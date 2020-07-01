@@ -1,16 +1,32 @@
 ﻿using Android.Content;
 using Android.Graphics;
+using Android.OS;
+using Android.Support.V4.Content;
 using Android.Support.V4.View;
 using Android.Support.V7.Widget;
+using Android.Text;
+using Android.Text.Method;
+using Android.Text.Style;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Facebook.Shimmer;
+using Java.Util.Regex;
 using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.FAQ.Activity;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
+using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.WhatsNewDetail.MVP;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -25,11 +41,15 @@ namespace myTNB_Android.Src.WhatsNewDialog
         public event EventHandler<int> DetailsClicked;
         public event EventHandler<int> CloseClicked;
         public event EventHandler<int> RefreshIndicator;
+        private bool isTextOnly = false;
+        private bool isPhotoOnly = true;
+        private RewardServiceImpl mApi;
 
         public WhatsNewDialogPagerAdapter(Context ctx, List<WhatsNewModel> items)
         {
             this.mContext = ctx;
             this.whatsnew = items;
+            this.mApi = new RewardServiceImpl();
         }
 
         public WhatsNewDialogPagerAdapter()
@@ -39,90 +59,168 @@ namespace myTNB_Android.Src.WhatsNewDialog
 
         public override Java.Lang.Object InstantiateItem(ViewGroup container, int position)
         {
-            ViewGroup rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerItemLayout, container, false);
-            FrameLayout whatsNewDialogCardView = (FrameLayout)rootView.FindViewById(Resource.Id.layout_image_holder);
-            Button btnGotIt = (Button)rootView.FindViewById(Resource.Id.btnWhatsNewGotIt);
-            RelativeLayout imageWhatsnewMain = (RelativeLayout)rootView.FindViewById(Resource.Id.imageWhatsnewMain);
-            ImageView imgWhatsNew = (ImageView)rootView.FindViewById(Resource.Id.image_whatsnew);
-            CheckBox chkDontShow = (CheckBox)rootView.FindViewById(Resource.Id.chk_remember_me);
-            
-            LinearLayout whatsNewMainImgLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewMainShimmerImgLayout);
-            ShimmerFrameLayout shimmerWhatsNewImageLayout = (ShimmerFrameLayout)rootView.FindViewById(Resource.Id.shimmerWhatsNewImageLayout);
-
-            int maxHeight = GetDeviceVerticalScaleInPixel(0.732f);
-
-            if (mContext.Resources.DisplayMetrics.HeightPixels >= 1920)
-            {
-                maxHeight = GetDeviceVerticalScaleInPixel(0.632f);
-            }
-
-            whatsNewDialogCardView.LayoutParameters.Height = maxHeight;
-            whatsNewDialogCardView.RequestLayout();
-            btnGotIt.RequestLayout();
-            rootView.RequestLayout();
-
-            TextViewUtils.SetMuseoSans500Typeface(btnGotIt, chkDontShow);
-            // WhatsNew TODO: update chkDontShow to multilingual
-            // chkDontShow.Text = Utility.GetLocalizedCommonLabel("rememberEmail");
-
-
             WhatsNewModel model = whatsnew[position];
 
-            if (shimmerWhatsNewImageLayout.IsShimmerStarted)
-            {
-                shimmerWhatsNewImageLayout.StopShimmer();
-            }
-            var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
-            if (shimmerBuilder != null)
-            {
-                shimmerWhatsNewImageLayout.SetShimmer(shimmerBuilder?.Build());
-            }
-            shimmerWhatsNewImageLayout.StartShimmer();
+            // isPhotoOnly = false;
+            // isTextOnly = true;
 
-            if (!string.IsNullOrEmpty(model.PortraitImage_PopUpB64))
-            {
-                Bitmap localBitmap = Base64ToBitmap(model.PortraitImage_PopUpB64);
-                if (localBitmap != null)
+            // if (isPhotoOnly && !isTextOnly)
+            // {
+                ViewGroup rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerItemLayout, container, false);
+                FrameLayout whatsNewDialogCardView = (FrameLayout)rootView.FindViewById(Resource.Id.layout_image_holder);
+                Button btnGotIt = (Button)rootView.FindViewById(Resource.Id.btnWhatsNewGotIt);
+                RelativeLayout imageWhatsnewMain = (RelativeLayout)rootView.FindViewById(Resource.Id.imageWhatsnewMain);
+                ImageView imgWhatsNew = (ImageView)rootView.FindViewById(Resource.Id.image_whatsnew);
+                CheckBox chkDontShow = (CheckBox)rootView.FindViewById(Resource.Id.chk_remember_me);
+
+                LinearLayout whatsNewMainImgLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewMainShimmerImgLayout);
+                ShimmerFrameLayout shimmerWhatsNewImageLayout = (ShimmerFrameLayout)rootView.FindViewById(Resource.Id.shimmerWhatsNewImageLayout);
+
+                int maxHeight = GetDeviceVerticalScaleInPixel(0.732f);
+
+                if (mContext.Resources.DisplayMetrics.HeightPixels >= 1920)
                 {
-                    model.PortraitImage_PopUpBitmap = localBitmap;
-                    SetWhatsNewDialogImage(localBitmap, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew, imageWhatsnewMain);
+                    maxHeight = GetDeviceVerticalScaleInPixel(0.632f);
+                }
+
+                whatsNewDialogCardView.LayoutParameters.Height = maxHeight;
+                whatsNewDialogCardView.RequestLayout();
+                btnGotIt.RequestLayout();
+                rootView.RequestLayout();
+
+                TextViewUtils.SetMuseoSans500Typeface(btnGotIt, chkDontShow);
+                // WhatsNew TODO: update chkDontShow to multilingual
+                // chkDontShow.Text = Utility.GetLocalizedCommonLabel("rememberEmail");
+
+
+                if (shimmerWhatsNewImageLayout.IsShimmerStarted)
+                {
+                    shimmerWhatsNewImageLayout.StopShimmer();
+                }
+                var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+                if (shimmerBuilder != null)
+                {
+                    shimmerWhatsNewImageLayout.SetShimmer(shimmerBuilder?.Build());
+                }
+                shimmerWhatsNewImageLayout.StartShimmer();
+
+                if (!string.IsNullOrEmpty(model.PortraitImage_PopUpB64))
+                {
+                    Bitmap localBitmap = Base64ToBitmap(model.PortraitImage_PopUpB64);
+                    if (localBitmap != null)
+                    {
+                        model.PortraitImage_PopUpBitmap = localBitmap;
+                        SetWhatsNewDialogImage(localBitmap, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew, imageWhatsnewMain);
+                    }
+                    else
+                    {
+                        // WhatsNew TODO: set default img
+                    }
+                }
+                else if (!string.IsNullOrEmpty(model.PortraitImage_PopUp))
+                {
+                    _ = GetImageAsync(model, position, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew, imageWhatsnewMain);
                 }
                 else
                 {
                     // WhatsNew TODO: set default img
                 }
-            }
-            else if (!string.IsNullOrEmpty(model.PortraitImage_PopUp))
+
+                btnGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
+
+                btnGotIt.Click += delegate
+                {
+                    OnCloseClick(position);
+                };
+
+                imgWhatsNew.Click += delegate
+                {
+                    OnDetailsClick(position);
+                    OnCloseClick(position);
+                };
+
+                chkDontShow.Checked = model.SkipShowOnAppLaunch;
+
+                chkDontShow.Click += delegate
+                {
+                    SkipWhatsNew(position, chkDontShow.Checked);
+                };
+
+                container.AddView(rootView);
+                return rootView;
+            // }
+
+            /*ViewGroup rootTextView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerTextItemLayout, container, false);
+            CardView whatsNewCardView = (CardView)rootTextView.FindViewById(Resource.Id.whatsNewDialogCardView);
+            LinearLayout layout_btn_holder = (LinearLayout)rootTextView.FindViewById(Resource.Id.layout_btn_holder);
+            TextView txtToolTipTitle = (TextView)rootTextView.FindViewById(Resource.Id.txtToolTipTitle);
+            TextView txtToolTipMessage = (TextView)rootTextView.FindViewById(Resource.Id.txtToolTipMessage);
+            Button btnTextGotIt = (Button)rootTextView.FindViewById(Resource.Id.btnWhatsNewGotIt);
+            LinearLayout whatsNewDialogMainView = (LinearLayout)rootTextView.FindViewById(Resource.Id.whatsNewDialogMainView);
+            ImageView imgToolTipHeader = (ImageView)rootTextView.FindViewById(Resource.Id.imgToolTipHeader);
+            CheckBox chkTextDontShow = (CheckBox)rootTextView.FindViewById(Resource.Id.chk_remember_me);
+
+            int photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.096f);
+            float photoRatio = 0.7852f;
+            int photoHeight = (int) (photoWidth * photoRatio);
+            if (!isPhotoOnly)
             {
-                _ = GetImageAsync(model, position, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew, imageWhatsnewMain);
+                photoRatio = 0.4929f;
+                photoHeight = (int)(photoWidth * photoRatio);
+                imgToolTipHeader.SetImageResource(Resource.Drawable.ic_banner_whatsnewdialog);
+                imgToolTipHeader.LayoutParameters.Height = photoHeight;
             }
             else
             {
-                // WhatsNew TODO: set default img
+                imgToolTipHeader.LayoutParameters.Height = photoHeight;
             }
 
-            btnGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
 
-            btnGotIt.Click += delegate
+            layout_btn_holder.RequestLayout();
+            btnTextGotIt.RequestLayout();
+            imgToolTipHeader.RequestLayout();
+            txtToolTipTitle.RequestLayout();
+            txtToolTipMessage.RequestLayout();
+            whatsNewCardView.RequestLayout();
+            rootTextView.RequestLayout();
+
+            btnTextGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
+            TextViewUtils.SetMuseoSans500Typeface(btnTextGotIt, chkTextDontShow, txtToolTipTitle);
+            TextViewUtils.SetMuseoSans300Typeface(txtToolTipMessage);
+            // WhatsNew TODO: update chkDontShow to multilingual
+            // chkDontShow.Text = Utility.GetLocalizedCommonLabel("rememberEmail");
+
+            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                // txtToolTipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                // txtToolTipMessage.TextFormatted = Html.FromHtml(this.message);
+            }
+
+            // txtToolTipMessage = ProcessClickableSpan(txtToolTipMessage, this.message);
+
+            btnTextGotIt.Click += delegate
             {
                 OnCloseClick(position);
             };
 
-            imgWhatsNew.Click += delegate
+            whatsNewDialogMainView.Click += delegate
             {
                 OnDetailsClick(position);
                 OnCloseClick(position);
             };
 
-            chkDontShow.Checked = model.SkipShowOnAppLaunch;
+            chkTextDontShow.Checked = model.SkipShowOnAppLaunch;
 
-            chkDontShow.Click += delegate
+            chkTextDontShow.Click += delegate
             {
-                SkipWhatsNew(position, chkDontShow.Checked);
+                SkipWhatsNew(position, chkTextDontShow.Checked);
             };
 
-            container.AddView(rootView);
-            return rootView;
+            container.AddView(rootTextView);
+            return rootTextView;*/
         }
 
         public int GetDeviceHorizontalScaleInPixel(float percentageValue)
@@ -141,6 +239,382 @@ namespace myTNB_Android.Src.WhatsNewDialog
         {
             int scaledInPixel = (int)((float)basePixel * percentageValue);
             return scaledInPixel;
+        }
+
+        private TextView ProcessClickableSpan(TextView mTextView, string message)
+        {
+            if (!string.IsNullOrEmpty(message))
+            {
+                int whileCount = 0;
+                bool isContained = false;
+                for (int i = 0; i < MyTNBAppToolTipBuilder.RedirectTypeList.Count; i++)
+                {
+                    if (message.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[i]))
+                    {
+                        whileCount = i;
+                        isContained = true;
+                        break;
+                    }
+                }
+
+                if (isContained)
+                {
+                    SpannableString s = new SpannableString(mTextView.TextFormatted);
+                    var clickableSpan = new ClickSpan()
+                    {
+                        textColor = new Android.Graphics.Color(ContextCompat.GetColor(mContext, Resource.Color.powerBlue)),
+                        typeFace = Typeface.CreateFromAsset(mContext.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+                    };
+
+                    clickableSpan.Click += v =>
+                    {
+                        if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[0]
+                            || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[1]
+                            || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[6])
+                        {
+                            List<string> extractedUrls = ExtractUrls(message);
+                            if (extractedUrls.Count > 0)
+                            {
+                                if (!extractedUrls[0].Contains("http"))
+                                {
+                                    extractedUrls[0] = "http://" + extractedUrls[0];
+                                }
+
+                                if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[0] || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[6])
+                                {
+                                    if (extractedUrls[0].Contains(".pdf") && !extractedUrls[0].Contains("docs.google"))
+                                    {
+                                        Intent webIntent = new Intent(this.mContext, typeof(BasePDFViewerActivity));
+                                        webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                        webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                        this.mContext.StartActivity(webIntent);
+                                    }
+                                    else
+                                    {
+                                        Intent webIntent = new Intent(this.mContext, typeof(BaseWebviewActivity));
+                                        webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                        webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                        this.mContext.StartActivity(webIntent);
+                                    }
+                                }
+                                else
+                                {
+                                    Intent intent = new Intent(Intent.ActionView);
+                                    intent.SetData(Android.Net.Uri.Parse(extractedUrls[0]));
+                                    this.mContext.StartActivity(intent);
+                                }
+                            }
+                        }
+                        else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[2])
+                        {
+                            int startIndex = message.LastIndexOf("=") + 1;
+                            int lastIndex = message.LastIndexOf("\">") - 1;
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < message.Length)
+                            {
+                                string phonenum = message.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(phonenum))
+                                {
+                                    if (!phonenum.Contains("tel:"))
+                                    {
+                                        phonenum = "tel:" + phonenum;
+                                    }
+
+                                    var call = Android.Net.Uri.Parse(phonenum);
+                                    var callIntent = new Intent(Intent.ActionView, call);
+                                    this.mContext.StartActivity(callIntent);
+                                }
+                            }
+                        }
+                        else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[3]
+                                    || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[8])
+                        {
+                            int startIndex = message.LastIndexOf("=") + 1;
+                            int lastIndex = message.LastIndexOf("}");
+                            if (lastIndex < 0)
+                            {
+                                lastIndex = message.LastIndexOf("\">") - 1;
+                            }
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < message.Length)
+                            {
+                                string whatsnewid = message.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(whatsnewid))
+                                {
+                                    if (!whatsnewid.Contains("{"))
+                                    {
+                                        whatsnewid = "{" + whatsnewid;
+                                    }
+
+                                    if (!whatsnewid.Contains("}"))
+                                    {
+                                        whatsnewid = whatsnewid + "}";
+                                    }
+
+                                    WhatsNewEntity wtManager = new WhatsNewEntity();
+
+                                    WhatsNewEntity item = wtManager.GetItem(whatsnewid);
+
+                                    if (item != null)
+                                    {
+                                        if (!item.Read)
+                                        {
+                                            UpdateWhatsNewRead(item.ID, true);
+                                        }
+
+                                        Intent activity = new Intent(this.mContext, typeof(WhatsNewDetailActivity));
+                                        activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsnewid);
+                                        activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
+                                        this.mContext.StartActivity(activity);
+                                    }
+                                }
+                            }
+                        }
+                        else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[4]
+                                    || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[9])
+                        {
+                            int startIndex = message.LastIndexOf("=") + 1;
+                            int lastIndex = message.LastIndexOf("}");
+                            if (lastIndex < 0)
+                            {
+                                lastIndex = message.LastIndexOf("\">") - 1;
+                            }
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < message.Length)
+                            {
+                                string faqid = message.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(faqid))
+                                {
+                                    if (!faqid.Contains("{"))
+                                    {
+                                        faqid = "{" + faqid;
+                                    }
+
+                                    if (!faqid.Contains("}"))
+                                    {
+                                        faqid = faqid + "}";
+                                    }
+
+                                    Intent faqIntent = new Intent(this.mContext, typeof(FAQListActivity));
+                                    faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                    this.mContext.StartActivity(faqIntent);
+                                }
+                            }
+                        }
+                        else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[5]
+                                    || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[10])
+                        {
+                            int startIndex = message.LastIndexOf("=") + 1;
+                            int lastIndex = message.LastIndexOf("}");
+                            if (lastIndex < 0)
+                            {
+                                lastIndex = message.LastIndexOf("\">") - 1;
+                            }
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < message.Length)
+                            {
+                                string rewardid = message.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(rewardid))
+                                {
+                                    if (!rewardid.Contains("{"))
+                                    {
+                                        rewardid = "{" + rewardid;
+                                    }
+
+                                    if (!rewardid.Contains("}"))
+                                    {
+                                        rewardid = rewardid + "}";
+                                    }
+
+                                    RewardsEntity wtManager = new RewardsEntity();
+
+                                    RewardsEntity item = wtManager.GetItem(rewardid);
+
+                                    if (item != null)
+                                    {
+                                        if (!item.Read)
+                                        {
+                                            UpdateRewardRead(item.ID, true);
+                                        }
+
+                                        Intent activity = new Intent(this.mContext, typeof(RewardDetailActivity));
+                                        activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardid);
+                                        activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
+                                        this.mContext.StartActivity(activity);
+                                    }
+                                }
+                            }
+                        }
+                        else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[7])
+                        {
+                            int startIndex = message.LastIndexOf("\"tel") + 1;
+                            int lastIndex = message.LastIndexOf("\">") - 1;
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < message.Length)
+                            {
+                                string phonenum = message.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(phonenum))
+                                {
+                                    if (!phonenum.Contains("tel:"))
+                                    {
+                                        phonenum = "tel:" + phonenum;
+                                    }
+
+                                    var call = Android.Net.Uri.Parse(phonenum);
+                                    var callIntent = new Intent(Intent.ActionView, call);
+                                    this.mContext.StartActivity(callIntent);
+                                }
+                            }
+                        }
+                    };
+
+                    var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+                    int startLink = s.GetSpanStart(urlSpans[0]);
+                    int endLink = s.GetSpanEnd(urlSpans[0]);
+                    s.RemoveSpan(urlSpans[0]);
+                    s.SetSpan(clickableSpan, startLink, endLink, SpanTypes.ExclusiveExclusive);
+                    mTextView.TextFormatted = s;
+                    mTextView.MovementMethod = new LinkMovementMethod();
+                }
+            }
+
+            return mTextView;
+        }
+
+        private List<string> ExtractUrls(string text)
+        {
+            List<string> containedUrls = new List<string>();
+            string urlRegex = "\\(?\\b(https://|http://|www[.])[-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
+            Java.Util.Regex.Pattern pattern = Java.Util.Regex.Pattern.Compile(urlRegex);
+            Matcher urlMatcher = pattern.Matcher(text);
+
+            try
+            {
+                while (urlMatcher.Find())
+                {
+                    string urlStr = urlMatcher.Group();
+                    if (urlStr.StartsWith("(") && urlStr.EndsWith(")"))
+                    {
+                        urlStr = urlStr.Substring(1, urlStr.Length - 1);
+                    }
+
+                    if (!containedUrls.Contains(urlStr))
+                    {
+                        containedUrls.Add(urlStr);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return containedUrls;
+        }
+
+        private void UpdateWhatsNewRead(string itemID, bool flag)
+        {
+            DateTime currentDate = DateTime.UtcNow;
+            WhatsNewEntity wtManager = new WhatsNewEntity();
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            string formattedDate = currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
+            if (!flag)
+            {
+                formattedDate = "";
+
+            }
+            wtManager.UpdateReadItem(itemID, flag, formattedDate);
+        }
+
+        private void UpdateRewardRead(string itemID, bool flag)
+        {
+            DateTime currentDate = DateTime.UtcNow;
+            RewardsEntity wtManager = new RewardsEntity();
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            string formattedDate = currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
+            if (!flag)
+            {
+                formattedDate = "";
+
+            }
+            wtManager.UpdateReadItem(itemID, flag, formattedDate);
+
+            _ = OnUpdateReward(itemID);
+        }
+
+        private async Task OnUpdateReward(string itemID)
+        {
+            try
+            {
+                // Update api calling
+                RewardsEntity wtManager = new RewardsEntity();
+                RewardsEntity currentItem = wtManager.GetItem(itemID);
+
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = UserEntity.GetActive().DeviceId,
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                string rewardId = currentItem.ID;
+                rewardId = rewardId.Replace("{", "");
+                rewardId = rewardId.Replace("}", "");
+
+                AddUpdateRewardModel currentReward = new AddUpdateRewardModel()
+                {
+                    Email = UserEntity.GetActive().Email,
+                    RewardId = rewardId,
+                    Read = currentItem.Read,
+                    ReadDate = !string.IsNullOrEmpty(currentItem.ReadDateTime) ? currentItem.ReadDateTime + " +00:00" : "",
+                    Favourite = currentItem.IsSaved,
+                    FavUpdatedDate = !string.IsNullOrEmpty(currentItem.IsSavedDateTime) ? currentItem.IsSavedDateTime + " +00:00" : "",
+                    Redeemed = currentItem.IsUsed,
+                    RedeemedDate = !string.IsNullOrEmpty(currentItem.IsUsedDateTime) ? currentItem.IsUsedDateTime + " +00:00" : ""
+                };
+
+                AddUpdateRewardRequest request = new AddUpdateRewardRequest()
+                {
+                    usrInf = currentUsrInf,
+                    reward = currentReward
+                };
+
+                AddUpdateRewardResponse response = await this.mApi.AddUpdateReward(request, new System.Threading.CancellationTokenSource().Token);
+
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        class ClickSpan : ClickableSpan
+        {
+            public Action<View> Click;
+            public Color textColor { get; set; }
+            public Typeface typeFace { get; set; }
+
+            public override void OnClick(View widget)
+            {
+                if (Click != null)
+                {
+                    Click(widget);
+                }
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.Color = textColor;
+                ds.SetTypeface(typeFace);
+                ds.UnderlineText = false;
+            }
         }
 
         private void SkipWhatsNew(int pos, bool isCheck)
