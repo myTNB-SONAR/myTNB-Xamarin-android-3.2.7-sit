@@ -1920,7 +1920,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                     ID = item.ID,
                                     PortraitImage_PopUp = item.PortraitImage_PopUp,
                                     PortraitImage_PopUpB64 = item.PortraitImage_PopUpB64,
-                                    SkipShowOnAppLaunch = item.SkipShowOnAppLaunch
+                                    SkipShowOnAppLaunch = item.SkipShowOnAppLaunch,
+                                    Disable_DoNotShow_Checkbox = item.Disable_DoNotShow_Checkbox
                                 });
                             }
                             IsRootTutorialShown = true;

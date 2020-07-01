@@ -70,6 +70,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 FrameLayout whatsNewDialogCardView = (FrameLayout)rootView.FindViewById(Resource.Id.layout_image_holder);
                 Button btnGotIt = (Button)rootView.FindViewById(Resource.Id.btnWhatsNewGotIt);
                 ImageView imgWhatsNew = (ImageView)rootView.FindViewById(Resource.Id.image_whatsnew);
+                LinearLayout whatsNewCheckBoxLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewCheckBoxLayout);
                 CheckBox chkDontShow = (CheckBox)rootView.FindViewById(Resource.Id.chk_remember_me);
 
                 LinearLayout whatsNewMainImgLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewMainShimmerImgLayout);
@@ -136,12 +137,19 @@ namespace myTNB_Android.Src.WhatsNewDialog
                     OnCloseClick(position);
                 };
 
-                chkDontShow.Checked = model.SkipShowOnAppLaunch;
-
-                chkDontShow.Click += delegate
+                if (model.Disable_DoNotShow_Checkbox)
                 {
-                    SkipWhatsNew(position, chkDontShow.Checked);
-                };
+                    whatsNewCheckBoxLayout.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    whatsNewCheckBoxLayout.Visibility = ViewStates.Visible;
+                    chkDontShow.Checked = model.SkipShowOnAppLaunch;
+                    chkDontShow.Click += delegate
+                    {
+                        SkipWhatsNew(position, chkDontShow.Checked);
+                    };
+                }
 
                 container.AddView(rootView);
                 return rootView;

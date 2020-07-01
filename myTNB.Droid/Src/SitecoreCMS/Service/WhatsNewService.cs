@@ -159,6 +159,15 @@ namespace myTNB.SitecoreCMS.Services
 
 					try
 					{
+						newItem.Disable_DoNotShow_Checkbox = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Disable_DoNotShow_Checkbox).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Disable_DoNotShow_Checkbox).ToUpper().Trim() == "TRUE") ? true : false;
+					}
+					catch (Exception ex)
+					{
+						newItem.Disable_DoNotShow_Checkbox = false;
+					}
+
+					try
+					{
 						newItem.PopUp_Text_Only = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PopUp_Text_Only).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PopUp_Text_Only).ToUpper().Trim() == "TRUE") ? true : false;
 					}
 					catch (Exception ex)
