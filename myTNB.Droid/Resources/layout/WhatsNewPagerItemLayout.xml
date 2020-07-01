@@ -22,34 +22,33 @@
                 android:id="@+id/layout_image_holder"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent">
-                <LinearLayout 
-                  android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:visibility="visible"
-                  android:id="@+id/whatsNewMainShimmerImgLayout">
-                    <com.facebook.shimmer.ShimmerFrameLayout
-                        android:id="@+id/shimmerWhatsNewImageLayout"
-                        android:layout_height="match_parent"
-                        android:layout_width="match_parent">
-                        <ImageView
-                        android:id="@+id/whatsNewShimmerImg"
-                        android:layout_height="match_parent"
-                        android:layout_width="match_parent"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/shimmer_rectangle"/>
-                    </com.facebook.shimmer.ShimmerFrameLayout>
-                </LinearLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/imageWhatsnewMain"
-                    android:visibility="gone">
+                    android:layout_height="match_parent">
+                    <LinearLayout 
+                      android:orientation="vertical"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:visibility="visible"
+                      android:id="@+id/whatsNewMainShimmerImgLayout">
+                        <com.facebook.shimmer.ShimmerFrameLayout
+                            android:id="@+id/shimmerWhatsNewImageLayout"
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent">
+                            <ImageView
+                            android:id="@+id/whatsNewShimmerImg"
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/shimmer_rectangle"/>
+                        </com.facebook.shimmer.ShimmerFrameLayout>
+                    </LinearLayout>
                     <ImageView
                         android:id="@+id/image_whatsnew"
                         android:layout_gravity="center"
                         android:layout_height="match_parent"
                         android:scaleType="fitXY"
+                        android:visibility="gone"
                         android:layout_width="match_parent"/>
                     <LinearLayout 
                         android:orientation="vertical"
