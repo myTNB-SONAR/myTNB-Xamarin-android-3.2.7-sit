@@ -98,6 +98,10 @@ namespace myTNB.SQLite.SQLiteDataManager
                     item.ShowEveryCountDays_PopUp = obj.ShowEveryCountDays_PopUp;
                     item.ShowForTotalCountDays_PopUp = obj.ShowForTotalCountDays_PopUp;
                     item.ShowAtAppLaunchPopUp = obj.ShowAtAppLaunchPopUp;
+                    item.PopUp_Text_Only = obj.PopUp_Text_Only;
+                    item.PopUp_HeaderImage = obj.PopUp_HeaderImage;
+                    item.PopUp_Text_Content = obj.PopUp_Text_Content;
+                    item.Donot_Show_In_WhatsNew = obj.Donot_Show_In_WhatsNew;
                     item.ShowDateForDay = obj.ShowDateForDay;
                     item.ShowCountForDay = obj.ShowCountForDay;
                     item.ShowDateForDay = obj.ShowDateForDay;
@@ -166,6 +170,10 @@ namespace myTNB.SQLite.SQLiteDataManager
                     ShowEveryCountDays_PopUp = item.ShowEveryCountDays_PopUp,
                     ShowForTotalCountDays_PopUp = item.ShowForTotalCountDays_PopUp,
                     ShowAtAppLaunchPopUp = item.ShowAtAppLaunchPopUp,
+                    PopUp_Text_Only = item.PopUp_Text_Only,
+                    PopUp_HeaderImage = item.PopUp_HeaderImage,
+                    PopUp_Text_Content = item.PopUp_Text_Content,
+                    Donot_Show_In_WhatsNew = item.Donot_Show_In_WhatsNew,
                     ShowDateForDay = item.ShowDateForDay,
                     ShowCountForDay = item.ShowCountForDay,
                     SkipShowOnAppLaunch = item.SkipShowOnAppLaunch
@@ -208,25 +216,18 @@ namespace myTNB.SQLite.SQLiteDataManager
                         {
                             Console.WriteLine("Error in GetActivePopupItems in Table : {0}", ne.Message);
                         }
-                        return (startResult >= 0 && endResult <= 0 && x.ShowAtAppLaunchPopUp && !x.SkipShowOnAppLaunch && x.ShowEveryCountDays_PopUp > 0 && x.ShowForTotalCountDays_PopUp > 0);
+                        return (startResult >= 0 && endResult <= 0 && x.ShowAtAppLaunchPopUp && !x.SkipShowOnAppLaunch && x.ShowEveryCountDays_PopUp > 0/*&& x.ShowForTotalCountDays_PopUp > 0*/);
                     });
                     if (matchList != null && matchList.Count > 0)
                     {
                         List<WhatsNewEntity> matchItemList = matchList.FindAll(x =>
                         {
-                            int startResult = -1;
-                            int endResult = 1;
                             bool isAlreadyExceedQuota = false;
                             try
                             {
                                 if (!string.IsNullOrEmpty(x.StartDate))
                                 {
-                                    DateTime startDateTime = DateTime.ParseExact(x.StartDate, "yyyyMMddTHHmmss",
-                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
-                                    DateTime stopDateTime = startDateTime.AddDays(x.ShowForTotalCountDays_PopUp);
                                     DateTime nowDateTime = DateTime.Now;
-                                    startResult = DateTime.Compare(nowDateTime, startDateTime);
-                                    endResult = DateTime.Compare(nowDateTime, stopDateTime);
                                     DateTime showDateTime = DateTime.ParseExact(x.ShowDateForDay, "yyyyMMddTHHmmss",
                                     CultureInfo.InvariantCulture, DateTimeStyles.None);
                                     if (showDateTime.Date == nowDateTime.Date && x.ShowCountForDay >= x.ShowEveryCountDays_PopUp)
@@ -239,7 +240,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                             {
                                 Console.WriteLine("Error in GetActivePopupItems in Table : {0}", ne.Message);
                             }
-                            return (startResult >= 0 && endResult <= 0 && !isAlreadyExceedQuota);
+                            return (!isAlreadyExceedQuota);
                         });
                         if (matchItemList != null && matchItemList.Count > 0)
                         {
@@ -266,6 +267,10 @@ namespace myTNB.SQLite.SQLiteDataManager
                                     ShowEveryCountDays_PopUp = item.ShowEveryCountDays_PopUp,
                                     ShowForTotalCountDays_PopUp = item.ShowForTotalCountDays_PopUp,
                                     ShowAtAppLaunchPopUp = item.ShowAtAppLaunchPopUp,
+                                    PopUp_Text_Only = item.PopUp_Text_Only,
+                                    PopUp_HeaderImage = item.PopUp_HeaderImage,
+                                    PopUp_Text_Content = item.PopUp_Text_Content,
+                                    Donot_Show_In_WhatsNew = item.Donot_Show_In_WhatsNew,
                                     ShowDateForDay = item.ShowDateForDay,
                                     ShowCountForDay = item.ShowCountForDay,
                                 };
@@ -394,6 +399,10 @@ namespace myTNB.SQLite.SQLiteDataManager
                     ShowEveryCountDays_PopUp = reward.ShowEveryCountDays_PopUp,
                     ShowForTotalCountDays_PopUp = reward.ShowForTotalCountDays_PopUp,
                     ShowAtAppLaunchPopUp = reward.ShowAtAppLaunchPopUp,
+                    PopUp_Text_Only = reward.PopUp_Text_Only,
+                    PopUp_HeaderImage = reward.PopUp_HeaderImage,
+                    PopUp_Text_Content = reward.PopUp_Text_Content,
+                    Donot_Show_In_WhatsNew = reward.Donot_Show_In_WhatsNew,
                     ShowDateForDay = reward.ShowDateForDay,
                     ShowCountForDay = reward.ShowCountForDay,
                     SkipShowOnAppLaunch = reward.SkipShowOnAppLaunch

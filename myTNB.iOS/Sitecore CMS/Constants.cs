@@ -180,6 +180,10 @@
                     public const string ShowEveryCountDays_PopUp = "ShowEveryCountDays_PopUp";
                     public const string ShowForTotalCountDays_PopUp = "ShowForTotalCountDays_PopUp";
                     public const string ShowAtAppLaunchPopUp = "ShowAtAppLaunchPopUp";
+                    public const string PopUp_Text_Only = "PopUp_Text_Only";
+                    public const string PopUp_HeaderImage = "PopUp_HeaderImage";
+                    public const string PopUp_Text_Content = "PopUp_Text_Content";
+                    public const string Donot_Show_In_WhatsNew = "Donot_Show_In_WhatsNew";
                 }
             }
 

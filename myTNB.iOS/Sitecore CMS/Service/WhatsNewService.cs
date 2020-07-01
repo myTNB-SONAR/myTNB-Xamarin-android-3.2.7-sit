@@ -141,6 +141,8 @@ namespace myTNB.SitecoreCMS.Service
                             Image_DetailsView = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image_DetailsView, _websiteURL, false),
                             Styles_DetailsView = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Styles_DetailsView),
                             PortraitImage_PopUp = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.PortraitImage_PopUp, _websiteURL, false),
+                            PopUp_HeaderImage = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.PopUp_HeaderImage, _websiteURL, false),
+                            PopUp_Text_Content = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PopUp_Text_Content),
                         };
 
                         try
@@ -166,6 +168,24 @@ namespace myTNB.SitecoreCMS.Service
                         catch (Exception ex)
                         {
                             listlItem.ShowAtAppLaunchPopUp = false;
+                        }
+
+                        try
+                        {
+                            listlItem.PopUp_Text_Only = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PopUp_Text_Only).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PopUp_Text_Only).ToUpper().Trim() == "TRUE") ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            listlItem.PopUp_Text_Only = false;
+                        }
+
+                        try
+                        {
+                            listlItem.Donot_Show_In_WhatsNew = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Donot_Show_In_WhatsNew).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Donot_Show_In_WhatsNew).ToUpper().Trim() == "TRUE") ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            listlItem.Donot_Show_In_WhatsNew = false;
                         }
 
                         if (listlItem.Description.Contains("<img"))

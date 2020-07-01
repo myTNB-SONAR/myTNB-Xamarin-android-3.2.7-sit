@@ -112,9 +112,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_11_500,
                 TextColor = MyTNBColor.CharcoalGrey,
-                // Text = GetI18NValue(LoginConstants.I18N_RememberEmail)
-                // WhatsNew TODO: Dont show this again multilingual
-                Text = "Don't show this again"
+                Text = LanguageUtility.GetCommonI18NValue(Constants.Common_DontShowThisAgain)
             };
 
             viewDoNotShowAgain.AddSubviews(new UIView[] { viewCheckBox, lblDontShowAgain });

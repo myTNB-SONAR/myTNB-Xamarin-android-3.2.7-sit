@@ -38,6 +38,10 @@ namespace myTNB.SitecoreCMS.Model
         public int ShowEveryCountDays_PopUp { set; get; }
         public int ShowForTotalCountDays_PopUp { set; get; }
         public bool ShowAtAppLaunchPopUp { set; get; }
+        public bool PopUp_Text_Only { set; get; }
+        public string PopUp_HeaderImage { set; get; }
+        public string PopUp_Text_Content { set; get; }
+        public bool Donot_Show_In_WhatsNew { set; get; }
         public string ShowDateForDay { set; get; }
         public int ShowCountForDay { set; get; }
         public bool SkipShowOnAppLaunch { set; get; }
@@ -66,6 +70,10 @@ namespace myTNB.SitecoreCMS.Model
                 ShowDateForDay = ShowDateForDay,
                 ShowCountForDay = ShowCountForDay,
                 SkipShowOnAppLaunch = SkipShowOnAppLaunch,
+                PopUp_Text_Only = PopUp_Text_Only,
+                PopUp_HeaderImage = PopUp_HeaderImage,
+                PopUp_Text_Content = PopUp_Text_Content,
+                Donot_Show_In_WhatsNew = Donot_Show_In_WhatsNew,
                 IsRead = IsRead
             };
 
