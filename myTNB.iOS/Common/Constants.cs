@@ -110,6 +110,7 @@ namespace myTNB
         public static string Common_Processing = "processing";
         public static string Common_RewardIsUsedTitle = "usedRewardTitle";
         public static string Common_RewardIsUsedDesc = "usedRewardMsg";
+        public static string Common_DontShowThisAgain = "dontShowThisAgain";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

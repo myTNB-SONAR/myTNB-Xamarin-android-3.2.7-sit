@@ -15,6 +15,7 @@ using myTNB.Home.Components;
 using myTNB.DataManager;
 using static myTNB.HomeTutorialOverlay;
 using myTNB.SitecoreCMS;
+using System.Globalization;
 
 namespace myTNB
 {
@@ -35,8 +36,8 @@ namespace myTNB
         public nfloat _previousScrollOffset;
         internal Dictionary<string, Action> _servicesActionDictionary;
         public bool _accountListIsShimmering = true;
-        private bool _servicesIsShimmering = true;
-        private bool _helpIsShimmering = false;
+        public bool _servicesIsShimmering = true;
+        public bool _helpIsShimmering = false;
         public bool _isRefreshScreenEnabled, _isGetServicesFailed;
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
         private UIImageView _footerImageBG;
@@ -47,6 +48,7 @@ namespace myTNB
         public bool IsNeedHelpCallDone;
         private bool _hotspotIsOn;
         private bool _isLanguageChanged;
+        private WhatsNewModalViewController whatsNewModalView;
 
         public override void ViewDidLoad()
         {
@@ -222,7 +224,10 @@ namespace myTNB
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
 
-            if (tutorialOverlayHasShown) { return; }
+            if (tutorialOverlayHasShown) {
+                ShowWhatsNewPopUp();
+                return;
+            }
 
             if (!_accountListIsShimmering && !_servicesIsShimmering && !_isGetServicesFailed && IsNeedHelpCallDone)
             {
@@ -243,6 +248,142 @@ namespace myTNB
                                 _tutorialContainer.RemoveFromSuperview();
                             }
                         }
+                    }
+                });
+            }
+        }
+
+        private void ShowWhatsNewPopUp()
+        {
+            if (!DataManager.DataManager.SharedInstance.IsWhatsNewFirstLoad
+                && DataManager.DataManager.SharedInstance.UserEntity.Count > 0
+                && DataManager.DataManager.SharedInstance.UserEntity[0] != null)
+            {
+                InvokeInBackground(async () =>
+                {
+                    bool hasUpdate = await SitecoreServices.Instance.WhatsNewHasUpdates();
+                    if (hasUpdate)
+                    {
+                        DataManager.DataManager.SharedInstance.IsWhatsNewLoading = true;
+                        await SitecoreServices.Instance.LoadWhatsNew(true);
+                        DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
+                        if (WhatsNewCache.WhatsNewIsAvailable)
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                WhatsNewEntity wsManager = new WhatsNewEntity();
+                                var items = wsManager.GetActivePopupItems();
+                                if (items != null && items.Count > 0)
+                                {
+                                    for (int index = 0; index < items.Count; index++)
+                                    {
+                                        string id = items[index].ID;
+                                        string recordDate = items[index].ShowDateForDay;
+                                        int count = items[index].ShowCountForDay;
+                                        DateTime showDateTime = DateTime.ParseExact(recordDate, "yyyyMMddTHHmmss",
+                                            CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                        if (showDateTime.Date == DateTime.Now.Date)
+                                        {
+                                            count = count + 1;
+                                        }
+                                        else
+                                        {
+                                            WhatsNewServices.SetWhatNewModelShowDate(id);
+                                            count = 1;
+                                        }
+                                        
+                                        WhatsNewServices.SetWhatNewModelShowCount(id, count);
+                                    }
+
+
+                                    whatsNewModalView = new WhatsNewModalViewController();
+                                    whatsNewModalView.WhatsNews = items;
+                                    whatsNewModalView.OnWhatsNewClick = OnNavigateWhatsNewModal;
+                                    whatsNewModalView.OnDismissWhatsNew = OnDismissWhatsNewModal;
+                                    UINavigationController navController = new UINavigationController(whatsNewModalView)
+                                    {
+                                        ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+                                    };
+                                    PresentViewController(navController, true, null);
+                                }
+                            });
+                        }
+                    }
+                    else
+                    {
+                        if (!DataManager.DataManager.SharedInstance.IsWhatsNewLoading)
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                WhatsNewEntity wsManager = new WhatsNewEntity();
+                                var items = wsManager.GetActivePopupItems();
+                                if (items != null && items.Count > 0)
+                                {
+                                    for (int index = 0; index < items.Count; index++)
+                                    {
+                                        string id = items[index].ID;
+                                        string recordDate = items[index].ShowDateForDay;
+                                        int count = items[index].ShowCountForDay;
+                                        DateTime showDateTime = DateTime.ParseExact(recordDate, "yyyyMMddTHHmmss",
+                                            CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                        if (showDateTime.Date == DateTime.Now.Date)
+                                        {
+                                            count = count + 1;
+                                        }
+                                        else
+                                        {
+                                            WhatsNewServices.SetWhatNewModelShowDate(id);
+                                            count = 1;
+                                        }
+
+                                        WhatsNewServices.SetWhatNewModelShowCount(id, count);
+                                    }
+
+                                    whatsNewModalView = new WhatsNewModalViewController();
+                                    whatsNewModalView.WhatsNews = items;
+                                    whatsNewModalView.OnWhatsNewClick = OnNavigateWhatsNewModal;
+                                    whatsNewModalView.OnDismissWhatsNew = OnDismissWhatsNewModal;
+                                    UINavigationController navController = new UINavigationController(whatsNewModalView)
+                                    {
+                                        ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+                                    };
+                                    PresentViewController(navController, true, null);
+                                }
+                            });
+                        }
+                    }
+                });
+                DataManager.DataManager.SharedInstance.IsWhatsNewFirstLoad = true;
+            }
+        }
+
+        public void OnNavigateWhatsNewModal()
+        {
+            if (DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId.IsValid())
+            {
+                var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                if (topVc != null)
+                {
+                    if (!(topVc is WhatsNewDetailsViewController) && !(topVc is AppLaunchViewController))
+                    {
+                        WhatsNewServices.OpenWhatsNewDetails(DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId, topVc);
+                    }
+                }
+
+                DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId = "";
+            }
+        }
+
+        public void OnDismissWhatsNewModal()
+        {
+            if (whatsNewModalView.WhatsNews.Count == 0)
+            {
+                whatsNewModalView.DismissViewController(true, () =>
+                {
+                    if (DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId.IsValid())
+                    {
+                        OnNavigateWhatsNewModal();
                     }
                 });
             }
@@ -333,6 +474,8 @@ namespace myTNB
                 var sharedPreference = NSUserDefaults.StandardUserDefaults;
                 sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
                 sharedPreference.Synchronize();
+
+                ShowWhatsNewPopUp();
             }
         }
 

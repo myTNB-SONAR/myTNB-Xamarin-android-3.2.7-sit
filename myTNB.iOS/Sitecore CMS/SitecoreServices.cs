@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -38,6 +39,9 @@ namespace myTNB.SitecoreCMS
             {
                 taskList.Add(LoadLanguage());
                 WhatsNewCache.ClearImages();
+                WhatsNewDetailCache.ClearImages();
+                WhatsNewDetailDescriptionCache.ClearImages();
+                WhatsNewPopupCache.ClearImages();
                 RewardsCache.ClearImages();
                 ClearTimeStamps();
             }
@@ -739,6 +743,9 @@ namespace myTNB.SitecoreCMS
                                             whatsNew.CategoryID = category.ID;
                                             whatsNew.CategoryName = category.CategoryName;
                                             whatsNew.IsRead = WhatsNewServices.GetIsRead(whatsNew.ID);
+                                            whatsNew.ShowDateForDay = WhatsNewServices.GetWhatNewModelShowDate(whatsNew.ID);
+                                            whatsNew.ShowCountForDay = WhatsNewServices.GetWhatNewModelShowCount(whatsNew.ID);
+                                            whatsNew.SkipShowOnAppLaunch = WhatsNewServices.GetIsSkipAppLaunch(whatsNew.ID);
                                             whatsNewData.Add(whatsNew);
                                         }
                                     }
