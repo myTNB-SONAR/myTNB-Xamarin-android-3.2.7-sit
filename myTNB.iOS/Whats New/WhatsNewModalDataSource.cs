@@ -225,13 +225,11 @@ namespace myTNB
             };
             mainView.AddGestureRecognizer(tapDetail);
             view.AddSubview(mainView);
-            view.AddSubview(viewDoNotShowAgain);
 
-            UIView doNotShowView = new UIView(new CGRect(0, 0, carWidth, itemHeight))
+            if (!whatsnew.Disable_DoNotShow_Checkbox)
             {
-                BackgroundColor = UIColor.Clear,
-                UserInteractionEnabled = true
-            };
+                view.AddSubview(viewDoNotShowAgain);
+            }
 
             UIButton btnGotIt = new UIButton(UIButtonType.Custom);
             btnGotIt.Frame = new CGRect(0, view.Frame.Height - buttonHeight, buttonWidth, buttonHeight);
