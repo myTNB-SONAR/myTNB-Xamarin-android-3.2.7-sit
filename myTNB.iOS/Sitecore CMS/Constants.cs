@@ -223,7 +223,7 @@
                 public const string BillDetailsTooltip = "/sitecore/content/myTNBapp/Contents/Itemised Billing Tooltip";
                 public const string AppLaunchImage = "/sitecore/content/myTNBapp/Contents/App Launch Image";
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
-#if DEBUG || STUB || DEVELOP || SIT
+#if DEBUG || STUB || DEVELOP || SIT || MASTER
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew_SIT_V2";
 #else
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew";
