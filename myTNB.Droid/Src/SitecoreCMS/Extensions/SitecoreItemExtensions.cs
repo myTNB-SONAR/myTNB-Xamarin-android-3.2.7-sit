@@ -120,6 +120,21 @@ namespace myTNB.SitecoreCMS.Extensions
             }
         }
 
+        public static string GetImageUrlFromExtractedUrl(this ISitecoreItem item, string extractedUrl, string websiteUrl = null)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(websiteUrl))
+                    return extractedUrl.Replace(" ", "%20");
+
+                return String.Format("{0}/{1}", websiteUrl, extractedUrl).Replace(" ", "%20");
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
         public static string GetImageFieldName(string imgSize)
         {
             switch (imgSize)

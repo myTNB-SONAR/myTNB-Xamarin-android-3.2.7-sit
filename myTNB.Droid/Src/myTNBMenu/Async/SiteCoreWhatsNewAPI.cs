@@ -195,6 +195,15 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                                                 {
                                                                     mModel.Read = searchItem.Read;
                                                                     mModel.ReadDateTime = searchItem.ReadDateTime;
+                                                                    mModel.ShowDateForDay = searchItem.ShowDateForDay;
+                                                                    mModel.ShowCountForDay = searchItem.ShowCountForDay;
+                                                                    mModel.SkipShowOnAppLaunch = searchItem.SkipShowOnAppLaunch;
+                                                                }
+                                                                else
+                                                                {
+                                                                    mModel.ShowDateForDay = GetCurrentDate();
+                                                                    mModel.ShowCountForDay = 0;
+                                                                    mModel.SkipShowOnAppLaunch = false;
                                                                 }
                                                                 localList.Add(mModel);
                                                             }
@@ -352,7 +361,14 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 			return null;
 		}
 
-		protected override void OnPostExecute(Java.Lang.Object result)
+        private string GetCurrentDate()
+        {
+            DateTime currentDate = DateTime.Now;
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            return currentDate.ToString(@"yyyyMMddTHHmmss", currCult);
+        }
+
+        protected override void OnPostExecute(Java.Lang.Object result)
 		{
 			base.OnPostExecute(result);
         }

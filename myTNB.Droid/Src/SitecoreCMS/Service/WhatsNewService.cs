@@ -109,20 +109,88 @@ namespace myTNB.SitecoreCMS.Services
 					{
 						continue;
 					}
-					list.Add(new WhatsNewModel
+
+					WhatsNewModel newItem = new WhatsNewModel();
+
+					newItem = new WhatsNewModel
 					{
 						CategoryName = whatsNewCategory.CategoryName,
 						CategoryID = whatsNewCategory.ID,
 						TitleOnListing = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.TitleOnListing),
 						StartDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.StartDate),
 						EndDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.EndDate),
-                        PublishDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PublishDate),
-                        Title = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Title),
+						PublishDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PublishDate),
+						Title = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Title),
 						Description = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Description),
 						Image = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image, _websiteURL, false),
 						CTA = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.CTA),
+						Image_DetailsView = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image_DetailsView, _websiteURL, false),
+						Styles_DetailsView = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Styles_DetailsView),
+						PortraitImage_PopUp = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.PortraitImage_PopUp, _websiteURL, false),
+						PopUp_HeaderImage = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.PopUp_HeaderImage, _websiteURL, false),
+						PopUp_Text_Content = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PopUp_Text_Content),
 						ID = item.Id
-					});
+					};
+
+					try
+                    {
+						newItem.ShowEveryCountDays_PopUp = !string.IsNullOrEmpty(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowEveryCountDays_PopUp)) ? int.Parse(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowEveryCountDays_PopUp)) : 0;
+					}
+					catch (Exception ex)
+					{
+						newItem.ShowEveryCountDays_PopUp = 0;
+					}
+					try
+					{
+						newItem.ShowForTotalCountDays_PopUp = !string.IsNullOrEmpty(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowForTotalCountDays_PopUp)) ? int.Parse(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowForTotalCountDays_PopUp)) : 0;
+					}
+					catch (Exception ex)
+					{
+						newItem.ShowForTotalCountDays_PopUp = 0;
+					}
+					try
+					{
+						newItem.ShowAtAppLaunchPopUp = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowAtAppLaunchPopUp).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowAtAppLaunchPopUp).ToUpper().Trim() == "TRUE") ? true : false;
+					}
+					catch (Exception ex)
+					{
+						newItem.ShowAtAppLaunchPopUp = false;
+					}
+
+					try
+					{
+						newItem.PopUp_Text_Only = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PopUp_Text_Only).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PopUp_Text_Only).ToUpper().Trim() == "TRUE") ? true : false;
+					}
+					catch (Exception ex)
+					{
+						newItem.PopUp_Text_Only = false;
+					}
+
+					try
+					{
+						newItem.Donot_Show_In_WhatsNew = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Donot_Show_In_WhatsNew).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Donot_Show_In_WhatsNew).ToUpper().Trim() == "TRUE") ? true : false;
+					}
+					catch (Exception ex)
+					{
+						newItem.Donot_Show_In_WhatsNew = false;
+					}
+
+					if (newItem.Description.Contains("<img"))
+                    {
+						string urlRegex = @"<img[^>]*?src\s*=\s*[""']?([^'"" >]+?)[ '""][^>]*?>";
+						System.Text.RegularExpressions.MatchCollection matchesImgSrc = System.Text.RegularExpressions.Regex.Matches(newItem.Description, urlRegex, System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+						foreach (System.Text.RegularExpressions.Match m in matchesImgSrc)
+						{
+							string href = m.Groups[1].Value;
+							if (!href.Contains("http"))
+                            {
+								href = item.GetImageUrlFromExtractedUrl(m.Groups[1].Value, _websiteURL);
+							}
+							newItem.Description = newItem.Description.Replace(m.Groups[1].Value, href);
+						}
+					}
+
+					list.Add(newItem);
 				}
 			}
 			catch (Exception e)
