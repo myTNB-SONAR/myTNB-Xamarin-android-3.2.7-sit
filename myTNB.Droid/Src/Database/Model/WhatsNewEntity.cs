@@ -97,6 +97,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("Donot_Show_In_WhatsNew")]
         public bool Donot_Show_In_WhatsNew { set; get; }
 
+        [Column("Disable_DoNotShow_Checkbox")]
+        public bool Disable_DoNotShow_Checkbox { set; get; }
+
         public void CreateTable()
         {
 
@@ -157,6 +160,7 @@ namespace myTNB_Android.Src.Database.Model
                     item.PopUp_Text_Only = obj.PopUp_Text_Only;
                     item.PopUp_HeaderImage = obj.PopUp_HeaderImage;
                     item.PopUp_Text_Content = obj.PopUp_Text_Content;
+                    item.Disable_DoNotShow_Checkbox = obj.Disable_DoNotShow_Checkbox;
                     item.Donot_Show_In_WhatsNew = obj.Donot_Show_In_WhatsNew;
                     item.ShowDateForDay = obj.ShowDateForDay;
                     item.ShowCountForDay = obj.ShowCountForDay;
