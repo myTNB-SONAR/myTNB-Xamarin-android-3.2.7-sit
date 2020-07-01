@@ -118,6 +118,8 @@ namespace myTNB.DataManager
         //WhatsNew
         public bool IsWhatsNewLoading;
         public bool IsFromWhatsNewDeeplink;
+        public bool IsWhatsNewFirstLoad = false;
+        public string WhatsNewModalNavigationId = "";
 
         //Rewards
         public bool IsRewardsLoading = false;
@@ -176,6 +178,9 @@ namespace myTNB.DataManager
             sharedPreference.SetString("", "SiteCoreWhatsNewTimeStamp");
             sharedPreference.SetString("", "SiteCoreRewardsTimeStamp");
             sharedPreference.SetString("", WhatsNewConstants.Pref_WhatsNewReadFlags);
+            sharedPreference.SetString("", WhatsNewConstants.Pref_WhatsNewSkipModelFlags);
+            sharedPreference.SetString("", WhatsNewConstants.Pref_WhatsNewModelShowDate);
+            sharedPreference.SetString("", WhatsNewConstants.Pref_WhatsNewModelShowCount);
             sharedPreference.SetBool(false, TNBGlobal.PreferenceKeys.PhoneVerification);
             sharedPreference.Synchronize();
 
@@ -251,7 +256,10 @@ namespace myTNB.DataManager
             SSMRActivityInfoCache.IsPhotoToolTipDisplayed = false;
             WhatsNewCache.Clear();
             RewardsCache.Clear();
-        }
+
+            IsWhatsNewFirstLoad = false;
+            WhatsNewModalNavigationId = "";
+    }
 
         public void RemoveAccountFromArrangedList(string accountNo)
         {

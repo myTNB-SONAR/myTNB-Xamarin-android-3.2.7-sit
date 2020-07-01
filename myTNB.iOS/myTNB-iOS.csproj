@@ -2780,6 +2780,12 @@
     <Compile Include="Sitecore CMS\Service\EppInfoTooltipService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\EppInfoTooltipEntity.cs" />
     <Compile Include="Helpers\WebWKUIDelegate.cs" />
+    <Compile Include="Session Cache\WhatsNewDetailCache.cs" />
+    <Compile Include="Whats New\WhatsNewModalViewController.cs" />
+    <Compile Include="Whats New\WhatsNewModalViewController.designer.cs" />
+    <Compile Include="Whats New\WhatsNewModalDataSource.cs" />
+    <Compile Include="Session Cache\WhatsNewPopupCache.cs" />
+    <Compile Include="Session Cache\WhatsNewDetailDescriptionCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

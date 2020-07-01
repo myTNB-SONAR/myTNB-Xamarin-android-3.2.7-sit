@@ -633,8 +633,8 @@
   "FindUs": {
     "title": "Temui Kami",
     "searchPlaceholder": "Cari nama jalan atau kawasan",
-    "zeroLocations": "Penutupan Kedai Tenaga Sepanjang PKP",
-    "noKTFound": "Pelanggan yang dihargai, Kedai Tenaga tidak beroperasi sepanjang tempoh PKP.",
+    "zeroLocations": "0 Lokasi",
+    "noKTFound": "Tiada Kedai Tenaga Ditemui",
     "no711Found": "Tiada Kedai 7-Eleven Ditemui",
     "show": "Tunjukkan"
   },

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Foundation;
 using myTNB.SQLite.SQLiteDataManager;
 using SQLite;
 
@@ -30,6 +32,19 @@ namespace myTNB.SitecoreCMS.Model
         public string StartDate { set; get; }
         public string EndDate { set; get; }
         public string PublishDate { set; get; }
+        public string Image_DetailsView { set; get; }
+        public string Styles_DetailsView { set; get; }
+        public string PortraitImage_PopUp { set; get; }
+        public int ShowEveryCountDays_PopUp { set; get; }
+        public int ShowForTotalCountDays_PopUp { set; get; }
+        public bool ShowAtAppLaunchPopUp { set; get; }
+        public bool PopUp_Text_Only { set; get; }
+        public string PopUp_HeaderImage { set; get; }
+        public string PopUp_Text_Content { set; get; }
+        public bool Donot_Show_In_WhatsNew { set; get; }
+        public string ShowDateForDay { set; get; }
+        public int ShowCountForDay { set; get; }
+        public bool SkipShowOnAppLaunch { set; get; }
         public bool IsRead { set; get; }
 
         public WhatsNewEntity ToEntity()
@@ -46,6 +61,19 @@ namespace myTNB.SitecoreCMS.Model
                 StartDate = StartDate,
                 EndDate = EndDate,
                 PublishDate = PublishDate,
+                Image_DetailsView = Image_DetailsView,
+                Styles_DetailsView = Styles_DetailsView,
+                PortraitImage_PopUp = PortraitImage_PopUp,
+                ShowEveryCountDays_PopUp = ShowEveryCountDays_PopUp,
+                ShowForTotalCountDays_PopUp = ShowForTotalCountDays_PopUp,
+                ShowAtAppLaunchPopUp = ShowAtAppLaunchPopUp,
+                ShowDateForDay = ShowDateForDay,
+                ShowCountForDay = ShowCountForDay,
+                SkipShowOnAppLaunch = SkipShowOnAppLaunch,
+                PopUp_Text_Only = PopUp_Text_Only,
+                PopUp_HeaderImage = PopUp_HeaderImage,
+                PopUp_Text_Content = PopUp_Text_Content,
+                Donot_Show_In_WhatsNew = Donot_Show_In_WhatsNew,
                 IsRead = IsRead
             };
 
