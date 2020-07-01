@@ -42,6 +42,7 @@ namespace myTNB.SitecoreCMS.Model
         public string PopUp_HeaderImage { set; get; }
         public string PopUp_Text_Content { set; get; }
         public bool Donot_Show_In_WhatsNew { set; get; }
+        public bool Disable_DoNotShow_Checkbox { set; get; }
         public string ShowDateForDay { set; get; }
         public int ShowCountForDay { set; get; }
         public bool SkipShowOnAppLaunch { set; get; }
@@ -74,6 +75,7 @@ namespace myTNB.SitecoreCMS.Model
                 PopUp_HeaderImage = PopUp_HeaderImage,
                 PopUp_Text_Content = PopUp_Text_Content,
                 Donot_Show_In_WhatsNew = Donot_Show_In_WhatsNew,
+                Disable_DoNotShow_Checkbox = Disable_DoNotShow_Checkbox,
                 IsRead = IsRead
             };
 

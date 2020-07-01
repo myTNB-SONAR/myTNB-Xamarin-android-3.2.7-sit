@@ -188,6 +188,15 @@ namespace myTNB.SitecoreCMS.Service
                             listlItem.Donot_Show_In_WhatsNew = false;
                         }
 
+                        try
+                        {
+                            listlItem.Disable_DoNotShow_Checkbox = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Disable_DoNotShow_Checkbox).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Disable_DoNotShow_Checkbox).ToUpper().Trim() == "TRUE") ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            listlItem.Disable_DoNotShow_Checkbox = false;
+                        }
+
                         if (listlItem.Description.Contains("<img"))
                         {
                             string urlRegex = @"<img[^>]*?src\s*=\s*[""']?([^'"" >]+?)[ '""][^>]*?>";

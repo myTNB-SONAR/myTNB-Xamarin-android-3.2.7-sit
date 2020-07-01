@@ -184,6 +184,7 @@
                     public const string PopUp_HeaderImage = "PopUp_HeaderImage";
                     public const string PopUp_Text_Content = "PopUp_Text_Content";
                     public const string Donot_Show_In_WhatsNew = "Donot_Show_In_WhatsNew";
+                    public const string Disable_DoNotShow_Checkbox = "Disable_DoNotShow_Checkbox";
                 }
             }
 
