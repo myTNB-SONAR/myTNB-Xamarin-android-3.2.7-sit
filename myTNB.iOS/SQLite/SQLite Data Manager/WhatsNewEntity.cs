@@ -102,6 +102,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                     item.PopUp_HeaderImage = obj.PopUp_HeaderImage;
                     item.PopUp_Text_Content = obj.PopUp_Text_Content;
                     item.Donot_Show_In_WhatsNew = obj.Donot_Show_In_WhatsNew;
+                    item.Disable_DoNotShow_Checkbox = obj.Disable_DoNotShow_Checkbox;
                     item.ShowDateForDay = obj.ShowDateForDay;
                     item.ShowCountForDay = obj.ShowCountForDay;
                     item.ShowDateForDay = obj.ShowDateForDay;
@@ -174,6 +175,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                     PopUp_HeaderImage = item.PopUp_HeaderImage,
                     PopUp_Text_Content = item.PopUp_Text_Content,
                     Donot_Show_In_WhatsNew = item.Donot_Show_In_WhatsNew,
+                    Disable_DoNotShow_Checkbox = item.Disable_DoNotShow_Checkbox,
                     ShowDateForDay = item.ShowDateForDay,
                     ShowCountForDay = item.ShowCountForDay,
                     SkipShowOnAppLaunch = item.SkipShowOnAppLaunch
@@ -271,6 +273,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                                     PopUp_HeaderImage = item.PopUp_HeaderImage,
                                     PopUp_Text_Content = item.PopUp_Text_Content,
                                     Donot_Show_In_WhatsNew = item.Donot_Show_In_WhatsNew,
+                                    Disable_DoNotShow_Checkbox = item.Disable_DoNotShow_Checkbox,
                                     ShowDateForDay = item.ShowDateForDay,
                                     ShowCountForDay = item.ShowCountForDay,
                                 };
@@ -403,6 +406,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                     PopUp_HeaderImage = reward.PopUp_HeaderImage,
                     PopUp_Text_Content = reward.PopUp_Text_Content,
                     Donot_Show_In_WhatsNew = reward.Donot_Show_In_WhatsNew,
+                    Disable_DoNotShow_Checkbox = reward.Disable_DoNotShow_Checkbox,
                     ShowDateForDay = reward.ShowDateForDay,
                     ShowCountForDay = reward.ShowCountForDay,
                     SkipShowOnAppLaunch = reward.SkipShowOnAppLaunch
