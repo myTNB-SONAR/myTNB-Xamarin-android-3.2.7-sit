@@ -371,6 +371,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                                     {
                                         mModel.Read = searchItem.Read;
                                         mModel.ReadDateTime = searchItem.ReadDateTime;
+                                        mModel.ShowDateForDay = searchItem.ShowDateForDay;
+                                        mModel.ShowCountForDay = searchItem.ShowCountForDay;
+                                        mModel.SkipShowOnAppLaunch = searchItem.SkipShowOnAppLaunch;
+                                    }
+                                    else
+                                    {
+                                        mModel.ShowDateForDay = GetCurrentDate();
+                                        mModel.ShowCountForDay = 0;
+                                        mModel.SkipShowOnAppLaunch = false;
                                     }
                                     localList.Add(mModel);
                                 }
@@ -415,6 +424,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                 this.mView.SetRefreshView(null, null);
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private string GetCurrentDate()
+        {
+            DateTime currentDate = DateTime.Now;
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            return currentDate.ToString(@"yyyyMMddTHHmmss", currCult);
         }
 
         public List<NewAppModel> OnGeneraNewAppTutorialList()

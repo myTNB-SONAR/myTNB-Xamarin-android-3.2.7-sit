@@ -256,6 +256,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void UpdateTrackDashboardMenu(int resId);
 
             void OnLoadMoreMenu();
-        }
+
+			bool GetIsWhatsNewDialogShowNeed();
+
+			void SetIsWhatsNewDialogShowNeed(bool flag);
+
+		}
 	}
 }

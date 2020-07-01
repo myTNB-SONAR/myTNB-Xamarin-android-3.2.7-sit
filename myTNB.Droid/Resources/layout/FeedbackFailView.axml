@@ -34,7 +34,7 @@
                     android:layout_gravity="center_horizontal"
                     android:padding="7.2dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_display_unsuccessful" />
+                    android:src="@drawable/ic_display_unsuccessful_new" />
 
                 <TextView
                     android:id="@+id/txtTitleInfo"
