@@ -89,9 +89,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 rootView.RequestLayout();
 
                 TextViewUtils.SetMuseoSans500Typeface(btnGotIt, chkDontShow);
-                // WhatsNew TODO: update chkDontShow to multilingual
-                // chkDontShow.Text = Utility.GetLocalizedCommonLabel("rememberEmail");
-
+                chkDontShow.Text = Utility.GetLocalizedCommonLabel("dontShowThisAgain");
 
                 if (shimmerWhatsNewImageLayout.IsShimmerStarted)
                 {
@@ -187,8 +185,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
             btnTextGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
             TextViewUtils.SetMuseoSans500Typeface(btnTextGotIt, chkTextDontShow, txtToolTipTitle);
             TextViewUtils.SetMuseoSans300Typeface(txtToolTipMessage);
-            // WhatsNew TODO: update chkDontShow to multilingual
-            // chkDontShow.Text = Utility.GetLocalizedCommonLabel("rememberEmail");
+            chkTextDontShow.Text = Utility.GetLocalizedCommonLabel("dontShowThisAgain");
 
             if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
             {

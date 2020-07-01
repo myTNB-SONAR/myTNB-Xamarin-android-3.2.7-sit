@@ -85,6 +85,18 @@ namespace myTNB_Android.Src.Database.Model
         [Column("ShowAtAppLaunchPopUp")]
         public bool ShowAtAppLaunchPopUp { set; get; }
 
+        [Column("PopUp_Text_Only")]
+        public bool PopUp_Text_Only { set; get; }
+
+        [Column("PopUp_HeaderImage")]
+        public string PopUp_HeaderImage { set; get; }
+
+        [Column("PopUp_Text_Content")]
+        public string PopUp_Text_Content { set; get; }
+
+        [Column("Donot_Show_In_WhatsNew")]
+        public bool Donot_Show_In_WhatsNew { set; get; }
+
         public void CreateTable()
         {
 
@@ -142,6 +154,10 @@ namespace myTNB_Android.Src.Database.Model
                     item.ShowEveryCountDays_PopUp = obj.ShowEveryCountDays_PopUp;
                     item.ShowForTotalCountDays_PopUp = obj.ShowForTotalCountDays_PopUp;
                     item.ShowAtAppLaunchPopUp = obj.ShowAtAppLaunchPopUp;
+                    item.PopUp_Text_Only = obj.PopUp_Text_Only;
+                    item.PopUp_HeaderImage = obj.PopUp_HeaderImage;
+                    item.PopUp_Text_Content = obj.PopUp_Text_Content;
+                    item.Donot_Show_In_WhatsNew = obj.Donot_Show_In_WhatsNew;
                     item.ShowDateForDay = obj.ShowDateForDay;
                     item.ShowCountForDay = obj.ShowCountForDay;
                     item.SkipShowOnAppLaunch = obj.SkipShowOnAppLaunch;
@@ -268,27 +284,19 @@ namespace myTNB_Android.Src.Database.Model
                         {
                             Utility.LoggingNonFatalError(ne);
                         }
-                        return (startResult >= 0 && endResult <= 0 && x.ShowAtAppLaunchPopUp && !x.SkipShowOnAppLaunch && x.ShowEveryCountDays_PopUp > 0 && x.ShowForTotalCountDays_PopUp > 0);
+                        return (startResult >= 0 && endResult <= 0 && x.ShowAtAppLaunchPopUp && !x.SkipShowOnAppLaunch && x.ShowEveryCountDays_PopUp > 0/*&& x.ShowForTotalCountDays_PopUp > 0*/);
                     });
 
                     if (matchList != null && matchList.Count > 0)
                     {
                         List<WhatsNewEntity> matchItemList = matchList.FindAll(x =>
                         {
-                            int startResult = -1;
-                            int endResult = 1;
                             bool isAlreadyExceedQuota = false;
                             try
                             {
                                 if (!string.IsNullOrEmpty(x.StartDate))
                                 {
-                                    DateTime startDateTime = DateTime.ParseExact(x.StartDate, "yyyyMMddTHHmmss",
-                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
-                                    DateTime stopDateTime = startDateTime.AddDays(x.ShowForTotalCountDays_PopUp);
                                     DateTime nowDateTime = DateTime.Now;
-                                    startResult = DateTime.Compare(nowDateTime, startDateTime);
-                                    endResult = DateTime.Compare(nowDateTime, stopDateTime);
-
                                     DateTime showDateTime = DateTime.ParseExact(x.ShowDateForDay, "yyyyMMddTHHmmss",
                                     CultureInfo.InvariantCulture, DateTimeStyles.None);
 
@@ -302,7 +310,7 @@ namespace myTNB_Android.Src.Database.Model
                             {
                                 Utility.LoggingNonFatalError(ne);
                             }
-                            return (startResult >= 0 && endResult <= 0 && !isAlreadyExceedQuota);
+                            return (!isAlreadyExceedQuota);
                         });
 
                         if (matchItemList != null && matchItemList.Count > 0)

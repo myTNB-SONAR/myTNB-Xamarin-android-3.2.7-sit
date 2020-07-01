@@ -127,6 +127,8 @@ namespace myTNB.SitecoreCMS.Services
 						Image_DetailsView = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image_DetailsView, _websiteURL, false),
 						Styles_DetailsView = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Styles_DetailsView),
 						PortraitImage_PopUp = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.PortraitImage_PopUp, _websiteURL, false),
+						PopUp_HeaderImage = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.PopUp_HeaderImage, _websiteURL, false),
+						PopUp_Text_Content = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PopUp_Text_Content),
 						ID = item.Id
 					};
 
@@ -153,6 +155,24 @@ namespace myTNB.SitecoreCMS.Services
 					catch (Exception ex)
 					{
 						newItem.ShowAtAppLaunchPopUp = false;
+					}
+
+					try
+					{
+						newItem.PopUp_Text_Only = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PopUp_Text_Only).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PopUp_Text_Only).ToUpper().Trim() == "TRUE") ? true : false;
+					}
+					catch (Exception ex)
+					{
+						newItem.PopUp_Text_Only = false;
+					}
+
+					try
+					{
+						newItem.Donot_Show_In_WhatsNew = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Donot_Show_In_WhatsNew).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Donot_Show_In_WhatsNew).ToUpper().Trim() == "TRUE") ? true : false;
+					}
+					catch (Exception ex)
+					{
+						newItem.Donot_Show_In_WhatsNew = false;
 					}
 
 					if (newItem.Description.Contains("<img"))

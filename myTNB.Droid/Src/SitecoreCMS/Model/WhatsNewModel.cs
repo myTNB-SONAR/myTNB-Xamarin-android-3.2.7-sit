@@ -49,6 +49,10 @@ namespace myTNB.SitecoreCMS.Model
 		public int ShowEveryCountDays_PopUp { set; get; }
 		public int ShowForTotalCountDays_PopUp { set; get; }
 		public bool ShowAtAppLaunchPopUp { set; get; }
+		public bool PopUp_Text_Only { set; get; }
+        public string PopUp_HeaderImage { set; get; }
+        public string PopUp_Text_Content { set; get; }
+        public bool Donot_Show_In_WhatsNew { set; get; }
 		public string ShowDateForDay { set; get; }
 		public int ShowCountForDay { set; get; }
 		public bool SkipShowOnAppLaunch { set; get; }
