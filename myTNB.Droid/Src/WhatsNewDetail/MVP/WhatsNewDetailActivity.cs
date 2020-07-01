@@ -377,7 +377,7 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
                         {
 							float currentImgWidth = this.Resources.DisplayMetrics.WidthPixels - DPUtils.ConvertDPToPx(36f);
 							float calImgRatio = currentImgWidth / containedImage[j].ExtractedImageBitmap.Width;
-							int currentImgHeight = (int)(currentImgWidth * calImgRatio) + (int)DPUtils.ConvertDPToPx(36f);
+							int currentImgHeight = (int) (containedImage[j].ExtractedImageBitmap.Height * calImgRatio);
 							ImageSpan imageSpan = new ImageSpan(this, Bitmap.CreateScaledBitmap(containedImage[j].ExtractedImageBitmap, (int) currentImgWidth, currentImgHeight, false), SpanAlign.Baseline);
 							ImageSpan ImageItem = imageSpans[j] as ImageSpan;
 							int startIndex = whatsNewDetailString.GetSpanStart(imageSpans[j]);
