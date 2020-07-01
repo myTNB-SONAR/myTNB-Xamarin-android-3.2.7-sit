@@ -99,7 +99,7 @@
     "open": "Buka",
     "paymentPendingMsg": "Pembayaran sedang diproses",
     "processing": "sedang diproses",
-    "dontShowThisAgain": "MS_Don't show this again"
+    "dontShowThisAgain": "Jangan paparkan lagi"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
