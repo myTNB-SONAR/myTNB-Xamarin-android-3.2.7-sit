@@ -171,7 +171,7 @@ namespace myTNB
                         if (foundWidth)
                         {
                             textImgHeight = nfloat.Parse(matcheImgSrc[index].Groups[4].Value);
-                            nfloat deviceWidth = UIScreen.MainScreen.Bounds.Width;
+                            nfloat deviceWidth = UIScreen.MainScreen.Bounds.Width - (BaseMarginWidth16 * 2);
                             WhatsNewModel.Description = WhatsNewModel.Description.Replace("width=\"" + textImgWidth + "\"", "width=\"" + deviceWidth.ToString() + "\"");
 
                             nfloat calImgRatio = deviceWidth / textImgWidth;
