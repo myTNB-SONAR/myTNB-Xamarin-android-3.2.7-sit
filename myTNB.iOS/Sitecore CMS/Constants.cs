@@ -225,10 +225,11 @@
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
 #if DEBUG || STUB || DEVELOP || SIT || MASTER
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew_SIT_V2";
+                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json SIT";
 #else
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew";
-#endif
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
+#endif
                 public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
 
                 //Created by Syahmi ICS 05052020
