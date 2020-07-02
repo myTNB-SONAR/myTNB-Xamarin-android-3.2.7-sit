@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
@@ -346,6 +347,80 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 						List<WhatsNewDetailImageModel> containedImage = this.presenter.ExtractImage(item.Description);
 						if (containedImage.Count > 0)
 						{
+							try
+                            {
+								SpannableString whatsNewDetailString = new SpannableString(txtDescription.TextFormatted);
+								var imageSpans = whatsNewDetailString.GetSpans(0, whatsNewDetailString.Length(), Java.Lang.Class.FromType(typeof(ImageSpan)));
+								if (imageSpans != null && imageSpans.Length > 0)
+								{
+									List<Bitmap> mShimmerBitmapList = new List<Bitmap>();
+									Drawable mShimmerDrawable = ContextCompat.GetDrawable(this, Resource.Drawable.shimmer_rectangle);
+									string urlHeightWidthRegex = "(<img\\b|(?!^)\\G)[^>]*?\\b(src|width|height)=([\"']?)([^\"]*)\\3";
+									System.Text.RegularExpressions.MatchCollection matcheImgSrc = System.Text.RegularExpressions.Regex.Matches(item.Description, urlHeightWidthRegex, System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+									bool foundWidth = false;
+									bool foundHeight = false;
+									float textImgWidth = 0;
+									float textImgHeight = 0;
+									for (int index = 0; index < matcheImgSrc.Count; index++)
+									{
+										if (matcheImgSrc[index].Groups[2].Value == "width")
+										{
+											if (foundHeight)
+											{
+												textImgWidth = float.Parse(matcheImgSrc[index].Groups[4].Value);
+												float deviceWidth = this.Resources.DisplayMetrics.WidthPixels - DPUtils.ConvertDPToPx(36f);
+												float calImgRatio = deviceWidth / textImgWidth;
+												float deviceHeight = textImgHeight * calImgRatio;
+
+												mShimmerBitmapList.Add(BitmapUtils.CreateBitmapFromDrawable(mShimmerDrawable, (int)deviceWidth, (int)deviceHeight));
+
+												foundHeight = false;
+											}
+											else
+											{
+												foundWidth = true;
+												textImgWidth = float.Parse(matcheImgSrc[index].Groups[4].Value);
+											}
+										}
+										else if (matcheImgSrc[index].Groups[2].Value == "height")
+										{
+											if (foundWidth)
+											{
+												textImgHeight = float.Parse(matcheImgSrc[index].Groups[4].Value);
+												float deviceWidth = this.Resources.DisplayMetrics.WidthPixels - DPUtils.ConvertDPToPx(36f);
+												float calImgRatio = deviceWidth / textImgWidth;
+												float deviceHeight = textImgHeight * calImgRatio;
+
+												mShimmerBitmapList.Add(BitmapUtils.CreateBitmapFromDrawable(mShimmerDrawable, (int)deviceWidth, (int)deviceHeight));
+
+												foundWidth = false;
+											}
+											else
+											{
+												foundHeight = true;
+												textImgHeight = float.Parse(matcheImgSrc[index].Groups[4].Value);
+											}
+										}
+									}
+
+									for (int j = 0; j < imageSpans.Length; j++)
+									{
+										ImageSpan imageSpan = new ImageSpan(this, mShimmerBitmapList[j], SpanAlign.Baseline);
+										ImageSpan ImageItem = imageSpans[j] as ImageSpan;
+										int startIndex = whatsNewDetailString.GetSpanStart(imageSpans[j]);
+										int endIndex = whatsNewDetailString.GetSpanEnd(imageSpans[j]);
+										whatsNewDetailString.RemoveSpan(imageSpans[j]);
+										whatsNewDetailString.SetSpan(imageSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
+									}
+
+									txtDescription.TextFormatted = whatsNewDetailString;
+								}
+							}
+							catch (Exception ex)
+							{
+								Utility.LoggingNonFatalError(ex);
+							}
+
 							_ = this.presenter.FetchWhatsNewDetailImage(containedImage);
 						}
 					}

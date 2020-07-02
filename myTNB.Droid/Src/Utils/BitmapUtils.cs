@@ -151,6 +151,26 @@ namespace myTNB_Android.Src.Utils
             return background;
         }
 
+        public static Bitmap CreateBitmapFromDrawable(Drawable originalDrawable, int widthInPx = 0, int heightInPx = 0)
+        {
+            if (widthInPx == 0)
+            {
+                widthInPx = originalDrawable.IntrinsicWidth;
+            }
+
+            if (heightInPx == 0)
+            {
+                heightInPx = originalDrawable.IntrinsicHeight;
+            }
+
+            Bitmap bitmap = Bitmap.CreateBitmap(widthInPx, heightInPx, Bitmap.Config.Argb8888);
+            Canvas canvas = new Canvas(bitmap);
+            originalDrawable.SetBounds(0, 0, canvas.Width, canvas.Height);
+            originalDrawable.Draw(canvas);
+
+            return bitmap;
+        }
+
         public static Bitmap ScaledImageFromDrawable(int id, int widthInPx, int heightInPx, Activity mActivity)
         {
             BitmapFactory.Options opt = new BitmapFactory.Options();
