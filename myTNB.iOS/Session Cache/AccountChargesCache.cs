@@ -109,7 +109,6 @@ namespace myTNB
                 if (AccountChargesDisctionary.ContainsKey(accountNumber))
                 {
                     AccountChargesModel item = AccountChargesDisctionary[accountNumber];
-                    Console.WriteLine("----HasMandatory: {0}", item.MandatoryCharges.TotalAmount > 0);
                     return item.MandatoryCharges.TotalAmount > 0;
                 }
             }
