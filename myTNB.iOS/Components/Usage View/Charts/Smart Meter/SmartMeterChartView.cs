@@ -88,32 +88,67 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.Clear
             };
-            nfloat toggleWidth = GetScaledWidth(122);
+            nfloat toggleWidth = GetScaledWidth(DeviceHelper.IsIOS13AndUp ? 114 : 122);
             nfloat toggleHeight = GetScaledHeight(26);
 
-            UITextAttributes attr = new UITextAttributes();
-            attr.Font = TNBFont.MuseoSans_12_300;
-            attr.TextColor = UIColor.White;
-            UITextAttributes attrSelected = new UITextAttributes();
-            attrSelected.Font = TNBFont.MuseoSans_12_300;
-            attrSelected.TextColor = MyTNBColor.DarkPeriwinkle;
+            UITextAttributes attr = new UITextAttributes
+            {
+                Font = TNBFont.MuseoSans_12_300,
+                TextColor = UIColor.White
+            };
+            UITextAttributes attrSelected = new UITextAttributes
+            {
+                Font = TNBFont.MuseoSans_12_300,
+                TextColor = MyTNBColor.DarkPeriwinkle
+            };
 
-            _toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, parentView), 1, toggleWidth, toggleHeight));
+            _toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, parentView)
+                , 1, toggleWidth, toggleHeight)) { ClipsToBounds = false };
+            CustomUIView segment1View = new CustomUIView();
+            CustomUIView segment2View = new CustomUIView();
+            if (DeviceHelper.IsIOS13AndUp)
+            {
+                CustomUIView toggleBarView = new CustomUIView(new CGRect(-GetScaledWidth(4), 0
+                    , toggleWidth + GetScaledWidth(8), toggleHeight)) { ClipsToBounds = true };
+                toggleBarView.Layer.CornerRadius = toggleHeight / 2;
+                toggleBarView.Layer.BorderColor = UIColor.White.CGColor;
+                toggleBarView.Layer.BorderWidth = GetScaledHeight(1);
+                _toggleBar.AddSubview(toggleBarView);
+                _toggleBar.SendSubviewToBack(toggleBarView);
+                segment1View = new CustomUIView(new CGRect(0, 0, toggleBarView.Frame.Width / 2, toggleHeight));
+                segment2View = new CustomUIView(new CGRect(segment1View.Frame.GetMaxX(), 0, toggleBarView.Frame.Width / 2, toggleHeight));
+                toggleBarView.AddSubviews(new CustomUIView[] { segment1View, segment2View });
+                toggleBarView.SendSubviewToBack(segment1View);
+                toggleBarView.SendSubviewToBack(segment2View);
+            }
+
             _toggleBar.InsertSegment(GetCommonI18NValue(UsageConstants.I18N_Day), 0, false);
             _toggleBar.InsertSegment(GetCommonI18NValue(UsageConstants.I18N_Month), 1, false);
-            _toggleBar.TintColor = UIColor.White;
+            _toggleBar.TintColor = DeviceHelper.IsIOS13AndUp ? UIColor.Clear : UIColor.White;
+
             _toggleBar.SetTitleTextAttributes(attr, UIControlState.Normal);
             _toggleBar.SetTitleTextAttributes(attrSelected, UIControlState.Selected);
-            _toggleBar.Layer.CornerRadius = toggleHeight / 2;
-            _toggleBar.Layer.BorderColor = UIColor.White.CGColor;
-            _toggleBar.Layer.BorderWidth = GetScaledHeight(1);
-            _toggleBar.Layer.MasksToBounds = true;
+            if (!DeviceHelper.IsIOS13AndUp)
+            {
+                _toggleBar.Layer.CornerRadius = toggleHeight / 2;
+                _toggleBar.Layer.BorderColor = UIColor.White.CGColor;
+                _toggleBar.Layer.BorderWidth = GetScaledHeight(1);
+                _toggleBar.Layer.MasksToBounds = true;
+            }
+
+            if (DeviceHelper.IsIOS13AndUp)
+            {
+                _toggleBar.SelectedSegment = 0;
+            }
             _toggleBar.SelectedSegment = 1;
+            UpdateSegmentBackground(segment1View, segment2View);
+
             _toggleBar.ValueChanged += (sender, e) =>
             {
                 if (_isDataReceived)
                 {
                     SmartMeterConstants.SmartMeterViewType smartMeterViewType;
+                    UpdateSegmentBackground(segment1View, segment2View);
                     if (_toggleBar.SelectedSegment == 0)
                     {
                         if (PinchOverlayAction != null && !_isOverlayDisplayed && !AccountUsageSmartCache.IsMDMSDown)
@@ -197,6 +232,15 @@ namespace myTNB
             }));
             toggleView.AddSubview(_pinchIcon);
             return toggleView;
+        }
+
+        private void UpdateSegmentBackground(CustomUIView segment1View, CustomUIView segment2View)
+        {
+            if (DeviceHelper.IsIOS13AndUp && segment1View != null && segment2View != null)
+            {
+                segment1View.BackgroundColor = _toggleBar.SelectedSegment == 0 ? UIColor.White : MyTNBColor.DarkPeriwinkle;
+                segment2View.BackgroundColor = _toggleBar.SelectedSegment == 1 ? UIColor.White : MyTNBColor.DarkPeriwinkle;
+            }
         }
 
         public override CustomUIView GetShimmerUI()

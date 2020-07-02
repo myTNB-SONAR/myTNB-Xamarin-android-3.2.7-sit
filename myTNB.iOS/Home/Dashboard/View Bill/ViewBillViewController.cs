@@ -157,7 +157,6 @@ namespace myTNB
                 if(UIDevice.CurrentDevice.CheckSystemVersion(13,0))// check iOS version
                 {
                     _webViewBill.ScalesLargeContentImage = true;
-
                 }
             }
             View.AddSubview(_webViewBill);
