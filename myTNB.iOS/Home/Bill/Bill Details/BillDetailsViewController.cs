@@ -447,7 +447,7 @@ namespace myTNB
             _viewMandatory = GetMandatoryView(GetYLocationFromFrame(viewMonthBill.Frame, 16));
 
             //True use _viewMandatory.Frame, False use viewMonthBill.Frame, 16
-            nfloat lineYLoc = GetYLocationFromFrame(HasMandatory || HasEppToolTip ? _viewMandatory.Frame : viewMonthBill.Frame, 16);
+            nfloat lineYLoc = GetYLocationFromFrame(HasMandatory ? _viewMandatory.Frame : viewMonthBill.Frame, 16);
             _viewLine = new UIView(new CGRect(BaseMargin, lineYLoc, BaseMarginedWidth, GetScaledHeight(1)))
             {
                 BackgroundColor = MyTNBColor.VeryLightPinkThree
@@ -615,7 +615,7 @@ namespace myTNB
 
         private CustomUIView GetMandatoryView(nfloat yLoc)
         {
-            if (!HasMandatory && !HasEppToolTip)
+            if (!HasMandatory)
             {
                 return new CustomUIView();
             }
