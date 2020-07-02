@@ -216,7 +216,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                         }
                         catch (Exception ne)
                         {
-                            Console.WriteLine("Error in GetActivePopupItems in Table : {0}", ne.Message);
+                            Debug.WriteLine("Error in GetActivePopupItems in Table : {0}", ne.Message);
                         }
                         return (startResult >= 0 && endResult <= 0 && x.ShowAtAppLaunchPopUp && !x.SkipShowOnAppLaunch && x.ShowEveryCountDays_PopUp > 0/*&& x.ShowForTotalCountDays_PopUp > 0*/);
                     });
@@ -240,7 +240,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                             }
                             catch (Exception ne)
                             {
-                                Console.WriteLine("Error in GetActivePopupItems in Table : {0}", ne.Message);
+                                Debug.WriteLine("Error in GetActivePopupItems in Table : {0}", ne.Message);
                             }
                             return (!isAlreadyExceedQuota);
                         });
@@ -289,7 +289,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+                Debug.WriteLine("Error in Updating Item in Table : {0}", e.Message);
             }
             return new List<WhatsNewModel>();
         }
