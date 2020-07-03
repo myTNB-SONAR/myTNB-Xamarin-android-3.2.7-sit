@@ -259,55 +259,19 @@ namespace myTNB
                 && DataManager.DataManager.SharedInstance.UserEntity.Count > 0
                 && DataManager.DataManager.SharedInstance.UserEntity[0] != null)
             {
+                DataManager.DataManager.SharedInstance.IsWhatsNewFirstLoad = true;
                 InvokeInBackground(async () =>
                 {
                     bool hasUpdate = await SitecoreServices.Instance.WhatsNewHasUpdates();
                     if (hasUpdate)
                     {
-                        DataManager.DataManager.SharedInstance.IsWhatsNewLoading = true;
-                        await SitecoreServices.Instance.LoadWhatsNew(true);
-                        DataManager.DataManager.SharedInstance.IsWhatsNewLoading = false;
-                        if (WhatsNewCache.WhatsNewIsAvailable)
+                        _ = Task.Delay(500).ContinueWith(_ =>
                         {
-                            InvokeOnMainThread(() =>
-                            {
-                                WhatsNewEntity wsManager = new WhatsNewEntity();
-                                var items = wsManager.GetActivePopupItems();
-                                if (items != null && items.Count > 0)
-                                {
-                                    for (int index = 0; index < items.Count; index++)
-                                    {
-                                        string id = items[index].ID;
-                                        string recordDate = items[index].ShowDateForDay;
-                                        int count = items[index].ShowCountForDay;
-                                        DateTime showDateTime = DateTime.ParseExact(recordDate, "yyyyMMddTHHmmss",
-                                            CultureInfo.InvariantCulture, DateTimeStyles.None);
-                                        if (showDateTime.Date == DateTime.Now.Date)
-                                        {
-                                            count = count + 1;
-                                        }
-                                        else
-                                        {
-                                            WhatsNewServices.SetWhatNewModelShowDate(id);
-                                            count = 1;
-                                        }
-                                        
-                                        WhatsNewServices.SetWhatNewModelShowCount(id, count);
-                                    }
-
-
-                                    whatsNewModalView = new WhatsNewModalViewController();
-                                    whatsNewModalView.WhatsNews = items;
-                                    whatsNewModalView.OnWhatsNewClick = OnNavigateWhatsNewModal;
-                                    whatsNewModalView.OnDismissWhatsNew = OnDismissWhatsNewModal;
-                                    UINavigationController navController = new UINavigationController(whatsNewModalView)
-                                    {
-                                        ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen
-                                    };
-                                    PresentViewController(navController, true, null);
-                                }
+                            InvokeOnMainThread(() => {
+                                DataManager.DataManager.SharedInstance.IsWhatsNewFirstLoad = false;
+                                ShowWhatsNewPopUp();
                             });
-                        }
+                        });
                     }
                     else
                     {
@@ -353,7 +317,6 @@ namespace myTNB
                         }
                     }
                 });
-                DataManager.DataManager.SharedInstance.IsWhatsNewFirstLoad = true;
             }
         }
 
