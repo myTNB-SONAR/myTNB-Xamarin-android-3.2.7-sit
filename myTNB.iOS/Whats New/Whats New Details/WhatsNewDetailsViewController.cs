@@ -150,7 +150,7 @@ namespace myTNB
                         if (foundHeight)
                         {
                             textImgWidth = nfloat.Parse(matcheImgSrc[index].Groups[4].Value);
-                            nfloat deviceWidth = UIScreen.MainScreen.Bounds.Width - (BaseMarginWidth16 * 2);
+                            nfloat deviceWidth = ViewWidth - (BaseMarginWidth16 * 2);
                             WhatsNewModel.Description = WhatsNewModel.Description.Replace("width=\"" + textImgWidth + "\"", "width=\"" + deviceWidth.ToString() + "\"");
 
                             nfloat calImgRatio = deviceWidth / textImgWidth;
@@ -171,7 +171,7 @@ namespace myTNB
                         if (foundWidth)
                         {
                             textImgHeight = nfloat.Parse(matcheImgSrc[index].Groups[4].Value);
-                            nfloat deviceWidth = UIScreen.MainScreen.Bounds.Width - (BaseMarginWidth16 * 2);
+                            nfloat deviceWidth = ViewWidth - (BaseMarginWidth16 * 2);
                             WhatsNewModel.Description = WhatsNewModel.Description.Replace("width=\"" + textImgWidth + "\"", "width=\"" + deviceWidth.ToString() + "\"");
 
                             nfloat calImgRatio = deviceWidth / textImgWidth;
@@ -351,6 +351,8 @@ namespace myTNB
                     {
                         bool downloadFailed = false;
 
+                        List<string> downloadImageUrls = new List<string>();
+
                         for (int imgCount = 0; imgCount < imageUrls.Count; imgCount++)
                         {
                             try
@@ -361,7 +363,7 @@ namespace myTNB
                                 if (contentType != null &&
                                     contentType.StartsWith("image", StringComparison.OrdinalIgnoreCase))
                                 {
-                                    imageUrls[imgCount] = "data:" + contentType + ";base64," + System.Convert.ToBase64String(outByteArray);
+                                    downloadImageUrls.Add("data:" + contentType + ";base64," + System.Convert.ToBase64String(outByteArray));
                                 }
                             }
                             catch (Exception e)
@@ -377,29 +379,31 @@ namespace myTNB
                             {
                                 try
                                 {
-                                    for (int imgCount = 0; imgCount < imageUrls.Count; imgCount++)
+                                    for (int imgCount = 0; imgCount < downloadImageUrls.Count; imgCount++)
                                     {
                                         string urlRegex = @"<img[^>]*?src\s*=\s*[""']?([^'"" >]+?)[ '""][^>]*?>";
                                         System.Text.RegularExpressions.MatchCollection matchesImgSrc = System.Text.RegularExpressions.Regex.Matches(WhatsNewModel.Description, urlRegex, System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
-                                        for (int count = 0; count < matchesImgSrc.Count; count++)
+                                        if (matchesImgSrc != null && matchesImgSrc.Count == downloadImageUrls.Count)
                                         {
-                                            System.Text.RegularExpressions.Match m = matchesImgSrc[count];
+                                            System.Text.RegularExpressions.Match m = matchesImgSrc[imgCount];
 
+                                            string tag = m.Groups[0].Value;
                                             string href = m.Groups[1].Value;
-                                            WhatsNewModel.Description = WhatsNewModel.Description.Replace(href, imageUrls[imgCount]);
+                                            tag = tag.Replace(href, downloadImageUrls[imgCount]);
+                                            WhatsNewModel.Description = WhatsNewModel.Description.Replace(m.Groups[0].Value, tag);
                                         }
-
-                                        _descTextView.RemoveFromSuperview();
-                                        _descTextView = CreateHTMLContent(WhatsNewModel.Description, false);
-                                        CGSize _descTextViewSize = _descTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
-                                        ViewHelper.AdjustFrameSetHeight(_descTextView, _descTextViewSize.Height);
-                                        ViewHelper.AdjustFrameSetX(_descTextView, GetScaledWidth(16F));
-                                        ViewHelper.AdjustFrameSetY(_descTextView, GetYLocationFromFrame(_titleTextView.Frame, 20F));
-                                        ViewHelper.AdjustFrameSetWidth(_descTextView, viewWidth);
-
-                                        _scrollView.AddSubview(_descTextView);
-                                        UpdateScrollViewContentSize(_descTextView);
                                     }
+
+                                    _descTextView.RemoveFromSuperview();
+                                    _descTextView = CreateHTMLContent(WhatsNewModel.Description, false);
+                                    CGSize _descTextViewSize = _descTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
+                                    ViewHelper.AdjustFrameSetHeight(_descTextView, _descTextViewSize.Height);
+                                    ViewHelper.AdjustFrameSetX(_descTextView, GetScaledWidth(16F));
+                                    ViewHelper.AdjustFrameSetY(_descTextView, GetYLocationFromFrame(_titleTextView.Frame, 20F));
+                                    ViewHelper.AdjustFrameSetWidth(_descTextView, viewWidth);
+
+                                    _scrollView.AddSubview(_descTextView);
+                                    UpdateScrollViewContentSize(_descTextView);
 
                                     WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
                                     whatsNewEntity.UpdateDescription(WhatsNewModel.ID, WhatsNewModel.Description);
