@@ -103,7 +103,7 @@ to find Kedai Tenaga nearby.</string>
 	<key>CFBundleDisplayName</key>
 	<string>myTNB</string>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>4</string>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
 	<key>ITSAppUsesNonExemptEncryption</key>

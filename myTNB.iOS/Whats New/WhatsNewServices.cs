@@ -196,14 +196,17 @@ namespace myTNB
                         if (dict.ContainsKey(id))
                         {
                             dateTime = dict[id];
+                            return dateTime;
                         }
                     }
                 }
+
+                SetWhatNewModelExactShowDate(id, dateTime);
             }
             return dateTime;
         }
 
-        public static void SetWhatNewModelShowDate(string id)
+        public static void SetWhatNewModelExactShowDate(string id, string dateTime)
         {
             if (id.IsValid())
             {
@@ -220,14 +223,16 @@ namespace myTNB
                             dict.Remove(id);
                         }
 
-                        dict.Add(id, GetCurrentDate());
+                        dict.Add(id, dateTime);
+
                         var jsonStr = JsonConvert.SerializeObject(dict);
                         sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewModelShowDate);
                         sharedPreference.Synchronize();
                     }
                     else
                     {
-                        dict.Add(id, GetCurrentDate());
+                        dict.Add(id, dateTime);
+
                         var jsonStr = JsonConvert.SerializeObject(dict);
                         sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewModelShowDate);
                         sharedPreference.Synchronize();
@@ -235,7 +240,72 @@ namespace myTNB
                 }
                 else
                 {
-                    dict.Add(id, GetCurrentDate());
+                    dict.Add(id, dateTime);
+
+                    var jsonStr = JsonConvert.SerializeObject(dict);
+                    sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewModelShowDate);
+                    sharedPreference.Synchronize();
+                }
+            }
+        }
+
+        public static void SetWhatNewModelShowDate(string id, bool isDiffDate)
+        {
+            if (id.IsValid())
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                Dictionary<string, string> dict = new Dictionary<string, string>();
+                string cachedData = sharedPreference.StringForKey(WhatsNewConstants.Pref_WhatsNewModelShowDate);
+                if (cachedData.IsValid())
+                {
+                    dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(cachedData);
+                    if (dict != null)
+                    {
+                        string dateTime = GetCurrentDate();
+
+                        if (!isDiffDate)
+                        {
+                            dateTime = GetWhatNewModelShowDate(id);
+                        }
+
+                        if (dict.ContainsKey(id))
+                        {
+                            dict.Remove(id);
+                        }
+
+                        dict.Add(id, dateTime);
+
+                        var jsonStr = JsonConvert.SerializeObject(dict);
+                        sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewModelShowDate);
+                        sharedPreference.Synchronize();
+                    }
+                    else
+                    {
+                        string dateTime = GetCurrentDate();
+
+                        if (!isDiffDate)
+                        {
+                            dateTime = GetWhatNewModelShowDate(id);
+                        }
+
+                        dict.Add(id, dateTime);
+
+                        var jsonStr = JsonConvert.SerializeObject(dict);
+                        sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewModelShowDate);
+                        sharedPreference.Synchronize();
+                    }
+                }
+                else
+                {
+                    string dateTime = GetCurrentDate();
+
+                    if (!isDiffDate)
+                    {
+                        dateTime = GetWhatNewModelShowDate(id);
+                    }
+
+                    dict.Add(id, dateTime);
+
                     var jsonStr = JsonConvert.SerializeObject(dict);
                     sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewModelShowDate);
                     sharedPreference.Synchronize();
