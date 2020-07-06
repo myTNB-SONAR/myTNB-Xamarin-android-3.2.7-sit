@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB.SitecoreCMS.Services
 {
@@ -17,6 +19,8 @@ namespace myTNB.SitecoreCMS.Services
         private static string WebsiteUrl { get; set; }
         private static string Language { get; set; }
 
+        private readonly TimeSpan timeSpan = TimeSpan.FromMilliseconds(5000);
+
         public GetItemsService(string os, string imageSize, string websiteUrl, string language = "en")
         {
             OS = os;
@@ -25,476 +29,944 @@ namespace myTNB.SitecoreCMS.Services
             Language = language;
         }
 
-        public string GetWalkthroughScreenItems()
+        public WalkthroughScreensResponseModel GetWalkthroughScreenItems()
         {
-            WalkthroughScreenService service = new WalkthroughScreenService();
-            var data = service.GetWalkthroughScreens(OS, ImageSize, WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
+            CancellationTokenSource token = new CancellationTokenSource();
+            WalkthroughScreensResponseModel respModel = new WalkthroughScreensResponseModel();
+            var task = Task.Run(() =>
+            {
+                try
+                {
+                    WalkthroughScreenService service = new WalkthroughScreenService();
+                    var data = service.GetWalkthroughScreens(OS, ImageSize, WebsiteUrl, Language);
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<WalkthroughScreensResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/WalkthroughScreens: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
+            {
+                return task.Result;
+            }
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
-        public string GetPreLoginPromoItem()
+        public PreLoginPromoResponseModel GetPreLoginPromoItem()
         {
-            PreLoginPromoService service = new PreLoginPromoService();
-            var data = service.GetPreLoginPromo(OS, ImageSize, WebsiteUrl, Language);
-            var listData = AddDataToList(data);
-            var resp = CheckData(listData);
-            return JsonConvert.SerializeObject(resp);
+            CancellationTokenSource token = new CancellationTokenSource();
+            PreLoginPromoResponseModel respModel = new PreLoginPromoResponseModel();
+
+            var task = Task.Run(() =>
+            {
+                try
+                {
+                    PreLoginPromoService service = new PreLoginPromoService();
+                    var data = service.GetPreLoginPromo(OS, ImageSize, WebsiteUrl, Language);
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<PreLoginPromoResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/PreLoginPromo: " + e.Message);
+                }
+
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
+            {
+                return task.Result;
+            }
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
-        public string GetFullRTEPagesItems()
+        public FullRTEPagesResponseModel GetFullRTEPagesItems()
         {
-            FullRTEPagesService service = new FullRTEPagesService();
-            var data = service.GetFullRTEPages(WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
+            CancellationTokenSource token = new CancellationTokenSource();
+            FullRTEPagesResponseModel respModel = new FullRTEPagesResponseModel();
+
+            var task = Task.Run(() =>
+            {
+                try
+                {
+                    FullRTEPagesService service = new FullRTEPagesService();
+                    var data = service.GetFullRTEPages(WebsiteUrl, Language);
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<FullRTEPagesResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/FullRTEPages: " + e.Message);
+                }
+
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
+            {
+                return task.Result;
+            }
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
-        public string GetEnergyTipsItems()
+        public FAQsResponseModel GetFAQsItem()
         {
-            EnergyTipsService service = new EnergyTipsService();
-            var data = service.GetEnergyTips(OS, ImageSize, WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
+            CancellationTokenSource token = new CancellationTokenSource();
+            FAQsResponseModel respModel = new FAQsResponseModel();
+
+            var task = Task.Run(() =>
+            {
+                try
+                {
+                    FAQsService service = new FAQsService();
+                    var data = service.GetFAQsService(OS, ImageSize, WebsiteUrl, Language);
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<FAQsResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetFAQsItem: " + e.Message);
+                }
+
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
+            {
+                return task.Result;
+            }
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
+        }
+        public FAQsParentResponseModel GetFAQsTimestampItem()
+        {
+            CancellationTokenSource token = new CancellationTokenSource();
+            FAQsParentResponseModel respModel = new FAQsParentResponseModel();
+
+            var task = Task.Run(() =>
+            {
+                try
+                {
+                    FAQsService service = new FAQsService();
+                    var data = service.GetTimestamp(WebsiteUrl, Language);
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<FAQsParentResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetFAQsTimestampItem: " + e.Message);
+                }
+
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
+            {
+                return task.Result;
+            }
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
-        public string GetLocationsItems()
+        public TimestampResponseModel GetTimestampItem()
         {
-            LocationsService service = new LocationsService();
-            var data = service.GetLocations(WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
-        }
+            CancellationTokenSource token = new CancellationTokenSource();
+            TimestampResponseModel respModel = new TimestampResponseModel();
 
-        public string GetFAQsItem()
-        {
-            FAQsService service = new FAQsService();
-            var data = service.GetFAQsService(OS, ImageSize, WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
-        }
-        public string GetFAQsTimestampItem()
-        {
-            FAQsService service = new FAQsService();
-            var data = service.GetTimestamp(WebsiteUrl, Language);
-            var listData = AddDataToList(data);
-            var resp = CheckData(listData);
-            return JsonConvert.SerializeObject(resp);
-        }
+            var task = Task.Run(() =>
+            {
+                try
+                {
+                    TimestampService service = new TimestampService();
+                    var data = service.GetTimestamp(WebsiteUrl, Language);
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<TimestampResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetTimestampItem: " + e.Message);
+                }
 
-        public string GetTimestampItem()
-        {
-            TimestampService service = new TimestampService();
-            var data = service.GetTimestamp(WebsiteUrl, Language);
-            var listData = AddDataToList(data);
-            var resp = CheckData(listData);
-            return JsonConvert.SerializeObject(resp);
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
+            {
+                return task.Result;
+            }
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
 
         public AppLaunchResponseModel GetAppLaunchItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             AppLaunchResponseModel respModel = new AppLaunchResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                AppLaunchService service = new AppLaunchService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<AppLaunchResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    AppLaunchService service = new AppLaunchService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetItems();
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<AppLaunchResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetAppLaunchItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetAppLaunchItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
         public HelpResponseModel GetHelpItems()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             HelpResponseModel respModel = new HelpResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                HelpService service = new HelpService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<HelpResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    HelpService service = new HelpService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetItems();
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<HelpResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/HelpResponseModel: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/HelpResponseModel: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public HelpTimeStampResponseModel GetHelpTimestampItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             HelpTimeStampResponseModel respModel = new HelpTimeStampResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                HelpService service = new HelpService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
-                var listData = AddDataToList(data);
-                var resp = CheckData(listData);
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<HelpTimeStampResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    HelpService service = new HelpService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetTimeStamp();
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<HelpTimeStampResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetFAQsTimestampItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetFAQsTimestampItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public ApplySSMRResponseModel GetApplySSMRWalkthroughItems()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             ApplySSMRResponseModel respModel = new ApplySSMRResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                ApplySSMRWalkthroughService service = new ApplySSMRWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<ApplySSMRResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    ApplySSMRWalkthroughService service = new ApplySSMRWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetItems();
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<ApplySSMRResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughItems: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughItems: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public ApplySSMRTimeStampResponseModel GetApplySSMRWalkthroughTimestampItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             ApplySSMRTimeStampResponseModel respModel = new ApplySSMRTimeStampResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                ApplySSMRWalkthroughService service = new ApplySSMRWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
-                var listData = AddDataToList(data);
-                var resp = CheckData(listData);
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<ApplySSMRTimeStampResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    ApplySSMRWalkthroughService service = new ApplySSMRWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetTimeStamp();
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<ApplySSMRTimeStampResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughTimestampItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughTimestampItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public SSMRMeterReadingResponseModel GetSSMRMeterReadingOnePhaseWalkthroughItems()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             SSMRMeterReadingResponseModel respModel = new SSMRMeterReadingResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                SSMRMeterReadingOnePhaseWalkThroughService service = new SSMRMeterReadingOnePhaseWalkThroughService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    SSMRMeterReadingOnePhaseWalkThroughService service = new SSMRMeterReadingOnePhaseWalkThroughService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetItems();
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<SSMRMeterReadingResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingOnePhaseWalkthroughItems: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingOnePhaseWalkthroughItems: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public SSMRMeterReadingTimeStampResponseModel GetSSMRMeterReadingOnePhaseWalkthroughTimestampItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             SSMRMeterReadingTimeStampResponseModel respModel = new SSMRMeterReadingTimeStampResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                SSMRMeterReadingOnePhaseWalkThroughService service = new SSMRMeterReadingOnePhaseWalkThroughService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
-                var listData = AddDataToList(data);
-                var resp = CheckData(listData);
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingTimeStampResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    SSMRMeterReadingOnePhaseWalkThroughService service = new SSMRMeterReadingOnePhaseWalkThroughService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetTimeStamp();
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<SSMRMeterReadingTimeStampResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingOnePhaseWalkthroughTimestampItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingOnePhaseWalkthroughTimestampItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public SSMRMeterReadingResponseModel GetSSMRMeterReadingOnePhaseOCROffWalkthroughItems()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             SSMRMeterReadingResponseModel respModel = new SSMRMeterReadingResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                SSMRMeterReadingOnePhaseWalkThroughOCROffService service = new SSMRMeterReadingOnePhaseWalkThroughOCROffService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    SSMRMeterReadingOnePhaseWalkThroughOCROffService service = new SSMRMeterReadingOnePhaseWalkThroughOCROffService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetItems();
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<SSMRMeterReadingResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingOnePhaseOCROffWalkthroughItems: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingOnePhaseOCROffWalkthroughItems: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public SSMRMeterReadingTimeStampResponseModel GetSSMRMeterReadingOnePhaseOCROffWalkthroughTimestampItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             SSMRMeterReadingTimeStampResponseModel respModel = new SSMRMeterReadingTimeStampResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                SSMRMeterReadingOnePhaseWalkThroughOCROffService service = new SSMRMeterReadingOnePhaseWalkThroughOCROffService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
-                var listData = AddDataToList(data);
-                var resp = CheckData(listData);
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingTimeStampResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    SSMRMeterReadingOnePhaseWalkThroughOCROffService service = new SSMRMeterReadingOnePhaseWalkThroughOCROffService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetTimeStamp();
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<SSMRMeterReadingTimeStampResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingOnePhaseOCROffWalkthroughTimestampItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingOnePhaseOCROffWalkthroughTimestampItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public SSMRMeterReadingResponseModel GetSSMRMeterReadingThreePhaseWalkthroughItems()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             SSMRMeterReadingResponseModel respModel = new SSMRMeterReadingResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                SSMRMeterReadingThreePhaseWalkthroughService service = new SSMRMeterReadingThreePhaseWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    SSMRMeterReadingThreePhaseWalkthroughService service = new SSMRMeterReadingThreePhaseWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetItems();
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<SSMRMeterReadingResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingThreePhaseWalkthroughItems: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingThreePhaseWalkthroughItems: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public SSMRMeterReadingTimeStampResponseModel GetSSMRMeterReadingThreePhaseWalkthroughTimestampItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             SSMRMeterReadingTimeStampResponseModel respModel = new SSMRMeterReadingTimeStampResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                SSMRMeterReadingThreePhaseWalkthroughService service = new SSMRMeterReadingThreePhaseWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
-                var listData = AddDataToList(data);
-                var resp = CheckData(listData);
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingTimeStampResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    SSMRMeterReadingThreePhaseWalkthroughService service = new SSMRMeterReadingThreePhaseWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetTimeStamp();
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<SSMRMeterReadingTimeStampResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingThreePhaseWalkthroughTimestampItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingThreePhaseWalkthroughTimestampItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public SSMRMeterReadingResponseModel GetSSMRMeterReadingThreePhaseOCROffWalkthroughItems()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             SSMRMeterReadingResponseModel respModel = new SSMRMeterReadingResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                SSMRMeterReadingThreePhaseWalkthroughOCROffService service = new SSMRMeterReadingThreePhaseWalkthroughOCROffService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    SSMRMeterReadingThreePhaseWalkthroughOCROffService service = new SSMRMeterReadingThreePhaseWalkthroughOCROffService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetItems();
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<SSMRMeterReadingResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingThreePhaseOCROffWalkthroughItems: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingThreePhaseOCROffWalkthroughItems: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public SSMRMeterReadingTimeStampResponseModel GetSSMRMeterReadingThreePhaseOCROffWalkthroughTimestampItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             SSMRMeterReadingTimeStampResponseModel respModel = new SSMRMeterReadingTimeStampResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                SSMRMeterReadingThreePhaseWalkthroughOCROffService service = new SSMRMeterReadingThreePhaseWalkthroughOCROffService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
-                var listData = AddDataToList(data);
-                var resp = CheckData(listData);
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingTimeStampResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    SSMRMeterReadingThreePhaseWalkthroughOCROffService service = new SSMRMeterReadingThreePhaseWalkthroughOCROffService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetTimeStamp();
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<SSMRMeterReadingTimeStampResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingThreePhaseOCROffWalkthroughTimestampItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingThreePhaseOCROffWalkthroughTimestampItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public EnergySavingTipsResponseModel GetEnergySavingTipsItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             EnergySavingTipsResponseModel respModel = new EnergySavingTipsResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                EnergySavingTipsService service = new EnergySavingTipsService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<EnergySavingTipsResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    EnergySavingTipsService service = new EnergySavingTipsService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetItems();
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<EnergySavingTipsResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetEnergySavingTipsItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetEnergySavingTipsItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public EnergySavingTipsTimeStampResponseModel GetEnergySavingTipsTimestampItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             EnergySavingTipsTimeStampResponseModel respModel = new EnergySavingTipsTimeStampResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                EnergySavingTipsService service = new EnergySavingTipsService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
-                var listData = AddDataToList(data);
-                var resp = CheckData(listData);
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<EnergySavingTipsTimeStampResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    EnergySavingTipsService service = new EnergySavingTipsService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetTimeStamp();
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<EnergySavingTipsTimeStampResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetEnergySavingTipsTimestampItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetEnergySavingTipsTimestampItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public BillDetailsTooltipResponseModel GetBillDetailsTooltipItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             BillDetailsTooltipResponseModel respModel = new BillDetailsTooltipResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                BillDetailsTooltipService service = new BillDetailsTooltipService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<BillDetailsTooltipResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    BillDetailsTooltipService service = new BillDetailsTooltipService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetItems();
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<BillDetailsTooltipResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetBillDetailsTooltipItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetBillDetailsTooltipItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public AppLaunchTimeStampResponseModel GetAppLaunchTimestampItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             AppLaunchTimeStampResponseModel respModel = new AppLaunchTimeStampResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                AppLaunchService service = new AppLaunchService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
-                var listData = AddDataToList(data);
-                var resp = CheckData(listData);
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<AppLaunchTimeStampResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    AppLaunchService service = new AppLaunchService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetTimeStamp();
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<AppLaunchTimeStampResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetAppLaunchTimestampItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetAppLaunchTimestampItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
         public BillDetailsTooltipTimeStampResponseModel GetBillDetailsTooltipTimestampItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             BillDetailsTooltipTimeStampResponseModel respModel = new BillDetailsTooltipTimeStampResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                BillDetailsTooltipService service = new BillDetailsTooltipService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
-                var listData = AddDataToList(data);
-                var resp = CheckData(listData);
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<BillDetailsTooltipTimeStampResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    BillDetailsTooltipService service = new BillDetailsTooltipService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetTimeStamp();
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<BillDetailsTooltipTimeStampResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetBillDetailsTooltipTimestampItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetBillDetailsTooltipTimestampItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public RewardsResponseModel GetRewardsItems()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             RewardsResponseModel respModel = new RewardsResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                RewardsService service = new RewardsService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<RewardsResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    RewardsService service = new RewardsService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetItems();
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<RewardsResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetRewardsItems: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetRewardsItems: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public RewardsTimeStampResponseModel GetRewardsTimestampItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             RewardsTimeStampResponseModel respModel = new RewardsTimeStampResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                RewardsService service = new RewardsService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
-                var listData = AddDataToList(data);
-                var resp = CheckData(listData);
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<RewardsTimeStampResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    RewardsService service = new RewardsService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetTimeStamp();
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<RewardsTimeStampResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetRewardsTimestampItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetRewardsTimestampItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public WhatsNewResponseModel GetWhatsNewItems()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             WhatsNewResponseModel respModel = new WhatsNewResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                WhatsNewService service = new WhatsNewService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<WhatsNewResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    WhatsNewService service = new WhatsNewService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetItems();
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<WhatsNewResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetWhatsNewItems: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetWhatsNewItems: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public WhatsNewTimeStampResponseModel GetWhatsNewTimestampItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             WhatsNewTimeStampResponseModel respModel = new WhatsNewTimeStampResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                WhatsNewService service = new WhatsNewService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
-                var listData = AddDataToList(data);
-                var resp = CheckData(listData);
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<WhatsNewTimeStampResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    WhatsNewService service = new WhatsNewService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetTimeStamp();
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<WhatsNewTimeStampResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetWhatsNewTimestampItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetWhatsNewTimestampItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         private BaseModel CheckData(List<object> data)
@@ -528,114 +1000,204 @@ namespace myTNB.SitecoreCMS.Services
 
         public LanguageResponseModel GetLanguageItems()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             LanguageResponseModel respModel = new LanguageResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                LanguageService service = new LanguageService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<LanguageResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    LanguageService service = new LanguageService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetItems();
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<LanguageResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetLanguageItems: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetLanguageItems: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public LanguageTimeStampResponseModel GetLanguageTimestampItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             LanguageTimeStampResponseModel respModel = new LanguageTimeStampResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                LanguageService service = new LanguageService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
-                var listData = AddDataToList(data);
-                var resp = CheckData(listData);
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<LanguageTimeStampResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    LanguageService service = new LanguageService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetTimeStamp();
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<LanguageTimeStampResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetLanguageTimestampItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetLanguageTimestampItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public CountryResponseModel GetCountryItems()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             CountryResponseModel respModel = new CountryResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                CountryService service = new CountryService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<CountryResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    CountryService service = new CountryService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetItems();
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<CountryResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetLanguageItems: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetLanguageItems: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public CountryTimeStampResponseModel GetCountryTimestampItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             CountryTimeStampResponseModel respModel = new CountryTimeStampResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                CountryService service = new CountryService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
-                var listData = AddDataToList(data);
-                var resp = CheckData(listData);
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<CountryTimeStampResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    CountryService service = new CountryService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetTimeStamp();
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<CountryTimeStampResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetLanguageTimestampItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetLanguageTimestampItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
         public EppToolTipResponseModel GetEppToolTipItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             EppToolTipResponseModel respModel = new EppToolTipResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                EppToolTipService service = new EppToolTipService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<EppToolTipResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    EppToolTipService service = new EppToolTipService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetItems();
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<EppToolTipResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetEppToolTipItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetEppToolTipItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
 
        
         public EppToolTipTimeStampResponseModel GetEppToolTipTimeStampItem()
         {
+            CancellationTokenSource token = new CancellationTokenSource();
             EppToolTipTimeStampResponseModel respModel = new EppToolTipTimeStampResponseModel();
-            try
+
+            var task = Task.Run(() =>
             {
-                EppToolTipService service = new EppToolTipService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
-                var listData = AddDataToList(data);
-                var resp = CheckData(listData);
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<EppToolTipTimeStampResponseModel>(serializedObj);
-            }
-            catch (Exception e)
+                try
+                {
+                    EppToolTipService service = new EppToolTipService(OS, ImageSize, WebsiteUrl, Language);
+                    var data = service.GetTimeStamp();
+                    var listData = AddDataToList(data);
+                    var resp = CheckData(listData);
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<EppToolTipTimeStampResponseModel>(serializedObj);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Exception in GetItemsService/GetEppToolTipTimeStampItem: " + e.Message);
+                }
+                return respModel;
+            }, token.Token);
+
+            if (task.Wait(timeSpan))
             {
-                Debug.WriteLine("Exception in GetItemsService/GetEppToolTipTimeStampItem: " + e.Message);
+                return task.Result;
             }
-            return respModel;
+            else
+            {
+                token.Cancel();
+                return respModel;
+            }
         }
     }
 }

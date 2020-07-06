@@ -261,6 +261,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 			void SetIsWhatsNewDialogShowNeed(bool flag);
 
+			Task OnGetEPPTooltipContentDetail();
+
 		}
 	}
 }
