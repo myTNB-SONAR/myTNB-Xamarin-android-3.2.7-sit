@@ -17,7 +17,7 @@ namespace myTNB.SitecoreCMS.Services
         static string WebsiteUrl { get; set; }
         static string Language { get; set; }
 
-        private readonly TimeSpan timeSpan = TimeSpan.FromMilliseconds(3000);
+        private readonly TimeSpan timeSpan = TimeSpan.FromMilliseconds(5000);
 
         public GetItemsService(string os, string imageSize, string websiteUrl, string language = "en")
         {
