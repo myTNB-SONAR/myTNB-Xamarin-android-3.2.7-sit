@@ -6,6 +6,7 @@ using myTNB.SitecoreCMS.Model;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace myTNB.SitecoreCMS.Services
 {
@@ -37,6 +38,7 @@ namespace myTNB.SitecoreCMS.Services
         public TermsAndConditionResponseModel GetFullRTEPagesItems()
         {
             TermsAndConditionResponseModel respModel = new TermsAndConditionResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -52,13 +54,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetFullRTEPagesItems: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -66,6 +69,7 @@ namespace myTNB.SitecoreCMS.Services
         public FAQsResponseModel GetFAQsItems()
         {
             FAQsResponseModel respModel = new FAQsResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -81,13 +85,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetFAQsItems: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -95,6 +100,7 @@ namespace myTNB.SitecoreCMS.Services
         public FAQTimestampResponseModel GetFAQsTimestampItem()
         {
             FAQTimestampResponseModel respModel = new FAQTimestampResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -111,13 +117,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetFAQsTimestampItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -134,6 +141,7 @@ namespace myTNB.SitecoreCMS.Services
         public TimestampResponseModel GetTimestampItemV2()
         {
             TimestampResponseModel respModel = new TimestampResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -150,13 +158,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetTimestampItemV2: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -193,6 +202,7 @@ namespace myTNB.SitecoreCMS.Services
         public HelpResponseModel GetHelpItems()
         {
             HelpResponseModel respModel = new HelpResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -208,13 +218,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetHelpItems: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -222,6 +233,7 @@ namespace myTNB.SitecoreCMS.Services
         public HelpTimeStampResponseModel GetHelpTimestampItem()
         {
             HelpTimeStampResponseModel respModel = new HelpTimeStampResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -238,13 +250,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetHelpTimestampItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -252,6 +265,7 @@ namespace myTNB.SitecoreCMS.Services
         public AppLaunchImageTimestampResponseModel GetAppLaunchImageTimestampItem()
         {
             AppLaunchImageTimestampResponseModel respModel = new AppLaunchImageTimestampResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -268,13 +282,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetAppLaunchImageTimestampItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -282,6 +297,7 @@ namespace myTNB.SitecoreCMS.Services
         public AppLaunchImageResponseModel GetAppLaunchImageItem()
         {
             AppLaunchImageResponseModel respModel = new AppLaunchImageResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -297,13 +313,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetAppLaunchImageItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -311,6 +328,7 @@ namespace myTNB.SitecoreCMS.Services
         public ApplySSMRResponseModel GetApplySSMRWalkthroughItems()
         {
             ApplySSMRResponseModel respModel = new ApplySSMRResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -326,13 +344,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughItems: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -340,6 +359,7 @@ namespace myTNB.SitecoreCMS.Services
         public ApplySSMRTimeStampResponseModel GetApplySSMRWalkthroughTimestampItem()
         {
             ApplySSMRTimeStampResponseModel respModel = new ApplySSMRTimeStampResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -356,13 +376,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughTimestampItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -370,6 +391,7 @@ namespace myTNB.SitecoreCMS.Services
         public MeterReadSSMRResponseModel GetMeterReadSSMRWalkthroughItems()
         {
             MeterReadSSMRResponseModel respModel = new MeterReadSSMRResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -385,13 +407,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetMeterReadSSMRWalkthroughItems: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -399,6 +422,7 @@ namespace myTNB.SitecoreCMS.Services
         public MeterReadSSMRTimeStampResponseModel GetMeterReadSSMRWalkthroughTimestampItem()
         {
             MeterReadSSMRTimeStampResponseModel respModel = new MeterReadSSMRTimeStampResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -415,13 +439,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetMeterReadSSMRWalkthroughTimestampItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -429,6 +454,7 @@ namespace myTNB.SitecoreCMS.Services
         public MeterReadSSMRResponseModel GetMeterReadSSMRWalkthroughItemsV2()
         {
             MeterReadSSMRResponseModel respModel = new MeterReadSSMRResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -444,13 +470,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetMeterReadSSMRWalkthroughItemsV2: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -458,6 +485,7 @@ namespace myTNB.SitecoreCMS.Services
         public MeterReadSSMRTimeStampResponseModel GetMeterReadSSMRWalkthroughTimestampItemV2()
         {
             MeterReadSSMRTimeStampResponseModel respModel = new MeterReadSSMRTimeStampResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -474,13 +502,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetMeterReadSSMRWalkthroughTimestampItemV2: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -488,6 +517,7 @@ namespace myTNB.SitecoreCMS.Services
         public EnergyTipsResponseModel GetEnergyTipsItem()
         {
             EnergyTipsResponseModel respModel = new EnergyTipsResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -503,13 +533,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetEnergyTipsItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -517,6 +548,7 @@ namespace myTNB.SitecoreCMS.Services
         public EnergyTipsTimeStampResponseModel GetEnergyTipsTimestampItem()
         {
             EnergyTipsTimeStampResponseModel respModel = new EnergyTipsTimeStampResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -533,13 +565,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetEnergyTipsTimestampItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -547,6 +580,7 @@ namespace myTNB.SitecoreCMS.Services
         public BillDetailsTooltipResponseModel GetBillDetailsTooltipItem()
         {
             BillDetailsTooltipResponseModel respModel = new BillDetailsTooltipResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -562,13 +596,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetBillDetailsTooltipItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -576,6 +611,7 @@ namespace myTNB.SitecoreCMS.Services
         public BillDetailsTooltipTimeStampResponseModel GetBillDetailsTooltipTimestampItem()
         {
             BillDetailsTooltipTimeStampResponseModel respModel = new BillDetailsTooltipTimeStampResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -592,13 +628,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetBillDetailsTooltipTimestampItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -607,6 +644,7 @@ namespace myTNB.SitecoreCMS.Services
         public EppInfoTooltipResponseModel GetEppInfoTooltipItem()
         {
             EppInfoTooltipResponseModel respModel = new EppInfoTooltipResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -622,13 +660,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetEppInfoTooltipItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -636,6 +675,7 @@ namespace myTNB.SitecoreCMS.Services
         public EppInfoTooltipTimeStampResponseModel GetEppInfoTooltipTimestampItem()
         {
             EppInfoTooltipTimeStampResponseModel respModel = new EppInfoTooltipTimeStampResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -652,13 +692,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetEppInfoTooltipTimestampItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -667,6 +708,7 @@ namespace myTNB.SitecoreCMS.Services
         public LanguageResponseModel GetLanguageItems()
         {
             LanguageResponseModel respModel = new LanguageResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -682,13 +724,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetLanguageItems: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -696,6 +739,7 @@ namespace myTNB.SitecoreCMS.Services
         public LanguageTimeStampResponseModel GetLanguageTimestampItem()
         {
             LanguageTimeStampResponseModel respModel = new LanguageTimeStampResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -712,13 +756,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetLanguageTimestampItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -726,6 +771,7 @@ namespace myTNB.SitecoreCMS.Services
         public RewardsTimestampResponseModel GetRewardsTimestampItem()
         {
             RewardsTimestampResponseModel respModel = new RewardsTimestampResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -742,13 +788,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetRewardsTimestampItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -756,6 +803,7 @@ namespace myTNB.SitecoreCMS.Services
         public RewardsResponseModel GetRewardsItems()
         {
             RewardsResponseModel respModel = new RewardsResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -771,13 +819,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetRewardsItems: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -785,6 +834,7 @@ namespace myTNB.SitecoreCMS.Services
         public WhatsNewTimestampResponseModel GetWhatsNewTimestampItem()
         {
             WhatsNewTimestampResponseModel respModel = new WhatsNewTimestampResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -801,13 +851,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetWhatsNewTimestampItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -815,6 +866,7 @@ namespace myTNB.SitecoreCMS.Services
         public WhatsNewResponseModel GetWhatsNewItems()
         {
             WhatsNewResponseModel respModel = new WhatsNewResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -830,13 +882,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetWhatsNewItems: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -844,6 +897,7 @@ namespace myTNB.SitecoreCMS.Services
         public PromotionsTimestampResponseModel GetPromotionsTimestampItem()
         {
             PromotionsTimestampResponseModel respModel = new PromotionsTimestampResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -860,13 +914,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetPromotionsTimestampItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -874,6 +929,7 @@ namespace myTNB.SitecoreCMS.Services
         public PromotionsResponseModel GetPromotionsItem()
         {
             PromotionsResponseModel respModel = new PromotionsResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -889,13 +945,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetPromotionsTimestampItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -903,6 +960,7 @@ namespace myTNB.SitecoreCMS.Services
         public CountryResponseModel GetCountryItems()
         {
             CountryResponseModel respModel = new CountryResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -918,13 +976,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/CountryResponseModel: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
@@ -932,6 +991,7 @@ namespace myTNB.SitecoreCMS.Services
         public CountryTimeStampResponseModel GetCountryTimestampItem()
         {
             CountryTimeStampResponseModel respModel = new CountryTimeStampResponseModel();
+            CancellationTokenSource token = new CancellationTokenSource();
             var task = Task.Run(() =>
             {
                 try
@@ -948,13 +1008,14 @@ namespace myTNB.SitecoreCMS.Services
                     Debug.WriteLine("Exception in GetItemsService/GetCountryTimestampItem: " + e.Message);
                 }
                 return respModel;
-            });
+            }, token.Token);
             if (task.Wait(timeSpan))
             {
                 return task.Result;
             }
             else
             {
+                token.Cancel();
                 return respModel;
             }
         }
