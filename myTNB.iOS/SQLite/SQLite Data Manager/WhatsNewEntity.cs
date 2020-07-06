@@ -227,7 +227,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                             bool isAlreadyExceedQuota = false;
                             try
                             {
-                                if (!string.IsNullOrEmpty(x.StartDate))
+                                if (!string.IsNullOrEmpty(x.ShowDateForDay))
                                 {
                                     DateTime nowDateTime = DateTime.Now;
                                     DateTime showDateTime = DateTime.ParseExact(x.ShowDateForDay, "yyyyMMddTHHmmss",
