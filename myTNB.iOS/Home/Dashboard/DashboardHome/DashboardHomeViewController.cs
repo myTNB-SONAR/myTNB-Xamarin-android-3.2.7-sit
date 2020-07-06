@@ -292,11 +292,12 @@ namespace myTNB
                                             CultureInfo.InvariantCulture, DateTimeStyles.None);
                                         if (showDateTime.Date == DateTime.Now.Date)
                                         {
+                                            WhatsNewServices.SetWhatNewModelShowDate(id, false);
                                             count = count + 1;
                                         }
                                         else
                                         {
-                                            WhatsNewServices.SetWhatNewModelShowDate(id);
+                                            WhatsNewServices.SetWhatNewModelShowDate(id, true);
                                             count = 1;
                                         }
 
