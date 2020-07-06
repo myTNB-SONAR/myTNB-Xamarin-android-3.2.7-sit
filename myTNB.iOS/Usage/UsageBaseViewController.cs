@@ -1987,14 +1987,21 @@ namespace myTNB
                 {
                     _footerViewComponent._eppToolTipsView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                     {
-                        EppInfoTooltipEntity wsEppManager = new EppInfoTooltipEntity();
-                        _eppToolTipList = wsEppManager.GetAllItems();
-
-                        DisplayCustomAlert(
-                        _eppToolTipList[0].PopUpTitle,
-                        _eppToolTipList[0].PopUpBody,
-                        new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null }, { GetCommonI18NValue("viewBill"), () => OnCurrentBillButtonTap() } },
-                        UIImage.LoadFromData(NSData.FromArray(_eppToolTipList[0].ImageByteArray)));
+                        try
+                        {
+                            EppInfoTooltipEntity wsEppManager = new EppInfoTooltipEntity();
+                            _eppToolTipList = wsEppManager.GetAllItems();
+                            DisplayCustomAlert(_eppToolTipList[0].PopUpTitle, _eppToolTipList[0].PopUpBody
+                                , new Dictionary<string, Action> {
+                                    { GetCommonI18NValue(Constants.Common_GotIt), null }
+                                    , { GetCommonI18NValue("viewBill"), () => OnCurrentBillButtonTap() }
+                                },
+                            UIImage.LoadFromData(NSData.FromArray(_eppToolTipList[0].ImageByteArray)));
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine("Error in EPP: " + e.Message);
+                        }
                     }));
                 }
                 if (_footerViewComponent._btnViewBill != null)
