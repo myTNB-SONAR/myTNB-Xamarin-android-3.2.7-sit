@@ -19,7 +19,17 @@ namespace myTNB
 
         public static string API_KEY_ID = GetAPIKeyID;
         public static string DEVICE_PLATFORM_IOS = "2";
-        public static string SITECORE_URL = "https://sitecore.tnb.com.my/";
+        public static string SITECORE_URL
+        {
+            get
+            {
+#if DEBUG || MASTER
+                return "http://tnbcsdevapp.tnb.my/";
+#else
+                return "https://sitecore.tnb.com.my/";
+#endif
+            }
+        }
         public static string SITECORE_USERNAME = "api_user";
         public static string SITECORE_PASSWORD = "mytnbapiuser!3$@2";
         public static string MobileNoPrefix = "+60";
