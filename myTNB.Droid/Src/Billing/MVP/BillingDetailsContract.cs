@@ -19,7 +19,6 @@ namespace myTNB_Android.Src.Billing.MVP
             void ShowBillDetailsError(bool isRefresh, string btnText, string contentText);
             void OnUpdatePendingPayment(bool mIsPendingPayament);
             void ShowViewBillError(string title, string message);
-            Task OnGetEPPTooltipContentDetail();
         }
 
         public interface IPresenter

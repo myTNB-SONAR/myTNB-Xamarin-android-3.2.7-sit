@@ -1501,6 +1501,36 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }, new CancellationTokenSource().Token);
         }
 
+        public Task OnGetEPPTooltipContentDetail()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
+
+                    EppToolTipTimeStampResponseModel timestampModel = getItemsService.GetEppToolTipTimeStampItem();
+                    if (timestampModel.Status.Equals("Success") && timestampModel.Data != null && timestampModel.Data.Count > 0)
+                    {
+                        if (SitecoreCmsEntity.IsNeedUpdates(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP, timestampModel.Data[0].Timestamp))
+                        {
+                            EppToolTipResponseModel responseModel = getItemsService.GetEppToolTipItem();
+
+                            if (responseModel.Status.Equals("Success"))
+                            {
+                                SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP, JsonConvert.SerializeObject(responseModel.Data), timestampModel.Data[0].Timestamp);
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
+        }
+
         private async Task OnUpdateReward(string itemID)
         {
             try

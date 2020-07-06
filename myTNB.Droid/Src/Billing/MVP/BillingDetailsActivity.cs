@@ -208,8 +208,6 @@ namespace myTNB_Android.Src.Billing.MVP
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             Bundle extras = Intent.Extras;
 
-            OnGetEPPTooltipContentDetail();
-
             if (extras.ContainsKey("SELECTED_ACCOUNT"))
             {
                 selectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString("SELECTED_ACCOUNT"));
@@ -697,38 +695,5 @@ namespace myTNB_Android.Src.Billing.MVP
             this.SetIsClicked(false);
         }
 
-        public Task OnGetEPPTooltipContentDetail()
-
-        {
-
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-
-                    EppToolTipTimeStampResponseModel timestampModel = getItemsService.GetEppToolTipTimeStampItem();
-                    if (timestampModel.Status.Equals("Success") && timestampModel.Data != null && timestampModel.Data.Count > 0)
-                    {
-                        if (SitecoreCmsEntity.IsNeedUpdates(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP, timestampModel.Data[0].Timestamp))
-                        {
-                            EppToolTipResponseModel responseModel = getItemsService.GetEppToolTipItem();
-
-                            if (responseModel.Status.Equals("Success"))
-                            {
-                                SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP, JsonConvert.SerializeObject(responseModel.Data), timestampModel.Data[0].Timestamp);
-                            }
-                        }
-
-
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            });
-        }
     }
 }

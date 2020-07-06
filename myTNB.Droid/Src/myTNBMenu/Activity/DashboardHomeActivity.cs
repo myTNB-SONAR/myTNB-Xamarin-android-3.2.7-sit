@@ -289,6 +289,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 this.userActionsListener.Start();
                 OnSetupSSMRMeterReadingTutorial();
+                this.mPresenter.OnGetEPPTooltipContentDetail();
             }
         }
 
