@@ -309,6 +309,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.mPresenter.OnResetRewardPromotionThread();
         }
 
+        public void OnResetEppTooltip()
+        {
+            this.mPresenter.OnGetEPPTooltipContentDetail();
+        }
+
         private void OnSetupSSMRMeterReadingTutorial()
         {
             savedSSMRMeterReadingTimeStamp = "0000000";
