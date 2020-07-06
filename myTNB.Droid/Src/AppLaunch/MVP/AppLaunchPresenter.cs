@@ -417,8 +417,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                    string json = getItemsService.GetTimestampItem();
-                    TimestampResponseModel responseModel = JsonConvert.DeserializeObject<TimestampResponseModel>(json);
+                    TimestampResponseModel responseModel = getItemsService.GetTimestampItem();
                     if (responseModel.Status.Equals("Success"))
                     {
                         TimeStampEntity wtManager = new TimeStampEntity();

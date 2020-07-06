@@ -66,8 +66,7 @@ namespace myTNB_Android.Src.FAQ.MVP
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                    string json = getItemsService.GetFAQsItem();
-                    FAQsResponseModel responseModel = JsonConvert.DeserializeObject<FAQsResponseModel>(json);
+                    FAQsResponseModel responseModel = getItemsService.GetFAQsItem();
                     if (responseModel.Status.Equals("Success"))
                     {
                         FAQsEntity wtManager = new FAQsEntity();
@@ -102,8 +101,7 @@ namespace myTNB_Android.Src.FAQ.MVP
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                    string json = getItemsService.GetFAQsTimestampItem();
-                    FAQsParentResponseModel responseModel = JsonConvert.DeserializeObject<FAQsParentResponseModel>(json);
+                    FAQsParentResponseModel responseModel = getItemsService.GetFAQsTimestampItem();
                     if (responseModel.Status.Equals("Success"))
                     {
                         FAQsParentEntity wtManager = new FAQsParentEntity();
