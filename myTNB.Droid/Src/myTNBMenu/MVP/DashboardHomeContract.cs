@@ -176,7 +176,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             bool GetAlreadyStarted();
 
             void SetAlreadyStarted(bool flag);
-        }
+
+			void OnResetEppTooltip();
+
+		}
 
         public interface IUserActionsListener : IBasePresenter
 		{
