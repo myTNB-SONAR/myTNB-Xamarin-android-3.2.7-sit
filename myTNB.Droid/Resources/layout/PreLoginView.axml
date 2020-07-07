@@ -95,34 +95,28 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:background="@color/platinumGrey"/>
             <LinearLayout
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:orientation="vertical">
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:textSize="16dp"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/water_blue"
-                    android:text="@string/quick_access"
-                    android:layout_gravity="center_horizontal"
-                    android:id="@+id/txtLikeToday" />
                 <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:layout_marginBottom="10dp">
                     <android.support.v7.widget.CardView
                         android:orientation="vertical"
-                        android:layout_width="88dp"
+                        android:layout_width="72dp"
                         android:layout_height="84dp"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
                         app:cardCornerRadius="4dp"
                         app:cardBackgroundColor="@color/white"
-                        app:cardElevation="4dp"
-                        android:layout_marginRight="12dp"
+                        app:cardElevation="0dp"
                         android:gravity="center"
                         android:clickable="true"
                         android:id="@+id/cardview_find_us">
@@ -150,12 +144,13 @@
                     </android.support.v7.widget.CardView>
                     <android.support.v7.widget.CardView
                         android:orientation="vertical"
-                        android:layout_width="88dp"
+                        android:layout_width="72dp"
                         android:layout_height="84dp"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
                         app:cardCornerRadius="4dp"
                         app:cardBackgroundColor="@color/white"
-                        app:cardElevation="4dp"
-                        android:layout_marginRight="12dp"
+                        app:cardElevation="0dp"
                         android:gravity="center"
                         android:clickable="true"
                         android:id="@+id/cardview_call_us">
@@ -183,11 +178,47 @@
                     </android.support.v7.widget.CardView>
                     <android.support.v7.widget.CardView
                         android:orientation="vertical"
-                        android:layout_width="88dp"
+                        android:layout_width="72dp"
                         android:layout_height="84dp"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
                         app:cardCornerRadius="4dp"
                         app:cardBackgroundColor="@color/white"
-                        app:cardElevation="4dp"
+                        app:cardElevation="0dp"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:id="@+id/cardview_check_us">
+                        <LinearLayout 
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <ImageView
+                            android:id="@+id/img_check_us"
+                            android:layout_height="28dp"
+                            android:layout_width="28dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/check_status"/>
+                            <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Check Status"
+                            android:textColor="@color/powerBlue"
+                            android:layout_marginTop="12dp"
+                            android:textSize="10dp"
+                            android:gravity="center"
+                            android:id="@+id/txtCheckUs" />
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        android:orientation="vertical"
+                        android:layout_width="72dp"
+                        android:layout_height="84dp"
+                        android:paddingLeft="2dp"
+                        android:paddingRight="2dp"
+                        app:cardCornerRadius="4dp"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardElevation="0dp"
                         android:gravity="center"
                         android:clickable="true"
                         android:id="@+id/cardview_feedback">
@@ -214,6 +245,12 @@
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
                 </LinearLayout>
+                <View
+                    android:layout_height="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/platinumGrey"/>
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"

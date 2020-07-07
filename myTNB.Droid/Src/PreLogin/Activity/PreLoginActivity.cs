@@ -50,9 +50,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.btnLogin)]
         Button btnLogin;
 
-        [BindView(Resource.Id.txtLikeToday)]
-        TextView txtLikeToday;
-
         [BindView(Resource.Id.txtPromotion)]
         TextView txtPromotion;
 
@@ -77,6 +74,15 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.txtCallUs)]
         TextView txtCallUs;
 
+        [BindView(Resource.Id.cardview_check_us)]
+        CardView cardCheckStatus;
+
+        [BindView(Resource.Id.img_check_us)]
+        ImageView imgCheckStatus;
+
+        [BindView(Resource.Id.txtCheckUs)]
+        TextView txtCheckStatus;
+
         [BindView(Resource.Id.cardview_feedback)]
         CardView cardFeedback;
 
@@ -100,23 +106,36 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
         private void UpdateLabels()
         {
+            string textFindUs = Utility.GetLocalizedLabel("Prelogin", "findUs");
+            string textCallUs = Utility.GetLocalizedLabel("Prelogin", "callUs");
+            // ApplicationStatus TODO: Update Multilingual
+            string textCheckStatus = "Check Status";
+            string textSubmitFeedback = Utility.GetLocalizedLabel("DashboardHome", "submitFeedback");
+            textFindUs = textFindUs.Replace(" ", "<br>");
+            textCallUs = textCallUs.Replace(" ", "<br>");
+            textCheckStatus = textCheckStatus.Replace(" ", "<br>");
+            textSubmitFeedback = textSubmitFeedback.Replace(" ", "<br>");
+
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+            {
+                txtFindUs.TextFormatted = Html.FromHtml(textFindUs, FromHtmlOptions.ModeLegacy);
+                txtCallUs.TextFormatted = Html.FromHtml(textCallUs, FromHtmlOptions.ModeLegacy);
+                txtCheckStatus.TextFormatted = Html.FromHtml(textCheckStatus, FromHtmlOptions.ModeLegacy);
+                txtFeedback.TextFormatted = Html.FromHtml(textSubmitFeedback, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                txtFindUs.TextFormatted = Html.FromHtml(textFindUs);
+                txtCallUs.TextFormatted = Html.FromHtml(textCallUs);
+                txtCheckStatus.TextFormatted = Html.FromHtml(textCheckStatus);
+                txtFeedback.TextFormatted = Html.FromHtml(textSubmitFeedback);
+            }
+
             txtWelcome.Text = Utility.GetLocalizedLabel("Prelogin", "welcomeTitle");
             txtManageAccount.Text = Utility.GetLocalizedLabel("Prelogin", "tagline");
             btnRegister.Text = Utility.GetLocalizedLabel("Prelogin", "register");
             btnLogin.Text = Utility.GetLocalizedLabel("Prelogin", "login");
-            txtLikeToday.Text = Utility.GetLocalizedLabel("Prelogin", "quickAccess");
-            txtFindUs.Text = Utility.GetLocalizedLabel("Prelogin", "findUs");
-            txtCallUs.Text = Utility.GetLocalizedLabel("Prelogin", "callUs");
             txtChangeLanguage.Text = Utility.GetLocalizedLabel("Prelogin", "changeLanguage");
-
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
-            {
-                txtFeedback.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitFeedback"), FromHtmlOptions.ModeLegacy);
-            }
-            else
-            {
-                txtFeedback.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitFeedback"));
-            }
 
             DismissProgressDialog();
         }
@@ -136,7 +155,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
             try
             {
                 mPresenter = new PreLoginPresenter(this);
-                TextViewUtils.SetMuseoSans500Typeface(txtWelcome, txtLikeToday, txtFindUs, txtFeedback, txtCallUs, txtChangeLanguage);
+                TextViewUtils.SetMuseoSans500Typeface(txtWelcome, txtFindUs, txtFeedback, txtCallUs, txtCheckStatus, txtChangeLanguage);
                 TextViewUtils.SetMuseoSans300Typeface(txtManageAccount, txtPromotion);
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin, btnRegister);
                 UpdateLabels();
@@ -145,6 +164,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 GenerateFindUsCardLayout();
                 GenerateCallUsCardLayout();
                 GenerateFeedbackCardLayout();
+                GenerateCheckStatusCardLayout();
             }
             catch (Exception ex)
             {
@@ -520,16 +540,12 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 LinearLayout.LayoutParams currentCard = cardFindUs.LayoutParameters as LinearLayout.LayoutParams;
                 ViewGroup.LayoutParams currentImg = imgFindUs.LayoutParameters;
 
-                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f) - GetDeviceHorizontalScaleInPixel(0.076f)) / 3;
-                float heightRatio = 84f / 88f;
+                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / 4;
+                float heightRatio = 84f / 72f;
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
                 currentCard.Height = cardHeight;
                 currentCard.Width = cardWidth;
-                currentCard.TopMargin = (int)DPUtils.ConvertDPToPx(12f);
-                currentCard.LeftMargin = (int)DPUtils.ConvertDPToPx(16f);
-                currentCard.RightMargin = GetDeviceHorizontalScaleInPixel(0.038f);
-                currentCard.BottomMargin = (int)DPUtils.ConvertDPToPx(8f);
 
                 float imgHeightRatio = 28f / 88f;
                 int imgHeight = (int)(cardWidth * (imgHeightRatio));
@@ -550,15 +566,12 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 LinearLayout.LayoutParams currentCard = cardCallUs.LayoutParameters as LinearLayout.LayoutParams;
                 ViewGroup.LayoutParams currentImg = imgCallUs.LayoutParameters;
 
-                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f) - GetDeviceHorizontalScaleInPixel(0.076f)) / 3;
-                float heightRatio = 84f / 88f;
+                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / 4;
+                float heightRatio = 84f / 72f;
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
                 currentCard.Height = cardHeight;
                 currentCard.Width = cardWidth;
-                currentCard.TopMargin = (int)DPUtils.ConvertDPToPx(12f);
-                currentCard.RightMargin = GetDeviceHorizontalScaleInPixel(0.038f);
-                currentCard.BottomMargin = (int)DPUtils.ConvertDPToPx(8f);
 
                 float imgHeightRatio = 28f / 88f;
                 int imgHeight = (int)(cardWidth * (imgHeightRatio));
@@ -579,15 +592,38 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 LinearLayout.LayoutParams currentCard = cardFeedback.LayoutParameters as LinearLayout.LayoutParams;
                 ViewGroup.LayoutParams currentImg = imgFeedback.LayoutParameters;
 
-                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f) - GetDeviceHorizontalScaleInPixel(0.076f)) / 3;
-                float heightRatio = 84f / 88f;
+                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / 4;
+                float heightRatio = 84f / 72f;
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
                 currentCard.Height = cardHeight;
                 currentCard.Width = cardWidth;
-                currentCard.TopMargin = (int)DPUtils.ConvertDPToPx(12f);
-                currentCard.RightMargin = (int)DPUtils.ConvertDPToPx(16f);
-                currentCard.BottomMargin = (int)DPUtils.ConvertDPToPx(8f);
+
+                float imgHeightRatio = 28f / 88f;
+                int imgHeight = (int)(cardWidth * (imgHeightRatio));
+
+                currentImg.Height = imgHeight;
+                currentImg.Width = imgHeight;
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        private void GenerateCheckStatusCardLayout()
+        {
+            try
+            {
+                LinearLayout.LayoutParams currentCard = cardCheckStatus.LayoutParameters as LinearLayout.LayoutParams;
+                ViewGroup.LayoutParams currentImg = imgCheckStatus.LayoutParameters;
+
+                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / 4;
+                float heightRatio = 84f / 72f;
+                int cardHeight = (int)(cardWidth * (heightRatio));
+
+                currentCard.Height = cardHeight;
+                currentCard.Width = cardWidth;
 
                 float imgHeightRatio = 28f / 88f;
                 int imgHeight = (int)(cardWidth * (imgHeightRatio));
