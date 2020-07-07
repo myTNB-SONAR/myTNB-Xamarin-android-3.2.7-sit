@@ -20,12 +20,13 @@
         android:layout_marginTop="?actionBarSize"
         android:orientation="vertical"
         android:background="@color/greyBackground">
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:overScrollMode="never"
             android:scrollbars="none"
+            android:id="@+id/applicationStatusLandingNestedScrollView"
             android:fillViewport="false">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -163,11 +164,16 @@
                         </LinearLayout>
                     </RelativeLayout>
                 </LinearLayout>
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/applicationStatusLandingRecyclerView"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="visible" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/applicationStatusLandingRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible" />
+                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -197,11 +203,10 @@
                         android:id="@+id/viewMoreImg"/>
                 </LinearLayout>
             </LinearLayout>
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:orientation="vertical"
             android:gravity="bottom"
             android:layout_gravity="bottom"

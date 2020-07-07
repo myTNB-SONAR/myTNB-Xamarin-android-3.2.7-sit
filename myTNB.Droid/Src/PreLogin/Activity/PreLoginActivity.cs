@@ -11,6 +11,7 @@ using Android.Widget;
 using CheeseBind;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
@@ -56,6 +57,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.cardview_find_us)]
         CardView cardFindUs;
 
+        [BindView(Resource.Id.findUsLayout)]
+        LinearLayout findUsLayout;
+
         [BindView(Resource.Id.img_find_us)]
         ImageView imgFindUs;
 
@@ -68,6 +72,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.cardview_call_us)]
         CardView cardCallUs;
 
+        [BindView(Resource.Id.callUsLayout)]
+        LinearLayout callUsLayout;
+
         [BindView(Resource.Id.img_call_us)]
         ImageView imgCallUs;
 
@@ -77,6 +84,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.cardview_check_us)]
         CardView cardCheckStatus;
 
+        [BindView(Resource.Id.checkUsLayout)]
+        LinearLayout checkStatusLayout;
+
         [BindView(Resource.Id.img_check_us)]
         ImageView imgCheckStatus;
 
@@ -85,6 +95,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
         [BindView(Resource.Id.cardview_feedback)]
         CardView cardFeedback;
+
+        [BindView(Resource.Id.feedbackLayout)]
+        LinearLayout feedbackLayout;
 
         [BindView(Resource.Id.img_feedback)]
         ImageView imgFeedback;
@@ -111,8 +124,8 @@ namespace myTNB_Android.Src.PreLogin.Activity
             // ApplicationStatus TODO: Update Multilingual
             string textCheckStatus = "Check Status";
             string textSubmitFeedback = Utility.GetLocalizedLabel("DashboardHome", "submitFeedback");
-            textFindUs = textFindUs.Replace(" ", "<br>");
-            textCallUs = textCallUs.Replace(" ", "<br>");
+            // textFindUs = textFindUs.Replace(" ", "<br>");
+            // textCallUs = textCallUs.Replace(" ", "<br>");
             textCheckStatus = textCheckStatus.Replace(" ", "<br>");
             textSubmitFeedback = textSubmitFeedback.Replace(" ", "<br>");
 
@@ -305,6 +318,23 @@ namespace myTNB_Android.Src.PreLogin.Activity
             }
         }
 
+        [OnClick(Resource.Id.cardview_check_us)]
+        void OnCheckStatus(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.userActionsListener.NavigateToCheckStatus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
 
 
         [OnClick(Resource.Id.cardview_feedback)]
@@ -475,6 +505,12 @@ namespace myTNB_Android.Src.PreLogin.Activity
             StartActivity(feedbackIntent);
         }
 
+        public void ShowCheckStatus()
+        {
+            var applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
+            StartActivity(applicationLandingIntent);
+        }
+
         public void GetDataFromSiteCore()
         {
             try
@@ -547,7 +583,11 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 currentCard.Height = cardHeight;
                 currentCard.Width = cardWidth;
 
-                float imgHeightRatio = 28f / 88f;
+                float paddingRatio = 13.5f / 72f;
+                int padding = (int)(cardWidth * (paddingRatio));
+                findUsLayout.SetPadding(padding, padding, padding, padding);
+
+                float imgHeightRatio = 28f / 72f;
                 int imgHeight = (int)(cardWidth * (imgHeightRatio));
 
                 currentImg.Height = imgHeight;
@@ -573,7 +613,11 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 currentCard.Height = cardHeight;
                 currentCard.Width = cardWidth;
 
-                float imgHeightRatio = 28f / 88f;
+                float paddingRatio = 13.5f / 72f;
+                int padding = (int)(cardWidth * (paddingRatio));
+                callUsLayout.SetPadding(padding, padding, padding, padding);
+
+                float imgHeightRatio = 28f / 72f;
                 int imgHeight = (int)(cardWidth * (imgHeightRatio));
 
                 currentImg.Height = imgHeight;
@@ -599,7 +643,11 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 currentCard.Height = cardHeight;
                 currentCard.Width = cardWidth;
 
-                float imgHeightRatio = 28f / 88f;
+                float paddingRatio = 13.5f / 72f;
+                int padding = (int)(cardWidth * (paddingRatio));
+                feedbackLayout.SetPadding(padding, padding, padding, padding);
+
+                float imgHeightRatio = 28f / 72f;
                 int imgHeight = (int)(cardWidth * (imgHeightRatio));
 
                 currentImg.Height = imgHeight;
@@ -625,7 +673,11 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 currentCard.Height = cardHeight;
                 currentCard.Width = cardWidth;
 
-                float imgHeightRatio = 28f / 88f;
+                float paddingRatio = 13.5f / 72f;
+                int padding = (int)(cardWidth * (paddingRatio));
+                checkStatusLayout.SetPadding(padding, padding, padding, padding);
+
+                float imgHeightRatio = 28f / 72f;
                 int imgHeight = (int)(cardWidth * (imgHeightRatio));
 
                 currentImg.Height = imgHeight;

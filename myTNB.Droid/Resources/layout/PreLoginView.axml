@@ -112,8 +112,6 @@
                         android:orientation="vertical"
                         android:layout_width="72dp"
                         android:layout_height="84dp"
-                        android:paddingLeft="2dp"
-                        android:paddingRight="2dp"
                         app:cardCornerRadius="4dp"
                         app:cardBackgroundColor="@color/white"
                         app:cardElevation="0dp"
@@ -124,7 +122,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
-                            android:gravity="center">
+                            android:id="@+id/findUsLayout"
+                            android:padding="13.5dp">
                             <ImageView
                             android:id="@+id/img_find_us"
                             android:layout_height="28dp"
@@ -146,8 +145,6 @@
                         android:orientation="vertical"
                         android:layout_width="72dp"
                         android:layout_height="84dp"
-                        android:paddingLeft="2dp"
-                        android:paddingRight="2dp"
                         app:cardCornerRadius="4dp"
                         app:cardBackgroundColor="@color/white"
                         app:cardElevation="0dp"
@@ -158,7 +155,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
-                            android:gravity="center">
+                            android:id="@+id/callUsLayout"
+                            android:padding="13.5dp">
                             <ImageView
                             android:id="@+id/img_call_us"
                             android:layout_height="28dp"
@@ -180,8 +178,6 @@
                         android:orientation="vertical"
                         android:layout_width="72dp"
                         android:layout_height="84dp"
-                        android:paddingLeft="2dp"
-                        android:paddingRight="2dp"
                         app:cardCornerRadius="4dp"
                         app:cardBackgroundColor="@color/white"
                         app:cardElevation="0dp"
@@ -192,7 +188,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
-                            android:gravity="center">
+                            android:id="@+id/checkUsLayout"
+                            android:padding="13.5dp">
                             <ImageView
                             android:id="@+id/img_check_us"
                             android:layout_height="28dp"
@@ -214,8 +211,6 @@
                         android:orientation="vertical"
                         android:layout_width="72dp"
                         android:layout_height="84dp"
-                        android:paddingLeft="2dp"
-                        android:paddingRight="2dp"
                         app:cardCornerRadius="4dp"
                         app:cardBackgroundColor="@color/white"
                         app:cardElevation="0dp"
@@ -226,7 +221,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical"
-                            android:gravity="center">
+                            android:id="@+id/feedbackLayout"
+                            android:padding="13.5dp">
                             <ImageView
                             android:id="@+id/img_feedback"
                             android:layout_height="28dp"

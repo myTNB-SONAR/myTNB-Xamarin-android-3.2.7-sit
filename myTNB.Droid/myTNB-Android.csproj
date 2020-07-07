@@ -4423,6 +4423,8 @@
     </AndroidResource>
     <Compile Include="Src\ApplicationStatus\ApplicationStatusListing\MVP\ApplicationStatusLandingContract.cs" />
     <Compile Include="Src\ApplicationStatus\ApplicationStatusListing\MVP\ApplicationStatusLandingPresenter.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusListing\Models\ApplicationStatusModel.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusListing\Adapter\ApplicationStatusLandingAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4802,6 +4804,8 @@
     <Folder Include="Src\ApplicationStatus\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusListing\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusListing\MVP\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusListing\Models\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusListing\Adapter\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
