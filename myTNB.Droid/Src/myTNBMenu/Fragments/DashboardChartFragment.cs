@@ -1291,6 +1291,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
             StartActivity(viewBill);
+            this.SetIsClicked(false);
         }
   
         private void showEPPTooltip()
@@ -1309,6 +1310,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     .SetSecondaryCTAaction(() => ShowBillPDF())
                     .Build();
                 eppTooltip.Show();
+            }
+            else
+            {
+                this.SetIsClicked(false);
             }
         }
 
