@@ -754,6 +754,7 @@ namespace myTNB.SitecoreCMS
                             whatsNewEntity.InsertListOfItems(whatsNewData);
                             UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreWhatsNewTimeStamp");
                         }
+                        WhatsNewCache.IsSitecoreRefresh = whatsNewResponse.Status == "Failed";
                     }
                     else
                     {
