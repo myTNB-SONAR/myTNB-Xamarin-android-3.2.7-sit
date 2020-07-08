@@ -4425,6 +4425,11 @@
     <Compile Include="Src\ApplicationStatus\ApplicationStatusListing\MVP\ApplicationStatusLandingPresenter.cs" />
     <Compile Include="Src\ApplicationStatus\ApplicationStatusListing\Models\ApplicationStatusModel.cs" />
     <Compile Include="Src\ApplicationStatus\ApplicationStatusListing\Adapter\ApplicationStatusLandingAdapter.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\ApplicationStatusFilterActivity.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationStatusFilterLandingLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4806,6 +4811,8 @@
     <Folder Include="Src\ApplicationStatus\ApplicationStatusListing\MVP\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusListing\Models\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusListing\Adapter\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusFilter\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

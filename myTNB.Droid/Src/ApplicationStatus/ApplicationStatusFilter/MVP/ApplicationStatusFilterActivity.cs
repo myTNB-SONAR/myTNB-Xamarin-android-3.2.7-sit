@@ -17,6 +17,7 @@ using CheeseBind;
 using Facebook.Shimmer;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FAQ.Activity;
@@ -25,10 +26,10 @@ using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.WhatsNewDetail.MVP;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
+namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
 {
-    [Activity(Label = "Check Status", Theme = "@style/Theme.RegisterForm")]
-    public class ApplicationStatusLandingActivity : BaseActivityCustom, ApplicationStatusLandingContract.IView
+    [Activity(Label = "Select Filter", Theme = "@style/Theme.RegisterForm")]
+    public class ApplicationStatusFilterActivity : BaseActivityCustom, ApplicationStatusLandingContract.IView
     {
         [BindView(Resource.Id.rootview)]
         LinearLayout rootview;
