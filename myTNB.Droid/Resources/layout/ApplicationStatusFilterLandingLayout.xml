@@ -60,11 +60,12 @@
                                 android:layout_gravity="center">
                                 <TextView
                                     android:id="@+id/applicationStatusSubTitle"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:textColor="@color/receipt_note_text"
                                     android:textSize="12dp"
                                     android:lineSpacingExtra="6dp"
+                                    android:paddingRight="24dp"
                                     android:text="Start Electricity"/>
                                 <ImageView
                                     android:id="@+id/applicationStatusItemRightArrow"
@@ -76,6 +77,7 @@
                         </LinearLayout>
                     </LinearLayout>
                     <View
+                        android:id="@+id/applicationStatusItemGroupContentSeparator"
                         android:visibility="visible"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -106,14 +108,15 @@
                                 android:layout_gravity="center">
                                 <TextView
                                     android:id="@+id/statusSubTitle"
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:textColor="@color/receipt_note_text"
                                     android:textSize="12dp"
                                     android:lineSpacingExtra="6dp"
+                                    android:paddingRight="24dp"
                                     android:text="Completed"/>
                                 <ImageView
-                                    android:id="@+id/applicationStatusItemRightArrow"
+                                    android:id="@+id/statusItemRightArrow"
                                     android:layout_width="16dp"
                                     android:layout_height="16dp"
                                     android:layout_alignParentRight="true"
@@ -122,7 +125,103 @@
                         </LinearLayout>
                     </LinearLayout>
                     <View
-                        android:id="@+id/applicationStatusItemGroupContentSeparator"
+                        android:id="@+id/statusItemGroupContentSeparator"
+                        android:visibility="visible"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/platinumGrey"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center"
+                            android:id="@+id/filterYearMainLayout">
+                            <TextView
+                                android:id="@+id/filterYearItemTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/tunaGrey"
+                                android:textSize="16dp"
+                                android:lineSpacingExtra="4dp"
+                                android:layout_marginRight="12dp"
+                                android:text="Creation Year"/>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center">
+                                <TextView
+                                    android:id="@+id/filterYearSubTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/receipt_note_text"
+                                    android:textSize="12dp"
+                                    android:lineSpacingExtra="6dp"
+                                    android:paddingRight="24dp"
+                                    android:text="2019"/>
+                                <ImageView
+                                    android:id="@+id/filterYearItemRightArrow"
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_alignParentRight="true"
+                                    android:src="@drawable/ic_action_expand"/>
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <View
+                        android:id="@+id/filterYearItemGroupContentSeparator"
+                        android:visibility="visible"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/platinumGrey"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_gravity="center"
+                            android:id="@+id/filterMonthMainLayout">
+                            <TextView
+                                android:id="@+id/filterMonthItemTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/tunaGrey"
+                                android:textSize="16dp"
+                                android:lineSpacingExtra="4dp"
+                                android:layout_marginRight="12dp"
+                                android:text="Creation Month"/>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center">
+                                <TextView
+                                    android:id="@+id/filterMonthSubTitle"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/receipt_note_text"
+                                    android:textSize="12dp"
+                                    android:lineSpacingExtra="6dp"
+                                    android:paddingRight="24dp"
+                                    android:text="January"/>
+                                <ImageView
+                                    android:id="@+id/filterMonthItemRightArrow"
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_alignParentRight="true"
+                                    android:src="@drawable/ic_action_expand"/>
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <View
+                        android:id="@+id/filterMonthItemGroupContentSeparator"
                         android:visibility="visible"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
