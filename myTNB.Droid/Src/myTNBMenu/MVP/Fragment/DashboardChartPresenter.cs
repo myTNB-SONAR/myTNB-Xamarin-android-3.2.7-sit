@@ -52,6 +52,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         private bool isDashboardReady = false;
 
         private bool isBillAvailable = true;
+        private bool isREFirstBill = false;
         private RewardServiceImpl mApi;
 
         public DashboardChartPresenter(DashboardChartContract.IView mView, ISharedPreferences pref)
@@ -368,6 +369,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     }
                 }
 
+                if (this.mView.GetIsREAccount() && isREFirstBill)
+                {
+                    isBillAvailable = false;
+                }
+
                 cts = new CancellationTokenSource();
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG
@@ -500,6 +506,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         {
             try
             {
+                isREFirstBill = false;
+
                 cts = new CancellationTokenSource();
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
 #if DEBUG
@@ -533,6 +541,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7201")
                 {
                     isBillAvailable = true;
+                    if (this.mView.GetIsREAccount())
+                    {
+                        isREFirstBill = true;
+                    }
                     this.mView.SetUsageData(usageHistoryResponse.Data.UsageHistoryData);
                     this.mView.ShowNewAccountView(usageHistoryResponse.Data.DisplayTitle);
                 }
