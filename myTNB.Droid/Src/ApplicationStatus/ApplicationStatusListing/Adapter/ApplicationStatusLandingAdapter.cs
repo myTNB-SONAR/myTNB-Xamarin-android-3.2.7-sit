@@ -22,7 +22,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
 
         public void Clear()
         {
-            this.mStatusCodeColorList.Clear();
             this.mApplicationStatusList.Clear();
             this.NotifyDataSetChanged();
         }
@@ -96,6 +95,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
             ApplicationStatusItemSubTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.receipt_note_text)));
             ApplicationStatusItemStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.silverChalice)));
             ApplicationStatusItemDate.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.receipt_note_text)));
+            TextViewUtils.SetMuseoSans300Typeface(ApplicationStatusItemSubTitle);
+            TextViewUtils.SetMuseoSans500Typeface(ApplicationStatusItemTitle, ApplicationStatusItemStatus, ApplicationStatusItemDate);
             ApplicationStatusItemRightArrow.Click += (sender, e) => listener(base.LayoutPosition);
         }
 
@@ -107,15 +108,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
             {
                 if (this.item.IsUpdated)
                 {
-                    TextViewUtils.SetMuseoSans300Typeface(ApplicationStatusItemSubTitle);
-                    TextViewUtils.SetMuseoSans500Typeface(ApplicationStatusItemTitle, ApplicationStatusItemStatus, ApplicationStatusItemDate);
+
                     ApplicationStatusItemNewIndicator.Visibility = ViewStates.Visible;
                     ApplicationStatusItemDate.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.tunaGrey)));
                 }
                 else
                 {
-                    TextViewUtils.SetMuseoSans300Typeface(ApplicationStatusItemSubTitle, ApplicationStatusItemDate);
-                    TextViewUtils.SetMuseoSans500Typeface(ApplicationStatusItemTitle, ApplicationStatusItemStatus);
                     ApplicationStatusItemNewIndicator.Visibility = ViewStates.Gone;
                     ApplicationStatusItemDate.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.receipt_note_text)));
                 }

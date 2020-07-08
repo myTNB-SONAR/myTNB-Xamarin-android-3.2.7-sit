@@ -4430,6 +4430,16 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\ApplicationStatusFilterContract.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\ApplicationStatusFilterPresenter.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationStatusFilterListLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ApplicationStatusFilterListItemLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

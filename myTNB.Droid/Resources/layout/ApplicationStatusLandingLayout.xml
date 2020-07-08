@@ -81,11 +81,20 @@
                         android:layout_marginLeft="32dp"
                         android:layout_marginRight="32dp"
                         android:layout_marginTop="16dp"
-                        android:layout_marginBottom="32dp"
+                        android:layout_marginBottom="16dp"
                         android:gravity="center"
                         android:text="Looks like you have no applications at the moment."
                         android:textSize="14dp"
                         android:lineSpacingExtra="3dp"/>
+                    <Button
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Search Application Status"
+                        android:id="@+id/btnEmptySearchApplicationStatus"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="32dp"
+                        style="@style/Theme.ApplicationStatusLandingButton" />
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/applicationStatusLandingShimmerLayout"
@@ -177,30 +186,39 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:visibility="gone"
-                    android:padding="16dp"
-                    android:clickable="true"
+                    android:orientation="vertical"
                     android:background="@color/white"
+                    android:visibility="gone"
+                    android:clickable="true"
                     android:id="@+id/viewMoreContainer">
-                    <TextView
-                        android:id="@+id/viewMoreLabel"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/receipt_note_text"
-                        android:textSize="12dp"
+                        android:orientation="horizontal"
                         android:gravity="center"
                         android:layout_gravity="center"
-                        android:text="View More"/>
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="4dp"
-                        android:src="@drawable/ic_action_expand_down_gray"
-                        android:id="@+id/viewMoreImg"/>
+                        android:padding="16dp">
+                        <TextView
+                            android:id="@+id/viewMoreLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/receipt_note_text"
+                            android:textSize="12dp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:text="View More"/>
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="4dp"
+                            android:src="@drawable/ic_action_expand_down_gray"
+                            android:id="@+id/viewMoreImg"/>
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/platinumGrey"/>
                 </LinearLayout>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>

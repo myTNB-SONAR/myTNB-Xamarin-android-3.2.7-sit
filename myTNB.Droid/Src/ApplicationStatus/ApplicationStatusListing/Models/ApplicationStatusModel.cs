@@ -48,6 +48,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models
         public List<ApplicationStatusCodeModel> Progress { get; set; }
     }
 
+    public class ApplicationStatusTypeModel
+    {
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("typeCode")]
+        public string TypeCode { get; set; }
+    }
+
     public class ApplicationStatusDateModel
     {
         [JsonProperty("month")]

@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="?actionBarSize"
         android:orientation="vertical"
-        android:background="@color/white">
+        android:background="@color/greyBackground">
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -44,6 +44,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:layout_gravity="center"
+                            android:clickable="true"
                             android:id="@+id/applicationTypeMainLayout">
                             <TextView
                                 android:id="@+id/applicationStatusItemTitle"
@@ -51,6 +52,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/tunaGrey"
                                 android:textSize="16dp"
+                                android:layout_gravity="center"
                                 android:lineSpacingExtra="4dp"
                                 android:layout_marginRight="12dp"
                                 android:text="Application Type"/>
@@ -66,12 +68,15 @@
                                     android:textSize="12dp"
                                     android:lineSpacingExtra="6dp"
                                     android:paddingRight="24dp"
+                                    android:maxLines="1"
+                                    android:ellipsize="end"
                                     android:text="Start Electricity"/>
                                 <ImageView
                                     android:id="@+id/applicationStatusItemRightArrow"
                                     android:layout_width="16dp"
                                     android:layout_height="16dp"
                                     android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
                                     android:src="@drawable/ic_action_expand"/>
                             </RelativeLayout>
                         </LinearLayout>
@@ -92,6 +97,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:layout_gravity="center"
+                            android:clickable="true"
                             android:id="@+id/statusMainLayout">
                             <TextView
                                 android:id="@+id/statusItemTitle"
@@ -99,6 +105,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/tunaGrey"
                                 android:textSize="16dp"
+                                android:layout_gravity="center"
                                 android:lineSpacingExtra="4dp"
                                 android:layout_marginRight="12dp"
                                 android:text="Status"/>
@@ -114,12 +121,15 @@
                                     android:textSize="12dp"
                                     android:lineSpacingExtra="6dp"
                                     android:paddingRight="24dp"
+                                    android:maxLines="1"
+                                    android:ellipsize="end"
                                     android:text="Completed"/>
                                 <ImageView
                                     android:id="@+id/statusItemRightArrow"
                                     android:layout_width="16dp"
                                     android:layout_height="16dp"
                                     android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
                                     android:src="@drawable/ic_action_expand"/>
                             </RelativeLayout>
                         </LinearLayout>
@@ -140,6 +150,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:layout_gravity="center"
+                            android:clickable="true"
                             android:id="@+id/filterYearMainLayout">
                             <TextView
                                 android:id="@+id/filterYearItemTitle"
@@ -147,6 +158,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/tunaGrey"
                                 android:textSize="16dp"
+                                android:layout_gravity="center"
                                 android:lineSpacingExtra="4dp"
                                 android:layout_marginRight="12dp"
                                 android:text="Creation Year"/>
@@ -162,12 +174,15 @@
                                     android:textSize="12dp"
                                     android:lineSpacingExtra="6dp"
                                     android:paddingRight="24dp"
+                                    android:maxLines="1"
+                                    android:ellipsize="end"
                                     android:text="2019"/>
                                 <ImageView
                                     android:id="@+id/filterYearItemRightArrow"
                                     android:layout_width="16dp"
                                     android:layout_height="16dp"
                                     android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
                                     android:src="@drawable/ic_action_expand"/>
                             </RelativeLayout>
                         </LinearLayout>
@@ -188,6 +203,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:layout_gravity="center"
+                            android:clickable="true"
                             android:id="@+id/filterMonthMainLayout">
                             <TextView
                                 android:id="@+id/filterMonthItemTitle"
@@ -195,6 +211,7 @@
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/tunaGrey"
                                 android:textSize="16dp"
+                                android:layout_gravity="center"
                                 android:lineSpacingExtra="4dp"
                                 android:layout_marginRight="12dp"
                                 android:text="Creation Month"/>
@@ -210,12 +227,15 @@
                                     android:textSize="12dp"
                                     android:lineSpacingExtra="6dp"
                                     android:paddingRight="24dp"
+                                    android:maxLines="1"
+                                    android:ellipsize="end"
                                     android:text="January"/>
                                 <ImageView
                                     android:id="@+id/filterMonthItemRightArrow"
                                     android:layout_width="16dp"
                                     android:layout_height="16dp"
                                     android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
                                     android:src="@drawable/ic_action_expand"/>
                             </RelativeLayout>
                         </LinearLayout>
@@ -233,12 +253,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="bottom"
-            android:padding="16dp"
+            android:background="@color/white"
             android:layout_gravity="bottom">
+            <ImageView
+                android:id="@+id/shadow_layout"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:visibility="visible"
+                android:scaleType="fitXY"
+                android:background="@drawable/shadow_effect" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:padding="16dp"
                 android:weightSum="1"
                 android:background="@color/white">
                 <Button
