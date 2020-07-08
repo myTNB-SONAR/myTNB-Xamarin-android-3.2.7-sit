@@ -1,4 +1,5 @@
-﻿using Sitecore.MobileSDK.API;
+﻿using myTNB_Android.Src.SiteCore;
+using Sitecore.MobileSDK.API;
 using Sitecore.MobileSDK.API.Exceptions;
 using Sitecore.MobileSDK.API.Items;
 using Sitecore.MobileSDK.API.Request;
@@ -168,7 +169,7 @@ namespace myTNB.SitecoreCMS.Services
             }
             try
             {
-                using (var credentials = new SecureStringPasswordProvider("admin", "b"))
+                using (var credentials = new SecureStringPasswordProvider(SiteCoreConfig.SITECORE_USERNAME, SiteCoreConfig.SITECORE_PASSWORD))
                 {
                     {
                         var session = SitecoreWebApiSessionBuilder.AuthenticatedSessionWithHost(websiteUrl)
