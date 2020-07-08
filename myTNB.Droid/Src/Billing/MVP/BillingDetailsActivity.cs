@@ -522,24 +522,26 @@ namespace myTNB_Android.Src.Billing.MVP
 
         public void ShowEPPDetailsTooltip()
         {
- 
-
             List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData();
 
             if (modelList != null && modelList.Count > 0)
             {
-                MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
-                   .SetHeaderImageBitmap(modelList[0].ImageBitmap)
-                   .SetTitle(modelList[0].PopUpTitle)
-                   .SetMessage(modelList[0].PopUpBody)
-                   .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                   .SetCTAaction(() => { this.SetIsClicked(false); })
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+                       .SetHeaderImageBitmap(modelList[0].ImageBitmap)
+                       .SetTitle(modelList[0].PopUpTitle)
+                       .SetMessage(modelList[0].PopUpBody)
+                       .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                       .SetCTAaction(() => { this.SetIsClicked(false); })
 
-                   .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("viewBill"))
-                   .SetSecondaryCTAaction(() => ShowBillPDF())
-                   .Build();
+                       .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("viewBill"))
+                       .SetSecondaryCTAaction(() => ShowBillPDF())
+                       .Build();
 
-                eppTooltip.Show();
+                    eppTooltip.Show();
+                }
             }            
         }
 
@@ -572,6 +574,7 @@ namespace myTNB_Android.Src.Billing.MVP
             viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
             viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
             StartActivity(viewBill);
+            this.SetIsClicked(false);
         }
 
         public void ShowProgressDialog()
