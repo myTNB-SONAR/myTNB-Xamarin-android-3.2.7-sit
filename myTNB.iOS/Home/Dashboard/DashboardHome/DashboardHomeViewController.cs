@@ -257,13 +257,14 @@ namespace myTNB
         {
             if (!DataManager.DataManager.SharedInstance.IsWhatsNewFirstLoad
                 && DataManager.DataManager.SharedInstance.UserEntity.Count > 0
-                && DataManager.DataManager.SharedInstance.UserEntity[0] != null)
+                && DataManager.DataManager.SharedInstance.UserEntity[0] != null
+                && !WhatsNewCache.IsSitecoreRefresh)
             {
                 DataManager.DataManager.SharedInstance.IsWhatsNewFirstLoad = true;
-                InvokeInBackground(async () =>
+                InvokeInBackground(() =>
                 {
-                    bool hasUpdate = await SitecoreServices.Instance.WhatsNewHasUpdates();
-                    if (hasUpdate)
+                    bool hasTimeStamp = SitecoreServices.Instance.WhatsNewHasTimeStamp();
+                    if (!hasTimeStamp)
                     {
                         _ = Task.Delay(500).ContinueWith(_ =>
                         {
@@ -275,47 +276,44 @@ namespace myTNB
                     }
                     else
                     {
-                        if (!DataManager.DataManager.SharedInstance.IsWhatsNewLoading)
+                        InvokeOnMainThread(() =>
                         {
-                            InvokeOnMainThread(() =>
+                            WhatsNewEntity wsManager = new WhatsNewEntity();
+                            var items = wsManager.GetActivePopupItems();
+                            if (items != null && items.Count > 0)
                             {
-                                WhatsNewEntity wsManager = new WhatsNewEntity();
-                                var items = wsManager.GetActivePopupItems();
-                                if (items != null && items.Count > 0)
+                                for (int index = 0; index < items.Count; index++)
                                 {
-                                    for (int index = 0; index < items.Count; index++)
+                                    string id = items[index].ID;
+                                    string recordDate = items[index].ShowDateForDay;
+                                    int count = items[index].ShowCountForDay;
+                                    DateTime showDateTime = DateTime.ParseExact(recordDate, "yyyyMMddTHHmmss",
+                                        CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                    if (showDateTime.Date == DateTime.Now.Date)
                                     {
-                                        string id = items[index].ID;
-                                        string recordDate = items[index].ShowDateForDay;
-                                        int count = items[index].ShowCountForDay;
-                                        DateTime showDateTime = DateTime.ParseExact(recordDate, "yyyyMMddTHHmmss",
-                                            CultureInfo.InvariantCulture, DateTimeStyles.None);
-                                        if (showDateTime.Date == DateTime.Now.Date)
-                                        {
-                                            WhatsNewServices.SetWhatNewModelShowDate(id, false);
-                                            count = count + 1;
-                                        }
-                                        else
-                                        {
-                                            WhatsNewServices.SetWhatNewModelShowDate(id, true);
-                                            count = 1;
-                                        }
-
-                                        WhatsNewServices.SetWhatNewModelShowCount(id, count);
+                                        WhatsNewServices.SetWhatNewModelShowDate(id, false);
+                                        count = count + 1;
+                                    }
+                                    else
+                                    {
+                                        WhatsNewServices.SetWhatNewModelShowDate(id, true);
+                                        count = 1;
                                     }
 
-                                    whatsNewModalView = new WhatsNewModalViewController();
-                                    whatsNewModalView.WhatsNews = items;
-                                    whatsNewModalView.OnWhatsNewClick = OnNavigateWhatsNewModal;
-                                    whatsNewModalView.OnDismissWhatsNew = OnDismissWhatsNewModal;
-                                    UINavigationController navController = new UINavigationController(whatsNewModalView)
-                                    {
-                                        ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen
-                                    };
-                                    PresentViewController(navController, true, null);
+                                    WhatsNewServices.SetWhatNewModelShowCount(id, count);
                                 }
-                            });
-                        }
+
+                                whatsNewModalView = new WhatsNewModalViewController();
+                                whatsNewModalView.WhatsNews = items;
+                                whatsNewModalView.OnWhatsNewClick = OnNavigateWhatsNewModal;
+                                whatsNewModalView.OnDismissWhatsNew = OnDismissWhatsNewModal;
+                                UINavigationController navController = new UINavigationController(whatsNewModalView)
+                                {
+                                    ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen
+                                };
+                                PresentViewController(navController, true, null);
+                            }
+                        });
                     }
                 });
             }

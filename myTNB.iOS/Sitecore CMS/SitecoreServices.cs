@@ -24,6 +24,7 @@ namespace myTNB.SitecoreCMS
         public bool NeedHelpTimeStampChanged { set; get; }
         public string NeedHelpTimeStamp { set; get; }
         public static bool IsForcedUpdate { get { return _isForcedUpdate; } }
+        private bool isWhatsNewUpdating = false;
 
         public async Task OnExecuteSitecoreCall(bool isforcedUpdate = false)
         {
@@ -695,8 +696,23 @@ namespace myTNB.SitecoreCMS
             return needsUpdate;
         }
 
+        public bool WhatsNewHasTimeStamp()
+        {
+            bool hasTimeStamp = false;
+            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+            string currentTS = sharedPreference.StringForKey("SiteCoreWhatsNewTimeStamp");
+
+            if (!string.IsNullOrEmpty(currentTS) && !isWhatsNewUpdating)
+            {
+                hasTimeStamp = true;
+            }
+
+            return hasTimeStamp;
+        }
+
         public Task LoadWhatsNew(bool forceUpdate = false)
         {
+            isWhatsNewUpdating = true;
             return Task.Factory.StartNew(() =>
             {
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS
@@ -722,49 +738,64 @@ namespace myTNB.SitecoreCMS
                     WhatsNewResponseModel whatsNewResponse = iService.GetWhatsNewItems();
                     if (whatsNewResponse != null)
                     {
-                        WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
-                        whatsNewEntity.DeleteTable();
-                        whatsNewEntity.CreateTable();
+                        WhatsNewCache.IsSitecoreRefresh = whatsNewResponse.Status == "Failed" || whatsNewResponse.Status == null;
 
-                        WhatsNewCache.WhatsNewIsAvailable = true;
-                        if (whatsNewResponse.Data != null && whatsNewResponse.Data.Count > 0)
+                        if (!WhatsNewCache.IsSitecoreRefresh)
                         {
-                            List<WhatsNewModel> whatsNewData = new List<WhatsNewModel>();
-                            List<WhatsNewCategoryModel> categoryList = new List<WhatsNewCategoryModel>(whatsNewResponse.Data);
-                            foreach (var category in categoryList)
+                            WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+                            whatsNewEntity.DeleteTable();
+                            whatsNewEntity.CreateTable();
+
+                            WhatsNewCache.WhatsNewIsAvailable = true;
+                            if (whatsNewResponse.Data != null && whatsNewResponse.Data.Count > 0)
                             {
-                                List<WhatsNewModel> whatsNewList = new List<WhatsNewModel>(category.WhatsNewItems);
-                                if (whatsNewList.Count > 0)
+                                List<WhatsNewModel> whatsNewData = new List<WhatsNewModel>();
+                                List<WhatsNewCategoryModel> categoryList = new List<WhatsNewCategoryModel>(whatsNewResponse.Data);
+                                foreach (var category in categoryList)
                                 {
-                                    foreach (var whatsNew in whatsNewList)
+                                    List<WhatsNewModel> whatsNewList = new List<WhatsNewModel>(category.WhatsNewItems);
+                                    if (whatsNewList.Count > 0)
                                     {
-                                        if (!WhatsNewServices.WhatsNewHasExpired(whatsNew))
+                                        foreach (var whatsNew in whatsNewList)
                                         {
-                                            whatsNew.CategoryID = category.ID;
-                                            whatsNew.CategoryName = category.CategoryName;
-                                            whatsNew.IsRead = WhatsNewServices.GetIsRead(whatsNew.ID);
-                                            whatsNew.ShowDateForDay = WhatsNewServices.GetWhatNewModelShowDate(whatsNew.ID);
-                                            whatsNew.ShowCountForDay = WhatsNewServices.GetWhatNewModelShowCount(whatsNew.ID);
-                                            whatsNew.SkipShowOnAppLaunch = WhatsNewServices.GetIsSkipAppLaunch(whatsNew.ID);
-                                            whatsNewData.Add(whatsNew);
+                                            if (!WhatsNewServices.WhatsNewHasExpired(whatsNew))
+                                            {
+                                                whatsNew.CategoryID = category.ID;
+                                                whatsNew.CategoryName = category.CategoryName;
+                                                whatsNew.IsRead = WhatsNewServices.GetIsRead(whatsNew.ID);
+                                                whatsNew.ShowDateForDay = WhatsNewServices.GetWhatNewModelShowDate(whatsNew.ID);
+                                                whatsNew.ShowCountForDay = WhatsNewServices.GetWhatNewModelShowCount(whatsNew.ID);
+                                                whatsNew.SkipShowOnAppLaunch = WhatsNewServices.GetIsSkipAppLaunch(whatsNew.ID);
+                                                whatsNewData.Add(whatsNew);
+                                            }
                                         }
                                     }
                                 }
+                                whatsNewEntity.InsertListOfItems(whatsNewData);
+                                if (!string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
+                                {
+                                    UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreWhatsNewTimeStamp");
+                                }
                             }
-                            whatsNewEntity.InsertListOfItems(whatsNewData);
-                            UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreWhatsNewTimeStamp");
                         }
-                        WhatsNewCache.IsSitecoreRefresh = whatsNewResponse.Status == "Failed" || whatsNewResponse.Status == null;
+                        else
+                        {
+                            WhatsNewCache.WhatsNewIsAvailable = false;
+                        }
                     }
                     else
                     {
+                        WhatsNewCache.IsSitecoreRefresh = false;
                         WhatsNewCache.WhatsNewIsAvailable = false;
                     }
                 }
                 else
                 {
+                    WhatsNewCache.IsSitecoreRefresh = false;
                     WhatsNewCache.WhatsNewIsAvailable = true;
                 }
+
+                isWhatsNewUpdating = false;
                 Debug.WriteLine("LoadWhatsNew Done");
             });
         }
