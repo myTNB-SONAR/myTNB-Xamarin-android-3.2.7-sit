@@ -1905,6 +1905,15 @@ namespace myTNB
                     DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                     _rEAmountComponent.SetValues(dueData.billDueDate, dueData.amountDue);
                 }
+                SetREAdviseEnable(!AccountUsageCache.IsDataEmpty);
+            }
+        }
+
+        internal void SetREAdviseEnable(bool enable)
+        {
+            if (_rEAmountComponent != null)
+            {
+                _rEAmountComponent.EnableDisableCTA(enable);
             }
         }
 
