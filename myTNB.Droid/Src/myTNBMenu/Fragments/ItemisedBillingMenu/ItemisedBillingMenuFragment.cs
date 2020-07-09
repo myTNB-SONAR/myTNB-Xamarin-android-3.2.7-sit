@@ -167,6 +167,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         private bool isFiltered = false;
         private string myHistoryTitle = "";
         private string billTitle = "";
+        private bool isViewBillDisable = false;
 
         private bool isPendingPayment = false;
 
@@ -264,6 +265,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(mSelectedAccountData));
                 intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(selectedAccountChargesModelList[0]));
                 intent.PutExtra("PENDING_PAYMENT", isPendingPayment);
+                intent.PutExtra("IS_VIEW_BILL_DISABLE", isViewBillDisable);
                 StartActivity(intent);
             }
         }
@@ -762,6 +764,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 }
                 emptyItemisedBillingList.Visibility = ViewStates.Visible;
                 itemisedBillingList.Visibility = ViewStates.Gone;
+            }
+
+            isViewBillDisable = true;
+            if (billingHistoryModelList != null && billingHistoryModelList.Count > 0)
+            {
+                for (int i = 0; i < billingHistoryModelList.Count; i++)
+                {
+                    var find = billingHistoryModelList[i].BillingHistoryDataList.Find(x => x.HistoryType.ToUpper() == Constants.ITEMIZED_BILLING_BILL_KEY);
+
+                    if (find != null && find.HistoryType.ToUpper() == Constants.ITEMIZED_BILLING_BILL_KEY)
+                    {
+                        isViewBillDisable = false;
+                    }
+
+                    if (!isViewBillDisable)
+                    {
+                        break;
+                    }
+                }
             }
         }
 

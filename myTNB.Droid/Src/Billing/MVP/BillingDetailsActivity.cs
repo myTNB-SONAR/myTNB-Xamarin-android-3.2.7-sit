@@ -244,6 +244,24 @@ namespace myTNB_Android.Src.Billing.MVP
                 topLayout.Visibility = ViewStates.Visible;
                 PopulateCharges();
                 EnablePayBillButtons();
+
+                if (extras.ContainsKey("IS_VIEW_BILL_DISABLE"))
+                {
+                    bool isViewBillDisable = extras.GetBoolean("IS_VIEW_BILL_DISABLE");
+
+                    if (isViewBillDisable)
+                    {
+                        EnableDisableViewBillButtons(false);
+                    }
+                    else
+                    {
+                        EnableDisableViewBillButtons(true);
+                    }
+                }
+                else
+                {
+                    EnableDisableViewBillButtons(true);
+                }
             }
             else
             {
@@ -277,6 +295,22 @@ namespace myTNB_Android.Src.Billing.MVP
             else
             {
                 btnPayBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            }
+        }
+
+        public void EnableDisableViewBillButtons(bool flag)
+        {
+            if (flag)
+            {
+                btnViewBill.Enabled = true;
+                btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
+                btnViewBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
+            }
+            else
+            {
+                btnViewBill.Enabled = false;
+                btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.silverChalice));
+                btnViewBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_outline);
             }
         }
 
