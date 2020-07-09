@@ -273,59 +273,16 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             }
         }
 
-        private async void ViewBillDetails(Models.NotificationDetails notificationDetails)
+        private void ViewBillDetails(Models.NotificationDetails notificationDetails)
         {
-            this.mView.ShowLoadingScreen();
-            try
+            AccountData accountData = new AccountData();
+            CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+            if (account != null)
             {
-                List<string> accountList = new List<string>();
-                List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
-                accountList.Add(notificationDetails.AccountNum);
-                AccountsChargesRequest accountChargeseRequest = new AccountsChargesRequest(
-                        accountList,
-                        true
-                        );
-                AccountChargesResponse accountChargeseResponse = await ServiceApiImpl.Instance.GetAccountsCharges(accountChargeseRequest);
-                this.mView.HideLoadingScreen();
-                if (accountChargeseResponse.IsSuccessResponse())
-                {
-                    AccountData accountData = new AccountData();
-                    accountChargeModelList = GetAccountChargeModelList(accountChargeseResponse.GetData().AccountCharges);
-                    CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(accountChargeseResponse.GetData().AccountCharges[0].ContractAccount);
-                    if (account != null)
-                    {
-                        accountData.AccountNum = account.AccNum;
-                        accountData.AccountNickName = account.AccDesc;
-                        accountData.AddStreet = account.AccountStAddress;
-                        mView.ViewDetails(accountData, accountChargeModelList[0]);
-                    }
-                    else
-                    {
-                        this.mView.ShowRetryOptionsApiException(null);
-                    }
-                }
-                else
-                {
-                    this.mView.ShowRetryOptionsApiException(null);
-                }
-            }
-            catch (System.OperationCanceledException e)
-            {
-                // ADD OPERATION CANCELLED HERE
-                this.mView.ShowRetryOptionsCancelledException(e);
-                Utility.LoggingNonFatalError(e);
-            }
-            catch (ApiException apiException)
-            {
-                // ADD HTTP CONNECTION EXCEPTION HERE
-                this.mView.ShowRetryOptionsApiException(apiException);
-                Utility.LoggingNonFatalError(apiException);
-            }
-            catch (Exception e)
-            {
-                // ADD UNKNOWN EXCEPTION HERE
-                this.mView.ShowRetryOptionsUnknownException(e);
-                Utility.LoggingNonFatalError(e);
+                accountData.AccountNum = account.AccNum;
+                accountData.AccountNickName = account.AccDesc;
+                accountData.AddStreet = account.AccountStAddress;
+                mView.ViewDetails(accountData);
             }
         }
 

@@ -371,11 +371,10 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             StartActivity(DashboardIntent);
         }
 
-        public void ViewDetails(AccountData mSelectedAccountData, AccountChargeModel accountChargeModel)
+        public void ViewDetails(AccountData mSelectedAccountData)
         {
             Intent intent = new Intent(this, typeof(BillingDetailsActivity));
             intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(mSelectedAccountData));
-            intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(accountChargeModel));
             StartActivity(intent);
         }
 
