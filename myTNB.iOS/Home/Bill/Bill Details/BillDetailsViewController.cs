@@ -26,21 +26,21 @@ namespace myTNB
         private bool isMandatoryExpanded;
         private AccountChargesModel _charges = new AccountChargesModel();
         private GetAccountsChargesResponseModel _accountCharges;
-
+        private UIView _tutorialContainer;
+        private bool IsLoading = true;
+        private Timer tutorialOverlayTimer;
+        private bool _isTooltipCreated;
         //Created by Syahmi ICS 05052020
         private List<EppTooltipModelEntity> _eppToolTipList;
-        public bool HasEppToolTip = false;
 
+        public bool HasEppToolTip = false;
         public bool IsFreshCall;
         public bool IsRoot { set; private get; } = false;
         public string AccountNumber { set; private get; } = string.Empty;
         public CustomerAccountRecordModel SelectedAccount = new CustomerAccountRecordModel();
         public bool IsFromBillSelection { set; private get; }
         public bool IsPayBtnEnabled = true, HasPendingPayment;
-        private UIView _tutorialContainer;
-        private bool IsLoading = true;
-        private Timer tutorialOverlayTimer;
-        private bool _isTooltipCreated;
+        public bool HasActiveBill { set; private get; } = true;
 
         public BillDetailsViewController(IntPtr handle) : base(handle) { }
 
@@ -110,6 +110,7 @@ namespace myTNB
                                             pendingPaymentResponse.d.IsSuccess && pendingPaymentResponse.d.data != null &&
                                             pendingPaymentResponse.d.data.Count > 0 && pendingPaymentResponse.d.data[0].HasPendingPayment;
                             _accountCharges = await GetAccountsCharges();
+                            _ = await GetBillHistory();
                             InvokeOnMainThread(() =>
                             {
                                 if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
@@ -156,6 +157,7 @@ namespace myTNB
                                         _refreshViewContainer.AddSubview(refreshComponent.GetUI(_refreshViewContainer));
                                     }
                                 }
+                                SetViewBillButtonEnable(HasActiveBill);
                                 ActivityIndicator.Hide();
                             });
                         });
@@ -807,7 +809,7 @@ namespace myTNB
             _btnViewBill.SetTitle(GetCommonI18NValue(BillConstants.I18N_ViewBill), UIControlState.Normal);
             _btnViewBill.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _btnViewBill.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-
+            SetViewBillButtonEnable(HasActiveBill);
             _btnPay = new CustomUIButtonV2
             {
                 Frame = new CGRect(_btnViewBill.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48)),
@@ -972,6 +974,38 @@ namespace myTNB
             };
             GetAccountsChargesResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountsChargesResponseModel>(BillConstants.Service_GetAccountsCharges, request);
             return response;
+        }
+
+        private async Task<BillHistoryResponseModel> GetBillHistory()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object requestParameter = new
+            {
+                serviceManager.usrInf,
+                contractAccount = DataManager.DataManager.SharedInstance.SelectedAccount.accNum,
+                isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount,
+            };
+            BillHistoryResponseModel response = serviceManager.OnExecuteAPIV6<BillHistoryResponseModel>(BillConstants.Service_GetBillHistory, requestParameter);
+            ParseHistoryData(response);
+            return response;
+        }
+
+        #region Parse For Bill Availability
+        private void ParseHistoryData(BillHistoryResponseModel response)
+        {
+            HasActiveBill = false;
+            if (response != null && response.d != null && response.d.data != null)
+            {
+                HasActiveBill = response.d.data.Count > 0;
+            }
+        }
+        #endregion
+
+        private void SetViewBillButtonEnable(bool enabled)
+        {
+            _btnViewBill.Enabled = enabled;
+            _btnViewBill.SetTitleColor(enabled ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice, UIControlState.Normal);
+            _btnViewBill.Layer.BorderColor = enabled ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.SilverChalice.CGColor;
         }
     }
 }

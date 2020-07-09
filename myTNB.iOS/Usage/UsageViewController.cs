@@ -252,6 +252,10 @@ namespace myTNB
                                         else if (AccountUsageCache.IsDataEmpty)
                                         {
                                             SetEmptyDataComponent(AccountUsageCache.EmptyDataMessage);
+                                            if (isREAccount)
+                                            {
+                                                SetREAdviseEnable(false);
+                                            }
                                         }
                                         else if (AccountUsageCache.IsPlannedDownTime)
                                         {
