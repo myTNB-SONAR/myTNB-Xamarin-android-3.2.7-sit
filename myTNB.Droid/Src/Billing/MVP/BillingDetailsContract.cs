@@ -19,11 +19,11 @@ namespace myTNB_Android.Src.Billing.MVP
             void ShowBillDetailsError(bool isRefresh, string btnText, string contentText);
             void OnUpdatePendingPayment(bool mIsPendingPayament);
             void ShowViewBillError(string title, string message);
+            void EnableDisableViewBillButtons(bool flag);
         }
 
         public interface IPresenter
         {
-            void GetBillHistory(AccountData selectedAccount);
             List<NewAppModel> OnGeneraNewAppTutorialList();
             void ShowBillDetails(AccountData selectedAccount, bool isCheckPendingNeeded);
             List<string> ExtractUrls(string text);
