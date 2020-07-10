@@ -161,8 +161,10 @@ namespace myTNB.SitecoreCMS.Services
         {
             if (String.IsNullOrEmpty(websiteUrl) || (!String.IsNullOrEmpty(websiteUrl) && !(Uri.IsWellFormedUriString(websiteUrl, UriKind.Absolute))))
             {
-#if DEBUG || STUB || DEVELOP || SIT
+#if DEBUG || DEVELOP || SIT
                 websiteUrl = "http://tnbcsdevapp.tnb.my/";
+#elif STUB
+                websiteUrl = "http://TNBCSSTGAPP.tnb.my/";
 #else
                 websiteUrl = "https://sitecore.tnb.com.my/";
 #endif
