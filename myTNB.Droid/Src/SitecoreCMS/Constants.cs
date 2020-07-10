@@ -231,7 +231,7 @@
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew_SIT_V2";
 #else
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
-                public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew";
+                public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNewV2";
 #endif
                 public const string EppToolTip = "/sitecore/content/myTNBapp/Contents/EppToolTip";
             }
