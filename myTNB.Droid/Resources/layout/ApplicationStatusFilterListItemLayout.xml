@@ -25,12 +25,26 @@
             android:textColor="@color/tunaGrey"
             android:textSize="16dp" />
         <ImageView
-            android:id="@+id/imageActionIcon"
+            android:id="@+id/imgApplicationFilter"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginRight="16dp"
             android:src="@drawable/ic_action_tick"
             android:layout_centerInParent="true"
             android:layout_alignParentEnd="true" />
+        <CheckBox
+            android:id="@+id/chkApplicationFilter"
+            android:layout_height="24dp"
+            android:layout_width="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="16dp"
+            android:visibility="gone"
+            android:button="@drawable/checkbox_selector" />
     </RelativeLayout>
+    <View
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/platinumGrey"/>
 </LinearLayout>

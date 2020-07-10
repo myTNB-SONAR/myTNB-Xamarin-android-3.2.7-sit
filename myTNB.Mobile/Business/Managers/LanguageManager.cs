@@ -34,6 +34,7 @@ namespace myTNB
         private string JSONLang = string.Empty;
         private const string SELECTOR = "_selector";
         private const string COMMON = "Common";
+        public const string SelectMonth_selector = "SelectMonth_selector";
         private const string Hint = "Hint";
         private const string Error = "Error";
         private const string LANGUAGE_RESOURCE_PATH = "myTNB.Mobile.Resources.Language.Language_{0}.json";
@@ -86,6 +87,16 @@ namespace myTNB
         public Dictionary<string, string> GetCommonValuePairs()
         {
             return GetValuesByPage(COMMON);
+        }
+
+        /// <summary>
+        /// Gets the Month selector
+        /// Advised to call this when app was launched.
+        /// </summary>
+        /// <returns>Key-value pairs of month selector strings</returns>
+        public Dictionary<string, List<SelectorModel>> GetMonthSelectorValuePairs()
+        {
+            return GetValues<Dictionary<string, List<SelectorModel>>>(SelectMonth_selector);
         }
 
         public Dictionary<string, string> GetHintValuePairs()

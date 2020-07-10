@@ -55,6 +55,19 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models
 
         [JsonProperty("typeCode")]
         public string TypeCode { get; set; }
+
+        public bool isChecked { get; set; }
+    }
+
+    public class ApplicationStatusStringSelectionModel
+    {
+        [JsonProperty("key")]
+        public string Key { get; set; }
+
+        [JsonProperty("value")]
+        public string Value { get; set; }
+
+        public bool isChecked { get; set; }
     }
 
     public class ApplicationStatusDateModel
@@ -76,6 +89,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models
 
         [JsonProperty("stateCode")]
         public string StateCode { get; set; }
+
+        public bool isChecked { get; set; }
     }
 
     public class ApplicationStatusColorCodeModel

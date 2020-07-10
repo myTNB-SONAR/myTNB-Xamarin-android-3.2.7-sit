@@ -4440,6 +4440,9 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusFilter\Adapter\ApplicationStatusFilterAdapter.cs" />
+    <Compile Include="Src\Base\Models\BaseKeyValueModel.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\ApplicationStatusFilterSelection\ApplicationStatusFilterSelectionActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4823,6 +4826,8 @@
     <Folder Include="Src\ApplicationStatus\ApplicationStatusListing\Adapter\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusFilter\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusFilter\Adapter\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\ApplicationStatusFilterSelection\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

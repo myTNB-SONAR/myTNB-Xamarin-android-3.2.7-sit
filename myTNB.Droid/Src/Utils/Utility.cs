@@ -5,17 +5,12 @@ using Android.Text;
 using Android.Text.Style;
 using Android.Util;
 using myTNB;
-using myTNB.SitecoreCMS.Model;
-using myTNB.SitecoreCMS.Services;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.SiteCore;
-using myTNB_Android.Src.SSMR.Util;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using myTNB_Android.Src.Base.Models;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -132,6 +127,40 @@ namespace myTNB_Android.Src.Utils
                 Log.Debug("DEBUG Error: ", e.Message);
             }
             return label;
+        }
+
+        /// <summary>
+        /// Gets the Month Selector List by key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static List<BaseKeyValueModel> GetLocalizedMonthSelectorLabel(string key)
+        {
+            List<BaseKeyValueModel> monthList = new List<BaseKeyValueModel>();
+            try
+            {
+                Dictionary<string, List<SelectorModel>> monthSelectorList = LanguageManager.Instance.GetMonthSelectorValuePairs();
+                if (monthSelectorList != null && monthSelectorList.Count > 0)
+                {
+                    List<SelectorModel> list = monthSelectorList[key];
+                    if (list != null && list.Count > 0)
+                    {
+                        foreach(var item in list)
+                        {
+                            monthList.Add(new BaseKeyValueModel()
+                            {
+                                Key = item.Key,
+                                Value = item.Value
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Debug("DEBUG Error: ", e.Message);
+            }
+            return monthList;
         }
 
         /// <summary>

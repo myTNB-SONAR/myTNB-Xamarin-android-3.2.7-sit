@@ -9,6 +9,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.ApplicationStatusFilterSelection;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
@@ -98,7 +99,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
         private string filterMonth = "";
         List<ApplicationStatusCodeModel> statusCodeList = new List<ApplicationStatusCodeModel>();
         List<ApplicationStatusTypeModel> typeList = new List<ApplicationStatusTypeModel>();
-        List<string> displayMonth = new List<string>();
+        List<ApplicationStatusStringSelectionModel> displayMonth = new List<ApplicationStatusStringSelectionModel>();
         List<string> displayYear = new List<string>();
 
         const string MONTH_ORIGINAL_FORMAT = "MMM";
@@ -225,27 +226,17 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 filterYearSubTitle.Text = "";
             }
 
-            // ApplicationStatus TODO: stub
-            for (int i = 1; i <= 12; i++)
+            var tempDisplayMonth = Utility.GetLocalizedMonthSelectorLabel("months");
+            foreach(var item in tempDisplayMonth)
             {
-                string month = "";
-                DateTime d = new DateTime(2000, i, 10);
-                TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
-                DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(d, tzi);
-                if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                displayMonth.Add(new ApplicationStatusStringSelectionModel()
                 {
-                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
-                    month = dateTimeMalaysia.ToString("MMMM", currCult);
-                }
-                else
-                {
-                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-                    month = dateTimeMalaysia.ToString("MMMM", currCult);
-                }
-
-                displayMonth.Add(month);
+                    Key = item.Key,
+                    Value = item.Value,
+                    isChecked = false
+                });
             }
-            // ApplicationStatus TODO: stub
+            
 
             if (!string.IsNullOrEmpty(filterMonth) && displayMonth != null && displayMonth.Count > 0)
             {
@@ -257,16 +248,16 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 {
                     try
                     {
-                        int singleMonthBreak = int.Parse(filterMonthBreak[i]) - 1;
+                        var filter = displayMonth.FindIndex(x => x.Key == filterMonthBreak[i]);
                         if (i == 0)
                         {
-                            displayMonthBreak += displayMonth[singleMonthBreak];
+                            displayMonthBreak += displayMonth[filter].Value;
                         }
                         else
                         {
-                            displayMonthBreak += ", " + displayMonth[singleMonthBreak];
+                            displayMonthBreak += ", " + displayMonth[filter].Value;
                         }
-
+                        displayMonth[filter].isChecked = true;
                     }
                     catch (Exception e)
                     {
@@ -390,7 +381,18 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
         [OnClick(Resource.Id.applicationTypeMainLayout)]
         internal void OnFilterTypeClick(object sender, EventArgs e)
         {
-            
+            /*if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent filterIntent = new Intent(this, typeof(ApplicationStatusFilterSelectionActivity));
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_REQUEST_KEY, Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE);
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_STATUS_KEY, filterStatus);
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_YEAR_KEY, filterYear);
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_MONTH_KEY, filterMonth);
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_STATUS_LIST_KEY, JsonConvert.SerializeObject(statusCodeList));
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_TYPE_LIST_KEY, JsonConvert.SerializeObject(typeList));
+                StartActivityForResult(filterIntent, Constants.APPLICATION_STATUS_FILTER_REQUEST_CODE);
+            }*/
         }
 
         [OnClick(Resource.Id.statusMainLayout)]
@@ -408,7 +410,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
         [OnClick(Resource.Id.filterMonthMainLayout)]
         internal void OnFilterMonthClick(object sender, EventArgs e)
         {
-            
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent filterIntent = new Intent(this, typeof(ApplicationStatusFilterSelectionActivity));
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_REQUEST_KEY, Constants.APPLICATION_STATUS_FILTER_MONTH_REQUEST_CODE);
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_MONTH_KEY, filterMonth);
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_MULTI_SELECT_KEY, true);
+                StartActivityForResult(filterIntent, Constants.APPLICATION_STATUS_FILTER_MONTH_REQUEST_CODE);
+            }
         }
 
 
