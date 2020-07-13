@@ -24,7 +24,7 @@ namespace myTNB
             get
             {
 #if DEBUG || MASTER
-                return "http://10.215.70.246/";// "http://tnbcsdevapp.tnb.my/";
+                return "http://10.215.70.246/";//"http://tnbcsdevapp.tnb.my/";
 #else
                 return "https://sitecore.tnb.com.my/";
 #endif

@@ -10,23 +10,28 @@ using System.Linq;
 using System.IO;
 using Sitecore.MobileSDK.PasswordProvider;
 using System.Diagnostics;
+using System.Threading;
 
 namespace myTNB.SitecoreCMS.Services
 {
     public class SitecoreService
     {
+        private readonly TimeSpan timeSpan = TimeSpan.FromMilliseconds(5000);
+
         public async Task<ScItemsResponse> GetItemByPath(string itemPath, PayloadType itemLoadType, List<ScopeType> itemScopeTypes, string websiteUrl = null, string itemLanguage = "en")
         {
             try
             {
                 using (var session = await GetSession(websiteUrl))
                 {
+                    CancellationTokenSource source = new CancellationTokenSource();
+                    source.CancelAfter(timeSpan);
                     IReadItemsByPathRequest request = ItemWebApiRequestBuilder.ReadItemsRequestWithPath(itemPath)
                         .Payload(itemLoadType)
                         .AddScope(itemScopeTypes)
                         .Language(itemLanguage)
                         .Build();
-                    return await session.ReadItemAsync(request);
+                    return await session.ReadItemAsync(request, source.Token);
                 }
             }
             catch (Exception e)
@@ -42,12 +47,14 @@ namespace myTNB.SitecoreCMS.Services
             {
                 using (var session = await GetSession(websiteUrl))
                 {
+                    CancellationTokenSource source = new CancellationTokenSource();
+                    source.CancelAfter(timeSpan);
                     IReadItemsByIdRequest request = ItemWebApiRequestBuilder.ReadItemsRequestWithId(itemId)
                         .Payload(itemLoadType)
                         .AddScope(itemScopeTypes)
                         .Language(itemLanguage)
                         .Build();
-                    return await session.ReadItemAsync(request);
+                    return await session.ReadItemAsync(request, source.Token);
                 }
             }
             catch (Exception e)
@@ -64,12 +71,14 @@ namespace myTNB.SitecoreCMS.Services
                 mediaUrl = CleanUpMediaUrlByReplacingWeirdTildeSignWithCorrect(mediaUrl);
                 using (var session = await SitecoreSession)
                 {
+                    CancellationTokenSource source = new CancellationTokenSource();
+                    source.CancelAfter(timeSpan);
                     IMediaResourceDownloadRequest request = ItemWebApiRequestBuilder.DownloadResourceRequestWithMediaPath(mediaUrl)
                         .Language("en")
                         .Build();
 
                     byte[] data = null;
-                    using (Stream response = await session.DownloadMediaResourceAsync(request))
+                    using (Stream response = await session.DownloadMediaResourceAsync(request, source.Token))
                     using (MemoryStream responseInMemory = new MemoryStream())
                     {
                         await response.CopyToAsync(responseInMemory);
