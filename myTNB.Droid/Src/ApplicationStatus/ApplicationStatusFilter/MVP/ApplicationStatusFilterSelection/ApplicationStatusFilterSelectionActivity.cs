@@ -114,6 +114,46 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             btnMultiFilterApply.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
         }
 
+        [OnClick(Resource.Id.btnMultiFilterApply)]
+        internal void OnConfirmClick(object sender, EventArgs e)
+        {
+            OnConfirmFilter();
+        }
+
+        private void OnConfirmFilter()
+        {
+            Intent finishIntent = new Intent();
+            if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE)
+            {
+                // mTypeList.Clear();
+            }
+            else if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE)
+            {
+                // mStatusCodeList.Clear();
+            }
+            SetResult(Result.Ok, finishIntent);
+            Finish();
+        }
+
+        void OnItemClick(object sender, int position)
+        {
+            try
+            {
+                if (!mMultipleSelectCapable)
+                {
+                    OnConfirmFilter();
+                }
+                else
+                {
+                    EnableButton();
+                }                
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -136,46 +176,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
                     else if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE)
                     {
                         // mStatusCodeList.Clear();
-                    }
-                    else if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_YEAR_REQUEST_CODE)
-                    {
-                        // mDisplayStringList.Clear();
-                    }
-                    else if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_MONTH_REQUEST_CODE)
-                    {
-                        if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_MONTH_KEY))
-                        {
-                            filterMonth = extras.GetString(Constants.APPLICATION_STATUS_FILTER_MONTH_KEY);
-                        }
-
-                        var tempDisplayMonth = Utility.GetLocalizedMonthSelectorLabel("months");
-                        foreach (var item in tempDisplayMonth)
-                        {
-                            displayMonth.Add(new ApplicationStatusStringSelectionModel()
-                            {
-                                Key = item.Key,
-                                Value = item.Value,
-                                isChecked = false
-                            });
-                        }
-
-                        if (!string.IsNullOrEmpty(filterMonth) && displayMonth != null && displayMonth.Count > 0)
-                        {
-                            string[] filterMonthBreak = filterMonth.Split(",");
-
-                            for (int i = 0; i < filterMonthBreak.Length; i++)
-                            {
-                                try
-                                {
-                                    var filter = displayMonth.FindIndex(x => x.Key == filterMonthBreak[i]);
-                                    displayMonth[filter].isChecked = true;
-                                }
-                                catch (Exception e)
-                                {
-                                    Utility.LoggingNonFatalError(e);
-                                }
-                            }
-                        }
                     }
                 }
 
@@ -200,6 +200,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             filterListView.SetLayoutManager(layoutManager);
             filterListView.SetAdapter(mAdapter);
+            mAdapter.ItemClick += OnItemClick;
         }
     }
 }

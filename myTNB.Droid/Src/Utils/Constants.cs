@@ -362,8 +362,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int APPLICATION_STATUS_LISTING_LIMIT = 5;
         internal static readonly string APPLICATION_STATUS_FILTER_TYPE_KEY = "applicationType";
         internal static readonly string APPLICATION_STATUS_FILTER_STATUS_KEY = "status";
-        internal static readonly string APPLICATION_STATUS_FILTER_YEAR_KEY = "year";
-        internal static readonly string APPLICATION_STATUS_FILTER_MONTH_KEY = "month";
+        internal static readonly string APPLICATION_STATUS_FILTER_DATE_KEY = "date";
         internal static readonly string APPLICATION_STATUS_TYPE_LIST_KEY = "typeList";
         internal static readonly string APPLICATION_STATUS_STATUS_LIST_KEY = "statusList";
         internal static readonly string APPLICATION_STATUS_FILTER_REQUEST_KEY = "filterRequest";
@@ -371,7 +370,6 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int APPLICATION_STATUS_FILTER_REQUEST_CODE = 29800;
         internal static readonly int APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE = 29801;
         internal static readonly int APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE = 29802;
-        internal static readonly int APPLICATION_STATUS_FILTER_YEAR_REQUEST_CODE = 29803;
-        internal static readonly int APPLICATION_STATUS_FILTER_MONTH_REQUEST_CODE = 29804;
+        internal static readonly int APPLICATION_STATUS_FILTER_DATE_REQUEST_CODE = 29803;
     }
 }

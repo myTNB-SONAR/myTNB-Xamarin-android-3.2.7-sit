@@ -101,8 +101,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
         private string filterApplicationType = "";
         private string filterStatus = "";
-        private string filterYear = "";
-        private string filterMonth = "";
+        private string filterDate = "";
 
         List<ApplicationStatusModel> applicationStatusList = new List<ApplicationStatusModel>();
         List<ApplicationStatusColorCodeModel> applicationStatusColorList = new List<ApplicationStatusColorCodeModel>();
@@ -143,8 +142,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 Intent filterIntent = new Intent(this, typeof(ApplicationStatusFilterActivity));
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_TYPE_KEY, filterApplicationType);
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_STATUS_KEY, filterStatus);
-                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_YEAR_KEY, filterYear);
-                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_MONTH_KEY, filterMonth);
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_DATE_KEY, filterDate);
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_STATUS_LIST_KEY, JsonConvert.SerializeObject(statusCodeList));
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_TYPE_LIST_KEY, JsonConvert.SerializeObject(typeList));
                 StartActivityForResult(filterIntent, Constants.APPLICATION_STATUS_FILTER_REQUEST_CODE);

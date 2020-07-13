@@ -151,9 +151,9 @@
                             android:orientation="horizontal"
                             android:layout_gravity="center"
                             android:clickable="true"
-                            android:id="@+id/filterYearMainLayout">
+                            android:id="@+id/filterDateMainLayout">
                             <TextView
-                                android:id="@+id/filterYearItemTitle"
+                                android:id="@+id/filterDateItemTitle"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/tunaGrey"
@@ -161,13 +161,13 @@
                                 android:layout_gravity="center"
                                 android:lineSpacingExtra="4dp"
                                 android:layout_marginRight="12dp"
-                                android:text="Creation Year"/>
+                                android:text="Creation Date"/>
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center">
                                 <TextView
-                                    android:id="@+id/filterYearSubTitle"
+                                    android:id="@+id/filterDateSubTitle"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:textColor="@color/receipt_note_text"
@@ -176,9 +176,9 @@
                                     android:paddingRight="24dp"
                                     android:maxLines="1"
                                     android:ellipsize="end"
-                                    android:text="2019"/>
+                                    android:text="Dec 2019 - Jan 2020"/>
                                 <ImageView
-                                    android:id="@+id/filterYearItemRightArrow"
+                                    android:id="@+id/filterDateItemRightArrow"
                                     android:layout_width="16dp"
                                     android:layout_height="16dp"
                                     android:layout_alignParentRight="true"
@@ -188,60 +188,7 @@
                         </LinearLayout>
                     </LinearLayout>
                     <View
-                        android:id="@+id/filterYearItemGroupContentSeparator"
-                        android:visibility="visible"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/platinumGrey"/>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_gravity="center"
-                            android:clickable="true"
-                            android:id="@+id/filterMonthMainLayout">
-                            <TextView
-                                android:id="@+id/filterMonthItemTitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/tunaGrey"
-                                android:textSize="16dp"
-                                android:layout_gravity="center"
-                                android:lineSpacingExtra="4dp"
-                                android:layout_marginRight="12dp"
-                                android:text="Creation Month"/>
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center">
-                                <TextView
-                                    android:id="@+id/filterMonthSubTitle"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/receipt_note_text"
-                                    android:textSize="12dp"
-                                    android:lineSpacingExtra="6dp"
-                                    android:paddingRight="24dp"
-                                    android:maxLines="1"
-                                    android:ellipsize="end"
-                                    android:text="January"/>
-                                <ImageView
-                                    android:id="@+id/filterMonthItemRightArrow"
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:src="@drawable/ic_action_expand"/>
-                            </RelativeLayout>
-                        </LinearLayout>
-                    </LinearLayout>
-                    <View
-                        android:id="@+id/filterMonthItemGroupContentSeparator"
+                        android:id="@+id/filterDateItemGroupContentSeparator"
                         android:visibility="visible"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -271,7 +218,7 @@
                 android:background="@color/white">
                 <Button
                     android:id="@+id/btnClearFilter"
-                    android:text="Clear Filter"
+                    android:text="Clear"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -280,7 +227,7 @@
                     style="@style/Theme.ApplicationStatusLandingButton" />
                 <Button
                     android:id="@+id/btnApplyFilter"
-                    android:text="Apply Filter"
+                    android:text="Apply"
                     android:layout_width="match_parent"
                     android:layout_weight="0.5"
                     android:layout_height="wrap_content"

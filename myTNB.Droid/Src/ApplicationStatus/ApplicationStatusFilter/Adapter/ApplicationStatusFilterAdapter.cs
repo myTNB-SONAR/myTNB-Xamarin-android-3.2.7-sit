@@ -284,6 +284,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
                         imgApplicationFilter.Visibility = ViewStates.Visible;
                     }
                 }
+
+                txtFilterName.RequestLayout();
+                imgApplicationFilter.RequestLayout();
+                chkApplicationFilter.RequestLayout();
             }
             catch (Exception e)
             {
@@ -315,6 +319,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
                         imgApplicationFilter.Visibility = ViewStates.Visible;
                     }
                 }
+
+                txtFilterName.RequestLayout();
+                imgApplicationFilter.RequestLayout();
+                chkApplicationFilter.RequestLayout();
             }
             catch (Exception e)
             {
@@ -346,6 +354,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
                         imgApplicationFilter.Visibility = ViewStates.Visible;
                     }
                 }
+
+                txtFilterName.RequestLayout();
+                imgApplicationFilter.RequestLayout();
+                chkApplicationFilter.RequestLayout();
             }
             catch (Exception e)
             {

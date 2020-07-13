@@ -4443,6 +4443,11 @@
     <Compile Include="Src\ApplicationStatus\ApplicationStatusFilter\Adapter\ApplicationStatusFilterAdapter.cs" />
     <Compile Include="Src\Base\Models\BaseKeyValueModel.cs" />
     <Compile Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\ApplicationStatusFilterSelection\ApplicationStatusFilterSelectionActivity.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\ApplicationStatusFilterSelection\ApplicationStatusFilterDateSelectionActivity.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationStatusFilterListDateLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

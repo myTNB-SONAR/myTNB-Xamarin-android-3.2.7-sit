@@ -53,35 +53,20 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
         [BindView(Resource.Id.statusItemGroupContentSeparator)]
         View statusItemGroupContentSeparator;
 
-        [BindView(Resource.Id.filterYearMainLayout)]
-        LinearLayout filterYearMainLayout;
+        [BindView(Resource.Id.filterDateMainLayout)]
+        LinearLayout filterDateMainLayout;
 
-        [BindView(Resource.Id.filterYearItemTitle)]
-        TextView filterYearItemTitle;
+        [BindView(Resource.Id.filterDateItemTitle)]
+        TextView filterDateItemTitle;
 
-        [BindView(Resource.Id.filterYearSubTitle)]
-        TextView filterYearSubTitle;
+        [BindView(Resource.Id.filterDateSubTitle)]
+        TextView filterDateSubTitle;
 
-        [BindView(Resource.Id.filterYearItemRightArrow)]
-        ImageView filterYearItemRightArrow;
+        [BindView(Resource.Id.filterDateItemRightArrow)]
+        ImageView filterDateItemRightArrow;
 
-        [BindView(Resource.Id.filterYearItemGroupContentSeparator)]
-        View filterYearItemGroupContentSeparator;
-
-        [BindView(Resource.Id.filterMonthMainLayout)]
-        LinearLayout filterMonthMainLayout;
-
-        [BindView(Resource.Id.filterMonthItemTitle)]
-        TextView filterMonthItemTitle;
-
-        [BindView(Resource.Id.filterMonthSubTitle)]
-        TextView filterMonthSubTitle;
-
-        [BindView(Resource.Id.filterMonthItemRightArrow)]
-        ImageView filterMonthItemRightArrow;
-
-        [BindView(Resource.Id.filterMonthItemGroupContentSeparator)]
-        View filterMonthItemGroupContentSeparator;
+        [BindView(Resource.Id.filterDateItemGroupContentSeparator)]
+        View filterDateItemGroupContentSeparator;
 
         [BindView(Resource.Id.btnClearFilter)]
         Button btnClearFilter;
@@ -95,12 +80,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
 
         private string filterApplicationType = "";
         private string filterStatus = "";
-        private string filterYear = "";
-        private string filterMonth = "";
+        private string filterDate = "";
         List<ApplicationStatusCodeModel> statusCodeList = new List<ApplicationStatusCodeModel>();
         List<ApplicationStatusTypeModel> typeList = new List<ApplicationStatusTypeModel>();
-        List<ApplicationStatusStringSelectionModel> displayMonth = new List<ApplicationStatusStringSelectionModel>();
-        List<string> displayYear = new List<string>();
+        string displayDate = "";
 
         const string MONTH_ORIGINAL_FORMAT = "MMM";
 
@@ -126,8 +109,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
 
             TextViewUtils.SetMuseoSans300Typeface(applicationStatusItemTitle, applicationStatusSubTitle);
             TextViewUtils.SetMuseoSans300Typeface(statusItemTitle, statusSubTitle);
-            TextViewUtils.SetMuseoSans300Typeface(filterYearItemTitle, filterYearSubTitle);
-            TextViewUtils.SetMuseoSans300Typeface(filterMonthItemTitle, filterMonthSubTitle);
+            // TextViewUtils.SetMuseoSans300Typeface(filterYearItemTitle, filterYearSubTitle);
+            // TextViewUtils.SetMuseoSans300Typeface(filterMonthItemTitle, filterMonthSubTitle);
             TextViewUtils.SetMuseoSans500Typeface(btnClearFilter, btnApplyFilter);
 
             // ApplicationStatus TODO: Multilingual
@@ -146,14 +129,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                     filterStatus = extras.GetString(Constants.APPLICATION_STATUS_FILTER_STATUS_KEY);
                 }
 
-                if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_YEAR_KEY))
+                if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_DATE_KEY))
                 {
-                    filterYear = extras.GetString(Constants.APPLICATION_STATUS_FILTER_YEAR_KEY);
-                }
-
-                if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_MONTH_KEY))
-                {
-                    filterMonth = extras.GetString(Constants.APPLICATION_STATUS_FILTER_MONTH_KEY);
+                    filterDate = extras.GetString(Constants.APPLICATION_STATUS_FILTER_DATE_KEY);
                 }
 
                 if (extras.ContainsKey(Constants.APPLICATION_STATUS_STATUS_LIST_KEY))
@@ -215,69 +193,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             else
             {
                 applicationStatusSubTitle.Text = "";
-            }
+            }            
 
-            if (!string.IsNullOrEmpty(filterYear))
+            if (!string.IsNullOrEmpty(filterDate))
             {
-                filterYearSubTitle.Text = filterYear;
-            }
-            else
-            {
-                filterYearSubTitle.Text = "";
-            }
-
-            var tempDisplayMonth = Utility.GetLocalizedMonthSelectorLabel("months");
-            foreach(var item in tempDisplayMonth)
-            {
-                displayMonth.Add(new ApplicationStatusStringSelectionModel()
-                {
-                    Key = item.Key,
-                    Value = item.Value,
-                    isChecked = false
-                });
-            }
-            
-
-            if (!string.IsNullOrEmpty(filterMonth) && displayMonth != null && displayMonth.Count > 0)
-            {
-                string[] filterMonthBreak = filterMonth.Split(",");
-
-                string displayMonthBreak = "";
-
-                for (int i = 0; i < filterMonthBreak.Length; i++)
-                {
-                    try
-                    {
-                        var filter = displayMonth.FindIndex(x => x.Key == filterMonthBreak[i]);
-                        if (i == 0)
-                        {
-                            displayMonthBreak += displayMonth[filter].Value;
-                        }
-                        else
-                        {
-                            displayMonthBreak += ", " + displayMonth[filter].Value;
-                        }
-                        displayMonth[filter].isChecked = true;
-                    }
-                    catch (Exception e)
-                    {
-                        Utility.LoggingNonFatalError(e);
-                    }
-                }
-
-
-                if (!string.IsNullOrEmpty(displayMonthBreak))
-                {
-                    applicationStatusSubTitle.Text = displayMonthBreak;
-                }
-                else
-                {
-                    filterMonthSubTitle.Text = "";
-                }
+                filterDateSubTitle.Text = filterDate;
             }
             else
             {
-                filterMonthSubTitle.Text = "";
+                filterDateSubTitle.Text = "";
             }
 
             DisableButtons();
@@ -394,23 +318,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             
         }
 
-        [OnClick(Resource.Id.filterYearMainLayout)]
-        internal void OnFilterYearClick(object sender, EventArgs e)
-        {
-            
-        }
-
-        [OnClick(Resource.Id.filterMonthMainLayout)]
-        internal void OnFilterMonthClick(object sender, EventArgs e)
+        [OnClick(Resource.Id.filterDateMainLayout)]
+        internal void OnFilterDateClick(object sender, EventArgs e)
         {
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                Intent filterIntent = new Intent(this, typeof(ApplicationStatusFilterSelectionActivity));
-                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_REQUEST_KEY, Constants.APPLICATION_STATUS_FILTER_MONTH_REQUEST_CODE);
-                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_MONTH_KEY, filterMonth);
-                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_MULTI_SELECT_KEY, true);
-                StartActivityForResult(filterIntent, Constants.APPLICATION_STATUS_FILTER_MONTH_REQUEST_CODE);
+                Intent filterIntent = new Intent(this, typeof(ApplicationStatusFilterDateSelectionActivity));
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_DATE_KEY, filterDate);
+                StartActivityForResult(filterIntent, Constants.APPLICATION_STATUS_FILTER_DATE_REQUEST_CODE);
             }
         }
 
