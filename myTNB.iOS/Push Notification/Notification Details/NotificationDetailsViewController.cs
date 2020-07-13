@@ -294,7 +294,7 @@ namespace myTNB
             _txtViewDetails = new UITextView
             {
                 Editable = false,
-                ScrollEnabled = true,
+                ScrollEnabled = false,
                 AttributedText = mutableHTMLBody,
                 WeakLinkTextAttributes = linkAttributes.Dictionary,
                 ContentInset = new UIEdgeInsets(0, -5, 0, -5)
