@@ -12,6 +12,7 @@ using Android.Support.V7.Widget;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
 using System.Collections.Generic;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter;
+using Android.Support.V4.Content;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.ApplicationStatusFilterSelection
 {
@@ -101,6 +102,18 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             }
         }
 
+        public void DisableButton()
+        {
+            btnMultiFilterApply.Enabled = false;
+            btnMultiFilterApply.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+        }
+
+        public void EnableButton()
+        {
+            btnMultiFilterApply.Enabled = true;
+            btnMultiFilterApply.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -174,6 +187,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
 
             if (mMultipleSelectCapable)
             {
+                DisableButton();
                 multiSelectBottomLayout.Visibility = ViewStates.Visible;
             }
             else

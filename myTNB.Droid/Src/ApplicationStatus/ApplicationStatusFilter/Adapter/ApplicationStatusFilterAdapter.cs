@@ -18,6 +18,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
         List<ApplicationStatusCodeModel> mStatusCodeList = new List<ApplicationStatusCodeModel>();
         List<ApplicationStatusTypeModel> mTypeList = new List<ApplicationStatusTypeModel>();
         List<ApplicationStatusStringSelectionModel> mDisplayStringList = new List<ApplicationStatusStringSelectionModel>();
+        public event EventHandler<int> ItemClick;
         int mRequestCode = -1;
         int countNumber = 0;
         bool mMultiSelectCapable = false;
@@ -231,6 +232,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
                 }
 
                 this.NotifyDataSetChanged();
+
+                if (ItemClick != null)
+                    ItemClick(this, position);
             }
         }
     }

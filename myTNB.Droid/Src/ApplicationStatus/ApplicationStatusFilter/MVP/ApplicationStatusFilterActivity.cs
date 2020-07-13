@@ -280,14 +280,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 filterMonthSubTitle.Text = "";
             }
 
-            if (!string.IsNullOrEmpty(filterStatus) || !string.IsNullOrEmpty(filterApplicationType) || !string.IsNullOrEmpty(filterYear) || !string.IsNullOrEmpty(filterMonth))
-            {
-                EnableButtons();
-            }
-            else
-            {
-                DisableButtons();
-            }
+            DisableButtons();
         }
 
         public void DisableButtons()
