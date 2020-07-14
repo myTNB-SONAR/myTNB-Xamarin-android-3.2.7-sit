@@ -25,70 +25,119 @@ namespace myTNB.SitecoreCMS.Services
             Language = language;
         }
 
-        public string GetWalkthroughScreenItems()
+        public WalkthroughScreensResponseModel GetWalkthroughScreenItems()
         {
-            WalkthroughScreenService service = new WalkthroughScreenService();
-            var data = service.GetWalkthroughScreens(OS, ImageSize, WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
+            WalkthroughScreensResponseModel respModel = new WalkthroughScreensResponseModel();
+            try
+            {
+                WalkthroughScreenService service = new WalkthroughScreenService();
+                var data = service.GetWalkthroughScreens(OS, ImageSize, WebsiteUrl, Language);
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<WalkthroughScreensResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/WalkthroughScreens: " + e.Message);
+            }
+            return respModel;
         }
 
-        public string GetPreLoginPromoItem()
+        public PreLoginPromoResponseModel GetPreLoginPromoItem()
         {
-            PreLoginPromoService service = new PreLoginPromoService();
-            var data = service.GetPreLoginPromo(OS, ImageSize, WebsiteUrl, Language);
-            var listData = AddDataToList(data);
-            var resp = CheckData(listData);
-            return JsonConvert.SerializeObject(resp);
+            PreLoginPromoResponseModel respModel = new PreLoginPromoResponseModel();
+            try
+            {
+                PreLoginPromoService service = new PreLoginPromoService();
+                var data = service.GetPreLoginPromo(OS, ImageSize, WebsiteUrl, Language);
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<PreLoginPromoResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/PreLoginPromo: " + e.Message);
+            }
+
+            return respModel;
         }
 
-        public string GetFullRTEPagesItems()
+        public FullRTEPagesResponseModel GetFullRTEPagesItems()
         {
-            FullRTEPagesService service = new FullRTEPagesService();
-            var data = service.GetFullRTEPages(WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
+            FullRTEPagesResponseModel respModel = new FullRTEPagesResponseModel();
+            try
+            {
+                FullRTEPagesService service = new FullRTEPagesService();
+                var data = service.GetFullRTEPages(WebsiteUrl, Language);
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<FullRTEPagesResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/FullRTEPages: " + e.Message);
+            }
+
+            return respModel;
         }
 
-        public string GetEnergyTipsItems()
+        public FAQsResponseModel GetFAQsItem()
         {
-            EnergyTipsService service = new EnergyTipsService();
-            var data = service.GetEnergyTips(OS, ImageSize, WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
+            FAQsResponseModel respModel = new FAQsResponseModel();
+            try
+            {
+                FAQsService service = new FAQsService();
+                var data = service.GetFAQsService(OS, ImageSize, WebsiteUrl, Language);
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<FAQsResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetFAQsItem: " + e.Message);
+            }
+
+            return respModel;
+        }
+        public FAQsParentResponseModel GetFAQsTimestampItem()
+        {
+            FAQsParentResponseModel respModel = new FAQsParentResponseModel();
+            try
+            {
+                FAQsService service = new FAQsService();
+                var data = service.GetTimestamp(WebsiteUrl, Language);
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<FAQsParentResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetFAQsTimestampItem: " + e.Message);
+            }
+
+            return respModel;
         }
 
-        public string GetLocationsItems()
+        public TimestampResponseModel GetTimestampItem()
         {
-            LocationsService service = new LocationsService();
-            var data = service.GetLocations(WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
-        }
+            TimestampResponseModel respModel = new TimestampResponseModel();
+            try
+            {
+                TimestampService service = new TimestampService();
+                var data = service.GetTimestamp(WebsiteUrl, Language);
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<TimestampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetTimestampItem: " + e.Message);
+            }
 
-        public string GetFAQsItem()
-        {
-            FAQsService service = new FAQsService();
-            var data = service.GetFAQsService(OS, ImageSize, WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
-        }
-        public string GetFAQsTimestampItem()
-        {
-            FAQsService service = new FAQsService();
-            var data = service.GetTimestamp(WebsiteUrl, Language);
-            var listData = AddDataToList(data);
-            var resp = CheckData(listData);
-            return JsonConvert.SerializeObject(resp);
-        }
-
-        public string GetTimestampItem()
-        {
-            TimestampService service = new TimestampService();
-            var data = service.GetTimestamp(WebsiteUrl, Language);
-            var listData = AddDataToList(data);
-            var resp = CheckData(listData);
-            return JsonConvert.SerializeObject(resp);
+            return respModel;
         }
 
 

@@ -176,7 +176,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             bool GetAlreadyStarted();
 
             void SetAlreadyStarted(bool flag);
-        }
+
+			void OnResetEppTooltip();
+
+		}
 
         public interface IUserActionsListener : IBasePresenter
 		{
@@ -256,6 +259,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void UpdateTrackDashboardMenu(int resId);
 
             void OnLoadMoreMenu();
-        }
+
+			bool GetIsWhatsNewDialogShowNeed();
+
+			void SetIsWhatsNewDialogShowNeed(bool flag);
+
+			Task OnGetEPPTooltipContentDetail();
+
+		}
 	}
 }

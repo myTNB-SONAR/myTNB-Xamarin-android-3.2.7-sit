@@ -41,6 +41,9 @@ using static Android.Views.View;
 using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
 using myTNB_Android.Src.WhatsNewDetail.MVP;
 using Newtonsoft.Json;
+using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.WhatsNewDialog;
+using System.Globalization;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -106,6 +109,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         private bool IsRootTutorialShown = false;
 
         private static bool isFirstInitiate = false;
+
+        private static bool isWhatNewDialogOnHold = false;
 
         public bool IsActive()
         {
@@ -284,6 +289,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 this.userActionsListener.Start();
                 OnSetupSSMRMeterReadingTutorial();
+                this.mPresenter.OnGetEPPTooltipContentDetail();
             }
         }
 
@@ -301,6 +307,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void OnResetPromotionRewards()
         {
             this.mPresenter.OnResetRewardPromotionThread();
+        }
+
+        public void OnResetEppTooltip()
+        {
+            this.mPresenter.OnGetEPPTooltipContentDetail();
         }
 
         private void OnSetupSSMRMeterReadingTutorial()
@@ -1235,6 +1246,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             FragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, currentFragment)
                            .CommitAllowingStateLoss();
+
+            if (isWhatNewDialogOnHold)
+            {
+                isWhatNewDialogOnHold = false;
+                OnCheckWhatsNewTab();
+            }
         }
 
         public override void OnTrimMemory(TrimMemory level)
@@ -1867,11 +1884,78 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         }
                     }
                 }
+                else if (this.mPresenter.GetIsWhatsNewDialogShowNeed() && currentFragment.GetType() == typeof(HomeMenuFragment))
+                {
+                    HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                    bool flag = fragment.GetHomeTutorialCallState();
+
+                    if (flag)
+                    {
+                        this.mPresenter.SetIsWhatsNewDialogShowNeed(false);
+                        WhatsNewEntity wtManager = new WhatsNewEntity();
+                        List<WhatsNewEntity> items = wtManager.GetActivePopupItems();
+                        if (items != null && items.Count > 0)
+                        {
+                            List<WhatsNewModel> list = new List<WhatsNewModel>();
+                            for (int index = 0; index < items.Count; index++)
+                            {
+                                string id = items[index].ID;
+                                string recordDate = items[index].ShowDateForDay;
+                                int count = items[index].ShowCountForDay;
+
+                                DateTime showDateTime = DateTime.ParseExact(recordDate, "yyyyMMddTHHmmss",
+                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                                if (showDateTime.Date == DateTime.Now.Date)
+                                {
+                                    count = count + 1;
+                                }
+                                else
+                                {
+                                    recordDate = GetCurrentDate();
+                                    count = 1;
+                                }
+
+                                wtManager.UpdateDialogCounterItem(id, recordDate, count);
+                            }
+
+                            foreach (WhatsNewEntity item in items)
+                            {
+                                list.Add(new WhatsNewModel()
+                                {
+                                    ID = item.ID,
+                                    PortraitImage_PopUp = item.PortraitImage_PopUp,
+                                    PortraitImage_PopUpB64 = item.PortraitImage_PopUpB64,
+                                    SkipShowOnAppLaunch = item.SkipShowOnAppLaunch,
+                                    Disable_DoNotShow_Checkbox = item.Disable_DoNotShow_Checkbox
+                                });
+                            }
+                            IsRootTutorialShown = true;
+                            WhatsNewDialogFragment dialogFragmnet = new WhatsNewDialogFragment(this);
+                            dialogFragmnet.Cancelable = false;
+                            Bundle extras = new Bundle();
+                            extras.PutString("whatsnew", JsonConvert.SerializeObject(list));
+                            dialogFragmnet.Arguments = extras;
+                            dialogFragmnet.Show(SupportFragmentManager, "WhatsNew Dialog");
+                        }
+                    }
+                    else
+                    {
+                        isWhatNewDialogOnHold = true;
+                    }
+                }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private string GetCurrentDate()
+        {
+            DateTime currentDate = DateTime.Now;
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            return currentDate.ToString(@"yyyyMMddTHHmmss", currCult);
         }
 
         public void ReloadProfileMenu()
@@ -1883,6 +1967,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public bool GetIsRootTutorialShown()
         {
             return IsRootTutorialShown;
+        }
+
+        public void SetIsRootTutorialShown(bool flag)
+        {
+            IsRootTutorialShown = flag;
         }
 
         private void OnSelectReward()

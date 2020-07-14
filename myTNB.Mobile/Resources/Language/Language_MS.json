@@ -98,7 +98,8 @@
     "pdfDownloadMessage": "Dokumen anda telah dimuat turun: {0}",
     "open": "Buka",
     "paymentPendingMsg": "Pembayaran sedang diproses",
-    "processing": "sedang diproses"
+    "processing": "sedang diproses",
+    "dontShowThisAgain": "Jangan paparkan lagi"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -625,8 +626,8 @@
   "FindUs": {
     "title": "Temui Kami",
     "searchPlaceholder": "Cari nama jalan atau kawasan",
-    "zeroLocations": "Penutupan Kedai Tenaga Sepanjang PKP",
-    "noKTFound": "Pelanggan yang dihargai, Kedai Tenaga tidak beroperasi sepanjang tempoh PKP.",
+    "zeroLocations": "0 Lokasi",
+    "noKTFound": "Tiada Kedai Tenaga Ditemui",
     "no711Found": "Tiada Kedai 7-Eleven Ditemui",
     "show": "Tunjukkan"
   },
@@ -941,6 +942,6 @@
     "tutorialItemDesc": "Tekan pada promosi atau pengumuman untuk butiran lanjut."
   },
   "SelectCountry": {
-    "title": "Pilih Negara"
+    "title": "Pilih Negara/Wilayah"
   }
 }

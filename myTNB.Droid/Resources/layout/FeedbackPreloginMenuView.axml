@@ -31,8 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scaleType="fitXY"
-                android:src="@drawable/feedback_banner"
-                app:srcCompat="@drawable/feedback_banner" />
+                android:src="@drawable/promotions_default_image"
+                app:srcCompat="@drawable/promotions_default_image" />
             <LinearLayout
                 android:orientation="vertical"
                 android:minWidth="25px"

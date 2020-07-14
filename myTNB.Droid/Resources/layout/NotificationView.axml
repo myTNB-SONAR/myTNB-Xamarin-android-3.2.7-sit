@@ -143,7 +143,7 @@
                     android:layout_marginTop="80dp"
                     android:gravity="center"
                     android:src="@drawable/empty_state_notification"
-                    app:srcCompat="@drawable/ic_empty_notification" />
+                    app:srcCompat="@drawable/empty_state_notification" />
 
                 <TextView
                     android:id="@+id/txtNotificationsContent"

@@ -99,6 +99,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void ShowFAQFromHide();
 
+            bool GetHomeTutorialCallState();
+
         }
 
         public interface IHomeMenuPresenter
@@ -165,6 +167,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             bool GetIsLoadedHomeDone();
 
             void OnCheckNewFAQState();
+
         }
 
         public interface IHomeMenuService

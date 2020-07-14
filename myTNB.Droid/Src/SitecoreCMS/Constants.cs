@@ -156,6 +156,17 @@
                     public const string PublishDate = "PublishDate";
                     public const string EndDate = "EndDate";
                     public const string CTA = "CTA";
+                    public const string Image_DetailsView = "Image_DetailsView";
+                    public const string Styles_DetailsView = "Styles_DetailsView";
+                    public const string PortraitImage_PopUp = "PortraitImage_PopUp";
+                    public const string ShowEveryCountDays_PopUp = "ShowEveryCountDays_PopUp";
+                    public const string ShowForTotalCountDays_PopUp = "ShowForTotalCountDays_PopUp";
+                    public const string ShowAtAppLaunchPopUp = "ShowAtAppLaunchPopUp";
+                    public const string PopUp_Text_Only = "PopUp_Text_Only";
+                    public const string PopUp_HeaderImage = "PopUp_HeaderImage";
+                    public const string PopUp_Text_Content = "PopUp_Text_Content";
+                    public const string Disable_DoNotShow_Checkbox = "Disable_DoNotShow_Checkbox";
+                    public const string Donot_Show_In_WhatsNew = "Donot_Show_In_WhatsNew";
                     public const string WhatsNewCategory = "WhatsNewCategory";
                 }
 
@@ -213,9 +224,15 @@
                 public const string SSMRMeterReadingThreePhaseWalkthroughOCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase OCR Off";
 
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
-                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
                 public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
-                public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew";
+
+#if DEBUG || STUB || DEVELOP || SIT
+                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json SIT";
+                public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew_SIT_V2";
+#else
+                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
+                public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNewV2";
+#endif
                 public const string EppToolTip = "/sitecore/content/myTNBapp/Contents/EppToolTip";
             }
         }

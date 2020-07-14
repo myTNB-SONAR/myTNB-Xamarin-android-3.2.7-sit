@@ -62,7 +62,7 @@
             <ImageView
                 android:layout_width="79.6dp"
                 android:layout_height="79.6dp"
-                android:src="@drawable/ic_display_unsuccessful"
+                android:src="@drawable/ic_display_unsuccessful_new"
                 android:layout_gravity="center|center_vertical"
                 android:padding="7.2dp" />
             <TextView

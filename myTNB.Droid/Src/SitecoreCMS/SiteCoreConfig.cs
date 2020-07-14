@@ -17,7 +17,13 @@
         //public static string SITECORE_PASSWORD = "b";
 
         //Production
+#if DEBUG || DEVELOP || SIT
+        public static string SITECORE_URL = "http://tnbcsdevapp.tnb.my/";
+#elif STUB
+        public static string SITECORE_URL = "http://TNBCSSTGAPP.tnb.my/";
+#else
         public static string SITECORE_URL = "https://sitecore.tnb.com.my/";
+#endif
         public static string SITECORE_USERNAME = "api_user";
         public static string SITECORE_PASSWORD = "mytnbapiuser!3$@2";
     }

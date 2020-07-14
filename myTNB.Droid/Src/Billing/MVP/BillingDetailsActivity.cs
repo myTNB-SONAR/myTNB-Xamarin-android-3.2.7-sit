@@ -208,8 +208,6 @@ namespace myTNB_Android.Src.Billing.MVP
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             Bundle extras = Intent.Extras;
 
-            OnGetEPPTooltipContentDetail();
-
             if (extras.ContainsKey("SELECTED_ACCOUNT"))
             {
                 selectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString("SELECTED_ACCOUNT"));
@@ -246,6 +244,24 @@ namespace myTNB_Android.Src.Billing.MVP
                 topLayout.Visibility = ViewStates.Visible;
                 PopulateCharges();
                 EnablePayBillButtons();
+
+                if (extras.ContainsKey("IS_VIEW_BILL_DISABLE"))
+                {
+                    bool isViewBillDisable = extras.GetBoolean("IS_VIEW_BILL_DISABLE");
+
+                    if (isViewBillDisable)
+                    {
+                        EnableDisableViewBillButtons(false);
+                    }
+                    else
+                    {
+                        EnableDisableViewBillButtons(true);
+                    }
+                }
+                else
+                {
+                    EnableDisableViewBillButtons(true);
+                }
             }
             else
             {
@@ -279,6 +295,22 @@ namespace myTNB_Android.Src.Billing.MVP
             else
             {
                 btnPayBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            }
+        }
+
+        public void EnableDisableViewBillButtons(bool flag)
+        {
+            if (flag)
+            {
+                btnViewBill.Enabled = true;
+                btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
+                btnViewBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
+            }
+            else
+            {
+                btnViewBill.Enabled = false;
+                btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.silverChalice));
+                btnViewBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_outline);
             }
         }
 
@@ -524,24 +556,26 @@ namespace myTNB_Android.Src.Billing.MVP
 
         public void ShowEPPDetailsTooltip()
         {
- 
-
             List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData();
 
             if (modelList != null && modelList.Count > 0)
             {
-                MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
-                   .SetHeaderImageBitmap(modelList[0].ImageBitmap)
-                   .SetTitle(modelList[0].PopUpTitle)
-                   .SetMessage(modelList[0].PopUpBody)
-                   .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                   .SetCTAaction(() => { this.SetIsClicked(false); })
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+                       .SetHeaderImageBitmap(modelList[0].ImageBitmap)
+                       .SetTitle(modelList[0].PopUpTitle)
+                       .SetMessage(modelList[0].PopUpBody)
+                       .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                       .SetCTAaction(() => { this.SetIsClicked(false); })
 
-                   .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("viewBill"))
-                   .SetSecondaryCTAaction(() => ShowBillPDF())
-                   .Build();
+                       .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("viewBill"))
+                       .SetSecondaryCTAaction(() => ShowBillPDF())
+                       .Build();
 
-                eppTooltip.Show();
+                    eppTooltip.Show();
+                }
             }            
         }
 
@@ -574,6 +608,7 @@ namespace myTNB_Android.Src.Billing.MVP
             viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
             viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
             StartActivity(viewBill);
+            this.SetIsClicked(false);
         }
 
         public void ShowProgressDialog()
@@ -697,38 +732,5 @@ namespace myTNB_Android.Src.Billing.MVP
             this.SetIsClicked(false);
         }
 
-        public Task OnGetEPPTooltipContentDetail()
-
-        {
-
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-
-                    EppToolTipTimeStampResponseModel timestampModel = getItemsService.GetEppToolTipTimeStampItem();
-                    if (timestampModel.Status.Equals("Success") && timestampModel.Data != null && timestampModel.Data.Count > 0)
-                    {
-                        if (SitecoreCmsEntity.IsNeedUpdates(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP, timestampModel.Data[0].Timestamp))
-                        {
-                            EppToolTipResponseModel responseModel = getItemsService.GetEppToolTipItem();
-
-                            if (responseModel.Status.Equals("Success"))
-                            {
-                                SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP, JsonConvert.SerializeObject(responseModel.Data), timestampModel.Data[0].Timestamp);
-                            }
-                        }
-
-
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            });
-        }
     }
 }

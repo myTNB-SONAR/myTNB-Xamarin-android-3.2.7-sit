@@ -506,10 +506,20 @@ namespace myTNB_Android.Src.Utils
 
                                 if (RedirectTypeList[whileCount] == RedirectTypeList[0] || RedirectTypeList[whileCount] == RedirectTypeList[6])
                                 {
-                                    Intent webIntent = new Intent(this.mContext, typeof(BaseWebviewActivity));
-                                    webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
-                                    webIntent.PutExtra(Constants.IN_APP_TITLE, "");
-                                    this.mContext.StartActivity(webIntent);
+                                    if (extractedUrls[0].Contains(".pdf") && !extractedUrls[0].Contains("docs.google"))
+                                    {
+                                        Intent webIntent = new Intent(this.mContext, typeof(BasePDFViewerActivity));
+                                        webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                        webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                        this.mContext.StartActivity(webIntent);
+                                    }
+                                    else
+                                    {
+                                        Intent webIntent = new Intent(this.mContext, typeof(BaseWebviewActivity));
+                                        webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                        webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                        this.mContext.StartActivity(webIntent);
+                                    }
                                 }
                                 else
                                 {

@@ -113,6 +113,9 @@ namespace myTNB_Android.Src.Base
                 FAQsParentEntity FAQsParentEntityManager = new FAQsParentEntity();
                 FAQsParentEntityManager.DeleteTable();
                 FAQsParentEntityManager.CreateTable();
+
+                //deleting epp tooltip data using SitecoreCmsEntity
+                SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP);
             }
             catch (Exception e)
             {
