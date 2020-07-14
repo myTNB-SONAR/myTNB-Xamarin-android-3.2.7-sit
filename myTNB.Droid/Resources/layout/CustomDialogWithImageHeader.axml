@@ -1,76 +1,86 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-  <LinearLayout
-      android:orientation="vertical"
-      android:layout_width="284dp"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:id="@+id/rootView"
-      android:background="@drawable/custom_round_white_dialog_shadow">
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:layout_width="284dp"
-        android:layout_height="wrap_content">
-         <ImageView
-        android:id="@+id/imgToolTipHeader"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:src="@drawable/single_phase"/>
-    </RelativeLayout>
-    <TextView
-        android:id="@+id/txtToolTipTitle"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
         android:layout_gravity="center"
-        android:textStyle="bold"
-        android:text="Uploading from your album?"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/tunaGrey"
-        android:textSize="14dp"
-        android:lineSpacingExtra="3dp"/>
-    <TextView
-        android:id="@+id/txtToolTipMessage"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:textColor="@color/tunaGrey"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="9dp"
-        android:maxLines="12"
-        android:scrollbars="vertical"
-        android:text="Be sure to upload a clear, straight-facing photo of the entire meter box with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable."
-        android:textSize="14dp"
-        android:lineSpacingExtra="3dp"/>
+        app:cardCornerRadius="5dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="0dp">
     <LinearLayout
-          android:orientation="vertical"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:clickable="true"
-          android:id="@+id/btnFirst">
-        <View
-            android:layout_height="1dp"
-            android:layout_width="match_parent"
-            android:alpha="0.2"
-            android:background="@color/tunaGrey" />
+        android:orientation="vertical"
+        android:layout_width="284dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/rootView"
+        android:layout_marginTop="-2dp"
+        >
+        <RelativeLayout
+            android:layout_width="284dp"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/imgToolTipHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:src="@drawable/single_phase"/>
+        </RelativeLayout>
         <TextView
-            android:id="@+id/txtToolTipCTA"
+            android:id="@+id/txtToolTipTitle"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:gravity="center"
-            android:textColor="@color/powerBlue"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:text="Uploading from your album?"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:paddingBottom="18dp"
-            android:text="Got it!"
-            android:textSize="16dp" />
+            android:textColor="@color/tunaGrey"
+            android:textSize="14dp"
+            android:lineSpacingExtra="3dp"/>
+        <TextView
+            android:id="@+id/txtToolTipMessage"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:textColor="@color/tunaGrey"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="9dp"
+            android:maxLines="12"
+            android:scrollbars="vertical"
+            android:text="Be sure to upload a clear, straight-facing photo of the entire meter box with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable."
+            android:textSize="14dp"
+            android:lineSpacingExtra="3dp"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:id="@+id/btnFirst">
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:alpha="0.2"
+                android:background="@color/tunaGrey" />
+            <TextView
+                android:id="@+id/txtToolTipCTA"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:textColor="@color/powerBlue"
+                android:layout_marginTop="16dp"
+                android:paddingBottom="18dp"
+                android:text="Got it!"
+                android:textSize="16dp" />
+        </LinearLayout>
     </LinearLayout>
-  </LinearLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>

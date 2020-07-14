@@ -36,31 +36,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
         {
             try
             {
-                //// TODO: REPLACE WITH THE FIRST
-                //this.mView.DisableSubmitButton();
-                //if (selectedCustomerBillingAccount != null)
-                //{
-                //    this.mView.ShowSelectedAccount(selectedCustomerBillingAccount);
-                //}
-                //else
-                //{
-                //    CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelectedOrFirst();
-                //    if (customerBillingAccount != null)
-                //    {
-                //        this.mView.ShowSelectedAccount(customerBillingAccount);
-                //    }
 
-                //}
-
-                //UserEntity userEntity = UserEntity.GetActive();
-                //if (TextUtils.IsEmpty(userEntity.MobileNo))
-                //{
-                //    this.mView.ShowMobileNo();
-                //}
-                //else
-                //{
-                //    this.mView.HideMobileNo();
-                //}
             }
             catch (Exception e)
             {
@@ -68,9 +44,6 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
             }
 
         }
-
-
-
 
         public void CheckRequiredFields(string feedback)
         {
@@ -93,6 +66,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
             }
         }
 
+
+
         public void OnAttachPhotoCamera()
         {
             this.mView.ShowCamera();
@@ -101,6 +76,29 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
         public void OnAttachPhotoGallery()
         {
             this.mView.ShowGallery();
+        }
+
+        private async void OnSaveCameraImage(string tempImagePath, string fileName)
+        {
+            this.mView.DisableSubmitButton();
+            this.mView.ShowLoadingImage();
+            string resultFilePath = await this.mView.SaveCameraImage(tempImagePath, fileName);
+            this.mView.UpdateAdapter(resultFilePath, fileName);
+            this.mView.HideLoadingImage();
+            this.mView.EnableSubmitButton();
+        }
+
+
+        private async void OnSaveGalleryImage(Android.Net.Uri selectedImage, string fileName)
+        {
+            this.mView.DisableSubmitButton();
+            this.mView.ShowLoadingImage();
+            string resultFilePath = await this.mView.SaveGalleryImage(selectedImage, FileUtils.TEMP_IMAGE_FOLDER, fileName);
+
+
+            this.mView.UpdateAdapter(resultFilePath, fileName);
+            this.mView.HideLoadingImage();
+            this.mView.EnableSubmitButton();
         }
 
         public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -131,28 +129,11 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
 
         }
 
-        private async void OnSaveCameraImage(string tempImagePath, string fileName)
-        {
-            this.mView.DisableSubmitButton();
-            this.mView.ShowLoadingImage();
-            string resultFilePath = await this.mView.SaveCameraImage(tempImagePath, fileName);
-            this.mView.UpdateAdapter(resultFilePath, fileName);
-            this.mView.HideLoadingImage();
-            this.mView.EnableSubmitButton();
-        }
 
 
-        private async void OnSaveGalleryImage(Android.Net.Uri selectedImage, string fileName)
-        {
-            this.mView.DisableSubmitButton();
-            this.mView.ShowLoadingImage();
-            string resultFilePath = await this.mView.SaveGalleryImage(selectedImage, FileUtils.TEMP_IMAGE_FOLDER, fileName);
 
 
-            this.mView.UpdateAdapter(resultFilePath, fileName);
-            this.mView.HideLoadingImage();
-            this.mView.EnableSubmitButton();
-        }
+
 
     }
 }

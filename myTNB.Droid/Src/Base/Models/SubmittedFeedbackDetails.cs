@@ -29,6 +29,14 @@ namespace myTNB_Android.Src.Base.Models
         [JsonProperty("FeedbackTypeName")]
         public string FeedbackTypeName { get; set; }
 
+        
+        [JsonProperty("IsOwner")]
+        public bool? IsOwner { get; set; }
+
+
+        [JsonProperty("FeedbackCategoryId")]
+        public string FeedbackCategoryId { get; set; }
+
         [JsonProperty("DateCreated")]
         public string DateCreated { get; set; }
 
@@ -44,16 +52,50 @@ namespace myTNB_Android.Src.Base.Models
         [JsonProperty("StatusDesc")]
         public string StatusDesc { get; set; }
 
+        [JsonProperty("ContactName")]
+        public string ContactName { get; set; }
+
+        [JsonProperty("ContactEmailAddress")]
+        public string ContactEmailAddress { get; set; }
+
+        [JsonProperty("ContactMobileNo")]
+        public string ContactMobileNo { get; set; }
+
+        [JsonProperty("RelationshipWithCA")]
+        public int? RelationshipWithCA { get; set; }
+
+        [JsonProperty("RelationshipWithCADesc")]
+        public string RelationshipWithCADesc { get; set; }
+
+ 
+        [JsonProperty("FeedbackUpdateDetails")]
+        public List<FeedbackUpdate> FeedbackUpdateDetails { get; set; }
+
         public class ImageResponse
         {
             [JsonProperty("imageHex")]
             public string ImageHex { get; set; }
+
+            [JsonProperty("fileHex")]
+            public string FileHex { get; set; }
 
             [JsonProperty("fileName")]
             public string FileName { get; set; }
 
             [JsonProperty("fileSize")]
             public int FileSize { get; set; }
+        }
+
+        public class FeedbackUpdate
+        {
+            [JsonProperty("FeedbackUpdInfoType")]
+            public int FeedbackUpdInfoType { get; set; }
+
+            [JsonProperty("FeedbackUpdInfoTypeDesc")]
+            public string FeedbackUpdInfoTypeDesc { get; set; }
+
+            [JsonProperty("FeedbackUpdInfoValue")]
+            public string FeedbackUpdInfoValue { get; set; }
         }
     }
 }

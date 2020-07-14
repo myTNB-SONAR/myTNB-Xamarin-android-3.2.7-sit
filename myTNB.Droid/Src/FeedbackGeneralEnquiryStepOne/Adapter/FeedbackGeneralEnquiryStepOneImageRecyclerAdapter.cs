@@ -1,5 +1,6 @@
 ﻿using Android.Graphics;
 using Android.Graphics.Drawables;
+using Android.Icu.Text;
 using Android.Support.V4.Graphics.Drawable;
 using Android.Support.V7.Widget;
 using Android.Views;
@@ -11,13 +12,22 @@ using myTNB_Android.Src.Utils;
 using Square.Picasso;
 using System;
 using System.Collections.Generic;
+using Java.Util;
+using Android.Preferences;
+using Android.App;
+using System.IO;
+
 namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter
 {
     public class FeedbackGeneralEnquiryStepOneImageRecyclerAdapter : BaseRecyclerAdapter<AttachedImage>
     {
+        private int countFileName =1 ;
 
         public event EventHandler<int> RemoveClickEvent;
+
         public event EventHandler<int> AddClickEvent;
+
+        public event EventHandler<int> SelectClickEvent;
 
         public FeedbackGeneralEnquiryStepOneImageRecyclerAdapter(bool notify) : base(notify)
         {
@@ -35,22 +45,25 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter
         public List<AttachedImage> GetAllImages()
         {
             List<AttachedImage> attachList = new List<AttachedImage>();
-            try
+            foreach (AttachedImage image in itemList)
             {
-                foreach (AttachedImage image in itemList)
+                if (image.ViewType == Constants.VIEW_TYPE_REAL_RECORD)
                 {
-                    if (image.ViewType == Constants.VIEW_TYPE_REAL_RECORD)
-                    {
-                        attachList.Add(image);
-                    }
+                    attachList.Add(image);
                 }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
             }
             return attachList;
         }
+
+        public void OnSelectEvent(int position)
+        {
+            if (SelectClickEvent != null)
+            {
+                SelectClickEvent(this, position);
+            }
+        }
+
+
 
 
         public override int GetItemViewType(int position)
@@ -58,72 +71,87 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter
             return itemList[position].ViewType;
         }
 
+        //public string GetImageName( )
+        //{   
+            
+        //    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+        //    Calendar calendar = Calendar.GetInstance(Locale.Default);
+        //    return GetString(Resource.String.feedback_image_name_convention, dateFormatter.Format(calendar.TimeInMillis), UserSessions.GetCurrentImageCount(PreferenceManager.GetDefaultSharedPreferences(this)) + itemCount);
+        //   // return Resource.String.feedback_image_name_convention + dateFormatter.Format(calendar.TimeInMillis)+ ".jpeg";
+        //}
 
 
-        public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
-        {
-            if (viewType == Constants.VIEW_TYPE_REAL_RECORD)
-            {
-                return new FeedbackGeneralEnquiryStepOneImageViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.FeedbackGeneralEnquiryStepOneImageRow, parent, false), RemoveClick);
-            }
-            else
-            {
-                return new FeedbackGeneralEnquiryStepOneDummyViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.FeedbackGeneralEnquiryStepOneImageEmptyRow, parent, false), AddClick);
-            }
 
-        }
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            try
+            AttachedImage image = GetItemObject(position);
+            if (holder is FeedbackGeneralEnquiryStepOneImageViewHolder)
             {
-                AttachedImage image = GetItemObject(position);
-                if (holder is FeedbackGeneralEnquiryStepOneImageViewHolder)
-                {
-                    // the actual image
-                    var viewHolder = holder as FeedbackGeneralEnquiryStepOneImageViewHolder;
-                    Picasso.With(viewHolder.ItemView.Context)
-                        .Load(new Java.IO.File(image.Path))
-                        .Fit()
-                        .Into(viewHolder.imageView
-                                , delegate
+                // the actual image
+                
+                var viewHolder = holder as FeedbackGeneralEnquiryStepOneImageViewHolder;
+                Picasso.With(viewHolder.ItemView.Context)
+                    .Load(new Java.IO.File(image.Path))
+                    .Fit()
+                    .Into(viewHolder.imageView
+                            , delegate
+                            {
+                                Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
+                                if (imageBitmap != null && !imageBitmap.IsRecycled)
                                 {
-                                    Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
-                                    if (imageBitmap != null && !imageBitmap.IsRecycled)
+                                    RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
+                                    imageDrawable.CornerRadius = 5f;
+                                    viewHolder.imageView.SetImageDrawable(imageDrawable);
+
+                                    if(image.Name == null)
                                     {
-                                        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
-                                        imageDrawable.CornerRadius = 5f;
-                                        viewHolder.imageView.SetImageDrawable(imageDrawable);
+                                        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+                                        Calendar calendar = Calendar.GetInstance(Locale.Default);
 
+                                        var name = Resource.String.feedback_image_name_convention + dateFormatter.Format(calendar.TimeInMillis) + countFileName + ".jpeg";
+                                        countFileName++;
+
+                                        viewHolder.filename.Text = name;
                                     }
-                                }
-                                , delegate
-                                {
+                                    else
+                                    {
+                                        viewHolder.filename.Text = image.Name;
+                                    }
 
-                                });
+                            
+
+
+
+
+
+
+                                }
+
+                            }
+                            , delegate
+                            {
+
+                            });
+
+                ;
+            }
+            else
+            {
+                // the dummy view
+                var viewHolder = holder as FeedbackGeneralEnquiryStepOneDummyViewHolder;
+                if (image.IsLoading)
+                {
+                    viewHolder.btnAdd.Visibility = ViewStates.Gone;
+                    viewHolder.progressBar.Visibility = ViewStates.Visible;
                 }
                 else
                 {
-                    // the dummy view
-                    var viewHolder = holder as FeedbackGeneralEnquiryStepOneDummyViewHolder;
-                    if (image.IsLoading)
-                    {
-                        viewHolder.btnAdd.Visibility = ViewStates.Gone;
-                        viewHolder.progressBar.Visibility = ViewStates.Visible;
-                    }
-                    else
-                    {
-                        viewHolder.btnAdd.Visibility = ViewStates.Visible;
-                        viewHolder.progressBar.Visibility = ViewStates.Gone;
-                    }
+                    viewHolder.btnAdd.Visibility = ViewStates.Visible;
+                    viewHolder.progressBar.Visibility = ViewStates.Gone;
                 }
             }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
-
 
         private void RemoveClick(int position)
         {
@@ -142,15 +170,36 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter
         }
 
 
+        public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
+        {
+            if (viewType == Constants.VIEW_TYPE_REAL_RECORD)
+            {
+                return new FeedbackGeneralEnquiryStepOneImageViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.FeedbackGeneralEnquiryStepOneImageRow, parent, false), RemoveClick);
+            }
+            else
+            {
+                return new FeedbackGeneralEnquiryStepOneDummyViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.FeedbackGeneralEnquiryStepOneImageEmptyRow, parent, false), AddClick);
+            }
+
+        }
+
+
+
+
 
         class FeedbackGeneralEnquiryStepOneImageViewHolder : BaseRecyclerViewHolder
         {
 
             [BindView(Resource.Id.imageView)]
+
             internal ImageView imageView;
 
             [BindView(Resource.Id.btnClose)]
+
             internal ImageView btnClose;
+
+            [BindView(Resource.Id.filename)]
+            internal TextView filename;
 
             public FeedbackGeneralEnquiryStepOneImageViewHolder(View itemView, Action<int> listener) : base(itemView)
             {

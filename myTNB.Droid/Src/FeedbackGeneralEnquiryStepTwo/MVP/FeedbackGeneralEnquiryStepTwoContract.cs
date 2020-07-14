@@ -9,6 +9,10 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Base.Request;
+using System.Threading.Tasks;
+using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Model;
 
 namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
 {
@@ -19,7 +23,34 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
 
             void ShowNavigateToTermsAndConditions();
 
+            void ShowFullNameError();
 
+            void DisableRegisterButton();
+
+            void ClearFullNameError();
+
+            void ShowInvalidEmailError();
+
+            void ClearInvalidEmailError();
+
+            void EnableRegisterButton();
+            void UpdateMobileNumber(string mobile_no);
+
+            void ClearInvalidMobileError();
+
+            void ShowInvalidMobileNoError();
+
+            string GetImageName(int itemCount);
+
+            Task<AttachedImageRequest> SaveImage(AttachedImage attachedImage);
+
+            public void HideProgressDialog();
+
+            void OnSubmitError(string message = null);
+
+            void ShowSuccess(string date, string feedbackId, int imageCount);
+
+            void ShowProgressDialog();
 
         }
 
@@ -27,6 +58,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
         {
 
             void NavigateToTermsAndConditions();
+
+            void CheckRequiredFields(string fullname, string mobile_no, string email);
+
+            void OnSubmit(string acc, string feedback, string fullname, string mobile_no, string email, List<AttachedImage> attachedImages , List<FeedbackUpdateDetailsModel> feedbackUpdateDetailsModelList,  bool isowner, int ownerRelationship, string relationshipDescription);
 
         }
     }

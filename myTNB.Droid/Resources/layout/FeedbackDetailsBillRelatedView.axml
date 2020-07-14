@@ -7,150 +7,512 @@
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
     android:orientation="vertical">
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?actionBarSize"
         android:background="@color/white"
         android:paddingTop="5dp">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:clipToPadding="false"
-            android:overScrollMode="never"
-            android:fillViewport="false">
+            android:fillViewport="false"
+            android:overScrollMode="never">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:paddingTop="16dp"
-                android:paddingBottom="16dp"
-                android:paddingEnd="18dp"
-                android:paddingLeft="18dp"
-                android:paddingRight="18dp"
-                android:paddingStart="18dp">
+                android:paddingBottom="16dp">
+
+                <LinearLayout
+                    android:id="@+id/LinearLayout_topBanner"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:text="Status:"
+                            android:textAllCaps="false"
+                            android:textColor="@color/black"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/txtFeedback_status_new"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="Completed"
+                            android:textAllCaps="false"
+                            android:textSize="16dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtforMyhouse"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="9dp"
+                        android:layout_weight="1"
+                        android:paddingBottom="16dp"
+                        android:text="for My House"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/FrameLayoutEnquiryDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lightGrey">
+
+                    <TextView
+                        android:id="@+id/txtEnquiryDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="1"
+                        android:text="Enquiry Details"
+                        android:textAllCaps="false"
+                        android:textColor="@color/powerBlue"
+                        android:textSize="16dp" />
+
+                </FrameLayout>
+
+                <View
+                    android:id="@+id/viewSpacer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"></View>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/TextInputLayoutRelationOwner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:errorEnabled="true"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                    <EditText
+                        android:id="@+id/EditTextRElationOwner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="6dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="RELATIONSHIP WITH OWNER"
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingTop="5dp" />
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/TextInputLayoutNewIC"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:errorEnabled="true"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                    <EditText
+                        android:id="@+id/EditTextNewIC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="6dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="NEW IDENTIFICATION NUMBER"
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingTop="5dp" />
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/TextInputLayoutNewAccName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:errorEnabled="true"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                    <EditText
+                        android:id="@+id/EditTextNewAccName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="6dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="NEW ACCOUNT NAME"
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingTop="5dp" />
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/TextInputLayoutNewMobileNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:errorEnabled="true"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                    <EditText
+                        android:id="@+id/EditTextNewMobileNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="6dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="NEW MOBILE  NUMBER"
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingTop="5dp" />
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/TextInputLayoutNewEmailAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:errorEnabled="true"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                    <EditText
+                        android:id="@+id/EditTextNewEmailAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="6dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="NEW EMAIL ADDRESS"
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingTop="5dp" />
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/TextInputLayoutNewMailingAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:errorEnabled="true"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                    <EditText
+                        android:id="@+id/EditTextNewMailingAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="6dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="NEW MAILING ADDRESS"
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingTop="5dp" />
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/TextInputLayoutNewPremiseAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:errorEnabled="true"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                    <EditText
+                        android:id="@+id/EditTextNewPremiseAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="6dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="NEW PREMISE ADDRESS"
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:paddingTop="5dp" />
+                </android.support.design.widget.TextInputLayout>
+
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txtInputLayoutFeedbackId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
                     <EditText
                         android:id="@+id/txtFeedbackId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:paddingTop="5dp"
                         android:drawablePadding="6dp"
                         android:enabled="false"
-                        android:importantForAutofill="noExcludeDescendants"
                         android:focusable="false"
                         android:hint="@string/bill_related_feedback_id"
+                        android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:paddingTop="5dp" />
                 </android.support.design.widget.TextInputLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txtInputLayoutStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
                     <EditText
                         android:id="@+id/txtFeedbackStatus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:paddingTop="5dp"
                         android:drawablePadding="6dp"
                         android:enabled="false"
-                        android:importantForAutofill="noExcludeDescendants"
                         android:focusable="false"
                         android:hint="@string/bill_related_feedback_status"
+                        android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:paddingTop="5dp" />
                 </android.support.design.widget.TextInputLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txtInputLayoutDateTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
                     <EditText
                         android:id="@+id/txtFeedbackDateTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:paddingTop="5dp"
                         android:drawablePadding="6dp"
                         android:enabled="false"
                         android:focusable="false"
-                        android:importantForAutofill="noExcludeDescendants"
                         android:hint="@string/bill_related_feedback_date_time"
+                        android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:paddingTop="5dp" />
                 </android.support.design.widget.TextInputLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txtInputLayoutAccountNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
                     <EditText
                         android:id="@+id/txtAccountNo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:paddingTop="5dp"
                         android:drawablePadding="6dp"
                         android:enabled="false"
                         android:focusable="false"
-                        android:importantForAutofill="noExcludeDescendants"
                         android:hint="@string/bill_related_account_no_hint"
+                        android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:paddingTop="5dp" />
                 </android.support.design.widget.TextInputLayout>
+
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txtInputLayoutFeedback"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
                     <EditText
                         android:id="@+id/txtFeedback"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="5dp"
+                        android:background="@android:color/transparent"
                         android:drawablePadding="6dp"
                         android:enabled="false"
                         android:focusable="false"
                         android:hint="@string/bill_related_feedback"
-                        android:inputType="text|textMultiLine"
                         android:importantForAutofill="noExcludeDescendants"
-                        android:background="@android:color/transparent" />
+                        android:inputType="text|textMultiLine"
+                        android:paddingTop="5dp" />
                 </android.support.design.widget.TextInputLayout>
+
                 <TextView
                     android:id="@+id/txtRelatedScreenshotTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="9dp"
                     android:layout_weight="1"
                     android:text="@string/bill_related_screenshot_detailed_title"
                     android:textAllCaps="true"
                     android:textColor="@color/silverChalice"
-                    android:textSize="9dp"
-                    android:layout_marginBottom="9dp" />
+                    android:textSize="9dp" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:layout_marginBottom="8dp" />
+                <FrameLayout
+                    android:id="@+id/FrameLayoutContactDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lightGrey">
+
+                    <TextView
+                        android:id="@+id/TextView_contactDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="1"
+                        android:text="Contact Details"
+                        android:textAllCaps="false"
+                        android:textColor="@color/powerBlue"
+                        android:textSize="16dp" />
+
+                </FrameLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/TextInputLayoutname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    app:errorEnabled="true"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                    <EditText
+                        android:id="@+id/EditTextName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="6dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="Name"
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:inputType="text|textMultiLine"
+                        android:paddingTop="5dp" />
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/TextInputLayoutEmailAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    app:errorEnabled="true"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                    <EditText
+                        android:id="@+id/EditTextEmailAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="6dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="Email Address"
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:inputType="text|textMultiLine"
+                        android:paddingTop="5dp" />
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/TextInputLayoutMobileNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    app:errorEnabled="true"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                    <EditText
+                        android:id="@+id/EditTextMobileNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="6dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint="Mobile Number"
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:inputType="text|textMultiLine"
+                        android:paddingTop="5dp" />
+                </android.support.design.widget.TextInputLayout>
+
             </LinearLayout>
         </ScrollView>
     </FrameLayout>

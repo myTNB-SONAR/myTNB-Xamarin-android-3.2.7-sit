@@ -79,6 +79,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void ShowRetryOptionsUnknownException(Exception exception);
 
             void ShowSubmitNewEnquiry();
+
+            void ShowSubmittedFeedbackNew();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -118,6 +120,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Action on resume
             /// </summary>
             void OnResume();
+
+            void onSubmittedFeedbackNew();
+
+
         }
     }
 }

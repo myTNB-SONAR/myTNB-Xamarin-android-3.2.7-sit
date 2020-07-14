@@ -25,6 +25,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             this.mView.SetPresenter(this);
         }
 
+        public void onSubmittedFeedbackNew()
+        {
+            this.mView.ShowSubmittedFeedbackNew();
+        }
+
         public void OnBillingPayment()
         {
             this.mView.ShowBillingPayment();

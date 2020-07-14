@@ -17,6 +17,7 @@ using myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.SelectSubmittedFeedback.Activity;
+using myTNB_Android.Src.SubmittedNewEnquiry.Activity;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -84,6 +85,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         [BindView(Resource.Id.submitNewEnquiryConstraint)]
         ConstraintLayout submitNewEnquiryConstraint;
 
+    
+
+        
+
         [BindView(Resource.Id.txtViewid_FeedbackNewIC)]
         TextView txtViewid_FeedbackNewIC;
 
@@ -135,12 +140,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             TextViewUtils.SetMuseoSans300Typeface(txtFeedbackBillingAndPaymentContent,
                         txtFeedbackFaultyStreetLampsContent,
                         txtSubmittedFeedbackContent,
-                        txtFeedbackOthersContent, txtViewid_FeedbackNewIC);
+                        txtFeedbackOthersContent, textviewid_subContent_FeedbackNewIC);
 
             TextViewUtils.SetMuseoSans500Typeface(txtFeedbackBillingAndPayment,
                         txtFeedbackFaultyStreetLamps,
                         txtSubmittedFeedback,
-                        txtFeedbackOthers, textviewid_subContent_FeedbackNewIC);
+                        txtFeedbackOthers, txtViewid_FeedbackNewIC);
 
             ((DashboardHomeActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("FeedbackList", "title"));
 
@@ -237,6 +242,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             StartActivity(submittedFeedback);
         }
 
+        public void ShowSubmittedFeedbackNew()
+        {
+            var submittedFeedback = new Intent(this.Activity, typeof(SubmittedNewEnquiryActivity));
+            submittedFeedback.PutExtra("TITLE", submittedFeedbackTitle);
+            StartActivity(submittedFeedback);
+        }
+
 
 
         [OnClick(Resource.Id.billRelatedContraint)]
@@ -263,6 +275,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         {
             if (!this.GetIsClicked())
             {
+
                 this.SetIsClicked(true);
                 if (DownTimeEntity.IsBCRMDown())
                 {
@@ -321,6 +334,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 this.userActionsListener.OnSubmittedFeedback();
             }
         }
+
+
 
 
         public void ShowSubmittedFeedbackCount(int count)

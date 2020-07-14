@@ -42,6 +42,11 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
             this.mView.ShowGeneralEnquiry();
         }
 
+       public void onUpdatePersonalDetail()
+        {
+            this.mView.showUpdatePersonalDetail();
+        }
+
         public void Start()
         {
             try
@@ -104,6 +109,11 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
 
         }
 
+        public void onShowWhereIsMyAcc()
+        {
+            this.mView.ShowWhereIsMyAcc();
+        }
+
         public void CheckRequiredFields(string accno)
         {
 
@@ -117,15 +127,24 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                     if (!Utility.AddAccountNumberValidation(accno.Length))
                     {
                         this.mView.ShowInvalidAccountNumberError();
-                        //  this.mView.DisableRegisterButton();
+                        this.mView.toggleDisableClick();
+
+                    }
+                    else
+                    {
+                        this.mView.toggleEnableClick();
                     }
 
 
-                //    this.mView.EnableRegisterButton();
+          
                 }
                 else
-                {
-                   // this.mView.DisableRegisterButton();
+                {   
+
+                    //if empty
+                    this.mView.ShowEnterOrSelectAccNumber();
+                    this.mView.toggleDisableClick();
+
                 }
             }
             catch (System.Exception e)

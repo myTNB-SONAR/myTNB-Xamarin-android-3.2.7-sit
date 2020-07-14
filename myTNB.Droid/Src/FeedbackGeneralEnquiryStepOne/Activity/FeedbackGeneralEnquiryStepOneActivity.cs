@@ -25,6 +25,7 @@ using myTNB_Android.Src.Common.Activity;
 using myTNB_Android.Src.Common.Model;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.Feedback_Login_BillRelated.Adapter;
 using myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP;
 using myTNB_Android.Src.FeedbackFail.Activity;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter;
@@ -94,8 +95,15 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         private AlertDialog _ChooseDialog;
 
         LinearLayoutManager layoutManager;
-        FeedbackGeneralEnquiryStepOneImageRecyclerAdapter adapter;
-      
+          FeedbackGeneralEnquiryStepOneImageRecyclerAdapter adapter;
+
+        // FeedbackLoginBillRelatedImageRecyclerAdapter adapter;
+
+        // GridLayoutManager layoutManager;
+
+
+        private string accNo = null;
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -103,7 +111,20 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 
             try
             {
-               // Intent intent = Intent;
+
+                Bundle extras = Intent.Extras;
+
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.ACCOUNT_NUMBER))
+                    {
+                        accNo = extras.GetString(Constants.ACCOUNT_NUMBER);
+                    }
+               
+                }
+
+
+                // Intent intent = Intent;
                 SetToolBarTitle("General Enquiry");
                 this.mPresenter = new FeedbackGeneralEnquiryStepOnePresenter(this);
 
@@ -112,71 +133,77 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 {
                     ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
                 });
-                layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical , false);
+                layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
                 recyclerView.SetLayoutManager(layoutManager);
                 recyclerView.SetAdapter(adapter);
 
-                //adapter listener
+               // adapter listener
                 adapter.AddClickEvent += Adapter_AddClickEvent;
                 adapter.RemoveClickEvent += Adapter_RemoveClickEvent;
 
-                // set font
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
-                TextViewUtils.SetMuseoSans300Typeface(txtMaxCharacters, txtRelatedScreenshotTitle, txtMaxImageContent);
-                TextViewUtils.SetMuseoSans500Typeface(txtstep1of2, IwantToEnquire, btnNext, uploadSupportingDoc);
+
+
+
+
 
                 //add listener 
-                txtGeneralEnquiry1.AddTextChangedListener(new InputFilterFormField(txtGeneralEnquiry1, txtInputLayoutGeneralEnquiry1));
-                txtGeneralEnquiry1.TextChanged += TextChanged;
                 txtGeneralEnquiry1.SetOnTouchListener(this);
+                txtGeneralEnquiry1.TextChanged += TextChanged;
+                txtGeneralEnquiry1.AddTextChangedListener(new InputFilterFormField(txtGeneralEnquiry1, txtInputLayoutGeneralEnquiry1));
+
+                DisableSubmitButton();
+
+                // set font
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
+                TextViewUtils.SetMuseoSans300Typeface(txtRelatedScreenshotTitle, txtMaxImageContent);
+               // , txtRelatedScreenshotTitle, txtMaxImageContent
+                TextViewUtils.SetMuseoSans500Typeface(txtstep1of2, IwantToEnquire, uploadSupportingDoc);
+           
+
+
+               
+
+
+
+
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
 
-            // Create your application here
+            // Create your application hereGetImageName
         }
 
-        public void SetPresenter(FeedbackGeneralEnquiryStepOneContract.IUserActionsListener userActionListener)
+        public override void Ready()
         {
-            this.userActionsListener = userActionListener;
+            FileUtils.CreateDirectory(this, FileUtils.TEMP_IMAGE_FOLDER);
+           
+
+
         }
 
-        private void Adapter_AddClickEvent(object sender, int e)
+        public string GetImageName(int itemCount)
         {
-            try
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+            Calendar calendar = Calendar.GetInstance(Locale.Default);
+            return GetString(Resource.String.feedback_image_name_convention, dateFormatter.Format(calendar.TimeInMillis), UserSessions.GetCurrentImageCount(PreferenceManager.GetDefaultSharedPreferences(this)) + itemCount);
+        }
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
             {
-                string[] items = { Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")  ,
-                                Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary") ,
-                                Utility.GetLocalizedCommonLabel("cancel")};
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                    .SetTitle(Utility.GetLocalizedLabel("FeedbackForm", "selectOptions"));
-                builder.SetItems(items, (lsender, args) =>
-                {
-
-
-
-                    if (items[args.Which].Equals(Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")))
-                    {
-                        this.userActionsListener.OnAttachPhotoCamera();
-                    }
-                    else if (items[args.Which].Equals(Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary")))
-                    {
-                        this.userActionsListener.OnAttachPhotoGallery();
-                    }
-                    else if (items[args.Which].Equals(Utility.GetLocalizedCommonLabel("cancel")))
-                    {
-                        _ChooseDialog.Dismiss();
-                    }
-                }
-                );
-                _ChooseDialog = builder.Show();
-            }
-            catch (System.Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
             }
         }
 
@@ -204,11 +231,106 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                     }
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
         }
+
+        private void Adapter_AddClickEvent(object sender, int e)
+        {
+            try
+            {
+                string[] items = { Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")  ,
+                               Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary") ,
+                               Utility.GetLocalizedCommonLabel("cancel")};
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                    .SetTitle(Utility.GetLocalizedLabel("FeedbackForm", "selectOptions"));
+                builder.SetItems(items, (lsender, args) =>
+                {
+
+
+
+                    if (items[args.Which].Equals(Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")))
+                    {
+                        this.userActionsListener.OnAttachPhotoCamera();
+                    }
+                    else if (items[args.Which].Equals(Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary")))
+                    {
+                        this.userActionsListener.OnAttachPhotoGallery();
+                    }
+                    else if (items[args.Which].Equals(Utility.GetLocalizedCommonLabel("cancel")))
+                    {
+                        _ChooseDialog.Dismiss();
+                    }
+                }
+                );
+                _ChooseDialog = builder.Show();
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        public void SetPresenter(FeedbackGeneralEnquiryStepOneContract.IUserActionsListener userActionListener)
+        {
+            this.userActionsListener = userActionListener;
+        }
+
+        public override int ResourceId()
+        {
+            return Resource.Layout.FeedbackGeneralEnquiryStepOneActivityView;
+        }
+
+        public override Boolean ShowCustomToolbarTitle()
+        {
+            return true;
+        }
+
+        public bool IsActive()
+        {
+            // needed when include contract
+            return Window.DecorView.RootView.IsShown;
+        }
+
+
+        public void ShowCamera()
+        {
+            if (!this.GetIsClicked())
+            {
+                Permission cameraPermission = ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera);
+                if (cameraPermission == (int)Permission.Granted)
+                {
+                    this.SetIsClicked(true);
+                    var intent = new Intent(MediaStore.ActionImageCapture);
+                    Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
+                    Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
+                                                    ApplicationContext.PackageName + ".provider", file);
+                    intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
+                    StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
+                }
+            }
+        }
+
+        public void ShowGallery()
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent galleryIntent = new Intent(Intent.ActionPick, MediaStore.Images.Media.ExternalContentUri);
+                galleryIntent.SetType("image/*");
+                StartActivityForResult(Intent.CreateChooser(galleryIntent, GetString(Resource.String.bill_related_feedback_select_images)), Constants.RUNTIME_PERMISSION_GALLERY_REQUEST_CODE);
+            }
+        }
+
+
+
+
+
+
+
 
 
         private void FeedBackCharacCount()
@@ -312,60 +434,19 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             }
         }
 
-        public void ShowCamera()
-        {
-            if (!this.GetIsClicked())
-            {
-                Permission cameraPermission = ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera);
-                if (cameraPermission == (int)Permission.Granted)
-                {
-                    this.SetIsClicked(true);
-                    var intent = new Intent(MediaStore.ActionImageCapture);
-                    Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
-                    Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
-                                                    ApplicationContext.PackageName + ".provider", file);
-                    intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
-                    StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
-                }
-            }
-        }
 
 
-        public void ShowGallery()
-        {
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                Intent galleryIntent = new Intent(Intent.ActionPick, MediaStore.Images.Media.ExternalContentUri);
-                galleryIntent.SetType("image/*");
-                StartActivityForResult(Intent.CreateChooser(galleryIntent, GetString(Resource.String.bill_related_feedback_select_images)), Constants.RUNTIME_PERMISSION_GALLERY_REQUEST_CODE);
-            }
-        }
 
-
-        public override int ResourceId()
-        {
-            return Resource.Layout.FeedbackGeneralEnquiryStepOneActivityView;
-        }
-
-        public override Boolean ShowCustomToolbarTitle()
-        {
-            return true;
-        }
-
-        public bool IsActive()
-        {
-            // needed when include contract
-            return Window.DecorView.RootView.IsShown;
-        }
 
         public void ShowGeneralEnquiry()
         {
-            String GeneralEnquiry2of2_app_bar=""; //this is test
+           
             var feedbackGeneralEnquiry = new Intent(this, typeof(FeedbackGeneralEnquiryStepTwoActivity));
-            feedbackGeneralEnquiry.PutExtra("TITLE", GeneralEnquiry2of2_app_bar);
+            feedbackGeneralEnquiry.PutExtra("FEEDBACK", txtGeneralEnquiry1.Text.Trim());
+            feedbackGeneralEnquiry.PutExtra("IMAGE", JsonConvert.SerializeObject(adapter?.GetAllImages()));
+            feedbackGeneralEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, accNo);
             StartActivity(feedbackGeneralEnquiry);
-
+            
         }
 
         [OnClick(Resource.Id.btnNext)]
@@ -392,6 +473,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             return FileUtils.GetTemporaryImageFilePath(this, pFolder, pFileName);
         }
 
+
+
+
         public void ShowLoadingImage()
         {
             try
@@ -408,6 +492,16 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+
+        public Task<string> SaveGalleryImage(Android.Net.Uri selectedImage, string pTempImagePath, string pFileName)
+        {
+            return Task.Run<string>(() =>
+            {
+                return FileUtils.ProcessGalleryImage(this, selectedImage, pTempImagePath, pFileName);
+            });
+
         }
 
         public Task<string> SaveCameraImage(string tempImagePath, string fileName)
@@ -438,6 +532,18 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             }
         }
 
+        public override bool StoragePermissionRequired()
+        {
+            return true;
+        }
+
+
+        public override bool CameraPermissionRequired()
+        {
+            return true;
+        }
+
+
         public void HideLoadingImage()
         {
             try
@@ -456,14 +562,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             }
         }
 
-        public Task<string> SaveGalleryImage(Android.Net.Uri selectedImage, string pTempImagePath, string pFileName)
-        {
-            return Task.Run<string>(() =>
-            {
-                return FileUtils.ProcessGalleryImage(this, selectedImage, pTempImagePath, pFileName);
-            });
 
-        }
+
+
+
 
 
 

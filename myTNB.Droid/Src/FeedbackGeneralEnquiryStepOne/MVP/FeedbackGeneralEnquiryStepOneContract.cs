@@ -18,8 +18,6 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
         public interface IView : IBaseView<IUserActionsListener>
         {
 
-            void ShowCamera();
-            void ShowGallery();
 
             void ShowGeneralEnquiry();
 
@@ -31,14 +29,21 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
 
             void DisableSubmitButton();
 
+
+            void ShowCamera();
+
+            void ShowGallery();
+
+
+         
+
+
+
+
             string GetTemporaryImageFilePath(string pFolder, string pFileName);
 
+
             void ShowLoadingImage();
-
-            Task<string> SaveCameraImage(string tempImagePath, string fileName);
-
-            void UpdateAdapter(string pFilePath, string pFileName);
-
 
             void HideLoadingImage();
 
@@ -46,30 +51,31 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
 
 
 
+            void UpdateAdapter(string pFilePath, string pFileName);
+
+            Task<string> SaveCameraImage(string tempImagePath, string fileName);
 
         }
 
         public interface IUserActionsListener : IBasePresenter
         {
-            /// <summary>
-            /// Action to attach photo from camera
-            /// </summary>
-            void OnAttachPhotoCamera();
 
-            /// <summary>
-            /// Action to attach image from gallery
-            /// </summary>
-            void OnAttachPhotoGallery();
 
 
             void OnGeneralEnquiry();
 
             void CheckRequiredFields(string feedback);
 
+            void OnAttachPhotoCamera();
+
+
+            void  OnAttachPhotoGallery();
+
             void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data);
 
 
 
+          
 
 
         }

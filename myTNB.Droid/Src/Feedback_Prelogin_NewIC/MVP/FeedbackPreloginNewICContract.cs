@@ -26,6 +26,19 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
 
             void RemoveNumberErrorMessage();
 
+            void showUpdatePersonalDetail();
+
+            void ShowEnterOrSelectAccNumber();
+
+            void toggleEnableClick();
+
+            void toggleDisableClick();
+
+            void ShowWhereIsMyAcc();
+
+
+
+
 
         }
 
@@ -36,6 +49,10 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
             void OnSelectAccount();
 
             void CheckRequiredFields(string accno);
+
+           void onUpdatePersonalDetail();
+
+           void onShowWhereIsMyAcc();
 
 
         }

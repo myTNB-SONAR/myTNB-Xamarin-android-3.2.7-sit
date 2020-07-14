@@ -1,0 +1,1069 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+     <LinearLayout
+        android:id="@+id/mainView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+            <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+            <TextView
+            android:id="@+id/pageStep"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:ellipsize="end"
+            android:gravity="top|center"
+            android:paddingTop="4dp"
+            android:maxEms="20"
+            android:maxLines="1"
+            android:text="Step 1 of 2"
+            android:textColor="@color/white"
+            android:textSize="12dp" />
+     
+
+         
+    <FrameLayout
+        android:id="@+id/rootview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+     
+        android:background="@color/lightGrey">
+              <!-- android:layout_marginTop="?actionBarSize"-->
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="?actionBarSize"
+            android:fillViewport="false"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/infotxtIsThisAcc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:text="Is this electricity account registered under your name?"
+                    android:textAllCaps="false"
+                    android:textColor="@color/powerBlue"
+                    android:textSize="16dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/bottomLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingBottom="16dp">
+
+                        <Button
+                            android:id="@+id/btnNo"
+                            style="@style/LightButtonWithIcon"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="No"
+                            android:textAllCaps="false"
+                            android:textSize="16dp" />
+
+                        <Button
+                            android:id="@+id/btnYes"
+                            style="@style/LightButtonWithIcon"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight=".5"
+                            android:text="Yes"
+                            android:textAllCaps="false"
+                            android:textSize="16dp" />
+
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/accountLayout3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="16dp">
+
+                        <LinearLayout
+                            android:id="@+id/infoLabelWhoIsRegistered"
+                            android:layout_width="match_parent"
+                            android:layout_height="24dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="16dp"
+                            android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
+                            android:gravity="center|left"
+
+                            android:orientation="horizontal"
+                            android:paddingLeft="2dp">
+
+                            <TextView
+                                android:id="@+id/infoLabeltxtWhoIsRegistered"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableLeft="@drawable/smr_why_accounts_info"
+                                android:drawablePadding="8dp"
+                                android:text="Who is registered owner?"
+                                android:textColor="#1c79ca"
+                                android:textSize="12dp" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/infotxtTitle_Which_information"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:text="Which information would you like to update?"
+                    android:textAllCaps="false"
+                    android:textColor="@color/powerBlue"
+                    android:textSize="16dp" />
+
+
+                <TextView
+
+                    android:id="@+id/TextView_whatIsYourRelationship"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:text="What is your relationship with the owner?"
+                    android:textAllCaps="false"
+                    android:textColor="@color/powerBlue"
+                    android:textSize="16dp" />
+
+                <LinearLayout
+                    android:id="@+id/LinearLayout_relationShipOwner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtAccountType"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="16dp"
+                        android:text="Relation ship with owner"
+                        android:textAllCaps="true"
+                        android:textColor="@color/tunaGrey"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/selector_account_type"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|left"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:drawableRight="@drawable/ic_action_dropdown1"
+                        android:drawableBottom="@drawable/blue_out_line"
+                        android:drawablePadding="4dp"
+                        android:paddingTop="4dp"
+                        android:paddingRight="6dp"
+                        android:paddingBottom="1dp"
+                        android:text="Selected Type"
+                        android:textColor="@color/tunaGrey"
+                        android:textSize="16dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+
+                        android:background="@color/platinumGrey" />
+
+                     <View
+                        android:id="@+id/spacingifSelectTypeIsNotother"
+                        android:layout_width="match_parent"
+                        android:layout_height="31dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"/>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtInputLayoutRelationshipOther"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        android:paddingBottom="16dp"
+                        app:counterEnabled="false"
+                        app:counterMaxLength="250"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/EditText_relationshipOther"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="PLEASE SPECIFY YOUR RELATIONSHIP"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLength="250"
+                            android:maxLines="1"
+                            android:overScrollMode="always"
+                            android:paddingTop="5dp"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:textSize="16dp" />
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/TextView_updateOnOwnerBehalf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:text="Which information would you like to update on your owner's behalf?"
+                    android:textAllCaps="false"
+                    android:textColor="@color/powerBlue"
+                    android:textSize="16dp" />
+
+
+                <LinearLayout
+                    android:id="@+id/LinearLayout_IC"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:id="@+id/selectICContainer"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="12dp"
+                            android:layout_weight="0.1"
+                            android:gravity="center">
+
+                            <CheckBox
+                                android:id="@+id/selectICChkBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:button="@drawable/checkbox_selector" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="1dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtIC"
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginRight="8dp"
+                                android:gravity="center|left"
+                                android:singleLine="true"
+                                android:text="Identification Number (IC / Passport)"
+                                android:textColor="@color/tunaGrey"
+                                android:textSize="14dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtInputLayoutCurrentICNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        app:counterEnabled="false"
+                        app:counterMaxLength="250"
+                        app:errorEnabled="true"
+                        android:visibility="gone"
+                        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtGeneralCurrentICNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="CURRENT IDENTIFICATION NUMBER"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLength="250"
+                            android:maxLines="1"
+                            android:overScrollMode="always"
+                            android:paddingTop="5dp"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:textSize="16dp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtInputLayoutNewIC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        android:paddingBottom="16dp"
+                        app:counterEnabled="false"
+                        app:counterMaxLength="250"
+                        app:errorEnabled="true"
+                        android:visibility="gone"
+                        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtNewIC"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="ENTER NEW IDENTIFICATION NUMBER"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLength="250"
+                            android:maxLines="5"
+                            android:overScrollMode="always"
+                            android:paddingTop="5dp"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:textSize="16dp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinearLayout_OwnerName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:id="@+id/selectOwnerNameContainer"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="12dp"
+                            android:layout_weight="0.1"
+                            android:gravity="center">
+
+                            <CheckBox
+                                android:id="@+id/selectOwnerNameChkBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center|right"
+                                android:button="@drawable/checkbox_selector" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="1dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtOwnerName"
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginRight="8dp"
+                                android:gravity="center|left"
+                                android:singleLine="true"
+                                android:text="Account's Owner Name"
+                                android:textColor="@color/tunaGrey"
+                                android:textSize="14dp" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtInputLayoutCurrentOwnerName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        app:counterEnabled="false"
+                        app:counterMaxLength="250"
+                        app:errorEnabled="true"
+                        android:visibility="gone"
+                        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtGeneralCurrentOwnerName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="CURRENT ACCOUNT OWNER NAME"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLength="250"
+                            android:maxLines="1"
+                            android:overScrollMode="always"
+                            android:paddingTop="5dp"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:textSize="16dp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtInputLayoutNewOwnerName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        android:paddingBottom="16dp"
+                        app:counterEnabled="false"
+                        app:counterMaxLength="250"
+                        app:errorEnabled="true"
+                        android:visibility="gone"
+                        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtNewOwnerName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="ENTER CURRENT ACCOUNT OWNER NAME"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLength="250"
+                            android:maxLines="5"
+                            android:overScrollMode="always"
+                            android:paddingTop="5dp"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:textSize="16dp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinearLayout_MobileNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:id="@+id/mobile_number_container"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="12dp"
+                            android:layout_weight="0.1"
+                            android:gravity="center">
+
+                            <CheckBox
+                                android:id="@+id/mobile_number_chk_box"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:button="@drawable/checkbox_selector" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="1dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtMobileNumber"
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginRight="8dp"
+                                android:gravity="center|left"
+                                android:singleLine="true"
+                                android:text="Mobile Number"
+                                android:textColor="@color/tunaGrey"
+                                android:textSize="14dp" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtInputLayoutCurrentMobileNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        app:counterEnabled="false"
+                        app:counterMaxLength="250"
+                        app:errorEnabled="true"
+                        android:visibility="gone"
+                        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtGeneralCurrentMobileNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="CURRENT MOBILE NUMBER"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLength="250"
+                            android:maxLines="1"
+                            android:overScrollMode="always"
+                            android:paddingTop="5dp"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:textSize="16dp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtInputLayoutNewMobileNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        android:paddingBottom="16dp"
+                        app:counterEnabled="false"
+                        app:counterMaxLength="250"
+                        app:errorEnabled="true"
+                        android:visibility="gone"
+                        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtNewMobileNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="ENTER NEW MOBILE NUMBER"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLength="250"
+                            android:maxLines="5"
+                            android:overScrollMode="always"
+                            android:paddingTop="5dp"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:textSize="16dp" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinearLayout_EmailAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:id="@+id/select_email_address"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="12dp"
+                            android:layout_weight="0.1"
+                            android:gravity="center">
+
+                            <CheckBox
+                                android:id="@+id/select_email_address_chk_box"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:button="@drawable/checkbox_selector" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="1dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtEmailAddress"
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginRight="8dp"
+                                android:gravity="center|left"
+                                android:singleLine="true"
+                                android:text="Email Address"
+                                android:textColor="@color/tunaGrey"
+                                android:textSize="14dp" />
+
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtInputLayoutCurrentEmailAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        app:counterEnabled="false"
+                        app:counterMaxLength="250"
+                        app:errorEnabled="true"
+                        android:visibility="gone"
+                        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtGeneralCurrentEmailAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="CURRENT EMAIL ADDRESS"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLength="250"
+                            android:maxLines="1"
+                            android:overScrollMode="always"
+                            android:paddingTop="5dp"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:textSize="16dp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtInputLayoutNewEmailAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        android:paddingBottom="16dp"
+                        app:counterEnabled="false"
+                        app:counterMaxLength="250"
+                        app:errorEnabled="true"
+                        android:visibility="gone"
+                        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtNewEmailAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="ENTER NEW EMAIL ADDRESS"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLength="250"
+                            android:maxLines="5"
+                            android:overScrollMode="always"
+                            android:paddingTop="5dp"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:textSize="16dp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinearLayout_MailingAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:id="@+id/select_mailing_address"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="12dp"
+                            android:layout_weight="0.1"
+                            android:gravity="center">
+
+                            <CheckBox
+                                android:id="@+id/select_mailing_address_chk_box"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:button="@drawable/checkbox_selector" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="1dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtMailingAddress"
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginRight="8dp"
+                                android:gravity="center|left"
+                                android:singleLine="true"
+                                android:text="Mailing Address"
+                                android:textColor="@color/tunaGrey"
+                                android:textSize="14dp" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtInputLayoutCurrentMailingAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        app:counterEnabled="false"
+                        app:counterMaxLength="250"
+                        app:errorEnabled="true"
+                        android:visibility="gone"
+                        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtGeneralCurrentMailingAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="CURRENT MAILING ADDRESS"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLength="250"
+                            android:maxLines="1"
+                            android:overScrollMode="always"
+                            android:paddingTop="5dp"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:textSize="16dp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtInputLayoutNewMailingAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        android:paddingBottom="16dp"
+                        app:counterEnabled="false"
+                        app:counterMaxLength="250"
+                        app:errorEnabled="true"
+                        android:visibility="gone"
+                        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtNewMailingAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="ENTER NEW MAILING ADDRESS"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLength="250"
+                            android:maxLines="5"
+                            android:overScrollMode="always"
+                            android:paddingTop="5dp"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:textSize="16dp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LinearLayout_PremiseAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:padding="16dp"
+                        android:weightSum="1">
+
+                        <LinearLayout
+                            android:id="@+id/select_premise_address"
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="12dp"
+                            android:layout_weight="0.1"
+                            android:gravity="center">
+
+                            <CheckBox
+                                android:id="@+id/premiseAddress_chk_box"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:button="@drawable/checkbox_selector" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="1dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtPremiseAddress"
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginRight="8dp"
+                                android:gravity="center|left"
+                                android:singleLine="true"
+                                android:text="Premise Address"
+                                android:textColor="@color/tunaGrey"
+                                android:textSize="14dp" />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtInputLayoutCurrentPremiseAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        app:counterEnabled="false"
+                        app:counterMaxLength="250"
+                        app:errorEnabled="true"
+                        android:visibility="gone"
+                        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtGeneralCurrentPremiseAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="CURRENT PREMISE ADDRESS"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLength="250"
+                            android:maxLines="1"
+                            android:overScrollMode="always"
+                            android:paddingTop="5dp"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:textSize="16dp" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/txtInputLayoutNewPremiseAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginRight="16dp"
+                        android:paddingBottom="16dp"
+                        app:counterEnabled="false"
+                        app:counterMaxLength="250"
+                        app:errorEnabled="true"
+                        android:visibility="gone"
+                        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtNewPremiseAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="ENTER NEW MAILING ADDRESS"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLength="250"
+                            android:maxLines="5"
+                            android:overScrollMode="always"
+                            android:paddingTop="5dp"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:textSize="16dp" />
+                    </android.support.design.widget.TextInputLayout>
+
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:id="@+id/FrameLayout_ownerAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="16dp">
+
+                    <LinearLayout
+                        android:id="@+id/infoLabelDoIneedOwnerConsent"
+                        android:layout_width="match_parent"
+                        android:layout_height="24dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
+                        android:gravity="center|left"
+
+                        android:orientation="horizontal"
+                        android:paddingLeft="2dp">
+
+                        <TextView
+                            android:id="@+id/TextViewDoINeedOwnerConsent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/smr_why_accounts_info"
+                            android:drawablePadding="8dp"
+                            android:text="Do I need owner’s consent?"
+                            android:textColor="#1c79ca"
+                            android:textSize="12dp" />
+                    </LinearLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+
+                <Button
+                    android:id="@+id/btnNext"
+                    style="@style/DarkButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Next"
+                    android:textAllCaps="false" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

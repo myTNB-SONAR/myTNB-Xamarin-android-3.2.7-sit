@@ -49,6 +49,7 @@
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidLinkTool>r8</AndroidLinkTool>
     <Debugger>Xamarin</Debugger>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -79,6 +80,10 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <MandroidI18n>West</MandroidI18n>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -560,6 +565,7 @@
     <Compile Include="Src\FeedbackDetails\Activity\FeedbackDetailsFaultyLampsActivity.cs" />
     <Compile Include="Src\FeedbackDetails\Activity\FeedbackDetailsOthersActivity.cs" />
     <Compile Include="Src\FeedbackDetails\Adapter\FeedbackImageRecyclerAdapter.cs" />
+    <Compile Include="Src\FeedbackDetails\Adapter\FeedbackImageRecyclerAdapterNew.cs" />
     <Compile Include="Src\FeedbackDetails\MVP\FeedbackDetailsBillRelatedPresenter.cs" />
     <Compile Include="Src\FeedbackDetails\MVP\FeedbackDetailsContract.cs" />
     <Compile Include="Src\FeedbackDetails\MVP\FeedbackDetailsFaultyLampsPresenter.cs" />
@@ -570,6 +576,7 @@
     <Compile Include="Src\FeedbackGeneralEnquiryStepOne\MVP\FeedbackGeneralEnquiryStepOneContract.cs" />
     <Compile Include="Src\FeedbackGeneralEnquiryStepOne\MVP\FeedbackGeneralEnquiryStepOnePresenter.cs" />
     <Compile Include="Src\FeedbackGeneralEnquiryStepTwo\Activity\FeedbackGeneralEnquiryStepTwoActivity.cs" />
+    <Compile Include="Src\FeedbackGeneralEnquiryStepTwo\Model\FeedbackUpdateDetailsModel.cs" />
     <Compile Include="Src\FeedbackGeneralEnquiryStepTwo\MVP\FeedbackGeneralEnquiryStepTwoContract.cs" />
     <Compile Include="Src\FeedbackGeneralEnquiryStepTwo\MVP\FeedbackGeneralEnquiryStepTwoPresenter.cs" />
     <Compile Include="Src\Feedback_Login_BillRelated\Activity\FeedbackSelectAccountActivity.cs" />
@@ -736,6 +743,7 @@
     <Compile Include="Src\myTNBMenu\Requests\SMUsageHistoryRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationChannelRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationTypeRequest.cs" />
+    <Compile Include="Src\MyTNBService\Request\SubmitEnquiryRequest.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetails.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetailsDeleteResponse.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetailsResponse.cs" />
@@ -878,6 +886,12 @@
     <Compile Include="Src\SitecoreCMS\Service\TimestampService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\WalkthroughScreenService.cs" />
     <Compile Include="Src\SitecoreCMS\SiteCoreConfig.cs" />
+    <Compile Include="Src\SubmitEnquirySuccess\Activity\SubmitEnquirySuccessActivity.cs" />
+    <Compile Include="Src\SubmitEnquirySuccess\MVP\SubmitEnquirySuccessContract.cs" />
+    <Compile Include="Src\SubmitEnquirySuccess\MVP\SubmitEnquirySuccessPresenter.cs" />
+    <Compile Include="Src\SubmittedNewEnquiry\Activity\SubmittedNewEnquiryActivity.cs" />
+    <Compile Include="Src\SubmittedNewEnquiry\MVP\SubmittedNewEnquiryContract.cs" />
+    <Compile Include="Src\SubmittedNewEnquiry\MVP\SubmittedNewEnquiryPresenter.cs" />
     <Compile Include="Src\SummaryDashBoard\Models\SummaryDashBoardDetails.cs" />
     <Compile Include="Src\SummaryDashBoard\Models\SummaryDashBoardResponse.cs" />
     <Compile Include="Src\SummaryDashBoard\Models\SummaryDashBordRequest.cs" />
@@ -912,6 +926,18 @@
     <Compile Include="Src\UpdatePassword\MVP\UpdatePasswordContract.cs" />
     <Compile Include="Src\UpdatePassword\MVP\UpdatePasswordPresenter.cs" />
     <Compile Include="Src\UpdatePassword\Request\UpdatePasswordRequest.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepOne\Activity\UpdatePersonalDetailStepOneActivity.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepOne\Adapter\UpdatePersonalDetailStepOneSelectRelationshipAdapter.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepOne\Fragment\UpdatePersonalDetailStepOneSelectRelationshipFragment.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepOne\Model\enum.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepOne\Model\SelectRelationshipModel.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepOne\MVP\UpdatePersonalDetailStepOneContract.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepOne\MVP\UpdatePersonalDetailStepOnePresenter.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepTwo\Activity\UpdatePersonalDetailStepTwoActivity.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepTwo\Adapter\supportingDocAdapter.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepTwo\Adapter\your_ic_adaptercs.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepTwo\MVP\UpdatePersonalDetailStepTwoContract.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepTwo\MVP\UpdatePersonalDetailStepTwoPresenter.cs" />
     <Compile Include="Src\Utils\BitmapUtils.cs" />
     <Compile Include="Src\Utils\BottomNavigationViewUtils.cs" />
     <Compile Include="Src\Utils\ConnectionUtils.cs" />
@@ -7553,6 +7579,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\FeedbackGeneralEnquiryStepTwoView.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\UpdatePersonalDetailStepOneView.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\SubmittedNewEnquiryView.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\SubmitEnquirySuccessView.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\UpdatePersonalDetailStepTwoView.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\FeedbackDetailImageRowNew.axml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
