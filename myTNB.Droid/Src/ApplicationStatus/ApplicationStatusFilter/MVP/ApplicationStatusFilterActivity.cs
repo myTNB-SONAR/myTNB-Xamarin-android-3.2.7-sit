@@ -4,6 +4,7 @@ using System.Globalization;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Runtime;
 using Android.Support.V4.Content;
 using Android.Util;
 using Android.Views;
@@ -83,9 +84,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
         private string filterDate = "";
         List<ApplicationStatusCodeModel> statusCodeList = new List<ApplicationStatusCodeModel>();
         List<ApplicationStatusTypeModel> typeList = new List<ApplicationStatusTypeModel>();
-        string displayDate = "";
-
-        const string MONTH_ORIGINAL_FORMAT = "MMM";
+        private string displayDate = "";
 
         public override int ResourceId()
         {
@@ -109,8 +108,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
 
             TextViewUtils.SetMuseoSans300Typeface(applicationStatusItemTitle, applicationStatusSubTitle);
             TextViewUtils.SetMuseoSans300Typeface(statusItemTitle, statusSubTitle);
-            // TextViewUtils.SetMuseoSans300Typeface(filterYearItemTitle, filterYearSubTitle);
-            // TextViewUtils.SetMuseoSans300Typeface(filterMonthItemTitle, filterMonthSubTitle);
+            TextViewUtils.SetMuseoSans300Typeface(filterDateItemTitle, filterDateSubTitle);
             TextViewUtils.SetMuseoSans500Typeface(btnClearFilter, btnApplyFilter);
 
             // ApplicationStatus TODO: Multilingual
@@ -195,9 +193,39 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 applicationStatusSubTitle.Text = "";
             }            
 
-            if (!string.IsNullOrEmpty(filterDate))
+            if (!string.IsNullOrEmpty(filterDate) && filterDate.Contains(","))
             {
-                filterDateSubTitle.Text = filterDate;
+                string[] filterDateArray = filterDate.Split(",");
+                string displayDate = "";
+                for (int i = 0; i < filterDateArray.Length; i++)
+                {
+                    string tempDateTime = "";
+                    DateTime dateTimeParse = DateTime.ParseExact(filterDateArray[i], "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+                    TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
+                    DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
+                    if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                    {
+                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
+                        tempDateTime = dateTimeMalaysia.ToString("MMM yyyy", currCult);
+                    }
+                    else
+                    {
+                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                        tempDateTime = dateTimeMalaysia.ToString("MMM yyyy", currCult);
+                    }
+
+                    if (i == 0)
+                    {
+                        displayDate += tempDateTime;
+                    }
+                    else
+                    {
+                        displayDate += " - " + tempDateTime;
+                    }
+                }
+
+                filterDateSubTitle.Text = displayDate;
             }
             else
             {
@@ -228,6 +256,73 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
         public override View OnCreateView(string name, Context context, IAttributeSet attrs)
         {
             return base.OnCreateView(name, context, attrs);
+        }
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            try
+            {
+                if (requestCode == Constants.APPLICATION_STATUS_FILTER_DATE_REQUEST_CODE)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        Bundle extra = data.Extras;
+                        string resultDate = "";
+
+                        if (extra.ContainsKey(Constants.APPLICATION_STATUS_FILTER_DATE_KEY))
+                        {
+                            resultDate = extra.GetString(Constants.APPLICATION_STATUS_FILTER_DATE_KEY);
+                        }
+
+                        if (!string.IsNullOrEmpty(resultDate) && resultDate.Contains(","))
+                        {
+                            filterDate = resultDate;
+                            string[] filterDateArray = filterDate.Split(",");
+                            for (int i = 0; i < filterDateArray.Length; i++)
+                            {
+                                string tempDateTime = "";
+                                DateTime dateTimeParse = DateTime.ParseExact(filterDateArray[i], "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
+                                DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
+                                if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                                {
+                                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
+                                    tempDateTime = dateTimeMalaysia.ToString("MMM yyyy", currCult);
+                                }
+                                else
+                                {
+                                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                                    tempDateTime = dateTimeMalaysia.ToString("MMM yyyy", currCult);
+                                }
+
+                                if (i == 0)
+                                {
+                                    displayDate += tempDateTime;
+                                }
+                                else
+                                {
+                                    displayDate += " - " + tempDateTime;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            filterDate = "";
+                            displayDate = "";
+                        }
+
+                        filterDateSubTitle.Text = displayDate;
+
+                        EnableButtons();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowProgressDialog()
@@ -330,6 +425,19 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             }
         }
 
+        [OnClick(Resource.Id.btnClearFilter)]
+        internal void OnClearFilterClick(object sender, EventArgs e)
+        {
+            DisableButtons();
+            filterApplicationType = "";
+            filterStatus = "";
+            filterDate = "";
+            displayDate = "";
+
+            applicationStatusSubTitle.Text = "";
+            statusSubTitle.Text = "";
+            filterDateSubTitle.Text = "";
+        }
 
     }
 }

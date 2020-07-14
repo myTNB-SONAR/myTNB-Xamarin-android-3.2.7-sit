@@ -365,11 +365,13 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string APPLICATION_STATUS_FILTER_DATE_KEY = "date";
         internal static readonly string APPLICATION_STATUS_TYPE_LIST_KEY = "typeList";
         internal static readonly string APPLICATION_STATUS_STATUS_LIST_KEY = "statusList";
+        internal static readonly string APPLICATION_STATUS_SEARCH_BY_LIST_KEY = "searchByList";
         internal static readonly string APPLICATION_STATUS_FILTER_REQUEST_KEY = "filterRequest";
         internal static readonly string APPLICATION_STATUS_FILTER_MULTI_SELECT_KEY = "multiSelect";
         internal static readonly int APPLICATION_STATUS_FILTER_REQUEST_CODE = 29800;
         internal static readonly int APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE = 29801;
         internal static readonly int APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE = 29802;
         internal static readonly int APPLICATION_STATUS_FILTER_DATE_REQUEST_CODE = 29803;
+        internal static readonly int APPLICATION_STATUS_FILTER_SEARCH_BY_REQUEST_CODE = 29804;
     }
 }

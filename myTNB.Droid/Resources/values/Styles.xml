@@ -283,6 +283,23 @@
 
   </style>
 
+  <style name="TextInputLayout.TextAppearance.ColorFix" parent="TextAppearance.AppCompat">
+    <!-- Hint color and label color in FALSE state -->
+    <item name="android:textColorHint">@color/silverChalice</item>
+    <item name="android:textSize">10dp</item>
+
+    <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+    <item name="colorAccent">@color/tunaGrey</item>
+    <item name="colorControlNormal">@color/platinumGrey</item>
+    <item name="colorControlHighlight">@color/platinumGrey</item>
+    <item name="colorControlActivated">@color/platinumGrey</item>
+    <item name="android:colorControlNormal">@color/platinumGrey</item>
+    <item name="android:colorControlHighlight">@color/platinumGrey</item>
+    <item name="android:colorControlActivated">@color/platinumGrey</item>
+    <item name="textColorError">@color/errorColor</item>
+
+  </style>
+
   <!-- End Floating Label -->
 
   <!-- Floating Label -->

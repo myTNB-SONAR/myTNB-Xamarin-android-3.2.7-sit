@@ -4448,6 +4448,45 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Base\Fragments\MonthYearPickerDialog.cs" />
+    <AndroidResource Include="Resources\layout\BaseMonthYearPickerDialog.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\values\FilterViewStyle.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\SearchApplicationStaturLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_field_application_type.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_field_application_type.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_field_application_type.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_field_application_type.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_field_application_type.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\MVP\SearchApplicationStatusActivity.cs" />
+    <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\MVP\SearchApplicationStatusContract.cs" />
+    <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\MVP\SearchApplicationStatusPresenter.cs" />
+    <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\SearchApplicationStatusSelection\MVP\SearchApplicationStatusSelectionActivity.cs" />
+    <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\Models\SearchApplicationStatusModel.cs" />
+    <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\SearchApplicationStatusSelection\Adapter\SearchApplicationStatusAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4833,6 +4872,12 @@
     <Folder Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusFilter\Adapter\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\ApplicationStatusFilterSelection\" />
+    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\" />
+    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\MVP\" />
+    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\SearchApplicationStatusSelection\" />
+    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\SearchApplicationStatusSelection\MVP\" />
+    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\Models\" />
+    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\SearchApplicationStatusSelection\Adapter\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
