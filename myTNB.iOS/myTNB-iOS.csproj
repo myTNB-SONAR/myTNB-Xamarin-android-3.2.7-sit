@@ -1824,6 +1824,14 @@
     <ImageAsset Include="Assets\Rewards.xcassets\Reward_Default-Banner.imageset\Reward_Default-Banner%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%403x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\imgPoc.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Assets.xcassets\imgPoc.imageset\imgPoc.jpg" />
+    <ImageAsset Include="Assets\Assets.xcassets\imgPoc.imageset\imgPoc%402x.jpg" />
+    <ImageAsset Include="Assets\Assets.xcassets\imgPoc.imageset\imgPoc%403x.jpg" />
+    <ImageAsset Include="Assets\Assets.xcassets\imgIcCopy.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Assets.xcassets\imgIcCopy.imageset\imgIcCopy.jpg" />
+    <ImageAsset Include="Assets\Assets.xcassets\imgIcCopy.imageset\imgIcCopy%402x.jpg" />
+    <ImageAsset Include="Assets\Assets.xcassets\imgIcCopy.imageset\imgIcCopy%403x.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1975,6 +1983,13 @@
     <Folder Include="Assets\Assets.xcassets\" />
     <Folder Include="Assets\Flags.xcassets\" />
     <Folder Include="Assets\Notification.xcassets\" />
+    <Folder Include="Feedback\Enquiry\" />
+    <Folder Include="Feedback\Enquiry\General Enquiry\" />
+    <Folder Include="Feedback\Enquiry\Update Personal Detail\" />
+    <Folder Include="Feedback\Enquiry\Enquiry Status Page\" />
+    <Folder Include="Feedback\Enquiry\Enquiry Details\" />
+    <Folder Include="Assets\Assets.xcassets\imgPoc.imageset\" />
+    <Folder Include="Assets\Assets.xcassets\imgIcCopy.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2017,6 +2032,7 @@
     <InterfaceDefinition Include="Profile Updates\Update Mobile Number\Select Country\SelectCountryViewController.xib" />
     <InterfaceDefinition Include="Whats New\Whats New Details\WhatsNewDetailsViewController.xib" />
     <InterfaceDefinition Include="Browser\BrowserViewController.xib" />
+    <InterfaceDefinition Include="Feedback\Enquiry\Enquiry.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -2780,6 +2796,48 @@
     <Compile Include="Sitecore CMS\Service\EppInfoTooltipService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\EppInfoTooltipEntity.cs" />
     <Compile Include="Helpers\WebWKUIDelegate.cs" />
+    <Compile Include="Feedback\Enquiry\EnquiryViewController.cs" />
+    <Compile Include="Feedback\Enquiry\EnquiryViewController.designer.cs">
+      <DependentUpon>EnquiryViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\Enquiry\EnquiryConstants.cs" />
+    <Compile Include="Feedback\Enquiry\General Enquiry\GeneralEnquiryViewController.cs" />
+    <Compile Include="Feedback\Enquiry\General Enquiry\GeneralEnquiryViewController.designer.cs">
+      <DependentUpon>GeneralEnquiryViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\Enquiry\General Enquiry\GeneralEnquiry2ViewController.cs" />
+    <Compile Include="Feedback\Enquiry\General Enquiry\GeneralEnquiry2ViewController.designer.cs">
+      <DependentUpon>GeneralEnquiry2ViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\Enquiry\General Enquiry\GeneralEnquiryComponent.cs" />
+    <Compile Include="Feedback\Enquiry\General Enquiry\GeneralEnquiryCommonWidgets.cs" />
+    <Compile Include="Feedback\Enquiry\General Enquiry\GeneralEnquiryImagePickerDelegate.cs" />
+    <Compile Include="Feedback\Enquiry\Update Personal Detail\UpdatePersonalDetailViewController.cs" />
+    <Compile Include="Feedback\Enquiry\Update Personal Detail\UpdatePersonalDetailViewController.designer.cs">
+      <DependentUpon>UpdatePersonalDetailViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\Enquiry\Update Personal Detail\UpdatePersonalDetail2ViewController.cs" />
+    <Compile Include="Feedback\Enquiry\Update Personal Detail\UpdatePersonalDetail2ViewController.designer.cs">
+      <DependentUpon>UpdatePersonalDetail2ViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\Enquiry\Update Personal Detail\UpdatePersonalDetail3ViewController.cs" />
+    <Compile Include="Feedback\Enquiry\Update Personal Detail\UpdatePersonalDetail3ViewController.designer.cs">
+      <DependentUpon>UpdatePersonalDetail3ViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\Enquiry\Update Personal Detail\UpdatePersonalDetailComponent.cs" />
+    <Compile Include="Feedback\Enquiry\Update Personal Detail\UpdatePersonalDetailCommonWidgets.cs" />
+    <Compile Include="Feedback\Enquiry\Update Personal Detail\UpdatePersonalDetailImagePickerDelegate.cs" />
+    <Compile Include="Feedback\Feedback Image\ImageDataEnquiryModel.cs" />
+    <Compile Include="Feedback\Enquiry\Enquiry Status Page\EnquiryStatusPageViewController.cs" />
+    <Compile Include="Feedback\Enquiry\Enquiry Status Page\EnquiryStatusPageViewController.designer.cs">
+      <DependentUpon>EnquiryStatusPageViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\Enquiry\Enquiry Status Page\EnquiryStatusPageActions.cs" />
+    <Compile Include="Feedback\Enquiry\Enquiry Details\EnquiryDetailsViewController.cs" />
+    <Compile Include="Feedback\Enquiry\Enquiry Details\EnquiryDetailsViewController.designer.cs">
+      <DependentUpon>EnquiryDetailsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Feedback\FeedbackUpdateDetailsModel.cs" />
     <Compile Include="Session Cache\WhatsNewDetailCache.cs" />
     <Compile Include="Whats New\WhatsNewModalViewController.cs" />
     <Compile Include="Whats New\WhatsNewModalViewController.designer.cs" />
