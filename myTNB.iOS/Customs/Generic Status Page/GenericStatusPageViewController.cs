@@ -64,7 +64,8 @@ namespace myTNB
             Feedback,
             SSMRApply,
             SSMRDiscontinue,
-            SSMRReading
+            SSMRReading,
+            Enquiry
         }
 
         public UIViewController NextViewController
@@ -252,6 +253,14 @@ namespace myTNB
                     value = GetI18NValue(StatusPageConstants.SSMRReadingI18NDictionary[key]);
                 }
             }
+            if (StatusDisplayType == StatusType.Enquiry) //this enquiry
+            {
+                bool isKeyExist = StatusPageConstants.FeedbackI18NDictionary.ContainsKey(key);
+                if (isKeyExist)
+                {
+                    value = GetI18NValue(StatusPageConstants.FeedbackI18NDictionary[key]);
+                }
+            }
             return value;
         }
 
@@ -302,7 +311,21 @@ namespace myTNB
 
                 }
             }
+            else if (StatusDisplayType == StatusType.Enquiry) //this enquiry
+            {
+                if (IsSuccess)
+                {
+                    //GetCTA(ref btnSecondary, GetCommonI18NValue(StatusPageConstants.I18N_BacktoHome), false, _actions.BackToHome, true); //ViewSubmittedEnquiry
+                    GetCTA(ref btnPrimary, "View Submitted Enquiry", true, _actions.BackToHome); 
+                }
+                else
+                {
+                    GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.BackToHome, true);
+
+                }
+            }
             View.AddSubviews(new UIView[] { btnPrimary, btnSecondary });
+
         }
 
         private void GetCTA(ref CustomUIButtonV2 btn, string title, bool isPrimary, Action ctaAction, bool isWhiteBG = false)

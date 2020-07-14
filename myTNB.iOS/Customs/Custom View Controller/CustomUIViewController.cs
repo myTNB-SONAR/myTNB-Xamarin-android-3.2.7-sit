@@ -25,6 +25,8 @@ namespace myTNB
 
         private bool _isAnimating;
 
+
+
         public enum PermissionMode
         {
             Camera,
@@ -338,7 +340,7 @@ namespace myTNB
             gradientView.Layer.InsertSublayer(gradientLayer, 0);
             View.AddSubview(gradientView);
         }
-
+         
         private void CreateNewBackgroundGradient()
         {
             UIView gradientView = new UIView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));

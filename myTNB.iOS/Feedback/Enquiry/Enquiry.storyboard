@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="377">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+    </dependencies>
+    <scenes>
+        <scene sceneID="376">
+            <objects>
+                <navigationController id="377" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="379">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue id="476" destination="386" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="380" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="62" y="-102"/>
+        </scene>
+        <scene sceneID="385">
+            <objects>
+                <viewController id="386" sceneMemberID="viewController" storyboardIdentifier="GeneralEnquiryViewController" customClass="GeneralEnquiryViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="383"/>
+                        <viewControllerLayoutGuide type="bottom" id="384"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="387">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                    <navigationItem title="Title" id="475" key="navigationItem"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="388" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="63" y="755"/>
+        </scene>
+        <scene sceneID="844">
+            <objects>
+                <viewController id="845" sceneMemberID="viewController" storyboardIdentifier="GeneralEnquiry2ViewController" customClass="GeneralEnquiry2ViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="842"/>
+                        <viewControllerLayoutGuide type="bottom" id="843"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="846">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                    <navigationItem title="Title" id="1034" key="navigationItem"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="847" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="703" y="756"/>
+        </scene>
+        <scene sceneID="890">
+            <objects>
+                <navigationController id="891" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="893">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue id="1035" destination="845" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="894" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="696" y="-99"/>
+        </scene>
+        <scene sceneID="1407">
+            <objects>
+                <viewController id="1408" sceneMemberID="viewController" storyboardIdentifier="UpdatePersonalDetailViewController" customClass="UpdatePersonalDetailViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1405"/>
+                        <viewControllerLayoutGuide type="bottom" id="1406"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="1409">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                    <navigationItem title="Title" id="2229" key="navigationItem"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1410" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="43" y="2446"/>
+        </scene>
+        <scene sceneID="2075">
+            <objects>
+                <navigationController id="2076" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2078">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue id="2230" destination="1408" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2079" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="46" y="1591"/>
+        </scene>
+        <scene sceneID="2619">
+            <objects>
+                <navigationController id="2620" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2622">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue id="2851" destination="2677" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2623" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="694" y="1598"/>
+        </scene>
+        <scene sceneID="2676">
+            <objects>
+                <viewController id="2677" sceneMemberID="viewController" storyboardIdentifier="UpdatePersonalDetail2ViewController" customClass="UpdatePersonalDetail2ViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2674"/>
+                        <viewControllerLayoutGuide type="bottom" id="2675"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="2678">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                    <navigationItem title="Title" id="2850" key="navigationItem"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2679" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="684" y="2443"/>
+        </scene>
+        <scene sceneID="3124">
+            <objects>
+                <navigationController id="3125" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="3127">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue id="3348" destination="3182" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3128" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1290" y="1596"/>
+        </scene>
+        <scene sceneID="3181">
+            <objects>
+                <viewController id="3182" sceneMemberID="viewController" storyboardIdentifier="UpdatePersonalDetail3ViewController" customClass="UpdatePersonalDetail3ViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="3179"/>
+                        <viewControllerLayoutGuide type="bottom" id="3180"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3183">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                    <navigationItem title="Title" id="3347" key="navigationItem"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3184" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1292" y="2451"/>
+        </scene>
+        <scene sceneID="3745">
+            <objects>
+                <navigationController id="3746" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="3748">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue id="3781" destination="3755" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3749" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1895" y="783"/>
+        </scene>
+        <scene sceneID="3754">
+            <objects>
+                <viewController id="3755" sceneMemberID="viewController" customClass="EnquiryStatusPageViewController" storyboardIdentifier="EnquiryStatusPageViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="3752"/>
+                        <viewControllerLayoutGuide type="bottom" id="3753"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3756">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                    <navigationItem title="Title" id="3780" key="navigationItem"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3757" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2411" y="784"/>
+        </scene>
+        <scene sceneID="4235">
+            <objects>
+                <navigationController id="4236" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="4238">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue id="4265" destination="4245" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4239" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1899" y="1598"/>
+        </scene>
+        <scene sceneID="4244">
+            <objects>
+                <viewController id="4245" sceneMemberID="viewController" customClass="EnquiryDetailsViewController" storyboardIdentifier="EnquiryDetailsViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="4242"/>
+                        <viewControllerLayoutGuide type="bottom" id="4243"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="4246">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                    <navigationItem title="Title" id="4264" key="navigationItem"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4247" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2414" y="1595"/>
+        </scene>
+    </scenes>
+</document>

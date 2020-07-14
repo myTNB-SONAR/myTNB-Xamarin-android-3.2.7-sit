@@ -94,25 +94,71 @@ namespace myTNB
                         {
                             InvokeOnMainThread(() =>
                             {
-                                if (_feedbackDetails != null && _feedbackDetails.d != null
-                                   && _feedbackDetails.d.data != null && _feedbackDetails.d.IsSuccess)
+                                if (!DataManager.DataManager.SharedInstance.IsLoggedIn())
                                 {
-                                    _feedbackDetails.d.data.FeedbackCategoryId = feedback.FeedbackCategoryId;
-                                    _feedbackDetails.d.data.FeedbackMessage = feedback.FeedbackMessage;
-                                    _feedbackDetails.d.data.FeedbackCategoryName = feedback.FeedbackCategoryName;
-                                    UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackDetails", null);
-                                    FeedbackDetailsViewController viewController =
-                                        storyBoard.InstantiateViewController("FeedbackDetailsViewController")
-                                                  as FeedbackDetailsViewController;
-                                    viewController.FeedbackDetails = _feedbackDetails.d.data;
-                                    viewController.Title = feedback.FeedbackNameInListView;
-                                    UINavigationController navController = new UINavigationController(viewController);
-                                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                                    PresentViewController(navController, true, null);
+                                    if (_feedbackDetails != null && _feedbackDetails.d != null
+                                       && _feedbackDetails.d.data != null && _feedbackDetails.d.IsSuccess && _feedbackDetails.d.data.RelationshipWithCA == null)
+                                    {
+                                        _feedbackDetails.d.data.FeedbackCategoryId = feedback.FeedbackCategoryId;
+                                        _feedbackDetails.d.data.FeedbackMessage = feedback.FeedbackMessage;
+                                        _feedbackDetails.d.data.FeedbackCategoryName = feedback.FeedbackCategoryName;
+                                        UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackDetails", null);
+                                        FeedbackDetailsViewController viewController =
+                                            storyBoard.InstantiateViewController("FeedbackDetailsViewController")
+                                                      as FeedbackDetailsViewController;
+                                        viewController.FeedbackDetails = _feedbackDetails.d.data;
+                                        viewController.Title = feedback.FeedbackNameInListView;
+                                        UINavigationController navController = new UINavigationController(viewController);
+                                        navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                                        PresentViewController(navController, true, null);
+                                    }
+                                    else
+                                    {
+                                        DisplayServiceError(_feedbackDetails.d.DisplayMessage);
+                                    }
                                 }
                                 else
                                 {
-                                    DisplayServiceError(_feedbackDetails.d.DisplayMessage);
+                                    if (_feedbackDetails != null && _feedbackDetails.d != null
+                                     && _feedbackDetails.d.data != null && _feedbackDetails.d.IsSuccess && _feedbackDetails.d.data.RelationshipWithCA != null)
+                                    {
+                                        _feedbackDetails.d.data.FeedbackCategoryId = feedback.FeedbackCategoryId;
+                                        _feedbackDetails.d.data.FeedbackMessage = feedback.FeedbackMessage;
+                                        _feedbackDetails.d.data.FeedbackCategoryName = feedback.FeedbackCategoryName;
+                                        UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
+                                        EnquiryDetailsViewController enquiryDetailsViewController =
+                                         storyBoard.InstantiateViewController("EnquiryDetailsViewController")
+                                         as EnquiryDetailsViewController;
+
+                                        enquiryDetailsViewController._feedbackDetails = _feedbackDetails.d.data;
+                                        enquiryDetailsViewController.Title = feedback.FeedbackNameInListView;
+
+                                        UINavigationController navController = new UINavigationController(enquiryDetailsViewController);
+                                        navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                                        PresentViewController(navController, true, null);
+                                    }
+                                    else if (_feedbackDetails != null && _feedbackDetails.d != null
+                                    && _feedbackDetails.d.data != null && _feedbackDetails.d.IsSuccess && _feedbackDetails.d.data.RelationshipWithCA == null)
+                                    {
+                                        _feedbackDetails.d.data.FeedbackCategoryId = feedback.FeedbackCategoryId;
+                                        _feedbackDetails.d.data.FeedbackMessage = feedback.FeedbackMessage;
+                                        _feedbackDetails.d.data.FeedbackCategoryName = feedback.FeedbackCategoryName;
+                                        UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackDetails", null);
+                                        FeedbackDetailsViewController viewController =
+                                         storyBoard.InstantiateViewController("FeedbackDetailsViewController")
+                                         as FeedbackDetailsViewController;
+
+                                        viewController.FeedbackDetails = _feedbackDetails.d.data;
+                                        viewController.Title = feedback.FeedbackNameInListView;
+
+                                        UINavigationController navController = new UINavigationController(viewController);
+                                        navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                                        PresentViewController(navController, true, null);
+                                    }
+                                    else
+                                    {
+                                        DisplayServiceError(_feedbackDetails.d.DisplayMessage);
+                                    }
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -136,7 +182,9 @@ namespace myTNB
                     serviceManager.usrInf,
                     serviceReqNo = serviceReq
                 };
-                _feedbackDetails = serviceManager.OnExecuteAPIV6<SubmittedFeedbackDetailsResponseModel>(FeedbackConstants.Service_GetSubmittedFeedbackDetails, requestParameter);
+                //_feedbackDetails = serviceManager.OnExecuteAPIV6<SubmittedFeedbackDetailsResponseModel>(FeedbackConstants.Service_GetSubmittedFeedbackDetails, requestParameter);
+                _feedbackDetails = serviceManager.OnExecuteAPIV6<SubmittedFeedbackDetailsResponseModel>("GetSubmittedFeedbackWithContactDetails", requestParameter);
+
             });
         }
     }
