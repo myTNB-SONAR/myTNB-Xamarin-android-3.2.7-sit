@@ -1,13 +1,14 @@
 ﻿using System;
 using UIKit;
 
-namespace myTNB.Customs.GenericStatusPage
+namespace myTNB.Feedback.Enquiry.EnquiryStatusPage
 {
-    public class StatusPageActions
+    public class EnquiryStatusPageActions
     {
+
         readonly UIViewController _controller;
         public UIViewController _nextViewController;
-        public StatusPageActions(UIViewController controller, UIViewController nextViewController = null)
+        public EnquiryStatusPageActions(UIViewController controller, UIViewController nextViewController = null)
         {
             _controller = controller;
             _nextViewController = nextViewController;
@@ -46,11 +47,6 @@ namespace myTNB.Customs.GenericStatusPage
         internal void BackToFeedback()
         {
             _controller.DismissViewController(true, null);
-        }
-
-        internal void ViewSubmittedEnquiry()
-        {
-            _controller.NavigationController.PushViewController(_nextViewController,true);
         }
     }
 }

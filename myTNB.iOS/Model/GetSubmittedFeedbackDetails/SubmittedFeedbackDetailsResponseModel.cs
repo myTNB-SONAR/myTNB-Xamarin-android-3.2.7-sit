@@ -30,6 +30,15 @@ namespace myTNB.Model
         public string FeedbackCategoryId { set; get; }
         public string FeedbackMessage { set; get; }
         public string FeedbackCategoryName { set; get; }
+        //Add Custom
+        public List<FeedbackUpdateDetailsModels> FeedbackUpdateDetails { set; get; }
+        public string ContactName { set; get; }
+        public string ContactEmailAddress { set; get; }
+        public string ContactMobileNo { set; get; }
+        public bool? IsOwner { set; get; }
+        public int? RelationshipWithCA { set; get; }
+        public string RelationshipWithCADesc { set; get; }
+
     }
 
     public class FeedbackImageModel
@@ -37,5 +46,12 @@ namespace myTNB.Model
         public string imageHex { set; get; }
         public string fileName { set; get; }
         public string fileSize { set; get; }
+    }
+
+    public class FeedbackUpdateDetailsModels //add
+    {
+        public int FeedbackUpdInfoType { set; get; }
+        public string FeedbackUpdInfoTypeDesc { set; get; }
+        public string FeedbackUpdInfoValue { set; get; }
     }
 }

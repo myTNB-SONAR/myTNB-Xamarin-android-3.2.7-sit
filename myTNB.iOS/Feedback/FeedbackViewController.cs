@@ -21,6 +21,11 @@ namespace myTNB
         private SubmittedFeedbackResponseModel _submittedFeedback = new SubmittedFeedbackResponseModel();
         private string _email = string.Empty;
 
+        //cell1
+        public UIView _viewTitleSection;
+        public UIView Frame;
+        public UILabel lblTitle;         public UILabel lblSubtTitle;         public UIView viewLine;         public UILabel lblCount;         public UIImageView imgViewIcon;
+
         public override void ViewDidLoad()
         {
             PageName = FeedbackConstants.Pagename_FeedbackList;
@@ -156,14 +161,28 @@ namespace myTNB
 
         internal void DisplayFeedbackEntry(string id)
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
-            FeedbackEntryViewController feedbackEntryViewController =
-             storyBoard.InstantiateViewController("FeedbackEntryViewController") as FeedbackEntryViewController;
-            feedbackEntryViewController.FeedbackID = id;
-            feedbackEntryViewController.IsLoggedIn = DataManager.DataManager.SharedInstance.IsLoggedIn();//!isFromPreLogin;
-            UINavigationController navController = new UINavigationController(feedbackEntryViewController);
-            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-            PresentViewController(navController, true, null);
+            if (!DataManager.DataManager.SharedInstance.IsLoggedIn()) //Check user from prelogin or login
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
+                FeedbackEntryViewController feedbackEntryViewController =
+                 storyBoard.InstantiateViewController("FeedbackEntryViewController") as FeedbackEntryViewController;
+                feedbackEntryViewController.FeedbackID = id;
+                feedbackEntryViewController.IsLoggedIn = DataManager.DataManager.SharedInstance.IsLoggedIn();//!isFromPreLogin;
+                UINavigationController navController = new UINavigationController(feedbackEntryViewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                PresentViewController(navController, true, null);
+            }
+            else
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
+                EnquiryViewController enquiryViewController =
+                 storyBoard.InstantiateViewController("EnquiryViewController") as EnquiryViewController;
+                enquiryViewController.FeedbackID = id;
+                enquiryViewController.IsLoggedIn = DataManager.DataManager.SharedInstance.IsLoggedIn();//!isFromPreLogin;
+                UINavigationController navController = new UINavigationController(enquiryViewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                PresentViewController(navController, true, null);
+            }
         }
 
         private Task GetSubmittedFeedbackList()

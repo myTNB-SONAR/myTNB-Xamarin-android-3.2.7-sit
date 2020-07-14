@@ -92,6 +92,21 @@ namespace myTNB.DataManager
         public int CurrentSelectedStateForFeedbackIndex = -1;
         public int CurrentSelectedFeedbackTypeIndex = 0;
 
+        //General Eqnuiry
+        public string CurrentSelectedEnquiryCA = string.Empty;
+        public string CurrentSelectedEnquiryMessage = string.Empty;
+        public List<string> CurrentSelectedEnquiryImageName = new List<string>();
+        public string CurrentSelectedEnquiryContactName = string.Empty;
+        public string CurrentSelectedEnquiryContactMobileNo = string.Empty;
+        public string CurrentSelectedEnquiryContactEmaillAddress = string.Empty;
+
+        //Updated Personal Detail
+        public int CurrentSelectedRelationshipTypeNoIndex = 0;
+        public int IsOwner = 0;
+        public int Relationship = 0;
+        public string RelationshipDesc = null;
+        public List<FeedbackUpdateDetailsModel> FeedbackUpdateDetails = new List<FeedbackUpdateDetailsModel>();
+
         //Find Us
         public int CurrentStoreTypeIndex = 0;
         public int PreviousStoreTypeIndex = 0;

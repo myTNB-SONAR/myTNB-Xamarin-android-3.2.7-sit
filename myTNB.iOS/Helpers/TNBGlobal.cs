@@ -64,6 +64,8 @@ namespace myTNB
         public static string ACCOUNT_NO_PATTERN = @"^[0-9]{12}$";
         public static string IC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
         public static string PasswordPattern = @"^(?=.*[A-Za-z])(?=.*\d)[^.]{8,}$";
+        public static string ROC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
+
 
         /// <summary>
         /// Gets the payment URL.
@@ -100,7 +102,8 @@ namespace myTNB
         /// <summary>
         /// The input characters limits.
         /// </summary>
-        public static int FeedbackMaxCharCount = 250;
+        public static int FeedbackMaxCharCount = 75;
+        //public static int FeedbackMaxCharCount = 250;
         public static int FEEDBACK_FIELD_MAX_HEIGHT = 113;
         public static int AccountNumberLowCharLimit = 12;
         public static int AccountNumberHighCharLimit = 14;

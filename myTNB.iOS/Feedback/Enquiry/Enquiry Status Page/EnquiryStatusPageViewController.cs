@@ -1,14 +1,15 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using CoreGraphics;
-using UIKit;
 using myTNB.Customs.GenericStatusPage;
+using myTNB.Feedback.Enquiry.EnquiryStatusPage;
+using UIKit;
 
 namespace myTNB
 {
-    public partial class GenericStatusPageViewController : CustomUIViewController
+    public partial class EnquiryStatusPageViewController : CustomUIViewController
     {
-        public GenericStatusPageViewController(IntPtr handle) : base(handle)
+        public EnquiryStatusPageViewController (IntPtr handle) : base (handle)
         {
         }
 
@@ -57,15 +58,14 @@ namespace myTNB
             set; get;
         }
 
-        private StatusPageActions _actions;
+        private EnquiryStatusPageActions _actions;
 
         public enum StatusType
         {
             Feedback,
             SSMRApply,
             SSMRDiscontinue,
-            SSMRReading,
-            Enquiry
+            SSMRReading
         }
 
         public UIViewController NextViewController
@@ -85,7 +85,7 @@ namespace myTNB
             PageName = StatusPageConstants.PageName;
             NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
-            _actions = new StatusPageActions(this, NextViewController);
+            _actions = new EnquiryStatusPageActions(this, NextViewController);
             SetStatusCard();
             AddCTA();
         }
@@ -253,14 +253,6 @@ namespace myTNB
                     value = GetI18NValue(StatusPageConstants.SSMRReadingI18NDictionary[key]);
                 }
             }
-            if (StatusDisplayType == StatusType.Enquiry) //this enquiry
-            {
-                bool isKeyExist = StatusPageConstants.FeedbackI18NDictionary.ContainsKey(key);
-                if (isKeyExist)
-                {
-                    value = GetI18NValue(StatusPageConstants.FeedbackI18NDictionary[key]);
-                }
-            }
             return value;
         }
 
@@ -311,21 +303,7 @@ namespace myTNB
 
                 }
             }
-            else if (StatusDisplayType == StatusType.Enquiry) //this enquiry
-            {
-                if (IsSuccess)
-                {
-                    GetCTA(ref btnSecondary, GetCommonI18NValue(StatusPageConstants.I18N_BacktoHome), false, _actions.BackToHome, true); //ViewSubmittedEnquiry
-                    GetCTA(ref btnPrimary, "View Submitted Enquiry", true, _actions.BackToHome); 
-                }
-                else
-                {
-                    GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.BackToHome, true);
-
-                }
-            }
             View.AddSubviews(new UIView[] { btnPrimary, btnSecondary });
-
         }
 
         private void GetCTA(ref CustomUIButtonV2 btn, string title, bool isPrimary, Action ctaAction, bool isWhiteBG = false)
