@@ -860,6 +860,49 @@ You acknowledge that you have been provided with and have read and understood th
   <string name="feedback_total_character_left">250 characters left</string>
   <!-- End of Feedback-->
 
+  <!-- SubmitICFeedback -->
+   <string name="submitICFeedback_account_number">Account Number</string>
+   <string name="submitICFeedback_WhereisMyAccount">Where is my account number?</string>
+   <string name="submitICFeedback_HowCanWehelp">How can we help you?</string>
+   <string name="submitICFeedback_GeneralEnquiryTitle">General Enquiry</string>
+   <string name="submitICFeedback_GeneralEnquirySuBTitle">I want to submit my thought &amp; concerns.</string>
+   <string name="submitICFeedback_UpdatePersonal">Update Personal Details</string>
+   <string name="submitICFeedback_UpdatePersonalSub">I want to update my personal details.</string>
+  <!-- end of SubmitICFeedback -->
+
+  <!-- GeneralEnquiry1of2 -->
+  <string name="GeneralEnquiry1of2_app_bar">General Enquiry \n Step 1 of 2</string>
+  <string name="GeneralEnquiry1of2_iwanttoenquire">I want to enquire about:</string>
+  <string name="GeneralEnquiry1of2_urmessage">YOUR MESSAGE</string>
+  <string name="GeneralEnquiry1of2_uploadSupporting">Upload supporting documents:</string>
+  <string name="GeneralEnquiry1of2_uploadSupporting_sub">Attach photo / screenshot &#40;optional&#41;</string>
+  <string name="GeneralEnquiry1of2_uploadSupporting_img_sub">Maximum document size is 1MB. &#40;PDF, JPG &amp; JPEG format only&#41;</string>
+  <string name="GeneralEnquiry1of2_next">Next</string>
+  <!-- end of GeneralEnquiry1of2 -->
+
+  <!-- GeneralEnquiry2of2 -->
+  <string name="GeneralEnquiry2of2_app_bar">General Enquiry \n Step 2 of 2</string>
+  <string name="GeneralEnquiry2of2_who_shouldWeCntct">Who should  we contact regardig this enquiry?</string>
+  <string name="GeneralEnquiry2of2_name">NAME</string>
+  <string name="GeneralEnquiry2of2_email">EMAIL ADDRESS</string>
+  <string name="GeneralEnquiry2of2_mobileNumber">MOBILE NUMBER</string>
+  <string name="GeneralEnquiry2of2_tnc">By submitting you are agreeing to the TNB Terms of Use. User Agreement and Privacy policy and Personal Data Protection Policy.</string>
+  <string name="GeneralEnquiry2of2_submit">Submit</string>
+  <!-- end of GeneralEnquiry2of2 -->
+
+
+  <!-- GeneralEnquirySuccess -->
+  <string name="GeneralEnquirySuccess_ThankU">Thank you For Your Enquiry!</string>
+  <string name="GeneralEnquirySuccess_wellgetback">Well get back to you as soon, in the meantime, stay updated by tracking your submitted enquiry status.</string>
+  <string name="GeneralEnquirySuccess_serviceReqNum">SERVICE REQUEST NUMBER</string>
+  <string name="GeneralEnquirySuccess_serviceReqNum_sample">49RC827</string>
+  <string name="GeneralEnquirySuccess_backHome">Back to Home</string>
+  <string name="GeneralEnquirySuccess_ViewSubmitted">View Submitted Enquiry</string>
+  <!-- end of GeneralEnquirySuccess -->
+
+
+  
+
 
 
   <!-- Manage Cards-->

@@ -54,6 +54,25 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string APP_NAVIGATION_KEY = ".appNavigation";
         internal static readonly string FROM_BILL_DETAILS_PAGE = ".fromBillDetailsPage";
         internal static readonly string SELECT_COUNTRY_CODE = ".selectCountryCode";
+        internal static readonly string SELECT_REGISTERED_OWNER = ".registedOwner";
+        internal static readonly string OWNER_RELATIONSHIP = ".ownerRelationship";
+        internal static readonly string ACCOUNT_OWNER_NAME = ".accOwnerName";
+        internal static readonly string ACCOUNT_MOBILE_NUMBER = ".mobileNumber";
+        internal static readonly string ACCOUNT_EMAIL_ADDRESS = ".emailAddress";
+        internal static readonly string ACCOUNT_MAILING_ADDRESS = ".mailingAddress";
+        internal static readonly string ACCOUNT_PREMISE_ADDRESS = ".premiseAddress";
+        internal static readonly string ACCOUNT_IC_NUMBER = ".icNumber";
+        internal static readonly string ADAPTER_TYPE = ".adapterType";
+        internal static readonly string IMAGE_OWNER = ".imageOwner";
+        internal static readonly string IMAGE_OWN = ".imageOwn";
+        internal static readonly string IMAGE_SUPPORTING_DOC = ".imageSupportingDoc";
+        internal static readonly string PAGE_TITLE = ".pageTitle";
+        internal static readonly string PAGE_STEP_TITLE = ".pageStepTitle";
+        internal static readonly string ACCOUNT_NUMBER = ".accountNumber";
+
+
+
+
 
         internal static readonly int VIEW_TYPE_REAL_RECORD = 0;
         internal static readonly int VIEW_TYPE_DUMMY_RECORD = 1;

@@ -1,6 +1,7 @@
 ﻿using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.MVP;
 using System.Collections.Generic;
+using static myTNB_Android.Src.Base.Models.SubmittedFeedbackDetails;
 
 namespace myTNB_Android.Src.FeedbackDetails.MVP
 {
@@ -22,7 +23,7 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                 /// <param name="accountNoName">string</param>
                 /// <param name="feedback">string</param>
 
-                void ShowInputData(string feedbackId, string feedbackStatus, string feedbackCode, string dateTime, string accountNoName, string feedback);
+                void ShowInputData(string feedbackId, string feedbackStatus, string feedbackCode, string dateTime, string accountNoName, string feedback , List<FeedbackUpdate> feedbackUpdateList, string name, string email, string mobile, int? relationShip, string relationshipDesc);
 
                 /// <summary>
                 /// Show/Add to adapter

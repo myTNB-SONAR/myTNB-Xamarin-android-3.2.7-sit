@@ -373,6 +373,19 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        internal static void SaveAdapterType(ISharedPreferences mSharedPref, string largeJsonString)
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.PutString(Constants.ADAPTER_TYPE, largeJsonString);
+            editor.Apply();
+        }
+
+        internal static string GetAdapterType(ISharedPreferences mSharePref)
+        {
+            return mSharePref.GetString(Constants.ADAPTER_TYPE, null);
+        }
+
+
         internal static string GetSelectedFeedback(ISharedPreferences mSharePref)
         {
             return mSharePref.GetString(Constants.SELECTED_FEEDBACK, null);

@@ -13,9 +13,11 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Feedback_Login_BillRelated.Activity;
 using myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity;
 using myTNB_Android.Src.Feedback_Login_Others.Activity;
+using myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.SelectSubmittedFeedback.Activity;
+using myTNB_Android.Src.SubmittedNewEnquiry.Activity;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -74,10 +76,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         View spaceOthers;
 
         MaterialDialog progressDialog;
+        
 
         [BindView(Resource.Id.feedbackMenuHeaderImage)]
         ImageView feedbackMenuHeaderImage;
+
+        //syahmi add
+        [BindView(Resource.Id.submitNewEnquiryConstraint)]
+        ConstraintLayout submitNewEnquiryConstraint;
+
+    
+
         
+
+        [BindView(Resource.Id.txtViewid_FeedbackNewIC)]
+        TextView txtViewid_FeedbackNewIC;
+
+        [BindView(Resource.Id.textviewid_subContent_FeedbackNewIC)]
+        TextView textviewid_subContent_FeedbackNewIC;
+
+        [BindView(Resource.Id.spaceNewEnquiry)]
+        View spaceNewEnquiry;
+
+        
+
 
         FeedbackMenuContract.IUserActionsListener userActionsListener;
         FeedbackMenuPresenter mPresenter;
@@ -85,8 +107,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         string feedbackBillRelatedTitle = "";
         string feedbackStreetLampTitle = "";
         string feedbackOthersTitle = "";
-
         string submittedFeedbackTitle = "";
+        //syahhmi add
+        string feedbackNewIc = "";
+   
 
 
         public override int ResourceId()
@@ -116,12 +140,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             TextViewUtils.SetMuseoSans300Typeface(txtFeedbackBillingAndPaymentContent,
                         txtFeedbackFaultyStreetLampsContent,
                         txtSubmittedFeedbackContent,
-                        txtFeedbackOthersContent);
+                        txtFeedbackOthersContent, textviewid_subContent_FeedbackNewIC);
 
             TextViewUtils.SetMuseoSans500Typeface(txtFeedbackBillingAndPayment,
                         txtFeedbackFaultyStreetLamps,
                         txtSubmittedFeedback,
-                        txtFeedbackOthers);
+                        txtFeedbackOthers, txtViewid_FeedbackNewIC);
 
             ((DashboardHomeActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("FeedbackList", "title"));
 
@@ -180,9 +204,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         public void ShowBillingPayment()
         {
             var billingPaymentFeedback = new Intent(this.Activity, typeof(FeedbackLoginBillRelatedActivity));
+            billingPaymentFeedback.PutExtra("TITLE", feedbackNewIc);
+            StartActivity(billingPaymentFeedback);
+        }
+
+        //syahmi add
+        public void ShowSubmitNewEnquiry()
+        {   //todo change intent location 
+            var billingPaymentFeedback = new Intent(this.Activity, typeof(FeedbackPreloginNewICActivity));
             billingPaymentFeedback.PutExtra("TITLE", feedbackBillRelatedTitle);
             StartActivity(billingPaymentFeedback);
         }
+
+
 
 
         public void ShowFaultyStreetLamps()
@@ -208,6 +242,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             StartActivity(submittedFeedback);
         }
 
+        public void ShowSubmittedFeedbackNew()
+        {
+            var submittedFeedback = new Intent(this.Activity, typeof(SubmittedNewEnquiryActivity));
+            submittedFeedback.PutExtra("TITLE", submittedFeedbackTitle);
+            StartActivity(submittedFeedback);
+        }
+
 
 
         [OnClick(Resource.Id.billRelatedContraint)]
@@ -224,6 +265,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 else
                 {
                     this.userActionsListener.OnBillingPayment();
+                }
+            }
+        }
+
+        //syahmi add
+        [OnClick(Resource.Id.submitNewEnquiryConstraint)]
+        void OnNewIc(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+
+                this.SetIsClicked(true);
+                if (DownTimeEntity.IsBCRMDown())
+                {
+                    this.SetIsClicked(false);
+                    OnBCRMDownTimeErrorMessage();
+                }
+                else
+                {
+                    this.userActionsListener.OnSubmitNewEnquiry();
                 }
             }
         }
@@ -273,6 +334,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 this.userActionsListener.OnSubmittedFeedback();
             }
         }
+
+
 
 
         public void ShowSubmittedFeedbackCount(int count)
@@ -392,13 +455,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 spaceBillRelated.Visibility = ViewStates.Gone;
                 spaceFaultyStreetLamps.Visibility = ViewStates.Gone;
                 spaceOthers.Visibility = ViewStates.Gone;
+
+                //syahmi add
+                submitNewEnquiryConstraint.Visibility= ViewStates.Gone;
+                spaceNewEnquiry.Visibility = ViewStates.Gone;
+
+
                 foreach (FeedbackCategoryEntity fc in feedbackCategory)
                 {
                     if (fc.Id.Equals("1"))
                     {
-                        billRelatedConstraint.Visibility = ViewStates.Visible;
-                        spaceBillRelated.Visibility = ViewStates.Visible;
-                        feedbackBillRelatedTitle = fc.Name;
+                        //billRelatedConstraint.Visibility = ViewStates.Visible;
+                        //spaceBillRelated.Visibility = ViewStates.Visible;
+                        //feedbackBillRelatedTitle = fc.Name;
+                        //txtFeedbackBillingAndPayment.Text = fc.Name;
+                        //txtFeedbackBillingAndPaymentContent.Text = fc.Desc;
+
+                        //syahmi add
+
+
+                        submitNewEnquiryConstraint.Visibility = ViewStates.Visible;
+                        spaceNewEnquiry.Visibility = ViewStates.Visible;
+                        feedbackNewIc = fc.Name;
                         txtFeedbackBillingAndPayment.Text = fc.Name;
                         txtFeedbackBillingAndPaymentContent.Text = fc.Desc;
                     }
