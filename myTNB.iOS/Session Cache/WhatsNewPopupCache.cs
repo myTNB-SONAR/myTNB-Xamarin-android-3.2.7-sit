@@ -4,16 +4,11 @@ using Foundation;
 
 namespace myTNB
 {
-    public sealed class WhatsNewCache
+    public sealed class WhatsNewPopupCache
     {
-        private static readonly Lazy<WhatsNewCache> lazy = new Lazy<WhatsNewCache>(() => new WhatsNewCache());
-        public static WhatsNewCache Instance { get { return lazy.Value; } }
+        private static readonly Lazy<WhatsNewPopupCache> lazy = new Lazy<WhatsNewPopupCache>(() => new WhatsNewPopupCache());
+        public static WhatsNewPopupCache Instance { get { return lazy.Value; } }
         private static Dictionary<string, NSData> ImageDictionary = new Dictionary<string, NSData>();
-
-        public static bool WhatsNewIsAvailable { set; get; }
-        public static bool RefreshWhatsNew { set; get; } = false;
-        public static string DeeplinkWhatsNewId { set; get; }
-        public static bool IsSitecoreRefresh { set; get; }
 
         public static void SaveImage(string key, NSData data)
         {
@@ -46,8 +41,6 @@ namespace myTNB
             {
                 ImageDictionary.Clear();
             }
-            WhatsNewIsAvailable = false;
-            DeeplinkWhatsNewId = string.Empty;
         }
 
         public static void ClearImages()

@@ -4,22 +4,17 @@ using Foundation;
 
 namespace myTNB
 {
-    public sealed class WhatsNewCache
+    public sealed class WhatsNewDetailDescriptionCache
     {
-        private static readonly Lazy<WhatsNewCache> lazy = new Lazy<WhatsNewCache>(() => new WhatsNewCache());
-        public static WhatsNewCache Instance { get { return lazy.Value; } }
-        private static Dictionary<string, NSData> ImageDictionary = new Dictionary<string, NSData>();
+        private static readonly Lazy<WhatsNewDetailDescriptionCache> lazy = new Lazy<WhatsNewDetailDescriptionCache>(() => new WhatsNewDetailDescriptionCache());
+        public static WhatsNewDetailDescriptionCache Instance { get { return lazy.Value; } }
+        private static Dictionary<string, Dictionary<string, string>> ImageDictionary = new Dictionary<string, Dictionary<string, string>>();
 
-        public static bool WhatsNewIsAvailable { set; get; }
-        public static bool RefreshWhatsNew { set; get; } = false;
-        public static string DeeplinkWhatsNewId { set; get; }
-        public static bool IsSitecoreRefresh { set; get; }
-
-        public static void SaveImage(string key, NSData data)
+        public static void SaveImages(string key, Dictionary<string, string> data)
         {
             if (ImageDictionary == null)
             {
-                ImageDictionary = new Dictionary<string, NSData>();
+                ImageDictionary = new Dictionary<string, Dictionary<string, string>>();
             }
             if (ImageDictionary.ContainsKey(key))
             {
@@ -31,7 +26,7 @@ namespace myTNB
             }
         }
 
-        public static NSData GetImage(string key)
+        public static Dictionary<string, string> GetImages(string key)
         {
             if (ImageDictionary.ContainsKey(key))
             {
@@ -46,8 +41,6 @@ namespace myTNB
             {
                 ImageDictionary.Clear();
             }
-            WhatsNewIsAvailable = false;
-            DeeplinkWhatsNewId = string.Empty;
         }
 
         public static void ClearImages()

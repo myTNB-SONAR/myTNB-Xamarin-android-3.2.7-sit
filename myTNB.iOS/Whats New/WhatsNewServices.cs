@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using Foundation;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
@@ -116,6 +117,272 @@ namespace myTNB
             }
         }
 
+        public static bool GetIsSkipAppLaunch(string id)
+        {
+            bool isSkip = false;
+            if (id.IsValid())
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                Dictionary<string, bool> dict = new Dictionary<string, bool>();
+                string cachedData = sharedPreference.StringForKey(WhatsNewConstants.Pref_WhatsNewSkipModelFlags);
+                if (cachedData.IsValid())
+                {
+                    dict = JsonConvert.DeserializeObject<Dictionary<string, bool>>(cachedData);
+                    if (dict != null)
+                    {
+                        if (dict.ContainsKey(id))
+                        {
+                            isSkip = dict[id];
+                        }
+                    }
+                }
+            }
+            return isSkip;
+        }
+
+        public static void SetIsSkipAppLaunch(string id, bool flag)
+        {
+            if (id.IsValid())
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                Dictionary<string, bool> dict = new Dictionary<string, bool>();
+                string cachedData = sharedPreference.StringForKey(WhatsNewConstants.Pref_WhatsNewSkipModelFlags);
+                if (cachedData.IsValid())
+                {
+                    dict = JsonConvert.DeserializeObject<Dictionary<string, bool>>(cachedData);
+                    if (dict != null)
+                    {
+                        if (dict.ContainsKey(id))
+                        {
+                            dict.Remove(id);
+                        }
+
+                        dict.Add(id, flag);
+                        var jsonStr = JsonConvert.SerializeObject(dict);
+                        sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewSkipModelFlags);
+                        sharedPreference.Synchronize();
+                    }
+                    else
+                    {
+                        dict.Add(id, flag);
+                        var jsonStr = JsonConvert.SerializeObject(dict);
+                        sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewSkipModelFlags);
+                        sharedPreference.Synchronize();
+                    }
+                }
+                else
+                {
+                    dict.Add(id, flag);
+                    var jsonStr = JsonConvert.SerializeObject(dict);
+                    sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewSkipModelFlags);
+                    sharedPreference.Synchronize();
+                }
+            }
+        }
+
+        public static string GetWhatNewModelShowDate(string id)
+        {
+            string dateTime = GetCurrentDate();
+            if (id.IsValid())
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                Dictionary<string, string> dict = new Dictionary<string, string>();
+                string cachedData = sharedPreference.StringForKey(WhatsNewConstants.Pref_WhatsNewModelShowDate);
+                if (cachedData.IsValid())
+                {
+                    dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(cachedData);
+                    if (dict != null)
+                    {
+                        if (dict.ContainsKey(id))
+                        {
+                            dateTime = dict[id];
+                            return dateTime;
+                        }
+                    }
+                }
+
+                SetWhatNewModelExactShowDate(id, dateTime);
+            }
+            return dateTime;
+        }
+
+        public static void SetWhatNewModelExactShowDate(string id, string dateTime)
+        {
+            if (id.IsValid())
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                Dictionary<string, string> dict = new Dictionary<string, string>();
+                string cachedData = sharedPreference.StringForKey(WhatsNewConstants.Pref_WhatsNewModelShowDate);
+                if (cachedData.IsValid())
+                {
+                    dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(cachedData);
+                    if (dict != null)
+                    {
+                        if (dict.ContainsKey(id))
+                        {
+                            dict.Remove(id);
+                        }
+
+                        dict.Add(id, dateTime);
+
+                        var jsonStr = JsonConvert.SerializeObject(dict);
+                        sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewModelShowDate);
+                        sharedPreference.Synchronize();
+                    }
+                    else
+                    {
+                        dict.Add(id, dateTime);
+
+                        var jsonStr = JsonConvert.SerializeObject(dict);
+                        sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewModelShowDate);
+                        sharedPreference.Synchronize();
+                    }
+                }
+                else
+                {
+                    dict.Add(id, dateTime);
+
+                    var jsonStr = JsonConvert.SerializeObject(dict);
+                    sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewModelShowDate);
+                    sharedPreference.Synchronize();
+                }
+            }
+        }
+
+        public static void SetWhatNewModelShowDate(string id, bool isDiffDate)
+        {
+            if (id.IsValid())
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                Dictionary<string, string> dict = new Dictionary<string, string>();
+                string cachedData = sharedPreference.StringForKey(WhatsNewConstants.Pref_WhatsNewModelShowDate);
+                if (cachedData.IsValid())
+                {
+                    dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(cachedData);
+                    if (dict != null)
+                    {
+                        string dateTime = GetCurrentDate();
+
+                        if (!isDiffDate)
+                        {
+                            dateTime = GetWhatNewModelShowDate(id);
+                        }
+
+                        if (dict.ContainsKey(id))
+                        {
+                            dict.Remove(id);
+                        }
+
+                        dict.Add(id, dateTime);
+
+                        var jsonStr = JsonConvert.SerializeObject(dict);
+                        sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewModelShowDate);
+                        sharedPreference.Synchronize();
+                    }
+                    else
+                    {
+                        string dateTime = GetCurrentDate();
+
+                        if (!isDiffDate)
+                        {
+                            dateTime = GetWhatNewModelShowDate(id);
+                        }
+
+                        dict.Add(id, dateTime);
+
+                        var jsonStr = JsonConvert.SerializeObject(dict);
+                        sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewModelShowDate);
+                        sharedPreference.Synchronize();
+                    }
+                }
+                else
+                {
+                    string dateTime = GetCurrentDate();
+
+                    if (!isDiffDate)
+                    {
+                        dateTime = GetWhatNewModelShowDate(id);
+                    }
+
+                    dict.Add(id, dateTime);
+
+                    var jsonStr = JsonConvert.SerializeObject(dict);
+                    sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewModelShowDate);
+                    sharedPreference.Synchronize();
+                }
+            }
+        }
+
+        public static int GetWhatNewModelShowCount(string id)
+        {
+            int count = 0;
+            if (id.IsValid())
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                Dictionary<string, int> dict = new Dictionary<string, int>();
+                string cachedData = sharedPreference.StringForKey(WhatsNewConstants.Pref_WhatsNewModelShowCount);
+                if (cachedData.IsValid())
+                {
+                    dict = JsonConvert.DeserializeObject<Dictionary<string, int>>(cachedData);
+                    if (dict != null)
+                    {
+                        if (dict.ContainsKey(id))
+                        {
+                            count = dict[id];
+                        }
+                    }
+                }
+            }
+            return count;
+        }
+
+        public static void SetWhatNewModelShowCount(string id, int count)
+        {
+            if (id.IsValid())
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                Dictionary<string, int> dict = new Dictionary<string, int>();
+                string cachedData = sharedPreference.StringForKey(WhatsNewConstants.Pref_WhatsNewModelShowCount);
+                if (cachedData.IsValid())
+                {
+                    dict = JsonConvert.DeserializeObject<Dictionary<string, int>>(cachedData);
+                    if (dict != null)
+                    {
+                        if (dict.ContainsKey(id))
+                        {
+                            dict.Remove(id);
+                        }
+
+                        dict.Add(id, count);
+                        var jsonStr = JsonConvert.SerializeObject(dict);
+                        sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewModelShowCount);
+                        sharedPreference.Synchronize();
+                    }
+                    else
+                    {
+                        dict.Add(id, count);
+                        var jsonStr = JsonConvert.SerializeObject(dict);
+                        sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewModelShowCount);
+                        sharedPreference.Synchronize();
+                    }
+                }
+                else
+                {
+                    dict.Add(id, count);
+                    var jsonStr = JsonConvert.SerializeObject(dict);
+                    sharedPreference.SetString(jsonStr, WhatsNewConstants.Pref_WhatsNewModelShowCount);
+                    sharedPreference.Synchronize();
+                }
+            }
+        }
+
+        private static string GetCurrentDate()
+        {
+            DateTime currentDate = DateTime.Now;
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            return currentDate.ToString(@"yyyyMMddTHHmmss", currCult);
+        }
+
         public static string GetPublishedDate(string publishedDate)
         {
             string strPublishedDate = string.Empty;
@@ -172,6 +439,52 @@ namespace myTNB
                     {
                         ShowWhatsNewExpired(topView);
                     }
+                }
+            }
+            else
+            {
+                ShowWhatsNewUnavailable();
+            }
+        }
+
+        public static void OpenWhatsNewDetailsInDetails(string whatsNewId, UIViewController topView)
+        {
+            if (WhatsNewCache.WhatsNewIsAvailable)
+            {
+                if (whatsNewId.IsValid())
+                {
+                    var whatsNew = WhatsNewEntity.GetItem(whatsNewId);
+                    if (whatsNew != null)
+                    {
+                        if (!WhatsNewHasExpired(whatsNew))
+                        {
+                            WhatsNewCache.RefreshWhatsNew = true;
+                            WhatsNewDetailsViewController whatsNewDetailView = new WhatsNewDetailsViewController();
+                            whatsNewDetailView.WhatsNewModel = whatsNew;
+                            UINavigationController navController = new UINavigationController(whatsNewDetailView)
+                            {
+                                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                            };
+                            topView.PresentViewController(navController, true, null);
+
+                            var entityModel = whatsNew.ToEntity();
+                            entityModel.IsRead = true;
+                            WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+                            whatsNewEntity.UpdateItem(entityModel);
+                        }
+                        else
+                        {
+                            ShowWhatsNewExpired(topView);
+                        }
+                    }
+                    else
+                    {
+                        ShowWhatsNewExpired(topView);
+                    }
+                }
+                else
+                {
+                    ShowWhatsNewExpired(topView);
                 }
             }
             else

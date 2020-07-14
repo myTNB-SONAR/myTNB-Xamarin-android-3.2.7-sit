@@ -326,6 +326,20 @@ namespace myTNB.SitecoreCMS.Extensions
             return string.Format("{0}/-/media/{1}.ashx", websiteUrl, id.ToString("N")).Replace(" ", "%20");
         }
 
+        public static string GetImageUrlFromExtractedUrl(this ISitecoreItem item, string extractedUrl, string websiteUrl = null)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(websiteUrl))
+                    return extractedUrl.Replace(" ", "%20");
+                return String.Format("{0}/{1}", websiteUrl, extractedUrl).Replace(" ", "%20");
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+
         private static string GetImageFieldName(string imgSize)
         {
             switch (imgSize)

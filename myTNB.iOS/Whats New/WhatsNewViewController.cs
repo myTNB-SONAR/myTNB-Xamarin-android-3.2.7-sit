@@ -163,7 +163,14 @@ namespace myTNB
                 }
                 else
                 {
-                    SetEmptyView();
+                    if (WhatsNewCache.IsSitecoreRefresh)
+                    {
+                        SetRefreshScreen();
+                    }
+                    else
+                    {
+                        SetEmptyView();
+                    }
                 }
             });
         }

@@ -231,7 +231,7 @@ namespace myTNB
         private void AddTitle()
         {
             _lblTitle = new UILabel(new CGRect(BaseMargin, GetYLocationFromFrame(_bgImageView.Frame, 24)
-               , ViewWidth - GetScaledWidth(10), GetScaledHeight(48)))
+               , BaseMarginedWidth, GetScaledHeight(48)))
             {
                 TextAlignment = UITextAlignment.Left,
                 TextColor = MyTNBColor.WaterBlue,
@@ -294,7 +294,7 @@ namespace myTNB
             _txtViewDetails = new UITextView
             {
                 Editable = false,
-                ScrollEnabled = true,
+                ScrollEnabled = false,
                 AttributedText = mutableHTMLBody,
                 WeakLinkTextAttributes = linkAttributes.Dictionary,
                 ContentInset = new UIEdgeInsets(0, -5, 0, -5)
