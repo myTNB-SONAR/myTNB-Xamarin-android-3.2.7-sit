@@ -19,12 +19,14 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
         FeedbackDetailsContract.BillRelated.IView mView;
         CancellationTokenSource cts;
         SubmittedFeedbackDetails feedbackDetails;
+        private bool isNewScreen;
 
-        public FeedbackDetailsBillRelatedPresenter(FeedbackDetailsContract.BillRelated.IView mView, SubmittedFeedbackDetails feedbackDetails)
+        public FeedbackDetailsBillRelatedPresenter(FeedbackDetailsContract.BillRelated.IView mView, SubmittedFeedbackDetails feedbackDetails , bool isNewScreen)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
             this.feedbackDetails = feedbackDetails;
+            this.isNewScreen = isNewScreen;
         }
 
         public async void Start()
@@ -34,30 +36,33 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                 this.mView.ShowProgressDialog();
 
                 List<AttachedImage> attachImageList = new List<AttachedImage>();
-                foreach (ImageResponse image in feedbackDetails.ImageList)
-                {
-                    if (!TextUtils.IsEmpty(image.ImageHex))
+
+    
+                    foreach (ImageResponse image in feedbackDetails.ImageList)
                     {
-                        try
+                        if (!TextUtils.IsEmpty(image.ImageHex))
                         {
-                            Bitmap bitmap = await FileUtils.GetImageFromHexAsync(image.ImageHex, image.FileSize);
-                            string filePath = await FileUtils.SaveAsync(bitmap, FileUtils.IMAGE_FOLDER, image.FileName);
-                            var attachImage = new AttachedImage()
+                            try
                             {
-                                Path = filePath,
-                                Name = image.FileName
-                            };
-                            attachImageList.Add(attachImage);
+                                Bitmap bitmap = await FileUtils.GetImageFromHexAsync(image.ImageHex, image.FileSize);
+                                string filePath = await FileUtils.SaveAsync(bitmap, FileUtils.IMAGE_FOLDER, image.FileName);
+                                var attachImage = new AttachedImage()
+                                {
+                                    Path = filePath,
+                                    Name = image.FileName
+                                };
+                                attachImageList.Add(attachImage);
+                            }
+                            catch (Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
                         }
-                        catch (Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
+
                     }
+                
 
-
-
-                }
+              
 
                 string dateTime = string.Empty;
                 if (!string.IsNullOrEmpty(feedbackDetails.DateCreated))
@@ -99,7 +104,7 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                     }
                 }
 
-                this.mView.ShowInputData(feedbackDetails.ServiceReqNo, feedbackDetails.StatusDesc, feedbackDetails.StatusCode, dateTime, accountNum, feedbackDetails.FeedbackMessage);
+                this.mView.ShowInputData(feedbackDetails.ServiceReqNo, feedbackDetails.StatusDesc, feedbackDetails.StatusCode, dateTime, accountNum, feedbackDetails.FeedbackMessage , feedbackDetails.FeedbackUpdateDetails , feedbackDetails.ContactName,feedbackDetails.ContactEmailAddress,feedbackDetails.ContactMobileNo , feedbackDetails.RelationshipWithCA , feedbackDetails.RelationshipWithCADesc);
                 this.mView.ShowImages(attachImageList);
 
                 this.mView.HideProgressDialog();

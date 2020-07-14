@@ -45,6 +45,10 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> SubmitFeedback<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SubmitFeedbackWithContactDetails")]
+        Task<T> SubmitEnquiry<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetSubmittedFeedbackList")]
         Task<T> SubmittedFeedbackList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
@@ -80,9 +84,9 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetRegisteredCards")]
         Task<T> GetRegisteredCards<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
-
+              
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetSubmittedFeedbackDetails")]
+        [Post("/v6/mytnbappws.asmx/GetSubmittedFeedbackWithContactDetails")]
         Task<T> SubmittedFeedbackDetails<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]

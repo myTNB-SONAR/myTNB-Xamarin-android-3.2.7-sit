@@ -140,6 +140,17 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
+        /// Call submit enquiry with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SubmitFeedbackResponse> SubmitEnquiry([Body] Request.BaseRequest request)
+        {
+            return api.SubmitEnquiry<SubmitFeedbackResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+
+        /// <summary>
         /// Call GetSubmittedFeedbackList with default timeout.
         /// </summary>
         /// <param name="request"></param>
