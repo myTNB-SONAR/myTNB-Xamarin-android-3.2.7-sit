@@ -155,6 +155,8 @@ namespace myTNB
         public static string Error_PaymentCCErrorMsg = "paymentCCErrorMsg";
         public static string Error_ProfileCCErrorMsg = "profileCCErrorMsg";
         public static string Error_RedeemRewardFailMsg = "redeemRewardFailMsg";
+        public static string Error_NoMeterAccessTitle = "noMeterAccessErrorTitle";
+        public static string Error_NoMeterAccessMessage = "noMeterAccessErrorMessage";
 
         //Refresh
         public static string Refresh_BillDetails = "refreshBillDetails";
