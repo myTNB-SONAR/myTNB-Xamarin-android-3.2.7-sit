@@ -1,6 +1,7 @@
 ﻿using System;
 using CoreGraphics;
 using Foundation;
+using myTNB.Common;
 using myTNB.Model;
 using myTNB.SSMR;
 using UIKit;
@@ -132,6 +133,14 @@ namespace myTNB
             return _containerView;
         }
 
+        public UIView View
+        {
+            get
+            {
+                return _containerView != null ? _containerView : new UIView();
+            }
+        }
+
         public void SetSubmitButtonHidden(MeterReadingHistoryModel model, bool forceDisplay = false, string title = "")
         {
             if (forceDisplay)
@@ -236,6 +245,93 @@ namespace myTNB
             frame.Height = ScaleUtility.GetYLocationFromFrame(_viewDropDownContainer.Frame, 16);
             _containerView.Frame = frame;
         }
+
+        #region Apply SSMR
+        private UIView _applyContainer;
+        internal CustomUIButtonV2 _btnNo, _btnYes;
+        internal Action OnInfoBarTap;
+        internal enum HasMeterAccess
+        {
+            Yes,
+            No
+        }
+        internal void SetApplySSMRHeader(string headerTitle, string infoBarTitle)
+        {
+            _applyContainer = new UIView(new CGRect(0, _viewDropDownContainer.Frame.GetMaxY(), View.Frame.Width, GetScaledHeight(168))) { BackgroundColor = UIColor.White };
+            #region Title
+            UIView applyHeaderView = new UIView(new CGRect(0, 0, View.Frame.Width, GetScaledHeight(48))) { BackgroundColor = MyTNBColor.LightGrayBG };
+            UILabel lblHeaderTitle = new UILabel(new CGRect(BaseMarginWidth16, BaseMarginWidth16, View.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(24)))
+            {
+                TextColor = MyTNBColor.WaterBlue,
+                Font = TNBFont.MuseoSans_16_500,
+                TextAlignment = UITextAlignment.Left,
+                Text = headerTitle
+            };
+            applyHeaderView.AddSubview(lblHeaderTitle);
+            #endregion
+            #region Button
+            nfloat btnWidth = (_parentView.Frame.Width - GetScaledWidth(36)) / 2;
+            _btnNo = new CustomUIButtonV2
+            {
+                Frame = new CGRect(BaseMarginHeight16, GetYLocationFromFrame(applyHeaderView.Frame, 16), btnWidth, GetScaledHeight(48)),
+                BackgroundColor = UIColor.White,
+                PageName = "SSMRLanding",
+                EventName = "No"
+            };
+            _btnNo.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.Common_No), UIControlState.Normal);
+            _btnNo.SetTitleColor(MyTNBColor.AlgaeGreen, UIControlState.Normal);
+            _btnNo.Layer.BorderColor = MyTNBColor.AlgaeGreen.CGColor;
+
+            _btnYes = new CustomUIButtonV2
+            {
+                Frame = new CGRect(GetXLocationFromFrame(_btnNo.Frame, 4), _btnNo.Frame.Y, btnWidth, GetScaledHeight(48)),
+                BackgroundColor = UIColor.White,
+                PageName = "SSMRLanding",
+                EventName = "Yes"
+            };
+            _btnYes.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.Common_Yes), UIControlState.Normal);
+            _btnYes.SetTitleColor(MyTNBColor.AlgaeGreen, UIControlState.Normal);
+            _btnYes.Layer.BorderColor = MyTNBColor.AlgaeGreen.CGColor;
+            #endregion
+            #region InfoBar
+            CommonInfoBar infoBar = new CommonInfoBar(infoBarTitle, GetYLocationFromFrame(_btnNo.Frame, 16))
+            {
+                OnTapAction = OnInfoBarTap
+            };
+            #endregion
+            _applyContainer.AddSubviews(new UIView[] { applyHeaderView, _btnNo, _btnYes, infoBar.View });
+            _containerView.AddSubview(_applyContainer);
+
+            CGRect containerFrame = _containerView.Frame;
+            containerFrame.Height = _applyContainer.Frame.GetMaxY();
+            _containerView.Frame = containerFrame;
+        }
+
+        internal bool IsApplyHidden
+        {
+            set
+            {
+                if (_applyContainer != null)
+                {
+                    _applyContainer.Hidden = value;
+                    if (value)
+                    {
+                        _applyContainer.RemoveFromSuperview();
+                        _applyContainer = null;
+                    }
+                }
+            }
+        }
+
+        internal void UpdateAccessSelection(HasMeterAccess hasMeterAccess)
+        {
+            bool hasAccess = hasMeterAccess == HasMeterAccess.Yes;
+            _btnNo.BackgroundColor = hasAccess ? UIColor.White : MyTNBColor.AlgaeGreen;
+            _btnYes.BackgroundColor = hasAccess ? MyTNBColor.AlgaeGreen : UIColor.White;
+            _btnNo.SetTitleColor(hasAccess ? MyTNBColor.AlgaeGreen : UIColor.White, UIControlState.Normal);
+            _btnYes.SetTitleColor(hasAccess ? UIColor.White : MyTNBColor.AlgaeGreen, UIControlState.Normal);
+        }
+        #endregion
 
         private void AdjustViewFrames()
         {

@@ -224,7 +224,8 @@ namespace myTNB
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
 
-            if (tutorialOverlayHasShown) {
+            if (tutorialOverlayHasShown)
+            {
                 ShowWhatsNewPopUp();
                 return;
             }
@@ -268,7 +269,8 @@ namespace myTNB
                     {
                         _ = Task.Delay(500).ContinueWith(_ =>
                         {
-                            InvokeOnMainThread(() => {
+                            InvokeOnMainThread(() =>
+                            {
                                 DataManager.DataManager.SharedInstance.IsWhatsNewFirstLoad = false;
                                 ShowWhatsNewPopUp();
                             });
@@ -407,9 +409,11 @@ namespace myTNB
                             break;
                         }
                     }
-
-                    _tutorialContainer.AddSubview(tutorialView.GetView());
-                    currentWindow.AddSubview(_tutorialContainer);
+                    if (_tutorialContainer != null)
+                    {
+                        _tutorialContainer.AddSubview(tutorialView.GetView());
+                        currentWindow.AddSubview(_tutorialContainer);
+                    }
                 }
                 else
                 {
