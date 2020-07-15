@@ -162,7 +162,8 @@ namespace myTNB.SSMR
         //Event Names
         public static string EVENT_SubmitToOCR = "SubmitImagesToOCR";
         public static string EVENT_DeleteImage = "DeleteImage";
-        public static string EVENT_DisableSelfMeterReading = "DisableSelfMeterReading";
+        public static string EVENT_DisableSelfMeterReading = "DisableSMR";
+        public static string EVENT_EnableSelfMeterReading = "EnableSMR";
         public static string EVENT_Refresh = "Refresh";
 
         public static int Max_ReasonCharacterCount = 550;

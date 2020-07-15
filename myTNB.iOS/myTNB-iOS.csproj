@@ -2849,7 +2849,6 @@
     <Compile Include="Whats New\WhatsNewModalDataSource.cs" />
     <Compile Include="Session Cache\WhatsNewPopupCache.cs" />
     <Compile Include="Session Cache\WhatsNewDetailDescriptionCache.cs" />
-    <Compile Include="SSMR\Reading History\SSMRReadingHistoryView.cs" />
     <Compile Include="Common\CommonInfoBar.cs" />
   </ItemGroup>
   <ItemGroup>
