@@ -928,7 +928,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             {
                 try
                 {
-                    height += NonSMRActionContainer.Height;
+                    height -= (int)DPUtils.ConvertDPToPx(16f);
                 }
                 catch (Exception e)
                 {
