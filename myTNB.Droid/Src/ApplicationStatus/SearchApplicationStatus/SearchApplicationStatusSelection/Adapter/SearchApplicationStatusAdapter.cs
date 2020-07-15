@@ -64,8 +64,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                 if (searchByData != null && searchByData.Count > 0)
                 {
                     mSearchByList.AddRange(searchByData);
+                    mSearchByList.Add(new SearchByModel()
+                    {
+                        Code = "NUMBER-CTA-ANDROID"
+                    });
                 }
-                mSearchByList.AddRange(searchByData);
                 countNumber = mSearchByList.Count;
             }
         }
@@ -103,29 +106,45 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                 {
                     var selectedTypeList = mTypeList[position];
                     bool previousSelectedFlag = selectedTypeList.isChecked;
-                    previousSelectedFlag = !previousSelectedFlag;
+                    if (!previousSelectedFlag)
+                        previousSelectedFlag = !previousSelectedFlag;
+
                     foreach (var item in mTypeList)
                     {
                         item.isChecked = false;
                     }
                     mTypeList[position].isChecked = previousSelectedFlag;
+
+                    this.NotifyDataSetChanged();
+
+                    if (ItemClick != null)
+                        ItemClick(this, position);
                 }
                 else if (mRequestCode == Constants.APPLICATION_STATUS_FILTER_SEARCH_BY_REQUEST_CODE)
                 {
-                    var selectedSearchByList = mSearchByList[position];
-                    bool previousSelectedFlag = selectedSearchByList.isChecked;
-                    previousSelectedFlag = !previousSelectedFlag;
-                    foreach (var item in mSearchByList)
+                    if (position == mSearchByList.Count - 1)
                     {
-                        item.isChecked = false;
+
                     }
-                    mSearchByList[position].isChecked = previousSelectedFlag;
+                    else
+                    {
+                        var selectedSearchByList = mSearchByList[position];
+                        bool previousSelectedFlag = selectedSearchByList.isChecked;
+                        if (!previousSelectedFlag)
+                            previousSelectedFlag = !previousSelectedFlag;
+
+                        foreach (var item in mSearchByList)
+                        {
+                            item.isChecked = false;
+                        }
+                        mSearchByList[position].isChecked = previousSelectedFlag;
+
+                        this.NotifyDataSetChanged();
+
+                        if (ItemClick != null)
+                            ItemClick(this, position);
+                    }
                 }
-
-                this.NotifyDataSetChanged();
-
-                if (ItemClick != null)
-                    ItemClick(this, position);
             }
         }
     }
@@ -136,6 +155,9 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         public TextView txtFilterName { get; private set; }
         public ImageView imgApplicationFilter { get; private set; }
         public CheckBox chkApplicationFilter { get; private set; }
+        public LinearLayout filterSelection { get; private set; }
+        public LinearLayout ctaSelection { get; private set; }
+        public TextView whyAccountsNotHere { get; private set; }
         private Context context;
 
         public ApplicationStatusFilterViewHolder(View itemView, Action<int> listener) : base(itemView)
@@ -144,10 +166,15 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             txtFilterName = itemView.FindViewById<TextView>(Resource.Id.txtFilterName);
             imgApplicationFilter = itemView.FindViewById<ImageView>(Resource.Id.imgApplicationFilter);
             chkApplicationFilter = itemView.FindViewById<CheckBox>(Resource.Id.chkApplicationFilter);
+            filterSelection = itemView.FindViewById<LinearLayout>(Resource.Id.filterSelection);
+            ctaSelection = itemView.FindViewById<LinearLayout>(Resource.Id.ctaSelection);
+            whyAccountsNotHere = itemView.FindViewById<TextView>(Resource.Id.whyAccountsNotHere);
             txtFilterName.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.tunaGrey)));
             TextViewUtils.SetMuseoSans300Typeface(txtFilterName);
+            TextViewUtils.SetMuseoSans500Typeface(whyAccountsNotHere);
             txtFilterName.Click += (sender, e) => listener(base.LayoutPosition);
             chkApplicationFilter.Click += (sender, e) => listener(base.LayoutPosition);
+            whyAccountsNotHere.Click += (sender, e) => listener(base.LayoutPosition);
         }
 
 
@@ -155,19 +182,31 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         {
             try
             {
-                txtFilterName.Text = item.Title;
-                imgApplicationFilter.Visibility = ViewStates.Gone;
-                chkApplicationFilter.Visibility = ViewStates.Gone;
-                txtFilterName.Clickable = true;
-                chkApplicationFilter.Clickable = false;
-                if (item.isChecked)
+                if (item.Code == "NUMBER-CTA-ANDROID")
                 {
-                    imgApplicationFilter.Visibility = ViewStates.Visible;
+                    ctaSelection.Visibility = ViewStates.Visible;
+                    filterSelection.Visibility = ViewStates.Gone;
+                    // ApplicationStatus TODO: Multilingual
+                    whyAccountsNotHere.Text = "Where do I get these numbers?";
                 }
+                else
+                {
+                    ctaSelection.Visibility = ViewStates.Gone;
+                    filterSelection.Visibility = ViewStates.Visible;
+                    txtFilterName.Text = item.Title;
+                    imgApplicationFilter.Visibility = ViewStates.Gone;
+                    chkApplicationFilter.Visibility = ViewStates.Gone;
+                    txtFilterName.Clickable = true;
+                    chkApplicationFilter.Clickable = false;
+                    if (item.isChecked)
+                    {
+                        imgApplicationFilter.Visibility = ViewStates.Visible;
+                    }
 
-                txtFilterName.RequestLayout();
-                imgApplicationFilter.RequestLayout();
-                chkApplicationFilter.RequestLayout();
+                    txtFilterName.RequestLayout();
+                    imgApplicationFilter.RequestLayout();
+                    chkApplicationFilter.RequestLayout();
+                }
             }
             catch (Exception e)
             {

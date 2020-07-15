@@ -257,6 +257,10 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             this.SetIsClicked(true);
                             Intent filterIntent = new Intent(this, typeof(SearchApplicationStatusSelectionActivity));
                             var listShowing = mTypeList;
+                            for (int i = 0; i < listShowing.Count; i++)
+                            {
+                                listShowing[i].isChecked = false;
+                            }
                             if (!string.IsNullOrEmpty(targetApplicationType))
                             {
                                 for (int i = 0; i < listShowing.Count; i++)
@@ -300,6 +304,12 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                     }
                                 }
                             }
+
+                            for (int i = 0; i < mList.Count; i++)
+                            {
+                                mList[i].isChecked = false;
+                            }
+
                             if (!string.IsNullOrEmpty(targetSearchBy) && mList != null && mList.Count > 0)
                             {
                                 for (int i = 0; i < mList.Count; i++)
