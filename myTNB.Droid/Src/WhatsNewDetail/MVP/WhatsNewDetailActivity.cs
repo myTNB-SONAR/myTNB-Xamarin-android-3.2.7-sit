@@ -293,7 +293,7 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 				{
 					LocalItem = item;
 					txtTitle.Text = item.Title;
-                    txtDescription.TextFormatted = GetFormattedText(item.Description);
+                    txtDescription.TextFormatted = GetFormattedTextNoExtraSpacing(item.Description);
 
 					if (item.Description != null)
 					{
