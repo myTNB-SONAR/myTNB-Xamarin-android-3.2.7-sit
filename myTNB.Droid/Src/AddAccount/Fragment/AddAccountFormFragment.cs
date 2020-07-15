@@ -459,6 +459,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                         .SetTitle(Utility.GetLocalizedErrorLabel("error_duplicateAccountTitle"))
                         .SetMessage(Utility.GetLocalizedErrorLabel("error_duplicateAccountMessage"))
+                        .SetContentGravity(GravityFlags.Center)
                         .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
                         .Build().Show();
                 }
