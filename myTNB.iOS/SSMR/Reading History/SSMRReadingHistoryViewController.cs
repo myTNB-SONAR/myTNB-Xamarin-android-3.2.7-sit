@@ -3,7 +3,6 @@ using CoreGraphics;
 using Foundation;
 using myTNB.Model;
 using myTNB.SSMR;
-using myTNB.SSMR.ReadingHistory;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,7 +15,7 @@ namespace myTNB
     {
         internal SSMRReadingHistoryHeaderComponent _ssmrHeaderComponent;
         private UITableView _readingHistoryTableView;
-        private UIView _headerView, _footerView, _navbarView, _viewRefreshContainer;
+        private UIView _headerView, _footerView, _applyFooterView, _navbarView, _viewRefreshContainer;
         private CustomUIButtonV2 _btnDisable;
         private UIImageView _bgImageView;
         private MeterReadingHistoryModel _meterReadingHistory;
@@ -44,7 +43,7 @@ namespace myTNB
         private bool IsLoading = true;
         private Timer tutorialOverlayTimer;
 
-        internal CustomUIButtonV2 _btnStart;
+        internal CustomUIButtonV2 _btnStart, _btnApply;
         internal CustomUIView _ctaView, _applyContainerView;
 
         public SSMRReadingHistoryViewController(IntPtr handle) : base(handle) { }
@@ -58,6 +57,7 @@ namespace myTNB
             SSMRAccounts.SetFilteredEligibleAccounts();
             PrepareHeaderView();
             PrepareFooterView();
+            PrepareApplyFooterView();
             AddTableView();
             View.BackgroundColor = MyTNBColor.LightGrayBG;
         }
@@ -181,7 +181,7 @@ namespace myTNB
             _readingHistoryTableView.TableFooterView = null;
             _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, _readingHistoryList, false);
             _readingHistoryTableView.ReloadData();
-            this.SetApplyItemsHidden(true);
+            _ssmrHeaderComponent.IsApplyHidden = true;
         }
 
         private void SetEnableSSMR()
@@ -199,11 +199,10 @@ namespace myTNB
                 }));
                 AdjustHeader();
             }
-            _readingHistoryTableView.TableFooterView = null;
+            _readingHistoryTableView.TableFooterView = _applyFooterView;
             _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, null, false);
             _readingHistoryTableView.ReloadData();
             IsLoading = false;
-            this.SetStartButton();
         }
 
         #region Tutorial Overlay Methods
@@ -419,6 +418,30 @@ namespace myTNB
             _footerView.AddSubview(viewButton);
         }
 
+        private void PrepareApplyFooterView()
+        {
+            _applyFooterView = new UIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(104))) { BackgroundColor = MyTNBColor.LightGrayBG };
+            UIView viewButton = new UIView(new CGRect(0, GetScaledHeight(24), ViewWidth, GetScaledHeight(80))) { BackgroundColor = UIColor.White };
+            _btnApply = new CustomUIButtonV2
+            {
+                Frame = new CGRect(BaseMargin, BaseMargin, BaseMarginedWidth, GetScaledHeight(48)),
+                BackgroundColor = MyTNBColor.SilverChalice,
+                PageName = PageName,
+                EventName = SSMRConstants.EVENT_EnableSelfMeterReading,
+                Enabled = false
+            };
+            _btnApply.SetTitle(GetI18NValue(SSMRConstants.I18N_EnableSSMRCTA), UIControlState.Normal);
+            _btnApply.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
+            _btnApply.Layer.BorderWidth = GetScaledWidth(1);
+            _btnApply.SetTitleColor(UIColor.White, UIControlState.Normal);
+            _btnApply.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                OnEnableSSMR();
+            }));
+            viewButton.AddSubview(_btnApply);
+            _applyFooterView.AddSubview(viewButton);
+        }
+
         private void OnSelectAccount(int index)
         {
             if (index > -1)
@@ -570,15 +593,23 @@ namespace myTNB
         {
             HasMeterAccess = false;
             _ssmrHeaderComponent.UpdateAccessSelection(SSMRReadingHistoryHeaderComponent.HasMeterAccess.No);
-            this.SetStartButtonEnable(true);
+            SetApplyButtonEnable(true);
         }
 
         private void OnYesAction()
         {
             HasMeterAccess = true;
             _ssmrHeaderComponent.UpdateAccessSelection(SSMRReadingHistoryHeaderComponent.HasMeterAccess.Yes);
-            this.SetStartButtonEnable(true);
+            SetApplyButtonEnable(true);
         }
+
+        private void SetApplyButtonEnable(bool enable)
+        {
+            _btnApply.Enabled = enable;
+            _btnApply.BackgroundColor = enable ? MyTNBColor.AlgaeGreen : MyTNBColor.SilverChalice;
+            _btnApply.Layer.BorderColor = (enable ? MyTNBColor.AlgaeGreen : MyTNBColor.SilverChalice).CGColor;
+        }
+
 
         private void OnInfoBarTap()
         {
@@ -719,7 +750,7 @@ namespace myTNB
                         _readingHistoryTableView.Hidden = true;
                         DisplayRefresh();
                     }
-                    this.SetApplyItemsHidden(true);
+                    _ssmrHeaderComponent.IsApplyHidden = true;
                     ActivityIndicator.Hide();
                 });
             });

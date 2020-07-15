@@ -257,7 +257,8 @@ namespace myTNB
         }
         internal void SetApplySSMRHeader(string headerTitle, string infoBarTitle)
         {
-            _applyContainer = new UIView(new CGRect(0, _viewDropDownContainer.Frame.GetMaxY(), View.Frame.Width, GetScaledHeight(168))) { BackgroundColor = UIColor.White };
+            _applyContainer = new UIView(new CGRect(0, GetYLocationFromFrame(_viewDropDownContainer.Frame, 16)
+                , View.Frame.Width, GetScaledHeight(168))) { BackgroundColor = UIColor.White };
             #region Title
             UIView applyHeaderView = new UIView(new CGRect(0, 0, View.Frame.Width, GetScaledHeight(48))) { BackgroundColor = MyTNBColor.LightGrayBG };
             UILabel lblHeaderTitle = new UILabel(new CGRect(BaseMarginWidth16, BaseMarginWidth16, View.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(24)))
