@@ -61,12 +61,10 @@ namespace myTNB_Android.Src.WhatsNewDialog
         {
             WhatsNewModel model = whatsnew[position];
 
-            // isPhotoOnly = false;
-            // isTextOnly = true;
+            ViewGroup rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerItemLayout, container, false);
 
-            // if (isPhotoOnly && !isTextOnly)
-            // {
-                ViewGroup rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerItemLayout, container, false);
+            if (!string.IsNullOrEmpty(model.PortraitImage_PopUp))
+            {
                 FrameLayout whatsNewDialogCardView = (FrameLayout)rootView.FindViewById(Resource.Id.layout_image_holder);
                 Button btnGotIt = (Button)rootView.FindViewById(Resource.Id.btnWhatsNewGotIt);
                 ImageView imgWhatsNew = (ImageView)rootView.FindViewById(Resource.Id.image_whatsnew);
@@ -150,9 +148,24 @@ namespace myTNB_Android.Src.WhatsNewDialog
                         SkipWhatsNew(position, chkDontShow.Checked);
                     };
                 }
+            }
+            else
+            {
+                rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerTextItemLayout, container, false);
 
-                container.AddView(rootView);
-                return rootView;
+                // TODO: Handle Text + Image / Text only
+                if (model.PopUp_Text_Only)
+                {
+                    // TODO: Handle Popup Text
+                }
+                else
+                {
+
+                }
+            }
+
+            container.AddView(rootView);
+            return rootView;
             // }
 
             /*ViewGroup rootTextView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerTextItemLayout, container, false);

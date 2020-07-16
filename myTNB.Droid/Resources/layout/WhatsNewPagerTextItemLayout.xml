@@ -23,14 +23,33 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/whatsNewDialogMainView">
+                        <LinearLayout 
+                          android:orientation="vertical"
+                          android:layout_width="match_parent"
+                          android:layout_height="180dp"
+                          android:visibility="visible"
+                          android:id="@+id/whatsNewMainShimmerImgLayout">
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/shimmerWhatsNewImageLayout"
+                                android:layout_height="match_parent"
+                                android:layout_width="match_parent">
+                                <ImageView
+                                android:id="@+id/whatsNewShimmerImg"
+                                android:layout_height="match_parent"
+                                android:layout_width="match_parent"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/shimmer_rectangle"/>
+                            </com.facebook.shimmer.ShimmerFrameLayout>
+                        </LinearLayout>
                         <ImageView
-                            android:id="@+id/imgToolTipHeader"
+                            android:id="@+id/image_whatsnew"
                             android:layout_width="match_parent"
                             android:layout_height="180dp"
                             android:scaleType="fitXY"
+                            android:visibility="gone"
                             android:src="@drawable/ic_banner_whatsnewdialog"/>
                         <TextView
-                            android:id="@+id/txtToolTipTitle"
+                            android:id="@+id/txtWhatsNewTitle"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
                             android:layout_gravity="center"
@@ -43,7 +62,7 @@
                             android:textSize="14dp"
                             android:lineSpacingExtra="3dp"/>
                         <TextView
-                            android:id="@+id/txtToolTipMessage"
+                            android:id="@+id/txtWhatsNewMessage"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
                             android:layout_gravity="center"
