@@ -159,8 +159,8 @@
     "paymentCCErrorTitle": "Maaf, kami tidak boleh mendapatkan maklumat kad anda sekarang.",
     "paymentCCErrorMsg": "Maaf, kami tidak boleh mendapatkan maklumat kad anda sekarang. Anda masih boleh bayar menggunakan kad lain atau perbankan dalam talian melalui FPX.",
     "profileCCErrorMsg": "Jika anda di sini untuk menguruskan kad anda, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula kemudian.",
-    "noMeterAccessErrorTitle": "MS_Sorry this service may not be available to you.",
-    "noMeterAccessErrorMessage": "MS_The meter will need to be accessible so that you can read your meter, you may try again when you have access to the meter."
+    "noMeterAccessErrorTitle": "Maaf, perkhidmatan ini mungkin tidak disediakan untuk anda.",
+    "noMeterAccessErrorMessage": "Meter perlu boleh diakses supaya anda dapat membaca meter anda, Sila cuba lagi apabila anda mempunyai akses ke meter."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -280,10 +280,10 @@
     "tutorialHeaderTitle": "Status bacaan anda sepintas lalu.",
     "tutorialHeaderDesc": "Lihat akaun lain dan dapatkan gambaran keseluruhan status bacaan anda di sini.",
     "tutorialGotIt": "OK!",
-    "whereIsMyMeter": "MS_Where can I look for my meter?",
-    "whereIsMyMeterTitle": "MS_Where can I look for my meter?",
-    "whereIsMyMeterMessage": "MS_To submit your monthly meter reading, you must be able to view the reading stated in your meter display screen. Your meter usually located near your door, or your building meter room (riser).",
-    "doYouHaveMeterAccess":"MS_Do you have access to your meter?"
+    "whereIsMyMeter": "Di mana saya boleh mencari meter saya?",
+    "whereIsMyMeterTitle": "Di mana saya boleh mencari meter saya?",
+    "whereIsMyMeterMessage": "Untuk menghantar bacaan meter bulanan, anda haruslah dapat melihat bacaan yang dinyatakan pada paparan meter. Meter anda kebiasaannya terletak berhampiran pintu atau bangunan meter (bilik riser).",
+    "doYouHaveMeterAccess":"Adakah anda mempunyai akses ke meter?"
   },
   "SSMRReadingHistory_selector": {
     "SMREligibiltyPopUpDetails": [
