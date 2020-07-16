@@ -158,7 +158,9 @@
     "usedRewardMsg": "Tidak mengapa, kami mempunyai lebih banyak ganjaran untuk anda meneroka!",
     "paymentCCErrorTitle": "Maaf, kami tidak boleh mendapatkan maklumat kad anda sekarang.",
     "paymentCCErrorMsg": "Maaf, kami tidak boleh mendapatkan maklumat kad anda sekarang. Anda masih boleh bayar menggunakan kad lain atau perbankan dalam talian melalui FPX.",
-    "profileCCErrorMsg": "Jika anda di sini untuk menguruskan kad anda, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula kemudian."
+    "profileCCErrorMsg": "Jika anda di sini untuk menguruskan kad anda, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula kemudian.",
+    "noMeterAccessErrorTitle": "MS_Sorry this service may not be available to you.",
+    "noMeterAccessErrorMessage": "MS_The meter will need to be accessible so that you can read your meter, you may try again when you have access to the meter."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -277,7 +279,11 @@
     "noHistoryData": "Nampaknya anda tiada rekod bacaan meter buat masa ini.",
     "tutorialHeaderTitle": "Status bacaan anda sepintas lalu.",
     "tutorialHeaderDesc": "Lihat akaun lain dan dapatkan gambaran keseluruhan status bacaan anda di sini.",
-    "tutorialGotIt": "OK!"
+    "tutorialGotIt": "OK!",
+    "whereIsMyMeter": "MS_Where can I look for my meter?",
+    "whereIsMyMeterTitle": "MS_Where can I look for my meter?",
+    "whereIsMyMeterMessage": "MS_To submit your monthly meter reading, you must be able to view the reading stated in your meter display screen. Your meter usually located near your door, or your building meter room (riser).",
+    "doYouHaveMeterAccess":"MS_Do you have access to your meter?"
   },
   "SSMRReadingHistory_selector": {
     "SMREligibiltyPopUpDetails": [
