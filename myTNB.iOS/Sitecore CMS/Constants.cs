@@ -218,12 +218,7 @@
                 public const string AppLaunchImage = "/sitecore/content/myTNBapp/Contents/App Launch Image";
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNewV2";
-
-#if DEBUG || STUB || DEVELOP || SIT || MASTER
-                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json SIT";
-#else
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
-#endif
                 public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
 
                 //Created by Syahmi ICS 05052020

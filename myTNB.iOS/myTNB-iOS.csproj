@@ -1832,10 +1832,10 @@
     <ImageAsset Include="Assets\Assets.xcassets\imgIcCopy.imageset\imgIcCopy.jpg" />
     <ImageAsset Include="Assets\Assets.xcassets\imgIcCopy.imageset\imgIcCopy%402x.jpg" />
     <ImageAsset Include="Assets\Assets.xcassets\imgIcCopy.imageset\imgIcCopy%403x.jpg" />
-    <ImageAsset Include="Assets\SSMR.xcassets\Contents.json" />
-    <ImageAsset Include="Assets\SSMR.xcassets\Sample-Meter.imageset\Contents.json" />
-    <ImageAsset Include="Assets\SSMR.xcassets\Sample-Meter.imageset\imgSmrIos%402x.png" />
-    <ImageAsset Include="Assets\SSMR.xcassets\Sample-Meter.imageset\imgSmrIos%403x.png" />
+    <ImageAsset Include="Assets\SMR.xcassets\Contents.json" />
+    <ImageAsset Include="Assets\SMR.xcassets\Sample-Meter.imageset\Contents.json" />
+    <ImageAsset Include="Assets\SMR.xcassets\Sample-Meter.imageset\imgSmrIos%402x.png" />
+    <ImageAsset Include="Assets\SMR.xcassets\Sample-Meter.imageset\imgSmrIos%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1994,7 +1994,7 @@
     <Folder Include="Feedback\Enquiry\Enquiry Details\" />
     <Folder Include="Assets\Assets.xcassets\imgPoc.imageset\" />
     <Folder Include="Assets\Assets.xcassets\imgIcCopy.imageset\" />
-    <Folder Include="Assets\SSMR.xcassets\Sample-Meter.imageset\" />
+    <Folder Include="Assets\SMR.xcassets\Sample-Meter.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2850,6 +2850,7 @@
     <Compile Include="Session Cache\WhatsNewPopupCache.cs" />
     <Compile Include="Session Cache\WhatsNewDetailDescriptionCache.cs" />
     <Compile Include="Common\CommonInfoBar.cs" />
+    <Compile Include="SSMR\Reading History\SSMRReadingHistoryView.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

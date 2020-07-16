@@ -280,10 +280,10 @@
     "tutorialHeaderTitle": "Status bacaan anda sepintas lalu.",
     "tutorialHeaderDesc": "Lihat akaun lain dan dapatkan gambaran keseluruhan status bacaan anda di sini.",
     "tutorialGotIt": "OK!",
-    "doYouHaveMeterAccess": "Do you have access to your meter?",
-    "whereIsMyMeter": "Where can I look for my meter?",
-    "whereIsMyMeterTitle": "Where can I look for my meter?",
-    "whereIsMyMeterMessage": "To submit your monthly meter reading, you must be able to view the reading stated in your meter display screen. Your meter usually located near your door, or your building meter room (riser)."
+    "doYouHaveMeterAccess": "MS-Do you have access to your meter?",
+    "whereIsMyMeter": "MS-Where can I look for my meter?",
+    "whereIsMyMeterTitle": "MS-Where can I look for my meter?",
+    "whereIsMyMeterMessage": "MS-To submit your monthly meter reading, you must be able to view the reading stated in your meter display screen. Your meter usually located near your door, or your building meter room (riser)."
   },
   "SSMRReadingHistory_selector": {
     "SMREligibiltyPopUpDetails": [
