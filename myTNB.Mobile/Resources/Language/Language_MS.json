@@ -159,8 +159,8 @@
     "paymentCCErrorTitle": "Maaf, kami tidak boleh mendapatkan maklumat kad anda sekarang.",
     "paymentCCErrorMsg": "Maaf, kami tidak boleh mendapatkan maklumat kad anda sekarang. Anda masih boleh bayar menggunakan kad lain atau perbankan dalam talian melalui FPX.",
     "profileCCErrorMsg": "Jika anda di sini untuk menguruskan kad anda, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula kemudian.",
-    "noMeterAccessErrorTitle": "Maaf, perkhidmatan ini mungkin tidak disediakan untuk anda.",
-    "noMeterAccessErrorMessage": "Meter perlu boleh diakses supaya anda dapat membaca meter anda, Sila cuba lagi apabila anda mempunyai akses ke meter."
+    "noMeterAccessErrorTitle": "Maaf, anda mungkin tidak boleh mengakses perkhidmatan ini.",
+    "noMeterAccessErrorMessage": "Anda perlu mempunyai meter yang boleh diakses supaya bacaan meter boleh dilakukan. Sila cuba lagi apabila anda mempunyai akses kepada meter anda."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -280,9 +280,9 @@
     "tutorialHeaderTitle": "Status bacaan anda sepintas lalu.",
     "tutorialHeaderDesc": "Lihat akaun lain dan dapatkan gambaran keseluruhan status bacaan anda di sini.",
     "tutorialGotIt": "OK!",
-    "whereIsMyMeter": "Di mana saya boleh mencari meter saya?",
-    "whereIsMyMeterTitle": "Di mana saya boleh mencari meter saya?",
-    "whereIsMyMeterMessage": "Untuk menghantar bacaan meter bulanan, anda haruslah dapat melihat bacaan yang dinyatakan pada paparan meter. Meter anda kebiasaannya terletak berhampiran pintu atau bangunan meter (bilik riser).",
+    "whereIsMyMeter": "Di manakah boleh saya mencari meter saya?",
+    "whereIsMyMeterTitle": "Di manakah boleh saya mencari meter saya?",
+    "whereIsMyMeterMessage": "Untuk menghantar bacaan meter bulanan, nilai pada skin paparan meter anda haruslah boleh dibaca dengan jelas. Meter anda kebiasaannya terletak berhampiran pintu atau bangunan meter (bilik riser).",
     "doYouHaveMeterAccess":"Adakah anda mempunyai akses ke meter?"
   },
   "SSMRReadingHistory_selector": {
