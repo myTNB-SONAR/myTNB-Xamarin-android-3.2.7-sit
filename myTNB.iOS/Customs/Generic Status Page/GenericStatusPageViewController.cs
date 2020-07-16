@@ -315,8 +315,8 @@ namespace myTNB
             {
                 if (IsSuccess)
                 {
-                    GetCTA(ref btnSecondary, GetCommonI18NValue(StatusPageConstants.I18N_BacktoHome), false, _actions.BackToHome, true); //ViewSubmittedEnquiry
-                    GetCTA(ref btnPrimary, "View Submitted Enquiry", true, _actions.BackToHome); 
+                    GetCTA(ref btnSecondary, GetCommonI18NValue(StatusPageConstants.I18N_BacktoHome), false, _actions.BackToHome, false); 
+                    GetCTA(ref btnPrimary, "View Submitted Enquiry", true, _actions.BackToFeedback, true); //ViewSubmittedEnquiry
                 }
                 else
                 {

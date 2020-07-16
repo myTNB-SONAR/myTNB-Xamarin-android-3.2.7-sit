@@ -50,7 +50,8 @@ namespace myTNB.Customs.GenericStatusPage
 
         internal void ViewSubmittedEnquiry()
         {
-            _controller.NavigationController.PushViewController(_nextViewController,true);
+            //_controller.NavigationController.PushViewController(_nextViewController,true);
+
         }
     }
 }

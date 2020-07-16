@@ -2844,6 +2844,7 @@
     <Compile Include="Whats New\WhatsNewModalDataSource.cs" />
     <Compile Include="Session Cache\WhatsNewPopupCache.cs" />
     <Compile Include="Session Cache\WhatsNewDetailDescriptionCache.cs" />
+    <Compile Include="Feedback\Enquiry\Enquiry Status Page\EnquiryStatusPageConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

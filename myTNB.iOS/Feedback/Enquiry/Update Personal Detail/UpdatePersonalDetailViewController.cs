@@ -14,8 +14,8 @@ namespace myTNB
         private UIScrollView _svContainer;
         private UIView _viewContainerRelationship;
         private UIView _viewTitleSection, _viewTitleSection2, _viewYesNoContainer, _viewTitleSectionRelationship;
-        private UIView _btnSubmitContainer;
-        private UIButton _btnSubmit;
+        private UIView _btnNextContainer;
+        private UIButton _btnNext;
         private CustomUIButtonV2 _btnNo, _btnYes;
         private CustomUIView _yesnoToolTipsView;
         private CustomUIView _ownerConsentToolTipsView;
@@ -87,6 +87,7 @@ namespace myTNB
         private UIView _viewUpdateICContainer;
         private UILabel _lblTitle;
         private UILabel _lblValue;
+        //IC
         private UIView viewICNumber;
         private UILabel lblICNoTitle;
         private UILabel lblICNoError;
@@ -100,6 +101,8 @@ namespace myTNB
         private List<string> _typeRelationshipNameList = new List<string>();
 
         List<FeedbackUpdateDetailsModel> feedbackUpdateDetailsList;
+
+        const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
 
         //Specify Other
         private UIView viewSpecifyOther;
@@ -236,15 +239,15 @@ namespace myTNB
 
                 removeRelationshipBelow();
 
+                GetTextUIField();
+
                 AddSectionTitleRelationship();
                 checkBoxList();
                 UpdateCheckBoxListHeight();
                 UpdateContentSize();
+                SetEvents();
 
-                //temporary
-                _btnSubmit.Enabled = true;
-                _btnSubmit.SetTitleColor(UIColor.White, UIControlState.Normal);
-                _btnSubmit.BackgroundColor = MyTNBColor.FreshGreen;
+                SetTextUIField();
 
                 _btnYes.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
                 _btnYes.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
@@ -260,18 +263,14 @@ namespace myTNB
 
                 removeRelationshipBelow();
 
+                GetTextUIField();
+
                 checkBoxList();
                 UpdateCheckBoxListHeight();
                 UpdateContentSize();
+                SetEvents();
 
-                //SetVisibility();
-                //SetViews();
-
-                //temporary
-                _btnSubmit.Enabled = true;
-                _btnSubmit.SetTitleColor(UIColor.White, UIControlState.Normal);
-                _btnSubmit.BackgroundColor = MyTNBColor.FreshGreen;
-
+                SetTextUIField();
 
                 _btnNo.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
                 _btnNo.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
@@ -396,10 +395,6 @@ namespace myTNB
                 viewLineSpecifyOther = GenericLine.GetLine(new CGRect(0, 36, viewSpecifyOther.Frame.Width, 1));
                 viewSpecifyOther.AddSubviews(new UIView[] { lblSpecifyOtherTitle, lblSpecifyOtherError, txtFieldSpecifyOther, viewLineSpecifyOther });
 
-
-                SetTextFieldEvents(txtFieldSpecifyOther, lblSpecifyOtherTitle, lblSpecifyOtherError
-                   , viewLineSpecifyOther, lblICNoHint, TNBGlobal.CustomerNamePattern);
-
                 //Other reason
 
                 viewAccountRelationTypeContainer.AddSubviews(viewAccountRelation, viewSpecifyOther);//viewSpecifyOther
@@ -488,8 +483,8 @@ namespace myTNB
 
             _svContainer.AddSubview(_viewUpdateICContainer);
 
-            SetTextFieldEvents(txtFieldICNo, lblICNoTitle, lblICNoError
-               , viewLineICNo, lblICNoHint, TNBGlobal.IC_NO_PATTERN);
+            //SetTextFieldEvents(txtFieldICNo, lblICNoTitle, lblICNoError
+            //   , viewLineICNo, lblICNoHint, TNBGlobal.IC_NO_PATTERN);
         }
 
         private void checkBoxList()
@@ -563,6 +558,8 @@ namespace myTNB
                 UpdateContentSize();
 
                 SetTextUIField();
+                SetEvents();
+                SetNextButtonEnable();
 
             }));
 
@@ -583,7 +580,7 @@ namespace myTNB
                 };
 
                 lblICNoTitle = GetTitleLabel("ENTER NEW IDENTIFICATION NUMBER");
-                lblICNoError = GetErrorLabel("");
+                lblICNoError = GetErrorLabel("IC is required");
 
                 txtFieldICNo = new UITextField
                 {
@@ -600,8 +597,6 @@ namespace myTNB
                 viewICNumber.AddSubviews(new UIView[] { lblICNoTitle, lblICNoError, txtFieldICNo, viewLineICNo });
                 _viewCheckBoxContainerIC.AddSubview(viewICNumber);
 
-                SetTextFieldEvents(txtFieldICNo, lblICNoTitle, lblICNoError
-                , viewLineICNo, lblICNoHint, TNBGlobal.CustomerNamePattern);
             }
         }
         private void checkBoxAccountOwnerName()
@@ -640,6 +635,9 @@ namespace myTNB
                 UpdateContentSize();
 
                 SetTextUIField();
+                SetEvents();
+                SetNextButtonEnable();
+
             }));
 
             lblAccount = new UILabel(new CGRect(GetXLocationFromFrame(viewCheckBoxAccount.Frame, 18F), GetScaledHeight(16F), _viewCheckBoxContainerAccount.Frame.Width - 23, GetScaledHeight(20F)))
@@ -659,8 +657,8 @@ namespace myTNB
                     BackgroundColor = UIColor.Clear
                 };
 
-                lblAccOwnerNameTitle = GetTitleLabel(IsOwner ? "ENTER NEW ACCOUNT" : "ENTER NEW ACCOUNT'S OWNER NAME");
-                lblAccOwnerNameError = GetErrorLabel("");
+                lblAccOwnerNameTitle = GetTitleLabel(IsOwner ? "ENTER NEW ACCOUNT NAME" : "ENTER NEW ACCOUNT'S OWNER NAME");
+                lblAccOwnerNameError = GetErrorLabel(IsOwner ? "Account name is required" : "Owner name is required");
 
                 txtFieldAccOwnerName = new UITextField
                 {
@@ -711,6 +709,8 @@ namespace myTNB
                 UpdateContentSize();
 
                 SetTextUIField();
+                SetEvents();
+                SetNextButtonEnable();
 
             }));
 
@@ -732,7 +732,7 @@ namespace myTNB
             };
 
             lblMobileNumberTitle = GetTitleLabel("ENTER NEW MOBILE NUMBER");
-            lblMobileNumberError = GetErrorLabel("");
+            lblMobileNumberError = GetErrorLabel("Mobile number is required");
 
             txtFieldMobileNumber = new UITextField
             {
@@ -783,6 +783,9 @@ namespace myTNB
                 UpdateContentSize();
 
                 SetTextUIField();
+                SetEvents();
+                SetNextButtonEnable();
+
             }));
 
             lblEmail = new UILabel(new CGRect(GetXLocationFromFrame(viewCheckBoxEmail.Frame, 18F), GetScaledHeight(16F), _viewCheckBoxContainerEmail.Frame.Width - 23, GetScaledHeight(20F)))
@@ -803,7 +806,7 @@ namespace myTNB
             };
 
             lblEmailTitle = GetTitleLabel("ENTER NEW EMAIL ADDRESS");
-            lblEmailError = GetErrorLabel("");
+            lblEmailError = GetErrorLabel("Email is required");
 
             txtFieldEmail = new UITextField
             {
@@ -855,6 +858,8 @@ namespace myTNB
                 UpdateContentSize();
 
                 SetTextUIField();
+                SetEvents();
+                SetNextButtonEnable();
 
             }));
 
@@ -875,7 +880,7 @@ namespace myTNB
                 };
 
                 lblMailingTitle = GetTitleLabel("ENTER NEW MAILING ADDRESS");
-                lblMailingError = GetErrorLabel("");
+                lblMailingError = GetErrorLabel("Mailing address is required");
 
                 txtFieldMailing = new UITextField
                 {
@@ -926,6 +931,8 @@ namespace myTNB
                 UpdateContentSize();
 
                 SetTextUIField();
+                SetEvents();
+                SetNextButtonEnable();
 
             }));
 
@@ -947,7 +954,7 @@ namespace myTNB
                 };
 
                 lblPremiseTitle = GetTitleLabel("ENTER NEW PERMISE ADDRESS");
-                lblPremiseError = GetErrorLabel("");
+                lblPremiseError = GetErrorLabel("Premise address is required");
 
                 txtFieldPremise = new UITextField
                 {
@@ -972,27 +979,27 @@ namespace myTNB
 
         private void AddCTA()
         {
-            _btnSubmitContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(145F))
+            _btnNextContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(145F))
                 , View.Frame.Width, DeviceHelper.GetScaledHeight(100F)))
             {
                 BackgroundColor = UIColor.White
             };
 
-            _btnSubmit = new UIButton(UIButtonType.Custom)
+            _btnNext = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(18, DeviceHelper.GetScaledHeight(18), _btnSubmitContainer.Frame.Width - 36, 48)
+                Frame = new CGRect(18, DeviceHelper.GetScaledHeight(18), _btnNextContainer.Frame.Width - 36, 48)
             };
-            _btnSubmit.SetTitle("Next", UIControlState.Normal);
-            _btnSubmit.Font = MyTNBFont.MuseoSans18_300;
-            _btnSubmit.Layer.CornerRadius = 5.0f;
-            _btnSubmit.Enabled = false;
-            _btnSubmit.BackgroundColor = MyTNBColor.SilverChalice;
-            _btnSubmit.TouchUpInside += (sender, e) =>
+            _btnNext.SetTitle("Next", UIControlState.Normal);
+            _btnNext.Font = MyTNBFont.MuseoSans18_300;
+            _btnNext.Layer.CornerRadius = 5.0f;
+            _btnNext.Enabled = false;
+            _btnNext.BackgroundColor = MyTNBColor.SilverChalice;
+            _btnNext.TouchUpInside += (sender, e) =>
             {
                 NavigateToPage();
             };
-            _btnSubmitContainer.AddSubview(_btnSubmit);
-            View.AddSubview(_btnSubmitContainer);
+            _btnNextContainer.AddSubview(_btnNext);
+            View.AddSubview(_btnNextContainer);
         }
 
         public CustomUIView GetYesNoTooltipView(nfloat yLoc)
@@ -1076,71 +1083,54 @@ namespace myTNB
 
         private void UpdateCheckBoxListHeight()
         {
-            _viewCheckBoxListContainer.Frame = new CGRect(0, _viewTitleSection2.Frame.GetMaxY(), ViewWidth, GetScaledHeight(_ownerConsentToolTipsView.Frame.GetMaxY() + GetScaledHeight(24)));
+            _viewCheckBoxListContainer.Frame = new CGRect(0, _viewTitleSection2.Frame.GetMaxY(), ViewWidth, GetScaledHeight(_ownerConsentToolTipsView.Frame.GetMaxY()));
         }
 
         private nfloat GetScrollHeight()
         {
-            return (nfloat)((_viewCheckBoxListContainer.Frame.GetMaxY())); //+ (_btnSubmitContainer.Frame.Height + 50f)));
+            return (nfloat)((_viewCheckBoxListContainer.Frame.GetMaxY() + (_btnNextContainer.Frame.Height + 16f)));
         }
 
         private void UpdateContentSize()
         {
-            _svContainer.ContentSize = new CGRect(0f, 0f, View.Frame.Width, GetScrollHeight() + GetScaledHeight(80F)).Size;
+            _svContainer.ContentSize = new CGRect(0f, 0f, View.Frame.Width, GetScrollHeight()).Size;
         }
 
 
-        private void SetTextFieldEvents(UITextField textField, UILabel lblTitle
-            , UILabel lblError, UIView viewLine, UILabel lblHint, string pattern)
+    private void SetTextFieldEvents(UILabel lblTitle, UITextField textField
+           , UILabel lblError, UIView viewLine, string pattern)
         {
-            if (lblHint == null)
-            {
-                lblHint = new UILabel();
-            }
             _textFieldHelper.SetKeyboard(textField);
+            _textFieldHelper.CreateDoneButton(textField);
             textField.EditingChanged += (sender, e) =>
             {
-                lblHint.Hidden = !lblError.Hidden || textField.Text.Length == 0;
-                lblTitle.Hidden = textField.Text.Length == 0;
-                //DisplayEyeIcon(textField);
-                //SetRegisterButtonEnable();
+                //lblTitle.Hidden = textField.Text.Length == 0;
+                SetNextButtonEnable();
             };
             textField.EditingDidBegin += (sender, e) =>
             {
-                lblHint.Hidden = !lblError.Hidden || textField.Text.Length == 0;
-                lblTitle.Hidden = textField.Text.Length == 0;
+                //lblTitle.Hidden = textField.Text.Length == 0;
                 viewLine.BackgroundColor = MyTNBColor.PowerBlue;
-                //DisplayEyeIcon(textField);
                 textField.LeftViewMode = UITextFieldViewMode.Never;
             };
             textField.ShouldEndEditing = (sender) =>
             {
-                lblTitle.Hidden = textField.Text.Length == 0;
+                //lblTitle.Hidden = textField.Text.Length == 0;
                 bool isValid = _textFieldHelper.ValidateTextField(textField.Text, pattern);
-                /*//Handling for Confirm Email
-                if (textField == txtFieldConfirmEmail)
+                //Handling for Confirm Email
+                if (textField == txtFieldEmail)
                 {
-                    bool isMatch = txtFieldEmail.Text.Equals(txtFieldConfirmEmail.Text);
+                    bool isMatch = txtFieldEmail.Text.Equals(txtFieldEmail.Text);
                     lblError.Text = isValid ? GetErrorI18NValue(Constants.Error_MismatchedEmail)
                         : GetErrorI18NValue(Constants.Error_InvalidEmailAddress);
                     isValid = isValid && isMatch;
                 }
-                //Handling for Confirm Password
-                else if (textField == txtFieldConfirmPassword)
+                //Handling for Account Name
+                else if (textField == txtFieldAccOwnerName)
                 {
-                    bool isMatch = txtFieldPassword.Text.Equals(txtFieldConfirmPassword.Text);
-                    lblError.Text = isValid ? GetErrorI18NValue(Constants.Error_MismatchedPassword)
-                        : GetHintI18NValue(Constants.Hint_Password);
-                    isValid = isValid && isMatch;
+                    isValid = isValid && !string.IsNullOrWhiteSpace(textField.Text);
                 }
-                else*/
-                //if (textField == txtFieldSpecifyOther)
-                //{
-                //    isValid = isValid && !string.IsNullOrWhiteSpace(textField.Text);
-                //}
-                //DisplayEyeIcon(textField);*/
                 lblError.Hidden = isValid;
-                lblHint.Hidden = true;
                 viewLine.BackgroundColor = isValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
                 textField.TextColor = isValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
 
@@ -1153,7 +1143,7 @@ namespace myTNB
             };
             textField.ShouldChangeCharacters += (txtField, range, replacementString) =>
             {
-                if (textField == txtFieldSpecifyOther)
+                if (textField == txtFieldAccOwnerName)
                 {
                     bool isCharValid = string.IsNullOrEmpty(replacementString)
                         || _textFieldHelper.ValidateTextField(replacementString, pattern);
@@ -1171,33 +1161,96 @@ namespace myTNB
             };
         }
 
-        private void SetRegisterButtonEnable()
+        private void SetNextButtonEnable()
         {
-            bool isValidFieldSpecifyOther = _textFieldHelper.ValidateTextField(txtFieldSpecifyOther.Text, TNBGlobal.CustomerNamePattern)
-                && !string.IsNullOrWhiteSpace(txtFieldSpecifyOther.Text);
-            //bool isValidFieldICNo = _textFieldHelper.ValidateTextField(txtFieldICNo.Text, TNBGlobal.IC_NO_PATTERN);
-            //bool isValidMobileNo = _mobileNumberComponent.MobileNumber.IsValid();
-            //bool isValidEmail = _textFieldHelper.ValidateTextField(txtFieldEmail.Text, EMAIL_PATTERN)
-            //    && _textFieldHelper.ValidateTextField(txtFieldConfirmEmail.Text, EMAIL_PATTERN)
-            //    && txtFieldEmail.Text.Equals(txtFieldConfirmEmail.Text);
-            //bool isValidPassword = _textFieldHelper.ValidateTextField(txtFieldPassword.Text, PASSWORD_PATTERN)
-            //    && _textFieldHelper.ValidateTextField(txtFieldConfirmPassword.Text, PASSWORD_PATTERN)
-            //    && txtFieldPassword.Text.Equals(txtFieldConfirmPassword.Text);
-            //bool isValid = isValidName && isValidICNo && isValidMobileNo
-            //    && isValidEmail && isValidPassword;
-            bool isValid = isValidFieldSpecifyOther;  //&& isValidFieldICNo;
+            bool isValidFieldIC, isValidFieldAccOwnerName,
+                isValidFieldMobile, isValidFieldEmail, isValidFieldMailing,
+                isValidFieldPremise;
+            bool isValid = false;
 
-            _btnSubmit.Enabled = isValid;
-            _btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
+            if (IsIC)
+            {
+                 isValidFieldIC = _textFieldHelper.ValidateTextField(txtFieldICNo.Text, TNBGlobal.IC_NO_PATTERN)
+                    && !string.IsNullOrWhiteSpace(txtFieldICNo.Text);
+
+                isValid = isValidFieldIC;
+            }
+            if (IsAccount)
+            {
+                 isValidFieldAccOwnerName = _textFieldHelper.ValidateTextField(txtFieldAccOwnerName.Text, TNBGlobal.ACCOUNT_NAME_PATTERN)
+                    && !string.IsNullOrWhiteSpace(txtFieldAccOwnerName.Text);
+
+                isValid = isValidFieldAccOwnerName;
+            }
+            if (IsMobileNumber)
+            {
+                 isValidFieldMobile = _textFieldHelper.ValidateTextField(txtFieldMobileNumber.Text, TNBGlobal.MobileNoPattern)
+                    && !string.IsNullOrWhiteSpace(txtFieldMobileNumber.Text);
+
+                isValid = isValidFieldMobile;
+            }
+            if (IsEmail)
+            {
+                 isValidFieldEmail = _textFieldHelper.ValidateTextField(txtFieldEmail.Text, EMAIL_PATTERN)
+                    && !string.IsNullOrWhiteSpace(txtFieldEmail.Text);
+
+                isValid = isValidFieldEmail;
+            }
+            if (IsMailing)
+            {
+                 isValidFieldMailing = _textFieldHelper.ValidateTextField(txtFieldMailing.Text, TNBGlobal.CustomerNamePattern)
+                    && !string.IsNullOrWhiteSpace(txtFieldMailing.Text);
+
+                isValid = isValidFieldMailing;
+            }
+            if (IsPremise)
+            {
+                 isValidFieldPremise = _textFieldHelper.ValidateTextField(txtFieldPremise.Text, TNBGlobal.CustomerNamePattern)
+                    && !string.IsNullOrWhiteSpace(txtFieldPremise.Text);
+
+                isValid = isValidFieldPremise;
+            }
+            if ((IsIC || IsAccount || IsMobileNumber || IsEmail || IsMailing || IsPremise) == false)
+            {
+                isValid = false;
+            }
+
+            _btnNext.Enabled = isValid;
+            _btnNext.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
-        private void SetViews()
+        private void SetEvents()
         {
-            //_textFieldHelper.CreateTextFieldLeftView(txtFieldICNo, "IC");
-
-            _btnSubmit.Enabled = false;
-            _btnSubmit.BackgroundColor = MyTNBColor.SilverChalice;
+            if (IsSpecifyOther)
+            {
+                SetTextFieldEvents(lblSpecifyOtherTitle, txtFieldSpecifyOther, lblSpecifyOtherError, viewLineSpecifyOther, TNBGlobal.CustomerNamePattern);
+            }
+            if (IsIC)
+            {
+                SetTextFieldEvents(lblICNoTitle, txtFieldICNo, lblICNoError, viewLineICNo, TNBGlobal.IC_NO_PATTERN);
+            }
+            if (IsAccount)
+            {
+                SetTextFieldEvents(lblAccOwnerNameTitle, txtFieldAccOwnerName, lblAccOwnerNameError, viewLineAccOwnerName, TNBGlobal.CustomerNamePattern);
+            }
+            if (IsMobileNumber)
+            {
+                SetTextFieldEvents(lblMobileNumberTitle, txtFieldMobileNumber, lblMobileNumberError, viewLineMobile, TNBGlobal.MobileNoPattern);
+            }
+            if (IsEmail)
+            {
+                SetTextFieldEvents(lblEmailTitle, txtFieldEmail, lblEmailError, viewLineEmailLine, EMAIL_PATTERN);
+            }
+            if (IsMailing)
+            {
+                SetTextFieldEvents(lblMailingTitle, txtFieldMailing, lblMailingError, viewLineMailinglLine, TNBGlobal.CustomerNamePattern);
+            }
+            if (IsPremise)
+            {
+                SetTextFieldEvents(lblPremiseTitle, txtFieldPremise, lblPremiseError, viewLinePremiselLine, TNBGlobal.CustomerNamePattern);
+            }
         }
+
 
         private UILabel GetTitleLabel(string key)
         {
@@ -1217,7 +1270,8 @@ namespace myTNB
                 Frame = new CGRect(0, 37, View.Frame.Width - 36, 14),
                 AttributedText = AttributedStringUtility.GetAttributedString(key
                     , AttributedStringUtility.AttributedStringType.Error),
-                TextAlignment = UITextAlignment.Left
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
             };
         }
 
@@ -1234,6 +1288,7 @@ namespace myTNB
                 checkBoxList();
                 UpdateCheckBoxListHeight();
                 UpdateContentSize();
+                SetEvents();
 
             }
             else
@@ -1244,6 +1299,7 @@ namespace myTNB
                 checkBoxList();
                 UpdateCheckBoxListHeight();
                 UpdateContentSize();
+                SetEvents();
 
             }
         }
@@ -1325,7 +1381,7 @@ namespace myTNB
             int relationship = DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex + 1;
             string relationshipDesc = _typeRelationshipNameList[DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex];
 
-            if (IsSpecifyOther && relationship ==6 )
+            if (IsSpecifyOther && relationship == 6 )
             {
                 DataManager.DataManager.SharedInstance.Relationship = relationship;
                 DataManager.DataManager.SharedInstance.RelationshipDesc = txtFieldSpecifyOther.Text;

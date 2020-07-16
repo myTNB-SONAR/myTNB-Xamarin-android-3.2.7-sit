@@ -65,7 +65,8 @@ namespace myTNB
             Feedback,
             SSMRApply,
             SSMRDiscontinue,
-            SSMRReading
+            SSMRReading,
+            Enquiry
         }
 
         public UIViewController NextViewController
@@ -253,6 +254,14 @@ namespace myTNB
                     value = GetI18NValue(StatusPageConstants.SSMRReadingI18NDictionary[key]);
                 }
             }
+            else if (StatusDisplayType == StatusType.Enquiry)
+            {
+                bool isKeyExist = StatusPageConstants.SSMRReadingI18NDictionary.ContainsKey(key);
+                if (isKeyExist)
+                {
+                    value = GetI18NValue(StatusPageConstants.SSMRReadingI18NDictionary[key]);
+                }
+            }
             return value;
         }
 
@@ -303,10 +312,39 @@ namespace myTNB
 
                 }
             }
+            else if (StatusDisplayType == StatusType.Enquiry)
+            {
+                if (IsSuccess)
+                {
+                    GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRViewReadHistory), true, _actions.ViewReadingHistory, true);
+                    GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRViewReadHistory), true, _actions.ViewReadingHistory, true);
+                }
+                else
+                {
+                    GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.SSMRReadingTryAgain, true);
+
+                }
+            }
             View.AddSubviews(new UIView[] { btnPrimary, btnSecondary });
         }
 
         private void GetCTA(ref CustomUIButtonV2 btn, string title, bool isPrimary, Action ctaAction, bool isWhiteBG = false)
+        {
+            nfloat height = GetScaledHeight(48);
+            CGSize size = new CGSize(BaseMarginedWidth, height);
+            CGPoint point = new CGPoint(BaseMargin, isPrimary ? ViewHeight - height : ViewHeight - ((height * 2) + GetScaledHeight(6)));
+            btn = new CustomUIButtonV2(isWhiteBG)
+            {
+                Frame = new CGRect(point, size)
+            };
+            btn.SetTitle(title, UIControlState.Normal);
+            btn.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                if (ctaAction != null) { ctaAction.Invoke(); }
+            }));
+        }
+
+        private void GetCTA2(ref CustomUIButtonV2 btn, string title, bool isPrimary, Action ctaAction, bool isWhiteBG = false)
         {
             nfloat height = GetScaledHeight(48);
             CGSize size = new CGSize(BaseMarginedWidth, height);

@@ -23,7 +23,9 @@ namespace myTNB
         public bool IsOwner;
 
         private UIView _viewTitleSection, _viewTitleSection2, _btnSubmitContainer, _viewPersonalDetail;
+        private UIView viewCheckBoxTNC;
         private UIScrollView _svContainer;
+        private UITextView lblTNC;
         private UIButton _btnSubmit;
 
         private UITextField txtFieldName, txtFieldICNo, txtFieldEmail
@@ -33,6 +35,7 @@ namespace myTNB
         private UIView viewLineName, viewLineICNo, viewLineEmail
             , viewLineConfirmEmail, viewLinePassword, viewLineConfirmPassword
             , viewShowConfirmPassword, viewShowPassword, btnRegisterContainer;
+        private UIView viewEmail;
         private UILabel lblNameTitle, lblICNoTitle, lblEmailTitle
             , lblConfirmEmailTitle, lblPasswordTitle, lblConfirmPasswordTitle
             , lblNameError, lblICNoError, lblEmailError
@@ -58,6 +61,7 @@ namespace myTNB
             , _viewTerminateTitle, _viewTerminateContainer, _viewOthersContainer
             , _viewLineTerminate, _viewLineReason, _viewMainDetails, _viewApplyForTitle
             , _viewContactDetailsTitle, _viewAccountContainer;
+        private UIView viewName;
         private UIScrollView _scrollContainer;
         private CGRect _scrollViewFrame;
         private CustomTextField _customNameField;
@@ -71,8 +75,18 @@ namespace myTNB
         private UILabel _lblAddress, _lblEditInfo, _lblTerminateReason, _lblReason;
         private UITextView _txtViewReason;
         private bool _isAllowEdit;
+        private UIView viewMobile;
+        private UILabel lblMobileTitle;
+        private UILabel lblMobileError;
+        private UITextField txtFieldMobile;
+        private UIView viewLineMobile;
 
+        private TextFieldHelper _textFieldHelper = new TextFieldHelper();
+        private UIImageView imgViewCheckBoxTNC;
+        private object imgViewCheckBoxIC;
+        const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
 
+        public bool IsTNC { get; private set; }
 
         public override void ViewDidLoad()
         {
@@ -81,10 +95,11 @@ namespace myTNB
 
             SetHeader();
             AddScrollView();
-            //AddCTA();
-            AddTnCSection();
+            AddCTA();
+            //AddTnCSection();
             AddSectionTitle();
             AddDetailsSection();
+            SetEvents();
 
         }
 
@@ -113,157 +128,227 @@ namespace myTNB
             View.AddSubview(_svContainer);
         }
 
-        #region Details Section
         private void AddDetailsSection()
         {
-            _scrollContainer = new UIScrollView(new CGRect(0, _viewTitleSection.Frame.GetMaxY(), ViewWidth, ViewHeight));
-
-            _viewContactDetails = new UIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(219)))
+            _viewContactDetails = new UIView(new CGRect(0, _viewTitleSection.Frame.GetMaxY() + 8, ViewWidth, GetScaledHeight(219)))
             {
                 BackgroundColor = UIColor.White
             };
 
-            _customNameField = new CustomTextField(_viewContactDetails, new CGPoint(GetScaledWidth(16), GetScaledHeight(16)))
+            //Name
+            viewName = new UIView((new CGRect(18, 16, View.Frame.Width - 36, 51)))
             {
-                Title = "Name",
-                LeftIcon = "Name",
-                KeyboardType = UIKeyboardType.ASCIICapable,
-                //Error = GetErrorI18NValue(SSMRConstants.I18N_InvalidEmail),
-                TypingEndAction = ToggleCTA,
-                TypingBeginAction = OnEdit,
-                TextFieldType = CustomTextField.Type.NameUser,
-                //OnCreateValidation = true
-
+                BackgroundColor = UIColor.Clear
             };
-            UIView viewName = _customNameField.GetUI();
 
+            lblNameTitle = GetTitleLabel("NAME");
+            lblNameError = GetErrorLabel("Name is required");
 
-            _customEmailField = new CustomTextField(_viewContactDetails, new CGPoint(GetScaledWidth(16), GetScaledHeight(75)))
+            txtFieldName = new UITextField
             {
-                Title = GetCommonI18NValue(SSMRConstants.I18N_Email),
-                LeftIcon = SSMRConstants.IMG_Email,
-                KeyboardType = UIKeyboardType.EmailAddress,
-                Error = GetErrorI18NValue(SSMRConstants.I18N_InvalidEmail),
-                TypingEndAction = ToggleCTA,
-                TypingBeginAction = OnEdit,
-                TextFieldType = CustomTextField.Type.EmailAddress,
-                OnCreateValidation = true
-
+                Frame = new CGRect(0, 12, viewName.Frame.Width, 24),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(""
+                , AttributedStringUtility.AttributedStringType.Value),
+                TextColor = MyTNBColor.TunaGrey()
             };
-            UIView viewEmail = _customEmailField.GetUI();
 
+            txtFieldName.ReturnKeyType = UIReturnKeyType.Done;
 
-            _customMobileField = new CustomTextField(_viewContactDetails, new CGPoint(GetScaledWidth(16), GetScaledHeight(134)))
+            viewLineName = GenericLine.GetLine(new CGRect(0, 36, viewName.Frame.Width, 1));
+
+            viewName.AddSubviews(new UIView[] { lblNameTitle, lblNameError, txtFieldName, viewLineName });
+            _viewContactDetails.AddSubview(viewName);
+
+            //Email
+            viewEmail = new UIView((new CGRect(18, viewName.Frame.GetMaxY() + 16, View.Frame.Width - 36, 51)))
             {
-                Title = GetCommonI18NValue(SSMRConstants.I18N_MobileNumber),
-                LeftIcon = SSMRConstants.IMG_MobileNumber,
-                KeyboardType = UIKeyboardType.PhonePad,
-                Error = GetErrorI18NValue(SSMRConstants.I18N_InvalidMobileNumber),
-                Hint = GetHintI18NValue(SSMRConstants.I18N_HintMobileNumber),
-                TypingEndAction = ToggleCTA,
-                TypingBeginAction = OnEdit,
-                TextFieldType = CustomTextField.Type.MobileNumber,
-                OnCreateValidation = true
+                BackgroundColor = UIColor.Clear
             };
-            UIView viewMobile = _customMobileField.GetUI();
 
+            lblEmailTitle = GetTitleLabel("EMAIL ADDRESS");
+            lblEmailError = GetErrorLabel("Invalid email address");
 
-            _lblEditInfo = new UILabel(new CGRect(BaseMargin, GetYLocationFromFrame(viewMobile.Frame, 12)
-                , _viewContactDetails.Frame.Width - GetScaledWidth(32), GetScaledHeight(32)))
+            txtFieldEmail = new UITextField
             {
-                TextColor = MyTNBColor.CharcoalGrey,
+                Frame = new CGRect(0, 12, viewEmail.Frame.Width, 24),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(""
+                , AttributedStringUtility.AttributedStringType.Value),
+                TextColor = MyTNBColor.TunaGrey()
+            };
+
+            txtFieldEmail.ReturnKeyType = UIReturnKeyType.Done;
+
+            viewLineEmail = GenericLine.GetLine(new CGRect(0, 36, viewEmail.Frame.Width, 1));
+
+            viewEmail.AddSubviews(new UIView[] { lblEmailTitle, lblEmailError, txtFieldEmail, viewLineEmail });
+            _viewContactDetails.AddSubview(viewEmail);
+
+            //Mobile Number
+            viewMobile = new UIView((new CGRect(18, viewEmail.Frame.GetMaxY() + 16, View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+
+            lblMobileTitle = GetTitleLabel("MOBILE NUMBER");
+            lblMobileError = GetErrorLabel("Invalid mobile number");
+
+            txtFieldMobile = new UITextField
+            {
+                Frame = new CGRect(0, 12, viewMobile.Frame.Width, 24),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(""
+                , AttributedStringUtility.AttributedStringType.Value),
+                TextColor = MyTNBColor.TunaGrey()
+            };
+
+            txtFieldMobile.ReturnKeyType = UIReturnKeyType.Done;
+
+            viewLineMobile = GenericLine.GetLine(new CGRect(0, 36, viewMobile.Frame.Width, 1));
+
+            viewMobile.AddSubviews(new UIView[] { lblMobileTitle, lblMobileError, txtFieldMobile, viewLineMobile });
+            _viewContactDetails.AddSubview(viewMobile);
+
+            _svContainer.AddSubview(_viewContactDetails);
+        }
+
+        private UILabel GetTitleLabel(string key)
+        {
+            return new UILabel
+            {
+                Frame = new CGRect(0, 0, View.Frame.Width - 36, 12),
+                AttributedText = AttributedStringUtility.GetAttributedString(key
+                    , AttributedStringUtility.AttributedStringType.Title),
+                TextAlignment = UITextAlignment.Left
+            };
+        }
+
+        private UILabel GetErrorLabel(string key)
+        {
+            return new UILabel
+            {
+                Frame = new CGRect(0, 37, View.Frame.Width - 36, 14),
+                AttributedText = AttributedStringUtility.GetAttributedString(key
+                    , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
-                Font = TNBFont.MuseoSans_12_300,
-                Text = GetI18NValue(SSMRConstants.I18N_EditInfo),
-                Lines = 0,
-                LineBreakMode = UILineBreakMode.WordWrap,
                 Hidden = true
             };
-
-            CGSize newLblEditInfoSize = GetLabelSize(_lblEditInfo, _lblEditInfo.Frame.Width, GetScaledHeight(300));
-            _lblEditInfo.Frame = new CGRect(_lblEditInfo.Frame.X, _lblEditInfo.Frame.Y, _lblEditInfo.Frame.Width, newLblEditInfoSize.Height);
-            _viewContactDetails.AddSubviews(new UIView[] { viewName, viewEmail, viewMobile, _lblEditInfo });
-
-            _scrollContainer.AddSubviews(new UIView[] { _viewContactDetails });
-            _scrollContainer.ContentSize = new CGSize(ViewWidth, _viewContactDetails.Frame.GetMaxY());
-            _svContainer.AddSubview(_scrollContainer);
-            //_scrollViewFrame = _scrollContainer.Frame;
         }
-        #endregion
 
-        private void ToggleCTA()
+        private void SetTextFieldEvents(UITextField textField, UILabel textFieldTitle, UILabel textFieldError, UIView viewLine, string pattern)
         {
-            bool isValid = !_isAllowEdit;
-            if (_isAllowEdit && _customEmailField != null && _customMobileField != null)
+            _textFieldHelper.SetKeyboard(textField);
+            _textFieldHelper.CreateDoneButton(textField);
+
+            textField.EditingChanged += (sender, e) =>
             {
-                isValid = _customEmailField.IsFieldValid && _customMobileField.IsFieldValid;
-            }
-            if (!IsApplication && _viewOthersContainer != null && !_viewOthersContainer.Hidden)
+                //textFieldTitle.Hidden = textField.Text.Length == 0;
+                SetSubmitButtonEnable();
+            };
+            textField.EditingDidBegin += (sender, e) =>
             {
-                isValid = isValid && (_txtViewReason.Text != GetI18NValue(SSMRConstants.I18N_StateReason));
-            }
+                //textFieldTitle.Hidden = textField.Text.Length == 0;
+                textField.LeftViewMode = UITextFieldViewMode.Never;
+                viewLine.BackgroundColor = MyTNBColor.PowerBlue;
+                textField.TextColor = MyTNBColor.TunaGrey();
+            };
+            textField.ShouldEndEditing = (sender) =>
+            {
+                //textFieldTitle.Hidden = textField.Text.Length == 0;
+                bool isValid = _textFieldHelper.ValidateTextField(textField.Text, pattern);
+                //if (textField == _txtAccountNumber)
+                //{
+                //    isValid = isValid && _textFieldHelper.ValidateTextFieldWithLength(textField.Text, TNBGlobal.AccountNumberLowCharLimit);
+                //}
+
+                textFieldError.Hidden = isValid;
+
+                viewLine.BackgroundColor = isValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                textField.TextColor = isValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
+                return true;
+            };
+            textField.ShouldReturn = (sender) =>
+            {
+                sender.ResignFirstResponder();
+                return false;
+            };
+            textField.ShouldChangeCharacters = (txtField, range, replacementString) =>
+            {
+                //if (textField == _txtAccountNumber)
+                //{
+                //    string content = _textFieldHelper.TrimAllSpaces(((UITextField)txtField).Text);
+                //    nint count = content.Length + replacementString.Length - range.Length;
+                //    return count <= TNBGlobal.AccountNumberLowCharLimit;
+                //}
+
+                return true;
+            };
+
+            textField.EditingDidEnd += (sender, e) =>
+            {
+                if (textField.Text.Length == 0)
+                    textField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
+            };
+        }
+
+
+        private void SetEvents()
+        {
+            SetTextFieldEvents(txtFieldName, lblNameTitle, lblNameError, viewLineName, TNBGlobal.CustomerNamePattern);
+            SetTextFieldEvents(txtFieldEmail, lblEmailTitle, lblEmailError, viewLineEmail, EMAIL_PATTERN);
+            SetTextFieldEvents(txtFieldMobile, lblMobileTitle, lblMobileError, viewLineMobile, TNBGlobal.MobileNoPattern);
+        }
+
+        private void SetSubmitButtonEnable()
+        {
+            bool isValidFieldName = _textFieldHelper.ValidateTextField(txtFieldName.Text, TNBGlobal.CustomerNamePattern)
+               && !string.IsNullOrWhiteSpace(txtFieldName.Text);
+
+            bool isValidFieldEmail = _textFieldHelper.ValidateTextField(txtFieldEmail.Text, EMAIL_PATTERN)
+               && !string.IsNullOrWhiteSpace(txtFieldEmail.Text);
+
+            bool isValidFieldMobile = _textFieldHelper.ValidateTextField(txtFieldMobile.Text, TNBGlobal.MobileNoPattern)
+               && !string.IsNullOrWhiteSpace(txtFieldMobile.Text);
+
+            bool isValid = isValidFieldName && isValidFieldEmail && isValidFieldMobile && IsTNC;
+
             _btnSubmit.Enabled = isValid;
             _btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
+
         }
 
-        private void OnEdit()
-        {
-            if (_lblEditInfo.Hidden)
-            {
-                _lblEditInfo.Hidden = false;
-                CGRect detailsFrame = _viewContactDetails.Frame;
-                detailsFrame.Height = _lblEditInfo.Frame.GetMaxY() + GetScaledHeight(16);
-                _viewContactDetails.Frame = detailsFrame;
+        //#region TNC Section
+        //private void AddTnCSection()
+        //{
+        //    _viewBottomContainer = new UIView(new CGRect(0, View.Frame.Height - GetScaledHeight(160), View.Frame.Width, GetScaledHeight(160)))
+        //    {
+        //        BackgroundColor = UIColor.White
+        //    };
+        //    UIView viewPadding = new UIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(1)))
+        //    {
+        //        BackgroundColor = MyTNBColor.SectionGrey
+        //    };
 
-                if (!IsApplication)
-                {
-                    _viewTerminateTitle.Frame = new CGRect(0, _viewContactDetails.Frame.GetMaxY()
-                        , ViewWidth, _viewTerminateTitle.Frame.Height);
-                    _viewTerminateContainer.Frame = new CGRect(0, _viewTerminateTitle.Frame.GetMaxY()
-                        , ViewWidth, _viewTerminateContainer.Frame.Height);
-                    _scrollContainer.ContentSize = new CGSize(ViewWidth, _viewTerminateContainer.Frame.GetMaxY());
-                }
-                else
-                {
-                    _scrollContainer.ContentSize = new CGSize(ViewWidth, _viewContactDetails.Frame.GetMaxY());
-                }
-            }
-        }
+        //    UITextView txtFieldInfo= GetInfo();
+        //    _btnSubmit = new CustomUIButtonV2()
+        //    {
+        //        Frame = new CGRect(BaseMargin, GetYLocationFromFrame(txtFieldInfo.Frame, 16), BaseMarginedWidth, GetScaledHeight(48)),
+        //        Enabled = true,
+        //        BackgroundColor = MyTNBColor.FreshGreen
+        //    };
+        //    _btnSubmit.SetTitle(GetCommonI18NValue(SSMRConstants.I18N_Submit), UIControlState.Normal);
+        //    _btnSubmit.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+        //    {
+        //        ExecuteSubmitUpdatePersonalDetail();
+        //    }));
+        //    _viewBottomContainer.AddSubviews(new UIView[] { viewPadding, txtFieldInfo, _btnSubmit });
+        //    nfloat containerHeight = _btnSubmit.Frame.GetMaxY() + (DeviceHelper.IsIphoneXUpResolution() ? 36 : 16);
+        //    _viewBottomContainer.Frame = new CGRect(0, ViewHeight - containerHeight, ViewWidth, containerHeight);
+        //    View.AddSubview(_viewBottomContainer);
+        //}
 
-        #region TNC Section
-        private void AddTnCSection()
-        {
-            _viewBottomContainer = new UIView(new CGRect(0, View.Frame.Height - GetScaledHeight(160), View.Frame.Width, GetScaledHeight(160)))
-            {
-                BackgroundColor = UIColor.White
-            };
-            UIView viewPadding = new UIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(1)))
-            {
-                BackgroundColor = MyTNBColor.SectionGrey
-            };
-
-            UITextView txtFieldInfo = GetInfo();
-            _btnSubmit = new CustomUIButtonV2()
-            {
-                Frame = new CGRect(BaseMargin, GetYLocationFromFrame(txtFieldInfo.Frame, 16), BaseMarginedWidth, GetScaledHeight(48)),
-                Enabled = true,
-                BackgroundColor = MyTNBColor.FreshGreen
-            };
-            _btnSubmit.SetTitle(GetCommonI18NValue(SSMRConstants.I18N_Submit), UIControlState.Normal);
-            _btnSubmit.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                ExecuteSubmitUpdatePersonalDetail();
-            }));
-            _viewBottomContainer.AddSubviews(new UIView[] { viewPadding, txtFieldInfo, _btnSubmit });
-            nfloat containerHeight = _btnSubmit.Frame.GetMaxY() + (DeviceHelper.IsIphoneXUpResolution() ? 36 : 16);
-            _viewBottomContainer.Frame = new CGRect(0, ViewHeight - containerHeight, ViewWidth, containerHeight);
-            View.AddSubview(_viewBottomContainer);
-        }
-
-        private UITextView GetInfo()
+        private void GetInfo()
         {
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("By submmitting, you are agreeing to the <a href=\"\\\"><strong>TNB Terms and Conditions</strong></a>, <a href=\"\\\"><strong>User Agreement</strong></a> and <a href=\"\\\"><strong>Privacy policy</strong></a>."
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("By submmitting, you are agreeing to the <a href=\"\\\"><strong>TNB Terms & Conditions</strong></a>"
                         , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F));
             NSMutableAttributedString mutableHTMLFooter = new NSMutableAttributedString(htmlBody);
 
@@ -278,7 +363,7 @@ namespace myTNB
             {
                 ForegroundColor = MyTNBColor.CharcoalGrey
             }, new NSRange(0, htmlBody.Length));
-            UITextView txtFieldInfo = new UITextView
+            lblTNC = new UITextView
             {
                 Editable = false,
                 ScrollEnabled = true,
@@ -286,9 +371,9 @@ namespace myTNB
                 WeakLinkTextAttributes = linkAttributes.Dictionary,
                 TextAlignment = UITextAlignment.Left
             };
-            txtFieldInfo.TextContainerInset = UIEdgeInsets.Zero;
+            lblTNC.TextContainerInset = UIEdgeInsets.Zero;
 
-            txtFieldInfo.Delegate = new TextViewDelegate(new Action<NSUrl>((url) =>
+            lblTNC.Delegate = new TextViewDelegate(new Action<NSUrl>((url) =>
             {
                 UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
                 TermsAndConditionViewController viewController =
@@ -302,41 +387,97 @@ namespace myTNB
                 }
             }));
             //Resize
-            CGSize size = txtFieldInfo.SizeThatFits(new CGSize(BaseMarginedWidth, GetScaledHeight(160)));
-            txtFieldInfo.Frame = new CGRect(BaseMargin, GetScaledHeight(17), size.Width, size.Height);
-            return txtFieldInfo;
+            CGSize size = lblTNC.SizeThatFits(new CGSize(View.Frame.Width - 23, GetScaledHeight(160)));
+            lblTNC.Frame = new CGRect(GetXLocationFromFrame(viewCheckBoxTNC.Frame, 8F), 16, size.Width - 24 - 18, size.Height);
+            //return txtFieldInfo;
         }
-        #endregion
+        //#endregion
+
+        //private void AddCTA()
+        //{
+        //    _btnSubmitContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(128))
+        //        , View.Frame.Width, DeviceHelper.GetScaledHeight(100)))
+        //    {
+        //        BackgroundColor = UIColor.White
+        //    };
+
+        //    _btnSubmit = new UIButton(UIButtonType.Custom)
+        //    {
+        //        Frame = new CGRect(18, DeviceHelper.GetScaledHeight(18), _btnSubmitContainer.Frame.Width - 36, 48)
+        //    };
+        //    _btnSubmit.SetTitle("Submit", UIControlState.Normal);
+        //    _btnSubmit.Font = MyTNBFont.MuseoSans18_300;
+        //    _btnSubmit.Layer.CornerRadius = 5.0f;
+        //    //_btnSubmit.Enabled = true; //false;
+        //    //_btnSubmit.BackgroundColor = MyTNBColor.SilverChalice;
+
+        //    _btnSubmit.Enabled = true;//Temporary
+        //    _btnSubmit.SetTitleColor(UIColor.White, UIControlState.Normal);
+        //    _btnSubmit.BackgroundColor = MyTNBColor.FreshGreen;
+
+        //    _btnSubmit.TouchUpInside += (sender, e) =>
+        //    {
+        //        //DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryMessage = _feedbackTextView.Text ? string.Empty;
+        //        //NavigateToPage();
+        //    };
+        //    _btnSubmitContainer.AddSubview(_btnSubmit);
+        //    View.AddSubview(_btnSubmitContainer);
+        //}
 
         private void AddCTA()
         {
-            _btnSubmitContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(128))
-                , View.Frame.Width, DeviceHelper.GetScaledHeight(100)))
+            //_btnSubmitContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(145))
+            //    , View.Frame.Width, DeviceHelper.GetScaledHeight(100)))
+            _btnSubmitContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(173))
+            , View.Frame.Width, DeviceHelper.GetScaledHeight(128)))
             {
                 BackgroundColor = UIColor.White
             };
 
+            viewCheckBoxTNC = new UIView(new CGRect(16, 16, 20, 20))
+            {
+                BackgroundColor = MyTNBColor.WhiteTwo
+            };
+            viewCheckBoxTNC.Layer.CornerRadius = GetScaledWidth(5F);
+            viewCheckBoxTNC.Layer.BorderColor = IsTNC ? UIColor.Clear.CGColor : MyTNBColor.VeryLightPinkSeven.CGColor;
+            viewCheckBoxTNC.Layer.BorderWidth = GetScaledWidth(1F);
+            imgViewCheckBoxTNC = new UIImageView(new CGRect(0, 0, 20, 20))
+            {
+                Image = UIImage.FromBundle(LoginConstants.IMG_RememberIcon),
+                ContentMode = UIViewContentMode.ScaleAspectFill,
+                BackgroundColor = UIColor.Clear,
+                Hidden = IsTNC ? false : true
+            };
+            viewCheckBoxTNC.AddSubview(imgViewCheckBoxTNC);
+
+            viewCheckBoxTNC.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                IsTNC = !IsTNC;
+                imgViewCheckBoxTNC.Hidden = !IsTNC;
+                viewCheckBoxTNC.Layer.BorderColor = IsTNC ? UIColor.Clear.CGColor : MyTNBColor.VeryLightPinkSeven.CGColor;
+
+                SetSubmitButtonEnable();
+            }));
+
+            lblTNC = new UITextView(new CGRect(GetXLocationFromFrame(viewCheckBoxTNC.Frame, 18F), 16, View.Frame.Width - 23, 20));
+            GetInfo();
+
             _btnSubmit = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(18, DeviceHelper.GetScaledHeight(18), _btnSubmitContainer.Frame.Width - 36, 48)
+                Frame = new CGRect(18, lblTNC.Frame.GetMaxY() + DeviceHelper.GetScaledHeight(16), _btnSubmitContainer.Frame.Width - 36, 48)
             };
             _btnSubmit.SetTitle("Submit", UIControlState.Normal);
             _btnSubmit.Font = MyTNBFont.MuseoSans18_300;
             _btnSubmit.Layer.CornerRadius = 5.0f;
-            //_btnSubmit.Enabled = true; //false;
-            //_btnSubmit.BackgroundColor = MyTNBColor.SilverChalice;
-
-            _btnSubmit.Enabled = true;//Temporary
-            _btnSubmit.SetTitleColor(UIColor.White, UIControlState.Normal);
-            _btnSubmit.BackgroundColor = MyTNBColor.FreshGreen;
-
+            _btnSubmit.Enabled = false;
+            _btnSubmit.BackgroundColor = MyTNBColor.SilverChalice;
             _btnSubmit.TouchUpInside += (sender, e) =>
             {
-                //DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryMessage = _feedbackTextView.Text ? string.Empty;
-                //NavigateToPage();
+                ExecuteSubmitUpdatePersonalDetail();
             };
-            _btnSubmitContainer.AddSubview(_btnSubmit);
+            _btnSubmitContainer.AddSubviews(viewCheckBoxTNC, lblTNC, _btnSubmit);
             View.AddSubview(_btnSubmitContainer);
+
         }
 
         private void AddSectionTitle()
@@ -416,7 +557,7 @@ namespace myTNB
                 name = DataManager.DataManager.SharedInstance.UserEntity[0].displayName,
                 email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
                 phoneNum = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo,
-                feedbackMesage = DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryMessage, //Common
+                feedbackMesage = string.Empty, //Common
                 stateId = "",
                 location = "",
                 poleNum = "",

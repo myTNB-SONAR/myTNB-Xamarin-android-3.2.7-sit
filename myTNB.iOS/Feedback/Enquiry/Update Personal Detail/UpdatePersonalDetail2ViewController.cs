@@ -41,35 +41,17 @@ namespace myTNB
         private UIView _viewPhotoContainer;
 
         //Widgets
-        private UIView _btnSubmitContainer, _viewUploadPhoto, _feedbackCategoryView, _viewFeedback
-             , _viewLineFeedback;
-        private UILabel _lblPhotoTitle, _lblFeedbackTitle, _lblFeedbackSubTitle, _lblFeedbackError;
-        private UIImageView _iconFeedback;
+        private UIView _btnSubmitContainer, _viewUploadPhoto;
+        private UILabel _lblPhotoTitle;
         private UIButton _btnSubmit;
-        private UIScrollView _svContainer, imageContainerScroll;
+        private UIScrollView _svContainer;
         private UITapGestureRecognizer _tapImage, _tapImage2, _tapImage3;
 
-        private FeedbackTextView _feedbackTextView;
-        //private OtherFeedbackComponent _otherFeedbackComponent;
-        private UpdatePersonalDetailComponent _billRelatedFeedbackComponent;
-        //public StreetLampFeedbackComponent _streetLampRelatedFeedbackComponent;
-
-        private SubmitFeedbackResponseModel _submitFeedback;
-
         //syahmi
-        private UIView _viewTitleSection, _viewTitleSection2;
+        private UIView _viewTitleSection2;
 
         //for header
-        private UIView _headerViewContainer, _headerView, _navbarView
-        , _shimmerView, _viewRefreshContainer, _refreshView;
-        private UILabel _lblNavTitle, _lblNavStep;
-        private UIImageView _bgImageView, _imgFilter;
-        private CAGradientLayer _gradientLayer;
-        private CustomUIView _accountSelectorContainer, _viewFilter;
-        private nfloat _navBarHeight;
         public nfloat _previousScrollOffset;
-        private nfloat _tableViewOffset;
-        private CGRect DefaultBannerRect;
 
         private CustomUIView _identificationToolTipsView;
         private CustomUIView _proofConsentToolTipsView;
@@ -78,7 +60,6 @@ namespace myTNB
         private UIView imageContainer2;
         private UIView imageContainer3;
 
-        private bool imageTapped, imageTapped2, imageTapped3;
         private UIView _viewUploadPhoto2;
         private UILabel _lblPhotoTitle2;
         private UIView _viewUploadPhoto3;
@@ -87,15 +68,15 @@ namespace myTNB
         public int imageContainerSelected = 0;
 
         UIViewWithDashedLinerBorder dashedLineView, dashedLineView2, dashedLineView3;
+        private UILabel lblPhotoSubTitle3;
+        private UILabel lblPhotoSubTitle2;
+        private UILabel lblPhotoSubTitle1;
 
         public override void ViewDidLoad()
         {
             PageName = FeedbackConstants.Pagename_FeedbackForm;
 
             base.ViewDidLoad();
-            //_otherFeedbackComponent = new OtherFeedbackComponent(this);
-            _billRelatedFeedbackComponent = new UpdatePersonalDetailComponent(this);
-            //_streetLampRelatedFeedbackComponent = new StreetLampFeedbackComponent(this);
             SetHeader();
             AddScrollView();
             AddCTA();
@@ -172,7 +153,8 @@ namespace myTNB
 
             _btnSubmit.TouchUpInside += (sender, e) =>
             {
-                //DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryMessage = _feedbackTextView.Text ? string.Empty;
+                ActivityIndicator.Show();
+
                 NavigateToPage();
             };
             _btnSubmitContainer.AddSubview(_btnSubmit);
@@ -225,14 +207,14 @@ namespace myTNB
 
             AddImageContainer();
   
-            UILabel lblPhotoSubTitle = new UILabel(new CGRect(0, imageContainer.Frame.GetMaxY() + 4
+            lblPhotoSubTitle1 = new UILabel(new CGRect(0, imageContainer.Frame.GetMaxY() + 4
                 , View.Frame.Width - 36, 14))
             {
-                Text = "Maximum document size is 1MB (PDF, JPG & JPEG format only)",
+                Text = "Maximum document size is 5MB (PDF, JPG & JPEG format only)",
                 TextColor = MyTNBColor.SilverChalice,
                 Font = MyTNBFont.MuseoSans11_300
             };
-            _viewUploadPhoto.AddSubviews(new UIView[] { _lblPhotoTitle, lblPhotoSubTitle }); //GetIdentificationTooltipView(GetYLocationFromFrame(lblPhotoSubTitle.Frame, 16))
+            _viewUploadPhoto.AddSubviews(new UIView[] { _lblPhotoTitle, lblPhotoSubTitle1 }); 
             _viewPhotoContainer.AddSubview(_viewUploadPhoto);
             _svContainer.AddSubview(_viewPhotoContainer);
 
@@ -262,16 +244,15 @@ namespace myTNB
 
             AddImageContainer2();
 
-            UILabel lblPhotoSubTitle2 = new UILabel(new CGRect(0, imageContainer2.Frame.GetMaxY() + 4
+            lblPhotoSubTitle2 = new UILabel(new CGRect(0, imageContainer2.Frame.GetMaxY() + 4
                 , View.Frame.Width - 36, 14))
             {
-                Text = "Maximum document size is 1MB (PDF, JPG & JPEG format only)",
+                Text = "Maximum document size is 5MB (PDF, JPG & JPEG format only)",
                 TextColor = MyTNBColor.SilverChalice,
                 Font = MyTNBFont.MuseoSans11_300
             };
             _viewUploadPhoto2.AddSubviews(new UIView[] { _lblPhotoTitle2, lblPhotoSubTitle2});
             _viewPhotoContainer.AddSubview(_viewUploadPhoto2);
-            //_viewPhotoContainer.AddSubview(GetIdentificationTooltipView(GetYLocationFromFrame(_viewUploadPhoto2.Frame, 16))); tnb
 
         }
 
@@ -305,10 +286,10 @@ namespace myTNB
 
             AddImageContainer3();
 
-            UILabel lblPhotoSubTitle3 = new UILabel(new CGRect(0, imageContainer3.Frame.GetMaxY() + 4
+            lblPhotoSubTitle3 = new UILabel(new CGRect(0, imageContainer3.Frame.GetMaxY() + 4
                 , View.Frame.Width - 36, 14))
             {
-                Text = "Maximum document size is 1MB (PDF, JPG & JPEG format only)",
+                Text = "Maximum document size is 5MB (PDF, JPG & JPEG format only)",
                 TextColor = MyTNBColor.SilverChalice,
                 Font = MyTNBFont.MuseoSans11_300
             };
@@ -344,8 +325,6 @@ namespace myTNB
 
                 _tapImage = new UITapGestureRecognizer(() =>
                 {
-                    imageContainerSelected = 1;
-
                     UIImagePickerController imgPicker = new UIImagePickerController();
                     UpdatePersonalDetailImagePickerDelegate imgPickerDelegate = new UpdatePersonalDetailImagePickerDelegate(this)
                     {
@@ -407,7 +386,6 @@ namespace myTNB
 
                 _tapImage2 = new UITapGestureRecognizer(() =>
                 {
-                    imageContainerSelected = 2;
 
                     UIImagePickerController imgPicker2 = new UIImagePickerController();
                     UpdatePersonalDetailImagePickerDelegate imgPickerDelegate2 = new UpdatePersonalDetailImagePickerDelegate(this)
@@ -469,7 +447,6 @@ namespace myTNB
 
                 _tapImage3 = new UITapGestureRecognizer(() =>
                 {
-                    imageContainerSelected = 3;
 
                     UIImagePickerController imgPicker3 = new UIImagePickerController();
                     UpdatePersonalDetailImagePickerDelegate imgPickerDelegate3 = new UpdatePersonalDetailImagePickerDelegate(this)
@@ -482,7 +459,6 @@ namespace myTNB
 
                     alert.AddAction(UIAlertAction.Create(GetI18NValue(FeedbackConstants.I18N_Camera), UIAlertActionStyle.Default, (obj) =>
                     {
-                        imageTapped3 = true;
                         imgPicker3.SourceType = UIImagePickerControllerSourceType.Camera;
                         imgPicker3.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(imgPicker3, true, null);
@@ -490,7 +466,6 @@ namespace myTNB
 
                     alert.AddAction(UIAlertAction.Create(GetI18NValue(FeedbackConstants.I18N_CameraRoll), UIAlertActionStyle.Default, (obj) =>
                     {
-                        imageTapped3 = true;
                         imgPicker3.SourceType = UIImagePickerControllerSourceType.PhotoLibrary;
                         imgPicker3.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(imgPicker3, true, null);
@@ -562,30 +537,8 @@ namespace myTNB
 
         private nfloat GetScrollHeight()
         {
-            return (nfloat)((_viewPhotoContainer.Frame.GetMaxY() + (_btnSubmitContainer.Frame.Height + 50f)));
+            return (nfloat)((_viewPhotoContainer.Frame.GetMaxY() + (_btnSubmitContainer.Frame.Height + 32f)));
         }
-
-        internal void SetButtonEnable()
-        {
-            bool isValidFeedback = _feedbackTextView.ValidateTextView(_feedbackTextView.Text, ANY_PATTERN) && _feedbackTextView.Text.Length != 0;
-            bool isValidFields;
-            //if (string.Compare(FeedbackID, "1") == 0)
-            //{
-                isValidFields = _billRelatedFeedbackComponent.IsValidEntry();
-            //}
-            //else if (string.Compare(FeedbackID, "2") == 0)
-            //{
-            //    isValidFields = _streetLampRelatedFeedbackComponent.IsValidEntry();
-            //}
-            //else
-            //{
-            //    isValidFields = _otherFeedbackComponent.IsValidEntry();
-            //}
-            bool isValid = isValidFields && isValidFeedback;
-            _btnSubmit.Enabled = true; //isValid;
-            _btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
-        }
-
 
         public CustomUIView GetIdentificationTooltipView(nfloat yLoc)
         {
@@ -674,6 +627,8 @@ namespace myTNB
             UIImageView imgView;
             UIImage resizedImage;
 
+            ActivityIndicator.Show();
+
             foreach (UIView view in dashedLineView.Subviews)
             {
                 if (view.Tag == 1)
@@ -737,13 +692,50 @@ namespace myTNB
 
         private void NavigateToPage()
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
-            UpdatePersonalDetail3ViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetail3ViewController") as UpdatePersonalDetail3ViewController;
-            viewController.IsOwner = IsOwner;
-            viewController.Items = GetImageList();
-            viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
-            NavigationController.PushViewController(viewController, true);
 
+            if (IsOwner)
+            { 
+                if(GetImageList().Count == 1)// : GetImageList().Count == 3)
+                { 
+
+                UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
+                UpdatePersonalDetail3ViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetail3ViewController") as UpdatePersonalDetail3ViewController;
+                viewController.IsOwner = IsOwner;
+                viewController.Items = GetImageList();
+                viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
+                NavigationController.PushViewController(viewController, true);
+
+                ActivityIndicator.Hide();
+                }
+                else
+                {
+                    lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
+
+                    ActivityIndicator.Hide();
+                }
+            }
+            else if (!IsOwner)
+            {
+                if (GetImageList().Count == 3)
+                {
+                    UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
+                    UpdatePersonalDetail3ViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetail3ViewController") as UpdatePersonalDetail3ViewController;
+                    viewController.IsOwner = IsOwner;
+                    viewController.Items = GetImageList();
+                    viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
+                    NavigationController.PushViewController(viewController, true);
+
+                    ActivityIndicator.Hide();
+                }
+                else
+                {
+                    lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
+                    lblPhotoSubTitle2.TextColor = MyTNBColor.Tomato;
+                    lblPhotoSubTitle3.TextColor = MyTNBColor.Tomato;
+
+                    ActivityIndicator.Hide();
+                }
+            }
 
         }
     }

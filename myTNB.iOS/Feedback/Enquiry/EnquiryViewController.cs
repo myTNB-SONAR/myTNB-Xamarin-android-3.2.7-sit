@@ -1,13 +1,11 @@
 using CoreGraphics;
 using Foundation;
-using myTNB.Customs;
 using myTNB.Feedback;
 using myTNB.Home.Bill;
 using myTNB.Model;
 using myTNB.Registration;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UIKit;
 
 namespace myTNB
@@ -37,15 +35,11 @@ namespace myTNB
         public UIView Frame2;
         public UILabel lblTitle2;         public UILabel lblSubtTitle2;         public UIView viewLine2;         public UILabel lblCount2;         public UIImageView imgViewIcon2;
 
-        private ValidateManualAccountLinkingResponseModel _validateManualAccountLinkingResponse
-        = new ValidateManualAccountLinkingResponseModel();
-        private string accontNumber;
-        private string storyboard;
-        private string viewcontroller;
-
         public override void ViewDidLoad()
         {
-            PageName = FeedbackConstants.Pagename_FeedbackList;
+            //PageName = FeedbackConstants.Pagename_FeedbackList;
+            PageName = "SubmitEnquiry";
+
             base.ViewDidLoad();
 
             SetHeader();
@@ -83,7 +77,7 @@ namespace myTNB
             NavigationItem.LeftBarButtonItem = btnBack;
 
             //Title = DataManager.DataManager.SharedInstance.FeedbackCategory?.Find(x => x?.FeedbackCategoryId == FeedbackID)?.FeedbackCategoryName;
-            Title = "Submit New Enquiry";
+            Title = GetI18NValue("submitEnquiryTitle");
 
         }
 
@@ -106,7 +100,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "How we can help you?"
+                Text = GetI18NValue("enquiringTitle")
             };
 
             _viewTitleSection.AddSubview(lblSectionTitle);
@@ -154,7 +148,7 @@ namespace myTNB
             {
                 Font = MyTNBFont.MuseoSans16_300,
                 TextColor = MyTNBColor.TunaGrey(),
-                Placeholder = "Account Number",
+                Placeholder = GetI18NValue("accNumberHint"),
                 AttributedText = new NSAttributedString("",
                 font: MyTNBFont.MuseoSans16,
                 foregroundColor: MyTNBColor.SilverChalice,
@@ -212,16 +206,17 @@ namespace myTNB
             _svContainer.AddSubview(_accContainer);
 
             SetKeyboard(_txtAccountNumber);
-            _txtAccountNumber.KeyboardType = UIKeyboardType.NumberPad;
-            _textFieldHelper.CreateDoneButton(_txtAccountNumber);
+            //_textFieldHelper.CreateDoneButton(_txtAccountNumber);
         }
 
         private void SetKeyboard(UITextField textField)
         {
+            textField.KeyboardType = UIKeyboardType.NumberPad;
             textField.AutocorrectionType = UITextAutocorrectionType.No;
             textField.AutocapitalizationType = UITextAutocapitalizationType.None;
             textField.SpellCheckingType = UITextSpellCheckingType.No;
             textField.ReturnKeyType = UIReturnKeyType.Done;
+            _textFieldHelper.CreateDoneButton(textField);
         }
 
         public void SetSelectedAccountNumber()
@@ -302,12 +297,12 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "Where is my account number?"
+                Text = GetI18NValue("accNumberInfo")
 
             };
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
-                DisplayCustomAlert("Where is my account number?"
+                DisplayCustomAlert(GetI18NValue("accNumberInfo")
                     , "Your 12-digit account number can be found on the top left corner of your monthly paper bill."
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
                     , UIImage.FromBundle("Find_Account_Number"));
@@ -329,19 +324,18 @@ namespace myTNB
                 Image = UIImage.FromBundle("Feedback-Generic")
             };              lblTitle = new UILabel(new CGRect(80, 16, cellWidth - 96, 16))
             {
-                Text = "General Enquiry",
-                TextColor = MyTNBColor.PowerBlue,
+                Text = GetI18NValue("generalEnquiryTitle"),
+                TextColor = MyTNBColor.CharcoalGrey,
                 Font = MyTNBFont.MuseoSans16_500
             };              lblSubtTitle = new UILabel(new CGRect(80, 38, cellWidth - 96, 16))
             {
-                Text = "I want to submit my though and concerns.",
+                Text = GetI18NValue("generalEnquiryDescription"),
                 TextColor = MyTNBColor.TunaGrey(),
                 Font = MyTNBFont.MuseoSans12_300,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap
             };              lblCount = new UILabel(new CGRect(cellWidth - 38, 16, 20, 16))
             {
-                Text = "asdasdadasd",
                 TextColor = MyTNBColor.PowerBlue,
                 TextAlignment = UITextAlignment.Right,
                 Font = MyTNBFont.MuseoSans12,
@@ -380,19 +374,18 @@ namespace myTNB
                 Image = UIImage.FromBundle("Feedback-Submitted")
             };              lblTitle2 = new UILabel(new CGRect(80, 16, cellWidth - 96, 16))
             {
-                Text = "Update Personal Details",
-                TextColor = MyTNBColor.PowerBlue,
+                Text = GetI18NValue("updatePersonalDetTitle"),
+                TextColor = MyTNBColor.CharcoalGrey,
                 Font = MyTNBFont.MuseoSans16_500
             };              lblSubtTitle2 = new UILabel(new CGRect(80, 38, cellWidth - 96, 16))
             {
-                Text = "I want to update personal details.",
+                Text = GetI18NValue("personalDetailsDescription"),
                 TextColor = MyTNBColor.TunaGrey(),
                 Font = MyTNBFont.MuseoSans12_300,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap
             };              lblCount2 = new UILabel(new CGRect(cellWidth - 38, 16, 20, 16))
             {
-                Text = "asdasdadasd",
                 TextColor = MyTNBColor.PowerBlue,
                 TextAlignment = UITextAlignment.Right,
                 Font = MyTNBFont.MuseoSans12,
@@ -483,7 +476,6 @@ namespace myTNB
 
         private void SetEvents()
         {
-
             SetTextFieldEvents(_txtAccountNumber, _lblAccountNoTitle, _lblAccountNoError, _viewLineAccountNo, TNBGlobal.ACCOUNT_NO_PATTERN);
         }
 
