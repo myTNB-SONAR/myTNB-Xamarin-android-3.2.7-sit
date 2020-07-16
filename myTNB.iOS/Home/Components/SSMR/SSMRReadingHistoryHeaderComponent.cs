@@ -133,6 +133,14 @@ namespace myTNB
             return _containerView;
         }
 
+        public nfloat ApplyTutorialHeight
+        {
+            get
+            {
+                return _viewDropDownContainer.Frame.GetMaxY() + GetScaledHeight(16);
+            }
+        }
+
         public void SetSubmitButtonHidden(MeterReadingHistoryModel model, bool forceDisplay = false, string title = "")
         {
             if (forceDisplay)

@@ -44,6 +44,8 @@ namespace myTNB
         private bool IsLoading = true;
         private Timer tutorialOverlayTimer;
 
+        private bool _hasMeterAccess = false;
+
         internal CustomUIButtonV2 _btnStart;
         internal CustomUIView _ctaView, _applyContainerView;
 
@@ -264,7 +266,7 @@ namespace myTNB
                 GetI18NValue = GetI18NValue,
                 TopViewYPos = _bgImageView.Frame.Height,
                 OnDismissAction = HideTutorialOverlay,
-                HeaderHeight = _ssmrHeaderComponent?.GetView()?.Frame.Height ?? 0
+                HeaderHeight = (nfloat)(_currAcc.IsSSMR ? _ssmrHeaderComponent?.GetView()?.Frame.Height ?? 0 : _ssmrHeaderComponent?.ApplyTutorialHeight)
             };
             _tutorialContainer.AddSubview(tutorialView.GetView());
         }
@@ -549,7 +551,7 @@ namespace myTNB
 
         internal void OnEnableSSMR()
         {
-            if (!HasMeterAccess)
+            if (!_hasMeterAccess)
             {
                 DisplayCustomAlert(GetErrorI18NValue(Constants.Error_NoMeterAccessTitle)
                     , GetErrorI18NValue(Constants.Error_NoMeterAccessMessage)
@@ -565,17 +567,17 @@ namespace myTNB
         {
             DisplayApplciationForm(false);
         }
-        private bool HasMeterAccess = false;
+
         private void OnNoAction()
         {
-            HasMeterAccess = false;
+            _hasMeterAccess = false;
             _ssmrHeaderComponent.UpdateAccessSelection(SSMRReadingHistoryHeaderComponent.HasMeterAccess.No);
             this.SetStartButtonEnable(true);
         }
 
         private void OnYesAction()
         {
-            HasMeterAccess = true;
+            _hasMeterAccess = true;
             _ssmrHeaderComponent.UpdateAccessSelection(SSMRReadingHistoryHeaderComponent.HasMeterAccess.Yes);
             this.SetStartButtonEnable(true);
         }
