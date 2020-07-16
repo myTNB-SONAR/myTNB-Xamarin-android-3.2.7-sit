@@ -23,7 +23,7 @@ using System;
 
 namespace myTNB_Android.Src.AddAccount.Fragment
 {
-    public class AddAccountFormFragment : Android.App.Fragment, AddAccountContract.IView
+    public class AddAccountFormFragment : Android.App.Fragment, AddAccountContract.IView, View.IOnTouchListener
     {
         private static string TAG = "AddAccountForm";
         private bool isOwner = false;
@@ -31,7 +31,6 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         private AccountType selectedAccountType;
         private readonly int SELECT_ACCOUNT_TYPE_REQ_CODE = 2011;
 
-        LinearLayout ownerDetailsLayout;
         Button addAccount;
 
         private Snackbar mSnackBar;
@@ -65,9 +64,6 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         [BindView(Resource.Id.owner_mother_maiden_name_layout)]
         TextInputLayout textInputLayoutMotherMaidenName;
-
-        [BindView(Resource.Id.scan)]
-        ImageButton scan;
 
         [BindView(Resource.Id.txtAccountType)]
         TextView txtAccountType;
@@ -121,7 +117,6 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             View mainView = inflater.Inflate(Resource.Layout.AddAccountFormView, container, false);
             try
             {
-                ownerDetailsLayout = mainView.FindViewById<LinearLayout>(Resource.Id.owner_details_layout);
                 rootView = mainView.FindViewById<LinearLayout>(Resource.Id.rootView);
                 edtAccountNo = mainView.FindViewById<EditText>(Resource.Id.account_no_edittext);
                 edtAccountLabel = mainView.FindViewById<EditText>(Resource.Id.account_label_edittext);
@@ -156,11 +151,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 if (isOwner || hasRights)
                 {
                     isOwner = true;
-                    ownerDetailsLayout.Visibility = ViewStates.Visible;
+                    textInputLayoutOwnerIC.Visibility = ViewStates.Visible;
                 }
                 else
                 {
-                    ownerDetailsLayout.Visibility = ViewStates.Gone;
+                    textInputLayoutOwnerIC.Visibility = ViewStates.Gone;
                 }
 
                 addAccount = rootView.FindViewById<Button>(Resource.Id.btnAddAccount);
@@ -171,19 +166,9 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     CallValidateAccountService();
                 };
 
-                scan = rootView.FindViewById<ImageButton>(Resource.Id.scan);
-                scan.Click += async delegate
-                {
-                    if (!isClicked)
-                    {
-                        isClicked = true;
-                        Intent barcodeIntent = new Intent(Activity, typeof(BarcodeActivity));
-                        StartActivityForResult(barcodeIntent, Constants.BARCODE_REQUEST_CODE);
-                    }
-                };
-
                 btnWhereIsMyAccountNo = rootView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
                 btnWhereIsMyAccountNo.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
+                TextViewUtils.SetMuseoSans500Typeface(btnWhereIsMyAccountNo);
                 btnWhereIsMyAccountNo.Click += async delegate
                 {
                     dialogWhereMyAccountNo = new MaterialDialog.Builder(Activity)
@@ -238,12 +223,33 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 edtAccountLabel.FocusChange += (sender, e) =>
                 {
-                    textInputLayoutAccountLabel.Error = null;
+                    textInputLayoutAccountLabel.Error = "";
                     string accountLabel = edtAccountLabel.Text.Trim();
                     if (e.HasFocus)
                     {
                         textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
                         textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
+                    }
+                    try
+                    {
+                        Activity.RunOnUiThread(() =>
+                        {
+                            try
+                            {
+                                ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)txtAccountType.LayoutParameters;
+                                lp3.TopMargin = (int)DPUtils.ConvertDPToPx(8f);
+                                txtAccountType.LayoutParameters = lp3;
+                                txtAccountType.RequestLayout();
+                            }
+                            catch (Exception ex)
+                            {
+                                Utility.LoggingNonFatalError(ex);
+                            }
+                        });
+                    }
+                    catch (Exception exp)
+                    {
+                        Utility.LoggingNonFatalError(exp);
                     }
                 };
 
@@ -255,7 +261,60 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     edtOwnerMotherName.LongClick += (object sender, View.LongClickEventArgs e) => onLongClick(sender, e);
                 }
 
+                edtAccountNo.SetOnTouchListener(this);
+
                 this.userActionsListener.Start();
+
+                textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                textInputLayoutAccountNo.Error = "";
+                try
+                {
+                    Activity.RunOnUiThread(() =>
+                    {
+                        try
+                        {
+                            ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)btnWhereIsMyAccountNo.LayoutParameters;
+                            lp3.TopMargin = -(int)DPUtils.ConvertDPToPx(26f);
+                            lp3.RightMargin = (int) DPUtils.ConvertDPToPx(2f);
+                            btnWhereIsMyAccountNo.LayoutParameters = lp3;
+                            btnWhereIsMyAccountNo.RequestLayout();
+                        }
+                        catch (Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
+                    });
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+                textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                textInputLayoutAccountLabel.Error = "";
+                try
+                {
+                    Activity.RunOnUiThread(() =>
+                    {
+                        try
+                        {
+                            ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)txtAccountType.LayoutParameters;
+                            lp3.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
+                            txtAccountType.LayoutParameters = lp3;
+                            txtAccountType.RequestLayout();
+                        }
+                        catch (Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
+                    });
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+                textInputLayoutOwnerIC.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                textInputLayoutOwnerIC.Error = "";
+
             }
             catch (Exception e)
             {
@@ -397,8 +456,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 }
                 else
                 {
-                    edtAccountNo.Error = Utility.GetLocalizedErrorLabel("error_duplicateAccountMessage");
-                    edtAccountNo.RequestFocus();
+                    MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(Utility.GetLocalizedErrorLabel("error_duplicateAccountTitle"))
+                        .SetMessage(Utility.GetLocalizedErrorLabel("error_duplicateAccountMessage"))
+                        .SetContentGravity(GravityFlags.Center)
+                        .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                        .Build().Show();
                 }
             }
             catch (Exception e)
@@ -470,12 +533,74 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         {
             textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             textInputLayoutAccountLabel.Error = "Invalid Account NickName";
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)txtAccountType.LayoutParameters;
+                        lp3.TopMargin = (int)DPUtils.ConvertDPToPx(8f);
+                        txtAccountType.LayoutParameters = lp3;
+                        txtAccountType.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowEmptyAccountNumberError()
         {
-            textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountNo.Error = "Invalid Account Number";
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                        textInputLayoutAccountNo.Error = "Invalid Account Number";
+                        textInputLayoutAccountNo.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)btnWhereIsMyAccountNo.LayoutParameters;
+                        lp3.TopMargin = 0;
+                        lp3.RightMargin = (int)DPUtils.ConvertDPToPx(2f);
+                        btnWhereIsMyAccountNo.LayoutParameters = lp3;
+                        btnWhereIsMyAccountNo.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowEmptyMothersMaidenNameError()
@@ -492,8 +617,49 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public void ShowInvalidAccountNumberError()
         {
-            textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                        textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");
+                        textInputLayoutAccountNo.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)btnWhereIsMyAccountNo.LayoutParameters;
+                        lp3.TopMargin = 0;
+                        lp3.RightMargin = (int)DPUtils.ConvertDPToPx(2f);
+                        btnWhereIsMyAccountNo.LayoutParameters = lp3;
+                        btnWhereIsMyAccountNo.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private Snackbar mCancelledExceptionSnackBar;
@@ -595,23 +761,154 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         {
             textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             textInputLayoutAccountLabel.Error = this.Activity.GetString(Resource.String.invalid_charac);
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)txtAccountType.LayoutParameters;
+                        lp3.TopMargin = (int)DPUtils.ConvertDPToPx(8f);
+                        txtAccountType.LayoutParameters = lp3;
+                        txtAccountType.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void RemoveNameErrorMessage()
         {
             textInputLayoutAccountLabel.Error = "";
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)txtAccountType.LayoutParameters;
+                        lp3.TopMargin = (int)DPUtils.ConvertDPToPx(8f);
+                        txtAccountType.LayoutParameters = lp3;
+                        txtAccountType.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void RemoveNumberErrorMessage()
         {
-            textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountNo.Error = "";
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                        textInputLayoutAccountNo.Error = "";
+                        textInputLayoutAccountNo.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)btnWhereIsMyAccountNo.LayoutParameters;
+                        lp3.TopMargin = -(int)DPUtils.ConvertDPToPx(26f);
+                        lp3.RightMargin = (int)DPUtils.ConvertDPToPx(2f);
+                        btnWhereIsMyAccountNo.LayoutParameters = lp3;
+                        btnWhereIsMyAccountNo.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowSameAccountNameError()
         {
             textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)txtAccountType.LayoutParameters;
+                        lp3.TopMargin = (int)DPUtils.ConvertDPToPx(8f);
+                        txtAccountType.LayoutParameters = lp3;
+                        txtAccountType.RequestLayout();
+                    }
+                    catch (Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public bool OnTouch(View v, MotionEvent e)
+        {
+            const int DRAWABLE_LEFT = 0;
+            const int DRAWABLE_TOP = 1;
+            const int DRAWABLE_RIGHT = 2;
+            const int DRAWABLE_BOTTOM = 3;
+            if (v is EditText)
+            {
+                EditText eTxtView = v as EditText;
+                if (eTxtView.Id == Resource.Id.account_no_edittext)
+                {
+                    if (e.RawX >= (edtAccountNo.Right - edtAccountNo.GetCompoundDrawables()[DRAWABLE_RIGHT].Bounds.Width()))
+                    {
+                        if (!isClicked)
+                        {
+                            isClicked = true;
+                            Intent barcodeIntent = new Intent(Activity, typeof(BarcodeActivity));
+                            StartActivityForResult(barcodeIntent, Constants.BARCODE_REQUEST_CODE);
+                        }
+
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }

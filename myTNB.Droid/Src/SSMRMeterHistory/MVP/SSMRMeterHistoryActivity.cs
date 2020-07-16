@@ -56,6 +56,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 				ISharedPreferences mPref;
         private bool isTutorialShown = false;
         private bool isSMR = false;
+        private bool noMeterAccess = false;
 
         SSMRMeterHistoryMenuAdapter meterHistoryMenuAdapter;
 
@@ -104,14 +105,29 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [BindView(Resource.Id.nonSMRActionContainer)]
         LinearLayout NonSMRActionContainer;
 
+        [BindView(Resource.Id.bottomLayout)]
+        LinearLayout bottomLayout;
+
+        [BindView(Resource.Id.txtMeterAccessTitle)]
+        TextView txtMeterAccessTitle;
+
+        [BindView(Resource.Id.btnNo)]
+        Button btnNo;
+
+        [BindView(Resource.Id.btnYes)]
+        Button btnYes;
+
+        [BindView(Resource.Id.meterLookLabelContainer)]
+        LinearLayout meterLookLabelContainer;
+
+        [BindView(Resource.Id.meterLookLabel)]
+        TextView meterLookLabel;
+
         [BindView(Resource.Id.readingHistoryList)]
         LinearLayout ReadingHistoryListContainer;
 
         [BindView(Resource.Id.disableSMRBtnContainer)]
         LinearLayout DisableSMRBtnContainer;
-
-        [BindView(Resource.Id.non_smr_note_content)]
-        TextView NonSMRNoteContent;
 
         [BindView(Resource.Id.layout_content_nestedscroll)]
         NestedScrollView NestedScrollViewContent;
@@ -152,7 +168,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
 
                 TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, SMRMessageTitle, btnSubmitMeter, btnEnableSubmitMeter, btnDisableSubmitMeter, btnRefresh);
-                TextViewUtils.SetMuseoSans300Typeface(SMRMainContent, SMRAccountTitle, SMRAccountSelected, NonSMRNoteContent, EmptySMRHistoryMessage, refreshMsg);
+                TextViewUtils.SetMuseoSans300Typeface(SMRMainContent, SMRAccountTitle, SMRAccountSelected, EmptySMRHistoryMessage, refreshMsg);
+
+                TextViewUtils.SetMuseoSans500Typeface(txtMeterAccessTitle, btnNo, btnYes, meterLookLabel);
 
                 SMRMessageTitle.Text = GetLabelByLanguage("subTitle");
                 SMRAccountTitle.Text = GetLabelCommonByLanguage("account").ToUpper();
@@ -163,7 +181,10 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 EmptySMRHistoryMessage.Text = GetLabelByLanguage("noHistoryData");
                 refreshMsg.Text = GetLabelCommonByLanguage("refreshDescription");
                 btnRefresh.Text = GetLabelCommonByLanguage("refreshNow");
-                NonSMRNoteContent.Text = GetLabelByLanguage("enableSSMRDescription");
+                txtMeterAccessTitle.Text = GetLabelByLanguage("doYouHaveMeterAccess");
+                btnNo.Text = GetLabelCommonByLanguage("no");
+                btnYes.Text = GetLabelCommonByLanguage("yes");
+                meterLookLabel.Text = GetLabelByLanguage("whereIsMyMeter");
                 btnSubmitMeter.Text = Utility.GetLocalizedLabel("SSMRSubmitMeterReading", "title");
                 mPresenter = new SSMRMeterHistoryPresenter(this);
                 mPref = PreferenceManager.GetDefaultSharedPreferences(this);
@@ -302,6 +323,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         {
             //Non-SMR visibility
             NonSMRActionContainer.Visibility = isNonSMRAccount ? ViewStates.Visible : ViewStates.Gone;
+            bottomLayout.Visibility = isNonSMRAccount ? ViewStates.Visible : ViewStates.Gone;
             //SMR UI visiblility
             SMRActionContainer.Visibility = isNonSMRAccount ? ViewStates.Gone : ViewStates.Visible;
             ReadingHistoryListContainer.Visibility = isNonSMRAccount ? ViewStates.Gone : ViewStates.Visible;
@@ -309,6 +331,70 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
             //Checking for no tagged SMR
             NonSMRActionContainer.Visibility = hasNoSMREligibleAccount ? ViewStates.Visible : ViewStates.Gone;
+            bottomLayout.Visibility = hasNoSMREligibleAccount ? ViewStates.Visible : ViewStates.Gone;
+
+            btnNo.Enabled = true;
+            btnNo.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
+            btnNo.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
+
+            btnYes.Enabled = true;
+            btnYes.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
+            btnYes.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
+
+            btnEnableSubmitMeter.Enabled = false;
+            btnEnableSubmitMeter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+
+            noMeterAccess = false;
+        }
+
+        [OnClick(Resource.Id.btnNo)]
+        void OnSelectNo(object sender, EventArgs eventArgs)
+        {
+            btnNo.Enabled = true;
+            btnNo.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.white));
+            btnNo.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+
+            btnYes.Enabled = true;
+            btnYes.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
+            btnYes.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
+
+            btnEnableSubmitMeter.Enabled = true;
+            btnEnableSubmitMeter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+
+            noMeterAccess = true;
+        }
+
+        [OnClick(Resource.Id.btnYes)]
+        void OnSelectYes(object sender, EventArgs eventArgs)
+        {
+            btnNo.Enabled = true;
+            btnNo.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
+            btnNo.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
+
+            btnYes.Enabled = true;
+            btnYes.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.white));
+            btnYes.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+
+            btnEnableSubmitMeter.Enabled = true;
+            btnEnableSubmitMeter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+
+            noMeterAccess = false;
+        }
+
+        [OnClick(Resource.Id.meterLookLabelContainer)]
+        void OnMeterLookPopupClick(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                    .SetHeaderImage(Resource.Drawable.img_start_smr)
+                    .SetTitle(GetLabelByLanguage("whereIsMyMeterTitle"))
+                    .SetMessage(GetLabelByLanguage("whereIsMyMeterMessage"))
+                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                    .SetCTAaction(() => { this.SetIsClicked(false); })
+                    .Build().Show();
+            }
         }
 
         private void UpdateUIForNonSMR()
@@ -562,16 +648,32 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [OnClick(Resource.Id.btnEnableSubmitMeter)]
         void OnEnableSubmitMeter(object sender, EventArgs eventArgs)
         {
-            if (!this.GetIsClicked())
+            if (noMeterAccess)
             {
-                this.SetIsClicked(true);
-                AccountData accountData = new AccountData();
-                SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
-                accountData.AccountNum = selectedAccountNumber;
-                accountData.AddStreet = eligibleAccount.accountAddress;
-                accountData.AccountNickName = eligibleAccount.accountName;
-                SMR_ACTION_KEY = Constants.SMR_ENABLE_FLAG;
-                this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(Utility.GetLocalizedErrorLabel("noMeterAccessErrorTitle"))
+                        .SetMessage(Utility.GetLocalizedErrorLabel("noMeterAccessErrorMessage"))
+                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                        .SetCTAaction(() => { this.SetIsClicked(false); })
+                        .Build().Show();
+                }
+            }
+            else
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    AccountData accountData = new AccountData();
+                    SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+                    accountData.AccountNum = selectedAccountNumber;
+                    accountData.AddStreet = eligibleAccount.accountAddress;
+                    accountData.AccountNickName = eligibleAccount.accountName;
+                    SMR_ACTION_KEY = Constants.SMR_ENABLE_FLAG;
+                    this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
+                }
             }
         }
 
@@ -826,7 +928,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             {
                 try
                 {
-                    height += NonSMRActionContainer.Height;
+                    height -= (int)DPUtils.ConvertDPToPx(16f);
                 }
                 catch (Exception e)
                 {
