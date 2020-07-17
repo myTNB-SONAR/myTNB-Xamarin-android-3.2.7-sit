@@ -1926,6 +1926,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                     ID = item.ID,
                                     PortraitImage_PopUp = item.PortraitImage_PopUp,
                                     PortraitImage_PopUpB64 = item.PortraitImage_PopUpB64,
+                                    PopUp_HeaderImage = item.PopUp_HeaderImage,
+                                    PopUp_HeaderImageB64 = item.PopUp_HeaderImageB64,
+                                    PopUp_Text_Only = item.PopUp_Text_Only,
+                                    PopUp_Text_Content = item.PopUp_Text_Content,
                                     SkipShowOnAppLaunch = item.SkipShowOnAppLaunch,
                                     Disable_DoNotShow_Checkbox = item.Disable_DoNotShow_Checkbox
                                 });
