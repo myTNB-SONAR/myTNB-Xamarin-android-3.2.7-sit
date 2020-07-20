@@ -292,7 +292,7 @@ namespace myTNB_Android.Src.Database.Model
                         {
                             Utility.LoggingNonFatalError(ne);
                         }
-                        return (startResult >= 0 && endResult <= 0 && x.ShowAtAppLaunchPopUp && !x.SkipShowOnAppLaunch && x.ShowEveryCountDays_PopUp > 0/*&& x.ShowForTotalCountDays_PopUp > 0*/);
+                        return (startResult >= 0 && endResult <= 0 && x.ShowAtAppLaunchPopUp);
                     });
 
                     if (matchList != null && matchList.Count > 0)
@@ -302,7 +302,11 @@ namespace myTNB_Android.Src.Database.Model
                             bool isAlreadyExceedQuota = false;
                             try
                             {
-                                if (!string.IsNullOrEmpty(x.StartDate))
+                                if (x.ShowEveryCountDays_PopUp == 0)
+                                {
+                                    isAlreadyExceedQuota = true;
+                                }
+                                else if (!string.IsNullOrEmpty(x.ShowDateForDay) && x.ShowEveryCountDays_PopUp > 0)
                                 {
                                     DateTime nowDateTime = DateTime.Now;
                                     DateTime showDateTime = DateTime.ParseExact(x.ShowDateForDay, "yyyyMMddTHHmmss",
@@ -417,7 +421,7 @@ namespace myTNB_Android.Src.Database.Model
                         {
                             Utility.LoggingNonFatalError(ne);
                         }
-                        return (startResult >= 0 && endResult <= 0&& !x.Donot_Show_In_WhatsNew);
+                        return (startResult >= 0 && endResult <= 0 && !x.Donot_Show_In_WhatsNew);
                     });
 
                     if (matchList != null && matchList.Count > 0)

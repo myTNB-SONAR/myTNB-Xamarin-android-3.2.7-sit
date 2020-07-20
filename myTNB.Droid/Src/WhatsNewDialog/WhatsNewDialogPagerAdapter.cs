@@ -205,20 +205,20 @@ namespace myTNB_Android.Src.WhatsNewDialog
                         if (localBitmap != null)
                         {
                             model.PopUp_HeaderImageBitmap = localBitmap;
-                            // SetWhatsNewDialogImage(localBitmap, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                            SetWhatsNewDialogTextImage(localBitmap, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
                         }
                         else
                         {
-                            // WhatsNew TODO: set default img
+                            SetWhatsNewDialogTextImage(null, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
                         }
                     }
                     else if (!string.IsNullOrEmpty(model.PopUp_HeaderImage))
                     {
-                        // _ = GetImageAsync(model, position, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                        _ = GetTextImageAsync(model, position, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
                     }
                     else
                     {
-                        // WhatsNew TODO: set default img
+                        SetWhatsNewDialogTextImage(null, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
                     }
                 }
 
@@ -226,7 +226,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
 
                 if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
-                    txtWhatsNewMessage.TextFormatted = Html.FromHtml(model.PopUp_Text_Content, FromHtmlOptions.ModeLegacy);
+                    txtWhatsNewMessage.TextFormatted = Html.FromHtml(model.PopUp_Text_Content, FromHtmlOptions.ModeCompact);
                 }
                 else
                 {
@@ -268,6 +268,78 @@ namespace myTNB_Android.Src.WhatsNewDialog
 
             container.AddView(rootView);
             return rootView;
+        }
+
+        private async Task GetTextImageAsync(WhatsNewModel item, int position, ShimmerFrameLayout shimmerWhatsNewImageLayout, LinearLayout whatsNewMainImgLayout, ImageView imgWhatsNew)
+        {
+            try
+            {
+                CancellationTokenSource cts = new CancellationTokenSource();
+                Bitmap imageBitmap = null;
+                await Task.Run(() =>
+                {
+                    imageBitmap = GetImageBitmapFromUrl(item.PopUp_HeaderImage);
+                }, cts.Token);
+
+                if (imageBitmap != null)
+                {
+                    item.PopUp_HeaderImageBitmap = imageBitmap;
+                    item.PopUp_HeaderImageB64 = BitmapToBase64(imageBitmap);
+                    this.whatsnew[position].PopUp_HeaderImageBitmap = item.PopUp_HeaderImageBitmap;
+                    this.whatsnew[position].PopUp_HeaderImageB64 = item.PopUp_HeaderImageB64;
+                    WhatsNewEntity wtManager = new WhatsNewEntity();
+                    wtManager.UpdateCachePopupHeaderImage(item.ID, item.PopUp_HeaderImageB64);
+                    SetWhatsNewDialogTextImage(imageBitmap, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                }
+                else
+                {
+                    SetWhatsNewDialogTextImage(null, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void SetWhatsNewDialogTextImage(Bitmap imgSrc, ShimmerFrameLayout shimmerWhatsNewImageLayout, LinearLayout whatsNewMainImgLayout, ImageView imgWhatsNew)
+        {
+            try
+            {
+                if (imgSrc == null)
+                {
+                    int photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.096f);
+                    float photoRatio = 0.4929f;
+                    int photoHeight = (int)(photoWidth * photoRatio);
+
+                    imgWhatsNew.SetImageResource(Resource.Drawable.ic_banner_whatsnewdialog);
+                    imgWhatsNew.LayoutParameters.Height = photoHeight;
+
+                    imgWhatsNew.RequestLayout();
+                }
+                else if (imgSrc != null)
+                {
+                    float currentImgWidth = mContext.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.096f);
+                    float calImgRatio = currentImgWidth / imgSrc.Width;
+                    int currentImgHeight = (int)(imgSrc.Height * calImgRatio);
+
+                    imgWhatsNew.SetImageBitmap(imgSrc);
+                    imgWhatsNew.LayoutParameters.Height = currentImgHeight;
+                    imgWhatsNew.RequestLayout();
+                }
+
+                whatsNewMainImgLayout.Visibility = ViewStates.Gone;
+                if (shimmerWhatsNewImageLayout.IsShimmerStarted)
+                {
+                    shimmerWhatsNewImageLayout.StopShimmer();
+                }
+
+                imgWhatsNew.Visibility = ViewStates.Visible;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public int GetDeviceHorizontalScaleInPixel(float percentageValue)
