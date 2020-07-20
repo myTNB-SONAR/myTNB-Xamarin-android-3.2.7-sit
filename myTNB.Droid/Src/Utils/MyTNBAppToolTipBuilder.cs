@@ -365,7 +365,13 @@ namespace myTNB_Android.Src.Utils
 
                 if (this.imageResourceBitmap != null)
                 {
+                    float currentImgWidth = DPUtils.ConvertDPToPx(284f);
+                    float calImgRatio = currentImgWidth / this.imageResourceBitmap.Width;
+                    int currentImgHeight = (int)(this.imageResourceBitmap.Height * calImgRatio);
+
                     tooltipImageHeader.SetImageBitmap(this.imageResourceBitmap);
+                    tooltipImageHeader.LayoutParameters.Height = currentImgHeight;
+                    tooltipImageHeader.RequestLayout();
                 }
                 else
                 {

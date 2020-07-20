@@ -51,7 +51,9 @@ namespace myTNB.SitecoreCMS.Model
 		public bool ShowAtAppLaunchPopUp { set; get; }
 		public bool PopUp_Text_Only { set; get; }
         public string PopUp_HeaderImage { set; get; }
-        public string PopUp_Text_Content { set; get; }
+		public string PopUp_HeaderImageB64 { set; get; }
+		public Bitmap PopUp_HeaderImageBitmap { set; get; }
+		public string PopUp_Text_Content { set; get; }
         public bool Donot_Show_In_WhatsNew { set; get; }
 		public bool Disable_DoNotShow_Checkbox { set; get; }
 		public string ShowDateForDay { set; get; }

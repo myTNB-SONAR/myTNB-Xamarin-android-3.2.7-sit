@@ -81,6 +81,11 @@ namespace myTNB_Android.Src.WhatsNewDialog
                     leftRightPadding = GetDeviceHorizontalScaleInPixel(0.006f);
                 }
 
+                if (whatsnew != null && whatsnew.Count > 0 && string.IsNullOrEmpty(whatsnew[0].PortraitImage_PopUp))
+                {
+                    topPadding = 0;
+                }
+
                 pager.SetPadding(leftRightPadding, topPadding, leftRightPadding, 0);
                 pager.PageMargin = leftRightPadding;
 

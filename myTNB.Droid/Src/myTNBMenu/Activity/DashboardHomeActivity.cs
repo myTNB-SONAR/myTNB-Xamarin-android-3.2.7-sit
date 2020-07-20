@@ -252,7 +252,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 if (!alreadyStarted)
                 {
-                    EvaluateBCRMDowntime();
+                    this.userActionsListener.Start();
+                    OnSetupSSMRMeterReadingTutorial();
+                    this.mPresenter.OnGetEPPTooltipContentDetail();
+                    this.mPresenter.OnGetBillTooltipContent();
                     alreadyStarted = true;
                 }
             }
@@ -263,33 +266,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 LaunchViewIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 StartActivity(LaunchViewIntent);
                 Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        private void EvaluateBCRMDowntime()
-        {
-            DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-            if (bcrmEntity != null && bcrmEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
-            {
-                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                .SetHeaderImage(Resource.Drawable.maintenance_bcrm)
-                .SetTitle(bcrmEntity.DowntimeTextMessage)
-                .SetMessage(bcrmEntity.DowntimeMessage)
-                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                .SetCTAaction(()=>
-                {
-                    this.userActionsListener.Start();
-                    OnSetupSSMRMeterReadingTutorial();
-                })
-                .Build()
-                .Show();
-                MyTNBAccountManagement.GetInstance().SetIsMaintenanceDialogShown(true);
-            }
-            else
-            {
-                this.userActionsListener.Start();
-                OnSetupSSMRMeterReadingTutorial();
-                this.mPresenter.OnGetEPPTooltipContentDetail();
             }
         }
 
@@ -312,6 +288,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void OnResetEppTooltip()
         {
             this.mPresenter.OnGetEPPTooltipContentDetail();
+        }
+
+        public void OnResetBillDetailTooltip()
+        {
+            this.mPresenter.OnGetBillTooltipContent();
         }
 
         private void OnSetupSSMRMeterReadingTutorial()
@@ -1668,6 +1649,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                     urlSchemaCalled = false;
                                     ShowWhatsNewFailedTooltip();
                                 }
+                                else
+                                {
+                                    DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                                    if (bcrmEntity != null && bcrmEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
+                                    {
+                                        OnShowBCRMPopup(bcrmEntity);
+                                    }
+                                }
                             }
                             catch (Exception e)
                             {
@@ -1837,6 +1826,17 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             try
             {
+                DownTimeEntity bcrmEntity = null;
+
+                try
+                {
+                    bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                }
+                catch (Exception exe)
+                {
+                    Utility.LoggingNonFatalError(exe);
+                }
+
                 if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("whatsnew"))
                 {
                     HideProgressDialog();
@@ -1896,53 +1896,210 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         List<WhatsNewEntity> items = wtManager.GetActivePopupItems();
                         if (items != null && items.Count > 0)
                         {
-                            List<WhatsNewModel> list = new List<WhatsNewModel>();
-                            for (int index = 0; index < items.Count; index++)
+                            List<WhatsNewEntity> MaintenancePopupItems = items.FindAll(x => x.Donot_Show_In_WhatsNew);
+
+                            if (MaintenancePopupItems != null && MaintenancePopupItems.Count > 0)
                             {
-                                string id = items[index].ID;
-                                string recordDate = items[index].ShowDateForDay;
-                                int count = items[index].ShowCountForDay;
+                                List<WhatsNewEntity> FilteredMaintenancePopupItems = new List<WhatsNewEntity>();
+                                WhatsNewEntity FilteredItem = new WhatsNewEntity();
 
-                                DateTime showDateTime = DateTime.ParseExact(recordDate, "yyyyMMddTHHmmss",
-                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
-
-                                if (showDateTime.Date == DateTime.Now.Date)
+                                for (int i = 0; i < MaintenancePopupItems.Count; i++)
                                 {
-                                    count = count + 1;
-                                }
-                                else
-                                {
-                                    recordDate = GetCurrentDate();
-                                    count = 1;
+                                    if (i == 0)
+                                    {
+                                        FilteredItem = MaintenancePopupItems[i];
+                                    }
+                                    else
+                                    {
+                                        try
+                                        {
+                                            if (!string.IsNullOrEmpty(MaintenancePopupItems[i].PublishDate) && !string.IsNullOrEmpty(FilteredItem.PublishDate))
+                                            {
+                                                DateTime showDateTime = DateTime.ParseExact(FilteredItem.PublishDate, "yyyyMMddTHHmmss",
+                                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                                DateTime compareDateTime = DateTime.ParseExact(MaintenancePopupItems[i].PublishDate, "yyyyMMddTHHmmss",
+                                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                                int result = DateTime.Compare(compareDateTime, showDateTime);
+                                                if (result > 0)
+                                                {
+                                                    FilteredItem = MaintenancePopupItems[i];
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Utility.LoggingNonFatalError(ex);
+                                        }
+                                    }
                                 }
 
-                                wtManager.UpdateDialogCounterItem(id, recordDate, count);
+                                if (!FilteredItem.SkipShowOnAppLaunch)
+                                {
+                                    FilteredMaintenancePopupItems.Add(FilteredItem);
+                                }
+
+                                if (FilteredMaintenancePopupItems != null && FilteredMaintenancePopupItems.Count > 0)
+                                {
+                                    List<WhatsNewModel> list = new List<WhatsNewModel>();
+                                    for (int index = 0; index < FilteredMaintenancePopupItems.Count; index++)
+                                    {
+                                        if (FilteredMaintenancePopupItems[index].ShowEveryCountDays_PopUp > 0)
+                                        {
+                                            string id = FilteredMaintenancePopupItems[index].ID;
+                                            string recordDate = FilteredMaintenancePopupItems[index].ShowDateForDay;
+                                            int count = FilteredMaintenancePopupItems[index].ShowCountForDay;
+
+                                            DateTime showDateTime = DateTime.ParseExact(recordDate, "yyyyMMddTHHmmss",
+                                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                                            if (showDateTime.Date == DateTime.Now.Date)
+                                            {
+                                                count = count + 1;
+                                            }
+                                            else
+                                            {
+                                                recordDate = GetCurrentDate();
+                                                count = 1;
+                                            }
+
+                                            wtManager.UpdateDialogCounterItem(id, recordDate, count);
+                                        }
+                                    }
+
+                                    foreach (WhatsNewEntity item in FilteredMaintenancePopupItems)
+                                    {
+                                        list.Add(new WhatsNewModel()
+                                        {
+                                            ID = item.ID,
+                                            PortraitImage_PopUp = item.PortraitImage_PopUp,
+                                            PortraitImage_PopUpB64 = item.PortraitImage_PopUpB64,
+                                            PopUp_HeaderImage = item.PopUp_HeaderImage,
+                                            PopUp_HeaderImageB64 = item.PopUp_HeaderImageB64,
+                                            PopUp_Text_Only = item.PopUp_Text_Only,
+                                            PopUp_Text_Content = item.PopUp_Text_Content,
+                                            SkipShowOnAppLaunch = item.SkipShowOnAppLaunch,
+                                            Disable_DoNotShow_Checkbox = item.Disable_DoNotShow_Checkbox
+                                        });
+                                    }
+                                    IsRootTutorialShown = true;
+                                    WhatsNewDialogFragment dialogFragmnet = new WhatsNewDialogFragment(this);
+                                    dialogFragmnet.Cancelable = false;
+                                    Bundle extras = new Bundle();
+                                    extras.PutString("whatsnew", JsonConvert.SerializeObject(list));
+                                    dialogFragmnet.Arguments = extras;
+                                    dialogFragmnet.Show(SupportFragmentManager, "WhatsNew Dialog");
+                                }
                             }
-
-                            foreach (WhatsNewEntity item in items)
+                            else if (bcrmEntity != null && bcrmEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
                             {
-                                list.Add(new WhatsNewModel()
-                                {
-                                    ID = item.ID,
-                                    PortraitImage_PopUp = item.PortraitImage_PopUp,
-                                    PortraitImage_PopUpB64 = item.PortraitImage_PopUpB64,
-                                    SkipShowOnAppLaunch = item.SkipShowOnAppLaunch,
-                                    Disable_DoNotShow_Checkbox = item.Disable_DoNotShow_Checkbox
-                                });
+                                OnShowBCRMPopup(bcrmEntity);
                             }
-                            IsRootTutorialShown = true;
-                            WhatsNewDialogFragment dialogFragmnet = new WhatsNewDialogFragment(this);
-                            dialogFragmnet.Cancelable = false;
-                            Bundle extras = new Bundle();
-                            extras.PutString("whatsnew", JsonConvert.SerializeObject(list));
-                            dialogFragmnet.Arguments = extras;
-                            dialogFragmnet.Show(SupportFragmentManager, "WhatsNew Dialog");
+                            else
+                            {
+                                List<WhatsNewEntity> FilteredPopupItems = new List<WhatsNewEntity>();
+                                WhatsNewEntity FilteredItem = new WhatsNewEntity();
+
+                                for (int i = 0; i < items.Count; i++)
+                                {
+                                    if (i == 0)
+                                    {
+                                        FilteredItem = items[i];
+                                    }
+                                    else
+                                    {
+                                        try
+                                        {
+                                            if (!string.IsNullOrEmpty(items[i].PublishDate) && !string.IsNullOrEmpty(FilteredItem.PublishDate))
+                                            {
+                                                DateTime showDateTime = DateTime.ParseExact(FilteredItem.PublishDate, "yyyyMMddTHHmmss",
+                                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                                DateTime compareDateTime = DateTime.ParseExact(items[i].PublishDate, "yyyyMMddTHHmmss",
+                                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                                int result = DateTime.Compare(compareDateTime, showDateTime);
+                                                if (result > 0)
+                                                {
+                                                    FilteredItem = items[i];
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Utility.LoggingNonFatalError(ex);
+                                        }
+                                    }
+                                }
+
+                                if (!FilteredItem.SkipShowOnAppLaunch)
+                                {
+                                    FilteredPopupItems.Add(FilteredItem);
+                                }
+
+                                if (FilteredPopupItems != null && FilteredPopupItems.Count > 0)
+                                {
+                                    List<WhatsNewModel> list = new List<WhatsNewModel>();
+                                    for (int index = 0; index < FilteredPopupItems.Count; index++)
+                                    {
+                                        if (FilteredPopupItems[index].ShowEveryCountDays_PopUp > 0)
+                                        {
+                                            string id = FilteredPopupItems[index].ID;
+                                            string recordDate = FilteredPopupItems[index].ShowDateForDay;
+                                            int count = FilteredPopupItems[index].ShowCountForDay;
+
+                                            DateTime showDateTime = DateTime.ParseExact(recordDate, "yyyyMMddTHHmmss",
+                                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                                            if (showDateTime.Date == DateTime.Now.Date)
+                                            {
+                                                count = count + 1;
+                                            }
+                                            else
+                                            {
+                                                recordDate = GetCurrentDate();
+                                                count = 1;
+                                            }
+
+                                            wtManager.UpdateDialogCounterItem(id, recordDate, count);
+                                        }
+                                    }
+
+                                    foreach (WhatsNewEntity item in FilteredPopupItems)
+                                    {
+                                        list.Add(new WhatsNewModel()
+                                        {
+                                            ID = item.ID,
+                                            PortraitImage_PopUp = item.PortraitImage_PopUp,
+                                            PortraitImage_PopUpB64 = item.PortraitImage_PopUpB64,
+                                            PopUp_HeaderImage = item.PopUp_HeaderImage,
+                                            PopUp_HeaderImageB64 = item.PopUp_HeaderImageB64,
+                                            PopUp_Text_Only = item.PopUp_Text_Only,
+                                            PopUp_Text_Content = item.PopUp_Text_Content,
+                                            SkipShowOnAppLaunch = item.SkipShowOnAppLaunch,
+                                            Disable_DoNotShow_Checkbox = item.Disable_DoNotShow_Checkbox
+                                        });
+                                    }
+                                    IsRootTutorialShown = true;
+                                    WhatsNewDialogFragment dialogFragmnet = new WhatsNewDialogFragment(this);
+                                    dialogFragmnet.Cancelable = false;
+                                    Bundle extras = new Bundle();
+                                    extras.PutString("whatsnew", JsonConvert.SerializeObject(list));
+                                    dialogFragmnet.Arguments = extras;
+                                    dialogFragmnet.Show(SupportFragmentManager, "WhatsNew Dialog");
+                                }
+                            }
+                        }
+                        else if (bcrmEntity != null && bcrmEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
+                        {
+                            OnShowBCRMPopup(bcrmEntity);
                         }
                     }
                     else
                     {
                         isWhatNewDialogOnHold = true;
                     }
+                }
+                else if (bcrmEntity != null && bcrmEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
+                {
+                    OnShowBCRMPopup(bcrmEntity);
                 }
             }
             catch (Exception e)
@@ -1956,6 +2113,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             DateTime currentDate = DateTime.Now;
             CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
             return currentDate.ToString(@"yyyyMMddTHHmmss", currCult);
+        }
+
+        private void OnShowBCRMPopup(DownTimeEntity bcrmEntity)
+        {
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                    .SetHeaderImage(Resource.Drawable.maintenance_bcrm)
+                    .SetTitle(bcrmEntity.DowntimeTextMessage)
+                    .SetMessage(bcrmEntity.DowntimeMessage)
+                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                    .Build()
+                    .Show();
+            MyTNBAccountManagement.GetInstance().SetIsMaintenanceDialogShown(true);
         }
 
         public void ReloadProfileMenu()

@@ -239,8 +239,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     {
                         OnCheckToCallItemizedTutorial();
                     }
-
-                    OnGetBillTooltipContent();
                 }
             }
             catch (System.OperationCanceledException e)
@@ -516,27 +514,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 }
                 Utility.LoggingNonFatalError(e);
             }
-        }
-
-
-        public void OnGetBillTooltipContent()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                    BillDetailsTooltipResponseModel responseModel = getItemsService.GetBillDetailsTooltipItem();
-                    SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP, JsonConvert.SerializeObject(responseModel.Data),"");
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            }).ContinueWith((Task previous) =>
-            {
-            }, new CancellationTokenSource().Token);
         }
 
         private List<AccountBillPayFilter> GetAccountBillPayFilterList(List<BillPayFilterData> billPayFilters)
