@@ -1983,10 +1983,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                     dialogFragmnet.Arguments = extras;
                                     dialogFragmnet.Show(SupportFragmentManager, "WhatsNew Dialog");
                                 }
-                                else if (bcrmEntity != null && bcrmEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
-                                {
-                                    OnShowBCRMPopup(bcrmEntity);
-                                }
                             }
                             else if (bcrmEntity != null && bcrmEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
                             {
