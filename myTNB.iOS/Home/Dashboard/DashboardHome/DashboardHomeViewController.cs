@@ -168,6 +168,15 @@ namespace myTNB
                 OnRearrangeSuccess(RearrangeSuccessMsg);
                 IsRearrangeSaved = false;
             }
+        }
+
+        public override void ViewDidDisappear(bool animated)
+        {
+            base.ViewDidDisappear(animated);
+        }
+
+        private void OnDisplayBCRMPopup()
+        {
             bool isBRCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             if (!isBRCRMAvailable && !AppLaunchMasterCache.IsBCRMPopupDisplayed)
             {
@@ -197,11 +206,6 @@ namespace myTNB
             }
         }
 
-        public override void ViewDidDisappear(bool animated)
-        {
-            base.ViewDidDisappear(animated);
-        }
-
         public void UpdateGreeting(string greeting)
         {
             if (_dashboardHomeHeader != null)
@@ -224,7 +228,8 @@ namespace myTNB
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
 
-            if (tutorialOverlayHasShown) {
+            if (tutorialOverlayHasShown)
+            {
                 ShowWhatsNewPopUp();
                 return;
             }
@@ -268,7 +273,8 @@ namespace myTNB
                     {
                         _ = Task.Delay(500).ContinueWith(_ =>
                         {
-                            InvokeOnMainThread(() => {
+                            InvokeOnMainThread(() =>
+                            {
                                 DataManager.DataManager.SharedInstance.IsWhatsNewFirstLoad = false;
                                 ShowWhatsNewPopUp();
                             });
@@ -303,15 +309,21 @@ namespace myTNB
                                     WhatsNewServices.SetWhatNewModelShowCount(id, count);
                                 }
 
-                                whatsNewModalView = new WhatsNewModalViewController();
-                                whatsNewModalView.WhatsNews = items;
-                                whatsNewModalView.OnWhatsNewClick = OnNavigateWhatsNewModal;
-                                whatsNewModalView.OnDismissWhatsNew = OnDismissWhatsNewModal;
+                                whatsNewModalView = new WhatsNewModalViewController
+                                {
+                                    WhatsNews = items,
+                                    OnWhatsNewClick = OnNavigateWhatsNewModal,
+                                    OnDismissWhatsNew = OnDismissWhatsNewModal
+                                };
                                 UINavigationController navController = new UINavigationController(whatsNewModalView)
                                 {
                                     ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen
                                 };
                                 PresentViewController(navController, true, null);
+                            }
+                            else
+                            {
+                                OnDisplayBCRMPopup();
                             }
                         });
                     }
