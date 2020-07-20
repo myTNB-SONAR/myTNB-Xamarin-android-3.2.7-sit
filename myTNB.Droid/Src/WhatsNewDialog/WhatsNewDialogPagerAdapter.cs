@@ -129,11 +129,14 @@ namespace myTNB_Android.Src.WhatsNewDialog
                     OnCloseClick(position);
                 };
 
-                imgWhatsNew.Click += delegate
+                if (!model.Donot_Show_In_WhatsNew)
                 {
-                    OnDetailsClick(position);
-                    OnCloseClick(position);
-                };
+                    imgWhatsNew.Click += delegate
+                    {
+                        OnDetailsClick(position);
+                        OnCloseClick(position);
+                    };
+                }
 
                 if (model.Disable_DoNotShow_Checkbox)
                 {
@@ -155,6 +158,8 @@ namespace myTNB_Android.Src.WhatsNewDialog
 
                 CardView whatsNewCardView = (CardView)rootView.FindViewById(Resource.Id.whatsNewDialogCardView);
 
+                
+                LinearLayout whatsNewDialogMainView = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewDialogMainView);
                 LinearLayout whatsNewMainImgLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewMainShimmerImgLayout);
                 ShimmerFrameLayout shimmerWhatsNewImageLayout = (ShimmerFrameLayout)rootView.FindViewById(Resource.Id.shimmerWhatsNewImageLayout);
 
@@ -245,6 +250,15 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 chkDontShow.Text = Utility.GetLocalizedCommonLabel("dontShowThisAgain");
 
                 btnGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
+
+                if (!model.Donot_Show_In_WhatsNew)
+                {
+                    whatsNewDialogMainView.Click += delegate
+                    {
+                        OnDetailsClick(position);
+                        OnCloseClick(position);
+                    };
+                }
 
                 btnGotIt.Click += delegate
                 {
