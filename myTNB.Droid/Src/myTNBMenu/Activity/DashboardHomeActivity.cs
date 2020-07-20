@@ -255,6 +255,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     this.userActionsListener.Start();
                     OnSetupSSMRMeterReadingTutorial();
                     this.mPresenter.OnGetEPPTooltipContentDetail();
+                    this.mPresenter.OnGetBillTooltipContent();
                     alreadyStarted = true;
                 }
             }
@@ -287,6 +288,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void OnResetEppTooltip()
         {
             this.mPresenter.OnGetEPPTooltipContentDetail();
+        }
+
+        public void OnResetBillDetailTooltip()
+        {
+            this.mPresenter.OnGetBillTooltipContent();
         }
 
         private void OnSetupSSMRMeterReadingTutorial()

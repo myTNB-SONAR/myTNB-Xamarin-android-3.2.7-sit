@@ -116,6 +116,7 @@ namespace myTNB_Android.Src.Base
 
                 //deleting epp tooltip data using SitecoreCmsEntity
                 SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP);
+                SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP);
             }
             catch (Exception e)
             {

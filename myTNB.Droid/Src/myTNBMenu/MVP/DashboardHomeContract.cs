@@ -266,6 +266,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 			Task OnGetEPPTooltipContentDetail();
 
+			Task OnGetBillTooltipContent();
+
 		}
 	}
 }

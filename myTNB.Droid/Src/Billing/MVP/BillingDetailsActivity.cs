@@ -477,13 +477,20 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 this.SetIsClicked(true);
                 List<UnderstandTooltipModel> modelList = MyTNBAppToolTipData.GetUnderstandBillTooltipData(this);
-                UnderstandBillToolTipAdapter adapter = new UnderstandBillToolTipAdapter(modelList);
-                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
-                    .SetAdapter(adapter)
-                    .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
-                    .SetCTAaction(()=> { this.SetIsClicked(false);})
-                    .Build()
-                    .Show();
+                if (modelList != null && modelList.Count > 0)
+                {
+                    UnderstandBillToolTipAdapter adapter = new UnderstandBillToolTipAdapter(modelList);
+                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
+                        .SetAdapter(adapter)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
+                        .SetCTAaction(() => { this.SetIsClicked(false); })
+                        .Build()
+                        .Show();
+                }
+                else
+                {
+                    this.SetIsClicked(false);
+                }
             }
         }
 
