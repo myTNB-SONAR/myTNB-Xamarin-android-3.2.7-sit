@@ -61,12 +61,10 @@ namespace myTNB_Android.Src.WhatsNewDialog
         {
             WhatsNewModel model = whatsnew[position];
 
-            // isPhotoOnly = false;
-            // isTextOnly = true;
+            ViewGroup rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerItemLayout, container, false);
 
-            // if (isPhotoOnly && !isTextOnly)
-            // {
-                ViewGroup rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerItemLayout, container, false);
+            if (!string.IsNullOrEmpty(model.PortraitImage_PopUp))
+            {
                 FrameLayout whatsNewDialogCardView = (FrameLayout)rootView.FindViewById(Resource.Id.layout_image_holder);
                 Button btnGotIt = (Button)rootView.FindViewById(Resource.Id.btnWhatsNewGotIt);
                 ImageView imgWhatsNew = (ImageView)rootView.FindViewById(Resource.Id.image_whatsnew);
@@ -150,81 +148,198 @@ namespace myTNB_Android.Src.WhatsNewDialog
                         SkipWhatsNew(position, chkDontShow.Checked);
                     };
                 }
-
-                container.AddView(rootView);
-                return rootView;
-            // }
-
-            /*ViewGroup rootTextView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerTextItemLayout, container, false);
-            CardView whatsNewCardView = (CardView)rootTextView.FindViewById(Resource.Id.whatsNewDialogCardView);
-            LinearLayout layout_btn_holder = (LinearLayout)rootTextView.FindViewById(Resource.Id.layout_btn_holder);
-            TextView txtToolTipTitle = (TextView)rootTextView.FindViewById(Resource.Id.txtToolTipTitle);
-            TextView txtToolTipMessage = (TextView)rootTextView.FindViewById(Resource.Id.txtToolTipMessage);
-            Button btnTextGotIt = (Button)rootTextView.FindViewById(Resource.Id.btnWhatsNewGotIt);
-            LinearLayout whatsNewDialogMainView = (LinearLayout)rootTextView.FindViewById(Resource.Id.whatsNewDialogMainView);
-            ImageView imgToolTipHeader = (ImageView)rootTextView.FindViewById(Resource.Id.imgToolTipHeader);
-            CheckBox chkTextDontShow = (CheckBox)rootTextView.FindViewById(Resource.Id.chk_remember_me);
-
-            int photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.096f);
-            float photoRatio = 0.7852f;
-            int photoHeight = (int) (photoWidth * photoRatio);
-            if (!isPhotoOnly)
-            {
-                photoRatio = 0.4929f;
-                photoHeight = (int)(photoWidth * photoRatio);
-                imgToolTipHeader.SetImageResource(Resource.Drawable.ic_banner_whatsnewdialog);
-                imgToolTipHeader.LayoutParameters.Height = photoHeight;
             }
             else
             {
-                imgToolTipHeader.LayoutParameters.Height = photoHeight;
+                rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerTextItemLayout, container, false);
+
+                CardView whatsNewCardView = (CardView)rootView.FindViewById(Resource.Id.whatsNewDialogCardView);
+
+                LinearLayout whatsNewMainImgLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewMainShimmerImgLayout);
+                ShimmerFrameLayout shimmerWhatsNewImageLayout = (ShimmerFrameLayout)rootView.FindViewById(Resource.Id.shimmerWhatsNewImageLayout);
+
+                ImageView imgWhatsNew = (ImageView)rootView.FindViewById(Resource.Id.image_whatsnew);
+
+                TextView txtWhatsNewTitle = (TextView)rootView.FindViewById(Resource.Id.txtWhatsNewTitle);
+                TextView txtWhatsNewMessage = (TextView)rootView.FindViewById(Resource.Id.txtWhatsNewMessage);
+
+                LinearLayout whatsNewCheckBoxLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewCheckBoxLayout);
+                CheckBox chkDontShow = (CheckBox)rootView.FindViewById(Resource.Id.chk_remember_me);
+
+                Button btnGotIt = (Button)rootView.FindViewById(Resource.Id.btnWhatsNewGotIt);
+
+                if (model.PopUp_Text_Only)
+                {
+                    whatsNewMainImgLayout.Visibility = ViewStates.Gone;
+                    imgWhatsNew.Visibility = ViewStates.Visible;
+
+                    int photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.096f);
+                    float photoRatio = 0.4929f;
+                    int photoHeight = (int)(photoWidth * photoRatio);
+
+                    imgWhatsNew.SetImageResource(Resource.Drawable.ic_banner_whatsnewdialog);
+                    imgWhatsNew.LayoutParameters.Height = photoHeight;
+
+                    imgWhatsNew.RequestLayout();
+                }
+                else
+                {
+                    whatsNewMainImgLayout.Visibility = ViewStates.Visible;
+                    imgWhatsNew.Visibility = ViewStates.Gone;
+
+                    if (shimmerWhatsNewImageLayout.IsShimmerStarted)
+                    {
+                        shimmerWhatsNewImageLayout.StopShimmer();
+                    }
+                    var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+                    if (shimmerBuilder != null)
+                    {
+                        shimmerWhatsNewImageLayout.SetShimmer(shimmerBuilder?.Build());
+                    }
+                    shimmerWhatsNewImageLayout.StartShimmer();
+
+                    // WhatsNew TODO: To handle header image
+                    if (!string.IsNullOrEmpty(model.PopUp_HeaderImageB64))
+                    {
+                        Bitmap localBitmap = Base64ToBitmap(model.PopUp_HeaderImageB64);
+                        if (localBitmap != null)
+                        {
+                            model.PopUp_HeaderImageBitmap = localBitmap;
+                            SetWhatsNewDialogTextImage(localBitmap, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                        }
+                        else
+                        {
+                            SetWhatsNewDialogTextImage(null, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(model.PopUp_HeaderImage))
+                    {
+                        _ = GetTextImageAsync(model, position, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                    }
+                    else
+                    {
+                        SetWhatsNewDialogTextImage(null, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                    }
+                }
+
+                txtWhatsNewTitle.Visibility = ViewStates.Gone;
+
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    txtWhatsNewMessage.TextFormatted = Html.FromHtml(model.PopUp_Text_Content, FromHtmlOptions.ModeCompact);
+                }
+                else
+                {
+                    txtWhatsNewMessage.TextFormatted = Html.FromHtml(model.PopUp_Text_Content);
+                }
+
+                txtWhatsNewMessage = ProcessClickableSpan(txtWhatsNewMessage, model.PopUp_Text_Content);
+
+                btnGotIt.RequestLayout();
+                rootView.RequestLayout();
+                whatsNewCardView.RequestLayout();
+
+                TextViewUtils.SetMuseoSans300Typeface(txtWhatsNewMessage);
+                TextViewUtils.SetMuseoSans500Typeface(txtWhatsNewTitle);
+                TextViewUtils.SetMuseoSans500Typeface(btnGotIt, chkDontShow);
+                chkDontShow.Text = Utility.GetLocalizedCommonLabel("dontShowThisAgain");
+
+                btnGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
+
+                btnGotIt.Click += delegate
+                {
+                    OnCloseClick(position);
+                };
+
+                if (model.Disable_DoNotShow_Checkbox)
+                {
+                    whatsNewCheckBoxLayout.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    whatsNewCheckBoxLayout.Visibility = ViewStates.Visible;
+                    chkDontShow.Checked = model.SkipShowOnAppLaunch;
+                    chkDontShow.Click += delegate
+                    {
+                        SkipWhatsNew(position, chkDontShow.Checked);
+                    };
+                }
             }
 
+            container.AddView(rootView);
+            return rootView;
+        }
 
-            layout_btn_holder.RequestLayout();
-            btnTextGotIt.RequestLayout();
-            imgToolTipHeader.RequestLayout();
-            txtToolTipTitle.RequestLayout();
-            txtToolTipMessage.RequestLayout();
-            whatsNewCardView.RequestLayout();
-            rootTextView.RequestLayout();
-
-            btnTextGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
-            TextViewUtils.SetMuseoSans500Typeface(btnTextGotIt, chkTextDontShow, txtToolTipTitle);
-            TextViewUtils.SetMuseoSans300Typeface(txtToolTipMessage);
-            chkTextDontShow.Text = Utility.GetLocalizedCommonLabel("dontShowThisAgain");
-
-            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+        private async Task GetTextImageAsync(WhatsNewModel item, int position, ShimmerFrameLayout shimmerWhatsNewImageLayout, LinearLayout whatsNewMainImgLayout, ImageView imgWhatsNew)
+        {
+            try
             {
-                // txtToolTipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
+                CancellationTokenSource cts = new CancellationTokenSource();
+                Bitmap imageBitmap = null;
+                await Task.Run(() =>
+                {
+                    imageBitmap = GetImageBitmapFromUrl(item.PopUp_HeaderImage);
+                }, cts.Token);
+
+                if (imageBitmap != null)
+                {
+                    item.PopUp_HeaderImageBitmap = imageBitmap;
+                    item.PopUp_HeaderImageB64 = BitmapToBase64(imageBitmap);
+                    this.whatsnew[position].PopUp_HeaderImageBitmap = item.PopUp_HeaderImageBitmap;
+                    this.whatsnew[position].PopUp_HeaderImageB64 = item.PopUp_HeaderImageB64;
+                    WhatsNewEntity wtManager = new WhatsNewEntity();
+                    wtManager.UpdateCachePopupHeaderImage(item.ID, item.PopUp_HeaderImageB64);
+                    SetWhatsNewDialogTextImage(imageBitmap, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                }
+                else
+                {
+                    SetWhatsNewDialogTextImage(null, shimmerWhatsNewImageLayout, whatsNewMainImgLayout, imgWhatsNew);
+                }
             }
-            else
+            catch (Exception e)
             {
-                // txtToolTipMessage.TextFormatted = Html.FromHtml(this.message);
+                Utility.LoggingNonFatalError(e);
             }
+        }
 
-            // txtToolTipMessage = ProcessClickableSpan(txtToolTipMessage, this.message);
-
-            btnTextGotIt.Click += delegate
+        private void SetWhatsNewDialogTextImage(Bitmap imgSrc, ShimmerFrameLayout shimmerWhatsNewImageLayout, LinearLayout whatsNewMainImgLayout, ImageView imgWhatsNew)
+        {
+            try
             {
-                OnCloseClick(position);
-            };
+                if (imgSrc == null)
+                {
+                    int photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.096f);
+                    float photoRatio = 0.4929f;
+                    int photoHeight = (int)(photoWidth * photoRatio);
 
-            whatsNewDialogMainView.Click += delegate
+                    imgWhatsNew.SetImageResource(Resource.Drawable.ic_banner_whatsnewdialog);
+                    imgWhatsNew.LayoutParameters.Height = photoHeight;
+
+                    imgWhatsNew.RequestLayout();
+                }
+                else if (imgSrc != null)
+                {
+                    float currentImgWidth = mContext.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.096f);
+                    float calImgRatio = currentImgWidth / imgSrc.Width;
+                    int currentImgHeight = (int)(imgSrc.Height * calImgRatio);
+
+                    imgWhatsNew.SetImageBitmap(imgSrc);
+                    imgWhatsNew.LayoutParameters.Height = currentImgHeight;
+                    imgWhatsNew.RequestLayout();
+                }
+
+                whatsNewMainImgLayout.Visibility = ViewStates.Gone;
+                if (shimmerWhatsNewImageLayout.IsShimmerStarted)
+                {
+                    shimmerWhatsNewImageLayout.StopShimmer();
+                }
+
+                imgWhatsNew.Visibility = ViewStates.Visible;
+            }
+            catch (Exception e)
             {
-                OnDetailsClick(position);
-                OnCloseClick(position);
-            };
-
-            chkTextDontShow.Checked = model.SkipShowOnAppLaunch;
-
-            chkTextDontShow.Click += delegate
-            {
-                SkipWhatsNew(position, chkTextDontShow.Checked);
-            };
-
-            container.AddView(rootTextView);
-            return rootTextView;*/
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public int GetDeviceHorizontalScaleInPixel(float percentageValue)

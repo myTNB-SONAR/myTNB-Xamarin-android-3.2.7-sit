@@ -755,25 +755,28 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             if (meterReadingModelList.Count > 1)
             {
-                List<string> meterReadingUnitList = new List<string>();
-                for (int i = 0; i < meterReadingModelList.Count; i++)
+                if (threePhaseList != null && threePhaseList.Count > 0)
                 {
-                    meterReadingUnitList.Add(meterReadingModelList[i].meterReadingUnitDisplay);
-                }
-                string meterReadingListToString = String.Join(", ", meterReadingUnitList.ToArray());
+                    List<string> meterReadingUnitList = new List<string>();
+                    for (int i = 0; i < meterReadingModelList.Count; i++)
+                    {
+                        meterReadingUnitList.Add(meterReadingModelList[i].meterReadingUnitDisplay);
+                    }
+                    string meterReadingListToString = String.Join(", ", meterReadingUnitList.ToArray());
 
-                try
-                {
-                    threePhaseList[0].Description = String.Format(threePhaseList[0].Description, meterReadingUnitList.Count, meterReadingListToString);
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
+                    try
+                    {
+                        threePhaseList[0].Description = String.Format(threePhaseList[0].Description, meterReadingUnitList.Count, meterReadingListToString);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
 
-                SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(false, this, SupportFragmentManager, threePhaseList);
+                    SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(false, this, SupportFragmentManager, threePhaseList);
+                }
             }
-            else
+            else if (singlePhaseList != null && singlePhaseList.Count > 0)
             {
                 SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(true, this, SupportFragmentManager, singlePhaseList);
             }
