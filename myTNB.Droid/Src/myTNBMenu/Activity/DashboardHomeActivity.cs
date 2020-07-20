@@ -1978,6 +1978,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                             PopUp_Text_Only = item.PopUp_Text_Only,
                                             PopUp_Text_Content = item.PopUp_Text_Content,
                                             SkipShowOnAppLaunch = item.SkipShowOnAppLaunch,
+                                            Donot_Show_In_WhatsNew = item.Donot_Show_In_WhatsNew,
                                             Disable_DoNotShow_Checkbox = item.Disable_DoNotShow_Checkbox
                                         });
                                     }
@@ -2074,6 +2075,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                             PopUp_Text_Only = item.PopUp_Text_Only,
                                             PopUp_Text_Content = item.PopUp_Text_Content,
                                             SkipShowOnAppLaunch = item.SkipShowOnAppLaunch,
+                                            Donot_Show_In_WhatsNew = item.Donot_Show_In_WhatsNew,
                                             Disable_DoNotShow_Checkbox = item.Disable_DoNotShow_Checkbox
                                         });
                                     }
