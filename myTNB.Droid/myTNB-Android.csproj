@@ -5693,8 +5693,6 @@
     <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\SearchApplicationStatusSelection\MVP\" />
     <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\Models\" />
     <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\SearchApplicationStatusSelection\Adapter\" />
-    <Folder Include="Src\UpdateNickname\Api\" />
-    <Folder Include="Src\UpdatePassword\Api\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
