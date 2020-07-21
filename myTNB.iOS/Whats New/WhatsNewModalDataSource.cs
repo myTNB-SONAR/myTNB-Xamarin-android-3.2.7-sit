@@ -143,14 +143,14 @@ namespace myTNB
             UITextView txtViewContent = view.ViewWithTag(1002) as UITextView;
             CustomUIView dontShowAgainView = view.ViewWithTag(1003) as CustomUIView;
             UIView viewLine = view.ViewWithTag(1004) as UIView;
-            UIButton btnGotit = view.ViewWithTag(1005) as UIButton;
+            UIButton btnGotIt = view.ViewWithTag(1005) as UIButton;
 
             txtViewContent.Frame = new CGRect(new CGPoint(txtViewContent.Frame.X, GetYLocationFromFrame(imgView.Frame, 16)), txtViewContent.Frame.Size);
             dontShowAgainView.Frame = new CGRect(new CGPoint(dontShowAgainView.Frame.X, GetYLocationFromFrame(txtViewContent.Frame, 16)), dontShowAgainView.Frame.Size);
             nfloat lineYLoc = dontShowAgainView.Frame.Height > 0 ? ScaleUtility.GetScaledHeight(16) : 0;
             viewLine.Frame = new CGRect(new CGPoint(viewLine.Frame.X, dontShowAgainView.Frame.GetMaxY() + lineYLoc), viewLine.Frame.Size);
-            btnGotit.Frame = new CGRect(new CGPoint(btnGotit.Frame.X, viewLine.Frame.GetMaxY()), btnGotit.Frame.Size);
-            view.Frame = new CGRect(0, 0, view.Frame.Width, btnGotit.Frame.GetMaxY());
+            btnGotIt.Frame = new CGRect(new CGPoint(btnGotIt.Frame.X, viewLine.Frame.GetMaxY()), btnGotIt.Frame.Size);
+            view.Frame = new CGRect(0, 0, view.Frame.Width, btnGotIt.Frame.GetMaxY());
         }
 
         private void UpdateView(ref UIView view, UIImageView imageView, WhatsNewModel whatsNewItem)
@@ -246,7 +246,8 @@ namespace myTNB
                 , ScaleUtility.GetScaledHeight(24F)))
             {
                 BackgroundColor = UIColor.White,
-                ClipsToBounds = true
+                ClipsToBounds = true,
+                Tag = 1003
             };
             viewDoNotShowAgain.Layer.CornerRadius = ScaleUtility.GetScaledHeight(4F);
 
