@@ -69,6 +69,8 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string PAGE_TITLE = ".pageTitle";
         internal static readonly string PAGE_STEP_TITLE = ".pageStepTitle";
         internal static readonly string ACCOUNT_NUMBER = ".accountNumber";
+        internal static readonly string REQ_EMAIL = ".requesterEmail";
+        internal static readonly string REQ_IC = ".requesterIC";
 
 
 

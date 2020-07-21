@@ -159,6 +159,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     try
                                     {
                                         UserEntity entity = UserEntity.GetActive();
+
+                                        UserSessions.SaveFeedbackUpdateDetailDisabled(mSharedPref, responseData.IsFeedbackUpdateDetailDisabled.ToString());  //save sharedpref
+
                                         bool phoneVerified = UserSessions.GetPhoneVerifiedFlag(mSharedPref);
                                         if (!phoneVerified)
                                         {

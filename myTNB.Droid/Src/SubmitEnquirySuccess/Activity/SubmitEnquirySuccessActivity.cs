@@ -124,6 +124,16 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
                 //}
 
                 //txtTransactionScheduleContent.Text = dateTime;
+
+
+                //TRANSLATION 
+                txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouTitle");
+                txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouDescription");
+                txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
+                buttonBackToHome.Text= Utility.GetLocalizedLabel("Common", "backToHome");
+                btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");
+
+
             }
             catch (Exception e)
             {

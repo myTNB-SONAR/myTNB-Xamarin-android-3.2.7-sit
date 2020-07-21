@@ -179,6 +179,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 			void OnResetEppTooltip();
 
+			void OnResetWhereIsMyAccNumber();
+
 		}
 
         public interface IUserActionsListener : IBasePresenter
@@ -265,6 +267,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			void SetIsWhatsNewDialogShowNeed(bool flag);
 
 			Task OnGetEPPTooltipContentDetail();
+
+			Task OnWhereIsMyAccNumberContentDetail();
 
 		}
 	}

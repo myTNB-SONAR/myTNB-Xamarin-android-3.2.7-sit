@@ -54,7 +54,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
 
         }
 
-        public void CheckRequiredFields(string fullname, string mobile_no, string email)
+        public void CheckRequiredFields(string fullname, string mobile_no, string email, bool tnc ,bool isNeedTNC)
         {
 
             try
@@ -130,6 +130,14 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                         else
                         {
                             this.mView.ClearInvalidMobileError();
+                        }
+                    }
+                    if (isNeedTNC)
+                    {
+                        if (tnc == false)
+                        {
+                            this.mView.DisableRegisterButton();
+                            return;
                         }
                     }
 

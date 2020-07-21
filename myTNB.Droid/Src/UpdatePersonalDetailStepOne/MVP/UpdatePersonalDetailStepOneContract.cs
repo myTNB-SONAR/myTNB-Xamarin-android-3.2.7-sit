@@ -124,7 +124,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
 
             void OninfoLabelDoIneedOwnerConsent();
 
-            void CheckRequiredFields(string iC, bool toggleChkBoxIC, string ownerName, bool toggleChkOwnerName, string mobileNumber, bool toggleChkMobileNumber, string emailAddress, bool toggleChkEmailAddress, string mailingAddress, bool toggleChkMailingAddress, string premiseAddress, bool toggleChkPremiseAddress);
+            void CheckRequiredFields(string iC, bool toggleChkBoxIC, string ownerName, bool toggleChkOwnerName, string mobileNumber, bool toggleChkMobileNumber, string emailAddress, bool toggleChkEmailAddress, string mailingAddress, bool toggleChkMailingAddress, string premiseAddress, bool toggleChkPremiseAddress, string otherRelationstip , bool isOtherChoosed);
 
             void OnShowUpdatePersonalDetailStepTwoActivity();
 
