@@ -257,9 +257,6 @@ namespace myTNB
         }
         internal void SetApplySSMRHeader(string headerTitle, string infoBarTitle)
         {
-            _applyContainer = new UIView(new CGRect(0, GetYLocationFromFrame(_viewDropDownContainer.Frame, 16)
-                , View.Frame.Width, GetScaledHeight(184)))
-            { BackgroundColor = UIColor.White };
             #region Title
             UIView applyHeaderView = new UIView(new CGRect(0, 0, View.Frame.Width, GetScaledHeight(48))) { BackgroundColor = MyTNBColor.LightGrayBG };
             UILabel lblHeaderTitle = new UILabel(new CGRect(BaseMarginWidth16, BaseMarginWidth16, View.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(24)))
@@ -267,8 +264,13 @@ namespace myTNB
                 TextColor = MyTNBColor.WaterBlue,
                 Font = TNBFont.MuseoSans_16_500,
                 TextAlignment = UITextAlignment.Left,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0,
                 Text = headerTitle
             };
+            nfloat lblHeight = lblHeaderTitle.GetLabelHeight(1000);
+            lblHeaderTitle.Frame = new CGRect(lblHeaderTitle.Frame.Location, new CGSize(lblHeaderTitle.Frame.Width, lblHeight));
+            applyHeaderView.Frame = new CGRect(applyHeaderView.Frame.Location, new CGSize(applyHeaderView.Frame.Width, lblHeaderTitle.Frame.GetMaxY() + GetScaledHeight(8)));
             applyHeaderView.AddSubview(lblHeaderTitle);
             #endregion
             #region Button
@@ -302,6 +304,9 @@ namespace myTNB
             };
             #endregion
             UIView viewBottomSpace = new UIView(new CGRect(0, GetYLocationFromFrame(infoBar.View.Frame, 16), View.Frame.Width, GetScaledHeight(16))) { BackgroundColor = MyTNBColor.LightGrayBG };
+            _applyContainer = new UIView(new CGRect(0, GetYLocationFromFrame(_viewDropDownContainer.Frame, 16)
+               , View.Frame.Width, GetScaledHeight(136) + applyHeaderView.Frame.Height))
+            { BackgroundColor = UIColor.White };
             _applyContainer.AddSubviews(new UIView[] { applyHeaderView, _btnNo, _btnYes, infoBar.View, viewBottomSpace });
             _containerView.AddSubview(_applyContainer);
 
