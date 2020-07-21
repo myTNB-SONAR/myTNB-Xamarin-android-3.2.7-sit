@@ -71,7 +71,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:layout_marginTop="16dp"
-                            android:layout_marginBottom="8dp"
+                            android:layout_marginBottom="3dp"
                             android:text="Be sure to upload a clear, straight-facing photo of the entire meter box with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable."
                             android:textSize="14dp"
                             android:lineSpacingExtra="3dp"/>
@@ -81,12 +81,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="visible"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="6dp"
                         android:layout_marginLeft="12dp"
                         android:layout_marginRight="12dp"
                         android:layout_alignParentBottom="true"
                         android:id="@+id/whatsNewCheckBoxLayout"
-                        android:layout_marginBottom="4dp">
+                        android:layout_marginBottom="6dp">
                         <android.support.v7.widget.CardView 
                             android:orientation="vertical"
                             android:layout_width="match_parent"
@@ -100,7 +100,8 @@
                             android:layout_width="wrap_content"
                             android:checked="false"
                             android:paddingLeft="8dp"
-                            android:layout_margin="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
                             android:text="Don't show this again"
                             android:textColor="@color/tunaGrey"
                             android:textSize="12dp"
@@ -109,7 +110,7 @@
                     </LinearLayout>
                     <View
                         android:layout_height="1dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="6dp"
                         android:layout_width="match_parent"
                         android:alpha="0.2"
                         android:background="@color/tunaGrey" />
