@@ -1836,6 +1836,9 @@
     <ImageAsset Include="Assets\SMR.xcassets\Sample-Meter.imageset\Contents.json" />
     <ImageAsset Include="Assets\SMR.xcassets\Sample-Meter.imageset\imgSmrIos%402x.png" />
     <ImageAsset Include="Assets\SMR.xcassets\Sample-Meter.imageset\imgSmrIos%403x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\WhatsNew-Popup-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Assets.xcassets\WhatsNew-Popup-Banner.imageset\group5Copy%402x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\WhatsNew-Popup-Banner.imageset\group5Copy%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1995,6 +1998,7 @@
     <Folder Include="Assets\Assets.xcassets\imgPoc.imageset\" />
     <Folder Include="Assets\Assets.xcassets\imgIcCopy.imageset\" />
     <Folder Include="Assets\SMR.xcassets\Sample-Meter.imageset\" />
+    <Folder Include="Assets\Assets.xcassets\WhatsNew-Popup-Banner.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

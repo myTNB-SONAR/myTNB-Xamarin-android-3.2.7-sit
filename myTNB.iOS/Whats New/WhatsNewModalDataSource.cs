@@ -11,21 +11,23 @@ namespace myTNB
 {
     public class WhatsNewModalDataSource : iCarouselDataSource
     {
-        List<WhatsNewModel> whatsnews;
-        UIView parentView;
+        private List<WhatsNewModel> whatsNew;
 
         public Action OnTapDetails { get; set; }
         public EventHandler OnTapExit { get; set; }
 
-        public WhatsNewModalDataSource(UIView parent, List<WhatsNewModel> whatnew)
+        private nfloat margin = ScaleUtility.GetScaledWidth(16);
+        private nfloat baseWidth = 0;
+
+        public WhatsNewModalDataSource(List<WhatsNewModel> whatsNew)
         {
-            parentView = parent;
-            whatsnews = whatnew;
+            this.whatsNew = whatsNew;
+            baseWidth = UIScreen.MainScreen.Bounds.Width - (margin * 2);
         }
 
         public override nint GetNumberOfItems(iCarousel carousel)
         {
-            return whatsnews?.Count ?? 0;
+            return whatsNew?.Count ?? 0;
         }
 
         private void OnGetTapDetail()
@@ -39,42 +41,209 @@ namespace myTNB
             return xValue;
         }
 
+        public nfloat GetYLocationFromFrame(CGRect frame, nfloat xValue)
+        {
+            ScaleUtility.GetYLocationFromFrame(frame, ref xValue);
+            return xValue;
+        }
+
         public override UIView GetViewForItem(iCarousel carousel, nint index, UIView view)
         {
-            double buttonHeight = ScaleUtility.GetScaledHeight(52F);
-            double itemHeight = UIScreen.MainScreen.Bounds.Height - buttonHeight;
-            if (DeviceHelper.IsIphoneXUpResolution())
+            WhatsNewModel whatsNewItem = whatsNew[(int)index];
+            if (whatsNewItem.PortraitImage_PopUp.IsValid())
             {
-                itemHeight = itemHeight - (ScaleUtility.GetScaledHeight(68F) + (UIScreen.MainScreen.Bounds.Height * 0.202F));
+                GetViewForPortrait(ref view, whatsNewItem);
             }
             else
             {
-                itemHeight = itemHeight - (ScaleUtility.GetScaledHeight(18F) + (UIScreen.MainScreen.Bounds.Height * 0.102F));
+                GetViewForBanner(ref view, whatsNewItem);
             }
-            float marginPercentage = 0.056F;
-            double margin = UIScreen.MainScreen.Bounds.Width * marginPercentage;
-            double carWidth = UIScreen.MainScreen.Bounds.Width - (margin * 2);
-            double carHeight = itemHeight + buttonHeight;
-            double buttonWidth = Math.Floor(carWidth);
 
-            var whatsnew = whatsnews[(int)index];
+            if (!whatsNewItem.Donot_Show_In_WhatsNew)
+            {
+                view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnGetTapDetail();
+                }));
+            }
 
-            view = new UIView(new CGRect(0, 0, carWidth, carHeight))
+            return view;
+        }
+
+        private void GetViewForBanner(ref UIView view, WhatsNewModel whatsNewItem)
+        {
+            var ratio = 0.5;
+            var imgWidth = baseWidth;
+            var imgHeight = imgWidth * ratio;
+
+            UIImageView imageView = new UIImageView(new CGRect(0, 0, imgWidth, imgHeight))
+            {
+                Image = UIImage.FromBundle("WhatsNew-Popup-Banner"),
+                Tag = 1001
+            };
+            UpdateView(ref view, imageView, whatsNewItem);
+            UIView refView = view;
+            if (!whatsNewItem.PopUp_Text_Only)
+            {
+                CustomShimmerView shimmeringView = new CustomShimmerView();
+                UIView viewShimmerParent = new UIView(new CGRect(0, 0, imgWidth, imgHeight))
+                { BackgroundColor = UIColor.Clear };
+                UIView viewShimmerContent = new UIView(new CGRect(0, 0, imgWidth, imgHeight))
+                { BackgroundColor = UIColor.Clear };
+                viewShimmerParent.AddSubview(shimmeringView);
+                shimmeringView.ContentView = viewShimmerContent;
+                shimmeringView.Shimmering = true;
+                shimmeringView.SetValues();
+                UIView imgLoadingView = new UIView(imageView.Bounds)
+                {
+                    BackgroundColor = UIColor.White
+                };
+                UIView viewImage = new UIView(new CGRect(0, 0, imgWidth, imgHeight))
+                {
+                    BackgroundColor = MyTNBColor.PaleGreyThree
+                };
+                viewShimmerContent.AddSubview(viewImage);
+                imgLoadingView.AddSubview(viewShimmerParent);
+                view.AddSubview(imgLoadingView);
+                NSUrl url = new NSUrl(whatsNewItem.PopUp_HeaderImage);
+                NSUrlSession session = NSUrlSession
+                    .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
+                NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
+                {
+                    if (error == null && response != null && data != null)
+                    {
+                        InvokeOnMainThread(() =>
+                        {
+                            using (var image = UIImage.LoadFromData(data))
+                            {
+                                ratio = image != null ? image.Size.Height / image.Size.Width : 0;
+                                imgHeight = imgWidth * ratio;
+                                imageView.Frame = new CGRect(0, 0, imgWidth, imgHeight);
+                                imageView.Image = image;
+                                UpdateLocations(refView);
+                                imgLoadingView.RemoveFromSuperview();
+                            }
+                        });
+                    }
+                    else
+                    {
+                        InvokeOnMainThread(() =>
+                        {
+                            imgLoadingView.RemoveFromSuperview();
+                        });
+                    }
+                });
+                dataTask.Resume();
+            }
+        }
+
+        private void UpdateLocations(UIView view)
+        {
+            UIImageView imgView = view.ViewWithTag(1001) as UIImageView;
+            UITextView txtViewContent = view.ViewWithTag(1002) as UITextView;
+            CustomUIView dontShowAgainView = view.ViewWithTag(1003) as CustomUIView;
+            UIView viewLine = view.ViewWithTag(1004) as UIView;
+            UIButton btnGotit = view.ViewWithTag(1005) as UIButton;
+
+            txtViewContent.Frame = new CGRect(new CGPoint(txtViewContent.Frame.X, GetYLocationFromFrame(imgView.Frame, 16)), txtViewContent.Frame.Size);
+            dontShowAgainView.Frame = new CGRect(new CGPoint(dontShowAgainView.Frame.X, GetYLocationFromFrame(txtViewContent.Frame, 16)), dontShowAgainView.Frame.Size);
+            nfloat lineYLoc = dontShowAgainView.Frame.Height > 0 ? ScaleUtility.GetScaledHeight(16) : 0;
+            viewLine.Frame = new CGRect(new CGPoint(viewLine.Frame.X, dontShowAgainView.Frame.GetMaxY() + lineYLoc), viewLine.Frame.Size);
+            btnGotit.Frame = new CGRect(new CGPoint(btnGotit.Frame.X, viewLine.Frame.GetMaxY()), btnGotit.Frame.Size);
+            view.Frame = new CGRect(0, 0, view.Frame.Width, btnGotit.Frame.GetMaxY());
+        }
+
+        private void UpdateView(ref UIView view, UIImageView imageView, WhatsNewModel whatsNewItem)
+        {
+            UITextView txtView = GetBodyContent(whatsNewItem.PopUp_Text_Content, ScaleUtility.GetYLocationFromFrame(imageView.Frame, 16));
+            CustomUIView viewDoNotShowAgain = new CustomUIView(new CGRect(ScaleUtility.GetScaledWidth(16), GetYLocationFromFrame(txtView.Frame, 16), 0, 0))
+            {
+                Tag = 1003
+            };
+            nfloat lineYLoc = 0;
+            if (!whatsNewItem.Disable_DoNotShow_Checkbox)
+            {
+                viewDoNotShowAgain = GetDontShowAgainView(whatsNewItem, GetYLocationFromFrame(txtView.Frame, 16));
+                lineYLoc = ScaleUtility.GetScaledHeight(16);
+            }
+
+            UIView lineView = new UIView(new CGRect(0, viewDoNotShowAgain.Frame.GetMaxY() + lineYLoc, baseWidth, ScaleUtility.GetScaledHeight(1)))
+            {
+                BackgroundColor = MyTNBColor.LinesGray,
+                Tag = 1004
+            };
+
+            UIButton btnGotIt = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(0, lineView.Frame.GetMaxY(), baseWidth, ScaleUtility.GetScaledHeight(56)),
+                BackgroundColor = UIColor.White,
+                Tag = 1005,
+
+            };
+            btnGotIt.SetAttributedTitle(LabelHelper.CreateAttributedString(LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt)
+                , MyTNBFont.MuseoSans16_500, MyTNBColor.PowerBlue), UIControlState.Normal);
+            btnGotIt.TouchDown += OnTapExit;
+
+            view = new UIView(new CGRect(0, 0, baseWidth, btnGotIt.Frame.GetMaxY()))
             {
                 BackgroundColor = UIColor.White,
                 ClipsToBounds = true
             };
+            view.Layer.CornerRadius = ScaleUtility.GetScaledWidth(6);
+            view.AddSubviews(new UIView[] { imageView, txtView, viewDoNotShowAgain, lineView, btnGotIt });
+        }
 
-            view.Layer.CornerRadius = 6.0f;
-
-            UIView mainView = new UIView(new CGRect(0, 0, carWidth, itemHeight))
+        private UITextView GetBodyContent(string message, nfloat yLoc)
+        {
+            UIStringAttributes linkAttributes = new UIStringAttributes
             {
-                BackgroundColor = UIColor.Clear,
-                UserInteractionEnabled = true
+                ForegroundColor = MyTNBColor.PowerBlue,
+                Font = TNBFont.MuseoSans_14_300,
+                UnderlineStyle = NSUnderlineStyle.None,
+                UnderlineColor = UIColor.Clear
             };
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(message
+                , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(14F));
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
+            {
+                ForegroundColor = MyTNBColor.CharcoalGrey,
+                ParagraphStyle = new NSMutableParagraphStyle
+                {
+                    LineSpacing = 3.0f
+                }
+            }, new NSRange(0, htmlBody.Length));
 
-            UIImageView imgView = new UIImageView(new CGRect(0, 0, carWidth, itemHeight));
-            UIView viewDoNotShowAgain = new UIView(new CGRect(ScaleUtility.GetScaledHeight(12F), imgView.Bounds.Height - ScaleUtility.GetScaledHeight(34F), imgView.Bounds.Width - ScaleUtility.GetScaledHeight(24F), ScaleUtility.GetScaledHeight(24F)))
+            // Body
+            UITextView txtViewDetails = new UITextView
+            {
+                Editable = false,
+                ScrollEnabled = true,
+                AttributedText = mutableHTMLBody,
+                WeakLinkTextAttributes = linkAttributes.Dictionary,
+                ContentInset = new UIEdgeInsets(-5, 0, -5, 0),
+                Tag = 1002
+            };
+            txtViewDetails.ScrollIndicatorInsets = UIEdgeInsets.Zero;
+            txtViewDetails.TextContainer.LineFragmentPadding = 0F;
+
+            //Resize
+            var maxDescriptionHeight = UIScreen.MainScreen.Bounds.Height;
+            CGSize size = txtViewDetails.SizeThatFits(new CGSize(baseWidth - (ScaleUtility.GetScaledWidth(16) * 2), maxDescriptionHeight));
+            nfloat txtViewHeight = size.Height > maxDescriptionHeight ? maxDescriptionHeight : size.Height;
+            txtViewDetails.Frame = new CGRect(ScaleUtility.GetScaledWidth(16), yLoc, baseWidth - (ScaleUtility.GetScaledWidth(16) * 2), txtViewHeight);
+            txtViewDetails.TextAlignment = UITextAlignment.Left;
+
+            return txtViewDetails;
+        }
+
+        private CustomUIView GetDontShowAgainView(WhatsNewModel whatsNewItem, nfloat yLoc)
+        {
+            CustomUIView viewDoNotShowAgain = new CustomUIView(new CGRect(ScaleUtility.GetScaledWidth(16)
+                , yLoc
+                , baseWidth - (margin * 2)
+                , ScaleUtility.GetScaledHeight(24F)))
             {
                 BackgroundColor = UIColor.White,
                 ClipsToBounds = true
@@ -96,16 +265,16 @@ namespace myTNB
             };
             viewCheckBox.AddSubview(imgViewCheckBox);
 
-            imgViewCheckBox.Hidden = !WhatsNewServices.GetIsSkipAppLaunch(whatsnew.ID);
-            viewCheckBox.Layer.BorderColor = WhatsNewServices.GetIsSkipAppLaunch(whatsnew.ID) ? UIColor.Clear.CGColor : MyTNBColor.VeryLightPinkSeven.CGColor;
+            imgViewCheckBox.Hidden = !WhatsNewServices.GetIsSkipAppLaunch(whatsNewItem.ID);
+            viewCheckBox.Layer.BorderColor = WhatsNewServices.GetIsSkipAppLaunch(whatsNewItem.ID) ? UIColor.Clear.CGColor : MyTNBColor.VeryLightPinkSeven.CGColor;
 
-            viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            viewDoNotShowAgain.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                bool flag = WhatsNewServices.GetIsSkipAppLaunch(whatsnew.ID);
+                bool flag = WhatsNewServices.GetIsSkipAppLaunch(whatsNewItem.ID);
                 flag = !flag;
                 imgViewCheckBox.Hidden = !flag;
                 viewCheckBox.Layer.BorderColor = flag ? UIColor.Clear.CGColor : MyTNBColor.VeryLightPinkSeven.CGColor;
-                WhatsNewServices.SetIsSkipAppLaunch(whatsnew.ID, flag);
+                WhatsNewServices.SetIsSkipAppLaunch(whatsNewItem.ID, flag);
             }));
 
             UILabel lblDontShowAgain = new UILabel(new CGRect(GetXLocationFromFrame(viewCheckBox.Frame, 8F), ScaleUtility.GetScaledHeight(4F), viewDoNotShowAgain.Frame.Width, ScaleUtility.GetScaledHeight(16F)))
@@ -116,11 +285,46 @@ namespace myTNB
             };
 
             viewDoNotShowAgain.AddSubviews(new UIView[] { viewCheckBox, lblDontShowAgain });
+            return viewDoNotShowAgain;
+        }
 
-
-            if (whatsnew.PortraitImage_PopUp.IsValid())
+        #region Portrait
+        private void GetViewForPortrait(ref UIView view, WhatsNewModel whatsNewItem)
+        {
+            double buttonHeight = ScaleUtility.GetScaledHeight(52F);
+            double itemHeight = UIScreen.MainScreen.Bounds.Height - buttonHeight;
+            if (DeviceHelper.IsIphoneXUpResolution())
             {
-                NSData imgData = WhatsNewPopupCache.GetImage(whatsnew.ID);
+                itemHeight = itemHeight - (ScaleUtility.GetScaledHeight(68F) + (UIScreen.MainScreen.Bounds.Height * 0.202F));
+            }
+            else
+            {
+                itemHeight = itemHeight - (ScaleUtility.GetScaledHeight(18F) + (UIScreen.MainScreen.Bounds.Height * 0.102F));
+            }
+
+            double carHeight = itemHeight + buttonHeight;
+            double buttonWidth = Math.Floor(baseWidth);
+
+            view = new UIView(new CGRect(0, 0, baseWidth, carHeight))
+            {
+                BackgroundColor = UIColor.White,
+                ClipsToBounds = true
+            };
+
+            view.Layer.CornerRadius = ScaleUtility.GetScaledWidth(6);
+
+            UIView mainView = new UIView(new CGRect(0, 0, baseWidth, itemHeight))
+            {
+                BackgroundColor = UIColor.Clear,
+                UserInteractionEnabled = true
+            };
+
+            UIImageView imgView = new UIImageView(new CGRect(0, 0, baseWidth, itemHeight));
+            CustomUIView viewDoNotShowAgain = GetDontShowAgainView(whatsNewItem, imgView.Bounds.Height - ScaleUtility.GetScaledHeight(34F));
+
+            if (whatsNewItem.PortraitImage_PopUp.IsValid())
+            {
+                NSData imgData = WhatsNewPopupCache.GetImage(whatsNewItem.ID);
                 if (imgData != null)
                 {
                     using (var image = UIImage.LoadFromData(imgData))
@@ -134,7 +338,7 @@ namespace myTNB
                 {
                     try
                     {
-                        UIView imgLoadingView = new UIView(new CGRect(0, 0, carWidth, itemHeight))
+                        UIView imgLoadingView = new UIView(new CGRect(0, 0, baseWidth, itemHeight))
                         {
                             BackgroundColor = UIColor.Clear
                         };
@@ -142,15 +346,15 @@ namespace myTNB
                         mainView.AddSubview(imgLoadingView);
                         mainView.AddSubview(imgView);
 
-                        UIView viewImage = new UIView(new CGRect(0, 0, carWidth, itemHeight))
+                        UIView viewImage = new UIView(new CGRect(0, 0, baseWidth, itemHeight))
                         {
                             BackgroundColor = MyTNBColor.PaleGreyThree
                         };
 
                         CustomShimmerView shimmeringView = new CustomShimmerView();
-                        UIView viewShimmerParent = new UIView(new CGRect(0, 0, carWidth, itemHeight))
+                        UIView viewShimmerParent = new UIView(new CGRect(0, 0, baseWidth, itemHeight))
                         { BackgroundColor = UIColor.Clear };
-                        UIView viewShimmerContent = new UIView(new CGRect(0, 0, carWidth, itemHeight))
+                        UIView viewShimmerContent = new UIView(new CGRect(0, 0, baseWidth, itemHeight))
                         { BackgroundColor = UIColor.Clear };
                         viewShimmerParent.AddSubview(shimmeringView);
                         shimmeringView.ContentView = viewShimmerContent;
@@ -160,7 +364,7 @@ namespace myTNB
                         viewShimmerContent.AddSubview(viewImage);
                         imgLoadingView.AddSubview(viewShimmerParent);
 
-                        NSUrl url = new NSUrl(whatsnew.PortraitImage_PopUp);
+                        NSUrl url = new NSUrl(whatsNewItem.PortraitImage_PopUp);
                         NSUrlSession session = NSUrlSession
                             .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
                         NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
@@ -173,7 +377,7 @@ namespace myTNB
                                     {
                                         imgView.Image = image;
                                     }
-                                    WhatsNewPopupCache.SaveImage(whatsnew.ID, data);
+                                    WhatsNewPopupCache.SaveImage(whatsNewItem.ID, data);
                                     imgLoadingView.RemoveFromSuperview();
                                 });
                             }
@@ -192,7 +396,7 @@ namespace myTNB
             }
             else
             {
-                UIView imgLoadingView = new UIView(new CGRect(0, 0, carWidth, itemHeight))
+                UIView imgLoadingView = new UIView(new CGRect(0, 0, baseWidth, itemHeight))
                 {
                     BackgroundColor = UIColor.Clear
                 };
@@ -200,15 +404,21 @@ namespace myTNB
                 mainView.AddSubview(imgLoadingView);
                 mainView.AddSubview(imgView);
 
-                UIView viewImage = new UIView(new CGRect(0, 0, carWidth, itemHeight))
+                imgLoadingView.Layer.BorderWidth = 1;
+                imgLoadingView.Layer.BorderColor = UIColor.Cyan.CGColor;
+
+                imgView.Layer.BorderWidth = 1;
+                imgView.Layer.BorderColor = UIColor.Green.CGColor;
+
+                UIView viewImage = new UIView(new CGRect(0, 0, baseWidth, itemHeight))
                 {
                     BackgroundColor = MyTNBColor.PaleGreyThree
                 };
 
                 CustomShimmerView shimmeringView = new CustomShimmerView();
-                UIView viewShimmerParent = new UIView(new CGRect(0, 0, carWidth, itemHeight))
+                UIView viewShimmerParent = new UIView(new CGRect(0, 0, baseWidth, itemHeight))
                 { BackgroundColor = UIColor.Clear };
-                UIView viewShimmerContent = new UIView(new CGRect(0, 0, carWidth, itemHeight))
+                UIView viewShimmerContent = new UIView(new CGRect(0, 0, baseWidth, itemHeight))
                 { BackgroundColor = UIColor.Clear };
                 viewShimmerParent.AddSubview(shimmeringView);
                 shimmeringView.ContentView = viewShimmerContent;
@@ -218,31 +428,28 @@ namespace myTNB
                 viewShimmerContent.AddSubview(viewImage);
                 imgLoadingView.AddSubview(viewShimmerParent);
             }
-
-            UITapGestureRecognizer tapDetail = new UITapGestureRecognizer(OnGetTapDetail)
-            {
-                NumberOfTapsRequired = 1
-            };
-            mainView.AddGestureRecognizer(tapDetail);
             view.AddSubview(mainView);
 
-            if (!whatsnew.Disable_DoNotShow_Checkbox)
+            if (!whatsNewItem.Disable_DoNotShow_Checkbox)
             {
                 view.AddSubview(viewDoNotShowAgain);
             }
 
-            UIButton btnGotIt = new UIButton(UIButtonType.Custom);
-            btnGotIt.Frame = new CGRect(0, view.Frame.Height - buttonHeight, buttonWidth, buttonHeight);
+            UIButton btnGotIt = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(0, view.Frame.Height - buttonHeight, buttonWidth, buttonHeight),
+                BackgroundColor = UIColor.White
+            };
             btnGotIt.SetAttributedTitle(LabelHelper.CreateAttributedString(LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt), MyTNBFont.MuseoSans16_500, MyTNBColor.PowerBlue), UIControlState.Normal);
-            btnGotIt.BackgroundColor = UIColor.White;
             btnGotIt.TouchDown += OnTapExit;
             view.AddSubview(btnGotIt);
 
-            UIView lineView = new UIView(new CGRect(btnGotIt.Frame.Width + 1, view.Frame.Height - buttonHeight, 1, buttonHeight));
-            lineView.BackgroundColor = MyTNBColor.LinesGray;
+            UIView lineView = new UIView(new CGRect(btnGotIt.Frame.Width + 1, view.Frame.Height - buttonHeight, 1, buttonHeight))
+            {
+                BackgroundColor = MyTNBColor.LinesGray
+            };
             view.AddSubview(lineView);
-
-            return view;
         }
+        #endregion
     }
 }

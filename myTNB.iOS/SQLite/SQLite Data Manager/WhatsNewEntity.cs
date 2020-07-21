@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using myTNB.SitecoreCMS.Model;
 using SQLite;
 
@@ -142,7 +143,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             WhatsNewModel rewardModel;
             if (entityItems != null && entityItems.Count > 0)
             {
-                for(int index = 0; index < entityItems.Count; index++)
+                for (int index = 0; index < entityItems.Count; index++)
                 {
                     entityItems[index].ShowDateForDay = WhatsNewServices.GetWhatNewModelShowDate(entityItems[index].ID);
                     entityItems[index].ShowCountForDay = WhatsNewServices.GetWhatNewModelShowCount(entityItems[index].ID);
@@ -191,105 +192,107 @@ namespace myTNB.SQLite.SQLiteDataManager
             try
             {
                 List<WhatsNewEntity> entityItems = GetAllEntityItems();
-                if (entityItems != null && entityItems.Count > 0)
+                List<WhatsNewEntity> maintenanceList = entityItems.FindAll(x => x.Donot_Show_In_WhatsNew)
+                        .OrderByDescending(x => DateTime.ParseExact(x.PublishDate, "yyyyMMddTHHmmss"
+                        , CultureInfo.InvariantCulture, DateTimeStyles.None)).ToList();
+                bool showMaintenance = false;
+                WhatsNewEntity maintenance = new WhatsNewEntity();
+                if (maintenanceList != null && maintenanceList.Count > 0)
                 {
-                    List<WhatsNewEntity> matchList = entityItems.FindAll(x =>
+                    maintenance = maintenanceList.First();
+                    int startResult = -1;
+                    int endResult = 1;
+                    try
                     {
-                        int startResult = -1;
-                        int endResult = 1;
-                        try
+                        if (!string.IsNullOrEmpty(maintenance.StartDate) && !string.IsNullOrEmpty(maintenance.EndDate))
                         {
-                            if (!string.IsNullOrEmpty(x.StartDate) && !string.IsNullOrEmpty(x.EndDate))
-                            {
-                                DateTime startDateTime = DateTime.ParseExact(x.StartDate, "yyyyMMddTHHmmss",
+                            DateTime startDateTime = DateTime.ParseExact(maintenance.StartDate, "yyyyMMddTHHmmss",
+                            CultureInfo.InvariantCulture, DateTimeStyles.None);
+                            DateTime stopDateTime = DateTime.ParseExact(maintenance.EndDate, "yyyyMMddTHHmmss",
                                 CultureInfo.InvariantCulture, DateTimeStyles.None);
-                                DateTime stopDateTime = DateTime.ParseExact(x.EndDate, "yyyyMMddTHHmmss",
-                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
-                                DateTime nowDateTime = DateTime.Now;
-                                startResult = DateTime.Compare(nowDateTime, startDateTime);
-                                endResult = DateTime.Compare(nowDateTime, stopDateTime);
-                            }
+                            DateTime nowDateTime = DateTime.Now;
+                            startResult = DateTime.Compare(nowDateTime, startDateTime);
+                            endResult = DateTime.Compare(nowDateTime, stopDateTime);
+                        }
 
-                            x.ShowDateForDay = WhatsNewServices.GetWhatNewModelShowDate(x.ID);
-                            x.ShowCountForDay = WhatsNewServices.GetWhatNewModelShowCount(x.ID);
-                            x.SkipShowOnAppLaunch = WhatsNewServices.GetIsSkipAppLaunch(x.ID);
-                        }
-                        catch (Exception ne)
-                        {
-                            Debug.WriteLine("Error in GetActivePopupItems in Table : {0}", ne.Message);
-                        }
-                        return (startResult >= 0 && endResult <= 0 && x.ShowAtAppLaunchPopUp && !x.SkipShowOnAppLaunch && x.ShowEveryCountDays_PopUp > 0/*&& x.ShowForTotalCountDays_PopUp > 0*/);
-                    });
-                    if (matchList != null && matchList.Count > 0)
-                    {
-                        List<WhatsNewEntity> matchItemList = matchList.FindAll(x =>
-                        {
-                            bool isAlreadyExceedQuota = false;
-                            try
-                            {
-                                if (!string.IsNullOrEmpty(x.ShowDateForDay))
-                                {
-                                    DateTime nowDateTime = DateTime.Now;
-                                    DateTime showDateTime = DateTime.ParseExact(x.ShowDateForDay, "yyyyMMddTHHmmss",
-                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
-                                    if (showDateTime.Date == nowDateTime.Date && x.ShowCountForDay >= x.ShowEveryCountDays_PopUp)
-                                    {
-                                        isAlreadyExceedQuota = true;
-                                    }
-                                }
-                            }
-                            catch (Exception ne)
-                            {
-                                Debug.WriteLine("Error in GetActivePopupItems in Table : {0}", ne.Message);
-                            }
-                            return (!isAlreadyExceedQuota);
-                        });
-                        if (matchItemList != null && matchItemList.Count > 0)
-                        {
-                            List<WhatsNewModel> itemList = new List<WhatsNewModel>();
-                            WhatsNewModel rewardModel;
-                            foreach (var item in matchItemList)
-                            {
-                                rewardModel = new WhatsNewModel
-                                {
-                                    CategoryID = item.CategoryID,
-                                    CategoryName = item.CategoryName,
-                                    ID = item.ID,
-                                    Title = item.Title,
-                                    TitleOnListing = item.TitleOnListing,
-                                    Description = item.Description,
-                                    Image = item.Image,
-                                    StartDate = item.StartDate,
-                                    EndDate = item.EndDate,
-                                    PublishDate = item.PublishDate,
-                                    IsRead = item.IsRead,
-                                    Image_DetailsView = item.Image_DetailsView,
-                                    Styles_DetailsView = item.Styles_DetailsView,
-                                    PortraitImage_PopUp = item.PortraitImage_PopUp,
-                                    ShowEveryCountDays_PopUp = item.ShowEveryCountDays_PopUp,
-                                    ShowForTotalCountDays_PopUp = item.ShowForTotalCountDays_PopUp,
-                                    ShowAtAppLaunchPopUp = item.ShowAtAppLaunchPopUp,
-                                    PopUp_Text_Only = item.PopUp_Text_Only,
-                                    PopUp_HeaderImage = item.PopUp_HeaderImage,
-                                    PopUp_Text_Content = item.PopUp_Text_Content,
-                                    Donot_Show_In_WhatsNew = item.Donot_Show_In_WhatsNew,
-                                    Disable_DoNotShow_Checkbox = item.Disable_DoNotShow_Checkbox,
-                                    ShowDateForDay = item.ShowDateForDay,
-                                    ShowCountForDay = item.ShowCountForDay,
-                                };
-                                itemList.Add(rewardModel);
-                            }
-
-                            return itemList;
-                        }
-                        return new List<WhatsNewModel>();
+                        maintenance.ShowDateForDay = WhatsNewServices.GetWhatNewModelShowDate(maintenance.ID);
+                        maintenance.ShowCountForDay = WhatsNewServices.GetWhatNewModelShowCount(maintenance.ID);
+                        maintenance.SkipShowOnAppLaunch = WhatsNewServices.GetIsSkipAppLaunch(maintenance.ID);
                     }
+                    catch (Exception ne)
+                    {
+                        Debug.WriteLine("Error in GetActivePopupItems in Table : {0}", ne.Message);
+                    }
+
+                    if (startResult >= 0
+                        && endResult <= 0
+                        && maintenance.ShowAtAppLaunchPopUp
+                        && !maintenance.SkipShowOnAppLaunch
+                        && (maintenance.ShowEveryCountDays_PopUp == -1 || maintenance.ShowCountForDay < maintenance.ShowEveryCountDays_PopUp))
+                    {
+                        showMaintenance = true;
+                    }
+                }
+                if (showMaintenance)
+                {
+                    return new List<WhatsNewModel> { maintenance };
+                }
+
+                if (!DataManager.DataManager.SharedInstance.IsBcrmAvailable)
+                {
                     return new List<WhatsNewModel>();
+                }
+
+                List<WhatsNewEntity> marketingList = entityItems.FindAll(x => !x.Donot_Show_In_WhatsNew)
+                    .OrderByDescending(x => DateTime.ParseExact(x.PublishDate, "yyyyMMddTHHmmss"
+                    , CultureInfo.InvariantCulture, DateTimeStyles.None)).ToList();
+                bool showMarketing = false;
+                WhatsNewEntity marketing = new WhatsNewEntity();
+                if (marketingList != null && marketingList.Count > 0)
+                {
+                    marketing = marketingList.First();
+
+                    int startResult = -1;
+                    int endResult = 1;
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(marketing.StartDate) && !string.IsNullOrEmpty(marketing.EndDate))
+                        {
+                            DateTime startDateTime = DateTime.ParseExact(marketing.StartDate, "yyyyMMddTHHmmss",
+                            CultureInfo.InvariantCulture, DateTimeStyles.None);
+                            DateTime stopDateTime = DateTime.ParseExact(marketing.EndDate, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+                            DateTime nowDateTime = DateTime.Now;
+                            startResult = DateTime.Compare(nowDateTime, startDateTime);
+                            endResult = DateTime.Compare(nowDateTime, stopDateTime);
+                        }
+
+                        marketing.ShowDateForDay = WhatsNewServices.GetWhatNewModelShowDate(marketing.ID);
+                        marketing.ShowCountForDay = WhatsNewServices.GetWhatNewModelShowCount(marketing.ID);
+                        marketing.SkipShowOnAppLaunch = WhatsNewServices.GetIsSkipAppLaunch(marketing.ID);
+                    }
+                    catch (Exception ne)
+                    {
+                        Debug.WriteLine("Error in GetActivePopupItems in Table : {0}", ne.Message);
+                    }
+
+                    if (startResult >= 0
+                        && endResult <= 0
+                        && marketing.ShowAtAppLaunchPopUp
+                        && !marketing.SkipShowOnAppLaunch
+                        && (marketing.ShowEveryCountDays_PopUp == -1 || marketing.ShowCountForDay < marketing.ShowEveryCountDays_PopUp))
+                    {
+                        showMarketing = true;
+                    }
+                }
+                if (showMarketing)
+                {
+                    return new List<WhatsNewModel> { marketing };
                 }
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+                Debug.WriteLine("Error in GetActivePopupItems: " + e.Message);
             }
             return new List<WhatsNewModel>();
         }
