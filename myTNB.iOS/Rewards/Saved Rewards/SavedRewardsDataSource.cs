@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 using Foundation;
-using myTNB.Home.Components;
 using myTNB.SitecoreCMS.Model;
 using UIKit;
 
@@ -19,7 +20,8 @@ namespace myTNB
             Func<string, string> getI18NValue)
         {
             _controller = controller;
-            _savedRewardsList = savedRewardsList;
+            _savedRewardsList = savedRewardsList.OrderByDescending(x => DateTime.ParseExact(x.StartDate, "yyyyMMddTHHmmss"
+                   , CultureInfo.InvariantCulture, DateTimeStyles.None)).ToList();
             GetI18NValue = getI18NValue;
         }
 
