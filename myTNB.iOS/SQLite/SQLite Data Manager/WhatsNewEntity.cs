@@ -192,7 +192,7 @@ namespace myTNB.SQLite.SQLiteDataManager
             try
             {
                 List<WhatsNewEntity> entityItems = GetAllEntityItems();
-                List<WhatsNewEntity> maintenanceList = entityItems.FindAll(x => x.Donot_Show_In_WhatsNew)
+                List<WhatsNewEntity> maintenanceList = entityItems.FindAll(x => x.Donot_Show_In_WhatsNew && x.ShowAtAppLaunchPopUp)
                         .OrderByDescending(x => DateTime.ParseExact(x.PublishDate, "yyyyMMddTHHmmss"
                         , CultureInfo.InvariantCulture, DateTimeStyles.None)).ToList();
                 bool showMaintenance = false;
@@ -243,7 +243,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                     return new List<WhatsNewModel>();
                 }
 
-                List<WhatsNewEntity> marketingList = entityItems.FindAll(x => !x.Donot_Show_In_WhatsNew)
+                List<WhatsNewEntity> marketingList = entityItems.FindAll(x => !x.Donot_Show_In_WhatsNew && x.ShowAtAppLaunchPopUp)
                     .OrderByDescending(x => DateTime.ParseExact(x.PublishDate, "yyyyMMddTHHmmss"
                     , CultureInfo.InvariantCulture, DateTimeStyles.None)).ToList();
                 bool showMarketing = false;
