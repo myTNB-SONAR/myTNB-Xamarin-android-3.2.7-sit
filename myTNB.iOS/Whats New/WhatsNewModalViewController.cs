@@ -69,9 +69,11 @@ namespace myTNB
                 return value;
             };
 
-            var whatsNewDataSource = new WhatsNewModalDataSource(View, WhatsNews);
-            whatsNewDataSource.OnTapDetails = OnItemDetailsTapped;
-            whatsNewDataSource.OnTapExit = HandleSkip;
+            var whatsNewDataSource = new WhatsNewModalDataSource(WhatsNews)
+            {
+                OnTapDetails = OnItemDetailsTapped,
+                OnTapExit = HandleSkip
+            };
             whatsNewCarousel.DataSource = whatsNewDataSource;
             View.AddSubview(whatsNewCarousel);
 
