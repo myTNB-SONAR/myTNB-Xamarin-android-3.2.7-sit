@@ -1935,7 +1935,25 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                                 if (!FilteredItem.SkipShowOnAppLaunch)
                                 {
-                                    FilteredMaintenancePopupItems.Add(FilteredItem);
+                                    if (FilteredItem.ShowEveryCountDays_PopUp < 0)
+                                    {
+                                        FilteredMaintenancePopupItems.Add(FilteredItem);
+                                    }
+                                    else if (!string.IsNullOrEmpty(FilteredItem.ShowDateForDay) && FilteredItem.ShowEveryCountDays_PopUp > 0)
+                                    {
+                                        DateTime nowDateTime = DateTime.Now;
+                                        DateTime showDateTime = DateTime.ParseExact(FilteredItem.ShowDateForDay, "yyyyMMddTHHmmss",
+                                        CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                                        if ((showDateTime.Date == nowDateTime.Date && FilteredItem.ShowCountForDay >= FilteredItem.ShowEveryCountDays_PopUp))
+                                        {
+                                            
+                                        }
+                                        else
+                                        {
+                                            FilteredMaintenancePopupItems.Add(FilteredItem);
+                                        }
+                                    }
                                 }
 
                                 if (FilteredMaintenancePopupItems != null && FilteredMaintenancePopupItems.Count > 0)
@@ -2032,7 +2050,25 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                                 if (!FilteredItem.SkipShowOnAppLaunch)
                                 {
-                                    FilteredPopupItems.Add(FilteredItem);
+                                    if (FilteredItem.ShowEveryCountDays_PopUp < 0)
+                                    {
+                                        FilteredPopupItems.Add(FilteredItem);
+                                    }
+                                    else if (!string.IsNullOrEmpty(FilteredItem.ShowDateForDay) && FilteredItem.ShowEveryCountDays_PopUp > 0)
+                                    {
+                                        DateTime nowDateTime = DateTime.Now;
+                                        DateTime showDateTime = DateTime.ParseExact(FilteredItem.ShowDateForDay, "yyyyMMddTHHmmss",
+                                        CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                                        if ((showDateTime.Date == nowDateTime.Date && FilteredItem.ShowCountForDay >= FilteredItem.ShowEveryCountDays_PopUp))
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            FilteredPopupItems.Add(FilteredItem);
+                                        }
+                                    }
                                 }
 
                                 if (FilteredPopupItems != null && FilteredPopupItems.Count > 0)

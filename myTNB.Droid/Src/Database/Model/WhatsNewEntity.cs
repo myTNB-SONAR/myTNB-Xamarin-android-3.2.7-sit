@@ -297,40 +297,7 @@ namespace myTNB_Android.Src.Database.Model
 
                     if (matchList != null && matchList.Count > 0)
                     {
-                        List<WhatsNewEntity> matchItemList = matchList.FindAll(x =>
-                        {
-                            bool isAlreadyExceedQuota = false;
-                            try
-                            {
-                                if (x.ShowEveryCountDays_PopUp == 0)
-                                {
-                                    isAlreadyExceedQuota = true;
-                                }
-                                else if (!string.IsNullOrEmpty(x.ShowDateForDay) && x.ShowEveryCountDays_PopUp > 0)
-                                {
-                                    DateTime nowDateTime = DateTime.Now;
-                                    DateTime showDateTime = DateTime.ParseExact(x.ShowDateForDay, "yyyyMMddTHHmmss",
-                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
-
-                                    if (showDateTime.Date == nowDateTime.Date && x.ShowCountForDay >= x.ShowEveryCountDays_PopUp)
-                                    {
-                                        isAlreadyExceedQuota = true;
-                                    }
-                                }
-                            }
-                            catch (Exception ne)
-                            {
-                                Utility.LoggingNonFatalError(ne);
-                            }
-                            return (!isAlreadyExceedQuota);
-                        });
-
-                        if (matchItemList != null && matchItemList.Count > 0)
-                        {
-                            return matchItemList;
-                        }
-
-                        return new List<WhatsNewEntity>();
+                        return matchList;
                     }
 
                     return new List<WhatsNewEntity>();
