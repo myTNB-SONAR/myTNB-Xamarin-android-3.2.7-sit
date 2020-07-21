@@ -378,6 +378,16 @@ namespace myTNB_Android.Src.Database.Model
 
                     if (matchList != null && matchList.Count > 0)
                     {
+                        try
+                        {
+                            matchList.Sort((x, y) => DateTime.Compare(DateTime.ParseExact(y.PublishDate, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None), DateTime.ParseExact(x.PublishDate, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None)));
+                        }
+                        catch (Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
                         return matchList;
                     }
 
@@ -426,6 +436,16 @@ namespace myTNB_Android.Src.Database.Model
 
                     if (matchList != null && matchList.Count > 0)
                     {
+                        try
+                        {
+                            matchList.Sort((x, y) => DateTime.Compare(DateTime.ParseExact(y.PublishDate, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None), DateTime.ParseExact(x.PublishDate, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None)));
+                        }
+                        catch (Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
                         return matchList;
                     }
 
