@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/mainView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+
+        <TextView
+            android:id="@+id/txtstep1of2"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:ellipsize="end"
+            android:gravity="top|center"
+            android:paddingTop="4dp"
+            android:maxEms="20"
+            android:maxLines="1"
+            android:text="Step 1 of 2"
+            android:textColor="@color/white"
+            android:textSize="12dp" />
+        <!-- android:padding="3dp"
+             android:drawablePadding="3dp"
+             android:layout_marginBottom="10dp"
+             android:textAppearance="?android:attr/textAppearanceMedium"
+                -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/lightGrey">
+            <!--android:layout_marginTop="?actionBarSize"-->
+            <!--    android:id="@+id/rootview"-->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="?actionBarSize"
+                android:fillViewport="false"
+                android:overScrollMode="never">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp">
+                    <!--                   android:paddingEnd="18dp"
+                               android:paddingStart="18dp"-->
+                    <TextView
+                        android:id="@+id/IwantToEnquire"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="1"
+                        android:text="@string/GeneralEnquiry1of2_iwanttoenquire"
+                        android:textAllCaps="false"
+                        android:textColor="@color/powerBlue"
+                        android:textSize="16sp" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:background="@color/white">
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/txtInputLayoutGeneralEnquiry1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginRight="16dp"
+                            app:counterEnabled="false"
+                            app:counterMaxLength="250"
+                            app:errorEnabled="true"
+                            app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+                            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                            <EditText
+                                android:id="@+id/txtGeneralEnquiry1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/GeneralEnquiry1of2_urmessage"
+                                android:importantForAutofill="noExcludeDescendants"
+                                android:inputType="text|textMultiLine"
+                                android:maxLength="250"
+                                android:maxLines="5"
+                                android:overScrollMode="always"
+                                android:paddingTop="5dp"
+                                android:scrollbarStyle="insideInset"
+                                android:scrollbars="vertical"
+                                android:textSize="16dp" />
+                        </android.support.design.widget.TextInputLayout>
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/uploadSupportingDoc"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_weight="1"
+                        android:text="@string/GeneralEnquiry1of2_uploadSupporting"
+                        android:textAllCaps="false"
+                        android:textColor="@color/powerBlue"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtRelatedScreenshotTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_weight="1"
+                            android:text="Attach photo / screenshot (optional)"
+                            android:textAllCaps="false"
+                            android:textSize="14sp" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="4dp" />
+
+                        <TextView
+                            android:id="@+id/txtMaxImageContent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:text="@string/GeneralEnquiry1of2_uploadSupporting_img_sub"
+                            android:textSize="9dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btnNext"
+                    style="@style/DarkButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/GeneralEnquiry1of2_next"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

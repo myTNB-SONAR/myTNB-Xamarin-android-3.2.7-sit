@@ -226,6 +226,18 @@ namespace myTNB_Android.Src.Base.Activity
             }
         }
 
+        public ISpanned GetFormattedTextNoExtraSpacing(string stringValue)
+        {
+            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                return Html.FromHtml(stringValue, FromHtmlOptions.ModeCompact);
+            }
+            else
+            {
+                return Html.FromHtml(stringValue);
+            }
+        }
+
         public void ShowGenericSnackbarException()
         {
             //if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)

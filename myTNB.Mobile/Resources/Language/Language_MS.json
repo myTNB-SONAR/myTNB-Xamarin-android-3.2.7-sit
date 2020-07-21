@@ -158,7 +158,9 @@
     "usedRewardMsg": "Tidak mengapa, kami mempunyai lebih banyak ganjaran untuk anda meneroka!",
     "paymentCCErrorTitle": "Maaf, kami tidak boleh mendapatkan maklumat kad anda sekarang.",
     "paymentCCErrorMsg": "Maaf, kami tidak boleh mendapatkan maklumat kad anda sekarang. Anda masih boleh bayar menggunakan kad lain atau perbankan dalam talian melalui FPX.",
-    "profileCCErrorMsg": "Jika anda di sini untuk menguruskan kad anda, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula kemudian."
+    "profileCCErrorMsg": "Jika anda di sini untuk menguruskan kad anda, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula kemudian.",
+    "noMeterAccessErrorTitle": "Maaf, anda mungkin tidak boleh mengakses perkhidmatan ini.",
+    "noMeterAccessErrorMessage": "Anda perlu mempunyai meter yang boleh diakses supaya bacaan meter boleh dilakukan. Sila cuba lagi apabila anda mempunyai akses kepada meter anda."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -277,7 +279,11 @@
     "noHistoryData": "Nampaknya anda tiada rekod bacaan meter buat masa ini.",
     "tutorialHeaderTitle": "Status bacaan anda sepintas lalu.",
     "tutorialHeaderDesc": "Lihat akaun lain dan dapatkan gambaran keseluruhan status bacaan anda di sini.",
-    "tutorialGotIt": "OK!"
+    "tutorialGotIt": "OK!",
+    "whereIsMyMeter": "Di manakah boleh saya mencari meter saya?",
+    "whereIsMyMeterTitle": "Di manakah boleh saya mencari meter saya?",
+    "whereIsMyMeterMessage": "Untuk menghantar bacaan meter bulanan, nilai pada skin paparan meter anda haruslah boleh dibaca dengan jelas. Meter anda kebiasaannya terletak berhampiran pintu atau bangunan meter (bilik riser).",
+    "doYouHaveMeterAccess":"Adakah anda mempunyai akses ke meter?"
   },
   "SSMRReadingHistory_selector": {
     "SMREligibiltyPopUpDetails": [

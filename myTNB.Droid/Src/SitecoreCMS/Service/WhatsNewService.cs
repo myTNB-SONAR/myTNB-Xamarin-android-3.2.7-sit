@@ -134,11 +134,11 @@ namespace myTNB.SitecoreCMS.Services
 
 					try
                     {
-						newItem.ShowEveryCountDays_PopUp = !string.IsNullOrEmpty(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowEveryCountDays_PopUp)) ? int.Parse(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowEveryCountDays_PopUp)) : 0;
+						newItem.ShowEveryCountDays_PopUp = !string.IsNullOrEmpty(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowEveryCountDays_PopUp)) ? int.Parse(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowEveryCountDays_PopUp)) : -1;
 					}
 					catch (Exception ex)
 					{
-						newItem.ShowEveryCountDays_PopUp = 0;
+						newItem.ShowEveryCountDays_PopUp = -1;
 					}
 					try
 					{

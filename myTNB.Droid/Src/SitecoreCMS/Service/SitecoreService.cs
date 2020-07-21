@@ -10,25 +10,31 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace myTNB.SitecoreCMS.Services
 {
     public class SitecoreService
     {
+        private readonly TimeSpan timeSpan = TimeSpan.FromMilliseconds(5000);
+
         public async Task<ScItemsResponse> GetItemByPath(string itemPath, PayloadType itemLoadType, List<ScopeType> itemScopeTypes, string websiteUrl = null, string itemLanguage = "en")
         {
             try
             {
                 using (var session = await GetSession(websiteUrl))
                 {
+                    CancellationTokenSource source = new CancellationTokenSource();
+                    source.CancelAfter(timeSpan);
+
                     IReadItemsByPathRequest request = ItemWebApiRequestBuilder.ReadItemsRequestWithPath(itemPath)
                         .Payload(itemLoadType)
                         .AddScope(itemScopeTypes)
                         .Language(itemLanguage)
                         .Build();
 
-                    return await session.ReadItemAsync(request);
+                    return await session.ReadItemAsync(request, source.Token);
                 }
             }
             catch (SitecoreMobileSdkException ex)
@@ -47,13 +53,16 @@ namespace myTNB.SitecoreCMS.Services
             {
                 using (var session = await GetSession(websiteUrl))
                 {
+                    CancellationTokenSource source = new CancellationTokenSource();
+                    source.CancelAfter(timeSpan);
+
                     IReadItemsByIdRequest request = ItemWebApiRequestBuilder.ReadItemsRequestWithId(itemId)
                         .Payload(itemLoadType)
                         .AddScope(itemScopeTypes)
                         .Language(itemLanguage)
                         .Build();
 
-                    return await session.ReadItemAsync(request);
+                    return await session.ReadItemAsync(request, source.Token);
                 }
             }
             catch (SitecoreMobileSdkException ex)
@@ -74,13 +83,16 @@ namespace myTNB.SitecoreCMS.Services
 
                 using (var session = await SitecoreSession)
                 {
+                    CancellationTokenSource source = new CancellationTokenSource();
+                    source.CancelAfter(timeSpan);
+
                     IMediaResourceDownloadRequest request = ItemWebApiRequestBuilder.DownloadResourceRequestWithMediaPath(mediaUrl)
                         .Language("en")
                         .Build();
 
                     byte[] data = null;
 
-                    using (Stream response = await session.DownloadMediaResourceAsync(request))
+                    using (Stream response = await session.DownloadMediaResourceAsync(request, source.Token))
 
                     using (MemoryStream responseInMemory = new MemoryStream())
                     {
@@ -161,10 +173,10 @@ namespace myTNB.SitecoreCMS.Services
         {
             if (String.IsNullOrEmpty(websiteUrl) || (!String.IsNullOrEmpty(websiteUrl) && !(Uri.IsWellFormedUriString(websiteUrl, UriKind.Absolute))))
             {
-#if DEBUG || DEVELOP || SIT
+#if DEBUG || DEVELOP || STUB
                 websiteUrl = "http://tnbcsdevapp.tnb.my/";
-#elif STUB
-                websiteUrl = "http://TNBCSSTGAPP.tnb.my/";
+#elif SIT
+                websiteUrl = "http://tnbcsstgapp.tnb.my/";
 #else
                 websiteUrl = "https://sitecore.tnb.com.my/";
 #endif
