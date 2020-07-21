@@ -81,7 +81,6 @@
                             app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                             android:id="@+id/txtInputLayoutSearchBy"
                             app:errorEnabled="true"
-                            android:layout_marginTop="10dp"
                             android:layout_marginRight="17dp">
                             <EditText
                                 android:hint="Search by"
@@ -104,7 +103,6 @@
                             app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                             android:id="@+id/txtInputLayoutServiceRequestNum"
                             app:errorEnabled="true"
-                            android:layout_marginTop="10dp"
                             android:layout_marginRight="17dp">
                             <EditText
                                 android:hint="Service Request Number"

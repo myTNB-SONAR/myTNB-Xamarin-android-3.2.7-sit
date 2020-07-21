@@ -77,9 +77,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         [BindView(Resource.Id.btnSearchApplicationStatus)]
         Button btnSearchApplicationStatus;
 
-        [BindView(Resource.Id.btnEmptySearchApplicationStatus)]
-        Button btnEmptySearchApplicationStatus;
-
         [BindView(Resource.Id.applicationStatusLandingNestedScrollView)]
         NestedScrollView applicationStatusLandingNestedScrollView;
 
@@ -187,7 +184,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             mPresenter = new ApplicationStatusLandingPresenter(this);
 
             TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusLandingEmpty);
-            TextViewUtils.SetMuseoSans500Typeface(btnSearchApplicationStatus, txtApplicationStatusLandingTitle, viewMoreLabel, btnEmptySearchApplicationStatus);
+            TextViewUtils.SetMuseoSans500Typeface(btnSearchApplicationStatus, txtApplicationStatusLandingTitle, viewMoreLabel);
 
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             applicationStatusLandingRecyclerView.SetLayoutManager(layoutManager);

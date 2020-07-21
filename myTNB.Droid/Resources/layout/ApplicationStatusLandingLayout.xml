@@ -91,15 +91,6 @@
                             android:text="Looks like you have no applications at the moment."
                             android:textSize="14dp"
                             android:lineSpacingExtra="3dp"/>
-                        <Button
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Search Application Status"
-                            android:id="@+id/btnEmptySearchApplicationStatus"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
-                            android:layout_marginBottom="32dp"
-                            style="@style/Theme.ApplicationStatusLandingButton" />
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/applicationStatusLandingShimmerLayout"
@@ -286,15 +277,6 @@
                             android:text="Looks like you have no applications at the moment."
                             android:textSize="14dp"
                             android:lineSpacingExtra="3dp"/>
-                        <Button
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Search Application Status"
-                            android:id="@+id/btnEmptySearchProjectStatus"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
-                            android:layout_marginBottom="32dp"
-                            style="@style/Theme.ApplicationStatusLandingButton" />
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/projectStatusLandingShimmerLayout"

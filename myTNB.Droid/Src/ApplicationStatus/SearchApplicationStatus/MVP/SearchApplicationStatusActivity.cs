@@ -226,7 +226,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             resultSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>(extra.GetString(Constants.APPLICATION_STATUS_SEARCH_BY_LIST_KEY));
                             SearchByModel selectedType = resultSearchByList.Find(x => x.isChecked);
                             targetSearchBy = selectedType.Code;
-                            txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
+                            txtSearchBy.Text = selectedType.Title;
+                            txtInputLayoutServiceRequestNum.Visibility = ViewStates.Visible;
                             txtInputLayoutServiceRequestNum.Hint = selectedType.Title;
                         }
                     }
