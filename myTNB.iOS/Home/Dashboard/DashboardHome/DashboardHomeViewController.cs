@@ -319,6 +319,10 @@ namespace myTNB
                     }
                 });
             }
+            else
+            {
+                OnDisplayBCRMPopup();
+            }
         }
 
         public void OnTapHomePopUp(WhatsNewModel whatnew)
