@@ -251,6 +251,7 @@ namespace myTNB_Android.Src.Base
                 EPPTooltipDataList.ForEach(data =>
                 {
                     tooltipModel = new EPPTooltipResponse();
+                    tooltipModel.Title = data.Title;
                     tooltipModel.PopUpTitle = data.PopUpTitle;
                     tooltipModel.PopUpBody = data.PopUpBody;
                     tooltipModel.ImageBitmap = Base64ToBitmap(data.ImageBase64);
