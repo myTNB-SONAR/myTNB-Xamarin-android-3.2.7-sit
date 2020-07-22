@@ -111,21 +111,23 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
 
 
                 //
-                CustomerBillingAccount selectedAcc;
+              //  CustomerBillingAccount selectedAcc;
 
-                if (CustomerBillingAccount.HasItems())
-                {
-                    List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-                    selectedAcc = accountList.Find(x => x.AccNum.Contains(caNumber));
+                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(caNumber);
 
-                }
+                //if (CustomerBillingAccount.HasItems())
+                //{
+                //    List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+                //    selectedAcc = accountList.Find(x => x.AccNum.Contains(caNumber));
+
+                //}
 
 
 
 
 
                 string data = Utility.GetLocalizedLabel("SubmitEnquiry", "tncAgree");
-                string temp = string.Format(data, reqEmail, caNumber, "940519106638");
+                string temp = string.Format(data, reqEmail, caNumber, customerBillingAccount.OwnerName);
 
                 TextView_tnc_data.TextFormatted = GetFormattedText(temp);
 

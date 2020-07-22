@@ -227,6 +227,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                        
                         this.mView.DisableSubmitButton();
                     }
+
                 }
 
                 // check checkBox 

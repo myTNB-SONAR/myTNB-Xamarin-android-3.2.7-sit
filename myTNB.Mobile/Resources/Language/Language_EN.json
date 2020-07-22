@@ -1049,7 +1049,8 @@
     "tncAgree":"I confirm that I <b>{0}</b> the owner/authorized person, have the consent and permission to view and update the account information for <b>{1}</b> from <b>{2}</b>. <br></br><br></br> Please be informed that this application is for the privilege use between TNB and its account holder and any other person with the consent of the account holder. TNB shall not be held liable for any improper use and incorrect use of the information described and contained herein and under no obligation to check the authenticity of such consent and permission given. Upon submitting, you are deemed to have read, understood and agreed to the disclaimer as displayed.",
     "tnc":"Terms & Conditions",
     "personalDisclamer" : "Update Personal Data Disclamer",
-    "tnbTermUse":"TNB’s Terms of Use"
+    "tnbTermUse":"TNB’s Terms of Use",
+    "name":"Name"
     }
 
 

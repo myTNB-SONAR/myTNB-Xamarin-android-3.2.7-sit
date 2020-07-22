@@ -129,7 +129,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 //1 set presenter
                 mPresenter = new FeedbackGeneralEnquiryStepTwoPresenter(this);
 
-                //Intent intent = Intent;
+         
               
 
                 Bundle extras = Intent.Extras;

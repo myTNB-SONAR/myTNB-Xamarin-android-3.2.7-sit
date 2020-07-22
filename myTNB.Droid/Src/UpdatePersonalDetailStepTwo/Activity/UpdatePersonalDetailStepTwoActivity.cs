@@ -885,30 +885,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
         public void ShowinfoLabelCopyOfIdentification()
         {
 
-            //List<HowDoesCopyofIdentificationResponseModel> modelList = MyTNBAppToolTipData.GetHowDoesCopyofIdentificationToolTipData();
-
-            //if (modelList != null && modelList.Count > 0)
-            //{
-            //    MyTNBAppToolTipBuilder Tooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-            //        .SetHeaderImageBitmap(modelList[0].ImageBitmap)
-            //        .SetTitle(modelList[0].PopUpTitle)
-            //        .SetMessage(modelList[0].PopUpBody)
-            //        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-            //        .SetCTAaction(() => { this.SetIsClicked(false); })
-            //        .Build();
-            //        Tooltip.Show();
-            //}
-            //else
-            //{
-            //    //fallback if sitecore cannot select data
-            //    MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-            //   .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "copyICTitle"))
-            //   .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "copyIcDet"))
-            //   .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-            //   .SetCTAaction(() => { this.SetIsClicked(false); })
-            //   .Build();
-            //    infoLabelWhoIsRegistered.Show();
-            //}
+   
             var url = Utility.GetLocalizedLabel("SubmitEnquiry", "imageCopyIC");
             
             Bitmap imageCache = ImageUtils.GetImageBitmapFromUrl(SiteCoreConfig.SITECORE_URL+ url);

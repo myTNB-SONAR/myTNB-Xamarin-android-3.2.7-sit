@@ -1050,7 +1050,8 @@
       "tncAgree":"Saya mengesahkan bahawa saya <b>{0}</b> pemilik / orang yang diberi kuasa, mempunyai persetujuan dan kebenaran untuk melihat dan mengemas kini maklumat akaun untuk <b>{1}</b> dari <b>{2}</b>.<br></br><br></br> Dimaklumkan bahawa aplikasi ini adalah untuk keistimewaan penggunaan antara TNB dan pemegang akaunnya dan orang lain dengan persetujuan pemegang akaun. TNB tidak akan bertanggungjawab atas penggunaan yang tidak betul dan penggunaan maklumat yang dijelaskan dan terkandung di dalam ini dan tidak berkewajipan untuk memeriksa kesahihan persetujuan dan kebenaran yang diberikan. Setelah mengesahkan, anda dianggap telah membaca, memahami dan menyetujui penafian seperti yang ditunjukkan.",
       "tnc":"Terma dan Syarat",
       "personalDisclamer": "Kemas kini Penafian Data Peribadi",
-      "tnbTermUse":"Terma dan Syarat TNB"
+      "tnbTermUse":"Terma dan Syarat TNB",
+      "name":"Nama"
     }
      
 }

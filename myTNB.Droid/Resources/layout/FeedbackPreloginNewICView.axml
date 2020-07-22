@@ -46,6 +46,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:errorEnabled="true"
+                        android:layout_marginTop="8dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginLeft="16dp"
                         app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
@@ -72,7 +73,7 @@
                         android:background="@drawable/selector_pressable"
                         android:scaleType="centerCrop"
                         android:layout_marginRight="60dp"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="16dp" />
                 </FrameLayout>
                 <FrameLayout
                     android:id="@+id/accountLayout3"

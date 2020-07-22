@@ -314,7 +314,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 {
                     TextInputLayoutname.Visibility = ViewStates.Visible;
                     EditTextName.Text = name;
-                    TextInputLayoutname.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHint").ToUpper();
+                    TextInputLayoutname.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "name").ToUpper();
                 }
 
                 if (!email.IsNullOrEmpty() && isNewScreen)
@@ -409,9 +409,21 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
                     if (item.FeedbackUpdInfoType == 1 && isNewScreen)
                     {
+
+                        string icNo = item.FeedbackUpdInfoValue;
+                        if (!string.IsNullOrEmpty(icNo) && icNo.Length > 4)
+                        {
+                            string lastDigit = icNo.Substring(icNo.Length - 4);
+                            icNo = "******-**-" + lastDigit;
+                        }
+                        string maskedICNo = icNo;
+
                         TextInputLayoutNewIC.Visibility = ViewStates.Visible;
-                        EditTextNewIC.Text = item.FeedbackUpdInfoValue;
+                        EditTextNewIC.Text = maskedICNo;
                         TextInputLayoutNewIC.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "newIC").ToUpper();
+
+                 
+                     
 
                     }
 

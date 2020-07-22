@@ -95,11 +95,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         private AlertDialog _ChooseDialog;
 
         LinearLayoutManager layoutManager;
-          FeedbackGeneralEnquiryStepOneImageRecyclerAdapter adapter;
+        FeedbackGeneralEnquiryStepOneImageRecyclerAdapter adapter;
 
-        // FeedbackLoginBillRelatedImageRecyclerAdapter adapter;
-
-        // GridLayoutManager layoutManager;
 
 
         private string accNo = null;
@@ -152,7 +149,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 // set font
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
                 TextViewUtils.SetMuseoSans300Typeface(txtRelatedScreenshotTitle, txtMaxImageContent);
-               // , txtRelatedScreenshotTitle, txtMaxImageContent
+        
                 TextViewUtils.SetMuseoSans500Typeface(txtstep1of2, IwantToEnquire, uploadSupportingDoc);
 
 
