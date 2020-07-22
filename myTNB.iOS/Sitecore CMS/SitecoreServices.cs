@@ -34,6 +34,12 @@ namespace myTNB.SitecoreCMS
                 , LoadBillDetailsTooltip()
                 //, LoadSSMRWalkthrough()
                 , LoadEppInfoTooltip() //Created by Syahmi ICS 05052020
+
+                //, LoadWhereAccountInfoTooltip() //Tooltip for where O
+                //, LoadRegisteredInfoTooltip()
+                //, LoadOwnerConsentInfoTooltip()
+                //, LoadIdentificationInfoTooltip()
+                //, LoadProofConsentInfoTooltip()
              };
             if (_isForcedUpdate)
             {

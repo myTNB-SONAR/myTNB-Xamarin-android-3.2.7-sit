@@ -28,13 +28,17 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
-            PageName = FeedbackConstants.Pagename_FeedbackList;
+            //PageName = FeedbackConstants.Pagename_FeedbackList;
+            PageName = "SubmitEnquiry";
+
             base.ViewDidLoad();
             if (isFromPreLogin == true)
             {
                 feedbackTableView.Frame = new CGRect(0, 0, View.Frame.Width, View.Frame.Height - (114 - 64));
                 AddBackButton();
-                Title = GetI18NValue(FeedbackConstants.I18N_Title);
+                //Title = GetI18NValue(FeedbackConstants.I18N_Title);
+                Title = GetI18NValue("enquireTitle");
+
             }
             else
             {
@@ -48,7 +52,9 @@ namespace myTNB
         {
             Debug.WriteLine("DEBUG >>> FEEDBACK LanguageDidChange");
             base.LanguageDidChange(notification);
-            _titleBarComponent?.SetTitle(GetI18NValue(FeedbackConstants.I18N_Title));
+            //_titleBarComponent?.SetTitle(GetI18NValue(FeedbackConstants.I18N_Title));
+            _titleBarComponent?.SetTitle(GetI18NValue("enquireTitle"));
+
         }
 
         public override void ViewWillAppear(bool animated)
@@ -130,7 +136,8 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             _titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = _titleBarComponent.GetUI();
-            _titleBarComponent.SetTitle(GetI18NValue(FeedbackConstants.I18N_Title));
+            //_titleBarComponent.SetTitle(GetI18NValue(FeedbackConstants.I18N_Title));
+            _titleBarComponent.SetTitle(GetI18NValue("enquiryTitle"));
             _titleBarComponent.SetPrimaryVisibility(true);
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);

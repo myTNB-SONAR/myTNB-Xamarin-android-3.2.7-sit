@@ -123,6 +123,7 @@ namespace myTNB.DataManager
         public bool IsBcrmAvailable = true;
         public bool IsPaymentFPXAvailable = true;
         public bool IsPaymentCreditCardAvailable = true;
+        public bool IsFeedbackUpdateDetailDisabled = false;
 
         //Feedback
         public List<StatesForFeedbackDataModel> StatesForFeedBack = new List<StatesForFeedbackDataModel>();

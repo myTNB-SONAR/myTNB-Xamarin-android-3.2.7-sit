@@ -235,5 +235,38 @@
             </objects>
             <point key="canvasLocation" x="2414" y="1595"/>
         </scene>
+        <scene sceneID="4670">
+            <objects>
+                <navigationController id="4671" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="4673">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue id="5213" destination="5155" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4674" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1887" y="2434"/>
+        </scene>
+        <scene sceneID="5154">
+            <objects>
+                <viewController id="5155" sceneMemberID="viewController" customClass="EnquiryTNCViewController" storyboardIdentifier="EnquiryTNCViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="5152"/>
+                        <viewControllerLayoutGuide type="bottom" id="5153"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5156">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                    <navigationItem title="Title" id="5212" key="navigationItem"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5157" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2410" y="2437"/>
+        </scene>
     </scenes>
 </document>

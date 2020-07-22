@@ -1,13 +1,11 @@
 using CoreGraphics;
 using Foundation;
-using myTNB.Customs;
 using myTNB.Feedback;
 using myTNB.Home.Bill;
 using myTNB.Model;
 using myTNB.Registration;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UIKit;
 
 namespace myTNB
@@ -22,7 +20,7 @@ namespace myTNB
         private UILabel _lblAccountNoTitle, _lblAccountNoError;
         private UITextField _txtAccountNumber;
 
-        private CustomUIView _eppToolTipsView;
+        private CustomUIView _ToolTipsView;
         private UIScrollView _svContainer;
 
         public bool IsLoggedIn;
@@ -31,35 +29,43 @@ namespace myTNB
 
         //Cell General Enquiry
         public UIView Frame;
-        public UILabel lblTitle;         public UILabel lblSubtTitle;         public UIView viewLine;         public UILabel lblCount;         public UIImageView imgViewIcon;
+        public UILabel lblTitle;
+        public UILabel lblSubtTitle;
+        public UIView viewLine;
+        public UILabel lblCount;
+        public UIImageView imgViewIcon;
 
         //Cell Update Personal Detail
         public UIView Frame2;
-        public UILabel lblTitle2;         public UILabel lblSubtTitle2;         public UIView viewLine2;         public UILabel lblCount2;         public UIImageView imgViewIcon2;
-
-        private ValidateManualAccountLinkingResponseModel _validateManualAccountLinkingResponse
-        = new ValidateManualAccountLinkingResponseModel();
-        private string accontNumber;
-        private string storyboard;
-        private string viewcontroller;
+        public UILabel lblTitle2;
+        public UILabel lblSubtTitle2;
+        public UIView viewLine2;
+        public UILabel lblCount2;
+        public UIImageView imgViewIcon2;
 
         public override void ViewDidLoad()
         {
-            PageName = FeedbackConstants.Pagename_FeedbackList;
+            //PageName = FeedbackConstants.Pagename_FeedbackList;
+            PageName = EnquiryConstants.Pagename_Enquiry;
+
             base.ViewDidLoad();
 
             SetHeader();
+            //AddCustomNavBar();
             AddScrollView();
             ConstructAccountNumberSelector();
             AddSectionTitle();
             CellGeneralEnquiry();
             CellUpdatePersonalDetail();
             SetEvents();
+            SetVisibility();
         }
 
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
+
+            if (NavigationController != null) { NavigationController.SetNavigationBarHidden(false, true); }
 
             string accountNo = DataManager.DataManager.SharedInstance.AccountNumber;
             if (!string.IsNullOrEmpty(accountNo))
@@ -73,8 +79,17 @@ namespace myTNB
 
         }
 
+        public override void AddCustomNavBar(Action backAction = null)
+        {
+            base.AddCustomNavBar(backAction);
+
+            Title = GetI18NValue(EnquiryConstants.submitEnquiryTitle);
+        }
+
         private void SetHeader()
         {
+            if (NavigationController != null) { NavigationController.SetNavigationBarHidden(false, false); }
+
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
@@ -83,7 +98,7 @@ namespace myTNB
             NavigationItem.LeftBarButtonItem = btnBack;
 
             //Title = DataManager.DataManager.SharedInstance.FeedbackCategory?.Find(x => x?.FeedbackCategoryId == FeedbackID)?.FeedbackCategoryName;
-            Title = "Submit New Enquiry";
+            Title = GetI18NValue(EnquiryConstants.submitEnquiryTitle);
 
         }
 
@@ -106,7 +121,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "How we can help you?"
+                Text = GetI18NValue("enquiringTitle")
             };
 
             _viewTitleSection.AddSubview(lblSectionTitle);
@@ -129,7 +144,7 @@ namespace myTNB
             _lblAccountNoTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewAccountNo.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedString(GetCommonI18NValue(Constants.Common_AccountNo)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.accNumberHint)//GetCommonI18NValue(Constants.Common_AccountNo)
                 , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = false
@@ -154,7 +169,7 @@ namespace myTNB
             {
                 Font = MyTNBFont.MuseoSans16_300,
                 TextColor = MyTNBColor.TunaGrey(),
-                Placeholder = "Account Number",
+                Placeholder = GetI18NValue(EnquiryConstants.accNumberHint),
                 AttributedText = new NSAttributedString("",
                 font: MyTNBFont.MuseoSans16,
                 foregroundColor: MyTNBColor.SilverChalice,
@@ -212,16 +227,16 @@ namespace myTNB
             _svContainer.AddSubview(_accContainer);
 
             SetKeyboard(_txtAccountNumber);
-            _txtAccountNumber.KeyboardType = UIKeyboardType.NumberPad;
-            _textFieldHelper.CreateDoneButton(_txtAccountNumber);
         }
 
         private void SetKeyboard(UITextField textField)
         {
+            textField.KeyboardType = UIKeyboardType.NumberPad;
             textField.AutocorrectionType = UITextAutocorrectionType.No;
             textField.AutocapitalizationType = UITextAutocapitalizationType.None;
             textField.SpellCheckingType = UITextSpellCheckingType.No;
             textField.ReturnKeyType = UIReturnKeyType.Done;
+            _textFieldHelper.CreateDoneButton(textField);
         }
 
         public void SetSelectedAccountNumber()
@@ -283,7 +298,8 @@ namespace myTNB
 
         public CustomUIView GetTooltipView(nfloat yLoc)
         {
-            _eppToolTipsView = new CustomUIView(new CGRect(0, yLoc, View.Frame.Width, GetScaledHeight(24)))
+
+            _ToolTipsView = new CustomUIView(new CGRect(0, yLoc, View.Frame.Width, GetScaledHeight(24)))
             {
                 BackgroundColor = UIColor.White,
             };
@@ -297,56 +313,61 @@ namespace myTNB
                 Image = UIImage.FromBundle(BillConstants.IMG_InfoBlue)
             };
             UILabel lblDescription = new UILabel(new CGRect(GetScaledWidth(28)
-                , GetScaledHeight(4), _eppToolTipsView.Frame.Width - GetScaledWidth(44), GetScaledHeight(16)))
+                , GetScaledHeight(4), _ToolTipsView.Frame.Width - GetScaledWidth(44), GetScaledHeight(16)))
             {
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "Where is my account number?"
+                Text = GetI18NValue(EnquiryConstants.accNumberInfo)
 
             };
+            
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
-                DisplayCustomAlert("Where is my account number?"
-                    , "Your 12-digit account number can be found on the top left corner of your monthly paper bill."
+                var cimg = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imageWhereAcc));
+
+                DisplayCustomAlert(GetI18NValue(EnquiryConstants.accNumberInfo)
+                    , GetI18NValue(EnquiryConstants.accNumberDetails)
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
-                    , UIImage.FromBundle("Find_Account_Number"));
+                    , cimg);
             });
 
             viewInfo.Layer.CornerRadius = GetScaledHeight(12);
-            _eppToolTipsView.AddGestureRecognizer(tapInfo);
+            _ToolTipsView.AddGestureRecognizer(tapInfo);
             viewInfo.AddSubviews(new UIView[] { imgView, lblDescription });
-            _eppToolTipsView.AddSubview(viewInfo);
+            _ToolTipsView.AddSubview(viewInfo);
 
-            return _eppToolTipsView;
+            return _ToolTipsView;
         }
 
         public void CellGeneralEnquiry()
         {
-            nfloat cellWidth = View.Frame.Width;             nfloat cellHeight = 80;             Frame = new UIView(new CGRect(0, _viewTitleSection.Frame.GetMaxY(), cellWidth, cellHeight))
-            { BackgroundColor = UIColor.White };              imgViewIcon = new UIImageView(new CGRect(16, 13, 48, 48))
+            nfloat cellWidth = View.Frame.Width;
+            nfloat cellHeight = 80;
+            Frame = new UIView(new CGRect(0, _viewTitleSection.Frame.GetMaxY(), cellWidth, cellHeight))
+            { BackgroundColor = UIColor.White };
+            imgViewIcon = new UIImageView(new CGRect(16, 13, 48, 48))
             {
                 Image = UIImage.FromBundle("Feedback-Generic")
-            };              lblTitle = new UILabel(new CGRect(80, 16, cellWidth - 96, 16))
+            };            lblTitle = new UILabel(new CGRect(80, 16, cellWidth - 96, 16))
             {
-                Text = "General Enquiry",
-                TextColor = MyTNBColor.PowerBlue,
+                Text = GetI18NValue(EnquiryConstants.generalEnquiryTitle),
+                TextColor = MyTNBColor.CharcoalGrey,
                 Font = MyTNBFont.MuseoSans16_500
-            };              lblSubtTitle = new UILabel(new CGRect(80, 38, cellWidth - 96, 16))
+            };            lblSubtTitle = new UILabel(new CGRect(80, 38, cellWidth - 96, 16))
             {
-                Text = "I want to submit my though and concerns.",
+                Text = GetI18NValue(EnquiryConstants.generalEnquiryDescription),
                 TextColor = MyTNBColor.TunaGrey(),
                 Font = MyTNBFont.MuseoSans12_300,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap
-            };              lblCount = new UILabel(new CGRect(cellWidth - 38, 16, 20, 16))
+            };            lblCount = new UILabel(new CGRect(cellWidth - 38, 16, 20, 16))
             {
-                Text = "asdasdadasd",
                 TextColor = MyTNBColor.PowerBlue,
                 TextAlignment = UITextAlignment.Right,
                 Font = MyTNBFont.MuseoSans12,
                 Hidden = true
-            };              viewLine = new UIView(new CGRect(0, cellHeight - 7, cellWidth, 7))
+            };            viewLine = new UIView(new CGRect(0, cellHeight - 7, cellWidth, 7))
             {
                 BackgroundColor = MyTNBColor.SectionGrey,
                 Hidden = false
@@ -371,33 +392,38 @@ namespace myTNB
                     _txtAccountNumber.TextColor = isAccountValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
                     _lblAccountNoError.Hidden = isAccountValid;
                 }
-            }));              Frame.AddSubviews(new UIView[] { imgViewIcon, lblTitle, lblSubtTitle, lblCount, viewLine });             _svContainer.AddSubviews(Frame);         }
+            }));
+            Frame.AddSubviews(new UIView[] { imgViewIcon, lblTitle, lblSubtTitle, lblCount, viewLine });
+            _svContainer.AddSubviews(Frame);        }
 
         public void CellUpdatePersonalDetail()
         {
-            nfloat cellWidth = View.Frame.Width;             nfloat cellHeight = 80;             Frame2 = new UIView(new CGRect(0, Frame.Frame.GetMaxY(), cellWidth, cellHeight))             {BackgroundColor = UIColor.White };              imgViewIcon2 = new UIImageView(new CGRect(16, 13, 48, 48))
+            nfloat cellWidth = View.Frame.Width;
+            nfloat cellHeight = 80;
+            Frame2 = new UIView(new CGRect(0, Frame.Frame.GetMaxY(), cellWidth, cellHeight))
+            {BackgroundColor = UIColor.White };
+            imgViewIcon2 = new UIImageView(new CGRect(16, 13, 48, 48))
             {
                 Image = UIImage.FromBundle("Feedback-Submitted")
-            };              lblTitle2 = new UILabel(new CGRect(80, 16, cellWidth - 96, 16))
+            };            lblTitle2 = new UILabel(new CGRect(80, 16, cellWidth - 96, 16))
             {
-                Text = "Update Personal Details",
-                TextColor = MyTNBColor.PowerBlue,
+                Text = GetI18NValue(EnquiryConstants.updatePersonalDetTitle),
+                TextColor = MyTNBColor.CharcoalGrey,
                 Font = MyTNBFont.MuseoSans16_500
-            };              lblSubtTitle2 = new UILabel(new CGRect(80, 38, cellWidth - 96, 16))
+            };            lblSubtTitle2 = new UILabel(new CGRect(80, 38, cellWidth - 96, 16))
             {
-                Text = "I want to update personal details.",
+                Text = GetI18NValue(EnquiryConstants.personalDetailsDescription),
                 TextColor = MyTNBColor.TunaGrey(),
                 Font = MyTNBFont.MuseoSans12_300,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap
-            };              lblCount2 = new UILabel(new CGRect(cellWidth - 38, 16, 20, 16))
+            };            lblCount2 = new UILabel(new CGRect(cellWidth - 38, 16, 20, 16))
             {
-                Text = "asdasdadasd",
                 TextColor = MyTNBColor.PowerBlue,
                 TextAlignment = UITextAlignment.Right,
                 Font = MyTNBFont.MuseoSans12,
                 Hidden = true
-            };              viewLine2 = new UIView(new CGRect(0, cellHeight - 7, cellWidth, 7))
+            };            viewLine2 = new UIView(new CGRect(0, cellHeight - 7, cellWidth, 7))
             {
                 BackgroundColor = MyTNBColor.LightGray,
                 Hidden = false
@@ -424,8 +450,8 @@ namespace myTNB
                 _lblAccountNoError.Hidden = isAccountValid;
             }
 
-        }));              Frame2.AddSubviews(new UIView[] { imgViewIcon2, lblTitle2, lblSubtTitle2, lblCount2, viewLine2 });
-            _svContainer.AddSubviews(Frame2);         }
+        }));            Frame2.AddSubviews(new UIView[] { imgViewIcon2, lblTitle2, lblSubtTitle2, lblCount2, viewLine2 });
+            _svContainer.AddSubviews(Frame2);        }
 
         private void SetTextFieldEvents(UITextField textField, UILabel textFieldTitle, UILabel textFieldError, UIView viewLine, string pattern)
         {
@@ -483,8 +509,19 @@ namespace myTNB
 
         private void SetEvents()
         {
-
             SetTextFieldEvents(_txtAccountNumber, _lblAccountNoTitle, _lblAccountNoError, _viewLineAccountNo, TNBGlobal.ACCOUNT_NO_PATTERN);
+        }
+
+        private void SetVisibility()
+        {
+            if (DataManager.DataManager.SharedInstance.IsFeedbackUpdateDetailDisabled)
+            {
+                Frame2.Hidden = true;
+            }
+            else
+            {
+                Frame2.Hidden = false;
+            }
         }
 
         private void SetAddAccountButtonEnable()
@@ -498,6 +535,17 @@ namespace myTNB
             _txtAccountNumber.TextColor = isValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
             _lblAccountNoError.Hidden = isValid;
 
+        }
+
+        private UIImage GetFromUrl(string uri)//temporary
+        {
+            using (var url = new NSUrl(uri))
+            using (var data = NSData.FromUrl(url, NSDataReadingOptions.Uncached, out NSError error))
+                if (error != null) { return null; }
+                else
+                {
+                    return UIImage.LoadFromData(data);
+                }
         }
 
     }
