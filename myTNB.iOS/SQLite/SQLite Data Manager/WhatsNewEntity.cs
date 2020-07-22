@@ -233,6 +233,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                         showMaintenance = true;
                     }
                 }
+
                 if (showMaintenance)
                 {
                     return new List<WhatsNewModel> { maintenance };

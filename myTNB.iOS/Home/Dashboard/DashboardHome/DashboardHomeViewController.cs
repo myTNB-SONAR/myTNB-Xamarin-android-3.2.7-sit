@@ -285,7 +285,7 @@ namespace myTNB
                         InvokeOnMainThread(() =>
                         {
                             WhatsNewEntity wsManager = new WhatsNewEntity();
-                            var items = wsManager.GetActivePopupItems();
+                            List<WhatsNewModel> items = wsManager.GetActivePopupItems();
                             if (items != null && items.Count > 0)
                             {
                                 for (int index = 0; index < items.Count; index++)
@@ -309,17 +309,7 @@ namespace myTNB
                                     WhatsNewServices.SetWhatNewModelShowCount(id, count);
                                 }
 
-                                whatsNewModalView = new WhatsNewModalViewController
-                                {
-                                    WhatsNews = items,
-                                    OnWhatsNewClick = OnNavigateWhatsNewModal,
-                                    OnDismissWhatsNew = OnDismissWhatsNewModal
-                                };
-                                UINavigationController navController = new UINavigationController(whatsNewModalView)
-                                {
-                                    ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen
-                                };
-                                PresentViewController(navController, true, null);
+                                this.DisplayMarketingPopup(items[0], OnTapHomePopUp);
                             }
                             else
                             {
@@ -329,6 +319,14 @@ namespace myTNB
                     }
                 });
             }
+        }
+
+        public void OnTapHomePopUp(WhatsNewModel whatnew)
+        {
+            whatnew.IsRead = true;
+            WhatsNewServices.SetIsRead(whatnew.ID);
+            DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId = whatnew.ID;
+            OnNavigateWhatsNewModal();
         }
 
         public void OnNavigateWhatsNewModal()
