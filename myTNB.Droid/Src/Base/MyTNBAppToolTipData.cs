@@ -15,6 +15,9 @@ using static myTNB_Android.Src.SSMR.SMRApplication.Api.GetAccountsSMREligibility
 using myTNB_Android.Src.myTNBMenu.Models;
 using Android.Graphics;
 using Android.Util;
+using myTNB_Android.Src.Feedback_Prelogin_NewIC.Model;
+using myTNB_Android.Src.UpdatePersonalDetailStepOne.Model;
+using myTNB_Android.Src.UpdatePersonalDetailStepTwo.Model;
 
 namespace myTNB_Android.Src.Base
 {
@@ -264,7 +267,6 @@ namespace myTNB_Android.Src.Base
             }
     
 
-    
             return tooltipModelDataList;
         }
 
@@ -324,6 +326,130 @@ namespace myTNB_Android.Src.Base
             public string title { set; get; }
             public string description { set; get; }
             public string cta { set; get; }
+        }
+
+        public static List<WhereMyAccToolTipResponse> GetWhereMyAccTipData()
+        {
+            List<WhereMyAccToolTipResponse> tooltipModelDataList = new List<WhereMyAccToolTipResponse>();
+            WhereMyAccToolTipResponse tooltipModel;
+            string jsonData = SitecoreCmsEntity.GetItemById(SitecoreCmsEntity.SITE_CORE_ID.WHERE_IS_MY_ACC);
+            //syahmi modified
+            if (jsonData != null && jsonData != "null")
+            {
+                List<WhereIsMyAccNumberModel> TooltipDataList = JsonConvert.DeserializeObject<List<WhereIsMyAccNumberModel>>(jsonData);
+
+                TooltipDataList.ForEach(data =>
+                {
+                    tooltipModel = new WhereMyAccToolTipResponse();
+                    tooltipModel.PopUpTitle = data.PopUpTitle;
+                    tooltipModel.PopUpBody = data.PopUpBody;
+                    tooltipModel.ImageBitmap = Base64ToBitmap(data.ImageBase64);
+                    tooltipModelDataList.Add(tooltipModel);
+                });
+            }
+
+
+            return tooltipModelDataList;
+        }
+
+        //who is registered owner 
+        public static List<whoIsRegisteredOwnerResponseModel> GetWhoIsRegisteredOwnerTipData()
+        {
+            List<whoIsRegisteredOwnerResponseModel> tooltipModelDataList = new List<whoIsRegisteredOwnerResponseModel>();
+            whoIsRegisteredOwnerResponseModel tooltipModel;
+            string jsonData = SitecoreCmsEntity.GetItemById(SitecoreCmsEntity.SITE_CORE_ID.WHO_IS_REGISTERED_OWNER);
+            //syahmi modified
+            if (jsonData != null && jsonData != "null")
+            {
+                List<WhoIsRegisteredOwnerModel> TooltipDataList = JsonConvert.DeserializeObject<List<WhoIsRegisteredOwnerModel>>(jsonData);
+
+                TooltipDataList.ForEach(data =>
+                {
+                    tooltipModel = new whoIsRegisteredOwnerResponseModel();
+                    tooltipModel.PopUpTitle = data.PopUpTitle;
+                    tooltipModel.PopUpBody = data.PopUpBody;
+              
+                    tooltipModelDataList.Add(tooltipModel);
+                });
+            }
+
+
+            return tooltipModelDataList;
+        }
+
+        //DO I NEED OWNER CONSENT
+        public static List<DoINeedOwnerConsentResponseModel> GetDoINeedOwnerConsentTipData()
+        {
+            List<DoINeedOwnerConsentResponseModel> tooltipModelDataList = new List<DoINeedOwnerConsentResponseModel>();
+            DoINeedOwnerConsentResponseModel tooltipModel;
+            string jsonData = SitecoreCmsEntity.GetItemById(SitecoreCmsEntity.SITE_CORE_ID.DO_I_NEED_OWNER_CONSENT);
+            //syahmi modified
+            if (jsonData != null && jsonData != "null")
+            {
+                List<DoINeedOwnerConsentModel> TooltipDataList = JsonConvert.DeserializeObject<List<DoINeedOwnerConsentModel>>(jsonData);
+
+                TooltipDataList.ForEach(data =>
+                {
+                    tooltipModel = new DoINeedOwnerConsentResponseModel();
+                    tooltipModel.PopUpTitle = data.PopUpTitle;
+                    tooltipModel.PopUpBody = data.PopUpBody;
+
+                    tooltipModelDataList.Add(tooltipModel);
+                });
+            }
+
+
+            return tooltipModelDataList;
+        }
+
+        //HOW DOES COPY OF IDENTIFICATION LOOK LIKE
+        public static List<HowDoesCopyofIdentificationResponseModel> GetHowDoesCopyofIdentificationToolTipData()
+        {
+            List<HowDoesCopyofIdentificationResponseModel> tooltipModelDataList = new List<HowDoesCopyofIdentificationResponseModel>();
+            HowDoesCopyofIdentificationResponseModel tooltipModel;
+            string jsonData = SitecoreCmsEntity.GetItemById(SitecoreCmsEntity.SITE_CORE_ID.HOW_DOES_COPY_IC);
+            //syahmi modified
+            if (jsonData != null && jsonData != "null")
+            {
+                List<HowDoesCopyOfIdentificationModel> TooltipDataList = JsonConvert.DeserializeObject<List<HowDoesCopyOfIdentificationModel>>(jsonData);
+
+                TooltipDataList.ForEach(data =>
+                {
+                    tooltipModel = new HowDoesCopyofIdentificationResponseModel();
+                    tooltipModel.PopUpTitle = data.PopUpTitle;
+                    tooltipModel.PopUpBody = data.PopUpBody;
+                    tooltipModel.ImageBitmap = Base64ToBitmap(data.ImageBase64);
+                    tooltipModelDataList.Add(tooltipModel);
+                });
+            }
+
+
+            return tooltipModelDataList;
+        }
+
+        //HOW PROOF OF CONSENT LOOK LIKE
+        public static List<HowDoesProofOfConsentResponseBitmapModel> GetHowDoesProofOfConsentToolTipData()
+        {
+            List<HowDoesProofOfConsentResponseBitmapModel> tooltipModelDataList = new List<HowDoesProofOfConsentResponseBitmapModel>();
+            HowDoesProofOfConsentResponseBitmapModel tooltipModel;
+            string jsonData = SitecoreCmsEntity.GetItemById(SitecoreCmsEntity.SITE_CORE_ID.HOW_DOES_PROOF_OF_CONSENT);
+            //syahmi modified
+            if (jsonData != null && jsonData != "null")
+            {
+                List<HowDoesProofOfConsentModel> TooltipDataList = JsonConvert.DeserializeObject<List<HowDoesProofOfConsentModel>>(jsonData);
+
+                TooltipDataList.ForEach(data =>
+                {
+                    tooltipModel = new HowDoesProofOfConsentResponseBitmapModel();
+                    tooltipModel.PopUpTitle = data.PopUpTitle;
+                    tooltipModel.PopUpBody = data.PopUpBody;
+                    tooltipModel.ImageBitmap = Base64ToBitmap(data.ImageBase64);
+                    tooltipModelDataList.Add(tooltipModel);
+                });
+            }
+
+
+            return tooltipModelDataList;
         }
     }
 }

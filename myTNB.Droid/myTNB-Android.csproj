@@ -587,6 +587,7 @@
     <Compile Include="Src\Feedback_PreLogin_Menu\MVP\FeedbackPreLoginMenuContract.cs" />
     <Compile Include="Src\Feedback_PreLogin_Menu\MVP\FeedbackPreLoginMenuPresenter.cs" />
     <Compile Include="Src\Feedback_Prelogin_NewIC\Activity\FeedbackPreloginNewICActivity.cs" />
+    <Compile Include="Src\Feedback_Prelogin_NewIC\Model\WhereMyAccToolTipResponse.cs" />
     <Compile Include="Src\Feedback_Prelogin_NewIC\MVP\FeedbackPreloginNewICContract.cs" />
     <Compile Include="Src\Feedback_Prelogin_NewIC\MVP\FeedbackPreloginNewICPresenter.cs" />
     <Compile Include="Src\Feedback_PreLogin_Others\Activity\FeedbackPreLoginOthersActivity.cs" />
@@ -849,12 +850,15 @@
     <Compile Include="Src\SitecoreCMS\Constants.cs" />
     <Compile Include="Src\SitecoreCMS\Extensions\SitecoreItemExtensions.cs" />
     <Compile Include="Src\SitecoreCMS\Model\BaseModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\DoINeedOwnerConsentModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\EnergyTipsModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\FAQsModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\FAQsParentResponseModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\FAQsResponseModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\FullRTEPagesModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\FullRTEPagesResponseModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\HowDoesCopyOfIdentificationModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\HowDoesProofOfConsentModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\LocationsModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\PreLoginPromoModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\TimestampModel.cs" />
@@ -862,15 +866,22 @@
     <Compile Include="Src\SitecoreCMS\Model\WalkthroughScreensModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\PreLoginPromoResponseModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\WalkthroughScreensResponseModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\WhereIsMyAccNumberModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\WhoIsRegisteredOwnerModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\DoINeedOwnerConsentService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\EnergyTipsService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\FAQsService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\FullRTEPagesService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\GetItemsService.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\HowDoesCopyOfIdentificationService.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\HowDoesProofOfConsentService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\LocationsService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\PreLoginPromoService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\SitecoreService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\TimestampService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\WalkthroughScreenService.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\WhereIsMyAccNumberService.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\WhoIsRegisteredOwnerService.cs" />
     <Compile Include="Src\SitecoreCMS\SiteCoreConfig.cs" />
     <Compile Include="Src\SubmitEnquirySuccess\Activity\SubmitEnquirySuccessActivity.cs" />
     <Compile Include="Src\SubmitEnquirySuccess\MVP\SubmitEnquirySuccessContract.cs" />
@@ -917,13 +928,18 @@
     <Compile Include="Src\UpdatePersonalDetailStepOne\Fragment\UpdatePersonalDetailStepOneSelectRelationshipFragment.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepOne\Model\enum.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepOne\Model\SelectRelationshipModel.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepOne\Model\whoIsRegisteredOwnerResponseModel.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepOne\MVP\UpdatePersonalDetailStepOneContract.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepOne\MVP\UpdatePersonalDetailStepOnePresenter.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepTwo\Activity\UpdatePersonalDetailStepTwoActivity.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepTwo\Adapter\supportingDocAdapter.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepTwo\Adapter\your_ic_adaptercs.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepTwo\Model\HowDoesCopyofIdentificationResponseModel.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepTwo\MVP\UpdatePersonalDetailStepTwoContract.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepTwo\MVP\UpdatePersonalDetailStepTwoPresenter.cs" />
+    <Compile Include="Src\UpdatePersonalDetailTnC\Activity\UpdatePersonalDetailTnCActivity.cs" />
+    <Compile Include="Src\UpdatePersonalDetailTnC\MVP\UpdatePersonalDetailTnCContract.cs" />
+    <Compile Include="Src\UpdatePersonalDetailTnC\MVP\UpdatePersonalDetailTnCPresenter.cs" />
     <Compile Include="Src\Utils\BitmapUtils.cs" />
     <Compile Include="Src\Utils\BottomNavigationViewUtils.cs" />
     <Compile Include="Src\Utils\ConnectionUtils.cs" />
@@ -7408,18 +7424,6 @@
     <AndroidResource Include="Resources\layout\CustomDialogViewDailyUsage.axml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_tile_feedback_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_tile_feedback_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_tile_feedback_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_tile_feedback_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\layout\FeedbackPreloginNewICView.axml" />
   </ItemGroup>
   <ItemGroup>
@@ -7463,6 +7467,54 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\feedback_banner.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\update_personal_details.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\update_personal_details.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\update_personal_details.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\update_personal_details.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\update_personal_details.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_tile_feedback_bill.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_tile_feedback_bill.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_tile_feedback_bill.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_tile_feedback_bill.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_tile_feedback_bill.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\general_enquiry.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\general_enquiry.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\general_enquiry.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\general_enquiry.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\general_enquiry.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\UpdatePersonalDetailTnCView.axml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

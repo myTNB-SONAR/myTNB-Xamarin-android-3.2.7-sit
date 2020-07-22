@@ -115,6 +115,21 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:layout_marginBottom="4dp" />
+
+                        <TextView
+                            android:id="@+id/TextView_ownerIC"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:text="@string/GeneralEnquiry1of2_uploadSupporting_img_sub"
+                            android:textSize="9dp" />
+
+
+
                         <TextView
                             android:id="@+id/TextViewtitle_yourIC"
                             android:layout_width="match_parent"
@@ -136,6 +151,19 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:layout_marginBottom="4dp" />
+
+                        <TextView
+                            android:id="@+id/TextView_yourIC_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:text="@string/GeneralEnquiry1of2_uploadSupporting_img_sub"
+                            android:textSize="9dp" />
+
 
 
                         <FrameLayout
@@ -189,6 +217,22 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:layout_marginBottom="4dp" />
+
+
+                        <TextView
+                            android:id="@+id/TextView_proofOfConsent_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:text="@string/GeneralEnquiry1of2_uploadSupporting_img_sub"
+                            android:textSize="9dp" />
+
+
+
                         <FrameLayout
                             android:id="@+id/FrameLayout_proofofconsent"
                             android:layout_width="match_parent"

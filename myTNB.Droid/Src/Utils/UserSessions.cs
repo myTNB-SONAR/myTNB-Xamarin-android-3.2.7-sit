@@ -415,6 +415,18 @@ namespace myTNB_Android.Src.Utils
             return prefs.GetString("deviceID", "");
         }
 
+        public static void SaveFeedbackUpdateDetailDisabled(ISharedPreferences prefs, string data)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("IsFeedbackUpdateDetailDisabled", data);
+            editor.Apply();
+        }
+
+        public static string GetFeedbackUpdateDetailDisabled(ISharedPreferences prefs)
+        {
+            return prefs.GetString("IsFeedbackUpdateDetailDisabled",  null);
+        }
+
         public static void SaveLogoutFlag(ISharedPreferences prefs, bool flag)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
