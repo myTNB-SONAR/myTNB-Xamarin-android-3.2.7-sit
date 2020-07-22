@@ -168,7 +168,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
             this.mView.ShowinfoLabelDoIneedOwnerConsent();
         }
 
-        public void CheckRequiredFields(string iC, bool toggleChkBoxIC, string ownerName,bool toggleChkOwnerName,string  mobileNumber, bool toggleChkMobileNumber, string emailAddress, bool toggleChkEmailAddress, string mailingAddress, bool toggleChkMailingAddress, string premiseAddress, bool toggleChkPremiseAddress)
+        public void CheckRequiredFields(string iC, bool toggleChkBoxIC, string ownerName,bool toggleChkOwnerName,string  mobileNumber, bool toggleChkMobileNumber, string emailAddress, bool toggleChkEmailAddress, string mailingAddress, bool toggleChkMailingAddress, string premiseAddress, bool toggleChkPremiseAddress, string otherRelationstip, bool isOtherChoosed)
         {
             try
             {
@@ -227,6 +227,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                        
                         this.mView.DisableSubmitButton();
                     }
+
                 }
 
                 // check checkBox 
@@ -288,6 +289,23 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                     {
                        
                         this.mView.ShowEmptyError(typeOfLayout.premiseAddress);
+                        this.mView.DisableSubmitButton();
+                    }
+                }
+
+                if (isOtherChoosed)
+                {
+                    if (!TextUtils.IsEmpty(otherRelationstip.Trim()))
+                    {
+
+                        // do nothing , enable only if other input is tick
+                       
+                     //   this.mView.ClearInvalidError(typeOfLayout.premiseAddress);
+                    }
+                    else
+                    {
+
+                      ///  this.mView.ShowEmptyError(typeOfLayout.premiseAddress);
                         this.mView.DisableSubmitButton();
                     }
                 }

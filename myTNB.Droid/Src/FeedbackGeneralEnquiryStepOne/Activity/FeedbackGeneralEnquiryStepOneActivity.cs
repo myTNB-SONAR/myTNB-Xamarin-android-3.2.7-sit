@@ -95,11 +95,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         private AlertDialog _ChooseDialog;
 
         LinearLayoutManager layoutManager;
-          FeedbackGeneralEnquiryStepOneImageRecyclerAdapter adapter;
+        FeedbackGeneralEnquiryStepOneImageRecyclerAdapter adapter;
 
-        // FeedbackLoginBillRelatedImageRecyclerAdapter adapter;
-
-        // GridLayoutManager layoutManager;
 
 
         private string accNo = null;
@@ -125,7 +122,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 
 
                 // Intent intent = Intent;
-                SetToolBarTitle("General Enquiry");
+                SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle"));
                 this.mPresenter = new FeedbackGeneralEnquiryStepOnePresenter(this);
 
                 adapter = new FeedbackGeneralEnquiryStepOneImageRecyclerAdapter(true);
@@ -142,10 +139,6 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 adapter.RemoveClickEvent += Adapter_RemoveClickEvent;
 
 
-
-
-
-
                 //add listener 
                 txtGeneralEnquiry1.SetOnTouchListener(this);
                 txtGeneralEnquiry1.TextChanged += TextChanged;
@@ -156,12 +149,19 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 // set font
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
                 TextViewUtils.SetMuseoSans300Typeface(txtRelatedScreenshotTitle, txtMaxImageContent);
-               // , txtRelatedScreenshotTitle, txtMaxImageContent
+        
                 TextViewUtils.SetMuseoSans500Typeface(txtstep1of2, IwantToEnquire, uploadSupportingDoc);
+
+
+                //set translation 
+                txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
+                IwantToEnquire.Text= Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryAboutTitle");
+                txtInputLayoutGeneralEnquiry1.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "messageHint").ToUpper();
+                uploadSupportingDoc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "uploadDocTitle");
+                txtRelatedScreenshotTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachTitle");
+                txtMaxImageContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
+                btnNext.Text= Utility.GetLocalizedLabel("Common", "next");
            
-
-
-               
 
 
 
@@ -387,7 +387,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 
         public void ShowEmptyFeedbackError()
         {
-            txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
+    
+            txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1.FindViewById<TextView>(Resource.Id.textinput_error));
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
             txtInputLayoutGeneralEnquiry1.Error = Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");
@@ -445,6 +446,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             feedbackGeneralEnquiry.PutExtra("FEEDBACK", txtGeneralEnquiry1.Text.Trim());
             feedbackGeneralEnquiry.PutExtra("IMAGE", JsonConvert.SerializeObject(adapter?.GetAllImages()));
             feedbackGeneralEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, accNo);
+            feedbackGeneralEnquiry.PutExtra(Constants.PAGE_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle"));
+            feedbackGeneralEnquiry.PutExtra(Constants.PAGE_STEP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle2of2"));
             StartActivity(feedbackGeneralEnquiry);
             
         }

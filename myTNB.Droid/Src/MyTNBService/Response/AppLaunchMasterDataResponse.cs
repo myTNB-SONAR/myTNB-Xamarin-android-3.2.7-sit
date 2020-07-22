@@ -59,6 +59,11 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "ForceUpdateInfo")]
             [AliasAs("ForceUpdateInfo")]
             public ForceUpdateInfoData ForceUpdateInfo { get; set; }
+
+            [JsonProperty(PropertyName = "IsFeedbackUpdateDetailDisabled")]
+            [AliasAs("IsFeedbackUpdateDetailDisabled")]
+            public bool IsFeedbackUpdateDetailDisabled { get; set; }
+
         }
 
         public class ForceUpdateInfoData

@@ -53,36 +53,36 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Fragment
                     }
                 }
 
-                SetToolBarTitle("Relationship with Owner");  // set lang and translation  GetLabelByLanguage("selectAccountType")
+                SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle"));  // set lang and translation  GetLabelByLanguage("selectAccountType")
                 SelectRelationshipModel Child = new SelectRelationshipModel();
                 Child.Id = "1";
-                Child.Type = "Child";  // translation  GetLabelByLanguage("residential")
+                Child.Type = Utility.GetLocalizedLabel("SubmitEnquiry", "childTitle"); // translation  GetLabelByLanguage("residential")
 
                 SelectRelationshipModel Tenant = new SelectRelationshipModel();
                 Tenant.Id = "2";
-                Tenant.Type = "Tenant";  //trnaslation GetLabelByLanguage("commercial")
+                Tenant.Type = Utility.GetLocalizedLabel("SubmitEnquiry", "tenantTitle"); //trnaslation GetLabelByLanguage("commercial")
 
                 SelectRelationshipModel Guardian = new SelectRelationshipModel();
                 Guardian.Id = "3";
-                Guardian.Type = "Guardian";  //trnaslation GetLabelByLanguage("commercial")
+                Guardian.Type = Utility.GetLocalizedLabel("SubmitEnquiry", "guardianTitle");  //trnaslation GetLabelByLanguage("commercial")
 
                 SelectRelationshipModel Parent = new SelectRelationshipModel();
                 Parent.Id = "4";
-                Parent.Type = "Parent";  //trnaslation GetLabelByLanguage("commercial")
+                Parent.Type =Utility.GetLocalizedLabel("SubmitEnquiry", "parentTitle"); //trnaslation GetLabelByLanguage("commercial")
 
                 SelectRelationshipModel Spouse = new SelectRelationshipModel();
                 Spouse.Id = "5";
-                Spouse.Type = "Spouse";  //trnaslation GetLabelByLanguage("commercial")
+                Spouse.Type = Utility.GetLocalizedLabel("SubmitEnquiry", "spouseTitle"); //trnaslation GetLabelByLanguage("commercial")
 
                 SelectRelationshipModel Others = new SelectRelationshipModel();
                 Others.Id = "6";
-                Others.Type = "Others";  //trnaslation GetLabelByLanguage("commercial")
+                Others.Type = Utility.GetLocalizedLabel("SubmitEnquiry", "othersTitle"); //trnaslation GetLabelByLanguage("commercial")
 
-                //AccountType Government = new AccountType();
-                //Government.Id = "3";
-                //Government.Type = "Government";
+            //AccountType Government = new AccountType();
+            //Government.Id = "3";
+            //Government.Type = "Government";
 
-                if (selectedAccountRelationship != null)
+            if (selectedAccountRelationship != null)
                 {
                     if (selectedAccountRelationship.Id.Equals("1"))
                     {

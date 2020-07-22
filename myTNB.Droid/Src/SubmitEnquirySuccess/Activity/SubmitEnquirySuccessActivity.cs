@@ -98,32 +98,13 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
 
                 string dateTime = "NA";
 
-                //if (!string.IsNullOrEmpty(date))
-                //{
-                //    try
-                //    {
-                //        dateTime = date;
-                //        DateTime dateTimeParse = DateTime.ParseExact(dateTime, "dd'/'MM'/'yyyy HH:mm:ss",
-                //                CultureInfo.InvariantCulture, DateTimeStyles.None);
-                //        if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
-                //        {
-                //            CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
-                //            dateTime = dateTimeParse.ToString("dd MMM yyyy, h:mm tt", currCult);
-                //        }
-                //        else
-                //        {
-                //            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-                //            dateTime = dateTimeParse.ToString("dd MMM yyyy, h:mm tt", currCult);
-                //        }
-                //    }
-                //    catch (System.Exception e)
-                //    {
-                //        dateTime = "NA";
-                //        Utility.LoggingNonFatalError(e);
-                //    }
-                //}
+   
 
-                //txtTransactionScheduleContent.Text = dateTime;
+
+              
+           
+
+
             }
             catch (Exception e)
             {
@@ -135,12 +116,12 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
         }
 
         private void SetStaticLabels()
-        {
-            //txtTitleInfo.Text = Utility.GetLocalizedLabel("Status", "feedbackSuccessTitle");
-            //txtContentInfo.Text = Utility.GetLocalizedLabel("Status", "feedbackSuccessMessage");
-            //txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("Status", "feedbackReferenceTitle");
-            //buttonBackToHome.Text = Utility.GetLocalizedLabel("Status", "backToFeedback");
-            //btnViewSubmitted.Text = Utility.GetLocalizedLabel("Status", "backToFeedback");
+        {     //TRANSLATION 
+            txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouTitle");
+            txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouDescription");
+            txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
+            buttonBackToHome.Text = Utility.GetLocalizedLabel("Common", "backToHome");
+            btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");
         }
 
         protected override void OnResume()
@@ -201,74 +182,6 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
 
 
 
-      //public async  Task<List<SubmittedFeedback>> FeedbackList()
-      //  {
-      //      List<SubmittedFeedback> submittedFeedbackList = new List<SubmittedFeedback>();
-
-      //      try
-      //      { 
-      //          var submittedFeedbackResponse = await ServiceApiImpl.Instance.SubmittedFeedbackList(new SubmittedFeedbackListRequest());
-              
-
-      //          if (submittedFeedbackResponse.IsSuccessResponse())
-      //          {
-                 
-      //              foreach (SubmittedFeedbackListResponse.ResponseData responseData in submittedFeedbackResponse.GetData())
-      //              {
-      //                  SubmittedFeedback sf = new SubmittedFeedback();
-      //                  sf.FeedbackId = responseData.ServiceReqNo;
-      //                  sf.FeedbackCategoryId = responseData.FeedbackCategoryId;
-      //                  sf.DateCreated = responseData.DateCreated;
-      //                  sf.FeedbackMessage = responseData.FeedbackMessage;
-      //                  sf.FeedbackCategoryName = responseData.FeedbackCategoryName;
-      //                  sf.FeedbackNameInListView = responseData.FeedbackNameInListView;
-      //                  submittedFeedbackList.Add(sf);
-      //                  SubmittedFeedbackEntity.InsertOrReplace(sf);
-      //              }
-
-                 
-      //            //  return submittedFeedbackList;
-
-      //          }
-      //          else
-      //          {
-      //            //  return null;
-      //          }
-
-      //          return submittedFeedbackList;
-      //      }
-      //      catch (System.OperationCanceledException e)
-      //      {
-
-      //          HideProgressDialog();
-      //          // ADD OPERATION CANCELLED HERE
-      //          Utility.LoggingNonFatalError(e);
-      //          return submittedFeedbackList;
-      //      }
-      //      catch (ApiException apiException)
-      //      {
-
-      //          HideProgressDialog();
-
-      //          // ADD HTTP CONNECTION EXCEPTION HERE
-      //          ShowRetryOptionsApiException(apiException, "");
-      //          Utility.LoggingNonFatalError(apiException);
-      //          return submittedFeedbackList;
-      //      }
-      //      catch (Exception e)
-      //      {
-
-      //          HideProgressDialog();
-      //          // ADD UNKNOWN EXCEPTION HERE
-      //          ShowRetryOptionsUnknownException(e, "");
-      //          Utility.LoggingNonFatalError(e);
-      //          return submittedFeedbackList;
-      //      }
-
-
-
-
-      //  }
 
 
         public void HideProgressDialog()

@@ -23,7 +23,13 @@ namespace myTNB_Android.Src.Database.Model
             LANGUAGE_EN,
             LANGUAGE_MS,
             COUNTRY,
-            EPP_TOOLTIP
+            EPP_TOOLTIP,
+            WHERE_IS_MY_ACC,
+            WHO_IS_REGISTERED_OWNER,
+            DO_I_NEED_OWNER_CONSENT,
+            HOW_DOES_COPY_IC,
+            HOW_DOES_PROOF_OF_CONSENT
+
         }
 
         public static void CreateTable()

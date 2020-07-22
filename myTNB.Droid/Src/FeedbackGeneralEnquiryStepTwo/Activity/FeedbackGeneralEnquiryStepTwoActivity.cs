@@ -9,6 +9,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.Icu.Text;
+using Android.Opengl;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
@@ -24,11 +25,13 @@ using Java.Util;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.Request;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Model;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP;
 using myTNB_Android.Src.FeedbackSuccess.Activity;
 using myTNB_Android.Src.SubmitEnquirySuccess.Activity;
 using myTNB_Android.Src.TermsAndConditions.Activity;
+using myTNB_Android.Src.UpdatePersonalDetailTnC.Activity;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
@@ -68,10 +71,17 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         [BindView(Resource.Id.txtstep2of2)]
         TextView txtstep2of2;
 
+        [BindView(Resource.Id.LinearLayout_TNC)]
+        LinearLayout LinearLayout_TNC;
+
+        [BindView(Resource.Id.agreementCheckbox)]
+        CheckBox agreementCheckbox;
+
         
 
-        //[BindView(Resource.Id.txtTermsConditionsGeneralEnquiry)]
-        //TextView txtTermsConditionsGeneralEnquiry;
+
+        [BindView(Resource.Id.txtTermsConditionsGeneralEnquiry)]
+        TextView txtTermsConditionsGeneralEnquiry;
 
         [BindView(Resource.Id.btnSubmit)]
         Button btnSubmit;
@@ -107,6 +117,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         private string emailAddress;
         private string mailingAddress;
         private string premiseAddress;
+        private bool toggleTncData = false;
+        private bool isNeedTNC = false;
 
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -117,8 +129,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 //1 set presenter
                 mPresenter = new FeedbackGeneralEnquiryStepTwoPresenter(this);
 
-                //Intent intent = Intent;
-                SetToolBarTitle("Submit General Enquiry");
+         
+              
 
                 Bundle extras = Intent.Extras;
                 
@@ -190,7 +202,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                         FeedbackUpdateDetailsModel icUpdate = new FeedbackUpdateDetailsModel()
                         {
                             FeedbackUpdInfoType = 1,
-                            FeedbackUpdInfoTypeDesc = "Identification number (IC/Passport)",
+                            FeedbackUpdInfoTypeDesc = Utility.GetLocalizedLabel("SubmitEnquiry", "icTitle"),
                             FeedbackUpdInfoValue = icNumber,
                         };
                         feedbackUpdateDetailsModelList.Add(icUpdate);
@@ -202,7 +214,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                         FeedbackUpdateDetailsModel accountNameUpdate = new FeedbackUpdateDetailsModel()
                         {
                             FeedbackUpdInfoType = 2,
-                            FeedbackUpdInfoTypeDesc = "Account Name",
+                            FeedbackUpdInfoTypeDesc = Utility.GetLocalizedLabel("SubmitEnquiry", "accNametitle"),
                             FeedbackUpdInfoValue = accOwnerName,
                         };
                         feedbackUpdateDetailsModelList.Add(accountNameUpdate);
@@ -214,7 +226,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                         FeedbackUpdateDetailsModel mobileUpdate = new FeedbackUpdateDetailsModel()
                         {
                             FeedbackUpdInfoType = 3,
-                            FeedbackUpdInfoTypeDesc = "Mobile Number",
+                            FeedbackUpdInfoTypeDesc = Utility.GetLocalizedLabel("SubmitEnquiry", "mobileNumberTitle"),
                             FeedbackUpdInfoValue = mobileNumber,
                         };
                         feedbackUpdateDetailsModelList.Add(mobileUpdate);
@@ -226,7 +238,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                         FeedbackUpdateDetailsModel emailUpdate = new FeedbackUpdateDetailsModel()
                         {
                             FeedbackUpdInfoType = 4,
-                            FeedbackUpdInfoTypeDesc = "Email Address",
+                            FeedbackUpdInfoTypeDesc = Utility.GetLocalizedLabel("SubmitEnquiry", "emailAddressTitle"),
                             FeedbackUpdInfoValue = emailAddress,
                         };
                         feedbackUpdateDetailsModelList.Add(emailUpdate);
@@ -239,7 +251,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                         FeedbackUpdateDetailsModel mailingUpdate = new FeedbackUpdateDetailsModel()
                         {
                             FeedbackUpdInfoType = 5,
-                            FeedbackUpdInfoTypeDesc = "Mailing Address",
+                            FeedbackUpdInfoTypeDesc = Utility.GetLocalizedLabel("SubmitEnquiry", "mailingAddressTitle"),
                             FeedbackUpdInfoValue = mailingAddress,
                         };
                         feedbackUpdateDetailsModelList.Add(mailingUpdate);
@@ -252,7 +264,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                         FeedbackUpdateDetailsModel premiseUpdate = new FeedbackUpdateDetailsModel()
                         {
                             FeedbackUpdInfoType = 6,
-                            FeedbackUpdInfoTypeDesc = "Premise Address",
+                            FeedbackUpdInfoTypeDesc = Utility.GetLocalizedLabel("SubmitEnquiry", "premiseAddressTitle"),
                             FeedbackUpdInfoValue = premiseAddress,
                         };
                         feedbackUpdateDetailsModelList.Add(premiseUpdate);
@@ -270,10 +282,34 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 //, txtTermsConditionsGeneralEnquiry
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit , WhoShouldWeContact);
 
+
+                //SET TRANSLATION
+                txtInputLayoutName.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "nameHint").ToUpper();
+                txtInputLayoutEmail.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "emailHint").ToUpper();
+                txtInputLayoutPhoneNumber.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "mobileHint").ToUpper();
+                btnSubmit.Text = Utility.GetLocalizedLabel("Common", "submit");
+
+
                 //set translation of string 
-                // txtTermsConditionsGeneralEnquiry.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc"));
-                //StripUnderlinesFromLinks(txtTermsConditionsGeneralEnquiry);
-                WhoShouldWeContact.Text = "Who should we contact regarding this enquiry?";
+                 txtTermsConditionsGeneralEnquiry.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryTnc"));
+                 StripUnderlinesFromLinks(txtTermsConditionsGeneralEnquiry);
+
+
+                WhoShouldWeContact.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "contactEnquiryTitle");
+
+                /// cater on is need tnc or not
+                if (!feedback.IsNullOrEmpty())
+                {
+                    LinearLayout_TNC.Visibility = ViewStates.Gone;
+                    isNeedTNC = false;
+
+
+                }
+                else
+                {  /// feedback is null so this is from update feedback page
+                    isNeedTNC = true;
+                }
+
 
                 // bind text change 
 
@@ -317,15 +353,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         {
             try
             {
-                string fullname = txtName.Text.ToString().Trim();
-                string mobile_no = txtPhoneNumber.Text.ToString().Trim();
-                string email = txtEmail.Text.ToString().Trim();
-                this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email);
-
-
-
-
-
+                passCheck();
 
             }
             catch (Exception ex)
@@ -413,25 +441,30 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
             return true;
         }
 
-        //[OnClick(Resource.Id.txtTermsConditionsGeneralEnquiry)]
-        //void OnTermsConditions(object sender, EventArgs eventArgs)
-        //{
-        //    if (!this.GetIsClicked())
-        //    {
-        //        this.SetIsClicked(true);
-        //        this.userActionsListener.NavigateToTermsAndConditions();
-        //    }
-        //}
+        [OnClick(Resource.Id.txtTermsConditionsGeneralEnquiry)]
+        void OnTermsConditions(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.NavigateToTermsAndConditions();
+            }
+        }
 
         public void ShowNavigateToTermsAndConditions()
-        {
-            StartActivity(typeof(TermsAndConditionActivity));
+        { 
+
+            var tnc = new Intent(this, typeof(UpdatePersonalDetailTnCActivity));
+            tnc.PutExtra(Constants.REQ_EMAIL, UserEntity.GetActive().Email);
+            tnc.PutExtra(Constants.REQ_IC, "test" );
+            tnc.PutExtra(Constants.ACCOUNT_NUMBER, acc);
+            StartActivity(tnc);
         }
 
         public void ShowFullNameError()
         {
-            txtInputLayoutName.Error = GetString(Resource.String.name_error);
-
+            //txtInputLayoutNamee = GetString(Resource.String.name_error);
+            txtInputLayoutName.Error = Utility.GetLocalizedErrorLabel("invalid_fullname");
 
         }
 
@@ -467,7 +500,14 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         }
 
 
-        
+        [OnClick(Resource.Id.agreementCheckbox)]
+        void OnTnc(object sender, EventArgs eventArgs)
+        {
+            toggleTNC();
+        }
+
+
+
 
         [OnClick(Resource.Id.btnSubmit)]
         void OnSubmit(object sender, EventArgs eventArgs)
@@ -490,23 +530,23 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                     // ensure not from feedback and owner must be false to pass this parameter
                     if(feedback.IsNullOrEmpty() && isOwner == false)
                     {
-                        if (ownerRelationship == "Child")
+                        if (ownerRelationship == Utility.GetLocalizedLabel("Common", "childTitle"))
                         {
                             ownerRelationshipID = 1;
                         }
-                        else if (ownerRelationship == "Tenant")
+                        else if (ownerRelationship == Utility.GetLocalizedLabel("Common", "tenantTitle"))
                         {
                             ownerRelationshipID = 2;
                         }
-                        else if (ownerRelationship == "Guardian")
+                        else if (ownerRelationship == Utility.GetLocalizedLabel("Common", "guardianTitle"))
                         {
                             ownerRelationshipID = 3;
                         }
-                        else if (ownerRelationship == "Parent")
+                        else if (ownerRelationship == Utility.GetLocalizedLabel("Common", "parentTitle"))
                         {
                             ownerRelationshipID = 4;
                         }
-                        else if (ownerRelationship == "Spouse")
+                        else if (ownerRelationship == Utility.GetLocalizedLabel("Common", "spouseTitle"))
                         {
                             ownerRelationshipID = 5;
                         }
@@ -541,7 +581,28 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
             }
         }
 
- 
+
+        public void toggleTNC()
+        {
+            toggleTncData = !toggleTncData;  //boolean change
+
+            passCheck();
+        }
+
+        public void passCheck()
+        {
+
+            string fullname = txtName.Text.ToString().Trim();
+            string mobile_no = txtPhoneNumber.Text.ToString().Trim();
+            string email = txtEmail.Text.ToString().Trim();
+            bool tnc = toggleTncData;
+            bool varNeedTNC = isNeedTNC;
+
+            this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, tnc , varNeedTNC);
+
+        }
+
+
 
         public void ShowProgressDialog()
         {

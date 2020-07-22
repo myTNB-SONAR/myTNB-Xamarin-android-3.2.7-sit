@@ -230,7 +230,15 @@ namespace myTNB_Android.Src.Utils
                 }
 
                 tooltipMessage = ProcessClickableSpan(tooltipMessage, this.message);
-                tooltipImageHeader.SetImageResource(this.imageResource);
+               // tooltipImageHeader.SetImageResource(this.imageResource);
+                 if (this.imageResourceBitmap != null)
+                {
+                    tooltipImageHeader.SetImageBitmap(this.imageResourceBitmap);
+                }
+                else
+                {
+                    tooltipImageHeader.SetImageResource(this.imageResource);
+                }
                 tooltipCTA.Text = this.ctaLabel;
             }
             else if(this.toolTipType == ToolTipType.NORMAL_WITH_HEADER)

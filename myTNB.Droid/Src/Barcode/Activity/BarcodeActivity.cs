@@ -49,13 +49,35 @@ namespace myTNB_Android.Src.Barcode.Activity
             return Resource.Layout.BarcodeScannerView;
         }
 
+        
+
         public override bool ShowCustomToolbarTitle()
         {
             return true;
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
+
         {
+
+
+            Bundle extras = Intent.Extras;
+            if (extras != null)
+            {
+                ///PAGE TITLE FROM BEFORE PAGE
+                if (extras.ContainsKey(Constants.PAGE_TITLE))
+                {
+
+              
+                    PAGE_ID = "SubmitEnquiry";
+
+
+
+                }
+            } 
+
+               
+
             base.OnCreate(savedInstanceState);
             mPresenter = new BarcodePresenter(this);
             barCodeView.Click += delegate

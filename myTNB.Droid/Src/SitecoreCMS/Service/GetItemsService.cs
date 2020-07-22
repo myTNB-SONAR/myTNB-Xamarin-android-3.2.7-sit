@@ -667,7 +667,6 @@ namespace myTNB.SitecoreCMS.Services
             return respModel;
         }
 
-       
         public EppToolTipTimeStampResponseModel GetEppToolTipTimeStampItem()
         {
             EppToolTipTimeStampResponseModel respModel = new EppToolTipTimeStampResponseModel();
@@ -683,6 +682,195 @@ namespace myTNB.SitecoreCMS.Services
             catch (Exception e)
             {
                 Debug.WriteLine("Exception in GetItemsService/GetEppToolTipTimeStampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public WhereIsMyAccNumberResponseModel GetWhereIsMyAccToolTipItem()
+        {
+            WhereIsMyAccNumberResponseModel respModel = new WhereIsMyAccNumberResponseModel();
+            try
+            {
+                WhereIsMyAccNumberService service = new WhereIsMyAccNumberService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<WhereIsMyAccNumberResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetWhereIsMyAccToolTipItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public WhereIsMyAccNumberTimeStampResponseModel GetWhereIsMyAccToolTipTimeStampItem()
+        {
+            WhereIsMyAccNumberTimeStampResponseModel respModel = new WhereIsMyAccNumberTimeStampResponseModel();
+            try
+            {
+                WhereIsMyAccNumberService service = new WhereIsMyAccNumberService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<WhereIsMyAccNumberTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetEppToolTipTimeStampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+
+        /// WHO IS REGISTERED OWNER
+        public WhoIsRegisteredOwnerResponseModel GetWhoIsRegisteredOwnerToolTipItem()
+        {
+            WhoIsRegisteredOwnerResponseModel respModel = new WhoIsRegisteredOwnerResponseModel();
+            try
+            {
+                WhoIsRegisteredOwnerService service = new WhoIsRegisteredOwnerService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<WhoIsRegisteredOwnerResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetWhoIsRegisteredOwnerToolTipItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public WhoIsRegisteredOwnerTimeStampResponseModel GetWhoIsRegisteredOwnerToolTipTimeStampItem()
+        {
+            WhoIsRegisteredOwnerTimeStampResponseModel respModel = new WhoIsRegisteredOwnerTimeStampResponseModel();
+            try
+            {
+                WhoIsRegisteredOwnerService service = new WhoIsRegisteredOwnerService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<WhoIsRegisteredOwnerTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetEppToolTipTimeStampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        /// DO I NEED OWNER CONSENT
+        public DoINeedOwnerConsentOwnerResponseModel DoINeedOwnerConsentToolTipItem()
+        {
+            DoINeedOwnerConsentOwnerResponseModel respModel = new DoINeedOwnerConsentOwnerResponseModel();
+            try
+            {
+                DoINeedOwnerConsentService service = new DoINeedOwnerConsentService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<DoINeedOwnerConsentOwnerResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetWhoIsRegisteredOwnerToolTipItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public DoINeedOwnerConsentTimeStampResponseModel DoINeedOwnerConsentToolTipTimeStampItem()
+        {
+            DoINeedOwnerConsentTimeStampResponseModel respModel = new DoINeedOwnerConsentTimeStampResponseModel();
+            try
+            {
+                DoINeedOwnerConsentService service = new DoINeedOwnerConsentService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<DoINeedOwnerConsentTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetEppToolTipTimeStampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        /// HOW DOES COPY OF IDENTIFICATION LOOK LIKE
+        public HowDoesCopyOfIdentificationpResponseModel GetHowDoesCopyOfIdentificationpToolTipItem()
+        {
+            HowDoesCopyOfIdentificationpResponseModel respModel = new HowDoesCopyOfIdentificationpResponseModel();
+            try
+            {
+                HowDoesCopyOfIdentificationService service = new HowDoesCopyOfIdentificationService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<HowDoesCopyOfIdentificationpResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/DoINeedOwnerConsentToolTipItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public HowDoesCopyOfIdentificationTimeStampResponseModel GetHowDoesCopyOfIdentificationTimeStampItem()
+        {
+            HowDoesCopyOfIdentificationTimeStampResponseModel respModel = new HowDoesCopyOfIdentificationTimeStampResponseModel();
+            try
+            {
+                HowDoesCopyOfIdentificationService service = new HowDoesCopyOfIdentificationService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<HowDoesCopyOfIdentificationTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/HowDoesCopyOfIdentificationTimeStampItem: " + e.Message);
+            }
+            return respModel;
+        }
+        /// HOW DOES PROOF OF CONSENT LOOK LIKE
+        public HowDoesProofOfConsentResponseModel GetHowDoesProofOfConsentToolTipItem()
+        {
+            HowDoesProofOfConsentResponseModel respModel = new HowDoesProofOfConsentResponseModel();
+            try
+            {
+                HowDoesProofOfConsentService service = new HowDoesProofOfConsentService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<HowDoesProofOfConsentResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetHowDoesProofOfConsentToolTipItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public HowDoesProofOfConsentTimeStampResponseModel GetHowDoesProofOfConsentTimeStampItem()
+        {
+            HowDoesProofOfConsentTimeStampResponseModel respModel = new HowDoesProofOfConsentTimeStampResponseModel();
+            try
+            {
+                HowDoesProofOfConsentService service = new HowDoesProofOfConsentService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<HowDoesProofOfConsentTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetHowDoesProofOfConsentTimeStampItem: " + e.Message);
             }
             return respModel;
         }

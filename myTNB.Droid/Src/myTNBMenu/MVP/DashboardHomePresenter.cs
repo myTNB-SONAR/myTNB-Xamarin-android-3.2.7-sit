@@ -1531,6 +1531,36 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             });
         }
 
+        public Task OnWhereIsMyAccNumberContentDetail()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
+
+                    WhereIsMyAccNumberTimeStampResponseModel timestampModel = getItemsService.GetWhereIsMyAccToolTipTimeStampItem();
+                    if (timestampModel.Status.Equals("Success") && timestampModel.Data != null && timestampModel.Data.Count > 0)
+                    {
+                        if (SitecoreCmsEntity.IsNeedUpdates(SitecoreCmsEntity.SITE_CORE_ID.WHERE_IS_MY_ACC, timestampModel.Data[0].Timestamp))
+                        {
+                            WhereIsMyAccNumberResponseModel responseModel = getItemsService.GetWhereIsMyAccToolTipItem();
+
+                            if (responseModel.Status.Equals("Success"))
+                            {
+                                SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.WHERE_IS_MY_ACC, JsonConvert.SerializeObject(responseModel.Data), timestampModel.Data[0].Timestamp);
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
+        }
+
         public Task OnGetBillTooltipContent()
         {
             return Task.Factory.StartNew(() =>
