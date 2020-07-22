@@ -1383,16 +1383,27 @@ namespace myTNB
         {
             feedbackUpdateDetailsList = new List<FeedbackUpdateDetailsModel>();
 
+            if(IsOwner == false)
+            { 
             int relationship = DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex + 1;
             string relationshipDesc = _typeRelationshipNameList[DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex];
 
-            if (IsSpecifyOther && relationship == 6 )
-            {
-                DataManager.DataManager.SharedInstance.Relationship = relationship;
-                DataManager.DataManager.SharedInstance.RelationshipDesc = txtFieldSpecifyOther.Text;
+                if (IsSpecifyOther && relationship == 5 )
+                {
+                    DataManager.DataManager.SharedInstance.Relationship = relationship;
+                    DataManager.DataManager.SharedInstance.RelationshipDesc = txtFieldSpecifyOther.Text;
+                }
+                else
+                {
+                    DataManager.DataManager.SharedInstance.Relationship = relationship;
+                    DataManager.DataManager.SharedInstance.RelationshipDesc = relationshipDesc;
+                }
             }
             else
             {
+                int relationship = 0;
+                string relationshipDesc = null;
+
                 DataManager.DataManager.SharedInstance.Relationship = relationship;
                 DataManager.DataManager.SharedInstance.RelationshipDesc = relationshipDesc;
             }

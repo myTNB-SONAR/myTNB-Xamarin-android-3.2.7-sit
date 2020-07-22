@@ -29,11 +29,19 @@ namespace myTNB
 
         //Cell General Enquiry
         public UIView Frame;
-        public UILabel lblTitle;        public UILabel lblSubtTitle;        public UIView viewLine;        public UILabel lblCount;        public UIImageView imgViewIcon;
+        public UILabel lblTitle;
+        public UILabel lblSubtTitle;
+        public UIView viewLine;
+        public UILabel lblCount;
+        public UIImageView imgViewIcon;
 
         //Cell Update Personal Detail
         public UIView Frame2;
-        public UILabel lblTitle2;        public UILabel lblSubtTitle2;        public UIView viewLine2;        public UILabel lblCount2;        public UIImageView imgViewIcon2;
+        public UILabel lblTitle2;
+        public UILabel lblSubtTitle2;
+        public UIView viewLine2;
+        public UILabel lblCount2;
+        public UIImageView imgViewIcon2;
 
         public override void ViewDidLoad()
         {
@@ -219,7 +227,6 @@ namespace myTNB
             _svContainer.AddSubview(_accContainer);
 
             SetKeyboard(_txtAccountNumber);
-            //_textFieldHelper.CreateDoneButton(_txtAccountNumber);
         }
 
         private void SetKeyboard(UITextField textField)
@@ -335,8 +342,11 @@ namespace myTNB
 
         public void CellGeneralEnquiry()
         {
-            nfloat cellWidth = View.Frame.Width;            nfloat cellHeight = 80;            Frame = new UIView(new CGRect(0, _viewTitleSection.Frame.GetMaxY(), cellWidth, cellHeight))
-            { BackgroundColor = UIColor.White };            imgViewIcon = new UIImageView(new CGRect(16, 13, 48, 48))
+            nfloat cellWidth = View.Frame.Width;
+            nfloat cellHeight = 80;
+            Frame = new UIView(new CGRect(0, _viewTitleSection.Frame.GetMaxY(), cellWidth, cellHeight))
+            { BackgroundColor = UIColor.White };
+            imgViewIcon = new UIImageView(new CGRect(16, 13, 48, 48))
             {
                 Image = UIImage.FromBundle("Feedback-Generic")
             };            lblTitle = new UILabel(new CGRect(80, 16, cellWidth - 96, 16))
@@ -382,11 +392,17 @@ namespace myTNB
                     _txtAccountNumber.TextColor = isAccountValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
                     _lblAccountNoError.Hidden = isAccountValid;
                 }
-            }));            Frame.AddSubviews(new UIView[] { imgViewIcon, lblTitle, lblSubtTitle, lblCount, viewLine });            _svContainer.AddSubviews(Frame);        }
+            }));
+            Frame.AddSubviews(new UIView[] { imgViewIcon, lblTitle, lblSubtTitle, lblCount, viewLine });
+            _svContainer.AddSubviews(Frame);        }
 
         public void CellUpdatePersonalDetail()
         {
-            nfloat cellWidth = View.Frame.Width;            nfloat cellHeight = 80;            Frame2 = new UIView(new CGRect(0, Frame.Frame.GetMaxY(), cellWidth, cellHeight))            {BackgroundColor = UIColor.White };            imgViewIcon2 = new UIImageView(new CGRect(16, 13, 48, 48))
+            nfloat cellWidth = View.Frame.Width;
+            nfloat cellHeight = 80;
+            Frame2 = new UIView(new CGRect(0, Frame.Frame.GetMaxY(), cellWidth, cellHeight))
+            {BackgroundColor = UIColor.White };
+            imgViewIcon2 = new UIImageView(new CGRect(16, 13, 48, 48))
             {
                 Image = UIImage.FromBundle("Feedback-Submitted")
             };            lblTitle2 = new UILabel(new CGRect(80, 16, cellWidth - 96, 16))
@@ -500,14 +516,10 @@ namespace myTNB
         {
             if (DataManager.DataManager.SharedInstance.IsFeedbackUpdateDetailDisabled)
             {
-                //_viewTitleSection.Hidden = true;
-                //Frame.Hidden = true;
                 Frame2.Hidden = true;
             }
             else
             {
-                //_viewTitleSection.Hidden = false;
-                //Frame.Hidden = false;
                 Frame2.Hidden = false;
             }
         }
@@ -525,7 +537,7 @@ namespace myTNB
 
         }
 
-        private UIImage GetFromUrl(string uri)//temporary solution
+        private UIImage GetFromUrl(string uri)//temporary
         {
             using (var url = new NSUrl(uri))
             using (var data = NSData.FromUrl(url, NSDataReadingOptions.Uncached, out NSError error))

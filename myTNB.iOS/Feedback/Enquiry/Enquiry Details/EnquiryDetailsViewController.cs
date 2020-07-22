@@ -142,7 +142,7 @@ namespace myTNB
                     TextColor = MyTNBColor.TunaGrey(),
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.WordWrap,
-                    Text = "for "+ _feedbackDetails.AccountNum //+ " - " + _feedbackDetails.StateName ?? string.Empty
+                    Text = _feedbackDetails.AccountNum //+ " - " + _feedbackDetails.StateName ?? string.Empty
                 };
 
                 _container1.AddSubviews(new UIView[] { lblTitleStatus, lblAccountNumber });
@@ -249,12 +249,12 @@ namespace myTNB
 
             if (_feedbackDetails.FeedbackUpdateDetails != null && _feedbackDetails.FeedbackUpdateDetails.Count > 0)
             {
-                _containerFeedbackUpdateDetails = new UIView(new CGRect(0, _containerRelation.Frame.GetMaxY(), View.Frame.Width, GetScaledHeight(48)))
+                _containerFeedbackUpdateDetails = new UIView(new CGRect(0, _feedbackDetails.RelationshipWithCA != 0 ? _containerRelation.Frame.GetMaxY() : _viewTitleSection.Frame.GetMaxY() , View.Frame.Width, GetScaledHeight(48)))
                 {
                     BackgroundColor = UIColor.White
                 };
 
-                    int x = 0;
+                    int x = _feedbackDetails.RelationshipWithCA != 0 ? 0 : 16;
                     foreach (FeedbackUpdateDetailsModels item in _feedbackDetails.FeedbackUpdateDetails)
                     {
                         UIView viewContainer = new UIView(new CGRect(18, x, _containerFeedbackUpdateDetails.Frame.Width - 18, 40));
@@ -289,7 +289,7 @@ namespace myTNB
                         _containerFeedbackUpdateDetails.AddSubview(viewContainer);
                         x += 40 + 16;
                     }
-                    _containerFeedbackUpdateDetails.Frame = new CGRect(0, _containerRelation.Frame.GetMaxY(), View.Frame.Width, x);
+                    _containerFeedbackUpdateDetails.Frame = new CGRect(0, _feedbackDetails.RelationshipWithCA != 0 ? _containerRelation.Frame.GetMaxY() : _viewTitleSection.Frame.GetMaxY(), View.Frame.Width, x);
 
                     _svContainer.AddSubview(_containerFeedbackUpdateDetails);
             }

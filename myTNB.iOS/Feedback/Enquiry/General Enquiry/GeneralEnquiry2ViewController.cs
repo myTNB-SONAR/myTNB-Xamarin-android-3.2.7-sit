@@ -81,6 +81,9 @@ namespace myTNB
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
+                if (Items.Count > 0)
+                    Items.Clear();
+
                 NavigationController?.PopViewController(true);
             });
             if (NavigationItem != null)
