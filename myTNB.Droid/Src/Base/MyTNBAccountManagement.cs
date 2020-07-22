@@ -121,6 +121,7 @@ namespace myTNB_Android.Src.Base
                 SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.DO_I_NEED_OWNER_CONSENT);
                 SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.HOW_DOES_COPY_IC);
                 SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.HOW_DOES_PROOF_OF_CONSENT);
+                SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP);
             }
             catch (Exception e)
             {

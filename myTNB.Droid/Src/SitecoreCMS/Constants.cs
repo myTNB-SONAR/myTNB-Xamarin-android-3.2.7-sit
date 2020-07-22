@@ -238,11 +238,8 @@
 
                 public const string AppLaunch = "/sitecore/content/myTNBapp/Contents/App Launch Image";
 
-#if DEBUG || STUB || DEVELOP || SIT
-                public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help_SIT";
-#else
                 public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
-#endif
+
                 public const string ApplySSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR Apply";
 
                 public const string EnergySavingTips = "/sitecore/content/myTNBapp/Contents/Energy Saving Tips";
@@ -257,13 +254,9 @@
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
                 public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
 
-#if DEBUG || STUB || DEVELOP || SIT
-                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json SIT";
-                public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew_SIT_V2";
-#else
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNewV2";
-#endif
+
                 public const string EppToolTip = "/sitecore/content/myTNBapp/Contents/EppToolTip";
                 public const string WhereIsMyAccToolTip ="/sitecore/content/myTNBapp/Contents/WhereIsMyAccToolTip";
                 public const string WhoIsRegisteredOwnerToolTip="/sitecore/content/myTNBapp/Contents/WhoIsRegisteredOwner";

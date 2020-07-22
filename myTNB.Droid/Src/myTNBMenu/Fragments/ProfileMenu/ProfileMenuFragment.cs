@@ -204,7 +204,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                     ((DashboardHomeActivity)this.Activity).OnResetPromotionRewards();
                     ((DashboardHomeActivity)this.Activity).OnResetEppTooltip();
                     ((DashboardHomeActivity)this.Activity).OnResetWhereIsMyAccNumber();
-                    
+                    ((DashboardHomeActivity)this.Activity).OnResetBillDetailTooltip();
                 }
 
                 FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Profile");

@@ -91,6 +91,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("PopUp_HeaderImage")]
         public string PopUp_HeaderImage { set; get; }
 
+        [Column("PopUp_HeaderImageB64")]
+        public string PopUp_HeaderImageB64 { set; get; }
+
         [Column("PopUp_Text_Content")]
         public string PopUp_Text_Content { set; get; }
 
@@ -159,6 +162,7 @@ namespace myTNB_Android.Src.Database.Model
                     item.ShowAtAppLaunchPopUp = obj.ShowAtAppLaunchPopUp;
                     item.PopUp_Text_Only = obj.PopUp_Text_Only;
                     item.PopUp_HeaderImage = obj.PopUp_HeaderImage;
+                    item.PopUp_HeaderImageB64 = string.IsNullOrEmpty(obj.PopUp_HeaderImageB64) ? "" : obj.PopUp_HeaderImageB64;
                     item.PopUp_Text_Content = obj.PopUp_Text_Content;
                     item.Disable_DoNotShow_Checkbox = obj.Disable_DoNotShow_Checkbox;
                     item.Donot_Show_In_WhatsNew = obj.Donot_Show_In_WhatsNew;
@@ -235,7 +239,7 @@ namespace myTNB_Android.Src.Database.Model
                         {
                             Utility.LoggingNonFatalError(ne);
                         }
-                        return (startResult >= 0 && endResult <= 0);
+                        return (startResult >= 0 && endResult <= 0 && !x.Donot_Show_In_WhatsNew);
                     });
 
                     if (matchList != null && matchList.Count > 0)
@@ -288,41 +292,12 @@ namespace myTNB_Android.Src.Database.Model
                         {
                             Utility.LoggingNonFatalError(ne);
                         }
-                        return (startResult >= 0 && endResult <= 0 && x.ShowAtAppLaunchPopUp && !x.SkipShowOnAppLaunch && x.ShowEveryCountDays_PopUp > 0/*&& x.ShowForTotalCountDays_PopUp > 0*/);
+                        return (startResult >= 0 && endResult <= 0 && x.ShowAtAppLaunchPopUp);
                     });
 
                     if (matchList != null && matchList.Count > 0)
                     {
-                        List<WhatsNewEntity> matchItemList = matchList.FindAll(x =>
-                        {
-                            bool isAlreadyExceedQuota = false;
-                            try
-                            {
-                                if (!string.IsNullOrEmpty(x.StartDate))
-                                {
-                                    DateTime nowDateTime = DateTime.Now;
-                                    DateTime showDateTime = DateTime.ParseExact(x.ShowDateForDay, "yyyyMMddTHHmmss",
-                                    CultureInfo.InvariantCulture, DateTimeStyles.None);
-
-                                    if (showDateTime.Date == nowDateTime.Date && x.ShowCountForDay >= x.ShowEveryCountDays_PopUp)
-                                    {
-                                        isAlreadyExceedQuota = true;
-                                    }
-                                }
-                            }
-                            catch (Exception ne)
-                            {
-                                Utility.LoggingNonFatalError(ne);
-                            }
-                            return (!isAlreadyExceedQuota);
-                        });
-
-                        if (matchItemList != null && matchItemList.Count > 0)
-                        {
-                            return matchItemList;
-                        }
-
-                        return new List<WhatsNewEntity>();
+                        return matchList;
                     }
 
                     return new List<WhatsNewEntity>();
@@ -365,11 +340,21 @@ namespace myTNB_Android.Src.Database.Model
                         {
                             Utility.LoggingNonFatalError(ne);
                         }
-                        return (startResult >= 0 && endResult <= 0);
+                        return (startResult >= 0 && endResult <= 0 && !x.Donot_Show_In_WhatsNew);
                     });
 
                     if (matchList != null && matchList.Count > 0)
                     {
+                        try
+                        {
+                            matchList.Sort((x, y) => DateTime.Compare(DateTime.ParseExact(y.PublishDate, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None), DateTime.ParseExact(x.PublishDate, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None)));
+                        }
+                        catch (Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
                         return matchList;
                     }
 
@@ -413,11 +398,21 @@ namespace myTNB_Android.Src.Database.Model
                         {
                             Utility.LoggingNonFatalError(ne);
                         }
-                        return (startResult >= 0 && endResult <= 0);
+                        return (startResult >= 0 && endResult <= 0 && !x.Donot_Show_In_WhatsNew);
                     });
 
                     if (matchList != null && matchList.Count > 0)
                     {
+                        try
+                        {
+                            matchList.Sort((x, y) => DateTime.Compare(DateTime.ParseExact(y.PublishDate, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None), DateTime.ParseExact(x.PublishDate, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None)));
+                        }
+                        catch (Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
                         return matchList;
                     }
 
@@ -564,6 +559,19 @@ namespace myTNB_Android.Src.Database.Model
             {
                 var db = DBHelper.GetSQLiteConnection();
                 db.Execute("UPDATE WhatsNewEntityV3 SET PortraitImage_PopUpB64 = ? WHERE ID = ?", imageB64, itemID);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Updating Item in Table : {0}", e.Message);
+            }
+        }
+
+        public void UpdateCachePopupHeaderImage(string itemID, string imageB64)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("UPDATE WhatsNewEntityV3 SET PopUp_HeaderImageB64 = ? WHERE ID = ?", imageB64, itemID);
             }
             catch (Exception e)
             {

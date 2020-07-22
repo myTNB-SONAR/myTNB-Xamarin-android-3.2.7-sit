@@ -71,7 +71,12 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 int topPadding = GetDeviceVerticalScaleInPixel(0.058f);
                 int leftRightPadding = GetDeviceHorizontalScaleInPixel(0.096f);
 
-                if (Resources.DisplayMetrics.HeightPixels >= 1920)
+                if (Resources.DisplayMetrics.HeightPixels >= 2200)
+                {
+                    topPadding = GetDeviceVerticalScaleInPixel(0.138f);
+                    leftRightPadding = GetDeviceHorizontalScaleInPixel(0.016f);
+                }
+                else if (Resources.DisplayMetrics.HeightPixels >= 1920)
                 {
                     topPadding = GetDeviceVerticalScaleInPixel(0.138f);
                     leftRightPadding = GetDeviceHorizontalScaleInPixel(0.036f);
@@ -79,6 +84,11 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 else if (Resources.DisplayMetrics.HeightPixels >= 1080)
                 {
                     leftRightPadding = GetDeviceHorizontalScaleInPixel(0.006f);
+                }
+
+                if (whatsnew != null && whatsnew.Count > 0 && string.IsNullOrEmpty(whatsnew[0].PortraitImage_PopUp))
+                {
+                    topPadding = 0;
                 }
 
                 pager.SetPadding(leftRightPadding, topPadding, leftRightPadding, 0);
