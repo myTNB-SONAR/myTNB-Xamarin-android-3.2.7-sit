@@ -177,8 +177,21 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 {
                     whatsNewMainImgLayout.Visibility = ViewStates.Gone;
                     imgWhatsNew.Visibility = ViewStates.Visible;
+                    imgWhatsNew.SetScaleType(ImageView.ScaleType.CenterCrop);
 
                     int photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.096f);
+                    if (mContext.Resources.DisplayMetrics.HeightPixels >= 2200)
+                    {
+                        photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - 6 * GetDeviceHorizontalScaleInPixel(0.016f);
+                    }
+                    else if (mContext.Resources.DisplayMetrics.HeightPixels >= 1920)
+                    {
+                        photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - 4 * GetDeviceHorizontalScaleInPixel(0.036f);
+                    }
+                    else if (mContext.Resources.DisplayMetrics.HeightPixels >= 1080)
+                    {
+                        photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - 2 * GetDeviceHorizontalScaleInPixel(0.006f);
+                    }
                     float photoRatio = 0.4929f;
                     int photoHeight = (int)(photoWidth * photoRatio);
 
@@ -323,9 +336,22 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 if (imgSrc == null)
                 {
                     int photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.096f);
+                    if (mContext.Resources.DisplayMetrics.HeightPixels >= 2200)
+                    {
+                        photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - 6 * GetDeviceHorizontalScaleInPixel(0.016f);
+                    }
+                    else if (mContext.Resources.DisplayMetrics.HeightPixels >= 1920)
+                    {
+                        photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - 4 * GetDeviceHorizontalScaleInPixel(0.036f);
+                    }
+                    else if (mContext.Resources.DisplayMetrics.HeightPixels >= 1080)
+                    {
+                        photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - 2 * GetDeviceHorizontalScaleInPixel(0.006f);
+                    }
                     float photoRatio = 0.4929f;
                     int photoHeight = (int)(photoWidth * photoRatio);
 
+                    imgWhatsNew.SetScaleType(ImageView.ScaleType.CenterCrop);
                     imgWhatsNew.SetImageResource(Resource.Drawable.ic_banner_whatsnewdialog);
                     imgWhatsNew.LayoutParameters.Height = photoHeight;
 
@@ -334,9 +360,22 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 else if (imgSrc != null)
                 {
                     float currentImgWidth = mContext.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.096f);
+                    if (mContext.Resources.DisplayMetrics.HeightPixels >= 2200)
+                    {
+                        currentImgWidth = mContext.Resources.DisplayMetrics.WidthPixels - 6 * GetDeviceHorizontalScaleInPixel(0.016f);
+                    }
+                    else if (mContext.Resources.DisplayMetrics.HeightPixels >= 1920)
+                    {
+                        currentImgWidth = mContext.Resources.DisplayMetrics.WidthPixels - 4 * GetDeviceHorizontalScaleInPixel(0.036f);
+                    }
+                    else if (mContext.Resources.DisplayMetrics.HeightPixels >= 1080)
+                    {
+                        currentImgWidth = mContext.Resources.DisplayMetrics.WidthPixels - 2 * GetDeviceHorizontalScaleInPixel(0.006f);
+                    }
                     float calImgRatio = currentImgWidth / imgSrc.Width;
                     int currentImgHeight = (int)(imgSrc.Height * calImgRatio);
 
+                    imgWhatsNew.SetScaleType(ImageView.ScaleType.CenterCrop);
                     imgWhatsNew.SetImageBitmap(imgSrc);
                     imgWhatsNew.LayoutParameters.Height = currentImgHeight;
                     imgWhatsNew.RequestLayout();
