@@ -253,7 +253,7 @@ namespace myTNB.Home.Dashboard.DashboardHome
             UITextView txtViewDetails = new UITextView
             {
                 Editable = false,
-                ScrollEnabled = true,
+                ScrollEnabled = false,
                 Selectable = false,
                 AttributedText = mutableHTMLBody,
                 WeakLinkTextAttributes = linkAttributes.Dictionary,
