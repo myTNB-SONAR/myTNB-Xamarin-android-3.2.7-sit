@@ -963,7 +963,7 @@
     "messageHint": "Your Message",
     "uploadDocTitle": "Upload supporting documents:",
     "attachTitle": "Attach photo/screenshot (optional)",
-    "attachDescription": "Maximum document size is 1MB (PDF, JPG &JPEG format only)",
+    "attachDescription": "Maximum document size is 5MB (PDF, JPG &JPEG format only)",
     "stepTitle2of2": "Step 2 of 2",
     "contactEnquiryTitle": "How can we contact you regarding this enquiry?",
     "nameHint": "Full Name (As per your identification card)",

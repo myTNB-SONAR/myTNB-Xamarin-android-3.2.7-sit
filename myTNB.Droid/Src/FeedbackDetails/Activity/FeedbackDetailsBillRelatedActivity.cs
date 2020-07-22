@@ -419,7 +419,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                         string maskedICNo = icNo;
 
                         TextInputLayoutNewIC.Visibility = ViewStates.Visible;
-                        EditTextNewIC.Text = maskedICNo;
+                        EditTextNewIC.Text = item.FeedbackUpdInfoValue.Length>4 ? maskedICNo : item.FeedbackUpdInfoValue;
                         TextInputLayoutNewIC.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "newIC").ToUpper();
 
                  
