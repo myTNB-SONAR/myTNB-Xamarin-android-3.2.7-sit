@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using myTNB.SitecoreCMS.Extensions;
 using myTNB.SitecoreCMS.Model;
@@ -117,7 +114,7 @@ namespace myTNB.SitecoreCMS.Service
         private async Task<IEnumerable<WhatsNewModel>> GenerateWhatsNewChildren(ScItemsResponse itemsResponse)
         {
             List<WhatsNewModel> list = new List<WhatsNewModel>();
-            await Task.Run(async() =>
+            await Task.Run(async () =>
             {
                 try
                 {
@@ -147,11 +144,14 @@ namespace myTNB.SitecoreCMS.Service
 
                         try
                         {
-                            listlItem.ShowEveryCountDays_PopUp = !string.IsNullOrEmpty(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowEveryCountDays_PopUp)) ? int.Parse(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowEveryCountDays_PopUp)) : 0;
+                            listlItem.ShowEveryCountDays_PopUp = !string.IsNullOrEmpty(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowEveryCountDays_PopUp)) ? int.Parse(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowEveryCountDays_PopUp)) : -1;
                         }
                         catch (Exception ex)
                         {
-                            listlItem.ShowEveryCountDays_PopUp = 0;
+#if DEBUG || MASTER
+                            Debug.WriteLine("Error: " + ex.Message);
+#endif
+                            listlItem.ShowEveryCountDays_PopUp = -1;
                         }
                         try
                         {
@@ -159,6 +159,9 @@ namespace myTNB.SitecoreCMS.Service
                         }
                         catch (Exception ex)
                         {
+#if DEBUG || MASTER
+                            Debug.WriteLine("Error: " + ex.Message);
+#endif
                             listlItem.ShowForTotalCountDays_PopUp = 0;
                         }
                         try
@@ -167,6 +170,9 @@ namespace myTNB.SitecoreCMS.Service
                         }
                         catch (Exception ex)
                         {
+#if DEBUG || MASTER
+                            Debug.WriteLine("Error: " + ex.Message);
+#endif
                             listlItem.ShowAtAppLaunchPopUp = false;
                         }
 
@@ -176,6 +182,9 @@ namespace myTNB.SitecoreCMS.Service
                         }
                         catch (Exception ex)
                         {
+#if DEBUG || MASTER
+                            Debug.WriteLine("Error: " + ex.Message);
+#endif
                             listlItem.PopUp_Text_Only = false;
                         }
 
@@ -185,6 +194,9 @@ namespace myTNB.SitecoreCMS.Service
                         }
                         catch (Exception ex)
                         {
+#if DEBUG || MASTER
+                            Debug.WriteLine("Error: " + ex.Message);
+#endif
                             listlItem.Donot_Show_In_WhatsNew = false;
                         }
 
@@ -194,6 +206,9 @@ namespace myTNB.SitecoreCMS.Service
                         }
                         catch (Exception ex)
                         {
+#if DEBUG || MASTER
+                            Debug.WriteLine("Error: " + ex.Message);
+#endif
                             listlItem.Disable_DoNotShow_Checkbox = false;
                         }
 

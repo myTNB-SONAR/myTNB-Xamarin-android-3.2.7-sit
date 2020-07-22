@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
@@ -528,10 +527,6 @@ namespace myTNB.SitecoreCMS
         {
             return Task.Factory.StartNew(() =>
             {
-#if DEBUG
-            LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE
-                , TNBGlobal.APP_LANGUAGE == "EN" ? LanguageManager.Language.EN : LanguageManager.Language.MS);
-#else
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS
                     , DataManager.DataManager.SharedInstance.ImageSize
                     , TNBGlobal.SITECORE_URL
@@ -550,7 +545,7 @@ namespace myTNB.SitecoreCMS
 
                 UpdateTimeStamp(timeStamp.Data[0].Timestamp, "LanguageTimeStamp", ref needsUpdate);
 
-                if (needsUpdate || !LanguageUtility.HasSavedContent)
+                if (timeStamp.Status != null && timeStamp.Status == "Success" && (needsUpdate || !LanguageUtility.HasSavedContent))
                 {
                     LanguageResponseModel languageItems = iService.GetLanguageItems();
                     if (languageItems != null
@@ -597,8 +592,12 @@ namespace myTNB.SitecoreCMS
                         UpdateSharedPreference(timeStamp.Data[0].Timestamp, "LanguageJSON");
                     }
                     LanguageUtility.SetLanguageGlobals();
+                    LanguageUtility.SaveLanguageContent(content);
+                    if (_isForcedUpdate)
+                    {
+                        LanguageUtility.SetLanguage(TNBGlobal.APP_LANGUAGE);
+                    }
                 }
-#endif
             });
         }
 

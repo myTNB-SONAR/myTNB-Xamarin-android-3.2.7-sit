@@ -85,6 +85,7 @@ namespace myTNB.SSMR
         public static string IMG_Refresh = "SSMR-Refresh";
         public static string IMG_NoHistory = "SSMR-No-History";
         public static string IMG_CameraIcon = "Camera-Icon-Green";
+        public static string IMG_Meter = "Sample-Meter";
 
         //Error
         public static string I18N_InvalidEmail = "invalid_email";
@@ -108,6 +109,10 @@ namespace myTNB.SSMR
         public static string I18N_TutorialGotIt = "tutorialGotIt";
         public static string I18N_PrevReadingEmptyTitle = "prevReadingEmptyTitle";
         public static string I18N_PrevReadingEmptyMsg = "prevReadingEmptyMsg";
+        public static string I18N_WhereIsMyMeter = "whereIsMyMeter";
+        public static string I18N_WhereIsMyMeterTitle = "whereIsMyMeterTitle";
+        public static string I18N_WhereIsMyMeterMessage = "whereIsMyMeterMessage";
+        public static string I18N_DoYouHaveMeterAccess = "doYouHaveMeterAccess";
 
         //Capture Meter
         public static string I18N_OCRReading = "ocrReading";
@@ -157,7 +162,8 @@ namespace myTNB.SSMR
         //Event Names
         public static string EVENT_SubmitToOCR = "SubmitImagesToOCR";
         public static string EVENT_DeleteImage = "DeleteImage";
-        public static string EVENT_DisableSelfMeterReading = "DisableSelfMeterReading";
+        public static string EVENT_DisableSelfMeterReading = "DisableSMR";
+        public static string EVENT_EnableSelfMeterReading = "EnableSMR";
         public static string EVENT_Refresh = "Refresh";
 
         public static int Max_ReasonCharacterCount = 550;

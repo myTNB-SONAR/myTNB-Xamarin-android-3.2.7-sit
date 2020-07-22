@@ -1832,6 +1832,13 @@
     <ImageAsset Include="Assets\Assets.xcassets\imgIcCopy.imageset\imgIcCopy.jpg" />
     <ImageAsset Include="Assets\Assets.xcassets\imgIcCopy.imageset\imgIcCopy%402x.jpg" />
     <ImageAsset Include="Assets\Assets.xcassets\imgIcCopy.imageset\imgIcCopy%403x.jpg" />
+    <ImageAsset Include="Assets\SMR.xcassets\Contents.json" />
+    <ImageAsset Include="Assets\SMR.xcassets\Sample-Meter.imageset\Contents.json" />
+    <ImageAsset Include="Assets\SMR.xcassets\Sample-Meter.imageset\imgSmrIos%402x.png" />
+    <ImageAsset Include="Assets\SMR.xcassets\Sample-Meter.imageset\imgSmrIos%403x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\WhatsNew-Popup-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Assets.xcassets\WhatsNew-Popup-Banner.imageset\group5Copy%402x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\WhatsNew-Popup-Banner.imageset\group5Copy%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1990,6 +1997,9 @@
     <Folder Include="Feedback\Enquiry\Enquiry Details\" />
     <Folder Include="Assets\Assets.xcassets\imgPoc.imageset\" />
     <Folder Include="Assets\Assets.xcassets\imgIcCopy.imageset\" />
+    <Folder Include="Assets\SMR.xcassets\Sample-Meter.imageset\" />
+    <Folder Include="Assets\Assets.xcassets\WhatsNew-Popup-Banner.imageset\" />
+    <Folder Include="Home\Dashboard\DashboardHome\Home Popup\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2839,12 +2849,12 @@
     </Compile>
     <Compile Include="Model\Feedback\FeedbackUpdateDetailsModel.cs" />
     <Compile Include="Session Cache\WhatsNewDetailCache.cs" />
-    <Compile Include="Whats New\WhatsNewModalViewController.cs" />
-    <Compile Include="Whats New\WhatsNewModalViewController.designer.cs" />
-    <Compile Include="Whats New\WhatsNewModalDataSource.cs" />
     <Compile Include="Session Cache\WhatsNewPopupCache.cs" />
     <Compile Include="Session Cache\WhatsNewDetailDescriptionCache.cs" />
     <Compile Include="Feedback\Enquiry\Enquiry Status Page\EnquiryStatusPageConstants.cs" />
+    <Compile Include="Common\CommonInfoBar.cs" />
+    <Compile Include="SSMR\Reading History\SSMRReadingHistoryView.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Home Popup\HomePopup.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

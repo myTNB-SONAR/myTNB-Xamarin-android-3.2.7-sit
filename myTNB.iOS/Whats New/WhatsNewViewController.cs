@@ -140,6 +140,7 @@ namespace myTNB
                 _whatsNewList = whatsNewEntity.GetAllItems();
                 if (_whatsNewList != null && _whatsNewList.Count > 0)
                 {
+                    _whatsNewList = _whatsNewList.FindAll(x => !x.Donot_Show_In_WhatsNew);
                     _categoryList = new List<WhatsNewModel>();
                     _categoryList = _whatsNewList.GroupBy(x => x.CategoryID).Select(x => x.First()).ToList();
 

@@ -48,7 +48,6 @@ namespace myTNB
         public bool IsNeedHelpCallDone;
         private bool _hotspotIsOn;
         private bool _isLanguageChanged;
-        private WhatsNewModalViewController whatsNewModalView;
 
         public override void ViewDidLoad()
         {
@@ -168,6 +167,15 @@ namespace myTNB
                 OnRearrangeSuccess(RearrangeSuccessMsg);
                 IsRearrangeSaved = false;
             }
+        }
+
+        public override void ViewDidDisappear(bool animated)
+        {
+            base.ViewDidDisappear(animated);
+        }
+
+        private void OnDisplayBCRMPopup()
+        {
             bool isBRCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             if (!isBRCRMAvailable && !AppLaunchMasterCache.IsBCRMPopupDisplayed)
             {
@@ -197,11 +205,6 @@ namespace myTNB
             }
         }
 
-        public override void ViewDidDisappear(bool animated)
-        {
-            base.ViewDidDisappear(animated);
-        }
-
         public void UpdateGreeting(string greeting)
         {
             if (_dashboardHomeHeader != null)
@@ -224,7 +227,8 @@ namespace myTNB
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
 
-            if (tutorialOverlayHasShown) {
+            if (tutorialOverlayHasShown)
+            {
                 ShowWhatsNewPopUp();
                 return;
             }
@@ -268,7 +272,8 @@ namespace myTNB
                     {
                         _ = Task.Delay(500).ContinueWith(_ =>
                         {
-                            InvokeOnMainThread(() => {
+                            InvokeOnMainThread(() =>
+                            {
                                 DataManager.DataManager.SharedInstance.IsWhatsNewFirstLoad = false;
                                 ShowWhatsNewPopUp();
                             });
@@ -279,7 +284,7 @@ namespace myTNB
                         InvokeOnMainThread(() =>
                         {
                             WhatsNewEntity wsManager = new WhatsNewEntity();
-                            var items = wsManager.GetActivePopupItems();
+                            List<WhatsNewModel> items = wsManager.GetActivePopupItems();
                             if (items != null && items.Count > 0)
                             {
                                 for (int index = 0; index < items.Count; index++)
@@ -289,6 +294,7 @@ namespace myTNB
                                     int count = items[index].ShowCountForDay;
                                     DateTime showDateTime = DateTime.ParseExact(recordDate, "yyyyMMddTHHmmss",
                                         CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                    Debug.WriteLine("is same day: " + (showDateTime.Date == DateTime.Now.Date));
                                     if (showDateTime.Date == DateTime.Now.Date)
                                     {
                                         WhatsNewServices.SetWhatNewModelShowDate(id, false);
@@ -303,20 +309,28 @@ namespace myTNB
                                     WhatsNewServices.SetWhatNewModelShowCount(id, count);
                                 }
 
-                                whatsNewModalView = new WhatsNewModalViewController();
-                                whatsNewModalView.WhatsNews = items;
-                                whatsNewModalView.OnWhatsNewClick = OnNavigateWhatsNewModal;
-                                whatsNewModalView.OnDismissWhatsNew = OnDismissWhatsNewModal;
-                                UINavigationController navController = new UINavigationController(whatsNewModalView)
-                                {
-                                    ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen
-                                };
-                                PresentViewController(navController, true, null);
+                                this.DisplayMarketingPopup(items[0], OnTapHomePopUp);
+                            }
+                            else
+                            {
+                                OnDisplayBCRMPopup();
                             }
                         });
                     }
                 });
             }
+            else
+            {
+                OnDisplayBCRMPopup();
+            }
+        }
+
+        public void OnTapHomePopUp(WhatsNewModel whatnew)
+        {
+            whatnew.IsRead = true;
+            WhatsNewServices.SetIsRead(whatnew.ID);
+            DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId = whatnew.ID;
+            OnNavigateWhatsNewModal();
         }
 
         public void OnNavigateWhatsNewModal()
@@ -334,20 +348,6 @@ namespace myTNB
                 }
 
                 DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId = "";
-            }
-        }
-
-        public void OnDismissWhatsNewModal()
-        {
-            if (whatsNewModalView.WhatsNews.Count == 0)
-            {
-                whatsNewModalView.DismissViewController(true, () =>
-                {
-                    if (DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId.IsValid())
-                    {
-                        OnNavigateWhatsNewModal();
-                    }
-                });
             }
         }
 
@@ -701,7 +701,10 @@ namespace myTNB
             }
             _homeTableView = new UITableView(new CGRect(0, yPos
                 , ViewWidth, ViewHeight + addtlHeight))
-            { BackgroundColor = UIColor.Clear };
+            {
+                BackgroundColor = UIColor.Clear,
+                ShowsVerticalScrollIndicator = false
+            };
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _homeTableView.RegisterClassForCellReuse(typeof(AccountsTableViewCell), DashboardHomeConstants.Cell_Accounts);
             _homeTableView.RegisterClassForCellReuse(typeof(ServicesTableViewCell), DashboardHomeConstants.Cell_Services);

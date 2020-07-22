@@ -23,8 +23,10 @@ namespace myTNB
         {
             get
             {
-#if DEBUG || MASTER
+#if DEBUG
                 return "http://10.215.70.246/";//"http://tnbcsdevapp.tnb.my/";
+#elif MASTER
+                return "http://10.215.70.248/";//"http://tnbcsstgapp.tnb.my/";
 #else
                 return "https://sitecore.tnb.com.my/";
 #endif
