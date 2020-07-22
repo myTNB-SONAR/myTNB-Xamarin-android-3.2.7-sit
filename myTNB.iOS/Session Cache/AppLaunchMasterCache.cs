@@ -36,6 +36,7 @@ namespace myTNB
                 masterData = response.d.data;
                 IsSuccess = response.d.IsSuccess;
 
+                DataManager.DataManager.SharedInstance.IsFeedbackUpdateDetailDisabled = dataModel.IsFeedbackUpdateDetailDisabled;
                 DataManager.DataManager.SharedInstance.LatestAppVersion = masterData?.ForceUpdateInfo?.iOSLatestVersion;
                 DataManager.DataManager.SharedInstance.SystemStatus = masterData?.SystemStatus ?? new List<DowntimeDataModel>();
                 DataManager.DataManager.SharedInstance.SetSystemsAvailability();

@@ -1824,14 +1824,6 @@
     <ImageAsset Include="Assets\Rewards.xcassets\Reward_Default-Banner.imageset\Reward_Default-Banner%403x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%403x.png" />
-    <ImageAsset Include="Assets\Assets.xcassets\imgPoc.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\imgPoc.imageset\imgPoc.jpg" />
-    <ImageAsset Include="Assets\Assets.xcassets\imgPoc.imageset\imgPoc%402x.jpg" />
-    <ImageAsset Include="Assets\Assets.xcassets\imgPoc.imageset\imgPoc%403x.jpg" />
-    <ImageAsset Include="Assets\Assets.xcassets\imgIcCopy.imageset\Contents.json" />
-    <ImageAsset Include="Assets\Assets.xcassets\imgIcCopy.imageset\imgIcCopy.jpg" />
-    <ImageAsset Include="Assets\Assets.xcassets\imgIcCopy.imageset\imgIcCopy%402x.jpg" />
-    <ImageAsset Include="Assets\Assets.xcassets\imgIcCopy.imageset\imgIcCopy%403x.jpg" />
     <ImageAsset Include="Assets\SMR.xcassets\Contents.json" />
     <ImageAsset Include="Assets\SMR.xcassets\Sample-Meter.imageset\Contents.json" />
     <ImageAsset Include="Assets\SMR.xcassets\Sample-Meter.imageset\imgSmrIos%402x.png" />
@@ -2851,9 +2843,14 @@
     <Compile Include="Session Cache\WhatsNewDetailCache.cs" />
     <Compile Include="Session Cache\WhatsNewPopupCache.cs" />
     <Compile Include="Session Cache\WhatsNewDetailDescriptionCache.cs" />
+    <Compile Include="Feedback\Enquiry\Enquiry Status Page\EnquiryStatusPageConstants.cs" />
     <Compile Include="Common\CommonInfoBar.cs" />
     <Compile Include="SSMR\Reading History\SSMRReadingHistoryView.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Home Popup\HomePopup.cs" />
+    <Compile Include="Feedback\Enquiry\EnquiryTNCViewController.cs" />
+    <Compile Include="Feedback\Enquiry\EnquiryTNCViewController.designer.cs">
+      <DependentUpon>EnquiryTNCViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

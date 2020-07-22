@@ -47,7 +47,8 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
-            PageName = FeedbackConstants.Pagename_FeedbackDetails;
+            PageName = EnquiryConstants.Pagename_Enquiry;
+
             base.ViewDidLoad();
             AddBackButton();
             AddScrollView();
@@ -65,27 +66,6 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            GetNickName();
-            //feedbackDetailsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-            //feedbackDetailsTableView.Source = new FeedbackDetailsDataSource(this, FeedbackDetails);
-            //feedbackDetailsTableView.ReloadData();
-        }
-
-        /// <summary>
-        /// Gets the nickname of the account number to be appended for display.
-        /// </summary>
-        private void GetNickName()
-        {
-            if (_feedbackDetails.FeedbackCategoryId == "1" && !string.IsNullOrEmpty(_feedbackDetails.AccountNum))
-            {
-                int index = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindIndex(x => x.accNum == _feedbackDetails.AccountNum) ?? -1;
-
-                if (index >= 0)
-                {
-                    _feedbackDetails.AccountNum = string.Format("{0} - {1}", _feedbackDetails?.AccountNum
-                        , DataManager.DataManager.SharedInstance?.AccountRecordsList?.d[index]?.accDesc);
-                }
-            }
         }
 
         private void AddBackButton()
@@ -97,6 +77,8 @@ namespace myTNB
                 DismissViewController(true, null);
             });
             NavigationItem.LeftBarButtonItem = btnBack;
+
+            Title = GetI18NValue(EnquiryConstants.submittedEnquiryTitle);
         }
 
         private void AddScrollView()
@@ -160,7 +142,7 @@ namespace myTNB
                     TextColor = MyTNBColor.TunaGrey(),
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.WordWrap,
-                    Text = "for "+ _feedbackDetails.AccountNum //+ " - " + _feedbackDetails.StateName ?? string.Empty
+                    Text = _feedbackDetails.AccountNum //+ " - " + _feedbackDetails.StateName ?? string.Empty
                 };
 
                 _container1.AddSubviews(new UIView[] { lblTitleStatus, lblAccountNumber });
@@ -179,7 +161,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "Enquiry Details"
+                Text = GetI18NValue(EnquiryConstants.reqUpdate) //reqUpdate
             };
 
             _viewTitleSection.AddSubview(lblSectionTitle);
@@ -197,7 +179,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_10_500,
                 TextColor = MyTNBColor.SilverChalice,
-                Text = "Your Message".ToUpper()
+                Text = GetI18NValue(EnquiryConstants.messageHint).ToUpper() // "Your Message".ToUpper()
             };
 
             lblValueStatus2 = new UILabel(new CGRect(18, lblTitleStatus2.Frame.GetMaxY() + 4, _container2.Frame.Width - 18, 18))
@@ -231,7 +213,7 @@ namespace myTNB
                 {
                     Font = TNBFont.MuseoSans_10_500,
                     TextColor = MyTNBColor.SilverChalice,
-                    Text = "Relationship with owner".ToUpper()
+                    Text = GetI18NValue(EnquiryConstants.relationshipTitle).ToUpper()
                 };
 
                 lblRelationShipDesc = new UILabel(new CGRect(18, lblTitleRelationship.Frame.GetMaxY() + 4, _containerRelation.Frame.Width - 18, 24))
@@ -243,14 +225,14 @@ namespace myTNB
                 _svContainer.AddSubviews(_containerRelation);
                 _containerRelation.Frame = new CGRect(0, _viewTitleSection.Frame.GetMaxY(), View.Frame.Width, lblRelationShipDesc.Frame.GetMaxY() + 16);
 
-                if (_feedbackDetails.RelationshipWithCA == 6) //add specify relatioship
+                if (_feedbackDetails.RelationshipWithCA == 5) //add specify relatioship
                 {
-                    lblRelationShipDesc.Text = "Others";
+                    lblRelationShipDesc.Text = GetI18NValue(EnquiryConstants.othersTitle); //"Others";
                     lblTitleRelationshipOther = new UILabel(new CGRect(18, lblRelationShipDesc.Frame.GetMaxY() + 16, _containerRelation.Frame.Width - 18, 12))
                     {
                         Font = TNBFont.MuseoSans_10_500,
                         TextColor = MyTNBColor.SilverChalice,
-                        Text = "Specify RelationShip with owner".ToUpper()
+                        Text = GetI18NValue(EnquiryConstants.otherRelationshipHint).ToUpper()
                     };
 
                     lblRelationShipOther = new UILabel(new CGRect(18, lblTitleRelationshipOther.Frame.GetMaxY() + 4, _containerRelation.Frame.Width - 18, 24))
@@ -267,12 +249,12 @@ namespace myTNB
 
             if (_feedbackDetails.FeedbackUpdateDetails != null && _feedbackDetails.FeedbackUpdateDetails.Count > 0)
             {
-                _containerFeedbackUpdateDetails = new UIView(new CGRect(0, _containerRelation.Frame.GetMaxY(), View.Frame.Width, GetScaledHeight(48)))
+                _containerFeedbackUpdateDetails = new UIView(new CGRect(0, _feedbackDetails.RelationshipWithCA != 0 ? _containerRelation.Frame.GetMaxY() : _viewTitleSection.Frame.GetMaxY() , View.Frame.Width, GetScaledHeight(48)))
                 {
                     BackgroundColor = UIColor.White
                 };
 
-                    int x = 0;
+                    int x = _feedbackDetails.RelationshipWithCA != 0 ? 0 : 16;
                     foreach (FeedbackUpdateDetailsModels item in _feedbackDetails.FeedbackUpdateDetails)
                     {
                         UIView viewContainer = new UIView(new CGRect(18, x, _containerFeedbackUpdateDetails.Frame.Width - 18, 40));
@@ -290,11 +272,24 @@ namespace myTNB
                             Text = item.FeedbackUpdInfoValue
                         };
 
+                        if(item.FeedbackUpdInfoType == 1)
+                        {
+                        string icNo = item?.FeedbackUpdInfoValue;
+                        if (!string.IsNullOrEmpty(icNo) && icNo.Length > 4)
+                        {
+                            string lastDigit = icNo.Substring(icNo.Length - 4);
+                            icNo = "•••••• •• " + lastDigit;
+                            string maskedICNo = icNo;
+                            lblViewInfo.Text = maskedICNo;
+                        }
+ 
+                    }
+
                         viewContainer.AddSubviews(lblView , lblViewInfo);
                         _containerFeedbackUpdateDetails.AddSubview(viewContainer);
                         x += 40 + 16;
                     }
-                    _containerFeedbackUpdateDetails.Frame = new CGRect(0, _containerRelation.Frame.GetMaxY(), View.Frame.Width, x);
+                    _containerFeedbackUpdateDetails.Frame = new CGRect(0, _feedbackDetails.RelationshipWithCA != 0 ? _containerRelation.Frame.GetMaxY() : _viewTitleSection.Frame.GetMaxY(), View.Frame.Width, x);
 
                     _svContainer.AddSubview(_containerFeedbackUpdateDetails);
             }
@@ -313,7 +308,7 @@ namespace myTNB
                 {
                     Font = TNBFont.MuseoSans_10_500,
                     TextColor = MyTNBColor.SilverChalice,
-                    Text = "Photo / Screenshot".ToUpper()
+                    Text = GetI18NValue(EnquiryConstants.photoTitle).ToUpper()
                 };
 
                 _containerImage = new UIView(new CGRect(0, lblTitlePhoto.Frame.GetMaxY() + 4, View.Frame.Width, GetScaledHeight(48)))
@@ -382,7 +377,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "Contact Details"
+                Text = GetI18NValue(EnquiryConstants.contactDetailsTitle)
             };
 
             _viewTitleSection2.AddSubview(lblSectionTitle);
@@ -400,7 +395,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_10_500,
                 TextColor = MyTNBColor.SilverChalice,
-                Text = "Name".ToUpper()
+                Text = GetCommonI18NValue("name").ToUpper()
             };
 
             lblContactName = new UILabel(new CGRect(18, lblTitleContactName.Frame.GetMaxY() + 4, _container4.Frame.Width - 18, 24))
@@ -415,7 +410,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_10_500,
                 TextColor = MyTNBColor.SilverChalice,
-                Text = "Email Address".ToUpper()
+                Text = GetCommonI18NValue("emailAddress").ToUpper()
             };
 
             lblContactEmail = new UILabel(new CGRect(18, lblTitleContactEmail.Frame.GetMaxY() + 4, _container4.Frame.Width - 18, 24))
@@ -430,7 +425,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_10_500,
                 TextColor = MyTNBColor.SilverChalice,
-                Text = "Mobile Number".ToUpper()
+                Text = GetCommonI18NValue("mobileNumber").ToUpper()
             };
 
             lblContactMobile = new UILabel(new CGRect(18, lblTitleContactMobile.Frame.GetMaxY() + 4, _container4.Frame.Width - 18, 24))
