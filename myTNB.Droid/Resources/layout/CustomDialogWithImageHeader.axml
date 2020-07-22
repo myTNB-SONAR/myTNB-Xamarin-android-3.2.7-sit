@@ -20,16 +20,12 @@
         android:id="@+id/rootView"
         android:layout_marginTop="-2dp"
         >
-        <RelativeLayout
-            android:layout_width="284dp"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/imgToolTipHeader"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                android:src="@drawable/single_phase"/>
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/imgToolTipHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/single_phase"/>
         <TextView
             android:id="@+id/txtToolTipTitle"
             android:layout_height="wrap_content"
