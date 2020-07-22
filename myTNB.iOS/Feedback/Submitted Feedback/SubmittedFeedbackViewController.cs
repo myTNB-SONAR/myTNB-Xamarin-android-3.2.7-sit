@@ -20,7 +20,8 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
-            PageName = FeedbackConstants.Pagename_SubmittedFeedback;
+            PageName = EnquiryConstants.Pagename_Enquiry;
+
             base.ViewDidLoad();
             AddBackButton();
         }
@@ -78,6 +79,8 @@ namespace myTNB
                 DismissViewController(true, null);
             });
             NavigationItem.LeftBarButtonItem = btnBack;
+
+            Title = GetI18NValue(EnquiryConstants.viewSubmittedEnquiry);
         }
 
         //Call from on row select

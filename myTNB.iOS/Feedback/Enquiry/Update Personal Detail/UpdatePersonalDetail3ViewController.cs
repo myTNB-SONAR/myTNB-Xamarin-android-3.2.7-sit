@@ -1,5 +1,6 @@
 using CoreGraphics;
 using Foundation;
+using myTNB.Feedback;
 using myTNB.Feedback.FeedbackImage;
 using myTNB.Model;
 using myTNB.Registration;
@@ -22,59 +23,27 @@ namespace myTNB
         SubmitFeedbackResponseModel _submitFeedback;
         public bool IsOwner;
 
-        private UIView _viewTitleSection, _viewTitleSection2, _btnSubmitContainer, _viewPersonalDetail;
+        private UIView _viewTitleSection, _btnSubmitContainer;
         private UIView viewCheckBoxTNC;
         private UIScrollView _svContainer;
         private UITextView lblTNC;
         private UIButton _btnSubmit;
 
-        private UITextField txtFieldName, txtFieldICNo, txtFieldEmail
-            , txtFieldConfirmEmail, txtFieldPassword, txtFieldConfirmPassword;
-        private UITextView txtViewDetails;
-        private CustomUIButtonV2 btnRegister;
-        private UIView viewLineName, viewLineICNo, viewLineEmail
-            , viewLineConfirmEmail, viewLinePassword, viewLineConfirmPassword
-            , viewShowConfirmPassword, viewShowPassword, btnRegisterContainer;
+        private UITextField txtFieldName, txtFieldEmail;
+        private UIView viewLineName, viewLineEmail;
         private UIView viewEmail;
-        private UILabel lblNameTitle, lblICNoTitle, lblEmailTitle
-            , lblConfirmEmailTitle, lblPasswordTitle, lblConfirmPasswordTitle
-            , lblNameError, lblICNoError, lblEmailError
-            , lblConfirmEmailError, lblPasswordError, lblConfirmPasswordError
-            , lblNameHint, lblEmailHint
-            , lblConfirmEmailHint, lblPasswordHint, lblICNoHint, lblConfirmPasswordHint;
+        private UILabel lblNameTitle, lblEmailTitle
+            , lblNameError, lblEmailError;
 
-        private MobileNumberComponent _mobileNumberComponent;
-
-        private string _eMail = string.Empty, _password = string.Empty
-            , _fullName = string.Empty, _icNo = string.Empty, _mobileNo = string.Empty;
-
-        //private UIView _viewBottomContainer;
         public bool IsApplication = true;
 
         //add detail section
-        //public bool IsApplication;
         public CustomerAccountRecordModel SelectedAccount;
         public ContactDetailsResponseModel ContactDetails;
 
-        //private CustomUIButtonV2 _btnSubmit;
-        private UIView _viewBottomContainer, _viewContactDetails, _viewTerminate
-            , _viewTerminateTitle, _viewTerminateContainer, _viewOthersContainer
-            , _viewLineTerminate, _viewLineReason, _viewMainDetails, _viewApplyForTitle
-            , _viewContactDetailsTitle, _viewAccountContainer;
+        private UIView  _viewContactDetails;
         private UIView viewName;
-        private UIScrollView _scrollContainer;
-        private CGRect _scrollViewFrame;
-        private CustomTextField _customNameField;
-        private CustomTextField _customMobileField;
-        private CustomTextField _customEmailField;
-        //protected List<CustomerAccountRecordModel> _eligibleAccountList;
-        //protected AccountsSMREligibilityResponseModel _smrEligibleList;
-        //protected SSMRApplicationStatusResponseModel _ssmrApplicationStatus;
-        //protected TerminationReasonsResponseModel _ssmrTerminationReasons;
-        private int _selectedTerminateReasonIndex = 0;
-        private UILabel _lblAddress, _lblEditInfo, _lblTerminateReason, _lblReason;
-        private UITextView _txtViewReason;
-        private bool _isAllowEdit;
+
         private UIView viewMobile;
         private UILabel lblMobileTitle;
         private UILabel lblMobileError;
@@ -83,20 +52,18 @@ namespace myTNB
 
         private TextFieldHelper _textFieldHelper = new TextFieldHelper();
         private UIImageView imgViewCheckBoxTNC;
-        private object imgViewCheckBoxIC;
         const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
 
         public bool IsTNC { get; private set; }
 
         public override void ViewDidLoad()
         {
-            //PageName = FeedbackConstants.Pagename_FeedbackForm;
+            PageName = EnquiryConstants.Pagename_Enquiry;
             base.ViewDidLoad();
 
             SetHeader();
             AddScrollView();
             AddCTA();
-            //AddTnCSection();
             AddSectionTitle();
             AddDetailsSection();
             SetEvents();
@@ -114,9 +81,7 @@ namespace myTNB
             {
                 NavigationItem.LeftBarButtonItem = btnBack;
             }
-            //NavigationItem.LeftBarButtonItem = btnBack;
-            //Title = DataManager.DataManager.SharedInstance.FeedbackCategory?.Find(x => x?.FeedbackCategoryId == FeedbackID)?.FeedbackCategoryName;
-            Title = "Update Personal Detail";
+            Title = GetI18NValue(EnquiryConstants.updatePersonalDetTitle);
         }
 
         private void AddScrollView()
@@ -141,8 +106,8 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            lblNameTitle = GetTitleLabel("NAME");
-            lblNameError = GetErrorLabel("Name is required");
+            lblNameTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.nameHint).ToUpper()); //(GetI18NValue("name")
+            lblNameError = GetErrorLabel(GetErrorI18NValue("invalid_fullname")); //(GetI18NValue("name")
 
             txtFieldName = new UITextField
             {
@@ -165,8 +130,8 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            lblEmailTitle = GetTitleLabel("EMAIL ADDRESS");
-            lblEmailError = GetErrorLabel("Invalid email address");
+            lblEmailTitle = GetTitleLabel(GetCommonI18NValue("emailAddress").ToUpper()); //(GetI18NValue("name")
+            lblEmailError = GetErrorLabel(GetErrorI18NValue("invalid_email")); //(GetI18NValue("name")
 
             txtFieldEmail = new UITextField
             {
@@ -189,8 +154,8 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            lblMobileTitle = GetTitleLabel("MOBILE NUMBER");
-            lblMobileError = GetErrorLabel("Invalid mobile number");
+            lblMobileTitle = GetTitleLabel(GetCommonI18NValue("mobileNumber").ToUpper()); //(GetI18NValue("name")
+            lblMobileError = GetErrorLabel(GetErrorI18NValue("invalid_mobileNumber")); //(GetI18NValue("name")
 
             txtFieldMobile = new UITextField
             {
@@ -240,25 +205,17 @@ namespace myTNB
 
             textField.EditingChanged += (sender, e) =>
             {
-                //textFieldTitle.Hidden = textField.Text.Length == 0;
                 SetSubmitButtonEnable();
             };
             textField.EditingDidBegin += (sender, e) =>
             {
-                //textFieldTitle.Hidden = textField.Text.Length == 0;
                 textField.LeftViewMode = UITextFieldViewMode.Never;
                 viewLine.BackgroundColor = MyTNBColor.PowerBlue;
                 textField.TextColor = MyTNBColor.TunaGrey();
             };
             textField.ShouldEndEditing = (sender) =>
             {
-                //textFieldTitle.Hidden = textField.Text.Length == 0;
                 bool isValid = _textFieldHelper.ValidateTextField(textField.Text, pattern);
-                //if (textField == _txtAccountNumber)
-                //{
-                //    isValid = isValid && _textFieldHelper.ValidateTextFieldWithLength(textField.Text, TNBGlobal.AccountNumberLowCharLimit);
-                //}
-
                 textFieldError.Hidden = isValid;
 
                 viewLine.BackgroundColor = isValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
@@ -272,13 +229,6 @@ namespace myTNB
             };
             textField.ShouldChangeCharacters = (txtField, range, replacementString) =>
             {
-                //if (textField == _txtAccountNumber)
-                //{
-                //    string content = _textFieldHelper.TrimAllSpaces(((UITextField)txtField).Text);
-                //    nint count = content.Length + replacementString.Length - range.Length;
-                //    return count <= TNBGlobal.AccountNumberLowCharLimit;
-                //}
-
                 return true;
             };
 
@@ -348,7 +298,7 @@ namespace myTNB
         private void GetInfo()
         {
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("By submmitting, you are agreeing to the <a href=\"\\\"><strong>TNB Terms & Conditions</strong></a>"
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTnc)
                         , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F));
             NSMutableAttributedString mutableHTMLFooter = new NSMutableAttributedString(htmlBody);
 
@@ -375,9 +325,9 @@ namespace myTNB
 
             lblTNC.Delegate = new TextViewDelegate(new Action<NSUrl>((url) =>
             {
-                UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
-                TermsAndConditionViewController viewController =
-                    storyBoard.InstantiateViewController("TermsAndConditionViewController") as TermsAndConditionViewController;
+                UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
+                EnquiryTNCViewController viewController =
+                    storyBoard.InstantiateViewController("EnquiryTNCViewController") as EnquiryTNCViewController;
                 if (viewController != null)
                 {
                     viewController.isPresentedVC = true;
@@ -385,49 +335,15 @@ namespace myTNB
                     navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
                 }
+
             }));
             //Resize
             CGSize size = lblTNC.SizeThatFits(new CGSize(View.Frame.Width - 23, GetScaledHeight(160)));
             lblTNC.Frame = new CGRect(GetXLocationFromFrame(viewCheckBoxTNC.Frame, 8F), 16, size.Width - 24 - 18, size.Height);
-            //return txtFieldInfo;
         }
-        //#endregion
-
-        //private void AddCTA()
-        //{
-        //    _btnSubmitContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(128))
-        //        , View.Frame.Width, DeviceHelper.GetScaledHeight(100)))
-        //    {
-        //        BackgroundColor = UIColor.White
-        //    };
-
-        //    _btnSubmit = new UIButton(UIButtonType.Custom)
-        //    {
-        //        Frame = new CGRect(18, DeviceHelper.GetScaledHeight(18), _btnSubmitContainer.Frame.Width - 36, 48)
-        //    };
-        //    _btnSubmit.SetTitle("Submit", UIControlState.Normal);
-        //    _btnSubmit.Font = MyTNBFont.MuseoSans18_300;
-        //    _btnSubmit.Layer.CornerRadius = 5.0f;
-        //    //_btnSubmit.Enabled = true; //false;
-        //    //_btnSubmit.BackgroundColor = MyTNBColor.SilverChalice;
-
-        //    _btnSubmit.Enabled = true;//Temporary
-        //    _btnSubmit.SetTitleColor(UIColor.White, UIControlState.Normal);
-        //    _btnSubmit.BackgroundColor = MyTNBColor.FreshGreen;
-
-        //    _btnSubmit.TouchUpInside += (sender, e) =>
-        //    {
-        //        //DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryMessage = _feedbackTextView.Text ? string.Empty;
-        //        //NavigateToPage();
-        //    };
-        //    _btnSubmitContainer.AddSubview(_btnSubmit);
-        //    View.AddSubview(_btnSubmitContainer);
-        //}
 
         private void AddCTA()
         {
-            //_btnSubmitContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(145))
-            //    , View.Frame.Width, DeviceHelper.GetScaledHeight(100)))
             _btnSubmitContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(173))
             , View.Frame.Width, DeviceHelper.GetScaledHeight(128)))
             {
@@ -466,7 +382,7 @@ namespace myTNB
             {
                 Frame = new CGRect(18, lblTNC.Frame.GetMaxY() + DeviceHelper.GetScaledHeight(16), _btnSubmitContainer.Frame.Width - 36, 48)
             };
-            _btnSubmit.SetTitle("Submit", UIControlState.Normal);
+            _btnSubmit.SetTitle(GetCommonI18NValue("submit"), UIControlState.Normal);
             _btnSubmit.Font = MyTNBFont.MuseoSans18_300;
             _btnSubmit.Layer.CornerRadius = 5.0f;
             _btnSubmit.Enabled = false;
@@ -491,7 +407,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "Who should contact regarding this enquiry?",
+                Text = GetI18NValue(EnquiryConstants.contactEnquiryTitle),
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 2
 
@@ -518,12 +434,12 @@ namespace myTNB
                                 if (_submitFeedback != null && _submitFeedback?.d != null
                                    && _submitFeedback.d.IsSuccess && _submitFeedback?.d?.data != null)
                                 {
-                                    UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
-                                    GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
+                                    UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
+                                    EnquiryStatusPageViewController status = storyBoard.InstantiateViewController("EnquiryStatusPageViewController") as EnquiryStatusPageViewController;
                                     status.IsSuccess = true;
                                     status.ReferenceNumber = _submitFeedback?.d?.data?.ServiceReqNo;
                                     status.ReferenceDate = _submitFeedback?.d?.data?.DateCreated;
-                                    status.StatusDisplayType = GenericStatusPageViewController.StatusType.Enquiry;
+                                    status.StatusDisplayType = EnquiryStatusPageViewController.StatusType.Enquiry;
                                     NavigationController.PushViewController(status, true);
                                 }
                                 else
@@ -561,9 +477,9 @@ namespace myTNB
                 stateId = "",
                 location = "",
                 poleNum = "",
-                contactName = _customNameField.TextField.Text,
-                contactMobileNo = _customMobileField.TextField.Text,
-                contactEmailAddress = _customEmailField.TextField.Text,
+                contactName = txtFieldName.Text,
+                contactMobileNo = txtFieldMobile.Text,
+                contactEmailAddress = txtFieldEmail.Text,
                 isOwner = IsOwner, // 1=true,0=false , if general enquiry set as false
                 relationship = DataManager.DataManager.SharedInstance.Relationship,
                 relationshipDesc = DataManager.DataManager.SharedInstance.RelationshipDesc

@@ -1,5 +1,6 @@
 using CoreGraphics;
 using Foundation;
+using myTNB.Feedback;
 using myTNB.Home.Bill;
 using myTNB.Model;
 using myTNB.SQLite.SQLiteDataManager;
@@ -144,7 +145,9 @@ namespace myTNB
         public UpdatePersonalDetailViewController (IntPtr handle) : base (handle){ }
 
         public override void ViewDidLoad()
-        {
+        {   //PageName = FeedbackConstants.Pagename_FeedbackList;
+            PageName = EnquiryConstants.Pagename_Enquiry;
+
             base.ViewDidLoad();
 
             DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex = 0;
@@ -174,7 +177,7 @@ namespace myTNB
                 NavigationItem.LeftBarButtonItem = btnBack;
             }
 
-            Title = "Update Personal Detail";
+            Title = GetI18NValue(EnquiryConstants.updatePersonalDetTitle); //(GetI18NValue("updatePersonalDetTitle")
         }
 
         private void AddScrollView()
@@ -198,7 +201,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "Is this electricity account registered under your name?",
+                Text = GetI18NValue(EnquiryConstants.registeredTitle), //(GetI18NValue("registeredTitle")
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 2
             };
@@ -217,7 +220,7 @@ namespace myTNB
                 Frame = new CGRect(BaseMargin, GetScaledHeight(16), btnWidth, GetScaledHeight(48)),
                 BackgroundColor = UIColor.White
             };
-            _btnNo.SetTitle("No", UIControlState.Normal);
+            _btnNo.SetTitle(GetCommonI18NValue("no"), UIControlState.Normal); //(GetI18NValue("no")
             _btnNo.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _btnNo.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
 
@@ -226,7 +229,7 @@ namespace myTNB
                 Frame = new CGRect(_btnNo.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48)),
                 BackgroundColor = UIColor.White
             };
-            _btnYes.SetTitle("Yes", UIControlState.Normal);
+            _btnYes.SetTitle(GetCommonI18NValue("yes"), UIControlState.Normal); //(GetI18NValue("yes")
             _btnYes.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _btnYes.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
 
@@ -294,7 +297,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "What is your relationship with the owner?",
+                Text = GetI18NValue(EnquiryConstants.ownerTitle), //(GetI18NValue("ownerTitle")
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 2
             };
@@ -316,7 +319,7 @@ namespace myTNB
                 lblAccountRelationTitle = new UILabel
                 {
                     Frame = new CGRect(0, 0, viewAccountRelation.Frame.Width, 12),
-                    AttributedText = AttributedStringUtility.GetAttributedString("RELATIONSHIP WITH OWNER"
+                    AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.relationshipTitle) //relationshipTitle
                         , AttributedStringUtility.AttributedStringType.Title),
                     TextAlignment = UITextAlignment.Left
                 };
@@ -356,15 +359,15 @@ namespace myTNB
                     UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
                     GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
                         .InstantiateViewController("GenericSelectorViewController");
-                    viewController.Title = "Relationship with Owner";
+                    viewController.Title = GetI18NValue(EnquiryConstants.relationshipTitle); //GetI18NValue("relationshipTitle")
                     viewController.Items = new List<string>()
                     {
-                        "Child",
-                        "Tenant", 
-                        "Guardian",
-                        "Parent",
-                        "Spouse",
-                        "Others"
+                        GetI18NValue(EnquiryConstants.childTitle), //GetI18NValue("childTitle")
+                        GetI18NValue(EnquiryConstants.tenantTitle), //GetI18NValue("tenantTitle")
+                        GetI18NValue(EnquiryConstants.guardianTitle), //GetI18NValue("guardiantTitle")
+                        GetI18NValue(EnquiryConstants.parentTitle), //GetI18NValue("parentTitle")
+                        GetI18NValue(EnquiryConstants.spouseTitle), //GetI18NValue("spouseTitle")
+                        GetI18NValue(EnquiryConstants.othersTitle) //GetI18NValue("otherTitle")
                     };
                     viewController.OnSelect = OnSelectAction;
                     viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex;
@@ -382,8 +385,8 @@ namespace myTNB
                     Hidden = !IsSpecifyOther
                 };
 
-                lblSpecifyOtherTitle = GetTitleLabel("PLEASE SPECIFY YOUR RELATIONSHIP");
-                lblSpecifyOtherError = GetErrorLabel("");
+                lblSpecifyOtherTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.otherRelationshipHint)); 
+            lblSpecifyOtherError = GetErrorLabel("");
 
                 txtFieldSpecifyOther = new UITextField
                 {
@@ -483,8 +486,6 @@ namespace myTNB
 
             _svContainer.AddSubview(_viewUpdateICContainer);
 
-            //SetTextFieldEvents(txtFieldICNo, lblICNoTitle, lblICNoError
-            //   , viewLineICNo, lblICNoHint, TNBGlobal.IC_NO_PATTERN);
         }
 
         private void checkBoxList()
@@ -494,12 +495,12 @@ namespace myTNB
             {
                 BackgroundColor = MyTNBColor.LightGrayBG
             };
-            //}
+            
             UILabel lblSectionTitle = new UILabel(new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)))
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = IsOwner ? "Which information you would like to update? (Optional)" : "Which information would you like to update on your owner's behalf?",
+                Text = IsOwner ? GetI18NValue(EnquiryConstants.updateNoOwnerTitle) : GetI18NValue(EnquiryConstants.updateOwnerTitle), //GetI18NValue("updateOwnerTitle")
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 2
             };
@@ -567,7 +568,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.GreyishBrown,
-                Text = "Identification Number (IC / Passport)"
+                Text = GetI18NValue(EnquiryConstants.icTitle) //GetI18NValue("icTitle")
             };
             _viewCheckBoxContainerIC.AddSubviews(new UIView[] { viewCheckBoxIC, lblIC});
 
@@ -579,8 +580,8 @@ namespace myTNB
                     BackgroundColor = UIColor.Clear
                 };
 
-                lblICNoTitle = GetTitleLabel("ENTER NEW IDENTIFICATION NUMBER");
-                lblICNoError = GetErrorLabel("IC is required");
+                lblICNoTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.icHint).ToUpper()); //GetI18NValue("icHint")
+                lblICNoError = GetErrorLabel(GetI18NValue(EnquiryConstants.icReq));
 
                 txtFieldICNo = new UITextField
                 {
@@ -644,7 +645,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.GreyishBrown,
-                Text = "Account's Owner Name"
+                Text = GetI18NValue(EnquiryConstants.accNametitle) //GetI18NValue("accNametitle")
             };
 
             _viewCheckBoxContainerAccount.AddSubviews(new UIView[] { viewCheckBoxAccount, lblAccount});
@@ -657,8 +658,8 @@ namespace myTNB
                     BackgroundColor = UIColor.Clear
                 };
 
-                lblAccOwnerNameTitle = GetTitleLabel(IsOwner ? "ENTER NEW ACCOUNT NAME" : "ENTER NEW ACCOUNT'S OWNER NAME");
-                lblAccOwnerNameError = GetErrorLabel(IsOwner ? "Account name is required" : "Owner name is required");
+                lblAccOwnerNameTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.accNametitle).ToUpper()); //GetI18NValue("accNameHint")
+                lblAccOwnerNameError = GetErrorLabel(GetI18NValue(EnquiryConstants.ownerReq)); //GetI18NValue("accNametitle")
 
                 txtFieldAccOwnerName = new UITextField
                 {
@@ -718,7 +719,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.GreyishBrown,
-                Text = "Mobile Number"
+                Text = GetI18NValue(EnquiryConstants.mobileNumberTitle) //GetI18NValue("mobileNumberTitle")
             };
 
             _viewCheckBoxContainerMobileNumber.AddSubviews(new UIView[] { viewCheckBoxMobileNumber, lblMobileNumber});
@@ -731,8 +732,8 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            lblMobileNumberTitle = GetTitleLabel("ENTER NEW MOBILE NUMBER");
-            lblMobileNumberError = GetErrorLabel("Mobile number is required");
+            lblMobileNumberTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.mobileNumberHint)); //mobileNumberHint
+            lblMobileNumberError = GetErrorLabel(GetI18NValue(EnquiryConstants.mobileReq));
 
             txtFieldMobileNumber = new UITextField
             {
@@ -792,7 +793,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.GreyishBrown,
-                Text = "Email Address"
+                Text = GetI18NValue(EnquiryConstants.emailAddressTitle) //GetI18NValue("emailAddressTitle")
             };
 
             _viewCheckBoxContainerEmail.AddSubviews(new UIView[] { viewCheckBoxEmail, lblEmail});
@@ -805,8 +806,8 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            lblEmailTitle = GetTitleLabel("ENTER NEW EMAIL ADDRESS");
-            lblEmailError = GetErrorLabel("Email is required");
+            lblEmailTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.emailAddressHint)); //GetI18NValue("emailAddressHint")
+            lblEmailError = GetErrorLabel(GetI18NValue(EnquiryConstants.emailReq));
 
             txtFieldEmail = new UITextField
             {
@@ -867,7 +868,8 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.GreyishBrown,
-                Text = "Mailing Address"
+                Text = GetI18NValue(EnquiryConstants.mailingAddressTitle) //GetI18NValue("mailingAddressTitle")
+
             };
             _viewCheckBoxContainerMailing.AddSubviews(new UIView[] { viewCheckBoxMaling, lblMailing });
 
@@ -879,8 +881,8 @@ namespace myTNB
                     BackgroundColor = UIColor.Clear
                 };
 
-                lblMailingTitle = GetTitleLabel("ENTER NEW MAILING ADDRESS");
-                lblMailingError = GetErrorLabel("Mailing address is required");
+                lblMailingTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.mailingAddressHint)); //GetI18NValue("mailingAddressHint")
+                lblMailingError = GetErrorLabel(GetI18NValue(EnquiryConstants.mailingReq));
 
                 txtFieldMailing = new UITextField
                 {
@@ -940,7 +942,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.GreyishBrown,
-                Text = "Premise Address"
+                Text = GetI18NValue(EnquiryConstants.premiseAddressTitle) //GetI18NValue("premiseAddressTitle")
             };
 
             _viewCheckBoxContainerPremise.AddSubviews(new UIView[] { viewCheckBoxPremise, lblPremise});
@@ -953,8 +955,8 @@ namespace myTNB
                     BackgroundColor = UIColor.Clear
                 };
 
-                lblPremiseTitle = GetTitleLabel("ENTER NEW PERMISE ADDRESS");
-                lblPremiseError = GetErrorLabel("Premise address is required");
+                lblPremiseTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.premiseAddressHint)); //GetI18NValue("premiseAddressTitle")
+                lblPremiseError = GetErrorLabel(GetI18NValue(EnquiryConstants.permisesReq));
 
                 txtFieldPremise = new UITextField
                 {
@@ -989,7 +991,7 @@ namespace myTNB
             {
                 Frame = new CGRect(18, DeviceHelper.GetScaledHeight(18), _btnNextContainer.Frame.Width - 36, 48)
             };
-            _btnNext.SetTitle("Next", UIControlState.Normal);
+            _btnNext.SetTitle(GetCommonI18NValue("next"), UIControlState.Normal);
             _btnNext.Font = MyTNBFont.MuseoSans18_300;
             _btnNext.Layer.CornerRadius = 5.0f;
             _btnNext.Enabled = false;
@@ -1023,13 +1025,13 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "Who is registered owner?"
+                Text = GetI18NValue(EnquiryConstants.registeredInfo) //GetI18NValue("registeredInfo")
 
             };
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
-                DisplayCustomAlert("Who is registered owner?"
-                    , "This electricity account must be registered under your name with your IC or Passport."
+                DisplayCustomAlert(GetI18NValue(EnquiryConstants.registeredInfo) //GetI18NValue("registeredInfo")
+                    , GetI18NValue(EnquiryConstants.registeredInfoDetail) //GetI18NValue("registeredInfoDetail")
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
                     , null);
             });
@@ -1062,13 +1064,13 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "Do I need owner's consent?"
+                Text = GetI18NValue(EnquiryConstants.ownerConsentInfo) //GetI18NValue("ownerConsentInfo")
 
             };
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
-                DisplayCustomAlert("Do I need owner's consent?"
-                    , "You as a non-owner or an authorised person are required to provide the owner’s proof of consent to update the personal details on their behalf as it will permanently update the owner’s TNB electricity account details. You will also consent to update your own contact information as it is still the owner’s property."
+                DisplayCustomAlert(GetI18NValue(EnquiryConstants.ownerConsentInfo) //GetI18NValue("ownerConsentInfo")
+                    , GetI18NValue(EnquiryConstants.ownerConsentDescription) //GetI18NValue("ownerConsentDescription")
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
                     , null);
             });
@@ -1289,6 +1291,7 @@ namespace myTNB
                 UpdateCheckBoxListHeight();
                 UpdateContentSize();
                 SetEvents();
+                SetNextButtonEnable();
 
             }
             else
@@ -1300,6 +1303,7 @@ namespace myTNB
                 UpdateCheckBoxListHeight();
                 UpdateContentSize();
                 SetEvents();
+                SetNextButtonEnable();
 
             }
         }
@@ -1324,12 +1328,13 @@ namespace myTNB
 
         private void InitilizeRelationshipType()
         {
-            _typeRelationshipNameList.Add("Child");
-            _typeRelationshipNameList.Add("Tenant"); //Friend
-            _typeRelationshipNameList.Add("Guardian");
-            _typeRelationshipNameList.Add("Parent");
-            _typeRelationshipNameList.Add("Spouse");
-            _typeRelationshipNameList.Add("Others");
+            _typeRelationshipNameList.Add(GetI18NValue(EnquiryConstants.childTitle));
+            _typeRelationshipNameList.Add(GetI18NValue(EnquiryConstants.tenantTitle)); //Friend
+            _typeRelationshipNameList.Add(GetI18NValue(EnquiryConstants.guardianTitle));
+            _typeRelationshipNameList.Add(GetI18NValue(EnquiryConstants.parentTitle));
+            _typeRelationshipNameList.Add(GetI18NValue(EnquiryConstants.spouseTitle));
+            _typeRelationshipNameList.Add(GetI18NValue(EnquiryConstants.othersTitle));
+
         }
 
         private void GetTextUIField()
@@ -1395,7 +1400,7 @@ namespace myTNB
             if (IsIC)
             {
                 int FeedbackUpdInfoType = 1;
-                string FeedbackUpdInfoTypeDesc = "Identification number (IC/Passport)";
+                string FeedbackUpdInfoTypeDesc = GetI18NValue(EnquiryConstants.icTitle);//"Identification number (IC/Passport)";
                 string FeedbackUpdInfoValue = txtFieldICNo.Text;
 
                 FeedbackUpdateDetailsModel feedbackUpdateDetailsModel = new FeedbackUpdateDetailsModel();
@@ -1408,7 +1413,7 @@ namespace myTNB
             if (IsAccount)
             {
                 int FeedbackUpdInfoType = 2;
-                string FeedbackUpdInfoTypeDesc = "Account Name";
+                string FeedbackUpdInfoTypeDesc = GetI18NValue(EnquiryConstants.accNametitle);//"Account Name";
                 string FeedbackUpdInfoValue = txtFieldAccOwnerName.Text;
 
                 FeedbackUpdateDetailsModel feedbackUpdateDetailsModel = new FeedbackUpdateDetailsModel();
@@ -1421,7 +1426,7 @@ namespace myTNB
             if (IsMobileNumber)
             {
                 int FeedbackUpdInfoType = 3;
-                string FeedbackUpdInfoTypeDesc = "Mobile Number";
+                string FeedbackUpdInfoTypeDesc = GetI18NValue(EnquiryConstants.mobileNumberTitle);//"Mobile Number";
                 string FeedbackUpdInfoValue = txtFieldMobileNumber.Text;
 
                 FeedbackUpdateDetailsModel feedbackUpdateDetailsModel = new FeedbackUpdateDetailsModel();
@@ -1434,7 +1439,7 @@ namespace myTNB
             if (IsEmail)
             {
                 int FeedbackUpdInfoType = 4;
-                string FeedbackUpdInfoTypeDesc = "Email Address";
+                string FeedbackUpdInfoTypeDesc = GetI18NValue(EnquiryConstants.emailAddressTitle);//"Email Address";
                 string FeedbackUpdInfoValue = txtFieldEmail.Text;
 
                 FeedbackUpdateDetailsModel feedbackUpdateDetailsModel = new FeedbackUpdateDetailsModel();
@@ -1447,7 +1452,7 @@ namespace myTNB
             if (IsMailing)
             {
                 int FeedbackUpdInfoType = 5;
-                string FeedbackUpdInfoTypeDesc = "Mailing Address";
+                string FeedbackUpdInfoTypeDesc = GetI18NValue(EnquiryConstants.mailingAddressTitle); //"Mailing Address";
                 string FeedbackUpdInfoValue = txtFieldMailing.Text;
 
                 FeedbackUpdateDetailsModel feedbackUpdateDetailsModel = new FeedbackUpdateDetailsModel();
@@ -1460,7 +1465,7 @@ namespace myTNB
             if (IsPremise)
             {
                 int FeedbackUpdInfoType = 6;
-                string FeedbackUpdInfoTypeDesc = "Premises Address";
+                string FeedbackUpdInfoTypeDesc = GetI18NValue(EnquiryConstants.premiseAddressTitle);// "Premises Address";
                 string FeedbackUpdInfoValue = txtFieldPremise.Text;
 
                 FeedbackUpdateDetailsModel feedbackUpdateDetailsModel = new FeedbackUpdateDetailsModel();
