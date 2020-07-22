@@ -137,12 +137,12 @@ namespace myTNB
                 Lines = 0
             };
 
-            nfloat txtViewY = ScaleUtility.GetScaledHeight(12F);
+            nfloat txtViewY = imgView.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(12F);
             if (!string.IsNullOrEmpty(title) && !string.IsNullOrWhiteSpace(title))
             {
                 CGSize titleSize = LabelHelper.GetLabelSize(lblTitle, width - (sidePadding * 2), ScaleUtility.GetScaledHeight(60F));
                 lblTitle.Frame = new CGRect(sidePadding, imgView.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(24F), width - (sidePadding * 2), titleSize.Height);
-                txtViewY += lblTitle.Frame.GetMaxY();
+                txtViewY = lblTitle.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(12F);
                 maxDescriptionHeight -= (topPadding + titleSize.Height);
             }
 
@@ -295,7 +295,7 @@ namespace myTNB
                         key = key.Replace("{", "").Replace("}", "");
                         UIViewController baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
                         UIViewController topVc = AppDelegate.GetTopViewController(baseRootVc);
-                        if(topVc != null)
+                        if (topVc != null)
                         {
                             WhatsNewServices.OpenWhatsNewDetails(key, topVc);
                         }
@@ -313,7 +313,7 @@ namespace myTNB
                         {
                             key = "{" + key;
                         }
-                        if(!key.Contains("}"))
+                        if (!key.Contains("}"))
                         {
                             key = key + "}";
                         }

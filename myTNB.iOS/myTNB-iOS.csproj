@@ -1999,6 +1999,7 @@
     <Folder Include="Assets\Assets.xcassets\imgIcCopy.imageset\" />
     <Folder Include="Assets\SMR.xcassets\Sample-Meter.imageset\" />
     <Folder Include="Assets\Assets.xcassets\WhatsNew-Popup-Banner.imageset\" />
+    <Folder Include="Home\Dashboard\DashboardHome\Home Popup\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2848,13 +2849,11 @@
     </Compile>
     <Compile Include="Model\Feedback\FeedbackUpdateDetailsModel.cs" />
     <Compile Include="Session Cache\WhatsNewDetailCache.cs" />
-    <Compile Include="Whats New\WhatsNewModalViewController.cs" />
-    <Compile Include="Whats New\WhatsNewModalViewController.designer.cs" />
-    <Compile Include="Whats New\WhatsNewModalDataSource.cs" />
     <Compile Include="Session Cache\WhatsNewPopupCache.cs" />
     <Compile Include="Session Cache\WhatsNewDetailDescriptionCache.cs" />
     <Compile Include="Common\CommonInfoBar.cs" />
     <Compile Include="SSMR\Reading History\SSMRReadingHistoryView.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Home Popup\HomePopup.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">
