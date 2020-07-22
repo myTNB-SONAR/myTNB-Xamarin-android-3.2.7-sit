@@ -12,7 +12,7 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-        <include
+    <include
     android:id="@+id/toolbar"
     layout="@layout/toolbar" />
 	
@@ -46,6 +46,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:errorEnabled="true"
+                        android:layout_marginTop="8dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginLeft="16dp"
                         app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
@@ -72,7 +73,7 @@
                         android:background="@drawable/selector_pressable"
                         android:scaleType="centerCrop"
                         android:layout_marginRight="60dp"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="16dp" />
                 </FrameLayout>
                 <FrameLayout
                     android:id="@+id/accountLayout3"
@@ -132,11 +133,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="13dp"
-                        android:src="@drawable/ic_feedback_bill"
+                        android:layout_marginTop="17dp"
+                        android:src="@drawable/general_enquiry"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_feedback_bill" />
+                        app:srcCompat="@drawable/general_enquiry" />
                     <TextView
                         android:id="@+id/txtGeneralEnquiry"
                         android:layout_width="wrap_content"
@@ -191,11 +192,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="13dp"
-                        android:src="@drawable/ic_feedback_bill"
+                        android:layout_marginTop="17dp"
+                        android:src="@drawable/update_personal_details"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_feedback_bill" />
+                        app:srcCompat="@drawable/update_personal_details" />
                     <TextView
                         android:id="@+id/txtUpdatePersonal"
                         android:layout_width="wrap_content"

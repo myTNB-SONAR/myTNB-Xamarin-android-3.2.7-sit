@@ -100,7 +100,6 @@
                                 android:id="@+id/txtGeneralEnquiry1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:hint="@string/GeneralEnquiry1of2_urmessage"
                                 android:importantForAutofill="noExcludeDescendants"
                                 android:inputType="text|textMultiLine"
                                 android:maxLength="250"

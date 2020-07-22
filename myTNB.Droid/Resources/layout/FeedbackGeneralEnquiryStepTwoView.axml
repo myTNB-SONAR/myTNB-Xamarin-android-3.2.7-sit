@@ -17,8 +17,8 @@
         android:gravity="center"
         android:orientation="vertical">
         <include
-android:id="@+id/toolbar"
-layout="@layout/toolbar" />
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
 
         <TextView
             android:id="@+id/txtstep2of2"
@@ -36,165 +36,184 @@ layout="@layout/toolbar" />
             android:textSize="12dp" />
 
 
-    <FrameLayout
-        android:id="@+id/rootview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-      
-        android:background="@color/lightGrey">
-              <!--android:layout_marginTop="?actionBarSize"-->
-
-        <ScrollView
+        <FrameLayout
+            android:id="@+id/rootview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="?actionBarSize"
-            android:fillViewport="false"
-            android:overScrollMode="never">
 
-            <LinearLayout
+            android:background="@color/lightGrey">
+            <!--android:layout_marginTop="?actionBarSize"-->
+
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/WhoShouldWeContact"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_weight="1"
-                    android:text="@string/GeneralEnquiry2of2_who_shouldWeCntct"
-                    android:textAllCaps="false"
-                    android:textColor="@color/powerBlue"
-                    android:textSize="16dp" />
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="?actionBarSize"
+                android:fillViewport="false"
+                android:overScrollMode="never">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:background="@color/white"
                     android:orientation="vertical">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/txtInputLayoutName"
+                    <TextView
+                        android:id="@+id/WhoShouldWeContact"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="16dp"
-
                         android:layout_marginRight="16dp"
-                        app:errorEnabled="true"
+                        android:layout_marginBottom="16dp"
+                        android:layout_weight="1"
+                        android:text="@string/GeneralEnquiry2of2_who_shouldWeCntct"
+                        android:textAllCaps="false"
+                        android:textColor="@color/powerBlue"
+                        android:textSize="16dp" />
 
-                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                        <EditText
-                            android:id="@+id/txtName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawablePadding="6dp"
-                            android:hint="@string/GeneralEnquiry2of2_name"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:paddingTop="5dp"
-                            android:singleLine="true"
-                            android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/txtInputLayoutEmail"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        app:errorEnabled="true"
+                        android:layout_marginBottom="16dp"
+                        android:background="@color/white"
+                        android:orientation="vertical">
 
-                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                        <EditText
-                            android:id="@+id/txtEmail"
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/txtInputLayoutName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawablePadding="6dp"
-                            android:hint="@string/GeneralEnquiry2of2_email"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:paddingTop="5dp"
-                            android:singleLine="true"
-                            android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/txtInputLayoutPhoneNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        app:errorEnabled="true"
+                            android:layout_marginRight="16dp"
+                            app:errorEnabled="true"
 
-                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+                            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
-                        <EditText
-                            android:id="@+id/txtPhoneNumber"
+                            <EditText
+                                android:id="@+id/txtName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="6dp"
+                                android:hint="@string/GeneralEnquiry2of2_name"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:paddingTop="5dp"
+                                android:singleLine="true"
+                                android:textSize="16dp" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/txtInputLayoutEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawablePadding="6dp"
-                            android:hint="@string/GeneralEnquiry2of2_mobileNumber"
-                            android:inputType="phone"
-                            android:digits="1234567890"
-                            android:maxLines="1"
-                            android:paddingTop="5dp"
-                            android:singleLine="true"
-                            android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            app:errorEnabled="true"
+
+                            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                            <EditText
+                                android:id="@+id/txtEmail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="6dp"
+                                android:hint="@string/GeneralEnquiry2of2_email"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:paddingTop="5dp"
+                                android:singleLine="true"
+                                android:textSize="16dp" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/txtInputLayoutPhoneNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            app:errorEnabled="true"
+
+                            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                            <EditText
+                                android:id="@+id/txtPhoneNumber"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="6dp"
+                                android:hint="@string/GeneralEnquiry2of2_mobileNumber"
+                                android:inputType="phone"
+                                android:digits="1234567890"
+                                android:maxLines="1"
+                                android:paddingTop="5dp"
+                                android:singleLine="true"
+                                android:textSize="16dp" />
+                        </android.support.design.widget.TextInputLayout>
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-        </ScrollView>
+            </ScrollView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:paddingBottom="16dp"
-            android:background="@color/white"
-            android:orientation="vertical">
-
-<!--            <TextView
-                android:id="@+id/txtTermsConditionsGeneralEnquiry"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:gravity="bottom"
-                android:paddingTop="16dp"
+                android:layout_gravity="bottom|center"
                 android:paddingBottom="16dp"
-                android:text="@string/registration_form_terms_conditions"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColorLink="@color/powerBlue"
-                android:textSize="12dp" />-->
+                android:background="@color/white"
+                android:orientation="vertical">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                >
-
-                <Button
-                    android:id="@+id/btnSubmit"
-                    style="@style/DarkButton"
+                <LinearLayout
+                    android:id="@+id/LinearLayout_TNC"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/GeneralEnquiry2of2_submit"
-                    android:textAllCaps="false" />
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    >
 
-            </FrameLayout>
+                    <CheckBox
+                        android:id="@+id/agreementCheckbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:button="@drawable/checkbox_selector" />
 
-        </LinearLayout>
-    </FrameLayout>
+                    <TextView
+                        android:id="@+id/txtTermsConditionsGeneralEnquiry"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:gravity="bottom"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:text="@string/registration_form_terms_conditions"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColorLink="@color/powerBlue"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
+
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    >
+
+                    <Button
+                        android:id="@+id/btnSubmit"
+                        style="@style/DarkButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/GeneralEnquiry2of2_submit"
+                        android:textAllCaps="false" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+        </FrameLayout>
 
     </LinearLayout>
 

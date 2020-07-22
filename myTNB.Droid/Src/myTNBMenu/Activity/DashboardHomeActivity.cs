@@ -50,8 +50,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
     [Activity(Label = "@string/dashboard_activity_title"
               , Icon = "@drawable/ic_launcher"
         , ScreenOrientation = ScreenOrientation.Portrait
-        ,Theme = "@style/Theme.DashboardHome"
-        ,WindowSoftInputMode = SoftInput.AdjustNothing)]
+        , Theme = "@style/Theme.DashboardHome"
+        , WindowSoftInputMode = SoftInput.AdjustNothing)]
     public class DashboardHomeActivity : BaseToolbarAppCompatActivity, DashboardHomeContract.IView, ISummaryFragmentToDashBoardActivtyListener
     {
         internal readonly string TAG = typeof(DashboardHomeActivity).Name;
@@ -247,7 +247,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
 
             this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
-            
+
             try
             {
                 if (!alreadyStarted)
@@ -293,6 +293,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void OnResetBillDetailTooltip()
         {
             this.mPresenter.OnGetBillTooltipContent();
+        }
+
+        public void OnResetWhereIsMyAccNumber()
+        {
+            this.mPresenter.OnWhereIsMyAccNumberContentDetail();
         }
 
         private void OnSetupSSMRMeterReadingTutorial()

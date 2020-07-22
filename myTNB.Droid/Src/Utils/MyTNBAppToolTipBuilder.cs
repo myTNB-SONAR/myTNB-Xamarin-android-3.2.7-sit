@@ -230,7 +230,21 @@ namespace myTNB_Android.Src.Utils
                 }
 
                 tooltipMessage = ProcessClickableSpan(tooltipMessage, this.message);
-                tooltipImageHeader.SetImageResource(this.imageResource);
+               // tooltipImageHeader.SetImageResource(this.imageResource);
+                 if (this.imageResourceBitmap != null)
+                {
+                    float currentImgWidth = DPUtils.ConvertDPToPx(284f);
+                    float calImgRatio = currentImgWidth / this.imageResourceBitmap.Width;
+                    int currentImgHeight = (int)(this.imageResourceBitmap.Height * calImgRatio);
+
+                    tooltipImageHeader.SetImageBitmap(this.imageResourceBitmap);
+                    tooltipImageHeader.LayoutParameters.Height = currentImgHeight;
+                    tooltipImageHeader.RequestLayout();
+                }
+                else
+                {
+                    tooltipImageHeader.SetImageResource(this.imageResource);
+                }
                 tooltipCTA.Text = this.ctaLabel;
             }
             else if(this.toolTipType == ToolTipType.NORMAL_WITH_HEADER)
