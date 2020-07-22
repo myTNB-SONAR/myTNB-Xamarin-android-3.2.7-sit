@@ -216,6 +216,14 @@ namespace myTNB.SQLite.SQLiteDataManager
                         }
 
                         maintenance.ShowDateForDay = WhatsNewServices.GetWhatNewModelShowDate(maintenance.ID);
+                        DateTime showDateTime = DateTime.ParseExact(maintenance.ShowDateForDay, "yyyyMMddTHHmmss",
+                            CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        if (showDateTime.Date != DateTime.Now.Date)
+                        {
+                            WhatsNewServices.SetWhatNewModelShowDate(maintenance.ID, true);
+                            WhatsNewServices.SetWhatNewModelShowCount(maintenance.ID, 0);
+
+                        }
                         maintenance.ShowCountForDay = WhatsNewServices.GetWhatNewModelShowCount(maintenance.ID);
                         maintenance.SkipShowOnAppLaunch = WhatsNewServices.GetIsSkipAppLaunch(maintenance.ID);
                     }
@@ -233,6 +241,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                         showMaintenance = true;
                     }
                 }
+
                 if (showMaintenance)
                 {
                     return new List<WhatsNewModel> { maintenance };
@@ -268,6 +277,14 @@ namespace myTNB.SQLite.SQLiteDataManager
                         }
 
                         marketing.ShowDateForDay = WhatsNewServices.GetWhatNewModelShowDate(marketing.ID);
+                        DateTime showDateTime = DateTime.ParseExact(marketing.ShowDateForDay, "yyyyMMddTHHmmss",
+                            CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        if (showDateTime.Date != DateTime.Now.Date)
+                        {
+                            WhatsNewServices.SetWhatNewModelShowDate(marketing.ID, true);
+                            WhatsNewServices.SetWhatNewModelShowCount(marketing.ID, 0);
+
+                        }
                         marketing.ShowCountForDay = WhatsNewServices.GetWhatNewModelShowCount(marketing.ID);
                         marketing.SkipShowOnAppLaunch = WhatsNewServices.GetIsSkipAppLaunch(marketing.ID);
                     }
