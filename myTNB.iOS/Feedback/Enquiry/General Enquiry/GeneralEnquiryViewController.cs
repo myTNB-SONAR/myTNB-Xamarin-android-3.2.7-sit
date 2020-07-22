@@ -28,7 +28,6 @@ namespace myTNB
         const int MAX_IMAGE = 2;
         const float TXTVIEW_DEFAULT_MARGIN = 24f;
         const float UNIVERSAL_MARGIN = 7f;
-        const float VIEW_PHOTO_MARGIN = 20f;
 
         private int imageWidth = 0;
         private int capturedImageCount = 0;
@@ -38,7 +37,7 @@ namespace myTNB
         private UIView _viewPhotoContainer;
 
         //Widgets
-        private UIView _btnSubmitContainer, _viewUploadPhoto, _feedbackCategoryView, _viewFeedback
+        private UIView _btnSubmitContainer, _viewUploadPhoto, _viewFeedback
              , _viewLineFeedback;
         private UILabel _lblPhotoTitle, _lblFeedbackTitle, _lblFeedbackSubTitle, _lblFeedbackError;
         private UIImageView _iconFeedback;
@@ -47,43 +46,31 @@ namespace myTNB
         private UITapGestureRecognizer _tapImage;
 
         private FeedbackTextView _feedbackTextView;
-        //private OtherFeedbackComponent _otherFeedbackComponent;
-        private GeneralEnquiryComponent _billRelatedFeedbackComponent;
-        //public StreetLampFeedbackComponent _streetLampRelatedFeedbackComponent;
-
-        private SubmitFeedbackResponseModel _submitFeedback;
 
         //syahmi
         private UIView _viewTitleSection, _viewTitleSection2;
 
         //for header
-        private UIView _headerViewContainer, _headerView, _navbarView
-        , _shimmerView, _viewRefreshContainer, _refreshView;
-        private UILabel _lblNavTitle, _lblNavStep;
-        private UIImageView _bgImageView, _imgFilter;
-        private CAGradientLayer _gradientLayer;
-        private CustomUIView _accountSelectorContainer, _viewFilter;
-        private nfloat _navBarHeight;
         public nfloat _previousScrollOffset;
-        private nfloat _tableViewOffset;
-        private CGRect DefaultBannerRect;
 
         internal CustomUIView _navbarContainer;
         private UILabel _navbarTitle;
         private UIView _viewCommentSection;
+        private CAGradientLayer _gradientLayer;
+        private nfloat _navBarHeight;
+        private UIView _navbarView;
+        private UIImageView _bgImageView;
+        private nfloat titleBarHeight;
 
         public override void ViewDidLoad()
         {
-            PageName = FeedbackConstants.Pagename_FeedbackForm;
-            
+            PageName = EnquiryConstants.Pagename_Enquiry;
+
             base.ViewDidLoad();
-            //_otherFeedbackComponent = new OtherFeedbackComponent(this);
-            _billRelatedFeedbackComponent = new GeneralEnquiryComponent(this);
-            //_streetLampRelatedFeedbackComponent = new StreetLampFeedbackComponent(this);
+
             SetHeader();
             AddScrollView();
             AddCTA();
-            //InitializeFeedbackComponents();
             AddSectionTitle();
             CreateCommentSection();
             AddSectionTitle2();
@@ -109,9 +96,7 @@ namespace myTNB
             {
                 NavigationItem.LeftBarButtonItem = btnBack;
             }
-
-            //Title = DataManager.DataManager.SharedInstance.FeedbackCategory?.Find(x => x?.FeedbackCategoryId == FeedbackID)?.FeedbackCategoryName;
-            Title = "General Enquiry";
+            Title = GetI18NValue(EnquiryConstants.generalEnquiryTitle);
         }
 
         private void AddScrollView()
@@ -135,7 +120,7 @@ namespace myTNB
             {
                 Frame = new CGRect(18, DeviceHelper.GetScaledHeight(18), _btnSubmitContainer.Frame.Width - 36, 48)
             };
-            _btnSubmit.SetTitle("Next", UIControlState.Normal);
+            _btnSubmit.SetTitle(GetCommonI18NValue("next"), UIControlState.Normal);
             _btnSubmit.Font = MyTNBFont.MuseoSans18_300;
             _btnSubmit.Layer.CornerRadius = 5.0f;
             _btnSubmit.Enabled = false;
@@ -160,8 +145,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "I want to enquiry about:"
-
+                Text = GetI18NValue(EnquiryConstants.enquiryAboutTitle)
             };
 
             _viewTitleSection.AddSubview(lblSectionTitle);
@@ -179,7 +163,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "Upload supporting documents:"
+                Text = GetI18NValue(EnquiryConstants.uploadDocTitle)
 
             };
 
@@ -189,8 +173,6 @@ namespace myTNB
         private void CreatePhotoUploadWidget()
         {
             //Photo View
-            //_viewUploadPhoto = new UIView((new CGRect(18, (nfloat)(GetPhotoWidgetYCoordinate() + VIEW_PHOTO_MARGIN)
-            //    , View.Frame.Width - 36, 180)))
             _viewPhotoContainer = new UIView((new CGRect(0, _viewTitleSection2.Frame.GetMaxY(), View.Frame.Width, 180)))
             {
                 BackgroundColor = UIColor.White
@@ -203,7 +185,7 @@ namespace myTNB
             //Photo/s Title
             _lblPhotoTitle = new UILabel(new CGRect(0, 0, View.Frame.Width - 36, 16))
             {
-                Text = GetI18NValue(FeedbackConstants.I18N_AttachPhotoTitle),
+                Text = GetI18NValue(EnquiryConstants.attachTitle),
                 TextColor = MyTNBColor.TunaGrey(),
                 Font = MyTNBFont.MuseoSans14_300
             };
@@ -212,8 +194,7 @@ namespace myTNB
             UILabel lblPhotoSubTitle = new UILabel(new CGRect(0, _lblPhotoTitle.Frame.GetMaxY() + 108 + 9 + 6
                 , View.Frame.Width - 36, 14))
             {
-                //Text = GetI18NValue(FeedbackConstants.I18N_MaxFile),
-                Text = "Maximum document size is 1MB (PDF, JPG & JPEG format only)",
+                Text = GetI18NValue(EnquiryConstants.attachDescription),
                 TextColor = MyTNBColor.SilverChalice,
                 Font = MyTNBFont.MuseoSans11_300
             };
@@ -223,22 +204,6 @@ namespace myTNB
             AddImageContainer();
         }
 
-        private nfloat GetPhotoWidgetYCoordinate()
-        {
-            nfloat yCoord = 0.0f;
-            yCoord = GetFeedbackCategoryViewHeight();
-            yCoord += _viewFeedback?.Frame.Height ?? 0;
-            return yCoord;
-        }
-
-        private nfloat GetFeedbackCategoryViewHeight()
-        {
-            return (nfloat)(_viewTitleSection2?.Frame.GetMaxY());
-            //return _viewFeedback?.Frame.Height ?? 0;
-            //return _feedbackCategoryView?.Frame.Height ?? 0;
-
-        }
-
         private void AddImageContainer()
         {
             if (capturedImageCount < MAX_IMAGE)
@@ -246,7 +211,7 @@ namespace myTNB
                 if (imageContainerScroll == null)
                 {
                     imageContainerScroll = new UIScrollView(new CGRect(0, _lblPhotoTitle.Frame.GetMaxY() + UNIVERSAL_MARGIN
-                    , View.Frame.Width - 36, 120 + 12)) //94
+                    , View.Frame.Width - 36, 120 + 12))
                     {
                         ScrollEnabled = true,
                         Bounces = false,
@@ -256,7 +221,7 @@ namespace myTNB
 
                 UIViewWithDashedLinerBorder dashedLineView = new UIViewWithDashedLinerBorder
                 {
-                    Frame = new CGRect(0, imageWidth, View.Frame.Width - 36, 48),//94
+                    Frame = new CGRect(0, imageWidth, View.Frame.Width - 36, 48),
                     BackgroundColor = UIColor.White
                 };
                 dashedLineView.Layer.CornerRadius = 5.0f;
@@ -286,14 +251,14 @@ namespace myTNB
 
                     UIAlertController alert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
 
-                    alert.AddAction(UIAlertAction.Create(GetI18NValue(FeedbackConstants.I18N_Camera), UIAlertActionStyle.Default, (obj) =>
+                    alert.AddAction(UIAlertAction.Create(GetI18NValue(EnquiryConstants.camera), UIAlertActionStyle.Default, (obj) =>
                     {
                         imgPicker.SourceType = UIImagePickerControllerSourceType.Camera;
                         imgPicker.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(imgPicker, true, null);
                     }));
 
-                    alert.AddAction(UIAlertAction.Create(GetI18NValue(FeedbackConstants.I18N_CameraRoll), UIAlertActionStyle.Default, (obj) =>
+                    alert.AddAction(UIAlertAction.Create(GetI18NValue(EnquiryConstants.cameraRoll), UIAlertActionStyle.Default, (obj) =>
                     {
                         imgPicker.SourceType = UIImagePickerControllerSourceType.PhotoLibrary;
                         imgPicker.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
@@ -308,8 +273,7 @@ namespace myTNB
 
                 dashedLineView.AddGestureRecognizer(_tapImage);
                 imageContainerScroll.AddSubview(dashedLineView);
-                imageWidth += 18 + 48; //94
-                //imageContainerScroll.ContentSize = new CGRect(18, 165, imageWidth, 94).Size;
+                imageWidth += 18 + 48; 
                 imageContainerScroll.ContentSize = new CGRect(18, 165, 94, imageWidth).Size;
                 capturedImageCount++;
             }
@@ -323,13 +287,11 @@ namespace myTNB
 
                 if (view.Tag == 10)
                 {
-                    //view.Frame = new CGRect(imageWidth, 0, 94, 94);
                     view.Frame = new CGRect(0, imageWidth, View.Frame.Width - 36, 48);
-                    imageWidth += 18 + 48; //94
+                    imageWidth += 18 + 48; 
                 }
 
             }
-            //imageContainerScroll.ContentSize = new CGRect(18, 165, imageWidth, 94).Size;
             imageContainerScroll.ContentSize = new CGRect(18, 165, 94, imageWidth).Size;
 
         }
@@ -337,7 +299,6 @@ namespace myTNB
         internal void AddImage(UIImage image, UIViewWithDashedLinerBorder view)
         {
             ActivityIndicator.Show();
-            //UIImageView capturedImageView = new UIImageView(new CGRect(0, 0, view.Frame.Width, view.Frame.Height))
             UIImageView capturedImageView = new UIImageView(new CGRect(8, 8, 32, 32))
             {
                 Image = image,
@@ -409,7 +370,7 @@ namespace myTNB
             _lblFeedbackTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewFeedback.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedString("Your Message"
+                AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.messageHint) //GetI18NValue("enquiryAboutTitle")
                     , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = false
@@ -433,7 +394,7 @@ namespace myTNB
                 Image = UIImage.FromBundle("IC-Feedback")
             };
 
-            _feedbackTextView.SetPlaceholder("Please enter your message");
+            _feedbackTextView.SetPlaceholder(GetI18NValue(EnquiryConstants.messageHint)); //GetI18NValue("messageHint")
             _feedbackTextView.CreateDoneButton();
 
             _feedbackTextView.ShouldChangeText = (txtView, range, replacementString) => //check textfield length
@@ -481,26 +442,19 @@ namespace myTNB
                 FeedbackTextView txtView = sender as FeedbackTextView;
                 if (txtView == _feedbackTextView)
                 {
-                    HandleFeedbackTextViewChange(); //count char lenght
+                    HandleFeedbackTextViewChange();
                     CGRect frame = new CGRect();
-                    frame = _feedbackTextView.Frame; //get location, size feedbacktextview frame
+                    frame = _feedbackTextView.Frame; 
                     frame.Height = _feedbackTextView.ContentSize.Height <= TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT
                         ? _feedbackTextView.ContentSize.Height : TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT;
-                    _feedbackTextView.Frame = frame;// transfer frame back to _feedbackTextView frame
-                    _svContainer.ContentSize = new CGRect(0f, 0f, View.Frame.Width, GetScrollHeight() + _feedbackTextView.Frame.Height - 38f).Size; //increase size scrollview
+                    _feedbackTextView.Frame = frame;
+                    _svContainer.ContentSize = new CGRect(0f, 0f, View.Frame.Width, GetScrollHeight() + _feedbackTextView.Frame.Height - 38f).Size; 
                     _viewFeedback.Frame = ViewHelper.UpdateFeedbackViewYCoord((float)GetCommentSectionYCoordinate(), 16f
-                        , _viewFeedback, (float)(51f + _feedbackTextView.Frame.Height)); //update y _viewFeedback.Frame container
+                        , _viewFeedback, (float)(51f + _feedbackTextView.Frame.Height)); 
                     _viewLineFeedback.Frame = ViewHelper.UpdateFeedbackViewYCoord((float)_feedbackTextView.Frame.GetMaxY()
-                        , 3f, _viewLineFeedback, (float)_viewLineFeedback.Frame.Height); //update y location _viewLineFeedback
+                        , 3f, _viewLineFeedback, (float)_viewLineFeedback.Frame.Height); 
                     _lblFeedbackSubTitle.Frame = ViewHelper.UpdateFeedbackViewYCoord((float)_viewLineFeedback.Frame.GetMaxY()
-                        , 3f, _lblFeedbackSubTitle, (float)_lblFeedbackSubTitle.Frame.Height); //update y location _viewLineFeedback
-
-                    //_viewTitleSection2.Frame = ViewHelper.UpdateFeedbackViewYCoord((float)GetCommentSectionYCoordinate(), 16f
-                    //, View, 48f); //update y _viewFeedback.Frame container
-
-                   // _viewUploadPhoto.Frame = ViewHelper.UpdateFeedbackViewYCoord((float)(_viewFeedback.Frame.Y + _viewFeedback.Frame.Height)
-                   //     , 0f, _viewUploadPhoto, (float)_viewUploadPhoto.Frame.Height); //update y location _viewUploadPhoto
-
+                        , 3f, _lblFeedbackSubTitle, (float)_lblFeedbackSubTitle.Frame.Height);
                     _feedbackTextView.SetPlaceholderHidden(txtView.Text.Length > 0);
                 }
                 lblHint.Hidden = !lblError.Hidden || _feedbackTextView.Text.Length == 0;
@@ -563,7 +517,6 @@ namespace myTNB
 
         private nfloat GetCommentSectionYCoordinate()
         {
-            //return _feedbackCategoryView?.Frame.Height ?? 0.0f;
             return _viewTitleSection.Frame.GetMaxY();
         }
 
@@ -575,20 +528,7 @@ namespace myTNB
         internal void SetButtonEnable()
         {
             bool isValidFeedback = _feedbackTextView.ValidateTextView(_feedbackTextView.Text, ANY_PATTERN) && _feedbackTextView.Text.Length != 0;
-            bool isValidFields;
-            //if (string.Compare(FeedbackID, "1") == 0)
-            //{
-            //    isValidFields = _billRelatedFeedbackComponent.IsValidEntry();
-            //}
-            //else if (string.Compare(FeedbackID, "2") == 0)
-            //{
-            //    isValidFields = _streetLampRelatedFeedbackComponent.IsValidEntry();
-            //}
-            //else
-            //{
-            //    isValidFields = _otherFeedbackComponent.IsValidEntry();
-            //}
-            //bool isValid = isValidFields && isValidFeedback; remove account no validation
+
             bool isValid = isValidFeedback;
             _btnSubmit.Enabled = isValid;
             _btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
