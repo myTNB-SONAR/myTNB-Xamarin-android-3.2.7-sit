@@ -118,6 +118,30 @@
                                 android:inputType="text" />
                         </android.support.design.widget.TextInputLayout>
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:id="@+id/searchApplicatioStatuListResult">
+                        <TextView
+                            android:id="@+id/txtSearchApplicationStatusListResult"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:textColor="@color/powerBlue"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="We found this application(s) under the electricity account number:"
+                            android:textSize="16dp"
+                            android:lineSpacingExtra="4dp"/>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/searchApplicationStatusListRecyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="visible" />
+                    </LinearLayout>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
         <LinearLayout

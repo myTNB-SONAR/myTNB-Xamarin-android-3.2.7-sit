@@ -389,6 +389,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string APPLICATION_STATUS_SEARCH_BY_LIST_KEY = "searchByList";
         internal static readonly string APPLICATION_STATUS_FILTER_REQUEST_KEY = "filterRequest";
         internal static readonly string APPLICATION_STATUS_FILTER_MULTI_SELECT_KEY = "multiSelect";
+        internal static readonly string APPLICATION_STATUS_DETAIL_TITLE_KEY = "applicationStatusTitle";
         internal static readonly int APPLICATION_STATUS_FILTER_REQUEST_CODE = 29800;
         internal static readonly int APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE = 29801;
         internal static readonly int APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE = 29802;
