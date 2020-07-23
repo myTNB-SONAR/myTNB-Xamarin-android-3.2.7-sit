@@ -114,8 +114,8 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> ChangeNewPassword<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/SendUpdatePhoneTokenSMS")]
-        Task<T> SendUpdatePhoneTokenSMS<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+        [Post("/v6/mytnbappws.asmx/SendUpdatePhoneTokenSMSV2")]
+        Task<T> SendUpdatePhoneTokenSMSV2<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/UpdatePhoneNumber")]
