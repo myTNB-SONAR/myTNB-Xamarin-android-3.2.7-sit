@@ -5392,6 +5392,10 @@
     <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\SearchApplicationStatusSelection\MVP\SearchApplicationStatusSelectionActivity.cs" />
     <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\Models\SearchApplicationStatusModel.cs" />
     <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\SearchApplicationStatusSelection\Adapter\SearchApplicationStatusAdapter.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationStatusDetailLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
