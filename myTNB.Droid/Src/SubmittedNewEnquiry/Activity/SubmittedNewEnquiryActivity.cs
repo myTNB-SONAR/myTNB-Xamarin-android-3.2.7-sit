@@ -91,7 +91,7 @@ namespace myTNB_Android.Src.SubmittedNewEnquiry.Activity
 
                 // adapter listener
                 adapter.SelectClickEvent += Adapter_SelectClickEvent;
-                mPresenter = new SubmittedNewEnquiryPresenter(this, submittedFeedback);
+                mPresenter = new SubmittedNewEnquiryPresenter(this, submittedFeedback, this);
                 this.userActionsListener.Start();
 
 
