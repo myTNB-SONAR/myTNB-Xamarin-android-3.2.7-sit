@@ -315,9 +315,9 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<SendUpdatePhoneTokenSMSResponse> SendUpdatePhoneTokenSMS([Body] Request.BaseRequest request)
+        public Task<SendUpdatePhoneTokenSMSResponse> SendUpdatePhoneTokenSMSV2([Body] Request.BaseRequest request)
         {
-            return api.SendUpdatePhoneTokenSMS<SendUpdatePhoneTokenSMSResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SendUpdatePhoneTokenSMSV2<SendUpdatePhoneTokenSMSResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
