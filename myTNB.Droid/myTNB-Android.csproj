@@ -5465,6 +5465,13 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailActivity.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationStatusDetailItemContentLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\Models\ApplicationStatusDetailModel.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\Adapter\ApplicationStatusDetailProgressAdapter.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\Adapter\ApplicationStatusDetailSubDetailAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -5784,6 +5791,8 @@
     <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\SearchApplicationStatusSelection\Adapter\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusDetail\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetail\Adapter\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetail\Models\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

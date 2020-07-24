@@ -16,6 +16,7 @@ using Android.Views.Animations;
 using Android.Widget;
 using CheeseBind;
 using Facebook.Shimmer;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
@@ -628,7 +629,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         {
             try
             {
-
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    Intent DetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+                    StartActivity(DetailIntent);
+                }
             }
             catch (Exception e)
             {

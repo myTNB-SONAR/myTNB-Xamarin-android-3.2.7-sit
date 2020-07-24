@@ -11,6 +11,7 @@ using Android.Widget;
 using CheeseBind;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
@@ -507,7 +508,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
         public void ShowCheckStatus()
         {
-            var applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
+            // ApplicationStatus TODO: stub
+            // var applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
+            var applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
             StartActivity(applicationLandingIntent);
         }
 

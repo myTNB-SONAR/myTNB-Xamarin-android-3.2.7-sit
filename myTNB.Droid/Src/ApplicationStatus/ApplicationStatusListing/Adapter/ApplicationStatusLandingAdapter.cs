@@ -74,6 +74,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
     {
         public TextView ApplicationStatusItemTitle { get; private set; }
         public TextView ApplicationStatusItemSubTitle { get; private set; }
+        public LinearLayout AppicationStatusListMainLayout { get; private set; }
         public TextView ApplicationStatusItemStatus { get; private set; }
         public TextView ApplicationStatusItemDate { get; private set; }
         public ImageView ApplicationStatusItemNewIndicator { get; private set; }
@@ -85,6 +86,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
         public ApplicationStatusViewHolder(View itemView, Action<int> listener) : base(itemView)
         {
             context = itemView.Context;
+            AppicationStatusListMainLayout = itemView.FindViewById<LinearLayout>(Resource.Id.appicationStatusListMainLayout);
             ApplicationStatusItemTitle = itemView.FindViewById<TextView>(Resource.Id.applicationStatusItemTitle);
             ApplicationStatusItemSubTitle = itemView.FindViewById<TextView>(Resource.Id.applicationStatusItemSubTitle);
             ApplicationStatusItemStatus = itemView.FindViewById<TextView>(Resource.Id.applicationStatusItemStatus);
@@ -97,7 +99,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
             ApplicationStatusItemDate.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.receipt_note_text)));
             TextViewUtils.SetMuseoSans300Typeface(ApplicationStatusItemSubTitle);
             TextViewUtils.SetMuseoSans500Typeface(ApplicationStatusItemTitle, ApplicationStatusItemStatus, ApplicationStatusItemDate);
-            ApplicationStatusItemRightArrow.Click += (sender, e) => listener(base.LayoutPosition);
+            AppicationStatusListMainLayout.Click += (sender, e) => listener(base.LayoutPosition);
         }
 
 
