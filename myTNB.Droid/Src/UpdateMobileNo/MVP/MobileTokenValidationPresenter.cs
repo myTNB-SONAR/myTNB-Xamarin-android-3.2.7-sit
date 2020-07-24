@@ -217,12 +217,24 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
             try
             {
-                MyTNBService.Request.SendUpdatePhoneTokenSMSRequest sendUpdatePhoneTokenSMSRequest = new MyTNBService.Request.SendUpdatePhoneTokenSMSRequest(newPhoneNumber);
+                string oldPhoneNumber = "";
+
+                try
+                {
+                    UserEntity userEntity = UserEntity.GetActive();
+                    oldPhoneNumber = userEntity.MobileNo;
+                }
+                catch (Exception ex)
+                {
+                    Utility.LoggingNonFatalError(ex);
+                }
+
+                MyTNBService.Request.SendUpdatePhoneTokenSMSRequest sendUpdatePhoneTokenSMSRequest = new MyTNBService.Request.SendUpdatePhoneTokenSMSRequest(newPhoneNumber, oldPhoneNumber);
                 if (this.authenticationRequest != null)
                 {
                     sendUpdatePhoneTokenSMSRequest.SetUserName(this.authenticationRequest.UserName);
                 }
-                var verificationResponse = await ServiceApiImpl.Instance.SendUpdatePhoneTokenSMS(sendUpdatePhoneTokenSMSRequest);
+                var verificationResponse = await ServiceApiImpl.Instance.SendUpdatePhoneTokenSMSV2(sendUpdatePhoneTokenSMSRequest);
 
                 if (!verificationResponse.IsSuccessResponse())
                 {

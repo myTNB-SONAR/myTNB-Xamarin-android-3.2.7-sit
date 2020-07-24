@@ -571,7 +571,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
                 );
                 View v = mSnackBar.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(5);
+                tv.SetMaxLines(7);
                 mSnackBar.Show();
             }
 
