@@ -195,7 +195,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
                 adapter.SelectClickEvent += Adapter_SelectClickEvent;
 
-                mPresenter = new FeedbackDetailsFaultyLampsPresenter(this, submittedFeedback);
+                mPresenter = new FeedbackDetailsFaultyLampsPresenter(this, submittedFeedback, this);
                 this.userActionsListener.Start();
             }
             catch (Exception e)

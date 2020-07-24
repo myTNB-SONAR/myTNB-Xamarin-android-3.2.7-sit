@@ -172,7 +172,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
                 adapter.SelectClickEvent += Adapter_SelectClickEvent;
 
-                mPresenter = new FeedbackDetailsOthersPresenter(this, submittedFeedback);
+                mPresenter = new FeedbackDetailsOthersPresenter(this, submittedFeedback, this);
                 this.userActionsListener.Start();
             }
             catch (Exception e)

@@ -17,7 +17,7 @@ namespace myTNB_Android.Src.Utils
         internal const string PROMO_IMAGE_FOLDER = "PromoImages";
         public static string GetImagesPath(Context context, string pFolder)
         {
-            string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            string path = context.FilesDir.AbsolutePath;
             string filePath = System.IO.Path.Combine(path, pFolder);
             Console.WriteLine(string.Format("Folder Personal {0} File Path {1}", path, filePath));
             if (IsExternalStorageReadable() && IsExternalStorageWritable())
@@ -31,7 +31,7 @@ namespace myTNB_Android.Src.Utils
 
         public static string GetTemporaryImageFilePath(Context context, string pFolder, string tmpName)
         {
-            string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            string path = context.FilesDir.AbsolutePath;
             string filePath = System.IO.Path.Combine(path, pFolder, tmpName);
             if (IsExternalStorageReadable() && IsExternalStorageWritable())
             {
@@ -44,7 +44,7 @@ namespace myTNB_Android.Src.Utils
 
         public static void Remove(Context context, string pFolder, string pFileName)
         {
-            string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            string path = context.FilesDir.AbsolutePath;
 
             string filePath = System.IO.Path.Combine(path, pFolder, pFileName);
             Console.WriteLine(string.Format("Folder Personal {0} File Path {1}", path, filePath));
@@ -65,7 +65,7 @@ namespace myTNB_Android.Src.Utils
         public static string Save(Context context, Bitmap bitmap, string pFolder, string pFileName)
         {
 
-            string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            string path = context.FilesDir.AbsolutePath;
 
             string filePath = System.IO.Path.Combine(path, pFolder, pFileName);
             Console.WriteLine(string.Format("Folder Personal {0} File Path {1}", path, filePath));
@@ -90,29 +90,11 @@ namespace myTNB_Android.Src.Utils
             return filePath;
         }
 
-        public static string Save(Bitmap bitmap, string pFolder, string pFileName)
-        {
-            string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-
-            string filePath = System.IO.Path.Combine(path, pFolder, pFileName);
-            if (!Directory.Exists(System.IO.Path.Combine(path, pFolder)))
-            {
-                Directory.CreateDirectory(System.IO.Path.Combine(path, pFolder));
-            }
-
-            var stream = new FileStream(filePath, FileMode.Create);
-
-            bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
-            stream.Close();
-
-            return filePath;
-        }
-
-        public static Task<string> SaveAsync(Bitmap bitmap, string pFolder, string pFileName)
+        public static Task<string> SaveAsync(Context context, Bitmap bitmap, string pFolder, string pFileName)
         {
             return Task.Run<string>(() =>
             {
-                string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+                string path = context.FilesDir.AbsolutePath;
 
                 string filePath = System.IO.Path.Combine(path, pFolder, pFileName);
                 if (!Directory.Exists(System.IO.Path.Combine(path, pFolder)))
@@ -207,7 +189,7 @@ namespace myTNB_Android.Src.Utils
 
         internal static bool DirectoryExists(Context context, string pTempFolder)
         {
-            string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            string path = context.FilesDir.AbsolutePath;
 
 
             if (IsExternalStorageReadable() && IsExternalStorageWritable())
@@ -221,7 +203,7 @@ namespace myTNB_Android.Src.Utils
         {
             if (!DirectoryExists(context, pTempFolder))
             {
-                string path = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+                string path = context.FilesDir.AbsolutePath;
 
 
                 if (IsExternalStorageReadable() && IsExternalStorageWritable())

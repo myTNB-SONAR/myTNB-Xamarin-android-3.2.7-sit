@@ -247,7 +247,14 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 {
                     try
                     {
-                        var directory = new Java.IO.File(Android.OS.Environment.ExternalStorageDirectory, "pdf").ToString();
+                        string rootPath = this.FilesDir.AbsolutePath;
+
+                        if (FileUtils.IsExternalStorageReadable() && FileUtils.IsExternalStorageWritable())
+                        {
+                            rootPath = this.GetExternalFilesDir(null).AbsolutePath;
+                        }
+
+                        var directory = System.IO.Path.Combine(rootPath, "pdf");
                         if (!Directory.Exists(directory))
                         {
                             Directory.CreateDirectory(directory);

@@ -640,7 +640,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
          
 
-                mPresenter = new FeedbackDetailsBillRelatedPresenter(this, submittedFeedback,isNewScreen);
+                mPresenter = new FeedbackDetailsBillRelatedPresenter(this, submittedFeedback,isNewScreen, this);
                 this.userActionsListener.Start();
             }
             catch (Exception e)

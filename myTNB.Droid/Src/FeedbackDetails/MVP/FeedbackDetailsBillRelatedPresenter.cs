@@ -1,4 +1,5 @@
-﻿using Android.Graphics;
+﻿using Android.Content;
+using Android.Graphics;
 using Android.Text;
 using Java.Text;
 using Java.Util;
@@ -20,13 +21,15 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
         CancellationTokenSource cts;
         SubmittedFeedbackDetails feedbackDetails;
         private bool isNewScreen;
+        private Context context;
 
-        public FeedbackDetailsBillRelatedPresenter(FeedbackDetailsContract.BillRelated.IView mView, SubmittedFeedbackDetails feedbackDetails , bool isNewScreen)
+        public FeedbackDetailsBillRelatedPresenter(FeedbackDetailsContract.BillRelated.IView mView, SubmittedFeedbackDetails feedbackDetails , bool isNewScreen, Context mContext)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
             this.feedbackDetails = feedbackDetails;
             this.isNewScreen = isNewScreen;
+            this.context = mContext;
         }
 
         public async void Start()
@@ -45,7 +48,7 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                             try
                             {
                                 Bitmap bitmap = await FileUtils.GetImageFromHexAsync(image.ImageHex, image.FileSize);
-                                string filePath = await FileUtils.SaveAsync(bitmap, FileUtils.IMAGE_FOLDER, image.FileName);
+                                string filePath = await FileUtils.SaveAsync(this.context, bitmap, FileUtils.IMAGE_FOLDER, image.FileName);
                                 var attachImage = new AttachedImage()
                                 {
                                     Path = filePath,

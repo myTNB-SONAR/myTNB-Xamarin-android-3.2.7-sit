@@ -1,4 +1,5 @@
-﻿using Android.Graphics;
+﻿using Android.Content;
+using Android.Graphics;
 using Android.Text;
 using Java.Text;
 using Java.Util;
@@ -19,12 +20,14 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
 
         SimpleDateFormat simpleDateTimeParser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd MMM yyyy h:mm a");
+        private Context context;
 
-        public FeedbackDetailsFaultyLampsPresenter(FeedbackDetailsContract.FaultyLamps.IView mView, SubmittedFeedbackDetails submittedFeedback)
+        public FeedbackDetailsFaultyLampsPresenter(FeedbackDetailsContract.FaultyLamps.IView mView, SubmittedFeedbackDetails submittedFeedback, Context mContext)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
             this.feedbackDetails = submittedFeedback;
+            this.context = mContext;
         }
 
 
@@ -45,7 +48,7 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
 
 
                             Bitmap bitmap = await FileUtils.GetImageFromHexAsync(image.ImageHex, image.FileSize);
-                            string filePath = await FileUtils.SaveAsync(bitmap, FileUtils.IMAGE_FOLDER, image.FileName);
+                            string filePath = await FileUtils.SaveAsync(this.context, bitmap, FileUtils.IMAGE_FOLDER, image.FileName);
                             var attachImage = new AttachedImage()
                             {
                                 Path = filePath,
