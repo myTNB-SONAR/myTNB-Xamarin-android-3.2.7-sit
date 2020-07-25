@@ -216,9 +216,10 @@ namespace myTNB
             nfloat tabHeight = TabBarController != null && TabBarController.TabBar != null
                 && TabBarController.TabBar.Frame != null ? TabBarController.TabBar.Frame.Height : 0;
             nfloat height = DeviceHelper.IsIOS10AndBelow ? View.Frame.Height - tabHeight : ViewHeight;
-            _profileTableview = new UITableView(new CGRect(0, yLoc, View.Frame.Width, height))
+            _profileTableview = new UITableView(new CGRect(0, yLoc + DeviceHelper.TopSafeAreaInset, View.Frame.Width, height))
             {
-                SeparatorStyle = UITableViewCellSeparatorStyle.None
+                SeparatorStyle = UITableViewCellSeparatorStyle.None,
+                ShowsVerticalScrollIndicator = false
             };
             _profileTableview.RegisterClassForCellReuse(typeof(ProfileCell), ProfileConstants.Cell_Profile);
             View.AddSubview(_profileTableview);

@@ -115,13 +115,8 @@
         public static string tnc = "tnc";
 
         public static string personalDisclamer = "personalDisclamer";
+        public static string copyOfPermiseProof = "copyOfPermiseProof";
+        public static string tnbTermUse = "tnbTermUse";
 
-        /*need to add
-        "updateNoOwnerTitle" : "Which information you would like to update?"
-        "newAccNoOwnerName" : "Enter New Account Name"
-        "newAccNoOwnerNameReq" :"Account name is required"
-
-        ??send ic bagai kena bahasa melayu?
-        */
     }
 }

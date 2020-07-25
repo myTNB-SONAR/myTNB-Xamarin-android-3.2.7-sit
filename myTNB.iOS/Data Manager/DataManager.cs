@@ -94,6 +94,8 @@ namespace myTNB.DataManager
 
         //General Eqnuiry
         public string CurrentSelectedEnquiryCA = string.Empty;
+        public string CurrentSelectedEnquiryIC = string.Empty;
+        public string CurrentSelectedEnquiryFullName = string.Empty;
         public string CurrentSelectedEnquiryMessage = string.Empty;
         public List<string> CurrentSelectedEnquiryImageName = new List<string>();
         public string CurrentSelectedEnquiryContactName = string.Empty;
@@ -106,6 +108,11 @@ namespace myTNB.DataManager
         public int Relationship = 0;
         public string RelationshipDesc = null;
         public List<FeedbackUpdateDetailsModel> FeedbackUpdateDetails = new List<FeedbackUpdateDetailsModel>();
+        public NSData imageWhereAcc;
+        public NSData imageCopyIC;
+        public NSData imageConsent;
+        
+                
 
         //Find Us
         public int CurrentStoreTypeIndex = 0;

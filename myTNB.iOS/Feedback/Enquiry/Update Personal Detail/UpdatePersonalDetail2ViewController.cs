@@ -22,6 +22,7 @@ namespace myTNB
         }
 
         public bool IsOwner;
+        public bool IsPremise;
         public string FeedbackID = string.Empty;
         public bool IsLoggedIn;
         public bool isMobileNumberAvailable;
@@ -71,6 +72,12 @@ namespace myTNB
         private UILabel lblPhotoSubTitle3;
         private UILabel lblPhotoSubTitle2;
         private UILabel lblPhotoSubTitle1;
+        private UIView _viewUploadPhoto4;
+        private UILabel _lblPhotoTitle4;
+        private UIView imageContainer4;
+        private UILabel lblPhotoSubTitle4;
+        private UIViewWithDashedLinerBorder dashedLineView4;
+        private UITapGestureRecognizer _tapImage4;
 
         public override void ViewDidLoad()
         {
@@ -82,10 +89,17 @@ namespace myTNB
             AddCTA();
             AddSectionTitle2();
             //Should be the last to add
-            if (IsOwner)
+            if (IsOwner && !IsPremise)
             {
                 CreatePhotoUploadWidget();
                 CreateIdentifcationToolTip();
+                UpdateContentSize();
+            }
+            else if (IsOwner && IsPremise)
+            {
+                CreatePhotoUploadWidget();
+                CreateIdentifcationToolTip();
+                CreatePhotoUploadWidget4();
                 UpdateContentSize();
             }
             else
@@ -94,6 +108,7 @@ namespace myTNB
                 CreatePhotoUploadWidget2();
                 CreateIdentifcationToolTip();
                 CreatePhotoUploadWidget3();
+                CreatePhotoUploadWidget4();
                 UpdateContentSize();
             }
         }
@@ -298,6 +313,48 @@ namespace myTNB
 
         }
 
+        private void CreatePhotoUploadWidget4()
+        {
+            if (IsPremise)
+            {
+                //Photo View4
+                _viewUploadPhoto4 = new UIView((new CGRect(18, IsOwner ? _identificationToolTipsView.Frame.GetMaxY() + 16 : _proofConsentToolTipsView.Frame.GetMaxY() + 16, View.Frame.Width - 36, 89))) //164
+                {
+                    BackgroundColor = UIColor.Clear
+                };
+
+                //Photo/s Title
+                _lblPhotoTitle4 = new UILabel(new CGRect(0, 0, View.Frame.Width - 36, 16))
+                {
+                    Text = GetI18NValue(EnquiryConstants.copyOfPermiseProof), //GetI18NValue("consentTitle")
+                    TextColor = MyTNBColor.TunaGrey(),
+                    Font = MyTNBFont.MuseoSans14_300
+                };
+                _viewUploadPhoto4.AddSubview(_lblPhotoTitle4);
+
+                imageContainer4 = new UIView(new CGRect(0, _lblPhotoTitle4.Frame.GetMaxY() + UNIVERSAL_MARGIN
+                , View.Frame.Width - 36, 48));
+
+                _viewUploadPhoto4.AddSubview(imageContainer4);
+
+                AddImageContainer4();
+
+                lblPhotoSubTitle4 = new UILabel(new CGRect(0, imageContainer4.Frame.GetMaxY() + 4
+                    , View.Frame.Width - 36, 14))
+                {
+                    Text = GetI18NValue(EnquiryConstants.attachDescription),
+                    TextColor = MyTNBColor.SilverChalice,
+                    Font = MyTNBFont.MuseoSans11_300
+                };
+                _viewUploadPhoto4.AddSubviews(new UIView[] { _lblPhotoTitle4, lblPhotoSubTitle4 });
+                _viewPhotoContainer.AddSubview(_viewUploadPhoto4);
+                //_viewPhotoContainer.AddSubview(GetProofConsentTooltipView(GetYLocationFromFrame(_viewUploadPhoto4.Frame, 16)));
+
+                _viewPhotoContainer.Frame = new CGRect(0, _viewTitleSection2.Frame.GetMaxY(), View.Frame.Width, _viewUploadPhoto4.Frame.GetMaxY() + 16);
+            }
+
+        }
+
         private void AddImageContainer()
         {
             imageContainer = new UIView(new CGRect(0, _lblPhotoTitle.Frame.GetMaxY() + UNIVERSAL_MARGIN
@@ -420,7 +477,7 @@ namespace myTNB
         
         private void AddImageContainer3()
         {
-            imageContainer3 = new UIView(new CGRect(0, _lblPhotoTitle2.Frame.GetMaxY() + UNIVERSAL_MARGIN
+            imageContainer3 = new UIView(new CGRect(0, _lblPhotoTitle3.Frame.GetMaxY() + UNIVERSAL_MARGIN
             , View.Frame.Width - 36, 48)); //94
                 
                 _viewUploadPhoto3.AddSubview(imageContainer3);
@@ -479,6 +536,66 @@ namespace myTNB
             
         }
 
+        private void AddImageContainer4()
+        {
+            imageContainer4 = new UIView(new CGRect(0, _lblPhotoTitle4.Frame.GetMaxY() + UNIVERSAL_MARGIN
+            , View.Frame.Width - 36, 48)); //94
+
+            _viewUploadPhoto4.AddSubview(imageContainer4);
+
+
+            dashedLineView4 = new UIViewWithDashedLinerBorder
+            {
+                Frame = new CGRect(0, 0, View.Frame.Width - 36, 48),//94
+                BackgroundColor = UIColor.White
+            };
+            dashedLineView4.Layer.CornerRadius = 5.0f;
+            dashedLineView4.Tag = 10;
+
+            UIImageView imgViewAdd4 = new UIImageView(new CGRect(dashedLineView4.Frame.GetMidX() - 12, 12, 24, 24))
+            {
+                Image = UIImage.FromBundle("IC-Action-Add-Card"),
+                Tag = 0
+            };
+
+            dashedLineView4.AddSubview(imgViewAdd4);
+
+            _tapImage4 = new UITapGestureRecognizer(() =>
+            {
+
+                UIImagePickerController imgPicker4 = new UIImagePickerController();
+                UpdatePersonalDetailImagePickerDelegate imgPickerDelegate3 = new UpdatePersonalDetailImagePickerDelegate(this)
+                {
+                    DashedLineView = dashedLineView4
+                };
+                imgPicker4.Delegate = imgPickerDelegate3;
+
+                UIAlertController alert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
+
+                alert.AddAction(UIAlertAction.Create(GetI18NValue(EnquiryConstants.camera), UIAlertActionStyle.Default, (obj) =>
+                {
+                    imgPicker4.SourceType = UIImagePickerControllerSourceType.Camera;
+                    imgPicker4.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    PresentViewController(imgPicker4, true, null);
+                }));
+
+                alert.AddAction(UIAlertAction.Create(GetI18NValue(EnquiryConstants.cameraRoll), UIAlertActionStyle.Default, (obj) =>
+                {
+                    imgPicker4.SourceType = UIImagePickerControllerSourceType.PhotoLibrary;
+                    imgPicker4.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    PresentViewController(imgPicker4, true, null);
+                }));
+
+                UIAlertAction cancelAction = UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Cancel), UIAlertActionStyle.Cancel, null);
+                alert.AddAction(cancelAction);
+                alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                PresentViewController(alert, animated: true, completionHandler: null);
+            });
+
+            dashedLineView4.AddGestureRecognizer(_tapImage4);
+            imageContainer4.AddSubview(dashedLineView4);
+
+        }
 
         internal void AddImage(UIImage image, UIViewWithDashedLinerBorder view)
         {
@@ -534,7 +651,7 @@ namespace myTNB
 
         private nfloat GetScrollHeight()
         {
-            return (nfloat)((_viewPhotoContainer.Frame.GetMaxY() + (_btnSubmitContainer.Frame.Height + 32f)));
+            return (nfloat)((_viewPhotoContainer.Frame.GetMaxY() + (_btnSubmitContainer.Frame.Height + 32f) + 48));
         }
 
         public CustomUIView GetIdentificationTooltipView(nfloat yLoc)
@@ -563,12 +680,23 @@ namespace myTNB
             };
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
-                var cimg = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imageCopyIC));
+                //var cimg = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imageCopyIC));
+                NSData cimg;
+
+                if (DataManager.DataManager.SharedInstance.imageCopyIC == null)
+                {
+                    DataManager.DataManager.SharedInstance.imageCopyIC = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imageCopyIC));
+                    cimg = DataManager.DataManager.SharedInstance.imageCopyIC;
+                }
+                else
+                {
+                    cimg = DataManager.DataManager.SharedInstance.imageCopyIC;
+                }
 
                 DisplayCustomAlert(GetI18NValue(EnquiryConstants.copyICTitle) //GetI18NValue("copyICTitle")
                     , GetI18NValue(EnquiryConstants.copyIcDet) //GetI18NValue("copyIcDet")
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
-                    , cimg); //UIImage.FromBundle("imgIcCopy")
+                    , UIImage.LoadFromData(cimg ?? null)); //UIImage.FromBundle("imgIcCopy")
             });
             viewInfo.Layer.CornerRadius = GetScaledHeight(12);
             _identificationToolTipsView.AddGestureRecognizer(tapInfo);
@@ -604,12 +732,21 @@ namespace myTNB
             };
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
-                var cimg = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imageConsent));
+                NSData cimg;
 
+                if (DataManager.DataManager.SharedInstance.imageConsent == null)
+                {
+                    DataManager.DataManager.SharedInstance.imageConsent = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imageConsent));
+                    cimg = DataManager.DataManager.SharedInstance.imageConsent;
+                }
+                else
+                {
+                    cimg = DataManager.DataManager.SharedInstance.imageConsent;
+                }
                 DisplayCustomAlert(GetI18NValue(EnquiryConstants.consentTitle) //GetI18NValue("consentTitle")
                     , GetI18NValue(EnquiryConstants.poc) //GetI18NValue("poc")
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
-                    , cimg);
+                    , UIImage.LoadFromData(cimg ?? null));
             });
             viewInfo.Layer.CornerRadius = GetScaledHeight(12);
             _proofConsentToolTipsView.AddGestureRecognizer(tapInfo);
@@ -627,8 +764,6 @@ namespace myTNB
             ImageDataEnquiryModel imgData;
             UIImageView imgView;
             UIImage resizedImage;
-
-            ActivityIndicator.Show();
 
             foreach (UIView view in dashedLineView.Subviews)
             {
@@ -688,13 +823,33 @@ namespace myTNB
 
                 }
             }
+            if (dashedLineView4 != null)
+            {
+                foreach (UIView view in dashedLineView4.Subviews)
+                {
+                    if (view.Tag == 1)
+                    {
+                        imgData = new ImageDataEnquiryModel();
+                        imgView = view as UIImageView;
+                        if (imgView != null)
+                        {
+                            resizedImage = _imageHelper.ResizeImage(imgView.Image);
+                            imgData.fileType = "jpeg";
+                            imgData.fileHex = _imageHelper.ConvertImageToHex(resizedImage);
+                            imgData.fileSize = _imageHelper.GetImageFileSize(resizedImage).ToString();
+                            imgData.fileName = FeedbackFileNameHelper.GenerateFileName();
+                            capturedImageList.Add(imgData);
+                        }
+                    }
+
+                }
+            }
             return capturedImageList;
         }
 
         private void NavigateToPage()
         {
-
-            if (IsOwner)
+             if (IsOwner)
             { 
                 if(GetImageList().Count == 1)
                 { 
@@ -715,7 +870,29 @@ namespace myTNB
                     ActivityIndicator.Hide();
                 }
             }
-            else if (!IsOwner)
+            if (IsOwner && IsPremise)
+            {
+                if (GetImageList().Count == 2)
+                {
+
+                    UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
+                    UpdatePersonalDetail3ViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetail3ViewController") as UpdatePersonalDetail3ViewController;
+                    viewController.IsOwner = IsOwner;
+                    viewController.Items = GetImageList();
+                    viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
+                    NavigationController.PushViewController(viewController, true);
+
+                    ActivityIndicator.Hide();
+                }
+                else
+                {
+                    lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
+                    lblPhotoSubTitle4.TextColor = MyTNBColor.Tomato;
+
+                    ActivityIndicator.Hide();
+                }
+            }
+            else if (!IsOwner && !IsPremise)
             {
                 if (GetImageList().Count == 3)
                 {
@@ -733,22 +910,47 @@ namespace myTNB
                     lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
                     lblPhotoSubTitle2.TextColor = MyTNBColor.Tomato;
                     lblPhotoSubTitle3.TextColor = MyTNBColor.Tomato;
+                    //lblPhotoSubTitle4.TextColor = MyTNBColor.Tomato;
 
                     ActivityIndicator.Hide();
                 }
-            }
+            }else if(!IsOwner && IsPremise)
+            {
+                if (GetImageList().Count == 4)
+                {
+                    UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
+                    UpdatePersonalDetail3ViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetail3ViewController") as UpdatePersonalDetail3ViewController;
+                    viewController.IsOwner = IsOwner;
+                    viewController.Items = GetImageList();
+                    viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
+                    NavigationController.PushViewController(viewController, true);
 
+                    ActivityIndicator.Hide();
+                }
+                else
+                {
+                    lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
+                    lblPhotoSubTitle2.TextColor = MyTNBColor.Tomato;
+                    lblPhotoSubTitle3.TextColor = MyTNBColor.Tomato;
+                    lblPhotoSubTitle4.TextColor = MyTNBColor.Tomato;
+
+                    ActivityIndicator.Hide();
+                }
+
+            }
 
         }
 
-        private UIImage GetFromUrl(string uri)
+        private NSData GetFromUrl(string uri)
         {
             using (var url = new NSUrl(uri))
             using (var data = NSData.FromUrl(url, NSDataReadingOptions.Uncached, out NSError error))
                 if (error != null) { return null; }
                 else
                 {
-                    return UIImage.LoadFromData(data);
+                    //return UIImage.LoadFromData(data);
+                    return data;
+
                 }
         }
     }

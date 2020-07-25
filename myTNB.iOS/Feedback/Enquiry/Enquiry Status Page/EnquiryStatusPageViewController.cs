@@ -191,12 +191,12 @@ namespace myTNB
             {
                 if (IsSuccess)
                 {
-                    GetCTA2(ref btnSecondary, GetI18NValue(EnquiryConstants.backHomeButton), false, _actions.BackToHome, false);
+                    GetCTA2(ref btnSecondary, GetI18NValue(EnquiryConstants.backHomeButton), false, _actions.BackToFeedback, false);
                     GetCTA2(ref btnPrimary, GetI18NValue(EnquiryConstants.viewSubmittedEnquiry), true, null, true); //ViewSubmittedEnquiry
                 }
                 else
                 {
-                    GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.BackToHome, true);
+                    GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.BackToFeedback, true);
 
                 }
             }

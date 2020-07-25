@@ -75,6 +75,7 @@ namespace myTNB
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DismissViewController(true, null);
+                
             });
             NavigationItem.LeftBarButtonItem = btnBack;
 
@@ -161,7 +162,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = GetI18NValue(EnquiryConstants.reqUpdate) //reqUpdate
+                Text = _feedbackDetails.RelationshipWithCA == 0 ? GetI18NValue(EnquiryConstants.enquiryDetailsTitle) : GetI18NValue(EnquiryConstants.reqUpdate) 
             };
 
             _viewTitleSection.AddSubview(lblSectionTitle);
@@ -308,7 +309,7 @@ namespace myTNB
                 {
                     Font = TNBFont.MuseoSans_10_500,
                     TextColor = MyTNBColor.SilverChalice,
-                    Text = GetI18NValue(EnquiryConstants.photoTitle).ToUpper()
+                    Text = GetI18NValue(EnquiryConstants.supportingDocTitle).ToUpper()
                 };
 
                 _containerImage = new UIView(new CGRect(0, lblTitlePhoto.Frame.GetMaxY() + 4, View.Frame.Width, GetScaledHeight(48)))

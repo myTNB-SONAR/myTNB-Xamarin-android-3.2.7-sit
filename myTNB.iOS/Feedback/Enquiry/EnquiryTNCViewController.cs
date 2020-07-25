@@ -114,7 +114,7 @@ namespace myTNB
             };
 
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(string.Format(GetI18NValue(EnquiryConstants.tncAgree), userInfo.email, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA, GetAccountDetail())
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(string.Format(GetI18NValue(EnquiryConstants.tncAgree), userInfo.email, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryFullName)
                         , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(14F));
             NSMutableAttributedString mutableHTMLFooter = new NSMutableAttributedString(htmlBody);
 
@@ -156,7 +156,7 @@ namespace myTNB
                 {
                     Font = TNBFont.MuseoSans_14_500,
                     TextColor = MyTNBColor.WaterBlue,
-                    Text = GetI18NValue(EnquiryConstants.tnc),
+                    Text = GetI18NValue(EnquiryConstants.tnbTermUse),
                     LineBreakMode = UILineBreakMode.WordWrap,
                 };
 

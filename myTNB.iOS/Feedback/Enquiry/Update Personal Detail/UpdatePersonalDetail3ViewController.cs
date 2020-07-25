@@ -4,6 +4,7 @@ using myTNB.Feedback;
 using myTNB.Feedback.FeedbackImage;
 using myTNB.Model;
 using myTNB.Registration;
+using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SSMR;
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,10 @@ namespace myTNB
 
         private TextFieldHelper _textFieldHelper = new TextFieldHelper();
         private UIImageView imgViewCheckBoxTNC;
-        const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
+
+        UITextField textField;
+        private const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
+        private const string MOBILENUMBER_PATTERN = @"^[0-9 \+]+$";
 
         public bool IsTNC { get; private set; }
 
@@ -98,6 +102,9 @@ namespace myTNB
 
         private void AddDetailsSection()
         {
+            UserEntity userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+            ? DataManager.DataManager.SharedInstance.UserEntity[0] : new UserEntity();
+
             _viewContactDetails = new UIView(new CGRect(0, _viewTitleSection.Frame.GetMaxY() + 8, ViewWidth, GetScaledHeight(219)))
             {
                 BackgroundColor = UIColor.White
@@ -117,7 +124,8 @@ namespace myTNB
                 Frame = new CGRect(0, 12, viewName.Frame.Width, 24),
                 AttributedPlaceholder = AttributedStringUtility.GetAttributedString(""
                 , AttributedStringUtility.AttributedStringType.Value),
-                TextColor = MyTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey(),
+                Text = userInfo?.displayName ?? string.Empty
             };
 
             txtFieldName.ReturnKeyType = UIReturnKeyType.Done;
@@ -141,7 +149,8 @@ namespace myTNB
                 Frame = new CGRect(0, 12, viewEmail.Frame.Width, 24),
                 AttributedPlaceholder = AttributedStringUtility.GetAttributedString(""
                 , AttributedStringUtility.AttributedStringType.Value),
-                TextColor = MyTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey(),
+                Text = userInfo?.email ?? string.Empty
             };
 
             txtFieldEmail.ReturnKeyType = UIReturnKeyType.Done;
@@ -165,7 +174,8 @@ namespace myTNB
                 Frame = new CGRect(0, 12, viewMobile.Frame.Width, 24),
                 AttributedPlaceholder = AttributedStringUtility.GetAttributedString(""
                 , AttributedStringUtility.AttributedStringType.Value),
-                TextColor = MyTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey(),
+                Text = userInfo?.mobileNo ?? string.Empty
             };
 
             txtFieldMobile.ReturnKeyType = UIReturnKeyType.Done;
@@ -212,6 +222,21 @@ namespace myTNB
             };
             textField.EditingDidBegin += (sender, e) =>
             {
+                if (textField == txtFieldMobile && textField.Text.Length == 0)
+                {
+                    textField.Text += TNBGlobal.MobileNoPrefix;
+                }
+                string value = textField.Text;
+                bool hidden;
+                if (textField == txtFieldMobile)
+                {
+                    hidden = value.Length != 3 && IsEmpty(value) || value.Length == 0;
+                }
+                else
+                {
+                    hidden = IsEmpty(value) || value.Length == 0;
+                }
+
                 textField.LeftViewMode = UITextFieldViewMode.Never;
                 viewLine.BackgroundColor = MyTNBColor.PowerBlue;
                 textField.TextColor = MyTNBColor.TunaGrey();
@@ -232,6 +257,20 @@ namespace myTNB
             };
             textField.ShouldChangeCharacters = (txtField, range, replacementString) =>
             {
+                if (txtField == txtFieldMobile)
+                {
+                    bool isCharValid = _textFieldHelper.ValidateTextField(replacementString, TNBGlobal.MobileNoPattern);
+                    if (!isCharValid) { return false; }
+
+                    if (range.Location >= TNBGlobal.MobileNoPrefix.Length)
+                    {
+                        string content = _textFieldHelper.TrimAllSpaces(textField.Text);
+                        nint count = content.Length + replacementString.Length - range.Length;
+                        return count <= TNBGlobal.MobileNumberMaxCharCount;
+                    }
+                    return false;
+                }
+
                 return true;
             };
 
@@ -247,7 +286,7 @@ namespace myTNB
         {
             SetTextFieldEvents(txtFieldName, lblNameTitle, lblNameError, viewLineName, TNBGlobal.CustomerNamePattern);
             SetTextFieldEvents(txtFieldEmail, lblEmailTitle, lblEmailError, viewLineEmail, EMAIL_PATTERN);
-            SetTextFieldEvents(txtFieldMobile, lblMobileTitle, lblMobileError, viewLineMobile, TNBGlobal.MobileNoPattern);
+            SetTextFieldEvents(txtFieldMobile, lblMobileTitle, lblMobileError, viewLineMobile, MOBILENUMBER_PATTERN);
         }
 
         private void SetSubmitButtonEnable()
@@ -258,7 +297,7 @@ namespace myTNB
             bool isValidFieldEmail = _textFieldHelper.ValidateTextField(txtFieldEmail.Text, EMAIL_PATTERN)
                && !string.IsNullOrWhiteSpace(txtFieldEmail.Text);
 
-            bool isValidFieldMobile = _textFieldHelper.ValidateTextField(txtFieldMobile.Text, TNBGlobal.MobileNoPattern)
+            bool isValidFieldMobile = _textFieldHelper.ValidateTextField(txtFieldMobile.Text, MOBILENUMBER_PATTERN) && _textFieldHelper.ValidateMobileNumberLength(txtFieldMobile.Text)
                && !string.IsNullOrWhiteSpace(txtFieldMobile.Text);
 
             bool isValid = isValidFieldName && isValidFieldEmail && isValidFieldMobile && IsTNC;
@@ -328,6 +367,8 @@ namespace myTNB
 
             lblTNC.Delegate = new TextViewDelegate(new Action<NSUrl>((url) =>
             {
+                if (DataManager.DataManager.SharedInstance.IsLoggedIn())
+                { 
                 UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
                 EnquiryTNCViewController viewController =
                     storyBoard.InstantiateViewController("EnquiryTNCViewController") as EnquiryTNCViewController;
@@ -338,6 +379,21 @@ namespace myTNB
                     navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
                 }
+                }
+                else
+                {
+                    UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
+                    TermsAndConditionViewController viewController =
+                        storyBoard.InstantiateViewController("TermsAndConditionViewController") as TermsAndConditionViewController;
+                    if (viewController != null)
+                    {
+                        viewController.isPresentedVC = true;
+                        UINavigationController navController = new UINavigationController(viewController);
+                        navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                        PresentViewController(navController, true, null);
+                    }
+                }
+
 
             }));
             //Resize
@@ -420,6 +476,17 @@ namespace myTNB
             _svContainer.AddSubview(_viewTitleSection);
         }
 
+        private bool IsEmpty(string value)
+        {
+            if (textField == txtFieldMobile)
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value)) { return true; }
+                int countryCodeIndex = value.IndexOf(@"+60", 0, StringComparison.CurrentCulture);
+                return countryCodeIndex > -1 && value.Length == 3;
+            }
+            return string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value);
+        }
+
         private void ExecuteSubmitUpdatePersonalDetail()
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
@@ -473,9 +540,9 @@ namespace myTNB
                 feedbackCategoryId = "1",
                 feedbackTypeId = "",
                 accountNum = DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA,
-                name = DataManager.DataManager.SharedInstance.UserEntity[0].displayName,
-                email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                phoneNum = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo,
+                name = DataManager.DataManager.SharedInstance.IsLoggedIn() ? DataManager.DataManager.SharedInstance.UserEntity[0].displayName : txtFieldName.Text,
+                email = DataManager.DataManager.SharedInstance.IsLoggedIn() ? DataManager.DataManager.SharedInstance.UserEntity[0].email : txtFieldEmail.Text,
+                phoneNum = DataManager.DataManager.SharedInstance.IsLoggedIn() ? DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo : txtFieldMobile.Text,
                 feedbackMesage = string.Empty, //Common
                 stateId = "",
                 location = "",
