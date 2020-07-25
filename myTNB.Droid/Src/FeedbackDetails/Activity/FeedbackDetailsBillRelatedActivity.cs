@@ -249,11 +249,11 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 
 
 
-                if (relationShip==null)
-                {
-                    isNewScreen = false;
-                }
-
+                //if (relationShip==null)
+                //{
+                //    isNewScreen = false;
+                //}
+                isNewScreen = true;
 
                 if (isNewScreen)
                 {
@@ -505,10 +505,6 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 {
                     txtInputLayoutFeedback.Visibility = ViewStates.Gone;
                 }
-
-
-
-
                 else
                 {
                     txtFeedback.Text = feedback;
@@ -609,7 +605,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 string feedbackDateTimeTitle = Utility.GetLocalizedLabel("FeedbackDetails", "dateTimeTitle");
                 txtInputLayoutDateTime.Hint = feedbackDateTimeTitle;
                 txtInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("Common", "accountNo");
-                txtInputLayoutFeedback.Hint = Utility.GetLocalizedLabel("FeedbackDetails", "feedback");
+                txtInputLayoutFeedback.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "messageHint");
                 txtRelatedScreenshotTitle.Text = Utility.GetLocalizedLabel("FeedbackDetails", "photoTitle");
           
 

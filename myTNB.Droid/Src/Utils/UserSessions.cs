@@ -427,6 +427,20 @@ namespace myTNB_Android.Src.Utils
             return prefs.GetString("IsFeedbackUpdateDetailDisabled",  null);
         }
 
+        public static void SaveGetAccountIsExist(ISharedPreferences prefs, string data)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("IsAccountExist", data);
+            editor.Apply();
+        }
+
+        public static string GetAccountIsExist(ISharedPreferences prefs)
+        {
+            return prefs.GetString("IsAccountExist", null);
+        }
+
+
+
         public static void SaveLogoutFlag(ISharedPreferences prefs, bool flag)
         {
             ISharedPreferencesEditor editor = prefs.Edit();

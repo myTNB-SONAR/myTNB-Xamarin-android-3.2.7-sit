@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using myTNB_Android.Src.MyTNBService.InterfaceAPI;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
+using Org.Json;
 using Refit;
 
 namespace myTNB_Android.Src.MyTNBService.ServiceImpl
@@ -88,6 +89,17 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
 		{
 			return api.ValidateManualAccount<ValidateManualAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
 		}
+
+        /// <summary>
+        /// Call ValidateAccisExist with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<GetSearchForAccountResponse> ValidateAccIsExist([Body] Request.BaseRequest request)
+        {
+
+            return api.GetSearchForAccount<GetSearchForAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
 
         /// <summary>
         /// Call GetPhoneVerifyStatus with default timeout.

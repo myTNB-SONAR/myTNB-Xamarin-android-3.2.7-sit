@@ -96,7 +96,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="6dp"
-                                android:hint="@string/GeneralEnquiry2of2_name"
+                                android:hint="Name"
                                 android:inputType="text"
                                 android:maxLines="1"
                                 android:paddingTop="5dp"
@@ -112,14 +112,14 @@
                             android:layout_marginRight="16dp"
                             app:errorEnabled="true"
 
-                            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+                           app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                             <EditText
                                 android:id="@+id/txtEmail"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="6dp"
-                                android:hint="@string/GeneralEnquiry2of2_email"
+                                android:hint="Email"
                                 android:inputType="text"
                                 android:maxLines="1"
                                 android:paddingTop="5dp"
@@ -134,8 +134,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             app:errorEnabled="true"
-
-                            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+                           app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                             <EditText
                                 android:id="@+id/txtPhoneNumber"
