@@ -77,7 +77,7 @@ namespace myTNB.Home.Dashboard.DashboardHome
             };
             ContentContainer.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (OnTapPopUp != null)
+                if (!WhatsNewItem.Donot_Show_In_WhatsNew && OnTapPopUp != null)
                 {
                     OnTapPopUp?.Invoke(WhatsNewItem);
                     Dismiss();
@@ -254,6 +254,7 @@ namespace myTNB.Home.Dashboard.DashboardHome
             {
                 Editable = false,
                 ScrollEnabled = true,
+                Selectable = false,
                 AttributedText = mutableHTMLBody,
                 WeakLinkTextAttributes = linkAttributes.Dictionary,
                 ContentInset = new UIEdgeInsets(-5, 0, -5, 0),

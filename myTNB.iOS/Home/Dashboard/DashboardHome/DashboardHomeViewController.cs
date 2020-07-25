@@ -48,7 +48,6 @@ namespace myTNB
         public bool IsNeedHelpCallDone;
         private bool _hotspotIsOn;
         private bool _isLanguageChanged;
-        private WhatsNewModalViewController whatsNewModalView;
 
         public override void ViewDidLoad()
         {
@@ -295,6 +294,7 @@ namespace myTNB
                                     int count = items[index].ShowCountForDay;
                                     DateTime showDateTime = DateTime.ParseExact(recordDate, "yyyyMMddTHHmmss",
                                         CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                    Debug.WriteLine("is same day: " + (showDateTime.Date == DateTime.Now.Date));
                                     if (showDateTime.Date == DateTime.Now.Date)
                                     {
                                         WhatsNewServices.SetWhatNewModelShowDate(id, false);
@@ -344,20 +344,6 @@ namespace myTNB
                 }
 
                 DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId = "";
-            }
-        }
-
-        public void OnDismissWhatsNewModal()
-        {
-            if (whatsNewModalView.WhatsNews.Count == 0)
-            {
-                whatsNewModalView.DismissViewController(true, () =>
-                {
-                    if (DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId.IsValid())
-                    {
-                        OnNavigateWhatsNewModal();
-                    }
-                });
             }
         }
 
@@ -711,7 +697,10 @@ namespace myTNB
             }
             _homeTableView = new UITableView(new CGRect(0, yPos
                 , ViewWidth, ViewHeight + addtlHeight))
-            { BackgroundColor = UIColor.Clear };
+            {
+                BackgroundColor = UIColor.Clear,
+                ShowsVerticalScrollIndicator = false
+            };
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _homeTableView.RegisterClassForCellReuse(typeof(AccountsTableViewCell), DashboardHomeConstants.Cell_Accounts);
             _homeTableView.RegisterClassForCellReuse(typeof(ServicesTableViewCell), DashboardHomeConstants.Cell_Services);
