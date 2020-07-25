@@ -471,6 +471,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                     this.SetIsClicked(true);
                     this.userActionsListener.NavigateToTermsAndConditions();
                 }
+                else
+                {
+                    ShowInvalidEmailError();
+                }
 
 
               
