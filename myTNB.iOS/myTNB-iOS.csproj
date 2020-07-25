@@ -1992,6 +1992,7 @@
     <Folder Include="Assets\SMR.xcassets\Sample-Meter.imageset\" />
     <Folder Include="Assets\Assets.xcassets\WhatsNew-Popup-Banner.imageset\" />
     <Folder Include="Home\Dashboard\DashboardHome\Home Popup\" />
+    <Folder Include="Model\GetSearchForAccount\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2826,8 +2827,6 @@
     <Compile Include="Feedback\Enquiry\Update Personal Detail\UpdatePersonalDetail3ViewController.designer.cs">
       <DependentUpon>UpdatePersonalDetail3ViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Feedback\Enquiry\Update Personal Detail\UpdatePersonalDetailComponent.cs" />
-    <Compile Include="Feedback\Enquiry\Update Personal Detail\UpdatePersonalDetailCommonWidgets.cs" />
     <Compile Include="Feedback\Enquiry\Update Personal Detail\UpdatePersonalDetailImagePickerDelegate.cs" />
     <Compile Include="Feedback\Feedback Image\ImageDataEnquiryModel.cs" />
     <Compile Include="Feedback\Enquiry\Enquiry Status Page\EnquiryStatusPageViewController.cs" />
@@ -2851,6 +2850,7 @@
     <Compile Include="Feedback\Enquiry\EnquiryTNCViewController.designer.cs">
       <DependentUpon>EnquiryTNCViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\GetSearchForAccount\GetSearchForAccountResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">

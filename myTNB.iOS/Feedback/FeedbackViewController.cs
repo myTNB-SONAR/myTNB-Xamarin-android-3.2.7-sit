@@ -168,19 +168,19 @@ namespace myTNB
 
         internal void DisplayFeedbackEntry(string id)
         {
-            if (!DataManager.DataManager.SharedInstance.IsLoggedIn()) //Check user from prelogin or login
-            {
-                UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
-                FeedbackEntryViewController feedbackEntryViewController =
-                 storyBoard.InstantiateViewController("FeedbackEntryViewController") as FeedbackEntryViewController;
-                feedbackEntryViewController.FeedbackID = id;
-                feedbackEntryViewController.IsLoggedIn = DataManager.DataManager.SharedInstance.IsLoggedIn();//!isFromPreLogin;
-                UINavigationController navController = new UINavigationController(feedbackEntryViewController);
-                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                PresentViewController(navController, true, null);
-            }
-            else
-            {
+            //if (!DataManager.DataManager.SharedInstance.IsLoggedIn()) //Check user from prelogin or login
+            //{
+            //    UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
+            //    FeedbackEntryViewController feedbackEntryViewController =
+            //     storyBoard.InstantiateViewController("FeedbackEntryViewController") as FeedbackEntryViewController;
+            //    feedbackEntryViewController.FeedbackID = id;
+            //    feedbackEntryViewController.IsLoggedIn = DataManager.DataManager.SharedInstance.IsLoggedIn();//!isFromPreLogin;
+            //    UINavigationController navController = new UINavigationController(feedbackEntryViewController);
+            //    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+            //    PresentViewController(navController, true, null);
+            //}
+            //else
+            //{
                 UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
                 EnquiryViewController enquiryViewController =
                  storyBoard.InstantiateViewController("EnquiryViewController") as EnquiryViewController;
@@ -189,7 +189,7 @@ namespace myTNB
                 UINavigationController navController = new UINavigationController(enquiryViewController);
                 navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
-            }
+            //}
         }
 
         private Task GetSubmittedFeedbackList()

@@ -3,9 +3,11 @@ using Foundation;
 using myTNB.Feedback;
 using myTNB.Home.Bill;
 using myTNB.Model;
+using myTNB.Model;
 using myTNB.Registration;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UIKit;
 
 namespace myTNB
@@ -22,6 +24,10 @@ namespace myTNB
 
         private CustomUIView _ToolTipsView;
         private UIScrollView _svContainer;
+
+        private GetSearchForAccountResponseModel getSearchForAccountResponseModel
+            = new GetSearchForAccountResponseModel();
+        List<string> getContractAccounts;
 
         public bool IsLoggedIn;
 
@@ -45,13 +51,11 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
-            //PageName = FeedbackConstants.Pagename_FeedbackList;
             PageName = EnquiryConstants.Pagename_Enquiry;
 
             base.ViewDidLoad();
 
             SetHeader();
-            //AddCustomNavBar();
             AddScrollView();
             ConstructAccountNumberSelector();
             AddSectionTitle();
@@ -77,13 +81,6 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.AccountNumber = string.Empty;
             }
 
-        }
-
-        public override void AddCustomNavBar(Action backAction = null)
-        {
-            base.AddCustomNavBar(backAction);
-
-            Title = GetI18NValue(EnquiryConstants.submitEnquiryTitle);
         }
 
         private void SetHeader()
@@ -324,12 +321,23 @@ namespace myTNB
             
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
-                var cimg = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imageWhereAcc));
+                //var cimg = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imageWhereAcc));
+                NSData cimg;
+
+                if (DataManager.DataManager.SharedInstance.imageWhereAcc == null)
+                {
+                    DataManager.DataManager.SharedInstance.imageWhereAcc = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imageWhereAcc));
+                    cimg = DataManager.DataManager.SharedInstance.imageWhereAcc;
+                }
+                else
+                {
+                    cimg = DataManager.DataManager.SharedInstance.imageWhereAcc;
+                }
 
                 DisplayCustomAlert(GetI18NValue(EnquiryConstants.accNumberInfo)
                     , GetI18NValue(EnquiryConstants.accNumberDetails)
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
-                    , cimg);
+                    , UIImage.LoadFromData(cimg));
             });
 
             viewInfo.Layer.CornerRadius = GetScaledHeight(12);
@@ -375,33 +383,39 @@ namespace myTNB
 
             Frame?.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                bool isAccountValid = _textFieldHelper.ValidateTextField(_txtAccountNumber.Text, TNBGlobal.ACCOUNT_NO_PATTERN)
-                && _textFieldHelper.ValidateTextFieldWithLength(_txtAccountNumber.Text, TNBGlobal.AccountNumberLowCharLimit);
+                ExecuteValidateContractAccount("Enquiry", "GeneralEnquiryViewController");
 
-                if(isAccountValid)
-                {
-                    DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA = _txtAccountNumber.Text;
+                //bool isAccountValid = _textFieldHelper.ValidateTextField(_txtAccountNumber.Text, TNBGlobal.ACCOUNT_NO_PATTERN)
+                //&& _textFieldHelper.ValidateTextFieldWithLength(_txtAccountNumber.Text, TNBGlobal.AccountNumberLowCharLimit);
 
-                    UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
-                    UIViewController viewController =
-                        storyBoard.InstantiateViewController("GeneralEnquiryViewController") as UIViewController;
-                    NavigationController?.PushViewController(viewController, true);
-                }else
-                {
-                    _viewLineAccountNo.BackgroundColor = isAccountValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
-                    _txtAccountNumber.TextColor = isAccountValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
-                    _lblAccountNoError.Hidden = isAccountValid;
-                }
+                //if (isAccountValid)
+                //{
+                //    DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA = _txtAccountNumber.Text;
+
+                //    UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
+                //    UIViewController viewController =
+                //        storyBoard.InstantiateViewController("GeneralEnquiryViewController") as UIViewController;
+                //    NavigationController?.PushViewController(viewController, true);
+                //}
+                //else
+                //{
+                //    _viewLineAccountNo.BackgroundColor = isAccountValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                //    _txtAccountNumber.TextColor = isAccountValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
+                //    _lblAccountNoError.Hidden = isAccountValid;
+                //}
             }));
             Frame.AddSubviews(new UIView[] { imgViewIcon, lblTitle, lblSubtTitle, lblCount, viewLine });
             _svContainer.AddSubviews(Frame);        }
 
         public void CellUpdatePersonalDetail()
         {
+
             nfloat cellWidth = View.Frame.Width;
             nfloat cellHeight = 80;
             Frame2 = new UIView(new CGRect(0, Frame.Frame.GetMaxY(), cellWidth, cellHeight))
-            {BackgroundColor = UIColor.White };
+            {
+                BackgroundColor = UIColor.White
+            };
             imgViewIcon2 = new UIImageView(new CGRect(16, 13, 48, 48))
             {
                 Image = UIImage.FromBundle("Feedback-Submitted")
@@ -431,26 +445,28 @@ namespace myTNB
 
             Frame2?.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                bool isAccountValid = _textFieldHelper.ValidateTextField(_txtAccountNumber.Text, TNBGlobal.ACCOUNT_NO_PATTERN)
-                && _textFieldHelper.ValidateTextFieldWithLength(_txtAccountNumber.Text, TNBGlobal.AccountNumberLowCharLimit);
 
-            if (isAccountValid)
-            {
-                DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA = _txtAccountNumber.Text;
+                ExecuteValidateContractAccount("Enquiry", "UpdatePersonalDetailViewController");
+            //    bool isAccountValid = _textFieldHelper.ValidateTextField(_txtAccountNumber.Text, TNBGlobal.ACCOUNT_NO_PATTERN)
+            //    && _textFieldHelper.ValidateTextFieldWithLength(_txtAccountNumber.Text, TNBGlobal.AccountNumberLowCharLimit);
 
-                UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
-                UIViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetailViewController") as UIViewController;
-                NavigationController?.PushViewController(viewController, true);
-               
-            }
-            else
-            {
-                _viewLineAccountNo.BackgroundColor = isAccountValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
-                _txtAccountNumber.TextColor = isAccountValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
-                _lblAccountNoError.Hidden = isAccountValid;
-            }
+                //if (isAccountValid)
+                //{
+                //    DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA = _txtAccountNumber.Text;
 
-        }));            Frame2.AddSubviews(new UIView[] { imgViewIcon2, lblTitle2, lblSubtTitle2, lblCount2, viewLine2 });
+                //    UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
+                //    UIViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetailViewController") as UIViewController;
+                //    NavigationController?.PushViewController(viewController, true);
+
+                //}
+                //else
+                //{
+                //    _viewLineAccountNo.BackgroundColor = isAccountValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                //    _txtAccountNumber.TextColor = isAccountValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
+                //    _lblAccountNoError.Hidden = isAccountValid;
+                //}
+
+            }));            Frame2.AddSubviews(new UIView[] { imgViewIcon2, lblTitle2, lblSubtTitle2, lblCount2, viewLine2 });
             _svContainer.AddSubviews(Frame2);        }
 
         private void SetTextFieldEvents(UITextField textField, UILabel textFieldTitle, UILabel textFieldError, UIView viewLine, string pattern)
@@ -512,12 +528,18 @@ namespace myTNB
             SetTextFieldEvents(_txtAccountNumber, _lblAccountNoTitle, _lblAccountNoError, _viewLineAccountNo, TNBGlobal.ACCOUNT_NO_PATTERN);
         }
 
+
+
         private void SetVisibility()
         {
             if (DataManager.DataManager.SharedInstance.IsFeedbackUpdateDetailDisabled)
             {
                 Frame2.Hidden = true;
             }
+            //else if(IsLoggedIn == false)
+            //{
+            //    Frame2.Hidden = true;
+            //}
             else
             {
                 Frame2.Hidden = false;
@@ -537,14 +559,107 @@ namespace myTNB
 
         }
 
-        private UIImage GetFromUrl(string uri)//temporary
+        private void ExecuteValidateContractAccount(string uistoryboard, string viewcontroller)
+        {
+            ActivityIndicator.Show();
+
+            getContractAccounts = new List<string>();
+            getContractAccounts.Add(_txtAccountNumber.Text);
+
+            string fullName = string.Empty;
+            string Ic = string.Empty;
+
+            ValidateAccountLinking().ContinueWith(task =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (getSearchForAccountResponseModel != null
+                        && getSearchForAccountResponseModel.d != null)
+                    {
+
+                        bool isAccountValid = _textFieldHelper.ValidateTextField(_txtAccountNumber.Text, TNBGlobal.ACCOUNT_NO_PATTERN)
+                        && _textFieldHelper.ValidateTextFieldWithLength(_txtAccountNumber.Text, TNBGlobal.AccountNumberLowCharLimit);
+
+                        if (isAccountValid)
+                        {
+                            for (int i = 0; i < getSearchForAccountResponseModel.d.Count; i++)
+                            {
+                                GetSearchForAccountModel item = getSearchForAccountResponseModel.d[i];
+
+                                Ic = item.IC;
+                                fullName = item.FullName;
+                            }
+
+                            if(Ic != string.Empty && fullName != string.Empty)
+                            { 
+
+                            DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryIC = Ic;
+                            DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryFullName = fullName;
+                            DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA = _txtAccountNumber.Text;
+
+                            UIStoryboard storyBoard = UIStoryboard.FromName(uistoryboard, null);
+                            UIViewController viewController = storyBoard.InstantiateViewController(viewcontroller) as UIViewController;
+                            NavigationController?.PushViewController(viewController, true);
+
+                            ActivityIndicator.Hide();
+
+                            }
+                            else
+                            {
+                                isAccountValid = false;
+
+                                _viewLineAccountNo.BackgroundColor = isAccountValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                                _txtAccountNumber.TextColor = isAccountValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
+                                _lblAccountNoError.Hidden = isAccountValid;
+
+                                ActivityIndicator.Hide();
+                            }
+                        }
+                        else
+                        {
+                            _viewLineAccountNo.BackgroundColor = isAccountValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                            _txtAccountNumber.TextColor = isAccountValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
+                            _lblAccountNoError.Hidden = isAccountValid;
+
+                            ActivityIndicator.Hide();
+                        }
+
+                    }
+                    else
+                    {
+                        DisplayServiceError("");
+                        ActivityIndicator.Hide();
+                    }
+                });
+            });
+        }
+
+        private Task ValidateAccountLinking()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object requestParameter = new
+                {
+                    serviceManager.usrInf,
+                    contractAccounts = getContractAccounts
+                };
+                getSearchForAccountResponseModel = serviceManager.OnExecuteAPIV6<GetSearchForAccountResponseModel>
+                    ("GetSearchForAccount", requestParameter);
+            });
+
+        }
+
+        private NSData GetFromUrl(string uri)//temporary
         {
             using (var url = new NSUrl(uri))
             using (var data = NSData.FromUrl(url, NSDataReadingOptions.Uncached, out NSError error))
                 if (error != null) { return null; }
                 else
                 {
-                    return UIImage.LoadFromData(data);
+                    //return UIImage.LoadFromData(data);
+                    return data;
+
                 }
         }
 
