@@ -10,6 +10,7 @@ using Android.Widget;
 using CheeseBind;
 using Java.Text;
 using Java.Util;
+using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
@@ -18,6 +19,7 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB_Android.Src.PreLogin.Activity;
 using myTNB_Android.Src.SubmittedNewEnquiry.Activity;
 using myTNB_Android.Src.SubmittedNewEnquiry.MVP;
 using myTNB_Android.Src.Utils;
@@ -242,7 +244,10 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
 
 
 
+        public override void OnBackPressed()
+        {
 
+        }
 
 
         public void ShowProgressDialog()
@@ -263,12 +268,30 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
-                //MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                HomeMenuUtils.ResetAll();
-                DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                StartActivity(DashboardIntent);
-                //Finish();
+
+                if (UserEntity.IsCurrentlyActive())
+                {
+                    Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+                    //MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                    HomeMenuUtils.ResetAll();
+                    DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                    StartActivity(DashboardIntent);
+                    //Finish();
+                }
+                else
+                {
+                    /// copy logout style
+                    
+                        LaunchViewActivity.MAKE_INITIAL_CALL = true;
+                        Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
+                        PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                        StartActivity(PreLoginIntent);
+                    
+
+                }
+
+
+
             }
         }
     }

@@ -16,6 +16,7 @@ using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Castle.Core.Internal;
 using CheeseBind;
 using Java.Text;
 using Java.Util;
@@ -41,6 +42,7 @@ using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,7 +60,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
     public class FeedbackPreloginNewICActivity : BaseToolbarAppCompatActivity, FeedbackPreloginNewICContract.IView, View.IOnTouchListener
     {
-        
+
 
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -124,11 +126,13 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             base.OnCreate(savedInstanceState);
             try
             {
-                //1 set presenter
-                mPresenter = new FeedbackPreloginNewICPresenter(this);
 
                 //init shared preferences 
                 mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
+                //1 set presenter
+                mPresenter = new FeedbackPreloginNewICPresenter(this, mSharedPref);
+
+              
 
                 // Intent intent = Intent;
                 SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle"));
@@ -148,7 +152,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 txtGeneralEnquiry_subContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryDescription");
                 txtUpdatePersonal.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle");
                 txtUpdatePersonalContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "personalDetailsDescription");
-           
+
                 // txtInputLayoutAccountNo.Hint= GetLabelCommonByLanguage("email"); //sample of injecting hint using common lang
 
                 txtAccountNo.SetOnTouchListener(this);  //set listener on dropdown arrow at TextLayout
@@ -157,13 +161,19 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
                 infoLabeltxtWhereIsMyAcc.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");  // inject translation to text
 
-                bool isUpdatePersonalDetail = bool.Parse( UserSessions.GetFeedbackUpdateDetailDisabled(mSharedPref));
+                onGetTooltipImageContent();
 
-             
+                var sharedpref_data = UserSessions.GetFeedbackUpdateDetailDisabled(mSharedPref);
+
+                bool isUpdatePersonalDetail = bool.Parse(sharedpref_data);  //get from shared pref
+
+
                 if (isUpdatePersonalDetail == true)
                 {
                     updatePersonalInfoConstraint.Visibility = ViewStates.Gone;
                 }
+
+               
 
 
             }
@@ -183,6 +193,11 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         public bool IsActive()
         {
             return Window.DecorView.RootView.IsShown;
+        }
+
+        public void  makeSetClick(bool setClick)
+        {
+            this.SetIsClicked(setClick);
         }
 
         public void SetPresenter(FeedbackPreloginNewICContract.IUserActionsListener userActionListener)
@@ -263,7 +278,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             return true;
         }
 
- 
+
 
 
 
@@ -302,7 +317,31 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             }
         }
 
-      
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
 
         [OnClick(Resource.Id.scanNewEnquiry)]
         void OnScanClick(object sender, EventArgs eventArgs)
@@ -339,7 +378,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         {
             txtInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             // txtInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");  //todo  add translation for bm
-            txtInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc");  
+            txtInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc");
 
         }
 
@@ -400,7 +439,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             }
             catch (Exception e)
             {
-               Utility.LoggingNonFatalError(e);
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -409,7 +448,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         {
             if (!this.GetIsClicked())
             {
-  
+
 
                 this.SetIsClicked(true);
 
@@ -424,7 +463,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     //please paste here
                     if (isAccChoosed)
                     {
-                        this.userActionsListener.OnGeneralEnquiry();
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim() , false);
+                        //this.userActionsListener.OnGeneralEnquiry();
                     }
                     else
                     {   //checking 
@@ -454,7 +494,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 else if (isAccChoosed)
                 {
                     this.SetIsClicked(true);
-                    this.userActionsListener.onUpdatePersonalDetail();
+                    this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim() , true);
+                    //this.userActionsListener.onUpdatePersonalDetail();
                 }
                 else
                 {
@@ -515,7 +556,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         }
 
 
-        
+
 
         [OnClick(Resource.Id.infoLabelWhereIsMyAcc)]
         void OninfoLabelWhereIsMyAcc(object sender, EventArgs eventArgs)
@@ -523,8 +564,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             if (!this.GetIsClicked())
             {
 
-               
 
+                this.SetIsClicked(true);
                 this.userActionsListener.onShowWhereIsMyAcc();
 
 
@@ -574,27 +615,251 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             //     whereisMyacc.Show();
             //}
 
-            var url = Utility.GetLocalizedLabel("SubmitEnquiry", "imageWhereAcc");
+            //   var url = Utility.GetLocalizedLabel("SubmitEnquiry", "imageWhereAcc");
 
-    
-         
-            Bitmap imageCache =  ImageUtils.GetImageBitmapFromUrl(SiteCoreConfig.SITECORE_URL+url);
 
-            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-             .SetHeaderImageBitmap(imageCache)
-            .SetTitle(Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle"))
-            .SetMessage(Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails"))
-            .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-            .SetCTAaction(() => { this.SetIsClicked(false); })
-            .Build();
-            whereisMyacc.Show();
+
+            ///   Bitmap imageCache = ImageUtils.GetImageBitmapFromUrl(SiteCoreConfig.SITECORE_URL + url);
+            ///   
+
+        
+                
+
+                string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
+
+                if (!base64Image.IsNullOrEmpty())
+                {
+                    var imageCache = Base64ToBitmap(base64Image);
+
+                    MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                     .SetHeaderImageBitmap(imageCache)
+                    .SetTitle(Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle"))
+                    .SetMessage(Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails"))
+                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                    .SetCTAaction(() => { this.SetIsClicked(false); })
+                    .Build();
+                    whereisMyacc.Show();
+
+
+                }
+                else
+                {   //if sql lite data is somehow corrupted
+                    Bitmap imageCache = ImageUtils.GetImageBitmapFromUrl(SiteCoreConfig.SITECORE_URL + Utility.GetLocalizedLabel("SubmitEnquiry", "imageWhereAcc"));
+                    MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                    .SetHeaderImageBitmap(imageCache)
+                    .SetTitle(Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle"))
+                    .SetMessage(Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails"))
+                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                    .SetCTAaction(() => { this.SetIsClicked(false); })
+                    .Build();
+                    whereisMyacc.Show();
+
+                }
+
+
+            
+
+  
+
+ 
 
         }
 
 
 
+        private Task onGetTooltipImageContent()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    //check if image is exist in sql lite
+                    var imageWhereAccUrl = SiteCoreConfig.SITECORE_URL + Utility.GetLocalizedLabel("SubmitEnquiry", "imageWhereAcc");
 
+                    if (TooltipImageDirectEntity.isNeedUpdate(imageWhereAccUrl, TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC))
+                    {
+                        TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
+
+                        var image = ImageUtils.GetImageBitmapFromUrl(imageWhereAccUrl);
+                        var base64 = BitmapToBase64(image);
+
+                        TooltipImageDirectEntity newImage_WHERE_MY_ACC = new TooltipImageDirectEntity();
+                        newImage_WHERE_MY_ACC.ImageBase64 = base64;
+                        newImage_WHERE_MY_ACC.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC.ToString();
+                        newImage_WHERE_MY_ACC.Url = imageWhereAccUrl;
+
+                        TooltipImageDirectEntity.InsertItem(newImage_WHERE_MY_ACC);
+
+                    }
+                    else
+                    {
+                        // recheck local is the base64 exist or not is not need update
+                        string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
+                        if (base64Image.IsNullOrEmpty())
+                        {
+                            TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
+
+                            var image = ImageUtils.GetImageBitmapFromUrl(imageWhereAccUrl);
+                            var base64 = BitmapToBase64(image);
+
+                            TooltipImageDirectEntity newImage_WHERE_MY_ACC = new TooltipImageDirectEntity();
+                            newImage_WHERE_MY_ACC.ImageBase64 = base64;
+                            newImage_WHERE_MY_ACC.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC.ToString();
+                            newImage_WHERE_MY_ACC.Url = imageWhereAccUrl;
+
+                            TooltipImageDirectEntity.InsertItem(newImage_WHERE_MY_ACC);
+
+                        }
+
+                    }
+
+                    //check if image is exist in sql lite
+                    var imageIC = SiteCoreConfig.SITECORE_URL + Utility.GetLocalizedLabel("SubmitEnquiry", "imageCopyIC");
+
+                    if (TooltipImageDirectEntity.isNeedUpdate(imageIC, TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE))
+                    {
+                        TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
+
+                        var image = ImageUtils.GetImageBitmapFromUrl(imageIC);
+                        var base64 = BitmapToBase64(image);
+
+                        TooltipImageDirectEntity newImage_WHERE_MY_ACC = new TooltipImageDirectEntity();
+                        newImage_WHERE_MY_ACC.ImageBase64 = base64;
+                        newImage_WHERE_MY_ACC.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE.ToString();
+                        newImage_WHERE_MY_ACC.Url = imageIC;
+
+                        TooltipImageDirectEntity.InsertItem(newImage_WHERE_MY_ACC);
+
+                    }
+                    else
+                    {
+                        // recheck local is the base64 exist or not is not need update
+                        string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
+                        if (base64Image.IsNullOrEmpty())
+                        {
+
+                            TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
+
+                            var image = ImageUtils.GetImageBitmapFromUrl(imageIC);
+                            var base64 = BitmapToBase64(image);
+
+                            TooltipImageDirectEntity newImage_IC_SAMPLE = new TooltipImageDirectEntity();
+                            newImage_IC_SAMPLE.ImageBase64 = base64;
+                            newImage_IC_SAMPLE.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE.ToString();
+                            newImage_IC_SAMPLE.Url = imageIC;
+
+                            TooltipImageDirectEntity.InsertItem(newImage_IC_SAMPLE);
+
+                        }
+                    }
+                    //check if image is exist in sql lite
+                    var imageConsent = SiteCoreConfig.SITECORE_URL + Utility.GetLocalizedLabel("SubmitEnquiry", "imageConsent");
+
+                    if (TooltipImageDirectEntity.isNeedUpdate(imageConsent, TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT))
+                    {
+                        TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
+
+                        var image_consent = ImageUtils.GetImageBitmapFromUrl(imageConsent);
+                        var base64 = BitmapToBase64(image_consent);
+
+                        TooltipImageDirectEntity newImage_PROOF_OF_CONSENT = new TooltipImageDirectEntity();
+                        newImage_PROOF_OF_CONSENT.ImageBase64 = base64;
+                        newImage_PROOF_OF_CONSENT.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT.ToString();
+                        newImage_PROOF_OF_CONSENT.Url = imageConsent;
+
+                        TooltipImageDirectEntity.InsertItem(newImage_PROOF_OF_CONSENT);
+
+                    }
+                    else
+                    {
+                        // recheck local is the base64 exist or not is not need update
+                        string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
+                        if (base64Image.IsNullOrEmpty())
+                        {
+                            TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
+
+                            var image_consent = ImageUtils.GetImageBitmapFromUrl(imageConsent);
+                            var base64 = BitmapToBase64(image_consent);
+
+                            TooltipImageDirectEntity newImage_PROOF_OF_CONSENT = new TooltipImageDirectEntity();
+                            newImage_PROOF_OF_CONSENT.ImageBase64 = base64;
+                            newImage_PROOF_OF_CONSENT.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT.ToString();
+                            newImage_PROOF_OF_CONSENT.Url = imageConsent;
+
+                            TooltipImageDirectEntity.InsertItem(newImage_PROOF_OF_CONSENT);
+                        }
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
+        }
+
+        public string BitmapToBase64(Bitmap bitmap)
+        {
+            string B64Output = "";
+            try
+            {
+                MemoryStream byteArrayOutputStream = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Png, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.ToArray();
+                B64Output = Android.Util.Base64.EncodeToString(byteArray, Base64Flags.Default);
+            }
+            catch (Exception e)
+            {
+                B64Output = "";
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return B64Output;
+        }
+
+        public static Bitmap Base64ToBitmap(string base64String)
+        {
+            Bitmap convertedBitmap = null;
+            try
+            {
+                byte[] imageAsBytes = Android.Util.Base64.Decode(base64String, Base64Flags.Default);
+                convertedBitmap = BitmapFactory.DecodeByteArray(imageAsBytes, 0, imageAsBytes.Length);
+            }
+            catch (Exception e)
+            {
+                convertedBitmap = null;
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return convertedBitmap;
+        }
+
+        Snackbar newErrorMessageSnackBar;
+        public void OnSubmitError(string message = null)
+        {
+            if (newErrorMessageSnackBar != null && newErrorMessageSnackBar.IsShown)
+            {
+                newErrorMessageSnackBar.Dismiss();
+            }
+
+
+            if (string.IsNullOrEmpty(message))
+            {
+                message = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
+            }
+
+            newErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { newErrorMessageSnackBar.Dismiss(); }
+            );
+            View v = newErrorMessageSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+
+            newErrorMessageSnackBar.Show();
+            this.SetIsClicked(false);
+        }
 
 
     }
+    
 }

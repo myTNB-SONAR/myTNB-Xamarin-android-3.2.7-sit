@@ -215,9 +215,61 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                 {
                     if (!TextUtils.IsEmpty(mobileNumber.Trim()))
                     {
-                        this.mView.ClearInvalidError(typeOfLayout.mobileNumber);
-                 
-                        this.mView.EnableSubmitButton();
+
+                        if (TextUtils.IsEmpty(mobileNumber) || mobileNumber.Length < 3 || !mobileNumber.Contains("+60"))
+                        {
+                            this.mView.UpdateMobileNumber("+60");
+                            this.mView.ClearInvalidError(typeOfLayout.mobileNumber);
+                            this.mView.DisableSubmitButton();
+                            
+                        }
+                        else if (mobileNumber == "+60")
+                        {
+                            this.mView.UpdateMobileNumber("+60");
+                            this.mView.ClearInvalidError(typeOfLayout.mobileNumber);
+                            this.mView.DisableSubmitButton();
+                           
+                        }
+                        else if (mobileNumber.Contains("+60") && mobileNumber.IndexOf("+60") > 0)
+                        {
+                            mobileNumber = mobileNumber.Substring(mobileNumber.IndexOf("+60"));
+                            if (mobileNumber == "+60")
+                            {
+                                this.mView.UpdateMobileNumber("+60");
+                                this.mView.ClearInvalidError(typeOfLayout.mobileNumber);
+                                this.mView.DisableSubmitButton();
+                              
+                            }
+                            else if (!Utility.IsValidMobileNumber(mobileNumber))
+                            {
+                                this.mView.ShowInvalidMobileNoError();
+                                this.mView.DisableSubmitButton();
+                             
+                            }
+                            else
+                            {
+                                this.mView.ClearInvalidError(typeOfLayout.mobileNumber);
+                                this.mView.EnableSubmitButton();
+                            }
+                        }
+                        else
+                        {
+                            if (!Utility.IsValidMobileNumber(mobileNumber))
+                            {
+                                this.mView.ShowInvalidMobileNoError();
+                                this.mView.DisableSubmitButton();
+                            
+                            }
+                            else
+                            {
+                                this.mView.ClearInvalidError(typeOfLayout.mobileNumber);
+                                this.mView.EnableSubmitButton();
+                            }
+                        }
+
+
+              
+                        
                        
                     }
                     else

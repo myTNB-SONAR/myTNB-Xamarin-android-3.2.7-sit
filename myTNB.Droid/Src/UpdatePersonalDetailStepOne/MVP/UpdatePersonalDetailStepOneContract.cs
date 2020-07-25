@@ -67,7 +67,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
 
             void ShowUpdatePersonalDetailStepTwoActivity();
 
+            void UpdateMobileNumber(string mobile_no);
 
+            void ShowInvalidMobileNoError();
 
 
 

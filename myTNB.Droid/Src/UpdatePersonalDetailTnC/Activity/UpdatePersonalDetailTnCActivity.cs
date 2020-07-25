@@ -7,6 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Text;
 using Android.Views;
@@ -14,9 +15,11 @@ using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.UpdatePersonalDetailTnC.MVP;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
 {
@@ -44,7 +47,11 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
 
         UpdatePersonalDetailTnCPresenter mPresenter;
 
+        private ISharedPreferences mSharedPref;
+
         UpdatePersonalDetailTnCContract.IUserActionsListener userActionsListener;
+
+
 
 
         private string reqEmail;
@@ -61,6 +68,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
 
             try
             {
+                //init shared pref
+                mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
                 //get from prev page data
 
@@ -127,7 +136,14 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
 
 
                 string data = Utility.GetLocalizedLabel("SubmitEnquiry", "tncAgree");
-                string temp = string.Format(data, reqEmail, caNumber, customerBillingAccount.OwnerName);
+
+
+                string acc = UserSessions.GetAccountIsExist(PreferenceManager.GetDefaultSharedPreferences(this));
+                GetSearchForAccountResponse.GetSearchForAccountModel  AccData = JsonConvert.DeserializeObject<GetSearchForAccountResponse.GetSearchForAccountModel>(acc);
+
+
+
+                string temp = string.Format(data, reqEmail, AccData.ContractAccount, AccData.FullName);
 
                 TextView_tnc_data.TextFormatted = GetFormattedText(temp);
 

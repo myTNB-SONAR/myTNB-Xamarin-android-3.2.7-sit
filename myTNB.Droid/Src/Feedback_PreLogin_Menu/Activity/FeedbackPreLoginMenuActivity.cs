@@ -13,6 +13,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity;
 using myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity;
 using myTNB_Android.Src.Feedback_PreLogin_Menu.MVP;
+using myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity;
 using myTNB_Android.Src.Feedback_PreLogin_Others.Activity;
 using myTNB_Android.Src.SelectSubmittedFeedback.Activity;
 using myTNB_Android.Src.Utils;
@@ -91,7 +92,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
         string feedbackOthersTitle = "";
         string submittedFeedbackTitle = "";
 
-        const string PAGE_ID = "FeedbackList";
+        const string PAGE_ID = "SubmitEnquiry";
 
         public override int ResourceId()
         {
@@ -144,9 +145,14 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
 
         public void ShowBillingPayment()
         {
-            var billingPaymentFeedback = new Intent(this, typeof(FeedbackPreLoginBillRelatedActivity));
-            billingPaymentFeedback.PutExtra("TITLE", feedbackBillRelatedTitle);
+            //  var billingPaymentFeedback = new Intent(this, typeof(FeedbackPreLoginBillRelatedActivity));
+            //  billingPaymentFeedback.PutExtra("TITLE", feedbackBillRelatedTitle);
+            //  StartActivity(billingPaymentFeedback);
+
+            var billingPaymentFeedback = new Intent(this, typeof(FeedbackPreloginNewICActivity));
+            //billingPaymentFeedback.PutExtra("TITLE", feedbackNewIc);
             StartActivity(billingPaymentFeedback);
+
         }
 
 

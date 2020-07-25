@@ -11,6 +11,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -348,6 +349,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                 TextView_whatIsYourRelationship.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "ownerTitle");
                 txtAccountType.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle").ToUpper();
                 TextView_updateOnOwnerBehalf.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "updateOwnerTitle");
+
                 txtIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "icTitle");
                 txtOwnerName.Text= Utility.GetLocalizedLabel("SubmitEnquiry", "accNametitle");
                 txtMobileNumber.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "mobileNumberTitle");
@@ -618,6 +620,90 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
         {
             if (!this.GetIsClicked())
             {
+
+
+                if (toggleChkBoxIC)
+                {
+                    if (TextUtils.IsEmpty(txtNewIC.Text.Trim()))
+                    {
+                        ShowEmptyError(typeOfLayout.ic);
+                        DisableSubmitButton();
+                        return;
+                    }
+                }
+
+                // check checkBox 
+                if (toggleChkOwnerName)
+                {
+                    if (TextUtils.IsEmpty(txtNewOwnerName.Text.Trim()))
+                    {
+                        ShowEmptyError(typeOfLayout.ownerName);
+                        DisableSubmitButton();
+                        return;
+                    }
+                }
+
+                // check checkBox 
+                if (toggleChkMobileNumber)
+                {
+                    if (TextUtils.IsEmpty(txtNewMobileNumber.Text.Trim())|| txtNewMobileNumber.Text.Trim()=="+60")
+                    {
+                        //ShowEmptyError(typeOfLayout.mobileNumber);
+                        ShowInvalidMobileNoError();
+                        DisableSubmitButton();
+                        return;
+                    }
+                
+                }
+
+                // check checkBox 
+                if (toggleChkEmailAddress)
+                {
+                    if (TextUtils.IsEmpty(txtNewEmailAddress.Text.Trim()))
+                    {
+                        ShowEmptyError(typeOfLayout.emailAddress);
+                        DisableSubmitButton();
+                        return;
+                    }
+                }
+
+                // check checkBox 
+                if (toggleChkMailingAddress)
+                {
+                    if (TextUtils.IsEmpty(txtNewMailingAddress.Text.Trim()))
+                    {
+
+                        ShowEmptyError(typeOfLayout.mailingAddress);
+                        DisableSubmitButton();
+                        return;
+                    }
+                 
+                }
+
+                // check checkBox 
+                if (toggleChkPremiseAddress)
+                {
+                    if (TextUtils.IsEmpty(txtNewPremiseAddress.Text.Trim()))
+                    {
+                        ShowEmptyError(typeOfLayout.premiseAddress);
+                        DisableSubmitButton();
+                        return;
+                    }
+               
+                }
+
+                if (isOtherChoosed)
+                {
+                    if (TextUtils.IsEmpty(EditText_relationshipOther.Text.Trim()))
+                    {
+                        DisableSubmitButton();
+                        return;
+
+                    }
+                   
+                }
+
+
                 this.SetIsClicked(true);
                 this.userActionsListener.OnShowUpdatePersonalDetailStepTwoActivity();
 
@@ -707,6 +793,101 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             }
         }
 
+        public void ShowInvalidMobileNoError()
+        {
+            try
+            {
+
+                txtInputLayoutNewMobileNumber.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMobileNumber);
+
+                txtInputLayoutNewMobileNumber.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void UpdateMobileNumber(string mobile_no)
+        {
+            try
+            {
+                if (txtNewMobileNumber.Text != mobile_no)
+                {
+                    txtNewMobileNumber.Text = mobile_no;
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void cleanAllField()
+        {
+            txtNewIC.Text = "";
+
+            txtNewOwnerName.Text = "";
+
+            txtNewMobileNumber.Text="";
+
+            txtNewEmailAddress.Text = "";
+
+            txtNewMailingAddress.Text = "";
+
+            txtNewPremiseAddress.Text = "";
+
+            EditText_relationshipOther.Text = "";
+
+            selectICChkBox.Checked = false;
+            selectOwnerNameChkBox.Checked = false;
+            mobile_number_chk_box.Checked = false;
+            select_email_address_chk_box.Checked = false;
+            select_mailing_address_chk_box.Checked = false;
+            premiseAddress_chk_box.Checked = false;
+            isOtherChoosed = false;
+
+            isOtherRelationShip(false);  //  handle ui
+
+
+
+
+            toggleChkBoxIC = false;
+
+            toggleChkOwnerName = false;
+
+            toggleChkMobileNumber = false;
+
+            toggleChkEmailAddress = false;
+
+            toggleChkMailingAddress = false;
+
+            toggleChkPremiseAddress = false;
+
+            txtInputLayoutNewIC.Visibility = ViewStates.Gone;
+            txtInputLayoutNewOwnerName.Visibility = ViewStates.Gone;
+            txtInputLayoutNewMobileNumber.Visibility = ViewStates.Gone;
+            txtInputLayoutNewEmailAddress.Visibility = ViewStates.Gone;
+            txtInputLayoutNewMailingAddress.Visibility = ViewStates.Gone;
+            txtInputLayoutNewPremiseAddress.Visibility = ViewStates.Gone;
+            txtInputLayoutRelationshipOther.Visibility = ViewStates.Gone;
+
+            toggleCounter = 0;
+
+
+            SelectRelationshipModel Child = new SelectRelationshipModel();
+            Child.Id = "1";
+            Child.Type = Utility.GetLocalizedLabel("SubmitEnquiry", "childTitle"); // translate for child  Utility.GetLocalizedLabel("AddAccount", "residential")
+            Child.IsSelected = true;
+            selectedAccountRelationship = Child;
+            selector_account_type.Text = selectedAccountRelationship.Type;
+            ownerRelationship = Utility.GetLocalizedLabel("SubmitEnquiry", "childTitle");
+
+
+        }
+
+
         [OnClick(Resource.Id.btnYes)]
         public void clickbtnYes(object sender, EventArgs eventArgs)
         {
@@ -718,7 +899,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                 btnYes.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.white)));  //change text to white
                 btnNo.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);  //change no to green ouline
                 btnNo.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));  //change text to white
-
+                cleanAllField();
 
 
 
@@ -737,7 +918,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                 btnNo.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.white)));  //change text to white
                 btnYes.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);  //change no to green ouline
                 btnYes.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));  //change text to white
-
+                cleanAllField();
                 //  btnNo.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);  //change to white on no
 
 
@@ -762,7 +943,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (toggleChkBoxIC)
             {
                 txtInputLayoutNewIC.Visibility = ViewStates.Visible;
-                parseCheckRequiredField();
+               // parseCheckRequiredField();
                 AddtoggleCounter(); 
             }
             else
@@ -791,7 +972,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (toggleChkOwnerName)
             {
                 txtInputLayoutNewOwnerName.Visibility = ViewStates.Visible;
-                parseCheckRequiredField();
+               // parseCheckRequiredField();
                 AddtoggleCounter();
             }
             else
@@ -821,7 +1002,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (toggleChkMobileNumber)
             {
                 txtInputLayoutNewMobileNumber.Visibility = ViewStates.Visible;
-                parseCheckRequiredField();
+                UpdateMobileNumber("+60");
+               // parseCheckRequiredField();
                 AddtoggleCounter();
             }
             else
@@ -852,7 +1034,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (toggleChkEmailAddress)
             {
                 txtInputLayoutNewEmailAddress.Visibility = ViewStates.Visible;
-                parseCheckRequiredField();
+              //  parseCheckRequiredField();
                 AddtoggleCounter();
             }
             else
@@ -882,7 +1064,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (toggleChkMailingAddress)
             {
                 txtInputLayoutNewMailingAddress.Visibility = ViewStates.Visible;
-                parseCheckRequiredField();
+                //parseCheckRequiredField();
                 AddtoggleCounter();
             }
             else
@@ -912,7 +1094,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (toggleChkPremiseAddress)
             {
                 txtInputLayoutNewPremiseAddress.Visibility = ViewStates.Visible;
-                parseCheckRequiredField();
+                //parseCheckRequiredField();
                 AddtoggleCounter();
             }
             else

@@ -68,7 +68,7 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                      
+
                         android:background="@color/white">
 
 
@@ -262,6 +262,41 @@
                                     android:drawableLeft="@drawable/smr_why_accounts_info"/>
                             </LinearLayout>
                         </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/txtRelatedScreenshotTitle3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_weight="1"
+                            android:text="Permises proof"
+                            android:textAllCaps="false"
+                            android:textColor="@color/silverChalice"
+                            android:textSize="14sp" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recyclerView3"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="4dp" />
+
+
+                        <TextView
+                            android:id="@+id/TextView_proofOfConsent_image3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:layout_weight="1"
+                            android:background="@color/white"
+                            android:text="@string/GeneralEnquiry1of2_uploadSupporting_img_sub"
+                            android:textSize="9dp" />
 
 
                     </LinearLayout>

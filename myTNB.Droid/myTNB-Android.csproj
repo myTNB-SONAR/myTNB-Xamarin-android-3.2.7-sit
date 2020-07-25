@@ -536,6 +536,7 @@
     <Compile Include="Src\Database\Model\SubmittedFeedbackEntity.cs" />
     <Compile Include="Src\Database\Model\SummaryDashBoardAccountEntity.cs" />
     <Compile Include="Src\Database\Model\TimeStampEntity.cs" />
+    <Compile Include="Src\Database\Model\TooltipImageDirectEntity.cs" />
     <Compile Include="Src\Database\Model\UsageHistoryEntity.cs" />
     <Compile Include="Src\Database\Model\UsageHistoryModel.cs" />
     <Compile Include="Src\Database\Model\UserNotificationChannelEntity.cs" />
@@ -730,7 +731,9 @@
     <Compile Include="Src\myTNBMenu\Requests\SMUsageHistoryRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationChannelRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationTypeRequest.cs" />
+    <Compile Include="Src\MyTNBService\Request\GetSearchForAccountRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\SubmitEnquiryRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\GetSearchForAccountResponse.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetails.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetailsDeleteResponse.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetailsResponse.cs" />
@@ -932,6 +935,7 @@
     <Compile Include="Src\UpdatePersonalDetailStepOne\MVP\UpdatePersonalDetailStepOneContract.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepOne\MVP\UpdatePersonalDetailStepOnePresenter.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepTwo\Activity\UpdatePersonalDetailStepTwoActivity.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepTwo\Adapter\permiseAdapter.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepTwo\Adapter\supportingDocAdapter.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepTwo\Adapter\your_ic_adaptercs.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepTwo\Model\HowDoesCopyofIdentificationResponseModel.cs" />
@@ -5250,28 +5254,40 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\img_start_smr.png">
-      <SubType></SubType>
-      <Generator></Generator>
+      <SubType>
+      </SubType>
+      <Generator>
+      </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-mdpi\img_start_smr.png">
-      <SubType></SubType>
-      <Generator></Generator>
+      <SubType>
+      </SubType>
+      <Generator>
+      </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xhdpi\img_start_smr.png">
-      <SubType></SubType>
-      <Generator></Generator>
+      <SubType>
+      </SubType>
+      <Generator>
+      </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxhdpi\img_start_smr.png">
-      <SubType></SubType>
-      <Generator></Generator>
+      <SubType>
+      </SubType>
+      <Generator>
+      </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\img_start_smr.png">
-      <SubType></SubType>
-      <Generator></Generator>
+      <SubType>
+      </SubType>
+      <Generator>
+      </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\shadow_path.xml">
-      <SubType></SubType>
-      <Generator></Generator>
+      <SubType>
+      </SubType>
+      <Generator>
+      </Generator>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>

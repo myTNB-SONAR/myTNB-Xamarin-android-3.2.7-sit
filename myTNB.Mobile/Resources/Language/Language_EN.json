@@ -964,7 +964,7 @@
     "updatePersonalDetTitle": "Update Personal Details",
     "personalDetailsDescription": "I want to update my personal details.",
     "stepTitle1of2": "Step 1 of 2",
-    "enquiryAboutTitle": "I want to enquiry about:",
+    "enquiryAboutTitle": "I want to enquire about:",
     "messageHint": "Your Message",
     "uploadDocTitle": "Upload supporting documents:",
     "attachTitle": "Attach photo/screenshot (optional)",
@@ -1055,7 +1055,9 @@
     "tnc":"Terms & Conditions",
     "personalDisclamer" : "Update Personal Data Disclamer",
     "tnbTermUse":"TNB’s Terms of Use",
-    "name":"Name"
+    "name":"Name",
+    "copyOfPermiseProof":"Copy of Sales & Purchase Agreement/Cukai Pintu/Tenancy Agreement"
+ 
     }
 
 

@@ -36,7 +36,13 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
 
             void ShowWhereIsMyAcc();
 
+            void OnSubmitError(string message = null);
 
+            void ShowProgressDialog();
+
+             void HideProgressDialog();
+
+            void makeSetClick(bool setclick);
 
 
 
@@ -53,6 +59,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
            void onUpdatePersonalDetail();
 
            void onShowWhereIsMyAcc();
+
+            void ValidateAccountAsync(string contractAccounts, bool isUpdateUserInfo);
 
 
         }
