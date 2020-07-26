@@ -971,7 +971,7 @@
     "attachDescription": "Maximum document size is 1MB (PDF, JPG &JPEG format only)",
     "stepTitle2of2": "Step 2 of 2",
     "contactEnquiryTitle": "How can we contact you regarding this enquiry?",
-    "nameHint": "Full Name (As per your identification card)",
+    "nameHint": "Your Full Name",
     "emailHint": "Email Address",
     "mobileHint": "Mobile Number",
     "thankYouTitle": "Thank you for your enquiry!",
@@ -1056,6 +1056,8 @@
     "personalDisclamer": "Update Personal Data Disclamer",
     "tnbTermUse": "TNB’s Terms of Use",
     "name": "Name",
-    "copyOfPermiseProof": "Copy of Sales & Purchase Agreement/Cukai Pintu/Tenancy Agreement"
+    "copyOfPermiseProof": "Copy of Sales & Purchase Agreement/Cukai Pintu/Tenancy Agreement",
+    "nameHintBottom": "Enter your full name as per your identification card.",
+    "enquiryTncRead": "I have read and agreed to the <a href=\"\\\"><strong>Terms & Conditions</strong></a>"
   }
 }
