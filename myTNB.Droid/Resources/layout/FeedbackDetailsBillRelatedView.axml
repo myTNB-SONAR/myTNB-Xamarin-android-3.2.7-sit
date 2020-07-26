@@ -54,7 +54,7 @@
 
                             android:text="Status:"
                             android:textAllCaps="false"
-                            android:textColor="@color/black"
+                            android:textColor="@color/charcoalGrey"
                             android:textSize="16dp" />
 
                         <TextView
