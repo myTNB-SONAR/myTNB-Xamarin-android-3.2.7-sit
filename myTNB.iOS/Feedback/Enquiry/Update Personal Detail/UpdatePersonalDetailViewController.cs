@@ -1275,10 +1275,10 @@ namespace myTNB
 
         private void SetEvents()
         {
-            if (IsSpecifyOther)
-            {
-                SetTextFieldEvents(lblSpecifyOtherTitle, txtFieldSpecifyOther, lblSpecifyOtherError, viewLineSpecifyOther, TNBGlobal.CustomerNamePattern);
-            }
+            //if (IsSpecifyOther)
+            //{
+            //    SetTextFieldEvents(lblSpecifyOtherTitle, txtFieldSpecifyOther, lblSpecifyOtherError, viewLineSpecifyOther, TNBGlobal.CustomerNamePattern);
+            //}
             if (IsIC)
             {
                 SetTextFieldEvents(lblICNoTitle, txtFieldICNo, lblICNoError, viewLineICNo, TNBGlobal.IC_NO_PATTERN);
@@ -1466,10 +1466,10 @@ namespace myTNB
             int relationship = DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex + 1;
             string relationshipDesc = _typeRelationshipNameList[DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex];
 
-                if (IsSpecifyOther && relationship == 5 )
+                if (IsSpecifyOther && relationship == 6 )
                 {
                     DataManager.DataManager.SharedInstance.Relationship = relationship;
-                    DataManager.DataManager.SharedInstance.RelationshipDesc = txtFieldSpecifyOther.Text;
+                    DataManager.DataManager.SharedInstance.RelationshipDesc = txtFieldSpecifyOther.Text ?? relationshipDesc;
                 }
                 else
                 {

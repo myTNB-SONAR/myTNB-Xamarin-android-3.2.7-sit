@@ -17,6 +17,7 @@ namespace myTNB
         {
         }
 
+        public string Email;
         public bool isPresentedVC;
         private UIScrollView _svContainer;
         private UIView _containerTitleTNC;
@@ -114,7 +115,7 @@ namespace myTNB
             };
 
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(string.Format(GetI18NValue(EnquiryConstants.tncAgree), userInfo.email, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryFullName)
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(string.Format(GetI18NValue(EnquiryConstants.tncAgree), userInfo.email ?? Email ?? string.Empty, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryFullName)
                         , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(14F));
             NSMutableAttributedString mutableHTMLFooter = new NSMutableAttributedString(htmlBody);
 
@@ -188,26 +189,6 @@ namespace myTNB
                 _svContainer.AddSubview(_containerRedirectTNC);
 
             }
-        }
-
-        private string GetAccountDetail()
-        {
-            BillingAccountDetailsDataModel model = null;
-
-            if (!string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA))
-            {
-                var entity = BillingAccountEntity.GetItem(DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA);
-                if (entity != null)
-                {
-                    model = JsonConvert.DeserializeObject<BillingAccountDetailsDataModel>(entity.Data);
-
-                }
-            }
-            if (model != null)
-                return model.accName;
-            else
-                return string.Empty;
-
         }
 
 
