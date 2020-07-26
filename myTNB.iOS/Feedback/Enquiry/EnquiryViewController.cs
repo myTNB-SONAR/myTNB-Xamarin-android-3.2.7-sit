@@ -94,7 +94,6 @@ namespace myTNB
             });
             NavigationItem.LeftBarButtonItem = btnBack;
 
-            //Title = DataManager.DataManager.SharedInstance.FeedbackCategory?.Find(x => x?.FeedbackCategoryId == FeedbackID)?.FeedbackCategoryName;
             Title = GetI18NValue(EnquiryConstants.submitEnquiryTitle);
 
         }
@@ -118,7 +117,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = GetI18NValue("enquiringTitle")
+                Text = GetI18NValue(EnquiryConstants.enquiringTitle)
             };
 
             _viewTitleSection.AddSubview(lblSectionTitle);

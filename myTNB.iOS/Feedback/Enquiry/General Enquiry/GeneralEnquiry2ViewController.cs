@@ -125,7 +125,7 @@ namespace myTNB
             };
 
             lblNameTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.nameHint).ToUpper()); //(GetI18NValue("nameHint") 
-            lblNameError = GetErrorLabel(GetErrorI18NValue("invalid_fullname")); //(GetI18NValue("nameHint") 
+            lblNameError = GetErrorLabel(GetI18NValue("nameHintBottom")); //(GetI18NValue("nameHint") 
 
             txtFieldName = new UITextField
             {
