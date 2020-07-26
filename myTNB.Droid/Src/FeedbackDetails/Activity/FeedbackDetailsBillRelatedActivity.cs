@@ -332,10 +332,15 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
 
 
-                //req update title
+                //if there was no feedback its mean it is an update , if not it is enquiry
                 if (feedback.IsNullOrEmpty() && !feedbackUpdateList.IsNullOrEmpty())
                 {
                     txtEnquiryDetails.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "reqUpdate");   // translate
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle"));
+                }
+                else
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle"));
                 }
 
                 // relationship hide or not
@@ -474,7 +479,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 if (feedbackCode.Equals("CL01"))
                 {
                     txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.createdColor)));
-                    txtFeedback_status_new.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.createdColor)));
+                    txtFeedback_status_new.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.createdColorSubmit)));
                 }
                 else if (feedbackCode.Equals("CL02"))
                 {

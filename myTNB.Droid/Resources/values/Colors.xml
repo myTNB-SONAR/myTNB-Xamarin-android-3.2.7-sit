@@ -72,6 +72,11 @@
   <color name="cancelledColor">@color/tomato</color>
   <!--End Feedback Status Color-->
 
+  <!--Submit Enquiry Status Color-->
+  <color name="createdColorSubmit">#424141</color>
+  <color name="completedColorSubmit">@color/freshGreen</color>
+  <!--End Submit Enquiry Status Color-->
+
 
   <color name="tunagrey">#49494A</color>
   <color name="silverchalice">#A6A6A6</color>

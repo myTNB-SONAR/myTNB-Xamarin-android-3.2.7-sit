@@ -73,7 +73,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
 
                 if (item.FeedbackCategoryId.Equals("1"))
                 {
-                    vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_billing));
+                    vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.general_enquiry));
                 }
                 else if (item.FeedbackCategoryId.Equals("2"))
                 {

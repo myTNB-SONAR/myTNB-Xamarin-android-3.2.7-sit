@@ -1058,8 +1058,9 @@
       "personalDisclamer": "Kemas kini Penafian Data Peribadi",
       "tnbTermUse":"Terma dan Syarat TNB",
       "name":"Nama",
-      "copyOfPermiseProof":"Salinan Perjanjian Jual & Beli / Cukai pintu / Perjanjian Sewa Rumah"
-     
+      "copyOfPermiseProof":"Salinan Perjanjian Jual & Beli / Cukai pintu / Perjanjian Sewa Rumah",
+      "nameHintBottom":"Masukkan nama penuh seperti di dalam kad pengenalan",
+      "enquiryTncRead":"Saya sudah baca dan bersetuju dengan <a href=\"\\\"><strong>Terma dan Syarat</strong></a>"
     }
      
 }

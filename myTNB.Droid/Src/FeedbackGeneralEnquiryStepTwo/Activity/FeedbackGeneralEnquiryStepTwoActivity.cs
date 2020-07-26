@@ -294,7 +294,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
 
                 //SET TRANSLATION
-                txtInputLayoutName.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "nameHint");
+                txtInputLayoutName.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "nameHint").ToUpper();
+                txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
                 txtInputLayoutEmail.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "emailHint");
                 txtInputLayoutPhoneNumber.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "mobileHint");
                 btnSubmit.Text = Utility.GetLocalizedLabel("Common", "submit");
@@ -509,6 +510,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         public void ClearFullNameError()
         {
             txtInputLayoutName.Error = null;
+            txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
         }
 
         public void ShowInvalidEmailError()
@@ -613,8 +615,19 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
 
         public void toggleTNC()
-        {
+        {  
             toggleTncData = !toggleTncData;  //boolean change
+
+            if (toggleTncData)
+            {
+                txtTermsConditionsGeneralEnquiry.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryTncRead"));
+                StripUnderlinesFromLinks(txtTermsConditionsGeneralEnquiry);
+            }
+            else
+            {
+                txtTermsConditionsGeneralEnquiry.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryTnc"));
+                StripUnderlinesFromLinks(txtTermsConditionsGeneralEnquiry);
+            }
 
             passCheck();
         }

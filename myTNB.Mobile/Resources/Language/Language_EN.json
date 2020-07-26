@@ -971,7 +971,7 @@
     "attachDescription": "Maximum document size is 5MB (PDF, JPG &JPEG format only)",
     "stepTitle2of2": "Step 2 of 2",
     "contactEnquiryTitle": "How can we contact you regarding this enquiry?",
-    "nameHint": "Full Name (As per your identification card)",
+    "nameHint": "Your Full Name",
     "emailHint": "Email Address",
     "mobileHint": "Mobile Number",
     "thankYouTitle": "Thank you for your enquiry!",
@@ -983,8 +983,8 @@
     "photoTitle": "Photo / Screenshot",	
     "stepTitle1of3": "Step 1 of 3",
     "registeredTitle": "Is this electricity account registered under your name?",
-      "registeredInfo": "Who is a registered owner?",
-     "registeredInfoDetail":"This electricity account must be registered under your name with your IC or Passport.",
+    "registeredInfo": "Registered Owner",
+     "registeredInfoDetail":"A registered owner is the person who opened this electricity account under their name with their IC or Passport",
     "whichInfoUpdate":"Which information would you like to update?",
     "ownerTitle": "What is your relationship with the owner?",
     "icTitle":"Identification Number (IC/Passport)",
@@ -1009,7 +1009,7 @@
     "othersTitle": "Others",
     "otherRelationshipHint": "Please specify your relationship",
     "ownerConsentInfo": "Do I need account owner’s consent?",
-    "ownerConsentDescription": "You as a non-owner or an authorised person are required to provide the owner’s proof of consent to update the personal details on their behalf as it will permanently update the owner’s TNB electricity account details. You will also consent to update your own contact information as it is still the owner’s property.",
+    "ownerConsentDescription": "You as a non-owner or an authorised person are required to provide the owner’s proof of consent to update the personal details on their behalf as it will permanently update the owner’s TNB electricity account details",
     "stepTitle2of3": "Step 2 of 3",
     "ownerIcOwner": "Copy of owner’s identification (IC/Passport)",
     "icTitleinfo": "Copy of your identification (IC/Passport)",
@@ -1056,8 +1056,9 @@
     "personalDisclamer" : "Update Personal Data Disclamer",
     "tnbTermUse":"TNB’s Terms of Use",
     "name":"Name",
-    "copyOfPermiseProof":"Copy of Sales & Purchase Agreement/Cukai Pintu/Tenancy Agreement"
- 
+    "copyOfPermiseProof":"Copy of Sales & Purchase Agreement/Cukai Pintu/Tenancy Agreement",
+    "nameHintBottom":"Enter your full name as per your identification card.",
+    "enquiryTncRead":"I have read and agreed to the <a href=\"\\\"><strong>Terms & Conditions</strong></a>"
     }
 
 
