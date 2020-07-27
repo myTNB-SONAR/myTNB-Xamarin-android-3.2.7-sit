@@ -449,7 +449,10 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
+                ClearEmailError();
                 this.txtInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
+                if (!this.txtInputLayoutEmail.ErrorEnabled)
+                    this.txtInputLayoutEmail.ErrorEnabled = true;
             }
             catch (Exception e)
             {
@@ -461,7 +464,10 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
+                ClearEmailError();
                 this.txtInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
+                if (!this.txtInputLayoutEmail.ErrorEnabled)
+                    this.txtInputLayoutEmail.ErrorEnabled = true;
             }
             catch (Exception e)
             {
@@ -473,7 +479,11 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
-                this.txtInputLayoutEmail.Error = null;
+                if (!string.IsNullOrEmpty(this.txtInputLayoutEmail.Error))
+                {
+                    this.txtInputLayoutEmail.Error = null;
+                    this.txtInputLayoutEmail.ErrorEnabled = false;
+                }
             }
             catch (Exception e)
             {
@@ -597,7 +607,10 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
+                ClearInvalidMobileError();
                 txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
+                if (!txtInputLayoutMobileNo.ErrorEnabled)
+                    txtInputLayoutMobileNo.ErrorEnabled = true;
             }
             catch (Exception e)
             {
@@ -609,7 +622,11 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
-                txtInputLayoutMobileNo.Error = null;
+                if (!string.IsNullOrEmpty(txtInputLayoutMobileNo.Error))
+                {
+                    txtInputLayoutMobileNo.Error = null;
+                    txtInputLayoutMobileNo.ErrorEnabled = false;
+                }
             }
             catch (Exception e)
             {
@@ -621,7 +638,12 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
+                ClearReasonError();
                 txtInputLayoutTxtReason.Error = "Reason can't be empty";
+                if (!txtInputLayoutTxtReason.ErrorEnabled)
+                {
+                    txtInputLayoutTxtReason.ErrorEnabled = true;
+                }
             }
             catch (Exception e)
             {
@@ -648,7 +670,11 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
-                txtInputLayoutTxtReason.Error = null;
+                if (!string.IsNullOrEmpty(txtInputLayoutTxtReason.Error))
+                {
+                    txtInputLayoutTxtReason.Error = null;
+                    txtInputLayoutTxtReason.ErrorEnabled = false;
+                }
             }
             catch (Exception e)
             {

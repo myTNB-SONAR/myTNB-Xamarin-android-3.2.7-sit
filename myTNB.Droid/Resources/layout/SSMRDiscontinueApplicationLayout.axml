@@ -107,6 +107,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="17dp"
+                    android:layout_marginBottom="8dp"
                     app:errorEnabled="true"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance">
                     <EditText
@@ -126,6 +127,7 @@
                     android:layout_height="wrap_content"
                     app:errorEnabled="true"
                     android:layout_marginRight="17dp"
+                    android:layout_marginBottom="8dp"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance">
                     <EditText
                         android:id="@+id/txtMobileNo"
@@ -178,7 +180,8 @@
                     android:id="@+id/accountLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp">
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp">
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/txtInputLayoutReason"
                         android:layout_width="match_parent"
@@ -207,6 +210,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     app:errorEnabled="true"
+                    android:layout_marginBottom="8dp"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance">
                     <EditText
                         android:id="@+id/txtReason"

@@ -274,7 +274,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                         try
                         {
                             ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)btnWhereIsMyAccountNo.LayoutParameters;
-                            lp3.TopMargin = -(int)DPUtils.ConvertDPToPx(26f);
+                            lp3.TopMargin = -(int)DPUtils.ConvertDPToPx(23f);
                             lp3.RightMargin = (int) DPUtils.ConvertDPToPx(2f);
                             btnWhereIsMyAccountNo.LayoutParameters = lp3;
                             btnWhereIsMyAccountNo.RequestLayout();
@@ -840,7 +840,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     try
                     {
                         ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)btnWhereIsMyAccountNo.LayoutParameters;
-                        lp3.TopMargin = -(int)DPUtils.ConvertDPToPx(26f);
+                        lp3.TopMargin = -(int)DPUtils.ConvertDPToPx(23f);
                         lp3.RightMargin = (int)DPUtils.ConvertDPToPx(2f);
                         btnWhereIsMyAccountNo.LayoutParameters = lp3;
                         btnWhereIsMyAccountNo.RequestLayout();

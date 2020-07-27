@@ -65,8 +65,16 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ClearErrorMessages()
         {
-            txtInputLayoutEmail.Error = null;
-            textInputLayoutVerificationCode.Error = null;
+            if (!string.IsNullOrEmpty(txtInputLayoutEmail.Error))
+            {
+                txtInputLayoutEmail.Error = null;
+                txtInputLayoutEmail.ErrorEnabled = false;
+            }
+            if (!string.IsNullOrEmpty(textInputLayoutVerificationCode.Error))
+            {
+                textInputLayoutVerificationCode.Error = null;
+                textInputLayoutVerificationCode.ErrorEnabled = false;
+            }
         }
 
         public bool IsActive()
@@ -86,7 +94,14 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowEmptyEmailError()
         {
+            if (!string.IsNullOrEmpty(txtInputLayoutEmail.Error))
+            {
+                txtInputLayoutEmail.Error = null;
+                txtInputLayoutEmail.ErrorEnabled = false;
+            }
             txtInputLayoutEmail.Error = GetString(Resource.String.forget_password_empty_email_error);
+            if (!txtInputLayoutEmail.ErrorEnabled)
+                txtInputLayoutEmail.ErrorEnabled = true;
             this.SetIsClicked(false);
         }
 
@@ -134,7 +149,14 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowInvalidEmailError()
         {
+            if (!string.IsNullOrEmpty(txtInputLayoutEmail.Error))
+            {
+                txtInputLayoutEmail.Error = null;
+                txtInputLayoutEmail.ErrorEnabled = false;
+            }
             txtInputLayoutEmail.Error = Utility.GetLocalizedLabel("Error", "invalid_email");
+            if (!txtInputLayoutEmail.ErrorEnabled)
+                txtInputLayoutEmail.ErrorEnabled = true;
             this.SetIsClicked(false);
         }
 
@@ -357,7 +379,14 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowEmptyCodeError()
         {
+            if (!string.IsNullOrEmpty(textInputLayoutVerificationCode.Error))
+            {
+                textInputLayoutVerificationCode.Error = null;
+                textInputLayoutVerificationCode.ErrorEnabled = false;
+            }
             textInputLayoutVerificationCode.Error = GetString(Resource.String.forget_password_empty_code_error);
+            if (!textInputLayoutVerificationCode.ErrorEnabled)
+                textInputLayoutVerificationCode.ErrorEnabled = true;
         }
 
         private Snackbar mCodeCancelledExceptionSnackBar;

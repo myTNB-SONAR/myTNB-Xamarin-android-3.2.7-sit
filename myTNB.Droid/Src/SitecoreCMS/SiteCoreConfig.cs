@@ -18,7 +18,8 @@
 
         //Production
 #if DEBUG || DEVELOP || STUB
-        public static string SITECORE_URL = "http://tnbcsdevapp.tnb.my/";
+        //public static string SITECORE_URL = "http://tnbcsdevapp.tnb.my/";
+        public static string SITECORE_URL = "https://sitecore.tnb.com.my/";
 #elif SIT
         public static string SITECORE_URL = "http://tnbcsstgapp.tnb.my/";
 #else

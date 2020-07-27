@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Support.Design.BottomNavigation;
 using Android.Support.Design.Internal;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
@@ -27,14 +28,7 @@ namespace myTNB_Android.Src.Utils
                     return;
                 }
 
-
-                var shiftMode = menuView.Class.GetDeclaredField("mShiftingMode");
-
-                shiftMode.Accessible = true;
-                shiftMode.SetBoolean(menuView, enableShiftMode);
-                shiftMode.Accessible = false;
-                shiftMode.Dispose();
-
+                bottomNavigationView.LabelVisibilityMode = LabelVisibilityMode.LabelVisibilityLabeled;
 
                 for (int i = 0; i < menuView.ChildCount; i++)
                 {
@@ -42,7 +36,7 @@ namespace myTNB_Android.Src.Utils
                     if (item == null)
                         continue;
 
-                    item.SetShiftingMode(enableItemShiftMode);
+                    item.SetLabelVisibilityMode(LabelVisibilityMode.LabelVisibilityLabeled);
                     item.SetChecked(item.ItemData.IsChecked);
 
                 }
