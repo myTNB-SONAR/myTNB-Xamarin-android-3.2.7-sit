@@ -132,6 +132,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                             this.mView.ClearInvalidMobileError();
                         }
                     }
+
                     if (isNeedTNC)
                     {
                         if (tnc == false)
@@ -185,7 +186,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                     ctr++;
                 } ;
 
-                SubmitEnquiryRequest submitEnquiryRequest  = new SubmitEnquiryRequest("1", "", acc, userEntity.DisplayName, userEntity.MobileNo, feedback, "", "", "", mobile_no, fullname, email, isowner, ownerRelationship, relationshipDescription);
+                SubmitEnquiryRequest submitEnquiryRequest  = new SubmitEnquiryRequest("1", "", acc, fullname, mobile_no, feedback, "", "", "", mobile_no, fullname, email, isowner, ownerRelationship, relationshipDescription);
                 foreach (AttachedImageRequest image in imageRequest)
                 {
 
