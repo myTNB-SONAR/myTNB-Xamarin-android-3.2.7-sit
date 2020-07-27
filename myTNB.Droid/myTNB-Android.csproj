@@ -463,6 +463,9 @@
     <Reference Include="Xamarin.Bindings.PDFView-Android">
       <HintPath>..\packages\Xamarin.Bindings.PDFView-Android.1.0.0\lib\MonoAndroid\Xamarin.Bindings.PDFView-Android.dll</HintPath>
     </Reference>
+    <Reference Include="DaveMorrisseySubsamplingScaleImageViewBindingLib.Android">
+      <HintPath>..\packages\WiyonoAten.SubsamplingScaleImageView.Xamarin.Android.3.4.1\lib\MonoAndroid\DaveMorrisseySubsamplingScaleImageViewBindingLib.Android.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.Designer.cs" />
