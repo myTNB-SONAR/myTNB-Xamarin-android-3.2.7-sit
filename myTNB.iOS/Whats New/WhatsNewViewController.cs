@@ -766,15 +766,33 @@ namespace myTNB
         {
             if (whatsNew != null)
             {
-                WhatsNewDetailsViewController whatsNewDetailView = new WhatsNewDetailsViewController();
-                whatsNewDetailView.WhatsNewModel = whatsNew;
-                UINavigationController navController = new UINavigationController(whatsNewDetailView)
+                if (whatsNew.Infographic_FullView_URL.IsValid())
                 {
-                    ModalPresentationStyle = UIModalPresentationStyle.FullScreen
-                };
-                PresentViewController(navController, true, null);
-                WhatsNewServices.SetIsRead(whatsNew.ID);
-                OnUpdateReadWhatsNew(whatsNew);
+                    BrowserViewController viewController = new BrowserViewController();
+                    if (viewController != null)
+                    {
+                        viewController.URL = whatsNew.Infographic_FullView_URL;
+                        viewController.IsDelegateNeeded = false;
+                        viewController.NavigationTitle = GetI18NValue(WhatsNewConstants.I18N_Title);
+                        UINavigationController navController = new UINavigationController(viewController)
+                        {
+                            ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                        };
+                        PresentViewController(navController, true, null);
+                    }
+                }
+                else
+                {
+                    WhatsNewDetailsViewController whatsNewDetailView = new WhatsNewDetailsViewController();
+                    whatsNewDetailView.WhatsNewModel = whatsNew;
+                    UINavigationController navController = new UINavigationController(whatsNewDetailView)
+                    {
+                        ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                    };
+                    PresentViewController(navController, true, null);
+                    WhatsNewServices.SetIsRead(whatsNew.ID);
+                    OnUpdateReadWhatsNew(whatsNew);
+                }
             }
         }
 
