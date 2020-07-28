@@ -180,7 +180,11 @@ namespace myTNB_Android.Src.WhatsNewDialog
                     imgWhatsNew.SetScaleType(ImageView.ScaleType.CenterCrop);
 
                     int photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.096f);
-                    if (mContext.Resources.DisplayMetrics.HeightPixels >= 2200)
+                    if (mContext.Resources.DisplayMetrics.HeightPixels >= 2500)
+                    {
+                        photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - 8 * GetDeviceHorizontalScaleInPixel(0.006f);
+                    }
+                    else if (mContext.Resources.DisplayMetrics.HeightPixels >= 2200)
                     {
                         photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - 6 * GetDeviceHorizontalScaleInPixel(0.016f);
                     }
@@ -336,7 +340,11 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 if (imgSrc == null)
                 {
                     int photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.096f);
-                    if (mContext.Resources.DisplayMetrics.HeightPixels >= 2200)
+                    if (mContext.Resources.DisplayMetrics.HeightPixels >= 2500)
+                    {
+                        photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - 8 * GetDeviceHorizontalScaleInPixel(0.006f);
+                    }
+                    else if (mContext.Resources.DisplayMetrics.HeightPixels >= 2200)
                     {
                         photoWidth = mContext.Resources.DisplayMetrics.WidthPixels - 6 * GetDeviceHorizontalScaleInPixel(0.016f);
                     }
@@ -360,7 +368,11 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 else if (imgSrc != null)
                 {
                     float currentImgWidth = mContext.Resources.DisplayMetrics.WidthPixels - GetDeviceHorizontalScaleInPixel(0.096f);
-                    if (mContext.Resources.DisplayMetrics.HeightPixels >= 2200)
+                    if (mContext.Resources.DisplayMetrics.HeightPixels >= 2500)
+                    {
+                        currentImgWidth = mContext.Resources.DisplayMetrics.WidthPixels - 8 * GetDeviceHorizontalScaleInPixel(0.006f);
+                    }
+                    else if(mContext.Resources.DisplayMetrics.HeightPixels >= 2200)
                     {
                         currentImgWidth = mContext.Resources.DisplayMetrics.WidthPixels - 6 * GetDeviceHorizontalScaleInPixel(0.016f);
                     }
@@ -457,6 +469,13 @@ namespace myTNB_Android.Src.WhatsNewDialog
                                     if (extractedUrls[0].Contains(".pdf") && !extractedUrls[0].Contains("docs.google"))
                                     {
                                         Intent webIntent = new Intent(this.mContext, typeof(BasePDFViewerActivity));
+                                        webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                        webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                        this.mContext.StartActivity(webIntent);
+                                    }
+                                    else if (extractedUrls[0].Contains(".jpeg") || extractedUrls[0].Contains(".jpg") || extractedUrls[0].Contains(".png"))
+                                    {
+                                        Intent webIntent = new Intent(this.mContext, typeof(BaseFullScreenImageViewActivity));
                                         webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
                                         webIntent.PutExtra(Constants.IN_APP_TITLE, "");
                                         this.mContext.StartActivity(webIntent);
