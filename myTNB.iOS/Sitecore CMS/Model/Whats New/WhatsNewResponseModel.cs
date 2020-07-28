@@ -47,6 +47,7 @@ namespace myTNB.SitecoreCMS.Model
         public int ShowCountForDay { set; get; }
         public bool SkipShowOnAppLaunch { set; get; }
         public bool IsRead { set; get; }
+        public string Infographic_FullView_URL { set; get; }
 
         public WhatsNewEntity ToEntity()
         {
@@ -76,7 +77,8 @@ namespace myTNB.SitecoreCMS.Model
                 PopUp_Text_Content = PopUp_Text_Content,
                 Donot_Show_In_WhatsNew = Donot_Show_In_WhatsNew,
                 Disable_DoNotShow_Checkbox = Disable_DoNotShow_Checkbox,
-                IsRead = IsRead
+                IsRead = IsRead,
+                Infographic_FullView_URL = Infographic_FullView_URL
             };
 
             return entity;
