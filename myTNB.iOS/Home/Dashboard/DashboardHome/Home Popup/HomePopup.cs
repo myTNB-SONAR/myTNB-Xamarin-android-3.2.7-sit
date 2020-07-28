@@ -440,6 +440,7 @@ namespace myTNB.Home.Dashboard.DashboardHome
                         }
                     }
                 }
+                Dismiss();
             });
             textView.Delegate = new TextViewDelegate(action)
             {
