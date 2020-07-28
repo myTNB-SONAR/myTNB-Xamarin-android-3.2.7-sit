@@ -5343,6 +5343,11 @@
       <Generator>
       </Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\BaseFullScreenImageViewLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Base\Activity\BaseFullScreenImageViewActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

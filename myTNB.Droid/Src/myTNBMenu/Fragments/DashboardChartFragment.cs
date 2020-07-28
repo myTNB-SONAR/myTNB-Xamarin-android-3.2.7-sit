@@ -5034,6 +5034,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             webIntent.PutExtra(Constants.IN_APP_TITLE, "");
                                             this.Activity.StartActivity(webIntent);
                                         }
+                                        else if (extractedUrls[0].Contains(".jpeg") || extractedUrls[0].Contains(".jpg") || extractedUrls[0].Contains(".png"))
+                                        {
+                                            Intent webIntent = new Intent(this.Activity, typeof(BaseFullScreenImageViewActivity));
+                                            webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                            webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                            this.Activity.StartActivity(webIntent);
+                                        }
                                         else
                                         {
                                             Intent webIntent = new Intent(this.Activity, typeof(BaseWebviewActivity));

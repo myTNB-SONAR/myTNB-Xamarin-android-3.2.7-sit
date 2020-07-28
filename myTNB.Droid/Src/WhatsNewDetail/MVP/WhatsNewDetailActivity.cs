@@ -624,6 +624,13 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 									webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
 									this.StartActivity(webIntent);
 								}
+								else if (uri.Contains(".jpeg") || uri.Contains(".jpg") || uri.Contains(".png"))
+								{
+									Intent webIntent = new Intent(this, typeof(BaseFullScreenImageViewActivity));
+									webIntent.PutExtra(Constants.IN_APP_LINK, uri);
+									webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
+									this.StartActivity(webIntent);
+								}
 								else
 								{
 									Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
