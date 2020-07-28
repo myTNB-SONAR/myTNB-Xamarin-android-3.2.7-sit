@@ -9,7 +9,6 @@ using Android.Widget;
 using CheeseBind;
 using Com.Davemorrissey.Labs.Subscaleview;
 using myTNB_Android.Src.Utils;
-using PDFViewAndroid;
 using System;
 using System.IO;
 using System.Net;

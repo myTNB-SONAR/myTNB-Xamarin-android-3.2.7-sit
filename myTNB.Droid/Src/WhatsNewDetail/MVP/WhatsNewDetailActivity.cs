@@ -24,7 +24,7 @@ using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
-using PDFViewAndroid;
+using Syncfusion.SfPdfViewer.Android;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -81,7 +81,7 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 		LinearLayout whatsNewFullPDFDetailLayout;
 
 		[BindView(Resource.Id.pdfFullView)]
-		PDFView pdfFullView;
+		SfPdfViewer pdfFullView;
 
 		WhatsNewDetailContract.IWhatsNewDetailPresenter presenter;
 
@@ -100,6 +100,8 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 		private Snackbar mNoInternetSnackbar;
 
 		private bool fullScreenFirstLoaded = false;
+
+		private bool isLoadedDocument = false;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -126,6 +128,7 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 			try
 			{
 				fullScreenFirstLoaded = false;
+				isLoadedDocument = false;
 
 				Bundle extras = Intent.Extras;
 
@@ -259,6 +262,17 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 			this.menu = menu;
 			return base.OnCreateOptionsMenu(menu);
 		}
+
+		protected override void OnDestroy()
+        {
+            if (isLoadedDocument)
+            {
+                pdfFullView.Unload();
+                isLoadedDocument = false;
+            }
+
+            base.OnDestroy();
+        }
 
 		public override bool OnOptionsItemSelected(IMenuItem item)
 		{
@@ -1034,9 +1048,11 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 
 						Java.IO.File file = new Java.IO.File(path);
 
-						pdfFullView
-							.FromFile(file)
-							.Show();
+                        using (Stream PdfStream = File.Open(file.AbsolutePath, FileMode.Open))
+                        {
+                            pdfFullView.LoadDocument(PdfStream);
+                            isLoadedDocument = true;
+                        }
 					}
 					catch (Exception ex)
 					{
