@@ -71,7 +71,12 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 int topPadding = GetDeviceVerticalScaleInPixel(0.058f);
                 int leftRightPadding = GetDeviceHorizontalScaleInPixel(0.096f);
 
-                if (Resources.DisplayMetrics.HeightPixels >= 2200)
+                if (Resources.DisplayMetrics.HeightPixels >= 2500)
+                {
+                    topPadding = GetDeviceVerticalScaleInPixel(0.138f);
+                    leftRightPadding = GetDeviceHorizontalScaleInPixel(0.006f);
+                }
+                else if (Resources.DisplayMetrics.HeightPixels >= 2200)
                 {
                     topPadding = GetDeviceVerticalScaleInPixel(0.138f);
                     leftRightPadding = GetDeviceHorizontalScaleInPixel(0.016f);

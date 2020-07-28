@@ -24,73 +24,118 @@
             android:background="@color/white">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <LinearLayout 
-                    android:orientation="vertical"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:id="@+id/whatsNewMainImg"
-                    android:visibility="gone">
-                    <ImageView
-                        android:id="@+id/whatsNewImg"
-                        android:layout_height="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:id="@+id/whatsNewNormalDetailLayout">
+                    <LinearLayout 
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/promotions_default_image"/>
+                        android:layout_height="180dp"
+                        android:id="@+id/whatsNewMainImg"
+                        android:visibility="gone">
+                        <ImageView
+                            android:id="@+id/whatsNewImg"
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/promotions_default_image"/>
+                    </LinearLayout>
+                    <LinearLayout 
+                      android:orientation="vertical"
+                      android:layout_width="match_parent"
+                      android:layout_height="180dp"
+                      android:id="@+id/whatsNewMainShimmerImgLayout">
+                        <com.facebook.shimmer.ShimmerFrameLayout
+                            android:id="@+id/shimmerWhatsNewImageLayout"
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent">
+                            <ImageView
+                            android:id="@+id/whatsNewShimmerImg"
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/shimmer_rectangle"/>
+                        </com.facebook.shimmer.ShimmerFrameLayout>
+                    </LinearLayout>
+                    <LinearLayout 
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="15dp"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:id="@+id/mainContentLayout">
+                        <TextView
+                            android:id="@+id/txtTitle"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:textColor="@color/powerBlue"
+                            android:text="TNB Energy Night Run"
+                            android:textSize="16dp"
+                            android:lineSpacingExtra="4dp"/>
+                        <TextView
+                            android:id="@+id/txtDescription"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:textColor="@color/tunaGrey"
+                            android:text="Valid from 06 Sep - 30 Oct 2019"
+                            android:textSize="14dp"
+                            android:paddingTop="13dp"
+                            android:lineSpacingExtra="3dp"/>
+                        <TextView
+                            android:id="@+id/txtFooter"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:textColor="@color/tunaGrey"
+                            android:text=""
+                            android:textSize="12dp"
+                            android:paddingTop="16dp"
+                            android:visibility="gone"
+                            android:lineSpacingExtra="3dp"/>
+                    </LinearLayout>
                 </LinearLayout>
-                <LinearLayout 
-                  android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="180dp"
-                  android:id="@+id/whatsNewMainShimmerImgLayout">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:id="@+id/whatsNewFullScreenShimmerLayout">
                     <com.facebook.shimmer.ShimmerFrameLayout
-                        android:id="@+id/shimmerWhatsNewImageLayout"
+                        android:id="@+id/shimmerFullScreenLayout"
                         android:layout_height="match_parent"
                         android:layout_width="match_parent">
                         <ImageView
-                        android:id="@+id/whatsNewShimmerImg"
-                        android:layout_height="match_parent"
-                        android:layout_width="match_parent"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/shimmer_rectangle"/>
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/shimmer_rectangle"/>
                     </com.facebook.shimmer.ShimmerFrameLayout>
                 </LinearLayout>
-                <LinearLayout 
-                    android:orientation="vertical"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="15dp"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:id="@+id/mainContentLayout">
-                    <TextView
-                        android:id="@+id/txtTitle"
-                        android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:id="@+id/whatsNewFullImageDetailLayout">
+                    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
+                        android:id="@+id/imgFullView"
                         android:layout_width="match_parent"
-                        android:textColor="@color/powerBlue"
-                        android:text="TNB Energy Night Run"
-                        android:textSize="16dp"
-                        android:lineSpacingExtra="4dp"/>
-                    <TextView
-                        android:id="@+id/txtDescription"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:id="@+id/whatsNewFullPDFDetailLayout">
+                    <Syncfusion.SfPdfViewer.Android.SfPdfViewer
                         android:layout_width="match_parent"
-                        android:textColor="@color/tunaGrey"
-                        android:text="Valid from 06 Sep - 30 Oct 2019"
-                        android:textSize="14dp"
-                        android:paddingTop="13dp"
-                        android:lineSpacingExtra="3dp"/>
-                    <TextView
-                        android:id="@+id/txtFooter"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:textColor="@color/tunaGrey"
-                        android:text=""
-                        android:textSize="12dp"
-                        android:paddingTop="16dp"
-                        android:visibility="gone"
-                        android:lineSpacingExtra="3dp"/>
+                        android:layout_height="match_parent"
+                        android:id="@+id/pdfFullView" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
