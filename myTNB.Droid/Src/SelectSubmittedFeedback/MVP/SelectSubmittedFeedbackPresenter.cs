@@ -40,7 +40,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
 
             try
             {
-                var detailsResponse = await ServiceApiImpl.Instance.SubmittedFeedbackDetails(new SubmittedFeedbackDetailsRequest(submittedFeedback.FeedbackId));
+                var detailsResponse = await ServiceApiImpl.Instance.SubmittedFeedbackWithContactDetails(new SubmittedFeedbackDetailsRequest(submittedFeedback.FeedbackId));
 
                 if (mView.IsActive())
                 {

@@ -262,6 +262,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             return api.SubmittedFeedbackDetails<SubmittedFeedbackDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
+          /// <summary>
+        /// Call GetSubmittedFeedbackWithCotactDetails with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SubmittedFeedbackDetailsResponse> SubmittedFeedbackWithContactDetails([Body] Request.BaseRequest request)
+        {
+            return api.SubmittedFeedbackContactDetails<SubmittedFeedbackDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
         /// <summary>
         /// Call CreateNewUserWithToken with default timeout.
         /// </summary>
