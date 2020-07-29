@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Com.Davemorrissey.Labs.Subscaleview;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Utils;
@@ -23,7 +24,7 @@ namespace myTNB_Android.Src.FeedbackFullScreenImage.Activity
         AttachedImage attachedImage;
 
         [BindView(Resource.Id.imgFeedback)]
-        ImageView imgFeedback;
+        SubsamplingScaleImageView imgFeedback;
 
 
         public override int ResourceId()
@@ -75,10 +76,12 @@ namespace myTNB_Android.Src.FeedbackFullScreenImage.Activity
 
                 //    } , delegate { } );
 
-                Picasso.With(this)
-                    .Load(new Java.IO.File(attachedImage.Path))
-                    .Fit()
-                    .Into(imgFeedback);
+                Java.IO.File temp = new Java.IO.File(attachedImage.Path);
+
+                var source = ImageSource.InvokeUri(temp.Path);
+
+                imgFeedback.SetImage(source);
+                imgFeedback.ZoomEnabled = true;
             }
             catch (Exception e)
             {
