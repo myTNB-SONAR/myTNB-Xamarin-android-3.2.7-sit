@@ -176,7 +176,7 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
 
         public async Task<SubmittedFeedbackDetails> FeedbackSaveSharedPreference(string FeedbackId)
         {
-            var detailsResponse = await ServiceApiImpl.Instance.SubmittedFeedbackDetails(new SubmittedFeedbackDetailsRequest(FeedbackId));
+            var detailsResponse = await ServiceApiImpl.Instance.SubmittedFeedbackWithContactDetails(new SubmittedFeedbackDetailsRequest(FeedbackId));
             UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
             return  detailsResponse.GetData();
         }
