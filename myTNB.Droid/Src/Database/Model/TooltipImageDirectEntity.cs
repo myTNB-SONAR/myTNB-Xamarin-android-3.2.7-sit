@@ -31,6 +31,7 @@ namespace myTNB_Android.Src.Database.Model
             WHERE_MY_ACC,
             IC_SAMPLE,
             PROOF_OF_CONSENT,
+            PERMISE_IMAGE
     
 
         }

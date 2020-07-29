@@ -14,6 +14,7 @@ using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Com.Davemorrissey.Labs.Subscaleview;
 using Facebook.Shimmer;
 using Firebase.DynamicLinks;
 using myTNB.SitecoreCMS.Model;
@@ -23,8 +24,10 @@ using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using Syncfusion.SfPdfViewer.Android;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime;
 
 namespace myTNB_Android.Src.WhatsNewDetail.MVP
@@ -59,7 +62,28 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 		[BindView(Resource.Id.txtFooter)]
 		TextView txtFooter;
 
-        WhatsNewDetailContract.IWhatsNewDetailPresenter presenter;
+		[BindView(Resource.Id.whatsNewNormalDetailLayout)]
+		LinearLayout whatsNewNormalDetailLayout;
+
+		[BindView(Resource.Id.whatsNewFullScreenShimmerLayout)]
+		LinearLayout whatsNewFullScreenShimmerLayout;
+
+		[BindView(Resource.Id.shimmerFullScreenLayout)]
+		ShimmerFrameLayout shimmerFullScreenLayout;
+
+		[BindView(Resource.Id.whatsNewFullImageDetailLayout)]
+		LinearLayout whatsNewFullImageDetailLayout;
+
+		[BindView(Resource.Id.imgFullView)]
+		SubsamplingScaleImageView imgFullView;
+
+		[BindView(Resource.Id.whatsNewFullPDFDetailLayout)]
+		LinearLayout whatsNewFullPDFDetailLayout;
+
+		[BindView(Resource.Id.pdfFullView)]
+		SfPdfViewer pdfFullView;
+
+		WhatsNewDetailContract.IWhatsNewDetailPresenter presenter;
 
 		private WhatsNewModel LocalItem = new WhatsNewModel();
 
@@ -74,6 +98,10 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 		private string generatedLink = "";
 
 		private Snackbar mNoInternetSnackbar;
+
+		private bool fullScreenFirstLoaded = false;
+
+		private bool isLoadedDocument = false;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -99,6 +127,9 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 
 			try
 			{
+				fullScreenFirstLoaded = false;
+				isLoadedDocument = false;
+
 				Bundle extras = Intent.Extras;
 
 				if (extras != null)
@@ -137,8 +168,15 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
                         }
                         else
                         {
-                            SetupImageParam();
-                            this.presenter.GetActiveWhatsNew(ItemID);
+							if (!fullScreenFirstLoaded)
+                            {
+								whatsNewNormalDetailLayout.Visibility = ViewStates.Visible;
+								whatsNewFullScreenShimmerLayout.Visibility = ViewStates.Gone;
+								whatsNewFullImageDetailLayout.Visibility = ViewStates.Gone;
+								whatsNewFullPDFDetailLayout.Visibility = ViewStates.Gone;
+								SetupImageParam();
+								this.presenter.GetActiveWhatsNew(ItemID);
+							}
                         }
                     }
                     catch (Exception ex)
@@ -225,6 +263,17 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 			return base.OnCreateOptionsMenu(menu);
 		}
 
+		protected override void OnDestroy()
+        {
+            if (isLoadedDocument)
+            {
+                pdfFullView.Unload();
+                isLoadedDocument = false;
+            }
+
+            base.OnDestroy();
+        }
+
 		public override bool OnOptionsItemSelected(IMenuItem item)
 		{
 			switch (item.ItemId)
@@ -283,6 +332,21 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 					return true;
 			}
 			return base.OnOptionsItemSelected(item);
+		}
+
+		public void UpdateWhatsNewDetail(WhatsNewModel item)
+        {
+			try
+            {
+				if (item != null)
+                {
+					LocalItem = item;
+				}
+			}
+			catch (Exception e)
+			{
+				Utility.LoggingNonFatalError(e);
+			}
 		}
 
 		public void SetWhatsNewDetail(WhatsNewModel item)
@@ -556,6 +620,46 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 			}
 		}
 
+		public void SetupFullScreenShimmer()
+        {
+			try
+			{
+				whatsNewNormalDetailLayout.Visibility = ViewStates.Gone;
+				whatsNewFullScreenShimmerLayout.Visibility = ViewStates.Visible;
+
+				if (shimmerFullScreenLayout.IsShimmerStarted)
+				{
+					shimmerFullScreenLayout.StopShimmer();
+				}
+				var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+				if (shimmerBuilder != null)
+				{
+					shimmerFullScreenLayout.SetShimmer(shimmerBuilder?.Build());
+				}
+				shimmerFullScreenLayout.StartShimmer();
+			}
+			catch (Exception e)
+			{
+				Utility.LoggingNonFatalError(e);
+			}
+		}
+
+		public void StopFullScreenShimmer()
+		{
+			try
+			{
+				whatsNewFullScreenShimmerLayout.Visibility = ViewStates.Gone;
+				if (shimmerFullScreenLayout.IsShimmerStarted)
+				{
+					shimmerFullScreenLayout.StopShimmer();
+				}
+			}
+			catch (Exception e)
+			{
+				Utility.LoggingNonFatalError(e);
+			}
+		}
+
 		class ClickSpan : ClickableSpan
 		{
 			public Action<View> Click;
@@ -604,7 +708,9 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 								uri = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[1])[1];
 							}
 
-							if (!uri.Contains("http"))
+							string compareText = uri.ToLower();
+
+							if (!compareText.Contains("http"))
 							{
 								uri = "http://" + uri;
 							}
@@ -617,9 +723,16 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 							}
 							else
 							{
-								if (uri.Contains(".pdf") && !uri.Contains("docs.google"))
+								if (compareText.Contains(".pdf") && !compareText.Contains("docs.google"))
 								{
 									Intent webIntent = new Intent(this, typeof(BasePDFViewerActivity));
+									webIntent.PutExtra(Constants.IN_APP_LINK, uri);
+									webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
+									this.StartActivity(webIntent);
+								}
+								else if (compareText.Contains(".jpeg") || compareText.Contains(".jpg") || compareText.Contains(".png"))
+								{
+									Intent webIntent = new Intent(this, typeof(BaseFullScreenImageViewActivity));
 									webIntent.PutExtra(Constants.IN_APP_LINK, uri);
 									webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
 									this.StartActivity(webIntent);
@@ -920,6 +1033,96 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
         {
 			return LocalItem.ID;
 		}
+
+		public void OnUpdateFullScreenPdf(string path)
+		{
+			try
+			{
+				RunOnUiThread(() =>
+				{
+					try
+					{
+						fullScreenFirstLoaded = true;
+						StopFullScreenShimmer();
+						whatsNewFullPDFDetailLayout.Visibility = ViewStates.Visible;
+
+						Java.IO.File file = new Java.IO.File(path);
+
+                        using (Stream PdfStream = File.Open(file.AbsolutePath, FileMode.Open))
+                        {
+                            pdfFullView.LoadDocument(PdfStream);
+                            isLoadedDocument = true;
+                        }
+					}
+					catch (Exception ex)
+					{
+						Utility.LoggingNonFatalError(ex);
+					}
+				});
+			}
+			catch (Exception e)
+			{
+				Utility.LoggingNonFatalError(e);
+			}
+		}
+
+		public void OnUpdateFullScreenImage(Bitmap fullBitmap)
+        {
+			try
+			{
+				RunOnUiThread(() =>
+				{
+					try
+					{
+						fullScreenFirstLoaded = true;
+						StopFullScreenShimmer();
+						whatsNewFullImageDetailLayout.Visibility = ViewStates.Visible;
+
+						var source = ImageSource.InvokeBitmap(fullBitmap);
+
+						imgFullView
+							.SetImage(source);
+						imgFullView.ZoomEnabled = true;
+					}
+					catch (Exception ex)
+					{
+						Utility.LoggingNonFatalError(ex);
+					}
+				});
+			}
+			catch (Exception e)
+			{
+				Utility.LoggingNonFatalError(e);
+			}
+		}
+
+		public string GenerateTmpFilePath()
+        {
+			string path = "";
+			try
+            {
+				string rootPath = this.FilesDir.AbsolutePath;
+
+				if (Utils.FileUtils.IsExternalStorageReadable() && Utils.FileUtils.IsExternalStorageWritable())
+				{
+					rootPath = this.GetExternalFilesDir(null).AbsolutePath;
+				}
+
+				var directory = System.IO.Path.Combine(rootPath, "pdf");
+				if (!Directory.Exists(directory))
+				{
+					Directory.CreateDirectory(directory);
+				}
+
+				string filename = "tmpWhatNew.pdf";
+				path = System.IO.Path.Combine(directory, filename);
+			}
+			catch (Exception e)
+            {
+				Utility.LoggingNonFatalError(e);
+            }
+			return path;
+        }
 
 		public class LinkBuilder
 		{

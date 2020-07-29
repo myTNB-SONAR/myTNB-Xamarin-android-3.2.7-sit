@@ -83,6 +83,10 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 {
                     vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_others));
                 }
+                else if (item.FeedbackCategoryId.Equals("4"))
+                {
+                    vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.update_personal_details));
+                }
             }
             catch (Exception e)
             {

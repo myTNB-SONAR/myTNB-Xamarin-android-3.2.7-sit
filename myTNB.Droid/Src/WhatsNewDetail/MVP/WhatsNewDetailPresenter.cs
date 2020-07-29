@@ -72,32 +72,50 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
                     fetchItem.Image_DetailsViewB64 = item.Image_DetailsViewB64;
                     fetchItem.Styles_DetailsView = item.Styles_DetailsView;
                     fetchItem.Description_Images = item.Description_Images;
+                    fetchItem.Infographic_FullView_URL = item.Infographic_FullView_URL;
+                    fetchItem.Infographic_FullView_URL_ImageB64 = item.Infographic_FullView_URL_ImageB64;
 
-                    this.mView.SetWhatsNewDetail(fetchItem);
-                    if (fetchItem.Image_DetailsViewBitmap != null)
+                    if (!string.IsNullOrEmpty(fetchItem.Infographic_FullView_URL))
                     {
-                        this.mView.SetWhatsNewImage(fetchItem.Image_DetailsViewBitmap);
-                    }
-                    else if (!string.IsNullOrEmpty(fetchItem.Image_DetailsViewB64))
-                    {
-                        Bitmap localBitmap = Base64ToBitmap(fetchItem.Image_DetailsViewB64);
-                        if (localBitmap != null)
+                        this.mView.SetupFullScreenShimmer();
+                        this.mView.UpdateWhatsNewDetail(fetchItem);
+                        if (!string.IsNullOrEmpty(fetchItem.Infographic_FullView_URL_ImageB64))
                         {
-                            fetchItem.Image_DetailsViewBitmap = localBitmap;
-                            this.mView.SetWhatsNewImage(fetchItem.Image_DetailsViewBitmap);
+                            this.mView.OnUpdateFullScreenImage(Base64ToBitmap(fetchItem.Infographic_FullView_URL_ImageB64));
                         }
                         else
                         {
-                            this.mView.SetWhatsNewImage(null);
+                            _ = OnGetFullScreenItem(fetchItem);
                         }
-                    }
-                    else if (!string.IsNullOrEmpty(fetchItem.Image_DetailsView))
-                    {
-                        _ = GetImageAsync(fetchItem);
                     }
                     else
                     {
-                        this.mView.HideWhatsNewDetailImage();
+                        this.mView.SetWhatsNewDetail(fetchItem);
+                        if (fetchItem.Image_DetailsViewBitmap != null)
+                        {
+                            this.mView.SetWhatsNewImage(fetchItem.Image_DetailsViewBitmap);
+                        }
+                        else if (!string.IsNullOrEmpty(fetchItem.Image_DetailsViewB64))
+                        {
+                            Bitmap localBitmap = Base64ToBitmap(fetchItem.Image_DetailsViewB64);
+                            if (localBitmap != null)
+                            {
+                                fetchItem.Image_DetailsViewBitmap = localBitmap;
+                                this.mView.SetWhatsNewImage(fetchItem.Image_DetailsViewBitmap);
+                            }
+                            else
+                            {
+                                this.mView.SetWhatsNewImage(null);
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(fetchItem.Image_DetailsView))
+                        {
+                            _ = GetImageAsync(fetchItem);
+                        }
+                        else
+                        {
+                            this.mView.HideWhatsNewDetailImage();
+                        }
                     }
                 }
                 else
@@ -132,6 +150,86 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
             {
                 // Set Default Image
                 this.mView.SetWhatsNewImage(null);
+            }
+        }
+
+        private async Task OnGetFullScreenItem(WhatsNewModel item)
+        {
+            try
+            {
+                CancellationTokenSource cts = new CancellationTokenSource();
+                string contentType = "";
+                Bitmap imageBitmap = null;
+                string fileDirectory = "";
+                await Task.Run(() =>
+                {
+                    WebRequest webRequest = WebRequest.Create(item.Infographic_FullView_URL);
+                    using (WebResponse response = webRequest.GetResponse())
+                    {
+                        if (response != null && !string.IsNullOrEmpty(response.ContentType))
+                        {
+                            contentType = response.ContentType.ToLower();
+                            if (contentType.Contains("pdf"))
+                            {
+                                using (var stream = response.GetResponseStream())
+                                {
+                                    if (stream != null)
+                                    {
+                                        fileDirectory = this.mView.GenerateTmpFilePath();
+
+                                        if (!string.IsNullOrEmpty(fileDirectory))
+                                        {
+                                            if (File.Exists(fileDirectory))
+                                            {
+                                                File.Delete(fileDirectory);
+                                            }
+
+                                            try
+                                            {
+                                                using (var memoryStream = new MemoryStream())
+                                                {
+                                                    stream.CopyTo(memoryStream);
+                                                    Java.IO.File file = new Java.IO.File(fileDirectory);
+
+                                                    Java.IO.FileOutputStream outs = new Java.IO.FileOutputStream(file);
+
+                                                    outs.Write(memoryStream.GetBuffer());
+
+                                                    outs.Flush();
+                                                    outs.Close();
+
+                                                    this.mView.OnUpdateFullScreenPdf(fileDirectory);
+                                                }
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                Utility.LoggingNonFatalError(e);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                using (var stream = response.GetResponseStream())
+                                {
+                                    if (stream != null)
+                                    {
+                                        imageBitmap = BitmapFactory.DecodeStream(stream);
+                                        item.Infographic_FullView_URL_ImageB64 = BitmapToBase64(imageBitmap);
+                                        WhatsNewEntity wtManager = new WhatsNewEntity();
+                                        wtManager.UpdateFullScreenImage(item.ID, item.Infographic_FullView_URL_ImageB64);
+                                        this.mView.OnUpdateFullScreenImage(imageBitmap);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }, cts.Token);
+            }
+            catch (Exception exe)
+            {
+                Utility.LoggingNonFatalError(exe);
             }
         }
 

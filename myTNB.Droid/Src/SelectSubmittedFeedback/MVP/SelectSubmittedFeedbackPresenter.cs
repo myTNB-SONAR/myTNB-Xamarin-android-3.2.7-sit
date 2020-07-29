@@ -59,6 +59,11 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                         UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
                         this.mView.ShowFeedbackDetailsFaultyLamps(detailsResponse.GetData());
                     }
+                    else if (submittedFeedback.FeedbackCategoryId.Equals("4"))
+                    {
+                        UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
+                        this.mView.ShowFeedbackDetailsBillRelated(detailsResponse.GetData(), submittedFeedback);
+                    }
                     else
                     {
                         UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));

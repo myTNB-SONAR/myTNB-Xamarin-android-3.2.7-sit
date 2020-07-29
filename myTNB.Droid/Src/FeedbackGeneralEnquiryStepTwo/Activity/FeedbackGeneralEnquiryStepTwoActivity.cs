@@ -467,14 +467,17 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
             if (!this.GetIsClicked())
             {
 
-                if (!txtEmail.Text.Trim().IsNullOrEmpty())
+                if (!txtEmail.Text.Trim().IsNullOrEmpty() && !txtName.Text.Trim().IsNullOrEmpty())
                 {
                     this.SetIsClicked(true);
                     this.userActionsListener.NavigateToTermsAndConditions();
                 }
-                else
+                else if(txtEmail.Text.Trim().IsNullOrEmpty())
                 {
                     ShowInvalidEmailError();
+                }else if (txtName.Text.Trim().IsNullOrEmpty())
+                {
+                    ShowFullNameError();
                 }
 
 
@@ -487,8 +490,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
             var tnc = new Intent(this, typeof(UpdatePersonalDetailTnCActivity));
             tnc.PutExtra(Constants.REQ_EMAIL, txtEmail.Text.Trim());
-           // tnc.PutExtra(Constants.REQ_IC,  );
-           // tnc.PutExtra(Constants.ACCOUNT_NUMBER, acc);
+            tnc.PutExtra(Constants.SELECT_REGISTERED_OWNER, isOwner.ToString());
+            tnc.PutExtra(Constants.ENTERED_NAME, txtName.Text.Trim());
+           
             StartActivity(tnc);
         }
 
@@ -673,6 +677,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 
                 Bitmap bitmap = BitmapFactory.DecodeFile(attachedImage.Path, bmOptions);
+             
 
                 byte[] imageBytes = FileUtils.Get(this, bitmap);
                 int size = imageBytes.Length;
