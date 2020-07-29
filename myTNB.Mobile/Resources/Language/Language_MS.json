@@ -190,7 +190,7 @@
     "viewEBills": "Lihat<br>Bil Saya",
     "payBill": "Bayar<br>Bil Saya",
     "payBills": "Bayar<br>Bil Saya",
-    "submitFeedback": "Hantar<br>Maklum Balas",
+    "submitFeedback": "Hantar<br>Pertanyaan",
     "selfMeterReading": "Self<br>Meter Reading",
     "viewEBillAndAdvice": "Lihat Bil / Makluman Saya",
     "tutorialAccountTitle": "Ringkasan akaun anda.",
@@ -669,7 +669,7 @@
     "quickAccess": "Akses Mudah",
     "findUs": "Temui Kami",
     "callUs": "Hubungi Kami",
-    "feedback": "Hantar Maklum Balas",
+    "feedback": "Hantar Pertanyaan",
     "changeLanguage": "Change language to English"
   },
   "Login": {
@@ -953,8 +953,8 @@
 
 
     "SubmitEnquiry": {
-      "enquireTitle": "Maklum balas",
-      "submitEnquiryTitle": "Hantar Maklum Balas",
+      "enquireTitle": "Pertanyaan",
+      "submitEnquiryTitle": "Hantar Pertanyaan",
       "submitEnquiryDescription": "Beritahu kami pendapat dan saranan anda.",
       "viewSubmittedEnquiry": "Lihat Pertanyaan yang Dihantar",
       "viewEnquiryTitle": "Lihat kemas kini status untuk pertanyaan anda di sini.",
@@ -1053,14 +1053,23 @@
       "updateNoOwnerTitle": "Maklumat mana yang ingin anda kemaskini?",
       "newAccNoOwnerName": "Nama baru akaun",
       "newAccNoOwnerNameReq": "Nama akaun diperlukan",
-      "tncAgree":"Saya mengesahkan bahawa saya <b>{0}</b> pemilik / orang yang diberi kuasa, mempunyai persetujuan dan kebenaran untuk melihat dan mengemas kini maklumat akaun untuk <b>{1}</b> dari <b>{2}</b>.<br></br><br></br> Dimaklumkan bahawa aplikasi ini adalah untuk keistimewaan penggunaan antara TNB dan pemegang akaunnya dan orang lain dengan persetujuan pemegang akaun. TNB tidak akan bertanggungjawab atas penggunaan yang tidak betul dan penggunaan maklumat yang dijelaskan dan terkandung di dalam ini dan tidak berkewajipan untuk memeriksa kesahihan persetujuan dan kebenaran yang diberikan. Setelah mengesahkan, anda dianggap telah membaca, memahami dan menyetujui penafian seperti yang ditunjukkan.",
       "tnc":"Terma dan Syarat",
       "personalDisclamer": "Kemas kini Penafian Data Peribadi",
       "tnbTermUse":"Terma dan Syarat TNB",
       "name":"Nama",
       "copyOfPermiseProof":"Salinan Perjanjian Jual & Beli / Cukai pintu / Perjanjian Sewa Rumah",
       "nameHintBottom":"Masukkan nama penuh seperti di dalam kad pengenalan",
-      "enquiryTncRead":"Saya sudah baca dan bersetuju dengan <a href=\"\\\"><strong>Terma dan Syarat</strong></a>"
+      "enquiryTncRead":"Saya sudah baca dan bersetuju dengan <a href=\"\\\"><strong>Terma dan Syarat</strong></a>",
+      "imagePermises":"-/media/myTNBapp/SubmitEnquiry/permises2x.png",
+      "permisesTooltipTitle":"BM_How does agreement look like?",
+      "permisesTitle":"BM_Copy of Sales & Purchase Agreement/Cukai Pintu/Tenancy Agreement",
+      "permisesContent":"BM_We only need the pages with your name, identification number and premises address",
+      "submitEnquiryEmpty":"Anda masih belum hantar sebarang pertanyaan buat masa sekarang.",
+      "tncAgreeOwner":"BM_<p><strong><span>Undertaking by the Registered Account <a>Owner</a></span></strong></p><p>1. I hereby confirm that I, {0} and email({1}), the registered account holder for the electricity supply {2}, and I have the right to correct and/or update the account information for this account.</p><p><span>2.&nbsp;</span>I hereby certify that the information given in this request and any document(s) submitted are true and accurate.</p><p>3.&nbsp;<span>I understand that:</span></p><ol><li><span>It will be necessary for TNB to verify my identity;</span></li><li><span>TNB may contact me for more detailed information regarding this request; and</span></li><li><span>all personal data provided by me in this form will be collected and processed by TNB as personal data in accordance with the Personal Data Protection Act 2010.&nbsp; &nbsp;</span></li></ol>4. I hereby agreed to indemnify TNB for any losses, costs and expenses incurred by TNB in connection with this request or in the event that any information and/or document(s) submitted by me is/are not true.<p><span>&nbsp;</span>Please be informed that this application is for the privilege use between TNB and its registered account holder and any relevant person with the consent of the registered account holder. TNB shall not be held liable for any improper use and incorrect use of the information described and contained herein and under no obligation to check the authenticity of such consent and permission given. Upon clicking the submit button, you have deemed to read, understood and agreed to the undertaking as displayed</p><div> </div><div> </div>",
+      "tncAgreeNonOwner":"BM_<p><strong><span>Undertaking by the </span></strong><strong><span>Relevant Person (any person who has been authorized to update personal data on behalf of the account owner)</span></strong></p><p><span>1.&nbsp; I hereby confirm that I, {0} and email ({1}) , have been authorized by the registered account holder for the electricity supply {2} to correct and/or update the account information for this account.</span></p><p><span>2. I</span><span> hereby undertake that consent of the registered account holder has been obtained accordingly for this request and the proof of authorization is attached together with this request.</span></p><p><span>3. I hereby certify that the information given in request and any document(s) submitted are true and accurate.</span></p><p><span>4.&nbsp; I understand that:</span></p><ol><li><span>It will be necessary for TNB to verify my identity;</span></li><li ><span>TNB may contact me for more detailed information regarding this request; and</span></li><li><span>all personal data provided by me in this form will be collected and processed by TNB as personal data in accordance with the Personal Data Protection Act 2010.</span></li></ol><p ><span >5.&nbsp; I hereby agreed to indemnify TNB for any losses, costs and expenses incurred by TNB in connection with this request or in the event that any information and/or document(s) submitted by me is/are not true.</span></p><p><span>Please be informed that this application is for the privilege use between TNB and its registered account holder and any relevant person with the consent of the registered account holder. TNB shall not be held liable for any improper use and incorrect use of the information described and contained herein and under no obligation to check the authenticity of such consent and permission given. Upon clicking the submit button, you have deemed to read, understood and agreed to the undertaking as displayed</span></p>",
+      "antiSpamPolicy":"https://www.tnb.com.my/terms-policy/",
+      "privacyPolicy":"https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa",
+      "privacyPolicyTitle":"Polisi Privasi"
     }
      
 }

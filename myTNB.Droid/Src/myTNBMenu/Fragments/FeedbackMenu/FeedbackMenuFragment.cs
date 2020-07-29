@@ -144,16 +144,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
 
           
-            if (UserEntity.IsCurrentlyActive())
-            {
-                ((DashboardHomeActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "enquireTitle"));
-            }
-            else
-            {  // ori code
-                ((DashboardHomeActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("FeedbackList", "title"));
-            }
+            //if (UserEntity.IsCurrentlyActive())
+            //{
+            //    ;
+            //}
+            //else
+            //{  // ori code
+            //    ((DashboardHomeActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("FeedbackList", "title"));
+            //}
 
-         
+
+            ((DashboardHomeActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "enquireTitle"));
+
+
 
             feedbackMenuHeaderImage.Visibility = ViewStates.Gone;
 
@@ -471,30 +474,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 {
                     if (fc.Id.Equals("1"))
                     {
-               
-
-                        //syahmi add
-
-                        if (UserEntity.IsCurrentlyActive())
-                        {
                             submitNewEnquiryConstraint.Visibility = ViewStates.Visible;
                             spaceNewEnquiry.Visibility = ViewStates.Visible;
-                            txtViewid_FeedbackNewIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle");
-                            textviewid_subContent_FeedbackNewIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryDescription");
-                        }
-                        else
-                        {   //ori code
-                            billRelatedConstraint.Visibility = ViewStates.Visible;
-                            spaceBillRelated.Visibility = ViewStates.Visible;
-                            feedbackBillRelatedTitle = fc.Name;
-                            txtFeedbackBillingAndPayment.Text = fc.Name;
-                            txtFeedbackBillingAndPaymentContent.Text = fc.Desc;
-                        }
-
-
-
-
-
+                            feedbackNewIc = fc.Name;
+                        txtViewid_FeedbackNewIC.Text = fc.Name;
+                            textviewid_subContent_FeedbackNewIC.Text = fc.Desc;
                     }
                     else if (fc.Id.Equals("2"))
                     {
@@ -514,24 +498,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                     }
                     else if (fc.Id.Equals("10"))
                     {
-             
-
-                        if (UserEntity.IsCurrentlyActive())
-                        {
-
-                            submittedFeedbackTitle = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");
-                            txtSubmittedFeedback.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");
-                            txtSubmittedFeedbackContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewEnquiryTitle");
-
-                        }
-                        else
-                        {   //ori code
                             submittedFeedbackTitle = fc.Name;
                             txtSubmittedFeedback.Text = fc.Name;
                             txtSubmittedFeedbackContent.Text = fc.Desc;
-                        }
-
-
 
                     }
 

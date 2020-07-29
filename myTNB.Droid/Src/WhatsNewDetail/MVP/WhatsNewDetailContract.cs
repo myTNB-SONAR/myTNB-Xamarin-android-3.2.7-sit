@@ -22,6 +22,16 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
             void HideWhatsNewDetailImage();
 
             string GetLocalItemID();
+
+            void SetupFullScreenShimmer();
+
+            string GenerateTmpFilePath();
+
+            void OnUpdateFullScreenImage(Bitmap fullBitmap);
+
+            void OnUpdateFullScreenPdf(string path);
+
+            void UpdateWhatsNewDetail(WhatsNewModel item);
         }
 
         public interface IWhatsNewDetailPresenter

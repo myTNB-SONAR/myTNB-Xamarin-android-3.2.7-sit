@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace myTNB_Android.Src.Database.Model
 {
-    [Table("WhatsNewCategoryEntityV3")]
+    [Table("WhatsNewCategoryEntityV4")]
     public class WhatsNewCategoryEntity
     {
         [Unique, Column("ID")]
@@ -21,7 +21,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("WhatsNewCategoryEntityV3");
+                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("WhatsNewCategoryEntityV4");
                 db.CreateTable<WhatsNewCategoryEntity>();
             }
             catch (Exception e)
@@ -63,7 +63,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                itemList = db.Query<WhatsNewCategoryEntity>("select * from WhatsNewCategoryEntityV3");
+                itemList = db.Query<WhatsNewCategoryEntity>("select * from WhatsNewCategoryEntityV4");
                 if (itemList == null)
                 {
                     itemList = new List<WhatsNewCategoryEntity>();
@@ -81,7 +81,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                db.Execute("Delete from WhatsNewCategoryEntityV3 WHERE CategoryID = ?", categoryId);
+                db.Execute("Delete from WhatsNewCategoryEntityV4 WHERE CategoryID = ?", categoryId);
             }
             catch (Exception e)
             {
@@ -107,7 +107,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                var existingRecord = db.Query<WhatsNewCategoryEntity>("SELECT * FROM WhatsNewCategoryEntityV3");
+                var existingRecord = db.Query<WhatsNewCategoryEntity>("SELECT * FROM WhatsNewCategoryEntityV4");
 
                 if (existingRecord != null && existingRecord.Count > 0)
                 {

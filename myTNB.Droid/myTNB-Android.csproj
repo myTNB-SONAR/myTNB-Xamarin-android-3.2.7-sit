@@ -412,6 +412,9 @@
     <Reference Include="AndroidSegmentedControl.Droid">
       <HintPath>..\packages\AndroidSegmentedControl.Droid.Binding.1.0.8\lib\MonoAndroid\AndroidSegmentedControl.Droid.dll</HintPath>
     </Reference>
+    <Reference Include="DaveMorrisseySubsamplingScaleImageViewBindingLib.Android">
+      <HintPath>..\packages\WiyonoAten.SubsamplingScaleImageView.Xamarin.Android.3.4.1\lib\MonoAndroid\DaveMorrisseySubsamplingScaleImageViewBindingLib.Android.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -5289,6 +5292,11 @@
       <Generator>
       </Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\BaseFullScreenImageViewLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Base\Activity\BaseFullScreenImageViewActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -7531,6 +7539,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\UpdatePersonalDetailTnCView.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\group_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\group_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\group_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\group_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\group_4.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

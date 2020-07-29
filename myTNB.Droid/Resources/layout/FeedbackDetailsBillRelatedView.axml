@@ -62,7 +62,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:text="Completed"
+                            android:text=""
                             android:textAllCaps="false"
                             android:textSize="16dp" />
                     </LinearLayout>
@@ -75,7 +75,7 @@
                         android:layout_marginBottom="9dp"
                         android:layout_weight="1"
                         android:paddingBottom="16dp"
-                        android:text="for My House"
+                        android:text=""
                         android:textAllCaps="false"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
@@ -97,7 +97,7 @@
                         android:layout_marginRight="16dp"
                         android:layout_marginBottom="8dp"
                         android:layout_weight="1"
-                        android:text="Enquiry Details"
+                        android:text=""
                         android:textAllCaps="false"
                         android:textColor="@color/powerBlue"
                         android:textSize="16dp" />
@@ -128,7 +128,7 @@
                         android:drawablePadding="6dp"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="RELATIONSHIP WITH OWNER"
+                        android:hint=""
                         android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text"
                         android:maxLines="1"
@@ -152,7 +152,7 @@
                         android:drawablePadding="6dp"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="NEW IDENTIFICATION NUMBER"
+                        android:hint=""
                         android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text"
                         android:maxLines="1"
@@ -176,7 +176,7 @@
                         android:drawablePadding="6dp"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="NEW ACCOUNT NAME"
+                        android:hint=""
                         android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text"
                         android:maxLines="1"
@@ -200,7 +200,7 @@
                         android:drawablePadding="6dp"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="NEW MOBILE  NUMBER"
+                        android:hint=""
                         android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text"
                         android:maxLines="1"
@@ -224,7 +224,7 @@
                         android:drawablePadding="6dp"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="NEW EMAIL ADDRESS"
+                        android:hint=""
                         android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text"
                         android:maxLines="1"
@@ -248,10 +248,10 @@
                         android:drawablePadding="6dp"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="NEW MAILING ADDRESS"
+                        android:hint=""
                         android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text"
-                        android:maxLines="1"
+                        android:inputType="text|textMultiLine"
+                      
                         android:paddingTop="5dp" />
                 </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
@@ -272,10 +272,10 @@
                         android:drawablePadding="6dp"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="NEW PREMISE ADDRESS"
+                        android:hint=""
                         android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text"
-                        android:maxLines="1"
+                        android:inputType="text|textMultiLine"
+                       
                         android:paddingTop="5dp" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -438,7 +438,7 @@
                         android:layout_marginRight="16dp"
                         android:layout_marginBottom="8dp"
                         android:layout_weight="1"
-                        android:text="Contact Details"
+                        android:text=""
                         android:textAllCaps="false"
                         android:textColor="@color/powerBlue"
                         android:textSize="16dp" />
@@ -463,7 +463,7 @@
                         android:drawablePadding="6dp"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="Name"
+                        android:hint=""
                         android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text|textMultiLine"
                         android:paddingTop="5dp" />
@@ -485,7 +485,7 @@
                         android:drawablePadding="6dp"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="Email Address"
+                        android:hint=""
                         android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text|textMultiLine"
                         android:paddingTop="5dp" />
@@ -507,7 +507,7 @@
                         android:drawablePadding="6dp"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="Mobile Number"
+                        android:hint=""
                         android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text|textMultiLine"
                         android:paddingTop="5dp" />

@@ -168,6 +168,7 @@
                     public const string Disable_DoNotShow_Checkbox = "Disable_DoNotShow_Checkbox";
                     public const string Donot_Show_In_WhatsNew = "Donot_Show_In_WhatsNew";
                     public const string WhatsNewCategory = "WhatsNewCategory";
+                    public const string Infographic_FullView_URL = "Infographic_FullView_URL";
                 }
 
                 public struct Language

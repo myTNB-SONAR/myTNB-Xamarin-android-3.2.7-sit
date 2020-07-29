@@ -113,6 +113,12 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP
             //this.mView.EnableSubmitButton();
         }
 
+        public void OninfoLabelPermise()
+        {
+
+            this.mView.ShowinfoLabelPermise();
+        }
+
 
 
     }

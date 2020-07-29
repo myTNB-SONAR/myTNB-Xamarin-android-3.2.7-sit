@@ -29,7 +29,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginBottom="?actionBarSize"
         android:fillViewport="false"
         android:overScrollMode="never"
         app:layout_anchor="@+id/rootview"
@@ -38,10 +37,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="16dp"
-            android:paddingTop="16dp">
-     
+            android:orientation="vertical">
+                <!--android:paddingTop="16dp"-->
+        <!--  android:layout_marginTop="16dp"-->
 
             <TextView
                 android:id="@+id/TextView_updatePersonalDataDisclaim"
@@ -82,19 +80,17 @@
                 android:id="@+id/view4"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-
                 android:background="@color/platinumGrey" />
 
-            <TextView
+         <TextView
                 android:id="@+id/TextView_TNB_TermOfUse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:drawableRight="@drawable/expand_right_arrow"
                 android:padding="16dp"
-                android:text="TNB’s Terms of Use"
+                android:text="TNB’s Terms of Use,Anti-Spam Policy"
                 android:textAllCaps="false"
                 android:textColor="@color/powerBlue"
                 android:textSize="14dp"
@@ -103,11 +99,26 @@
                 android:id="@+id/view5"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="16dp"
                 android:background="@color/platinumGrey" />
-
-
-
+            <TextView
+                android:id="@+id/TextView_privacypolicy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:drawableRight="@drawable/expand_right_arrow"
+                android:padding="16dp"
+                android:text="Privacy Policy"
+                android:textAllCaps="false"
+                android:textColor="@color/powerBlue"
+                android:textSize="14dp"
+                android:textStyle="normal" />
+            <View
+                android:id="@+id/view7"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="30dp"
+                android:background="@color/platinumGrey" />
         </LinearLayout>
 
     </ScrollView>

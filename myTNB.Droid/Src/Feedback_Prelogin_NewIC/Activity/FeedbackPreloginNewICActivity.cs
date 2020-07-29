@@ -752,7 +752,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
                         }
                     }
-                    //check if image is exist in sql lite
+                    //check if image is exist in sql lite   imagePermises
                     var imageConsent = SiteCoreConfig.SITECORE_URL + Utility.GetLocalizedLabel("SubmitEnquiry", "imageConsent");
 
                     if (TooltipImageDirectEntity.isNeedUpdate(imageConsent, TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT))
@@ -787,6 +787,44 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                             newImage_PROOF_OF_CONSENT.Url = imageConsent;
 
                             TooltipImageDirectEntity.InsertItem(newImage_PROOF_OF_CONSENT);
+                        }
+
+                    }
+                    //check if image is exist in sql lite   
+                    var imagePermises = SiteCoreConfig.SITECORE_URL + Utility.GetLocalizedLabel("SubmitEnquiry", "imagePermises");
+
+                    if (TooltipImageDirectEntity.isNeedUpdate(imagePermises, TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE))
+                    {
+                        TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
+
+                        var image_Permises = ImageUtils.GetImageBitmapFromUrl(imagePermises);
+                        var base64 = BitmapToBase64(image_Permises);
+
+                        TooltipImageDirectEntity newImage_PERMISE_IMAGE = new TooltipImageDirectEntity();
+                        newImage_PERMISE_IMAGE.ImageBase64 = base64;
+                        newImage_PERMISE_IMAGE.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE.ToString();
+                        newImage_PERMISE_IMAGE.Url = imagePermises;
+
+                        TooltipImageDirectEntity.InsertItem(newImage_PERMISE_IMAGE);
+
+                    }
+                    else
+                    {
+                        // recheck local is the base64 exist or not is not need update
+                        string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
+                        if (base64Image.IsNullOrEmpty())
+                        {
+                            TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
+
+                            var image_Permises = ImageUtils.GetImageBitmapFromUrl(imagePermises);
+                            var base64 = BitmapToBase64(image_Permises);
+
+                            TooltipImageDirectEntity newImage_PERMISE_IMAGE = new TooltipImageDirectEntity();
+                            newImage_PERMISE_IMAGE.ImageBase64 = base64;
+                            newImage_PERMISE_IMAGE.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE.ToString();
+                            newImage_PERMISE_IMAGE.Url = imagePermises;
+
+                            TooltipImageDirectEntity.InsertItem(newImage_PERMISE_IMAGE);
                         }
 
                     }

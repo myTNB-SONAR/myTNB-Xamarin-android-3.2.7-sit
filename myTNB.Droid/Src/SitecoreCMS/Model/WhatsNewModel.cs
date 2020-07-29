@@ -61,6 +61,8 @@ namespace myTNB.SitecoreCMS.Model
 		public bool SkipShowOnAppLaunch { set; get; }
 		public bool Read { set; get; }
 		public string ReadDateTime { set; get; }
+		public string Infographic_FullView_URL { set; get; }
+		public string Infographic_FullView_URL_ImageB64 { set; get; }
 	}
 
 	public class WhatsNewDetailImageModel
