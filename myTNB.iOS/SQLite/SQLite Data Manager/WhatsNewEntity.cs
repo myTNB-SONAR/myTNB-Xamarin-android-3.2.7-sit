@@ -109,6 +109,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                     item.ShowDateForDay = obj.ShowDateForDay;
                     item.ShowCountForDay = obj.ShowCountForDay;
                     item.SkipShowOnAppLaunch = obj.SkipShowOnAppLaunch;
+                    item.Infographic_FullView_URL = obj.Infographic_FullView_URL;
                     InsertItem(item);
                 }
             }
@@ -179,7 +180,8 @@ namespace myTNB.SQLite.SQLiteDataManager
                     Disable_DoNotShow_Checkbox = item.Disable_DoNotShow_Checkbox,
                     ShowDateForDay = item.ShowDateForDay,
                     ShowCountForDay = item.ShowCountForDay,
-                    SkipShowOnAppLaunch = item.SkipShowOnAppLaunch
+                    SkipShowOnAppLaunch = item.SkipShowOnAppLaunch,
+                    Infographic_FullView_URL = item.Infographic_FullView_URL
                 };
                 itemList.Add(rewardModel);
             }
@@ -398,38 +400,39 @@ namespace myTNB.SQLite.SQLiteDataManager
         /// <summary>
         /// Updates the entity item.
         /// </summary>
-        /// <param name="reward"></param>
-        public void UpdateEntity(WhatsNewModel reward)
+        /// <param name="whatsNewItem"></param>
+        public void UpdateEntity(WhatsNewModel whatsNewItem)
         {
-            if (reward != null)
+            if (whatsNewItem != null)
             {
                 WhatsNewEntity item = new WhatsNewEntity
                 {
-                    CategoryID = reward.CategoryID,
-                    CategoryName = reward.CategoryName,
-                    ID = reward.ID,
-                    Title = reward.Title,
-                    TitleOnListing = reward.TitleOnListing,
-                    Description = reward.Description,
-                    Image = reward.Image,
-                    StartDate = reward.StartDate,
-                    EndDate = reward.EndDate,
-                    PublishDate = reward.PublishDate,
-                    IsRead = reward.IsRead,
-                    Image_DetailsView = reward.Image_DetailsView,
-                    Styles_DetailsView = reward.Styles_DetailsView,
-                    PortraitImage_PopUp = reward.PortraitImage_PopUp,
-                    ShowEveryCountDays_PopUp = reward.ShowEveryCountDays_PopUp,
-                    ShowForTotalCountDays_PopUp = reward.ShowForTotalCountDays_PopUp,
-                    ShowAtAppLaunchPopUp = reward.ShowAtAppLaunchPopUp,
-                    PopUp_Text_Only = reward.PopUp_Text_Only,
-                    PopUp_HeaderImage = reward.PopUp_HeaderImage,
-                    PopUp_Text_Content = reward.PopUp_Text_Content,
-                    Donot_Show_In_WhatsNew = reward.Donot_Show_In_WhatsNew,
-                    Disable_DoNotShow_Checkbox = reward.Disable_DoNotShow_Checkbox,
-                    ShowDateForDay = reward.ShowDateForDay,
-                    ShowCountForDay = reward.ShowCountForDay,
-                    SkipShowOnAppLaunch = reward.SkipShowOnAppLaunch
+                    CategoryID = whatsNewItem.CategoryID,
+                    CategoryName = whatsNewItem.CategoryName,
+                    ID = whatsNewItem.ID,
+                    Title = whatsNewItem.Title,
+                    TitleOnListing = whatsNewItem.TitleOnListing,
+                    Description = whatsNewItem.Description,
+                    Image = whatsNewItem.Image,
+                    StartDate = whatsNewItem.StartDate,
+                    EndDate = whatsNewItem.EndDate,
+                    PublishDate = whatsNewItem.PublishDate,
+                    IsRead = whatsNewItem.IsRead,
+                    Image_DetailsView = whatsNewItem.Image_DetailsView,
+                    Styles_DetailsView = whatsNewItem.Styles_DetailsView,
+                    PortraitImage_PopUp = whatsNewItem.PortraitImage_PopUp,
+                    ShowEveryCountDays_PopUp = whatsNewItem.ShowEveryCountDays_PopUp,
+                    ShowForTotalCountDays_PopUp = whatsNewItem.ShowForTotalCountDays_PopUp,
+                    ShowAtAppLaunchPopUp = whatsNewItem.ShowAtAppLaunchPopUp,
+                    PopUp_Text_Only = whatsNewItem.PopUp_Text_Only,
+                    PopUp_HeaderImage = whatsNewItem.PopUp_HeaderImage,
+                    PopUp_Text_Content = whatsNewItem.PopUp_Text_Content,
+                    Donot_Show_In_WhatsNew = whatsNewItem.Donot_Show_In_WhatsNew,
+                    Disable_DoNotShow_Checkbox = whatsNewItem.Disable_DoNotShow_Checkbox,
+                    ShowDateForDay = whatsNewItem.ShowDateForDay,
+                    ShowCountForDay = whatsNewItem.ShowCountForDay,
+                    SkipShowOnAppLaunch = whatsNewItem.SkipShowOnAppLaunch,
+                    Infographic_FullView_URL = whatsNewItem.Infographic_FullView_URL
                 };
                 UpdateItem(item);
             }
