@@ -1,14 +1,10 @@
 using CoreAnimation;
 using CoreGraphics;
-using Foundation;
 using myTNB.Customs;
 using myTNB.Feedback;
 using myTNB.Feedback.Enquiry.GeneralEnquiry;
 using myTNB.Feedback.FeedbackImage;
-using myTNB.Home.Bill;
 using myTNB.Home.Feedback;
-using myTNB.Home.Feedback.FeedbackEntry;
-using myTNB.Model;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -53,13 +49,21 @@ namespace myTNB
 
         private UILabel lblPhotoSubTitle;
 
+        internal nfloat _navBarHeight;
+        private UIView _navbarView;
+        private nfloat titleBarHeight = ScaleUtility.GetScaledHeight(24f);
+        private CAGradientLayer _gradientLayer;
+
+
+
         public override void ViewDidLoad()
         {
             PageName = EnquiryConstants.Pagename_Enquiry;
 
             base.ViewDidLoad();
 
-            SetHeader();
+            //SetHeader();
+            SetNavigation();
             AddScrollView();
             AddCTA();
             AddSectionTitle();
@@ -76,12 +80,19 @@ namespace myTNB
 
         }
 
+        public override void ViewWillDisappear(bool animated)
+        {
+            base.ViewWillDisappear(animated);
+            if (NavigationController != null) { NavigationController.SetNavigationBarHidden(false, false); }
+        }
+
         private void SetHeader()
         {
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 NavigationController?.PopViewController(true);
+
             });
             if (NavigationItem != null)
             {
@@ -90,9 +101,77 @@ namespace myTNB
             Title = GetI18NValue(EnquiryConstants.generalEnquiryTitle);
         }
 
+        private void SetNavigation()
+        {
+            if (NavigationController != null && NavigationController.NavigationBar != null)
+            {
+                NavigationController.NavigationBar.Hidden = true;
+                _navBarHeight = NavigationController.NavigationBar.Frame.Height;
+            }
+
+            _navbarView = new UIView(new CGRect(0, 0, ViewWidth, DeviceHelper.GetStatusBarHeight() + _navBarHeight + 38f))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+
+            UIView viewTitleBar = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(8f), _navbarView.Frame.Width, titleBarHeight));
+
+            UIView viewBack = new UIView(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(24F), titleBarHeight));
+            UIImageView imgViewBack = new UIImageView(new CGRect(0, 0, GetScaledWidth(24F), titleBarHeight))
+            {
+                Image = UIImage.FromBundle(Constants.IMG_Back)
+            };
+            viewBack.AddSubview(imgViewBack);
+            viewTitleBar.AddSubview(viewBack);
+
+            UILabel lblTitle = new UILabel(new CGRect(GetScaledWidth(56F), 0, _navbarView.Frame.Width - (GetScaledWidth(56F) * 2), titleBarHeight))
+            {
+                Font = TNBFont.MuseoSans_16_500,
+                Text = GetI18NValue(EnquiryConstants.generalEnquiryTitle)
+            };
+
+            lblTitle.TextAlignment = UITextAlignment.Center;
+            lblTitle.TextColor = UIColor.White;
+            viewTitleBar.AddSubview(lblTitle);
+
+            UIView viewStepBar = new UIView(new CGRect(0, viewTitleBar.Frame.GetMaxY() + 4f, _navbarView.Frame.Width, titleBarHeight));
+            UILabel lblStep = new UILabel(new CGRect(GetScaledWidth(56F), 0, _navbarView.Frame.Width - (GetScaledWidth(56F) * 2), titleBarHeight))
+            {
+                Font = TNBFont.MuseoSans_12_500,
+                Text = GetI18NValue(EnquiryConstants.stepTitle1of2)
+            };
+
+            lblStep.TextAlignment = UITextAlignment.Center;
+            lblStep.TextColor = UIColor.White;
+            viewStepBar.AddSubview(lblStep);
+
+            viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                //NavigationController.PopViewController(true);
+                DismissViewController(true, null);
+
+
+            }));
+
+            _navbarView.AddSubviews(viewTitleBar, viewStepBar);
+
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
+            _gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor.CGColor, endColor.CGColor }
+            };
+            _gradientLayer.StartPoint = new CGPoint(x: 0.0, y: 0.5);
+            _gradientLayer.EndPoint = new CGPoint(x: 1.0, y: 0.5);
+
+            _gradientLayer.Frame = _navbarView.Bounds;
+            _navbarView.Layer.InsertSublayer(_gradientLayer, 0);
+            View.AddSubview(_navbarView);
+        }
+
         private void AddScrollView()
         {
-            _svContainer = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height)) //y:0
+            _svContainer = new UIScrollView(new CGRect(0, _navbarView.Frame.GetMaxY(), View.Frame.Width, View.Frame.Height)) //y:0
             {
                 BackgroundColor = MyTNBColor.LightGrayBG
             };
@@ -101,7 +180,14 @@ namespace myTNB
 
         private void AddCTA()
         {
-            _btnSubmitContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(145))
+            nfloat containerHeight = GetScaledHeight(80) + DeviceHelper.BottomSafeAreaInset;
+            nfloat yLoc = View.Frame.Height - DeviceHelper.TopSafeAreaInset - NavigationController.NavigationBar.Frame.Height - containerHeight;
+            if (DeviceHelper.IsIOS10AndBelow)
+            {
+                yLoc = ViewHeight - containerHeight;
+            }
+
+            _btnSubmitContainer = new UIView(new CGRect(0, yLoc + _navBarHeight + DeviceHelper.GetStatusBarHeight()
                 , View.Frame.Width, DeviceHelper.GetScaledHeight(100)))
             {
                 BackgroundColor = UIColor.White
@@ -568,7 +654,9 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
             GeneralEnquiry2ViewController viewController = storyBoard.InstantiateViewController("GeneralEnquiry2ViewController") as GeneralEnquiry2ViewController;
             viewController.Items = GetImageList();
-            NavigationController.PushViewController(viewController, true);
+            NavigationController?.PushViewController(viewController, true);
+            //PresentViewController(viewController, true, null);
+
         }
     }
 }

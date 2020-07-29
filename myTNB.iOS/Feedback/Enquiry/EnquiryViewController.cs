@@ -1,8 +1,8 @@
+using CoreAnimation;
 using CoreGraphics;
 using Foundation;
 using myTNB.Feedback;
 using myTNB.Home.Bill;
-using myTNB.Model;
 using myTNB.Model;
 using myTNB.Registration;
 using System;
@@ -49,13 +49,19 @@ namespace myTNB
         public UILabel lblCount2;
         public UIImageView imgViewIcon2;
 
+        internal nfloat _navBarHeight;
+        private UIView _navbarView;
+        private nfloat titleBarHeight = ScaleUtility.GetScaledHeight(24f);
+        private CAGradientLayer _gradientLayer;
+
         public override void ViewDidLoad()
         {
             PageName = EnquiryConstants.Pagename_Enquiry;
 
             base.ViewDidLoad();
-
-            SetHeader();
+            NavigationController.SetNavigationBarHidden(true, false);
+            //SetHeader();
+            SetNavigation();
             AddScrollView();
             ConstructAccountNumberSelector();
             AddSectionTitle();
@@ -69,7 +75,7 @@ namespace myTNB
         {
             base.ViewDidAppear(animated);
 
-            if (NavigationController != null) { NavigationController.SetNavigationBarHidden(false, true); }
+           NavigationController.SetNavigationBarHidden(true, false);
 
             string accountNo = DataManager.DataManager.SharedInstance.AccountNumber;
             if (!string.IsNullOrEmpty(accountNo))
@@ -82,6 +88,62 @@ namespace myTNB
             }
 
         }
+
+        private void SetNavigation()
+        {
+            if (NavigationController != null && NavigationController.NavigationBar != null)
+            {
+                NavigationController.NavigationBar.Hidden = true;
+                _navBarHeight = NavigationController.NavigationBar.Frame.Height;
+            }
+
+            _navbarView = new UIView(new CGRect(0, 0, ViewWidth, DeviceHelper.GetStatusBarHeight() + _navBarHeight))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+
+            UIView viewTitleBar = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(8f), _navbarView.Frame.Width, titleBarHeight));
+
+            UIView viewBack = new UIView(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(24F), titleBarHeight));
+            UIImageView imgViewBack = new UIImageView(new CGRect(0, 0, GetScaledWidth(24F), titleBarHeight))
+            {
+                Image = UIImage.FromBundle(Constants.IMG_Back)
+            };
+            viewBack.AddSubview(imgViewBack);
+            viewTitleBar.AddSubview(viewBack);
+
+            UILabel lblTitle = new UILabel(new CGRect(GetScaledWidth(56F), 0, _navbarView.Frame.Width - (GetScaledWidth(56F) * 2), titleBarHeight))
+            {
+                Font = TNBFont.MuseoSans_16_500,
+                Text = GetI18NValue(EnquiryConstants.submitEnquiryTitle)
+            };
+
+            lblTitle.TextAlignment = UITextAlignment.Center;
+            lblTitle.TextColor = UIColor.White;
+            viewTitleBar.AddSubview(lblTitle);
+
+            viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                DismissViewController(true, null);
+
+            }));
+
+            _navbarView.AddSubview(viewTitleBar);
+
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
+            _gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor.CGColor, endColor.CGColor }
+            };
+            _gradientLayer.StartPoint = new CGPoint(x: 0.0, y: 0.5);
+            _gradientLayer.EndPoint = new CGPoint(x: 1.0, y: 0.5);
+
+            _gradientLayer.Frame = _navbarView.Bounds;
+            _navbarView.Layer.InsertSublayer(_gradientLayer, 0);
+            View.AddSubview(_navbarView);
+        }
+
 
         private void SetHeader()
         {
@@ -100,7 +162,7 @@ namespace myTNB
 
         private void AddScrollView()
         {
-            _svContainer = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height))
+            _svContainer = new UIScrollView(new CGRect(0, _navbarView.Frame.GetMaxY(), View.Frame.Width, View.Frame.Height))
             {
                 BackgroundColor = MyTNBColor.LightGrayBG
             };
@@ -165,7 +227,7 @@ namespace myTNB
             {
                 Font = MyTNBFont.MuseoSans16_300,
                 TextColor = MyTNBColor.TunaGrey(),
-                Placeholder = GetI18NValue(EnquiryConstants.accNumberHint),
+                //Placeholder = GetI18NValue(EnquiryConstants.accNumberHint),
                 AttributedText = new NSAttributedString("",
                 font: MyTNBFont.MuseoSans16,
                 foregroundColor: MyTNBColor.SilverChalice,
@@ -321,7 +383,7 @@ namespace myTNB
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
                 //var cimg = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imageWhereAcc));
-                NSData cimg;
+                UIImage cimg;
 
                 if (DataManager.DataManager.SharedInstance.imageWhereAcc == null)
                 {
@@ -336,7 +398,7 @@ namespace myTNB
                 DisplayCustomAlert(GetI18NValue(EnquiryConstants.accNumberInfo)
                     , GetI18NValue(EnquiryConstants.accNumberDetails)
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
-                    , UIImage.LoadFromData(cimg));
+                    , cimg);//UIImage.LoadFromData(cimg)
             });
 
             viewInfo.Layer.CornerRadius = GetScaledHeight(12);
@@ -355,7 +417,7 @@ namespace myTNB
             { BackgroundColor = UIColor.White };
             imgViewIcon = new UIImageView(new CGRect(16, 13, 48, 48))
             {
-                Image = UIImage.FromBundle("Feedback-Generic")
+                Image = UIImage.FromBundle("IC-Tile-FeedbackBill")
             };            lblTitle = new UILabel(new CGRect(80, 16, cellWidth - 96, 16))
             {
                 Text = GetI18NValue(EnquiryConstants.generalEnquiryTitle),
@@ -383,25 +445,6 @@ namespace myTNB
             Frame?.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 ExecuteValidateContractAccount("Enquiry", "GeneralEnquiryViewController");
-
-                //bool isAccountValid = _textFieldHelper.ValidateTextField(_txtAccountNumber.Text, TNBGlobal.ACCOUNT_NO_PATTERN)
-                //&& _textFieldHelper.ValidateTextFieldWithLength(_txtAccountNumber.Text, TNBGlobal.AccountNumberLowCharLimit);
-
-                //if (isAccountValid)
-                //{
-                //    DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA = _txtAccountNumber.Text;
-
-                //    UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
-                //    UIViewController viewController =
-                //        storyBoard.InstantiateViewController("GeneralEnquiryViewController") as UIViewController;
-                //    NavigationController?.PushViewController(viewController, true);
-                //}
-                //else
-                //{
-                //    _viewLineAccountNo.BackgroundColor = isAccountValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
-                //    _txtAccountNumber.TextColor = isAccountValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
-                //    _lblAccountNoError.Hidden = isAccountValid;
-                //}
             }));
             Frame.AddSubviews(new UIView[] { imgViewIcon, lblTitle, lblSubtTitle, lblCount, viewLine });
             _svContainer.AddSubviews(Frame);        }
@@ -417,8 +460,9 @@ namespace myTNB
             };
             imgViewIcon2 = new UIImageView(new CGRect(16, 13, 48, 48))
             {
-                Image = UIImage.FromBundle("Feedback-Submitted")
-            };            lblTitle2 = new UILabel(new CGRect(80, 16, cellWidth - 96, 16))
+                Image = UIImage.FromBundle("Update-PersonalDetails")
+            };
+            lblTitle2 = new UILabel(new CGRect(80, 16, cellWidth - 96, 16))
             {
                 Text = GetI18NValue(EnquiryConstants.updatePersonalDetTitle),
                 TextColor = MyTNBColor.CharcoalGrey,
@@ -430,13 +474,15 @@ namespace myTNB
                 Font = MyTNBFont.MuseoSans12_300,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap
-            };            lblCount2 = new UILabel(new CGRect(cellWidth - 38, 16, 20, 16))
+            };
+            lblCount2 = new UILabel(new CGRect(cellWidth - 38, 16, 20, 16))
             {
                 TextColor = MyTNBColor.PowerBlue,
                 TextAlignment = UITextAlignment.Right,
                 Font = MyTNBFont.MuseoSans12,
                 Hidden = true
-            };            viewLine2 = new UIView(new CGRect(0, cellHeight - 7, cellWidth, 7))
+            };
+            viewLine2 = new UIView(new CGRect(0, cellHeight - 7, cellWidth, 7))
             {
                 BackgroundColor = MyTNBColor.LightGray,
                 Hidden = false
@@ -446,26 +492,9 @@ namespace myTNB
             {
 
                 ExecuteValidateContractAccount("Enquiry", "UpdatePersonalDetailViewController");
-            //    bool isAccountValid = _textFieldHelper.ValidateTextField(_txtAccountNumber.Text, TNBGlobal.ACCOUNT_NO_PATTERN)
-            //    && _textFieldHelper.ValidateTextFieldWithLength(_txtAccountNumber.Text, TNBGlobal.AccountNumberLowCharLimit);
 
-                //if (isAccountValid)
-                //{
-                //    DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA = _txtAccountNumber.Text;
-
-                //    UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
-                //    UIViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetailViewController") as UIViewController;
-                //    NavigationController?.PushViewController(viewController, true);
-
-                //}
-                //else
-                //{
-                //    _viewLineAccountNo.BackgroundColor = isAccountValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
-                //    _txtAccountNumber.TextColor = isAccountValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
-                //    _lblAccountNoError.Hidden = isAccountValid;
-                //}
-
-            }));            Frame2.AddSubviews(new UIView[] { imgViewIcon2, lblTitle2, lblSubtTitle2, lblCount2, viewLine2 });
+            }));
+            Frame2.AddSubviews(new UIView[] { imgViewIcon2, lblTitle2, lblSubtTitle2, lblCount2, viewLine2 });
             _svContainer.AddSubviews(Frame2);        }
 
         private void SetTextFieldEvents(UITextField textField, UILabel textFieldTitle, UILabel textFieldError, UIView viewLine, string pattern)
@@ -478,7 +507,7 @@ namespace myTNB
             textField.EditingDidBegin += (sender, e) =>
             {
                 textFieldTitle.Hidden = textField.Text.Length == 0;
-                textField.LeftViewMode = UITextFieldViewMode.Never;
+                //textField.LeftViewMode = UITextFieldViewMode.Never;
                 viewLine.BackgroundColor = MyTNBColor.PowerBlue;
                 textField.TextColor = MyTNBColor.TunaGrey();
             };
@@ -598,9 +627,21 @@ namespace myTNB
 
                             UIStoryboard storyBoard = UIStoryboard.FromName(uistoryboard, null);
                             UIViewController viewController = storyBoard.InstantiateViewController(viewcontroller) as UIViewController;
-                            NavigationController?.PushViewController(viewController, true);
+                                UINavigationController navController = new UINavigationController(viewController);
+                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                                PresentViewController(navController, true, null);
+                                //NavigationController?.PushViewController(viewController, true);
 
-                            ActivityIndicator.Hide();
+                                //UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
+                                //EnquiryViewController enquiryViewController =
+                                // storyBoard.InstantiateViewController("EnquiryViewController") as EnquiryViewController;
+                                //enquiryViewController.FeedbackID = id;
+                                //enquiryViewController.IsLoggedIn = DataManager.DataManager.SharedInstance.IsLoggedIn();//!isFromPreLogin;
+                                //UINavigationController navController = new UINavigationController(enquiryViewController);
+                                //navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                                //PresentViewController(navController, true, null);
+
+                                ActivityIndicator.Hide();
 
                             }
                             else
@@ -649,15 +690,15 @@ namespace myTNB
 
         }
 
-        private NSData GetFromUrl(string uri)//temporary
+        private UIImage GetFromUrl(string uri)//temporary
         {
             using (var url = new NSUrl(uri))
             using (var data = NSData.FromUrl(url, NSDataReadingOptions.Uncached, out NSError error))
                 if (error != null) { return null; }
                 else
                 {
-                    //return UIImage.LoadFromData(data);
-                    return data;
+                    return UIImage.LoadFromData(data);
+                    //return data;
 
                 }
         }

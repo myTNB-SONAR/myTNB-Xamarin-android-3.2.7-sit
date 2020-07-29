@@ -31,7 +31,7 @@ namespace myTNB.Home.Feedback
                     switch (f.FeedbackCategoryId)
                     {
                         case "1":
-                            feedBackRowModel.Icon = "Feedback-Generic";
+                            feedBackRowModel.Icon = "IC-Tile-FeedbackBill";//Feedback-Generic
                             break;
                         case "2":
                             feedBackRowModel.Icon = "Feedback-Streetlamp";

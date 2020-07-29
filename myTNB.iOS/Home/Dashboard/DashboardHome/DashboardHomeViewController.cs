@@ -325,12 +325,29 @@ namespace myTNB
             }
         }
 
-        public void OnTapHomePopUp(WhatsNewModel whatnew)
+        public void OnTapHomePopUp(WhatsNewModel item)
         {
-            whatnew.IsRead = true;
-            WhatsNewServices.SetIsRead(whatnew.ID);
-            DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId = whatnew.ID;
-            OnNavigateWhatsNewModal();
+            item.IsRead = true;
+            WhatsNewServices.SetIsRead(item.ID);
+            DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId = item.ID;
+            if (item.Infographic_FullView_URL.IsValid())
+            {
+                BrowserViewController viewController = new BrowserViewController();
+                if (viewController != null)
+                {
+                    viewController.URL = item.Infographic_FullView_URL;
+                    viewController.IsDelegateNeeded = false;
+                    UINavigationController navController = new UINavigationController(viewController)
+                    {
+                        ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                    };
+                    PresentViewController(navController, true, null);
+                }
+            }
+            else
+            {
+                OnNavigateWhatsNewModal();
+            }
         }
 
         public void OnNavigateWhatsNewModal()

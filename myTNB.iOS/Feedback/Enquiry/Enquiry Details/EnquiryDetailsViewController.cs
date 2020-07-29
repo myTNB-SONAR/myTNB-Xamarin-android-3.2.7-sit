@@ -115,10 +115,9 @@ namespace myTNB
                     case "CL01":
                         {
                             //Created
-                            //lblTitleStatus.TextColor = MyTNBColor.PowerBlue;
                             firstAttributes = new UIStringAttributes
                         {
-                            ForegroundColor = MyTNBColor.PowerBlue,
+                            ForegroundColor = MyTNBColor.CharcoalGrey,
                             Font = TNBFont.MuseoSans_16_500
                         };
                         break;
@@ -126,7 +125,6 @@ namespace myTNB
                     case "CL02":
                         {
                             //In Progress
-                            //lblTitleStatus.TextColor = MyTNBColor.SunGlow;
                             firstAttributes = new UIStringAttributes
                         {
                             ForegroundColor = MyTNBColor.SunGlow,
@@ -138,7 +136,6 @@ namespace myTNB
                     case "CL04":
                         {
                             //Completed
-                            //lblTitleStatus.TextColor = MyTNBColor.FreshGreen;
                             firstAttributes = new UIStringAttributes
                         {
                             ForegroundColor = MyTNBColor.FreshGreen,
@@ -149,7 +146,6 @@ namespace myTNB
                     case "CL06":
                         {
                             //Cancelled
-                            //lblTitleStatus.TextColor = MyTNBColor.Tomato;
                             firstAttributes = new UIStringAttributes
                         {
                             ForegroundColor = MyTNBColor.Tomato,
@@ -206,7 +202,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_10_500,
                 TextColor = MyTNBColor.SilverChalice,
-                Text = GetI18NValue(EnquiryConstants.messageHint).ToUpper() // "Your Message".ToUpper()
+                Text = GetI18NValue(EnquiryConstants.messageHint).ToUpper()
             };
 
             lblValueStatus2 = new UILabel(new CGRect(18, lblTitleStatus2.Frame.GetMaxY() + 4, _container2.Frame.Width - 18, 18))
@@ -281,7 +277,7 @@ namespace myTNB
                     BackgroundColor = UIColor.White
                 };
 
-                int x = _feedbackDetails.RelationshipWithCA != 0 ? 0 : 16;
+                nfloat x = _feedbackDetails.RelationshipWithCA != 0 ? 0 : 16;
                 foreach (FeedbackUpdateDetailsModels item in _feedbackDetails.FeedbackUpdateDetails)
                 {
                     UIView viewContainer = new UIView(new CGRect(18, x, _containerFeedbackUpdateDetails.Frame.Width - 18, 40));
@@ -293,14 +289,15 @@ namespace myTNB
                         Text = item.FeedbackUpdInfoTypeDesc.ToUpper()
                     };
 
-                    UILabel lblViewInfo = new UILabel(new CGRect(0, lblView.Frame.GetMaxY() + 4, viewContainer.Frame.Width, 24))
+                    UILabel lblViewInfo = new UILabel(new CGRect(0, lblView.Frame.GetMaxY() + 4, viewContainer.Frame.Width -18, 24))
                     {
                         Font = TNBFont.MuseoSans_16_300,
                         Text = item.FeedbackUpdInfoValue,
                         LineBreakMode = UILineBreakMode.WordWrap,
                         Lines = 0,
                     };
-                    ResizeLabel(ref lblViewInfo, GetScaledHeight(16));
+                    CGSize newSize = lblViewInfo.SizeThatFits(new CGSize(View.Frame.Width - 23, GetScaledHeight(160)));
+                    lblViewInfo.Frame = new CGRect(0, lblView.Frame.GetMaxY() + 4, viewContainer.Frame.Width -18, newSize.Height);
 
                     if (item.FeedbackUpdInfoType == 1)
                     {
@@ -316,9 +313,9 @@ namespace myTNB
                     }
 
                     viewContainer.AddSubviews(lblView, lblViewInfo);
-                    viewContainer.Frame = new CGRect(18, x, _containerFeedbackUpdateDetails.Frame.Width - 18, lblViewInfo.Frame.GetMaxY() + 16);//40
+                    viewContainer.Frame = new CGRect(18, x, _containerFeedbackUpdateDetails.Frame.Width - 18, lblViewInfo.Frame.GetMaxY() + 16);
                     _containerFeedbackUpdateDetails.AddSubview(viewContainer);
-                    x += 40 + 16;
+                    x += lblViewInfo.Frame.GetMaxY() + 16;
                 }
                 _containerFeedbackUpdateDetails.Frame = new CGRect(0, _feedbackDetails.RelationshipWithCA != 0 ? _containerRelation.Frame.GetMaxY() : _viewTitleSection.Frame.GetMaxY(), View.Frame.Width, x);
 

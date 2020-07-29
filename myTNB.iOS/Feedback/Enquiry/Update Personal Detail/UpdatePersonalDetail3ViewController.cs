@@ -1,7 +1,9 @@
+using CoreAnimation;
 using CoreGraphics;
 using Foundation;
 using myTNB.Feedback;
 using myTNB.Feedback.FeedbackImage;
+using myTNB.Home.Feedback;
 using myTNB.Model;
 using myTNB.Registration;
 using myTNB.SQLite.SQLiteDataManager;
@@ -19,7 +21,7 @@ namespace myTNB
         {
         }
 
-        public List<ImageDataEnquiryModel> Items;
+        public List<ImageDataEnquiryTempModel> Items;
         public List<FeedbackUpdateDetailsModel> feedbackUpdateDetailsList;
         SubmitFeedbackResponseModel _submitFeedback;
         public bool IsOwner;
@@ -27,6 +29,7 @@ namespace myTNB
         private UIView _viewTitleSection, _btnSubmitContainer;
         private UIView viewCheckBoxTNC;
         private UIScrollView _svContainer;
+        private UITextView txtFieldInfo;
         private UITextView lblTNC;
         private UIButton _btnSubmit;
 
@@ -54,22 +57,29 @@ namespace myTNB
         private TextFieldHelper _textFieldHelper = new TextFieldHelper();
         private UIImageView imgViewCheckBoxTNC;
 
-        NSAttributedString htmlBody;
-
         UITextField textField;
+        private List<ImageDataEnquiryModel> capturedImageList;
         private const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
         private const string MOBILENUMBER_PATTERN = @"^[0-9 \+]+$";
 
         public bool IsTNC { get; private set; }
+
+
+        internal nfloat _navBarHeight;
+        private UIView _navbarView;
+        private nfloat titleBarHeight = ScaleUtility.GetScaledHeight(24f);
+        private CAGradientLayer _gradientLayer;
 
         public override void ViewDidLoad()
         {
             PageName = EnquiryConstants.Pagename_Enquiry;
             base.ViewDidLoad();
 
-            SetHeader();
+            //SetHeader();
+            SetNavigation();
             AddScrollView();
-            AddCTA();
+            //AddCTA();
+            AddTnCSection();
             AddSectionTitle();
             AddDetailsSection();
             SetEvents();
@@ -94,9 +104,78 @@ namespace myTNB
             Title = GetI18NValue(EnquiryConstants.updatePersonalDetTitle);
         }
 
+        private void SetNavigation()
+        {
+            if (NavigationController != null && NavigationController.NavigationBar != null)
+            {
+                NavigationController.NavigationBar.Hidden = true;
+                _navBarHeight = NavigationController.NavigationBar.Frame.Height;
+            }
+
+            _navbarView = new UIView(new CGRect(0, 0, ViewWidth, DeviceHelper.GetStatusBarHeight() + _navBarHeight + 38f))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+
+            UIView viewTitleBar = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(8f), _navbarView.Frame.Width, titleBarHeight));
+
+            UIView viewBack = new UIView(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(24F), titleBarHeight));
+            UIImageView imgViewBack = new UIImageView(new CGRect(0, 0, GetScaledWidth(24F), titleBarHeight))
+            {
+                Image = UIImage.FromBundle(Constants.IMG_Back)
+            };
+            viewBack.AddSubview(imgViewBack);
+            viewTitleBar.AddSubview(viewBack);
+
+            UILabel lblTitle = new UILabel(new CGRect(GetScaledWidth(56F), 0, _navbarView.Frame.Width - (GetScaledWidth(56F) * 2), titleBarHeight))
+            {
+                Font = TNBFont.MuseoSans_16_500,
+                Text = GetI18NValue(EnquiryConstants.updatePersonalDetTitle)
+            };
+
+            lblTitle.TextAlignment = UITextAlignment.Center;
+            lblTitle.TextColor = UIColor.White;
+            viewTitleBar.AddSubview(lblTitle);
+
+            UIView viewStepBar = new UIView(new CGRect(0, viewTitleBar.Frame.GetMaxY() + 4f, _navbarView.Frame.Width, titleBarHeight));
+            UILabel lblStep = new UILabel(new CGRect(GetScaledWidth(56F), 0, _navbarView.Frame.Width - (GetScaledWidth(56F) * 2), titleBarHeight))
+            {
+                Font = TNBFont.MuseoSans_12_500,
+                Text = GetI18NValue(EnquiryConstants.stepTitle3of3)
+            };
+
+            lblStep.TextAlignment = UITextAlignment.Center;
+            lblStep.TextColor = UIColor.White;
+            viewStepBar.AddSubview(lblStep);
+
+            viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                NavigationController.PopViewController(true);
+                //DismissViewController(true, null);
+
+
+            }));
+
+            _navbarView.AddSubviews(viewTitleBar, viewStepBar);
+
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
+            _gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor.CGColor, endColor.CGColor }
+            };
+            _gradientLayer.StartPoint = new CGPoint(x: 0.0, y: 0.5);
+            _gradientLayer.EndPoint = new CGPoint(x: 1.0, y: 0.5);
+
+            _gradientLayer.Frame = _navbarView.Bounds;
+            _navbarView.Layer.InsertSublayer(_gradientLayer, 0);
+            View.AddSubview(_navbarView);
+        }
+
+
         private void AddScrollView()
         {
-            _svContainer = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height))
+            _svContainer = new UIScrollView(new CGRect(0, _navbarView.Frame.GetMaxY(), View.Frame.Width, View.Frame.Height))
             {
                 BackgroundColor = MyTNBColor.LightGrayBG
             };
@@ -120,7 +199,7 @@ namespace myTNB
             };
 
             lblNameTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.nameHint).ToUpper()); 
-            lblNameError = GetErrorLabel(GetI18NValue("nameHintBottom")); //GetErrorI18NValue("invalid_fullname")
+            lblNameError = GetErrorLabel(GetI18NValue("nameHintBottom"));
 
             txtFieldName = new UITextField
             {
@@ -302,7 +381,7 @@ namespace myTNB
             bool isValidFieldMobile = _textFieldHelper.ValidateTextField(txtFieldMobile.Text, MOBILENUMBER_PATTERN) && _textFieldHelper.ValidateMobileNumberLength(txtFieldMobile.Text)
                && !string.IsNullOrWhiteSpace(txtFieldMobile.Text);
 
-            lblTNC.UserInteractionEnabled = isValidFieldEmail;
+            //lblTNC.UserInteractionEnabled = isValidFieldEmail;
 
             bool isValid = isValidFieldName && isValidFieldEmail && isValidFieldMobile && IsTNC;
 
@@ -311,12 +390,15 @@ namespace myTNB
 
         }
 
-        private void AddCTA()
+        private void AddTnCSection()
         {
-            _btnSubmitContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(173))
-            , View.Frame.Width, DeviceHelper.GetScaledHeight(128)))
+            _btnSubmitContainer = new UIView(new CGRect(0, View.Frame.Height - GetScaledHeight(160), View.Frame.Width, GetScaledHeight(160)))
             {
                 BackgroundColor = UIColor.White
+            };
+            UIView viewPadding = new UIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(1)))
+            {
+                BackgroundColor = MyTNBColor.SectionGrey
             };
 
             viewCheckBoxTNC = new UIView(new CGRect(16, 16, 20, 20))
@@ -335,43 +417,43 @@ namespace myTNB
             };
             viewCheckBoxTNC.AddSubview(imgViewCheckBoxTNC);
 
+            txtFieldInfo = IsTNC ? GetInfoTNCRead() : GetInfoTNC();
+
             viewCheckBoxTNC.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 IsTNC = !IsTNC;
                 imgViewCheckBoxTNC.Hidden = !IsTNC;
                 viewCheckBoxTNC.Layer.BorderColor = IsTNC ? UIColor.Clear.CGColor : MyTNBColor.VeryLightPinkSeven.CGColor;
-
-
-
+                txtFieldInfo.RemoveFromSuperview();
+                txtFieldInfo = IsTNC ? GetInfoTNCRead() : GetInfoTNC();
+                _btnSubmitContainer.AddSubviews(txtFieldInfo);
                 SetSubmitButtonEnable();
             }));
 
-            lblTNC = new UITextView(new CGRect(GetXLocationFromFrame(viewCheckBoxTNC.Frame, 16F), 16, View.Frame.Width - 23, 20));
-            GetInfo();
-
-            _btnSubmit = new UIButton(UIButtonType.Custom)
+            _btnSubmit = new CustomUIButtonV2()
             {
-                Frame = new CGRect(18, lblTNC.Frame.GetMaxY() + DeviceHelper.GetScaledHeight(16), _btnSubmitContainer.Frame.Width - 36, 48)
+                Frame = new CGRect(BaseMargin, GetYLocationFromFrame(txtFieldInfo.Frame, 16), BaseMarginedWidth, GetScaledHeight(48)),
+                Enabled = true,
+                BackgroundColor = MyTNBColor.FreshGreen
             };
-            _btnSubmit.SetTitle(GetCommonI18NValue("submit"), UIControlState.Normal);
-            _btnSubmit.Font = MyTNBFont.MuseoSans18_300;
-            _btnSubmit.Layer.CornerRadius = 5.0f;
-            _btnSubmit.Enabled = false;
-            _btnSubmit.BackgroundColor = MyTNBColor.SilverChalice;
-            _btnSubmit.TouchUpInside += (sender, e) =>
+            _btnSubmit.SetTitle(GetCommonI18NValue(SSMRConstants.I18N_Submit), UIControlState.Normal);
+            _btnSubmit.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 ExecuteSubmitUpdatePersonalDetail();
-            };
-            _btnSubmitContainer.AddSubviews(viewCheckBoxTNC, lblTNC, _btnSubmit);
+                //OnSubmitSMRApplication();
+            }));
+            _btnSubmitContainer.AddSubviews(new UIView[] { viewPadding, viewCheckBoxTNC, txtFieldInfo, _btnSubmit });
+            nfloat containerHeight = _btnSubmit.Frame.GetMaxY() + (DeviceHelper.IsIphoneXUpResolution() ? 36 : 16);
+            _btnSubmitContainer.Frame = new CGRect(0, ViewHeight - containerHeight + _navBarHeight + DeviceHelper.GetStatusBarHeight(), ViewWidth, containerHeight + 30);
             View.AddSubview(_btnSubmitContainer);
-
         }
 
-        private void GetInfo()
+        private UITextView GetInfoTNC()
         {
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTnc)
-                        , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F));
+                        , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F)) ;
+            
             NSMutableAttributedString mutableHTMLFooter = new NSMutableAttributedString(htmlBody);
 
             UIStringAttributes linkAttributes = new UIStringAttributes
@@ -403,7 +485,8 @@ namespace myTNB
                     storyBoard.InstantiateViewController("EnquiryTNCViewController") as EnquiryTNCViewController;
                 if (viewController != null)
                 {
-                    viewController.Email = txtFieldEmail.Text;
+                    viewController.IsOwner = IsOwner;
+                    viewController.Name = txtFieldName.Text;
                     viewController.isPresentedVC = true;
                     UINavigationController navController = new UINavigationController(viewController);
                     navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
@@ -413,7 +496,60 @@ namespace myTNB
             }));
             //Resize
             CGSize size = lblTNC.SizeThatFits(new CGSize(View.Frame.Width - 23, GetScaledHeight(160)));
-            lblTNC.Frame = new CGRect(GetXLocationFromFrame(viewCheckBoxTNC.Frame, 8F), 16, size.Width - 24 - 18, size.Height);
+            lblTNC.Frame = new CGRect(GetXLocationFromFrame(viewCheckBoxTNC.Frame, 8F), 16, BaseMarginedWidth, size.Height);
+            return lblTNC;
+        }
+
+        private UITextView GetInfoTNCRead()
+        {
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTncRead)
+                        , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F));
+            
+            NSMutableAttributedString mutableHTMLFooter = new NSMutableAttributedString(htmlBody);
+
+            UIStringAttributes linkAttributes = new UIStringAttributes
+            {
+                ForegroundColor = MyTNBColor.WaterBlue,
+                UnderlineStyle = NSUnderlineStyle.None,
+                UnderlineColor = UIColor.Clear
+            };
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
+            {
+                ForegroundColor = MyTNBColor.CharcoalGrey
+            }, new NSRange(0, htmlBody.Length));
+            lblTNC = new UITextView
+            {
+                Editable = false,
+                ScrollEnabled = true,
+                AttributedText = mutableHTMLBody,
+                WeakLinkTextAttributes = linkAttributes.Dictionary,
+                TextAlignment = UITextAlignment.Left
+            };
+            lblTNC.TextContainerInset = UIEdgeInsets.Zero;
+
+            lblTNC.Delegate = new TextViewDelegate(new Action<NSUrl>((url) =>
+            {
+
+                UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
+                EnquiryTNCViewController viewController =
+                    storyBoard.InstantiateViewController("EnquiryTNCViewController") as EnquiryTNCViewController;
+                if (viewController != null)
+                {
+                    viewController.IsOwner = IsOwner;
+                    viewController.Name = txtFieldName.Text;
+                    viewController.isPresentedVC = true;
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    PresentViewController(navController, true, null);
+                }
+
+            }));
+            //Resize
+            CGSize size = lblTNC.SizeThatFits(new CGSize(View.Frame.Width - 23, GetScaledHeight(160)));
+            lblTNC.Frame = new CGRect(GetXLocationFromFrame(viewCheckBoxTNC.Frame, 8F), 16, BaseMarginedWidth , size.Height);
+            return lblTNC;
         }
 
         private void AddSectionTitle()
@@ -497,8 +633,8 @@ namespace myTNB
                 serviceManager.usrInf,
                 serviceManager.deviceInf,
                 feedbackUpdateDetails = feedbackUpdateDetailsList,
-                attachment = Items, //Common
-                feedbackCategoryId = "1",
+                attachment = ConvertImage(),//Items, //Common
+                feedbackCategoryId = "4",
                 feedbackTypeId = "",
                 accountNum = DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA,
                 name = DataManager.DataManager.SharedInstance.IsLoggedIn() ? DataManager.DataManager.SharedInstance.UserEntity[0].displayName : txtFieldName.Text,
@@ -527,5 +663,28 @@ namespace myTNB
                 _submitFeedback = serviceManager.OnExecuteAPIV6<SubmitFeedbackResponseModel>("SubmitFeedbackWithContactDetails", requestParameter);
             });
         }
-    } 
+
+        private List<ImageDataEnquiryModel> ConvertImage()
+        {
+            capturedImageList = new List<ImageDataEnquiryModel>();
+            UIImageHelper _imageHelper = new UIImageHelper();
+            ImageDataEnquiryModel imgData;
+
+            for (int i=0; i<Items.Count; i++)
+            {
+                imgData = new ImageDataEnquiryModel();
+
+                imgData.fileType = "jpeg";
+                imgData.fileHex = _imageHelper.ConvertImageToHex(Items[i].tempImage);
+                imgData.fileSize = _imageHelper.GetImageFileSize(Items[i].tempImage).ToString();
+                imgData.fileName = Items[i].fileName;
+                capturedImageList.Add(imgData);
+                    
+            }
+
+            return capturedImageList;
+
+        }
+
+    }
 }

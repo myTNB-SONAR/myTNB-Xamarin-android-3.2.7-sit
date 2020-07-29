@@ -1,9 +1,7 @@
 using CoreAnimation;
 using CoreGraphics;
 using Foundation;
-using myTNB.Customs;
 using myTNB.Feedback;
-using myTNB.Feedback.Enquiry.GeneralEnquiry;
 using myTNB.Feedback.Enquiry.UpdatePersonalDetail;
 using myTNB.Feedback.FeedbackImage;
 using myTNB.Home.Bill;
@@ -11,6 +9,7 @@ using myTNB.Home.Feedback;
 using myTNB.Model;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UIKit;
 
 namespace myTNB
@@ -28,30 +27,21 @@ namespace myTNB
         public bool isMobileNumberAvailable;
         public List<FeedbackUpdateDetailsModel> feedbackUpdateDetailsList;
 
-        const string ANY_PATTERN = @".*";
-        const int MAX_IMAGE = 2;
-        const float TXTVIEW_DEFAULT_MARGIN = 24f;
         const float UNIVERSAL_MARGIN = 7f;
-        const float VIEW_PHOTO_MARGIN = 20f;
 
         private int imageWidth = 0;
-        private int capturedImageCount = 0;
-        private int imageCount = 0;
 
         internal MobileNumberComponent _mobileNumberComponent;
         private UIView _viewPhotoContainer;
 
-        //Widgets
         private UIView _btnSubmitContainer, _viewUploadPhoto;
         private UILabel _lblPhotoTitle;
         private UIButton _btnSubmit;
         private UIScrollView _svContainer;
         private UITapGestureRecognizer _tapImage, _tapImage2, _tapImage3;
 
-        //syahmi
         private UIView _viewTitleSection2;
 
-        //for header
         public nfloat _previousScrollOffset;
 
         private CustomUIView _identificationToolTipsView;
@@ -78,13 +68,22 @@ namespace myTNB
         private UILabel lblPhotoSubTitle4;
         private UIViewWithDashedLinerBorder dashedLineView4;
         private UITapGestureRecognizer _tapImage4;
+        private CustomUIView _premiseToolTipsView;
+
+        List<ImageDataEnquiryTempModel> capturedImageList;
+
+        internal nfloat _navBarHeight;
+        private UIView _navbarView;
+        private nfloat titleBarHeight = ScaleUtility.GetScaledHeight(24f);
+        private CAGradientLayer _gradientLayer;
 
         public override void ViewDidLoad()
         {
             PageName = EnquiryConstants.Pagename_Enquiry;
 
             base.ViewDidLoad();
-            SetHeader();
+            //SetHeader();
+            SetNavigation();
             AddScrollView();
             AddCTA();
             AddSectionTitle2();
@@ -119,6 +118,75 @@ namespace myTNB
 
         }
 
+        private void SetNavigation()
+        {
+            if (NavigationController != null && NavigationController.NavigationBar != null)
+            {
+                NavigationController.NavigationBar.Hidden = true;
+                _navBarHeight = NavigationController.NavigationBar.Frame.Height;
+            }
+
+            _navbarView = new UIView(new CGRect(0, 0, ViewWidth, DeviceHelper.GetStatusBarHeight() + _navBarHeight + 38f))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+
+            UIView viewTitleBar = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(8f), _navbarView.Frame.Width, titleBarHeight));
+
+            UIView viewBack = new UIView(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(24F), titleBarHeight));
+            UIImageView imgViewBack = new UIImageView(new CGRect(0, 0, GetScaledWidth(24F), titleBarHeight))
+            {
+                Image = UIImage.FromBundle(Constants.IMG_Back)
+            };
+            viewBack.AddSubview(imgViewBack);
+            viewTitleBar.AddSubview(viewBack);
+
+            UILabel lblTitle = new UILabel(new CGRect(GetScaledWidth(56F), 0, _navbarView.Frame.Width - (GetScaledWidth(56F) * 2), titleBarHeight))
+            {
+                Font = TNBFont.MuseoSans_16_500,
+                Text = GetI18NValue(EnquiryConstants.updatePersonalDetTitle)
+            };
+
+            lblTitle.TextAlignment = UITextAlignment.Center;
+            lblTitle.TextColor = UIColor.White;
+            viewTitleBar.AddSubview(lblTitle);
+
+            UIView viewStepBar = new UIView(new CGRect(0, viewTitleBar.Frame.GetMaxY() + 4f, _navbarView.Frame.Width, titleBarHeight));
+            UILabel lblStep = new UILabel(new CGRect(GetScaledWidth(56F), 0, _navbarView.Frame.Width - (GetScaledWidth(56F) * 2), titleBarHeight))
+            {
+                Font = TNBFont.MuseoSans_12_500,
+                Text = GetI18NValue(EnquiryConstants.stepTitle2of3)
+            };
+
+            lblStep.TextAlignment = UITextAlignment.Center;
+            lblStep.TextColor = UIColor.White;
+            viewStepBar.AddSubview(lblStep);
+
+            viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                NavigationController.PopViewController(true);
+                //DismissViewController(true, null);
+
+
+            }));
+
+            _navbarView.AddSubviews(viewTitleBar, viewStepBar);
+
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
+            _gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor.CGColor, endColor.CGColor }
+            };
+            _gradientLayer.StartPoint = new CGPoint(x: 0.0, y: 0.5);
+            _gradientLayer.EndPoint = new CGPoint(x: 1.0, y: 0.5);
+
+            _gradientLayer.Frame = _navbarView.Bounds;
+            _navbarView.Layer.InsertSublayer(_gradientLayer, 0);
+            View.AddSubview(_navbarView);
+        }
+
+
         private void SetHeader()
         {
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
@@ -131,12 +199,12 @@ namespace myTNB
                 NavigationItem.LeftBarButtonItem = btnBack;
             }
 
-            Title = GetI18NValue(EnquiryConstants.updatePersonalDetTitle); //(GetI18NValue("updatePersonalDetTitle")
+            Title = GetI18NValue(EnquiryConstants.updatePersonalDetTitle); 
         }
 
         private void AddScrollView()
         {
-            _svContainer = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height)) //y:0
+            _svContainer = new UIScrollView(new CGRect(0, _navbarView.Frame.GetMaxY(), View.Frame.Width, View.Frame.Height)) 
             {
                 BackgroundColor = MyTNBColor.LightGrayBG
             };
@@ -145,7 +213,14 @@ namespace myTNB
 
         private void AddCTA()
         {
-            _btnSubmitContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(145))
+            nfloat containerHeight = GetScaledHeight(80) + DeviceHelper.BottomSafeAreaInset;
+            nfloat yLoc = View.Frame.Height - DeviceHelper.TopSafeAreaInset - NavigationController.NavigationBar.Frame.Height - containerHeight;
+            if (DeviceHelper.IsIOS10AndBelow)
+            {
+                yLoc = ViewHeight - containerHeight;
+            }
+
+            _btnSubmitContainer = new UIView(new CGRect(0, yLoc + _navBarHeight + DeviceHelper.GetStatusBarHeight()
                 , View.Frame.Width, DeviceHelper.GetScaledHeight(100)))
             {
                 BackgroundColor = UIColor.White
@@ -165,8 +240,6 @@ namespace myTNB
 
             _btnSubmit.TouchUpInside += (sender, e) =>
             {
-                ActivityIndicator.Show();
-
                 NavigateToPage();
             };
             _btnSubmitContainer.AddSubview(_btnSubmit);
@@ -348,9 +421,9 @@ namespace myTNB
                 };
                 _viewUploadPhoto4.AddSubviews(new UIView[] { _lblPhotoTitle4, lblPhotoSubTitle4 });
                 _viewPhotoContainer.AddSubview(_viewUploadPhoto4);
-                //_viewPhotoContainer.AddSubview(GetProofConsentTooltipView(GetYLocationFromFrame(_viewUploadPhoto4.Frame, 16)));
+                _viewPhotoContainer.AddSubview(GetPremiseTooltipView(GetYLocationFromFrame(_viewUploadPhoto4.Frame, 16)));
 
-                _viewPhotoContainer.Frame = new CGRect(0, _viewTitleSection2.Frame.GetMaxY(), View.Frame.Width, _viewUploadPhoto4.Frame.GetMaxY() + 16);
+                _viewPhotoContainer.Frame = new CGRect(0, _viewTitleSection2.Frame.GetMaxY(), View.Frame.Width, _premiseToolTipsView.Frame.GetMaxY() + 16);
             }
 
         }
@@ -651,7 +724,7 @@ namespace myTNB
 
         private nfloat GetScrollHeight()
         {
-            return (nfloat)((_viewPhotoContainer.Frame.GetMaxY() + (_btnSubmitContainer.Frame.Height + 32f) + 48));
+            return (nfloat)((_viewPhotoContainer.Frame.GetMaxY() + (_btnSubmitContainer.Frame.Height + 32f) + 64));
         }
 
         public CustomUIView GetIdentificationTooltipView(nfloat yLoc)
@@ -675,13 +748,13 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = GetI18NValue(EnquiryConstants.icInfo) //GetI18NValue("icInfo")
+                Text = GetI18NValue(EnquiryConstants.icInfo) 
 
             };
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
-                //var cimg = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imageCopyIC));
-                NSData cimg;
+                
+                UIImage cimg;
 
                 if (DataManager.DataManager.SharedInstance.imageCopyIC == null)
                 {
@@ -693,10 +766,10 @@ namespace myTNB
                     cimg = DataManager.DataManager.SharedInstance.imageCopyIC;
                 }
 
-                DisplayCustomAlert(GetI18NValue(EnquiryConstants.copyICTitle) //GetI18NValue("copyICTitle")
-                    , GetI18NValue(EnquiryConstants.copyIcDet) //GetI18NValue("copyIcDet")
+                DisplayCustomAlert(GetI18NValue(EnquiryConstants.copyICTitle)
+                    , GetI18NValue(EnquiryConstants.copyIcDet) 
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
-                    , UIImage.LoadFromData(cimg ?? null)); //UIImage.FromBundle("imgIcCopy")
+                    , cimg ?? null); 
             });
             viewInfo.Layer.CornerRadius = GetScaledHeight(12);
             _identificationToolTipsView.AddGestureRecognizer(tapInfo);
@@ -727,12 +800,12 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = GetI18NValue(EnquiryConstants.consentInfo) //GetI18NValue("consentInfo")
+                Text = GetI18NValue(EnquiryConstants.consentInfo)
 
             };
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
-                NSData cimg;
+                UIImage cimg;
 
                 if (DataManager.DataManager.SharedInstance.imageConsent == null)
                 {
@@ -743,10 +816,10 @@ namespace myTNB
                 {
                     cimg = DataManager.DataManager.SharedInstance.imageConsent;
                 }
-                DisplayCustomAlert(GetI18NValue(EnquiryConstants.consentTitle) //GetI18NValue("consentTitle")
-                    , GetI18NValue(EnquiryConstants.poc) //GetI18NValue("poc")
+                DisplayCustomAlert(GetI18NValue(EnquiryConstants.consentTitle)
+                    , GetI18NValue(EnquiryConstants.poc) 
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
-                    , UIImage.LoadFromData(cimg ?? null));
+                    , cimg ?? null);
             });
             viewInfo.Layer.CornerRadius = GetScaledHeight(12);
             _proofConsentToolTipsView.AddGestureRecognizer(tapInfo);
@@ -756,27 +829,78 @@ namespace myTNB
             return _proofConsentToolTipsView;
         }
 
-
-        private List<ImageDataEnquiryModel> GetImageList()
+        public CustomUIView GetPremiseTooltipView(nfloat yLoc)
         {
-            List<ImageDataEnquiryModel> capturedImageList = new List<ImageDataEnquiryModel>();
+            _premiseToolTipsView = new CustomUIView(new CGRect(0, yLoc, View.Frame.Width, GetScaledHeight(24)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            CustomUIView viewInfo = new CustomUIView(new CGRect(16, 0, View.Frame.Width - (GetScaledWidth(16) * 2), GetScaledHeight(24)))
+            {
+                BackgroundColor = MyTNBColor.IceBlue
+            };
+            UIImageView imgView = new UIImageView(new CGRect(GetScaledWidth(4)
+                , GetScaledHeight(4), GetScaledWidth(16), GetScaledWidth(16)))
+            {
+                Image = UIImage.FromBundle(BillConstants.IMG_InfoBlue)
+            };
+            UILabel lblDescription = new UILabel(new CGRect(GetScaledWidth(28)
+                , GetScaledHeight(4), _premiseToolTipsView.Frame.Width - GetScaledWidth(44), GetScaledHeight(16)))
+            {
+                TextAlignment = UITextAlignment.Left,
+                Font = TNBFont.MuseoSans_12_500,
+                TextColor = MyTNBColor.WaterBlue,
+                Text = GetI18NValue(EnquiryConstants.permisesTooltipTitle) //GetI18NValue("consentInfo")
+
+            };
+            UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
+            {
+                UIImage cimg;
+
+                if (DataManager.DataManager.SharedInstance.imageConsent == null)
+                {
+                    DataManager.DataManager.SharedInstance.imagePermises = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imagePermises));
+                    cimg = DataManager.DataManager.SharedInstance.imagePermises;
+                }
+                else
+                {
+                    cimg = DataManager.DataManager.SharedInstance.imagePermises;
+                }
+                DisplayCustomAlert(GetI18NValue(EnquiryConstants.permisesTitle) 
+                    , GetI18NValue(EnquiryConstants.permisesContent) 
+                    , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
+                    , cimg ?? null);
+            });
+            viewInfo.Layer.CornerRadius = GetScaledHeight(12);
+            _premiseToolTipsView.AddGestureRecognizer(tapInfo);
+            viewInfo.AddSubviews(new UIView[] { imgView, lblDescription });
+            _premiseToolTipsView.AddSubview(viewInfo);
+
+            return _premiseToolTipsView;
+        }
+
+
+        private void GetImageList()
+        {
+            capturedImageList = new List<ImageDataEnquiryTempModel>();
             UIImageHelper _imageHelper = new UIImageHelper();
-            ImageDataEnquiryModel imgData;
+            ImageDataEnquiryTempModel imgData;
             UIImageView imgView;
-            UIImage resizedImage;
+            //UIImage resizedImage;
+            
 
             foreach (UIView view in dashedLineView.Subviews)
             {
                 if (view.Tag == 1)
                 {
-                    imgData = new ImageDataEnquiryModel();
+                    imgData = new ImageDataEnquiryTempModel();
                     imgView = view as UIImageView;
                     if (imgView != null)
                     {
-                        resizedImage = _imageHelper.ResizeImage(imgView.Image);
-                        imgData.fileType = "jpeg";
-                        imgData.fileHex = _imageHelper.ConvertImageToHex(resizedImage);
-                        imgData.fileSize = _imageHelper.GetImageFileSize(resizedImage).ToString();
+                        imgData.tempImage = _imageHelper.ResizeImage(imgView.Image);
+                        //imgData.fileType = "jpeg";
+                        //imgData.fileHex = _imageHelper.ConvertImageToHex(resizedImage);
+                        //imgData.fileSize = _imageHelper.GetImageFileSize(resizedImage).ToString();
                         imgData.fileName = FeedbackFileNameHelper.GenerateFileName();
                         capturedImageList.Add(imgData);
                     }
@@ -788,14 +912,14 @@ namespace myTNB
                 {
                     if (view.Tag == 1)
                     {
-                        imgData = new ImageDataEnquiryModel();
+                        imgData = new ImageDataEnquiryTempModel();
                         imgView = view as UIImageView;
                         if (imgView != null)
                         {
-                            resizedImage = _imageHelper.ResizeImage(imgView.Image);
-                            imgData.fileType = "jpeg";
-                            imgData.fileHex = _imageHelper.ConvertImageToHex(resizedImage);
-                            imgData.fileSize = _imageHelper.GetImageFileSize(resizedImage).ToString();
+                            imgData.tempImage = _imageHelper.ResizeImage(imgView.Image);
+                            //imgData.fileType = "jpeg";
+                            //imgData.fileHex = _imageHelper.ConvertImageToHex(resizedImage);
+                            //imgData.fileSize = _imageHelper.GetImageFileSize(resizedImage).ToString();
                             imgData.fileName = FeedbackFileNameHelper.GenerateFileName();
                             capturedImageList.Add(imgData);
                         }
@@ -808,14 +932,14 @@ namespace myTNB
                 {
                     if (view.Tag == 1)
                     {
-                        imgData = new ImageDataEnquiryModel();
+                        imgData = new ImageDataEnquiryTempModel();
                         imgView = view as UIImageView;
                         if (imgView != null)
                         {
-                            resizedImage = _imageHelper.ResizeImage(imgView.Image);
-                            imgData.fileType = "jpeg";
-                            imgData.fileHex = _imageHelper.ConvertImageToHex(resizedImage);
-                            imgData.fileSize = _imageHelper.GetImageFileSize(resizedImage).ToString();
+                            imgData.tempImage = _imageHelper.ResizeImage(imgView.Image);
+                            //imgData.fileType = "jpeg";
+                            //imgData.fileHex = _imageHelper.ConvertImageToHex(resizedImage);
+                            //imgData.fileSize = _imageHelper.GetImageFileSize(resizedImage).ToString();
                             imgData.fileName = FeedbackFileNameHelper.GenerateFileName();
                             capturedImageList.Add(imgData);
                         }
@@ -829,14 +953,14 @@ namespace myTNB
                 {
                     if (view.Tag == 1)
                     {
-                        imgData = new ImageDataEnquiryModel();
+                        imgData = new ImageDataEnquiryTempModel();
                         imgView = view as UIImageView;
                         if (imgView != null)
                         {
-                            resizedImage = _imageHelper.ResizeImage(imgView.Image);
-                            imgData.fileType = "jpeg";
-                            imgData.fileHex = _imageHelper.ConvertImageToHex(resizedImage);
-                            imgData.fileSize = _imageHelper.GetImageFileSize(resizedImage).ToString();
+                            imgData.tempImage = _imageHelper.ResizeImage(imgView.Image);
+                            //imgData.fileType = "jpeg";
+                            //imgData.fileHex = _imageHelper.ConvertImageToHex(resizedImage);
+                            //imgData.fileSize = _imageHelper.GetImageFileSize(resizedImage).ToString();
                             imgData.fileName = FeedbackFileNameHelper.GenerateFileName();
                             capturedImageList.Add(imgData);
                         }
@@ -844,112 +968,115 @@ namespace myTNB
 
                 }
             }
-            return capturedImageList;
+            //return capturedImageList;
         }
 
         private void NavigateToPage()
         {
-             if (IsOwner)
-            { 
-                if(GetImageList().Count == 1)
-                { 
+            GetImageList();
 
-                UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
-                UpdatePersonalDetail3ViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetail3ViewController") as UpdatePersonalDetail3ViewController;
-                viewController.IsOwner = IsOwner;
-                viewController.Items = GetImageList();
-                viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
-                NavigationController.PushViewController(viewController, true);
+                    if (IsOwner)
+                    {
+                        if (capturedImageList.Count == 1)
+                        {
 
-                ActivityIndicator.Hide();
-                }
-                else
-                {
-                    lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
+                            UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
+                            UpdatePersonalDetail3ViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetail3ViewController") as UpdatePersonalDetail3ViewController;
+                            viewController.IsOwner = IsOwner;
+                            viewController.Items = capturedImageList;
+                            viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
+                            NavigationController.PushViewController(viewController, true);
 
-                    ActivityIndicator.Hide();
-                }
-            }
-            if (IsOwner && IsPremise)
-            {
-                if (GetImageList().Count == 2)
-                {
+                            ActivityIndicator.Hide();
+                        }
+                        else
+                        {
+                            lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
 
-                    UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
-                    UpdatePersonalDetail3ViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetail3ViewController") as UpdatePersonalDetail3ViewController;
-                    viewController.IsOwner = IsOwner;
-                    viewController.Items = GetImageList();
-                    viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
-                    NavigationController.PushViewController(viewController, true);
+                            ActivityIndicator.Hide();
+                        }
+                    }
+                    if (IsOwner && IsPremise)
+                    {
+                        if (capturedImageList.Count == 2)
+                        {
 
-                    ActivityIndicator.Hide();
-                }
-                else
-                {
-                    lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
-                    lblPhotoSubTitle4.TextColor = MyTNBColor.Tomato;
+                            UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
+                            UpdatePersonalDetail3ViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetail3ViewController") as UpdatePersonalDetail3ViewController;
+                            viewController.IsOwner = IsOwner;
+                            viewController.Items = capturedImageList;
+                            viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
+                            NavigationController.PushViewController(viewController, true);
 
-                    ActivityIndicator.Hide();
-                }
-            }
-            else if (!IsOwner && !IsPremise)
-            {
-                if (GetImageList().Count == 3)
-                {
-                    UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
-                    UpdatePersonalDetail3ViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetail3ViewController") as UpdatePersonalDetail3ViewController;
-                    viewController.IsOwner = IsOwner;
-                    viewController.Items = GetImageList();
-                    viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
-                    NavigationController.PushViewController(viewController, true);
+                            ActivityIndicator.Hide();
+                        }
+                        else
+                        {
+                            lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
+                            lblPhotoSubTitle4.TextColor = MyTNBColor.Tomato;
 
-                    ActivityIndicator.Hide();
-                }
-                else
-                {
-                    lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
-                    lblPhotoSubTitle2.TextColor = MyTNBColor.Tomato;
-                    lblPhotoSubTitle3.TextColor = MyTNBColor.Tomato;
-                    //lblPhotoSubTitle4.TextColor = MyTNBColor.Tomato;
+                            ActivityIndicator.Hide();
+                        }
+                    }
+                    else if (!IsOwner && !IsPremise)
+                    {
+                        if (capturedImageList.Count == 3)
+                        {
+                            UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
+                            UpdatePersonalDetail3ViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetail3ViewController") as UpdatePersonalDetail3ViewController;
+                            viewController.IsOwner = IsOwner;
+                            viewController.Items = capturedImageList;
+                            viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
+                            NavigationController.PushViewController(viewController, true);
 
-                    ActivityIndicator.Hide();
-                }
-            }else if(!IsOwner && IsPremise)
-            {
-                if (GetImageList().Count == 4)
-                {
-                    UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
-                    UpdatePersonalDetail3ViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetail3ViewController") as UpdatePersonalDetail3ViewController;
-                    viewController.IsOwner = IsOwner;
-                    viewController.Items = GetImageList();
-                    viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
-                    NavigationController.PushViewController(viewController, true);
+                            ActivityIndicator.Hide();
+                        }
+                        else
+                        {
+                            lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
+                            lblPhotoSubTitle2.TextColor = MyTNBColor.Tomato;
+                            lblPhotoSubTitle3.TextColor = MyTNBColor.Tomato;
+                            //lblPhotoSubTitle4.TextColor = MyTNBColor.Tomato;
 
-                    ActivityIndicator.Hide();
-                }
-                else
-                {
-                    lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
-                    lblPhotoSubTitle2.TextColor = MyTNBColor.Tomato;
-                    lblPhotoSubTitle3.TextColor = MyTNBColor.Tomato;
-                    lblPhotoSubTitle4.TextColor = MyTNBColor.Tomato;
+                            ActivityIndicator.Hide();
+                        }
+                    }
+                    else if (!IsOwner && IsPremise)
+                    {
+                        if (capturedImageList.Count == 4)
+                        {
+                            UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
+                            UpdatePersonalDetail3ViewController viewController = storyBoard.InstantiateViewController("UpdatePersonalDetail3ViewController") as UpdatePersonalDetail3ViewController;
+                            viewController.IsOwner = IsOwner;
+                            viewController.Items = capturedImageList;
+                            viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
+                            NavigationController.PushViewController(viewController, true);
 
-                    ActivityIndicator.Hide();
-                }
+                            ActivityIndicator.Hide();
+                        }
+                        else
+                        {
+                            lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
+                            lblPhotoSubTitle2.TextColor = MyTNBColor.Tomato;
+                            lblPhotoSubTitle3.TextColor = MyTNBColor.Tomato;
+                            lblPhotoSubTitle4.TextColor = MyTNBColor.Tomato;
 
-            }
+                            ActivityIndicator.Hide();
+                        }
+
+                    }
 
         }
 
-        private NSData GetFromUrl(string uri)
+        private UIImage GetFromUrl(string uri)
         {
             using (var url = new NSUrl(uri))
             using (var data = NSData.FromUrl(url, NSDataReadingOptions.Uncached, out NSError error))
                 if (error != null) { return null; }
                 else
                 {
-                    //return UIImage.LoadFromData(data);
-                    return data;
+                    return UIImage.LoadFromData(data);
+                    //return data;
 
                 }
         }

@@ -33,7 +33,7 @@ namespace myTNB.Home.Feedback
 
                 if (feedback.FeedbackCategoryId == "1")
                 {
-                    cell.imgViewIcon.Image = UIImage.FromBundle("Feedback-Submitted-Generic");
+                    cell.imgViewIcon.Image = UIImage.FromBundle("IC-Tile-FeedbackBill");//"Feedback-Submitted-Generic"
                 }
                 else if (feedback.FeedbackCategoryId == "2")
                 {
@@ -42,6 +42,10 @@ namespace myTNB.Home.Feedback
                 else if (feedback.FeedbackCategoryId == "3")
                 {
                     cell.imgViewIcon.Image = UIImage.FromBundle("Feedback-Submitted-Others");
+                }
+                else if (feedback.FeedbackCategoryId == "4")
+                {
+                    cell.imgViewIcon.Image = UIImage.FromBundle("Update-PersonalDetails");
                 }
             }
 

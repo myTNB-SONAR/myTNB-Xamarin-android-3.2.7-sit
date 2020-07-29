@@ -1,18 +1,14 @@
 using CoreGraphics;
-using Foundation;
 using myTNB.Model;
-using myTNB.Registration;
-using myTNB.SSMR;
 using System;
 using System.Collections.Generic;
 using UIKit;
 
-using myTNB.Home.Feedback;
 using System.Threading.Tasks;
 using myTNB.Feedback;
 using myTNB.Feedback.FeedbackImage;
-using myTNB.Feedback.Enquiry.GeneralEnquiry;
 using myTNB.SQLite.SQLiteDataManager;
+using CoreAnimation;
 
 namespace myTNB
 {
@@ -58,6 +54,11 @@ namespace myTNB
         const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
         private const string MOBILENUMBER_PATTERN = @"^[0-9 \+]+$";
 
+        internal nfloat _navBarHeight;
+        private UIView _navbarView;
+        private nfloat titleBarHeight = ScaleUtility.GetScaledHeight(24f);
+        private CAGradientLayer _gradientLayer;
+
 
         public override void ViewDidLoad()
         {
@@ -65,6 +66,7 @@ namespace myTNB
             base.ViewDidLoad();
 
             SetHeader();
+            SetNavigation();
             AddScrollView();
             AddCTA();
             AddSectionTitle();
@@ -77,7 +79,14 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-
+            if (NavigationController != null) { NavigationController.SetNavigationBarHidden(false, true); }
+            //SetNavigation();
+            //AddScrollView();
+            //AddCTA();
+            //AddSectionTitle();
+            //AddDetailsSection();
+            //SetSubmitButtonEnable();
+            //SetEvents();
         }
 
         private void SetHeader()
@@ -99,9 +108,76 @@ namespace myTNB
 
         }
 
+        private void SetNavigation()
+        {
+            if (NavigationController != null && NavigationController.NavigationBar != null)
+            {
+                if (NavigationController != null) { NavigationController.SetNavigationBarHidden(false, false); }
+                _navBarHeight = NavigationController.NavigationBar.Frame.Height;
+            }
+
+            _navbarView = new UIView(new CGRect(0, 0, ViewWidth, DeviceHelper.GetStatusBarHeight() + _navBarHeight + 38f))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+
+            UIView viewTitleBar = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(8f), _navbarView.Frame.Width, titleBarHeight));
+
+            UIView viewBack = new UIView(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(24F), titleBarHeight));
+            UIImageView imgViewBack = new UIImageView(new CGRect(0, 0, GetScaledWidth(24F), titleBarHeight))
+            {
+                Image = UIImage.FromBundle(Constants.IMG_Back)
+            };
+            viewBack.AddSubview(imgViewBack);
+            viewTitleBar.AddSubview(viewBack);
+
+            UILabel lblTitle = new UILabel(new CGRect(GetScaledWidth(56F), 0, _navbarView.Frame.Width - (GetScaledWidth(56F) * 2), titleBarHeight))
+            {
+                Font = TNBFont.MuseoSans_16_500,
+                Text = GetI18NValue(EnquiryConstants.generalEnquiryTitle)
+            };
+
+            lblTitle.TextAlignment = UITextAlignment.Center;
+            lblTitle.TextColor = UIColor.White;
+            viewTitleBar.AddSubview(lblTitle);
+
+            UIView viewStepBar = new UIView(new CGRect(0, viewTitleBar.Frame.GetMaxY() + 4f, _navbarView.Frame.Width, titleBarHeight));
+            UILabel lblStep = new UILabel(new CGRect(GetScaledWidth(56F), 0, _navbarView.Frame.Width - (GetScaledWidth(56F) * 2), titleBarHeight))
+            {
+                Font = TNBFont.MuseoSans_12_500,
+                Text = GetI18NValue(EnquiryConstants.stepTitle2of2)
+            };
+
+            lblStep.TextAlignment = UITextAlignment.Center;
+            lblStep.TextColor = UIColor.White;
+            viewStepBar.AddSubview(lblStep);
+
+            viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                NavigationController.PopViewController(true);
+
+            }));
+
+            _navbarView.AddSubviews(viewTitleBar, viewStepBar);
+
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
+            _gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor.CGColor, endColor.CGColor }
+            };
+            _gradientLayer.StartPoint = new CGPoint(x: 0.0, y: 0.5);
+            _gradientLayer.EndPoint = new CGPoint(x: 1.0, y: 0.5);
+
+            _gradientLayer.Frame = _navbarView.Bounds;
+            _navbarView.Layer.InsertSublayer(_gradientLayer, 0);
+            View.AddSubview(_navbarView);
+        }
+
+
         private void AddScrollView()
         {
-            _svContainer = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height))
+            _svContainer = new UIScrollView(new CGRect(0, _navbarView.Frame.GetMaxY(), View.Frame.Width, View.Frame.Height))
             {
                 BackgroundColor = MyTNBColor.LightGrayBG
             };
@@ -124,8 +200,8 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            lblNameTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.nameHint).ToUpper()); //(GetI18NValue("nameHint") 
-            lblNameError = GetErrorLabel(GetI18NValue("nameHintBottom")); //(GetI18NValue("nameHint") 
+            lblNameTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.nameHint).ToUpper());
+            lblNameError = GetErrorLabel(GetI18NValue("nameHintBottom"));  
 
             txtFieldName = new UITextField
             {
@@ -150,8 +226,8 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            lblEmailTitle = GetTitleLabel(GetCommonI18NValue("emailAddress").ToUpper()); //(GetI18NValue("name") 
-            lblEmailError = GetErrorLabel(GetErrorI18NValue("invalid_email")); //(GetI18NValue("name")
+            lblEmailTitle = GetTitleLabel(GetCommonI18NValue("emailAddress").ToUpper());  
+            lblEmailError = GetErrorLabel(GetErrorI18NValue("invalid_email")); 
 
             txtFieldEmail = new UITextField
             {
@@ -176,8 +252,8 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            lblMobileTitle = GetTitleLabel(GetCommonI18NValue("mobileNumber").ToUpper()); //(GetI18NValue("name") 
-            lblMobileError = GetErrorLabel(GetErrorI18NValue("invalid_mobileNumber")); //(GetI18NValue("name")
+            lblMobileTitle = GetTitleLabel(GetCommonI18NValue("mobileNumber").ToUpper());
+            lblMobileError = GetErrorLabel(GetErrorI18NValue("invalid_mobileNumber")); 
 
             txtFieldMobile = new UITextField
             {
@@ -201,7 +277,14 @@ namespace myTNB
 
         private void AddCTA()
         {
-            _btnSubmitContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(145))
+            nfloat containerHeight = GetScaledHeight(80) + DeviceHelper.BottomSafeAreaInset;
+            nfloat yLoc = View.Frame.Height - DeviceHelper.TopSafeAreaInset - NavigationController.NavigationBar.Frame.Height - containerHeight;
+            if (DeviceHelper.IsIOS10AndBelow)
+            {
+                yLoc = ViewHeight - containerHeight;
+            }
+
+            _btnSubmitContainer = new UIView(new CGRect(0, yLoc + _navbarView.Frame.GetMaxY() - DeviceHelper.GetStatusBarHeight() ///DeviceHelper.GetStatusBarHeight() yLoc + _navbarView.Frame.GetMaxY()
                 , View.Frame.Width, DeviceHelper.GetScaledHeight(100)))
             {
                 BackgroundColor = UIColor.White
