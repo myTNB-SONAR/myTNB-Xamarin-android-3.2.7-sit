@@ -337,6 +337,8 @@ namespace myTNB
                 {
                     viewController.URL = item.Infographic_FullView_URL;
                     viewController.IsDelegateNeeded = false;
+                    viewController.IsShareableContent = true;
+                    viewController.ShareID = item.ID;
                     UINavigationController navController = new UINavigationController(viewController)
                     {
                         ModalPresentationStyle = UIModalPresentationStyle.FullScreen
