@@ -340,7 +340,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 }
                 else
                 {
-                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle"));
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "submittedEnquiryTitle"));
                 }
 
                 // relationship hide or not
@@ -470,9 +470,6 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
 
                 }
-
-
-
 
 
 
@@ -611,7 +608,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 txtInputLayoutDateTime.Hint = feedbackDateTimeTitle;
                 txtInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("Common", "accountNo");
                 txtInputLayoutFeedback.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "messageHint");
-                txtRelatedScreenshotTitle.Text = Utility.GetLocalizedLabel("FeedbackDetails", "photoTitle");
+                txtRelatedScreenshotTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "supportingDocTitle");
           
 
 

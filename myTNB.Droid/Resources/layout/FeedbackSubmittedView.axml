@@ -35,9 +35,9 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center"
-          android:layout_marginTop="48dp"
+          android:layout_marginTop="20dp"
           android:gravity="center"
-          android:src="@drawable/ic_empty_archived_message"/>
+          android:src="@drawable/group_4"/>
 
       <TextView
           android:id="@+id/txtEmptyFeedback"
@@ -45,7 +45,9 @@
           android:layout_height="wrap_content"
           android:layout_gravity="center"
           android:gravity="center"
-          android:padding="12dp"
+          android:paddingTop="24dp"
+          android:paddingRight="32dp"
+          android:paddingLeft="32dp"
           android:text="@string/select_submitted_feedback_empty_string"
           android:textColor="@color/silverChalice"
           android:textSize="12dp"/>
