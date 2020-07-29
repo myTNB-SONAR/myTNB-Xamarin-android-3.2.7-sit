@@ -73,6 +73,15 @@ namespace myTNB_Android.Src.Base.Activity
 
             imgFullView = FindViewById<SubsamplingScaleImageView>(Resource.Id.imgFullView);
 
+            try
+            {
+                imgFullView.SetMinimumScaleType(SubsamplingScaleImageView.ScaleTypeCenterInside);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             if (extra != null)
             {
                 if (extra.ContainsKey(Constants.IN_APP_LINK))
