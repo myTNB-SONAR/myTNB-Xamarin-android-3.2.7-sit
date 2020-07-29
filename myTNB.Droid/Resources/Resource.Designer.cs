@@ -162,14 +162,6 @@ namespace myTNB_Android
 			global::HockeyApp.Resource.Style.HockeyApp_EditTextStyle = global::myTNB_Android.Resource.Style.HockeyApp_EditTextStyle;
 			global::HockeyApp.Resource.Style.HockeyApp_SingleLineInputStyle = global::myTNB_Android.Resource.Style.HockeyApp_SingleLineInputStyle;
 			global::iTextSharpLGPLMonoForAndroid.Resource.String.library_name = global::myTNB_Android.Resource.String.library_name;
-			global::Syncfusion.SfPdfViewer.Android.Resource.String.sfpdfviewer_copy = global::myTNB_Android.Resource.String.sfpdfviewer_copy;
-			global::Syncfusion.SfPdfViewer.Android.Resource.String.sfpdfviewer_highlight = global::myTNB_Android.Resource.String.sfpdfviewer_highlight;
-			global::Syncfusion.SfPdfViewer.Android.Resource.String.sfpdfviewer_hyperlink_cancel = global::myTNB_Android.Resource.String.sfpdfviewer_hyperlink_cancel;
-			global::Syncfusion.SfPdfViewer.Android.Resource.String.sfpdfviewer_hyperlink_message = global::myTNB_Android.Resource.String.sfpdfviewer_hyperlink_message;
-			global::Syncfusion.SfPdfViewer.Android.Resource.String.sfpdfviewer_hyperlink_open = global::myTNB_Android.Resource.String.sfpdfviewer_hyperlink_open;
-			global::Syncfusion.SfPdfViewer.Android.Resource.String.sfpdfviewer_hyperlink_title = global::myTNB_Android.Resource.String.sfpdfviewer_hyperlink_title;
-			global::Syncfusion.SfPdfViewer.Android.Resource.String.sfpdfviewer_strikethrough = global::myTNB_Android.Resource.String.sfpdfviewer_strikethrough;
-			global::Syncfusion.SfPdfViewer.Android.Resource.String.sfpdfviewer_underline = global::myTNB_Android.Resource.String.sfpdfviewer_underline;
 			global::XamiTextSharpLGPL.Droid.Resource.String.library_name = global::myTNB_Android.Resource.String.library_name;
 			global::ZXing.Mobile.Resource.Id.contentFrame = global::myTNB_Android.Resource.Id.contentFrame;
 			global::ZXing.Mobile.Resource.Layout.zxingscanneractivitylayout = global::myTNB_Android.Resource.Layout.zxingscanneractivitylayout;
@@ -17165,451 +17157,427 @@ namespace myTNB_Android
 			public const int select_supply_activity_unknown_exception_error = 2131690497;
 			
 			// aapt resource value: 0x7F0F0402
-			public const int sfpdfviewer_copy = 2131690498;
+			public const int show_less = 2131690498;
 			
 			// aapt resource value: 0x7F0F0403
-			public const int sfpdfviewer_highlight = 2131690499;
+			public const int show_less_accounts = 2131690499;
 			
 			// aapt resource value: 0x7F0F0404
-			public const int sfpdfviewer_hyperlink_cancel = 2131690500;
+			public const int show_more = 2131690500;
 			
 			// aapt resource value: 0x7F0F0405
-			public const int sfpdfviewer_hyperlink_message = 2131690501;
+			public const int skip = 2131690501;
 			
 			// aapt resource value: 0x7F0F0406
-			public const int sfpdfviewer_hyperlink_open = 2131690502;
+			public const int smart_meter_learn_more_activity_title = 2131690502;
 			
 			// aapt resource value: 0x7F0F0407
-			public const int sfpdfviewer_hyperlink_title = 2131690503;
+			public const int smart_meter_learn_more_snackbar_error_btn = 2131690503;
 			
 			// aapt resource value: 0x7F0F0408
-			public const int sfpdfviewer_strikethrough = 2131690504;
+			public const int smart_meter_learn_more_snackbar_error_no_internet = 2131690504;
 			
 			// aapt resource value: 0x7F0F0409
-			public const int sfpdfviewer_underline = 2131690505;
+			public const int smr_contact_not_available_btn = 2131690505;
 			
 			// aapt resource value: 0x7F0F040A
-			public const int show_less = 2131690506;
+			public const int smr_contact_not_available_message = 2131690506;
 			
 			// aapt resource value: 0x7F0F040B
-			public const int show_less_accounts = 2131690507;
+			public const int smr_contact_not_available_title = 2131690507;
 			
 			// aapt resource value: 0x7F0F040C
-			public const int show_more = 2131690508;
+			public const int smr_manual_reading_down_title = 2131690508;
 			
 			// aapt resource value: 0x7F0F040D
-			public const int skip = 2131690509;
+			public const int smr_manual_reading_title = 2131690509;
 			
 			// aapt resource value: 0x7F0F040E
-			public const int smart_meter_learn_more_activity_title = 2131690510;
+			public const int ssmr_discontinue_activity_title = 2131690510;
 			
 			// aapt resource value: 0x7F0F040F
-			public const int smart_meter_learn_more_snackbar_error_btn = 2131690511;
+			public const int ssmr_discontinue_btn_submit = 2131690511;
 			
 			// aapt resource value: 0x7F0F0410
-			public const int smart_meter_learn_more_snackbar_error_no_internet = 2131690512;
+			public const int ssmr_discontinue_email_hint = 2131690512;
 			
 			// aapt resource value: 0x7F0F0411
-			public const int smr_contact_not_available_btn = 2131690513;
+			public const int ssmr_discontinue_mobile_no_hint = 2131690513;
 			
 			// aapt resource value: 0x7F0F0412
-			public const int smr_contact_not_available_message = 2131690514;
+			public const int ssmr_empty_history_message = 2131690514;
 			
 			// aapt resource value: 0x7F0F0413
-			public const int smr_contact_not_available_title = 2131690515;
+			public const int ssmr_meter_history_activity_title = 2131690515;
 			
 			// aapt resource value: 0x7F0F0414
-			public const int smr_manual_reading_down_title = 2131690516;
+			public const int ssmr_need_pay = 2131690516;
 			
 			// aapt resource value: 0x7F0F0415
-			public const int smr_manual_reading_title = 2131690517;
+			public const int ssmr_reading_history_tooltip_title = 2131690517;
 			
 			// aapt resource value: 0x7F0F0416
-			public const int ssmr_discontinue_activity_title = 2131690518;
+			public const int ssmr_readint_history_tooltip_message = 2131690518;
 			
 			// aapt resource value: 0x7F0F0417
-			public const int ssmr_discontinue_btn_submit = 2131690519;
+			public const int ssmr_select_discontinue_reason_hint = 2131690519;
 			
 			// aapt resource value: 0x7F0F0418
-			public const int ssmr_discontinue_email_hint = 2131690520;
+			public const int ssmr_select_discontinue_txt_reason_hint = 2131690520;
 			
 			// aapt resource value: 0x7F0F0419
-			public const int ssmr_discontinue_mobile_no_hint = 2131690521;
+			public const int ssmr_single_adjust_photo_note = 2131690521;
 			
 			// aapt resource value: 0x7F0F041A
-			public const int ssmr_empty_history_message = 2131690522;
+			public const int ssmr_single_take_photo_note = 2131690522;
 			
 			// aapt resource value: 0x7F0F041B
-			public const int ssmr_meter_history_activity_title = 2131690523;
+			public const int ssmr_submit_meter = 2131690523;
 			
 			// aapt resource value: 0x7F0F041C
-			public const int ssmr_need_pay = 2131690524;
+			public const int ssmr_submit_meter_reading_message_multiple = 2131690524;
 			
 			// aapt resource value: 0x7F0F041D
-			public const int ssmr_reading_history_tooltip_title = 2131690525;
+			public const int ssmr_submit_meter_reading_message_single = 2131690525;
 			
 			// aapt resource value: 0x7F0F041E
-			public const int ssmr_readint_history_tooltip_message = 2131690526;
+			public const int ssmr_submit_meter_reading_note = 2131690526;
 			
 			// aapt resource value: 0x7F0F041F
-			public const int ssmr_select_discontinue_reason_hint = 2131690527;
+			public const int ssmr_subscribe_terms_conditions = 2131690527;
 			
 			// aapt resource value: 0x7F0F0420
-			public const int ssmr_select_discontinue_txt_reason_hint = 2131690528;
+			public const int ssmr_terminate_terms_conditions = 2131690528;
 			
 			// aapt resource value: 0x7F0F0421
-			public const int ssmr_single_adjust_photo_note = 2131690529;
+			public const int ssmr_view_meter = 2131690529;
 			
 			// aapt resource value: 0x7F0F0422
-			public const int ssmr_single_take_photo_note = 2131690530;
-			
-			// aapt resource value: 0x7F0F0423
-			public const int ssmr_submit_meter = 2131690531;
-			
-			// aapt resource value: 0x7F0F0424
-			public const int ssmr_submit_meter_reading_message_multiple = 2131690532;
-			
-			// aapt resource value: 0x7F0F0425
-			public const int ssmr_submit_meter_reading_message_single = 2131690533;
-			
-			// aapt resource value: 0x7F0F0426
-			public const int ssmr_submit_meter_reading_note = 2131690534;
-			
-			// aapt resource value: 0x7F0F0427
-			public const int ssmr_subscribe_terms_conditions = 2131690535;
-			
-			// aapt resource value: 0x7F0F0428
-			public const int ssmr_terminate_terms_conditions = 2131690536;
+			public const int status_bar_notification_info_overflow = 2131690530;
 			
 			// aapt resource value: 0x7F0F0429
-			public const int ssmr_view_meter = 2131690537;
+			public const int submitICFeedback_account_number = 2131690537;
+			
+			// aapt resource value: 0x7F0F0423
+			public const int submitICFeedback_GeneralEnquirySuBTitle = 2131690531;
+			
+			// aapt resource value: 0x7F0F0424
+			public const int submitICFeedback_GeneralEnquiryTitle = 2131690532;
+			
+			// aapt resource value: 0x7F0F0425
+			public const int submitICFeedback_HowCanWehelp = 2131690533;
+			
+			// aapt resource value: 0x7F0F0426
+			public const int submitICFeedback_UpdatePersonal = 2131690534;
+			
+			// aapt resource value: 0x7F0F0427
+			public const int submitICFeedback_UpdatePersonalSub = 2131690535;
+			
+			// aapt resource value: 0x7F0F0428
+			public const int submitICFeedback_WhereisMyAccount = 2131690536;
 			
 			// aapt resource value: 0x7F0F042A
-			public const int status_bar_notification_info_overflow = 2131690538;
-			
-			// aapt resource value: 0x7F0F0431
-			public const int submitICFeedback_account_number = 2131690545;
+			public const int summary_dashboard_error_refresh = 2131690538;
 			
 			// aapt resource value: 0x7F0F042B
-			public const int submitICFeedback_GeneralEnquirySuBTitle = 2131690539;
+			public const int suppy_account_question_one = 2131690539;
 			
 			// aapt resource value: 0x7F0F042C
-			public const int submitICFeedback_GeneralEnquiryTitle = 2131690540;
+			public const int suppy_account_question_two = 2131690540;
 			
 			// aapt resource value: 0x7F0F042D
-			public const int submitICFeedback_HowCanWehelp = 2131690541;
+			public const int tenaga_nasional = 2131690541;
 			
 			// aapt resource value: 0x7F0F042E
-			public const int submitICFeedback_UpdatePersonal = 2131690542;
+			public const int terms_conditions_activity_title = 2131690542;
 			
 			// aapt resource value: 0x7F0F042F
-			public const int submitICFeedback_UpdatePersonalSub = 2131690543;
+			public const int text_app_version = 2131690543;
 			
 			// aapt resource value: 0x7F0F0430
-			public const int submitICFeedback_WhereisMyAccount = 2131690544;
+			public const int text_co2 = 2131690544;
+			
+			// aapt resource value: 0x7F0F0431
+			public const int text_kwh = 2131690545;
 			
 			// aapt resource value: 0x7F0F0432
-			public const int summary_dashboard_error_refresh = 2131690546;
+			public const int text_new_refresh = 2131690546;
 			
 			// aapt resource value: 0x7F0F0433
-			public const int suppy_account_question_one = 2131690547;
+			public const int text_new_refresh_content = 2131690547;
 			
 			// aapt resource value: 0x7F0F0434
-			public const int suppy_account_question_two = 2131690548;
+			public const int text_pay_bill = 2131690548;
 			
 			// aapt resource value: 0x7F0F0435
-			public const int tenaga_nasional = 2131690549;
+			public const int text_refresh = 2131690549;
 			
 			// aapt resource value: 0x7F0F0436
-			public const int terms_conditions_activity_title = 2131690550;
+			public const int text_rm = 2131690550;
 			
 			// aapt resource value: 0x7F0F0437
-			public const int text_app_version = 2131690551;
+			public const int text_total_amount = 2131690551;
 			
 			// aapt resource value: 0x7F0F0438
-			public const int text_co2 = 2131690552;
+			public const int title_current_payment_advice = 2131690552;
 			
 			// aapt resource value: 0x7F0F0439
-			public const int text_kwh = 2131690553;
+			public const int title_payment_advice_amount = 2131690553;
 			
 			// aapt resource value: 0x7F0F043A
-			public const int text_new_refresh = 2131690554;
+			public const int title_payment_total_receivable = 2131690554;
 			
 			// aapt resource value: 0x7F0F043B
-			public const int text_new_refresh_content = 2131690555;
+			public const int tnc_html = 2131690555;
 			
 			// aapt resource value: 0x7F0F043C
-			public const int text_pay_bill = 2131690556;
+			public const int tnc_title = 2131690556;
 			
 			// aapt resource value: 0x7F0F043D
-			public const int text_refresh = 2131690557;
+			public const int tnc_version = 2131690557;
 			
 			// aapt resource value: 0x7F0F043E
-			public const int text_rm = 2131690558;
+			public const int tooltip_btnLabel = 2131690558;
 			
 			// aapt resource value: 0x7F0F043F
-			public const int text_total_amount = 2131690559;
+			public const int tooltip_sm_what_are_these_link = 2131690559;
 			
 			// aapt resource value: 0x7F0F0440
-			public const int title_current_payment_advice = 2131690560;
+			public const int tooltip_sm_what_are_these_message = 2131690560;
 			
 			// aapt resource value: 0x7F0F0441
-			public const int title_payment_advice_amount = 2131690561;
+			public const int tooltip_what_does_this_link = 2131690561;
 			
 			// aapt resource value: 0x7F0F0442
-			public const int title_payment_total_receivable = 2131690562;
+			public const int tooltip_what_does_this_message = 2131690562;
 			
 			// aapt resource value: 0x7F0F0443
-			public const int tnc_html = 2131690563;
+			public const int total_amount = 2131690563;
 			
 			// aapt resource value: 0x7F0F0444
-			public const int tnc_title = 2131690564;
+			public const int total_amount_due = 2131690564;
 			
 			// aapt resource value: 0x7F0F0445
-			public const int tnc_version = 2131690565;
+			public const int total_amount_due_bill = 2131690565;
 			
 			// aapt resource value: 0x7F0F0446
-			public const int tooltip_btnLabel = 2131690566;
+			public const int tutorial_arrow_down = 2131690566;
 			
 			// aapt resource value: 0x7F0F0447
-			public const int tooltip_sm_what_are_these_link = 2131690567;
+			public const int unavailable_downtime_message = 2131690567;
 			
 			// aapt resource value: 0x7F0F0448
-			public const int tooltip_sm_what_are_these_message = 2131690568;
+			public const int unavailable_refresh_message = 2131690568;
 			
 			// aapt resource value: 0x7F0F0449
-			public const int tooltip_what_does_this_link = 2131690569;
+			public const int update_account_activity_title = 2131690569;
 			
 			// aapt resource value: 0x7F0F044A
-			public const int tooltip_what_does_this_message = 2131690570;
+			public const int update_account_btn_save = 2131690570;
 			
 			// aapt resource value: 0x7F0F044B
-			public const int total_amount = 2131690571;
+			public const int update_account_empty_nickname_error = 2131690571;
 			
 			// aapt resource value: 0x7F0F044C
-			public const int total_amount_due = 2131690572;
+			public const int update_account_hint_account_nickname = 2131690572;
 			
 			// aapt resource value: 0x7F0F044D
-			public const int total_amount_due_bill = 2131690573;
+			public const int update_account_progress_content = 2131690573;
 			
 			// aapt resource value: 0x7F0F044E
-			public const int tutorial_arrow_down = 2131690574;
+			public const int update_account_progress_title = 2131690574;
 			
 			// aapt resource value: 0x7F0F044F
-			public const int unavailable_downtime_message = 2131690575;
+			public const int update_dialog_message = 2131690575;
 			
 			// aapt resource value: 0x7F0F0450
-			public const int unavailable_refresh_message = 2131690576;
+			public const int update_dialog_title = 2131690576;
 			
 			// aapt resource value: 0x7F0F0451
-			public const int update_account_activity_title = 2131690577;
+			public const int update_mobile_activity_title = 2131690577;
 			
 			// aapt resource value: 0x7F0F0452
-			public const int update_account_btn_save = 2131690578;
+			public const int update_mobile_api_exception_btn_close = 2131690578;
 			
 			// aapt resource value: 0x7F0F0453
-			public const int update_account_empty_nickname_error = 2131690579;
+			public const int update_mobile_api_exception_error = 2131690579;
 			
 			// aapt resource value: 0x7F0F0454
-			public const int update_account_hint_account_nickname = 2131690580;
+			public const int update_mobile_btn_save = 2131690580;
 			
 			// aapt resource value: 0x7F0F0455
-			public const int update_account_progress_content = 2131690581;
+			public const int update_mobile_cancelled_exception_btn_close = 2131690581;
 			
 			// aapt resource value: 0x7F0F0456
-			public const int update_account_progress_title = 2131690582;
+			public const int update_mobile_cancelled_exception_error = 2131690582;
 			
 			// aapt resource value: 0x7F0F0457
-			public const int update_dialog_message = 2131690583;
+			public const int update_mobile_mobile_empty_error = 2131690583;
 			
 			// aapt resource value: 0x7F0F0458
-			public const int update_dialog_title = 2131690584;
+			public const int update_mobile_mobile_no = 2131690584;
 			
 			// aapt resource value: 0x7F0F0459
-			public const int update_mobile_activity_title = 2131690585;
+			public const int update_mobile_progress_content = 2131690585;
 			
 			// aapt resource value: 0x7F0F045A
-			public const int update_mobile_api_exception_btn_close = 2131690586;
+			public const int update_mobile_progress_title = 2131690586;
 			
 			// aapt resource value: 0x7F0F045B
-			public const int update_mobile_api_exception_error = 2131690587;
+			public const int update_mobile_unknown_exception_btn_close = 2131690587;
 			
 			// aapt resource value: 0x7F0F045C
-			public const int update_mobile_btn_save = 2131690588;
+			public const int update_mobile_unknown_exception_error = 2131690588;
 			
 			// aapt resource value: 0x7F0F045D
-			public const int update_mobile_cancelled_exception_btn_close = 2131690589;
+			public const int update_now = 2131690589;
 			
 			// aapt resource value: 0x7F0F045E
-			public const int update_mobile_cancelled_exception_error = 2131690590;
+			public const int update_password_activity_title = 2131690590;
 			
 			// aapt resource value: 0x7F0F045F
-			public const int update_mobile_mobile_empty_error = 2131690591;
+			public const int update_password_api_exception_btn_close = 2131690591;
 			
 			// aapt resource value: 0x7F0F0460
-			public const int update_mobile_mobile_no = 2131690592;
+			public const int update_password_api_exception_error = 2131690592;
 			
 			// aapt resource value: 0x7F0F0461
-			public const int update_mobile_progress_content = 2131690593;
+			public const int update_password_btn_save = 2131690593;
 			
 			// aapt resource value: 0x7F0F0462
-			public const int update_mobile_progress_title = 2131690594;
+			public const int update_password_cancelled_exception_btn_close = 2131690594;
 			
 			// aapt resource value: 0x7F0F0463
-			public const int update_mobile_unknown_exception_btn_close = 2131690595;
+			public const int update_password_cancelled_exception_error = 2131690595;
 			
 			// aapt resource value: 0x7F0F0464
-			public const int update_mobile_unknown_exception_error = 2131690596;
+			public const int update_password_empty_confirm_new_password = 2131690596;
 			
 			// aapt resource value: 0x7F0F0465
-			public const int update_now = 2131690597;
+			public const int update_password_empty_current_password = 2131690597;
 			
 			// aapt resource value: 0x7F0F0466
-			public const int update_password_activity_title = 2131690598;
+			public const int update_password_empty_new_password = 2131690598;
 			
 			// aapt resource value: 0x7F0F0467
-			public const int update_password_api_exception_btn_close = 2131690599;
+			public const int update_password_invalid_confirm_password = 2131690599;
 			
 			// aapt resource value: 0x7F0F0468
-			public const int update_password_api_exception_error = 2131690600;
+			public const int update_password_invalid_current_password = 2131690600;
 			
 			// aapt resource value: 0x7F0F0469
-			public const int update_password_btn_save = 2131690601;
+			public const int update_password_invalid_new_password = 2131690601;
 			
 			// aapt resource value: 0x7F0F046A
-			public const int update_password_cancelled_exception_btn_close = 2131690602;
+			public const int update_password_progress_content = 2131690602;
 			
 			// aapt resource value: 0x7F0F046B
-			public const int update_password_cancelled_exception_error = 2131690603;
+			public const int update_password_progress_title = 2131690603;
 			
 			// aapt resource value: 0x7F0F046C
-			public const int update_password_empty_confirm_new_password = 2131690604;
+			public const int update_password_unknown_exception_btn_close = 2131690604;
 			
 			// aapt resource value: 0x7F0F046D
-			public const int update_password_empty_current_password = 2131690605;
+			public const int update_password_unknown_exception_error = 2131690605;
 			
 			// aapt resource value: 0x7F0F046E
-			public const int update_password_empty_new_password = 2131690606;
+			public const int verfiy_mobile_validation_pin_info_wildcard = 2131690606;
 			
 			// aapt resource value: 0x7F0F046F
-			public const int update_password_invalid_confirm_password = 2131690607;
+			public const int verification_alert_dialog_message = 2131690607;
 			
 			// aapt resource value: 0x7F0F0470
-			public const int update_password_invalid_current_password = 2131690608;
+			public const int verification_alert_dialog_title = 2131690608;
 			
 			// aapt resource value: 0x7F0F0471
-			public const int update_password_invalid_new_password = 2131690609;
+			public const int verification_success_alert_dialog_title = 2131690609;
 			
 			// aapt resource value: 0x7F0F0472
-			public const int update_password_progress_content = 2131690610;
+			public const int verification_success_btn_close = 2131690610;
 			
 			// aapt resource value: 0x7F0F0473
-			public const int update_password_progress_title = 2131690611;
+			public const int verify_mobile_no = 2131690611;
 			
 			// aapt resource value: 0x7F0F0474
-			public const int update_password_unknown_exception_btn_close = 2131690612;
+			public const int verify_mobile_no_info = 2131690612;
 			
 			// aapt resource value: 0x7F0F0475
-			public const int update_password_unknown_exception_error = 2131690613;
+			public const int viewbill_activity_title = 2131690613;
 			
 			// aapt resource value: 0x7F0F0476
-			public const int verfiy_mobile_validation_pin_info_wildcard = 2131690614;
+			public const int walkthrough_1_content = 2131690614;
 			
 			// aapt resource value: 0x7F0F0477
-			public const int verification_alert_dialog_message = 2131690615;
+			public const int walkthrough_1_heading = 2131690615;
 			
 			// aapt resource value: 0x7F0F0478
-			public const int verification_alert_dialog_title = 2131690616;
+			public const int walkthrough_2_content = 2131690616;
 			
 			// aapt resource value: 0x7F0F0479
-			public const int verification_success_alert_dialog_title = 2131690617;
+			public const int walkthrough_2_heading = 2131690617;
 			
 			// aapt resource value: 0x7F0F047A
-			public const int verification_success_btn_close = 2131690618;
+			public const int walkthrough_3_content = 2131690618;
 			
 			// aapt resource value: 0x7F0F047B
-			public const int verify_mobile_no = 2131690619;
+			public const int walkthrough_3_heading = 2131690619;
 			
 			// aapt resource value: 0x7F0F047C
-			public const int verify_mobile_no_info = 2131690620;
+			public const int walkthrough_btn_done = 2131690620;
 			
 			// aapt resource value: 0x7F0F047D
-			public const int viewbill_activity_title = 2131690621;
+			public const int walkthrough_btn_skip = 2131690621;
 			
 			// aapt resource value: 0x7F0F047E
-			public const int walkthrough_1_content = 2131690622;
+			public const int walkthrough_done = 2131690622;
 			
 			// aapt resource value: 0x7F0F047F
-			public const int walkthrough_1_heading = 2131690623;
+			public const int walkthrough_install_msg_1 = 2131690623;
 			
 			// aapt resource value: 0x7F0F0480
-			public const int walkthrough_2_content = 2131690624;
+			public const int walkthrough_install_msg_2 = 2131690624;
 			
 			// aapt resource value: 0x7F0F0481
-			public const int walkthrough_2_heading = 2131690625;
+			public const int walkthrough_install_msg_3 = 2131690625;
 			
 			// aapt resource value: 0x7F0F0482
-			public const int walkthrough_3_content = 2131690626;
+			public const int walkthrough_install_title_1 = 2131690626;
 			
 			// aapt resource value: 0x7F0F0483
-			public const int walkthrough_3_heading = 2131690627;
+			public const int walkthrough_install_title_2 = 2131690627;
 			
 			// aapt resource value: 0x7F0F0484
-			public const int walkthrough_btn_done = 2131690628;
+			public const int walkthrough_install_title_3 = 2131690628;
 			
 			// aapt resource value: 0x7F0F0485
-			public const int walkthrough_btn_skip = 2131690629;
+			public const int walkthrough_update_msg_1 = 2131690629;
 			
 			// aapt resource value: 0x7F0F0486
-			public const int walkthrough_done = 2131690630;
+			public const int walkthrough_update_title_1 = 2131690630;
 			
 			// aapt resource value: 0x7F0F0487
-			public const int walkthrough_install_msg_1 = 2131690631;
+			public const int weblink_activity_title = 2131690631;
 			
 			// aapt resource value: 0x7F0F0488
-			public const int walkthrough_install_msg_2 = 2131690632;
+			public const int welcome = 2131690632;
 			
 			// aapt resource value: 0x7F0F0489
-			public const int walkthrough_install_msg_3 = 2131690633;
+			public const int welcome_back = 2131690633;
 			
 			// aapt resource value: 0x7F0F048A
-			public const int walkthrough_install_title_1 = 2131690634;
+			public const int what_is_this = 2131690634;
 			
 			// aapt resource value: 0x7F0F048B
-			public const int walkthrough_install_title_2 = 2131690635;
+			public const int where_is_my_account_no = 2131690635;
 			
 			// aapt resource value: 0x7F0F048C
-			public const int walkthrough_install_title_3 = 2131690636;
+			public const int where_is_my_account_no_text = 2131690636;
 			
 			// aapt resource value: 0x7F0F048D
-			public const int walkthrough_update_msg_1 = 2131690637;
+			public const int why_this_amount = 2131690637;
 			
 			// aapt resource value: 0x7F0F048E
-			public const int walkthrough_update_title_1 = 2131690638;
-			
-			// aapt resource value: 0x7F0F048F
-			public const int weblink_activity_title = 2131690639;
-			
-			// aapt resource value: 0x7F0F0490
-			public const int welcome = 2131690640;
-			
-			// aapt resource value: 0x7F0F0491
-			public const int welcome_back = 2131690641;
-			
-			// aapt resource value: 0x7F0F0492
-			public const int what_is_this = 2131690642;
-			
-			// aapt resource value: 0x7F0F0493
-			public const int where_is_my_account_no = 2131690643;
-			
-			// aapt resource value: 0x7F0F0494
-			public const int where_is_my_account_no_text = 2131690644;
-			
-			// aapt resource value: 0x7F0F0495
-			public const int why_this_amount = 2131690645;
-			
-			// aapt resource value: 0x7F0F0496
-			public const int yes = 2131690646;
+			public const int yes = 2131690638;
 			
 			static String()
 			{
