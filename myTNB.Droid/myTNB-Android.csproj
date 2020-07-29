@@ -212,15 +212,6 @@
     <Reference Include="Square.Picasso, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Square.Picasso.2.5.2.1\lib\MonoAndroid\Square.Picasso.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.Compression.Portable, Version=15.4451.0.17, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.Compression.15.4.0.17\lib\MonoAndroid10\Syncfusion.Compression.Portable.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.Pdf.Portable, Version=15.4451.0.17, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.Pdf.15.4.0.17\lib\MonoAndroid10\Syncfusion.Pdf.Portable.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.SfPdfViewer.Android, Version=15.4451.0.17, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfPdfViewer.Android.15.4.0.17\lib\MonoAndroid10\Syncfusion.SfPdfViewer.Android.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.3.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
@@ -5297,6 +5288,9 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Base\Activity\BaseFullScreenImageViewActivity.cs" />
+    <Compile Include="Src\Utils\PDFView\PDFView.cs" />
+    <Compile Include="Src\Utils\PDFView\PDFRegionDecoder.cs" />
+    <Compile Include="Src\Utils\PDFView\PDFDecodeFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -5591,6 +5585,7 @@
     <Folder Include="Src\UpdateMobileNo\Api\" />
     <Folder Include="Src\UpdateNickname\Api\" />
     <Folder Include="Src\UpdatePassword\Api\" />
+    <Folder Include="Src\Utils\PDFView\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
