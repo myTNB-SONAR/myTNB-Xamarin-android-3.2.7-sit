@@ -59,22 +59,14 @@ namespace myTNB_Android.Src.FeedbackFullScreenImage.Activity
 
                 base.OnCreate(savedInstanceState);
                 imgFeedback.Visibility = ViewStates.Visible;
-                // Create your application here
-                //Picasso.With(this)
-                //    .Load(new Java.IO.File(attachedImage.Path))
-                //    .Fit()
-                //    .Into(imgFeedback , delegate 
-                //    {
-                //        if (imgProgress != null)
-                //        {
-                //            imgProgress.Visibility = ViewStates.Gone;
-                //        }
-                //        if (imgFeedback != null)
-                //        {
-                //            imgFeedback.Visibility = ViewStates.Visible;
-                //        }
-
-                //    } , delegate { } );
+                try
+                {
+                    imgFeedback.SetMinimumScaleType(SubsamplingScaleImageView.ScaleTypeCenterInside);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
 
                 Java.IO.File temp = new Java.IO.File(attachedImage.Path);
 

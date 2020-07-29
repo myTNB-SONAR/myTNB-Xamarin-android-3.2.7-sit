@@ -132,7 +132,7 @@
                     android:orientation="vertical"
                     android:visibility="gone"
                     android:id="@+id/whatsNewFullPDFDetailLayout">
-                    <Syncfusion.SfPdfViewer.Android.SfPdfViewer
+                    <myTNB_Android.Src.Utils.PDFView.PDFView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/pdfFullView" />

@@ -23,8 +23,8 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.PDFView;
 using Newtonsoft.Json;
-using Syncfusion.SfPdfViewer.Android;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -81,7 +81,7 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 		LinearLayout whatsNewFullPDFDetailLayout;
 
 		[BindView(Resource.Id.pdfFullView)]
-		SfPdfViewer pdfFullView;
+		PDFView pdfFullView;
 
 		WhatsNewDetailContract.IWhatsNewDetailPresenter presenter;
 
@@ -100,8 +100,6 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 		private Snackbar mNoInternetSnackbar;
 
 		private bool fullScreenFirstLoaded = false;
-
-		private bool isLoadedDocument = false;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -128,7 +126,6 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 			try
 			{
 				fullScreenFirstLoaded = false;
-				isLoadedDocument = false;
 
 				Bundle extras = Intent.Extras;
 
@@ -148,6 +145,15 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 			}
 			catch (Exception e)
 			{
+				Utility.LoggingNonFatalError(e);
+			}
+
+			try
+            {
+				imgFullView.SetMinimumScaleType(SubsamplingScaleImageView.ScaleTypeCenterInside);
+			}
+			catch (Exception e)
+            {
 				Utility.LoggingNonFatalError(e);
 			}
 		}
@@ -265,12 +271,6 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 
 		protected override void OnDestroy()
         {
-            if (isLoadedDocument)
-            {
-                pdfFullView.Unload();
-                isLoadedDocument = false;
-            }
-
             base.OnDestroy();
         }
 
@@ -1048,11 +1048,10 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 
 						Java.IO.File file = new Java.IO.File(path);
 
-                        using (Stream PdfStream = File.Open(file.AbsolutePath, FileMode.Open))
-                        {
-                            pdfFullView.LoadDocument(PdfStream);
-                            isLoadedDocument = true;
-                        }
+						pdfFullView
+							.FromFile(file)
+							.Show();
+
 					}
 					catch (Exception ex)
 					{

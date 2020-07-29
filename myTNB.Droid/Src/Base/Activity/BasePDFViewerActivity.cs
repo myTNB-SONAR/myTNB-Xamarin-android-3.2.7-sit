@@ -7,7 +7,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Utils;
-using Syncfusion.SfPdfViewer.Android;
+using myTNB_Android.Src.Utils.PDFView;
 using System;
 using System.IO;
 using System.Net;
@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.Base.Activity
     {
 
         [BindView(Resource.Id.rootView)]
-        public static FrameLayout baseView;
+        public static LinearLayout baseView;
 
         private bool isLoadedDocument = false;
 
@@ -32,7 +32,7 @@ namespace myTNB_Android.Src.Base.Activity
 
         CancellationTokenSource cts;
 
-        SfPdfViewer pdfViewer;
+        PDFView pdfViewer;
 
         private string pdfLink = "";
 
@@ -100,8 +100,8 @@ namespace myTNB_Android.Src.Base.Activity
             {
                 cts = new CancellationTokenSource();
 
-                baseView = FindViewById<FrameLayout>(Resource.Id.rootView);
-                pdfViewer = FindViewById<SfPdfViewer>(Resource.Id.pdf_viewer_control_view);
+                baseView = FindViewById<LinearLayout>(Resource.Id.rootView);
+                pdfViewer = FindViewById<PDFView>(Resource.Id.pdf_viewer_control_view);
 
                 try
                 {
@@ -135,23 +135,23 @@ namespace myTNB_Android.Src.Base.Activity
                     Utility.LoggingNonFatalError(e);
                 }
 
-                MemoryStream PdfStream = new MemoryStream();
+                string downloadPath = "";
 
                 await Task.Run(() =>
                 {
-                    PdfStream = OnDownloadPDF();
+                    downloadPath = OnDownloadPDF();
                 }, cts.Token);
 
-                if (PdfStream != null)
+                if (!string.IsNullOrEmpty(downloadPath))
                 {
                     try
                     {
-                        using (StreamReader sr = new StreamReader(PdfStream))
-                        {
-                            pdfViewer.LoadDocument(sr.BaseStream);
-                            isLoadedDocument = true;
-                        }
+                        Java.IO.File file = new Java.IO.File(downloadPath);
 
+                        pdfViewer
+                            .FromFile(file)
+                            .Show();
+                        isLoadedDocument = true;
                     }
                     catch (Exception e)
                     {
@@ -176,26 +176,61 @@ namespace myTNB_Android.Src.Base.Activity
 
         }
 
-        public MemoryStream OnDownloadPDF()
+        public string OnDownloadPDF()
         {
-            MemoryStream stream = new MemoryStream();
+            string path = "";
 
             try
             {
                 if (!string.IsNullOrEmpty(pdfLink))
                 {
-                    using (WebClient client = new WebClient())
+                    string rootPath = this.FilesDir.AbsolutePath;
+
+                    if (Utils.FileUtils.IsExternalStorageReadable() && Utils.FileUtils.IsExternalStorageWritable())
                     {
-                        var pdfByte = client.DownloadData(pdfLink);
-                        stream.Write(pdfByte, 0, pdfByte.Length);
+                        rootPath = this.GetExternalFilesDir(null).AbsolutePath;
+                    }
+
+                    var directory = System.IO.Path.Combine(rootPath, "pdf");
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    string filename = "temp.pdf";
+
+                    path = System.IO.Path.Combine(directory, filename);
+
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        if (File.Exists(path))
+                        {
+                            File.Delete(path);
+                        }
+
+                        try
+                        {
+                            using (WebClient client = new WebClient())
+                            {
+                                client.DownloadFile(pdfLink, path);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            path = "";
+                            Log.Debug("ViewBillActivity", e.StackTrace);
+                            Utility.LoggingNonFatalError(e);
+                        }
+
                     }
                 }
             }
             catch (Exception e)
             {
+                path = "";
                 Utility.LoggingNonFatalError(e);
             }
-            return stream;
+            return path;
         }
 
         protected override void OnDestroy()
@@ -206,7 +241,6 @@ namespace myTNB_Android.Src.Base.Activity
             }
             if (isLoadedDocument)
             {
-                pdfViewer.Unload();
                 isLoadedDocument = false;
             }
 
