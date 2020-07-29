@@ -1831,6 +1831,16 @@
     <ImageAsset Include="Assets\Assets.xcassets\WhatsNew-Popup-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets\Assets.xcassets\WhatsNew-Popup-Banner.imageset\group5Copy%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\WhatsNew-Popup-Banner.imageset\group5Copy%403x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\IC-Tile-FeedbackBill.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Assets.xcassets\IC-Tile-FeedbackBill.imageset\generalEnquiry.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\IC-Tile-FeedbackBill.imageset\generalEnquiry%402x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\IC-Tile-FeedbackBill.imageset\icTileFeedbackBill.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\IC-Tile-FeedbackBill.imageset\icTileFeedbackBill%402x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\IC-Tile-FeedbackBill.imageset\icTileFeedbackBill%403x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\Update-PersonalDetails.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Assets.xcassets\Update-PersonalDetails.imageset\updatePersonalDetails.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\Update-PersonalDetails.imageset\updatePersonalDetails%402x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\Update-PersonalDetails.imageset\updatePersonalDetails%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1993,6 +2003,8 @@
     <Folder Include="Assets\Assets.xcassets\WhatsNew-Popup-Banner.imageset\" />
     <Folder Include="Home\Dashboard\DashboardHome\Home Popup\" />
     <Folder Include="Model\GetSearchForAccount\" />
+    <Folder Include="Assets\Assets.xcassets\IC-Tile-FeedbackBill.imageset\" />
+    <Folder Include="Assets\Assets.xcassets\Update-PersonalDetails.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2851,6 +2863,7 @@
       <DependentUpon>EnquiryTNCViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\GetSearchForAccount\GetSearchForAccountResponseModel.cs" />
+    <Compile Include="Feedback\Feedback Image\ImageDataEnquiryTempModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">
