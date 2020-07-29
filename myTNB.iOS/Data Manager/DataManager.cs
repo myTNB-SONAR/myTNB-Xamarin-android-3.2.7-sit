@@ -8,6 +8,7 @@ using myTNB.Model;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using Newtonsoft.Json;
+using UIKit;
 
 namespace myTNB.DataManager
 {
@@ -108,11 +109,12 @@ namespace myTNB.DataManager
         public int Relationship = 0;
         public string RelationshipDesc = null;
         public List<FeedbackUpdateDetailsModel> FeedbackUpdateDetails = new List<FeedbackUpdateDetailsModel>();
-        public NSData imageWhereAcc;
-        public NSData imageCopyIC;
-        public NSData imageConsent;
-        
-                
+        public UIImage imageWhereAcc;
+        public UIImage imageCopyIC;
+        public UIImage imageConsent;
+        public UIImage imagePermises;
+
+
 
         //Find Us
         public int CurrentStoreTypeIndex = 0;
