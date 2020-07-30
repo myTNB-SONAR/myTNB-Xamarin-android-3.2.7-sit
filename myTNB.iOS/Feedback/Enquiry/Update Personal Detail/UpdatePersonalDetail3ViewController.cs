@@ -29,7 +29,7 @@ namespace myTNB
         private UIView _viewTitleSection, _btnSubmitContainer;
         private UIView viewCheckBoxTNC;
         private UIScrollView _svContainer;
-        private UITextView txtFieldInfo;
+        //private UITextView txtFieldInfo;
         private UITextView lblTNC;
         private UIButton _btnSubmit;
 
@@ -417,22 +417,25 @@ namespace myTNB
             };
             viewCheckBoxTNC.AddSubview(imgViewCheckBoxTNC);
 
-            txtFieldInfo = IsTNC ? GetInfoTNCRead() : GetInfoTNC();
+            UITextView txtFieldInfo = GetInfoTNC(); //IsTNC ? GetInfoTNCRead() : GetInfoTNC();
 
             viewCheckBoxTNC.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 IsTNC = !IsTNC;
                 imgViewCheckBoxTNC.Hidden = !IsTNC;
                 viewCheckBoxTNC.Layer.BorderColor = IsTNC ? UIColor.Clear.CGColor : MyTNBColor.VeryLightPinkSeven.CGColor;
-                txtFieldInfo.RemoveFromSuperview();
-                txtFieldInfo = IsTNC ? GetInfoTNCRead() : GetInfoTNC();
+
+                _btnSubmitContainer.RemoveFromSuperview();
+                AddTnCSection();
+                txtFieldInfo = GetInfoTNC();//IsTNC ? GetInfoTNCRead() : GetInfoTNC();
+
                 _btnSubmitContainer.AddSubviews(txtFieldInfo);
                 SetSubmitButtonEnable();
             }));
 
             _btnSubmit = new CustomUIButtonV2()
             {
-                Frame = new CGRect(BaseMargin, GetYLocationFromFrame(txtFieldInfo.Frame, 16), BaseMarginedWidth, GetScaledHeight(48)),
+                Frame = new CGRect(18, GetYLocationFromFrame(txtFieldInfo.Frame, 16), _btnSubmitContainer.Frame.Width - 36, 48),
                 Enabled = true,
                 BackgroundColor = MyTNBColor.FreshGreen
             };
@@ -451,7 +454,8 @@ namespace myTNB
         private UITextView GetInfoTNC()
         {
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTnc)
+            NSAttributedString htmlBody = IsTNC ? TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTncRead)
+                        , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F)) : TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTnc)
                         , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F)) ;
             
             NSMutableAttributedString mutableHTMLFooter = new NSMutableAttributedString(htmlBody);
@@ -467,10 +471,10 @@ namespace myTNB
             {
                 ForegroundColor = MyTNBColor.CharcoalGrey
             }, new NSRange(0, htmlBody.Length));
-            lblTNC = new UITextView
+            UITextView lblTNC = new UITextView
             {
                 Editable = false,
-                ScrollEnabled = true,
+                ScrollEnabled = false,
                 AttributedText = mutableHTMLBody,
                 WeakLinkTextAttributes = linkAttributes.Dictionary,
                 TextAlignment = UITextAlignment.Left
@@ -496,7 +500,7 @@ namespace myTNB
             }));
             //Resize
             CGSize size = lblTNC.SizeThatFits(new CGSize(View.Frame.Width - 23, GetScaledHeight(160)));
-            lblTNC.Frame = new CGRect(GetXLocationFromFrame(viewCheckBoxTNC.Frame, 8F), 16, BaseMarginedWidth, size.Height);
+            lblTNC.Frame = new CGRect(GetXLocationFromFrame(viewCheckBoxTNC.Frame, 8F), 16, View.Frame.Width - GetXLocationFromFrame(viewCheckBoxTNC.Frame, 8F) - 16, size.Height);///size.Height
             return lblTNC;
         }
 
@@ -548,7 +552,7 @@ namespace myTNB
             }));
             //Resize
             CGSize size = lblTNC.SizeThatFits(new CGSize(View.Frame.Width - 23, GetScaledHeight(160)));
-            lblTNC.Frame = new CGRect(GetXLocationFromFrame(viewCheckBoxTNC.Frame, 8F), 16, BaseMarginedWidth , size.Height);
+            lblTNC.Frame = new CGRect(GetXLocationFromFrame(viewCheckBoxTNC.Frame, 8F), 16, View.Frame.Width - GetXLocationFromFrame(viewCheckBoxTNC.Frame, 8F), size.Height);
             return lblTNC;
         }
 

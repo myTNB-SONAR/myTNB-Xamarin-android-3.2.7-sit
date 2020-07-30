@@ -730,7 +730,7 @@ namespace myTNB
                     BackgroundColor = UIColor.Clear
                 };
 
-                lblAccOwnerNameTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.accNametitle).ToUpper()); 
+                lblAccOwnerNameTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.accNameHint).ToUpper()); 
                 lblAccOwnerNameError = GetErrorLabel(GetI18NValue(EnquiryConstants.ownerReq)); 
 
                 txtFieldAccOwnerName = new UITextField

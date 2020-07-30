@@ -194,12 +194,12 @@ namespace myTNB
                     BackgroundColor = UIColor.White
                 };
 
-                lblRedirectTNC = new UILabel(new CGRect(18, 16, _containerRedirectTNC1.Frame.Width - 16, 20))
+                lblRedirectTNC = new UILabel(new CGRect(18, 16, _containerRedirectTNC1.Frame.Width - 16 - 20 - 24, 20))
                 {
                     Font = TNBFont.MuseoSans_14_500,
                     TextColor = MyTNBColor.WaterBlue,
                     Text = GetI18NValue(EnquiryConstants.tnbTermUse),
-                    LineBreakMode = UILineBreakMode.WordWrap,
+                    LineBreakMode = UILineBreakMode.TailTruncation,
                 };
 
                 imgViewRedirectTNC = new UIImageView(new CGRect(View.Frame.Width - 16 - 20, 16, GetScaledWidth(20F), GetScaledHeight(20F)))
@@ -231,7 +231,7 @@ namespace myTNB
                 BackgroundColor = UIColor.White
             };
 
-            lblRedirectTNC2 = new UILabel(new CGRect(18, 16, _containerRedirectTNC2.Frame.Width - 16, 20))
+            lblRedirectTNC2 = new UILabel(new CGRect(18, 16, _containerRedirectTNC2.Frame.Width - GetScaledWidth(20F) - 16f, 20))
             {
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.WaterBlue,

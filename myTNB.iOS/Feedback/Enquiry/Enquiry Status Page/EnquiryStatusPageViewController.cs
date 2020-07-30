@@ -191,7 +191,7 @@ namespace myTNB
             {
                 if (IsSuccess)
                 {
-                    GetCTA2(ref btnSecondary, GetI18NValue(EnquiryConstants.backHomeButton), false, _actions.BackToFeedback, false);
+                    GetCTA2(ref btnSecondary, GetI18NValue(EnquiryConstants.backHomeButton), false, _actions.BackToHome, false);
                     GetCTA2(ref btnPrimary, GetI18NValue(EnquiryConstants.viewSubmittedEnquiry), true, null, true); //ViewSubmittedEnquiry
                 }
                 else
@@ -232,7 +232,20 @@ namespace myTNB
             btn.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 if(ctaAction != null)
-                { ctaAction.Invoke(); }
+                {
+                    if (DataManager.DataManager.SharedInstance.IsLoggedIn())
+                    {
+                        ctaAction.Invoke();
+                    }
+                    else
+                    {
+                        UIStoryboard loginStoryboard = UIStoryboard.FromName("Login", null);
+                        UIViewController preloginVC = (UIViewController)loginStoryboard.InstantiateViewController("PreloginViewController");
+                        preloginVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
+                        preloginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                        PresentViewController(preloginVC, true, null);
+                    }
+                }
                 else { ExecuteGetSubmittedFeedbackDetailsCall(); }
             }));
         }

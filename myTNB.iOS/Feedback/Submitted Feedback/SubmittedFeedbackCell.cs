@@ -10,7 +10,7 @@ namespace myTNB
 
         public SubmittedFeedbackCell(IntPtr handle) : base(handle)
         {
-            imgViewIcon = new UIImageView(new CGRect(16, 18, 24, 24));
+            imgViewIcon = new UIImageView(new CGRect(16, 20, 24, 24));
 
             AddSubview(imgViewIcon);
         }
@@ -19,8 +19,8 @@ namespace myTNB
         {
             lblFeedbackType.Font = MyTNBFont.MuseoSans14_300;
             lblFeedbackType.TextColor = MyTNBColor.TunaGrey();
-            lblDetails.Font = MyTNBFont.MuseoSans9_300;
-            lblDetails.TextColor = MyTNBColor.SilverChalice;
+            //lblDetails.Font = MyTNBFont.MuseoSans9_300;
+            //lblDetails.TextColor = MyTNBColor.SilverChalice;
             lblDate.Font = MyTNBFont.MuseoSans9_300;
             lblDate.TextColor = MyTNBColor.SilverChalice;
         }
@@ -33,13 +33,13 @@ namespace myTNB
             }
         }
 
-        public UILabel FeedbackDetailsLabel
-        {
-            get
-            {
-                return lblDetails;
-            }
-        }
+        //public UILabel FeedbackDetailsLabel
+        //{
+        //    get
+        //    {
+        //        return lblDetails;
+        //    }
+        //}
 
         public UILabel FeedbackDateLabel
         {

@@ -24,6 +24,9 @@ namespace myTNB
         private UILabel lblTitleStatus2;
         private UILabel lblValueStatus2;
         private UILabel lblAccountNumber;
+        private UIView viewLineContainer1;
+        private UILabel lblSRNumberTitle;
+        private UILabel lblSRNumber;
         private UIView _container3;
         private UILabel lblTitlePhoto;
         private UIView _containerImage;
@@ -42,6 +45,8 @@ namespace myTNB
         private UILabel lblContactEmail;
         private UILabel lblTitleContactMobile;
         private UILabel lblContactMobile;
+
+        private string statusName;
 
         public override void ViewDidLoad()
         {
@@ -90,19 +95,20 @@ namespace myTNB
         }
 
         public void _containerOne()
-        {
+        { 
+
             var firstAttributes = new UIStringAttributes
             {
-                ForegroundColor = MyTNBColor.SilverChalice,
+                ForegroundColor = MyTNBColor.GreyishBrown,
                 Font = TNBFont.MuseoSans_16_500
             };
 
-            _container1 = new UIView(new CGRect(0, 0, View.Frame.Width, 80))
+            _container1 = new UIView(new CGRect(0, 0, View.Frame.Width, 153)) //80
                 {
                     BackgroundColor = UIColor.White
                 };
 
-                lblTitleStatus = new UILabel(new CGRect(18, 16, _container1.Frame.Width - 18, 24))
+                lblTitleStatus = new UILabel(new CGRect(18, 16, _container1.Frame.Width - 36, 24))
                 {
                     Font = TNBFont.MuseoSans_16_500,
                     TextColor = MyTNBColor.CharcoalGrey,
@@ -110,6 +116,7 @@ namespace myTNB
                 };
 
                 string statusCode = _feedbackDetails.StatusCode;
+                
                 switch (statusCode)
                 {
                     case "CL01":
@@ -120,6 +127,7 @@ namespace myTNB
                             ForegroundColor = MyTNBColor.CharcoalGrey,
                             Font = TNBFont.MuseoSans_16_500
                         };
+                        statusName = GetI18NValue("enquiryCL01");
                         break;
                         }
                     case "CL02":
@@ -130,6 +138,7 @@ namespace myTNB
                             ForegroundColor = MyTNBColor.SunGlow,
                             Font = TNBFont.MuseoSans_16_500
                         };
+                        statusName = GetI18NValue("enquiryCL02");
                         break;
                         }
                     case "CL03":
@@ -141,6 +150,7 @@ namespace myTNB
                             ForegroundColor = MyTNBColor.FreshGreen,
                             Font = TNBFont.MuseoSans_16_500
                         };
+                        statusName = GetI18NValue("enquiryCL04");
                         break;
                         }
                     case "CL06":
@@ -151,24 +161,51 @@ namespace myTNB
                             ForegroundColor = MyTNBColor.Tomato,
                             Font = TNBFont.MuseoSans_16_500
                         };
+                        statusName = GetI18NValue("enquiryCL06");
                         break;
                         }
                 }
-            var prettyString = new NSMutableAttributedString("Status : " + _feedbackDetails.StatusDesc ?? string.Empty);
-            prettyString.SetAttributes(firstAttributes.Dictionary, new NSRange(8, _feedbackDetails.StatusDesc.Length + 1 ));
+            var prettyString = new NSMutableAttributedString("Status : " + statusName ?? string.Empty);//_feedbackDetails.StatusDesc
+            prettyString.SetAttributes(firstAttributes.Dictionary, new NSRange(8, statusName.Length + 1 ));//_feedbackDetails.StatusDesc.Length + 1 
             lblTitleStatus.AttributedText = prettyString;
 
 
-            lblAccountNumber = new UILabel(new CGRect(18, lblTitleStatus.Frame.GetMaxY() + 4, _container1.Frame.Width, 24))
+            lblAccountNumber = new UILabel(new CGRect(18, lblTitleStatus.Frame.GetMaxY() + 4, _container1.Frame.Width - 36, 24))
                 {
                     Font = TNBFont.MuseoSans_14_300,
-                    TextColor = MyTNBColor.TunaGrey(),
+                    TextColor = MyTNBColor.CharcoalGrey,
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.WordWrap,
-                    Text = _feedbackDetails.AccountNum 
                 };
+            if (DataManager.DataManager.SharedInstance.IsLoggedIn())
+            {
+                lblAccountNumber.Text = GetI18NValue("for") +" "+ (AccountManager.GetNickname(_feedbackDetails.AccountNum) != string.Empty ? AccountManager.GetNickname(_feedbackDetails.AccountNum) : _feedbackDetails.AccountNum);
+            }
+            else { lblAccountNumber.Text = GetI18NValue("for") +" "+  _feedbackDetails.AccountNum; }
 
-                _container1.AddSubviews(new UIView[] { lblTitleStatus, lblAccountNumber });
+            viewLineContainer1 = GenericLine.GetLine(new CGRect(18, lblAccountNumber.Frame.GetMaxY() + 16, View.Frame.Width - 36, 1));
+
+            lblSRNumberTitle = new UILabel(new CGRect(18, viewLineContainer1.Frame.GetMaxY() + 16, _container1.Frame.Width, 24))
+            {
+                Font = TNBFont.MuseoSans_10_300,
+                TextColor = MyTNBColor.BrownGreyTwo,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Text = GetI18NValue("serviceNoTitle").ToUpper()//"Service Request Number"
+            };
+
+            lblSRNumber = new UILabel(new CGRect(18, lblSRNumberTitle.Frame.GetMaxY() + 4, _container1.Frame.Width, 24))
+            {
+                Font = TNBFont.MuseoSans_16_300,
+                TextColor = MyTNBColor.CharcoalGrey,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Text = _feedbackDetails.ServiceReqNo
+            };
+
+            _container1.Frame = new CGRect(0, 0, View.Frame.Width, lblSRNumber.Frame.GetMaxY() + 16);
+
+            _container1.AddSubviews(new UIView[] { lblTitleStatus, lblAccountNumber, viewLineContainer1, lblSRNumberTitle, lblSRNumber });
                 _svContainer.AddSubview(_container1);
 
             
@@ -184,7 +221,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = _feedbackDetails.RelationshipWithCA == 0 ? GetI18NValue(EnquiryConstants.enquiryDetailsTitle) : GetI18NValue(EnquiryConstants.reqUpdate)
+                Text = _feedbackDetails.FeedbackMessage == string.Empty ?  GetI18NValue(EnquiryConstants.reqUpdate) : GetI18NValue(EnquiryConstants.enquiryDetailsTitle)
             };
 
             _viewTitleSection.AddSubview(lblSectionTitle);
@@ -200,22 +237,22 @@ namespace myTNB
 
             lblTitleStatus2 = new UILabel(new CGRect(18, 16, _container2.Frame.Width - 18, 14))
             {
-                Font = TNBFont.MuseoSans_10_500,
-                TextColor = MyTNBColor.SilverChalice,
+                Font = TNBFont.MuseoSans_10_300,
+                TextColor = MyTNBColor.BrownGreyTwo,
                 Text = GetI18NValue(EnquiryConstants.messageHint).ToUpper()
             };
 
-            lblValueStatus2 = new UILabel(new CGRect(18, lblTitleStatus2.Frame.GetMaxY() + 4, _container2.Frame.Width - 18, 18))
+            lblValueStatus2 = new UILabel(new CGRect(18, lblTitleStatus2.Frame.GetMaxY() + 4, _container2.Frame.Width - 36, 18))
             {
                 Font = TNBFont.MuseoSans_14_300,
-                TextColor = MyTNBColor.TunaGrey(),
+                TextColor = MyTNBColor.CharcoalGrey,
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 0,
                 Text = _feedbackDetails.FeedbackMessage ?? string.Empty
             };
             CGSize newSize = GetTitleLabelSize(_feedbackDetails.FeedbackMessage);
-            lblValueStatus2.Frame = new CGRect(18, lblTitleStatus2.Frame.GetMaxY() + 4, _container2.Frame.Width - 18, GetScaledHeight(newSize.Height) + 16);
-            _container2.Frame = new CGRect(0, _viewTitleSection.Frame.GetMaxY(), View.Frame.Width, lblValueStatus2.Frame.GetMaxY());
+            lblValueStatus2.Frame = new CGRect(18, lblTitleStatus2.Frame.GetMaxY() + 4, _container2.Frame.Width - 36, newSize.Height);
+            _container2.Frame = new CGRect(0, _viewTitleSection.Frame.GetMaxY(), View.Frame.Width, lblValueStatus2.Frame.GetMaxY() +16);
 
 
             _container2.AddSubviews(new UIView[] { lblTitleStatus2, lblValueStatus2 });
@@ -234,39 +271,41 @@ namespace myTNB
 
                 lblTitleRelationship = new UILabel(new CGRect(18, 16, _containerRelation.Frame.Width - 18, 12))
                 {
-                    Font = TNBFont.MuseoSans_10_500,
-                    TextColor = MyTNBColor.SilverChalice,
+                    Font = TNBFont.MuseoSans_10_300,
+                    TextColor = MyTNBColor.BrownGreyTwo,
                     Text = GetI18NValue(EnquiryConstants.relationshipTitle).ToUpper()
                 };
 
                 lblRelationShipDesc = new UILabel(new CGRect(18, lblTitleRelationship.Frame.GetMaxY() + 4, _containerRelation.Frame.Width - 18, 24))
                 {
                     Font = TNBFont.MuseoSans_16_300,
+                    TextColor = MyTNBColor.CharcoalGrey,
                     Text = _feedbackDetails.RelationshipWithCADesc
                 };
                 _containerRelation.AddSubviews(lblTitleRelationship, lblRelationShipDesc);
                 _svContainer.AddSubviews(_containerRelation);
                 _containerRelation.Frame = new CGRect(0, _viewTitleSection.Frame.GetMaxY(), View.Frame.Width, lblRelationShipDesc.Frame.GetMaxY() + 16);
 
-                if (_feedbackDetails.RelationshipWithCA == 5) //add specify relatioship
-                {
-                    lblRelationShipDesc.Text = GetI18NValue(EnquiryConstants.othersTitle); //"Others";
-                    lblTitleRelationshipOther = new UILabel(new CGRect(18, lblRelationShipDesc.Frame.GetMaxY() + 16, _containerRelation.Frame.Width - 18, 12))
-                    {
-                        Font = TNBFont.MuseoSans_10_500,
-                        TextColor = MyTNBColor.SilverChalice,
-                        Text = GetI18NValue(EnquiryConstants.otherRelationshipHint).ToUpper()
-                    };
+                //if (_feedbackDetails.RelationshipWithCA == 6) //add specify relatioship
+                //{
+                //    lblRelationShipDesc.Text = GetI18NValue(EnquiryConstants.othersTitle); //"Others";
+                //    lblTitleRelationshipOther = new UILabel(new CGRect(18, lblRelationShipDesc.Frame.GetMaxY() + 16, _containerRelation.Frame.Width - 18, 12))
+                //    {
+                //        Font = TNBFont.MuseoSans_10_300,
+                //        TextColor = MyTNBColor.BrownGreyTwo,
+                //        Text = GetI18NValue(EnquiryConstants.otherRelationshipHint).ToUpper()
+                //    };
 
-                    lblRelationShipOther = new UILabel(new CGRect(18, lblTitleRelationshipOther.Frame.GetMaxY() + 4, _containerRelation.Frame.Width - 18, 24))
-                    {
-                        Font = TNBFont.MuseoSans_16_300,
-                        Text = _feedbackDetails.RelationshipWithCADesc
-                    };
-                    _containerRelation.AddSubviews(lblTitleRelationshipOther, lblRelationShipOther);
-                    _containerRelation.Frame = new CGRect(0, _viewTitleSection.Frame.GetMaxY(), View.Frame.Width, lblRelationShipOther.Frame.GetMaxY() + 16);
-                    _svContainer.AddSubviews(_containerRelation);
-                }
+                //    lblRelationShipOther = new UILabel(new CGRect(18, lblTitleRelationshipOther.Frame.GetMaxY() + 4, _containerRelation.Frame.Width - 18, 24))
+                //    {
+                //        Font = TNBFont.MuseoSans_16_300,
+                //        TextColor = MyTNBColor.CharcoalGrey,
+                //        Text = _feedbackDetails.RelationshipWithCADesc
+                //    };
+                //    _containerRelation.AddSubviews(lblTitleRelationshipOther, lblRelationShipOther);
+                //    _containerRelation.Frame = new CGRect(0, _viewTitleSection.Frame.GetMaxY(), View.Frame.Width, lblRelationShipOther.Frame.GetMaxY() + 16);
+                //    _svContainer.AddSubviews(_containerRelation);
+                //}
 
             }
 
@@ -284,14 +323,15 @@ namespace myTNB
 
                     UILabel lblView = new UILabel(new CGRect(0, 0, viewContainer.Frame.Width, 12))
                     {
-                        Font = TNBFont.MuseoSans_10_500,
-                        TextColor = MyTNBColor.SilverChalice,
+                        Font = TNBFont.MuseoSans_10_300,
+                        TextColor = MyTNBColor.BrownGreyTwo,
                         Text = item.FeedbackUpdInfoTypeDesc.ToUpper()
                     };
 
                     UILabel lblViewInfo = new UILabel(new CGRect(0, lblView.Frame.GetMaxY() + 4, viewContainer.Frame.Width -18, 24))
                     {
                         Font = TNBFont.MuseoSans_16_300,
+                        TextColor = MyTNBColor.CharcoalGrey,
                         Text = item.FeedbackUpdInfoValue,
                         LineBreakMode = UILineBreakMode.WordWrap,
                         Lines = 0,
@@ -305,7 +345,7 @@ namespace myTNB
                         if (!string.IsNullOrEmpty(icNo) && icNo.Length > 4)
                         {
                             string lastDigit = icNo.Substring(icNo.Length - 4);
-                            icNo = "•••••• •• " + lastDigit;
+                            icNo = "******-**-" + lastDigit;
                             string maskedICNo = icNo;
                             lblViewInfo.Text = maskedICNo;
                         }
@@ -334,8 +374,8 @@ namespace myTNB
 
                 lblTitlePhoto = new UILabel(new CGRect(18, 16, _container3.Frame.Width - 18, 14))
                 {
-                    Font = TNBFont.MuseoSans_10_500,
-                    TextColor = MyTNBColor.SilverChalice,
+                    Font = TNBFont.MuseoSans_10_300,
+                    TextColor = MyTNBColor.BrownGreyTwo,
                     Text = GetI18NValue(EnquiryConstants.supportingDocTitle).ToUpper()
                 };
 
@@ -421,14 +461,15 @@ namespace myTNB
 
             lblTitleContactName = new UILabel(new CGRect(18, 16, _container4.Frame.Width - 18, 12))
             {
-                Font = TNBFont.MuseoSans_10_500,
-                TextColor = MyTNBColor.SilverChalice,
+                Font = TNBFont.MuseoSans_10_300,
+                TextColor = MyTNBColor.BrownGreyTwo,
                 Text = GetCommonI18NValue("fullname").ToUpper()
             };
 
             lblContactName = new UILabel(new CGRect(18, lblTitleContactName.Frame.GetMaxY() + 4, _container4.Frame.Width - 18, 24))
             {
                 Font = TNBFont.MuseoSans_16_300,
+                TextColor = MyTNBColor.CharcoalGrey,
                 Text = _feedbackDetails.ContactName
             };
             _container4.AddSubviews(lblTitleContactName, lblContactName);
@@ -436,14 +477,15 @@ namespace myTNB
 
             lblTitleContactEmail = new UILabel(new CGRect(18, lblContactName.Frame.GetMaxY() + 16, _container4.Frame.Width - 18, 12))
             {
-                Font = TNBFont.MuseoSans_10_500,
-                TextColor = MyTNBColor.SilverChalice,
+                Font = TNBFont.MuseoSans_10_300,
+                TextColor = MyTNBColor.BrownGreyTwo,
                 Text = GetCommonI18NValue("emailAddress").ToUpper()
             };
 
             lblContactEmail = new UILabel(new CGRect(18, lblTitleContactEmail.Frame.GetMaxY() + 4, _container4.Frame.Width - 18, 24))
             {
                 Font = TNBFont.MuseoSans_16_300,
+                TextColor = MyTNBColor.CharcoalGrey,
                 Text = _feedbackDetails.ContactEmailAddress
             };
             _container4.AddSubviews(lblTitleContactEmail, lblContactEmail);
@@ -451,14 +493,15 @@ namespace myTNB
 
             lblTitleContactMobile = new UILabel(new CGRect(18, lblContactEmail.Frame.GetMaxY() + 16, _container4.Frame.Width - 18, 12))
             {
-                Font = TNBFont.MuseoSans_10_500,
-                TextColor = MyTNBColor.SilverChalice,
+                Font = TNBFont.MuseoSans_10_300,
+                TextColor = MyTNBColor.BrownGreyTwo,
                 Text = GetCommonI18NValue("mobileNumber").ToUpper()
             };
 
             lblContactMobile = new UILabel(new CGRect(18, lblTitleContactMobile.Frame.GetMaxY() + 4, _container4.Frame.Width - 18, 24))
             {
                 Font = TNBFont.MuseoSans_16_300,
+                TextColor = MyTNBColor.CharcoalGrey,
                 Text = _feedbackDetails.ContactMobileNo
             };
             _container4.AddSubviews(lblTitleContactMobile, lblContactMobile);
@@ -480,9 +523,10 @@ namespace myTNB
         {
             UILabel label = new UILabel(new CGRect(18, 30, UIApplication.SharedApplication.KeyWindow.Frame.Width - 36, 1000))
             {
-                Font = MyTNBFont.MuseoSans14,
-                Lines = 0,
+                Font = TNBFont.MuseoSans_14_300,
+                TextColor = MyTNBColor.CharcoalGrey,
                 LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0,
                 Text = text
             };
             return label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, 1000F));
@@ -583,14 +627,6 @@ namespace myTNB
                 UIApplication.SharedApplication.StatusBarHidden = true;
             }
 
-        }
-
-        private void ResizeLabel(ref UILabel label, nfloat minHeight)
-        {
-            CGSize newLblMsgSize = GetLabelSize(label, label.Frame.Width, ViewHeight / 2);
-            CGRect newMsgFrame = label.Frame;
-            newMsgFrame.Height = newLblMsgSize.Height < minHeight ? minHeight : newLblMsgSize.Height;
-            label.Frame = newMsgFrame;
         }
     }
 }
