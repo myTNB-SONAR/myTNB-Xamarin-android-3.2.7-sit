@@ -18,7 +18,7 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
-using PDFViewAndroid;
+using myTNB_Android.Src.Utils.PDFView;
 using System;
 using System.IO;
 using System.Net;
@@ -46,7 +46,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
         public ProgressBar mProgressBar;
 
         [BindView(Resource.Id.rootView)]
-        public static FrameLayout baseView;
+        public static LinearLayout baseView;
 
         private static Snackbar mErrorNoInternet;
 
@@ -172,7 +172,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 this.mPresenter = new ViewBillPresenter(this);
 
                 //webView = FindViewById<WebView>(Resource.Id.webView);
-                baseView = FindViewById<FrameLayout>(Resource.Id.rootView);
+                baseView = FindViewById<LinearLayout>(Resource.Id.rootView);
                 mProgressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
                 mProgressBar.Visibility = ViewStates.Gone;
                 cts = new CancellationTokenSource();
@@ -337,6 +337,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
 
         public string OnDownloadPDF()
         {

@@ -47,6 +47,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP
             Task<string> SaveGalleryImage(Android.Net.Uri selectedImage, string pTempImagePath, string pFileName);
 
             void UpdateAdapter(string pFilePath, string pFileName);
+
+
+            void ShowinfoLabelPermise();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -62,6 +65,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP
             void OnAttachPhotoGallery();
 
             void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data);
+
+            void OninfoLabelPermise();
         }
     }
 }

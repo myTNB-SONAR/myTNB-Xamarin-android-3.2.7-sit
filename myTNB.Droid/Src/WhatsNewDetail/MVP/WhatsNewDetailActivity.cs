@@ -23,8 +23,8 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.PDFView;
 using Newtonsoft.Json;
-using PDFViewAndroid;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -147,6 +147,15 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 			{
 				Utility.LoggingNonFatalError(e);
 			}
+
+			try
+            {
+				imgFullView.SetMinimumScaleType(SubsamplingScaleImageView.ScaleTypeCenterInside);
+			}
+			catch (Exception e)
+            {
+				Utility.LoggingNonFatalError(e);
+			}
 		}
 
 		protected override void OnStart()
@@ -259,6 +268,11 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 			this.menu = menu;
 			return base.OnCreateOptionsMenu(menu);
 		}
+
+		protected override void OnDestroy()
+        {
+            base.OnDestroy();
+        }
 
 		public override bool OnOptionsItemSelected(IMenuItem item)
 		{

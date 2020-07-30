@@ -7,7 +7,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Utils;
-using PDFViewAndroid;
+using myTNB_Android.Src.Utils.PDFView;
 using System;
 using System.IO;
 using System.Net;
@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.Base.Activity
     {
 
         [BindView(Resource.Id.rootView)]
-        public static FrameLayout baseView;
+        public static LinearLayout baseView;
 
         private bool isLoadedDocument = false;
 
@@ -100,7 +100,7 @@ namespace myTNB_Android.Src.Base.Activity
             {
                 cts = new CancellationTokenSource();
 
-                baseView = FindViewById<FrameLayout>(Resource.Id.rootView);
+                baseView = FindViewById<LinearLayout>(Resource.Id.rootView);
                 pdfViewer = FindViewById<PDFView>(Resource.Id.pdf_viewer_control_view);
 
                 try
@@ -152,7 +152,6 @@ namespace myTNB_Android.Src.Base.Activity
                             .FromFile(file)
                             .Show();
                         isLoadedDocument = true;
-
                     }
                     catch (Exception e)
                     {
@@ -218,14 +217,17 @@ namespace myTNB_Android.Src.Base.Activity
                         }
                         catch (Exception e)
                         {
+                            path = "";
                             Log.Debug("ViewBillActivity", e.StackTrace);
                             Utility.LoggingNonFatalError(e);
                         }
+
                     }
                 }
             }
             catch (Exception e)
             {
+                path = "";
                 Utility.LoggingNonFatalError(e);
             }
             return path;

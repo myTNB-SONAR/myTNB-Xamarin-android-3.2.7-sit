@@ -121,6 +121,12 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
         TextView TextView_proofOfConsent_image3;
 
 
+        [BindView(Resource.Id.TextView_agreement)]
+        TextView TextView_agreement;
+
+        [BindView(Resource.Id.FrameLayout_agreement)]
+        FrameLayout FrameLayout_agreement;
+        
 
 
 
@@ -232,8 +238,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
                 //2 set font type , 300 normal 500 button
                 TextViewUtils.SetMuseoSans300Typeface(TextViewtitle_ownerIC, TextViewtitle_yourIC, txtRelatedScreenshotTitle2, txtRelatedScreenshotTitle3);
-                TextViewUtils.SetMuseoSans300Typeface(txtstep1of2, uploadSupportingDoc, TextView_exampleofIC, TextView_proofOfConsent, TextView_proofOfConsent_image3);
-                TextViewUtils.SetMuseoSans500Typeface(uploadSupportingDoc);
+                TextViewUtils.SetMuseoSans300Typeface(txtstep1of2, TextView_proofOfConsent_image3, TextView_yourIC_image, TextView_ownerIC);
+                TextViewUtils.SetMuseoSans500Typeface(uploadSupportingDoc , TextView_exampleofIC, TextView_proofOfConsent, TextView_agreement);
 
 
                //owner adapter
@@ -323,6 +329,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 txtRelatedScreenshotTitle2.Text= Utility.GetLocalizedLabel("SubmitEnquiry", "consentTitle");
                 txtRelatedScreenshotTitle3.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "copyOfPermiseProof");
                 TextView_proofOfConsent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "consentInfo");
+                TextView_agreement.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "permisesTooltipTitle");
                 btnNext.Text= Utility.GetLocalizedLabel("Common", "next");
 
 
@@ -351,6 +358,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                     recyclerView3.Visibility = ViewStates.Visible;
                     txtRelatedScreenshotTitle3.Visibility = ViewStates.Visible;
                     TextView_proofOfConsent_image3.Visibility = ViewStates.Visible;
+                    FrameLayout_agreement.Visibility = ViewStates.Visible;
 
                 }
                 else
@@ -359,6 +367,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                     recyclerView3.Visibility = ViewStates.Gone;
                     txtRelatedScreenshotTitle3.Visibility = ViewStates.Gone;
                     TextView_proofOfConsent_image3.Visibility = ViewStates.Gone;
+                    FrameLayout_agreement.Visibility = ViewStates.Gone;
                 }
 
                 OnCheckingAttachment();  // disable button if there was no attachment
@@ -978,6 +987,19 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
             }
         }
 
+
+        [OnClick(Resource.Id.FrameLayout_agreement)]
+        public void OnFrameLayout_agreement(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OninfoLabelPermise();
+            }
+        }
+
+
+
         [OnClick(Resource.Id.FrameLayout_copyOfIC)]
         public void OnFrameLayout_copyOfIC(object sender, EventArgs eventArgs)
         {
@@ -1115,7 +1137,45 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 }
             
 
-        
+        }
+
+        public void ShowinfoLabelPermise()
+        {
+
+
+
+            string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
+
+            if (!base64Image.IsNullOrEmpty())
+            {
+                var imageCache = Base64ToBitmap(base64Image);
+                MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                .SetHeaderImageBitmap(imageCache)
+                .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "permisesTitle"))
+                .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "permisesContent"))
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                .SetCTAaction(() => { this.SetIsClicked(false); })
+                .Build();
+                infoLabelWhoIsRegistered.Show();
+
+            }
+            else
+            {  // incase base 64 is corrupt or null
+                var url = Utility.GetLocalizedLabel("SubmitEnquiry", "imagePermises");
+
+                Bitmap imageCache = ImageUtils.GetImageBitmapFromUrl(SiteCoreConfig.SITECORE_URL + url);
+
+                MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+               .SetHeaderImageBitmap(imageCache)
+               .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "permisesTitle"))
+               .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "permisesContent"))
+               .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+               .SetCTAaction(() => { this.SetIsClicked(false); })
+               .Build();
+                infoLabelWhoIsRegistered.Show();
+
+            }
+
 
         }
 

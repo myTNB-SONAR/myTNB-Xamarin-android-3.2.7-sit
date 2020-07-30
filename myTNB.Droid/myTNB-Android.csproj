@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.props" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.11\build\Xamarin.Build.Download.props')" />
   <Import Project="..\packages\Xamarin.Build.Download.0.4.2\build\Xamarin.Build.Download.props" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.2\build\Xamarin.Build.Download.props')" />
@@ -459,9 +459,6 @@
     </Reference>
     <Reference Include="Xamarin.Android.Support.ViewPager">
       <HintPath>..\packages\Xamarin.Android.Support.ViewPager.28.0.0.3\lib\monoandroid90\Xamarin.Android.Support.ViewPager.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Bindings.PDFView-Android">
-      <HintPath>..\packages\Xamarin.Bindings.PDFView-Android.1.0.0\lib\MonoAndroid\Xamarin.Bindings.PDFView-Android.dll</HintPath>
     </Reference>
     <Reference Include="DaveMorrisseySubsamplingScaleImageViewBindingLib.Android">
       <HintPath>..\packages\WiyonoAten.SubsamplingScaleImageView.Xamarin.Android.3.4.1\lib\MonoAndroid\DaveMorrisseySubsamplingScaleImageViewBindingLib.Android.dll</HintPath>
@@ -5348,6 +5345,9 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Base\Activity\BaseFullScreenImageViewActivity.cs" />
+    <Compile Include="Src\Utils\PDFView\PDFView.cs" />
+    <Compile Include="Src\Utils\PDFView\PDFRegionDecoder.cs" />
+    <Compile Include="Src\Utils\PDFView\PDFDecodeFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -5642,6 +5642,7 @@
     <Folder Include="Src\UpdateMobileNo\Api\" />
     <Folder Include="Src\UpdateNickname\Api\" />
     <Folder Include="Src\UpdatePassword\Api\" />
+    <Folder Include="Src\Utils\PDFView\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
@@ -7590,6 +7591,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\UpdatePersonalDetailTnCView.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\group_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\group_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\group_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\group_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\group_4.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
