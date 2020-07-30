@@ -463,7 +463,16 @@ namespace myTNB
         public void ScrollTableToTheBottom()
         {
             int indx = SitecoreServices.Instance.ShowNeedHelp ? DashboardHomeConstants.CellIndex_Help : DashboardHomeConstants.CellIndex_Services;
-            _homeTableView.ScrollToRow(NSIndexPath.Create(0, indx), UITableViewScrollPosition.Bottom, false);
+            try
+            {
+                _homeTableView.ScrollToRow(NSIndexPath.Create(0, indx), UITableViewScrollPosition.Bottom, false);
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Debug.WriteLine("DEBUG - ScrollTableToTheBottom Error: " + e.Message);
+#endif
+            }
         }
 
         public void ScrollTableToTheTop()

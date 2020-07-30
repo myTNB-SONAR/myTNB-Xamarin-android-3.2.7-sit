@@ -4,6 +4,7 @@ using Foundation;
 using UIKit;
 using System.Security;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace myTNB
 {
