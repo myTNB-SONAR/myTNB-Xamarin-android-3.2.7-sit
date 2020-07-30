@@ -249,11 +249,11 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 
 
 
-                if (relationShip==null)
-                {
-                    isNewScreen = false;
-                }
-
+                //if (relationShip==null)
+                //{
+                //    isNewScreen = false;
+                //}
+                isNewScreen = true;
 
                 if (isNewScreen)
                 {
@@ -332,10 +332,15 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
 
 
-                //req update title
+                //if there was no feedback its mean it is an update , if not it is enquiry
                 if (feedback.IsNullOrEmpty() && !feedbackUpdateList.IsNullOrEmpty())
                 {
                     txtEnquiryDetails.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "reqUpdate");   // translate
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle"));
+                }
+                else
+                {
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "submittedEnquiryTitle"));
                 }
 
                 // relationship hide or not
@@ -468,13 +473,10 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
 
 
-
-
-
                 if (feedbackCode.Equals("CL01"))
                 {
                     txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.createdColor)));
-                    txtFeedback_status_new.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.createdColor)));
+                    txtFeedback_status_new.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.createdColorSubmit)));
                 }
                 else if (feedbackCode.Equals("CL02"))
                 {
@@ -505,10 +507,6 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 {
                     txtInputLayoutFeedback.Visibility = ViewStates.Gone;
                 }
-
-
-
-
                 else
                 {
                     txtFeedback.Text = feedback;
@@ -609,8 +607,8 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 string feedbackDateTimeTitle = Utility.GetLocalizedLabel("FeedbackDetails", "dateTimeTitle");
                 txtInputLayoutDateTime.Hint = feedbackDateTimeTitle;
                 txtInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("Common", "accountNo");
-                txtInputLayoutFeedback.Hint = Utility.GetLocalizedLabel("FeedbackDetails", "feedback");
-                txtRelatedScreenshotTitle.Text = Utility.GetLocalizedLabel("FeedbackDetails", "photoTitle");
+                txtInputLayoutFeedback.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "messageHint");
+                txtRelatedScreenshotTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "supportingDocTitle");
           
 
 

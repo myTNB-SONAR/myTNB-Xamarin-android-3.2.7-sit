@@ -36,12 +36,24 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
 
             try
             {
-                MyTNBService.Request.SendUpdatePhoneTokenSMSRequest sendUpdatePhoneTokenSMSRequest = new MyTNBService.Request.SendUpdatePhoneTokenSMSRequest(newPhoneNumber);
+                string oldPhoneNumber = "";
+
+                try
+                {
+                    UserEntity userEntity = UserEntity.GetActive();
+                    oldPhoneNumber = userEntity.MobileNo;
+                }
+                catch (Exception ex)
+                {
+                    Utility.LoggingNonFatalError(ex);
+                }
+
+                MyTNBService.Request.SendUpdatePhoneTokenSMSRequest sendUpdatePhoneTokenSMSRequest = new MyTNBService.Request.SendUpdatePhoneTokenSMSRequest(newPhoneNumber, oldPhoneNumber);
                 if (request != null)
                 {
                     sendUpdatePhoneTokenSMSRequest.SetUserName(request.UserName);
                 }
-                var updateMobileResponse = await ServiceApiImpl.Instance.SendUpdatePhoneTokenSMS(sendUpdatePhoneTokenSMSRequest);
+                var updateMobileResponse = await ServiceApiImpl.Instance.SendUpdatePhoneTokenSMSV2(sendUpdatePhoneTokenSMSRequest);
 
                 if (mView.IsActive())
                 {

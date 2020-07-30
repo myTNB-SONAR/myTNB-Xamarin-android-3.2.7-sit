@@ -138,10 +138,15 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     {
                         new MasterApiDBOperation(masterDataResponse, mSharedPref).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
 
+                        
+
                         bool proceed = true;
 
                         bool appUpdateAvailable = false;
                         AppLaunchMasterDataModel responseData = masterDataResponse.GetData();
+
+                        UserSessions.SaveFeedbackUpdateDetailDisabled(mSharedPref, responseData.IsFeedbackUpdateDetailDisabled.ToString());  //save sharedpref cater prelogin & after login
+
                         if (responseData.AppVersionList != null && responseData.AppVersionList.Count > 0)
                         {
                             appUpdateAvailable = IsAppNeedsUpdate(responseData.ForceUpdateInfo);
@@ -153,14 +158,17 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 this.mView.ShowUpdateAvailable(modalTitle, modalMessage, modalBtnLabel);
                             }
                             else
-                            {
+                            {  
+
+
+
                                 if (UserEntity.IsCurrentlyActive())
                                 {
                                     try
                                     {
                                         UserEntity entity = UserEntity.GetActive();
 
-                                        UserSessions.SaveFeedbackUpdateDetailDisabled(mSharedPref, responseData.IsFeedbackUpdateDetailDisabled.ToString());  //save sharedpref
+                                      
 
                                         bool phoneVerified = UserSessions.GetPhoneVerifiedFlag(mSharedPref);
                                         if (!phoneVerified)

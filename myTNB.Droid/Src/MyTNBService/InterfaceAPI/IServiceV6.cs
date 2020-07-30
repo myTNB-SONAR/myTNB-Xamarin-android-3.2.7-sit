@@ -25,6 +25,10 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 		Task<T> ValidateManualAccount<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetSearchForAccount")]
+        Task<T> GetSearchForAccount<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetPhoneVerifyStatus")]
         Task<T> PhoneVerifyStatus<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
@@ -86,9 +90,15 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> GetRegisteredCards<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
               
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetSubmittedFeedbackWithContactDetails")]
+        [Post("/v6/mytnbappws.asmx/GetSubmittedFeedbackDetails")]
         Task<T> SubmittedFeedbackDetails<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetSubmittedFeedbackWithContactDetails")]
+        Task<T> SubmittedFeedbackContactDetails<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        
+        
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/CreateNewUserWithToken")]
         Task<T> CreateNewUserWithToken<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
@@ -114,8 +124,8 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> ChangeNewPassword<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/SendUpdatePhoneTokenSMS")]
-        Task<T> SendUpdatePhoneTokenSMS<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+        [Post("/v6/mytnbappws.asmx/SendUpdatePhoneTokenSMSV2")]
+        Task<T> SendUpdatePhoneTokenSMSV2<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/UpdatePhoneNumber")]

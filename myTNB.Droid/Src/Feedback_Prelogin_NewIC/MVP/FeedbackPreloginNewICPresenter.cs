@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Telephony;
 using Android.Text;
+using Castle.Core.Internal;
 using Java.Text;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
@@ -30,11 +31,14 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
 
         CustomerBillingAccount selectedCustomerBillingAccount;
 
+        private ISharedPreferences mSharedPref;
 
-        public FeedbackPreloginNewICPresenter(FeedbackPreloginNewICContract.IView mView)
+
+        public FeedbackPreloginNewICPresenter(FeedbackPreloginNewICContract.IView mView, ISharedPreferences mSharedPref)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
+            this.mSharedPref = mSharedPref;
         }
 
         public void OnGeneralEnquiry()
@@ -151,6 +155,87 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public async void ValidateAccountAsync(string contractAccounts , bool isUpdateUserInfo)
+        {
+           
+
+            try
+            {
+
+                if (mView.IsActive())
+                {
+                    this.mView.ShowProgressDialog();
+                }
+
+                //GetSearchForAccountRequest caReq = new GetSearchForAccountRequest();
+                //caReq.SetAcc(contractAccounts);
+
+                GetSearchForAccountRequest con = new GetSearchForAccountRequest(contractAccounts);
+
+               // Console.WriteLine(SerializeObject(con));
+          
+                var result = await ServiceApiImpl.Instance.ValidateAccIsExist(con);
+
+                if (result != null && !result.GetSearchForAccount[0].FullName.IsNullOrEmpty()  && !result.GetSearchForAccount[0].IC.IsNullOrEmpty())
+                {
+                    this.mView.HideProgressDialog();
+                    var data = result.GetSearchForAccount[0];
+                    UserSessions.SaveGetAccountIsExist(mSharedPref, JsonConvert.SerializeObject(data));
+
+                    if (isUpdateUserInfo)
+                    {
+                        onUpdatePersonalDetail();
+                    }
+                    else
+                    {
+                        OnGeneralEnquiry();
+                    }
+
+
+                   // mView.ShowAddAccountFail(result.Response.DisplayMessage);
+                }
+                else
+                {   // no data
+                    this.mView.HideProgressDialog();
+                    this.mView.ShowInvalidAccountNumberError();
+                    this.mView.makeSetClick(false);
+
+                }
+
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                //this.mView.ShowFail();
+                this.mView.OnSubmitError();
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                //this.mView.ShowFail();
+                this.mView.OnSubmitError();
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                //this.mView.ShowFail();
+                this.mView.OnSubmitError();
+                Utility.LoggingNonFatalError(e);
+            }
+
         }
 
 

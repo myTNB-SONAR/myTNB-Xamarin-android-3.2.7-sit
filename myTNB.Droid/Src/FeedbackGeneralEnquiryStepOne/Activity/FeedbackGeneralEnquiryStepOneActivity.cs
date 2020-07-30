@@ -156,7 +156,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 //set translation 
                 txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
                 IwantToEnquire.Text= Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryAboutTitle");
-                txtInputLayoutGeneralEnquiry1.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "messageHint").ToUpper();
+                txtInputLayoutGeneralEnquiry1.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "messageHint");
                 uploadSupportingDoc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "uploadDocTitle");
                 txtRelatedScreenshotTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachTitle");
                 txtMaxImageContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");

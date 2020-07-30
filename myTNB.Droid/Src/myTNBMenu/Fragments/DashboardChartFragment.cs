@@ -5019,7 +5019,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 List<string> extractedUrls = this.mPresenter.ExtractUrls(message);
                                 if (extractedUrls.Count > 0)
                                 {
-                                    if (!extractedUrls[0].Contains("http"))
+                                    string compareText = extractedUrls[0].ToLower();
+                                    if (!compareText.Contains("http"))
                                     {
                                         extractedUrls[0] = "http://" + extractedUrls[0];
                                     }
@@ -5027,9 +5028,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[0]
                                             || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[6])
                                     {
-                                        if (extractedUrls[0].Contains(".pdf") && !extractedUrls[0].Contains("docs.google"))
+                                        if (compareText.Contains(".pdf") && !compareText.Contains("docs.google"))
                                         {
                                             Intent webIntent = new Intent(this.Activity, typeof(BasePDFViewerActivity));
+                                            webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                            webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                            this.Activity.StartActivity(webIntent);
+                                        }
+                                        else if (compareText.Contains(".jpeg") || compareText.Contains(".jpg") || compareText.Contains(".png"))
+                                        {
+                                            Intent webIntent = new Intent(this.Activity, typeof(BaseFullScreenImageViewActivity));
                                             webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
                                             webIntent.PutExtra(Constants.IN_APP_TITLE, "");
                                             this.Activity.StartActivity(webIntent);

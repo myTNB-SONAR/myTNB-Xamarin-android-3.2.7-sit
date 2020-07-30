@@ -68,6 +68,7 @@ namespace myTNB_Android.Src
             MyServiceEntity.CreateTable();
             SitecoreCmsEntity.CreateTable();
             AccountSortingEntity.CreateTable();
+            TooltipImageDirectEntity.CreateTable();   // syahmi add
 
             AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironment_UnhandledExceptionRaiser;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;

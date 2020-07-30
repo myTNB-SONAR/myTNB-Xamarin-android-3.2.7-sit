@@ -212,15 +212,6 @@
     <Reference Include="Square.Picasso, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Square.Picasso.2.5.2.1\lib\MonoAndroid\Square.Picasso.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.Compression.Portable, Version=15.4451.0.17, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.Compression.15.4.0.17\lib\MonoAndroid10\Syncfusion.Compression.Portable.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.Pdf.Portable, Version=15.4451.0.17, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.Pdf.15.4.0.17\lib\MonoAndroid10\Syncfusion.Pdf.Portable.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.SfPdfViewer.Android, Version=15.4451.0.17, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Xamarin.SfPdfViewer.Android.15.4.0.17\lib\MonoAndroid10\Syncfusion.SfPdfViewer.Android.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.3.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
@@ -412,6 +403,9 @@
     <Reference Include="AndroidSegmentedControl.Droid">
       <HintPath>..\packages\AndroidSegmentedControl.Droid.Binding.1.0.8\lib\MonoAndroid\AndroidSegmentedControl.Droid.dll</HintPath>
     </Reference>
+    <Reference Include="DaveMorrisseySubsamplingScaleImageViewBindingLib.Android">
+      <HintPath>..\packages\WiyonoAten.SubsamplingScaleImageView.Xamarin.Android.3.4.1\lib\MonoAndroid\DaveMorrisseySubsamplingScaleImageViewBindingLib.Android.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\Resource.Designer.cs" />
@@ -536,6 +530,7 @@
     <Compile Include="Src\Database\Model\SubmittedFeedbackEntity.cs" />
     <Compile Include="Src\Database\Model\SummaryDashBoardAccountEntity.cs" />
     <Compile Include="Src\Database\Model\TimeStampEntity.cs" />
+    <Compile Include="Src\Database\Model\TooltipImageDirectEntity.cs" />
     <Compile Include="Src\Database\Model\UsageHistoryEntity.cs" />
     <Compile Include="Src\Database\Model\UsageHistoryModel.cs" />
     <Compile Include="Src\Database\Model\UserNotificationChannelEntity.cs" />
@@ -730,7 +725,9 @@
     <Compile Include="Src\myTNBMenu\Requests\SMUsageHistoryRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationChannelRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationTypeRequest.cs" />
+    <Compile Include="Src\MyTNBService\Request\GetSearchForAccountRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\SubmitEnquiryRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\GetSearchForAccountResponse.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetails.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetailsDeleteResponse.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetailsResponse.cs" />
@@ -932,6 +929,7 @@
     <Compile Include="Src\UpdatePersonalDetailStepOne\MVP\UpdatePersonalDetailStepOneContract.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepOne\MVP\UpdatePersonalDetailStepOnePresenter.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepTwo\Activity\UpdatePersonalDetailStepTwoActivity.cs" />
+    <Compile Include="Src\UpdatePersonalDetailStepTwo\Adapter\permiseAdapter.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepTwo\Adapter\supportingDocAdapter.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepTwo\Adapter\your_ic_adaptercs.cs" />
     <Compile Include="Src\UpdatePersonalDetailStepTwo\Model\HowDoesCopyofIdentificationResponseModel.cs" />
@@ -5250,26 +5248,42 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\img_start_smr.png">
-      <SubType></SubType>
-      <Generator></Generator>
+      <SubType>
+      </SubType>
+      <Generator>
+      </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-mdpi\img_start_smr.png">
-      <SubType></SubType>
-      <Generator></Generator>
+      <SubType>
+      </SubType>
+      <Generator>
+      </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xhdpi\img_start_smr.png">
-      <SubType></SubType>
-      <Generator></Generator>
+      <SubType>
+      </SubType>
+      <Generator>
+      </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxhdpi\img_start_smr.png">
-      <SubType></SubType>
-      <Generator></Generator>
+      <SubType>
+      </SubType>
+      <Generator>
+      </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\img_start_smr.png">
-      <SubType></SubType>
-      <Generator></Generator>
+      <SubType>
+      </SubType>
+      <Generator>
+      </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\shadow_path.xml">
+      <SubType>
+      </SubType>
+      <Generator>
+      </Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\BaseFullScreenImageViewLayout.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -5472,6 +5486,10 @@
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\Models\ApplicationStatusDetailModel.cs" />
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\Adapter\ApplicationStatusDetailProgressAdapter.cs" />
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\Adapter\ApplicationStatusDetailSubDetailAdapter.cs" />
+    <Compile Include="Src\Base\Activity\BaseFullScreenImageViewActivity.cs" />
+    <Compile Include="Src\Utils\PDFView\PDFView.cs" />
+    <Compile Include="Src\Utils\PDFView\PDFRegionDecoder.cs" />
+    <Compile Include="Src\Utils\PDFView\PDFDecodeFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -5793,6 +5811,9 @@
     <Folder Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusDetail\Adapter\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusDetail\Models\" />
+    <Folder Include="Src\UpdateNickname\Api\" />
+    <Folder Include="Src\UpdatePassword\Api\" />
+    <Folder Include="Src\Utils\PDFView\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
@@ -7741,6 +7762,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\UpdatePersonalDetailTnCView.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\group_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\group_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\group_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\group_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\group_4.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

@@ -7,6 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Text;
 using Android.Views;
@@ -14,9 +15,11 @@ using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.UpdatePersonalDetailTnC.MVP;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
 {
@@ -40,11 +43,21 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
         [BindView(Resource.Id.TextView_TNB_TermOfUse)]
         TextView TextView_TNB_TermOfUse;
 
+      
+
+        
+        [BindView(Resource.Id.TextView_privacypolicy)]
+        TextView TextView_privacypolicy;
+
 
 
         UpdatePersonalDetailTnCPresenter mPresenter;
 
+        private ISharedPreferences mSharedPref;
+
         UpdatePersonalDetailTnCContract.IUserActionsListener userActionsListener;
+
+
 
 
         private string reqEmail;
@@ -55,12 +68,18 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
 
         private string caIC;
 
+        private bool isOwner;
+
+        private string enteredNAme;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             try
             {
+                //init shared pref
+                mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
                 //get from prev page data
 
@@ -73,6 +92,10 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
                     {
                         caNumber = extras.GetString(Constants.ACCOUNT_NUMBER);
                     }
+                    if (extras.ContainsKey(Constants.ENTERED_NAME))
+                    {
+                        enteredNAme = extras.GetString(Constants.ENTERED_NAME);
+                    }
 
                     if (extras.ContainsKey(Constants.REQ_EMAIL))
                     {
@@ -84,9 +107,12 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
                         caIC = extras.GetString(Constants.REQ_IC);
                     }
 
+                    if (extras.ContainsKey(Constants.SELECT_REGISTERED_OWNER))
+                    {
+                        isOwner = bool.Parse(extras.GetString(Constants.SELECT_REGISTERED_OWNER));
+                    }
 
                 }
-
 
                 //set presenter
                 this.mPresenter = new UpdatePersonalDetailTnCPresenter(this);
@@ -99,41 +125,44 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
 
 
                 //set translation 
-               
                 TextView_updatePersonalDataDisclaim.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "personalDisclamer");
                 TextView_TNB_TermOfUse.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "tnbTermUse");
+                TextView_privacypolicy.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "privacyPolicyTitle");
 
 
 
                 //set font 
                 TextViewUtils.SetMuseoSans300Typeface(TextView_tnc_data); //inputLay
-                 TextViewUtils.SetMuseoSans500Typeface(TextView_updatePersonalDataDisclaim, TextView_TNB_TermOfUse); //edit text
+                TextViewUtils.SetMuseoSans500Typeface(TextView_updatePersonalDataDisclaim, TextView_TNB_TermOfUse, TextView_privacypolicy); //edit text
 
 
-                //
-              //  CustomerBillingAccount selectedAcc;
-
+  
+                //  CustomerBillingAccount selectedAcc;
                 CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(caNumber);
 
-                //if (CustomerBillingAccount.HasItems())
-                //{
-                //    List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-                //    selectedAcc = accountList.Find(x => x.AccNum.Contains(caNumber));
 
-                //}
+                string data;
+                // if owner tnc is different
+                if (isOwner)
+                {
+                    data= Utility.GetLocalizedLabel("SubmitEnquiry", "tncAgreeOwner");
+                }
+                else
+                {
+                    data = Utility.GetLocalizedLabel("SubmitEnquiry", "tncAgreeNonOwner");
+                }
+
+
+                string acc = UserSessions.GetAccountIsExist(PreferenceManager.GetDefaultSharedPreferences(this));
+                GetSearchForAccountResponse.GetSearchForAccountModel  AccData = JsonConvert.DeserializeObject<GetSearchForAccountResponse.GetSearchForAccountModel>(acc);
 
 
 
+                //string temp = string.Format(data, reqEmail, AccData.ContractAccount, AccData.FullName);
 
-
-                string data = Utility.GetLocalizedLabel("SubmitEnquiry", "tncAgree");
-                string temp = string.Format(data, reqEmail, caNumber, customerBillingAccount.OwnerName);
+                string temp = string.Format(data, enteredNAme, reqEmail, AccData.ContractAccount );
 
                 TextView_tnc_data.TextFormatted = GetFormattedText(temp);
-
-
-
-
 
 
 
@@ -182,11 +211,32 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
         [OnClick(Resource.Id.TextView_TNB_TermOfUse)]
         void OnTNC(object sender, EventArgs eventArgs)
         {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("SubmitEnquiry", "antiSpamPolicy"));
+                webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "tnbTermUse"));
+                this.StartActivity(webIntent);
 
-            StartActivity(typeof(TermsAndConditionActivity));
+            }
+
         }
 
-            
+        
+
+       [OnClick(Resource.Id.TextView_privacypolicy)]
+        void onPrivacyPolicy(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("SubmitEnquiry", "privacyPolicy"));
+                webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "privacyPolicyTitle"));
+                this.StartActivity(webIntent);
+            }
+        }
 
 
     }

@@ -73,7 +73,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
 
                 if (item.FeedbackCategoryId.Equals("1"))
                 {
-                    vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_billing));
+                    vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.general_enquiry));
                 }
                 else if (item.FeedbackCategoryId.Equals("2"))
                 {
@@ -82,6 +82,10 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 else if (item.FeedbackCategoryId.Equals("3"))
                 {
                     vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_others));
+                }
+                else if (item.FeedbackCategoryId.Equals("4"))
+                {
+                    vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.update_personal_details));
                 }
             }
             catch (Exception e)

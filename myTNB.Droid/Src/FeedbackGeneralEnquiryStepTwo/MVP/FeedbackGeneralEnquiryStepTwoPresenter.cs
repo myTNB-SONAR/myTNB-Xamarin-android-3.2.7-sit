@@ -21,6 +21,7 @@ using Java.Text;
 using Android.Gms.Common.Apis;
 using Newtonsoft.Json;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Model;
+using Castle.Core.Internal;
 
 namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
 {
@@ -132,6 +133,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                             this.mView.ClearInvalidMobileError();
                         }
                     }
+
                     if (isNeedTNC)
                     {
                         if (tnc == false)
@@ -185,7 +187,16 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                     ctr++;
                 } ;
 
-                SubmitEnquiryRequest submitEnquiryRequest  = new SubmitEnquiryRequest("1", "", acc, userEntity.DisplayName, userEntity.MobileNo, feedback, "", "", "", mobile_no, fullname, email, isowner, ownerRelationship, relationshipDescription);
+                int category=1;
+
+                if (feedback.IsNullOrEmpty())
+                {
+                    //if empty it is update personal detail which will inject 4
+                    category = 4;
+                }
+           
+
+                SubmitEnquiryRequest submitEnquiryRequest  = new SubmitEnquiryRequest(category.ToString(), "", acc, fullname, mobile_no, feedback, "", "", "", mobile_no, fullname, email, isowner, ownerRelationship, relationshipDescription);
                 foreach (AttachedImageRequest image in imageRequest)
                 {
 

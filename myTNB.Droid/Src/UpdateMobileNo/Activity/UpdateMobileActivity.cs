@@ -245,7 +245,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             );
             View v = mErrorSnackbar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
+            tv.SetMaxLines(7);
             mErrorSnackbar.Show();
             this.SetIsClicked(false);
         }

@@ -176,6 +176,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                     {
                         // add image 
                         attachList.Add(DeSerialze<List<AttachedImage>>(extras.GetString(Constants.IMAGE_OWNER))[0]);
+                        if (extras.ContainsKey(Constants.ACCOUNT_PREMISE_ADDRESS))
+                        {
+                            attachList.Add(DeSerialze<List<AttachedImage>>(extras.GetString(Constants.IMAGE_PERMISES))[0]);
+                        }
                         attachedImages = attachList;
 
                     }
@@ -190,7 +194,13 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                             attachList.Add(DeSerialze<List<AttachedImage>>(extras.GetString(Constants.IMAGE_OWNER))[0]);
                             attachList.Add(DeSerialze<List<AttachedImage>>(extras.GetString(Constants.IMAGE_OWN))[0]);
                             attachList.Add(DeSerialze<List<AttachedImage>>(extras.GetString(Constants.IMAGE_SUPPORTING_DOC))[0]);
-                            attachedImages = attachList;
+                            if (extras.ContainsKey(Constants.ACCOUNT_PREMISE_ADDRESS))
+                            {
+                                attachList.Add(DeSerialze<List<AttachedImage>>(extras.GetString(Constants.IMAGE_PERMISES))[0]);
+                            }
+                           
+                                
+                                attachedImages = attachList;
 
 
                         }
@@ -285,8 +295,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
                 //SET TRANSLATION
                 txtInputLayoutName.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "nameHint").ToUpper();
-                txtInputLayoutEmail.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "emailHint").ToUpper();
-                txtInputLayoutPhoneNumber.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "mobileHint").ToUpper();
+                txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
+                txtInputLayoutEmail.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "emailHint");
+                txtInputLayoutPhoneNumber.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "mobileHint");
                 btnSubmit.Text = Utility.GetLocalizedLabel("Common", "submit");
 
 
@@ -325,6 +336,15 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
                 //enforce 60
                 UpdateMobileNumber("+60");
+
+                //auto populate if login 
+                if (UserEntity.IsCurrentlyActive())
+                {
+                    txtName.Text = UserEntity.GetActive().DisplayName;
+                    txtEmail.Text = UserEntity.GetActive().Email;
+                    txtPhoneNumber.Text = UserEntity.GetActive().MobileNo;
+
+                }
 
 
             }
@@ -446,8 +466,22 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         {
             if (!this.GetIsClicked())
             {
-                this.SetIsClicked(true);
-                this.userActionsListener.NavigateToTermsAndConditions();
+
+                if (!txtEmail.Text.Trim().IsNullOrEmpty() && !txtName.Text.Trim().IsNullOrEmpty())
+                {
+                    this.SetIsClicked(true);
+                    this.userActionsListener.NavigateToTermsAndConditions();
+                }
+                else if(txtEmail.Text.Trim().IsNullOrEmpty())
+                {
+                    ShowInvalidEmailError();
+                }else if (txtName.Text.Trim().IsNullOrEmpty())
+                {
+                    ShowFullNameError();
+                }
+
+
+              
             }
         }
 
@@ -455,9 +489,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         { 
 
             var tnc = new Intent(this, typeof(UpdatePersonalDetailTnCActivity));
-            tnc.PutExtra(Constants.REQ_EMAIL, UserEntity.GetActive().Email);
-            tnc.PutExtra(Constants.REQ_IC, "test" );
-            tnc.PutExtra(Constants.ACCOUNT_NUMBER, acc);
+            tnc.PutExtra(Constants.REQ_EMAIL, txtEmail.Text.Trim());
+            tnc.PutExtra(Constants.SELECT_REGISTERED_OWNER, isOwner.ToString());
+            tnc.PutExtra(Constants.ENTERED_NAME, txtName.Text.Trim());
+           
             StartActivity(tnc);
         }
 
@@ -479,6 +514,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         public void ClearFullNameError()
         {
             txtInputLayoutName.Error = null;
+            txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
         }
 
         public void ShowInvalidEmailError()
@@ -583,8 +619,19 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
 
         public void toggleTNC()
-        {
+        {  
             toggleTncData = !toggleTncData;  //boolean change
+
+            if (toggleTncData)
+            {
+                txtTermsConditionsGeneralEnquiry.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryTncRead"));
+                StripUnderlinesFromLinks(txtTermsConditionsGeneralEnquiry);
+            }
+            else
+            {
+                txtTermsConditionsGeneralEnquiry.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryTnc"));
+                StripUnderlinesFromLinks(txtTermsConditionsGeneralEnquiry);
+            }
 
             passCheck();
         }
@@ -630,6 +677,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 
                 Bitmap bitmap = BitmapFactory.DecodeFile(attachedImage.Path, bmOptions);
+             
 
                 byte[] imageBytes = FileUtils.Get(this, bitmap);
                 int size = imageBytes.Length;

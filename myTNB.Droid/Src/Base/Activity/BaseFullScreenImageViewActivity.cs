@@ -1,13 +1,14 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
 using Android.OS;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Com.Davemorrissey.Labs.Subscaleview;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.PDFView;
 using System;
 using System.IO;
 using System.Net;
@@ -17,14 +18,14 @@ using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Base.Activity
 {
-    [Activity(Label = "Base PDF Viewer"
+    [Activity(Label = "Base Image Viewer"
           , ScreenOrientation = ScreenOrientation.Portrait
           , Theme = "@style/Theme.AddAccount")]
-    public class BasePDFViewerActivity : BaseToolbarAppCompatActivity
+    public class BaseFullScreenImageViewActivity : BaseToolbarAppCompatActivity
     {
 
-        [BindView(Resource.Id.rootView)]
-        public static LinearLayout baseView;
+        [BindView(Resource.Id.imgFullView)]
+        SubsamplingScaleImageView imgFullView;
 
         private bool isLoadedDocument = false;
 
@@ -32,13 +33,11 @@ namespace myTNB_Android.Src.Base.Activity
 
         CancellationTokenSource cts;
 
-        PDFView pdfViewer;
-
-        private string pdfLink = "";
+        private string imageLink = "";
 
         public override int ResourceId()
         {
-            return Resource.Layout.BasePDFViewerLayout;
+            return Resource.Layout.BaseFullScreenImageViewLayout;
         }
 
         public override bool ShowCustomToolbarTitle()
@@ -72,11 +71,22 @@ namespace myTNB_Android.Src.Base.Activity
 
             Bundle extra = Intent.Extras;
 
+            imgFullView = FindViewById<SubsamplingScaleImageView>(Resource.Id.imgFullView);
+
+            try
+            {
+                imgFullView.SetMinimumScaleType(SubsamplingScaleImageView.ScaleTypeCenterInside);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             if (extra != null)
             {
                 if (extra.ContainsKey(Constants.IN_APP_LINK))
                 {
-                    pdfLink = extra.GetString(Constants.IN_APP_LINK);
+                    imageLink = extra.GetString(Constants.IN_APP_LINK);
                 }
                 else
                 {
@@ -100,14 +110,11 @@ namespace myTNB_Android.Src.Base.Activity
             {
                 cts = new CancellationTokenSource();
 
-                baseView = FindViewById<LinearLayout>(Resource.Id.rootView);
-                pdfViewer = FindViewById<PDFView>(Resource.Id.pdf_viewer_control_view);
-
                 try
                 {
                     RunOnUiThread(() =>
                     {
-                        GetPDF();
+                        GetImage();
                     });
                 }
                 catch (Exception e)
@@ -122,7 +129,7 @@ namespace myTNB_Android.Src.Base.Activity
 
         }
 
-        public async Task GetPDF()
+        public async Task GetImage()
         {
             try
             {
@@ -135,27 +142,30 @@ namespace myTNB_Android.Src.Base.Activity
                     Utility.LoggingNonFatalError(e);
                 }
 
-                string downloadPath = "";
+                Bitmap cacheImg = null;
 
                 await Task.Run(() =>
                 {
-                    downloadPath = OnDownloadPDF();
+                    cacheImg = OnDownloadImage();
                 }, cts.Token);
 
-                if (!string.IsNullOrEmpty(downloadPath))
+                if (cacheImg != null)
                 {
                     try
                     {
-                        Java.IO.File file = new Java.IO.File(downloadPath);
+                        imgFullView.Visibility = ViewStates.Visible;
 
-                        pdfViewer
-                            .FromFile(file)
-                            .Show();
+                        var source = ImageSource.InvokeBitmap(cacheImg);
+
+                        imgFullView
+                            .SetImage(source);
+                        imgFullView.ZoomEnabled = true;
                         isLoadedDocument = true;
+
                     }
                     catch (Exception e)
                     {
-                        Log.Debug("BasePDFViewerActivity", e.Message);
+                        Log.Debug("BaseFullScreenImageViewActivity", e.Message);
                     }
                 }
 
@@ -176,61 +186,22 @@ namespace myTNB_Android.Src.Base.Activity
 
         }
 
-        public string OnDownloadPDF()
+        public Bitmap OnDownloadImage()
         {
-            string path = "";
+            Bitmap cache = null;
 
             try
             {
-                if (!string.IsNullOrEmpty(pdfLink))
+                if (!string.IsNullOrEmpty(imageLink))
                 {
-                    string rootPath = this.FilesDir.AbsolutePath;
-
-                    if (Utils.FileUtils.IsExternalStorageReadable() && Utils.FileUtils.IsExternalStorageWritable())
-                    {
-                        rootPath = this.GetExternalFilesDir(null).AbsolutePath;
-                    }
-
-                    var directory = System.IO.Path.Combine(rootPath, "pdf");
-                    if (!Directory.Exists(directory))
-                    {
-                        Directory.CreateDirectory(directory);
-                    }
-
-                    string filename = "temp.pdf";
-
-                    path = System.IO.Path.Combine(directory, filename);
-
-                    if (!string.IsNullOrEmpty(path))
-                    {
-                        if (File.Exists(path))
-                        {
-                            File.Delete(path);
-                        }
-
-                        try
-                        {
-                            using (WebClient client = new WebClient())
-                            {
-                                client.DownloadFile(pdfLink, path);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            path = "";
-                            Log.Debug("ViewBillActivity", e.StackTrace);
-                            Utility.LoggingNonFatalError(e);
-                        }
-
-                    }
+                    cache = ImageUtils.GetImageBitmapFromUrl(imageLink);
                 }
             }
             catch (Exception e)
             {
-                path = "";
                 Utility.LoggingNonFatalError(e);
             }
-            return path;
+            return cache;
         }
 
         protected override void OnDestroy()
@@ -275,7 +246,7 @@ namespace myTNB_Android.Src.Base.Activity
             try
             {
                 base.OnResume();
-                FirebaseAnalyticsUtils.SetScreenName(this, "Base PDF Viewer");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Base Image Viewer");
             }
             catch (Exception e)
             {
