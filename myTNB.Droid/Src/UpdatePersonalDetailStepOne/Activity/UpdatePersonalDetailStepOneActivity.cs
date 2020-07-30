@@ -24,7 +24,6 @@ using myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using NSubstitute.Core;
-using Syncfusion.Drawing;
 using static myTNB_Android.Src.UpdatePersonalDetailStepOne.Fragment.UpdatePersonalDetailStepOneSelectRelationshipFragment;
 
 namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
