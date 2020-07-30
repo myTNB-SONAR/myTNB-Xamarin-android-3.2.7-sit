@@ -25,6 +25,7 @@ namespace myTNB
         private bool IsMailing = false;
 
         public string Name;
+        public string Email;
         public bool isPresentedVC;
         private UIScrollView _svContainer;
         private UIView _containerDataDisclamer;
@@ -150,8 +151,8 @@ namespace myTNB
                 };
 
                 NSError htmlBodyError = null;
-                NSAttributedString htmlBody = !IsOwner ? TextHelper.ConvertToHtmlWithFont(string.Format(GetI18NValue(EnquiryConstants.tncAgreeNonOwner), Name, userInfo.email, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA)
-                            , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(14F)) : TextHelper.ConvertToHtmlWithFont(string.Format(GetI18NValue(EnquiryConstants.tncAgreeOwner), Name, userInfo.email, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA)
+                NSAttributedString htmlBody = !IsOwner ? TextHelper.ConvertToHtmlWithFont(string.Format(GetI18NValue(EnquiryConstants.tncAgreeNonOwner), Name, userInfo.email ?? Email, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA)
+                            , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(14F)) : TextHelper.ConvertToHtmlWithFont(string.Format(GetI18NValue(EnquiryConstants.tncAgreeOwner), Name, userInfo.email ?? Email, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA)
                             , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(14F));
 
                 NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);

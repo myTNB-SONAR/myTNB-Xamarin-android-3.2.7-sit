@@ -284,8 +284,8 @@ namespace myTNB
                 yLoc = ViewHeight - containerHeight;
             }
 
-            _btnSubmitContainer = new UIView(new CGRect(0, yLoc + _navbarView.Frame.GetMaxY() - DeviceHelper.GetStatusBarHeight() ///DeviceHelper.GetStatusBarHeight() yLoc + _navbarView.Frame.GetMaxY()
-                , View.Frame.Width, DeviceHelper.GetScaledHeight(100)))
+            _btnSubmitContainer = new UIView(new CGRect(0, yLoc + _navbarView.Frame.GetMaxY() - NavigationController.NavigationBar.Frame.Height//- DeviceHelper.GetStatusBarHeight() - DeviceHelper.TopSafeAreaInset///DeviceHelper.GetStatusBarHeight() yLoc + _navbarView.Frame.GetMaxY()
+                , View.Frame.Width, DeviceHelper.GetScaledHeight(120)))
             {
                 BackgroundColor = UIColor.White
             };

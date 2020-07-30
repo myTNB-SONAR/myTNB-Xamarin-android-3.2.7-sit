@@ -455,7 +455,7 @@ namespace myTNB
         {
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = IsTNC ? TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTncRead)
-                        , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F)) : TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTnc)
+                        , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F)) : TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTnc) + "  "
                         , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F)) ;
             
             NSMutableAttributedString mutableHTMLFooter = new NSMutableAttributedString(htmlBody);
@@ -491,6 +491,7 @@ namespace myTNB
                 {
                     viewController.IsOwner = IsOwner;
                     viewController.Name = txtFieldName.Text;
+                    viewController.Email = txtFieldEmail.Text;
                     viewController.isPresentedVC = true;
                     UINavigationController navController = new UINavigationController(viewController);
                     navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
@@ -504,7 +505,7 @@ namespace myTNB
             return lblTNC;
         }
 
-        private UITextView GetInfoTNCRead()
+        /*private UITextView GetInfoTNCRead()
         {
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTncRead)
@@ -543,6 +544,7 @@ namespace myTNB
                 {
                     viewController.IsOwner = IsOwner;
                     viewController.Name = txtFieldName.Text;
+                    viewController.Email = txtFieldEmail.Text;
                     viewController.isPresentedVC = true;
                     UINavigationController navController = new UINavigationController(viewController);
                     navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
@@ -554,7 +556,7 @@ namespace myTNB
             CGSize size = lblTNC.SizeThatFits(new CGSize(View.Frame.Width - 23, GetScaledHeight(160)));
             lblTNC.Frame = new CGRect(GetXLocationFromFrame(viewCheckBoxTNC.Frame, 8F), 16, View.Frame.Width - GetXLocationFromFrame(viewCheckBoxTNC.Frame, 8F), size.Height);
             return lblTNC;
-        }
+        }*/
 
         private void AddSectionTitle()
         {
