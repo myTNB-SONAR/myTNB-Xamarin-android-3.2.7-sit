@@ -314,6 +314,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="1"
+                    android:visibility="gone"
+                    android:id="@+id/applicationStatusDetailSingleButtonLayout"
                     android:background="@color/white">
                     <Button
                         android:id="@+id/btnSaveApplication"
@@ -322,6 +324,33 @@
                         android:layout_height="wrap_content"
                         android:textAllCaps="false"
                         style="@style/Theme.PayButton" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1"
+                    android:id="@+id/applicationStatusDetailDoubleButtonLayout"
+                    android:background="@color/white">
+                    <Button
+                        android:id="@+id/btnApplicationStatusViewBill"
+                        style="@style/Theme.ViewBill"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="0.5"
+                        android:text="@string/dashboard_chartview_view_bill"
+                        android:textAllCaps="false" />
+                    <Button
+                        android:id="@+id/btnApplicationStatusPay"
+                        style="@style/Theme.PayButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_weight="0.5"
+                        android:text="@string/dashboard_chartview_pay"
+                        android:textAllCaps="false"
+                        android:visibility="visible" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

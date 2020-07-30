@@ -5490,6 +5490,11 @@
     <Compile Include="Src\Utils\PDFView\PDFView.cs" />
     <Compile Include="Src\Utils\PDFView\PDFRegionDecoder.cs" />
     <Compile Include="Src\Utils\PDFView\PDFDecodeFactory.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationStatusDetailPaymentDetailLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\MVP\ApplicationStatusDetailPaymentActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -5814,6 +5819,8 @@
     <Folder Include="Src\UpdateNickname\Api\" />
     <Folder Include="Src\UpdatePassword\Api\" />
     <Folder Include="Src\Utils\PDFView\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

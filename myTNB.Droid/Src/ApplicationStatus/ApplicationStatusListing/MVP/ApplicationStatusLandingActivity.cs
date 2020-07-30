@@ -39,6 +39,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         [BindView(Resource.Id.applicationStatusLandingTitleLayout)]
         RelativeLayout applicationStatusLandingTitleLayout;
 
+        [BindView(Resource.Id.projectStatusLandingTitleLayout)]
+        RelativeLayout projectStatusLandingTitleLayout;
+
         [BindView(Resource.Id.txtApplicationStatusLandingTitle)]
         TextView txtApplicationStatusLandingTitle;
 
@@ -101,6 +104,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         private string filterStatus = "";
         private string filterDate = "";
 
+        private bool isApplicationStatusScrolled = false;
+        private bool isProjectStatusScrolled = false;
+
         List<ApplicationStatusModel> applicationStatusList = new List<ApplicationStatusModel>();
         List<ApplicationStatusColorCodeModel> applicationStatusColorList = new List<ApplicationStatusColorCodeModel>();
         List<ApplicationStatusCodeModel> statusCodeList = new List<ApplicationStatusCodeModel>();
@@ -126,7 +132,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             switch (item.ItemId)
             {
                 case Resource.Id.action_notification:
-                    OnNavigateToApplicationStatusFilter();
+                    if (isProjectStatusScrolled)
+                    {
+
+                    }
+                    else
+                    {
+                        OnNavigateToApplicationStatusFilter();
+                    }
                     return true;
             }
             return base.OnOptionsItemSelected(item);
@@ -162,12 +175,22 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             return base.OnCreateOptionsMenu(menu);
         }
 
-        public void ShowApplicationFilterToolbar(bool isShow)
+        public void ShowApplicationFilterToolbar(bool isApplicationShow, bool isProjectShow)
         {
-            if (isShow)
+            if (isProjectShow)
+            {
+                // ApplicationStatus TODO: Multilingual
+                SetToolBarTitle("My Project Status");
+                isProjectStatusScrolled = true;
+                applicationFilterMenuItem.SetVisible(true);
+                UpdateFilterIcon();
+            }
+            else if (isApplicationShow)
             {
                 // ApplicationStatus TODO: Multilingual
                 SetToolBarTitle("My Application Status");
+                isProjectStatusScrolled = false;
+                isApplicationStatusScrolled = true;
                 applicationFilterMenuItem.SetVisible(true);
                 UpdateFilterIcon();
             }
@@ -175,6 +198,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             {
                 // ApplicationStatus TODO: Multilingual
                 SetToolBarTitle("Check Status");
+                isProjectStatusScrolled = false;
+                isApplicationStatusScrolled = false;
                 applicationFilterMenuItem.SetVisible(false);
             }
         }
@@ -190,7 +215,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             applicationStatusLandingRecyclerView.SetLayoutManager(layoutManager);
 
-            ApplicationOnScrollChangeListener applicationOnScrollChangeListener = new ApplicationOnScrollChangeListener(ShowApplicationFilterToolbar, applicationStatusLandingTitleLayout);
+            ApplicationOnScrollChangeListener applicationOnScrollChangeListener = new ApplicationOnScrollChangeListener(ShowApplicationFilterToolbar, applicationStatusLandingTitleLayout, projectStatusLandingTitleLayout);
             applicationStatusLandingNestedScrollView.SetOnScrollChangeListener(applicationOnScrollChangeListener);
 
             // ApplicationStatus TODO: Multilingual
@@ -659,18 +684,21 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         class ApplicationOnScrollChangeListener : Java.Lang.Object, NestedScrollView.IOnScrollChangeListener
         {
             RelativeLayout mApplicationLandingTitle;
-            Action<bool> mOnScrollMethod;
-            public ApplicationOnScrollChangeListener(Action<bool> onScrollMethod, RelativeLayout applicationLandingTitle)
+            RelativeLayout mProjectStatusLandingTitleLayout;
+            Action<bool, bool> mOnScrollMethod;
+            public ApplicationOnScrollChangeListener(Action<bool, bool> onScrollMethod, RelativeLayout applicationLandingTitle, RelativeLayout projectLandingTitle)
             {
                 mApplicationLandingTitle = applicationLandingTitle;
+                mProjectStatusLandingTitleLayout = projectLandingTitle;
                 mOnScrollMethod = onScrollMethod;
             }
             public void OnScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)
             {
                 try
                 {
-                    bool IsWidgetVisible = isViewVisible(v, mApplicationLandingTitle);
-                    mOnScrollMethod(IsWidgetVisible);
+                    bool IsApplicationWidgetVisible = isViewVisible(v, mApplicationLandingTitle);
+                    bool IsProjectWidgetVisible = isViewVisible(v, mProjectStatusLandingTitleLayout);
+                    mOnScrollMethod(IsApplicationWidgetVisible, IsProjectWidgetVisible);
                 }
                 catch (Exception e)
                 {
