@@ -566,23 +566,23 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                     // ensure not from feedback and owner must be false to pass this parameter
                     if(feedback.IsNullOrEmpty() && isOwner == false)
                     {
-                        if (ownerRelationship == Utility.GetLocalizedLabel("Common", "childTitle"))
+                        if (ownerRelationship == Utility.GetLocalizedLabel("SubmitEnquiry", "childTitle"))
                         {
                             ownerRelationshipID = 1;
                         }
-                        else if (ownerRelationship == Utility.GetLocalizedLabel("Common", "tenantTitle"))
+                        else if (ownerRelationship == Utility.GetLocalizedLabel("SubmitEnquiry", "tenantTitle"))
                         {
                             ownerRelationshipID = 2;
                         }
-                        else if (ownerRelationship == Utility.GetLocalizedLabel("Common", "guardianTitle"))
+                        else if (ownerRelationship == Utility.GetLocalizedLabel("SubmitEnquiry", "guardianTitle"))
                         {
                             ownerRelationshipID = 3;
                         }
-                        else if (ownerRelationship == Utility.GetLocalizedLabel("Common", "parentTitle"))
+                        else if (ownerRelationship == Utility.GetLocalizedLabel("SubmitEnquiry", "parentTitle"))
                         {
                             ownerRelationshipID = 4;
                         }
-                        else if (ownerRelationship == Utility.GetLocalizedLabel("Common", "spouseTitle"))
+                        else if (ownerRelationship == Utility.GetLocalizedLabel("SubmitEnquiry", "spouseTitle"))
                         {
                             ownerRelationshipID = 5;
                         }
