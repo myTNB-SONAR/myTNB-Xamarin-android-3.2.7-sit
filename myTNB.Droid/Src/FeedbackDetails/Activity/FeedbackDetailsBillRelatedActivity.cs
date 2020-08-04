@@ -172,6 +172,18 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
         EditText EditTextNewPremiseAddress;
 
 
+        [BindView(Resource.Id.barLine)]
+        View barLine;
+
+
+        [BindView(Resource.Id.TextInputLayoutServiceRequestNumber)]
+        TextInputLayout TextInputLayoutServiceRequestNumber;
+
+
+        [BindView(Resource.Id.EditTextServiceRequestNumber)]
+        EditText EditTextServiceRequestNumber;
+
+
         private bool isNewScreen= false;
 
 
@@ -247,12 +259,6 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
             try
             {
                 
-
-
-                //if (relationShip==null)
-                //{
-                //    isNewScreen = false;
-                //}
                 isNewScreen = true;
 
                 if (isNewScreen)
@@ -260,10 +266,6 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
                     adapter2 = new FeedbackImageRecyclerAdapterNew(true);
                     layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-                    //adapter2.Insert(new Base.Models.AttachedImage()
-                    //{
-                    //    ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
-                    //});
                     recyclerView.SetLayoutManager(layoutManager2);
                     recyclerView.SetAdapter(adapter2);
                     adapter2.SelectClickEvent += Adapter_SelectClickEvent;
@@ -281,7 +283,8 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
                 if (isNewScreen)
                 {
-                    txtFeedbackId.Visibility = ViewStates.Visible;
+                    barLine.Visibility = ViewStates.Visible;
+                    TextInputLayoutServiceRequestNumber.Visibility = ViewStates.Visible;
                     txtInputLayoutFeedbackId.Visibility = ViewStates.Gone;
                     txtInputLayoutStatus.Visibility = ViewStates.Gone;
                     txtInputLayoutDateTime.Visibility = ViewStates.Gone;
@@ -295,15 +298,40 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                     LinearLayout_topBanner.Visibility = ViewStates.Gone;
                     viewSpacer.Visibility = ViewStates.Gone;
                     TextInputLayoutname.Visibility = ViewStates.Gone;
+                    barLine.Visibility = ViewStates.Gone;
+                    TextInputLayoutServiceRequestNumber.Visibility = ViewStates.Gone;
 
                 }
 
 
-                txtFeedbackId.Text = feedbackId;
-                txtFeedbackStatus.Text = feedbackStatus;
-                txtFeedback_status_new.Text = feedbackStatus;
+                EditTextServiceRequestNumber.Text = feedbackId;
+                txtFeedbackId.Text = feedbackId;  //not use
+              //  txtFeedbackStatus.Text = feedbackStatus;
 
- 
+                if (feedbackCode.Equals("CL01"))
+                {
+                    txtFeedback_status_new.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryCL01");
+
+                }else if (feedbackCode.Equals("CL02"))
+                {
+                    txtFeedback_status_new.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryCL02");
+                }else if (feedbackCode.Equals("CL03"))
+                {
+                    txtFeedback_status_new.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryCL04");
+                }
+                else if (feedbackCode.Equals("CL04"))
+                {
+                    txtFeedback_status_new.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryCL04");
+                }
+                else if (feedbackCode.Equals("CL06"))
+                {
+                    txtFeedback_status_new.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryCL06");
+                }
+
+
+                //txtFeedback_status_new.Text = feedbackStatus;  //set status new one
+
+
 
                 if ((!name.IsNullOrEmpty() || !email.IsNullOrEmpty() || !mobile.IsNullOrEmpty())&& isNewScreen)
                 {
@@ -347,58 +375,70 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
                 if (relationShip != null && isNewScreen)
                 {
-                    switch (relationShip)
+                    //switch (relationShip)
+                    //{
+                    //    case 0:
+                    //        {
+                    //            TextInputLayoutRelationOwner.Visibility = ViewStates.Gone;
+
+                    //        }
+                    //        break;
+                    //    case 1:
+                    //        {
+                    //            TextInputLayoutRelationOwner.Visibility = ViewStates.Visible;
+                    //            EditTextRElationOwner.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "childTitle"); //translate
+                    //            TextInputLayoutRelationOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle").ToUpper();
+                    //        }
+                    //        break;
+                    //    case 2:
+                    //        {
+                    //            TextInputLayoutRelationOwner.Visibility = ViewStates.Visible;
+                    //            EditTextRElationOwner.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "tenantTitle");
+                    //            TextInputLayoutRelationOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle").ToUpper();
+                    //        }
+                    //        break;
+                    //    case 3:
+                    //        {
+                    //            TextInputLayoutRelationOwner.Visibility = ViewStates.Visible;
+                    //            EditTextRElationOwner.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "guardianTitle");
+                    //            TextInputLayoutRelationOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle").ToUpper();
+                    //        }
+                    //        break;
+                    //    case 4:
+                    //        {
+                    //            TextInputLayoutRelationOwner.Visibility = ViewStates.Visible;
+                    //            EditTextRElationOwner.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "parentTitle");
+                    //            TextInputLayoutRelationOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle").ToUpper();
+                    //        }
+                    //        break;
+                    //    case 5:
+                    //        {
+                    //            TextInputLayoutRelationOwner.Visibility = ViewStates.Visible;
+                    //            EditTextRElationOwner.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "spouseTitle");
+                    //            TextInputLayoutRelationOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle").ToUpper();
+                    //        }
+                    //        break;
+                    //    case 6:
+                    //        {
+                    //            TextInputLayoutRelationOwner.Visibility = ViewStates.Visible;
+                    //            EditTextRElationOwner.Text = relationshipDesc;
+                    //            TextInputLayoutRelationOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle").ToUpper();
+                    //        }
+                    //        break;
+
+                    //}
+
+                    if (relationShip == 0)
                     {
-                        case 0:
-                            {
-                                TextInputLayoutRelationOwner.Visibility = ViewStates.Gone;
-
-                            }
-                            break;
-                        case 1:
-                            {
-                                TextInputLayoutRelationOwner.Visibility = ViewStates.Visible;
-                                EditTextRElationOwner.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "childTitle"); //translate
-                                TextInputLayoutRelationOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle").ToUpper();
-                            }
-                            break;
-                        case 2:
-                            {
-                                TextInputLayoutRelationOwner.Visibility = ViewStates.Visible;
-                                EditTextRElationOwner.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "tenantTitle");
-                                TextInputLayoutRelationOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle").ToUpper();
-                            }
-                            break;
-                        case 3:
-                            {
-                                TextInputLayoutRelationOwner.Visibility = ViewStates.Visible;
-                                EditTextRElationOwner.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "guardianTitle");
-                                TextInputLayoutRelationOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle").ToUpper();
-                            }
-                            break;
-                        case 4:
-                            {
-                                TextInputLayoutRelationOwner.Visibility = ViewStates.Visible;
-                                EditTextRElationOwner.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "parentTitle");
-                                TextInputLayoutRelationOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle").ToUpper();
-                            }
-                            break;
-                        case 5:
-                            {
-                                TextInputLayoutRelationOwner.Visibility = ViewStates.Visible;
-                                EditTextRElationOwner.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "spouseTitle");
-                                TextInputLayoutRelationOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle").ToUpper();
-                            }
-                            break;
-                        case 6:
-                            {
-                                TextInputLayoutRelationOwner.Visibility = ViewStates.Visible;
-                                EditTextRElationOwner.Text = relationshipDesc;
-                                TextInputLayoutRelationOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle").ToUpper();
-                            }
-                            break;
-
+                        TextInputLayoutRelationOwner.Visibility = ViewStates.Gone;
                     }
+                    else
+                    {
+                        TextInputLayoutRelationOwner.Visibility = ViewStates.Visible;
+                        EditTextRElationOwner.Text = relationshipDesc;
+                        TextInputLayoutRelationOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle").ToUpper();
+                    }
+            
                 }
                 else
                 {
@@ -436,35 +476,35 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                     {
                         TextInputLayoutNewAccName.Visibility = ViewStates.Visible;
                         EditTextNewAccName.Text = item.FeedbackUpdInfoValue;
-                        TextInputLayoutNewAccName.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "newAccName").ToUpper();
+                        TextInputLayoutNewAccName.Hint = item.FeedbackUpdInfoTypeDesc.ToUpper();//Utility.GetLocalizedLabel("SubmitEnquiry", "newAccName").ToUpper();
 
                     }
                     if (item.FeedbackUpdInfoType == 3 && isNewScreen)
                     {
                         TextInputLayoutNewMobileNumber.Visibility = ViewStates.Visible;
                         EditTextNewMobileNumber.Text = item.FeedbackUpdInfoValue;
-                        TextInputLayoutNewMobileNumber.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "newMobileNumber").ToUpper();
+                        TextInputLayoutNewMobileNumber.Hint = item.FeedbackUpdInfoTypeDesc.ToUpper();//Utility.GetLocalizedLabel("SubmitEnquiry", "newMobileNumber").ToUpper();
 
                     }
                     if (item.FeedbackUpdInfoType == 4 && isNewScreen)
                     {
                         TextInputLayoutNewEmailAddress.Visibility = ViewStates.Visible;
                         EditTextNewEmailAddress.Text = item.FeedbackUpdInfoValue;
-                        TextInputLayoutNewEmailAddress.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "newEmailAdd").ToUpper();
+                        TextInputLayoutNewEmailAddress.Hint = item.FeedbackUpdInfoTypeDesc.ToUpper();//Utility.GetLocalizedLabel("SubmitEnquiry", "newEmailAdd").ToUpper();
 
                     }
                     if (item.FeedbackUpdInfoType == 5 && isNewScreen)
                     {
                         TextInputLayoutNewMailingAddress.Visibility = ViewStates.Visible;
                         EditTextNewMailingAddress.Text = item.FeedbackUpdInfoValue;
-                        TextInputLayoutNewMailingAddress.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "newMailing").ToUpper();
+                        TextInputLayoutNewMailingAddress.Hint = item.FeedbackUpdInfoTypeDesc.ToUpper();//Utility.GetLocalizedLabel("SubmitEnquiry", "newMailing").ToUpper();
 
                     }
                     if (item.FeedbackUpdInfoType == 6 && isNewScreen)
                     {
                         TextInputLayoutNewPremiseAddress.Visibility = ViewStates.Visible;
                         EditTextNewPremiseAddress.Text = item.FeedbackUpdInfoValue;
-                        TextInputLayoutNewPremiseAddress.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "newPremisesAdd").ToUpper();
+                        TextInputLayoutNewPremiseAddress.Hint = item.FeedbackUpdInfoTypeDesc.ToUpper();//Utility.GetLocalizedLabel("SubmitEnquiry", "newPremisesAdd").ToUpper();
 
                     }
 
@@ -563,7 +603,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
 
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo, txtInputLayoutFeedback, txtInputLayoutFeedbackId, txtInputLayoutDateTime, txtInputLayoutStatus);
-                TextViewUtils.SetMuseoSans300Typeface(TextInputLayoutname, TextInputLayoutMobileNumber, TextInputLayoutEmailAddress);
+                TextViewUtils.SetMuseoSans300Typeface(TextInputLayoutname, TextInputLayoutMobileNumber, TextInputLayoutEmailAddress, TextInputLayoutServiceRequestNumber);
                 TextViewUtils.SetMuseoSans300Typeface(EditTextName, EditTextEmailAddress, EditTextMobileNumber);
                 TextViewUtils.SetMuseoSans300Typeface(txtFeedbackId, txtFeedbackDateTime, txtAccountNo, txtFeedback, txtRelatedScreenshotTitle,  txtforMyhouse);
                 TextViewUtils.SetMuseoSans500Typeface(txtStatus, txtFeedback_status_new, txtEnquiryDetails, TextView_contactDetails);
@@ -590,11 +630,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
                 TextInputLayoutMobileNumber.Hint = Utility.GetLocalizedLabel("Common", "mobileNo");
 
-
-       
-           
-
-
+                TextInputLayoutServiceRequestNumber.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle").ToUpper();
 
 
 

@@ -343,6 +343,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                 infotxtIsThisAcc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "registeredTitle");
                 btnNo.Text = Utility.GetLocalizedLabel("Common", "no");
                 btnYes.Text = Utility.GetLocalizedLabel("Common", "yes");
+                btnNext.Text = Utility.GetLocalizedLabel("Common", "next");
                 infoLabeltxtWhoIsRegistered.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "registeredInfo");
                 infotxtTitle_Which_information.Text= Utility.GetLocalizedLabel("SubmitEnquiry", "whichInfoUpdate");
                 TextView_whatIsYourRelationship.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "ownerTitle");

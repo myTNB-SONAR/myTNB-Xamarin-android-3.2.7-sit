@@ -275,11 +275,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             vh.serviceImg.SetImageResource(Resource.Drawable.feedback);
                             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                             {
-                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitFeedback"), FromHtmlOptions.ModeLegacy);
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitEnquiry"), FromHtmlOptions.ModeLegacy);
                             }
                             else
                             {
-                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitFeedback"));
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitEnquiry"));
                             }
                             vh.newLabel.Visibility = ViewStates.Gone;
                             break;

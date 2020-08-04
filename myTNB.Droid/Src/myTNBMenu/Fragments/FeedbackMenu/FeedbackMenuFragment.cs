@@ -474,11 +474,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 {
                     if (fc.Id.Equals("1"))
                     {
-                            submitNewEnquiryConstraint.Visibility = ViewStates.Visible;
-                            spaceNewEnquiry.Visibility = ViewStates.Visible;
-                            feedbackNewIc = fc.Name;
-                        txtViewid_FeedbackNewIC.Text = fc.Name;
-                            textviewid_subContent_FeedbackNewIC.Text = fc.Desc;
+                         submitNewEnquiryConstraint.Visibility = ViewStates.Visible;
+                         spaceNewEnquiry.Visibility = ViewStates.Visible;
+                         feedbackNewIc = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle");  // fc.Name;
+                         txtViewid_FeedbackNewIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle");  //fc.Name;
+                         textviewid_subContent_FeedbackNewIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryDescription"); //fc.Desc;
                     }
                     else if (fc.Id.Equals("2"))
                     {
@@ -498,9 +498,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                     }
                     else if (fc.Id.Equals("10"))
                     {
-                            submittedFeedbackTitle = fc.Name;
-                            txtSubmittedFeedback.Text = fc.Name;
-                            txtSubmittedFeedbackContent.Text = fc.Desc;
+                        submittedFeedbackTitle = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry"); //fc.Name;
+                        txtSubmittedFeedback.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");//fc.Name;
+                        txtSubmittedFeedbackContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewEnquiryTitle");//fc.Desc;
 
                     }
 

@@ -79,6 +79,35 @@
                         android:textAllCaps="false"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
+                     <View
+                        android:id="@+id/barLine"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@color/platinumGrey" />
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/TextInputLayoutServiceRequestNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginBottom="16dp"
+                        app:errorEnabled="true"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/EditTextServiceRequestNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint="SERVICE REQUEST NUMBER"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:paddingTop="5dp" />
+                    </android.support.design.widget.TextInputLayout>
 
                 </LinearLayout>
 
