@@ -78,7 +78,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
 
                 float scaledWidth = mContext.Resources.DisplayMetrics.WidthPixels / mContext.Resources.DisplayMetrics.Density;
 
-                if (scaledWidth >= 450)
+                if (scaledWidth >= 430)
                 {
                     maxHeight = GetDeviceVerticalScaleInPixel(0.532f);
                 }
