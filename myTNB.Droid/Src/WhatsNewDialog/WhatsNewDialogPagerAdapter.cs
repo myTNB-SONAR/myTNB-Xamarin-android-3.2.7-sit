@@ -76,15 +76,23 @@ namespace myTNB_Android.Src.WhatsNewDialog
 
                 int maxHeight = GetDeviceVerticalScaleInPixel(0.732f);
 
-                float scaledWidth = mContext.Resources.DisplayMetrics.WidthPixels / mContext.Resources.DisplayMetrics.Density;
-
-                if (scaledWidth >= 430)
-                {
-                    maxHeight = GetDeviceVerticalScaleInPixel(0.532f);
-                }
-                else if (mContext.Resources.DisplayMetrics.HeightPixels >= 1920)
+                if (mContext.Resources.DisplayMetrics.HeightPixels >= 1920)
                 {
                     maxHeight = GetDeviceVerticalScaleInPixel(0.632f);
+                }
+
+                try
+                {
+                    float scaledWidth = mContext.Resources.DisplayMetrics.WidthPixels / mContext.Resources.DisplayMetrics.Density;
+
+                    if (scaledWidth >= 430)
+                    {
+                        maxHeight = GetDeviceVerticalScaleInPixel(0.532f);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Utility.LoggingNonFatalError(ex);
                 }
 
                 whatsNewDialogCardView.LayoutParameters.Height = maxHeight;
