@@ -25,6 +25,7 @@ namespace myTNB_Android.Src.Base.Fragments
         public event EventHandler<int> mCancelHandler;
 
         private List<string> displayMonthList = new List<string>();
+        private List<BaseKeyValueModel> checkMonthList = new List<BaseKeyValueModel>();
 
         public MonthYearPickerDialog(BaseAppCompatActivity ctx, int minYear, int maxYear, int minMonth, int maxMonth, DateTime selectedDateTime)
         {
@@ -59,10 +60,12 @@ namespace myTNB_Android.Src.Base.Fragments
             List<BaseKeyValueModel> monthList = Utility.GetLocalizedMonthSelectorLabel("months");
 
             displayMonthList.Clear();
+            checkMonthList.Clear();
 
             for (int i = this.min_month - 1; i < this.max_month; i++)
             {
                 displayMonthList.Add(monthList[i].Value);
+                checkMonthList.Add(monthList[i]);
             }
 
         }
@@ -93,12 +96,21 @@ namespace myTNB_Android.Src.Base.Fragments
                 nowDateTime = mSelectedDateTime;
             }
 
-            monthPicker.MinValue = this.min_month - 1;
-            monthPicker.MaxValue = this.max_month - 1;
+            monthPicker.MinValue = 0;
+            monthPicker.MaxValue = displayMonthList.Count - 1;
             monthPicker.DescendantFocusability = DescendantFocusability.BlockDescendants;
 
             monthPicker.SetDisplayedValues(displayMonthList.ToArray());
-            monthPicker.Value = nowDateTime.Month;
+            int selectedIndex = 0;
+            for (int i = 0; i < checkMonthList.Count - 1; i++)
+            {
+                if (nowDateTime.Month == int.Parse(checkMonthList[i].Key))
+                {
+                    selectedIndex = i;
+                    break;
+                }
+            }
+            monthPicker.Value = selectedIndex;
 
             yearPicker.MinValue = this.min_year;
             yearPicker.MaxValue = this.max_year;
@@ -107,7 +119,7 @@ namespace myTNB_Android.Src.Base.Fragments
             builder.SetView(dialog)
                 .SetPositiveButton(Utility.GetLocalizedLabel("Common", "ok"), (senderAlert, args) =>
                 {
-                    mListener.OnDateSet(null, yearPicker.Value, monthPicker.Value + 1, 0);
+                    mListener.OnDateSet(null, yearPicker.Value, int.Parse(checkMonthList[monthPicker.Value].Key), 0);
                 })
                 .SetNegativeButton(Utility.GetLocalizedLabel("Common", "cancel"), (senderAlert, args) =>
                 {

@@ -30,7 +30,7 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 {
-    [Activity(Label = "Check Status", Theme = "@style/Theme.RegisterForm")]
+    [Activity(Label = "Application Status", Theme = "@style/Theme.RegisterForm")]
     public class ApplicationStatusLandingActivity : BaseActivityCustom, ApplicationStatusLandingContract.IView
     {
         [BindView(Resource.Id.rootview)]
@@ -106,8 +106,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
         private bool isApplicationStatusScrolled = false;
         private bool isProjectStatusScrolled = false;
+        private bool isOnlyHaveOneList = true;
 
         List<ApplicationStatusModel> applicationStatusList = new List<ApplicationStatusModel>();
+        List<ApplicationStatusModel> projectStatusList = new List<ApplicationStatusModel>();
         List<ApplicationStatusColorCodeModel> applicationStatusColorList = new List<ApplicationStatusColorCodeModel>();
         List<ApplicationStatusCodeModel> statusCodeList = new List<ApplicationStatusCodeModel>();
         List<ApplicationStatusTypeModel> typeList = new List<ApplicationStatusTypeModel>();
@@ -171,36 +173,47 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             MenuInflater.Inflate(Resource.Menu.DashboardToolbarMenu, menu);
             applicationFilterMenuItem = menu.FindItem(Resource.Id.action_notification);
             applicationFilterMenuItem.SetIcon(ContextCompat.GetDrawable(this, Resource.Drawable.bill_screen_filter_icon));
-            applicationFilterMenuItem.SetVisible(false);
+            if (!isOnlyHaveOneList)
+            {
+                applicationFilterMenuItem.SetVisible(false);
+            }
+            else
+            {
+                applicationFilterMenuItem.SetVisible(true);
+                UpdateFilterIcon();
+            }
             return base.OnCreateOptionsMenu(menu);
         }
 
         public void ShowApplicationFilterToolbar(bool isApplicationShow, bool isProjectShow)
         {
-            if (isProjectShow)
+            if (!isOnlyHaveOneList)
             {
-                // ApplicationStatus TODO: Multilingual
-                SetToolBarTitle("My Project Status");
-                isProjectStatusScrolled = true;
-                applicationFilterMenuItem.SetVisible(true);
-                UpdateFilterIcon();
-            }
-            else if (isApplicationShow)
-            {
-                // ApplicationStatus TODO: Multilingual
-                SetToolBarTitle("My Application Status");
-                isProjectStatusScrolled = false;
-                isApplicationStatusScrolled = true;
-                applicationFilterMenuItem.SetVisible(true);
-                UpdateFilterIcon();
-            }
-            else
-            {
-                // ApplicationStatus TODO: Multilingual
-                SetToolBarTitle("Check Status");
-                isProjectStatusScrolled = false;
-                isApplicationStatusScrolled = false;
-                applicationFilterMenuItem.SetVisible(false);
+                if (isProjectShow)
+                {
+                    // ApplicationStatus TODO: Multilingual
+                    SetToolBarTitle("My Project Status");
+                    isProjectStatusScrolled = true;
+                    applicationFilterMenuItem.SetVisible(true);
+                    UpdateFilterIcon();
+                }
+                else if (isApplicationShow)
+                {
+                    // ApplicationStatus TODO: Multilingual
+                    SetToolBarTitle("My Application Status");
+                    isProjectStatusScrolled = false;
+                    isApplicationStatusScrolled = true;
+                    applicationFilterMenuItem.SetVisible(true);
+                    UpdateFilterIcon();
+                }
+                else
+                {
+                    // ApplicationStatus TODO: Multilingual
+                    SetToolBarTitle("Application Status");
+                    isProjectStatusScrolled = false;
+                    isApplicationStatusScrolled = false;
+                    applicationFilterMenuItem.SetVisible(false);
+                }
             }
         }
 
@@ -219,7 +232,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             applicationStatusLandingNestedScrollView.SetOnScrollChangeListener(applicationOnScrollChangeListener);
 
             // ApplicationStatus TODO: Multilingual
-            SetToolBarTitle("Check Status");
+            SetToolBarTitle("Application Status");
 
             ScaleEmptyStateImage();
             SetupEmptyLandingText();
@@ -711,16 +724,23 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 Rect scrollBounds = new Rect();
                 v.GetDrawingRect(scrollBounds);
 
-                float top = view.GetY() + view.Height;
-                float bottom = top + view.Height;
-
-                if (scrollBounds.Top < top && scrollBounds.Bottom > bottom)
+                if (view.Height <= 0)
                 {
                     return false;
                 }
                 else
                 {
-                    return true;
+                    float top = view.GetY() + view.Height;
+                    float bottom = top + view.Height;
+
+                    if (scrollBounds.Top < top && scrollBounds.Bottom > bottom)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
                 }
             }
         }
@@ -843,12 +863,16 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 statusCodeList = JsonConvert.DeserializeObject<List<ApplicationStatusCodeModel>>("[{\"status\":\"Completed\",\"statusCode\":\"completed\"}]");
                 typeList = JsonConvert.DeserializeObject<List<ApplicationStatusTypeModel>>("[{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\"}]");
 
+                bool isApplicationAvailable = false;
+                bool isProjectAvailable = false;
+
                 if (applicationStatusList != null && applicationStatusList.Count > 0)
                 {
                     RunOnUiThread(() =>
                     {
                         try
                         {
+                            isApplicationAvailable = true;
                             viewMoreContainer.Visibility = ViewStates.Gone;
                             applicationStatusLandingRecyclerView.Visibility = ViewStates.Visible;
                             applicationStatusLandingFilterImg.Visibility = ViewStates.Visible;
@@ -897,6 +921,42 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                             Utility.LoggingNonFatalError(e);
                         }
                     });
+                }
+
+                // ApplicationStatus TODO: Project List handling
+                if (projectStatusList != null && projectStatusList.Count > 0)
+                {
+                    RunOnUiThread(() =>
+                    {
+                        try
+                        {
+                            isProjectAvailable = true;
+
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    });
+                }
+                else
+                {
+
+                }
+
+                if (isApplicationAvailable && !isProjectAvailable)
+                {
+                    applicationStatusLandingTitleLayout.Visibility = ViewStates.Gone;
+                    // ApplicationStatus TODO: Multilingual
+                    SetToolBarTitle("My Application Status");
+                    isProjectStatusScrolled = false;
+                    isApplicationStatusScrolled = true;
+                    applicationFilterMenuItem.SetVisible(true);
+                    UpdateFilterIcon();
+                }
+                else
+                {
+                    isOnlyHaveOneList = false;
                 }
             }
             catch (Exception e)
