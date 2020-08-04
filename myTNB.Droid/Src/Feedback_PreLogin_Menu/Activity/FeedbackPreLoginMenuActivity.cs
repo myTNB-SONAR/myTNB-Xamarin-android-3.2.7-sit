@@ -378,9 +378,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                     {
                         billRelatedConstraint.Visibility = ViewStates.Visible;
                         spaceBillRelated.Visibility = ViewStates.Visible;
-                        feedbackBillRelatedTitle = fc.Name;
-                        txtFeedbackBillingAndPayment.Text = fc.Name;
-                        txtFeedbackBillingAndPaymentContent.Text = fc.Desc;
+                        feedbackBillRelatedTitle = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle"); //fc.Name;
+                        txtFeedbackBillingAndPayment.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle");//fc.Name;
+                        txtFeedbackBillingAndPaymentContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryDescription");//fc.Desc;
                     }
                     else if (fc.Id.Equals("2"))
                     {
@@ -400,9 +400,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                     }
                     else if (fc.Id.Equals("10"))
                     {
-                        submittedFeedbackTitle = fc.Name;
-                        txtSubmittedFeedback.Text = fc.Name;
-                        txtSubmittedFeedbackContent.Text = fc.Desc;
+                        submittedFeedbackTitle = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry"); // fc.Name;Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle");
+                        txtSubmittedFeedback.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry"); //fc.Name;
+                        txtSubmittedFeedbackContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewEnquiryTitle");//fc.Desc;
                     }
 
                 }

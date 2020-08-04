@@ -101,12 +101,14 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                     if (customerBillingAccount != null)
                     {
                         // accountNum = string.Format("{0} - {1}", accountNum, customerBillingAccount.AccDesc);  
-                        accountNum = string.Format("{0}", "for "+customerBillingAccount.AccDesc);
+                        accountNum = string.Format("{0}", Utility.GetLocalizedLabel("SubmitEnquiry", "for") + customerBillingAccount.AccDesc);
                     }
                 }else
-                {  //bcos when from outside there was no name for accdesc
-                    accountNum = "";
+                {  
+                   //handle if acc from outside show only CA number 
                 }
+
+                var tempData = feedbackDetails;
 
                 this.mView.ShowInputData(feedbackDetails.ServiceReqNo, feedbackDetails.StatusDesc, feedbackDetails.StatusCode, dateTime, accountNum, feedbackDetails.FeedbackMessage , feedbackDetails.FeedbackUpdateDetails , feedbackDetails.ContactName,feedbackDetails.ContactEmailAddress,feedbackDetails.ContactMobileNo , feedbackDetails.RelationshipWithCA , feedbackDetails.RelationshipWithCADesc);
                 this.mView.ShowImages(attachImageList);
