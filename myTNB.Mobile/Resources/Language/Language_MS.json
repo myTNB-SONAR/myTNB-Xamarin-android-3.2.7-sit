@@ -1016,7 +1016,7 @@
       "ownerConsentDescription": "Anda sebagai bukan pemilik atau pihak diberi kuasa perlu menyertakan butiran pengesahan pemilik untuk mengemaskini maklumat peribadi pemilik bagi pihak pemilik kerana maklumat ini akan kekal di dalam akaun elektrik TNB pemilik.",
       "stepTitle2of3": "Langkah 2 dari 3",
       "ownerIcOwner": "Salinan kad pengenalan pemilik (IC / Pasport)",
-      "icTitleinfo": "Salinan nombor pengenalan anda (IC/Pasport)",
+      "icTitleinfo": "Salinan kad pengenalan anda (IC/Pasport)",
       "icInfo": "Bagaimanakah contoh salinan pengenalan?",
       "consentTitle": "Bukti Persetujuan",
       "consentInfo": "Bagaimanakah contoh bukti persetujuan?",
@@ -1074,10 +1074,6 @@
       "privacyPolicyTitle":"Dasar Perlindungan Data Peribadi",
       "submitEnquiryNonBRTitle":"Hantar Pertanyaan",
       "for":"untuk ",
-      "enquiryCL01": "Dicipta",
-      "enquiryCL02": "Sedang Diproses",
-      "enquiryCL04": "Selesai",
-      "enquiryCL06": "Dibatalkan",
       "validElectricityAccountNoError": "Sila masukkan nombor akaun elektrik yang sah."
     }
      

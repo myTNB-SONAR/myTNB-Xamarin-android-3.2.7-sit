@@ -118,6 +118,11 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
             this.mView.ShowWhereIsMyAcc();
         }
 
+        public void showScan()
+        {
+            this.mView.onScan();
+        }
+
         public void CheckRequiredFields(string accno)
         {
 

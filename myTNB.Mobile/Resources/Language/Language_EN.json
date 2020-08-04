@@ -1072,10 +1072,6 @@
     "privacyPolicyTitle":"Personal Data Protection Policy",
     "submitEnquiryNonBRTitle":"Submit Enquiry",
     "for":"for ",
-    "enquiryCL01": "Created",
-    "enquiryCL02": "In Progress",
-    "enquiryCL04": "Completed",
-    "enquiryCL06": "Cancelled",
     "validElectricityAccountNoError": "Please enter a valid electricity account number."
     }
 
