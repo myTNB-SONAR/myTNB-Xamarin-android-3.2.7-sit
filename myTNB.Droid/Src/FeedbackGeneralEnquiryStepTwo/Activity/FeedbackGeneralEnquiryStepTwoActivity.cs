@@ -759,7 +759,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
             ISharedPreferences sharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
             int currentCount = UserSessions.GetCurrentImageCount(sharedPref);
             UserSessions.SetCurrentImageCount(sharedPref, currentCount + imageCount);
-            Finish();
+            
 
             //public void showSuccess(string feedbackId)
             //{
@@ -768,11 +768,13 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
             //    StartActivityForResult(successIntent, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
 
             //}
-
+         
             var successIntent = new Intent(this, typeof(SubmitEnquirySuccessActivity));
             successIntent.PutExtra(Constants.RESPONSE_FEEDBACK_DATE, date);
             successIntent.PutExtra(Constants.RESPONSE_FEEDBACK_ID, feedbackId);
             StartActivity(successIntent);
+            
+            //StartActivityForResult(successIntent, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
         }
 
 

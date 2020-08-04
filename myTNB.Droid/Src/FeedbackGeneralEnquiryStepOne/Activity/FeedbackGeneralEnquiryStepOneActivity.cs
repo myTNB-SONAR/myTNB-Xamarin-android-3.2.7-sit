@@ -458,7 +458,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 
         public void ShowGeneralEnquiry()
         {
-           
+            
             var feedbackGeneralEnquiry = new Intent(this, typeof(FeedbackGeneralEnquiryStepTwoActivity));
             feedbackGeneralEnquiry.PutExtra("FEEDBACK", txtGeneralEnquiry1.Text.Trim());
             feedbackGeneralEnquiry.PutExtra("IMAGE", JsonConvert.SerializeObject(adapter?.GetAllImages()));
@@ -466,7 +466,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             feedbackGeneralEnquiry.PutExtra(Constants.PAGE_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle"));
             feedbackGeneralEnquiry.PutExtra(Constants.PAGE_STEP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle2of2"));
             StartActivity(feedbackGeneralEnquiry);
-            
+            //StartActivityForResult(feedbackGeneralEnquiry, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
+
         }
 
         [OnClick(Resource.Id.btnNext)]
