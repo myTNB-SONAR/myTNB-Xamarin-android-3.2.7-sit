@@ -2868,6 +2868,7 @@
     </Compile>
     <Compile Include="Model\GetSearchForAccount\GetSearchForAccountResponseModel.cs" />
     <Compile Include="Feedback\Feedback Image\ImageDataEnquiryTempModel.cs" />
+    <Compile Include="Common\CommonLinkAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">
