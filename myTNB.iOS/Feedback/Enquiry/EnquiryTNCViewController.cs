@@ -112,12 +112,12 @@ namespace myTNB
                     BackgroundColor = UIColor.White
                 };
 
-                lblTitleTNC = new UILabel(new CGRect(18, 16, _containerDataDisclamer.Frame.Width - 16, 20))
+                lblTitleTNC = new UILabel(new CGRect(18, 16, _containerDataDisclamer.Frame.Width - 16 - 20 - 24, 20))
                 {
                     Font = TNBFont.MuseoSans_14_500,
                     TextColor = MyTNBColor.WaterBlue,
                     Text = GetI18NValue(EnquiryConstants.personalDisclamer),
-                    LineBreakMode = UILineBreakMode.WordWrap,
+                    LineBreakMode = UILineBreakMode.TailTruncation,
                 };
 
                 imgViewDataDisclamer = new UIImageView(new CGRect(View.Frame.Width - 16 - 20, 16, GetScaledWidth(20F), GetScaledHeight(20F)))

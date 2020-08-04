@@ -104,9 +104,9 @@ namespace myTNB
         /// <summary>
         /// The input characters limits.
         /// </summary>
-        public static int FeedbackMaxCharCount = 75;
-        //public static int FeedbackMaxCharCount = 250;
+        public static int FeedbackMaxCharCount = 250;
         public static int FEEDBACK_FIELD_MAX_HEIGHT = 113;
+        public static int ENQUIRY_FIELD_MAX_HEIGHT = 72;
         public static int AccountNumberLowCharLimit = 12;
         public static int AccountNumberHighCharLimit = 14;
         public static int PaymentMinAmnt = 1;

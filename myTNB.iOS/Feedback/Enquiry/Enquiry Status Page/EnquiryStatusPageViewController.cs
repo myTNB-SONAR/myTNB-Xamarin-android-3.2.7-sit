@@ -22,6 +22,7 @@ namespace myTNB
         private string _refDate;
         private string _refTitle;
         private string _refMessage;
+        private bool IsEnquiryStatus = true;
 
         public string ReferenceNumber
         {
@@ -268,15 +269,17 @@ namespace myTNB
                                  && _feedbackDetails.d.data != null && _feedbackDetails.d.IsSuccess && _feedbackDetails.d.data.RelationshipWithCA != null)
                                 {
                                     UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
-                                    EnquiryDetailsViewController enquiryDetailsViewController =
-                                     storyBoard.InstantiateViewController("EnquiryDetailsViewController")
+                                    EnquiryDetailsViewController enquiryDetailsViewController = storyBoard.InstantiateViewController("EnquiryDetailsViewController")
                                      as EnquiryDetailsViewController;
 
                                     enquiryDetailsViewController._feedbackDetails = _feedbackDetails.d.data;
+                                    enquiryDetailsViewController.IsEnquiryStatus = IsEnquiryStatus;
 
                                     UINavigationController navController = new UINavigationController(enquiryDetailsViewController);
                                     navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                                    PresentViewController(navController, true, null);
+                                    //NavigationController.PushViewController(enquiryDetailsViewController, true);
+                                    PresentViewController(navController, true, null);//enquiryDetailsViewController
+
                                 }
                                 else
                                 {

@@ -48,7 +48,7 @@ namespace myTNB
                     _lblCallUs.Text = DataManager.DataManager.SharedInstance.WebLinks[index].Title;
                 }
             }
-            _lblFeedback.Text = GetI18NValue("equiry");//PreloginConstants.I18N_Feedback
+            _lblFeedback.Text = GetI18NValue("enquiry");//PreloginConstants.I18N_Feedback
             _lblChangeLanguage.Text = GetI18NValue(PreloginConstants.I18N_ChangeLanguage);
             _btnRegister.SetTitle(GetI18NValue(PreloginConstants.I18N_Register), UIControlState.Normal);
             _btnLogin.SetTitle(GetI18NValue(PreloginConstants.I18N_Login), UIControlState.Normal);

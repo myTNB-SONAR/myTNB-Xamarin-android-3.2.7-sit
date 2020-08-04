@@ -15,6 +15,8 @@ namespace myTNB
 
         public SubmittedFeedbackDetailsDataModel _feedbackDetails = new SubmittedFeedbackDetailsDataModel();
 
+        public bool IsEnquiryStatus;
+
         private UIView viewContainer;
         private UIScrollView _svContainer;
         private UIView _viewTitleSection;
@@ -53,6 +55,9 @@ namespace myTNB
             PageName = EnquiryConstants.Pagename_Enquiry;
 
             base.ViewDidLoad();
+
+            if (NavigationController != null) { NavigationController.SetNavigationBarHidden(false, false); }
+
             AddBackButton();
             AddScrollView();
             _containerOne();
@@ -69,15 +74,31 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            if (NavigationController != null) { NavigationController.SetNavigationBarHidden(false, false); }
+
         }
 
         private void AddBackButton()
         {
-            NavigationController.NavigationItem.HidesBackButton = true;
+            //NavigationController.NavigationItem.HidesBackButton = true;
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                DismissViewController(true, null);
+                if (IsEnquiryStatus)
+                {
+                    //UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                    //FeedbackViewController feedbackVC = storyBoard.InstantiateViewController("FeedbackViewController") as FeedbackViewController;
+                    //if (feedbackVC != null)
+                    //{
+                    //    //feedbackVC.isFromPreLogin = true;
+                    //    UINavigationController navController = new UINavigationController(feedbackVC);
+                    //    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    //    PresentViewController(navController, true, null);
+                    //}
+                    DismissViewController(true, null);
+                }
+                else { DismissViewController(true, null); }
+                
 
             });
             NavigationItem.LeftBarButtonItem = btnBack;
@@ -124,10 +145,10 @@ namespace myTNB
                             //Created
                             firstAttributes = new UIStringAttributes
                         {
-                            ForegroundColor = MyTNBColor.CharcoalGrey,
+                            ForegroundColor = MyTNBColor.CharcoalGrey,//
                             Font = TNBFont.MuseoSans_16_500
                         };
-                        statusName = GetI18NValue("enquiryCL01");
+                        statusName = _feedbackDetails.StatusDesc;
                         break;
                         }
                     case "CL02":
@@ -138,7 +159,7 @@ namespace myTNB
                             ForegroundColor = MyTNBColor.SunGlow,
                             Font = TNBFont.MuseoSans_16_500
                         };
-                        statusName = GetI18NValue("enquiryCL02");
+                        statusName = _feedbackDetails.StatusDesc;
                         break;
                         }
                     case "CL03":
@@ -150,7 +171,7 @@ namespace myTNB
                             ForegroundColor = MyTNBColor.FreshGreen,
                             Font = TNBFont.MuseoSans_16_500
                         };
-                        statusName = GetI18NValue("enquiryCL04");
+                        statusName = _feedbackDetails.StatusDesc;
                         break;
                         }
                     case "CL06":
@@ -161,12 +182,12 @@ namespace myTNB
                             ForegroundColor = MyTNBColor.Tomato,
                             Font = TNBFont.MuseoSans_16_500
                         };
-                        statusName = GetI18NValue("enquiryCL06");
+                        statusName = _feedbackDetails.StatusDesc;
                         break;
                         }
                 }
-            var prettyString = new NSMutableAttributedString("Status : " + statusName ?? string.Empty);//_feedbackDetails.StatusDesc
-            prettyString.SetAttributes(firstAttributes.Dictionary, new NSRange(8, statusName.Length + 1 ));//_feedbackDetails.StatusDesc.Length + 1 
+            var prettyString = new NSMutableAttributedString("Status : " + statusName ?? string.Empty);
+            prettyString.SetAttributes(firstAttributes.Dictionary, new NSRange(8, statusName.Length + 1 ));
             lblTitleStatus.AttributedText = prettyString;
 
 

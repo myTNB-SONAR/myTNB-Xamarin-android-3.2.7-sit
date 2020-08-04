@@ -5,7 +5,6 @@ using myTNB.Feedback;
 using myTNB.Feedback.FeedbackImage;
 using myTNB.Home.Feedback;
 using myTNB.Model;
-using myTNB.Registration;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SSMR;
 using System;
@@ -38,7 +37,8 @@ namespace myTNB
         private UIView viewEmail;
         private UILabel lblNameTitle, lblEmailTitle
             , lblNameError, lblEmailError;
-
+        private UILabel lblEmailHint;
+        private UILabel lblNameHint;
         public bool IsApplication = true;
 
         //add detail section
@@ -51,6 +51,7 @@ namespace myTNB
         private UIView viewMobile;
         private UILabel lblMobileTitle;
         private UILabel lblMobileError;
+        private UILabel lblMobileHint;
         private UITextField txtFieldMobile;
         private UIView viewLineMobile;
 
@@ -199,22 +200,25 @@ namespace myTNB
             };
 
             lblNameTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.nameHint).ToUpper()); 
-            lblNameError = GetErrorLabel(GetI18NValue("nameHintBottom"));
+            lblNameError = GetErrorLabel(GetErrorI18NValue("invalid_fullname"));
+            lblNameHint = GetHintLabel(GetI18NValue("nameHintBottom"));
 
             txtFieldName = new UITextField
             {
                 Frame = new CGRect(0, 12, viewName.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(""
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.nameHint)
                 , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey(),
                 Text = userInfo?.displayName ?? string.Empty
             };
+            if (txtFieldName.Text != string.Empty)
+                lblNameTitle.Hidden = false;
 
             txtFieldName.ReturnKeyType = UIReturnKeyType.Done;
 
             viewLineName = GenericLine.GetLine(new CGRect(0, 36, viewName.Frame.Width, 1));
 
-            viewName.AddSubviews(new UIView[] { lblNameTitle, lblNameError, txtFieldName, viewLineName });
+            viewName.AddSubviews(new UIView[] { lblNameTitle, lblNameError, lblNameHint ,txtFieldName, viewLineName });
             _viewContactDetails.AddSubview(viewName);
 
             //Email
@@ -225,21 +229,24 @@ namespace myTNB
 
             lblEmailTitle = GetTitleLabel(GetCommonI18NValue("emailAddress").ToUpper());
             lblEmailError = GetErrorLabel(GetErrorI18NValue("invalid_email"));
+            lblEmailHint = GetHintLabel("");
 
             txtFieldEmail = new UITextField
             {
                 Frame = new CGRect(0, 12, viewEmail.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(""
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetCommonI18NValue("emailAddress")
                 , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey(),
                 Text = userInfo?.email ?? string.Empty
             };
+            if (txtFieldEmail.Text != string.Empty)
+                lblEmailTitle.Hidden = false;
 
             txtFieldEmail.ReturnKeyType = UIReturnKeyType.Done;
 
             viewLineEmail = GenericLine.GetLine(new CGRect(0, 36, viewEmail.Frame.Width, 1));
 
-            viewEmail.AddSubviews(new UIView[] { lblEmailTitle, lblEmailError, txtFieldEmail, viewLineEmail });
+            viewEmail.AddSubviews(new UIView[] { lblEmailTitle, lblEmailError, lblEmailHint, txtFieldEmail, viewLineEmail });
             _viewContactDetails.AddSubview(viewEmail);
 
             //Mobile Number
@@ -249,22 +256,27 @@ namespace myTNB
             };
 
             lblMobileTitle = GetTitleLabel(GetCommonI18NValue("mobileNumber").ToUpper()); 
-            lblMobileError = GetErrorLabel(GetErrorI18NValue("invalid_mobileNumber")); 
+            lblMobileError = GetErrorLabel(GetErrorI18NValue("invalid_mobileNumber"));
+            lblMobileHint = GetHintLabel("");
+
 
             txtFieldMobile = new UITextField
             {
                 Frame = new CGRect(0, 12, viewMobile.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(""
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetCommonI18NValue("mobileNumber")
                 , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey(),
                 Text = userInfo?.mobileNo ?? string.Empty
             };
+            if (txtFieldMobile.Text != string.Empty)
+                lblMobileTitle.Hidden = false;
+
 
             txtFieldMobile.ReturnKeyType = UIReturnKeyType.Done;
 
             viewLineMobile = GenericLine.GetLine(new CGRect(0, 36, viewMobile.Frame.Width, 1));
 
-            viewMobile.AddSubviews(new UIView[] { lblMobileTitle, lblMobileError, txtFieldMobile, viewLineMobile });
+            viewMobile.AddSubviews(new UIView[] { lblMobileTitle, lblMobileError, lblMobileHint, txtFieldMobile, viewLineMobile });
             _viewContactDetails.AddSubview(viewMobile);
 
             _svContainer.AddSubview(_viewContactDetails);
@@ -277,7 +289,8 @@ namespace myTNB
                 Frame = new CGRect(0, 0, View.Frame.Width - 36, 12),
                 AttributedText = AttributedStringUtility.GetAttributedString(key
                     , AttributedStringUtility.AttributedStringType.Title),
-                TextAlignment = UITextAlignment.Left
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
             };
         }
 
@@ -293,17 +306,45 @@ namespace myTNB
             };
         }
 
-        private void SetTextFieldEvents(UITextField textField, UILabel textFieldTitle, UILabel textFieldError, UIView viewLine, string pattern)
+        private UILabel GetHintLabel(string key)
+        {
+            return new UILabel
+            {
+                Frame = new CGRect(0, 37, View.Frame.Width - 36, 14),
+                AttributedText = AttributedStringUtility.GetAttributedString(key
+                    , AttributedStringUtility.AttributedStringType.Hint),
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
+            };
+        }
+
+        private void SetTextFieldEvents(UITextField textField, UILabel textFieldTitle, UILabel textFieldError, UILabel textFieldHint, UIView viewLine, string pattern)
         {
             _textFieldHelper.SetKeyboard(textField);
             _textFieldHelper.CreateDoneButton(textField);
 
             textField.EditingChanged += (sender, e) =>
             {
+                textFieldTitle.Hidden = textField.Text.Length == 0;
+
+                string value = textField.Text;
+                textFieldHint.Hidden = !IsEmpty(value) && !textFieldError.Hidden || value.Length == 0;
+
+                bool hidden;
+                if (textField == txtFieldMobile)
+                {
+                    hidden = value.Length != 3 && IsEmpty(value) || value.Length == 0;
+                }
+                else
+                {
+                    hidden = IsEmpty(value) || value.Length == 0;
+                }
+
                 SetSubmitButtonEnable();
             };
             textField.EditingDidBegin += (sender, e) =>
             {
+                textFieldTitle.Hidden = textField.Text.Length == 0;
                 if (textField == txtFieldMobile && textField.Text.Length == 0)
                 {
                     textField.Text += TNBGlobal.MobileNoPrefix;
@@ -319,6 +360,13 @@ namespace myTNB
                     hidden = IsEmpty(value) || value.Length == 0;
                 }
 
+                textFieldHint.Hidden = !IsEmpty(value) && !textFieldError.Hidden || value.Length == 0;
+                if (sender == txtFieldName)
+                {
+                    lblNameHint.Hidden = false;
+                    lblNameError.Hidden = true;
+                }
+
                 textField.LeftViewMode = UITextFieldViewMode.Never;
                 viewLine.BackgroundColor = MyTNBColor.PowerBlue;
                 textField.TextColor = MyTNBColor.TunaGrey();
@@ -327,6 +375,8 @@ namespace myTNB
             {
                 bool isValid = _textFieldHelper.ValidateTextField(textField.Text, pattern);
                 textFieldError.Hidden = isValid;
+
+                textFieldHint.Hidden = true;
 
                 viewLine.BackgroundColor = isValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
                 textField.TextColor = isValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
@@ -366,9 +416,9 @@ namespace myTNB
 
         private void SetEvents()
         {
-            SetTextFieldEvents(txtFieldName, lblNameTitle, lblNameError, viewLineName, TNBGlobal.CustomerNamePattern);
-            SetTextFieldEvents(txtFieldEmail, lblEmailTitle, lblEmailError, viewLineEmail, EMAIL_PATTERN);
-            SetTextFieldEvents(txtFieldMobile, lblMobileTitle, lblMobileError, viewLineMobile, MOBILENUMBER_PATTERN);
+            SetTextFieldEvents(txtFieldName, lblNameTitle, lblNameError, lblNameHint,viewLineName, TNBGlobal.CustomerNamePattern);
+            SetTextFieldEvents(txtFieldEmail, lblEmailTitle, lblEmailError, lblEmailHint, viewLineEmail, EMAIL_PATTERN);
+            SetTextFieldEvents(txtFieldMobile, lblMobileTitle, lblMobileError, lblMobileHint, viewLineMobile, MOBILENUMBER_PATTERN);
         }
 
         private void SetSubmitButtonEnable()
@@ -639,7 +689,7 @@ namespace myTNB
                 serviceManager.usrInf,
                 serviceManager.deviceInf,
                 feedbackUpdateDetails = feedbackUpdateDetailsList,
-                attachment = ConvertImage(),//Items, //Common
+                attachment = ConvertImage(),//Items
                 feedbackCategoryId = "4",
                 feedbackTypeId = "",
                 accountNum = DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA,
