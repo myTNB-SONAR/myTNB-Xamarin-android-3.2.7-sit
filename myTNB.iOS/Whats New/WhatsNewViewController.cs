@@ -780,8 +780,6 @@ namespace myTNB
                         {
                             ModalPresentationStyle = UIModalPresentationStyle.FullScreen
                         };
-                        WhatsNewServices.SetIsRead(whatsNew.ID);
-                        OnUpdateReadWhatsNew(whatsNew);
                         PresentViewController(navController, true, null);
                     }
                 }
@@ -794,9 +792,9 @@ namespace myTNB
                         ModalPresentationStyle = UIModalPresentationStyle.FullScreen
                     };
                     PresentViewController(navController, true, null);
-                    WhatsNewServices.SetIsRead(whatsNew.ID);
-                    OnUpdateReadWhatsNew(whatsNew);
                 }
+                WhatsNewServices.SetIsRead(whatsNew.ID);
+                OnUpdateReadWhatsNew(whatsNew);
             }
         }
 
