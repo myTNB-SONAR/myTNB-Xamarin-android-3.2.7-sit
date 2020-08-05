@@ -9,6 +9,7 @@ using Com.Davemorrissey.Labs.Subscaleview;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.ZoomImageView;
 using Square.Picasso;
 using System;
 using System.Runtime;
@@ -24,7 +25,7 @@ namespace myTNB_Android.Src.FeedbackFullScreenImage.Activity
         AttachedImage attachedImage;
 
         [BindView(Resource.Id.imgFeedback)]
-        SubsamplingScaleImageView imgFeedback;
+        ZoomImageView imgFeedback;
 
 
         public override int ResourceId()
@@ -58,22 +59,12 @@ namespace myTNB_Android.Src.FeedbackFullScreenImage.Activity
                 }
 
                 base.OnCreate(savedInstanceState);
-                imgFeedback.Visibility = ViewStates.Visible;
-                try
-                {
-                    imgFeedback.SetMinimumScaleType(SubsamplingScaleImageView.ScaleTypeCenterInside);
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
 
                 Java.IO.File temp = new Java.IO.File(attachedImage.Path);
 
-                var source = ImageSource.InvokeUri(temp.Path);
-
-                imgFeedback.SetImage(source);
-                imgFeedback.ZoomEnabled = true;
+                imgFeedback
+                    .FromFile(temp.Path)
+                    .Show();
             }
             catch (Exception e)
             {

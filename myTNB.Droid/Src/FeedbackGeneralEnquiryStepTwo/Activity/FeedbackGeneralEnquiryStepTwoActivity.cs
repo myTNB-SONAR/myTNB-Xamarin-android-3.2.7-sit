@@ -294,8 +294,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
 
                 //SET TRANSLATION
-                txtInputLayoutName.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "nameHint").ToUpper();
-                txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
+                //txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
+                txtInputLayoutName.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "nameHint");    
                 txtInputLayoutEmail.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "emailHint");
                 txtInputLayoutPhoneNumber.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "mobileHint");
                 btnSubmit.Text = Utility.GetLocalizedLabel("Common", "submit");
@@ -334,6 +334,18 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 txtPhoneNumber.AddTextChangedListener(new InputFilterFormField(txtPhoneNumber, txtInputLayoutPhoneNumber));
 
 
+                txtName.FocusChange += (sender, e) =>
+                {
+                    txtInputLayoutName.Error = "";
+
+                    if (e.HasFocus)
+                    {
+                        txtInputLayoutName.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
+                        txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
+                    }
+                };
+
+
                 //enforce 60
                 UpdateMobileNumber("+60");
 
@@ -344,6 +356,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                     txtEmail.Text = UserEntity.GetActive().Email;
                     txtPhoneNumber.Text = UserEntity.GetActive().MobileNo;
 
+                }
+                else
+                {
+                    txtName.Text = "";
                 }
 
 
@@ -373,6 +389,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         {
             try
             {
+          
                 passCheck();
 
             }
@@ -499,6 +516,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         public void ShowFullNameError()
         {
             //txtInputLayoutNamee = GetString(Resource.String.name_error);
+            txtInputLayoutName.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             txtInputLayoutName.Error = Utility.GetLocalizedErrorLabel("invalid_fullname");
 
         }
@@ -514,6 +532,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         public void ClearFullNameError()
         {
             txtInputLayoutName.Error = null;
+            txtInputLayoutName.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
+            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName);
             txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
         }
 
@@ -739,7 +759,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
             ISharedPreferences sharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
             int currentCount = UserSessions.GetCurrentImageCount(sharedPref);
             UserSessions.SetCurrentImageCount(sharedPref, currentCount + imageCount);
-            Finish();
+            
 
             //public void showSuccess(string feedbackId)
             //{
@@ -748,11 +768,13 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
             //    StartActivityForResult(successIntent, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
 
             //}
-
+         
             var successIntent = new Intent(this, typeof(SubmitEnquirySuccessActivity));
             successIntent.PutExtra(Constants.RESPONSE_FEEDBACK_DATE, date);
             successIntent.PutExtra(Constants.RESPONSE_FEEDBACK_ID, feedbackId);
             StartActivity(successIntent);
+            
+            //StartActivityForResult(successIntent, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
         }
 
 

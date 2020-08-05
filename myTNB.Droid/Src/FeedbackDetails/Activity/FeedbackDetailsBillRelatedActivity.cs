@@ -306,30 +306,11 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
                 EditTextServiceRequestNumber.Text = feedbackId;
                 txtFeedbackId.Text = feedbackId;  //not use
-              //  txtFeedbackStatus.Text = feedbackStatus;
+           
 
-                if (feedbackCode.Equals("CL01"))
-                {
-                    txtFeedback_status_new.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryCL01");
+             
 
-                }else if (feedbackCode.Equals("CL02"))
-                {
-                    txtFeedback_status_new.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryCL02");
-                }else if (feedbackCode.Equals("CL03"))
-                {
-                    txtFeedback_status_new.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryCL04");
-                }
-                else if (feedbackCode.Equals("CL04"))
-                {
-                    txtFeedback_status_new.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryCL04");
-                }
-                else if (feedbackCode.Equals("CL06"))
-                {
-                    txtFeedback_status_new.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryCL06");
-                }
-
-
-                //txtFeedback_status_new.Text = feedbackStatus;  //set status new one
+                txtFeedback_status_new.Text = feedbackStatus;  //set status new one
 
 
 

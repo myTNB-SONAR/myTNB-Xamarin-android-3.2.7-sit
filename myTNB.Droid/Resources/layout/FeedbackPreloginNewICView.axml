@@ -55,12 +55,14 @@
                             android:id="@+id/txtAccountNo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_field_account_no"
                             android:drawableRight="@drawable/ic_action_dropdown1"
                             android:paddingTop="5dp"
                             android:singleLine="true"
                             android:textSize="16dp"
-                            android:hint="@string/submitICFeedback_account_number"
-                            android:inputType="text"
+                            android:hint=""
+                            android:inputType="number"
+                            android:maxLength="12"
                             android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -72,7 +74,7 @@
                         android:layout_gravity="right|top"
                         android:background="@drawable/selector_pressable"
                         android:scaleType="centerCrop"
-                        android:layout_marginRight="60dp"
+                        android:layout_marginRight="55dp"
                         android:layout_marginTop="16dp" />
                 </FrameLayout>
                 <FrameLayout

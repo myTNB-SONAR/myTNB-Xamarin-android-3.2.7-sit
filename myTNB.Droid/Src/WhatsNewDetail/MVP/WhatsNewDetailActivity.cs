@@ -24,6 +24,7 @@ using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.PDFView;
+using myTNB_Android.Src.Utils.ZoomImageView;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -75,7 +76,7 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 		LinearLayout whatsNewFullImageDetailLayout;
 
 		[BindView(Resource.Id.imgFullView)]
-		SubsamplingScaleImageView imgFullView;
+		ZoomImageView imgFullView;
 
 		[BindView(Resource.Id.whatsNewFullPDFDetailLayout)]
 		LinearLayout whatsNewFullPDFDetailLayout;
@@ -145,15 +146,6 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 			}
 			catch (Exception e)
 			{
-				Utility.LoggingNonFatalError(e);
-			}
-
-			try
-            {
-				imgFullView.SetMinimumScaleType(SubsamplingScaleImageView.ScaleTypeCenterInside);
-			}
-			catch (Exception e)
-            {
 				Utility.LoggingNonFatalError(e);
 			}
 		}
@@ -1077,11 +1069,9 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 						StopFullScreenShimmer();
 						whatsNewFullImageDetailLayout.Visibility = ViewStates.Visible;
 
-						var source = ImageSource.InvokeBitmap(fullBitmap);
-
 						imgFullView
-							.SetImage(source);
-						imgFullView.ZoomEnabled = true;
+							.FromBitmap(fullBitmap)
+							.Show();
 					}
 					catch (Exception ex)
 					{
