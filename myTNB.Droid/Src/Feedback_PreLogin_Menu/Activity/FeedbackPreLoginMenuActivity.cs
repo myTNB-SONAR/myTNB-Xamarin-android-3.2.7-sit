@@ -151,7 +151,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
 
             var billingPaymentFeedback = new Intent(this, typeof(FeedbackPreloginNewICActivity));
             //billingPaymentFeedback.PutExtra("TITLE", feedbackNewIc);
-            StartActivity(billingPaymentFeedback);
+
+            //StartActivityForResult(billingPaymentFeedback, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
+            StartActivity(billingPaymentFeedback); 
 
         }
 

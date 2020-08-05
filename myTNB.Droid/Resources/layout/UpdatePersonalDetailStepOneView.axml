@@ -311,6 +311,7 @@
                                 android:id="@+id/selectICChkBox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:paddingRight="8dp"
                                 android:layout_gravity="center"
                                 android:button="@drawable/checkbox_selector" />
                         </LinearLayout>
@@ -428,6 +429,7 @@
                             <CheckBox
                                 android:id="@+id/selectOwnerNameChkBox"
                                 android:layout_width="wrap_content"
+                                android:paddingRight="8dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center|right"
                                 android:button="@drawable/checkbox_selector" />
@@ -549,6 +551,7 @@
                                 android:id="@+id/mobile_number_chk_box"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:paddingRight="8dp"
                                 android:layout_gravity="center"
                                 android:button="@drawable/checkbox_selector" />
                         </LinearLayout>
@@ -669,6 +672,7 @@
                                 android:id="@+id/select_email_address_chk_box"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:paddingRight="8dp"
                                 android:layout_gravity="center"
                                 android:button="@drawable/checkbox_selector" />
                         </LinearLayout>
@@ -790,6 +794,7 @@
                                 android:id="@+id/select_mailing_address_chk_box"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:paddingRight="8dp"
                                 android:layout_gravity="center"
                                 android:button="@drawable/checkbox_selector" />
                         </LinearLayout>
@@ -910,6 +915,7 @@
                                 android:id="@+id/premiseAddress_chk_box"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:paddingRight="8dp"
                                 android:layout_gravity="center"
                                 android:button="@drawable/checkbox_selector" />
                         </LinearLayout>

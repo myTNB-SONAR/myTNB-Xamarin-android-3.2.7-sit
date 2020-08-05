@@ -127,6 +127,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             base.OnCreate(savedInstanceState);
             try
             {
+              
 
                 //init shared preferences 
                 mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
@@ -143,10 +144,9 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 TextViewUtils.SetMuseoSans500Typeface(infoLabeltxtWhereIsMyAcc, howCanWeHelpYou, txtGeneralEnquiry, txtUpdatePersonal);
 
                 //set translation of string 
-                //txtTermsConditionsGeneralEnquiry.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc"));
-                //StripUnderlinesFromLinks(txtTermsConditionsGeneralEnquiry);
+             
 
-                txtInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberHint").ToUpper();
+                txtInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberHint");
                 infoLabeltxtWhereIsMyAcc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo");
                 howCanWeHelpYou.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "infoHowcan");
                 txtGeneralEnquiry.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle");
@@ -157,15 +157,19 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
                 if (!UserEntity.IsCurrentlyActive())
                 {
-                   
+
                     // image inject lay
-                    ImageButton imgView = FindViewById<ImageButton>(Resource.Id.scanNewEnquiry);
-                    FrameLayout.LayoutParams imgViewParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WrapContent, FrameLayout.LayoutParams.WrapContent, GravityFlags.Right);
-                    imgViewParams.SetMargins(0, 8, 60, 0);
-                    scanNewEnquiry.LayoutParameters = imgViewParams;
+                    //  ImageButton imgView = FindViewById<ImageButton>(Resource.Id.scanNewEnquiry);
+                    //   FrameLayout.LayoutParams imgViewParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WrapContent, FrameLayout.LayoutParams.WrapContent, GravityFlags.Right);
+                    // imgViewParams.SetMargins(0, 8, 60, 0);
+                    //  scanNewEnquiry.LayoutParameters = imgViewParams;
+
+                    scanNewEnquiry.Visibility = ViewStates.Gone;
 
                     // bottom drawable hide
-                    txtAccountNo.SetCompoundDrawablesWithIntrinsicBounds(null,null, null, null);
+                    Drawable scanIcon = ContextCompat.GetDrawable(this, Resource.Drawable.scan);
+                    Drawable accnoIcon = ContextCompat.GetDrawable(this, Resource.Drawable.ic_field_account_no);
+                    txtAccountNo.SetCompoundDrawablesWithIntrinsicBounds(accnoIcon, null, scanIcon, null);
 
 
 
@@ -178,7 +182,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
                 txtAccountNo.AddTextChangedListener(new InputFilterFormField(txtAccountNo, txtInputLayoutAccountNo));  //adding listener on text change
 
-                infoLabeltxtWhereIsMyAcc.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");  // inject translation to text
+                infoLabeltxtWhereIsMyAcc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo");  // inject translation to text
 
                 onGetTooltipImageContent();
 
@@ -255,6 +259,21 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                             }
                         }
 
+                    }
+                    else
+                    {
+                        // cater if user is from outside
+                        if (e.Action == MotionEventActions.Up)
+                        {
+                            if (e.RawX >= (txtAccountNo.Right - txtAccountNo.GetCompoundDrawables()[DRAWABLE_RIGHT].Bounds.Width()))
+                            {
+                                //this function listen to click on the dropdown drawable right
+                            
+                                this.userActionsListener.showScan();
+
+                                return true;
+                            }
+                        }
                     }
 
 
@@ -381,6 +400,18 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             }
         }
 
+        public void onScan()
+        {
+            if (!this.GetIsClicked())
+            {
+
+                this.SetIsClicked(true);
+                Intent barcodeIntent = new Intent(this, typeof(BarcodeActivity));
+                barcodeIntent.PutExtra(Constants.PAGE_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle"));
+                StartActivityForResult(barcodeIntent, Constants.BARCODE_REQUEST_CODE);
+            }
+        }
+
         //[OnClick(Resource.Id.txtAccountNo)]
         //void OnSelectAccountLayout1(object sender, EventArgs eventArgs)
         //{
@@ -415,11 +446,15 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
         public void ShowGeneralEnquiry()
         {
-
+        
             Intent generalEnquiry = new Intent(this, typeof(FeedbackGeneralEnquiryStepOneActivity));
             generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
             StartActivity(generalEnquiry);
 
+
+            //Intent generalEnquiry = new Intent(this, typeof(FeedbackGeneralEnquiryStepOneActivity));
+            //generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
+            //StartActivityForResult(generalEnquiry, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
         }
 
         public void ShowSelectAccount(AccountData accountData)
@@ -657,8 +692,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
                     MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
                      .SetHeaderImageBitmap(imageCache)
-                    .SetTitle(Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle"))
-                    .SetMessage(Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails"))
+                    .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo"))
+                    .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberDetails"))
                     .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                     .SetCTAaction(() => { this.SetIsClicked(false); })
                     .Build();
