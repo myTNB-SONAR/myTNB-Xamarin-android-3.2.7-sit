@@ -25,6 +25,7 @@ namespace myTNB
         private bool IsMailing = false;
 
         public string Name;
+        public string Email;
         public bool isPresentedVC;
         private UIScrollView _svContainer;
         private UIView _containerDataDisclamer;
@@ -111,12 +112,12 @@ namespace myTNB
                     BackgroundColor = UIColor.White
                 };
 
-                lblTitleTNC = new UILabel(new CGRect(18, 16, _containerDataDisclamer.Frame.Width - 16, 20))
+                lblTitleTNC = new UILabel(new CGRect(18, 16, _containerDataDisclamer.Frame.Width - 16 - 20 - 24, 20))
                 {
                     Font = TNBFont.MuseoSans_14_500,
                     TextColor = MyTNBColor.WaterBlue,
                     Text = GetI18NValue(EnquiryConstants.personalDisclamer),
-                    LineBreakMode = UILineBreakMode.WordWrap,
+                    LineBreakMode = UILineBreakMode.TailTruncation,
                 };
 
                 imgViewDataDisclamer = new UIImageView(new CGRect(View.Frame.Width - 16 - 20, 16, GetScaledWidth(20F), GetScaledHeight(20F)))
@@ -150,8 +151,8 @@ namespace myTNB
                 };
 
                 NSError htmlBodyError = null;
-                NSAttributedString htmlBody = !IsOwner ? TextHelper.ConvertToHtmlWithFont(string.Format(GetI18NValue(EnquiryConstants.tncAgreeNonOwner), Name, userInfo.email, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA)
-                            , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(14F)) : TextHelper.ConvertToHtmlWithFont(string.Format(GetI18NValue(EnquiryConstants.tncAgreeOwner), Name, userInfo.email, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA)
+                NSAttributedString htmlBody = !IsOwner ? TextHelper.ConvertToHtmlWithFont(string.Format(GetI18NValue(EnquiryConstants.tncAgreeNonOwner), Name, userInfo.email ?? Email, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA)
+                            , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(14F)) : TextHelper.ConvertToHtmlWithFont(string.Format(GetI18NValue(EnquiryConstants.tncAgreeOwner), Name, userInfo.email ?? Email, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA)
                             , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(14F));
 
                 NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
@@ -194,12 +195,12 @@ namespace myTNB
                     BackgroundColor = UIColor.White
                 };
 
-                lblRedirectTNC = new UILabel(new CGRect(18, 16, _containerRedirectTNC1.Frame.Width - 16, 20))
+                lblRedirectTNC = new UILabel(new CGRect(18, 16, _containerRedirectTNC1.Frame.Width - 16 - 20 - 24, 20))
                 {
                     Font = TNBFont.MuseoSans_14_500,
                     TextColor = MyTNBColor.WaterBlue,
                     Text = GetI18NValue(EnquiryConstants.tnbTermUse),
-                    LineBreakMode = UILineBreakMode.WordWrap,
+                    LineBreakMode = UILineBreakMode.TailTruncation,
                 };
 
                 imgViewRedirectTNC = new UIImageView(new CGRect(View.Frame.Width - 16 - 20, 16, GetScaledWidth(20F), GetScaledHeight(20F)))
@@ -231,7 +232,7 @@ namespace myTNB
                 BackgroundColor = UIColor.White
             };
 
-            lblRedirectTNC2 = new UILabel(new CGRect(18, 16, _containerRedirectTNC2.Frame.Width - 16, 20))
+            lblRedirectTNC2 = new UILabel(new CGRect(18, 16, _containerRedirectTNC2.Frame.Width - GetScaledWidth(20F) - 16f, 20))
             {
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.WaterBlue,

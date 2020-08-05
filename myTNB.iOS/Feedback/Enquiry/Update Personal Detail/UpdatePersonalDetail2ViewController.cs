@@ -724,7 +724,7 @@ namespace myTNB
 
         private nfloat GetScrollHeight()
         {
-            return (nfloat)((_viewPhotoContainer.Frame.GetMaxY() + (_btnSubmitContainer.Frame.Height + 32f) + 64));
+            return (nfloat)((_viewPhotoContainer.Frame.GetMaxY() + (_btnSubmitContainer.Frame.Height + 32f) + 80));
         }
 
         public CustomUIView GetIdentificationTooltipView(nfloat yLoc)
@@ -753,23 +753,48 @@ namespace myTNB
             };
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
-                
-                UIImage cimg;
 
-                if (DataManager.DataManager.SharedInstance.imageCopyIC == null)
+            //UIImage cimg;
+
+            //if (DataManager.DataManager.SharedInstance.imageCopyIC == null)
+            //{
+            //    DataManager.DataManager.SharedInstance.imageCopyIC = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imageCopyIC));
+            //    cimg = DataManager.DataManager.SharedInstance.imageCopyIC;
+            //}
+            //else
+            //{
+            //    cimg = DataManager.DataManager.SharedInstance.imageCopyIC;
+            //}
+            UIImage cimg;
+            if (DataManager.DataManager.SharedInstance.imageConsent == null)
+            {
+                if (DataManager.DataManager.SharedInstance.imageCopyICUrl != GetI18NValue(EnquiryConstants.imageCopyIC))
                 {
-                    DataManager.DataManager.SharedInstance.imageCopyIC = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imageCopyIC));
+                    DataManager.DataManager.SharedInstance.imageCopyICUrl = GetI18NValue(EnquiryConstants.imageCopyIC);
+                    DataManager.DataManager.SharedInstance.imageCopyIC = GetFromUrl(TNBGlobal.SITECORE_URL + DataManager.DataManager.SharedInstance.imageCopyICUrl);
+
                     cimg = DataManager.DataManager.SharedInstance.imageCopyIC;
                 }
                 else
                 {
+                    DataManager.DataManager.SharedInstance.imageCopyIC = GetFromUrl(TNBGlobal.SITECORE_URL + DataManager.DataManager.SharedInstance.imageCopyICUrl);
+
                     cimg = DataManager.DataManager.SharedInstance.imageCopyIC;
                 }
+            }
+            else
+            {
+                cimg = DataManager.DataManager.SharedInstance.imageCopyIC;
+            }
 
-                DisplayCustomAlert(GetI18NValue(EnquiryConstants.copyICTitle)
-                    , GetI18NValue(EnquiryConstants.copyIcDet) 
-                    , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
-                    , cimg ?? null); 
+                if (cimg != null)
+                {
+
+                    DisplayCustomAlert(GetI18NValue(EnquiryConstants.copyICTitle)
+                        , GetI18NValue(EnquiryConstants.copyIcDet)
+                        , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
+                        , cimg ?? null);
+                }
             });
             viewInfo.Layer.CornerRadius = GetScaledHeight(12);
             _identificationToolTipsView.AddGestureRecognizer(tapInfo);
@@ -805,21 +830,46 @@ namespace myTNB
             };
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
-                UIImage cimg;
+                //UIImage cimg;
 
-                if (DataManager.DataManager.SharedInstance.imageConsent == null)
+                //if (DataManager.DataManager.SharedInstance.imageConsent == null)
+                //{
+                //    DataManager.DataManager.SharedInstance.imageConsent = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imageConsent));
+                //    cimg = DataManager.DataManager.SharedInstance.imageConsent;
+                //}
+                //else
+                //{
+                //    cimg = DataManager.DataManager.SharedInstance.imageConsent;
+                //}
+            UIImage cimg;
+            if (DataManager.DataManager.SharedInstance.imageConsent == null)
+            {
+                if (DataManager.DataManager.SharedInstance.imageConsentUrl != GetI18NValue(EnquiryConstants.imageConsent))
                 {
-                    DataManager.DataManager.SharedInstance.imageConsent = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imageConsent));
+                    DataManager.DataManager.SharedInstance.imageConsentUrl = GetI18NValue(EnquiryConstants.imageConsent);
+                    DataManager.DataManager.SharedInstance.imageConsent = GetFromUrl(TNBGlobal.SITECORE_URL + DataManager.DataManager.SharedInstance.imageConsentUrl);
+
                     cimg = DataManager.DataManager.SharedInstance.imageConsent;
                 }
                 else
                 {
+                    DataManager.DataManager.SharedInstance.imageConsent = GetFromUrl(TNBGlobal.SITECORE_URL + DataManager.DataManager.SharedInstance.imageConsentUrl);
+
                     cimg = DataManager.DataManager.SharedInstance.imageConsent;
                 }
-                DisplayCustomAlert(GetI18NValue(EnquiryConstants.consentTitle)
-                    , GetI18NValue(EnquiryConstants.poc) 
-                    , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
-                    , cimg ?? null);
+            }
+            else
+            {
+                cimg = DataManager.DataManager.SharedInstance.imageConsent;
+            }
+
+                if (cimg != null)
+                {
+                    DisplayCustomAlert(GetI18NValue(EnquiryConstants.consentTitle)
+                        , GetI18NValue(EnquiryConstants.poc)
+                        , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
+                        , cimg ?? null);
+                }
             });
             viewInfo.Layer.CornerRadius = GetScaledHeight(12);
             _proofConsentToolTipsView.AddGestureRecognizer(tapInfo);
@@ -855,21 +905,46 @@ namespace myTNB
             };
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
-                UIImage cimg;
+            //UIImage cimg;
 
-                if (DataManager.DataManager.SharedInstance.imageConsent == null)
+            //if (DataManager.DataManager.SharedInstance.imageConsent == null)
+            //{
+            //    DataManager.DataManager.SharedInstance.imagePermises = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imagePermises));
+            //    cimg = DataManager.DataManager.SharedInstance.imagePermises;
+            //}
+            //else
+            //{
+            //    cimg = DataManager.DataManager.SharedInstance.imagePermises;
+            //}
+            UIImage cimg;
+            if (DataManager.DataManager.SharedInstance.imagePermises == null)
+            {
+                if (DataManager.DataManager.SharedInstance.imagePermisesUrl != GetI18NValue(EnquiryConstants.imagePermises))
                 {
-                    DataManager.DataManager.SharedInstance.imagePermises = GetFromUrl(TNBGlobal.SITECORE_URL + GetI18NValue(EnquiryConstants.imagePermises));
+                    DataManager.DataManager.SharedInstance.imagePermisesUrl = GetI18NValue(EnquiryConstants.imagePermises);
+                    DataManager.DataManager.SharedInstance.imagePermises = GetFromUrl(TNBGlobal.SITECORE_URL + DataManager.DataManager.SharedInstance.imagePermisesUrl);
+
                     cimg = DataManager.DataManager.SharedInstance.imagePermises;
                 }
                 else
                 {
+                    DataManager.DataManager.SharedInstance.imagePermises = GetFromUrl(TNBGlobal.SITECORE_URL + DataManager.DataManager.SharedInstance.imagePermisesUrl);
+
                     cimg = DataManager.DataManager.SharedInstance.imagePermises;
                 }
-                DisplayCustomAlert(GetI18NValue(EnquiryConstants.permisesTitle) 
-                    , GetI18NValue(EnquiryConstants.permisesContent) 
-                    , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
-                    , cimg ?? null);
+            }
+            else
+            {
+                cimg = DataManager.DataManager.SharedInstance.imagePermises;
+            }
+
+                if (cimg != null)
+                {
+                    DisplayCustomAlert(GetI18NValue(EnquiryConstants.permisesTitle)
+                        , GetI18NValue(EnquiryConstants.permisesContent)
+                        , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
+                        , cimg ?? null);
+                }
             });
             viewInfo.Layer.CornerRadius = GetScaledHeight(12);
             _premiseToolTipsView.AddGestureRecognizer(tapInfo);
@@ -886,7 +961,6 @@ namespace myTNB
             UIImageHelper _imageHelper = new UIImageHelper();
             ImageDataEnquiryTempModel imgData;
             UIImageView imgView;
-            //UIImage resizedImage;
             
 
             foreach (UIView view in dashedLineView.Subviews)
@@ -898,9 +972,6 @@ namespace myTNB
                     if (imgView != null)
                     {
                         imgData.tempImage = _imageHelper.ResizeImage(imgView.Image);
-                        //imgData.fileType = "jpeg";
-                        //imgData.fileHex = _imageHelper.ConvertImageToHex(resizedImage);
-                        //imgData.fileSize = _imageHelper.GetImageFileSize(resizedImage).ToString();
                         imgData.fileName = FeedbackFileNameHelper.GenerateFileName();
                         capturedImageList.Add(imgData);
                     }
@@ -917,9 +988,6 @@ namespace myTNB
                         if (imgView != null)
                         {
                             imgData.tempImage = _imageHelper.ResizeImage(imgView.Image);
-                            //imgData.fileType = "jpeg";
-                            //imgData.fileHex = _imageHelper.ConvertImageToHex(resizedImage);
-                            //imgData.fileSize = _imageHelper.GetImageFileSize(resizedImage).ToString();
                             imgData.fileName = FeedbackFileNameHelper.GenerateFileName();
                             capturedImageList.Add(imgData);
                         }
@@ -937,9 +1005,6 @@ namespace myTNB
                         if (imgView != null)
                         {
                             imgData.tempImage = _imageHelper.ResizeImage(imgView.Image);
-                            //imgData.fileType = "jpeg";
-                            //imgData.fileHex = _imageHelper.ConvertImageToHex(resizedImage);
-                            //imgData.fileSize = _imageHelper.GetImageFileSize(resizedImage).ToString();
                             imgData.fileName = FeedbackFileNameHelper.GenerateFileName();
                             capturedImageList.Add(imgData);
                         }
@@ -958,9 +1023,6 @@ namespace myTNB
                         if (imgView != null)
                         {
                             imgData.tempImage = _imageHelper.ResizeImage(imgView.Image);
-                            //imgData.fileType = "jpeg";
-                            //imgData.fileHex = _imageHelper.ConvertImageToHex(resizedImage);
-                            //imgData.fileSize = _imageHelper.GetImageFileSize(resizedImage).ToString();
                             imgData.fileName = FeedbackFileNameHelper.GenerateFileName();
                             capturedImageList.Add(imgData);
                         }

@@ -401,7 +401,7 @@ namespace myTNB
                         }
                         break;
                     case ServiceEnum.SUBMITFEEDBACK:
-                        name = DashboardHomeConstants.I18N_SubmitFeedback;
+                        name = "submitEnquiry";//DashboardHomeConstants.I18N_SubmitFeedback;
                         break;
                     case ServiceEnum.SELFMETERREADING:
                         name = DashboardHomeConstants.I18N_SelfMeterReading;
