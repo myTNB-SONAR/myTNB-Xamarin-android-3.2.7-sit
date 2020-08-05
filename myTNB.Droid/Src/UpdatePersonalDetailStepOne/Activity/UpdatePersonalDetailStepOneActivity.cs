@@ -333,7 +333,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountType, selector_account_type,  txtOwnerName, txtIC,txtMobileNumber, txtEmailAddress, txtMailingAddress, txtPremiseAddress); //txtView
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutRelationshipOther,  txtInputLayoutNewIC,   txtInputLayoutNewOwnerName, txtInputLayoutCurrentMobileNumber, txtInputLayoutNewMobileNumber, txtInputLayoutNewPremiseAddress); //inputLay
                 TextViewUtils.SetMuseoSans500Typeface(EditText_relationshipOther,  txtNewIC,  txtNewOwnerName, txtGeneralCurrentMobileNumber, txtNewMobileNumber); //edit text
-                TextViewUtils.SetMuseoSans500Typeface(infotxtIsThisAcc, TextView_whatIsYourRelationship, infotxtTitle_Which_information, infoLabeltxtWhoIsRegistered, TextViewDoINeedOwnerConsent);  //txtView
+                TextViewUtils.SetMuseoSans500Typeface(infotxtIsThisAcc, TextView_whatIsYourRelationship, infotxtTitle_Which_information, infoLabeltxtWhoIsRegistered, TextViewDoINeedOwnerConsent, TextView_updateOnOwnerBehalf);  //txtView
                 // infoLabeltxtWhoIsRegistered, , infoLabelDoIneedOwnerConsent
                 //  TextViewUtils.SetMuseoSans500Typeface();
                 //txtGeneralCurrentICNumber txtGeneralCurrentOwnerName  txtInputLayoutCurrentICNumber   txtInputLayoutCurrentOwnerName
@@ -360,13 +360,13 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
 
 
-                txtInputLayoutNewIC.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "icHint").ToUpper();
-                txtInputLayoutNewOwnerName.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "accNameHint").ToUpper();
-                txtInputLayoutNewMobileNumber.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "mobileNumberHint").ToUpper();
-                txtInputLayoutNewEmailAddress.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "emailAddressHint").ToUpper();
-                txtInputLayoutNewMailingAddress.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "mailingAddressHint").ToUpper();
-                txtInputLayoutNewPremiseAddress.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "premiseAddressHint").ToUpper();
-                txtInputLayoutRelationshipOther.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "otherRelationshipHint").ToUpper();
+                txtInputLayoutNewIC.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "icHint");
+                txtInputLayoutNewOwnerName.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "accNameHint");
+                txtInputLayoutNewMobileNumber.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "mobileNumberHint");
+                txtInputLayoutNewEmailAddress.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "emailAddressHint");
+                txtInputLayoutNewMailingAddress.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "mailingAddressHint");
+                txtInputLayoutNewPremiseAddress.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "premiseAddressHint");
+                txtInputLayoutRelationshipOther.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "otherRelationshipHint");
               
 
 

@@ -5291,6 +5291,7 @@
     <Compile Include="Src\Utils\PDFView\PDFView.cs" />
     <Compile Include="Src\Utils\PDFView\PDFRegionDecoder.cs" />
     <Compile Include="Src\Utils\PDFView\PDFDecodeFactory.cs" />
+    <Compile Include="Src\Utils\ZoomImageView\ZoomImageView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -5586,6 +5587,7 @@
     <Folder Include="Src\UpdateNickname\Api\" />
     <Folder Include="Src\UpdatePassword\Api\" />
     <Folder Include="Src\Utils\PDFView\" />
+    <Folder Include="Src\Utils\ZoomImageView\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
