@@ -40,7 +40,6 @@
             android:id="@+id/rootview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
             android:background="@color/lightGrey">
             <!--android:layout_marginTop="?actionBarSize"-->
 
@@ -49,7 +48,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="?actionBarSize"
+                android:layout_marginBottom="87dp"
                 android:fillViewport="false"
                 android:overScrollMode="never">
 
@@ -64,6 +63,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="16dp"
+                        android:paddingTop="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginBottom="16dp"
                         android:layout_weight="1"
@@ -150,6 +150,11 @@
                                 android:textSize="16dp" />
                         </android.support.design.widget.TextInputLayout>
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"/>
+
                 </LinearLayout>
             </ScrollView>
 
@@ -166,8 +171,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    >
+                     android:paddingTop="16dp"
+                     android:orientation="horizontal"
+                    android:layout_marginRight="16dp">
 
                     <CheckBox
                         android:id="@+id/agreementCheckbox"
@@ -183,8 +189,6 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:gravity="bottom"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="16dp"
                         android:text="@string/registration_form_terms_conditions"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColorLink="@color/powerBlue"
@@ -199,7 +203,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                     android:layout_marginTop="16dp"
+                    android:layout_marginTop="16dp"
                     android:background="@color/white">
 
                     <Button

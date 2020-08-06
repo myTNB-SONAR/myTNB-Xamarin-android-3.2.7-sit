@@ -143,7 +143,7 @@
                                 android:drawablePadding="8dp"
                                 android:text="Who is registered owner?"
                                 android:textColor="#1c79ca"
-                                android:textSize="12dp" />
+                                android:textSize="11dp" />
                         </LinearLayout>
                     </FrameLayout>
 
@@ -190,21 +190,21 @@
                         android:id="@+id/txtAccountType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginLeft="19dp"
                         android:layout_marginTop="8dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginRight="19dp"
                         android:text="Relation ship with owner"
                         android:textAllCaps="true"
                         android:textColor="@color/tunaGrey"
-                        android:textSize="12dp" />
+                        android:textSize="10dp" />
 
                     <TextView
                         android:id="@+id/selector_account_type"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center|left"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginRight="19dp"
                         android:drawableRight="@drawable/ic_action_dropdown1"
                         android:drawableBottom="@drawable/blue_out_line"
                         android:drawablePadding="4dp"
@@ -218,8 +218,8 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
+                        android:layout_marginLeft="19dp"
+                        android:layout_marginRight="19dp"
 
                         android:background="@color/platinumGrey" />
 
@@ -238,7 +238,7 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginRight="16dp"
-                        android:paddingBottom="16dp"
+                        android:paddingBottom="0dp"
                         app:counterEnabled="false"
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
@@ -252,8 +252,8 @@
                             android:hint="PLEASE SPECIFY YOUR RELATIONSHIP"
                             android:importantForAutofill="noExcludeDescendants"
                             android:inputType="text|textMultiLine"
-                            android:maxLength="250"
-                            android:maxLines="1"
+                            android:maxLength="50"
+                            android:maxLines="2"
                             android:overScrollMode="always"
                             android:paddingTop="5dp"
                             android:scrollbarStyle="insideInset"
@@ -293,7 +293,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
                         android:background="@color/white"
                         android:orientation="horizontal"
                         android:padding="16dp"
@@ -371,9 +370,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="19dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="0dp"
                         android:layout_marginRight="16dp"
-                        android:paddingBottom="16dp"
+                        android:paddingBottom="0dp"
                         app:counterEnabled="false"
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
@@ -412,7 +411,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                    
                         android:background="@color/white"
                         android:orientation="horizontal"
                         android:padding="16dp"
@@ -493,9 +492,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="19dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="0dp"
                         android:layout_marginRight="16dp"
-                        android:paddingBottom="16dp"
+                        android:paddingBottom="0dp"
                         app:counterEnabled="false"
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
@@ -533,7 +532,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+              
                         android:background="@color/white"
                         android:orientation="horizontal"
                         android:padding="16dp"
@@ -614,9 +613,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="19dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="0dp"
                         android:layout_marginRight="16dp"
-                        android:paddingBottom="16dp"
+                        android:paddingBottom="0dp"
                         app:counterEnabled="false"
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
@@ -654,7 +653,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                 
                         android:background="@color/white"
                         android:orientation="horizontal"
                         android:padding="16dp"
@@ -736,9 +735,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="19dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="0dp"
                         android:layout_marginRight="16dp"
-                        android:paddingBottom="16dp"
+                        android:paddingBottom="0dp"
                         app:counterEnabled="false"
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
@@ -776,7 +775,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                      
                         android:background="@color/white"
                         android:orientation="horizontal"
                         android:padding="16dp"
@@ -857,9 +856,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="19dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="0dp"
                         android:layout_marginRight="16dp"
-                        android:paddingBottom="16dp"
+                        android:paddingBottom="0dp"
                         app:counterEnabled="false"
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
@@ -897,7 +896,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                
                         android:background="@color/white"
                         android:orientation="horizontal"
                         android:padding="16dp"
@@ -978,9 +977,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="19dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="0dp"
                         android:layout_marginRight="16dp"
-                        android:paddingBottom="16dp"
+                        android:paddingBottom="0dp"
                         app:counterEnabled="false"
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
@@ -1011,6 +1010,7 @@
                     android:id="@+id/FrameLayout_ownerAccount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
                     android:paddingBottom="16dp">
 
                     <LinearLayout
@@ -1034,7 +1034,7 @@
                             android:drawablePadding="8dp"
                             android:text="Do I need owner’s consent?"
                             android:textColor="#1c79ca"
-                            android:textSize="12dp" />
+                            android:textSize="11dp" />
                     </LinearLayout>
                 </FrameLayout>
 
@@ -1042,6 +1042,8 @@
 
 
         </ScrollView>
+
+         
 
         <LinearLayout
             android:layout_width="match_parent"

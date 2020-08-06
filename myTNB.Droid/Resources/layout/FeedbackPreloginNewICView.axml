@@ -157,12 +157,14 @@
                         android:layout_marginTop="16dp" />
                     <TextView
                         android:id="@+id/txtGeneralEnquiry_subContent"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="0dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginStart="16dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:layout_marginTop="0dp"
                         android:text="@string/submitICFeedback_GeneralEnquirySuBTitle"
                         android:textColor="@color/tunaGrey"
@@ -216,7 +218,7 @@
                         android:layout_marginTop="16dp" />
                     <TextView
                         android:id="@+id/txtUpdatePersonalContent"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="0dp"
                         android:layout_marginLeft="16dp"

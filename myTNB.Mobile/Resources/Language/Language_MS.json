@@ -992,7 +992,7 @@
       "whichInfoUpdate": "Maklumat mana yang anda ingin kemas kini?",
       "ownerTitle": "Apakah hubungan anda dengan pemilik akaun?",
       "icTitle": "Nombor Pengenalan (IC / Pasport)",
-      "icHint": "Masukkan Nombor Pengenalan Baru",
+      "icHint": "Masukkan Nombor Pengenalan Baru / Passport",
       "accNametitle": "Nama Akaun",
       "accNameHint": "Masukkan nama baru akaun",
       "mobileNumberTitle": "Nombor Telefon",
@@ -1010,7 +1010,7 @@
       "guardianTitle": "Penjaga",
       "parentTitle": "Ibu bapa",
       "spouseTitle": "Pasangan suami/isteri",
-      "othersTitle": " Lain-lain",
+      "othersTitle": "Lain-lain",
       "otherRelationshipHint": "Sila nyatakan hubungan anda",
       "ownerConsentInfo": "Adakah saya memerlukan persetujuan pemilik akaun?",
       "ownerConsentDescription": "Anda sebagai bukan pemilik atau pihak diberi kuasa perlu menyertakan butiran pengesahan pemilik untuk mengemaskini maklumat peribadi pemilik bagi pihak pemilik kerana maklumat ini akan kekal di dalam akaun elektrik TNB pemilik.",
@@ -1045,7 +1045,7 @@
       "viewSubmitted":"Lihat Pertanyaan yang Dihantar",
       "title": "Hantar Pertanyaan Baru",
       "scanMessage": "Imbas kod bar pada bil anda untuk mendapatkan butiran akaun.",
-      "enquiryTnc":"Dengan menghantar permintaan ini, anda telah bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat</strong></a>",
+      "enquiryTnc":"Dengan menghantar, saya telah membaca dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat</strong></a>",
       "camera":"Kamera",
       "cameraRoll":"Roll Kamera",
       "imageWhereAcc":"-/media/myTNBapp/SubmitEnquiry/newBillCopy2x.png",
@@ -1061,7 +1061,7 @@
       "name":"Nama",
       "copyOfPermiseProof":"Salinan Perjanjian Jual & Beli / Cukai pintu / Perjanjian Sewa Rumah",
       "nameHintBottom":"Masukkan nama penuh seperti di dalam kad pengenalan anda",
-      "enquiryTncRead":"Saya telah membaca dan bersetuju dengan  <a href=\"\\\"><strong>TNB’s Terms of Use,  Anti-Spam Policy dan Polisi Perlindungan Data Peribadi TNB</strong></a>",
+      "enquiryTncRead":"Saya telah membaca dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat</strong></a>",
       "imagePermises":"-/media/myTNBapp/SubmitEnquiry/permises2x.png",
       "permisesTooltipTitle":"Apakah contoh salinan dokumen perjanjian?",
       "permisesTitle":"Salinan Perjanjian Jual & Beli/ Cukai Pintu/ Perjanjian Penyewaan",
@@ -1074,7 +1074,8 @@
       "privacyPolicyTitle":"Polisi Perlindungan Data Peribadi",
       "submitEnquiryNonBRTitle":"Hantar Pertanyaan",
       "for":"untuk ",
-      "validElectricityAccountNoError": "Sila masukkan nombor akaun elektrik yang sah."
+      "validElectricityAccountNoError": "Sila masukkan nombor akaun elektrik yang sah.",
+      "backLogin":"Kembali ke Log Masuk"
     }
      
 }
