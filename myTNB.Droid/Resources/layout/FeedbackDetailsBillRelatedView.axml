@@ -91,7 +91,7 @@
                         android:layout_height="wrap_content"
 
                         android:layout_marginBottom="16dp"
-                        app:errorEnabled="true"
+                        app:errorEnabled="false"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                         <EditText
@@ -146,7 +146,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
-                    app:errorEnabled="true"
+                    app:errorEnabled="false"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                     <EditText
@@ -159,8 +159,8 @@
                         android:focusable="false"
                         android:hint=""
                         android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text"
-                        android:maxLines="1"
+                        android:inputType="text|textMultiLine"
+                        android:maxLines="6"
                         android:paddingTop="5dp" />
                 </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
@@ -170,7 +170,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
-                    app:errorEnabled="true"
+                    app:errorEnabled="false"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                     <EditText
@@ -194,7 +194,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
-                    app:errorEnabled="true"
+                    app:errorEnabled="false"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                     <EditText
@@ -207,8 +207,8 @@
                         android:focusable="false"
                         android:hint=""
                         android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text"
-                        android:maxLines="1"
+                        android:inputType="text|textMultiLine"
+                        android:maxLines="6"
                         android:paddingTop="5dp" />
                 </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
@@ -218,7 +218,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
-                    app:errorEnabled="true"
+                    app:errorEnabled="false"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                     <EditText
@@ -242,7 +242,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
-                    app:errorEnabled="true"
+                    app:errorEnabled="false"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                     <EditText
@@ -255,7 +255,7 @@
                         android:focusable="false"
                         android:hint=""
                         android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text"
+                        android:inputType="text|textMultiLine"
                         android:maxLines="1"
                         android:paddingTop="5dp" />
                 </android.support.design.widget.TextInputLayout>
@@ -266,7 +266,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
-                    app:errorEnabled="true"
+                    app:errorEnabled="false"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                     <EditText
@@ -280,7 +280,7 @@
                         android:hint=""
                         android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text|textMultiLine"
-                      
+                        android:maxLines="6"
                         android:paddingTop="5dp" />
                 </android.support.design.widget.TextInputLayout>
                 <android.support.design.widget.TextInputLayout
@@ -290,7 +290,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
-                    app:errorEnabled="true"
+                    app:errorEnabled="false"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                     <EditText
@@ -304,7 +304,7 @@
                         android:hint=""
                         android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text|textMultiLine"
-                       
+                        android:maxLines="6"
                         android:paddingTop="5dp" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -316,7 +316,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
-                    app:errorEnabled="true"
+                    app:errorEnabled="false"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                     <EditText
@@ -341,7 +341,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
-                    app:errorEnabled="true"
+                    app:errorEnabled="false"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                     <EditText

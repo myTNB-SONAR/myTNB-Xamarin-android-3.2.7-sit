@@ -216,6 +216,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
+                this.mView.makeSetClick(false);
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
                 Utility.LoggingNonFatalError(e);
@@ -227,6 +228,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                     this.mView.HideProgressDialog();
                 }
                 //this.mView.ShowFail();
+                this.mView.makeSetClick(false);
                 this.mView.OnSubmitError();
                 Utility.LoggingNonFatalError(apiException);
             }
@@ -237,6 +239,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                     this.mView.HideProgressDialog();
                 }
                 //this.mView.ShowFail();
+                this.mView.makeSetClick(false);
                 this.mView.OnSubmitError();
                 Utility.LoggingNonFatalError(e);
             }

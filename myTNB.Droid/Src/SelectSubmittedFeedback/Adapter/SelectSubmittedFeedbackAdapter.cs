@@ -71,8 +71,8 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
 
               //  vh.txtFeedbackTitle.Text = !string.IsNullOrEmpty(item.FeedbackNameInListView) ? item.FeedbackNameInListView : item.FeedbackCategoryName;
 
-                vh.txtFeedbackTitle.SetPadding(0, 24, 0, 0);  //inject padding;
-                vh.txtFeedbackDate.SetPadding(0, 24, 0, 0);
+               // vh.txtFeedbackTitle.SetPadding(0, 24, 0, 0);  //inject padding;
+               // vh.txtFeedbackDate.SetPadding(0, 24, 0, 0);
                 // vh.txtFeedbackContent.Text = item.FeedbackMessage;
                 vh.txtFeedbackContent.Visibility = ViewStates.Gone;
 
@@ -94,7 +94,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 {
                     vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.update_personal_details));
                     vh.txtFeedbackTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle");
-                    vh.txtFeedbackTitle.SetPadding(0, 24, 7, 0);
+                  //  vh.txtFeedbackTitle.SetPadding(0, 24, 7, 0);
                 }
             }
             catch (Exception e)
