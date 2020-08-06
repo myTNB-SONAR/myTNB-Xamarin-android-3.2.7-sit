@@ -121,10 +121,10 @@
                     android:orientation="vertical"
                     android:visibility="gone"
                     android:id="@+id/whatsNewFullImageDetailLayout">
-                    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
-                        android:id="@+id/imgFullView"
+                    <myTNB_Android.Src.Utils.ZoomImageView.ZoomImageView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:id="@+id/imgFullView" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"

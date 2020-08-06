@@ -9,6 +9,7 @@ using Android.Widget;
 using CheeseBind;
 using Com.Davemorrissey.Labs.Subscaleview;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.ZoomImageView;
 using System;
 using System.IO;
 using System.Net;
@@ -25,7 +26,7 @@ namespace myTNB_Android.Src.Base.Activity
     {
 
         [BindView(Resource.Id.imgFullView)]
-        SubsamplingScaleImageView imgFullView;
+        ZoomImageView imgFullView;
 
         private bool isLoadedDocument = false;
 
@@ -71,16 +72,7 @@ namespace myTNB_Android.Src.Base.Activity
 
             Bundle extra = Intent.Extras;
 
-            imgFullView = FindViewById<SubsamplingScaleImageView>(Resource.Id.imgFullView);
-
-            try
-            {
-                imgFullView.SetMinimumScaleType(SubsamplingScaleImageView.ScaleTypeCenterInside);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+            imgFullView = FindViewById<ZoomImageView>(Resource.Id.imgFullView);
 
             if (extra != null)
             {
@@ -155,11 +147,10 @@ namespace myTNB_Android.Src.Base.Activity
                     {
                         imgFullView.Visibility = ViewStates.Visible;
 
-                        var source = ImageSource.InvokeBitmap(cacheImg);
-
                         imgFullView
-                            .SetImage(source);
-                        imgFullView.ZoomEnabled = true;
+                            .FromBitmap(cacheImg)
+                            .Show();
+
                         isLoadedDocument = true;
 
                     }

@@ -306,30 +306,11 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
                 EditTextServiceRequestNumber.Text = feedbackId;
                 txtFeedbackId.Text = feedbackId;  //not use
-              //  txtFeedbackStatus.Text = feedbackStatus;
+           
 
-                if (feedbackCode.Equals("CL01"))
-                {
-                    txtFeedback_status_new.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryCL01");
+             
 
-                }else if (feedbackCode.Equals("CL02"))
-                {
-                    txtFeedback_status_new.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryCL02");
-                }else if (feedbackCode.Equals("CL03"))
-                {
-                    txtFeedback_status_new.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryCL04");
-                }
-                else if (feedbackCode.Equals("CL04"))
-                {
-                    txtFeedback_status_new.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryCL04");
-                }
-                else if (feedbackCode.Equals("CL06"))
-                {
-                    txtFeedback_status_new.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryCL06");
-                }
-
-
-                //txtFeedback_status_new.Text = feedbackStatus;  //set status new one
+                txtFeedback_status_new.Text = feedbackStatus;  //set status new one
 
 
 
@@ -459,16 +440,22 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                         if (!string.IsNullOrEmpty(icNo) && icNo.Length > 4)
                         {
                             string lastDigit = icNo.Substring(icNo.Length - 4);
-                            icNo = "******-**-" + lastDigit;
+                            int loopNumber = icNo.Length - 4;
+                            string asterik = "";
+                            for (int i = 0; i < loopNumber; i++)
+                            {
+                                asterik = asterik + "*";
+                            }
+                            icNo = asterik + lastDigit;
                         }
                         string maskedICNo = icNo;
 
                         TextInputLayoutNewIC.Visibility = ViewStates.Visible;
                         EditTextNewIC.Text = item.FeedbackUpdInfoValue.Length>4 ? maskedICNo : item.FeedbackUpdInfoValue;
-                        TextInputLayoutNewIC.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "newIC").ToUpper();
+                        TextInputLayoutNewIC.Hint = item.FeedbackUpdInfoTypeDesc.ToUpper();
 
-                 
-                     
+
+
 
                     }
 
@@ -607,8 +594,9 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 TextViewUtils.SetMuseoSans300Typeface(EditTextName, EditTextEmailAddress, EditTextMobileNumber);
                 TextViewUtils.SetMuseoSans300Typeface(txtFeedbackId, txtFeedbackDateTime, txtAccountNo, txtFeedback, txtRelatedScreenshotTitle,  txtforMyhouse);
                 TextViewUtils.SetMuseoSans500Typeface(txtStatus, txtFeedback_status_new, txtEnquiryDetails, TextView_contactDetails);
-
-
+                TextViewUtils.SetMuseoSans300Typeface(EditTextServiceRequestNumber, EditTextRElationOwner, EditTextNewIC, EditTextNewAccName, EditTextNewMobileNumber, EditTextNewEmailAddress, EditTextNewMailingAddress, EditTextNewPremiseAddress);
+                TextViewUtils.SetMuseoSans300Typeface(TextInputLayoutServiceRequestNumber,TextInputLayoutRelationOwner, TextInputLayoutNewIC, TextInputLayoutNewAccName, TextInputLayoutNewMobileNumber, TextInputLayoutNewEmailAddress, TextInputLayoutNewMailingAddress, TextInputLayoutNewPremiseAddress);
+                
                 //TRANSLATION
                 txtEnquiryDetails.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryDetailsTitle");
 

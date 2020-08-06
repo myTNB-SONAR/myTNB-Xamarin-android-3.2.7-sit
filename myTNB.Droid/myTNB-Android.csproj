@@ -5495,6 +5495,7 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\MVP\ApplicationStatusDetailPaymentActivity.cs" />
+    <Compile Include="Src\Utils\ZoomImageView\ZoomImageView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -5821,6 +5822,7 @@
     <Folder Include="Src\Utils\PDFView\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\MVP\" />
+    <Folder Include="Src\Utils\ZoomImageView\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

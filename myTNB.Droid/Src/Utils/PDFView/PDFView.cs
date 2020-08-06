@@ -51,16 +51,19 @@ namespace myTNB_Android.Src.Utils.PDFView
 
         public void Show()
         {
-            var source = ImageSource.InvokeUri(mFile!.Path);
-            PDFDecodeFactory mPDFDecodeFactory = new PDFDecodeFactory()
+            if (mFile != null && !string.IsNullOrEmpty(mFile.Path))
             {
-                mView = this,
-                mFile = this.mFile,
-                mScale = this.mScale,
-                mBackgroundColorPdf = Resource.Color.white
-            };
-            SetRegionDecoderFactory(mPDFDecodeFactory);
-            SetImage(source);
+                var source = ImageSource.InvokeUri(mFile!.Path);
+                PDFDecodeFactory mPDFDecodeFactory = new PDFDecodeFactory()
+                {
+                    mView = this,
+                    mFile = this.mFile,
+                    mScale = this.mScale,
+                    mBackgroundColorPdf = Resource.Color.white
+                };
+                SetRegionDecoderFactory(mPDFDecodeFactory);
+                SetImage(source);
+            }
         }
 
         protected override void OnDetachedFromWindow()

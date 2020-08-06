@@ -50,6 +50,8 @@
                 android:padding="16dp"
                 android:text="Update Personal Data Disclaimer"
                 android:textAllCaps="false"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="@color/powerBlue"
                 android:textSize="14dp"
                 android:textStyle="normal" />
