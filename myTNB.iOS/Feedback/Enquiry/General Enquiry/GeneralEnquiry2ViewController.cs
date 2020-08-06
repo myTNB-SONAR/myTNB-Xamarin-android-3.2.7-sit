@@ -271,8 +271,8 @@ namespace myTNB
             if (txtFieldMobile.Text != string.Empty)
                 lblMobileTitle.Hidden = false;
 
-
-            txtFieldMobile.ReturnKeyType = UIReturnKeyType.Done;
+            txtFieldMobile.KeyboardType = UIKeyboardType.NumberPad;
+            //txtFieldMobile.ReturnKeyType = UIReturnKeyType.Done;
 
             viewLineMobile = GenericLine.GetLine(new CGRect(0, 36, viewMobile.Frame.Width, 1));
 

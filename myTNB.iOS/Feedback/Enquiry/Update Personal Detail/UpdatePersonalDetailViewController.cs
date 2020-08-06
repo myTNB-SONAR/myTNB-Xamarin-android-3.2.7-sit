@@ -181,6 +181,11 @@ namespace myTNB
             base.ViewWillAppear(animated);
         }
 
+        public override void ViewDidDisappear(bool animated)
+        {
+            base.ViewDidDisappear(animated);
+        }
+
         private void SetHeader()
         { 
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
@@ -868,9 +873,10 @@ namespace myTNB
             if (MobileNumber != string.Empty)
                     lblMobileNumberTitle.Hidden = false;
 
-            txtFieldMobileNumber.ReturnKeyType = UIReturnKeyType.Done;
+                txtFieldMobileNumber.KeyboardType = UIKeyboardType.NumberPad;
+                //txtFieldMobileNumber.ReturnKeyType = UIReturnKeyType.Done;
 
-            viewLineMobile = GenericLine.GetLine(new CGRect(0, 36, viewMobileNumber.Frame.Width, 1));
+                viewLineMobile = GenericLine.GetLine(new CGRect(0, 36, viewMobileNumber.Frame.Width, 1));
 
             viewMobileNumber.AddSubviews(new UIView[] { lblMobileNumberTitle, lblMobileNumberError, txtFieldMobileNumber, viewLineMobile });
             _viewCheckBoxContainerMobileNumber.AddSubview(viewMobileNumber);
@@ -1134,7 +1140,7 @@ namespace myTNB
             }
 
             _btnNextContainer = new UIView(new CGRect(0, yLoc + _navBarHeight + DeviceHelper.GetStatusBarHeight()
-                , View.Frame.Width, DeviceHelper.GetScaledHeight(100F)))
+                , View.Frame.Width, DeviceHelper.GetScaledHeight(100F) + 30))
             {
                 BackgroundColor = UIColor.White
             };
@@ -1261,10 +1267,10 @@ namespace myTNB
             {
                 lblTitle.Hidden = textField.Text.Length == 0;
                 SetNextButtonEnable();
-                if (textField == txtFieldSpecifyOther && textField.Text.Length == 0)
-                {
-                    DisableButton();
-                }
+                //if (textField == txtFieldSpecifyOther && textField.Text.Length == 0 && IsSpecifyOther)
+                //{
+                //    DisableButton();
+                //}
             };
             textField.EditingDidBegin += (sender, e) =>
             {
@@ -1355,7 +1361,16 @@ namespace myTNB
                 isValidFieldPremise, isValidFieldOther;
             //bool isValid = false;
 
+            DisableButton();
+            if (IsSpecifyOther)
+            {
+                bool specifyValid = IsIC || IsAccount || IsMobileNumber || IsEmail || IsMailing || IsPremise;
+                isValidFieldOther = _textFieldHelper.ValidateTextField(txtFieldSpecifyOther.Text, TNBGlobal.ACCOUNT_NAME_PATTERN)
+                   && !string.IsNullOrWhiteSpace(txtFieldSpecifyOther.Text) && specifyValid != false && txtFieldSpecifyOther.Text.Length <= 50;  
 
+                if (!isValidFieldOther)
+                { DisableButton(); return; }
+            }
             if (IsIC)
             {
                  isValidFieldIC = _textFieldHelper.ValidateTextField(txtFieldICNo.Text, TNBGlobal.IC_NO_PATTERN)
@@ -1404,15 +1419,7 @@ namespace myTNB
                 if (!isValidFieldPremise)
                 { DisableButton(); return; }
             }
-            //if (IsSpecifyOther)
-            //{
-            //    isValidFieldOther = _textFieldHelper.ValidateTextField(lblSpecifyOtherTitle.Text, TNBGlobal.ACCOUNT_NAME_PATTERN)
-            //       && !string.IsNullOrWhiteSpace(lblSpecifyOtherTitle.Text);
-
-            //    if (!isValidFieldOther)
-            //    { DisableButton(); return; }
-            //}
-
+            
             _btnNext.Enabled = true;// isValid;
             _btnNext.BackgroundColor = MyTNBColor.FreshGreen;// isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
@@ -1621,8 +1628,15 @@ namespace myTNB
 
                 if (IsSpecifyOther && relationship == 6 )
                 {
+                    if (txtFieldSpecifyOther.Text != string.Empty)
+                    { 
                     DataManager.DataManager.SharedInstance.Relationship = relationship;
                     DataManager.DataManager.SharedInstance.RelationshipDesc = txtFieldSpecifyOther.Text ?? relationshipDesc;
+                    }
+                    else
+                    {
+                        DisableButton(); return;
+                    }
                 }
                 else
                 {

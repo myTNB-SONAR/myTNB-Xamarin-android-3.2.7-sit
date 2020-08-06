@@ -77,6 +77,9 @@ namespace myTNB
         private nfloat titleBarHeight = ScaleUtility.GetScaledHeight(24f);
         private CAGradientLayer _gradientLayer;
 
+        private int count;
+        private int countImage;
+
         public override void ViewDidLoad()
         {
             PageName = EnquiryConstants.Pagename_Enquiry;
@@ -90,12 +93,16 @@ namespace myTNB
             //Should be the last to add
             if (IsOwner && !IsPremise)
             {
+                count = 1;
+
                 CreatePhotoUploadWidget();
                 CreateIdentifcationToolTip();
                 UpdateContentSize();
             }
             else if (IsOwner && IsPremise)
             {
+                count = 1;
+
                 CreatePhotoUploadWidget();
                 CreateIdentifcationToolTip();
                 CreatePhotoUploadWidget4();
@@ -103,6 +110,8 @@ namespace myTNB
             }
             else
             {
+                count = 3;
+
                 CreatePhotoUploadWidget();
                 CreatePhotoUploadWidget2();
                 CreateIdentifcationToolTip();
@@ -234,9 +243,10 @@ namespace myTNB
             _btnSubmit.Font = MyTNBFont.MuseoSans18_300;
             _btnSubmit.Layer.CornerRadius = 5.0f;
 
-            _btnSubmit.Enabled = true;
+            _btnSubmit.Enabled = false;
             _btnSubmit.SetTitleColor(UIColor.White, UIControlState.Normal);
-            _btnSubmit.BackgroundColor = MyTNBColor.FreshGreen;
+            _btnSubmit.BackgroundColor = MyTNBColor.SilverChalice;
+
 
             _btnSubmit.TouchUpInside += (sender, e) =>
             {
@@ -245,7 +255,7 @@ namespace myTNB
             _btnSubmitContainer.AddSubview(_btnSubmit);
             View.AddSubview(_btnSubmitContainer);
         }
-
+ 
         private void AddSectionTitle2()
         {
             _viewTitleSection2 = new UIView(new CGRect(0, 0, View.Frame.Width, GetScaledHeight(48)))
@@ -390,6 +400,8 @@ namespace myTNB
         {
             if (IsPremise)
             {
+                count += 1;
+
                 //Photo View4
                 _viewUploadPhoto4 = new UIView((new CGRect(18, IsOwner ? _identificationToolTipsView.Frame.GetMaxY() + 16 : _proofConsentToolTipsView.Frame.GetMaxY() + 16, View.Frame.Width - 36, 89))) //164
                 {
@@ -672,7 +684,9 @@ namespace myTNB
 
         internal void AddImage(UIImage image, UIViewWithDashedLinerBorder view)
         {
-            ActivityIndicator.Show();
+            countImage += 1;
+            ValidationButton();
+
             UIImageView capturedImageView = new UIImageView(new CGRect(8, 8, 32, 32))
             {
                 Image = image,
@@ -709,12 +723,13 @@ namespace myTNB
                 imgView.RemoveFromSuperview();
                 imgViewNameBox.RemoveFromSuperview();
 
+                countImage -= 1;
+                ValidationButton();
+
             }));
 
             view.AddSubviews(new UIView[] { capturedImageView, imgView, imgViewNameBox });
 
-
-            ActivityIndicator.Hide();
         }
 
         private void UpdateContentSize()
@@ -961,7 +976,6 @@ namespace myTNB
             UIImageHelper _imageHelper = new UIImageHelper();
             ImageDataEnquiryTempModel imgData;
             UIImageView imgView;
-            
 
             foreach (UIView view in dashedLineView.Subviews)
             {
@@ -1009,7 +1023,6 @@ namespace myTNB
                             capturedImageList.Add(imgData);
                         }
                     }
-
                 }
             }
             if (dashedLineView4 != null)
@@ -1027,10 +1040,26 @@ namespace myTNB
                             capturedImageList.Add(imgData);
                         }
                     }
-
                 }
             }
-            //return capturedImageList;
+
+        }
+
+        private void ValidationButton()
+        {
+            if (count == countImage)
+            {
+                _btnSubmit.Enabled = true;
+                _btnSubmit.SetTitleColor(UIColor.White, UIControlState.Normal);
+                _btnSubmit.BackgroundColor = MyTNBColor.FreshGreen;
+            }
+            else
+            {
+                _btnSubmit.Enabled = false;
+                _btnSubmit.SetTitleColor(UIColor.White, UIControlState.Normal);
+                _btnSubmit.BackgroundColor = MyTNBColor.SilverChalice;
+
+            }
         }
 
         private void NavigateToPage()
@@ -1048,14 +1077,6 @@ namespace myTNB
                             viewController.Items = capturedImageList;
                             viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
                             NavigationController.PushViewController(viewController, true);
-
-                            ActivityIndicator.Hide();
-                        }
-                        else
-                        {
-                            lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
-
-                            ActivityIndicator.Hide();
                         }
                     }
                     if (IsOwner && IsPremise)
@@ -1069,15 +1090,6 @@ namespace myTNB
                             viewController.Items = capturedImageList;
                             viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
                             NavigationController.PushViewController(viewController, true);
-
-                            ActivityIndicator.Hide();
-                        }
-                        else
-                        {
-                            lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
-                            lblPhotoSubTitle4.TextColor = MyTNBColor.Tomato;
-
-                            ActivityIndicator.Hide();
                         }
                     }
                     else if (!IsOwner && !IsPremise)
@@ -1090,17 +1102,6 @@ namespace myTNB
                             viewController.Items = capturedImageList;
                             viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
                             NavigationController.PushViewController(viewController, true);
-
-                            ActivityIndicator.Hide();
-                        }
-                        else
-                        {
-                            lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
-                            lblPhotoSubTitle2.TextColor = MyTNBColor.Tomato;
-                            lblPhotoSubTitle3.TextColor = MyTNBColor.Tomato;
-                            //lblPhotoSubTitle4.TextColor = MyTNBColor.Tomato;
-
-                            ActivityIndicator.Hide();
                         }
                     }
                     else if (!IsOwner && IsPremise)
@@ -1114,17 +1115,15 @@ namespace myTNB
                             viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
                             NavigationController.PushViewController(viewController, true);
 
-                            ActivityIndicator.Hide();
                         }
-                        else
-                        {
-                            lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
-                            lblPhotoSubTitle2.TextColor = MyTNBColor.Tomato;
-                            lblPhotoSubTitle3.TextColor = MyTNBColor.Tomato;
-                            lblPhotoSubTitle4.TextColor = MyTNBColor.Tomato;
+                        //else
+                        //{
+                        //    lblPhotoSubTitle1.TextColor = MyTNBColor.Tomato;
+                        //    lblPhotoSubTitle2.TextColor = MyTNBColor.Tomato;
+                        //    lblPhotoSubTitle3.TextColor = MyTNBColor.Tomato;
+                        //    lblPhotoSubTitle4.TextColor = MyTNBColor.Tomato;
 
-                            ActivityIndicator.Hide();
-                        }
+                        //}
 
                     }
 
@@ -1138,7 +1137,6 @@ namespace myTNB
                 else
                 {
                     return UIImage.LoadFromData(data);
-                    //return data;
 
                 }
         }

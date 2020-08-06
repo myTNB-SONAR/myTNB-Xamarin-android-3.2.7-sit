@@ -128,6 +128,7 @@
         public static string tncAgreeOwner = "tncAgreeOwner";
 
         public static string submitEnquiryEmpty = "submitEnquiryEmpty";
+        public static string backLogin = "backLogin";
 
     }
 }

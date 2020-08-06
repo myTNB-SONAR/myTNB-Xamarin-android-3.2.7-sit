@@ -118,7 +118,10 @@ namespace myTNB
                     TextColor = MyTNBColor.WaterBlue,
                     Text = GetI18NValue(EnquiryConstants.personalDisclamer),
                     LineBreakMode = UILineBreakMode.TailTruncation,
+                    Lines = 0
                 };
+                CGSize newSizes = GetTitleLabelSize(lblTitleTNC.Text);
+                lblTitleTNC.Frame = new CGRect(18, 16, _containerDataDisclamer.Frame.Width - 16 - 20 - 24, newSizes.Height);
 
                 imgViewDataDisclamer = new UIImageView(new CGRect(View.Frame.Width - 16 - 20, 16, GetScaledWidth(20F), GetScaledHeight(20F)))
                 {
@@ -135,6 +138,8 @@ namespace myTNB
                 }));
 
                 viewLineTitleTNC = GenericLine.GetLine(new CGRect(0, lblTitleTNC.Frame.GetMaxY() + 16, View.Frame.Width, 1));
+                _containerDataDisclamer.Frame = new CGRect(0, 0, View.Frame.Width, viewLineTitleTNC.Frame.GetMaxY());
+
 
                 _containerDataDisclamer.AddSubviews(new UIView[] { lblTitleTNC, imgViewDataDisclamer, viewLineTitleTNC });
                 _svContainer.AddSubview(_containerDataDisclamer);
@@ -200,10 +205,14 @@ namespace myTNB
                     Font = TNBFont.MuseoSans_14_500,
                     TextColor = MyTNBColor.WaterBlue,
                     Text = GetI18NValue(EnquiryConstants.tnbTermUse),
-                    LineBreakMode = UILineBreakMode.TailTruncation,
+                    LineBreakMode = UILineBreakMode.WordWrap,
+                    Lines = 0
                 };
+                CGSize newSizes = GetTitleLabelSize(lblRedirectTNC.Text);
+                lblRedirectTNC.Frame = new CGRect(18, 16, _containerRedirectTNC1.Frame.Width - 16 - 20 - 24, newSizes.Height);
 
-                imgViewRedirectTNC = new UIImageView(new CGRect(View.Frame.Width - 16 - 20, 16, GetScaledWidth(20F), GetScaledHeight(20F)))
+
+            imgViewRedirectTNC = new UIImageView(new CGRect(View.Frame.Width - 16 - 20, 16, GetScaledWidth(20F), GetScaledHeight(20F)))
                 {
                     Image = UIImage.FromBundle("Arrow-Expand"),
                     ContentMode = UIViewContentMode.ScaleAspectFill,
@@ -218,7 +227,10 @@ namespace myTNB
 
                 viewLineRedirectTNC = GenericLine.GetLine(new CGRect(0, lblRedirectTNC.Frame.GetMaxY() + 16, View.Frame.Width, 1));
 
-                _containerRedirectTNC1.AddSubviews(new UIView[] { lblRedirectTNC, imgViewRedirectTNC, viewLineRedirectTNC });
+            _containerRedirectTNC1.Frame = new CGRect(0, _containerDataDisclamer.Frame.GetMaxY(), View.Frame.Width, viewLineRedirectTNC.Frame.GetMaxY());
+
+
+            _containerRedirectTNC1.AddSubviews(new UIView[] { lblRedirectTNC, imgViewRedirectTNC, viewLineRedirectTNC });
                 _svContainer.AddSubview(_containerRedirectTNC1);
 
           
@@ -238,7 +250,11 @@ namespace myTNB
                 TextColor = MyTNBColor.WaterBlue,
                 Text = GetI18NValue("privacyPolicyTitle"),
                 LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0
             };
+            CGSize newSizes = GetTitleLabelSize(lblRedirectTNC2.Text);
+            lblRedirectTNC2.Frame = new CGRect(18, 16, _containerRedirectTNC2.Frame.Width - 16 - 20 - 24, newSizes.Height);
+
 
             imgViewRedirectTNC2 = new UIImageView(new CGRect(View.Frame.Width - 16 - 20, 16, GetScaledWidth(20F), GetScaledHeight(20F)))
             {
@@ -255,10 +271,25 @@ namespace myTNB
 
             viewLineRedirectTNC2 = GenericLine.GetLine(new CGRect(0, lblRedirectTNC2.Frame.GetMaxY() + 16, View.Frame.Width, 1));
 
+            _containerRedirectTNC2.Frame = new CGRect(0, _containerRedirectTNC1.Frame.GetMaxY(), View.Frame.Width, viewLineRedirectTNC2.Frame.GetMaxY());
+
             _containerRedirectTNC2.AddSubviews(new UIView[] { lblRedirectTNC2, imgViewRedirectTNC2, viewLineRedirectTNC2 });
             _svContainer.AddSubview(_containerRedirectTNC2);
 
 
+        }
+
+        private CGSize GetTitleLabelSize(string text)
+        {
+            UILabel label = new UILabel(new CGRect(18, 30, UIApplication.SharedApplication.KeyWindow.Frame.Width - 36, 1000))
+            {
+                Font = TNBFont.MuseoSans_14_300,
+                TextColor = MyTNBColor.CharcoalGrey,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0,
+                Text = text
+            };
+            return label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, 1000F));
         }
 
         /*public void ContainerTNC()

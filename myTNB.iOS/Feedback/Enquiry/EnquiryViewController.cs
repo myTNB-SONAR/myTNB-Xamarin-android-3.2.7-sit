@@ -59,8 +59,8 @@ namespace myTNB
             PageName = EnquiryConstants.Pagename_Enquiry;
 
             base.ViewDidLoad();
-            //SetHeader();
-            SetNavigation();
+            SetHeader();
+            //SetNavigation();
             AddScrollView();
             ConstructAccountNumberSelector();
             AddSectionTitle();
@@ -75,6 +75,7 @@ namespace myTNB
         {
             base.ViewDidAppear(animated);
 
+            //NavigationController.NavigationBar.Hidden = true;
             string accountNo = DataManager.DataManager.SharedInstance.AccountNumber;
             if (!string.IsNullOrEmpty(accountNo))
             {
@@ -87,9 +88,24 @@ namespace myTNB
 
         }
 
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+
+            if (NavigationController != null && NavigationController.NavigationBar != null)
+            {
+                if(NavigationController.NavigationBar.Hidden == true)
+                NavigationController.NavigationBar.Hidden = false;
+            }
+        }
+
         private void SetHeader()
         {
-            if (NavigationController != null) { NavigationController.SetNavigationBarHidden(false, false); }
+            //if (NavigationController != null) { NavigationController.SetNavigationBarHidden(false, false); }
+            if (NavigationController != null && NavigationController.NavigationBar != null)
+            {
+                NavigationController.NavigationBar.Hidden = false;
+            }
 
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
@@ -104,6 +120,7 @@ namespace myTNB
 
         private void SetNavigation()
         {
+
             if (NavigationController != null && NavigationController.NavigationBar != null)
             {
                 NavigationController.NavigationBar.Hidden = true;
@@ -162,7 +179,7 @@ namespace myTNB
 
         private void AddScrollView()
         {
-            _svContainer = new UIScrollView(new CGRect(0, _navbarView.Frame.GetMaxY(), View.Frame.Width, View.Frame.Height))
+            _svContainer = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height)) //_navbarView.Frame.GetMaxY()
             {
                 BackgroundColor = MyTNBColor.LightGrayBG
             };
@@ -287,6 +304,20 @@ namespace myTNB
             textField.SpellCheckingType = UITextSpellCheckingType.No;
             textField.ReturnKeyType = UIReturnKeyType.Done;
             _textFieldHelper.CreateDoneButton(textField);
+        }
+
+        private void OnKeyboardNotification(NSNotification notification)
+        {
+            if (!IsViewLoaded)
+                return;
+
+            bool visible = notification.Name == UIKeyboard.WillShowNotification;
+            UIView.BeginAnimations("AnimateForKeyboard");
+            UIView.SetAnimationBeginsFromCurrentState(true);
+            UIView.SetAnimationDuration(UIKeyboard.AnimationDurationFromNotification(notification));
+            UIView.SetAnimationCurve((UIViewAnimationCurve)UIKeyboard.AnimationCurveFromNotification(notification));
+
+            UIView.CommitAnimations();
         }
 
         public void SetSelectedAccountNumber()
@@ -611,6 +642,8 @@ namespace myTNB
         private void ExecuteValidateContractAccount(string uistoryboard, string viewcontroller)
         {
             ActivityIndicator.Show();
+
+            View.EndEditing(true);
 
             getContractAccounts = new List<string>();
             getContractAccounts.Add(_txtAccountNumber.Text);
