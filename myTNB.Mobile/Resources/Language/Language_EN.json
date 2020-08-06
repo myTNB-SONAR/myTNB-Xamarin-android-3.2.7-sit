@@ -990,7 +990,7 @@
     "whichInfoUpdate":"Which information would you like to update?",
     "ownerTitle": "What is your relationship with the owner?",
     "icTitle":"Identification Number (IC/Passport)",
-    "icHint": "Enter New Identification Number",
+    "icHint": "Enter New Identification Number / Passport",
     "accNametitle" : "Account Name",
     "accNameHint": "Enter new account name",
     "mobileNumberTitle" : "Mobile Number",
@@ -1043,7 +1043,7 @@
     "viewSubmitted":"View Submitted Enquiry",
     "title": "Submit New Enquiry",
     "scanMessage": "Scan the barcode on your bill to retrieve account details.",
-    "enquiryTnc":"By submitting, you are agreeing to the <a href=\"\\\"><strong>Terms & Conditions</strong></a>",
+    "enquiryTnc":"By submitting, I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>",
     "camera":"Camera",
     "cameraRoll":"Camera Roll",
     "imageWhereAcc":"-/media/myTNBapp/SubmitEnquiry/newBillCopy2x.png",
@@ -1059,7 +1059,7 @@
     "name":"Name",
     "copyOfPermiseProof":"Copy of Sales & Purchase Agreement/Cukai Pintu/Tenancy Agreement",
     "nameHintBottom":"Enter your full name as per your identification card.",
-    "enquiryTncRead":"I have read and agreed to <a href=\"\\\"><strong>TNB’s Terms of Use,  Anti-Spam Policy and Personal Data Protection Policy</strong></a>",
+    "enquiryTncRead":"I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>",
     "imagePermises":"-/media/myTNBapp/SubmitEnquiry/permises2x.png",
     "permisesTooltipTitle":"How does agreement look like?",
     "permisesTitle":"Copy of Sales & Purchase Agreement/Cukai Pintu/Tenancy Agreement",
@@ -1072,7 +1072,8 @@
     "privacyPolicyTitle":"Personal Data Protection Policy",
     "submitEnquiryNonBRTitle":"Submit Enquiry",
     "for":"for ",
-    "validElectricityAccountNoError": "Please enter a valid electricity account number."
+    "validElectricityAccountNoError": "Please enter a valid electricity account number.",
+    "backLogin":"Back to Login"
     }
 
 
