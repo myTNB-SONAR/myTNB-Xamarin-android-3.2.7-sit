@@ -45,7 +45,7 @@ namespace myTNB
         public CustomerAccountRecordModel SelectedAccount;
         public ContactDetailsResponseModel ContactDetails;
 
-        private UIView  _viewContactDetails;
+        private UIView _viewContactDetails;
         private UIView viewName;
 
         private UIView viewMobile;
@@ -199,7 +199,7 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            lblNameTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.nameHint).ToUpper()); 
+            lblNameTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.nameHint).ToUpper());
             lblNameError = GetErrorLabel(GetErrorI18NValue("invalid_fullname"));
             lblNameHint = GetHintLabel(GetI18NValue("nameHintBottom"));
 
@@ -218,7 +218,7 @@ namespace myTNB
 
             viewLineName = GenericLine.GetLine(new CGRect(0, 36, viewName.Frame.Width, 1));
 
-            viewName.AddSubviews(new UIView[] { lblNameTitle, lblNameError, lblNameHint ,txtFieldName, viewLineName });
+            viewName.AddSubviews(new UIView[] { lblNameTitle, lblNameError, lblNameHint, txtFieldName, viewLineName });
             _viewContactDetails.AddSubview(viewName);
 
             //Email
@@ -255,7 +255,7 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            lblMobileTitle = GetTitleLabel(GetCommonI18NValue("mobileNumber").ToUpper()); 
+            lblMobileTitle = GetTitleLabel(GetCommonI18NValue("mobileNumber").ToUpper());
             lblMobileError = GetErrorLabel(GetErrorI18NValue("invalid_mobileNumber"));
             lblMobileHint = GetHintLabel("");
 
@@ -299,6 +299,8 @@ namespace myTNB
             return new UILabel
             {
                 Frame = new CGRect(0, 37, View.Frame.Width - 36, 14),
+                Font = MyTNBFont.MuseoSans11_300,
+                TextColor = MyTNBColor.Tomato,
                 AttributedText = AttributedStringUtility.GetAttributedString(key
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
@@ -416,7 +418,7 @@ namespace myTNB
 
         private void SetEvents()
         {
-            SetTextFieldEvents(txtFieldName, lblNameTitle, lblNameError, lblNameHint,viewLineName, TNBGlobal.CustomerNamePattern);
+            SetTextFieldEvents(txtFieldName, lblNameTitle, lblNameError, lblNameHint, viewLineName, TNBGlobal.CustomerNamePattern);
             SetTextFieldEvents(txtFieldEmail, lblEmailTitle, lblEmailError, lblEmailHint, viewLineEmail, EMAIL_PATTERN);
             SetTextFieldEvents(txtFieldMobile, lblMobileTitle, lblMobileError, lblMobileHint, viewLineMobile, MOBILENUMBER_PATTERN);
         }
@@ -504,10 +506,10 @@ namespace myTNB
         private UITextView GetInfoTNC()
         {
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = IsTNC ? TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTncRead)+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            NSAttributedString htmlBody = IsTNC ? TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTncRead) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
                         , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F)) : TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTnc) + "&nbsp;&nbsp;&nbsp;&nbsp;"
-                        , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F)) ;
-            
+                        , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F));
+
             NSMutableAttributedString mutableHTMLFooter = new NSMutableAttributedString(htmlBody);
 
             UIStringAttributes linkAttributes = new UIStringAttributes
@@ -528,7 +530,7 @@ namespace myTNB
                 AttributedText = mutableHTMLBody,
                 WeakLinkTextAttributes = linkAttributes.Dictionary,
                 TextAlignment = UITextAlignment.Left,
-                
+
             };
             lblTNC.TextContainerInset = UIEdgeInsets.Zero;
 
@@ -727,7 +729,7 @@ namespace myTNB
             UIImageHelper _imageHelper = new UIImageHelper();
             ImageDataEnquiryModel imgData;
 
-            for (int i=0; i<Items.Count; i++)
+            for (int i = 0; i < Items.Count; i++)
             {
                 imgData = new ImageDataEnquiryModel();
 
@@ -736,7 +738,7 @@ namespace myTNB
                 imgData.fileSize = _imageHelper.GetImageFileSize(Items[i].tempImage).ToString();
                 imgData.fileName = Items[i].fileName;
                 capturedImageList.Add(imgData);
-                    
+
             }
 
             return capturedImageList;
