@@ -385,7 +385,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 string feedback = txtGeneralEnquiry1.Text.Trim();
                 if (TextUtils.IsEmpty(feedback))
                 {
-                    ShowEmptyFeedbackError();
+                    //ShowEmptyFeedbackError();
                     DisableSubmitButton();
                     return;
                 }
@@ -404,7 +404,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 
         public void ShowEmptyFeedbackError()
         {
-           
+            TextView_CharLeft.Visibility = ViewStates.Gone;
             txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1.FindViewById<TextView>(Resource.Id.textinput_error));
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);

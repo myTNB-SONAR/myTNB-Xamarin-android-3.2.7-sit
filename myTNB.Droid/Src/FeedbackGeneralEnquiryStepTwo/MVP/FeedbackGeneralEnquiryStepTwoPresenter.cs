@@ -148,6 +148,16 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                 }
                 else
                 {
+
+                    if (TextUtils.IsEmpty(mobile_no) || mobile_no.Length < 3 || !mobile_no.Contains("+60"))
+                    {
+                        this.mView.UpdateMobileNumber("+60");
+                        this.mView.ClearInvalidMobileError();
+                        this.mView.DisableRegisterButton();
+                        return;
+                    }
+
+
                     this.mView.DisableRegisterButton();
                 }
             }
