@@ -4,6 +4,7 @@ using Foundation;
 using UIKit;
 using System.Security;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -41,8 +42,24 @@ namespace myTNB
         public static NSAttributedString ConvertToHtmlWithFont(string htmlContent, ref NSError htmlCampaignPeriodError,
                                                                string fontName, float fontSize)
         {
-            var styleCss = string.Format("<style>body{{font-family: '{0}'; font-size:{1}px; }}</style>", fontName, fontSize);
-            return ConvertToHtmlWithCss(htmlContent, styleCss, ref htmlCampaignPeriodError);
+            try
+            {
+                var styleCss = string.Format("<style>body{{font-family: '{0}'; font-size:{1}px; }}</style>", fontName, fontSize);
+                return ConvertToHtmlWithCss(htmlContent, styleCss, ref htmlCampaignPeriodError);
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Debug.WriteLine("DEBUG - ConvertToHtmlWithFont Error: " + e.Message);
+#endif
+                return new NSAttributedString(htmlContent ?? string.Empty
+                    , new NSAttributedStringDocumentAttributes
+                    {
+                        DocumentType = NSDocumentType.HTML,
+                        StringEncoding = NSStringEncoding.UTF8
+                    }
+                    , ref htmlCampaignPeriodError);
+            }
         }
 
         /// <summary>

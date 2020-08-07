@@ -1841,6 +1841,9 @@
     <ImageAsset Include="Assets\Assets.xcassets\Update-PersonalDetails.imageset\updatePersonalDetails.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Update-PersonalDetails.imageset\updatePersonalDetails%402x.png" />
     <ImageAsset Include="Assets\Assets.xcassets\Update-PersonalDetails.imageset\updatePersonalDetails%403x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\Enquiry-Empty.imageset\Contents.json" />
+    <ImageAsset Include="Assets\Assets.xcassets\Enquiry-Empty.imageset\group4%402x.png" />
+    <ImageAsset Include="Assets\Assets.xcassets\Enquiry-Empty.imageset\group4%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -2005,6 +2008,7 @@
     <Folder Include="Model\GetSearchForAccount\" />
     <Folder Include="Assets\Assets.xcassets\IC-Tile-FeedbackBill.imageset\" />
     <Folder Include="Assets\Assets.xcassets\Update-PersonalDetails.imageset\" />
+    <Folder Include="Assets\Assets.xcassets\Enquiry-Empty.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2864,6 +2868,7 @@
     </Compile>
     <Compile Include="Model\GetSearchForAccount\GetSearchForAccountResponseModel.cs" />
     <Compile Include="Feedback\Feedback Image\ImageDataEnquiryTempModel.cs" />
+    <Compile Include="Common\CommonLinkAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">
