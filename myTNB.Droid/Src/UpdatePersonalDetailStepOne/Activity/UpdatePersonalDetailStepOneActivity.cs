@@ -14,6 +14,7 @@ using Android.Support.V4.Content;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
+using Castle.Core.Internal;
 using CheeseBind;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
@@ -951,12 +952,17 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (toggleChkBoxIC)
             {
                 txtInputLayoutNewIC.Visibility = ViewStates.Visible;
+                if (txtNewIC.Text.IsNullOrEmpty())
+                {
+                    this.userActionsListener.OnDisableSubmitButton();
+                }
                // parseCheckRequiredField();
                 AddtoggleCounter(); 
             }
             else
             {
                 txtInputLayoutNewIC.Visibility = ViewStates.Gone;
+                txtNewIC.Text = "";   // remove if untick
                 parseCheckRequiredField();
                 MinustoggleCounter();
             }
@@ -980,12 +986,17 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (toggleChkOwnerName)
             {
                 txtInputLayoutNewOwnerName.Visibility = ViewStates.Visible;
-               // parseCheckRequiredField();
+                // parseCheckRequiredField();
+                if (txtNewOwnerName.Text.IsNullOrEmpty())
+                {
+                    this.userActionsListener.OnDisableSubmitButton();
+                }
                 AddtoggleCounter();
             }
             else
             {
                 txtInputLayoutNewOwnerName.Visibility = ViewStates.Gone;
+                txtNewOwnerName.Text = "";
                 parseCheckRequiredField();
                 MinustoggleCounter();
             }
@@ -1017,6 +1028,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             else
             {
                 txtInputLayoutNewMobileNumber.Visibility = ViewStates.Gone;
+                UpdateMobileNumber("+60");
                 parseCheckRequiredField();
                 MinustoggleCounter();
             }
@@ -1042,12 +1054,17 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (toggleChkEmailAddress)
             {
                 txtInputLayoutNewEmailAddress.Visibility = ViewStates.Visible;
-              //  parseCheckRequiredField();
+                //  parseCheckRequiredField();
+                if (txtNewEmailAddress.Text.IsNullOrEmpty())
+                {
+                    this.userActionsListener.OnDisableSubmitButton();
+                }
                 AddtoggleCounter();
             }
             else
             {
                 txtInputLayoutNewEmailAddress.Visibility = ViewStates.Gone;
+                txtNewEmailAddress.Text = "";
                 parseCheckRequiredField();
                 MinustoggleCounter();
             }
@@ -1073,11 +1090,16 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             {
                 txtInputLayoutNewMailingAddress.Visibility = ViewStates.Visible;
                 //parseCheckRequiredField();
+                if (txtNewMailingAddress.Text.IsNullOrEmpty())
+                {
+                    this.userActionsListener.OnDisableSubmitButton();
+                }
                 AddtoggleCounter();
             }
             else
             {
                 txtInputLayoutNewMailingAddress.Visibility = ViewStates.Gone;
+                txtNewMailingAddress.Text = "";
                 parseCheckRequiredField();
                 MinustoggleCounter();
             }
@@ -1103,11 +1125,16 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             {
                 txtInputLayoutNewPremiseAddress.Visibility = ViewStates.Visible;
                 //parseCheckRequiredField();
+                if (txtNewPremiseAddress.Text.IsNullOrEmpty())
+                {
+                    this.userActionsListener.OnDisableSubmitButton();
+                }
                 AddtoggleCounter();
             }
             else
             {
                 txtInputLayoutNewPremiseAddress.Visibility = ViewStates.Gone;
+                txtNewPremiseAddress.Text = "";
                 parseCheckRequiredField();
                 MinustoggleCounter();
             }
