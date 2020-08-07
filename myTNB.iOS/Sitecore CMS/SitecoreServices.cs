@@ -525,8 +525,13 @@ namespace myTNB.SitecoreCMS
 
         public Task LoadLanguage()
         {
+
             return Task.Factory.StartNew(() =>
             {
+#if DEBUG
+            LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE
+                            , TNBGlobal.APP_LANGUAGE == "EN" ? LanguageManager.Language.EN : LanguageManager.Language.MS);
+#else
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS
                     , DataManager.DataManager.SharedInstance.ImageSize
                     , TNBGlobal.SITECORE_URL
@@ -598,6 +603,7 @@ namespace myTNB.SitecoreCMS
                         LanguageUtility.SetLanguage(TNBGlobal.APP_LANGUAGE);
                     }
                 }
+#endif
             });
         }
 

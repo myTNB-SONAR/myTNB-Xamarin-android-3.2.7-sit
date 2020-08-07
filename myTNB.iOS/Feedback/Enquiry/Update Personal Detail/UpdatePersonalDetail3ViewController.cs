@@ -504,8 +504,8 @@ namespace myTNB
         private UITextView GetInfoTNC()
         {
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = IsTNC ? TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTncRead)
-                        , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F)) : TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTnc) + "  "
+            NSAttributedString htmlBody = IsTNC ? TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTncRead)+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                        , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F)) : TextHelper.ConvertToHtmlWithFont(GetI18NValue(EnquiryConstants.enquiryTnc) + "&nbsp;&nbsp;&nbsp;&nbsp;"
                         , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F)) ;
             
             NSMutableAttributedString mutableHTMLFooter = new NSMutableAttributedString(htmlBody);
@@ -527,7 +527,8 @@ namespace myTNB
                 ScrollEnabled = false,
                 AttributedText = mutableHTMLBody,
                 WeakLinkTextAttributes = linkAttributes.Dictionary,
-                TextAlignment = UITextAlignment.Left
+                TextAlignment = UITextAlignment.Left,
+                
             };
             lblTNC.TextContainerInset = UIEdgeInsets.Zero;
 
