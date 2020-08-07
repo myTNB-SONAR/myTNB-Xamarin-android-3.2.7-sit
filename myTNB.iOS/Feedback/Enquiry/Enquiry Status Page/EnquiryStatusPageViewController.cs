@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using CoreGraphics;
 using myTNB.Customs.GenericStatusPage;
@@ -192,7 +191,14 @@ namespace myTNB
             {
                 if (IsSuccess)
                 {
-                    GetCTA2(ref btnSecondary, GetI18NValue(EnquiryConstants.backHomeButton), false, _actions.BackToHome, false);
+                    if (DataManager.DataManager.SharedInstance.IsLoggedIn())
+                    {
+                        GetCTA2(ref btnSecondary, GetI18NValue(EnquiryConstants.backHomeButton), false, _actions.BackToHome, false);
+                    }
+                    else
+                    {
+                        GetCTA2(ref btnSecondary, GetI18NValue(EnquiryConstants.backLogin), false, _actions.BackToHome, false);
+                    }
                     GetCTA2(ref btnPrimary, GetI18NValue(EnquiryConstants.viewSubmittedEnquiry), true, null, true); //ViewSubmittedEnquiry
                 }
                 else

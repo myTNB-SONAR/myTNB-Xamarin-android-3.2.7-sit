@@ -366,8 +366,12 @@ namespace myTNB
                         if (!string.IsNullOrEmpty(icNo) && icNo.Length > 4)
                         {
                             string lastDigit = icNo.Substring(icNo.Length - 4);
-                            icNo = "******-**-" + lastDigit;
-                            string maskedICNo = icNo;
+                            //icNo = "******-**-" + lastDigit;
+                            string asterik = string.Empty;
+                            for (int i = 0; i < icNo.Length - 4; i++)
+                                asterik = asterik + "*";
+
+                            string maskedICNo = asterik + lastDigit;//icNo;
                             lblViewInfo.Text = maskedICNo;
                         }
 

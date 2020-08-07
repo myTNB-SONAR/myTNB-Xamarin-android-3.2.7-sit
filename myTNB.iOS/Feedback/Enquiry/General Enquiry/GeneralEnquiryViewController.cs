@@ -371,11 +371,15 @@ namespace myTNB
                 if (view.Tag == 10)
                 {
                     view.Frame = new CGRect(0, imageWidth, View.Frame.Width - 36, 48);
-                    imageWidth += 18 + 48;
+                    imageWidth += 18 + 48;//48
                 }
 
             }
             imageContainerScroll.ContentSize = new CGRect(18, 165, 94, imageWidth).Size;
+
+            _viewPhotoContainer.Frame = new CGRect(0, _viewTitleSection2.Frame.GetMaxY(), View.Frame.Width, imageWidth + 32 + 34); //+16
+            _viewUploadPhoto.Frame = new CGRect(18, 16, View.Frame.Width - 36, imageWidth + 34);//+ 16
+            lblPhotoSubTitle.Frame = new CGRect(0, imageWidth + 16, View.Frame.Width - 36, 14);//32
 
         }
 
