@@ -12,19 +12,21 @@
 
     <TextView
         android:id="@+id/txtFeedbackTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
         android:ellipsize="end"
         android:maxEms="15"
         android:maxLines="3"
-        android:text="Sample Title "
+        android:text="Sample Title"
         android:textColor="@color/tunaGrey"
         android:textSize="14dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/imgFeedback"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="17dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/txtFeedbackDate"
+        app:layout_constraintLeft_toRightOf="@+id/imgFeedback"
+        app:layout_constraintStart_toEndOf="@id/imgFeedback"
+        app:layout_constraintTop_toTopOf="parent" />
     <TextView
         android:id="@+id/txtFeedbackContent"
         android:layout_width="wrap_content"

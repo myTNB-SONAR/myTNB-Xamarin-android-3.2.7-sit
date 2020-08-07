@@ -124,7 +124,7 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
             txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
             if (UserEntity.IsCurrentlyActive())
             {
-                buttonBackToHome.Text = Utility.GetLocalizedLabel("Common", "backToHome");
+                buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backHomeButton");
             }
             else
             {
