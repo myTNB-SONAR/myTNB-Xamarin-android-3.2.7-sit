@@ -792,9 +792,9 @@ namespace myTNB
                         ModalPresentationStyle = UIModalPresentationStyle.FullScreen
                     };
                     PresentViewController(navController, true, null);
-                    WhatsNewServices.SetIsRead(whatsNew.ID);
-                    OnUpdateReadWhatsNew(whatsNew);
                 }
+                WhatsNewServices.SetIsRead(whatsNew.ID);
+                OnUpdateReadWhatsNew(whatsNew);
             }
         }
 
@@ -822,7 +822,7 @@ namespace myTNB
 
         private void RefreshTable()
         {
-            if (_whatsNewList != null && _whatsNewList.Count > 0)
+            if (_whatsNewList != null && _whatsNewList.Count > 0 && _categoryList != null)
             {
                 for (int c = 0; c < _categoryList.Count; c++)
                 {

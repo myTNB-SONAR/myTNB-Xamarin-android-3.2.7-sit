@@ -216,6 +216,10 @@ namespace myTNB
             nfloat tabHeight = TabBarController != null && TabBarController.TabBar != null
                 && TabBarController.TabBar.Frame != null ? TabBarController.TabBar.Frame.Height : 0;
             nfloat height = DeviceHelper.IsIOS13AndUp ? ViewHeight : View.Frame.Height - tabHeight;
+            if (!DeviceHelper.IsIOS13AndUp)
+            {
+                height -= DeviceHelper.BottomSafeAreaInset;
+            }
             _profileTableview = new UITableView(new CGRect(0, yLoc + DeviceHelper.TopSafeAreaInset, View.Frame.Width, height))
             {
                 SeparatorStyle = UITableViewCellSeparatorStyle.None,

@@ -147,8 +147,8 @@ namespace myTNB
 
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                //NavigationController.PopViewController(true);
-                DismissViewController(true, null);
+                NavigationController.PopViewController(true);
+                //DismissViewController(true, null);
 
 
             }));
@@ -371,11 +371,15 @@ namespace myTNB
                 if (view.Tag == 10)
                 {
                     view.Frame = new CGRect(0, imageWidth, View.Frame.Width - 36, 48);
-                    imageWidth += 18 + 48;
+                    imageWidth += 18 + 48;//48
                 }
 
             }
             imageContainerScroll.ContentSize = new CGRect(18, 165, 94, imageWidth).Size;
+
+            _viewPhotoContainer.Frame = new CGRect(0, _viewTitleSection2.Frame.GetMaxY(), View.Frame.Width, imageWidth + 32 + 34); //+16
+            _viewUploadPhoto.Frame = new CGRect(18, 16, View.Frame.Width - 36, imageWidth + 34);//+ 16
+            lblPhotoSubTitle.Frame = new CGRect(0, imageWidth + 16, View.Frame.Width - 36, 14);//32
 
         }
 
@@ -456,7 +460,7 @@ namespace myTNB
                 AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.messageHint) //GetI18NValue("enquiryAboutTitle")
                     , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
-                Hidden = false
+                Hidden = true
             };
 
             _feedbackTextView = new FeedbackTextView
@@ -483,7 +487,7 @@ namespace myTNB
             _feedbackTextView.ShouldChangeText = (txtView, range, replacementString) => 
             {
                 nint newLength = txtView.Text.Length + replacementString.Length - range.Length;
-                return newLength <= 75;
+                return newLength <= 250;
             };
 
             _lblFeedbackError = new UILabel
@@ -500,8 +504,9 @@ namespace myTNB
             _lblFeedbackSubTitle = new UILabel(new CGRect(0, _viewLineFeedback.Frame.GetMaxY(), _feedbackTextView.Frame.Width - 36, 14))
             {
                 TextColor = MyTNBColor.SilverChalice,
-                Font = MyTNBFont.MuseoSans11_300
+                Font = MyTNBFont.MuseoSans11_300,
             };
+            HandleFeedbackTextViewChange();
 
             _viewFeedback.AddSubviews(new UIView[] { _lblFeedbackTitle, _feedbackTextView
                 , _iconFeedback, _lblFeedbackError, _viewLineFeedback, _lblFeedbackSubTitle});
@@ -528,8 +533,8 @@ namespace myTNB
                     HandleFeedbackTextViewChange();
                     CGRect frame = new CGRect();
                     frame = _feedbackTextView.Frame;
-                    frame.Height = _feedbackTextView.ContentSize.Height <= TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT
-                        ? _feedbackTextView.ContentSize.Height : TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT;
+                    frame.Height = _feedbackTextView.ContentSize.Height <= TNBGlobal.ENQUIRY_FIELD_MAX_HEIGHT
+                        ? _feedbackTextView.ContentSize.Height : TNBGlobal.ENQUIRY_FIELD_MAX_HEIGHT;
                     _feedbackTextView.Frame = frame;
                     _svContainer.ContentSize = new CGRect(0f, 0f, View.Frame.Width, GetScrollHeight() + _feedbackTextView.Frame.Height - 38f).Size;
                     _viewFeedback.Frame = ViewHelper.UpdateFeedbackViewYCoord((float)GetCommentSectionYCoordinate(), 16f
@@ -651,8 +656,8 @@ namespace myTNB
 
         private void NavigateToPage(string storyboardName, string viewControllerName)
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
-            GeneralEnquiry2ViewController viewController = storyBoard.InstantiateViewController("GeneralEnquiry2ViewController") as GeneralEnquiry2ViewController;
+            UIStoryboard storyBoard = UIStoryboard.FromName(storyboardName, null);
+            GeneralEnquiry2ViewController viewController = storyBoard.InstantiateViewController(viewControllerName) as GeneralEnquiry2ViewController;
             viewController.Items = GetImageList();
             NavigationController?.PushViewController(viewController, true);
             //PresentViewController(viewController, true, null);

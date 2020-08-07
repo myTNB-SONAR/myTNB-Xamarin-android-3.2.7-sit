@@ -113,6 +113,10 @@ namespace myTNB.DataManager
         public UIImage imageCopyIC;
         public UIImage imageConsent;
         public UIImage imagePermises;
+        public string imageWhereAccUrl;
+        public string imageCopyICUrl;
+        public string imageConsentUrl;
+        public string imagePermisesUrl;
 
 
 

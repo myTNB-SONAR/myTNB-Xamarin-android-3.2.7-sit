@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using CoreGraphics;
 using myTNB.Customs.GenericStatusPage;
@@ -22,6 +21,7 @@ namespace myTNB
         private string _refDate;
         private string _refTitle;
         private string _refMessage;
+        private bool IsEnquiryStatus = true;
 
         public string ReferenceNumber
         {
@@ -191,7 +191,14 @@ namespace myTNB
             {
                 if (IsSuccess)
                 {
-                    GetCTA2(ref btnSecondary, GetI18NValue(EnquiryConstants.backHomeButton), false, _actions.BackToFeedback, false);
+                    if (DataManager.DataManager.SharedInstance.IsLoggedIn())
+                    {
+                        GetCTA2(ref btnSecondary, GetI18NValue(EnquiryConstants.backHomeButton), false, _actions.BackToHome, false);
+                    }
+                    else
+                    {
+                        GetCTA2(ref btnSecondary, GetI18NValue(EnquiryConstants.backLogin), false, _actions.BackToHome, false);
+                    }
                     GetCTA2(ref btnPrimary, GetI18NValue(EnquiryConstants.viewSubmittedEnquiry), true, null, true); //ViewSubmittedEnquiry
                 }
                 else
@@ -232,7 +239,20 @@ namespace myTNB
             btn.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 if(ctaAction != null)
-                { ctaAction.Invoke(); }
+                {
+                    if (DataManager.DataManager.SharedInstance.IsLoggedIn())
+                    {
+                        ctaAction.Invoke();
+                    }
+                    else
+                    {
+                        UIStoryboard loginStoryboard = UIStoryboard.FromName("Login", null);
+                        UIViewController preloginVC = (UIViewController)loginStoryboard.InstantiateViewController("PreloginViewController");
+                        preloginVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
+                        preloginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                        PresentViewController(preloginVC, true, null);
+                    }
+                }
                 else { ExecuteGetSubmittedFeedbackDetailsCall(); }
             }));
         }
@@ -255,15 +275,17 @@ namespace myTNB
                                  && _feedbackDetails.d.data != null && _feedbackDetails.d.IsSuccess && _feedbackDetails.d.data.RelationshipWithCA != null)
                                 {
                                     UIStoryboard storyBoard = UIStoryboard.FromName("Enquiry", null);
-                                    EnquiryDetailsViewController enquiryDetailsViewController =
-                                     storyBoard.InstantiateViewController("EnquiryDetailsViewController")
+                                    EnquiryDetailsViewController enquiryDetailsViewController = storyBoard.InstantiateViewController("EnquiryDetailsViewController")
                                      as EnquiryDetailsViewController;
 
                                     enquiryDetailsViewController._feedbackDetails = _feedbackDetails.d.data;
+                                    enquiryDetailsViewController.IsEnquiryStatus = IsEnquiryStatus;
 
                                     UINavigationController navController = new UINavigationController(enquiryDetailsViewController);
                                     navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                                    PresentViewController(navController, true, null);
+                                    //NavigationController.PushViewController(enquiryDetailsViewController, true);
+                                    PresentViewController(navController, true, null);//enquiryDetailsViewController
+
                                 }
                                 else
                                 {

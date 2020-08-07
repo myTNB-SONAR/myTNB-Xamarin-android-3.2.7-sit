@@ -278,18 +278,27 @@ namespace myTNB
 
         private void ScrollToHistorySection()
         {
-            int count = _billHistory?.d?.data?.BillPayHistories?.Count ?? 0;
-            if (count > 1)
+            try
             {
-                _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(2, 0), UITableViewScrollPosition.Bottom, false);
+                int count = _billHistory?.d?.data?.BillPayHistories?.Count ?? 0;
+                if (count > 1)
+                {
+                    _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(2, 0), UITableViewScrollPosition.Bottom, false);
+                }
+                else if (count > 0)
+                {
+                    _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(1, 0), UITableViewScrollPosition.Bottom, false);
+                }
+                else
+                {
+                    _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(0, 0), UITableViewScrollPosition.Top, false);
+                }
             }
-            else if (count > 0)
+            catch (Exception e)
             {
-                _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(1, 0), UITableViewScrollPosition.Bottom, false);
-            }
-            else
-            {
-                _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(0, 0), UITableViewScrollPosition.Top, false);
+#if DEBUG
+                Debug.WriteLine("DEBUG - ScrollToHistorySection Error: " + e.Message);
+#endif
             }
         }
 
