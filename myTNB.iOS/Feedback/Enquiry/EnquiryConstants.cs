@@ -127,34 +127,8 @@
         public static string tncAgreeNonOwner = "tncAgreeNonOwner";
         public static string tncAgreeOwner = "tncAgreeOwner";
 
-        /*tnc json
+        public static string submitEnquiryEmpty = "submitEnquiryEmpty";
+        public static string backLogin = "backLogin";
 
-        "privacyPolicyTitle": "Privacy Policy",
-        "antiSpamPolicyTitle": "Anti-Spam Policy",
-        "dataProtectionPolicyTitle": "Personal Data Protection Policy",
-
-        "tnbTermUseContent": "myTNB Terms and Conditions of Use<br>20151221<br><br>
-        <h3 style="color: #005daa; background-color: #ffffff; margin: 30px 0px 10px; padding: 0px; border: 0px;">ACCEPTANCE OF TERMS AND CONDITIONS</h3>
-        <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 7px; padding: 0px; border: 0px; text-align:justify">Access and use of this website is conditional upon the acceptance and compliance with all terms listed in this document (&lsquo;Terms and Conditions&rsquo;). All use of and/or continued access to this website constitutes agreement to these Terms and Conditions.</p>
-        <p style="margin: 0px 0px 7px; padding: 0px; border: 0px;text-align:justify">Tenaga Nasional Berhad (&ldquo;TNB&rdquo;) reserves the right to amend the Terms and Conditions at any time by posting the amended Terms and Conditions on this website, and such amendment will take effect at the time of posting. Please visit&nbsp;<a href="https://www.tnb.com.my/" style="background: 0px 0px; margin: 0px; padding: 0px; border: 0px;">www.tnb.com.my</a>&nbsp;periodically to determine any changes to these Terms and Conditions. Any violation of the Terms and Conditions will result in the termination of the use and access to this website.</p>
-        <p style="color: #000000; margin: 0px 0px 7px; padding: 0px; border: 0px;text-align:justify">Please note that there are sections of this website that are restricted to certain authorized users only. Use of these restricted sections is governed by the &lsquo;Restricted User&rsquo; terms below. If you have been granted access to such restricted sections by mistake, please exit the restricted area immediately, and let us know of such access by&nbsp;<a href="mailto:tnbwebadmin@tnb.com.my" style="background: 0px 0px; margin: 0px; padding: 0px; border: 0px;"><span style="margin: 0px; padding: 0px; border: 0px;">email</span></a>.</p>
-        <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 7px; padding: 0px; border: 0px;text-align:justify">The Terms and Conditions are effective until terminated by TNB. TNB may terminate your access to the website at any time without notice. In the event of termination, all restrictions imposed under the Disclaimer, Copyright Notice and Privacy Statement will survive the termination and continue to be binding upon you.</p>",
-
-        "privacyPolicyContent" : "<h3 style="color: #005daa; background-color: #ffffff; margin: 30px 0px 10px; padding: 0px; border: 0px; text-align: justify;"><a name="11" style="color: #000000; background: 0px 0px; margin: 0px; padding: 0px; border: 0px;"></a>PRIVACY STATEMENT</h3>
-        <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 7px; padding: 0px; border: 0px;text-align:justify">As the owner and operator of this website, through its Internet host server, TNB will obtain and retain certain information about those who are using this website.</p>
-        <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 7px; padding: 0px; border: 0px;text-align:justify">We believe in protecting your privacy, we reiterate that the information collected about you will not be divulged, disclosed or sold to any third party whatsoever. These are other than the purposes for TNB&rsquo;s internal applications, whereupon required, authorized or permitted by or under law, or for reasons known and authorized by you.</p>
-        <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 7px; padding: 0px; border: 0px;text-align:justify">While we exercise all reasonable precautions necessary to protect the confidentiality of your information from third parties, it is emphasized that TNB does not have any control over these third parties, who may or may not further disclose information to other parties. We do not assure that such parties will not solicit you via e-mail or in any other form of contact whatsoever.</p>
-        <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 7px; padding: 0px; border: 0px;text-align:justify">For statistical purposes, TNB reserves the right to collate demographic or statistical information from any information provided by you via usage of the TNB home page to third parties endorsed by the company. Such demographic or statistical information are not personally identifiable, and could be in the form a summary or compilation of information.</p>",
-
-        "antiSpamPolicyContent": "<h3 style="color: #005daa; background-color: #ffffff; margin: 30px 0px 10px; padding: 0px; border: 0px; text-align: justify;"><a name="13" style="color: #000000; background: 0px 0px; margin: 0px; padding: 0px; border: 0px;"></a>ANTI-SPAM POLICY</h3>
-        <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 7px; padding: 0px; border: 0px;text-align:justify">Spammers are strictly barred from all TNB servers. Please be reminded that by accessing this website you have expressly agreed not to send bulk unsolicited e-mails with commercial messages to other users of this website or the public, or interfere, harass, threaten or abuse other users, and/or post or distribute any obscene, hateful, racially offensive information or materials.</p>",
-
-        "dataProtectionPolicyTitle" : "<h3 style="color: #005daa; background-color: #ffffff; margin: 30px 0px 10px; padding: 0px; border: 0px; text-align: justify;"><a name="14" style="color: #000000; background: 0px 0px; margin: 0px; padding: 0px; border: 0px;"></a>PERSONAL DATA PROTECTION POLICY</h3>
-        <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 7px; padding: 0px; border: 0px;text-align:justify">We, Tenaga Nasional Berhad (Company No. 200866-W), and our subsidiaries, respect the privacy of all individuals with whom we have a contractual relationship. We are committed to protecting all Personal Data kept by us.</p>
-        <p style="color: #000000; background-color: #ffffff; margin: 0px 0px 7px; padding: 0px; border: 0px;text-align:justify">For this reason, Tenaga Nasional Berhad and its subsidiaries (collectively, &ldquo;TNB&rdquo;) have adopted this Personal Data Protection Policy (&ldquo;this Policy&rdquo;) in compliance with the Personal Data Protection Act 2010 of Malaysia (&ldquo;PDP Act&rdquo;).</p>",
-
-
-
-        */
     }
 }

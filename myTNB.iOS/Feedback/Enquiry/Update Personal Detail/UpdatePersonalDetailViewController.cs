@@ -140,6 +140,10 @@ namespace myTNB
         private nfloat titleBarHeight = ScaleUtility.GetScaledHeight(24f);
         private CAGradientLayer _gradientLayer;
 
+        private CGRect scrollViewFrame;
+        private CGRect keyboardRectangle;
+
+
         public UpdatePersonalDetailViewController (IntPtr handle) : base (handle){ }
 
         public override void ViewDidLoad()
@@ -157,11 +161,29 @@ namespace myTNB
             AddCTA();
             AddYesNo();
 
+            NotifCenterUtility.AddObserver(UIKeyboard.WillShowNotification, (NSNotification obj) =>
+            {
+                NSDictionary userInfo = obj.UserInfo;
+                NSValue keyboardFrame = userInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey) as NSValue;
+                keyboardRectangle = keyboardFrame.CGRectValue;
+                _svContainer.Frame = new CGRect(0, 0, View.Frame.Width
+                    , View.Frame.Height - (keyboardRectangle.Height));
+            });
+            NotifCenterUtility.AddObserver(UIKeyboard.WillHideNotification, (NSNotification obj) =>
+            {
+                _svContainer.Frame = scrollViewFrame;
+            });
+
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+        }
+
+        public override void ViewDidDisappear(bool animated)
+        {
+            base.ViewDidDisappear(animated);
         }
 
         private void SetHeader()
@@ -225,8 +247,8 @@ namespace myTNB
 
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                //NavigationController.PopViewController(true);
-                DismissViewController(true, null);
+                NavigationController.PopViewController(true);
+                //DismissViewController(true, null);
 
 
             }));
@@ -257,7 +279,31 @@ namespace myTNB
             View.AddSubview(_svContainer);
         }
 
+        private void OnKeyboardNotification(NSNotification notification)
+        {
+            if (!IsViewLoaded)
+                return;
 
+            bool visible = notification.Name == UIKeyboard.WillShowNotification;
+            UIView.BeginAnimations("AnimateForKeyboard");
+            UIView.SetAnimationBeginsFromCurrentState(true);
+            UIView.SetAnimationDuration(UIKeyboard.AnimationDurationFromNotification(notification));
+            UIView.SetAnimationCurve((UIViewAnimationCurve)UIKeyboard.AnimationCurveFromNotification(notification));
+
+            if (visible)
+            {
+                CGRect r = UIKeyboard.BoundsFromNotification(notification);
+                CGRect viewFrame = View.Bounds;
+                nfloat currentViewHeight = viewFrame.Height - r.Height;
+                _svContainer.Frame = new CGRect(_svContainer.Frame.X, _svContainer.Frame.Y, _svContainer.Frame.Width, currentViewHeight);
+            }
+            else
+            {
+                _svContainer.Frame = scrollViewFrame;
+            }
+
+            UIView.CommitAnimations();
+        }
 
         private void AddYesNo()
         {
@@ -461,6 +507,8 @@ namespace myTNB
                 txtFieldSpecifyOther = new UITextField
                 {
                     Frame = new CGRect(0, 12, viewSpecifyOther.Frame.Width, 24),
+                    AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.otherRelationshipHint)
+                    , AttributedStringUtility.AttributedStringType.Value),
                     TextColor = MyTNBColor.TunaGrey()
                 };
                 txtFieldSpecifyOther.ReturnKeyType = UIReturnKeyType.Done;
@@ -657,10 +705,12 @@ namespace myTNB
                 txtFieldICNo = new UITextField
                 {
                     Frame = new CGRect(0, 12, viewICNumber.Frame.Width, 24),
-                    AttributedPlaceholder = AttributedStringUtility.GetAttributedString(""
+                    AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.icHint)
                     , AttributedStringUtility.AttributedStringType.Value),
                     TextColor = MyTNBColor.TunaGrey()
                 };
+                if (IC != string.Empty)
+                    lblICNoTitle.Hidden = false;
 
                 txtFieldICNo.ReturnKeyType = UIReturnKeyType.Done;
 
@@ -730,14 +780,19 @@ namespace myTNB
                     BackgroundColor = UIColor.Clear
                 };
 
-                lblAccOwnerNameTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.accNametitle).ToUpper()); 
+                lblAccOwnerNameTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.accNameHint).ToUpper()); 
                 lblAccOwnerNameError = GetErrorLabel(GetI18NValue(EnquiryConstants.ownerReq)); 
 
                 txtFieldAccOwnerName = new UITextField
                 {
                     Frame = new CGRect(0, 12, viewAccOwnerName.Frame.Width, 24),
+                    AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.accNameHint)
+                    , AttributedStringUtility.AttributedStringType.Value),
                     TextColor = MyTNBColor.TunaGrey()
                 };
+                if (Account != string.Empty)
+                    lblAccOwnerNameTitle.Hidden = false;
+
                 txtFieldAccOwnerName.ReturnKeyType = UIReturnKeyType.Done;
 
                 viewLineAccOwnerName = GenericLine.GetLine(new CGRect(0, 36, viewAccOwnerName.Frame.Width, 1));
@@ -811,11 +866,17 @@ namespace myTNB
             txtFieldMobileNumber = new UITextField
             {
                 Frame = new CGRect(0, 12, viewMobileNumber.Frame.Width, 24),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.mobileNumberHint)
+                    , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
-            txtFieldMobileNumber.ReturnKeyType = UIReturnKeyType.Done;
+            if (MobileNumber != string.Empty)
+                    lblMobileNumberTitle.Hidden = false;
 
-            viewLineMobile = GenericLine.GetLine(new CGRect(0, 36, viewMobileNumber.Frame.Width, 1));
+                txtFieldMobileNumber.KeyboardType = UIKeyboardType.NumberPad;
+                //txtFieldMobileNumber.ReturnKeyType = UIReturnKeyType.Done;
+
+                viewLineMobile = GenericLine.GetLine(new CGRect(0, 36, viewMobileNumber.Frame.Width, 1));
 
             viewMobileNumber.AddSubviews(new UIView[] { lblMobileNumberTitle, lblMobileNumberError, txtFieldMobileNumber, viewLineMobile });
             _viewCheckBoxContainerMobileNumber.AddSubview(viewMobileNumber);
@@ -886,8 +947,12 @@ namespace myTNB
             txtFieldEmail = new UITextField
             {
                 Frame = new CGRect(0, 12, viewEmail.Frame.Width, 24),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.emailAddressHint)
+                    , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
+            if (Email != string.Empty)
+                    lblEmailTitle.Hidden = false;
 
             txtFieldEmail.ReturnKeyType = UIReturnKeyType.Done;
 
@@ -962,8 +1027,13 @@ namespace myTNB
                 txtFieldMailing = new UITextField
                 {
                     Frame = new CGRect(0, 12, viewMailing.Frame.Width, 24),
+                    AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.mailingAddressHint)
+                    , AttributedStringUtility.AttributedStringType.Value),
                     TextColor = MyTNBColor.TunaGrey()
                 };
+                if (Mailing != string.Empty)
+                    lblMailingTitle.Hidden = false;
+
                 txtFieldMailing.ReturnKeyType = UIReturnKeyType.Done;
 
                 viewLineMailinglLine = GenericLine.GetLine(new CGRect(0, 36, viewMailing.Frame.Width, 1));
@@ -1037,8 +1107,13 @@ namespace myTNB
                 txtFieldPremise = new UITextField
                 {
                     Frame = new CGRect(0, 12, viewPremise.Frame.Width, 24),
+                    AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.premiseAddressHint)
+                    , AttributedStringUtility.AttributedStringType.Value),
                     TextColor = MyTNBColor.TunaGrey()
                 };
+                if (Premise != string.Empty)
+                    lblPremiseTitle.Hidden = false;
+
                 txtFieldPremise.ReturnKeyType = UIReturnKeyType.Done;
 
                 viewLinePremiselLine = GenericLine.GetLine(new CGRect(0, 36, viewPremise.Frame.Width, 1));
@@ -1065,7 +1140,7 @@ namespace myTNB
             }
 
             _btnNextContainer = new UIView(new CGRect(0, yLoc + _navBarHeight + DeviceHelper.GetStatusBarHeight()
-                , View.Frame.Width, DeviceHelper.GetScaledHeight(100F)))
+                , View.Frame.Width, DeviceHelper.GetScaledHeight(100F) + 30))
             {
                 BackgroundColor = UIColor.White
             };
@@ -1145,9 +1220,9 @@ namespace myTNB
                 , GetScaledHeight(4), _ownerConsentToolTipsView.Frame.Width - GetScaledWidth(44), GetScaledHeight(16)))
             {
                 TextAlignment = UITextAlignment.Left,
-                Font = TNBFont.MuseoSans_12_500,
+                Font = TNBFont.MuseoSans_11_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = GetI18NValue(EnquiryConstants.ownerConsentInfo) 
+                Text = GetI18NValue(EnquiryConstants.ownerConsentTitle) 
 
             };
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
@@ -1168,17 +1243,18 @@ namespace myTNB
 
         private void UpdateCheckBoxListHeight()
         {
-            _viewCheckBoxListContainer.Frame = new CGRect(0, _viewTitleSection2.Frame.GetMaxY(), ViewWidth, GetScaledHeight(_ownerConsentToolTipsView.Frame.GetMaxY()));
+            _viewCheckBoxListContainer.Frame = new CGRect(0, _viewTitleSection2.Frame.GetMaxY(), ViewWidth, GetScaledHeight(_ownerConsentToolTipsView.Frame.GetMaxY()) + 32f);
         }
 
         private nfloat GetScrollHeight()
         {
-            return (nfloat)((_viewCheckBoxListContainer.Frame.GetMaxY() + (_btnNextContainer.Frame.Height + 16f)));
+            return (nfloat)((_viewCheckBoxListContainer.Frame.GetMaxY() + 16f));//+ (_btnNextContainer.Frame.Height + 16f)))
         }
 
         private void UpdateContentSize()
         {
             _svContainer.ContentSize = new CGRect(0f, 0f, View.Frame.Width, GetScrollHeight()).Size;
+            scrollViewFrame = _svContainer.Frame;
         }
 
 
@@ -1189,12 +1265,16 @@ namespace myTNB
             _textFieldHelper.CreateDoneButton(textField);
             textField.EditingChanged += (sender, e) =>
             {
-                //lblTitle.Hidden = textField.Text.Length == 0;
+                lblTitle.Hidden = textField.Text.Length == 0;
                 SetNextButtonEnable();
+                //if (textField == txtFieldSpecifyOther && textField.Text.Length == 0 && IsSpecifyOther)
+                //{
+                //    DisableButton();
+                //}
             };
             textField.EditingDidBegin += (sender, e) =>
             {
-                //lblTitle.Hidden = textField.Text.Length == 0;
+                lblTitle.Hidden = textField.Text.Length == 0;
                 if (textField == txtFieldMobileNumber && textField.Text.Length == 0)
                 {
                     textField.Text += TNBGlobal.MobileNoPrefix;
@@ -1281,7 +1361,16 @@ namespace myTNB
                 isValidFieldPremise, isValidFieldOther;
             //bool isValid = false;
 
+            DisableButton();
+            if (IsSpecifyOther)
+            {
+                bool specifyValid = IsIC || IsAccount || IsMobileNumber || IsEmail || IsMailing || IsPremise;
+                isValidFieldOther = _textFieldHelper.ValidateTextField(txtFieldSpecifyOther.Text, TNBGlobal.ACCOUNT_NAME_PATTERN)
+                   && !string.IsNullOrWhiteSpace(txtFieldSpecifyOther.Text) && specifyValid != false && txtFieldSpecifyOther.Text.Length <= 50;  
 
+                if (!isValidFieldOther)
+                { DisableButton(); return; }
+            }
             if (IsIC)
             {
                  isValidFieldIC = _textFieldHelper.ValidateTextField(txtFieldICNo.Text, TNBGlobal.IC_NO_PATTERN)
@@ -1330,15 +1419,7 @@ namespace myTNB
                 if (!isValidFieldPremise)
                 { DisableButton(); return; }
             }
-            //if (IsSpecifyOther)
-            //{
-            //    isValidFieldOther = _textFieldHelper.ValidateTextField(lblSpecifyOtherTitle.Text, TNBGlobal.ACCOUNT_NAME_PATTERN)
-            //       && !string.IsNullOrWhiteSpace(lblSpecifyOtherTitle.Text);
-
-            //    if (!isValidFieldOther)
-            //    { DisableButton(); return; }
-            //}
-
+            
             _btnNext.Enabled = true;// isValid;
             _btnNext.BackgroundColor = MyTNBColor.FreshGreen;// isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
@@ -1353,10 +1434,10 @@ namespace myTNB
 
         private void SetEvents()
         {
-            //if (IsSpecifyOther)
-            //{
-            //    SetTextFieldEvents(lblSpecifyOtherTitle, txtFieldSpecifyOther, lblSpecifyOtherError, viewLineSpecifyOther, TNBGlobal.CustomerNamePattern);
-            //}
+            if (IsSpecifyOther)
+            {
+                SetTextFieldEvents(lblSpecifyOtherTitle, txtFieldSpecifyOther, lblSpecifyOtherError, viewLineSpecifyOther, TNBGlobal.CustomerNamePattern);
+            }
             if (IsIC)
             {
                 SetTextFieldEvents(lblICNoTitle, txtFieldICNo, lblICNoError, viewLineICNo, TNBGlobal.IC_NO_PATTERN);
@@ -1391,7 +1472,8 @@ namespace myTNB
                 Frame = new CGRect(0, 0, View.Frame.Width - 36, 12),
                 AttributedText = AttributedStringUtility.GetAttributedString(key
                     , AttributedStringUtility.AttributedStringType.Title),
-                TextAlignment = UITextAlignment.Left
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
             };
         }
 
@@ -1546,8 +1628,15 @@ namespace myTNB
 
                 if (IsSpecifyOther && relationship == 6 )
                 {
+                    if (txtFieldSpecifyOther.Text != string.Empty)
+                    { 
                     DataManager.DataManager.SharedInstance.Relationship = relationship;
                     DataManager.DataManager.SharedInstance.RelationshipDesc = txtFieldSpecifyOther.Text ?? relationshipDesc;
+                    }
+                    else
+                    {
+                        DisableButton(); return;
+                    }
                 }
                 else
                 {

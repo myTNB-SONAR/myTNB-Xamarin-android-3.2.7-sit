@@ -5,6 +5,7 @@ using CoreAnimation;
 using CoreGraphics;
 using Firebase.Analytics;
 using Foundation;
+using myTNB.Common;
 using myTNB.Customs;
 using UIKit;
 
@@ -24,8 +25,6 @@ namespace myTNB
         private UILabel _lblToastDetails;
 
         private bool _isAnimating;
-
-
 
         public enum PermissionMode
         {
@@ -340,7 +339,7 @@ namespace myTNB
             gradientView.Layer.InsertSublayer(gradientLayer, 0);
             View.AddSubview(gradientView);
         }
-         
+
         private void CreateNewBackgroundGradient()
         {
             UIView gradientView = new UIView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
@@ -483,6 +482,15 @@ namespace myTNB
         public nfloat BaseMarginHeight16
         {
             get { return ScaleUtility.BaseMarginHeight16; }
+        }
+        #endregion
+        #region Action
+        internal Action<NSUrl> LinkAction
+        {
+            get
+            {
+                return CommonLinkAction.GetAction(this);
+            }
         }
         #endregion
         #endregion

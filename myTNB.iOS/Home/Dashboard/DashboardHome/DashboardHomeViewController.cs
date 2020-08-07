@@ -329,6 +329,14 @@ namespace myTNB
         {
             item.IsRead = true;
             WhatsNewServices.SetIsRead(item.ID);
+            var entity = WhatsNewEntity.GetItem(item.ID);
+            if (entity != null)
+            {
+                var entityModel = item.ToEntity();
+                entityModel.IsRead = true;
+                WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+                whatsNewEntity.UpdateItem(entityModel);
+            }
             DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId = item.ID;
             if (item.Infographic_FullView_URL.IsValid())
             {
@@ -337,6 +345,8 @@ namespace myTNB
                 {
                     viewController.URL = item.Infographic_FullView_URL;
                     viewController.IsDelegateNeeded = false;
+                    viewController.IsShareableContent = true;
+                    viewController.ShareID = item.ID;
                     UINavigationController navController = new UINavigationController(viewController)
                     {
                         ModalPresentationStyle = UIModalPresentationStyle.FullScreen
@@ -461,7 +471,16 @@ namespace myTNB
         public void ScrollTableToTheBottom()
         {
             int indx = SitecoreServices.Instance.ShowNeedHelp ? DashboardHomeConstants.CellIndex_Help : DashboardHomeConstants.CellIndex_Services;
-            _homeTableView.ScrollToRow(NSIndexPath.Create(0, indx), UITableViewScrollPosition.Bottom, false);
+            try
+            {
+                _homeTableView.ScrollToRow(NSIndexPath.Create(0, indx), UITableViewScrollPosition.Bottom, false);
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Debug.WriteLine("DEBUG - ScrollTableToTheBottom Error: " + e.Message);
+#endif
+            }
         }
 
         public void ScrollTableToTheTop()

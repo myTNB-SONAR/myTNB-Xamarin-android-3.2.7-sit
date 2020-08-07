@@ -774,6 +774,8 @@ namespace myTNB
                         viewController.URL = whatsNew.Infographic_FullView_URL;
                         viewController.IsDelegateNeeded = false;
                         viewController.NavigationTitle = GetI18NValue(WhatsNewConstants.I18N_Title);
+                        viewController.IsShareableContent = true;
+                        viewController.ShareID = whatsNew.ID;
                         UINavigationController navController = new UINavigationController(viewController)
                         {
                             ModalPresentationStyle = UIModalPresentationStyle.FullScreen
@@ -790,9 +792,9 @@ namespace myTNB
                         ModalPresentationStyle = UIModalPresentationStyle.FullScreen
                     };
                     PresentViewController(navController, true, null);
-                    WhatsNewServices.SetIsRead(whatsNew.ID);
-                    OnUpdateReadWhatsNew(whatsNew);
                 }
+                WhatsNewServices.SetIsRead(whatsNew.ID);
+                OnUpdateReadWhatsNew(whatsNew);
             }
         }
 
@@ -820,7 +822,7 @@ namespace myTNB
 
         private void RefreshTable()
         {
-            if (_whatsNewList != null && _whatsNewList.Count > 0)
+            if (_whatsNewList != null && _whatsNewList.Count > 0 && _categoryList != null)
             {
                 for (int c = 0; c < _categoryList.Count; c++)
                 {

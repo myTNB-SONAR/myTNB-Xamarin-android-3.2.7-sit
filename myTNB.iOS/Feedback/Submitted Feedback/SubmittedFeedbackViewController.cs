@@ -46,13 +46,13 @@ namespace myTNB
                 {
                     _imgNoFeedback = new UIImageView(new CGRect((View.Frame.Width / 2) - 75, 185, 150, 150))
                     {
-                        Image = UIImage.FromBundle("Feedback-Empty")
+                        Image = UIImage.FromBundle("Enquiry-Empty") //"Feedback-Empty"
                     };
                     _lblNoFeedback = new UILabel(new CGRect(44, 352, View.Frame.Width - 88, 32))
                     {
                         TextAlignment = UITextAlignment.Center,
                         Lines = 2,
-                        Text = GetI18NValue(FeedbackConstants.I18N_NoFeedback),
+                        Text = GetI18NValue(EnquiryConstants.submitEnquiryEmpty),//FeedbackConstants.I18N_NoFeedback
                         Font = MyTNBFont.MuseoSans12_300,
                         TextColor = MyTNBColor.SilverChalice
                     };

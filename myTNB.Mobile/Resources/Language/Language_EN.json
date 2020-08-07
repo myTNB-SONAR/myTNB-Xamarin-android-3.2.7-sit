@@ -977,7 +977,7 @@
     "emailHint": "Email Address",
     "mobileHint": "Mobile Number",
     "thankYouTitle": "Thank you for your enquiry!",
-    "thankYouDescription": "We’ll get back to you soon. In the meantime, stay updated by tracking your enquiry status.",
+    "thankYouDescription": "We’ll get back to you soon. In the meantime, stay updated by tracking your  enquiry status.",
     "serviceNoTitle": "Service Request Number",
     "backHomeButton": "Back to Home",
     "submittedEnquiryTitle": "Submitted Enquiry",
@@ -1078,3 +1078,4 @@
 
 
 }
+

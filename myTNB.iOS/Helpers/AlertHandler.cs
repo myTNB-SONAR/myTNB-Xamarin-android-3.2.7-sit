@@ -2,25 +2,14 @@
 using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
+using myTNB.Common;
 using UIKit;
 
 namespace myTNB
 {
     public static class AlertHandler
     {
-        public static List<string> RedirectTypeList = new List<string> {
-            "inAppBrowser=",
-            "externalBrowser=",
-            "tel=",
-            "whatsnew=",
-            "faq=",
-            "reward=",
-            "http",
-            "tel:",
-            "whatsnewid=",
-            "faqid=",
-            "rewardid="
-        };
+        private static readonly List<string> RedirectTypeList = CommonLinkAction.RedirectTypeList;
 
         /// <summary>
         /// Displays the no data alert.
