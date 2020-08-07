@@ -56,7 +56,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
                 }
                 else
                 {
-                    this.mView.ShowEmptyFeedbackError();
+                  //  this.mView.ShowEmptyFeedbackError();
                     this.mView.DisableSubmitButton();
                 }
             }

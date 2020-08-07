@@ -873,6 +873,14 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             txtInputLayoutNewPremiseAddress.Visibility = ViewStates.Gone;
             txtInputLayoutRelationshipOther.Visibility = ViewStates.Gone;
 
+            txtInputLayoutNewIC.Error = "";
+            txtInputLayoutNewOwnerName.Error = "";
+            txtInputLayoutNewMobileNumber.Error = "";
+            txtInputLayoutNewEmailAddress.Error = "";
+            txtInputLayoutNewMailingAddress.Error = "";
+            txtInputLayoutNewPremiseAddress.Error = "";
+            txtInputLayoutRelationshipOther.Error = "";
+
             toggleCounter = 0;
 
 
