@@ -29,7 +29,7 @@ namespace myTNB
         public bool isPresentedVC;
         private UIScrollView _svContainer;
         private UIView _containerDataDisclamer;
-        private UILabel lblTitleTNC;
+        private UILabel lblTitleTNC; //UILabel
         private UIImageView imgViewDataDisclamer;
         private UIView viewLineTitleTNC;
         private UIView _containerRedirectTNC;
@@ -117,10 +117,11 @@ namespace myTNB
                     Font = TNBFont.MuseoSans_14_500,
                     TextColor = MyTNBColor.WaterBlue,
                     Text = GetI18NValue(EnquiryConstants.personalDisclamer),
-                    LineBreakMode = UILineBreakMode.TailTruncation,
+                    LineBreakMode = UILineBreakMode.WordWrap,
                     Lines = 0
                 };
-                CGSize newSizes = GetTitleLabelSize(lblTitleTNC.Text);
+
+                CGSize newSizes = lblTitleTNC.SizeThatFits(new CGSize(_containerDataDisclamer.Frame.Width - 16 - 20 - 24, 20));
                 lblTitleTNC.Frame = new CGRect(18, 16, _containerDataDisclamer.Frame.Width - 16 - 20 - 24, newSizes.Height);
 
                 imgViewDataDisclamer = new UIImageView(new CGRect(View.Frame.Width - 16 - 20, 16, GetScaledWidth(20F), GetScaledHeight(20F)))
@@ -128,14 +129,6 @@ namespace myTNB
                     Image = IsDataDisclamer ? UIImage.FromBundle("Arrow-Expand-Down") : UIImage.FromBundle("Arrow-Expand"),
                     ContentMode = UIViewContentMode.ScaleAspectFill,
                 };
-
-                _containerDataDisclamer.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-                {
-                    //IsDataDisclamer = !IsDataDisclamer;
-
-                    //RefreshView();
-
-                }));
 
                 viewLineTitleTNC = GenericLine.GetLine(new CGRect(0, lblTitleTNC.Frame.GetMaxY() + 16, View.Frame.Width, 1));
                 _containerDataDisclamer.Frame = new CGRect(0, 0, View.Frame.Width, viewLineTitleTNC.Frame.GetMaxY());
