@@ -4,7 +4,6 @@ using Foundation;
 using myTNB.Feedback;
 using myTNB.Home.Bill;
 using myTNB.Model;
-using myTNB.SQLite.SQLiteDataManager;
 using System;
 using System.Collections.Generic;
 using UIKit;
@@ -161,18 +160,8 @@ namespace myTNB
             AddCTA();
             AddYesNo();
 
-            NotifCenterUtility.AddObserver(UIKeyboard.WillShowNotification, (NSNotification obj) =>
-            {
-                NSDictionary userInfo = obj.UserInfo;
-                NSValue keyboardFrame = userInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey) as NSValue;
-                keyboardRectangle = keyboardFrame.CGRectValue;
-                _svContainer.Frame = new CGRect(0, 0, View.Frame.Width
-                    , View.Frame.Height - (keyboardRectangle.Height));
-            });
-            NotifCenterUtility.AddObserver(UIKeyboard.WillHideNotification, (NSNotification obj) =>
-            {
-                _svContainer.Frame = scrollViewFrame;
-            });
+            NotifCenterUtility.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
+            NotifCenterUtility.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
 
         }
 
@@ -1653,6 +1642,34 @@ namespace myTNB
 
             if (Premise != null && txtFieldPremise != null)
                 txtFieldPremise.Text = Premise;
+        }
+
+        private void OnKeyboardNotification(NSNotification notification)
+        {
+            if (!IsViewLoaded)
+                return;
+
+            bool visible = notification.Name == UIKeyboard.WillShowNotification;
+            UIView.BeginAnimations("AnimateForKeyboard");
+            UIView.SetAnimationBeginsFromCurrentState(true);
+            UIView.SetAnimationDuration(UIKeyboard.AnimationDurationFromNotification(notification));
+            UIView.SetAnimationCurve((UIViewAnimationCurve)UIKeyboard.AnimationCurveFromNotification(notification));
+
+            if (visible)
+            {
+                CGRect r = UIKeyboard.BoundsFromNotification(notification);
+                CGRect viewFrame = View.Bounds;
+                nfloat currentViewHeight = viewFrame.Height - r.Height;
+                _svContainer.Frame = new CGRect(_svContainer.Frame.X, _navbarView.Frame.GetMaxY() , _svContainer.Frame.Width, currentViewHeight -_navbarView.Frame.Height);
+                //ScrollView.Frame = new CGRect(0, -DeviceHelper.GetStatusBarHeight(), ScrollView.Frame.Width, currentViewHeight);
+
+            }
+            else
+            {
+                _svContainer.Frame = scrollViewFrame;
+            }
+
+            UIView.CommitAnimations();
         }
 
         private void NavigateToPage()

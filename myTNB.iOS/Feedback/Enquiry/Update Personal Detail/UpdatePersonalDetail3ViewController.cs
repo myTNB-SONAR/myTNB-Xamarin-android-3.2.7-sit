@@ -55,6 +55,8 @@ namespace myTNB
         private UITextField txtFieldMobile;
         private UIView viewLineMobile;
 
+        private CGRect scrollViewFrame;
+
         private TextFieldHelper _textFieldHelper = new TextFieldHelper();
         private UIImageView imgViewCheckBoxTNC;
 
@@ -85,6 +87,10 @@ namespace myTNB
             AddDetailsSection();
             SetEvents();
             SetSubmitButtonEnable();
+            UpdateContentSize();
+
+            NotifCenterUtility.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
+            NotifCenterUtility.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
 
         }
 
@@ -280,6 +286,45 @@ namespace myTNB
             _viewContactDetails.AddSubview(viewMobile);
 
             _svContainer.AddSubview(_viewContactDetails);
+        }
+
+        private nfloat GetScrollHeight()
+        {
+            return (nfloat)((_viewContactDetails.Frame.GetMaxY() + 16f));//+ (_btnNextContainer.Frame.Height + 16f)))
+        }
+
+        private void UpdateContentSize()
+        {
+            _svContainer.ContentSize = new CGRect(0f, 0f, View.Frame.Width, GetScrollHeight()).Size;
+            scrollViewFrame = _svContainer.Frame;
+        }
+
+        private void OnKeyboardNotification(NSNotification notification)
+        {
+            if (!IsViewLoaded)
+                return;
+
+            bool visible = notification.Name == UIKeyboard.WillShowNotification;
+            UIView.BeginAnimations("AnimateForKeyboard");
+            UIView.SetAnimationBeginsFromCurrentState(true);
+            UIView.SetAnimationDuration(UIKeyboard.AnimationDurationFromNotification(notification));
+            UIView.SetAnimationCurve((UIViewAnimationCurve)UIKeyboard.AnimationCurveFromNotification(notification));
+
+            if (visible)
+            {
+                CGRect r = UIKeyboard.BoundsFromNotification(notification);
+                CGRect viewFrame = View.Bounds;
+                nfloat currentViewHeight = viewFrame.Height - r.Height;
+                _svContainer.Frame = new CGRect(_svContainer.Frame.X, _navbarView.Frame.GetMaxY(), _svContainer.Frame.Width, currentViewHeight - _navbarView.Frame.Height);
+                //ScrollView.Frame = new CGRect(0, -DeviceHelper.GetStatusBarHeight(), ScrollView.Frame.Width, currentViewHeight);
+
+            }
+            else
+            {
+                _svContainer.Frame = scrollViewFrame;
+            }
+
+            UIView.CommitAnimations();
         }
 
         private UILabel GetTitleLabel(string key)
