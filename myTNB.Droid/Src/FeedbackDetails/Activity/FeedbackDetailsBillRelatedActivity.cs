@@ -349,7 +349,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 }
                 else
                 {
-                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "submittedEnquiryTitle"));
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle"));
                 }
 
                 // relationship hide or not

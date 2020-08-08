@@ -172,6 +172,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
         {
             try
             {
+                bool shoudButtonEnable=true;
                 this.mView.ClearErrors();
                 
 
@@ -187,8 +188,10 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                     else
                     {
                         this.mView.ShowEmptyError(typeOfLayout.ic);
-                 
-                        this.mView.DisableSubmitButton();
+
+                        //this.mView.DisableSubmitButton();
+                        shoudButtonEnable = false;
+
                     }
                 }
 
@@ -205,8 +208,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                     {
                         // this.mView.ShowEmptyFeedbackError();
                         this.mView.ShowEmptyError(typeOfLayout.ownerName);
-                  
-                        this.mView.DisableSubmitButton();
+
+                        //this.mView.DisableSubmitButton();
+                        shoudButtonEnable = false;
                     }
                 }
 
@@ -220,15 +224,17 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                         {
                             this.mView.UpdateMobileNumber("+60");
                             this.mView.ClearInvalidError(typeOfLayout.mobileNumber);
-                            this.mView.DisableSubmitButton();
-                            
+                            //this.mView.DisableSubmitButton();
+                            shoudButtonEnable = false;
+
                         }
                         else if (mobileNumber == "+60")
                         {
                             this.mView.UpdateMobileNumber("+60");
                             this.mView.ClearInvalidError(typeOfLayout.mobileNumber);
-                            this.mView.DisableSubmitButton();
-                           
+                            //this.mView.DisableSubmitButton();
+                            shoudButtonEnable = false;
+
                         }
                         else if (mobileNumber.Contains("+60") && mobileNumber.IndexOf("+60") > 0)
                         {
@@ -237,14 +243,16 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                             {
                                 this.mView.UpdateMobileNumber("+60");
                                 this.mView.ClearInvalidError(typeOfLayout.mobileNumber);
-                                this.mView.DisableSubmitButton();
-                              
+                                //this.mView.DisableSubmitButton();
+                                shoudButtonEnable = false;
+
                             }
                             else if (!Utility.IsValidMobileNumber(mobileNumber))
                             {
                                 this.mView.ShowInvalidMobileNoError();
-                                this.mView.DisableSubmitButton();
-                             
+                                //this.mView.DisableSubmitButton();
+                                shoudButtonEnable = false;
+
                             }
                             else
                             {
@@ -257,8 +265,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                             if (!Utility.IsValidMobileNumber(mobileNumber))
                             {
                                 this.mView.ShowInvalidMobileNoError();
-                                this.mView.DisableSubmitButton();
-                            
+                                //this.mView.DisableSubmitButton();
+                                shoudButtonEnable = false;
+
                             }
                             else
                             {
@@ -276,8 +285,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                     {
                         // this.mView.ShowEmptyFeedbackError();
                         this.mView.ShowEmptyError(typeOfLayout.mobileNumber);
-                       
-                        this.mView.DisableSubmitButton();
+
+                        //this.mView.DisableSubmitButton();
+                        shoudButtonEnable = false;
                     }
 
                 }
@@ -291,8 +301,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                         {
                             this.mView.ShowInvalidError(typeOfLayout.emailAddress);
                  
-                            this.mView.DisableSubmitButton();
-                            return;
+                            //this.mView.DisableSubmitButton();
+                            shoudButtonEnable = false;
                         }
                         else
                         {
@@ -304,9 +314,10 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                     }
                     else
                     {
-                        this.mView.ShowEmptyError(typeOfLayout.emailAddress);   
-                        
-                        this.mView.DisableSubmitButton();
+                        this.mView.ShowEmptyError(typeOfLayout.emailAddress);
+
+                        // this.mView.DisableSubmitButton();
+                        shoudButtonEnable = false;
                     }
                 }
 
@@ -323,7 +334,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                     {
                    
                         this.mView.ShowEmptyError(typeOfLayout.mailingAddress);
-                        this.mView.DisableSubmitButton();
+                        //this.mView.DisableSubmitButton();
+                        shoudButtonEnable = false;
                     }
                 }
       
@@ -341,7 +353,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                     {
                        
                         this.mView.ShowEmptyError(typeOfLayout.premiseAddress);
-                        this.mView.DisableSubmitButton();
+                        //this.mView.DisableSubmitButton();
+                        shoudButtonEnable = false;
                     }
                 }
 
@@ -357,9 +370,24 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                     else
                     {
 
-                      ///  this.mView.ShowEmptyError(typeOfLayout.premiseAddress);
-                        this.mView.DisableSubmitButton();
+                        ///  this.mView.ShowEmptyError(typeOfLayout.premiseAddress);
+                        //this.mView.DisableSubmitButton();
+                        shoudButtonEnable = false;
                     }
+                }
+
+
+                if (shoudButtonEnable)
+                {
+                    if(toggleChkBoxIC|| toggleChkOwnerName||toggleChkMobileNumber||toggleChkEmailAddress||toggleChkMailingAddress|| toggleChkPremiseAddress )
+                    {
+                        this.mView.EnableSubmitButton();
+                    }
+
+                }
+                else
+                {
+                    this.mView.DisableSubmitButton();
                 }
 
             }

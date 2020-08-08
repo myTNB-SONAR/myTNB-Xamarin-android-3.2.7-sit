@@ -156,6 +156,47 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                         this.mView.DisableRegisterButton();
                         return;
                     }
+                    else if (mobile_no == "+60")
+                    {
+                        this.mView.UpdateMobileNumber("+60");
+                        this.mView.ClearInvalidMobileError();
+                        this.mView.DisableRegisterButton();
+                        return;
+                    }
+                    else if (mobile_no.Contains("+60") && mobile_no.IndexOf("+60") > 0)
+                    {
+                        mobile_no = mobile_no.Substring(mobile_no.IndexOf("+60"));
+                        if (mobile_no == "+60")
+                        {
+                            this.mView.UpdateMobileNumber("+60");
+                            this.mView.ClearInvalidMobileError();
+                            this.mView.DisableRegisterButton();
+                            return;
+                        }
+                        else if (!Utility.IsValidMobileNumber(mobile_no))
+                        {
+                            this.mView.ShowInvalidMobileNoError();
+                            this.mView.DisableRegisterButton();
+                            return;
+                        }
+                        else
+                        {
+                            this.mView.ClearInvalidMobileError();
+                        }
+                    }
+                    else
+                    {
+                        if (!Utility.IsValidMobileNumber(mobile_no))
+                        {
+                            this.mView.ShowInvalidMobileNoError();
+                            this.mView.DisableRegisterButton();
+                            return;
+                        }
+                        else
+                        {
+                            this.mView.ClearInvalidMobileError();
+                        }
+                    }
 
 
                     this.mView.DisableRegisterButton();
