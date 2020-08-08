@@ -126,7 +126,6 @@ namespace myTNB
 
                                     enquiryDetailsViewController._feedbackDetails = _feedbackDetails.d.data;
                                     enquiryDetailsViewController.Title = feedback.FeedbackNameInListView;
-                                    enquiryDetailsViewController.titleName = feedback.FeedbackMessage;
 
                                     UINavigationController navController = new UINavigationController(enquiryDetailsViewController);
                                     navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
