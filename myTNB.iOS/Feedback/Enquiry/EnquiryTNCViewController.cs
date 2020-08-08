@@ -149,7 +149,7 @@ namespace myTNB
                 };
 
                 NSError htmlBodyError = null;
-                NSAttributedString htmlBody = !IsOwner ? TextHelper.ConvertToHtmlWithFont(string.Format(GetI18NValue(EnquiryConstants.tncAgreeNonOwner), Name, userInfo.email ?? Email, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA)
+                NSAttributedString htmlBody = !IsOwner ? TextHelper.ConvertToHtmlWithFont(string.Format(GetI18NValue(EnquiryConstants.tncAgreeNonOwner) + "<p>&nbsp;</p>", Name, userInfo.email ?? Email, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA)
                             , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(14F)) : TextHelper.ConvertToHtmlWithFont(string.Format(GetI18NValue(EnquiryConstants.tncAgreeOwner) + "<p>&nbsp;</p>", Name, userInfo.email ?? Email, DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA)
                             , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(14F));
 
