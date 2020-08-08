@@ -4,7 +4,6 @@ using Foundation;
 using myTNB.Feedback;
 using myTNB.Home.Bill;
 using myTNB.Model;
-using myTNB.SQLite.SQLiteDataManager;
 using System;
 using System.Collections.Generic;
 using UIKit;
@@ -78,7 +77,7 @@ namespace myTNB
         private UILabel lblRelationError;
         private UILabel lblRelation;
         private UIView viewLineRelation;
-        
+
         private UIView viewICNumber;
         private UILabel lblICNoTitle;
         private UILabel lblICNoError;
@@ -144,10 +143,10 @@ namespace myTNB
         private CGRect keyboardRectangle;
 
 
-        public UpdatePersonalDetailViewController (IntPtr handle) : base (handle){ }
+        public UpdatePersonalDetailViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
-        {   
+        {
             PageName = EnquiryConstants.Pagename_Enquiry;
 
             base.ViewDidLoad();
@@ -161,18 +160,8 @@ namespace myTNB
             AddCTA();
             AddYesNo();
 
-            NotifCenterUtility.AddObserver(UIKeyboard.WillShowNotification, (NSNotification obj) =>
-            {
-                NSDictionary userInfo = obj.UserInfo;
-                NSValue keyboardFrame = userInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey) as NSValue;
-                keyboardRectangle = keyboardFrame.CGRectValue;
-                _svContainer.Frame = new CGRect(0, 0, View.Frame.Width
-                    , View.Frame.Height - (keyboardRectangle.Height));
-            });
-            NotifCenterUtility.AddObserver(UIKeyboard.WillHideNotification, (NSNotification obj) =>
-            {
-                _svContainer.Frame = scrollViewFrame;
-            });
+            NotifCenterUtility.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
+            NotifCenterUtility.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
 
         }
 
@@ -187,7 +176,7 @@ namespace myTNB
         }
 
         private void SetHeader()
-        { 
+        {
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
@@ -279,32 +268,6 @@ namespace myTNB
             View.AddSubview(_svContainer);
         }
 
-        private void OnKeyboardNotification(NSNotification notification)
-        {
-            if (!IsViewLoaded)
-                return;
-
-            bool visible = notification.Name == UIKeyboard.WillShowNotification;
-            UIView.BeginAnimations("AnimateForKeyboard");
-            UIView.SetAnimationBeginsFromCurrentState(true);
-            UIView.SetAnimationDuration(UIKeyboard.AnimationDurationFromNotification(notification));
-            UIView.SetAnimationCurve((UIViewAnimationCurve)UIKeyboard.AnimationCurveFromNotification(notification));
-
-            if (visible)
-            {
-                CGRect r = UIKeyboard.BoundsFromNotification(notification);
-                CGRect viewFrame = View.Bounds;
-                nfloat currentViewHeight = viewFrame.Height - r.Height;
-                _svContainer.Frame = new CGRect(_svContainer.Frame.X, _svContainer.Frame.Y, _svContainer.Frame.Width, currentViewHeight);
-            }
-            else
-            {
-                _svContainer.Frame = scrollViewFrame;
-            }
-
-            UIView.CommitAnimations();
-        }
-
         private void AddYesNo()
         {
             _viewTitleSection = new UIView(new CGRect(0, 0, View.Frame.Width, GetScaledHeight(72)))
@@ -315,7 +278,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = GetI18NValue(EnquiryConstants.registeredTitle), 
+                Text = GetI18NValue(EnquiryConstants.registeredTitle),
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 2
             };
@@ -334,7 +297,7 @@ namespace myTNB
                 Frame = new CGRect(BaseMargin, GetScaledHeight(16), btnWidth, GetScaledHeight(48)),
                 BackgroundColor = UIColor.White
             };
-            _btnNo.SetTitle(GetCommonI18NValue("no"), UIControlState.Normal); 
+            _btnNo.SetTitle(GetCommonI18NValue("no"), UIControlState.Normal);
             _btnNo.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _btnNo.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
 
@@ -343,7 +306,7 @@ namespace myTNB
                 Frame = new CGRect(_btnNo.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48)),
                 BackgroundColor = UIColor.White
             };
-            _btnYes.SetTitle(GetCommonI18NValue("yes"), UIControlState.Normal); 
+            _btnYes.SetTitle(GetCommonI18NValue("yes"), UIControlState.Normal);
             _btnYes.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _btnYes.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
 
@@ -413,117 +376,119 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = GetI18NValue(EnquiryConstants.ownerTitle), 
+                Text = GetI18NValue(EnquiryConstants.ownerTitle),
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 2
             };
             _viewTitleSectionRelationship.AddSubview(lblSectionTitle);
 
-            _viewContainerRelationship = new UIView(new CGRect(0, _viewYesNoContainer.Frame.GetMaxY(), View.Frame.Width, IsSpecifyOther? GetScaledHeight(222) : GetScaledHeight(155)));
+            _viewContainerRelationship = new UIView(new CGRect(0, _viewYesNoContainer.Frame.GetMaxY(), View.Frame.Width, IsSpecifyOther ? GetScaledHeight(222) : GetScaledHeight(155)));
 
             viewAccountRelationTypeContainer = new UIView((new CGRect(0, _viewTitleSectionRelationship.Frame.GetMaxY(), View.Frame.Width, IsSpecifyOther ? GetScaledHeight(150) : GetScaledHeight(83))))
             {
                 BackgroundColor = UIColor.White
             };
-        
+
 
             viewAccountRelation = new UIView((new CGRect(18, 18, View.Frame.Width - 36, 51)))
             {
                 BackgroundColor = UIColor.White
             };
 
-                lblAccountRelationTitle = new UILabel
-                {
-                    Frame = new CGRect(0, 0, viewAccountRelation.Frame.Width, 12),
-                    AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.relationshipTitle) //relationshipTitle
-                        , AttributedStringUtility.AttributedStringType.Title),
-                    TextAlignment = UITextAlignment.Left
-                };
-                viewAccountRelation.AddSubview(lblAccountRelationTitle);
+            lblAccountRelationTitle = new UILabel
+            {
+                Frame = new CGRect(0, 0, viewAccountRelation.Frame.Width, 12),
+                AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.relationshipTitle) //relationshipTitle
+                    , AttributedStringUtility.AttributedStringType.Title),
+                TextAlignment = UITextAlignment.Left
+            };
+            viewAccountRelation.AddSubview(lblAccountRelationTitle);
 
-                lblRelationError = new UILabel
-                {
-                    Frame = new CGRect(0, 37, viewAccountRelation.Frame.Width, 14),
-                    AttributedText = AttributedStringUtility.GetAttributedString(GetErrorI18NValue(Constants.Error_InvalidAccountType)
-                        , AttributedStringUtility.AttributedStringType.Error),
-                    TextAlignment = UITextAlignment.Left,
-                    Hidden = true
-                };
-                viewAccountRelation.AddSubview(lblRelationError);
+            lblRelationError = new UILabel
+            {
+                Frame = new CGRect(0, 37, viewAccountRelation.Frame.Width, 14),
+                Font = MyTNBFont.MuseoSans11_300,
+                TextColor = MyTNBColor.Tomato,
+                AttributedText = AttributedStringUtility.GetAttributedString(GetErrorI18NValue(Constants.Error_InvalidAccountType)
+                    , AttributedStringUtility.AttributedStringType.Error),
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
+            };
+            viewAccountRelation.AddSubview(lblRelationError);
 
 
-                lblRelation = new UILabel(new CGRect(0, 12, viewAccountRelation.Frame.Width, 24))
-                {
-                   
-                    Text = _typeRelationshipNameList[DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex],
-                    TextColor = MyTNBColor.TunaGrey()
-                };
+            lblRelation = new UILabel(new CGRect(0, 12, viewAccountRelation.Frame.Width, 24))
+            {
 
-                viewAccountRelation.AddSubview(lblRelation);
+                Text = _typeRelationshipNameList[DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex],
+                TextColor = MyTNBColor.TunaGrey()
+            };
 
-                UIImageView imgDropDown = new UIImageView(new CGRect(viewAccountRelation.Frame.Width - 30, 12, 24, 24))
-                {
-                    Image = UIImage.FromBundle("IC-Action-Dropdown")
-                };
-                viewAccountRelation.AddSubview(imgDropDown);
+            viewAccountRelation.AddSubview(lblRelation);
 
-                viewLineRelation = GenericLine.GetLine(new CGRect(0, 36, viewAccountRelation.Frame.Width, 1));
-                viewAccountRelation.AddSubview(viewLineRelation);
+            UIImageView imgDropDown = new UIImageView(new CGRect(viewAccountRelation.Frame.Width - 30, 12, 24, 24))
+            {
+                Image = UIImage.FromBundle("IC-Action-Dropdown")
+            };
+            viewAccountRelation.AddSubview(imgDropDown);
 
-                UITapGestureRecognizer tapAccounType = new UITapGestureRecognizer(() =>
-                {
-                    UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
-                    GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
-                        .InstantiateViewController("GenericSelectorViewController");
-                    viewController.Title = GetI18NValue(EnquiryConstants.relationshipTitle); 
-                    viewController.Items = new List<string>()
+            viewLineRelation = GenericLine.GetLine(new CGRect(0, 36, viewAccountRelation.Frame.Width, 1));
+            viewAccountRelation.AddSubview(viewLineRelation);
+
+            UITapGestureRecognizer tapAccounType = new UITapGestureRecognizer(() =>
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
+                GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
+                    .InstantiateViewController("GenericSelectorViewController");
+                viewController.Title = GetI18NValue(EnquiryConstants.relationshipTitle);
+                viewController.Items = new List<string>()
                     {
-                        GetI18NValue(EnquiryConstants.childTitle), 
-                        GetI18NValue(EnquiryConstants.tenantTitle), 
-                        GetI18NValue(EnquiryConstants.guardianTitle), 
-                        GetI18NValue(EnquiryConstants.parentTitle), 
-                        GetI18NValue(EnquiryConstants.spouseTitle), 
-                        GetI18NValue(EnquiryConstants.othersTitle) 
+                        GetI18NValue(EnquiryConstants.childTitle),
+                        GetI18NValue(EnquiryConstants.tenantTitle),
+                        GetI18NValue(EnquiryConstants.guardianTitle),
+                        GetI18NValue(EnquiryConstants.parentTitle),
+                        GetI18NValue(EnquiryConstants.spouseTitle),
+                        GetI18NValue(EnquiryConstants.othersTitle)
                     };
-                    viewController.OnSelect = OnSelectAction;
-                    viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex;
-                    UINavigationController navController = new UINavigationController(viewController);
-                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                    PresentViewController(navController, true, null);
+                viewController.OnSelect = OnSelectAction;
+                viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex;
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                PresentViewController(navController, true, null);
 
-                });
-                viewAccountRelation.AddGestureRecognizer(tapAccounType);
+            });
+            viewAccountRelation.AddGestureRecognizer(tapAccounType);
 
-                //Specify Other reason
-                viewSpecifyOther = new UIView((new CGRect(18, viewAccountRelation.Frame.GetMaxY() + 18, View.Frame.Width - 36, 51)))
-                {
-                    BackgroundColor = UIColor.Clear,
-                    Hidden = !IsSpecifyOther
-                };
+            //Specify Other reason
+            viewSpecifyOther = new UIView((new CGRect(18, viewAccountRelation.Frame.GetMaxY() + 18, View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear,
+                Hidden = !IsSpecifyOther
+            };
 
-                lblSpecifyOtherTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.otherRelationshipHint)); 
+            lblSpecifyOtherTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.otherRelationshipHint));
             lblSpecifyOtherError = GetErrorLabel("");
 
-                txtFieldSpecifyOther = new UITextField
-                {
-                    Frame = new CGRect(0, 12, viewSpecifyOther.Frame.Width, 24),
-                    AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.otherRelationshipHint)
-                    , AttributedStringUtility.AttributedStringType.Value),
-                    TextColor = MyTNBColor.TunaGrey()
-                };
-                txtFieldSpecifyOther.ReturnKeyType = UIReturnKeyType.Done;
+            txtFieldSpecifyOther = new UITextField
+            {
+                Frame = new CGRect(0, 12, viewSpecifyOther.Frame.Width, 24),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.otherRelationshipHint)
+                , AttributedStringUtility.AttributedStringType.Value),
+                TextColor = MyTNBColor.TunaGrey()
+            };
+            txtFieldSpecifyOther.ReturnKeyType = UIReturnKeyType.Done;
 
-                viewLineSpecifyOther = GenericLine.GetLine(new CGRect(0, 36, viewSpecifyOther.Frame.Width, 1));
-                viewSpecifyOther.AddSubviews(new UIView[] { lblSpecifyOtherTitle, lblSpecifyOtherError, txtFieldSpecifyOther, viewLineSpecifyOther });
+            viewLineSpecifyOther = GenericLine.GetLine(new CGRect(0, 36, viewSpecifyOther.Frame.Width, 1));
+            viewSpecifyOther.AddSubviews(new UIView[] { lblSpecifyOtherTitle, lblSpecifyOtherError, txtFieldSpecifyOther, viewLineSpecifyOther });
 
-                //Other reason
+            //Other reason
 
-                viewAccountRelationTypeContainer.AddSubviews(viewAccountRelation, viewSpecifyOther);//viewSpecifyOther
+            viewAccountRelationTypeContainer.AddSubviews(viewAccountRelation, viewSpecifyOther);//viewSpecifyOther
 
-                _viewContainerRelationship.AddSubviews(_viewTitleSectionRelationship, viewAccountRelationTypeContainer);
-                _svContainer.AddSubviews(_viewContainerRelationship);
+            _viewContainerRelationship.AddSubviews(_viewTitleSectionRelationship, viewAccountRelationTypeContainer);
+            _svContainer.AddSubviews(_viewContainerRelationship);
 
-            }
+        }
 
         /*private void AddUpdateIC()
         {
@@ -613,12 +578,12 @@ namespace myTNB
             {
                 BackgroundColor = MyTNBColor.LightGrayBG
             };
-            
+
             UILabel lblSectionTitle = new UILabel(new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)))
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = IsOwner ? GetI18NValue(EnquiryConstants.updateNoOwnerTitle) : GetI18NValue(EnquiryConstants.updateOwnerTitle), 
+                Text = IsOwner ? GetI18NValue(EnquiryConstants.updateNoOwnerTitle) : GetI18NValue(EnquiryConstants.updateOwnerTitle),
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 2
             };
@@ -659,7 +624,7 @@ namespace myTNB
                 Image = UIImage.FromBundle(LoginConstants.IMG_RememberIcon),
                 ContentMode = UIViewContentMode.ScaleAspectFill,
                 BackgroundColor = UIColor.Clear,
-                Hidden = IsIC? false : true
+                Hidden = IsIC ? false : true
             };
             viewCheckBoxIC.AddSubview(imgViewCheckBoxIC);
 
@@ -671,6 +636,9 @@ namespace myTNB
 
                 GetTextUIField();
 
+                if (IC != null && txtFieldICNo != null)
+                    IC = string.Empty;
+
                 removeCheckBoxBelow();
                 checkBoxList();
                 UpdateCheckBoxListHeight();
@@ -678,8 +646,8 @@ namespace myTNB
 
                 SetTextUIField();
                 SetEvents();
-                DisableButton();
-                //SetNextButtonEnable();
+                //DisableButton();
+                SetNextButtonEnable();
 
             }));
 
@@ -687,9 +655,9 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.GreyishBrown,
-                Text = GetI18NValue(EnquiryConstants.icTitle) 
+                Text = GetI18NValue(EnquiryConstants.icTitle)
             };
-            _viewCheckBoxContainerIC.AddSubviews(new UIView[] { viewCheckBoxIC, lblIC});
+            _viewCheckBoxContainerIC.AddSubviews(new UIView[] { viewCheckBoxIC, lblIC });
 
             //IC Number
             if (IsIC)
@@ -699,7 +667,7 @@ namespace myTNB
                     BackgroundColor = UIColor.Clear
                 };
 
-                lblICNoTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.icHint).ToUpper()); 
+                lblICNoTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.icHint).ToUpper());
                 lblICNoError = GetErrorLabel(GetI18NValue(EnquiryConstants.icReq));
 
                 txtFieldICNo = new UITextField
@@ -723,7 +691,7 @@ namespace myTNB
         }
         private void checkBoxAccountOwnerName()
         {
-            _viewCheckBoxContainerAccount = new UIView(new CGRect(0, _viewCheckBoxContainerIC.Frame.GetMaxY() + GetScaledHeight(8F), ViewWidth, IsAccount ? GetScaledHeight(119F) : GetScaledHeight(56F))) 
+            _viewCheckBoxContainerAccount = new UIView(new CGRect(0, _viewCheckBoxContainerIC.Frame.GetMaxY() + GetScaledHeight(8F), ViewWidth, IsAccount ? GetScaledHeight(119F) : GetScaledHeight(56F)))
             {
                 BackgroundColor = UIColor.White
             };
@@ -751,6 +719,9 @@ namespace myTNB
 
                 GetTextUIField();
 
+                if (Account != null && txtFieldAccOwnerName != null)
+                    Account = string.Empty;
+
                 removeCheckBoxBelow();
                 checkBoxList();
                 UpdateCheckBoxListHeight();
@@ -758,8 +729,8 @@ namespace myTNB
 
                 SetTextUIField();
                 SetEvents();
-                DisableButton();
-                //SetNextButtonEnable();
+                //DisableButton();
+                SetNextButtonEnable();
 
             }));
 
@@ -767,10 +738,10 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.GreyishBrown,
-                Text = GetI18NValue(EnquiryConstants.accNametitle) 
+                Text = GetI18NValue(EnquiryConstants.accNametitle)
             };
 
-            _viewCheckBoxContainerAccount.AddSubviews(new UIView[] { viewCheckBoxAccount, lblAccount});
+            _viewCheckBoxContainerAccount.AddSubviews(new UIView[] { viewCheckBoxAccount, lblAccount });
 
             if (IsAccount)
             {
@@ -780,8 +751,8 @@ namespace myTNB
                     BackgroundColor = UIColor.Clear
                 };
 
-                lblAccOwnerNameTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.accNameHint).ToUpper()); 
-                lblAccOwnerNameError = GetErrorLabel(GetI18NValue(EnquiryConstants.ownerReq)); 
+                lblAccOwnerNameTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.accNameHint).ToUpper());
+                lblAccOwnerNameError = GetErrorLabel(GetI18NValue(EnquiryConstants.ownerReq));
 
                 txtFieldAccOwnerName = new UITextField
                 {
@@ -831,6 +802,9 @@ namespace myTNB
 
                 GetTextUIField();
 
+                if (MobileNumber != null && txtFieldMobileNumber != null)
+                    MobileNumber = string.Empty;
+
                 removeCheckBoxBelow();
                 checkBoxList();
                 UpdateCheckBoxListHeight();
@@ -838,8 +812,8 @@ namespace myTNB
 
                 SetTextUIField();
                 SetEvents();
-                DisableButton();
-                //SetNextButtonEnable();
+                //DisableButton();
+                SetNextButtonEnable();
 
             }));
 
@@ -847,30 +821,30 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.GreyishBrown,
-                Text = GetI18NValue(EnquiryConstants.mobileNumberTitle) 
+                Text = GetI18NValue(EnquiryConstants.mobileNumberTitle)
             };
 
-            _viewCheckBoxContainerMobileNumber.AddSubviews(new UIView[] { viewCheckBoxMobileNumber, lblMobileNumber});
+            _viewCheckBoxContainerMobileNumber.AddSubviews(new UIView[] { viewCheckBoxMobileNumber, lblMobileNumber });
 
             if (IsMobileNumber)
-            { 
-            //Mobile Number
-            viewMobileNumber = new UIView((new CGRect(18, lblMobileNumber.Frame.GetMaxY() + 14, View.Frame.Width - 36, 51)))
             {
-                BackgroundColor = UIColor.Clear
-            };
+                //Mobile Number
+                viewMobileNumber = new UIView((new CGRect(18, lblMobileNumber.Frame.GetMaxY() + 14, View.Frame.Width - 36, 51)))
+                {
+                    BackgroundColor = UIColor.Clear
+                };
 
-            lblMobileNumberTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.mobileNumberHint)); 
-            lblMobileNumberError = GetErrorLabel(GetI18NValue(EnquiryConstants.mobileReq));
+                lblMobileNumberTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.mobileNumberHint));
+                lblMobileNumberError = GetErrorLabel(GetI18NValue(EnquiryConstants.mobileReq));
 
-            txtFieldMobileNumber = new UITextField
-            {
-                Frame = new CGRect(0, 12, viewMobileNumber.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.mobileNumberHint)
-                    , AttributedStringUtility.AttributedStringType.Value),
-                TextColor = MyTNBColor.TunaGrey()
-            };
-            if (MobileNumber != string.Empty)
+                txtFieldMobileNumber = new UITextField
+                {
+                    Frame = new CGRect(0, 12, viewMobileNumber.Frame.Width, 24),
+                    AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.mobileNumberHint)
+                        , AttributedStringUtility.AttributedStringType.Value),
+                    TextColor = MyTNBColor.TunaGrey()
+                };
+                if (MobileNumber != string.Empty)
                     lblMobileNumberTitle.Hidden = false;
 
                 txtFieldMobileNumber.KeyboardType = UIKeyboardType.NumberPad;
@@ -878,13 +852,13 @@ namespace myTNB
 
                 viewLineMobile = GenericLine.GetLine(new CGRect(0, 36, viewMobileNumber.Frame.Width, 1));
 
-            viewMobileNumber.AddSubviews(new UIView[] { lblMobileNumberTitle, lblMobileNumberError, txtFieldMobileNumber, viewLineMobile });
-            _viewCheckBoxContainerMobileNumber.AddSubview(viewMobileNumber);
+                viewMobileNumber.AddSubviews(new UIView[] { lblMobileNumberTitle, lblMobileNumberError, txtFieldMobileNumber, viewLineMobile });
+                _viewCheckBoxContainerMobileNumber.AddSubview(viewMobileNumber);
             }
         }
         private void checkBoxEmail()
         {
-            _viewCheckBoxContainerEmail = new UIView(new CGRect(0, _viewCheckBoxContainerMobileNumber.Frame.GetMaxY() + GetScaledHeight(8F), ViewWidth, IsEmail ? GetScaledHeight(119F) : GetScaledHeight(56F))) 
+            _viewCheckBoxContainerEmail = new UIView(new CGRect(0, _viewCheckBoxContainerMobileNumber.Frame.GetMaxY() + GetScaledHeight(8F), ViewWidth, IsEmail ? GetScaledHeight(119F) : GetScaledHeight(56F)))
             {
                 BackgroundColor = UIColor.White
             };
@@ -912,6 +886,9 @@ namespace myTNB
 
                 GetTextUIField();
 
+                if (Email != null && txtFieldEmail != null)
+                    Email = string.Empty;
+
                 removeCheckBoxBelow();
                 checkBoxList();
                 UpdateCheckBoxListHeight();
@@ -919,8 +896,8 @@ namespace myTNB
 
                 SetTextUIField();
                 SetEvents();
-                DisableButton();
-                //SetNextButtonEnable();
+                //DisableButton();
+                SetNextButtonEnable();
 
             }));
 
@@ -928,43 +905,43 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.GreyishBrown,
-                Text = GetI18NValue(EnquiryConstants.emailAddressTitle) 
+                Text = GetI18NValue(EnquiryConstants.emailAddressTitle)
             };
 
-            _viewCheckBoxContainerEmail.AddSubviews(new UIView[] { viewCheckBoxEmail, lblEmail});
+            _viewCheckBoxContainerEmail.AddSubviews(new UIView[] { viewCheckBoxEmail, lblEmail });
 
             if (IsEmail)
-            { 
-            //Email
-            viewEmail = new UIView((new CGRect(18, lblEmail.Frame.GetMaxY() + 14, View.Frame.Width - 36, 51)))
             {
-                BackgroundColor = UIColor.Clear
-            };
+                //Email
+                viewEmail = new UIView((new CGRect(18, lblEmail.Frame.GetMaxY() + 14, View.Frame.Width - 36, 51)))
+                {
+                    BackgroundColor = UIColor.Clear
+                };
 
-            lblEmailTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.emailAddressHint));
-            lblEmailError = GetErrorLabel(GetI18NValue(EnquiryConstants.emailReq));
+                lblEmailTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.emailAddressHint));
+                lblEmailError = GetErrorLabel(GetI18NValue(EnquiryConstants.emailReq));
 
-            txtFieldEmail = new UITextField
-            {
-                Frame = new CGRect(0, 12, viewEmail.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.emailAddressHint)
-                    , AttributedStringUtility.AttributedStringType.Value),
-                TextColor = MyTNBColor.TunaGrey()
-            };
-            if (Email != string.Empty)
+                txtFieldEmail = new UITextField
+                {
+                    Frame = new CGRect(0, 12, viewEmail.Frame.Width, 24),
+                    AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(EnquiryConstants.emailAddressHint)
+                        , AttributedStringUtility.AttributedStringType.Value),
+                    TextColor = MyTNBColor.TunaGrey()
+                };
+                if (Email != string.Empty)
                     lblEmailTitle.Hidden = false;
 
-            txtFieldEmail.ReturnKeyType = UIReturnKeyType.Done;
+                txtFieldEmail.ReturnKeyType = UIReturnKeyType.Done;
 
-            viewLineEmailLine = GenericLine.GetLine(new CGRect(0, 36, viewEmail.Frame.Width, 1));
+                viewLineEmailLine = GenericLine.GetLine(new CGRect(0, 36, viewEmail.Frame.Width, 1));
 
-            viewEmail.AddSubviews(new UIView[] { lblEmailTitle, lblEmailError, txtFieldEmail, viewLineEmailLine });
-            _viewCheckBoxContainerEmail.AddSubview(viewEmail);
+                viewEmail.AddSubviews(new UIView[] { lblEmailTitle, lblEmailError, txtFieldEmail, viewLineEmailLine });
+                _viewCheckBoxContainerEmail.AddSubview(viewEmail);
             }
         }
         private void checkBoxAccountMailing()
         {
-            _viewCheckBoxContainerMailing = new UIView(new CGRect(0, _viewCheckBoxContainerEmail.Frame.GetMaxY() + GetScaledHeight(8F), ViewWidth, IsMailing ? GetScaledHeight(119F) : GetScaledHeight(56F))) 
+            _viewCheckBoxContainerMailing = new UIView(new CGRect(0, _viewCheckBoxContainerEmail.Frame.GetMaxY() + GetScaledHeight(8F), ViewWidth, IsMailing ? GetScaledHeight(119F) : GetScaledHeight(56F)))
             {
                 BackgroundColor = UIColor.White
             };
@@ -992,6 +969,9 @@ namespace myTNB
 
                 GetTextUIField();
 
+                if (Mailing != null && txtFieldMailing != null)
+                    Mailing = string.Empty;
+
                 removeCheckBoxBelow();
                 checkBoxList();
                 UpdateCheckBoxListHeight();
@@ -999,8 +979,8 @@ namespace myTNB
 
                 SetTextUIField();
                 SetEvents();
-                DisableButton();
-                //SetNextButtonEnable();
+                //DisableButton();
+                SetNextButtonEnable();
 
             }));
 
@@ -1008,7 +988,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.GreyishBrown,
-                Text = GetI18NValue(EnquiryConstants.mailingAddressTitle) 
+                Text = GetI18NValue(EnquiryConstants.mailingAddressTitle)
 
             };
             _viewCheckBoxContainerMailing.AddSubviews(new UIView[] { viewCheckBoxMaling, lblMailing });
@@ -1021,7 +1001,7 @@ namespace myTNB
                     BackgroundColor = UIColor.Clear
                 };
 
-                lblMailingTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.mailingAddressHint)); 
+                lblMailingTitle = GetTitleLabel(GetI18NValue(EnquiryConstants.mailingAddressHint));
                 lblMailingError = GetErrorLabel(GetI18NValue(EnquiryConstants.mailingReq));
 
                 txtFieldMailing = new UITextField
@@ -1072,6 +1052,9 @@ namespace myTNB
 
                 GetTextUIField();
 
+                if (Premise != null && txtFieldPremise != null)
+                    Premise = string.Empty;
+
                 removeCheckBoxBelow();
                 checkBoxList();
                 UpdateCheckBoxListHeight();
@@ -1079,8 +1062,8 @@ namespace myTNB
 
                 SetTextUIField();
                 SetEvents();
-                DisableButton();
-                //SetNextButtonEnable();
+                //DisableButton();
+                SetNextButtonEnable();
 
             }));
 
@@ -1091,7 +1074,7 @@ namespace myTNB
                 Text = GetI18NValue(EnquiryConstants.premiseAddressTitle)
             };
 
-            _viewCheckBoxContainerPremise.AddSubviews(new UIView[] { viewCheckBoxPremise, lblPremise});
+            _viewCheckBoxContainerPremise.AddSubviews(new UIView[] { viewCheckBoxPremise, lblPremise });
 
             if (IsPremise)
             {
@@ -1189,7 +1172,7 @@ namespace myTNB
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
                 DisplayCustomAlert(GetI18NValue(EnquiryConstants.registeredInfo) //registeredInfo
-                    , GetI18NValue(EnquiryConstants.registeredInfoDetail) 
+                    , GetI18NValue(EnquiryConstants.registeredInfoDetail)
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
                     , null);
             });
@@ -1222,13 +1205,13 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_11_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = GetI18NValue(EnquiryConstants.ownerConsentTitle) 
+                Text = GetI18NValue(EnquiryConstants.ownerConsentInfo)
 
             };
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
-                DisplayCustomAlert(GetI18NValue(EnquiryConstants.ownerConsentInfo) 
-                    , GetI18NValue(EnquiryConstants.ownerConsentDescription)  
+                DisplayCustomAlert(GetI18NValue(EnquiryConstants.ownerConsentTitle)
+                    , GetI18NValue(EnquiryConstants.ownerConsentDescription)
                     , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
                     , null);
             });
@@ -1258,8 +1241,8 @@ namespace myTNB
         }
 
 
-    private void SetTextFieldEvents(UILabel lblTitle, UITextField textField
-           , UILabel lblError, UIView viewLine, string pattern)
+        private void SetTextFieldEvents(UILabel lblTitle, UITextField textField
+               , UILabel lblError, UIView viewLine, string pattern)
         {
             _textFieldHelper.SetKeyboard(textField);
             _textFieldHelper.CreateDoneButton(textField);
@@ -1359,69 +1342,106 @@ namespace myTNB
             bool isValidFieldIC, isValidFieldAccOwnerName,
                 isValidFieldMobile, isValidFieldEmail, isValidFieldMailing,
                 isValidFieldPremise, isValidFieldOther;
-            //bool isValid = false;
+            bool isValid = true;
 
             DisableButton();
+
             if (IsSpecifyOther)
             {
                 bool specifyValid = IsIC || IsAccount || IsMobileNumber || IsEmail || IsMailing || IsPremise;
                 isValidFieldOther = _textFieldHelper.ValidateTextField(txtFieldSpecifyOther.Text, TNBGlobal.ACCOUNT_NAME_PATTERN)
-                   && !string.IsNullOrWhiteSpace(txtFieldSpecifyOther.Text) && specifyValid != false && txtFieldSpecifyOther.Text.Length <= 50;  
+                   && !string.IsNullOrWhiteSpace(txtFieldSpecifyOther.Text) && specifyValid != false && txtFieldSpecifyOther.Text.Length <= 50;
 
                 if (!isValidFieldOther)
-                { DisableButton(); return; }
+                {
+                    DisableButton();
+                    isValid = false;
+                    //return;
+                }
             }
+
             if (IsIC)
             {
-                 isValidFieldIC = _textFieldHelper.ValidateTextField(txtFieldICNo.Text, TNBGlobal.IC_NO_PATTERN)
-                    && !string.IsNullOrWhiteSpace(txtFieldICNo.Text);
+                isValidFieldIC = _textFieldHelper.ValidateTextField(txtFieldICNo.Text, TNBGlobal.IC_NO_PATTERN)
+                   && !string.IsNullOrWhiteSpace(txtFieldICNo.Text);
 
                 if (!isValidFieldIC)
-                { DisableButton(); return; }
+                {
+                    DisableButton();
+                    isValid = false;
+                    //return;
+                }
             }
             if (IsAccount)
             {
-                 isValidFieldAccOwnerName = _textFieldHelper.ValidateTextField(txtFieldAccOwnerName.Text, TNBGlobal.ACCOUNT_NAME_PATTERN)
-                    && !string.IsNullOrWhiteSpace(txtFieldAccOwnerName.Text);
+                isValidFieldAccOwnerName = _textFieldHelper.ValidateTextField(txtFieldAccOwnerName.Text, TNBGlobal.ACCOUNT_NAME_PATTERN)
+                   && !string.IsNullOrWhiteSpace(txtFieldAccOwnerName.Text);
 
                 if (!isValidFieldAccOwnerName)
-                { DisableButton(); return; }
+                {
+                    DisableButton();
+                    isValid = false;
+                    //return;
+                }
             }
             if (IsMobileNumber)
             {
-                 isValidFieldMobile = _textFieldHelper.ValidateTextField(txtFieldMobileNumber.Text, MOBILENUMBER_PATTERN) && _textFieldHelper.ValidateMobileNumberLength(txtFieldMobileNumber.Text)
-                    && !string.IsNullOrWhiteSpace(txtFieldMobileNumber.Text);
+                isValidFieldMobile = _textFieldHelper.ValidateTextField(txtFieldMobileNumber.Text, MOBILENUMBER_PATTERN) && _textFieldHelper.ValidateMobileNumberLength(txtFieldMobileNumber.Text)
+                   && !string.IsNullOrWhiteSpace(txtFieldMobileNumber.Text);
 
                 if (!isValidFieldMobile)
-                { DisableButton(); return; }
+                {
+                    DisableButton();
+                    isValid = false;
+                    //return;
+                }
             }
             if (IsEmail)
             {
-                 isValidFieldEmail = _textFieldHelper.ValidateTextField(txtFieldEmail.Text, EMAIL_PATTERN)
-                    && !string.IsNullOrWhiteSpace(txtFieldEmail.Text);
+                isValidFieldEmail = _textFieldHelper.ValidateTextField(txtFieldEmail.Text, EMAIL_PATTERN)
+                   && !string.IsNullOrWhiteSpace(txtFieldEmail.Text);
 
                 if (!isValidFieldEmail)
-                { DisableButton(); return; }
+                {
+                    DisableButton();
+                    isValid = false;
+                    //return;
+                }
             }
             if (IsMailing)
             {
-                 isValidFieldMailing = _textFieldHelper.ValidateTextField(txtFieldMailing.Text, ADDRESS_PATTERN)
-                    && !string.IsNullOrWhiteSpace(txtFieldMailing.Text);
+                isValidFieldMailing = _textFieldHelper.ValidateTextField(txtFieldMailing.Text, ADDRESS_PATTERN)
+                   && !string.IsNullOrWhiteSpace(txtFieldMailing.Text);
 
                 if (!isValidFieldMailing)
-                { DisableButton(); return; }
+                {
+                    DisableButton();
+                    isValid = false;
+                    //return;
+                }
             }
             if (IsPremise)
             {
-                 isValidFieldPremise = _textFieldHelper.ValidateTextField(txtFieldPremise.Text, ADDRESS_PATTERN)
-                    && !string.IsNullOrWhiteSpace(txtFieldPremise.Text);
+                isValidFieldPremise = _textFieldHelper.ValidateTextField(txtFieldPremise.Text, ADDRESS_PATTERN)
+                   && !string.IsNullOrWhiteSpace(txtFieldPremise.Text);
 
                 if (!isValidFieldPremise)
-                { DisableButton(); return; }
+                {
+                    DisableButton();
+                    isValid = false;
+                    //return;
+                }
             }
-            
-            _btnNext.Enabled = true;// isValid;
-            _btnNext.BackgroundColor = MyTNBColor.FreshGreen;// isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
+
+            if (isValid)
+            {
+                if (IsIC || IsAccount || IsMobileNumber || IsEmail || IsMailing || IsPremise)
+                {
+                    _btnNext.Enabled = true;// isValid;
+                    _btnNext.BackgroundColor = MyTNBColor.FreshGreen;// isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
+                }
+            }
+
         }
 
 
@@ -1482,6 +1502,8 @@ namespace myTNB
             return new UILabel
             {
                 Frame = new CGRect(0, 37, View.Frame.Width - 36, 14),
+                Font = MyTNBFont.MuseoSans11_300,
+                TextColor = MyTNBColor.Tomato,
                 AttributedText = AttributedStringUtility.GetAttributedString(key
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
@@ -1507,6 +1529,8 @@ namespace myTNB
 
             if (index == 5)
             {
+                GetTextUIField();
+
                 removeRelationshipBelow();
                 IsSpecifyOther = true;
                 AddSectionTitleRelationship();
@@ -1517,9 +1541,12 @@ namespace myTNB
                 DisableButton();
                 //SetNextButtonEnable();
 
+                SetTextUIField();
             }
             else
             {
+                GetTextUIField();
+
                 removeRelationshipBelow();
                 IsSpecifyOther = false;
                 AddSectionTitleRelationship();
@@ -1530,6 +1557,7 @@ namespace myTNB
                 DisableButton();
                 //SetNextButtonEnable();
 
+                SetTextUIField();
             }
         }
 
@@ -1543,11 +1571,11 @@ namespace myTNB
 
         private void removeRelationshipBelow()
         {
-            if(_viewContainerRelationship != null)
+            if (_viewContainerRelationship != null)
                 _viewContainerRelationship.RemoveFromSuperview();
-            if(_viewTitleSection2 != null)
+            if (_viewTitleSection2 != null)
                 _viewTitleSection2.RemoveFromSuperview();
-            if(_viewCheckBoxListContainer != null)
+            if (_viewCheckBoxListContainer != null)
                 _viewCheckBoxListContainer.RemoveFromSuperview();
         }
 
@@ -1616,22 +1644,50 @@ namespace myTNB
                 txtFieldPremise.Text = Premise;
         }
 
+        private void OnKeyboardNotification(NSNotification notification)
+        {
+            if (!IsViewLoaded)
+                return;
+
+            bool visible = notification.Name == UIKeyboard.WillShowNotification;
+            UIView.BeginAnimations("AnimateForKeyboard");
+            UIView.SetAnimationBeginsFromCurrentState(true);
+            UIView.SetAnimationDuration(UIKeyboard.AnimationDurationFromNotification(notification));
+            UIView.SetAnimationCurve((UIViewAnimationCurve)UIKeyboard.AnimationCurveFromNotification(notification));
+
+            if (visible)
+            {
+                CGRect r = UIKeyboard.BoundsFromNotification(notification);
+                CGRect viewFrame = View.Bounds;
+                nfloat currentViewHeight = viewFrame.Height - r.Height;
+                _svContainer.Frame = new CGRect(_svContainer.Frame.X, _navbarView.Frame.GetMaxY() , _svContainer.Frame.Width, currentViewHeight -_navbarView.Frame.Height);
+                //ScrollView.Frame = new CGRect(0, -DeviceHelper.GetStatusBarHeight(), ScrollView.Frame.Width, currentViewHeight);
+
+            }
+            else
+            {
+                _svContainer.Frame = scrollViewFrame;
+            }
+
+            UIView.CommitAnimations();
+        }
+
         private void NavigateToPage()
         {
 
             feedbackUpdateDetailsList = new List<FeedbackUpdateDetailsModel>();
 
-            if(IsOwner == false)
-            { 
-            int relationship = DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex + 1;
-            string relationshipDesc = _typeRelationshipNameList[DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex];
+            if (IsOwner == false)
+            {
+                int relationship = DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex + 1;
+                string relationshipDesc = _typeRelationshipNameList[DataManager.DataManager.SharedInstance.CurrentSelectedRelationshipTypeNoIndex];
 
-                if (IsSpecifyOther && relationship == 6 )
+                if (IsSpecifyOther && relationship == 6)
                 {
                     if (txtFieldSpecifyOther.Text != string.Empty)
-                    { 
-                    DataManager.DataManager.SharedInstance.Relationship = relationship;
-                    DataManager.DataManager.SharedInstance.RelationshipDesc = txtFieldSpecifyOther.Text ?? relationshipDesc;
+                    {
+                        DataManager.DataManager.SharedInstance.Relationship = relationship;
+                        DataManager.DataManager.SharedInstance.RelationshipDesc = txtFieldSpecifyOther.Text ?? relationshipDesc;
                     }
                     else
                     {
@@ -1740,7 +1796,7 @@ namespace myTNB
             viewController.feedbackUpdateDetailsList = feedbackUpdateDetailsList;
             NavigationController?.PushViewController(viewController, true);
 
-     
+
         }
     }
 }

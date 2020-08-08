@@ -9,6 +9,7 @@ using myTNB.Feedback;
 using myTNB.Feedback.FeedbackImage;
 using myTNB.SQLite.SQLiteDataManager;
 using CoreAnimation;
+using Foundation;
 
 namespace myTNB
 {
@@ -51,6 +52,8 @@ namespace myTNB
         private UITextField txtFieldMobile;
         private UIView viewLineMobile;
 
+        private CGRect scrollViewFrame;
+
         private TextFieldHelper _textFieldHelper = new TextFieldHelper();
 
         UITextField textField;
@@ -76,6 +79,11 @@ namespace myTNB
             AddDetailsSection();
             SetSubmitButtonEnable();
             SetEvents();
+            UpdateContentSize();
+
+            NotifCenterUtility.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
+            NotifCenterUtility.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
+
 
         }
 
@@ -226,7 +234,7 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            lblEmailTitle = GetTitleLabel(GetCommonI18NValue("emailAddress").ToUpper());  
+            lblEmailTitle = GetTitleLabel(GetCommonI18NValue("emailAddress").ToUpper());
             lblEmailError = GetErrorLabel(GetErrorI18NValue("invalid_email"));
             lblEmailHint = GetHintLabel("");
 
@@ -245,7 +253,7 @@ namespace myTNB
 
             viewLineEmail = GenericLine.GetLine(new CGRect(0, 36, viewEmail.Frame.Width, 1));
 
-            viewEmail.AddSubviews(new UIView[] { lblEmailTitle, lblEmailError, lblEmailHint,txtFieldEmail, viewLineEmail });
+            viewEmail.AddSubviews(new UIView[] { lblEmailTitle, lblEmailError, lblEmailHint, txtFieldEmail, viewLineEmail });
             _viewContactDetails.AddSubview(viewEmail);
 
 
@@ -336,7 +344,7 @@ namespace myTNB
             _svContainer.AddSubview(_viewTitleSection);
         }
 
-        private void SetTextFieldEvents(UITextField textField, UILabel textFieldTitle, UILabel textFieldError ,UILabel TextFieldHint, UIView viewLine, string pattern)
+        private void SetTextFieldEvents(UITextField textField, UILabel textFieldTitle, UILabel textFieldError, UILabel TextFieldHint, UIView viewLine, string pattern)
         {
             _textFieldHelper.SetKeyboard(textField);
             _textFieldHelper.CreateDoneButton(textField);
@@ -436,7 +444,7 @@ namespace myTNB
         {
             SetTextFieldEvents(txtFieldName, lblNameTitle, lblNameError, lblNameHint, viewLineName, TNBGlobal.CustomerNamePattern);
             SetTextFieldEvents(txtFieldEmail, lblEmailTitle, lblEmailError, lblEmailHint, viewLineEmail, EMAIL_PATTERN);
-            SetTextFieldEvents(txtFieldMobile, lblMobileTitle, lblMobileError, lblMobileHint,viewLineMobile, MOBILENUMBER_PATTERN);
+            SetTextFieldEvents(txtFieldMobile, lblMobileTitle, lblMobileError, lblMobileHint, viewLineMobile, MOBILENUMBER_PATTERN);
         }
 
         private void SetSubmitButtonEnable()
@@ -457,6 +465,46 @@ namespace myTNB
 
         }
 
+        private nfloat GetScrollHeight()
+        {
+            return (nfloat)((_viewContactDetails.Frame.GetMaxY() + 16f));//+ (_btnNextContainer.Frame.Height + 16f)))
+        }
+
+        private void UpdateContentSize()
+        {
+            _svContainer.ContentSize = new CGRect(0f, 0f, View.Frame.Width, GetScrollHeight()).Size;
+            scrollViewFrame = _svContainer.Frame;
+        }
+
+        private void OnKeyboardNotification(NSNotification notification)
+        {
+            if (!IsViewLoaded)
+                return;
+
+            bool visible = notification.Name == UIKeyboard.WillShowNotification;
+            UIView.BeginAnimations("AnimateForKeyboard");
+            UIView.SetAnimationBeginsFromCurrentState(true);
+            UIView.SetAnimationDuration(UIKeyboard.AnimationDurationFromNotification(notification));
+            UIView.SetAnimationCurve((UIViewAnimationCurve)UIKeyboard.AnimationCurveFromNotification(notification));
+
+            if (visible)
+            {
+                CGRect r = UIKeyboard.BoundsFromNotification(notification);
+                CGRect viewFrame = View.Bounds;
+                nfloat currentViewHeight = viewFrame.Height - r.Height;
+                _svContainer.Frame = new CGRect(_svContainer.Frame.X, _navbarView.Frame.GetMaxY(), _svContainer.Frame.Width, currentViewHeight - _navbarView.Frame.Height);
+                //ScrollView.Frame = new CGRect(0, -DeviceHelper.GetStatusBarHeight(), ScrollView.Frame.Width, currentViewHeight);
+
+            }
+            else
+            {
+                _svContainer.Frame = scrollViewFrame;
+            }
+
+            UIView.CommitAnimations();
+        }
+
+
         private UILabel GetTitleLabel(string key)
         {
             return new UILabel
@@ -474,6 +522,8 @@ namespace myTNB
             return new UILabel
             {
                 Frame = new CGRect(0, 37, View.Frame.Width - 36, 14),
+                Font = MyTNBFont.MuseoSans11_300,
+                TextColor = MyTNBColor.Tomato,
                 AttributedText = AttributedStringUtility.GetAttributedString(key
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
@@ -561,7 +611,7 @@ namespace myTNB
                 name = DataManager.DataManager.SharedInstance.IsLoggedIn() ? DataManager.DataManager.SharedInstance.UserEntity[0].displayName : txtFieldName.Text,
                 email = DataManager.DataManager.SharedInstance.IsLoggedIn() ? DataManager.DataManager.SharedInstance.UserEntity[0].email : txtFieldEmail.Text,
                 phoneNum = DataManager.DataManager.SharedInstance.IsLoggedIn() ? DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo : txtFieldMobile.Text,
-                feedbackMesage = DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryMessage, 
+                feedbackMesage = DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryMessage,
                 stateId = "",
                 location = "",
                 poleNum = "",
@@ -580,7 +630,7 @@ namespace myTNB
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
-                 _submitFeedback = serviceManager.OnExecuteAPIV6<SubmitFeedbackResponseModel>("SubmitFeedbackWithContactDetails", requestParameter);
+                _submitFeedback = serviceManager.OnExecuteAPIV6<SubmitFeedbackResponseModel>("SubmitFeedbackWithContactDetails", requestParameter);
             });
         }
 
