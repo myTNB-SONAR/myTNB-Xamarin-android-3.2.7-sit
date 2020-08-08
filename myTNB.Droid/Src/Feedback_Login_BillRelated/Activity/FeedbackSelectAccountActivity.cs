@@ -72,13 +72,11 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
                             if(previouslySelected.AccountNum == customer.AccNum)
                             {
                             feedbackSelectAdapter.Add(AccountData.Copy(customer, true));
-                        }
-                             else
+                            }
+                            else
                             {
                             feedbackSelectAdapter.Add(AccountData.Copy(customer, false));
                             }
-                      
-                           
                         }
                         else
                         {
