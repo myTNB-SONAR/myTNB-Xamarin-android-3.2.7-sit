@@ -497,6 +497,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                                 ownerRelationship = selectedAccountRelationship.Type;
                                 isOtherRelationShip(false);
                                 isOtherChoosed = false;
+                                parseCheckRequiredField();
 
                             }
                         }
