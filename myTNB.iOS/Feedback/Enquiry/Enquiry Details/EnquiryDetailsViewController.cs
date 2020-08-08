@@ -16,7 +16,6 @@ namespace myTNB
         public SubmittedFeedbackDetailsDataModel _feedbackDetails = new SubmittedFeedbackDetailsDataModel();
 
         public bool IsEnquiryStatus;
-        public string titleName;
 
         private UIView viewContainer;
         private UIScrollView _svContainer;
@@ -104,7 +103,7 @@ namespace myTNB
             });
             NavigationItem.LeftBarButtonItem = btnBack;
 
-            if (titleName != string.Empty)
+            if (_feedbackDetails.FeedbackMessage != string.Empty)
                 Title = GetI18NValue(EnquiryConstants.generalEnquiryTitle);
             else
                 Title = GetI18NValue(EnquiryConstants.updatePersonalDetTitle);
