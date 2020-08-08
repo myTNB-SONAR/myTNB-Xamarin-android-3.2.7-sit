@@ -230,9 +230,10 @@ namespace myTNB
                 Frame = new CGRect(0, 37, _viewAccountNo.Frame.Width, 14),
                 Font = MyTNBFont.MuseoSans11_300,
                 TextColor = MyTNBColor.Tomato,
-                AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue("validElectricityAccountNoError")
-                    , AttributedStringUtility.AttributedStringType.Error),
-                TextAlignment = UITextAlignment.Left,
+                Text = GetI18NValue("validElectricityAccountNoError"),
+                //AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue("validElectricityAccountNoError")
+                //    , AttributedStringUtility.AttributedStringType.Error),
+                //TextAlignment = UITextAlignment.Left,
                 Hidden = true
 
             };
