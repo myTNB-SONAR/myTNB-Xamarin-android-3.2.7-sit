@@ -188,7 +188,7 @@
                                     android:id="@+id/TextView_exampleofIC"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="12dp"
+                                    android:textSize="11dp"
                                     android:textColor="#1c79ca"
                                     android:drawablePadding="8dp"
                                     android:text="How does copy of identification look like?"
