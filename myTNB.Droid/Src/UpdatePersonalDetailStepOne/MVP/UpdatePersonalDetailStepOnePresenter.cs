@@ -379,7 +379,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
 
                 if (shoudButtonEnable)
                 {
-                    if(toggleChkBoxIC|| toggleChkOwnerName||toggleChkMobileNumber||toggleChkEmailAddress||toggleChkMailingAddress|| toggleChkPremiseAddress || isOtherChoosed)
+                    if(toggleChkBoxIC|| toggleChkOwnerName||toggleChkMobileNumber||toggleChkEmailAddress||toggleChkMailingAddress|| toggleChkPremiseAddress )
                     {
                         this.mView.EnableSubmitButton();
                     }

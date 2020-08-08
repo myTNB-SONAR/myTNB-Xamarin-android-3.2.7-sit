@@ -1364,7 +1364,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (lay.Equals(typeOfLayout.ic))
             {
                 txtInputLayoutNewIC.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                // TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewIC.FindViewById<TextView>(Resource.Id.textinput_error));
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewIC.FindViewById<TextView>(Resource.Id.textinput_error));
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewIC);
                 txtInputLayoutNewIC.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "icReq"); //Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");  // change lang 
             }
@@ -1372,7 +1372,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (lay.Equals(typeOfLayout.emailAddress))
             {
                 txtInputLayoutNewEmailAddress.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewEmailAddress.FindViewById<TextView>(Resource.Id.textinput_error));
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewEmailAddress.FindViewById<TextView>(Resource.Id.textinput_error));
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewEmailAddress);
                 txtInputLayoutNewEmailAddress.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "emailReq"); //Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");  // change lang 
 
@@ -1381,8 +1381,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (lay.Equals(typeOfLayout.mailingAddress))
             {
                 txtInputLayoutNewMailingAddress.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                //  TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMailingAddress.FindViewById<TextView>(Resource.Id.textinput_error));
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMailingAddress.FindViewById<TextView>(Resource.Id.textinput_error));
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMailingAddress);
+            
                 txtInputLayoutNewMailingAddress.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "mailingReq");  //Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");  // change lang 
 
             }
@@ -1390,15 +1391,15 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (lay.Equals(typeOfLayout.mobileNumber))
             {
                 txtInputLayoutNewMobileNumber.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMobileNumber.FindViewById<TextView>(Resource.Id.textinput_error));
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMobileNumber.FindViewById<TextView>(Resource.Id.textinput_error));
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMobileNumber);
                 txtInputLayoutNewMobileNumber.Error= Utility.GetLocalizedLabel("SubmitEnquiry", "mobileReq"); //Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");  // change lang 
             }
 
             if (lay.Equals(typeOfLayout.ownerName))
             {
-                    txtInputLayoutNewOwnerName.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                // TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewOwnerName.FindViewById<TextView>(Resource.Id.textinput_error));
+                txtInputLayoutNewOwnerName.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewOwnerName.FindViewById<TextView>(Resource.Id.textinput_error));
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewOwnerName);
                 txtInputLayoutNewOwnerName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "ownerReq"); //Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");  // change lang 
             }
@@ -1406,7 +1407,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (lay.Equals(typeOfLayout.premiseAddress))
             {
                 txtInputLayoutNewPremiseAddress.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPremiseAddress.FindViewById<TextView>(Resource.Id.textinput_error));
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPremiseAddress.FindViewById<TextView>(Resource.Id.textinput_error));
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPremiseAddress);
                 txtInputLayoutNewPremiseAddress.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "permisesReq");  //Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");  // change lang 
             }

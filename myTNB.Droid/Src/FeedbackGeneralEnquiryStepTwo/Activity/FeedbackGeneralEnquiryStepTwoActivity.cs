@@ -444,6 +444,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         {
             try
             {
+                txtInputLayoutPhoneNumber.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutPhoneNumber.FindViewById<TextView>(Resource.Id.textinput_error));
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutPhoneNumber);
                 txtInputLayoutPhoneNumber.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
             }
             catch (Exception e)
@@ -517,6 +520,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         {
             //txtInputLayoutNamee = GetString(Resource.String.name_error);
             txtInputLayoutName.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error));
+            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName);
             txtInputLayoutName.Error = Utility.GetLocalizedErrorLabel("invalid_fullname");
 
         }
@@ -539,6 +544,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
         public void ShowInvalidEmailError()
         {
+            txtInputLayoutEmail.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail.FindViewById<TextView>(Resource.Id.textinput_error));
+            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail);
             txtInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
         }
 
