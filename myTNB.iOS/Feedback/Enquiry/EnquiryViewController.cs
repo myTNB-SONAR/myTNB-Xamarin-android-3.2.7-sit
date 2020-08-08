@@ -14,7 +14,7 @@ namespace myTNB
 {
     public partial class EnquiryViewController : CustomUIViewController
     {
-        public EnquiryViewController (IntPtr handle) : base (handle) { }
+        public EnquiryViewController(IntPtr handle) : base(handle) { }
 
         public string FeedbackID = string.Empty;
 
@@ -94,8 +94,8 @@ namespace myTNB
 
             if (NavigationController != null && NavigationController.NavigationBar != null)
             {
-                if(NavigationController.NavigationBar.Hidden == true)
-                NavigationController.NavigationBar.Hidden = false;
+                if (NavigationController.NavigationBar.Hidden == true)
+                    NavigationController.NavigationBar.Hidden = false;
             }
         }
 
@@ -228,10 +228,14 @@ namespace myTNB
             _lblAccountNoError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewAccountNo.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue("validElectricityAccountNoError")
-                    , AttributedStringUtility.AttributedStringType.Error),
-                TextAlignment = UITextAlignment.Left,
+                Font = MyTNBFont.MuseoSans11_300,
+                TextColor = MyTNBColor.Tomato,
+                Text = GetI18NValue("validElectricityAccountNoError"),
+                //AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue("validElectricityAccountNoError")
+                //    , AttributedStringUtility.AttributedStringType.Error),
+                //TextAlignment = UITextAlignment.Left,
                 Hidden = true
+
             };
 
             _txtAccountNumber = new UITextField(new CGRect(0, 12, _viewAccountNo.Frame.Width - 84, 24)) //x:30
@@ -243,7 +247,7 @@ namespace myTNB
             };
             _viewAccountNo.AddSubview(_txtAccountNumber);
             UIView viewScanner = DataManager.DataManager.SharedInstance.IsLoggedIn() ?
-                new UIView(new CGRect(_viewAccountNo.Frame.Width - 64, 12, 24, 24)): new UIView(new CGRect(_viewAccountNo.Frame.Width - 30, 12, 24, 24));
+                new UIView(new CGRect(_viewAccountNo.Frame.Width - 64, 12, 24, 24)) : new UIView(new CGRect(_viewAccountNo.Frame.Width - 30, 12, 24, 24));
             UIImageView scanner = new UIImageView(new CGRect(0, 0, 24, 24))
             {
                 Image = UIImage.FromBundle("Scan")
@@ -259,34 +263,35 @@ namespace myTNB
             viewScanner.AddSubview(scanner);
             _viewAccountNo.AddSubview(viewScanner);
 
-            if (DataManager.DataManager.SharedInstance.IsLoggedIn()) { 
-            UIView imgDropDownFrame = new UIView(new CGRect(_viewAccountNo.Frame.Width - 30, 12, 24, 24));
-            UIImageView imgDropDown = new UIImageView(new CGRect(0, 0, 24, 24))
+            if (DataManager.DataManager.SharedInstance.IsLoggedIn())
             {
-                Image = UIImage.FromBundle("IC-Action-Dropdown")
-            };
-            imgDropDownFrame?.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
-                GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
-                    .InstantiateViewController("GenericSelectorViewController");
-                viewController.Title = GetCommonI18NValue(Constants.Common_SelectElectricityAccount);
-                viewController.Items = GetAccountList();
-                viewController.OnSelect = OnSelectAction;
-                viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex;
-                UINavigationController navController = new UINavigationController(viewController);
-                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                PresentViewController(navController, true, null);
+                UIView imgDropDownFrame = new UIView(new CGRect(_viewAccountNo.Frame.Width - 30, 12, 24, 24));
+                UIImageView imgDropDown = new UIImageView(new CGRect(0, 0, 24, 24))
+                {
+                    Image = UIImage.FromBundle("IC-Action-Dropdown")
+                };
+                imgDropDownFrame?.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
+                    GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
+                        .InstantiateViewController("GenericSelectorViewController");
+                    viewController.Title = GetCommonI18NValue(Constants.Common_SelectElectricityAccount);
+                    viewController.Items = GetAccountList();
+                    viewController.OnSelect = OnSelectAction;
+                    viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex;
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    PresentViewController(navController, true, null);
 
-            }));
-            imgDropDownFrame.AddSubview(imgDropDown);
-            _viewAccountNo.AddSubview(imgDropDownFrame);
+                }));
+                imgDropDownFrame.AddSubview(imgDropDown);
+                _viewAccountNo.AddSubview(imgDropDownFrame);
             }
 
             _viewLineAccountNo = GenericLine.GetLine(new CGRect(0, 36, _viewAccountNo.Frame.Width, 1));
 
             _viewAccountNo.AddSubviews(new UIView[] { _lblAccountNoTitle, _lblAccountNoError
-                , _txtAccountNumber, _viewLineAccountNo }); 
+                , _txtAccountNumber, _viewLineAccountNo });
 
             _accContainer.AddSubview(_viewAccountNo);
             _accContainer.AddSubview(GetTooltipView(GetYLocationFromFrame(_viewAccountNo.Frame, 8)));
@@ -360,7 +365,9 @@ namespace myTNB
                 List<string> accountList = new List<string>();
                 foreach (CustomerAccountRecordModel item in DataManager.DataManager.SharedInstance.AccountRecordsList?.d)
                 {
-                    accountList.Add(string.Format("{0} - {1}", item?.accNum ?? string.Empty, item?.accDesc ?? string.Empty));
+                    //accountList.Add(string.Format("{0} - {1}", item?.accNum ?? string.Empty, item?.accDesc ?? string.Empty));
+                    accountList.Add(string.Format("{0}{1}", string.Empty, item?.accDesc ?? string.Empty));
+
                 }
                 return accountList;
             }
@@ -405,14 +412,14 @@ namespace myTNB
                 Text = GetI18NValue(EnquiryConstants.accNumberInfo)
 
             };
-            
+
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
                 UIImage cimg;
                 if (DataManager.DataManager.SharedInstance.imageWhereAcc == null)
                 {
-                    if(DataManager.DataManager.SharedInstance.imageWhereAccUrl != GetI18NValue(EnquiryConstants.imageWhereAcc))
-                    { 
+                    if (DataManager.DataManager.SharedInstance.imageWhereAccUrl != GetI18NValue(EnquiryConstants.imageWhereAcc))
+                    {
                         DataManager.DataManager.SharedInstance.imageWhereAccUrl = GetI18NValue(EnquiryConstants.imageWhereAcc);
                         DataManager.DataManager.SharedInstance.imageWhereAcc = GetFromUrl(TNBGlobal.SITECORE_URL + DataManager.DataManager.SharedInstance.imageWhereAccUrl);
 
@@ -430,12 +437,12 @@ namespace myTNB
                     cimg = DataManager.DataManager.SharedInstance.imageWhereAcc;
                 }
 
-                if(cimg != null)
-                { 
-                DisplayCustomAlert(GetI18NValue(EnquiryConstants.accNumberInfo)
-                    , GetI18NValue(EnquiryConstants.accNumberDetails)
-                    , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
-                    , cimg);//UIImage.LoadFromData(cimg)
+                if (cimg != null)
+                {
+                    DisplayCustomAlert(GetI18NValue(EnquiryConstants.accNumberInfo)
+                        , GetI18NValue(EnquiryConstants.accNumberDetails)
+                        , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
+                        , cimg);//UIImage.LoadFromData(cimg)
                 }
             });
 
@@ -456,25 +463,25 @@ namespace myTNB
             imgViewIcon = new UIImageView(new CGRect(16, 13, 48, 48))
             {
                 Image = UIImage.FromBundle("IC-Tile-FeedbackBill")
-            };            lblTitle = new UILabel(new CGRect(80, 16, cellWidth - 96, 16))
+            }; lblTitle = new UILabel(new CGRect(80, 16, cellWidth - 96, 16))
             {
                 Text = GetI18NValue(EnquiryConstants.generalEnquiryTitle),
                 TextColor = MyTNBColor.CharcoalGrey,
                 Font = MyTNBFont.MuseoSans16_500
-            };            lblSubtTitle = new UILabel(new CGRect(80, 38, cellWidth - 96, 16))
+            }; lblSubtTitle = new UILabel(new CGRect(80, 38, cellWidth - 96, 16))
             {
                 Text = GetI18NValue(EnquiryConstants.generalEnquiryDescription),
                 TextColor = MyTNBColor.TunaGrey(),
                 Font = MyTNBFont.MuseoSans12_300,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap
-            };            lblCount = new UILabel(new CGRect(cellWidth - 38, 16, 20, 16))
+            }; lblCount = new UILabel(new CGRect(cellWidth - 38, 16, 20, 16))
             {
                 TextColor = MyTNBColor.PowerBlue,
                 TextAlignment = UITextAlignment.Right,
                 Font = MyTNBFont.MuseoSans12,
                 Hidden = true
-            };            viewLine = new UIView(new CGRect(0, cellHeight - 7, cellWidth, 7))
+            }; viewLine = new UIView(new CGRect(0, cellHeight - 7, cellWidth, 7))
             {
                 BackgroundColor = MyTNBColor.LightGrayBG,
                 Hidden = false
@@ -485,7 +492,8 @@ namespace myTNB
                 ExecuteValidateContractAccount("Enquiry", "GeneralEnquiryViewController");
             }));
             Frame.AddSubviews(new UIView[] { imgViewIcon, lblTitle, lblSubtTitle, lblCount, viewLine });
-            _svContainer.AddSubviews(Frame);        }
+            _svContainer.AddSubviews(Frame);
+        }
 
         public void CellUpdatePersonalDetail()
         {
@@ -505,7 +513,7 @@ namespace myTNB
                 Text = GetI18NValue(EnquiryConstants.updatePersonalDetTitle),
                 TextColor = MyTNBColor.CharcoalGrey,
                 Font = MyTNBFont.MuseoSans16_500
-            };            lblSubtTitle2 = new UILabel(new CGRect(80, 38, cellWidth - 96, 16))
+            }; lblSubtTitle2 = new UILabel(new CGRect(80, 38, cellWidth - 96, 16))
             {
                 Text = GetI18NValue(EnquiryConstants.personalDetailsDescription),
                 TextColor = MyTNBColor.TunaGrey(),
@@ -533,7 +541,8 @@ namespace myTNB
 
             }));
             Frame2.AddSubviews(new UIView[] { imgViewIcon2, lblTitle2, lblSubtTitle2, lblCount2, viewLine2 });
-            _svContainer.AddSubviews(Frame2);        }
+            _svContainer.AddSubviews(Frame2);
+        }
 
 
         private void SetView()
@@ -628,7 +637,7 @@ namespace myTNB
 
             _viewLineAccountNo.BackgroundColor = isValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
             _txtAccountNumber.TextColor = isValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
-            _lblAccountNoError.Hidden = isValid; 
+            _lblAccountNoError.Hidden = isValid;
             if (_txtAccountNumber.Text == string.Empty)
             {
                 _lblAccountNoError.Text = GetI18NValue("plsEnterAcc");
@@ -672,18 +681,18 @@ namespace myTNB
                                 fullName = item.FullName;
                             }
 
-                            if(Ic != string.Empty && fullName != string.Empty)
-                            { 
+                            if (Ic != string.Empty && fullName != string.Empty)
+                            {
 
-                            DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryIC = Ic;
-                            DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryFullName = fullName;
-                            DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA = _txtAccountNumber.Text;
+                                DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryIC = Ic;
+                                DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryFullName = fullName;
+                                DataManager.DataManager.SharedInstance.CurrentSelectedEnquiryCA = _txtAccountNumber.Text;
 
-                            //UIStoryboard storyBoard = UIStoryboard.FromName(uistoryboard, null);
-                            //UIViewController viewController = storyBoard.InstantiateViewController(viewcontroller) as UIViewController;
-                            //    UINavigationController navController = new UINavigationController(viewController);
-                            //    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                            //    PresentViewController(navController, true, null);
+                                //UIStoryboard storyBoard = UIStoryboard.FromName(uistoryboard, null);
+                                //UIViewController viewController = storyBoard.InstantiateViewController(viewcontroller) as UIViewController;
+                                //    UINavigationController navController = new UINavigationController(viewController);
+                                //    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                                //    PresentViewController(navController, true, null);
 
                                 UIStoryboard storyBoard = UIStoryboard.FromName(uistoryboard, null);
                                 //GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
