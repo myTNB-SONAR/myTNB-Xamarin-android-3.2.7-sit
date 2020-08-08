@@ -1460,42 +1460,47 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
             if (lay.Equals(typeOfLayout.ic))
             {
-                //txtInputLayoutNewIC.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
+                
+                txtInputLayoutNewIC.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewIC.FindViewById<TextView>(Resource.Id.textinput_error));
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewIC);
                 txtInputLayoutNewIC.Error = Utility.GetLocalizedErrorLabel("invalid_icNumber");
             }
             if (lay.Equals(typeOfLayout.emailAddress))
             {
-                //txtInputLayoutNewEmailAddress.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
+                txtInputLayoutNewEmailAddress.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewEmailAddress.FindViewById<TextView>(Resource.Id.textinput_error));
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewEmailAddress);
                 txtInputLayoutNewEmailAddress.Error = Utility.GetLocalizedErrorLabel("invalid_email"); ;
             }
             if (lay.Equals(typeOfLayout.mailingAddress))
             {
-                //txtInputLayoutNewEmailAddress.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
+                txtInputLayoutNewMailingAddress.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMailingAddress.FindViewById<TextView>(Resource.Id.textinput_error));
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMailingAddress);
-                txtInputLayoutNewMailingAddress.Error = "Invalid mailing address";
+                //txtInputLayoutNewMailingAddress.Error = "Invalid mailing address";
             }
             if (lay.Equals(typeOfLayout.mobileNumber))
             {
+                txtInputLayoutNewMobileNumber.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMobileNumber.FindViewById<TextView>(Resource.Id.textinput_error));
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMobileNumber);
                 txtInputLayoutNewMobileNumber.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber"); ;
             }
             if (lay.Equals(typeOfLayout.ownerName))
             {
+                txtInputLayoutNewOwnerName.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewOwnerName.FindViewById<TextView>(Resource.Id.textinput_error));
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewOwnerName);
                 txtInputLayoutNewOwnerName.Error = Utility.GetLocalizedErrorLabel("invalid_fullname"); 
             }
             if (lay.Equals(typeOfLayout.premiseAddress))
             {
+
+                txtInputLayoutNewPremiseAddress.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPremiseAddress.FindViewById<TextView>(Resource.Id.textinput_error));
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPremiseAddress);
-                txtInputLayoutNewPremiseAddress.Error = "Invalid premise address";
+               // txtInputLayoutNewPremiseAddress.Error = "Invalid premise address";
             }
         }
     }
