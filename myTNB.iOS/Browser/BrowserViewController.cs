@@ -2,6 +2,8 @@
 using UIKit;
 using CoreGraphics;
 using WebKit;
+using System;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -45,33 +47,42 @@ namespace myTNB
                 {
                     NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                     {
-                        if (NetworkUtility.isReachable && ShareID.IsValid())
+                        InvokeOnMainThread(() =>
                         {
-                            ActivityIndicator.Show();
-                            BaseService baseService = new BaseService();
-                            APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
-                            string linkUrl = baseService.GetDomain(env) + "/whatsnew/redirect.aspx/wnid=" + ShareID;
-
-                            var deeplinkUrl = string.Empty;
-                            var components = CommonServices.GenerateLongURL(linkUrl);
-                            components.GetShortenUrl((shortUrl, warnings, error) =>
+                            if (NetworkUtility.isReachable && ShareID.IsValid())
                             {
-                                if (error == null)
+                                try
                                 {
-                                    deeplinkUrl = shortUrl.AbsoluteString;
+                                    BaseService baseService = new BaseService();
+                                    APIEnvironment env = TNBGlobal.IsProduction ? APIEnvironment.PROD : APIEnvironment.SIT;
+                                    string linkUrl = baseService.GetDomain(env) + "/whatsnew/redirect.aspx/wnid=" + ShareID;
+
+                                    var deeplinkUrl = string.Empty;
+                                    var components = CommonServices.GenerateLongURL(linkUrl);
+                                    components.GetShortenUrl((shortUrl, warnings, error) =>
+                                    {
+                                        if (error == null)
+                                        {
+                                            deeplinkUrl = shortUrl.AbsoluteString;
+                                        }
+                                        else
+                                        {
+                                            deeplinkUrl = linkUrl;
+                                        }
+                                        ShareAction(deeplinkUrl);
+                                    });
                                 }
-                                else
+                                catch (Exception e)
                                 {
-                                    deeplinkUrl = linkUrl;
+                                    Debug.WriteLine("Error in What's New Share: " + e.Message);
+                                    DisplayServiceError(GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage));
                                 }
-                                ShareAction(deeplinkUrl);
-                                ActivityIndicator.Hide();
-                            });
-                        }
-                        else
-                        {
-                            AlertHandler.DisplayNoDataAlert(this);
-                        }
+                            }
+                            else
+                            {
+                                AlertHandler.DisplayNoDataAlert(this);
+                            }
+                        });
                     });
                 });
                 NavigationItem.RightBarButtonItem = _btnShare;
