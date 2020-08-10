@@ -65,7 +65,7 @@ namespace myTNB
             _containerTwo();
             CreateFeedbackUpdateDetails();
             _containerPhoto();
-            AddSectionTitle2();
+            //AddSectionTitle2();
             AddContainer4();
             UpdateContentSize();
 
@@ -189,9 +189,23 @@ namespace myTNB
                         break;
                     }
             }
+            try
+            {
             var prettyString = new NSMutableAttributedString("Status : " + statusName ?? string.Empty);
+            if(statusName != null && statusName != string.Empty)
+            { 
             prettyString.SetAttributes(firstAttributes.Dictionary, new NSRange(8, statusName.Length + 1));
             lblTitleStatus.AttributedText = prettyString;
+            }
+            else
+            {
+                lblTitleStatus.Text = "Status : ";
+            }
+            }
+            catch(Exception ex)
+            { 
+                lblTitleStatus.Text = "Status : ";
+            }
 
 
             lblAccountNumber = new UILabel(new CGRect(18, lblTitleStatus.Frame.GetMaxY() + 4, _container1.Frame.Width - 36, 24))
@@ -286,7 +300,7 @@ namespace myTNB
 
         private void CreateFeedbackUpdateDetails()
         {
-            if (_feedbackDetails.RelationshipWithCA != 0)
+            if (_feedbackDetails.RelationshipWithCA != 0 && _feedbackDetails.RelationshipWithCADesc != string.Empty)
             {
                 _containerRelation = new UIView(new CGRect(0, _viewTitleSection.Frame.GetMaxY(), View.Frame.Width, GetScaledHeight(48)))
                 {
@@ -455,6 +469,7 @@ namespace myTNB
 
         private void AddSectionTitle2()
         {
+            if (_feedbackDetails.ContactName != null || _feedbackDetails.ContactName != string.Empty) { 
             try
             {
                 _viewTitleSection2 = new UIView(new CGRect(0, _container3 != null ? _container3.Frame.GetMaxY() : _containerFeedbackUpdateDetails.Frame.GetMaxY(), View.Frame.Width, GetScaledHeight(48)))
@@ -478,10 +493,37 @@ namespace myTNB
 
             _viewTitleSection2.AddSubview(lblSectionTitle);
             _svContainer.AddSubview(_viewTitleSection2);
+            };
         }
 
         private void AddContainer4()
         {
+            if (_feedbackDetails.ContactName != null && _feedbackDetails.ContactName != string.Empty)
+            {
+                try
+                {
+                    _viewTitleSection2 = new UIView(new CGRect(0, _container3 != null ? _container3.Frame.GetMaxY() : _containerFeedbackUpdateDetails.Frame.GetMaxY(), View.Frame.Width, GetScaledHeight(48)))
+                    {
+                        BackgroundColor = MyTNBColor.LightGrayBG
+                    };
+                }
+                catch (Exception ex)
+                {
+                    _viewTitleSection2 = new UIView(new CGRect(0, _container2.Frame.GetMaxY(), View.Frame.Width, GetScaledHeight(48)))
+                    {
+                        BackgroundColor = MyTNBColor.LightGrayBG
+                    };
+                }
+                UILabel lblSectionTitle = new UILabel(new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(24)))
+                {
+                    Font = TNBFont.MuseoSans_16_500,
+                    TextColor = MyTNBColor.WaterBlue,
+                    Text = GetI18NValue(EnquiryConstants.contactDetailsTitle)
+                };
+
+                _viewTitleSection2.AddSubview(lblSectionTitle);
+                _svContainer.AddSubview(_viewTitleSection2);
+            
             _container4 = new UIView(new CGRect(0, _viewTitleSection2.Frame.GetMaxY(), View.Frame.Width, GetScaledHeight(172)))
             {
                 BackgroundColor = UIColor.White
@@ -535,11 +577,18 @@ namespace myTNB
             _container4.AddSubviews(lblTitleContactMobile, lblContactMobile);
             _svContainer.AddSubviews(_container4);
 
+            };
+
         }
 
         private nfloat GetScrollHeight()
         {
-            return (nfloat)((_container4.Frame.GetMaxY()));
+            if(_viewTitleSection2 != null)
+                return (nfloat)((_container4.Frame.GetMaxY()));
+            else if(_container3 != null)
+                return (nfloat)((_container3.Frame.GetMaxY()));
+            else
+                return (nfloat)((_container2.Frame.GetMaxY()));
         }
 
         private void UpdateContentSize()
