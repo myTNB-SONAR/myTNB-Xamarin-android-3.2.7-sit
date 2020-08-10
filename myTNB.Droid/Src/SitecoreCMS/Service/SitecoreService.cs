@@ -17,16 +17,14 @@ namespace myTNB.SitecoreCMS.Services
 {
     public class SitecoreService
     {
-        private readonly TimeSpan timeSpan = TimeSpan.FromMilliseconds(5000);
-
-        public async Task<ScItemsResponse> GetItemByPath(string itemPath, PayloadType itemLoadType, List<ScopeType> itemScopeTypes, string websiteUrl = null, string itemLanguage = "en")
+        public async Task<ScItemsResponse> GetItemByPath(string itemPath, PayloadType itemLoadType, List<ScopeType> itemScopeTypes, TimeSpan mTimeSpan, string websiteUrl = null, string itemLanguage = "en")
         {
             try
             {
                 using (var session = await GetSession(websiteUrl))
                 {
                     CancellationTokenSource source = new CancellationTokenSource();
-                    source.CancelAfter(timeSpan);
+                    source.CancelAfter(mTimeSpan);
 
                     IReadItemsByPathRequest request = ItemWebApiRequestBuilder.ReadItemsRequestWithPath(itemPath)
                         .Payload(itemLoadType)
@@ -47,14 +45,14 @@ namespace myTNB.SitecoreCMS.Services
             }
         }
 
-        public async Task<ScItemsResponse> GetItemById(string itemId, PayloadType itemLoadType, List<ScopeType> itemScopeTypes, string websiteUrl = null, string itemLanguage = "en")
+        public async Task<ScItemsResponse> GetItemById(string itemId, PayloadType itemLoadType, List<ScopeType> itemScopeTypes, TimeSpan mTimeSpan, string websiteUrl = null, string itemLanguage = "en")
         {
             try
             {
                 using (var session = await GetSession(websiteUrl))
                 {
                     CancellationTokenSource source = new CancellationTokenSource();
-                    source.CancelAfter(timeSpan);
+                    source.CancelAfter(mTimeSpan);
 
                     IReadItemsByIdRequest request = ItemWebApiRequestBuilder.ReadItemsRequestWithId(itemId)
                         .Payload(itemLoadType)
@@ -75,7 +73,7 @@ namespace myTNB.SitecoreCMS.Services
             }
         }
 
-        public async Task<Byte[]> GetMediaByUrl(string mediaUrl)
+        public async Task<Byte[]> GetMediaByUrl(string mediaUrl, TimeSpan mTimeSpan)
         {
             try
             {
@@ -84,7 +82,7 @@ namespace myTNB.SitecoreCMS.Services
                 using (var session = await SitecoreSession)
                 {
                     CancellationTokenSource source = new CancellationTokenSource();
-                    source.CancelAfter(timeSpan);
+                    source.CancelAfter(mTimeSpan);
 
                     IMediaResourceDownloadRequest request = ItemWebApiRequestBuilder.DownloadResourceRequestWithMediaPath(mediaUrl)
                         .Language("en")
@@ -133,7 +131,7 @@ namespace myTNB.SitecoreCMS.Services
 
             foreach (string itemId in itemIds)
             {
-                ScItemsResponse response = await GetItemById(itemId, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, sitecoreItem.Source.Language);
+                ScItemsResponse response = await GetItemById(itemId, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, SiteCoreConfig.FiveSecondTimeSpan, sitecoreItem.Source.Language);
 
                 if (response == null)
                     continue;
@@ -158,7 +156,7 @@ namespace myTNB.SitecoreCMS.Services
 
         private async Task<ScItemsResponse> GetDatasourceFromChildren(ISitecoreItem sitecoreItem)
         {
-            return await GetItemById(sitecoreItem.Id, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, sitecoreItem.Source.Language);
+            return await GetItemById(sitecoreItem.Id, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, SiteCoreConfig.FiveSecondTimeSpan, sitecoreItem.Source.Language);
         }
 
         private Task<ISitecoreWebApiReadonlySession> SitecoreSession
