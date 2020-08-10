@@ -1,9 +1,14 @@
-﻿namespace myTNB_Android.Src.SiteCore
+﻿using System;
+
+namespace myTNB_Android.Src.SiteCore
 {
     public static class SiteCoreConfig
     {
         public static string OS = "droid";
         public static string DEFAULT_LANGUAGE = "en";
+
+        public static readonly TimeSpan FiveSecondTimeSpan = TimeSpan.FromMilliseconds(5000);
+        public static readonly TimeSpan TenSecondTimeSpan = TimeSpan.FromMilliseconds(10000);
 
         //Local machine
         //public static string SITECORE_URL = "http://10.215.229.127/";
