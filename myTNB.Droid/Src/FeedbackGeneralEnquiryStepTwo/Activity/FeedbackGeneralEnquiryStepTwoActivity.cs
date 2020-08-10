@@ -356,23 +356,32 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                     txtEmail.Text = UserEntity.GetActive().Email;
 
                     string tempPhone = UserEntity.GetActive().MobileNo;
-                    string tempSubstring = tempPhone.Substring(0, 2);
-                    if (tempSubstring.Contains("+6"))
-                    {
-                        tempPhone = UserEntity.GetActive().MobileNo;
-                        txtPhoneNumber.Text = tempPhone;
 
-                    }
-                    else if (!tempSubstring.Contains("+"))
-                    {
-                        tempPhone = "+6" + tempPhone.Trim();
-                        txtPhoneNumber.Text = tempPhone;
+                    if (!tempPhone.IsNullOrEmpty()) {
+                        
+                        string tempSubstring = tempPhone.Substring(0, 2);
+                        if (tempSubstring.Contains("+6"))
+                        {
+                            tempPhone = UserEntity.GetActive().MobileNo;
+                            txtPhoneNumber.Text = tempPhone;
+
+                        }
+                        else if (!tempSubstring.Contains("+"))
+                        {
+                            tempPhone = "+6" + tempPhone.Trim();
+                            txtPhoneNumber.Text = tempPhone;
+                        }
+                        else
+                        {
+                            tempPhone = "";
+                            txtPhoneNumber.Text = tempPhone;
+                        }
                     }
                     else
                     {
-                        tempPhone = "";
-                        txtPhoneNumber.Text = tempPhone;
+                        txtPhoneNumber.Text = "";
                     }
+             
 
                 }
                 else
