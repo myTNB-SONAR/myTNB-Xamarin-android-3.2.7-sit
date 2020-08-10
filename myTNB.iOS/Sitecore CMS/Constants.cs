@@ -1,7 +1,14 @@
-﻿namespace myTNB.SitecoreCMS
+﻿using System;
+
+namespace myTNB.SitecoreCMS
 {
     public static class Constants
     {
+        public struct TimeOut
+        {
+            public static TimeSpan FiveSecondTimeSpan = TimeSpan.FromMilliseconds(5000);
+            public static TimeSpan TenSecondTimeSpan = TimeSpan.FromMilliseconds(10000);
+        }
         public struct Sitecore
         {
             public struct Templates
