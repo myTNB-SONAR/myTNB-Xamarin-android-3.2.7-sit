@@ -72,9 +72,9 @@ namespace myTNB
                                         ShareAction(deeplinkUrl);
                                     });
                                 }
-                                catch (Exception e)
+                                catch (Exception ex)
                                 {
-                                    Debug.WriteLine("Error in What's New Share: " + e.Message);
+                                    Debug.WriteLine("Error in What's New Share: " + ex.Message);
                                     DisplayServiceError(GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage));
                                 }
                             }
