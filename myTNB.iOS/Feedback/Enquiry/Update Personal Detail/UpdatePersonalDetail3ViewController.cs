@@ -274,6 +274,8 @@ namespace myTNB
                 TextColor = MyTNBColor.TunaGrey(),
                 Text = userInfo?.mobileNo ?? string.Empty
             };
+            txtFieldMobile.Text = GetNewValue();
+
             if (txtFieldMobile.Text != string.Empty)
                 lblMobileTitle.Hidden = false;
 
@@ -297,6 +299,22 @@ namespace myTNB
         {
             _svContainer.ContentSize = new CGRect(0f, 0f, View.Frame.Width, GetScrollHeight()).Size;
             scrollViewFrame = _svContainer.Frame;
+        }
+
+        private string GetNewValue()
+        {
+            string value = "";
+            value = txtFieldMobile.Text;
+            if (value.Contains("+6") == false && !string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value))
+            {
+                value = "+6" + value;
+                if (!value.Contains("+60"))
+                {
+                    value = string.Empty;
+                }
+            }
+
+            return value;
         }
 
         private void OnKeyboardNotification(NSNotification notification)

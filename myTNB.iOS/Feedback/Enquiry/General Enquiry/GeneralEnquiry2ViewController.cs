@@ -10,6 +10,7 @@ using myTNB.Feedback.FeedbackImage;
 using myTNB.SQLite.SQLiteDataManager;
 using CoreAnimation;
 using Foundation;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -29,6 +30,8 @@ namespace myTNB
         //add detail section
         public CustomerAccountRecordModel SelectedAccount;
         public ContactDetailsResponseModel ContactDetails;
+
+        UserEntity userInfo;
 
         private UIView _viewContactDetails;
         private UIView viewName;
@@ -189,10 +192,15 @@ namespace myTNB
             View.AddSubview(_svContainer);
         }
 
+        private void GetUserInfo()
+        {
+            userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+            ? DataManager.DataManager.SharedInstance.UserEntity[0] : new UserEntity();
+        }
+
         private void AddDetailsSection()
         {
-            UserEntity userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
-            ? DataManager.DataManager.SharedInstance.UserEntity[0] : new UserEntity();
+            GetUserInfo();
 
             _viewContactDetails = new UIView(new CGRect(0, _viewTitleSection.Frame.GetMaxY() + 8, ViewWidth, GetScaledHeight(219)))
             {
@@ -276,6 +284,8 @@ namespace myTNB
                 TextColor = MyTNBColor.TunaGrey(),
                 Text = userInfo?.mobileNo ?? string.Empty
             };
+            txtFieldMobile.Text = GetNewValue();
+
             if (txtFieldMobile.Text != string.Empty)
                 lblMobileTitle.Hidden = false;
 
@@ -342,6 +352,23 @@ namespace myTNB
 
             _viewTitleSection.AddSubview(lblSectionTitle);
             _svContainer.AddSubview(_viewTitleSection);
+        }
+        
+        private string GetNewValue()
+        {
+            string value = "";
+            value = txtFieldMobile.Text;
+            if (value.Contains("+6") == false && !string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value))
+            {
+                value = "+6" + value;
+                if (!value.Contains("+60"))
+                {
+                    value = string.Empty;
+                }
+            }
+
+            return value;
+
         }
 
         private void SetTextFieldEvents(UITextField textField, UILabel textFieldTitle, UILabel textFieldError, UILabel TextFieldHint, UIView viewLine, string pattern)
