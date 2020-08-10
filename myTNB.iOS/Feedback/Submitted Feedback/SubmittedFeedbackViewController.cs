@@ -97,24 +97,25 @@ namespace myTNB
                         {
                             InvokeOnMainThread(() =>
                             {
+                                //if (_feedbackDetails != null && _feedbackDetails.d != null
+                                //   && _feedbackDetails.d.data != null && _feedbackDetails.d.IsSuccess && _feedbackDetails.d.data.RelationshipWithCA == null)
+                                //{
+                                //    _feedbackDetails.d.data.FeedbackCategoryId = feedback.FeedbackCategoryId;
+                                //    _feedbackDetails.d.data.FeedbackMessage = feedback.FeedbackMessage;
+                                //    _feedbackDetails.d.data.FeedbackCategoryName = feedback.FeedbackCategoryName;
+                                //    UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackDetails", null);
+                                //    FeedbackDetailsViewController viewController =
+                                //        storyBoard.InstantiateViewController("FeedbackDetailsViewController")
+                                //                  as FeedbackDetailsViewController;
+                                //    viewController.FeedbackDetails = _feedbackDetails.d.data;
+                                //    viewController.Title = feedback.FeedbackNameInListView;
+                                //    UINavigationController navController = new UINavigationController(viewController);
+                                //    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                                //    PresentViewController(navController, true, null);
+                                //}
+                                //else
                                 if (_feedbackDetails != null && _feedbackDetails.d != null
-                                   && _feedbackDetails.d.data != null && _feedbackDetails.d.IsSuccess && _feedbackDetails.d.data.RelationshipWithCA == null)
-                                {
-                                    _feedbackDetails.d.data.FeedbackCategoryId = feedback.FeedbackCategoryId;
-                                    _feedbackDetails.d.data.FeedbackMessage = feedback.FeedbackMessage;
-                                    _feedbackDetails.d.data.FeedbackCategoryName = feedback.FeedbackCategoryName;
-                                    UIStoryboard storyBoard = UIStoryboard.FromName("FeedbackDetails", null);
-                                    FeedbackDetailsViewController viewController =
-                                        storyBoard.InstantiateViewController("FeedbackDetailsViewController")
-                                                  as FeedbackDetailsViewController;
-                                    viewController.FeedbackDetails = _feedbackDetails.d.data;
-                                    viewController.Title = feedback.FeedbackNameInListView;
-                                    UINavigationController navController = new UINavigationController(viewController);
-                                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                                    PresentViewController(navController, true, null);
-                                }
-                                else if (_feedbackDetails != null && _feedbackDetails.d != null
-                                 && _feedbackDetails.d.data != null && _feedbackDetails.d.IsSuccess && _feedbackDetails.d.data.RelationshipWithCA != null)
+                                 && _feedbackDetails.d.data != null && _feedbackDetails.d.IsSuccess)// && _feedbackDetails.d.data.RelationshipWithCA != null)
                                 {
                                     _feedbackDetails.d.data.FeedbackCategoryId = feedback.FeedbackCategoryId;
                                     _feedbackDetails.d.data.FeedbackMessage = feedback.FeedbackMessage;
