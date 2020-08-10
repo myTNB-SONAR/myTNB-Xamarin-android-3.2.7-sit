@@ -373,13 +373,12 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                         }
                         else
                         {
-                            tempPhone = "";
-                            txtPhoneNumber.Text = tempPhone;
+                            UpdateMobileNumber("+60");
                         }
                     }
                     else
                     {
-                        txtPhoneNumber.Text = "";
+                        UpdateMobileNumber("+60");
                     }
              
 
