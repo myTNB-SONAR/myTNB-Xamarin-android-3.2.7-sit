@@ -14,6 +14,7 @@ namespace myTNB.SitecoreCMS.Service
     internal class WhatsNewService
     {
         private string _os, _imgSize, _websiteURL, _language;
+        internal bool HasChildItemError { private set; get; }
         internal WhatsNewService(string os, string imageSize, string websiteUrl = null, string language = "en")
         {
             _os = os;
@@ -24,9 +25,12 @@ namespace myTNB.SitecoreCMS.Service
 
         internal WhatsNewTimestamp GetTimeStamp()
         {
-            SitecoreService sitecoreService = new SitecoreService();
+            SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.FiveSecondTimeSpan);
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.WhatsNew
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
+                , PayloadType.Content
+                , new List<ScopeType> { ScopeType.Self }
+                , _websiteURL
+                , _language);
             var item = req.Result;
             var list = ParseToTimestamp(item);
             var itemList = list.Result;
@@ -61,9 +65,12 @@ namespace myTNB.SitecoreCMS.Service
 
         internal List<WhatsNewCategoryModel> GetCategoryItems()
         {
-            SitecoreService sitecoreService = new SitecoreService();
+            SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.TenSecondTimeSpan);
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.WhatsNew
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
+                , PayloadType.Content
+                , new List<ScopeType> { ScopeType.Children }
+                , _websiteURL
+                , _language);
             var item = req.Result;
             var list = ParseToCategoryItems(item);
             var itemList = list.Result;
@@ -72,13 +79,25 @@ namespace myTNB.SitecoreCMS.Service
 
         internal List<WhatsNewModel> GetChildItems(ISitecoreItem categoryItem)
         {
-            SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(categoryItem.Path
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
-            var item = req.Result;
-            var list = GenerateWhatsNewChildren(item);
-            var itemList = list.Result;
-            return itemList.ToList();
+            try
+            {
+                SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.TenSecondTimeSpan);
+                var req = sitecoreService.GetItemByPath(categoryItem.Path
+                    , PayloadType.Content
+                    , new List<ScopeType> { ScopeType.Children }
+                    , _websiteURL
+                    , _language);
+                var item = req.Result;
+                var list = GenerateWhatsNewChildren(item);
+                var itemList = list.Result;
+                return itemList.ToList();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("What's New GetChildItems Error: " + ex.Message);
+                HasChildItemError = true;
+            }
+            return new List<WhatsNewModel>();
         }
 
         private async Task<IEnumerable<WhatsNewCategoryModel>> ParseToCategoryItems(ScItemsResponse itemsResponse)
@@ -88,6 +107,7 @@ namespace myTNB.SitecoreCMS.Service
             {
                 try
                 {
+                    HasChildItemError = false;
                     for (int i = 0; i < itemsResponse.ResultCount; i++)
                     {
                         ISitecoreItem item = itemsResponse[i];
@@ -95,12 +115,21 @@ namespace myTNB.SitecoreCMS.Service
                         {
                             continue;
                         }
-                        list.Add(new WhatsNewCategoryModel
+
+                        List<WhatsNewModel> childItems = GetChildItems(item);
+                        if (HasChildItemError)
                         {
-                            ID = GetValidID(item.Id),
-                            CategoryName = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Category),
-                            WhatsNewItems = GetChildItems(item)
-                        });
+                            break;
+                        }
+                        else
+                        {
+                            list.Add(new WhatsNewCategoryModel
+                            {
+                                ID = GetValidID(item.Id),
+                                CategoryName = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Category),
+                                WhatsNewItems = childItems
+                            });
+                        }
                     }
                 }
                 catch (Exception e)
@@ -230,10 +259,12 @@ namespace myTNB.SitecoreCMS.Service
 
                         list.Add(listlItem);
                     }
+                    HasChildItemError = false;
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Exception in WhatsNewService/GenerateWhatsNewChildren: " + e.Message);
+                    HasChildItemError = true;
                 }
             });
             return list;
