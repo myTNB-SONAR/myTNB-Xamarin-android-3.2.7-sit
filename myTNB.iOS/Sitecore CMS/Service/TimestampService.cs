@@ -12,10 +12,12 @@ namespace myTNB.SitecoreCMS.Service
     {
         internal TimestampModel GetTimestamp(string websiteUrl = null, string language = "en")
         {
-            SitecoreService sitecoreService = new SitecoreService();
-
-            //var req = sitecoreService.GetItemById(Constants.Sitecore.ItemID.Timestamp, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, websiteUrl, language);
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Timestamp, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, websiteUrl, language);
+            SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.FiveSecondTimeSpan);
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Timestamp
+                , PayloadType.Content
+                , new List<ScopeType> { ScopeType.Self }
+                , websiteUrl
+                , language);
 
             var item = req.Result;
             var list = GenerateTimestamp(item);
