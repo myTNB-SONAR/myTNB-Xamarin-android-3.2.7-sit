@@ -23,7 +23,7 @@ namespace myTNB.SitecoreCMS.Service
 
         internal List<PromotionsModel> GetPromotionsService()
         {
-            SitecoreService sitecoreService = new SitecoreService();
+            SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.FiveSecondTimeSpan);
 
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Promotions, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
             var item = req.Result;
@@ -70,7 +70,7 @@ namespace myTNB.SitecoreCMS.Service
         }
         internal PromotionParentModel GetTimestamp()
         {
-            SitecoreService sitecoreService = new SitecoreService();
+            SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.FiveSecondTimeSpan);
 
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Promotions, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
             var item = req.Result;
