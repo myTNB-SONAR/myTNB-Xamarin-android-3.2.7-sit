@@ -479,9 +479,17 @@ namespace myTNB.SitecoreCMS.Services
             {
                 RewardsService service = new RewardsService(OS, ImageSize, WebsiteUrl, Language);
                 var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<RewardsResponseModel>(serializedObj);
+                if (service.IsChildItemError)
+                {
+                    service.IsChildItemError = false;
+                    return new RewardsResponseModel();
+                }
+                else
+                {
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<RewardsResponseModel>(serializedObj);
+                }
             }
             catch (Exception e)
             {
@@ -516,9 +524,17 @@ namespace myTNB.SitecoreCMS.Services
             {
                 WhatsNewService service = new WhatsNewService(OS, ImageSize, WebsiteUrl, Language);
                 var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<WhatsNewResponseModel>(serializedObj);
+                if (service.IsChildItemError)
+                {
+                    service.IsChildItemError = false;
+                    return new WhatsNewResponseModel();
+                }
+                else
+                {
+                    var resp = CheckData(data.ToList<object>());
+                    string serializedObj = JsonConvert.SerializeObject(resp);
+                    respModel = JsonConvert.DeserializeObject<WhatsNewResponseModel>(serializedObj);
+                }
             }
             catch (Exception e)
             {

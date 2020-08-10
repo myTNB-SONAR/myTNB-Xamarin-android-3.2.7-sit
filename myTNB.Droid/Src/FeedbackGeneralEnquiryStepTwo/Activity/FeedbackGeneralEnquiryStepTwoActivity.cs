@@ -354,7 +354,33 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 {
                     txtName.Text = UserEntity.GetActive().DisplayName;
                     txtEmail.Text = UserEntity.GetActive().Email;
-                    txtPhoneNumber.Text = UserEntity.GetActive().MobileNo;
+
+                    string tempPhone = UserEntity.GetActive().MobileNo;
+
+                    if (!tempPhone.IsNullOrEmpty()) {
+                        
+                        string tempSubstring = tempPhone.Substring(0, 2);
+                        if (tempSubstring.Contains("+6"))
+                        {
+                            tempPhone = UserEntity.GetActive().MobileNo;
+                            txtPhoneNumber.Text = tempPhone;
+
+                        }
+                        else if (!tempSubstring.Contains("+"))
+                        {
+                            tempPhone = "+6" + tempPhone.Trim();
+                            txtPhoneNumber.Text = tempPhone;
+                        }
+                        else
+                        {
+                            UpdateMobileNumber("+60");
+                        }
+                    }
+                    else
+                    {
+                        UpdateMobileNumber("+60");
+                    }
+             
 
                 }
                 else

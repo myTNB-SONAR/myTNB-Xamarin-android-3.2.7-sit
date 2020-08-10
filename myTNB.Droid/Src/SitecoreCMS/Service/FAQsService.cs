@@ -2,6 +2,7 @@
 using myTNB.SitecoreCMS.Extensions;
 using myTNB.SitecoreCMS.Models;
 using myTNB.SitecoreCMS.Services;
+using myTNB_Android.Src.SiteCore;
 using Sitecore.MobileSDK.API.Items;
 using Sitecore.MobileSDK.API.Request.Parameters;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace myTNB.SitecoreCM.Services
         {
             SitecoreService sitecoreService = new SitecoreService();
 
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.FAQs, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, websiteUrl, language);
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.FAQs, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, SiteCoreConfig.FiveSecondTimeSpan, websiteUrl, language);
             var item = req.Result;
             var list = GenerateFAQsChildren(item, OS, imageSize, websiteUrl, language);
             var itemList = list.Result;
@@ -51,7 +52,7 @@ namespace myTNB.SitecoreCM.Services
         {
             SitecoreService sitecoreService = new SitecoreService();
 
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.FAQs, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, websiteUrl, language);
+            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.FAQs, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, SiteCoreConfig.FiveSecondTimeSpan, websiteUrl, language);
             var item = req.Result;
             var list = GenerateTimestamp(item, websiteUrl, language);
             var itemList = list.Result;
