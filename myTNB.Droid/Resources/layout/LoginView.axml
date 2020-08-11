@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -73,7 +73,7 @@
                 android:paddingTop="12dp"
                 android:paddingLeft="12dp"
                 android:paddingStart="16dp">
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
@@ -92,7 +92,7 @@
                         android:paddingTop="5dp"
                         android:drawablePadding="6dp"
                         android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
                 <CheckBox
                     android:id="@+id/chk_remember_me"
                     android:layout_height="28dp"
@@ -105,7 +105,7 @@
                     android:textColor="@color/charcoalGrey"
                     android:textSize="12dp"
                     android:button="@drawable/checkbox_selector" />
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
@@ -125,7 +125,7 @@
                         android:paddingTop="5dp"
                         android:drawablePadding="6dp"
                         android:inputType="textPassword" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
                 <TextView
                     android:text="@string/login_forget_password"
                     android:textSize="12dp"
@@ -173,4 +173,4 @@
                 style="@style/Theme.LoginButton" />
         </LinearLayout>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

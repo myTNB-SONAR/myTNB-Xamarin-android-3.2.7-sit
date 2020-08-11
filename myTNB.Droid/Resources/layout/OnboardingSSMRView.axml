@@ -13,7 +13,7 @@
       android:layout_above="@+id/applicationIndicator"
       android:orientation="vertical"
       android:background="@color/white">
-      <android.support.v4.view.ViewPager
+      <androidx.viewpager.widget.ViewPager
           android:id="@+id/onBoardingSMRViewPager"
           android:layout_width="match_parent"
           android:layout_height="0dp"

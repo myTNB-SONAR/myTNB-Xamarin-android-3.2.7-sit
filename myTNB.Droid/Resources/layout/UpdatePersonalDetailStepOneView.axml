@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
@@ -230,7 +230,7 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"/>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutRelationshipOther"
                         android:visibility="gone"
                         android:layout_width="match_parent"
@@ -259,7 +259,7 @@
                             android:scrollbarStyle="insideInset"
                             android:scrollbars="vertical"
                             android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
                 </LinearLayout>
@@ -335,7 +335,7 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutCurrentICNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -363,9 +363,9 @@
                             android:scrollbarStyle="insideInset"
                             android:scrollbars="vertical"
                             android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutNewIC"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -394,7 +394,7 @@
                             android:scrollbarStyle="insideInset"
                             android:scrollbars="vertical"
                             android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
@@ -457,7 +457,7 @@
 
                     </LinearLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutCurrentOwnerName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -485,9 +485,9 @@
                             android:scrollbarStyle="insideInset"
                             android:scrollbars="vertical"
                             android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutNewOwnerName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -516,7 +516,7 @@
                             android:scrollbarStyle="insideInset"
                             android:scrollbars="vertical"
                             android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
@@ -578,7 +578,7 @@
 
                     </LinearLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutCurrentMobileNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -606,9 +606,9 @@
                             android:scrollbarStyle="insideInset"
                             android:scrollbars="vertical"
                             android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutNewMobileNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -638,7 +638,7 @@
                             android:scrollbarStyle="insideInset"
                             android:scrollbars="vertical"
                             android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -700,7 +700,7 @@
 
                     </LinearLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutCurrentEmailAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -728,9 +728,9 @@
                             android:scrollbarStyle="insideInset"
                             android:scrollbars="vertical"
                             android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutNewEmailAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -759,7 +759,7 @@
                             android:scrollbarStyle="insideInset"
                             android:scrollbars="vertical"
                             android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
@@ -821,7 +821,7 @@
 
                     </LinearLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutCurrentMailingAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -849,9 +849,9 @@
                             android:scrollbarStyle="insideInset"
                             android:scrollbars="vertical"
                             android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutNewMailingAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -880,7 +880,7 @@
                             android:scrollbarStyle="insideInset"
                             android:scrollbars="vertical"
                             android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
@@ -942,7 +942,7 @@
 
                     </LinearLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutCurrentPremiseAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -970,9 +970,9 @@
                             android:scrollbarStyle="insideInset"
                             android:scrollbars="vertical"
                             android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutNewPremiseAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1001,7 +1001,7 @@
                             android:scrollbarStyle="insideInset"
                             android:scrollbars="vertical"
                             android:textSize="16dp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
                 </LinearLayout>
@@ -1075,4 +1075,4 @@
     </FrameLayout>
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

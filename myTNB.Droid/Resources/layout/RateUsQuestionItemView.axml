@@ -34,7 +34,7 @@
         android:text="@string/payment_success_experience_rating_txt_content_1"
         android:textColor="@color/tunaGrey"
         android:textSize="12dp" />
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/txtInputLayoutComments"
         android:layout_width="256dp"
         android:layout_height="wrap_content"
@@ -60,5 +60,5 @@
             android:scrollbarStyle="insideInset"
             android:scrollbars="vertical"
             android:textColor="@color/tunaGrey" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

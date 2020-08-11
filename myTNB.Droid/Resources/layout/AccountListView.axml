@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
     android:orientation="vertical">
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
     <LinearLayout
         android:id="@+id/rootView"
         android:layout_height="match_parent"
@@ -66,7 +66,7 @@
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_gravity="bottom">
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/account_list_recycler_view"
                         android:scrollbars="vertical"
                         android:layout_width="match_parent"
@@ -92,7 +92,7 @@
                             android:background="@color/lightGrey"
                             android:visibility="gone"
                             android:text="Additional account" />
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/additional_account_list_recycler_view"
                             android:scrollbars="vertical"
                             android:layout_width="match_parent"
@@ -129,4 +129,4 @@
             </RelativeLayout>
         </ScrollView>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

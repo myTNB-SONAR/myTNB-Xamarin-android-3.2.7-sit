@@ -56,7 +56,7 @@
                     android:textColor="@color/powerBlue"
                     android:layout_alignParentRight="true"
                     android:textSize="14dp" />
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputLayoutNickName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:maxWidth="200dp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </RelativeLayout>
         </FrameLayout>
         <View

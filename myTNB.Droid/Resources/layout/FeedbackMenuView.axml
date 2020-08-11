@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:gravity="center|bottom"
     android:id="@+id/rootView">
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/feedbackContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -45,7 +45,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/linearLayout2">
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/submitNewEnquiryConstraint"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -98,13 +98,13 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintVertical_bias="0.218"/>
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                         <View
                             android:id="@+id/spaceNewEnquiry"
                             android:layout_width="match_parent"
                             android:layout_height="6dp"
                             android:background="@color/lightGrey" />
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/billRelatedContraint"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -157,13 +157,13 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintVertical_bias="0.218"/>
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                         <View
                             android:id="@+id/spaceBillRelated"
                             android:layout_width="match_parent"
                             android:layout_height="6dp"
                             android:background="@color/lightGrey" />
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/faultyStreetLampsContraint"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -216,13 +216,13 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintVertical_bias="0.218" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                         <View
                             android:id="@+id/spaceFaultyStreetLamps"
                             android:layout_width="match_parent"
                             android:layout_height="6dp"
                             android:background="@color/lightGrey" />
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/othersContraint"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -275,13 +275,13 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintVertical_bias="0.218"/>
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
                         <View
                             android:id="@+id/spaceOthers"
                             android:layout_height="6dp"
                             android:layout_width="match_parent"
                             android:background="@color/lightGrey" />
-                        <android.support.constraint.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/submittedFeedbackConstraint"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -334,12 +334,12 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintVertical_bias="0.218" />
-                        </android.support.constraint.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
           
                         
             </LinearLayout>
         </LinearLayout>
                  </ScrollView>
         </LinearLayout>
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </LinearLayout>

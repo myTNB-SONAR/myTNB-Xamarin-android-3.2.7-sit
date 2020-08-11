@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/rootView"> 
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
     <FrameLayout
         
         android:layout_width="match_parent"

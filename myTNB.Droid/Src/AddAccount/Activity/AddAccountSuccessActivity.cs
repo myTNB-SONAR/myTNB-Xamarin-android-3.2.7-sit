@@ -2,10 +2,11 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
+using Google.Android.Material.AppBar;
 using myTNB_Android.Src.AddAccount.Adapter;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.Base.Activity;
@@ -27,7 +28,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
         AddedAccountsAdapter adapter;
         List<NewAccount> accountList = new List<NewAccount>();
         RecyclerView.LayoutManager layoutManager;
-        private Android.Support.Design.Widget.AppBarLayout appBarLayout;
+        private AppBarLayout appBarLayout;
 
         [BindView(Resource.Id.account_list_recycler_view)]
         RecyclerView accountListRecyclerView;
@@ -86,7 +87,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             textAddAccountSuccess.Text = Utility.GetLocalizedLabel("AddAccount", "addAcctSuccessMsg");
             done.Text = Utility.GetLocalizedCommonLabel("done");
 
-            appBarLayout = FindViewById<Android.Support.Design.Widget.AppBarLayout>(Resource.Id.appBar);
+            appBarLayout = FindViewById<AppBarLayout>(Resource.Id.appBar);
             appBarLayout.Visibility = ViewStates.Gone;
         }
 

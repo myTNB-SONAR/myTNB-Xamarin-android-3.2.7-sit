@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
@@ -102,7 +102,7 @@
                 android:paddingStart="16dp"
                 android:visibility="gone"
                 android:id="@+id/contactDetailContainer">
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputLayoutEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -120,8 +120,8 @@
                         android:hint="@string/ssmr_discontinue_email_hint"
                         android:inputType="textEmailAddress"
                         android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputLayoutMobileNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
                         android:inputType="phone"
                         android:digits="0123456789+"
                         android:maxLines="1"  />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
                 <TextView
                     android:id="@+id/contactDetailConsent"
                     android:layout_width="match_parent"
@@ -182,7 +182,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp">
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutReason"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -202,9 +202,9 @@
                             android:ellipsize="end"
                             android:singleLine="true"
                             android:editable="false" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </FrameLayout>
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputLayoutTxtReason"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -227,7 +227,7 @@
                         android:overScrollMode="always"
                         android:scrollbarStyle="insideInset"
                         android:scrollbars="vertical"/>
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
             </LinearLayout>
         </ScrollView>
@@ -265,4 +265,4 @@
                 style="@style/Theme.SSMRDiscontinue" />
         </LinearLayout>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

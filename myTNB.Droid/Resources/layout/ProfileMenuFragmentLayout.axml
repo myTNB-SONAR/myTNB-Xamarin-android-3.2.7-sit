@@ -6,7 +6,7 @@
     android:background="@color/lightGrey"
     android:gravity="center|bottom"
     android:id="@+id/rootView">
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/profileMenuRootContent"
         android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -63,5 +63,5 @@
         </LinearLayout>
     </ScrollView>
             </LinearLayout>
-        </android.support.design.widget.CoordinatorLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </LinearLayout>

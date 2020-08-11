@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
@@ -85,7 +85,7 @@
                         android:layout_height="1dp"
                         android:layout_marginBottom="16dp"
                         android:background="@color/platinumGrey" />
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/TextInputLayoutServiceRequestNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                             android:inputType="text"
                             android:maxLines="1"
                             android:paddingTop="5dp" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </LinearLayout>
 
@@ -139,7 +139,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"></View>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TextInputLayoutRelationOwner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -162,8 +162,8 @@
                         android:inputType="text|textMultiLine"
                         android:maxLines="6"
                         android:paddingTop="5dp" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TextInputLayoutNewIC"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -186,8 +186,8 @@
                         android:inputType="text"
                         android:maxLines="1"
                         android:paddingTop="5dp" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TextInputLayoutNewAccName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -210,8 +210,8 @@
                         android:inputType="text|textMultiLine"
                         android:maxLines="6"
                         android:paddingTop="5dp" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TextInputLayoutNewMobileNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -234,8 +234,8 @@
                         android:inputType="text"
                         android:maxLines="1"
                         android:paddingTop="5dp" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TextInputLayoutNewEmailAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -258,8 +258,8 @@
                         android:inputType="text|textMultiLine"
                         android:maxLines="1"
                         android:paddingTop="5dp" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TextInputLayoutNewMailingAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -282,8 +282,8 @@
                         android:inputType="text|textMultiLine"
                         android:maxLines="6"
                         android:paddingTop="5dp" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TextInputLayoutNewPremiseAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -306,10 +306,10 @@
                         android:inputType="text|textMultiLine"
                         android:maxLines="6"
                         android:paddingTop="5dp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputLayoutFeedbackId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -332,9 +332,9 @@
                         android:inputType="text"
                         android:maxLines="1"
                         android:paddingTop="5dp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputLayoutStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -357,9 +357,9 @@
                         android:inputType="text"
                         android:maxLines="1"
                         android:paddingTop="5dp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputLayoutDateTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -382,9 +382,9 @@
                         android:inputType="text"
                         android:maxLines="1"
                         android:paddingTop="5dp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputLayoutAccountNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -407,9 +407,9 @@
                         android:inputType="text"
                         android:maxLines="1"
                         android:paddingTop="5dp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputLayoutFeedback"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -430,7 +430,7 @@
                         android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text|textMultiLine"
                         android:paddingTop="5dp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:id="@+id/txtRelatedScreenshotTitle"
@@ -445,7 +445,7 @@
                     android:textColor="@color/silverChalice"
                     android:textSize="9dp" />
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -474,7 +474,7 @@
 
                 </FrameLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TextInputLayoutname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -496,8 +496,8 @@
                         android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text|textMultiLine"
                         android:paddingTop="5dp" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TextInputLayoutEmailAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -518,8 +518,8 @@
                         android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text|textMultiLine"
                         android:paddingTop="5dp" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TextInputLayoutMobileNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -540,9 +540,9 @@
                         android:importantForAutofill="noExcludeDescendants"
                         android:inputType="text|textMultiLine"
                         android:paddingTop="5dp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
         </ScrollView>
     </FrameLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
