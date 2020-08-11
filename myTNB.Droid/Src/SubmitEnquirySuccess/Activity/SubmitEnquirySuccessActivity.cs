@@ -122,7 +122,16 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
             txtTitleInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouTitle");
             txtContentInfo.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "thankYouDescription");
             txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
-            buttonBackToHome.Text = Utility.GetLocalizedLabel("Common", "backToHome");
+            if (UserEntity.IsCurrentlyActive())
+            {
+                buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backHomeButton");
+            }
+            else
+            {
+                buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backLogin");
+            }
+           
+
             btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");
         }
 
@@ -246,7 +255,8 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
 
         public override void OnBackPressed()
         {
-
+           
+            
         }
 
 

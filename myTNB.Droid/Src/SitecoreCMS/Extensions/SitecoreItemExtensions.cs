@@ -1,4 +1,5 @@
 ﻿using myTNB.SitecoreCMS.Services;
+using myTNB_Android.Src.SiteCore;
 using Sitecore.MobileSDK.API.Items;
 using Sitecore.MobileSDK.API.Request.Parameters;
 using System;
@@ -206,7 +207,7 @@ namespace myTNB.SitecoreCMS.Extensions
                 SitecoreService sitecoreService = new SitecoreService();
                 if (!String.IsNullOrEmpty(imageId))
                 {
-                    var imageRequest = sitecoreService.GetItemById(imageId, PayloadType.Content, new List<ScopeType> { ScopeType.Parent, ScopeType.Self }, websiteUrl, language);
+                    var imageRequest = sitecoreService.GetItemById(imageId, PayloadType.Content, new List<ScopeType> { ScopeType.Parent, ScopeType.Self }, SiteCoreConfig.FiveSecondTimeSpan, websiteUrl, language);
                     var imagePath = String.Empty;
                     if (imageRequest.Result.TotalCount > 0)
                     {
@@ -307,7 +308,7 @@ namespace myTNB.SitecoreCMS.Extensions
             SitecoreService sitecoreService = new SitecoreService();
             try
             {
-                var itemReq = sitecoreService.GetItemById(ID, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, websiteUrl, language);
+                var itemReq = sitecoreService.GetItemById(ID, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, SiteCoreConfig.FiveSecondTimeSpan, websiteUrl, language);
                 foreach (var itemDropLink in itemReq.Result)
                 {
                     droplinkFieldNameValue = itemDropLink.GetValueFromField(droplinkFieldName);
@@ -334,7 +335,7 @@ namespace myTNB.SitecoreCMS.Extensions
 
                 try
                 {
-                    var itemReq = sitecoreService.GetItemById(ID, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, websiteUrl, language);
+                    var itemReq = sitecoreService.GetItemById(ID, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, SiteCoreConfig.FiveSecondTimeSpan, websiteUrl, language);
                     foreach (var itemMultilist in itemReq.Result)
                     {
                         multilistFieldNameValue = itemMultilist.GetValueFromField(multilistFieldName);

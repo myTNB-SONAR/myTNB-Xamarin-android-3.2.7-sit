@@ -55,12 +55,14 @@
                             android:id="@+id/txtAccountNo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:drawableLeft="@drawable/ic_field_account_no"
                             android:drawableRight="@drawable/ic_action_dropdown1"
                             android:paddingTop="5dp"
                             android:singleLine="true"
                             android:textSize="16dp"
-                            android:hint="@string/submitICFeedback_account_number"
-                            android:inputType="text"
+                            android:hint=""
+                            android:inputType="number"
+                            android:maxLength="12"
                             android:maxLines="1" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -72,7 +74,7 @@
                         android:layout_gravity="right|top"
                         android:background="@drawable/selector_pressable"
                         android:scaleType="centerCrop"
-                        android:layout_marginRight="60dp"
+                        android:layout_marginRight="55dp"
                         android:layout_marginTop="16dp" />
                 </FrameLayout>
                 <FrameLayout
@@ -155,12 +157,14 @@
                         android:layout_marginTop="16dp" />
                     <TextView
                         android:id="@+id/txtGeneralEnquiry_subContent"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="0dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginStart="16dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:layout_marginTop="0dp"
                         android:text="@string/submitICFeedback_GeneralEnquirySuBTitle"
                         android:textColor="@color/tunaGrey"
@@ -214,7 +218,7 @@
                         android:layout_marginTop="16dp" />
                     <TextView
                         android:id="@+id/txtUpdatePersonalContent"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="0dp"
                         android:layout_marginLeft="16dp"

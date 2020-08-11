@@ -8,6 +8,7 @@ using Android.Graphics;
 using Android.Util;
 using myTNB.SitecoreCMS.Extensions;
 using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
 using Sitecore.MobileSDK.API.Items;
 using Sitecore.MobileSDK.API.Request.Parameters;
@@ -35,7 +36,7 @@ namespace myTNB.SitecoreCMS.Services
         {
             SitecoreService sitecoreService = new SitecoreService();
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.EppToolTip
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
+                , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, SiteCoreConfig.FiveSecondTimeSpan, _websiteURL, _language);
             var item = req.Result;
             var list = ParseToChildrenItems(item);
             var itemList = list.Result;
@@ -46,7 +47,7 @@ namespace myTNB.SitecoreCMS.Services
         {
             SitecoreService sitecoreService = new SitecoreService();
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.EppToolTip
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
+                , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, SiteCoreConfig.FiveSecondTimeSpan, _websiteURL, _language);
             var item = req.Result;
             var list = ParseToTimestamp(item);
             var itemList = list.Result;

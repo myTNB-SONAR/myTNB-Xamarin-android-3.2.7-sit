@@ -53,39 +53,6 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
 
         public void Start()
         {
-            try
-            {
-                //// TODO: REPLACE WITH THE FIRST
-                //this.mView.DisableSubmitButton();
-                //if (selectedCustomerBillingAccount != null)
-                //{
-                //    this.mView.ShowSelectedAccount(selectedCustomerBillingAccount);
-                //}
-                //else
-                //{
-                //    CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelectedOrFirst();
-                //    if (customerBillingAccount != null)
-                //    {
-                //        this.mView.ShowSelectedAccount(customerBillingAccount);
-                //    }
-
-                //}
-
-                //UserEntity userEntity = UserEntity.GetActive();
-                //if (TextUtils.IsEmpty(userEntity.MobileNo))
-                //{
-                //    this.mView.ShowMobileNo();
-                //}
-                //else
-                //{
-                //    this.mView.HideMobileNo();
-                //}
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-
         }
 
         public void OnSelectAccount()
@@ -94,16 +61,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
             {
                 if (CustomerBillingAccount.HasItems())
                 {
-                    if (selectedCustomerBillingAccount != null)
-                    {
-                        this.mView.ShowSelectAccount(AccountData.Copy(selectedCustomerBillingAccount, true));
-                    }
-                    else
-                    {
-                        CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetFirst();
-                        this.mView.ShowSelectAccount(AccountData.Copy(customerBillingAccount, true));
-                    }
-
+                    this.mView.ShowSelectAccount();
                 }
             }
             catch (Exception e)
@@ -116,6 +74,11 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
         public void onShowWhereIsMyAcc()
         {
             this.mView.ShowWhereIsMyAcc();
+        }
+
+        public void showScan()
+        {
+            this.mView.onScan();
         }
 
         public void CheckRequiredFields(string accno)
@@ -211,6 +174,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                 {
                     this.mView.HideProgressDialog();
                 }
+                this.mView.makeSetClick(false);
                 //this.mView.ShowFail();
                 this.mView.OnSubmitError();
                 Utility.LoggingNonFatalError(e);
@@ -222,6 +186,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                     this.mView.HideProgressDialog();
                 }
                 //this.mView.ShowFail();
+                this.mView.makeSetClick(false);
                 this.mView.OnSubmitError();
                 Utility.LoggingNonFatalError(apiException);
             }
@@ -232,6 +197,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                     this.mView.HideProgressDialog();
                 }
                 //this.mView.ShowFail();
+                this.mView.makeSetClick(false);
                 this.mView.OnSubmitError();
                 Utility.LoggingNonFatalError(e);
             }
