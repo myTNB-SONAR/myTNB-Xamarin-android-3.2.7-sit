@@ -238,6 +238,7 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginRight="16dp"
+                        android:layout_marginBottom="4dp"
                         android:paddingBottom="0dp"
                         app:counterEnabled="false"
                         app:counterMaxLength="250"
@@ -342,6 +343,7 @@
                         android:layout_marginLeft="19dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginRight="16dp"
+                        android:layout_marginBottom="4dp"
                         app:counterEnabled="false"
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
@@ -372,6 +374,7 @@
                         android:layout_marginLeft="19dp"
                         android:layout_marginTop="0dp"
                         android:layout_marginRight="16dp"
+                        android:layout_marginBottom="4dp"
                         android:paddingBottom="0dp"
                         app:counterEnabled="false"
                         app:counterMaxLength="250"
@@ -468,6 +471,7 @@
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
                         android:visibility="gone"
+                        android:layout_marginBottom="4dp"
                         app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
@@ -499,6 +503,7 @@
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
                         android:visibility="gone"
+                        android:layout_marginBottom="4dp"
                         app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
@@ -589,6 +594,7 @@
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
                         android:visibility="gone"
+                        android:layout_marginBottom="4dp"
                         app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
@@ -620,6 +626,7 @@
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
                         android:visibility="gone"
+                        android:layout_marginBottom="4dp"
                         app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
@@ -711,6 +718,7 @@
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
                         android:visibility="gone"
+                        android:layout_marginBottom="4dp"
                         app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
@@ -742,6 +750,7 @@
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
                         android:visibility="gone"
+                        android:layout_marginBottom="4dp"
                         app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
@@ -832,6 +841,7 @@
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
                         android:visibility="gone"
+                        android:layout_marginBottom="4dp"
                         app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
@@ -863,6 +873,7 @@
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
                         android:visibility="gone"
+                        android:layout_marginBottom="4dp"
                         app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
@@ -953,6 +964,7 @@
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
                         android:visibility="gone"
+                        android:layout_marginBottom="4dp"
                         app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
@@ -984,6 +996,7 @@
                         app:counterMaxLength="250"
                         app:errorEnabled="true"
                         android:visibility="gone"
+                        android:layout_marginBottom="4dp"
                         app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 

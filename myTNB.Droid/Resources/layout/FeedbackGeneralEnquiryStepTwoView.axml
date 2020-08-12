@@ -8,6 +8,7 @@
     android:layout_centerHorizontal="true"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
+    android:theme="@style/Theme.FaultyStreetLamps"
     android:orientation="vertical">
 
     <LinearLayout
@@ -85,7 +86,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="16dp"
-
+                            android:layout_marginBottom="4dp"
                             android:layout_marginRight="16dp"
                             app:errorEnabled="true"
                             app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"    
@@ -111,7 +112,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             app:errorEnabled="true"
-
+                            android:layout_marginBottom="4dp"
                            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                             <EditText
@@ -134,6 +135,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             app:errorEnabled="true"
+                            android:layout_marginBottom="4dp"
                            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                             <EditText

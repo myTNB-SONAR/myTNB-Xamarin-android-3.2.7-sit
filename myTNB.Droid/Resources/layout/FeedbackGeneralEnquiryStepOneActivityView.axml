@@ -8,8 +8,8 @@
     android:layout_centerHorizontal="true"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
+    android:theme="@style/Theme.FaultyStreetLamps"
     android:orientation="vertical">
-
     <LinearLayout
         android:id="@+id/mainView"
         android:layout_width="match_parent"
@@ -91,6 +91,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginRight="16dp"
+                            android:layout_marginBottom="4dp"
                             app:counterEnabled="false"
                             app:counterMaxLength="250"
                             app:errorEnabled="true"
@@ -118,7 +119,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:textAppearance="@style/TextInputLayoutFeedbackCount"
-                            android:layout_marginTop="-21dp"
+                            android:layout_marginTop="-18dp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="16dp"
                             android:layout_marginBottom="16dp"
