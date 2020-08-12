@@ -24,7 +24,7 @@ using System;
 
 namespace myTNB_Android.Src.AddAccount.Fragment
 {
-    public class AddAccountFormFragment : Android.App.Fragment, AddAccountContract.IView, View.IOnTouchListener
+    public class AddAccountFormFragment : AndroidX.Fragment.App.Fragment , AddAccountContract.IView, View.IOnTouchListener
     {
         private static string TAG = "AddAccountForm";
         private bool isOwner = false;
@@ -350,14 +350,14 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             this.userActionsListener.CheckRequiredFields(accountNo, accountName, isOwner, ic_no);
         }
 
-        public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        public override void OnActivityResult(int requestCode, int resultCode, Intent data)
         {
             try
             {
                 base.OnActivityResult(requestCode, resultCode, data);
                 if (requestCode == Constants.BARCODE_REQUEST_CODE)
                 {
-                    if (resultCode == Result.Ok)
+                    if (resultCode == (int) Result.Ok)
                     {
 
                         string barcodeResultText = data.GetStringExtra(Constants.BARCODE_RESULT);
@@ -368,7 +368,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 else if (requestCode == SELECT_ACCOUNT_TYPE_REQ_CODE)
                 {
 
-                    if (resultCode == Result.Ok)
+                    if (resultCode == (int) Result.Ok)
                     {
                         selectedAccountType = JsonConvert.DeserializeObject<AccountType>(data.GetStringExtra("selectedAccountType"));
                         if (selectedAccountType != null)

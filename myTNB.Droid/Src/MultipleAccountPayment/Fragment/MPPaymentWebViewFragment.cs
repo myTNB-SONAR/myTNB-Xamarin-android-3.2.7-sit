@@ -25,7 +25,7 @@ using System.Web;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
-    public class MPPaymentWebViewFragment : Android.App.Fragment
+    public class MPPaymentWebViewFragment : AndroidX.Fragment.App.Fragment 
     {
         private string PYMT_IND = "tokenization";
         private string PYMT_CRITERIA_REGISTRATION = "registration";

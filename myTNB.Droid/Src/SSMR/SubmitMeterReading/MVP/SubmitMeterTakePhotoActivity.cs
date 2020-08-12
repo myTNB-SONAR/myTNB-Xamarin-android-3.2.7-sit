@@ -128,7 +128,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             if (savedInstanceState == null)
             {
                 takePhotoFragment = SubmitMeterTakePhotoFragment.NewInstance();
-                FragmentManager.BeginTransaction().Replace(Resource.Id.photoContainer, takePhotoFragment).Commit();
+                SupportFragmentManager.BeginTransaction().Replace(Resource.Id.photoContainer, takePhotoFragment).Commit();
             }
             btnSubmitPhotoToOCR.Click += delegate
             {

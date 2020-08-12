@@ -5,7 +5,7 @@ using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.MakePayment.Fragment
 {
-    public class PaymentSuccessFragment : Android.App.Fragment
+    public class PaymentSuccessFragment : AndroidX.Fragment.App.Fragment 
     {
         TextView lblTitleInfo;
         TextView lblTrxDateTime;

@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace myTNB_Android.Src.AddAccount.Fragment
 {
-    public class AddAccountByRightsFragment : Android.App.Fragment
+    public class AddAccountByRightsFragment : AndroidX.Fragment.App.Fragment 
     {
         bool isOwner = false;
         LinearLayout radio_non_owner;

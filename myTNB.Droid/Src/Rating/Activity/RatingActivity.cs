@@ -25,7 +25,7 @@ namespace myTNB_Android.Src.Rating.Activity
         private FrameLayout frameContainer;
         private AndroidX.CoordinatorLayout.Widget.CoordinatorLayout coordinatorLayout;
 
-        Android.App.Fragment currentFragment;
+        AndroidX.Fragment.App.Fragment  currentFragment;
 
         private string quesIdCategory = "1";
         private string merchantTransID;
@@ -140,26 +140,26 @@ namespace myTNB_Android.Src.Rating.Activity
 
         public void OnLoadMainFragment()
         {
-            Android.App.Fragment submitRatingFragment = new SubmitRatingFragment();
+            AndroidX.Fragment.App.Fragment  submitRatingFragment = new SubmitRatingFragment();
             Bundle bundle = new Bundle();
             bundle.PutString(Constants.QUESTION_ID_CATEGORY, quesIdCategory);
             bundle.PutInt(Constants.SELECTED_RATING, selectedRating);
             bundle.PutString(Constants.MERCHANT_TRANS_ID, merchantTransID);
             bundle.PutString(Constants.DEVICE_ID_PARAM, deviceID);
             submitRatingFragment.Arguments = bundle;
-            var fragmentTransaction = FragmentManager.BeginTransaction();
+            var fragmentTransaction = SupportFragmentManager.BeginTransaction();
             fragmentTransaction.Add(Resource.Id.fragment_container, submitRatingFragment);
             fragmentTransaction.Commit();
             currentFragment = submitRatingFragment;
         }
 
-        public void nextFragment(Android.App.Fragment fragment, Bundle bundle)
+        public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
         {
             if (fragment is SubmitRatingFragment)
             {
                 var thankYouFragment = new ThankYouFragment();
                 thankYouFragment.Arguments = bundle;
-                var fragmentTransaction = FragmentManager.BeginTransaction();
+                var fragmentTransaction = SupportFragmentManager.BeginTransaction();
                 fragmentTransaction.Add(Resource.Id.fragment_container, thankYouFragment);
                 fragmentTransaction.AddToBackStack(null);
                 fragmentTransaction.Commit();
@@ -171,7 +171,7 @@ namespace myTNB_Android.Src.Rating.Activity
         {
             try
             {
-                int count = this.FragmentManager.BackStackEntryCount;
+                int count = this.SupportFragmentManager.BackStackEntryCount;
                 Log.Debug("OnBackPressed", "fragment stack count :" + count);
                 if (currentFragment is ThankYouFragment || currentFragment is SubmitRatingFragment)
                 {
@@ -179,7 +179,7 @@ namespace myTNB_Android.Src.Rating.Activity
                 }
                 else
                 {
-                    this.FragmentManager.PopBackStack();
+                    this.SupportFragmentManager.PopBackStack();
                 }
 
             }

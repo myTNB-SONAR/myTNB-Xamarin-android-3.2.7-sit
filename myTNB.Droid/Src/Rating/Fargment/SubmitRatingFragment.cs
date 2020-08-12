@@ -19,7 +19,7 @@ using System.Collections.Generic;
 
 namespace myTNB_Android.Src.Rating.Fargment
 {
-    public class SubmitRatingFragment : Fragment, SubmitRatingContract.IView
+    public class SubmitRatingFragment : AndroidX.Fragment.App.Fragment, SubmitRatingContract.IView
     {
 
         private SubmitRatingPresenter mPresenter;

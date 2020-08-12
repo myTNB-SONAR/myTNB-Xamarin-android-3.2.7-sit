@@ -13,7 +13,7 @@ using System;
 
 namespace myTNB_Android.Src.Rating.Fargment
 {
-    public class ThankYouFragment : Fragment
+    public class ThankYouFragment : AndroidX.Fragment.App.Fragment
     {
         private RatingActivity ratingActivity;
 

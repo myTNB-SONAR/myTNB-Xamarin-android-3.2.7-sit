@@ -27,6 +27,7 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
         TextView txtVersion;
         //TextView txtTnCHtml;
 
+        [BindView(Resource.Id.tncWebView)]
         WebView tncWebView;
 
         const string PAGE_ID = "TnC";

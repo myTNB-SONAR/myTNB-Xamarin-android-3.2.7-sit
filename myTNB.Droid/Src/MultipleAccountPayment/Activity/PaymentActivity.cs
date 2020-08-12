@@ -31,7 +31,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         AccountData selectedAccount;
         List<MPAccount> accounts;
         string total;
-        Android.App.Fragment currentFragment;
+        AndroidX.Fragment.App.Fragment  currentFragment;
 
         private MaterialDialog mCancelPaymentDialog;
         public readonly static int SELECT_PAYMENT_ACTIVITY_CODE = 2367;
@@ -129,13 +129,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             }
         }
 
-        public void nextFragment(Android.App.Fragment fragment, Bundle bundle)
+        public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
         {
             if (fragment is MPSelectPaymentMethodFragment)
             {
                 var paymentWebViewFragment = new MPPaymentWebViewFragment();
                 paymentWebViewFragment.Arguments = bundle;
-                var fragmentTransaction = FragmentManager.BeginTransaction();
+                var fragmentTransaction = SupportFragmentManager.BeginTransaction();
                 fragmentTransaction.Add(Resource.Id.fragment_container, paymentWebViewFragment);
                 fragmentTransaction.AddToBackStack(null);
                 fragmentTransaction.Commit();
@@ -147,14 +147,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             if (!IsFinishing && !IsDestroyed)
             {
-                Android.App.Fragment selectPaymentFragment = new MPSelectPaymentMethodFragment();
+                AndroidX.Fragment.App.Fragment  selectPaymentFragment = new MPSelectPaymentMethodFragment();
                 Bundle bundle = new Bundle();
                 bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
                 bundle.PutString("PAYMENT_ITEMS", JsonConvert.SerializeObject(accounts));
                 bundle.PutString("ACCOUNT_CHARGES_LIST", JsonConvert.SerializeObject(accountChargeList));
                 bundle.PutString("TOTAL", total);
                 selectPaymentFragment.Arguments = bundle;
-                var fragmentTransaction = FragmentManager.BeginTransaction();
+                var fragmentTransaction = SupportFragmentManager.BeginTransaction();
                 fragmentTransaction.Add(Resource.Id.fragment_container, selectPaymentFragment);
                 fragmentTransaction.Commit();
                 currentFragment = selectPaymentFragment;
@@ -197,10 +197,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             try
             {
-                FragmentManager manager = this.FragmentManager;
+                var manager = this.SupportFragmentManager;
                 if (manager.BackStackEntryCount > 0)
                 {
-                    manager.PopBackStack(FragmentManager.GetBackStackEntryAt(0).Id, Android.App.PopBackStackFlags.Inclusive);
+                    manager.PopBackStack(SupportFragmentManager.GetBackStackEntryAt(0).Id, (int) Android.App.PopBackStackFlags.Inclusive);
                 }
             }
             catch (Exception e)
@@ -214,7 +214,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             try
             {
-                int count = this.FragmentManager.BackStackEntryCount;
+                int count = this.SupportFragmentManager.BackStackEntryCount;
                 Log.Debug("OnBackPressed", "fragment stack count :" + count);
                 if (count == 0 || paymentReceiptGenerated)
                 {
@@ -237,7 +237,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                             .PositiveColor(Resource.Color.black)
                             .OnPositive((dialog, which) =>
                             {
-                                this.FragmentManager.PopBackStack();
+                                this.SupportFragmentManager.PopBackStack();
                                 this.SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod","title"));
                             })
                             .NeutralText(Utility.GetLocalizedCommonLabel("no"))
@@ -246,7 +246,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     }
                     else
                     {
-                        this.FragmentManager.PopBackStack();
+                        this.SupportFragmentManager.PopBackStack();
                     }
                 }
             }

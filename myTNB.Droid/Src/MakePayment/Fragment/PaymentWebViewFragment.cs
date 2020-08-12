@@ -17,7 +17,7 @@ using System.Web;
 
 namespace myTNB_Android.Src.MakePayment.Fragment
 {
-    public class PaymentWebViewFragment : Android.App.Fragment
+    public class PaymentWebViewFragment : AndroidX.Fragment.App.Fragment 
     {
         private string TOOL_BAR_TITLE = "Enter OTP";
         private string PYMT_IND = "tokenization";
