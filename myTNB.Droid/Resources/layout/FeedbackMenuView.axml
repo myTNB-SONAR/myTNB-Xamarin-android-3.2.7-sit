@@ -95,7 +95,6 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintLeft_toRightOf="@+id/ImageView_idFeedbackNewIC"
                                 app:layout_constraintTop_toBottomOf="@+id/txtViewid_FeedbackNewIC"
-                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintVertical_bias="0.218"/>
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -154,7 +153,6 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintLeft_toRightOf="@+id/billRelatedIcon"
                                 app:layout_constraintTop_toBottomOf="@+id/txtFeedbackBillingAndPayment"
-                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintVertical_bias="0.218"/>
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -213,7 +211,6 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintLeft_toRightOf="@+id/faultyStreetLampsIcon"
                                 app:layout_constraintTop_toBottomOf="@+id/txtFeedbackFaultyStreetLamps"
-                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintVertical_bias="0.218" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -272,7 +269,6 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintLeft_toRightOf="@+id/othersIcon"
                                 app:layout_constraintTop_toBottomOf="@+id/txtFeedbackOthers"
-                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintVertical_bias="0.218"/>
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -331,7 +327,6 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintLeft_toRightOf="@+id/submittedFeedbackIcon"
                                 app:layout_constraintTop_toBottomOf="@+id/txtSubmittedFeedback"
-                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintVertical_bias="0.218" />
                         </androidx.constraintlayout.widget.ConstraintLayout>

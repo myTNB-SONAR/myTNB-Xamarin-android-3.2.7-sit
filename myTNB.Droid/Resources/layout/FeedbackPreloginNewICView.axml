@@ -172,7 +172,6 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@+id/GeneralEnquiryIcon"
                         app:layout_constraintTop_toBottomOf="@+id/txtGeneralEnquiry"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0"
                         app:layout_constraintVertical_bias="0.218"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -231,7 +230,6 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@+id/updatePersoanlInfoIcon"
                         app:layout_constraintTop_toBottomOf="@+id/txtUpdatePersonal"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0"
                         app:layout_constraintVertical_bias="0.218"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>

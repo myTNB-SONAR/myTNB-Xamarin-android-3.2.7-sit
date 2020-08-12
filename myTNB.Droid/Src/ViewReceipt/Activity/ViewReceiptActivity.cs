@@ -259,7 +259,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                         {
                             Java.IO.File file = new Java.IO.File(path);
                             Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
-                                            ApplicationContext.PackageName + ".provider", file);
+                                            ApplicationContext.PackageName + ".fileprovider", file);
 
                             Intent intent = new Intent(Intent.ActionView);
                             intent.SetDataAndType(fileUri, "application/pdf");

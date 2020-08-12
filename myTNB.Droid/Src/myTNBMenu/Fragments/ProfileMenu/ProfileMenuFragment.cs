@@ -61,7 +61,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
         const string PAGE_ID = "Profile";
 
-        private int APP_LANGUAGE_REQUEST = 1234908;
+        private int APP_LANGUAGE_REQUEST = 32766;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
