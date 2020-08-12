@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using Android.Content;
 using Android.Graphics.Drawables;
-using Android.Support.V4.Content;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.Utils;
 

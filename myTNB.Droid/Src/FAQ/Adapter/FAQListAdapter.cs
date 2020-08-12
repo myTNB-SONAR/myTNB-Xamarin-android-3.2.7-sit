@@ -1,13 +1,15 @@
 ﻿using Android.Graphics;
 using Android.Runtime;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
+
+
 using Android.Text;
 using Android.Text.Method;
 using Android.Text.Style;
 using Android.Text.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
+using AndroidX.RecyclerView.Widget;
 using Java.Lang;
 using myTNB.SitecoreCMS.Models;
 using myTNB_Android.Src.Utils;

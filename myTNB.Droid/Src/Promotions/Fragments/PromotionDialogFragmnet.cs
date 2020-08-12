@@ -2,8 +2,8 @@
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Support.V4.App;
-using Android.Support.V4.View;
+
+
 using Android.Views;
 using Me.Relex;
 using myTNB.SitecoreCM.Models;

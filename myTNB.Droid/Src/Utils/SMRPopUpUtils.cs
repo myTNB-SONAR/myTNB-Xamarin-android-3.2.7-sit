@@ -1,10 +1,5 @@
-﻿using AFollestad.MaterialDialogs;
-using Android.Graphics;
-using Android.OS;
-using Android.Text;
-using Android.Text.Method;
-using Android.Views;
-using Android.Widget;
+﻿
+using AndroidX.Fragment.App;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -23,7 +18,7 @@ namespace myTNB_Android.Src.Utils
         private static bool fromUsageSubmitSuccessful = false;
         private static bool ssmrMeterReadingTutorialRefreshNeeded = false;
 
-        public static SSMRMeterReadingDialogFragment OnShowSMRMeterReadingTooltipOnActivity(bool isSinglePhase, Android.App.Activity mActivity, Android.Support.V4.App.FragmentManager mManager, List<SSMRMeterReadingModel> list)
+        public static SSMRMeterReadingDialogFragment OnShowSMRMeterReadingTooltipOnActivity(bool isSinglePhase, Android.App.Activity mActivity, FragmentManager mManager, List<SSMRMeterReadingModel> list)
         {
             SSMRMeterReadingDialogFragment dialogFragmnet = new SSMRMeterReadingDialogFragment(mActivity, isSinglePhase, list);
             dialogFragmnet.Cancelable = false;

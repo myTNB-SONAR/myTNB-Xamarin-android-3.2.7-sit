@@ -2,11 +2,12 @@
 using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
-using Android.Support.V7.Widget.Helper;
+
+
+
 using Android.Text;
 using Android.Views;
+using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.Notifications.Adapter;
 
 namespace myTNB_Android.Src.Notifications.MVP

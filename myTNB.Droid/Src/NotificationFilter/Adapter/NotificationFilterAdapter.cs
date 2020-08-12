@@ -1,7 +1,8 @@
 ﻿using Android.Content;
-using Android.Support.V4.Content;
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.NotificationFilter.Models;

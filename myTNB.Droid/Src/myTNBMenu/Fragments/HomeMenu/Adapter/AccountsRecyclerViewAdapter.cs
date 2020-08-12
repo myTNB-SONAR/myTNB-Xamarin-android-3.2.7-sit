@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using Android.Graphics;
-using Android.Support.Constraints;
-using Android.Support.Design.Widget;
-using Android.Support.V7.Widget;
+
+
+
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.ConstraintLayout.Widget;
+using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.RecyclerView.Widget;
 using Facebook.Shimmer;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;

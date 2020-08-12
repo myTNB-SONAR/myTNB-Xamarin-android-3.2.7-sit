@@ -8,9 +8,9 @@ using Android.Text;
 using myTNB_Android.Src.Utils;
 using Android.Text.Style;
 using Android.Text.Method;
-using Android.Support.V7.Widget;
+
 using Android.Graphics;
-using Android.Support.V4.Content;
+
 using System.Collections.Generic;
 using Java.Util.Regex;
 using myTNB_Android.Src.Base.Activity;
@@ -25,6 +25,8 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
 using myTNB_Android.Src.Base.Models;
 using System.Threading.Tasks;
+using AndroidX.RecyclerView.Widget;
+using AndroidX.Core.Content;
 
 namespace myTNB_Android.Src.Utils
 {

@@ -1,11 +1,11 @@
 ﻿using System;
 using Android.Content;
 using Android.Graphics.Drawables;
-using Android.Support.V4.Content;
 using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
 using myTNB_Android.Src.Utils;
 

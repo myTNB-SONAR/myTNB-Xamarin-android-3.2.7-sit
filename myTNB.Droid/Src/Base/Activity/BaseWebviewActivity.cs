@@ -3,11 +3,11 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Net.Http;
 using Android.OS;
-using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Utils;
 using System;
 

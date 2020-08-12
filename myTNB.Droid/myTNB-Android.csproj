@@ -2574,7 +2574,6 @@
     <Compile Include="Src\Base\Fragments\BaseFragmentCustom.cs" />
     <Compile Include="Src\Base\Fragments\IExceptionView.cs" />
     <Compile Include="Src\Base\Fragments\IBaseFragmentCustomView.cs" />
-    <Compile Include="Src\Base\Fragments\MyTNBAppToolTipDialogFragment.cs" />
     <AndroidResource Include="Resources\layout\CustomDialogWithListViewLayout.axml" />
     <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\Adapter\UnderstandBillToolTipAdapter.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\UnderstandTooltipModel.cs" />

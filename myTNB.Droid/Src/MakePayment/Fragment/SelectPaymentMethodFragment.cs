@@ -2,7 +2,7 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Support.Design.Widget;
+
 using Android.Text;
 using Android.Util;
 using Android.Views;

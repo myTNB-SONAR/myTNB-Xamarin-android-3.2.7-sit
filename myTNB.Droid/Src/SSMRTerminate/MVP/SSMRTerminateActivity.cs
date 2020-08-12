@@ -11,9 +11,9 @@ using Newtonsoft.Json;
 using myTNB_Android.Src.Utils;
 using CheeseBind;
 using Android.Widget;
-using Android.Support.Design.Widget;
+
 using Android.Text;
-using Android.Support.V4.Content;
+
 using System.Collections.Generic;
 using Android.Content.PM;
 using myTNB_Android.Src.SSMRTerminate.Api;
@@ -23,6 +23,8 @@ using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using static Android.Views.View;
 using Android.Text.Style;
+using Google.Android.Material.TextField;
+using AndroidX.Core.Content;
 
 namespace myTNB_Android.Src.SSMRTerminate.MVP
 {

@@ -1,15 +1,18 @@
 ﻿using Android.Content;
 using Android.Graphics;
 using Android.OS;
-using Android.Support.V4.Content;
-using Android.Support.V4.View;
-using Android.Support.V7.Widget;
+
+
+
 using Android.Text;
 using Android.Text.Method;
 using Android.Text.Style;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.CardView.Widget;
+using AndroidX.Core.Content;
+using AndroidX.ViewPager.Widget;
 using Facebook.Shimmer;
 using Java.Util.Regex;
 using myTNB.SitecoreCMS.Model;

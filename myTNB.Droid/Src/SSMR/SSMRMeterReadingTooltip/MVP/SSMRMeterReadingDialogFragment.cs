@@ -2,10 +2,12 @@
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Support.V4.App;
-using Android.Support.V4.View;
+
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.Fragment.App;
+using AndroidX.ViewPager.Widget;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;

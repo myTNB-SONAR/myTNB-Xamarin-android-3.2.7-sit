@@ -2,8 +2,8 @@
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V7.App;
-using Android.Support.V7.Widget;
+
+
 using Android.Views;
 using Android.Widget;
 using CheeseBind;

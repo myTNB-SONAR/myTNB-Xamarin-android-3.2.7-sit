@@ -3,10 +3,12 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Support.Design.Widget;
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.LogoutEnd.Activity;
 using myTNB_Android.Src.LogoutRate.MVP;

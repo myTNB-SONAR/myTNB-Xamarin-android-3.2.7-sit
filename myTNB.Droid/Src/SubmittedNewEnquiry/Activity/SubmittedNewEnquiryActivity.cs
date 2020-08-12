@@ -9,8 +9,8 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
+
+
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -22,6 +22,8 @@ using myTNB_Android.Src.SubmittedNewEnquiry.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using myTNB_Android.Src.Base.Models;
+using AndroidX.RecyclerView.Widget;
+using AndroidX.Core.Content;
 
 namespace myTNB_Android.Src.SubmittedNewEnquiry.Activity
 {

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Android.App;
 using Android.Content;
-using Android.Support.V13.App;
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.Fragment.App;
 using Facebook.Shimmer;
 using Java.Lang;
 using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;

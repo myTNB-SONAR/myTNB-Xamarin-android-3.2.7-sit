@@ -2,7 +2,7 @@
 using Android.Content;
 using Android.Net.Wifi;
 using Android.OS;
-using Android.Support.Design.Widget;
+
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;

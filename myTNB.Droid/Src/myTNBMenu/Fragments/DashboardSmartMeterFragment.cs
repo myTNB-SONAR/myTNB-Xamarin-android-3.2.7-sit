@@ -16,7 +16,7 @@ using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using Refit;
 using myTNB_Android.Src.Base.Fragments;
 using CheeseBind;
-using Android.Support.Design.Widget;
+
 using MikePhil.Charting.Charts;
 using Java.Text;
 using MikePhil.Charting.Formatter;
@@ -35,7 +35,7 @@ using myTNB_Android.Src.ViewBill.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Database.Model;
-using Android.Support.V4.Content;
+
 using myTNB_Android.Src.Notifications.Activity;
 using myTNB_Android.Src.Utils;
 using Java.Util;
@@ -44,7 +44,7 @@ using static myTNB_Android.Src.myTNBMenu.Listener.SMDashboardScrollView;
 using static myTNB_Android.Src.myTNBMenu.Models.SMUsageHistoryData;
 using Android.Text;
 using System.Threading.Tasks;
-using Android.Support.V7.App;
+
 using myTNB_Android.Src.FAQ.Activity;
 using AFollestad.MaterialDialogs;
 using Android.Text.Style;

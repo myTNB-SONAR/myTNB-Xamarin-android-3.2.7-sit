@@ -1,9 +1,11 @@
 ﻿using Android.Graphics;
 using Android.Graphics.Drawables;
-using Android.Support.V4.Graphics.Drawable;
-using Android.Support.V7.Widget;
+
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Graphics.Drawable;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.Base.Models;

@@ -8,18 +8,24 @@ using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
-using Android.Support.V7.App;
-using Android.Support.V7.Widget;
+
+
+
+
 using Android.Text;
 using Android.Text.Method;
 using Android.Text.Style;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
+using AndroidX.AppCompat.App;
+using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.Core.Content;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Facebook.Shimmer;
+using Google.Android.Material.BottomSheet;
+using Google.Android.Material.Snackbar;
 using Java.Lang;
 using Java.Text;
 using Java.Util;
@@ -771,8 +777,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 errorMSG = extras.GetString(Constants.SELECTED_ERROR_MSG);
             }
 
-
-            SetHasOptionsMenu(true);
+            // AndroidX TODO: Relook this after
+            // SetHasOptionsMenu(true);
             this.mPresenter = new DashboardChartPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
 
             mIsPendingPayment = false;
@@ -5874,18 +5880,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
 
 
-        public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        public override void OnActivityResult(int requestCode, int resultCode, Intent data)
         {
             if (requestCode == DashboardHomeActivity.PAYMENT_RESULT_CODE)
             {
-                if (resultCode == Result.Ok)
+                if (resultCode == (int) Result.Ok)
                 {
                     ((DashboardHomeActivity)Activity).OnTapRefresh();
                 }
             }
             else if (requestCode == SSMR_METER_HISTORY_ACTIVITY_CODE)
             {
-                if (resultCode == Result.Ok)
+                if (resultCode == (int) Result.Ok)
                 {
                     this.userActionsListener.OnTapRefresh();
                 }

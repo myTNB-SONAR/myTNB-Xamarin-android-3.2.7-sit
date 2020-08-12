@@ -4,7 +4,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
-using Android.Support.Design.Widget;
+
 using Android.Text;
 using Android.Views;
 using Android.Widget;
@@ -18,7 +18,9 @@ using System;
 using System.Linq;
 using System.Runtime;
 using myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.Activity;
-using Android.Support.V4.Content;
+using Google.Android.Material.Snackbar;
+using Google.Android.Material.TextField;
+using AndroidX.Core.Content;
 
 namespace myTNB_Android.Src.ForgetPassword.Activity
 {

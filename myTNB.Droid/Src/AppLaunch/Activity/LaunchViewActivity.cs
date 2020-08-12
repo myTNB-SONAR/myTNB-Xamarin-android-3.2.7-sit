@@ -7,8 +7,6 @@ using Android.Gms.Common;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -18,7 +16,6 @@ using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.MVP;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Login.Activity;
 using myTNB_Android.Src.Maintenance.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Notifications.Activity;
@@ -30,16 +27,15 @@ using Refit;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
-using myTNB_Android.Src.Maintenance.Activity;
 using Android.Text;
 using myTNB.SitecoreCMS.Model;
-using System.Threading;
 using System.Globalization;
 using Android.Graphics.Drawables;
 using myTNB_Android.Src.NewWalkthrough.MVP;
-using myTNB_Android.Src.Base;
 using myTNB_Android.Src.MyTNBService.Response;
 using Firebase.DynamicLinks;
+using Google.Android.Material.Snackbar;
+using AndroidX.Core.Content;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {

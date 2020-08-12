@@ -1,8 +1,9 @@
 ﻿using Android.OS;
-using Android.Support.V4.App;
+
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Fragment.App;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.Scanner;
 using System;

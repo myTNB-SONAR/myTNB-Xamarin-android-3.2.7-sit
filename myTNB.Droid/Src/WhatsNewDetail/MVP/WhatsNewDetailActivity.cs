@@ -6,17 +6,20 @@ using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
+
+
 using Android.Text;
 using Android.Text.Method;
 using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
 using Com.Davemorrissey.Labs.Subscaleview;
 using Facebook.Shimmer;
 using Firebase.DynamicLinks;
+using Google.Android.Material.Snackbar;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;

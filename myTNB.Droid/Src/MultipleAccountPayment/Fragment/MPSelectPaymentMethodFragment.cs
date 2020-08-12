@@ -2,7 +2,7 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Support.Design.Widget;
+
 using Android.Text;
 using Android.Util;
 using Android.Views;
@@ -30,6 +30,7 @@ using System.Linq;
 using static myTNB_Android.Src.MyTNBService.Request.PaymentTransactionIdRequest;
 using myTNB_Android.Src.Utils.Custom;
 using System.Globalization;
+using Google.Android.Material.Snackbar;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {

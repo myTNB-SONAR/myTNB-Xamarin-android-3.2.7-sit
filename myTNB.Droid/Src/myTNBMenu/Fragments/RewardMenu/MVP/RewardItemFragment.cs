@@ -1,10 +1,9 @@
 ﻿using Android.Content;
 using Android.OS;
-using Android.App;
 using Android.Views;
 using myTNB_Android.Src.Utils;
 using Android.Widget;
-using Android.Support.V7.Widget;
+
 using static myTNB_Android.Src.Utils.Constants;
 using myTNB.SitecoreCMS.Model;
 using System.Collections.Generic;
@@ -14,6 +13,8 @@ using myTNB_Android.Src.RewardDetail.MVP;
 using Newtonsoft.Json;
 using myTNB_Android.Src.Database.Model;
 using System;
+using AndroidX.RecyclerView.Widget;
+using AndroidX.Fragment.App;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 {

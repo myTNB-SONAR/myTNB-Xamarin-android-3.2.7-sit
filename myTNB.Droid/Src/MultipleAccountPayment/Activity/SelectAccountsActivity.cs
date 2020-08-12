@@ -5,16 +5,19 @@ using Android.Content.PM;
 using Android.Net;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
+
+
+
 using Android.Text;
 using Android.Text.Method;
 using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
+using AndroidX.Core.Content;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using Java.Text;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;

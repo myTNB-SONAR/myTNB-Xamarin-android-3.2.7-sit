@@ -2,16 +2,16 @@
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
-using Android.Support.Design.Widget;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Runtime;
-using Toolbar = Android.Support.V7.Widget.Toolbar;
+using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
 
 namespace myTNB_Android.Src.Base.Activity
 {
@@ -29,7 +29,7 @@ namespace myTNB_Android.Src.Base.Activity
         {
             base.OnCreate(savedInstanceState);
             // To work-around the issue 
-            // Add else to manually find the view of toolbar which is using Toolbar = Android.Support.V7.Widget.Toolbar;
+            // Add else to manually find the view of toolbar which is using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
             if (toolbar != null)
             {
 

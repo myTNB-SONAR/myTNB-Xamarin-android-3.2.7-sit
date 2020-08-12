@@ -1,12 +1,13 @@
 ﻿using Android.Content;
 using Android.Graphics;
 using Android.OS;
-using Android.Support.V4.View;
+
 using Android.Text;
 using Android.Text.Method;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.ViewPager.Widget;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base;

@@ -1,11 +1,13 @@
 ﻿using Android.App;
-using Android.Support.Design.BottomNavigation;
-using Android.Support.Design.Internal;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
+
+
+
+
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
+using Google.Android.Material.BottomNavigation;
 using System;
 
 namespace myTNB_Android.Src.Utils

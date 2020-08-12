@@ -1,6 +1,7 @@
-﻿using Android.Support.Design.Widget;
+﻿
 using Android.Text;
 using Android.Widget;
+using Google.Android.Material.TextField;
 using Java.Lang;
 using Java.Util.Regex;
 using static Android.Views.View;

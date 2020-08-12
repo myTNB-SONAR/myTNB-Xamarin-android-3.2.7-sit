@@ -4,10 +4,12 @@ using Android.Content.PM;
 using Android.Gms.Common.Apis;
 using Android.OS;
 using Android.Preferences;
-using Android.Support.Design.Widget;
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.AppLaunch.Activity;

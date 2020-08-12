@@ -9,11 +9,12 @@ using Android.Graphics;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
-using Android.Support.V4.Content;
+
 using Android.Text;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
 
 using myTNB.SitecoreCMS.Model;
