@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Content.Res;
 using Android.Net.Http;
 using Android.OS;
 using Android.Views;
@@ -257,5 +258,11 @@ namespace myTNB_Android.Src.Base.Activity
         {
             Finish();
         }
+
+        // AndroidX TODO: Temporary Fix for Android 5,5.1 
+        // AndroidX TODO: Due to this: https://github.com/xamarin/AndroidX/issues/131
+        public override AssetManager Assets =>
+            (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop && Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.M)
+            ? Resources.Assets : base.Assets;
     }
 }

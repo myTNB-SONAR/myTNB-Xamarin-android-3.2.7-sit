@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content.PM;
+using Android.Content.Res;
 using Android.OS;
 using Android.Views;
 using Android.Webkit;
@@ -27,7 +28,6 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
         TextView txtVersion;
         //TextView txtTnCHtml;
 
-        [BindView(Resource.Id.tncWebView)]
         WebView tncWebView;
 
         const string PAGE_ID = "TnC";
@@ -286,7 +286,11 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
             return PAGE_ID;
         }
 
-
+        // AndroidX TODO: Temporary Fix for Android 5,5.1 
+        // AndroidX TODO: Due to this: https://github.com/xamarin/AndroidX/issues/131
+        public override AssetManager Assets =>
+            (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop && Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.M)
+            ? Resources.Assets : base.Assets;
 
         //public override void OnTrimMemory(TrimMemory level)
         //{
