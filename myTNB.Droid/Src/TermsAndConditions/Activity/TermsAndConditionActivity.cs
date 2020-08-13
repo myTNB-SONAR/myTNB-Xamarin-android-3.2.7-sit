@@ -86,7 +86,7 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
                                             Console.WriteLine("ReplaceStringOne::" + replacedString);
                                             replacedString = obj.GeneralText.Replace("\\n", string.Empty);
                                             Console.WriteLine("ReplaceStringTwo::" + replacedString);
-                                            tncWebView.LoadData(replacedString, "text/html", "UTF-8");
+                                            tncWebView.LoadDataWithBaseURL("", replacedString, "text/html", "UTF-8", "");
                                             txtVersion.Text = "Version [" + obj.PublishedDate + "]";
                                             txtTitle.Text = "" + obj.Title;
                                         }
@@ -176,7 +176,7 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
                 txtVersion.Text = "Version [" + tncArray[1] + "]";
                 txtTitle.Text = tncArray[0];
                 // txtTnCHtml.TextFormatted = Html.FromHtml(GetString(Resource.String.tnc_html));
-                tncWebView.LoadData(tncArray[3], "text/html", "UTF-8");
+                tncWebView.LoadDataWithBaseURL("", tncArray[3], "text/html", "UTF-8", "");
             }
             catch (Exception e)
             {
