@@ -67,8 +67,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
         {
             base.OnCreate(savedInstanceState);
 
-            // AndroidX TODO: Relook this after
-            // SetHasOptionsMenu(true);
+            this.HasOptionsMenu = true;
             presenter = new RewardMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
 
             RewardsMenuUtils.OnSetTouchDisable(false);

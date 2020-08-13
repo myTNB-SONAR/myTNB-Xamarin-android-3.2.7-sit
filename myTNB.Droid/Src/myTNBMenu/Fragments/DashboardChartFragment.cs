@@ -777,8 +777,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 errorMSG = extras.GetString(Constants.SELECTED_ERROR_MSG);
             }
 
-            // AndroidX TODO: Relook this after
-            // SetHasOptionsMenu(true);
+            this.HasOptionsMenu = true;
             this.mPresenter = new DashboardChartPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
 
             mIsPendingPayment = false;

@@ -424,8 +424,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoShimmer.SetShimmer(ShimmerUtils.ShimmerBuilderConfig().Build());
             itemisedBillingInfoShimmer.StartShimmer();
             billFilterIcon.Enabled = false;
-            // AndroidX TODO: Relook this after
-            // SetHasOptionsMenu(true);
+            this.HasOptionsMenu = true;
             BillOnScrollChangeListener billOnScrollChangeListener = new BillOnScrollChangeListener(ShowBillFilterToolbar, bills_list_title_container);
             itemisedBillingScrollView.SetOnScrollChangeListener(billOnScrollChangeListener);
             TextViewUtils.SetMuseoSans500Typeface(accountSelection, itemisedBillingInfoNote,
