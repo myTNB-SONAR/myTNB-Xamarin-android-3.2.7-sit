@@ -72,6 +72,8 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.UDID = UIDevice.CurrentDevice.IdentifierForVendor.AsString();
             SetupNavigationBar();
 
+            Firebase.Core.App.Configure();
+
             // Register your app for remote notifications.
             if (UIDevice.CurrentDevice.CheckSystemVersion(10, 0))
             {

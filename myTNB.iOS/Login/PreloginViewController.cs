@@ -48,7 +48,7 @@ namespace myTNB
                     _lblCallUs.Text = DataManager.DataManager.SharedInstance.WebLinks[index].Title;
                 }
             }
-            _lblFeedback.Text = GetI18NValue(PreloginConstants.I18N_Feedback);
+            _lblFeedback.Text = GetI18NValue(PreloginConstants.I18N_Enquiry);//PreloginConstants.I18N_Feedback
             _lblChangeLanguage.Text = GetI18NValue(PreloginConstants.I18N_ChangeLanguage);
             _btnRegister.SetTitle(GetI18NValue(PreloginConstants.I18N_Register), UIControlState.Normal);
             _btnLogin.SetTitle(GetI18NValue(PreloginConstants.I18N_Login), UIControlState.Normal);
@@ -217,7 +217,7 @@ namespace myTNB
             _lblFeedback = new UILabel(new CGRect(GetScaledWidth(8), GetYLocationFromFrame(imgFeedback.Frame, 4F)
                 , viewFeedback.Frame.Width - GetScaledWidth(16), GetScaledHeight(28F)))
             {
-                Text = GetI18NValue(PreloginConstants.I18N_Feedback),
+                Text = GetI18NValue(PreloginConstants.I18N_Enquiry), //PreloginConstants.I18N_Feedback
                 TextAlignment = UITextAlignment.Center,
                 TextColor = MyTNBColor.WaterBlue,
                 Font = TNBFont.MuseoSans_10_500,

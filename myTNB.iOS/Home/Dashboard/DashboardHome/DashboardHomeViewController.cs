@@ -15,6 +15,7 @@ using myTNB.Home.Components;
 using myTNB.DataManager;
 using static myTNB.HomeTutorialOverlay;
 using myTNB.SitecoreCMS;
+using System.Globalization;
 
 namespace myTNB
 {
@@ -35,8 +36,8 @@ namespace myTNB
         public nfloat _previousScrollOffset;
         internal Dictionary<string, Action> _servicesActionDictionary;
         public bool _accountListIsShimmering = true;
-        private bool _servicesIsShimmering = true;
-        private bool _helpIsShimmering = false;
+        public bool _servicesIsShimmering = true;
+        public bool _helpIsShimmering = false;
         public bool _isRefreshScreenEnabled, _isGetServicesFailed;
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
         private UIImageView _footerImageBG;
@@ -166,6 +167,15 @@ namespace myTNB
                 OnRearrangeSuccess(RearrangeSuccessMsg);
                 IsRearrangeSaved = false;
             }
+        }
+
+        public override void ViewDidDisappear(bool animated)
+        {
+            base.ViewDidDisappear(animated);
+        }
+
+        private void OnDisplayBCRMPopup()
+        {
             bool isBRCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             if (!isBRCRMAvailable && !AppLaunchMasterCache.IsBCRMPopupDisplayed)
             {
@@ -195,11 +205,6 @@ namespace myTNB
             }
         }
 
-        public override void ViewDidDisappear(bool animated)
-        {
-            base.ViewDidDisappear(animated);
-        }
-
         public void UpdateGreeting(string greeting)
         {
             if (_dashboardHomeHeader != null)
@@ -222,7 +227,11 @@ namespace myTNB
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
 
-            if (tutorialOverlayHasShown) { return; }
+            if (tutorialOverlayHasShown)
+            {
+                ShowWhatsNewPopUp();
+                return;
+            }
 
             if (!_accountListIsShimmering && !_servicesIsShimmering && !_isGetServicesFailed && IsNeedHelpCallDone)
             {
@@ -245,6 +254,127 @@ namespace myTNB
                         }
                     }
                 });
+            }
+        }
+
+        private void ShowWhatsNewPopUp()
+        {
+            if (!DataManager.DataManager.SharedInstance.IsWhatsNewFirstLoad
+                && DataManager.DataManager.SharedInstance.UserEntity.Count > 0
+                && DataManager.DataManager.SharedInstance.UserEntity[0] != null
+                && !WhatsNewCache.IsSitecoreRefresh)
+            {
+                DataManager.DataManager.SharedInstance.IsWhatsNewFirstLoad = true;
+                InvokeInBackground(() =>
+                {
+                    bool hasTimeStamp = SitecoreServices.Instance.WhatsNewHasTimeStamp();
+                    if (!hasTimeStamp)
+                    {
+                        _ = Task.Delay(500).ContinueWith(_ =>
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                DataManager.DataManager.SharedInstance.IsWhatsNewFirstLoad = false;
+                                ShowWhatsNewPopUp();
+                            });
+                        });
+                    }
+                    else
+                    {
+                        InvokeOnMainThread(() =>
+                        {
+                            WhatsNewEntity wsManager = new WhatsNewEntity();
+                            List<WhatsNewModel> items = wsManager.GetActivePopupItems();
+                            if (items != null && items.Count > 0)
+                            {
+                                for (int index = 0; index < items.Count; index++)
+                                {
+                                    string id = items[index].ID;
+                                    string recordDate = items[index].ShowDateForDay;
+                                    int count = items[index].ShowCountForDay;
+                                    DateTime showDateTime = DateTime.ParseExact(recordDate, "yyyyMMddTHHmmss",
+                                        CultureInfo.InvariantCulture, DateTimeStyles.None);
+                                    Debug.WriteLine("is same day: " + (showDateTime.Date == DateTime.Now.Date));
+                                    if (showDateTime.Date == DateTime.Now.Date)
+                                    {
+                                        WhatsNewServices.SetWhatNewModelShowDate(id, false);
+                                        count = count + 1;
+                                    }
+                                    else
+                                    {
+                                        WhatsNewServices.SetWhatNewModelShowDate(id, true);
+                                        count = 1;
+                                    }
+
+                                    WhatsNewServices.SetWhatNewModelShowCount(id, count);
+                                }
+
+                                this.DisplayMarketingPopup(items[0], OnTapHomePopUp);
+                            }
+                            else
+                            {
+                                OnDisplayBCRMPopup();
+                            }
+                        });
+                    }
+                });
+            }
+            else
+            {
+                OnDisplayBCRMPopup();
+            }
+        }
+
+        public void OnTapHomePopUp(WhatsNewModel item)
+        {
+            item.IsRead = true;
+            WhatsNewServices.SetIsRead(item.ID);
+            var entity = WhatsNewEntity.GetItem(item.ID);
+            if (entity != null)
+            {
+                var entityModel = item.ToEntity();
+                entityModel.IsRead = true;
+                WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+                whatsNewEntity.UpdateItem(entityModel);
+            }
+            DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId = item.ID;
+            if (item.Infographic_FullView_URL.IsValid())
+            {
+                BrowserViewController viewController = new BrowserViewController();
+                if (viewController != null)
+                {
+                    viewController.URL = item.Infographic_FullView_URL;
+                    viewController.IsDelegateNeeded = false;
+                    viewController.IsShareableContent = true;
+                    viewController.ShareID = item.ID;
+                    UINavigationController navController = new UINavigationController(viewController)
+                    {
+                        ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                    };
+                    PresentViewController(navController, true, null);
+                }
+            }
+            else
+            {
+                OnNavigateWhatsNewModal();
+            }
+        }
+
+        public void OnNavigateWhatsNewModal()
+        {
+            if (DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId.IsValid())
+            {
+                var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                if (topVc != null)
+                {
+                    if (!(topVc is WhatsNewDetailsViewController) && !(topVc is AppLaunchViewController))
+                    {
+                        WhatsNewServices.OpenWhatsNewDetails(DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId, topVc);
+                    }
+                }
+
+                DataManager.DataManager.SharedInstance.WhatsNewModalNavigationId = "";
             }
         }
 
@@ -333,13 +463,24 @@ namespace myTNB
                 var sharedPreference = NSUserDefaults.StandardUserDefaults;
                 sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
                 sharedPreference.Synchronize();
+
+                ShowWhatsNewPopUp();
             }
         }
 
         public void ScrollTableToTheBottom()
         {
             int indx = SitecoreServices.Instance.ShowNeedHelp ? DashboardHomeConstants.CellIndex_Help : DashboardHomeConstants.CellIndex_Services;
-            _homeTableView.ScrollToRow(NSIndexPath.Create(0, indx), UITableViewScrollPosition.Bottom, false);
+            try
+            {
+                _homeTableView.ScrollToRow(NSIndexPath.Create(0, indx), UITableViewScrollPosition.Bottom, false);
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Debug.WriteLine("DEBUG - ScrollTableToTheBottom Error: " + e.Message);
+#endif
+            }
         }
 
         public void ScrollTableToTheTop()
@@ -596,7 +737,10 @@ namespace myTNB
             }
             _homeTableView = new UITableView(new CGRect(0, yPos
                 , ViewWidth, ViewHeight + addtlHeight))
-            { BackgroundColor = UIColor.Clear };
+            {
+                BackgroundColor = UIColor.Clear,
+                ShowsVerticalScrollIndicator = false
+            };
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _homeTableView.RegisterClassForCellReuse(typeof(AccountsTableViewCell), DashboardHomeConstants.Cell_Accounts);
             _homeTableView.RegisterClassForCellReuse(typeof(ServicesTableViewCell), DashboardHomeConstants.Cell_Services);

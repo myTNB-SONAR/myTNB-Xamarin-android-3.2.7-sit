@@ -61,6 +61,7 @@ namespace myTNB.Model
         public bool IsSSMR { set; get; }
         public bool IsOwnedAccount { set; get; }
         public bool IsPayEnabled { set; get; }
+        public bool ShowEppToolTip { set; get; } //Created by Syahmi ICS 05052020
 
         public List<ItemisedBilling> ItemizedBillings { set; get; }
         public double OpenChargesTotal { set; get; }

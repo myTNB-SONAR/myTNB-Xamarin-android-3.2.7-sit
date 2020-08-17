@@ -22,5 +22,6 @@
         public static string I18N_CallUs = "callUs";
         public static string I18N_Feedback = "feedback";
         public static string I18N_ChangeLanguage = "changeLanguage";
+        public static string I18N_Enquiry = "enquiry";
     }
 }

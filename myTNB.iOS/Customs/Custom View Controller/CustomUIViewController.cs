@@ -5,6 +5,7 @@ using CoreAnimation;
 using CoreGraphics;
 using Firebase.Analytics;
 using Foundation;
+using myTNB.Common;
 using myTNB.Customs;
 using UIKit;
 
@@ -481,6 +482,15 @@ namespace myTNB
         public nfloat BaseMarginHeight16
         {
             get { return ScaleUtility.BaseMarginHeight16; }
+        }
+        #endregion
+        #region Action
+        internal Action<NSUrl> LinkAction
+        {
+            get
+            {
+                return CommonLinkAction.GetAction(this);
+            }
         }
         #endregion
         #endregion
