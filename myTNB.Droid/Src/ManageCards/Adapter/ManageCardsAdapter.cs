@@ -37,7 +37,7 @@ namespace myTNB_Android.Src.ManageCards.Adapter
 
                 string lastDigit = item.LastDigits.Substring(item.LastDigits.Length - 4);
                 string html = "<![CDATA[" + viewHolder.ItemView.Context.GetString(Resource.String.credit_card_masked) + lastDigit + "]]>";
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     viewHolder.txtCardNumber.TextFormatted = Html.FromHtml(html, FromHtmlOptions.ModeLegacy);
                 }

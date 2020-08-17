@@ -77,6 +77,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// </summary>
             /// <param name="exception">the returned exception</param>
             void ShowRetryOptionsUnknownException(Exception exception);
+
+            void ShowSubmitNewEnquiry();
+
+            void ShowSubmittedFeedbackNew();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -86,6 +90,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Action to navigate to BillRelated
             /// </summary>
             void OnBillingPayment();
+
+            /// <summary>
+            /// Action navigate to New Submit
+            /// </summary>
+            void OnSubmitNewEnquiry();
 
             /// <summary>
             /// Action to navigate to FaultyStreetLamps
@@ -111,6 +120,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Action on resume
             /// </summary>
             void OnResume();
+
+            void onSubmittedFeedbackNew();
+
+
         }
     }
 }

@@ -18,7 +18,7 @@ using System;
 using System.Linq;
 using System.Runtime;
 using myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.Activity;
-
+using Android.Support.V4.Content;
 
 namespace myTNB_Android.Src.ForgetPassword.Activity
 {
@@ -542,7 +542,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 OnCompleteResend.Visibility = ViewStates.Visible;
                 btnResend.Text = Utility.GetLocalizedLabel("Common", "resend");
                 btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loading), null, null, null);
-                btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                btnResend.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
                 progressGenerator.Progress = 0;
                 this.userActionsListener.OnComplete();
             }
@@ -581,7 +581,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 OnCompleteResend.Visibility = ViewStates.Gone;
                 btnResend.Visibility = ViewStates.Visible;
                 btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loading), null, null, null);
-                btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                btnResend.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
                 progressGenerator.Progress = 0;
                 progressGenerator.Start(btnResend, this);
             }

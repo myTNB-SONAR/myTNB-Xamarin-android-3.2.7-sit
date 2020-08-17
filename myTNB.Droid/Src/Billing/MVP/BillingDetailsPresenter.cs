@@ -19,6 +19,7 @@ using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.Base;
 using System.Net;
 using myTNB_Android.Src.Base.Models;
+using Java.Util.Regex;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
@@ -31,56 +32,40 @@ namespace myTNB_Android.Src.Billing.MVP
             mView = view;
         }
 
-        public void GetBillHistory(AccountData selectedAccount)
-        {
-            LoadingBillsHistory(selectedAccount);
-        }
-
         private async void LoadingBillsHistory(AccountData selectedAccount)
         {
-            this.mView.ShowProgressDialog();
+            bool isViewBillDisable = true;
 
             try
             {
                 var billsHistoryResponse = await ServiceApiImpl.Instance.GetBillHistory(new MyTNBService.Request.GetBillHistoryRequest(selectedAccount.AccountNum, selectedAccount.IsOwner));
 
-                this.mView.HideProgressDialog();
-
-                if (billsHistoryResponse.IsSuccessResponse())
+                if (billsHistoryResponse.IsSuccessResponse() && billsHistoryResponse.GetData() != null && billsHistoryResponse.GetData().Count > 0)
                 {
-                    if (billsHistoryResponse.GetData() != null && billsHistoryResponse.GetData().Count > 0)
-                    {
-                        // this.mView.ShowBillPDF(JsonConvert.SerializeObject(billsHistoryResponse.GetData()[0]));
-                        return;
-                    }
-                    else
-                    {
-                        this.mView.ShowViewBillError(billsHistoryResponse.Response.DisplayTitle, billsHistoryResponse.Response.DisplayMessage);
-                    }
-                }
-                else
-                {
-                    this.mView.ShowBillErrorSnackBar();
+                    isViewBillDisable = false;
                 }
 
             }
             catch (System.OperationCanceledException e)
             {
-                this.mView.HideProgressDialog();
-                this.mView.ShowBillErrorSnackBar();
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
-                this.mView.HideProgressDialog();
-                this.mView.ShowBillErrorSnackBar();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                this.mView.HideProgressDialog();
-                this.mView.ShowBillErrorSnackBar();
                 Utility.LoggingNonFatalError(e);
+            }
+
+            if (isViewBillDisable)
+            {
+                this.mView.EnableDisableViewBillButtons(false);
+            }
+            else
+            {
+                this.mView.EnableDisableViewBillButtons(true);
             }
         }
 
@@ -164,6 +149,8 @@ namespace myTNB_Android.Src.Billing.MVP
                         Utility.LoggingNonFatalError(e);
                     }
                 }
+
+                LoadingBillsHistory(selectedAccount);
 
                 List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
                 AccountsChargesRequest accountChargeseRequest = new AccountsChargesRequest(
@@ -256,6 +243,37 @@ namespace myTNB_Android.Src.Billing.MVP
             });
 
             return newList;
+        }
+
+        public List<string> ExtractUrls(string text)
+        {
+            List<string> containedUrls = new List<string>();
+            string urlRegex = "\\(?\\b(https://|http://|www[.])[-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
+            Pattern pattern = Pattern.Compile(urlRegex);
+            Matcher urlMatcher = pattern.Matcher(text);
+
+            try
+            {
+                while (urlMatcher.Find())
+                {
+                    string urlStr = urlMatcher.Group();
+                    if (urlStr.StartsWith("(") && urlStr.EndsWith(")"))
+                    {
+                        urlStr = urlStr.Substring(1, urlStr.Length - 1);
+                    }
+
+                    if (!containedUrls.Contains(urlStr))
+                    {
+                        containedUrls.Add(urlStr);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return containedUrls;
         }
     }
 }

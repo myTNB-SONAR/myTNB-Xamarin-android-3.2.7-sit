@@ -139,7 +139,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                 txtNotificationsContent.Text = GetLabelByLanguage("noNotification");
 
                 selectAllCheckboxButton.SetOnCheckedChangeListener(this);
-                SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 this.mPresenter = new NotificationPresenter(this);
                 ShowNotificationBadge();

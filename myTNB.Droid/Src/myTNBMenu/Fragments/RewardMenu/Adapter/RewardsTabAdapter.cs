@@ -72,7 +72,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
             TextView tabTextView = view.FindViewById<TextView>(Resource.Id.tabTextView);
             ShimmerFrameLayout tabTextShimmer = view.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerTabTextView);
             TextViewUtils.SetMuseoSans500Typeface(tabTextView);
-            tabTextView.SetTextColor(context.Resources.GetColor(Resource.Color.new_grey));
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.M)
+            {
+                tabTextView.SetTextColor(context.Resources.GetColor(Resource.Color.new_grey, null));
+            }
+            else
+            {
+                tabTextView.SetTextColor(context.Resources.GetColor(Resource.Color.new_grey));
+            }
 
             if (string.IsNullOrEmpty(mFragmentTitleList[position]))
             {
@@ -110,7 +117,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
             TextView tabTextView = view.FindViewById<TextView>(Resource.Id.tabTextView);
             ShimmerFrameLayout tabTextShimmer = view.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerTabTextView);
             TextViewUtils.SetMuseoSans500Typeface(tabTextView);
-            tabTextView.SetTextColor(context.Resources.GetColor(Resource.Color.powerBlue));
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.M)
+            {
+                tabTextView.SetTextColor(context.Resources.GetColor(Resource.Color.powerBlue, null));
+            }
+            else
+            {
+                tabTextView.SetTextColor(context.Resources.GetColor(Resource.Color.powerBlue));
+            }
 
             if (string.IsNullOrEmpty(mFragmentTitleList[position]))
             {

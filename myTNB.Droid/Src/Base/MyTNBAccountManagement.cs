@@ -113,6 +113,15 @@ namespace myTNB_Android.Src.Base
                 FAQsParentEntity FAQsParentEntityManager = new FAQsParentEntity();
                 FAQsParentEntityManager.DeleteTable();
                 FAQsParentEntityManager.CreateTable();
+
+                //deleting epp tooltip data using SitecoreCmsEntity
+                SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP);    
+                SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.WHERE_IS_MY_ACC);
+                SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.WHO_IS_REGISTERED_OWNER);
+                SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.DO_I_NEED_OWNER_CONSENT);
+                SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.HOW_DOES_COPY_IC);
+                SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.HOW_DOES_PROOF_OF_CONSENT);
+                SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP);
             }
             catch (Exception e)
             {

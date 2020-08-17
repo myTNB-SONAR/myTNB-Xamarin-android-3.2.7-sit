@@ -176,7 +176,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
                     position = extras.GetInt(Constants.SELECTED_NOTIFICATION_ITEM_POSITION);
                 }
-                SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 TextViewUtils.SetMuseoSans500Typeface(notificationDetailTitle);
                 TextViewUtils.SetMuseoSans300Typeface(notificationDetailMessage);
 
@@ -371,11 +371,10 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             StartActivity(DashboardIntent);
         }
 
-        public void ViewDetails(AccountData mSelectedAccountData, AccountChargeModel accountChargeModel)
+        public void ViewDetails(AccountData mSelectedAccountData)
         {
             Intent intent = new Intent(this, typeof(BillingDetailsActivity));
             intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(mSelectedAccountData));
-            intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(accountChargeModel));
             StartActivity(intent);
         }
 

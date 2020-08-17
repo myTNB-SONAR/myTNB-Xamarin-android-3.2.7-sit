@@ -95,7 +95,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             txtEmail.TextChanged += TextChange;
             txtMobileNumber.TextChanged += TextChange;
 
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
                 txtTermsAndCondition.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_subscribe_terms_conditions), FromHtmlOptions.ModeLegacy);
             }

@@ -9,6 +9,22 @@ using myTNB_Android.Src.Utils;
 using Android.Text.Style;
 using Android.Text.Method;
 using Android.Support.V7.Widget;
+using Android.Graphics;
+using Android.Support.V4.Content;
+using System.Collections.Generic;
+using Java.Util.Regex;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.WhatsNewDetail.MVP;
+using System.Globalization;
+using myTNB_Android.Src.FAQ.Activity;
+using myTNB_Android.Src.RewardDetail.MVP;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
+using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
+using myTNB_Android.Src.Base.Models;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -22,6 +38,7 @@ namespace myTNB_Android.Src.Utils
             LISTVIEW_WITH_INDICATOR_AND_HEADER,
             IMAGE_HEADER_TWO_BUTTON,
             NORMAL,
+            NORMAL_STRETCHABLE,
         }
 
         private ToolTipType toolTipType;
@@ -34,18 +51,37 @@ namespace myTNB_Android.Src.Utils
         private Action ctaAction;
         private Action secondaryCTAAction;
         private MaterialDialog dialog;
-        private ClickableSpan clickableSpan;
-        private Context mContext;
+        private ClickSpan clickableSpan;
+        private Color mClickSpanColor;
+        private Typeface mTypeface;
+        private Android.App.Activity mContext;
         private GravityFlags mGravityFlag;
+        private Bitmap imageResourceBitmap;
+        private RewardServiceImpl mApi;
 
-        private MyTNBAppToolTipBuilder()
+        public static List<string> RedirectTypeList = new List<string> {
+            "inAppBrowser=",
+            "externalBrowser=",
+            "tel=",
+            "whatsnew=",
+            "faq=",
+            "reward=",
+            "http",
+            "tel:",
+            "whatsnewid=",
+            "faqid=",
+            "rewardid="
+        };
+
+        private MyTNBAppToolTipBuilder(Android.App.Activity context)
         {
-
+            this.mContext = context;
+            this.mApi = new RewardServiceImpl();
         }
 
-        public static MyTNBAppToolTipBuilder Create(Context context, ToolTipType mToolTipType)
+        public static MyTNBAppToolTipBuilder Create(Android.App.Activity context, ToolTipType mToolTipType)
         {
-            MyTNBAppToolTipBuilder tooltipBuilder = new MyTNBAppToolTipBuilder();
+            MyTNBAppToolTipBuilder tooltipBuilder = new MyTNBAppToolTipBuilder(context);
             tooltipBuilder.toolTipType = mToolTipType;
             tooltipBuilder.mGravityFlag = GravityFlags.Left;
             int layoutResource = 0;
@@ -70,6 +106,10 @@ namespace myTNB_Android.Src.Utils
             {
                 layoutResource = Resource.Layout.CustomToolTipWithHeaderLayout;
             }
+            else if (mToolTipType == ToolTipType.NORMAL_STRETCHABLE)
+            {
+                layoutResource = Resource.Layout.WhatIsThisDialogView;
+            }
             tooltipBuilder.dialog = new MaterialDialog.Builder(context)
                 .CustomView(layoutResource, false)
                 .Cancelable(false)
@@ -77,12 +117,15 @@ namespace myTNB_Android.Src.Utils
                 .Build();
 
             View dialogView = tooltipBuilder.dialog.Window.DecorView;
-            dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
-            WindowManagerLayoutParams wlp = tooltipBuilder.dialog.Window.Attributes;
-            wlp.Gravity = GravityFlags.Center;
-            wlp.Width = ViewGroup.LayoutParams.MatchParent;
-            wlp.Height = ViewGroup.LayoutParams.WrapContent;
-            tooltipBuilder.dialog.Window.Attributes = wlp;
+            if (mToolTipType != ToolTipType.NORMAL_STRETCHABLE)
+            {
+                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+                WindowManagerLayoutParams wlp = tooltipBuilder.dialog.Window.Attributes;
+                wlp.Gravity = GravityFlags.Center;
+                wlp.Width = ViewGroup.LayoutParams.MatchParent;
+                wlp.Height = ViewGroup.LayoutParams.WrapContent;
+                tooltipBuilder.dialog.Window.Attributes = wlp;
+            }
 
             return tooltipBuilder;
         }
@@ -99,9 +142,12 @@ namespace myTNB_Android.Src.Utils
             return this;
         }
 
-        public MyTNBAppToolTipBuilder SetMessage(string message)
+        public MyTNBAppToolTipBuilder SetMessage(string message, Color? color = null, Typeface? typeface = null)
         {
             this.message = message;
+
+            this.mClickSpanColor = color ?? new Android.Graphics.Color(ContextCompat.GetColor(mContext, Resource.Color.powerBlue));
+            this.mTypeface = typeface ?? Typeface.CreateFromAsset(mContext.Assets, "fonts/" + TextViewUtils.MuseoSans500);
             return this;
         }
 
@@ -117,12 +163,6 @@ namespace myTNB_Android.Src.Utils
             return this;
         }
 
-        public MyTNBAppToolTipBuilder SetContext(Context context)
-        {
-            this.mContext = context;
-            return this;
-        }
-
         public MyTNBAppToolTipBuilder SetAdapter(RecyclerView.Adapter adapter)
         {
             this.adapter = adapter;
@@ -132,12 +172,6 @@ namespace myTNB_Android.Src.Utils
         public MyTNBAppToolTipBuilder SetCTAaction(Action ctaFunc)
         {
             this.ctaAction = ctaFunc;
-            return this;
-        }
-
-        public MyTNBAppToolTipBuilder SetClickableSpan(ClickableSpan clickSpan)
-        {
-            this.clickableSpan = clickSpan;
             return this;
         }
 
@@ -158,6 +192,12 @@ namespace myTNB_Android.Src.Utils
             this.dialog.Dismiss();
         }
 
+          public MyTNBAppToolTipBuilder SetHeaderImageBitmap(Bitmap imageResource)
+        {
+            this.imageResourceBitmap = imageResource;
+            return this;
+        }
+
         public MyTNBAppToolTipBuilder Build()
         {
             if (this.toolTipType == ToolTipType.IMAGE_HEADER)
@@ -166,6 +206,9 @@ namespace myTNB_Android.Src.Utils
                 TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
                 TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
                 TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
+
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
 
                 tooltipCTA.Click += delegate
                 {
@@ -185,17 +228,33 @@ namespace myTNB_Android.Src.Utils
                 {
                     tooltipMessage.TextFormatted = Html.FromHtml(this.message);
                 }
-                tooltipImageHeader.SetImageResource(this.imageResource);
-                tooltipCTA.Text = this.ctaLabel;
 
-                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
-                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
+                tooltipMessage = ProcessClickableSpan(tooltipMessage, this.message);
+               // tooltipImageHeader.SetImageResource(this.imageResource);
+                 if (this.imageResourceBitmap != null)
+                {
+                    float currentImgWidth = DPUtils.ConvertDPToPx(284f);
+                    float calImgRatio = currentImgWidth / this.imageResourceBitmap.Width;
+                    int currentImgHeight = (int)(this.imageResourceBitmap.Height * calImgRatio);
+
+                    tooltipImageHeader.SetImageBitmap(this.imageResourceBitmap);
+                    tooltipImageHeader.LayoutParameters.Height = currentImgHeight;
+                    tooltipImageHeader.RequestLayout();
+                }
+                else
+                {
+                    tooltipImageHeader.SetImageResource(this.imageResource);
+                }
+                tooltipCTA.Text = this.ctaLabel;
             }
             else if(this.toolTipType == ToolTipType.NORMAL_WITH_HEADER)
             {
                 TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
                 TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
                 TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
+
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
 
                 tooltipTitle.Gravity = this.mGravityFlag;
                 tooltipMessage.Gravity = this.mGravityFlag;
@@ -215,15 +274,10 @@ namespace myTNB_Android.Src.Utils
                 {
                     tooltipMessage.TextFormatted = Html.FromHtml(this.message);
                 }
-                if (this.clickableSpan != null)
-                {
-                    tooltipMessage.TextFormatted = Utility.GetFormattedURLString(this.clickableSpan, tooltipMessage.TextFormatted);
-                    tooltipMessage.MovementMethod = new LinkMovementMethod();
-                }
-                tooltipCTA.Text = this.ctaLabel;
 
-                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
-                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
+                tooltipMessage = ProcessClickableSpan(tooltipMessage, this.message);
+
+                tooltipCTA.Text = this.ctaLabel;
             }
             else if (this.toolTipType == ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
             {
@@ -278,6 +332,9 @@ namespace myTNB_Android.Src.Utils
                 TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
                 TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
 
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
+
                 tooltipTitle.Gravity = this.mGravityFlag;
                 tooltipMessage.Gravity = this.mGravityFlag;
 
@@ -305,11 +362,9 @@ namespace myTNB_Android.Src.Utils
                 {
                     tooltipMessage.TextFormatted = Html.FromHtml(this.message);
                 }
+                tooltipMessage = ProcessClickableSpan(tooltipMessage, this.message);
                 tooltipPrimaryCTA.Text = this.ctaLabel;
                 tooltipSecondaryCTA.Text = this.secondaryCTALabel;
-
-                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
-                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
             }
             else if (this.toolTipType == ToolTipType.IMAGE_HEADER_TWO_BUTTON)
             {
@@ -319,7 +374,23 @@ namespace myTNB_Android.Src.Utils
                 TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
                 TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
 
-                tooltipImageHeader.SetImageResource(this.imageResource);
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
+
+                if (this.imageResourceBitmap != null)
+                {
+                    float currentImgWidth = DPUtils.ConvertDPToPx(284f);
+                    float calImgRatio = currentImgWidth / this.imageResourceBitmap.Width;
+                    int currentImgHeight = (int)(this.imageResourceBitmap.Height * calImgRatio);
+
+                    tooltipImageHeader.SetImageBitmap(this.imageResourceBitmap);
+                    tooltipImageHeader.LayoutParameters.Height = currentImgHeight;
+                    tooltipImageHeader.RequestLayout();
+                }
+                else
+                {
+                    tooltipImageHeader.SetImageResource(this.imageResource);
+                }
 
                 tooltipPrimaryCTA.Click += delegate
                 {
@@ -345,19 +416,19 @@ namespace myTNB_Android.Src.Utils
                 {
                     tooltipMessage.TextFormatted = Html.FromHtml(this.message);
                 }
+                tooltipMessage = ProcessClickableSpan(tooltipMessage, this.message);
+
                 tooltipPrimaryCTA.Text = this.ctaLabel;
                 tooltipSecondaryCTA.Text = this.secondaryCTALabel;
-
-                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
-                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
-
-
             }
             else if (this.toolTipType == ToolTipType.NORMAL)
             {
                 TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
                 TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
                 TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
+
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
 
                 tooltipCTA.Click += delegate
                 {
@@ -374,15 +445,37 @@ namespace myTNB_Android.Src.Utils
                 {
                     tooltipMessage.TextFormatted = Html.FromHtml(this.message);
                 }
-                if (this.clickableSpan != null)
-                {
-                    tooltipMessage.TextFormatted = Utility.GetFormattedURLString(this.clickableSpan, tooltipMessage.TextFormatted);
-                    tooltipMessage.MovementMethod = new LinkMovementMethod();
-                }
+                tooltipMessage = ProcessClickableSpan(tooltipMessage, this.message);
+
                 tooltipCTA.Text = this.ctaLabel;
 
+            }
+            else if (this.toolTipType == ToolTipType.NORMAL_STRETCHABLE)
+            {
+                TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtDialogMessage);
+                TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnLabel);
+
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
-                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipCTA);
+
+                tooltipCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    this.ctaAction?.Invoke();
+                };
+
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message);
+                }
+                tooltipMessage = ProcessClickableSpan(tooltipMessage, this.message);
+
+                tooltipCTA.Text = this.ctaLabel;
+
             }
             return this;
         }
@@ -392,9 +485,373 @@ namespace myTNB_Android.Src.Utils
             this.dialog.Show();
         }
 
+        private TextView ProcessClickableSpan(TextView mTextView, string message)
+        {
+            if (!string.IsNullOrEmpty(message))
+            {
+                int whileCount = 0;
+                bool isContained = false;
+                for (int i = 0; i < RedirectTypeList.Count; i++)
+                {
+                    if (message.Contains(RedirectTypeList[i]))
+                    {
+                        whileCount = i;
+                        isContained = true;
+                        break;
+                    }
+                }
+
+                if (isContained)
+                {
+                    SpannableString s = new SpannableString(mTextView.TextFormatted);
+                    this.clickableSpan = new ClickSpan()
+                    {
+                        textColor = this.mClickSpanColor,
+                        typeFace = this.mTypeface
+                    };
+
+                    this.clickableSpan.Click += v =>
+                    {
+                        if (RedirectTypeList[whileCount] == RedirectTypeList[0]
+                            || RedirectTypeList[whileCount] == RedirectTypeList[1]
+                            || RedirectTypeList[whileCount] == RedirectTypeList[6])
+                        {
+                            List<string> extractedUrls = ExtractUrls(message);
+                            if (extractedUrls.Count > 0)
+                            {
+                                string compareText = extractedUrls[0].ToLower();
+                                if (!compareText.Contains("http"))
+                                {
+                                    extractedUrls[0] = "http://" + extractedUrls[0];
+                                }
+
+                                if (RedirectTypeList[whileCount] == RedirectTypeList[0] || RedirectTypeList[whileCount] == RedirectTypeList[6])
+                                {
+                                    if (compareText.Contains(".pdf") && !compareText.Contains("docs.google"))
+                                    {
+                                        Intent webIntent = new Intent(this.mContext, typeof(BasePDFViewerActivity));
+                                        webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                        webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                        this.mContext.StartActivity(webIntent);
+                                    }
+                                    else if (compareText.Contains(".jpeg") || compareText.Contains(".jpg") || compareText.Contains(".png"))
+                                    {
+                                        Intent webIntent = new Intent(this.mContext, typeof(BaseFullScreenImageViewActivity));
+                                        webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                        webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                        this.mContext.StartActivity(webIntent);
+                                    }
+                                    else
+                                    {
+                                        Intent webIntent = new Intent(this.mContext, typeof(BaseWebviewActivity));
+                                        webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                        webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                        this.mContext.StartActivity(webIntent);
+                                    }
+                                }
+                                else
+                                {
+                                    Intent intent = new Intent(Intent.ActionView);
+                                    intent.SetData(Android.Net.Uri.Parse(extractedUrls[0]));
+                                    this.mContext.StartActivity(intent);
+                                }
+                            }
+                        }
+                        else if (RedirectTypeList[whileCount] == RedirectTypeList[2])
+                        {
+                            int startIndex = message.LastIndexOf("=") + 1;
+                            int lastIndex = message.LastIndexOf("\">") - 1;
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < message.Length)
+                            {
+                                string phonenum = message.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(phonenum))
+                                {
+                                    if (!phonenum.Contains("tel:"))
+                                    {
+                                        phonenum = "tel:" + phonenum;
+                                    }
+
+                                    var call = Android.Net.Uri.Parse(phonenum);
+                                    var callIntent = new Intent(Intent.ActionView, call);
+                                    this.mContext.StartActivity(callIntent);
+                                }
+                            }
+                        }
+                        else if (RedirectTypeList[whileCount] == RedirectTypeList[3]
+                                    || RedirectTypeList[whileCount] == RedirectTypeList[8])
+                        {
+                            int startIndex = message.LastIndexOf("=") + 1;
+                            int lastIndex = message.LastIndexOf("}");
+                            if (lastIndex < 0)
+                            {
+                                lastIndex = message.LastIndexOf("\">") - 1;
+                            }
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < message.Length)
+                            {
+                                string whatsnewid = message.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(whatsnewid))
+                                {
+                                    if (!whatsnewid.Contains("{"))
+                                    {
+                                        whatsnewid = "{" + whatsnewid;
+                                    }
+
+                                    if (!whatsnewid.Contains("}"))
+                                    {
+                                        whatsnewid = whatsnewid + "}";
+                                    }
+
+                                    WhatsNewEntity wtManager = new WhatsNewEntity();
+
+                                    WhatsNewEntity item = wtManager.GetItem(whatsnewid);
+
+                                    if (item != null)
+                                    {
+                                        if (!item.Read)
+                                        {
+                                            UpdateWhatsNewRead(item.ID, true);
+                                        }
+
+                                        Intent activity = new Intent(this.mContext, typeof(WhatsNewDetailActivity));
+                                        activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsnewid);
+                                        activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
+                                        this.mContext.StartActivity(activity);
+                                    }
+                                }
+                            }
+                        }
+                        else if (RedirectTypeList[whileCount] == RedirectTypeList[4]
+                                    || RedirectTypeList[whileCount] == RedirectTypeList[9])
+                        {
+                            int startIndex = message.LastIndexOf("=") + 1;
+                            int lastIndex = message.LastIndexOf("}");
+                            if (lastIndex < 0)
+                            {
+                                lastIndex = message.LastIndexOf("\">") - 1;
+                            }
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < message.Length)
+                            {
+                                string faqid = message.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(faqid))
+                                {
+                                    if (!faqid.Contains("{"))
+                                    {
+                                        faqid = "{" + faqid;
+                                    }
+
+                                    if (!faqid.Contains("}"))
+                                    {
+                                        faqid = faqid + "}";
+                                    }
+
+                                    Intent faqIntent = new Intent(this.mContext, typeof(FAQListActivity));
+                                    faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                    this.mContext.StartActivity(faqIntent);
+                                }
+                            }
+                        }
+                        else if (RedirectTypeList[whileCount] == RedirectTypeList[5]
+                                    || RedirectTypeList[whileCount] == RedirectTypeList[10])
+                        {
+                            int startIndex = message.LastIndexOf("=") + 1;
+                            int lastIndex = message.LastIndexOf("}");
+                            if (lastIndex < 0)
+                            {
+                                lastIndex = message.LastIndexOf("\">") - 1;
+                            }
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < message.Length)
+                            {
+                                string rewardid = message.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(rewardid))
+                                {
+                                    if (!rewardid.Contains("{"))
+                                    {
+                                        rewardid = "{" + rewardid;
+                                    }
+
+                                    if (!rewardid.Contains("}"))
+                                    {
+                                        rewardid = rewardid + "}";
+                                    }
+
+                                    RewardsEntity wtManager = new RewardsEntity();
+
+                                    RewardsEntity item = wtManager.GetItem(rewardid);
+
+                                    if (item != null)
+                                    {
+                                        if (!item.Read)
+                                        {
+                                            UpdateRewardRead(item.ID, true);
+                                        }
+
+                                        Intent activity = new Intent(this.mContext, typeof(RewardDetailActivity));
+                                        activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardid);
+                                        activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
+                                        this.mContext.StartActivity(activity);
+                                    }
+                                }
+                            }
+                        }
+                        else if (RedirectTypeList[whileCount] == RedirectTypeList[7])
+                        {
+                            int startIndex = message.LastIndexOf("\"tel") + 1;
+                            int lastIndex = message.LastIndexOf("\">") - 1;
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < message.Length)
+                            {
+                                string phonenum = message.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(phonenum))
+                                {
+                                    if (!phonenum.Contains("tel:"))
+                                    {
+                                        phonenum = "tel:" + phonenum;
+                                    }
+
+                                    var call = Android.Net.Uri.Parse(phonenum);
+                                    var callIntent = new Intent(Intent.ActionView, call);
+                                    this.mContext.StartActivity(callIntent);
+                                }
+                            }
+                        }
+                    };
+
+                    var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+                    int startLink = s.GetSpanStart(urlSpans[0]);
+                    int endLink = s.GetSpanEnd(urlSpans[0]);
+                    s.RemoveSpan(urlSpans[0]);
+                    s.SetSpan(clickableSpan, startLink, endLink, SpanTypes.ExclusiveExclusive);
+                    mTextView.TextFormatted = s;
+                    mTextView.MovementMethod = new LinkMovementMethod();
+                }
+            }
+
+            return mTextView;
+        }
+
+        private List<string> ExtractUrls(string text)
+        {
+            List<string> containedUrls = new List<string>();
+            string urlRegex = "\\(?\\b(https://|http://|www[.])[-A-Za-z0-9+&amp;@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&amp;@#/%=~_()|]";
+            Java.Util.Regex.Pattern pattern = Java.Util.Regex.Pattern.Compile(urlRegex);
+            Matcher urlMatcher = pattern.Matcher(text);
+
+            try
+            {
+                while (urlMatcher.Find())
+                {
+                    string urlStr = urlMatcher.Group();
+                    if (urlStr.StartsWith("(") && urlStr.EndsWith(")"))
+                    {
+                        urlStr = urlStr.Substring(1, urlStr.Length - 1);
+                    }
+
+                    if (!containedUrls.Contains(urlStr))
+                    {
+                        containedUrls.Add(urlStr);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return containedUrls;
+        }
+
+        private void UpdateWhatsNewRead(string itemID, bool flag)
+        {
+            DateTime currentDate = DateTime.UtcNow;
+            WhatsNewEntity wtManager = new WhatsNewEntity();
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            string formattedDate = currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
+            if (!flag)
+            {
+                formattedDate = "";
+
+            }
+            wtManager.UpdateReadItem(itemID, flag, formattedDate);
+        }
+
+        private void UpdateRewardRead(string itemID, bool flag)
+        {
+            DateTime currentDate = DateTime.UtcNow;
+            RewardsEntity wtManager = new RewardsEntity();
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            string formattedDate = currentDate.ToString(@"M/d/yyyy h:m:s tt", currCult);
+            if (!flag)
+            {
+                formattedDate = "";
+
+            }
+            wtManager.UpdateReadItem(itemID, flag, formattedDate);
+
+            _ = OnUpdateReward(itemID);
+        }
+
+        private async Task OnUpdateReward(string itemID)
+        {
+            try
+            {
+                // Update api calling
+                RewardsEntity wtManager = new RewardsEntity();
+                RewardsEntity currentItem = wtManager.GetItem(itemID);
+
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = UserEntity.GetActive().DeviceId,
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = LanguageUtil.GetAppLanguage().ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                string rewardId = currentItem.ID;
+                rewardId = rewardId.Replace("{", "");
+                rewardId = rewardId.Replace("}", "");
+
+                AddUpdateRewardModel currentReward = new AddUpdateRewardModel()
+                {
+                    Email = UserEntity.GetActive().Email,
+                    RewardId = rewardId,
+                    Read = currentItem.Read,
+                    ReadDate = !string.IsNullOrEmpty(currentItem.ReadDateTime) ? currentItem.ReadDateTime + " +00:00" : "",
+                    Favourite = currentItem.IsSaved,
+                    FavUpdatedDate = !string.IsNullOrEmpty(currentItem.IsSavedDateTime) ? currentItem.IsSavedDateTime + " +00:00" : "",
+                    Redeemed = currentItem.IsUsed,
+                    RedeemedDate = !string.IsNullOrEmpty(currentItem.IsUsedDateTime) ? currentItem.IsUsedDateTime + " +00:00" : ""
+                };
+
+                AddUpdateRewardRequest request = new AddUpdateRewardRequest()
+                {
+                    usrInf = currentUsrInf,
+                    reward = currentReward
+                };
+
+                AddUpdateRewardResponse response = await this.mApi.AddUpdateReward(request, new System.Threading.CancellationTokenSource().Token);
+
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         class ClickSpan : ClickableSpan
         {
             public Action<View> Click;
+            public Color textColor { get; set; }
+            public Typeface typeFace { get; set; }
+
             public override void OnClick(View widget)
             {
                 if (Click != null)
@@ -406,6 +863,8 @@ namespace myTNB_Android.Src.Utils
             public override void UpdateDrawState(TextPaint ds)
             {
                 base.UpdateDrawState(ds);
+                ds.Color = textColor;
+                ds.SetTypeface(typeFace);
                 ds.UnderlineText = false;
             }
         }

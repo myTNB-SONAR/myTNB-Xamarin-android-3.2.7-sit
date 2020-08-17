@@ -77,14 +77,13 @@ namespace myTNB.Registration
             };
             mutableHTMLString.AddAttributes(attributes, new NSRange(0, htmlString.Length));
 
-            UITextView txtViewTNC = new UITextView(new CGRect(16, 10, View.Frame.Width - 32, View.Frame.Height))
+            UITextView txtViewTNC = new UITextView(new CGRect(18, 10, View.Frame.Width - 36, View.Frame.Height - 50))
             {
                 Editable = false,
                 ScrollEnabled = true,
                 TextAlignment = UITextAlignment.Justified,
                 AttributedText = mutableHTMLString,
-                WeakLinkTextAttributes = linkAttributes.Dictionary,
-                ShowsVerticalScrollIndicator = false
+                WeakLinkTextAttributes = linkAttributes.Dictionary
             };
             View.AddSubview(txtViewTNC);
         }

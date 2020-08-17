@@ -8,6 +8,7 @@ using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
 using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
 using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Text;
@@ -43,7 +44,6 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         private AccountData selectedAccount;
         private SMRAccount selectedEligibleAccount;
         private string selectedAccountNickName;
-        private MaterialDialog SSMRMenuDialog;
         private bool IsFromUsage = false;
         private List<SSMRMeterHistoryMenuModel> ssmrMeterHistoryMenuList = new List<SSMRMeterHistoryMenuModel>();
         public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
@@ -56,6 +56,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 				ISharedPreferences mPref;
         private bool isTutorialShown = false;
         private bool isSMR = false;
+        private bool noMeterAccess = false;
 
         SSMRMeterHistoryMenuAdapter meterHistoryMenuAdapter;
 
@@ -104,14 +105,29 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [BindView(Resource.Id.nonSMRActionContainer)]
         LinearLayout NonSMRActionContainer;
 
+        [BindView(Resource.Id.bottomLayout)]
+        LinearLayout bottomLayout;
+
+        [BindView(Resource.Id.txtMeterAccessTitle)]
+        TextView txtMeterAccessTitle;
+
+        [BindView(Resource.Id.btnNo)]
+        Button btnNo;
+
+        [BindView(Resource.Id.btnYes)]
+        Button btnYes;
+
+        [BindView(Resource.Id.meterLookLabelContainer)]
+        LinearLayout meterLookLabelContainer;
+
+        [BindView(Resource.Id.meterLookLabel)]
+        TextView meterLookLabel;
+
         [BindView(Resource.Id.readingHistoryList)]
         LinearLayout ReadingHistoryListContainer;
 
         [BindView(Resource.Id.disableSMRBtnContainer)]
         LinearLayout DisableSMRBtnContainer;
-
-        [BindView(Resource.Id.non_smr_note_content)]
-        TextView NonSMRNoteContent;
 
         [BindView(Resource.Id.layout_content_nestedscroll)]
         NestedScrollView NestedScrollViewContent;
@@ -152,7 +168,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
 
                 TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, SMRMessageTitle, btnSubmitMeter, btnEnableSubmitMeter, btnDisableSubmitMeter, btnRefresh);
-                TextViewUtils.SetMuseoSans300Typeface(SMRMainContent, SMRAccountTitle, SMRAccountSelected, NonSMRNoteContent, EmptySMRHistoryMessage, refreshMsg);
+                TextViewUtils.SetMuseoSans300Typeface(SMRMainContent, SMRAccountTitle, SMRAccountSelected, EmptySMRHistoryMessage, refreshMsg);
+
+                TextViewUtils.SetMuseoSans500Typeface(txtMeterAccessTitle, btnNo, btnYes, meterLookLabel);
 
                 SMRMessageTitle.Text = GetLabelByLanguage("subTitle");
                 SMRAccountTitle.Text = GetLabelCommonByLanguage("account").ToUpper();
@@ -163,7 +181,10 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 EmptySMRHistoryMessage.Text = GetLabelByLanguage("noHistoryData");
                 refreshMsg.Text = GetLabelCommonByLanguage("refreshDescription");
                 btnRefresh.Text = GetLabelCommonByLanguage("refreshNow");
-                NonSMRNoteContent.Text = GetLabelByLanguage("enableSSMRDescription");
+                txtMeterAccessTitle.Text = GetLabelByLanguage("doYouHaveMeterAccess");
+                btnNo.Text = GetLabelCommonByLanguage("no");
+                btnYes.Text = GetLabelCommonByLanguage("yes");
+                meterLookLabel.Text = GetLabelByLanguage("whereIsMyMeter");
                 btnSubmitMeter.Text = Utility.GetLocalizedLabel("SSMRSubmitMeterReading", "title");
                 mPresenter = new SSMRMeterHistoryPresenter(this);
                 mPref = PreferenceManager.GetDefaultSharedPreferences(this);
@@ -302,6 +323,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         {
             //Non-SMR visibility
             NonSMRActionContainer.Visibility = isNonSMRAccount ? ViewStates.Visible : ViewStates.Gone;
+            bottomLayout.Visibility = isNonSMRAccount ? ViewStates.Visible : ViewStates.Gone;
             //SMR UI visiblility
             SMRActionContainer.Visibility = isNonSMRAccount ? ViewStates.Gone : ViewStates.Visible;
             ReadingHistoryListContainer.Visibility = isNonSMRAccount ? ViewStates.Gone : ViewStates.Visible;
@@ -309,6 +331,70 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
             //Checking for no tagged SMR
             NonSMRActionContainer.Visibility = hasNoSMREligibleAccount ? ViewStates.Visible : ViewStates.Gone;
+            bottomLayout.Visibility = hasNoSMREligibleAccount ? ViewStates.Visible : ViewStates.Gone;
+
+            btnNo.Enabled = true;
+            btnNo.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
+            btnNo.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
+
+            btnYes.Enabled = true;
+            btnYes.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
+            btnYes.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
+
+            btnEnableSubmitMeter.Enabled = false;
+            btnEnableSubmitMeter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+
+            noMeterAccess = false;
+        }
+
+        [OnClick(Resource.Id.btnNo)]
+        void OnSelectNo(object sender, EventArgs eventArgs)
+        {
+            btnNo.Enabled = true;
+            btnNo.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.white));
+            btnNo.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+
+            btnYes.Enabled = true;
+            btnYes.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
+            btnYes.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
+
+            btnEnableSubmitMeter.Enabled = true;
+            btnEnableSubmitMeter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+
+            noMeterAccess = true;
+        }
+
+        [OnClick(Resource.Id.btnYes)]
+        void OnSelectYes(object sender, EventArgs eventArgs)
+        {
+            btnNo.Enabled = true;
+            btnNo.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
+            btnNo.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
+
+            btnYes.Enabled = true;
+            btnYes.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.white));
+            btnYes.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+
+            btnEnableSubmitMeter.Enabled = true;
+            btnEnableSubmitMeter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+
+            noMeterAccess = false;
+        }
+
+        [OnClick(Resource.Id.meterLookLabelContainer)]
+        void OnMeterLookPopupClick(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                    .SetHeaderImage(Resource.Drawable.img_start_smr)
+                    .SetTitle(GetLabelByLanguage("whereIsMyMeterTitle"))
+                    .SetMessage(GetLabelByLanguage("whereIsMyMeterMessage"))
+                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                    .SetCTAaction(() => { this.SetIsClicked(false); })
+                    .Build().Show();
+            }
         }
 
         private void UpdateUIForNonSMR()
@@ -436,85 +522,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             switch (item.ItemId)
             {
                 case Resource.Id.action_ssmr_more:
-                    OnClickSMRMenuMore();
                     break;
             }
             return base.OnOptionsItemSelected(item);
-        }
-
-        private void OnClickSMRMenuMore()
-        {
-            try
-            {
-                SSMRMenuDialog = new MaterialDialog.Builder(this)
-                    .CustomView(Resource.Layout.SSMRMenuListLayout, false)
-                    .Cancelable(false)
-                    .CanceledOnTouchOutside(false)
-                    .Build();
-
-                View dialogView = SSMRMenuDialog.Window.DecorView;
-                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
-                WindowManagerLayoutParams wlp = SSMRMenuDialog.Window.Attributes;
-                wlp.Gravity = GravityFlags.Top;
-                wlp.Width = ViewGroup.LayoutParams.MatchParent;
-                wlp.Height = ViewGroup.LayoutParams.WrapContent;
-                SSMRMenuDialog.Window.Attributes = wlp;
-
-                ImageView btnSMRMenuClose = SSMRMenuDialog.FindViewById<ImageView>(Resource.Id.btnSMRMenuClose);
-                RecyclerView mSMRMenuRecyclerView = SSMRMenuDialog.FindViewById<RecyclerView>(Resource.Id.smrMenuList);
-                mSMRMenuRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
-                if (smrResponse.Response.Data.MeterReadingMenu.Count > 0)
-                {
-                    ssmrMeterHistoryMenuList.Clear();
-                    ssmrMeterHistoryMenuList.AddRange(smrResponse.Response.Data.MeterReadingMenu);
-                    meterHistoryMenuAdapter = new SSMRMeterHistoryMenuAdapter(smrResponse.Response.Data.MeterReadingMenu);
-                    mSMRMenuRecyclerView.SetAdapter(meterHistoryMenuAdapter);
-                    meterHistoryMenuAdapter.ClickChanged += OnClickChanged;
-                }
-
-                btnSMRMenuClose.Click += delegate
-                {
-                    SSMRMenuDialog.Dismiss();
-                };
-
-                SSMRMenuDialog.Show();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        void OnClickChanged(object sender, int position)
-        {
-            try
-            {
-                if (position != -1)
-                {
-                    SSMRMeterHistoryMenuModel selectedMenu = ssmrMeterHistoryMenuList[position];
-                    if (selectedMenu.MenuId == "1004")
-                    {
-                        ShowProgressDialog();
-                        Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
-                        SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-                        StartActivityForResult(SSMRTerminateActivity, SSMR_METER_HISTORY_ACTIVITY_CODE);
-                        HideProgressDialog();
-                        SSMRMenuDialog.Dismiss();
-                    }
-                    else
-                    {
-                        SSMRMenuDialog.Dismiss();
-                    }
-                }
-                else
-                {
-                    SSMRMenuDialog.Dismiss();
-                }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         public void ShowProgressDialog()
@@ -638,16 +648,32 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [OnClick(Resource.Id.btnEnableSubmitMeter)]
         void OnEnableSubmitMeter(object sender, EventArgs eventArgs)
         {
-            if (!this.GetIsClicked())
+            if (noMeterAccess)
             {
-                this.SetIsClicked(true);
-                AccountData accountData = new AccountData();
-                SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
-                accountData.AccountNum = selectedAccountNumber;
-                accountData.AddStreet = eligibleAccount.accountAddress;
-                accountData.AccountNickName = eligibleAccount.accountName;
-                SMR_ACTION_KEY = Constants.SMR_ENABLE_FLAG;
-                this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(Utility.GetLocalizedErrorLabel("noMeterAccessErrorTitle"))
+                        .SetMessage(Utility.GetLocalizedErrorLabel("noMeterAccessErrorMessage"))
+                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                        .SetCTAaction(() => { this.SetIsClicked(false); })
+                        .Build().Show();
+                }
+            }
+            else
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    AccountData accountData = new AccountData();
+                    SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+                    accountData.AccountNum = selectedAccountNumber;
+                    accountData.AddStreet = eligibleAccount.accountAddress;
+                    accountData.AccountNickName = eligibleAccount.accountName;
+                    SMR_ACTION_KEY = Constants.SMR_ENABLE_FLAG;
+                    this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
+                }
             }
         }
 
@@ -847,77 +873,11 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         {
             try
             {
-                MaterialDialog materialDialog = new MaterialDialog.Builder(this)
-                        .CustomView(Resource.Layout.CustomToolTipWithHeaderLayout, false)
-                        .Cancelable(false)
-                        .CanceledOnTouchOutside(false)
-                        .Build();
-
-                View dialogView = materialDialog.Window.DecorView;
-                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
-                WindowManagerLayoutParams wlp = materialDialog.Window.Attributes;
-                wlp.Gravity = GravityFlags.Center;
-                wlp.Width = ViewGroup.LayoutParams.MatchParent;
-                wlp.Height = ViewGroup.LayoutParams.WrapContent;
-                materialDialog.Window.Attributes = wlp;
-
-                TextView tooltipTitle = materialDialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
-                TextView tooltipMessage = materialDialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
-                TextView tooltipCTA = materialDialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
-
-                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
-                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
-
-                tooltipCTA.Text = Utility.GetLocalizedCommonLabel("gotIt");
-                tooltipCTA.Click += delegate
-                {
-                    materialDialog.Dismiss();
-                };
-
-                tooltipTitle.Text = SMRPopUpUtils.GetTitle();
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                {
-                    tooltipMessage.TextFormatted = Html.FromHtml(SMRPopUpUtils.GetMessage(), FromHtmlOptions.ModeLegacy);
-                }
-                else
-                {
-                    tooltipMessage.TextFormatted = Html.FromHtml(SMRPopUpUtils.GetMessage());
-                }
-
-                SpannableString s = new SpannableString(tooltipMessage.TextFormatted);
-                var clickableSpan = new ClickSpan()
-                {
-                    textColor = Resources.GetColor(Resource.Color.powerBlue),
-                    typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                };
-                clickableSpan.Click += v =>
-                {
-                    if (SMRPopUpUtils.GetMessage() != null && SMRPopUpUtils.GetMessage().Contains("tel:"))
-                    {
-                        //Lauch FAQ
-                        int startIndex = SMRPopUpUtils.GetMessage().LastIndexOf("\"tel") + 1;
-                        int lastIndex = SMRPopUpUtils.GetMessage().LastIndexOf("\">") - 1;
-                        int lengthOfId = (lastIndex - startIndex) + 1;
-                        if (lengthOfId < SMRPopUpUtils.GetMessage().Length)
-                        {
-                            string phone = SMRPopUpUtils.GetMessage().Substring(startIndex, lengthOfId);
-                            if (!string.IsNullOrEmpty(phone))
-                            {
-                                var uri = Android.Net.Uri.Parse(phone);
-                                var intent = new Intent(Intent.ActionDial, uri);
-                                StartActivity(intent);
-                            }
-                        }
-                    }
-                };
-                var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
-                int startFAQLink = s.GetSpanStart(urlSpans[0]);
-                int endFAQLink = s.GetSpanEnd(urlSpans[0]);
-                s.RemoveSpan(urlSpans[0]);
-                s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
-                tooltipMessage.TextFormatted = s;
-                tooltipMessage.MovementMethod = new LinkMovementMethod();
-                materialDialog.Show();
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(SMRPopUpUtils.GetTitle())
+                .SetMessage(SMRPopUpUtils.GetMessage())
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                .Build().Show();
             }
             catch (System.Exception e)
             {
@@ -968,7 +928,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             {
                 try
                 {
-                    height += NonSMRActionContainer.Height;
+                    height -= (int)DPUtils.ConvertDPToPx(16f);
                 }
                 catch (Exception e)
                 {

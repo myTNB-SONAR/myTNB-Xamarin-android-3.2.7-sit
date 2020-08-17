@@ -13,6 +13,7 @@
                 public const string PreLoginPromo = "{3C1FD061-FBD7-4987-AF31-72519F3DD6A1}";
                 public const string Locations = "{1F49F2D1-DF07-4AF0-8553-6204D23D552D}";
                 public const string FullRTEPages = "{E57E72BF-12E7-44CF-8287-A0D931EBE237}";
+                public const string EppToolTip = "{8379FC18-1594-41FD-934A-EB45EDD17541}";
             }
 
             public struct Fields
@@ -155,13 +156,64 @@
                     public const string PublishDate = "PublishDate";
                     public const string EndDate = "EndDate";
                     public const string CTA = "CTA";
+                    public const string Image_DetailsView = "Image_DetailsView";
+                    public const string Styles_DetailsView = "Styles_DetailsView";
+                    public const string PortraitImage_PopUp = "PortraitImage_PopUp";
+                    public const string ShowEveryCountDays_PopUp = "ShowEveryCountDays_PopUp";
+                    public const string ShowForTotalCountDays_PopUp = "ShowForTotalCountDays_PopUp";
+                    public const string ShowAtAppLaunchPopUp = "ShowAtAppLaunchPopUp";
+                    public const string PopUp_Text_Only = "PopUp_Text_Only";
+                    public const string PopUp_HeaderImage = "PopUp_HeaderImage";
+                    public const string PopUp_Text_Content = "PopUp_Text_Content";
+                    public const string Disable_DoNotShow_Checkbox = "Disable_DoNotShow_Checkbox";
+                    public const string Donot_Show_In_WhatsNew = "Donot_Show_In_WhatsNew";
                     public const string WhatsNewCategory = "WhatsNewCategory";
+                    public const string Infographic_FullView_URL = "Infographic_FullView_URL";
                 }
 
                 public struct Language
                 {
                     public const string LanguageFile = "Language File";
                 }
+
+                public struct EppToolTip
+                {
+                    public const string Title = "Tool Tip Title";
+                    public const string PopUpTitle = "Pop Up Title";
+                    public const string PopUpBody = "Pop Up Body";
+                    public const string Image = "Image";
+                }
+
+                public struct WhereIsMyAccToolTip{
+                    public const string PopUpTitle = "Pop Up Title";
+                    public const string PopUpBody = "Pop Up Body";
+                    public const string Image = "Image";
+                }
+           
+                 public struct WhoIsRegisteredOwnerToolTip{
+                    public const string PopUpTitle = "Pop Up Title";
+                    public const string PopUpBody = "Pop Up Body";
+                }
+
+                 public struct DoIneedOwnerConsentToolTip{
+                    public const string PopUpTitle = "Pop Up Title";
+                    public const string PopUpBody = "Pop Up Body";
+                }
+
+                 public struct HowDoesCopyOfIdentification{
+                    public const string PopUpTitle = "Pop Up Title";
+                    public const string PopUpBody = "Pop Up Body";
+                    public const string Image = "Image";
+   
+                }
+
+                 public struct HowDoesProofOfConsent{
+                    public const string PopUpTitle = "Pop Up Title";
+                    public const string PopUpBody = "Pop Up Body";
+                    public const string Image = "Image";
+   
+                }
+
             }
 
             public struct ItemID
@@ -173,6 +225,7 @@
                 public const string PreLoginPromo = "{8F33E504-01AC-45BC-97A2-D46795F9AEBC}";
                 public const string FullRTEPages = "{41C06271-8712-4E29-BFC4-50FC9CA24132}";
                 public const string FAQs = "{28587E38-0753-4B6B-8EA8-024022033846}";
+                public const string EPPTips = "{9CC7DD33-7853-427F-BF0C-4CEB0E16F925}";
             }
 
             public struct ItemPath
@@ -186,11 +239,8 @@
 
                 public const string AppLaunch = "/sitecore/content/myTNBapp/Contents/App Launch Image";
 
-#if DEBUG || STUB || DEVELOP || SIT
-                public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help_SIT";
-#else
                 public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
-#endif
+
                 public const string ApplySSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR Apply";
 
                 public const string EnergySavingTips = "/sitecore/content/myTNBapp/Contents/Energy Saving Tips";
@@ -203,9 +253,17 @@
                 public const string SSMRMeterReadingThreePhaseWalkthroughOCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase OCR Off";
 
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
-                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
                 public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
-                public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew";
+
+                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
+                public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNewV2";
+
+                public const string EppToolTip = "/sitecore/content/myTNBapp/Contents/EppToolTip";
+                public const string WhereIsMyAccToolTip ="/sitecore/content/myTNBapp/Contents/WhereIsMyAccToolTip";
+                public const string WhoIsRegisteredOwnerToolTip="/sitecore/content/myTNBapp/Contents/WhoIsRegisteredOwner";
+                public const string DoIneedOwnerConsentToolTip="/sitecore/content/myTNBapp/Contents/DoINeedOwnerConsentToolTip";
+                public const string HowDoesCopyOfIdentification="/sitecore/content/myTNBapp/Contents/HowDoesCopyOfIdentificationToolTip";
+                public const string HowDoesProofOfConsent="/sitecore/content/myTNBapp/Contents/ProofOwnerConsentToolTips";
             }
         }
     }

@@ -97,6 +97,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             bool OnGetIsRootTooltipShown();
 
+            void ShowFAQFromHide();
+
+            bool GetHomeTutorialCallState();
+
         }
 
         public interface IHomeMenuPresenter
@@ -163,6 +167,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             bool GetIsLoadedHomeDone();
 
             void OnCheckNewFAQState();
+
         }
 
         public interface IHomeMenuService

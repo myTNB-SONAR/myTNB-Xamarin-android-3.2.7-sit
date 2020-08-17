@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
@@ -13,13 +14,21 @@ using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Com.Davemorrissey.Labs.Subscaleview;
 using Facebook.Shimmer;
 using Firebase.DynamicLinks;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.FAQ.Activity;
+using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.PDFView;
+using myTNB_Android.Src.Utils.ZoomImageView;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime;
 
 namespace myTNB_Android.Src.WhatsNewDetail.MVP
@@ -54,7 +63,28 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 		[BindView(Resource.Id.txtFooter)]
 		TextView txtFooter;
 
-        WhatsNewDetailContract.IWhatsNewDetailPresenter presenter;
+		[BindView(Resource.Id.whatsNewNormalDetailLayout)]
+		LinearLayout whatsNewNormalDetailLayout;
+
+		[BindView(Resource.Id.whatsNewFullScreenShimmerLayout)]
+		LinearLayout whatsNewFullScreenShimmerLayout;
+
+		[BindView(Resource.Id.shimmerFullScreenLayout)]
+		ShimmerFrameLayout shimmerFullScreenLayout;
+
+		[BindView(Resource.Id.whatsNewFullImageDetailLayout)]
+		LinearLayout whatsNewFullImageDetailLayout;
+
+		[BindView(Resource.Id.imgFullView)]
+		ZoomImageView imgFullView;
+
+		[BindView(Resource.Id.whatsNewFullPDFDetailLayout)]
+		LinearLayout whatsNewFullPDFDetailLayout;
+
+		[BindView(Resource.Id.pdfFullView)]
+		PDFView pdfFullView;
+
+		WhatsNewDetailContract.IWhatsNewDetailPresenter presenter;
 
 		private WhatsNewModel LocalItem = new WhatsNewModel();
 
@@ -69,6 +99,8 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 		private string generatedLink = "";
 
 		private Snackbar mNoInternetSnackbar;
+
+		private bool fullScreenFirstLoaded = false;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -94,6 +126,8 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 
 			try
 			{
+				fullScreenFirstLoaded = false;
+
 				Bundle extras = Intent.Extras;
 
 				if (extras != null)
@@ -132,8 +166,15 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
                         }
                         else
                         {
-                            SetupImageParam();
-                            this.presenter.GetActiveWhatsNew(ItemID);
+							if (!fullScreenFirstLoaded)
+                            {
+								whatsNewNormalDetailLayout.Visibility = ViewStates.Visible;
+								whatsNewFullScreenShimmerLayout.Visibility = ViewStates.Gone;
+								whatsNewFullImageDetailLayout.Visibility = ViewStates.Gone;
+								whatsNewFullPDFDetailLayout.Visibility = ViewStates.Gone;
+								SetupImageParam();
+								this.presenter.GetActiveWhatsNew(ItemID);
+							}
                         }
                     }
                     catch (Exception ex)
@@ -220,6 +261,11 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 			return base.OnCreateOptionsMenu(menu);
 		}
 
+		protected override void OnDestroy()
+        {
+            base.OnDestroy();
+        }
+
 		public override bool OnOptionsItemSelected(IMenuItem item)
 		{
 			switch (item.ItemId)
@@ -280,6 +326,21 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 			return base.OnOptionsItemSelected(item);
 		}
 
+		public void UpdateWhatsNewDetail(WhatsNewModel item)
+        {
+			try
+            {
+				if (item != null)
+                {
+					LocalItem = item;
+				}
+			}
+			catch (Exception e)
+			{
+				Utility.LoggingNonFatalError(e);
+			}
+		}
+
 		public void SetWhatsNewDetail(WhatsNewModel item)
 		{
 			try
@@ -288,48 +349,195 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 				{
 					LocalItem = item;
 					txtTitle.Text = item.Title;
-                    txtDescription.TextFormatted = GetFormattedText(item.Description);
+                    txtDescription.TextFormatted = GetFormattedTextNoExtraSpacing(item.Description);
 
-					if (item.Description != null && (item.Description.Contains("http") || item.Description.Contains("www.")))
+					if (item.Description != null)
 					{
 						SpannableString s = new SpannableString(txtDescription.TextFormatted);
-
 						var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
 
-						List<string> extractedUrls = this.presenter.ExtractUrls(item.Description);
-
-						if (urlSpans != null && urlSpans.Length > 0 && extractedUrls != null && extractedUrls.Count > 0)
-						{
+						if (urlSpans != null && urlSpans.Length > 0)
+                        {
 							for (int i = 0; i < urlSpans.Length; i++)
 							{
 								URLSpan URLItem = urlSpans[i] as URLSpan;
-								string searchedString = extractedUrls.Find(x => x == URLItem.URL);
-								if (!string.IsNullOrEmpty(searchedString))
+								int startIndex = s.GetSpanStart(urlSpans[i]);
+								int endIndex = s.GetSpanEnd(urlSpans[i]);
+								s.RemoveSpan(urlSpans[i]);
+								ClickSpan clickableSpan = new ClickSpan()
 								{
-									int startIndex = s.GetSpanStart(urlSpans[i]);
-									int endIndex = s.GetSpanEnd(urlSpans[i]);
-									s.RemoveSpan(urlSpans[i]);
-									ClickSpan clickableSpan = new ClickSpan()
-									{
-										textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
-										typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-									};
-									clickableSpan.Click += v =>
-									{
-										OnClickSpan(searchedString);
-									};
-									s.SetSpan(clickableSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
+									textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
+									typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+								};
+								clickableSpan.Click += v =>
+								{
+									OnClickSpan(URLItem.URL);
+								};
+								s.SetSpan(clickableSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
+							}
+							txtDescription.TextFormatted = s;
+							txtDescription.MovementMethod = new LinkMovementMethod();
+						}
+					}
+
+					if (item.Description != null && (item.Description.Contains("<img")))
+					{
+						if (!string.IsNullOrEmpty(item.Description_Images))
+                        {
+							try
+                            {
+								List<WhatsNewDetailImageDBModel> dbList = JsonConvert.DeserializeObject<List<WhatsNewDetailImageDBModel>>(item.Description_Images);
+
+								if (dbList.Count > 0)
+                                {
+									_ = this.presenter.ProcessWhatsNewDetailImage(dbList);
+									return;
 								}
 							}
+							catch (Exception ex)
+							{
+								Utility.LoggingNonFatalError(ex);
+							}
+                        }
+
+						List<WhatsNewDetailImageModel> containedImage = this.presenter.ExtractImage(item.Description);
+						if (containedImage.Count > 0)
+						{
+							try
+                            {
+								SpannableString whatsNewDetailString = new SpannableString(txtDescription.TextFormatted);
+								var imageSpans = whatsNewDetailString.GetSpans(0, whatsNewDetailString.Length(), Java.Lang.Class.FromType(typeof(ImageSpan)));
+								if (imageSpans != null && imageSpans.Length > 0)
+								{
+									List<Bitmap> mShimmerBitmapList = new List<Bitmap>();
+									Drawable mShimmerDrawable = ContextCompat.GetDrawable(this, Resource.Drawable.shimmer_rectangle);
+									string urlHeightWidthRegex = "(<img\\b|(?!^)\\G)[^>]*?\\b(src|width|height)=([\"']?)([^\"]*)\\3";
+									System.Text.RegularExpressions.MatchCollection matcheImgSrc = System.Text.RegularExpressions.Regex.Matches(item.Description, urlHeightWidthRegex, System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+									bool foundWidth = false;
+									bool foundHeight = false;
+									float textImgWidth = 0;
+									float textImgHeight = 0;
+									for (int index = 0; index < matcheImgSrc.Count; index++)
+									{
+										if (matcheImgSrc[index].Groups[2].Value == "width")
+										{
+											if (foundHeight)
+											{
+												textImgWidth = float.Parse(matcheImgSrc[index].Groups[4].Value);
+												float deviceWidth = this.Resources.DisplayMetrics.WidthPixels - DPUtils.ConvertDPToPx(36f);
+												float calImgRatio = deviceWidth / textImgWidth;
+												float deviceHeight = textImgHeight * calImgRatio;
+
+												mShimmerBitmapList.Add(BitmapUtils.CreateBitmapFromDrawable(mShimmerDrawable, (int)deviceWidth, (int)deviceHeight));
+
+												foundHeight = false;
+											}
+											else
+											{
+												foundWidth = true;
+												textImgWidth = float.Parse(matcheImgSrc[index].Groups[4].Value);
+											}
+										}
+										else if (matcheImgSrc[index].Groups[2].Value == "height")
+										{
+											if (foundWidth)
+											{
+												textImgHeight = float.Parse(matcheImgSrc[index].Groups[4].Value);
+												float deviceWidth = this.Resources.DisplayMetrics.WidthPixels - DPUtils.ConvertDPToPx(36f);
+												float calImgRatio = deviceWidth / textImgWidth;
+												float deviceHeight = textImgHeight * calImgRatio;
+
+												mShimmerBitmapList.Add(BitmapUtils.CreateBitmapFromDrawable(mShimmerDrawable, (int)deviceWidth, (int)deviceHeight));
+
+												foundWidth = false;
+											}
+											else
+											{
+												foundHeight = true;
+												textImgHeight = float.Parse(matcheImgSrc[index].Groups[4].Value);
+											}
+										}
+									}
+
+									for (int j = 0; j < imageSpans.Length; j++)
+									{
+										ImageSpan imageSpan = new ImageSpan(this, mShimmerBitmapList[j], SpanAlign.Baseline);
+										ImageSpan ImageItem = imageSpans[j] as ImageSpan;
+										int startIndex = whatsNewDetailString.GetSpanStart(imageSpans[j]);
+										int endIndex = whatsNewDetailString.GetSpanEnd(imageSpans[j]);
+										whatsNewDetailString.RemoveSpan(imageSpans[j]);
+										whatsNewDetailString.SetSpan(imageSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
+									}
+
+									txtDescription.TextFormatted = whatsNewDetailString;
+								}
+							}
+							catch (Exception ex)
+							{
+								Utility.LoggingNonFatalError(ex);
+							}
+
+							_ = this.presenter.FetchWhatsNewDetailImage(containedImage);
 						}
-                        txtDescription.TextFormatted = s;
-                        txtDescription.MovementMethod = new LinkMovementMethod();
 					}
 				}
 				else
 				{
 					this.Finish();
 				}
+			}
+			catch (Exception e)
+			{
+				Utility.LoggingNonFatalError(e);
+			}
+		}
+
+		public void SetWhatsNewDetailImage(List<WhatsNewDetailImageModel> containedImage)
+		{
+			try
+			{
+				SpannableString whatsNewDetailString = new SpannableString(txtDescription.TextFormatted);
+
+				var imageSpans = whatsNewDetailString.GetSpans(0, whatsNewDetailString.Length(), Java.Lang.Class.FromType(typeof(ImageSpan)));
+
+				if (imageSpans != null && imageSpans.Length > 0)
+				{
+					for (int j = 0; j < imageSpans.Length; j++)
+					{
+						if (containedImage[j].ExtractedImageBitmap != null)
+                        {
+							float currentImgWidth = this.Resources.DisplayMetrics.WidthPixels - DPUtils.ConvertDPToPx(36f);
+							float calImgRatio = currentImgWidth / containedImage[j].ExtractedImageBitmap.Width;
+							int currentImgHeight = (int) (containedImage[j].ExtractedImageBitmap.Height * calImgRatio);
+							ImageSpan imageSpan = new ImageSpan(this, Bitmap.CreateScaledBitmap(containedImage[j].ExtractedImageBitmap, (int) currentImgWidth, currentImgHeight, false), SpanAlign.Baseline);
+							ImageSpan ImageItem = imageSpans[j] as ImageSpan;
+							int startIndex = whatsNewDetailString.GetSpanStart(imageSpans[j]);
+							int endIndex = whatsNewDetailString.GetSpanEnd(imageSpans[j]);
+							whatsNewDetailString.RemoveSpan(imageSpans[j]);
+							whatsNewDetailString.SetSpan(imageSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
+						}
+					}
+
+					txtDescription.TextFormatted = whatsNewDetailString;
+				}
+			}
+			catch (Exception e)
+			{
+				Utility.LoggingNonFatalError(e);
+			}
+		}
+
+		public void HideWhatsNewDetailImage()
+        {
+			try
+            {
+				whatsNewMainShimmerImgLayout.Visibility = ViewStates.Gone;
+				if (shimmerWhatsNewImageLayout.IsShimmerStarted)
+				{
+					shimmerWhatsNewImageLayout.StopShimmer();
+				}
+
+				whatsNewImg.Visibility = ViewStates.Gone;
 			}
 			catch (Exception e)
 			{
@@ -349,7 +557,7 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 					Bitmap mDefaultBitmap = BitmapFactory.DecodeResource(this.Resources, Resource.Drawable.promotions_default_image, opt);
 
                     whatsNewImg.SetImageBitmap(mDefaultBitmap);
-                }
+				}
 				else if (imgSrc != null)
 				{
 					LocalItem.ImageBitmap = imgSrc;
@@ -404,6 +612,46 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 			}
 		}
 
+		public void SetupFullScreenShimmer()
+        {
+			try
+			{
+				whatsNewNormalDetailLayout.Visibility = ViewStates.Gone;
+				whatsNewFullScreenShimmerLayout.Visibility = ViewStates.Visible;
+
+				if (shimmerFullScreenLayout.IsShimmerStarted)
+				{
+					shimmerFullScreenLayout.StopShimmer();
+				}
+				var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+				if (shimmerBuilder != null)
+				{
+					shimmerFullScreenLayout.SetShimmer(shimmerBuilder?.Build());
+				}
+				shimmerFullScreenLayout.StartShimmer();
+			}
+			catch (Exception e)
+			{
+				Utility.LoggingNonFatalError(e);
+			}
+		}
+
+		public void StopFullScreenShimmer()
+		{
+			try
+			{
+				whatsNewFullScreenShimmerLayout.Visibility = ViewStates.Gone;
+				if (shimmerFullScreenLayout.IsShimmerStarted)
+				{
+					shimmerFullScreenLayout.StopShimmer();
+				}
+			}
+			catch (Exception e)
+			{
+				Utility.LoggingNonFatalError(e);
+			}
+		}
+
 		class ClickSpan : ClickableSpan
 		{
 			public Action<View> Click;
@@ -433,26 +681,229 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 			{
 				HideNoInternetSnackbar();
 
-				if (!string.IsNullOrEmpty(url) && (url.Contains("http") || url.Contains("www.")))
+				if (!string.IsNullOrEmpty(url))
 				{
 					if (!this.GetIsClicked())
 					{
 						this.SetIsClicked(true);
-
-						if (!url.Contains("http"))
+						if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[0])
+							|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[1])
+							|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[6]))
 						{
-							url = "http://" + url;
-						}
+							string uri = url;
+							if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[0]))
+							{
+								uri = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[0])[1];
+							}
+							else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[1]))
+							{
+								uri = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[1])[1];
+							}
 
-						Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
-						webIntent.PutExtra(Constants.IN_APP_LINK, url);
-						webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
-						StartActivity(webIntent);
+							string compareText = uri.ToLower();
+
+							if (!compareText.Contains("http"))
+							{
+								uri = "http://" + uri;
+							}
+
+							if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[1]))
+							{
+								Intent intent = new Intent(Intent.ActionView);
+								intent.SetData(Android.Net.Uri.Parse(uri));
+								this.StartActivity(intent);
+							}
+							else
+							{
+								if (compareText.Contains(".pdf") && !compareText.Contains("docs.google"))
+								{
+									Intent webIntent = new Intent(this, typeof(BasePDFViewerActivity));
+									webIntent.PutExtra(Constants.IN_APP_LINK, uri);
+									webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
+									this.StartActivity(webIntent);
+								}
+								else if (compareText.Contains(".jpeg") || compareText.Contains(".jpg") || compareText.Contains(".png"))
+								{
+									Intent webIntent = new Intent(this, typeof(BaseFullScreenImageViewActivity));
+									webIntent.PutExtra(Constants.IN_APP_LINK, uri);
+									webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
+									this.StartActivity(webIntent);
+								}
+								else
+								{
+									Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+									webIntent.PutExtra(Constants.IN_APP_LINK, uri);
+									webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
+									this.StartActivity(webIntent);
+								}
+							}
+						}
+						else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[2])
+									|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[7]))
+						{
+							string phonenum = url;
+							if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[2]))
+							{
+								phonenum = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[2])[1];
+							}
+							if (!string.IsNullOrEmpty(phonenum))
+							{
+								if (!phonenum.Contains("tel:"))
+								{
+									phonenum = "tel:" + phonenum;
+								}
+
+								var call = Android.Net.Uri.Parse(phonenum);
+								var callIntent = new Intent(Intent.ActionView, call);
+								this.StartActivity(callIntent);
+							}
+							else
+							{
+								this.SetIsClicked(false);
+							}
+						}
+						else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[3])
+									|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[8]))
+						{
+							string whatsnewid = url;
+							if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[3]))
+							{
+								whatsnewid = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[3])[1];
+							}
+							else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[8]))
+							{
+								whatsnewid = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[8])[1];
+							}
+
+							if (!string.IsNullOrEmpty(whatsnewid))
+							{
+								if (!whatsnewid.Contains("{"))
+								{
+									whatsnewid = "{" + whatsnewid;
+								}
+
+								if (!whatsnewid.Contains("}"))
+								{
+									whatsnewid = whatsnewid + "}";
+								}
+
+								WhatsNewEntity wtManager = new WhatsNewEntity();
+
+								WhatsNewEntity item = wtManager.GetItem(whatsnewid);
+
+								if (item != null)
+								{
+									if (!item.Read)
+									{
+										this.presenter.UpdateWhatsNewRead(item.ID, true);
+									}
+
+									Intent activity = new Intent(this, typeof(WhatsNewDetailActivity));
+									activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsnewid);
+									activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
+									this.StartActivity(activity);
+								}
+								else
+								{
+									this.SetIsClicked(false);
+								}
+							}
+							else
+							{
+								this.SetIsClicked(false);
+							}
+						}
+						else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[4])
+									|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[9]))
+						{
+							string faqid = url;
+							if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[4]))
+							{
+								faqid = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[4])[1];
+							}
+							else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[9]))
+							{
+								faqid = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[9])[1];
+							}
+
+							if (!string.IsNullOrEmpty(faqid))
+							{
+								if (!faqid.Contains("{"))
+								{
+									faqid = "{" + faqid;
+								}
+
+								if (!faqid.Contains("}"))
+								{
+									faqid = faqid + "}";
+								}
+
+								Intent faqIntent = new Intent(this, typeof(FAQListActivity));
+								faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+								this.StartActivity(faqIntent);
+							}
+							else
+							{
+								this.SetIsClicked(false);
+							}
+						}
+						else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[5])
+									|| url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[10]))
+						{
+							string rewardid = url;
+							if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[5]))
+							{
+								rewardid = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[5])[1];
+							}
+							else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[10]))
+							{
+								rewardid = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[10])[1];
+							}
+
+							if (!string.IsNullOrEmpty(rewardid))
+							{
+								if (!rewardid.Contains("{"))
+								{
+									rewardid = "{" + rewardid;
+								}
+
+								if (!rewardid.Contains("}"))
+								{
+									rewardid = rewardid + "}";
+								}
+
+								RewardsEntity wtManager = new RewardsEntity();
+
+								RewardsEntity item = wtManager.GetItem(rewardid);
+
+								if (item != null)
+								{
+									if (!item.Read)
+									{
+										this.presenter.UpdateRewardRead(item.ID, true);
+									}
+
+									Intent activity = new Intent(this, typeof(RewardDetailActivity));
+									activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardid);
+									activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
+									this.StartActivity(activity);
+								}
+								else
+								{
+									this.SetIsClicked(false);
+								}
+							}
+							else
+							{
+								this.SetIsClicked(false);
+							}
+						}
 					}
 				}
 			}
 			catch (Exception e)
 			{
+				this.SetIsClicked(false);
 				Utility.LoggingNonFatalError(e);
 			}
 		}
@@ -570,6 +1021,97 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 			}
 		}
 
+		public string GetLocalItemID()
+        {
+			return LocalItem.ID;
+		}
+
+		public void OnUpdateFullScreenPdf(string path)
+		{
+			try
+			{
+				RunOnUiThread(() =>
+				{
+					try
+					{
+						fullScreenFirstLoaded = true;
+						StopFullScreenShimmer();
+						whatsNewFullPDFDetailLayout.Visibility = ViewStates.Visible;
+
+						Java.IO.File file = new Java.IO.File(path);
+
+						pdfFullView
+							.FromFile(file)
+							.Show();
+
+					}
+					catch (Exception ex)
+					{
+						Utility.LoggingNonFatalError(ex);
+					}
+				});
+			}
+			catch (Exception e)
+			{
+				Utility.LoggingNonFatalError(e);
+			}
+		}
+
+		public void OnUpdateFullScreenImage(Bitmap fullBitmap)
+        {
+			try
+			{
+				RunOnUiThread(() =>
+				{
+					try
+					{
+						fullScreenFirstLoaded = true;
+						StopFullScreenShimmer();
+						whatsNewFullImageDetailLayout.Visibility = ViewStates.Visible;
+
+						imgFullView
+							.FromBitmap(fullBitmap)
+							.Show();
+					}
+					catch (Exception ex)
+					{
+						Utility.LoggingNonFatalError(ex);
+					}
+				});
+			}
+			catch (Exception e)
+			{
+				Utility.LoggingNonFatalError(e);
+			}
+		}
+
+		public string GenerateTmpFilePath()
+        {
+			string path = "";
+			try
+            {
+				string rootPath = this.FilesDir.AbsolutePath;
+
+				if (Utils.FileUtils.IsExternalStorageReadable() && Utils.FileUtils.IsExternalStorageWritable())
+				{
+					rootPath = this.GetExternalFilesDir(null).AbsolutePath;
+				}
+
+				var directory = System.IO.Path.Combine(rootPath, "pdf");
+				if (!Directory.Exists(directory))
+				{
+					Directory.CreateDirectory(directory);
+				}
+
+				string filename = "tmpWhatNew.pdf";
+				path = System.IO.Path.Combine(directory, filename);
+			}
+			catch (Exception e)
+            {
+				Utility.LoggingNonFatalError(e);
+            }
+			return path;
+        }
 
 		public class LinkBuilder
 		{

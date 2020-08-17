@@ -12,14 +12,11 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-
-        <ImageView
+        <myTNB_Android.Src.Utils.ZoomImageView.ZoomImageView
             android:id="@+id/imgFeedback"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true"/>
+            android:layout_height="match_parent"/>
+
     </FrameLayout>
 
 </LinearLayout>

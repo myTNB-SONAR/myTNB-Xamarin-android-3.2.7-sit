@@ -48,22 +48,22 @@ namespace myTNB_Android.Src.Utils
             String deviceDensity = "hdpi";
             switch (context.Resources.DisplayMetrics.DensityDpi)
             {
-                case DisplayMetrics.DensityLow:
+                case DisplayMetricsDensity.Low:
                     deviceDensity = "mdpi";
                     break;
-                case DisplayMetrics.DensityMedium:
+                case DisplayMetricsDensity.Medium:
                     deviceDensity = "mdpi";
                     break;
-                case DisplayMetrics.DensityHigh:
+                case DisplayMetricsDensity.High:
                     deviceDensity = "hdpi";
                     break;
-                case DisplayMetrics.DensityXhigh:
+                case DisplayMetricsDensity.Xhigh:
                     deviceDensity = "xhdpi";
                     break;
-                case DisplayMetrics.DensityXxhigh:
+                case DisplayMetricsDensity.Xxhigh:
                     deviceDensity = "xxhdpi";
                     break;
-                case DisplayMetrics.DensityXxxhigh:
+                case DisplayMetricsDensity.Xxxhigh:
                     deviceDensity = "xxxhdpi";
                     break;
             }

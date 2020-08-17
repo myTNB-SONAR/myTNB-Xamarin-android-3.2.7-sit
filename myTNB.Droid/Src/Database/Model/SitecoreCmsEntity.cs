@@ -22,7 +22,14 @@ namespace myTNB_Android.Src.Database.Model
             LANGUAGE_URL,
             LANGUAGE_EN,
             LANGUAGE_MS,
-            COUNTRY
+            COUNTRY,
+            EPP_TOOLTIP,
+            WHERE_IS_MY_ACC,
+            WHO_IS_REGISTERED_OWNER,
+            DO_I_NEED_OWNER_CONSENT,
+            HOW_DOES_COPY_IC,
+            HOW_DOES_PROOF_OF_CONSENT
+
         }
 
         public static void CreateTable()
@@ -114,6 +121,21 @@ namespace myTNB_Android.Src.Database.Model
                 Console.WriteLine("Error in Get All Items : {0}", e.Message);
             }
             return true;
+        }
+
+        public static void DeleteSitecoreRecord(SITE_CORE_ID itemId)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("DELETE FROM SitecoreCmsEntity where itemId = ?", itemId.ToString());
+
+                
+            }
+            catch (System.Exception e)
+            {
+                Console.WriteLine("Error in Delete Items : {0}", e.Message);
+            }
         }
 
         public static List<SitecoreCmsEntity> GetAllItems()

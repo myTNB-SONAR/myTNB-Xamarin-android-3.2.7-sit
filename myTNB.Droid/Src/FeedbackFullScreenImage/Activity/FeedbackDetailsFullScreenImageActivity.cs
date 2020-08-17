@@ -5,9 +5,11 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Com.Davemorrissey.Labs.Subscaleview;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.ZoomImageView;
 using Square.Picasso;
 using System;
 using System.Runtime;
@@ -23,7 +25,7 @@ namespace myTNB_Android.Src.FeedbackFullScreenImage.Activity
         AttachedImage attachedImage;
 
         [BindView(Resource.Id.imgFeedback)]
-        ImageView imgFeedback;
+        ZoomImageView imgFeedback;
 
 
         public override int ResourceId()
@@ -57,28 +59,12 @@ namespace myTNB_Android.Src.FeedbackFullScreenImage.Activity
                 }
 
                 base.OnCreate(savedInstanceState);
-                imgFeedback.Visibility = ViewStates.Visible;
-                // Create your application here
-                //Picasso.With(this)
-                //    .Load(new Java.IO.File(attachedImage.Path))
-                //    .Fit()
-                //    .Into(imgFeedback , delegate 
-                //    {
-                //        if (imgProgress != null)
-                //        {
-                //            imgProgress.Visibility = ViewStates.Gone;
-                //        }
-                //        if (imgFeedback != null)
-                //        {
-                //            imgFeedback.Visibility = ViewStates.Visible;
-                //        }
 
-                //    } , delegate { } );
+                Java.IO.File temp = new Java.IO.File(attachedImage.Path);
 
-                Picasso.With(this)
-                    .Load(new Java.IO.File(attachedImage.Path))
-                    .Fit()
-                    .Into(imgFeedback);
+                imgFeedback
+                    .FromFile(temp.Path)
+                    .Show();
             }
             catch (Exception e)
             {

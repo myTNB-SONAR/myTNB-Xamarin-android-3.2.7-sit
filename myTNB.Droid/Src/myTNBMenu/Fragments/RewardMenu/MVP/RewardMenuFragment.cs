@@ -183,6 +183,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 var actionBar = act.SupportActionBar;
                 actionBar.Show();
                 ShowBackButton(false);
+
+                ((DashboardHomeActivity)this.Activity).RemoveHeaderDropDown();
+                ((DashboardHomeActivity)this.Activity).HideAccountName();
+                ((DashboardHomeActivity)this.Activity).SetToolBarTitle(Utility.GetLocalizedLabel("Tabbar", "rewards"));
             }
             catch (System.Exception e)
             {
@@ -348,7 +352,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
         private void SettingMargin(ViewGroup.MarginLayoutParams layoutParams, int start, int end)
         {
-            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.JellyBeanMr1)
+            if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.JellyBeanMr1)
             {
                 layoutParams.MarginStart = start;
                 layoutParams.MarginEnd = end;
@@ -472,11 +476,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                         {
                             if (RewardsEntity.HasUnread())
                             {
-                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards();
                             }
                             else
                             {
-                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards();
                             }
                         }
                         catch (System.Exception ex)
@@ -638,11 +642,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                         {
                             if (RewardsEntity.HasUnread())
                             {
-                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards();
                             }
                             else
                             {
-                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards();
                             }
                         }
                         catch (System.Exception ex)
@@ -706,11 +710,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                         {
                             if (RewardsEntity.HasUnread())
                             {
-                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).ShowUnreadRewards();
                             }
                             else
                             {
-                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards(true);
+                                ((DashboardHomeActivity)this.Activity).HideUnreadRewards();
                             }
                         }
                         catch (System.Exception ex)

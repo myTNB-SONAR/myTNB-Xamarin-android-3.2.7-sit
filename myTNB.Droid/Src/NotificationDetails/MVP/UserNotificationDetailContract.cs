@@ -15,7 +15,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             void PayNow(AccountData mSelectedAccountData);
             void ContactUs(WeblinkEntity entity);
             void ViewUsage(AccountData mSelectedAccountData);
-            void ViewDetails(AccountData mSelectedAccountData, AccountChargeModel accountChargeModel);
+            void ViewDetails(AccountData mSelectedAccountData);
             void SubmitMeterReading(AccountData mSelectedAccountData, SMRActivityInfoResponse SMRAccountActivityInfoResponse);
             void EnableSelfMeterReading(AccountData mSelectedAccountData);
             void ViewBillHistory(AccountData mSelectedAccountData);

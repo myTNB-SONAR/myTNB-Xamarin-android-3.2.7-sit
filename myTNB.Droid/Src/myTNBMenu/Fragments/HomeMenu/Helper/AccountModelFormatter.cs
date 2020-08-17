@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Globalization;
 using Java.Text;
 using myTNB_Android.Src.Base.Helper;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
 {
@@ -15,7 +17,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
 
         public static string GetFormatAmount(string amountDue)
         {
-            DecimalFormat decimalFormatter = new DecimalFormat("###,###,###,###,##0.00");
+            DecimalFormat decimalFormatter = new DecimalFormat("###,###,###,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
             string formattedValue = "";
             if (amountDue != null && amountDue != "")
             {
@@ -27,19 +29,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
                 {
                     formattedValue = amountDue;
                 }
-                formattedValue = "RM " + decimalFormatter.Format(double.Parse(formattedValue));
+                CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                formattedValue = "RM " + decimalFormatter.Format(double.Parse(formattedValue, currCult));
             }
             return formattedValue;
         }
 
         public static string GetBillDueNote(int accountType, string amountDue, string dueDate, bool isTaggedSMR)
         {
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
             string dueAmountNote = "";
             if (accountType == 2)
             {
                 if ((amountDue != null && amountDue != "") && (dueDate != null && dueDate != ""))
                 {
-                    double checkAmount = double.Parse(amountDue) * -1;
+                    double checkAmount = double.Parse(amountDue, currCult) * -1;
                     if (checkAmount <= 0.00)
                     {
                         if (checkAmount < 0.00)
@@ -65,9 +69,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
             {
                 if ((amountDue != null && amountDue != "") && (dueDate != null && dueDate != ""))
                 {
-                    if (double.Parse(amountDue) <= 0.00)
+
+                    if (double.Parse(amountDue, currCult) <= 0.00)
                     {
-                        if (double.Parse(amountDue) < 0.00)
+                        if (double.Parse(amountDue, currCult) < 0.00)
                         {
                             dueAmountNote = Utility.GetLocalizedLabel("DashboardHome", "paidExtra");
                         }
@@ -87,20 +92,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
 
         public static bool IsNegativeAmount(string amountDue)
         {
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
             bool IsNegativeAmountValue = false;
             if (amountDue != null && amountDue != "")
             {
-                IsNegativeAmountValue = double.Parse(amountDue) < 0.00;
+                IsNegativeAmountValue = double.Parse(amountDue, currCult) < 0.00;
             }
             return IsNegativeAmountValue;
         }
 
         public static bool IsAmountCleared(string amountDue)
         {
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
             bool IsAmountClearedValue = false;
             if (amountDue != null && amountDue != "")
             {
-                IsAmountClearedValue = double.Parse(amountDue) == 0.00;
+                IsAmountClearedValue = double.Parse(amountDue, currCult) == 0.00;
             }
             return IsAmountClearedValue;
         }

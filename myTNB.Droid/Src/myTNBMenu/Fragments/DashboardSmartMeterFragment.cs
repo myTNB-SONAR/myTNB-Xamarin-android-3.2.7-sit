@@ -542,7 +542,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     txtRange.Text = GetString(Resource.String.dashboard_smart_meter_available_soon);
                     if (bcrmEntity.IsDown)
                     {
-                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                         {
                             txtAddress.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
                         }
@@ -1491,18 +1491,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 materialDialog.Dismiss();
             };
 
-            if (textMessage != "")
-            {
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                {
-                    dialogDetailsText.TextFormatted = Html.FromHtml(textMessage, FromHtmlOptions.ModeLegacy);
-                }
-                else
-                {
-                    dialogDetailsText.TextFormatted = Html.FromHtml(textMessage);
-                }
-            }
-
             if (dialogDetailsText != null)
             {
                 TextViewUtils.SetMuseoSans300Typeface(dialogDetailsText);
@@ -2434,7 +2422,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? Activity.GetString(Resource.String.tooltip_what_does_this_link);
                 string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage?? Activity.GetString(Resource.String.tooltip_what_does_this_message);
                 string whatDoesThisToolTipBtnLabel = accountStatusData?.AccountStatusModalBtnText ?? Activity.GetString(Resource.String.tooltip_btnLabel);
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     txtAccountStatus.TextFormatted = Html.FromHtml(accountStatusMessage, FromHtmlOptions.ModeLegacy);
                 }

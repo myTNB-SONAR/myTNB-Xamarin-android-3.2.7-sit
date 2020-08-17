@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.MakePayment.Models;
+using myTNB_Android.Src.MultipleAccountPayment.Models;
 
 namespace myTNB_Android.Src.MyTNBService.Response
 {

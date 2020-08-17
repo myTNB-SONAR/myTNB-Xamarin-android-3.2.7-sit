@@ -31,6 +31,7 @@ using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime;
 
@@ -200,7 +201,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 TextViewUtils.SetMuseoSans500Typeface(textTotalPayableCurrency, textTotalPayableTitle);
                 TextViewUtils.SetMuseoSans500Typeface(btnPayBill);
 
-                SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
                 btnPayBill.Text = GetLabelByLanguage("paySingle");
@@ -311,7 +312,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 {
                     total += account.amount;
                 }
-                textTotalPayable.Text = total.ToString("#,##0.00");
+                CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                textTotalPayable.Text = total.ToString("#,##0.00", currCult);
                 if (selectedAccounts.Count > 0)
                 {
                     btnPayBill.Text = string.Format(GetLabelByLanguage("payMultiple"), selectedAccounts.Count);
@@ -672,12 +674,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             {
                 if (accountChargeModel.MandatoryCharges.TotalAmount > 0f)
                 {
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
                     BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryPaymentTooltipData();
                     List<string> ctaList = mandatoryTooltipModel.CTA.Split(',').ToList();
                     string accountId = string.IsNullOrEmpty(account.accountLabel) ? account.accountNumber : account.accountLabel;
                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                         .SetTitle(mandatoryTooltipModel.Title)
-                        .SetMessage(string.Format(mandatoryTooltipModel.Description, "RM" + accountChargeModel.MandatoryCharges.TotalAmount.ToString("#,##0.00"),accountId))
+                        .SetMessage(string.Format(mandatoryTooltipModel.Description, "RM" + accountChargeModel.MandatoryCharges.TotalAmount.ToString("#,##0.00", currCult),accountId))
                         .SetCTALabel(ctaList[0])
                         .SetCTAaction(() => { ShowBillingDetails(accountChargeModel); })
                         .SetSecondaryCTALabel(ctaList[1])

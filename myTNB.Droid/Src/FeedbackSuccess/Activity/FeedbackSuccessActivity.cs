@@ -9,6 +9,7 @@ using Java.Util;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
 using System;
+using System.Globalization;
 using System.Runtime;
 
 namespace myTNB_Android.Src.FeedbackSuccess.Activity
@@ -39,11 +40,6 @@ namespace myTNB_Android.Src.FeedbackSuccess.Activity
         [BindView(Resource.Id.btnBackToFeedback)]
         Button btnBackToFeedback;
 
-        //17/07/2017
-        SimpleDateFormat simpleDateTimeParser = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("dd MMM yyyy h:mm a");
-
-
         private string date;
         private string feedbackId;
 
@@ -72,21 +68,35 @@ namespace myTNB_Android.Src.FeedbackSuccess.Activity
 
                 txtFeedbackIdContent.Text = feedbackId;
                 SetStaticLabels();
-                Date d = null;
 
-                try
+                string dateTime = "NA";
+
+                if (!string.IsNullOrEmpty(date))
                 {
-                    d = simpleDateTimeParser.Parse(date);
-                }
-                catch (Java.Text.ParseException e)
-                {
-                    Utility.LoggingNonFatalError(e);
+                    try
+                    {
+                        dateTime = date;
+                        DateTime dateTimeParse = DateTime.ParseExact(dateTime, "dd'/'MM'/'yyyy HH:mm:ss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+                        if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                        {
+                            CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
+                            dateTime = dateTimeParse.ToString("dd MMM yyyy, h:mm tt", currCult);
+                        }
+                        else
+                        {
+                            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                            dateTime = dateTimeParse.ToString("dd MMM yyyy, h:mm tt", currCult);
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        dateTime = "NA";
+                        Utility.LoggingNonFatalError(e);
+                    }
                 }
 
-                if (d != null)
-                {
-                    txtTransactionScheduleContent.Text = simpleDateTimeFormat.Format(d);
-                }
+                txtTransactionScheduleContent.Text = dateTime;
             }
             catch (Exception e)
             {

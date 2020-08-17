@@ -1,5 +1,6 @@
-﻿using AFollestad.MaterialDialogs;
-using Android.Animation;
+﻿using System;
+using System.Collections.Generic;
+using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -14,7 +15,6 @@ using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Text.Method;
 using Android.Text.Style;
-using Android.Util;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
@@ -31,10 +31,9 @@ using MikePhil.Charting.Highlight;
 using MikePhil.Charting.Interfaces.Datasets;
 using MikePhil.Charting.Jobs;
 using MikePhil.Charting.Listener;
-using MikePhil.Charting.Util;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.Database.Model;
@@ -51,19 +50,15 @@ using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Notifications.Activity;
+using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
-using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.Charts;
 using myTNB_Android.Src.ViewBill.Activity;
+using myTNB_Android.Src.WhatsNewDetail.MVP;
 using Newtonsoft.Json;
-using Refit;
-using System;
-using System.Collections.Generic;
 using static MikePhil.Charting.Components.XAxis;
 using static MikePhil.Charting.Components.YAxis;
-using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
 using static myTNB_Android.Src.myTNBMenu.Listener.NMRESMDashboardScrollView;
 using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
@@ -485,6 +480,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.txtReNoPayableCurrency)]
         TextView txtReNoPayableCurrency;
 
+        [BindView(Resource.Id.dashboard_bottom_view)]
+        LinearLayout dashboard_bottom_view;
+
+        [BindView(Resource.Id.dashboard_top_view)]
+        LinearLayout dashboard_top_view;
+
+        [BindView(Resource.Id.infoLabelContainerEPP)]
+        LinearLayout infoLabelEPP;
+
+        [BindView(Resource.Id.infoLabelEPP)]
+        TextView lblinfoLabelEPP;
+
+
         private static bool isZoomIn = false;
 
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
@@ -501,13 +509,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private static bool isREAccount = false;
 
-        DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00");
-        SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
+        DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
+        SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy", LocaleUtils.GetDefaultLocale());
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
         IAxisValueFormatter XLabelsFormatter;
         private string errorMSG = null;
-
-        private MaterialDialog mWhyThisAmtCardDialog;
 
         public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
 
@@ -600,9 +606,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private bool mIsPendingPayment = false;
 
-
-        private DecimalFormat smDecimalFormat = new DecimalFormat("#,###,##0.00");
-        private DecimalFormat smKwhFormat = new DecimalFormat("#,###,##0");
+        private DecimalFormat smDecimalFormat = new DecimalFormat("#,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
+        private DecimalFormat smKwhFormat = new DecimalFormat("#,###,##0", new DecimalFormatSymbols(Java.Util.Locale.Us));
 
         ScaleGestureDetector mScaleDetector;
 
@@ -879,8 +884,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 btnToggleMonth.Text = Utility.GetLocalizedCommonLabel("month");
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
-                DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
 
                 isZoomIn = false;
 
@@ -902,13 +905,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 try
                 {
-                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                     ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 }
                 catch (System.Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
                 }
+
+                dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
 
                 if (selectedAccount != null)
                 {
@@ -944,7 +949,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnViewBill.Text = Utility.GetLocalizedLabel("Usage", "viewDetails");
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
-                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
                         isChangeBackgroundNeeded = true;
                         layoutSMSegmentGroup.Visibility = ViewStates.Visible;
                         isSMR = false;
@@ -959,11 +963,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             isChangeVirtualHeightNeed = true;
                             SetVirtualHeightParams(6f);
                             isChangeBackgroundNeeded = true;
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
                         }
                         else
                         {
                             HideSSMRDashboardView();
+                            dashboard_bottom_view.SetBackgroundResource(0);
                             isChangeVirtualHeightNeed = true;
                             rootView.SetBackgroundResource(0);
                             scrollViewContent.SetBackgroundResource(0);
@@ -1032,6 +1036,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 else
                 {
                     HideSSMRDashboardView();
+                    dashboard_bottom_view.SetBackgroundResource(0);
                     rootView.SetBackgroundResource(0);
                     scrollViewContent.SetBackgroundResource(0);
                     isChangeVirtualHeightNeed = true;
@@ -1058,138 +1063,106 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                 }
 
-                //if (isBCRMDown)
-                //{
-                //    ShowAmountDueNotAvailable();
+                ((DashboardHomeActivity)Activity).HideAccountName();
+                dashboardAccountName.Visibility = ViewStates.Gone;
+                dashboardAccountName.Text = selectedAccount.AccountNickName;
+                List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+                bool enableDropDown = accountList.Count > 0 ? true : false;
+                if (enableDropDown)
+                {
+                    Drawable dropdown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_spinner_dropdown);
+                    Drawable transparentDropDown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_action_dropdown);
+                    transparentDropDown.Alpha = 0;
+                    dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(transparentDropDown, null, dropdown, null);
+                }
+                else
+                {
+                    dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                }
 
-                //    HideSSMRDashboardView();
-                //    energyTipsView.Visibility = ViewStates.Gone;
-                //    dashboardAccountName.Visibility = ViewStates.Gone;
+                tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
+                LinearLayoutManager linearTariffBlockLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Vertical, false);
+                tariffBlockLegendRecyclerView.SetLayoutManager(linearTariffBlockLayoutManager);
 
-                //    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                //    {
-                //        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
-                //    }
-                //    else
-                //    {
-                //        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
-                //    }
+                energyTipsView.Visibility = ViewStates.Gone;
+                energyTipsShimmerView.Visibility = ViewStates.Gone;
 
-                //    this.userActionsListener?.Start();
+                LinearLayoutManager linearEnergyTipLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+                energyTipsList.SetLayoutManager(linearEnergyTipLayoutManager);
+                energyTipsList.NestedScrollingEnabled = true;
 
-                //    //Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                //    //    bcrmEntity.DowntimeTextMessage,
-                //    //    Snackbar.LengthLong);
-                //    //View v = downtimeSnackBar.View;
-                //    //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                //    //tv.SetMaxLines(5);
-                //    //downtimeSnackBar.Show();
+                LinearSnapHelper snapHelper = new LinearSnapHelper();
+                snapHelper.AttachToRecyclerView(energyTipsList);
 
+                LinearLayoutManager linearEnergyTipShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+                energyTipsShimmerList.SetLayoutManager(linearEnergyTipShimmerLayoutManager);
+                energyTipsShimmerList.NestedScrollingEnabled = true;
 
-                //}
-                //else
-                //{
-                    ((DashboardHomeActivity)Activity).HideAccountName();
-                    dashboardAccountName.Visibility = ViewStates.Gone;
-                    dashboardAccountName.Text = selectedAccount.AccountNickName;
-                    List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-                    bool enableDropDown = accountList.Count > 0 ? true : false;
-                    if (enableDropDown)
+                LinearSnapHelper snapShimmerHelper = new LinearSnapHelper();
+                snapShimmerHelper.AttachToRecyclerView(energyTipsShimmerList);
+
+                DisablePayButton();
+                DisableViewBillButton();
+
+                energyDisconnectionButton.Visibility = ViewStates.Gone;
+
+                if (isUsageLoadedNeeded)
+                {
+                    rmKwhSelection.Enabled = false;
+                    tarifToggle.Enabled = false;
+                    btnToggleDay.Enabled = false;
+                    btnToggleMonth.Enabled = false;
+                    txtRange.Visibility = ViewStates.Gone;
+                    StartRangeShimmer();
+                    mChart.Visibility = ViewStates.Gone;
+                    StartGraphShimmer();
+                }
+                else
+                {
+                    rmKwhSelection.Enabled = true;
+                    rmKwhLabel.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                    imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle);
+                    tarifToggle.Enabled = true;
+                    btnToggleDay.Enabled = true;
+                    btnToggleMonth.Enabled = true;
+                }
+
+                re_img.Visibility = ViewStates.Gone;
+                rePayableLayout.Visibility = ViewStates.Gone;
+                totalPayableLayout.Visibility = ViewStates.Gone;
+                noPayableLayout.Visibility = ViewStates.Gone;
+
+                StartAmountDueShimmer();
+
+                StartSMStatisticShimmer();
+
+                energyDisconnectionButton.Visibility = ViewStates.Gone;
+
+                // Lin Siong Note: Energy Saving Tip On Start Shimmer and get data
+                if (selectedAccount != null)
+                {
+                    if (!selectedAccount.AccountCategoryId.Equals("2"))
                     {
-                        Drawable dropdown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_spinner_dropdown);
-                        Drawable transparentDropDown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_action_dropdown);
-                        transparentDropDown.Alpha = 0;
-                        dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(transparentDropDown, null, dropdown, null);
-                    }
-                    else
-                    {
-                        dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                    }
-
-                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
-                    tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
-                    LinearLayoutManager linearTariffBlockLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Vertical, false);
-                    tariffBlockLegendRecyclerView.SetLayoutManager(linearTariffBlockLayoutManager);
-
-                    energyTipsView.Visibility = ViewStates.Gone;
-                    energyTipsShimmerView.Visibility = ViewStates.Gone;
-
-                    LinearLayoutManager linearEnergyTipLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
-                    energyTipsList.SetLayoutManager(linearEnergyTipLayoutManager);
-                    energyTipsList.NestedScrollingEnabled = true;
-
-                    LinearSnapHelper snapHelper = new LinearSnapHelper();
-                    snapHelper.AttachToRecyclerView(energyTipsList);
-
-                    LinearLayoutManager linearEnergyTipShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
-                    energyTipsShimmerList.SetLayoutManager(linearEnergyTipShimmerLayoutManager);
-                    energyTipsShimmerList.NestedScrollingEnabled = true;
-
-                    LinearSnapHelper snapShimmerHelper = new LinearSnapHelper();
-                    snapShimmerHelper.AttachToRecyclerView(energyTipsShimmerList);
-
-                    DisablePayButton();
-                    DisableViewBillButton();
-
-                    energyDisconnectionButton.Visibility = ViewStates.Gone;
-
-                    if (isUsageLoadedNeeded)
-                    {
-                        rmKwhSelection.Enabled = false;
-                        tarifToggle.Enabled = false;
-                        btnToggleDay.Enabled = false;
-                        btnToggleMonth.Enabled = false;
-                        txtRange.Visibility = ViewStates.Gone;
-                        StartRangeShimmer();
-                        mChart.Visibility = ViewStates.Gone;
-                        StartGraphShimmer();
-                    }
-                    else
-                    {
-                        rmKwhSelection.Enabled = true;
-                        rmKwhLabel.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
-                        imgRmKwhDropdownArrow.SetImageResource(Resource.Drawable.rectangle);
-                        tarifToggle.Enabled = true;
-                        btnToggleDay.Enabled = true;
-                        btnToggleMonth.Enabled = true;
-                    }
-
-                    re_img.Visibility = ViewStates.Gone;
-                    rePayableLayout.Visibility = ViewStates.Gone;
-                    totalPayableLayout.Visibility = ViewStates.Gone;
-                    noPayableLayout.Visibility = ViewStates.Gone;
-
-                    StartAmountDueShimmer();
-
-                    StartSMStatisticShimmer();
-
-                    energyDisconnectionButton.Visibility = ViewStates.Gone;
-
-                    // Lin Siong Note: Energy Saving Tip On Start Shimmer and get data
-                    if (selectedAccount != null)
-                    {
-                        if (!selectedAccount.AccountCategoryId.Equals("2"))
+                        bool isGetEnergyTipsDisabled = false;
+                        if (MyTNBAccountManagement.GetInstance().IsEnergyTipsDisabled())
                         {
-                            bool isGetEnergyTipsDisabled = false;
-                            if (MyTNBAccountManagement.GetInstance().IsEnergyTipsDisabled())
-                            {
-                                isGetEnergyTipsDisabled = true;
-                            }
+                            isGetEnergyTipsDisabled = true;
+                        }
 
-                            if (!isGetEnergyTipsDisabled)
-                            {
-                                OnGetEnergyTipsItems();
-                            }
+                        if (!isGetEnergyTipsDisabled)
+                        {
+                            OnGetEnergyTipsItems();
                         }
                     }
+                }
 
-                    this.userActionsListener?.Start();
+                this.userActionsListener?.Start();
 
-                    if (!string.IsNullOrEmpty(errorMSG))
+                if (!string.IsNullOrEmpty(errorMSG))
                     {
                         ShowUnableToFecthSmartMeterData(errorMSG);
                     }
-                //}
 
                 txtNewRefreshMessage.Click += delegate
                 {
@@ -1288,6 +1261,62 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        class DPCClickSpan : ClickableSpan
+        {
+            public Action<View> Click;
+            public Color textColor { get; set; }
+            public Typeface typeFace { get; set; }
+
+            public override void OnClick(View widget)
+            {
+                if (Click != null)
+                {
+                    Click(widget);
+                }
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.Color = textColor;
+                ds.SetTypeface(typeFace);
+                ds.UnderlineText = false;
+            }
+        }
+
+ 
+        public void ShowBillPDF()
+        {
+            Intent viewBill = new Intent(this.activity, typeof(ViewBillActivity));
+            viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
+            StartActivity(viewBill);
+            this.SetIsClicked(false);
+        }
+  
+        private void showEPPTooltip()
+        {
+            List<EPPTooltipResponse> modelList = MyTNBAppToolTipData.GetEppToolTipData();
+
+            if (modelList != null && modelList.Count > 0)
+            {
+                MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+                    .SetHeaderImageBitmap(modelList[0].ImageBitmap)
+                    .SetTitle(modelList[0].PopUpTitle)
+                    .SetMessage(modelList[0].PopUpBody)
+                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                    .SetCTAaction(() => { this.SetIsClicked(false); })
+                    .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("viewBill"))
+                    .SetSecondaryCTAaction(() => ShowBillPDF())
+                    .Build();
+                eppTooltip.Show();
+            }
+            else
+            {
+                this.SetIsClicked(false);
+            }
+        }
+
         [OnClick(Resource.Id.smStatisticTooltip)]
         void OnSMStatisticTooltipClick(object sender, EventArgs eventArgs)
         {
@@ -1316,73 +1345,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                 }
 
-                MaterialDialog materialDialog = new MaterialDialog.Builder(Activity)
-                        .CustomView(Resource.Layout.WhatIsThisDialogView, false)
-                        .Cancelable(false)
+                if (textMessage != "" && btnLabel != "")
+                {
+                    MyTNBAppToolTipBuilder whatIsThisTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_STRETCHABLE)
+                        .SetMessage(textMessage)
+                        .SetCTALabel(btnLabel)
                         .Build();
-
-                View view = materialDialog.View;
-                TextView dialogDetailsText = view.FindViewById<TextView>(Resource.Id.txtDialogMessage);
-                TextView dialogBtnLabel = view.FindViewById<TextView>(Resource.Id.txtBtnLabel);
-                if (btnLabel != "")
-                {
-                    dialogBtnLabel.Text = btnLabel;
+                    whatIsThisTooltip.Show();
                 }
-                dialogBtnLabel.Click += delegate
-                {
-                    materialDialog.Dismiss();
-                };
-
-                if (textMessage != "")
-                {
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                    {
-                        dialogDetailsText.TextFormatted = Html.FromHtml(textMessage, FromHtmlOptions.ModeLegacy);
-                    }
-                    else
-                    {
-                        dialogDetailsText.TextFormatted = Html.FromHtml(textMessage);
-                    }
-                }
-
-                if (dialogDetailsText != null)
-                {
-                    TextViewUtils.SetMuseoSans300Typeface(dialogDetailsText);
-                }
-                if (dialogBtnLabel != null)
-                {
-                    TextViewUtils.SetMuseoSans500Typeface(dialogBtnLabel);
-                }
-                SpannableString s = new SpannableString(dialogDetailsText.TextFormatted);
-                var clickableSpan = new ClickSpan();
-                clickableSpan.Click += v =>
-                {
-                    if (textMessage != null && textMessage.Contains("faq"))
-                    {
-                        //Lauch FAQ
-                        int startIndex = textMessage.LastIndexOf("=") + 1;
-                        int lastIndex = textMessage.LastIndexOf("}");
-                        int lengthOfId = (lastIndex - startIndex) + 1;
-                        if (lengthOfId < textMessage.Length)
-                        {
-                            string faqid = textMessage.Substring(startIndex, lengthOfId);
-                            if (!string.IsNullOrEmpty(faqid))
-                            {
-                                Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
-                                faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
-                                Activity.StartActivity(faqIntent);
-                            }
-                        }
-                    }
-                };
-                var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
-                int startFAQLink = s.GetSpanStart(urlSpans[0]);
-                int endFAQLink = s.GetSpanEnd(urlSpans[0]);
-                s.RemoveSpan(urlSpans[0]);
-                s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
-                dialogDetailsText.TextFormatted = s;
-                dialogDetailsText.MovementMethod = new LinkMovementMethod();
-                materialDialog.Show();
             }
             catch (System.Exception e)
             {
@@ -1399,6 +1369,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     this.SetIsClicked(true);
                     StartSSMRMeterHistoryPage();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        [OnClick(Resource.Id.infoLabelContainerEPP)]
+        void OnEPPClick(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    showEPPTooltip();
+
                 }
             }
             catch (System.Exception e)
@@ -2122,10 +2110,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 graphBottomPadding = 6;
                 mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(216f);
-            }
-            else if (isSMR)
-            {
-                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(200f);
             }
             else
             {
@@ -4954,18 +4938,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     isToggleTariff = false;
                     if (isChangeBackgroundNeeded)
                     {
-                        if (isSMAccount)
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                        }
-                        else if (isSMR)
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-                        }
-                        else
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
-                        }
+                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                     }
                     DashboardCustomScrolling(0);
 
@@ -4984,14 +4957,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     isToggleTariff = true;
                     if (isChangeBackgroundNeeded)
                     {
-                        if (isSMR)
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_bg);
-                        }
-                        else
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
-                        }
+                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                     }
 
                     isClickedShowTariff = true;
@@ -5014,6 +4980,307 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             catch (System.Exception ne)
             {
                 Utility.LoggingNonFatalError(ne);
+            }
+        }
+
+        private void OnProcessDPCIndicationMessage(string message)
+        {
+            if (!string.IsNullOrEmpty(message))
+            {
+                int whileCount = 0;
+                bool isContained = false;
+                for (int i = 0; i < MyTNBAppToolTipBuilder.RedirectTypeList.Count; i++)
+                {
+                    if (message.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[i]))
+                    {
+                        whileCount = i;
+                        isContained = true;
+                        break;
+                    }
+                }
+
+                if (isContained)
+                {
+                    SpannableString s = new SpannableString(txtTariffBlockLegendDisclaimer.TextFormatted);
+                    var clickableSpan = new DPCClickSpan()
+                    {
+                        textColor = new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)),
+                        typeFace = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+                    };
+                    clickableSpan.Click += v =>
+                    {
+                        if (!this.GetIsClicked())
+                        {
+                            this.SetIsClicked(true);
+                            if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[0]
+                                || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[1]
+                                || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[6])
+                            {
+                                List<string> extractedUrls = this.mPresenter.ExtractUrls(message);
+                                if (extractedUrls.Count > 0)
+                                {
+                                    string compareText = extractedUrls[0].ToLower();
+                                    if (!compareText.Contains("http"))
+                                    {
+                                        extractedUrls[0] = "http://" + extractedUrls[0];
+                                    }
+
+                                    if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[0]
+                                            || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[6])
+                                    {
+                                        if (compareText.Contains(".pdf") && !compareText.Contains("docs.google"))
+                                        {
+                                            Intent webIntent = new Intent(this.Activity, typeof(BasePDFViewerActivity));
+                                            webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                            webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                            this.Activity.StartActivity(webIntent);
+                                        }
+                                        else if (compareText.Contains(".jpeg") || compareText.Contains(".jpg") || compareText.Contains(".png"))
+                                        {
+                                            Intent webIntent = new Intent(this.Activity, typeof(BaseFullScreenImageViewActivity));
+                                            webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                            webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                            this.Activity.StartActivity(webIntent);
+                                        }
+                                        else
+                                        {
+                                            Intent webIntent = new Intent(this.Activity, typeof(BaseWebviewActivity));
+                                            webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
+                                            webIntent.PutExtra(Constants.IN_APP_TITLE, "");
+                                            this.Activity.StartActivity(webIntent);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Intent intent = new Intent(Intent.ActionView);
+                                        intent.SetData(Android.Net.Uri.Parse(extractedUrls[0]));
+                                        this.Activity.StartActivity(intent);
+                                    }
+                                }
+                                else
+                                {
+                                    this.SetIsClicked(false);
+                                }
+                            }
+                            else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[2])
+                            {
+                                int startIndex = message.LastIndexOf("=") + 1;
+                                int lastIndex = message.LastIndexOf("\">") - 1;
+                                int lengthOfId = (lastIndex - startIndex) + 1;
+                                if (lengthOfId < message.Length)
+                                {
+                                    string phonenum = message.Substring(startIndex, lengthOfId);
+                                    if (!string.IsNullOrEmpty(phonenum))
+                                    {
+                                        if (!phonenum.Contains("tel:"))
+                                        {
+                                            phonenum = "tel:" + phonenum;
+                                        }
+
+                                        var call = Android.Net.Uri.Parse(phonenum);
+                                        var callIntent = new Intent(Intent.ActionView, call);
+                                        this.Activity.StartActivity(callIntent);
+                                    }
+                                    else
+                                    {
+                                        this.SetIsClicked(false);
+                                    }
+                                }
+                                else
+                                {
+                                    this.SetIsClicked(false);
+                                }
+                            }
+                            else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[3]
+                                        || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[8])
+                            {
+                                int startIndex = message.LastIndexOf("=") + 1;
+                                int lastIndex = message.LastIndexOf("}");
+                                if (lastIndex < 0)
+                                {
+                                    lastIndex = message.LastIndexOf("\">") - 1;
+                                }
+                                int lengthOfId = (lastIndex - startIndex) + 1;
+                                if (lengthOfId < message.Length)
+                                {
+                                    string whatsnewid = message.Substring(startIndex, lengthOfId);
+                                    if (!string.IsNullOrEmpty(whatsnewid))
+                                    {
+                                        if (!whatsnewid.Contains("{"))
+                                        {
+                                            whatsnewid = "{" + whatsnewid;
+                                        }
+
+                                        if (!whatsnewid.Contains("}"))
+                                        {
+                                            whatsnewid = whatsnewid + "}";
+                                        }
+
+                                        WhatsNewEntity wtManager = new WhatsNewEntity();
+
+                                        WhatsNewEntity item = wtManager.GetItem(whatsnewid);
+
+                                        if (item != null)
+                                        {
+                                            if (!item.Read)
+                                            {
+                                                this.mPresenter.UpdateWhatsNewRead(item.ID, true);
+                                            }
+
+                                            Intent activity = new Intent(this.Activity, typeof(WhatsNewDetailActivity));
+                                            activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsnewid);
+                                            activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
+                                            this.Activity.StartActivity(activity);
+                                        }
+                                        else
+                                        {
+                                            this.SetIsClicked(false);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        this.SetIsClicked(false);
+                                    }
+                                }
+                                else
+                                {
+                                    this.SetIsClicked(false);
+                                }
+                            }
+                            else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[4]
+                                        || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[9])
+                            {
+                                int startIndex = message.LastIndexOf("=") + 1;
+                                int lastIndex = message.LastIndexOf("}");
+                                if (lastIndex < 0)
+                                {
+                                    lastIndex = message.LastIndexOf("\">") - 1;
+                                }
+                                int lengthOfId = (lastIndex - startIndex) + 1;
+                                if (lengthOfId < message.Length)
+                                {
+                                    string faqid = message.Substring(startIndex, lengthOfId);
+                                    if (!string.IsNullOrEmpty(faqid))
+                                    {
+                                        if (!faqid.Contains("{"))
+                                        {
+                                            faqid = "{" + faqid;
+                                        }
+
+                                        if (!faqid.Contains("}"))
+                                        {
+                                            faqid = faqid + "}";
+                                        }
+
+                                        Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                                        faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                        this.Activity.StartActivity(faqIntent);
+                                    }
+                                    else
+                                    {
+                                        this.SetIsClicked(false);
+                                    }
+                                }
+                                else
+                                {
+                                    this.SetIsClicked(false);
+                                }
+                            }
+                            else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[5]
+                                        || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[10])
+                            {
+                                int startIndex = message.LastIndexOf("=") + 1;
+                                int lastIndex = message.LastIndexOf("}");
+                                if (lastIndex < 0)
+                                {
+                                    lastIndex = message.LastIndexOf("\">") - 1;
+                                }
+                                int lengthOfId = (lastIndex - startIndex) + 1;
+                                if (lengthOfId < message.Length)
+                                {
+                                    string rewardid = message.Substring(startIndex, lengthOfId);
+                                    if (!string.IsNullOrEmpty(rewardid))
+                                    {
+                                        if (!rewardid.Contains("{"))
+                                        {
+                                            rewardid = "{" + rewardid;
+                                        }
+
+                                        if (!rewardid.Contains("}"))
+                                        {
+                                            rewardid = rewardid + "}";
+                                        }
+
+                                        RewardsEntity wtManager = new RewardsEntity();
+
+                                        RewardsEntity item = wtManager.GetItem(rewardid);
+
+                                        if (item != null)
+                                        {
+                                            if (!item.Read)
+                                            {
+                                                this.mPresenter.UpdateRewardRead(item.ID, true);
+                                            }
+
+                                            Intent activity = new Intent(this.Activity, typeof(RewardDetailActivity));
+                                            activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardid);
+                                            activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
+                                            this.Activity.StartActivity(activity);
+                                        }
+                                        else
+                                        {
+                                            this.SetIsClicked(false);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        this.SetIsClicked(false);
+                                    }
+                                }
+                                else
+                                {
+                                    this.SetIsClicked(false);
+                                }
+                            }
+                            else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[7])
+                            {
+                                int startIndex = message.LastIndexOf("\"tel") + 1;
+                                int lastIndex = message.LastIndexOf("\">") - 1;
+                                int lengthOfId = (lastIndex - startIndex) + 1;
+                                if (lengthOfId < message.Length)
+                                {
+                                    string phonenum = message.Substring(startIndex, lengthOfId);
+                                    if (!string.IsNullOrEmpty(phonenum))
+                                    {
+                                        if (!phonenum.Contains("tel:"))
+                                        {
+                                            phonenum = "tel:" + phonenum;
+                                        }
+
+                                        var call = Android.Net.Uri.Parse(phonenum);
+                                        var callIntent = new Intent(Intent.ActionView, call);
+                                        this.Activity.StartActivity(callIntent);
+                                    }
+                                    else
+                                    {
+                                        this.SetIsClicked(false);
+                                    }
+                                }
+                                else
+                                {
+                                    this.SetIsClicked(false);
+                                }
+                            }
+                        }
+                    };
+                    var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+                    int startFAQLink = s.GetSpanStart(urlSpans[0]);
+                    int endFAQLink = s.GetSpanEnd(urlSpans[0]);
+                    s.RemoveSpan(urlSpans[0]);
+                    s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
+                    txtTariffBlockLegendDisclaimer.TextFormatted = s;
+                    txtTariffBlockLegendDisclaimer.MovementMethod = new LinkMovementMethod();
+                }
             }
         }
 
@@ -5046,12 +5313,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (GetIsMDMSDown())
                             {
-                                if (index != selectedSMHistoryData.ByMonth.Months.Count - 1 && selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                if (index != selectedSMHistoryData.ByMonth.Months.Count - 1 && selectedSMHistoryData.ByMonth.Months[index].DPCIndicator
+                                    && !string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage.Trim()))
                                 {
                                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage) ? "Your usage for <strong>" + selectedSMHistoryData.ByMonth.Months[index].Month + " " + selectedSMHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill."
-                                        : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
+                                    message = selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
 
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
@@ -5061,6 +5328,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
+
+                                    OnProcessDPCIndicationMessage(message);
 
                                     isDPCBarClicked = true;
                                     isChangeVirtualHeightNeed = true;
@@ -5078,11 +5347,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                             else
                             {
-                                if (selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                if (selectedSMHistoryData.ByMonth.Months[index].DPCIndicator
+                                    && !string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage.Trim()))
                                 {
                                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage) ? "Your usage for <strong>" + selectedSMHistoryData.ByMonth.Months[index].Month + " " + selectedSMHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill." : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
+                                    message = selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
 
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
@@ -5093,29 +5363,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
 
-                                    if (smStatisticContainer.Visibility == ViewStates.Visible && LanguageUtil.GetAppLanguage().ToUpper() == "MS")
-                                    {
-                                        TextPaint textPaint = new TextPaint();
-                                        try
-                                        {
-                                            Typeface plain = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans300);
-                                            textPaint.SetTypeface(plain);
-                                        }
-                                        catch (System.Exception e)
-                                        {
-                                            Utility.LoggingNonFatalError(e);
-                                        }
-                                        textPaint.TextSize = txtTariffBlockLegendDisclaimer.TextSize;
-                                        textPaint.TextAlign = Paint.Align.Left;
-
-
-                                        StaticLayout staticLayout = new StaticLayout(txtTariffBlockLegendDisclaimer.TextFormatted, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(48f), Layout.Alignment.AlignNormal, 3f, 0f, true);
-                                        int lineCount = staticLayout.LineCount;
-                                        if (lineCount == 4)
-                                        {
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
-                                        }
-                                    }
+                                    OnProcessDPCIndicationMessage(message);
 
                                     isDPCBarClicked = true;
                                     isChangeVirtualHeightNeed = true;
@@ -5125,7 +5373,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     if (smStatisticContainer.Visibility == ViewStates.Visible)
                                     {
-                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                                     }
 
                                     if (isDPCBarClicked)
@@ -5139,11 +5387,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else if (!isREAccount)
                         {
-                            if (selectedHistoryData.ByMonth.Months[index].DPCIndicator)
+                            if (selectedHistoryData.ByMonth.Months[index].DPCIndicator
+                                && !string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage.Trim()))
                             {
                                 tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                message = string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage) ? "Your usage for <strong>" + selectedHistoryData.ByMonth.Months[index].Month + " " + selectedHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill." : selectedHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
+                                message = selectedHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
 
                                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                 {
@@ -5156,7 +5405,132 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                 if (isSMR && ssmrHistoryContainer.Visibility == ViewStates.Visible)
                                 {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                }
+
+                                OnProcessDPCIndicationMessage(message);
+
+                                isDPCBarClicked = true;
+                                isChangeVirtualHeightNeed = true;
+                                SetVirtualHeightParams(6f);
+                            }
+                            else
+                            {
+                                if (isSMR && ssmrHistoryContainer.Visibility == ViewStates.Visible)
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                }
+
+                                if (isDPCBarClicked)
+                                {
+                                    isDPCBarClicked = false;
+                                    isChangeVirtualHeightNeed = true;
+                                    SetVirtualHeightParams(6f);
+                                }
+                            }
+                        }
+                    }
+                    else if (ChartType == ChartType.Month && ChartDataType == ChartDataType.RM && index != -1)
+                    {
+                        if (isSMAccount)
+                        {
+                            if (GetIsMDMSDown())
+                            {
+                                if (index != selectedSMHistoryData.ByMonth.Months.Count - 1 && selectedSMHistoryData.ByMonth.Months[index].DPCIndicator
+                                    && !string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage.Trim()))
+                                {
+                                    tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
+
+                                    message = selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage;
+
+                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
+                                    }
+                                    else
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
+                                    }
+
+                                    OnProcessDPCIndicationMessage(message);
+
+                                    isDPCBarClicked = true;
+                                    isChangeVirtualHeightNeed = true;
+                                    SetVirtualHeightParams(6f);
+                                }
+                                else
+                                {
+                                    if (isDPCBarClicked)
+                                    {
+                                        isDPCBarClicked = false;
+                                        isChangeVirtualHeightNeed = true;
+                                        SetVirtualHeightParams(6f);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (selectedSMHistoryData.ByMonth.Months[index].DPCIndicator
+                                    && !string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage.Trim()))
+                                {
+                                    tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
+
+                                    message = selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage;
+
+                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
+                                    }
+                                    else
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
+                                    }
+
+                                    OnProcessDPCIndicationMessage(message);
+
+                                    isDPCBarClicked = true;
+                                    isChangeVirtualHeightNeed = true;
+                                    SetVirtualHeightParams(6f);
+                                }
+                                else
+                                {
+                                    if (smStatisticContainer.Visibility == ViewStates.Visible)
+                                    {
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                    }
+
+                                    if (isDPCBarClicked)
+                                    {
+                                        isDPCBarClicked = false;
+                                        isChangeVirtualHeightNeed = true;
+                                        SetVirtualHeightParams(6f);
+                                    }
+                                }
+                            }
+                        }
+                        else if (!isREAccount)
+                        {
+                            if (selectedHistoryData.ByMonth.Months[index].DPCIndicator
+                                && !string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage.Trim()))
+                            {
+                                tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
+
+                                message = selectedHistoryData.ByMonth.Months[index].DPCIndicatorRMMessage;
+
+                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                {
+                                    txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
+                                }
+                                else
+                                {
+                                    txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
+                                }
+
+                                OnProcessDPCIndicationMessage(message);
+
+                                if (isSMR && ssmrHistoryContainer.Visibility == ViewStates.Visible)
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                                 }
 
                                 isDPCBarClicked = true;
@@ -5167,7 +5541,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 if (isSMR && ssmrHistoryContainer.Visibility == ViewStates.Visible)
                                 {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                                 }
 
                                 if (isDPCBarClicked)
@@ -5183,7 +5557,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         if (isSMR && smStatisticContainer.Visibility == ViewStates.Visible)
                         {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                         }
 
                         if (isDPCBarClicked)
@@ -5291,37 +5665,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity, isHighlightNeed);
                             tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
 
-                            if (isSMR)
-                            {
-                                if (newTariffList.Count >= 0 && newTariffList.Count < 1)
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-                                }
-                                else if (newTariffList.Count >= 4)
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
-                                }
-                                else
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_bg);
-                                }
-                            }
-                            else if (isSMAccount && !GetIsMDMSDown())
-                            {
-                                if (newTariffList.Count >= 0 && newTariffList.Count < 1)
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                                }
-                                else if (newTariffList.Count >= 1 && newTariffList.Count < 4)
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
-                                }
-                                else
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
-                                }
-                            }
-
                             LayoutAnimationController controller =
                                     AnimationUtils.LoadLayoutAnimation(this.Activity, Resource.Animation.layout_animation_fall_down);
 
@@ -5333,15 +5676,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                             tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
-
-                            if (isSMR)
-                            {
-                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-                            }
-                            else if (isSMAccount && !GetIsMDMSDown())
-                            {
-                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                            }
                         }
                     }
                     else if (ChartType == ChartType.Day && isSMAccount)
@@ -5393,22 +5727,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity, false);
                             tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
 
-                            if (isSMAccount && !GetIsMDMSDown())
-                            {
-                                if (newTariffList.Count >= 0 && newTariffList.Count < 1)
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                                }
-                                else if (newTariffList.Count >= 1 && newTariffList.Count < 4)
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
-                                }
-                                else
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
-                                }
-                            }
-
                             LayoutAnimationController controller =
                                     AnimationUtils.LoadLayoutAnimation(this.Activity, Resource.Animation.layout_animation_fall_down);
 
@@ -5420,11 +5738,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                             tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
-
-                            if (isSMAccount && !GetIsMDMSDown())
-                            {
-                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                            }
                         }
                     }
                     else
@@ -5441,13 +5754,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (GetIsMDMSDown())
                             {
-                                if (index != selectedSMHistoryData.ByMonth.Months.Count - 1 && selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                if (index != selectedSMHistoryData.ByMonth.Months.Count - 1 && selectedSMHistoryData.ByMonth.Months[index].DPCIndicator
+                                    && !string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage.Trim()))
                                 {
                                     tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage) ? "Your tariff rates for <strong>" + selectedSMHistoryData.ByMonth.Months[index].Month + " "+ selectedSMHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill."
-                                        : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
+                                    message = selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
 
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
@@ -5457,17 +5770,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
+
+                                    OnProcessDPCIndicationMessage(message);
                                 }
                             }
                             else
                             {
-                                if (selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                if (selectedSMHistoryData.ByMonth.Months[index].DPCIndicator
+                                    && !string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage.Trim()))
                                 {
                                     tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage) ? "Your tariff rates for <strong>" + selectedSMHistoryData.ByMonth.Months[index].Month + " " + selectedSMHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill."
-                                        : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
+                                    message = selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
 
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
@@ -5478,41 +5793,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
 
-                                    if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
-                                    {
-                                        TextPaint textPaint = new TextPaint();
-                                        try
-                                        {
-                                            Typeface plain = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans300);
-                                            textPaint.SetTypeface(plain);
-                                        }
-                                        catch (System.Exception e)
-                                        {
-                                            Utility.LoggingNonFatalError(e);
-                                        }
-                                        textPaint.TextSize = txtTariffBlockLegendDisclaimer.TextSize;
-                                        textPaint.TextAlign = Paint.Align.Left;
-
-
-                                        StaticLayout staticLayout = new StaticLayout(txtTariffBlockLegendDisclaimer.TextFormatted, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(48f), Layout.Alignment.AlignNormal, 3f, 0f, true);
-                                        int lineCount = staticLayout.LineCount;
-                                        if (lineCount == 4)
-                                        {
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
-                                        }
-                                    }
+                                    OnProcessDPCIndicationMessage(message);
                                 }
                             }
                         }
                         else if (!isREAccount)
                         {
-                            if (selectedHistoryData.ByMonth.Months[index].DPCIndicator)
+                            if (selectedHistoryData.ByMonth.Months[index].DPCIndicator
+                                && !string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage.Trim()))
                             {
                                 tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                                 tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
 
-                                message = string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage) ? "Your tariff rates for <strong>" + selectedHistoryData.ByMonth.Months[index].Month + " " + selectedHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill."
-                                    : selectedHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
+                                message = selectedHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
 
                                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                 {
@@ -5523,10 +5816,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                 }
 
-                                if (isSMR)
-                                {
-                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                                }
+                                OnProcessDPCIndicationMessage(message);
                             }
                         }
                     }
@@ -5687,6 +5977,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             rootView.SetBackgroundResource(0);
                             scrollViewContent.SetBackgroundResource(0);
+                            dashboard_bottom_view.SetBackgroundResource(0);
                             try
                             {
                                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
@@ -6230,6 +6521,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             try
             {
+                ShowBackButton(true);
+                ((DashboardHomeActivity)this.Activity).HideAccountName();
+                ((DashboardHomeActivity)this.Activity).SetAccountToolbarTitle(selectedAccount.AccountNickName);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+
+            try
+            {
                 if (SMRPopUpUtils.GetFromUsageFlag())
                 {
                     SMRPopUpUtils.SetFromUsageFlag(false);
@@ -6298,6 +6601,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShowBackButton(bool flag)
+        {
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.SetDisplayHomeAsUpEnabled(flag);
+            actionBar.SetDisplayShowHomeEnabled(flag);
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -6413,6 +6725,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     }
                                     else
                                     {
+                                         if (accountDueAmount.ShowEppToolTip == true)
+                                        {
+                                            ShowEpp();
+                                            isChangeVirtualHeightNeed = true;
+                                            SetVirtualHeightParams(6f);
+                                        }
+                                        else
+                                        {
+                                            HideEpp();
+                                        }
                                         EnablePayButton();
                                     }
 
@@ -6445,7 +6767,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         Calendar c = Calendar.Instance;
                                         c.Time = d;
                                         c.Add(CalendarField.Date, incrementDays);
-                                        SimpleDateFormat df = new SimpleDateFormat("dd MMM");
+                                        SimpleDateFormat df = new SimpleDateFormat("dd MMM", LocaleUtils.GetCurrentLocale());
                                         Date newDate = c.Time;
                                         string dateString = df.Format(newDate);
                                         if (calAmt <= 0)
@@ -6455,14 +6777,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             if (System.Math.Abs(calAmt) < 0.0001)
                                             {
                                                 txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "myEarnings");
-                                                txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                                                txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtReNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
+                                                txtReNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
                                             }
                                             else
                                             {
                                                 txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "beenPaidExtra");
-                                                txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                                                txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtReNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
+                                                txtReNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
                                             }
                                         }
                                         else if (calAmt > 0)
@@ -6485,14 +6807,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             if (System.Math.Abs(calAmt) < 0.0001)
                                             {
                                                 txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "clearedAllBills");
-                                                txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                                                txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
+                                                txtNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
                                             }
                                             else
                                             {
                                                 txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "paidExtra");
-                                                txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
-                                                txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                                                txtNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.freshGreen)));
+                                                txtNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.freshGreen)));
                                             }
                                             txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
                                             txtDueDate.Text = "- -";
@@ -6509,8 +6831,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             totalPayableLayout.Visibility = ViewStates.Gone;
                                             noPayableLayout.Visibility = ViewStates.Visible;
                                             txtNoPayableTitle.Text = Utility.GetLocalizedCommonLabel("paymentPendingMsg");
-                                            txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.lightOrange));
-                                            txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.lightOrange));
+                                            txtNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.lightOrange)));
+                                            txtNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.lightOrange)));
                                             txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
                                             txtDueDate.Text = "- -";
                                         }
@@ -6531,6 +6853,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     }
                                     else
                                     {
+                                        if (accountDueAmount.ShowEppToolTip == true)
+                                        {
+                                            ShowEpp();
+                                            isChangeVirtualHeightNeed = true;
+                                            SetVirtualHeightParams(6f);
+                                        }
+                                        else
+                                        {
+                                            HideEpp();
+                                        }
                                         EnablePayButton();
                                     }
 
@@ -6563,14 +6895,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             if (System.Math.Abs(calAmt) < 0.0001)
                                             {
                                                 txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "myEarnings");
-                                                txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                                                txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtReNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
+                                                txtReNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
                                             }
                                             else
                                             {
                                                 txtReNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "beenPaidExtra");
-                                                txtReNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                                                txtReNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtReNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
+                                                txtReNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
                                             }
                                         }
                                         else
@@ -6590,14 +6922,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             if (System.Math.Abs(calAmt) < 0.0001)
                                             {
                                                 txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "clearedAllBills");
-                                                txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                                                txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
+                                                txtNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.charcoalGrey)));
                                             }
                                             else
                                             {
                                                 txtNoPayableTitle.Text = Utility.GetLocalizedLabel("Usage", "paidExtra");
-                                                txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
-                                                txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                                                txtNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.freshGreen)));
+                                                txtNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.freshGreen)));
                                             }
                                             txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
                                             txtDueDate.Text = "- -";
@@ -6607,8 +6939,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                 totalPayableLayout.Visibility = ViewStates.Gone;
                                                 noPayableLayout.Visibility = ViewStates.Visible;
                                                 txtNoPayableTitle.Text = Utility.GetLocalizedCommonLabel("paymentPendingMsg");
-                                                txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.lightOrange));
-                                                txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.lightOrange));
+                                                txtNoPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.lightOrange)));
+                                                txtNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.lightOrange)));
                                                 txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
                                                 txtDueDate.Text = "- -";
                                             }
@@ -6741,6 +7073,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);
         }
 
+          public void ShowEpp()
+        {
+            lblinfoLabelEPP.Text = Utility.GetLocalizedCommonLabel("eppToolTipTitle");
+            infoLabelEPP.Visibility = ViewStates.Visible; 
+            //btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);
+        }
+
+        public void HideEpp()
+        {
+            infoLabelEPP.Visibility = ViewStates.Gone;
+            //btnPay.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);
+        }
+
         public void DisablePayButton()
         {
             btnPay.Enabled = false;
@@ -6862,7 +7207,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? Utility.GetLocalizedLabel("Usage", "missedReadTitle");
                     string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage ?? Utility.GetLocalizedLabel("Usage", "disconnectionMsg");
                     string whatDoesThisToolTipBtnLabel = accountStatusData?.AccountStatusModalBtnText ?? Utility.GetLocalizedCommonLabel("gotIt");
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                     {
                         txtEnergyDisconnection.TextFormatted = Html.FromHtml(accountStatusMessage, FromHtmlOptions.ModeLegacy);
                     }
@@ -6879,6 +7224,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         rootView.SetBackgroundResource(0);
                         scrollViewContent.SetBackgroundResource(0);
+                        dashboard_bottom_view.SetBackgroundResource(0);
                         try
                         {
                             ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
@@ -6947,7 +7293,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                 if (!string.IsNullOrEmpty(response.Response.Data.DashboardMessage))
                                 {
-                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
                                         ssmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage, FromHtmlOptions.ModeLegacy);
                                     }
@@ -7021,6 +7367,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 isChangeBackgroundNeeded = false;
                 rootView.SetBackgroundResource(0);
                 scrollViewContent.SetBackgroundResource(0);
+                dashboard_bottom_view.SetBackgroundResource(0);
                 isChangeVirtualHeightNeed = true;
                 SetVirtualHeightParams(6f);
                 try
@@ -7112,6 +7459,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             rootView.SetBackgroundResource(0);
                                             scrollViewContent.SetBackgroundResource(0);
+                                            dashboard_bottom_view.SetBackgroundResource(0);
                                             try
                                             {
                                                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
@@ -7130,6 +7478,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             rootView.SetBackgroundResource(0);
                                             scrollViewContent.SetBackgroundResource(0);
+                                            dashboard_bottom_view.SetBackgroundResource(0);
                                             try
                                             {
                                                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
@@ -7154,14 +7503,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             try
                                             {
-                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                             }
                                             catch (System.Exception e)
                                             {
                                                 Utility.LoggingNonFatalError(e);
                                             }
-                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                            rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                            dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                             smStatisticContainer.Visibility = ViewStates.Visible;
                                         }
                                     }
@@ -7171,14 +7521,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             try
                                             {
-                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                             }
                                             catch (System.Exception e)
                                             {
                                                 Utility.LoggingNonFatalError(e);
                                             }
-                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                            rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                            dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                             ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                         }
                                     }
@@ -7197,50 +7548,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             try
                                             {
-                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                             }
                                             catch (System.Exception e)
                                             {
                                                 Utility.LoggingNonFatalError(e);
                                             }
-                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-
-                                            if (ChartType == ChartType.Month && ChartDataType == ChartDataType.kWh && !GetIsMDMSDown() && currentSelectedBar != -1 && selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && LanguageUtil.GetAppLanguage().ToUpper() == "MS")
-                                            {
-                                                ICharSequence text;
-
-                                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
-                                                {
-                                                    text = Html.FromHtml(selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicatorUsageMessage, FromHtmlOptions.ModeLegacy);
-                                                }
-                                                else
-                                                {
-                                                    text = Html.FromHtml(selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicatorUsageMessage);
-                                                }
-
-                                                TextPaint textPaint = new TextPaint();
-                                                try
-                                                {
-                                                    Typeface plain = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans300);
-                                                    textPaint.SetTypeface(plain);
-                                                }
-                                                catch (System.Exception e)
-                                                {
-                                                    Utility.LoggingNonFatalError(e);
-                                                }
-                                                textPaint.TextSize = txtTariffBlockLegendDisclaimer.TextSize;
-                                                textPaint.TextAlign = Paint.Align.Left;
-
-
-                                                StaticLayout staticLayout = new StaticLayout(text, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(48f), Layout.Alignment.AlignNormal, 3f, 0f, true);
-                                                int lineCount = staticLayout.LineCount;
-                                                if (lineCount == 4)
-                                                {
-                                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
-                                                }
-                                            }
+                                            rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                            dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                             smStatisticContainer.Visibility = ViewStates.Visible;
                                         }
                                     }
@@ -7250,21 +7567,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             try
                                             {
-                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                             }
                                             catch (System.Exception e)
                                             {
                                                 Utility.LoggingNonFatalError(e);
                                             }
-                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-
-                                            if (currentSelectedBar != -1 && selectedHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && ChartDataType == ChartDataType.kWh)
-                                            {
-                                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                                            }
-
+                                            rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                            dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                             ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                         }
                                     }
@@ -7293,50 +7605,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         try
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                             ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                         }
                                         catch (System.Exception e)
                                         {
                                             Utility.LoggingNonFatalError(e);
                                         }
-                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-
-                                        if (ChartType == ChartType.Month && ChartDataType == ChartDataType.kWh && !GetIsMDMSDown() && currentSelectedBar != -1 && selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && LanguageUtil.GetAppLanguage().ToUpper() == "MS")
-                                        {
-                                            ICharSequence text;
-
-                                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
-                                            {
-                                                text = Html.FromHtml(selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicatorUsageMessage, FromHtmlOptions.ModeLegacy);
-                                            }
-                                            else
-                                            {
-                                                text = Html.FromHtml(selectedSMHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicatorUsageMessage);
-                                            }
-
-                                            TextPaint textPaint = new TextPaint();
-                                            try
-                                            {
-                                                Typeface plain = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans300);
-                                                textPaint.SetTypeface(plain);
-                                            }
-                                            catch (System.Exception e)
-                                            {
-                                                Utility.LoggingNonFatalError(e);
-                                            }
-                                            textPaint.TextSize = txtTariffBlockLegendDisclaimer.TextSize;
-                                            textPaint.TextAlign = Paint.Align.Left;
-
-
-                                            StaticLayout staticLayout = new StaticLayout(text, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(48f), Layout.Alignment.AlignNormal, 3f, 0f, true);
-                                            int lineCount = staticLayout.LineCount;
-                                            if (lineCount == 4)
-                                            {
-                                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
-                                            }
-                                        }
+                                        rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                        dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         smStatisticContainer.Visibility = ViewStates.Visible;
                                     }
                                 }
@@ -7346,19 +7624,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         try
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                             ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                         }
                                         catch (System.Exception e)
                                         {
                                             Utility.LoggingNonFatalError(e);
                                         }
-                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-                                        if (currentSelectedBar != -1 && selectedHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && ChartDataType == ChartDataType.kWh)
-                                        {
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                                        }
+                                        rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                        dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                     }
                                 }
@@ -7417,8 +7692,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 rmKwhSelectDropdown.Visibility = ViewStates.Gone;
                 rmKwhLabel.Text = "kWh";
-                kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
-                rmLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
+                kwhLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                rmLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.new_grey)));
                 isShowAnimationDisable = true;
                 ShowByKwh();
                 FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "kWh Selection Clicked");
@@ -7437,8 +7712,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 rmKwhSelectDropdown.Visibility = ViewStates.Gone;
                 rmKwhLabel.Text = "RM  ";
-                rmLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
-                kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
+                rmLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                kwhLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.new_grey)));
                 isShowAnimationDisable = true;
                 ShowByRM();
                 FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "RM Selection Clicked");
@@ -7623,6 +7898,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         rootView.SetBackgroundResource(0);
                                         scrollViewContent.SetBackgroundResource(0);
+                                        dashboard_bottom_view.SetBackgroundResource(0);
                                         try
                                         {
                                             ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
@@ -7642,6 +7918,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         rootView.SetBackgroundResource(0);
                                         scrollViewContent.SetBackgroundResource(0);
+                                        dashboard_bottom_view.SetBackgroundResource(0);
                                         try
                                         {
                                             ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
@@ -7667,14 +7944,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         try
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                             ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                         }
                                         catch (System.Exception e)
                                         {
                                             Utility.LoggingNonFatalError(e);
                                         }
-                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                        rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                        dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         smStatisticContainer.Visibility = ViewStates.Visible;
                                     }
                                 }
@@ -7684,14 +7962,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         try
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                             ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                         }
                                         catch (System.Exception e)
                                         {
                                             Utility.LoggingNonFatalError(e);
                                         }
-                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
+                                        rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                        dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                     }
                                 }
@@ -7710,15 +7989,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         try
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                             ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                         }
                                         catch (System.Exception e)
                                         {
                                             Utility.LoggingNonFatalError(e);
                                         }
-                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                        rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                        dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         smStatisticContainer.Visibility = ViewStates.Visible;
                                     }
                                 }
@@ -7728,19 +8008,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         try
                                         {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                             ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                         }
                                         catch (System.Exception e)
                                         {
                                             Utility.LoggingNonFatalError(e);
                                         }
-                                        rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-                                        if (currentSelectedBar != -1 && selectedHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && ChartDataType == ChartDataType.kWh)
-                                        {
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                                        }
+                                        rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                        dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                     }
                                 }
@@ -7775,15 +8052,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             try
                                             {
-                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                             }
                                             catch (System.Exception e)
                                             {
                                                 Utility.LoggingNonFatalError(e);
                                             }
-                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                            rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                            dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                             smStatisticContainer.Visibility = ViewStates.Visible;
                                         }
                                     }
@@ -7793,19 +8071,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             try
                                             {
-                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                                                 ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                                             }
                                             catch (System.Exception e)
                                             {
                                                 Utility.LoggingNonFatalError(e);
                                             }
-                                            rootView.SetBackgroundResource(Resource.Color.greyBackground);
-                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-                                            if (currentSelectedBar != -1 && selectedHistoryData.ByMonth.Months[currentSelectedBar].DPCIndicator && ChartDataType == ChartDataType.kWh)
-                                            {
-                                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                                            }
+                                            rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                                            dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                             ssmrHistoryContainer.Visibility = ViewStates.Visible;
                                         }
                                     }
@@ -8016,7 +8291,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 mChart.Invalidate();
 
                                 Vibrator vibrator = (Vibrator)this.Activity.GetSystemService(Context.VibratorService);
-                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
                                 {
                                     vibrator.Vibrate(VibrationEffect.CreateOneShot(150, 10));
 
@@ -8067,7 +8342,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             CurrentParentIndex = index;
                             Vibrator vibrator = (Vibrator)this.Activity.GetSystemService(Context.VibratorService);
-                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
                             {
                                 vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
 
@@ -8223,12 +8498,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 shimmrtGraph.StartShimmer();
                 shimmrtGraphView.Visibility = ViewStates.Visible;
-                if (isSMR)
-                {
-                    RelativeLayout.LayoutParams param = shimmrtGraphView.LayoutParameters as RelativeLayout.LayoutParams;
-                    param.Height = (int)DPUtils.ConvertDPToPx(170);
-                }
-                else if (isREAccount)
+                if (isREAccount)
                 {
                     RelativeLayout.LayoutParams param = shimmrtGraphView.LayoutParameters as RelativeLayout.LayoutParams;
                     param.Height = (int)DPUtils.ConvertDPToPx(200);
@@ -8527,6 +8797,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (GetIsMDMSDown())
                 {
                     rootView.SetBackgroundResource(0);
+                    dashboard_bottom_view.SetBackgroundResource(0);
                     scrollViewContent.SetBackgroundResource(0);
                     try
                     {
@@ -8572,11 +8843,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.CostData)
                             {
+                                System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
                                 if (costValue.Key == Constants.CURRENT_COST_KEY)
                                 {
                                     smStatisticBillTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
                                     smStatisticBillSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
-                                    smStatisticBill.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smDecimalFormat.Format(double.Parse(costValue.Value));
+                                    smStatisticBill.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smDecimalFormat.Format(double.Parse(costValue.Value, currCult));
                                     smStatisticBillCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
                                     if (isMDMSDown)
                                     {
@@ -8588,7 +8860,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     smStatisticPredictTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
                                     smStatisticPredictSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
-                                    smStatisticPredict.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smDecimalFormat.Format(double.Parse(costValue.Value));
+                                    smStatisticPredict.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smDecimalFormat.Format(double.Parse(costValue.Value, currCult));
                                     smStatisticPredictCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
                                     if (isMDMSDown)
                                     {
@@ -8629,11 +8901,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.UsageData)
                             {
+                                System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
                                 if (costValue.Key == Constants.CURRENT_USAGE_KEY)
                                 {
                                     smStatisticBillTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
                                     smStatisticBillSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
-                                    smStatisticBillKwh.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smKwhFormat.Format(double.Parse(costValue.Value));
+                                    smStatisticBillKwh.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smKwhFormat.Format(double.Parse(costValue.Value, currCult));
                                     smStatisticBillKwhUnit.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "kWh" : costValue.ValueUnit;
                                     if (isMDMSDown)
                                     {
@@ -8665,7 +8938,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                     {
 
-                                        smStatisticTrend.TextFormatted = Html.FromHtml(trendString, Html.FromHtmlModeLegacy);
+                                        smStatisticTrend.TextFormatted = Html.FromHtml(trendString, FromHtmlOptions.ModeLegacy);
                                     }
                                     else
                                     {
@@ -8748,6 +9021,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     rootView.SetBackgroundResource(0);
                     scrollViewContent.SetBackgroundResource(0);
+                    dashboard_bottom_view.SetBackgroundResource(0);
                     try
                     {
                         ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
@@ -9262,7 +9536,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             currentFragment.SetDayViewMonthText(dayViewMonthList[tempDayViewIndex]);
 
                             Vibrator vibrator = (Vibrator)currentActivity.GetSystemService(Context.VibratorService);
-                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
                             {
                                 vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
 
@@ -9467,8 +9741,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 rmKwhSelectDropdown.Visibility = ViewStates.Gone;
                 rmKwhLabel.Text = "RM  ";
-                rmLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
-                kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
+                rmLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.powerBlue)));
+                kwhLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.new_grey)));
                 isShowAnimationDisable = true;
                 ShowByRM();
             }
@@ -9485,18 +9759,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     isToggleTariff = false;
                     if (isChangeBackgroundNeeded)
                     {
-                        if (isSMAccount)
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
-                        }
-                        else if (isSMR)
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
-                        }
-                        else
-                        {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
-                        }
+                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                     }
 
                     mChart.Clear();
@@ -9790,7 +10053,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 isChangeVirtualHeightNeed = true;
                 SetVirtualHeightParams(6f);
                 isChangeBackgroundNeeded = true;
-                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                try
+                {
+                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+                    ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+                rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
+                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
             }
         }
 
@@ -9815,6 +10088,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             rootView.SetBackgroundResource(0);
                             scrollViewContent.SetBackgroundResource(0);
+                            dashboard_bottom_view.SetBackgroundResource(0);
                             try
                             {
                                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);

@@ -14,6 +14,7 @@ using MikePhil.Charting.Interfaces.Datasets;
 using MikePhil.Charting.Util;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -43,8 +44,8 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
             TextViewUtils.SetMuseoSans500Typeface(titleMarker);
             TextViewUtils.SetMuseoSans300Typeface(titlekWhMarker);
             titlekWhMarker.Visibility = ViewStates.Gone;
-            decimalFormat = new DecimalFormat("#,###,##0.00");
-            kwhFormat = new DecimalFormat("#,###,##0");
+            decimalFormat = new DecimalFormat("#,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
+            kwhFormat = new DecimalFormat("#,###,##0", new DecimalFormatSymbols(Java.Util.Locale.Us));
             currentContext = context;
         }
 

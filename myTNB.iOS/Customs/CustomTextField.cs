@@ -38,8 +38,7 @@ namespace myTNB
         public enum Type
         {
             MobileNumber,
-            EmailAddress,
-            NameUser
+            EmailAddress
         }
 
         private const string _regexMobileNumber = @"^[0-9 \+]+$";
@@ -74,7 +73,7 @@ namespace myTNB
             {
                 AttributedText = AttributedStringUtility.GetAttributedString(Title, AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
-                Hidden = !HasValue ? false : true
+                Hidden = !HasValue
             };
 
             TextField = new UITextField
