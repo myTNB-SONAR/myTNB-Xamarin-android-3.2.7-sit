@@ -112,7 +112,7 @@ namespace myTNB.SitecoreCMS.Extensions
         {
             string theString = mediaPath;
             var array = theString.Split('/', '2');
-            var newPath = string.Join("/", array);
+            var newPath = String.Join("/", array);
 
             if (string.IsNullOrWhiteSpace(websiteUrl))
                 return String.Format("-/media/{0}.ashx", newPath);
@@ -120,14 +120,9 @@ namespace myTNB.SitecoreCMS.Extensions
             return String.Format("{0}/-/media/{1}.ashx", websiteUrl, newPath);
         }
 
-        public static string GetImageUrlFromItemWithSize(this ISitecoreItem item
-            , string mediafieldName
-            , string OS
-            , string imageSize = null
-            , string websiteUrl = null
-            , string language = "en")
+        public static string GetImageUrlFromItemWithSize(this ISitecoreItem item, string mediafieldName, string OS, string imageSize = null, string websiteUrl = null, string language = "en")
         {
-            var imageUrl = string.Empty;
+            var imageUrl = String.Empty;
             bool isIos = false;
             if (OS.ToLower() == "ios")
             {
@@ -140,7 +135,7 @@ namespace myTNB.SitecoreCMS.Extensions
                 isMain = true;
             }
 
-            if (string.IsNullOrEmpty(imageSize))
+            if (String.IsNullOrEmpty(imageSize))
             {
                 return item.GetImageUrlFromMediaField(mediafieldName);
             }
@@ -148,11 +143,11 @@ namespace myTNB.SitecoreCMS.Extensions
             var imageId = item.GetImageIDFromMediaField(mediafieldName);
             try
             {
-                SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.FiveSecondTimeSpan);
-                if (!string.IsNullOrEmpty(imageId))
+                SitecoreService sitecoreService = new SitecoreService();
+                if (!String.IsNullOrEmpty(imageId))
                 {
                     var imageRequest = sitecoreService.GetItemById(imageId, PayloadType.Content, new List<ScopeType> { ScopeType.Parent, ScopeType.Self }, websiteUrl, language);
-                    var imagePath = string.Empty;
+                    var imagePath = String.Empty;
                     if (imageRequest.Result.TotalCount > 0)
                     {
                         if (isIos)
@@ -189,7 +184,7 @@ namespace myTNB.SitecoreCMS.Extensions
 
                         var mediaUrlArray = imagePath.Split('/');
                         mediaUrlArray = mediaUrlArray.Skip(3).ToArray();
-                        imageUrl = string.Join("/", mediaUrlArray);
+                        imageUrl = String.Join("/", mediaUrlArray);
 
                         if (string.IsNullOrWhiteSpace(websiteUrl))
                             return String.Format("-/media/{0}.ashx", imageUrl);
@@ -246,15 +241,11 @@ namespace myTNB.SitecoreCMS.Extensions
             return attribute.Value;
         }
 
-        public static string GetFieldValueFromDropLink(this ISitecoreItem item
-            , string fieldName
-            , string droplinkFieldName
-            , string websiteUrl = null
-            , string language = "en")
+        public static string GetFieldValueFromDropLink(this ISitecoreItem item, string fieldName, string droplinkFieldName, string websiteUrl = null, string language = "en")
         {
             var ID = item.GetValueFromField(fieldName);
-            var droplinkFieldNameValue = string.Empty;
-            SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.FiveSecondTimeSpan);
+            var droplinkFieldNameValue = String.Empty;
+            SitecoreService sitecoreService = new SitecoreService();
             try
             {
                 var itemReq = sitecoreService.GetItemById(ID, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, websiteUrl, language);
@@ -272,20 +263,16 @@ namespace myTNB.SitecoreCMS.Extensions
             }
         }
 
-        public static List<string> GetFieldValueFromMultilist(this ISitecoreItem item
-            , string fieldName
-            , string multilistFieldName
-            , string websiteUrl = null
-            , string language = "en")
+        public static List<string> GetFieldValueFromMultilist(this ISitecoreItem item, string fieldName, string multilistFieldName, string websiteUrl = null, string language = "en")
         {
             var IDs = item.GetValueFromField(fieldName);
             var IDsSplit = IDs.Split('|');
-            var multilistFieldNameValue = string.Empty;
+            var multilistFieldNameValue = String.Empty;
             List<string> multilistFieldNameList = new List<string>();
 
             foreach (var ID in IDsSplit)
             {
-                SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.FiveSecondTimeSpan);
+                SitecoreService sitecoreService = new SitecoreService();
 
                 try
                 {
@@ -337,20 +324,6 @@ namespace myTNB.SitecoreCMS.Extensions
                 return string.Format("-/media/{0}.ashx", id.ToString("N")).Replace(" ", "%20");
             }
             return string.Format("{0}/-/media/{1}.ashx", websiteUrl, id.ToString("N")).Replace(" ", "%20");
-        }
-
-        public static string GetImageUrlFromExtractedUrl(this ISitecoreItem item, string extractedUrl, string websiteUrl = null)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(websiteUrl))
-                    return extractedUrl.Replace(" ", "%20");
-                return String.Format("{0}/{1}", websiteUrl, extractedUrl).Replace(" ", "%20");
-            }
-            catch
-            {
-                return string.Empty;
-            }
         }
 
         private static string GetImageFieldName(string imgSize)

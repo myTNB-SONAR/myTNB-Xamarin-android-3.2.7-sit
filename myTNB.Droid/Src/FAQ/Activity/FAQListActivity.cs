@@ -171,18 +171,20 @@ namespace myTNB_Android.Src.FAQ.Activity
                 }
 
 
-                FAQCacheModel FAQs = JsonConvert.DeserializeObject<FAQCacheModel>(FaQ);
+                List<FAQCacheModel> FAQs = JsonConvert.DeserializeObject<List<FAQCacheModel>>(FaQ);
 
-                if (FAQs != null && FAQs.Data != null && FAQs.Data.Count > 0)
+                if (FAQs != null && FAQs != null && FAQs.Count > 0)
                 {
                     List<FAQsEntity> items = new List<FAQsEntity>();
 
-                    foreach(FAQCacheList item in FAQs.Data)
+                    foreach(FAQCacheModel item in FAQs)
                     {
                         items.Add(new FAQsEntity()
                         {
-                            Question = item.Title,
-                            Answer = item.Details
+                            ID = item.ID,
+                            Question = item.Question,
+                            Answer = item.Answer,
+
                         });
                     }
 
@@ -191,6 +193,20 @@ namespace myTNB_Android.Src.FAQ.Activity
                     adapter = new FAQListAdapter(this, faqs);
                     mFAQRecyclerView.SetAdapter(adapter);
                     adapter.NotifyDataSetChanged();
+
+                    if (!string.IsNullOrEmpty(FAQ_ID))
+                    {
+                        int index = 0;
+                        foreach (FAQsEntity entity in items)
+                        {
+                            if (entity.ID.Equals(FAQ_ID))
+                            {
+                                break;
+                            }
+                            index++;
+                        }
+                        mFAQRecyclerView.GetLayoutManager().ScrollToPosition(index);
+                    }
                 }
             }
             catch (Exception e)

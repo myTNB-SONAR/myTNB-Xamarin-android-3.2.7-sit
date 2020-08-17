@@ -527,48 +527,41 @@ namespace myTNB
                 WebClient webClient = new WebClient();
                 webClient.DownloadDataCompleted += (s, args) =>
                 {
-                    try
+                    if (args != null)
                     {
-                        if (args != null)
+                        byte[] data = args.Result;
+                        if (data != null)
                         {
-                            byte[] data = args.Result;
-                            if (data != null)
+                            File.WriteAllBytes(_imageFilePath, data);
+                            InvokeOnMainThread(() =>
                             {
-                                File.WriteAllBytes(_imageFilePath, data);
-                                InvokeOnMainThread(() =>
+                                if (!_splashIsShown)
                                 {
-                                    if (!_splashIsShown)
-                                    {
-                                        _splashIsShown = true;
-                                        _imgSplash = UIImage.FromFile(_imageFilePath);
-                                        imgViewAppLaunch.ContentMode = UIViewContentMode.ScaleAspectFill;
-                                        UIView.Transition(imgViewAppLaunch, 0.5,
-                                            UIViewAnimationOptions.TransitionCrossDissolve,
-                                            () => { imgViewAppLaunch.Image = _imgSplash; },
-                                            () =>
+                                    _splashIsShown = true;
+                                    _imgSplash = UIImage.FromFile(_imageFilePath);
+                                    imgViewAppLaunch.ContentMode = UIViewContentMode.ScaleAspectFill;
+                                    UIView.Transition(imgViewAppLaunch, 0.5,
+                                        UIViewAnimationOptions.TransitionCrossDissolve,
+                                        () => { imgViewAppLaunch.Image = _imgSplash; },
+                                        () =>
+                                        {
+                                            if (!_isTaskDelayDone)
                                             {
-                                                if (!_isTaskDelayDone)
-                                                {
-                                                    ShowSplashScreenWithDelay(_delay);
-                                                }
+                                                ShowSplashScreenWithDelay(_delay);
                                             }
-                                        );
-                                    }
-                                });
-                            }
-                            else
-                            {
-                                ShowDefaultSplashImage();
-                            }
+                                        }
+                                    );
+                                }
+                            });
                         }
                         else
                         {
                             ShowDefaultSplashImage();
                         }
                     }
-                    catch (Exception e)
+                    else
                     {
-                        Debug.WriteLine("Image load Error: " + e.Message);
+                        ShowDefaultSplashImage();
                     }
                 };
 

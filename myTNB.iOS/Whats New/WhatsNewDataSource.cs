@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
 using Foundation;
 using myTNB.SitecoreCMS.Model;
 using UIKit;
@@ -20,8 +18,7 @@ namespace myTNB.WhatsNew
         public WhatsNewDataSource(WhatsNewViewController controller, List<WhatsNewModel> whatsNewList, Func<string, string> getI18NValue)
         {
             _controller = controller;
-            _whatsNewList = whatsNewList.OrderByDescending(x => DateTime.ParseExact(x.PublishDate, "yyyyMMddTHHmmss"
-                   , CultureInfo.InvariantCulture, DateTimeStyles.None)).ToList();
+            _whatsNewList = whatsNewList;
             GetI18NValue = getI18NValue;
         }
 

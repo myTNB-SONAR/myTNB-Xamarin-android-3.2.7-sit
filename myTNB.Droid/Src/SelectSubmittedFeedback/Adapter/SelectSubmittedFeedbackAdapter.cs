@@ -10,6 +10,7 @@ using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 
 namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
 {
@@ -36,8 +37,8 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
 
-            SimpleDateFormat simpleDateParser = new SimpleDateFormat("dd/MM/yyyy");
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yyyy");
+            SimpleDateFormat simpleDateParser = new SimpleDateFormat("dd/MM/yyyy", LocaleUtils.GetDefaultLocale());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
             SubmitFeedbackViewHolder vh = null;
 
             if (convertView == null)
@@ -68,12 +69,18 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                     Utility.LoggingNonFatalError(e);
                 }
 
-                vh.txtFeedbackTitle.Text = !string.IsNullOrEmpty(item.FeedbackNameInListView) ? item.FeedbackNameInListView : item.FeedbackCategoryName;
-                vh.txtFeedbackContent.Text = item.FeedbackMessage;
+              //  vh.txtFeedbackTitle.Text = !string.IsNullOrEmpty(item.FeedbackNameInListView) ? item.FeedbackNameInListView : item.FeedbackCategoryName;
+
+               // vh.txtFeedbackTitle.SetPadding(0, 24, 0, 0);  //inject padding;
+               // vh.txtFeedbackDate.SetPadding(0, 24, 0, 0);
+                // vh.txtFeedbackContent.Text = item.FeedbackMessage;
+                vh.txtFeedbackContent.Visibility = ViewStates.Gone;
 
                 if (item.FeedbackCategoryId.Equals("1"))
                 {
-                    vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_billing));
+                    vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.general_enquiry));
+                    vh.txtFeedbackTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle");
+
                 }
                 else if (item.FeedbackCategoryId.Equals("2"))
                 {
@@ -82,6 +89,12 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 else if (item.FeedbackCategoryId.Equals("3"))
                 {
                     vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_others));
+                }
+                else if (item.FeedbackCategoryId.Equals("4"))
+                {
+                    vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.update_personal_details));
+                    vh.txtFeedbackTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle");
+                  //  vh.txtFeedbackTitle.SetPadding(0, 24, 7, 0);
                 }
             }
             catch (Exception e)

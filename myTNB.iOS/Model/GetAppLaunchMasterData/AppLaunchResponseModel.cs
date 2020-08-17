@@ -16,6 +16,5 @@ namespace myTNB
         public bool IsOCRDown { set; get; }
         public bool IsPayEnabled { set; get; }
         public bool IsRewardsDisabled { set; get; }
-        public bool IsFeedbackUpdateDetailDisabled { set; get; }
-}
+    }
 }

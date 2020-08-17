@@ -373,6 +373,19 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        internal static void SaveAdapterType(ISharedPreferences mSharedPref, string largeJsonString)
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.PutString(Constants.ADAPTER_TYPE, largeJsonString);
+            editor.Apply();
+        }
+
+        internal static string GetAdapterType(ISharedPreferences mSharePref)
+        {
+            return mSharePref.GetString(Constants.ADAPTER_TYPE, null);
+        }
+
+
         internal static string GetSelectedFeedback(ISharedPreferences mSharePref)
         {
             return mSharePref.GetString(Constants.SELECTED_FEEDBACK, null);
@@ -401,6 +414,32 @@ namespace myTNB_Android.Src.Utils
         {
             return prefs.GetString("deviceID", "");
         }
+
+        public static void SaveFeedbackUpdateDetailDisabled(ISharedPreferences prefs, string data)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("IsFeedbackUpdateDetailDisabled", data);
+            editor.Apply();
+        }
+
+        public static string GetFeedbackUpdateDetailDisabled(ISharedPreferences prefs)
+        {
+            return prefs.GetString("IsFeedbackUpdateDetailDisabled",  null);
+        }
+
+        public static void SaveGetAccountIsExist(ISharedPreferences prefs, string data)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("IsAccountExist", data);
+            editor.Apply();
+        }
+
+        public static string GetAccountIsExist(ISharedPreferences prefs)
+        {
+            return prefs.GetString("IsAccountExist", null);
+        }
+
+
 
         public static void SaveLogoutFlag(ISharedPreferences prefs, bool flag)
         {

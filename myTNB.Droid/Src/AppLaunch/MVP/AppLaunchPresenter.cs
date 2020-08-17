@@ -96,7 +96,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         UserSessions.SaveDeviceId(this.mView.GetDeviceId());
                     }
                     LoadAppMasterData();
-                    GetSSMRWalkThrough();
                     GetCountryList();
                 }
             }
@@ -139,10 +138,15 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     {
                         new MasterApiDBOperation(masterDataResponse, mSharedPref).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
 
+                        
+
                         bool proceed = true;
 
                         bool appUpdateAvailable = false;
                         AppLaunchMasterDataModel responseData = masterDataResponse.GetData();
+
+                        UserSessions.SaveFeedbackUpdateDetailDisabled(mSharedPref, responseData.IsFeedbackUpdateDetailDisabled.ToString());  //save sharedpref cater prelogin & after login
+
                         if (responseData.AppVersionList != null && responseData.AppVersionList.Count > 0)
                         {
                             appUpdateAvailable = IsAppNeedsUpdate(responseData.ForceUpdateInfo);
@@ -154,12 +158,18 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 this.mView.ShowUpdateAvailable(modalTitle, modalMessage, modalBtnLabel);
                             }
                             else
-                            {
+                            {  
+
+
+
                                 if (UserEntity.IsCurrentlyActive())
                                 {
                                     try
                                     {
                                         UserEntity entity = UserEntity.GetActive();
+
+                                      
+
                                         bool phoneVerified = UserSessions.GetPhoneVerifiedFlag(mSharedPref);
                                         if (!phoneVerified)
                                         {
@@ -418,8 +428,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-                    string json = getItemsService.GetTimestampItem();
-                    TimestampResponseModel responseModel = JsonConvert.DeserializeObject<TimestampResponseModel>(json);
+                    TimestampResponseModel responseModel = getItemsService.GetTimestampItem();
                     if (responseModel.Status.Equals("Success"))
                     {
                         TimeStampEntity wtManager = new TimeStampEntity();
@@ -441,6 +450,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 }
             });
         }
+
+       
 
         public void GetSavedTimeStamp()
         {
@@ -864,36 +875,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         public void OnUpdateApp()
         {
             this.mView.OnAppUpdateClick();
-        }
-
-        public Task GetSSMRWalkThrough()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
-
-                    ApplySSMRTimeStampResponseModel timestampModel = getItemsService.GetApplySSMRWalkthroughTimestampItem();
-                    if (timestampModel.Status.Equals("Success") && timestampModel.Data != null && timestampModel.Data.Count > 0)
-                    {
-                        if (SitecoreCmsEntity.IsNeedUpdates(SitecoreCmsEntity.SITE_CORE_ID.APPLY_SSMR_WALKTHROUGH, timestampModel.Data[0].Timestamp))
-                        {
-                            ApplySSMRResponseModel responseModel = getItemsService.GetApplySSMRWalkthroughItems();
-
-                            if (responseModel.Status.Equals("Success"))
-                            {
-                                SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.APPLY_SSMR_WALKTHROUGH, JsonConvert.SerializeObject(responseModel.Data), timestampModel.Data[0].Timestamp);
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            });
         }
 
         public void GetCountryList()

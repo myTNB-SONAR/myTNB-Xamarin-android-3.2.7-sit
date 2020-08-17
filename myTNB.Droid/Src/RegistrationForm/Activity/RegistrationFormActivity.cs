@@ -524,7 +524,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 mCancelledExceptionSnackBar.Dismiss();
                 string fullname = txtFullName.Text;
                 string ic_no = txtICNumber.Text;
-                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
                 string email = txtEmail.Text;
                 string confirm_email = txtConfirmEmail.Text;
                 string password = txtPassword.Text;
@@ -553,7 +553,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 mApiExcecptionSnackBar.Dismiss();
                 string fullname = txtFullName.Text;
                 string ic_no = txtICNumber.Text;
-                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
                 string email = txtEmail.Text;
                 string confirm_email = txtConfirmEmail.Text;
                 string password = txtPassword.Text;
@@ -582,7 +582,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 mUknownExceptionSnackBar.Dismiss();
                 string fullname = txtFullName.Text;
                 string ic_no = txtICNumber.Text;
-                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
                 string email = txtEmail.Text;
                 string confirm_email = txtConfirmEmail.Text;
                 string password = txtPassword.Text;

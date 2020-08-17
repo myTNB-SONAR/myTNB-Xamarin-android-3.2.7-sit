@@ -139,24 +139,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             }
         }
 
-        class ClickSpan : ClickableSpan
-        {
-            public Action<View> Click;
-            public override void OnClick(View widget)
-            {
-                if (Click != null)
-                {
-                    Click(widget);
-                }
-            }
-
-            public override void UpdateDrawState(TextPaint ds)
-            {
-                base.UpdateDrawState(ds);
-                ds.UnderlineText = false;
-            }
-        }
-
         internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             if (e.Position == accountList.Count)//Handling Account list Info tooltip from list
@@ -164,34 +146,8 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 MyTNBAppToolTipData.SMREligibiltyPopUpDetailData tooltipData = MyTNBAppToolTipData.GetInstance().GetSMREligibiltyPopUpDetails();
                 if (tooltipData != null)
                 {
-                    var clickableSpan = new ClickSpan();
-                    clickableSpan.Click += v =>
-                    {
-                        if (tooltipData.description != null && tooltipData.description.Contains("faq"))
-                        {
-                            //Lauch FAQ
-                            int startIndex = tooltipData.description.LastIndexOf("=") + 1;
-                            int lastIndex = tooltipData.description.LastIndexOf("}");
-                            int lengthOfId = (lastIndex - startIndex) + 1;
-                            if (lengthOfId < tooltipData.description.Length)
-                            {
-                                string faqid = tooltipData.description.Substring(startIndex, lengthOfId);
-                                if (!string.IsNullOrEmpty(faqid))
-                                {
-                                    if (!this.GetIsClicked())
-                                    {
-                                        this.SetIsClicked(true);
-                                        Intent faqIntent = new Intent(this, typeof(FAQListActivity));
-                                        faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
-                                        StartActivity(faqIntent);
-                                    }
-                                }
-                            }
-                        }
-                    };
                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                         .SetTitle(tooltipData.title)
-                        .SetClickableSpan(clickableSpan)
                         .SetMessage(tooltipData.description)
                         .SetCTALabel(tooltipData.cta)
                         .Build().Show();

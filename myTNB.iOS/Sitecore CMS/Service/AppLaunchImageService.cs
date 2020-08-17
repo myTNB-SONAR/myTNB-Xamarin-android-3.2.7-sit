@@ -24,7 +24,7 @@ namespace myTNB.SitecoreCMS.Service
 
         internal List<AppLaunchImageModel> GetAppLaunchImageService()
         {
-            SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.FiveSecondTimeSpan);
+            SitecoreService sitecoreService = new SitecoreService();
 
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.AppLaunchImage
                 , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
@@ -64,7 +64,7 @@ namespace myTNB.SitecoreCMS.Service
 
         internal AppLaunchImageTimestamp GetTimestamp()
         {
-            SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.FiveSecondTimeSpan);
+            SitecoreService sitecoreService = new SitecoreService();
 
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.AppLaunchImage
                 , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);

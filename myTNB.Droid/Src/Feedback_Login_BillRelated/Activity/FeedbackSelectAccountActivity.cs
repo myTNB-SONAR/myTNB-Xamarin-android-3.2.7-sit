@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Widget;
+using Castle.Core.Internal;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
@@ -65,14 +66,27 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
                 List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
                 foreach (CustomerBillingAccount customer in accountList)
                 {
-                    if (previouslySelected.AccountNum.Equals(customer.AccNum))
-                    {
-                        feedbackSelectAdapter.Add(AccountData.Copy(customer, true));
-                    }
-                    else
-                    {
-                        feedbackSelectAdapter.Add(AccountData.Copy(customer, false));
-                    }
+                    
+                        if (previouslySelected!=null)
+                        {
+                            if(previouslySelected.AccountNum == customer.AccNum)
+                            {
+                            feedbackSelectAdapter.Add(AccountData.Copy(customer, true));
+                            }
+                            else
+                            {
+                            feedbackSelectAdapter.Add(AccountData.Copy(customer, false));
+                            }
+                        }
+                        else
+                        {
+                            feedbackSelectAdapter.Add(AccountData.Copy(customer, false));
+                        }
+
+                    
+                   
+
+                    
 
                 }
             }

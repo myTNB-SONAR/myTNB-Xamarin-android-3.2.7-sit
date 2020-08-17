@@ -68,7 +68,7 @@ namespace myTNB_Android.Src.Utils
 
         private void FormatContent(TextView contentView, string content)
         {
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
                 contentView.TextFormatted = Html.FromHtml(content, FromHtmlOptions.ModeLegacy);
             }

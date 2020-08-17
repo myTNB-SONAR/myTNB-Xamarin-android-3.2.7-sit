@@ -12,7 +12,7 @@ namespace myTNB.SitecoreCMS.Services
     {
         internal List<WalkthroughScreensModel> GetWalkthroughScreens(string OS, string imageSize, string websiteUrl = null, string language = "en")
         {
-            SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.FiveSecondTimeSpan);
+            SitecoreService sitecoreService = new SitecoreService();
 
             //var req = sitecoreService.GetItemById(Constants.Sitecore.ItemID.WalkthroughScreens, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, websiteUrl, language);
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.WalkthroughScreens, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, websiteUrl, language);

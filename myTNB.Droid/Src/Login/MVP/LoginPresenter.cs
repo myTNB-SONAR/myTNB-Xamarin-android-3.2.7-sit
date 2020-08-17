@@ -225,6 +225,16 @@ namespace myTNB_Android.Src.Login.MVP
 
                         try
                         {
+                            SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP);
+                            SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP);
+                        }
+                        catch (Exception ex)
+                        {
+                            Utility.LoggingNonFatalError(ex);
+                        }
+
+                        try
+                        {
                             RewardsParentEntity mRewardParentEntity = new RewardsParentEntity();
                             mRewardParentEntity.DeleteTable();
                             mRewardParentEntity.CreateTable();

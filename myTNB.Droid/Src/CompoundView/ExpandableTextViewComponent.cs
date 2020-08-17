@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Android.Content;
 using Android.Graphics.Drawables;
 using Android.Support.V4.Content;
@@ -80,7 +81,8 @@ namespace myTNB_Android.Src.CompoundView
 
         public void SetOtherCharges(double totalAmount, List<ChargeModel> chargeList)
         {
-            myApplicationChargesValue.Text = "RM " + totalAmount.ToString("#,##0.00");
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            myApplicationChargesValue.Text = "RM " + totalAmount.ToString("#,##0.00", currCult);
             chargeList.ForEach(charge =>
             {
                 if (charge.Amount > 0.00)
@@ -90,7 +92,7 @@ namespace myTNB_Android.Src.CompoundView
                     TextView textValue = item.FindViewById<TextView>(Resource.Id.otherChargeValue);
 
                     textView.Text = charge.Title;
-                    textValue.Text = "RM" + charge.Amount.ToString("#,##0.00");
+                    textValue.Text = "RM" + charge.Amount.ToString("#,##0.00", currCult);
                     TextViewUtils.SetMuseoSans300Typeface(textView, textValue);
                     expandableContainer.AddView(item);
                 }

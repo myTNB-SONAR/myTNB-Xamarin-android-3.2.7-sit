@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Android.Graphics;
 using myTNB.SitecoreCMS.Model;
 
@@ -15,6 +16,22 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
             void ShowProgressDialog();
 
             void HideProgressDialog();
+
+            void SetWhatsNewDetailImage(List<WhatsNewDetailImageModel> containedImage);
+
+            void HideWhatsNewDetailImage();
+
+            string GetLocalItemID();
+
+            void SetupFullScreenShimmer();
+
+            string GenerateTmpFilePath();
+
+            void OnUpdateFullScreenImage(Bitmap fullBitmap);
+
+            void OnUpdateFullScreenPdf(string path);
+
+            void UpdateWhatsNewDetail(WhatsNewModel item);
         }
 
         public interface IWhatsNewDetailPresenter
@@ -24,6 +41,16 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
             void GetActiveWhatsNew(string itemID);
 
             List<string> ExtractUrls(string text);
+
+            List<WhatsNewDetailImageModel> ExtractImage(string text);
+
+            Task FetchWhatsNewDetailImage(List<WhatsNewDetailImageModel> containedImage);
+
+            Task ProcessWhatsNewDetailImage(List<WhatsNewDetailImageDBModel> containedImageDB);
+
+            void UpdateWhatsNewRead(string itemID, bool flag);
+
+            void UpdateRewardRead(string itemID, bool flag);
 
         }
     }

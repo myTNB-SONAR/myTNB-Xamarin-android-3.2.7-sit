@@ -12,7 +12,7 @@ using Android.Widget;
 using Card.IO;
 using myTNB_Android.Src.AddCard.MVP;
 using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.MakePayment.Model;
+using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
@@ -33,7 +33,7 @@ namespace myTNB_Android.Src.AddCard.Activity
         private AddCardContract.IUserActionsListener userActionsListener;
 
         private static readonly int REQUEST_SCAN = 5020;
-        private List<myTNB_Android.Src.MakePayment.Models.CreditCard> registerdCards = new List<myTNB_Android.Src.MakePayment.Models.CreditCard>();
+        private List<MultipleAccountPayment.Models.CreditCard> registerdCards = new List<MultipleAccountPayment.Models.CreditCard>();
 
         private MaterialDialog mDuplicateCardDialog;
         Snackbar mErrorMessageSnackBar;
@@ -80,7 +80,7 @@ namespace myTNB_Android.Src.AddCard.Activity
                 {
                     if (extras.ContainsKey("registeredCards"))
                     {
-                        registerdCards = DeSerialze<List<myTNB_Android.Src.MakePayment.Models.CreditCard>>(extras.GetString("registeredCards"));
+                        registerdCards = DeSerialze<List<MultipleAccountPayment.Models.CreditCard>>(extras.GetString("registeredCards"));
                     }
                 }
                 rootView = FindViewById<FrameLayout>(Resource.Id.rootView);
@@ -471,7 +471,7 @@ namespace myTNB_Android.Src.AddCard.Activity
             bool flag = false;
             string first6Digits = cardNumber.Substring(0, 6);
             string last4Digits = cardNumber.Substring(cardNumber.Length - 4);
-            foreach (myTNB_Android.Src.MakePayment.Models.CreditCard card in registerdCards)
+            foreach (MultipleAccountPayment.Models.CreditCard card in registerdCards)
             {
                 string first = card.LastDigits.Substring(0, 6);
                 string last = card.LastDigits.Substring(card.LastDigits.Length - 4);
