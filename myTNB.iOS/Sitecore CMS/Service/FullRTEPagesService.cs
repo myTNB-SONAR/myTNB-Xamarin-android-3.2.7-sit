@@ -12,7 +12,7 @@ namespace myTNB.SitecoreCMS.Services
     {
         internal List<FullRTEPagesModel> GetFullRTEPages(string websiteUrl = null, string language = "en")
         {
-            SitecoreService sitecoreService = new SitecoreService();
+            SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.FiveSecondTimeSpan);
 
             //var req = sitecoreService.GetItemById(Constants.Sitecore.ItemID.FullRTEPages, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, websiteUrl, language);
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.FullRTEPages, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, websiteUrl, language);

@@ -1,7 +1,14 @@
-﻿namespace myTNB.SitecoreCMS
+﻿using System;
+
+namespace myTNB.SitecoreCMS
 {
     public static class Constants
     {
+        public struct TimeOut
+        {
+            public static TimeSpan FiveSecondTimeSpan = TimeSpan.FromMilliseconds(5000);
+            public static TimeSpan TenSecondTimeSpan = TimeSpan.FromMilliseconds(10000);
+        }
         public struct Sitecore
         {
             public struct Templates
@@ -99,6 +106,15 @@
                     public const string Image = "Image";
                 }
 
+                //Created by Syahmi ICS 05052020
+                public struct EppInfoTooltip
+                {
+                    public const string Title = "Tool Tip Title";
+                    public const string PopUpTitle = "Pop Up Title";
+                    public const string PopUpBody = "Pop Up Body";
+                    public const string Image = "Image";
+                }
+
                 public struct BillDetailsTooltip
                 {
                     public const string Title = "Title";
@@ -165,6 +181,18 @@
                     public const string StartDate = "StartDate";
                     public const string EndDate = "EndDate";
                     public const string PublishDate = "PublishDate";
+                    public const string Image_DetailsView = "Image_DetailsView";
+                    public const string Styles_DetailsView = "Styles_DetailsView";
+                    public const string PortraitImage_PopUp = "PortraitImage_PopUp";
+                    public const string ShowEveryCountDays_PopUp = "ShowEveryCountDays_PopUp";
+                    public const string ShowForTotalCountDays_PopUp = "ShowForTotalCountDays_PopUp";
+                    public const string ShowAtAppLaunchPopUp = "ShowAtAppLaunchPopUp";
+                    public const string PopUp_Text_Only = "PopUp_Text_Only";
+                    public const string PopUp_HeaderImage = "PopUp_HeaderImage";
+                    public const string PopUp_Text_Content = "PopUp_Text_Content";
+                    public const string Donot_Show_In_WhatsNew = "Donot_Show_In_WhatsNew";
+                    public const string Disable_DoNotShow_Checkbox = "Disable_DoNotShow_Checkbox";
+                    public const string Infographic_FullView_URL = "Infographic_FullView_URL";
                 }
             }
 
@@ -182,16 +210,9 @@
 
             public struct ItemPath
             {
-
-#if DEBUG || MASTER
-                public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV4";
-                public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help_SIT";
-#else
-				public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV2";
-				public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
-#endif
+                public const string Promotions = "/sitecore/content/myTNBapp/Contents/PromotionsV2";
+                public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
                 public const string FAQs = "/sitecore/content/myTNBapp/Contents/FrequentlyAskedQuestions";
-
                 public const string Timestamp = "/sitecore/content/myTNBapp/Timestamp";
                 public const string WalkthroughScreens = "/sitecore/content/myTNBapp/Contents/Walkthrough Screens";
                 public const string FullRTEPages = "/sitecore/content/myTNBapp/Contents/Full RTE Pages/Terms Condition";
@@ -204,9 +225,12 @@
                 public const string BillDetailsTooltip = "/sitecore/content/myTNBapp/Contents/Itemised Billing Tooltip";
                 public const string AppLaunchImage = "/sitecore/content/myTNBapp/Contents/App Launch Image";
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
-                public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNew";
+                public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNewV2";
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
                 public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
+
+                //Created by Syahmi ICS 05052020
+                public const string EppToolTip = "/sitecore/content/myTNBapp/Contents/EppToolTip";
             }
         }
     }

@@ -122,12 +122,15 @@ namespace myTNB
             _btnNext.AddGestureRecognizer(new UITapGestureRecognizer(async () =>
             {
                 ActivityIndicator.Show();
-                BaseResponseModelV2 response = await ServiceCall.SendUpdatePhoneTokenSMS(_mobileNo);
+                string oldMobileNumber = DataManager.DataManager.SharedInstance.UserEntity[0]?.mobileNo ?? string.Empty;
+                BaseResponseModelV2 response = await ServiceCall.SendUpdatePhoneTokenSMSV2(_mobileNo, oldMobileNumber);
                 if (ServiceCall.ValidateBaseResponse(response))
                 {
                     DataManager.DataManager.SharedInstance.User.MobileNo = _mobileNo;
                     UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
                     VerifyPinViewController viewController = storyBoard.InstantiateViewController("VerifyPinViewController") as VerifyPinViewController;
+                    viewController.OldMobileNumber = oldMobileNumber;
+                    viewController.NewMobileNumber = _mobileNo;
                     viewController.IsMobileVerification = true;
                     viewController.IsFromLogin = IsFromLogin;
                     NavigationController.PushViewController(viewController, true);

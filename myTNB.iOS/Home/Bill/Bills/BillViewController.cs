@@ -44,6 +44,8 @@ namespace myTNB
         private CGRect FailBannerRect;
         private bool _hotspotIsOn, _isPayBtnEnabled = true;
 
+        private bool _hasActiveBill = false;
+
         public BillViewController(IntPtr handle) : base(handle) { }
 
         #region Life Cycle
@@ -276,18 +278,27 @@ namespace myTNB
 
         private void ScrollToHistorySection()
         {
-            int count = _billHistory?.d?.data?.BillPayHistories?.Count ?? 0;
-            if (count > 1)
+            try
             {
-                _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(2, 0), UITableViewScrollPosition.Bottom, false);
+                int count = _billHistory?.d?.data?.BillPayHistories?.Count ?? 0;
+                if (count > 1)
+                {
+                    _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(2, 0), UITableViewScrollPosition.Bottom, false);
+                }
+                else if (count > 0)
+                {
+                    _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(1, 0), UITableViewScrollPosition.Bottom, false);
+                }
+                else
+                {
+                    _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(0, 0), UITableViewScrollPosition.Top, false);
+                }
             }
-            else if (count > 0)
+            catch (Exception e)
             {
-                _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(1, 0), UITableViewScrollPosition.Bottom, false);
-            }
-            else
-            {
-                _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(0, 0), UITableViewScrollPosition.Top, false);
+#if DEBUG
+                Debug.WriteLine("DEBUG - ScrollToHistorySection Error: " + e.Message);
+#endif
             }
         }
 
@@ -439,6 +450,7 @@ namespace myTNB
                     viewController.AccountNumber = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
                     viewController.IsPayBtnEnabled = _isPayBtnEnabled;
                     viewController.HasPendingPayment = hasPendingPayment;
+                    viewController.HasActiveBill = _hasActiveBill;
                     UINavigationController navController = new UINavigationController(viewController);
                     navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
@@ -1345,7 +1357,27 @@ namespace myTNB
             };
             GetAccountBillPayHistoryResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountBillPayHistoryResponseModel>(BillConstants.Service_GetAccountBillPayHistory, request);
             _billHistory = response;
+            ParseHistoryData();
             return response;
+        }
+        #endregion
+
+        #region Parse For Bill Availability
+        private void ParseHistoryData()
+        {
+            if (_billHistory != null && _billHistory.d != null && _billHistory.d.data != null && _billHistory.d.data.BillPayHistories != null)
+            {
+                for (int i = 0; i < _billHistory.d.data.BillPayHistories.Count; i++)
+                {
+                    List<BillPayHistoryDataModel> item = _billHistory.d.data.BillPayHistories[i].BillPayHistoryData;
+                    if (item != null && item.Count > 0)
+                    {
+                        bool hasBill = item.Any(x => x.HistoryType == "BILL");
+                        _hasActiveBill = hasBill;
+                        if (hasBill) { break; }
+                    }
+                }
+            }
         }
         #endregion
     }

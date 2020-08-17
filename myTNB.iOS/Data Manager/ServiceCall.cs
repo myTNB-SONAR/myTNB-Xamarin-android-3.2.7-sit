@@ -102,7 +102,7 @@ namespace myTNB.DataManager
         /// </summary>
         /// <returns>The update phone token sms.</returns>
         /// <param name="mobileNumber">Mobile number.</param>
-        public static async Task<BaseResponseModelV2> SendUpdatePhoneTokenSMS(string mobileNumber)
+        public static async Task<BaseResponseModelV2> SendUpdatePhoneTokenSMSV2(string newMobileNumber, string oldMobileNumber)
         {
             ServiceManager serviceManager = new ServiceManager();
             BaseResponseModelV2 response;
@@ -129,12 +129,12 @@ namespace myTNB.DataManager
                     ses_param1 = string.Empty,
                     ses_param2 = string.Empty
                 },
-                mobileNo = mobileNumber,
-                updateEvent = string.Empty
+                mobileNo = newMobileNumber,
+                oldPhoneNumber = oldMobileNumber
             };
             response = await Task.Run(() =>
             {
-                return serviceManager.BaseServiceCallV6("SendUpdatePhoneTokenSMS", requestParameter);
+                return serviceManager.BaseServiceCallV6("SendUpdatePhoneTokenSMSV2", requestParameter);
             });
 
             return response;

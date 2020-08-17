@@ -12,6 +12,8 @@ namespace myTNB.Home.Feedback
         private SubmittedFeedbackViewController _controller;
         private List<SubmittedFeedbackDataModel> _submittedFeedbacks = new List<SubmittedFeedbackDataModel>();
 
+        public Dictionary<string, string> I18NDictionary;
+
         public SubmittedFeedbackDataSource(SubmittedFeedbackViewController controller, List<SubmittedFeedbackDataModel> submittedFeedbacks)
         {
             _controller = controller;
@@ -20,6 +22,8 @@ namespace myTNB.Home.Feedback
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
+            I18NDictionary = LanguageManager.Instance.GetValuesByPage("SubmitEnquiry");
+
             SubmittedFeedbackCell cell = tableView.DequeueReusableCell("SubmittedFeedbackCell", indexPath) as SubmittedFeedbackCell;
             cell.SeparatorInset = new UIEdgeInsets(0, 0, 0, 0);
             cell.LayoutMargins = new UIEdgeInsets(0, 0, 0, 0);
@@ -29,11 +33,12 @@ namespace myTNB.Home.Feedback
                 SubmittedFeedbackDataModel feedback = _submittedFeedbacks[indexPath.Row];
                 cell.FeedbackTypeLabel.Text = feedback.FeedbackCategoryName;
                 cell.FeedbackDateLabel.Text = GetFormattedDate(feedback.DateCreated);
-                cell.FeedbackDetailsLabel.Text = feedback.FeedbackMessage;
+                //cell.FeedbackDetailsLabel.Text = feedback.FeedbackMessage;
 
                 if (feedback.FeedbackCategoryId == "1")
                 {
-                    cell.imgViewIcon.Image = UIImage.FromBundle("Feedback-Submitted-Generic");
+                    cell.imgViewIcon.Image = UIImage.FromBundle("IC-Tile-FeedbackBill");//"Feedback-Submitted-Generic"
+                    cell.FeedbackTypeLabel.Text = GetI18NValue("generalEnquiryTitle");
                 }
                 else if (feedback.FeedbackCategoryId == "2")
                 {
@@ -43,9 +48,19 @@ namespace myTNB.Home.Feedback
                 {
                     cell.imgViewIcon.Image = UIImage.FromBundle("Feedback-Submitted-Others");
                 }
+                else if (feedback.FeedbackCategoryId == "4")
+                {
+                    cell.imgViewIcon.Image = UIImage.FromBundle("Update-PersonalDetails");
+                    cell.FeedbackTypeLabel.Text = GetI18NValue("updatePersonalDetTitle");
+                }
             }
 
             return cell;
+        }
+
+        public string GetI18NValue(string key)
+        {
+            return I18NDictionary != null && I18NDictionary.ContainsKey(key) ? I18NDictionary[key] : string.Empty;
         }
 
         public override nint RowsInSection(UITableView tableview, nint section)

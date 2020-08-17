@@ -14,6 +14,7 @@ namespace myTNB.SitecoreCMS.Service
     internal class WhatsNewService
     {
         private string _os, _imgSize, _websiteURL, _language;
+        internal bool HasChildItemError { private set; get; }
         internal WhatsNewService(string os, string imageSize, string websiteUrl = null, string language = "en")
         {
             _os = os;
@@ -24,9 +25,12 @@ namespace myTNB.SitecoreCMS.Service
 
         internal WhatsNewTimestamp GetTimeStamp()
         {
-            SitecoreService sitecoreService = new SitecoreService();
+            SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.FiveSecondTimeSpan);
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.WhatsNew
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
+                , PayloadType.Content
+                , new List<ScopeType> { ScopeType.Self }
+                , _websiteURL
+                , _language);
             var item = req.Result;
             var list = ParseToTimestamp(item);
             var itemList = list.Result;
@@ -61,9 +65,12 @@ namespace myTNB.SitecoreCMS.Service
 
         internal List<WhatsNewCategoryModel> GetCategoryItems()
         {
-            SitecoreService sitecoreService = new SitecoreService();
+            SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.TenSecondTimeSpan);
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.WhatsNew
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
+                , PayloadType.Content
+                , new List<ScopeType> { ScopeType.Children }
+                , _websiteURL
+                , _language);
             var item = req.Result;
             var list = ParseToCategoryItems(item);
             var itemList = list.Result;
@@ -72,13 +79,25 @@ namespace myTNB.SitecoreCMS.Service
 
         internal List<WhatsNewModel> GetChildItems(ISitecoreItem categoryItem)
         {
-            SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(categoryItem.Path
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
-            var item = req.Result;
-            var list = GenerateWhatsNewChildren(item);
-            var itemList = list.Result;
-            return itemList.ToList();
+            try
+            {
+                SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.TenSecondTimeSpan);
+                var req = sitecoreService.GetItemByPath(categoryItem.Path
+                    , PayloadType.Content
+                    , new List<ScopeType> { ScopeType.Children }
+                    , _websiteURL
+                    , _language);
+                var item = req.Result;
+                var list = GenerateWhatsNewChildren(item);
+                var itemList = list.Result;
+                return itemList.ToList();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("What's New GetChildItems Error: " + ex.Message);
+                HasChildItemError = true;
+            }
+            return new List<WhatsNewModel>();
         }
 
         private async Task<IEnumerable<WhatsNewCategoryModel>> ParseToCategoryItems(ScItemsResponse itemsResponse)
@@ -88,6 +107,7 @@ namespace myTNB.SitecoreCMS.Service
             {
                 try
                 {
+                    HasChildItemError = false;
                     for (int i = 0; i < itemsResponse.ResultCount; i++)
                     {
                         ISitecoreItem item = itemsResponse[i];
@@ -95,12 +115,21 @@ namespace myTNB.SitecoreCMS.Service
                         {
                             continue;
                         }
-                        list.Add(new WhatsNewCategoryModel
+
+                        List<WhatsNewModel> childItems = GetChildItems(item);
+                        if (HasChildItemError)
                         {
-                            ID = GetValidID(item.Id),
-                            CategoryName = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Category),
-                            WhatsNewItems = GetChildItems(item)
-                        });
+                            break;
+                        }
+                        else
+                        {
+                            list.Add(new WhatsNewCategoryModel
+                            {
+                                ID = GetValidID(item.Id),
+                                CategoryName = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Category),
+                                WhatsNewItems = childItems
+                            });
+                        }
                     }
                 }
                 catch (Exception e)
@@ -114,7 +143,7 @@ namespace myTNB.SitecoreCMS.Service
         private async Task<IEnumerable<WhatsNewModel>> GenerateWhatsNewChildren(ScItemsResponse itemsResponse)
         {
             List<WhatsNewModel> list = new List<WhatsNewModel>();
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 try
                 {
@@ -134,15 +163,108 @@ namespace myTNB.SitecoreCMS.Service
                             Image = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image, _websiteURL, false),
                             StartDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.StartDate),
                             EndDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.EndDate),
-                            PublishDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PublishDate)
+                            PublishDate = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PublishDate),
+                            Image_DetailsView = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.Image_DetailsView, _websiteURL, false),
+                            Styles_DetailsView = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Styles_DetailsView),
+                            PortraitImage_PopUp = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.PortraitImage_PopUp, _websiteURL, false),
+                            PopUp_HeaderImage = item.GetImageUrlFromMediaField(Constants.Sitecore.Fields.WhatsNew.PopUp_HeaderImage, _websiteURL, false),
+                            PopUp_Text_Content = item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PopUp_Text_Content),
+                            Infographic_FullView_URL = item.GetFileURLFromFieldName(Constants.Sitecore.Fields.WhatsNew.Infographic_FullView_URL, _websiteURL)
                         };
+
+                        try
+                        {
+                            listlItem.ShowEveryCountDays_PopUp = !string.IsNullOrEmpty(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowEveryCountDays_PopUp)) ? int.Parse(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowEveryCountDays_PopUp)) : -1;
+                        }
+                        catch (Exception ex)
+                        {
+#if DEBUG || MASTER
+                            Debug.WriteLine("Error: " + ex.Message);
+#endif
+                            listlItem.ShowEveryCountDays_PopUp = -1;
+                        }
+                        try
+                        {
+                            listlItem.ShowForTotalCountDays_PopUp = !string.IsNullOrEmpty(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowForTotalCountDays_PopUp)) ? int.Parse(item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowForTotalCountDays_PopUp)) : 0;
+                        }
+                        catch (Exception ex)
+                        {
+#if DEBUG || MASTER
+                            Debug.WriteLine("Error: " + ex.Message);
+#endif
+                            listlItem.ShowForTotalCountDays_PopUp = 0;
+                        }
+                        try
+                        {
+                            listlItem.ShowAtAppLaunchPopUp = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowAtAppLaunchPopUp).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.ShowAtAppLaunchPopUp).ToUpper().Trim() == "TRUE") ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+#if DEBUG || MASTER
+                            Debug.WriteLine("Error: " + ex.Message);
+#endif
+                            listlItem.ShowAtAppLaunchPopUp = false;
+                        }
+
+                        try
+                        {
+                            listlItem.PopUp_Text_Only = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PopUp_Text_Only).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.PopUp_Text_Only).ToUpper().Trim() == "TRUE") ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+#if DEBUG || MASTER
+                            Debug.WriteLine("Error: " + ex.Message);
+#endif
+                            listlItem.PopUp_Text_Only = false;
+                        }
+
+                        try
+                        {
+                            listlItem.Donot_Show_In_WhatsNew = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Donot_Show_In_WhatsNew).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Donot_Show_In_WhatsNew).ToUpper().Trim() == "TRUE") ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+#if DEBUG || MASTER
+                            Debug.WriteLine("Error: " + ex.Message);
+#endif
+                            listlItem.Donot_Show_In_WhatsNew = false;
+                        }
+
+                        try
+                        {
+                            listlItem.Disable_DoNotShow_Checkbox = (item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Disable_DoNotShow_Checkbox).ToUpper().Trim() == "1" || item.GetValueFromField(Constants.Sitecore.Fields.WhatsNew.Disable_DoNotShow_Checkbox).ToUpper().Trim() == "TRUE") ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+#if DEBUG || MASTER
+                            Debug.WriteLine("Error: " + ex.Message);
+#endif
+                            listlItem.Disable_DoNotShow_Checkbox = false;
+                        }
+
+                        if (listlItem.Description.Contains("<img"))
+                        {
+                            string urlRegex = @"<img[^>]*?src\s*=\s*[""']?([^'"" >]+?)[ '""][^>]*?>";
+                            System.Text.RegularExpressions.MatchCollection matchesImgSrc = System.Text.RegularExpressions.Regex.Matches(listlItem.Description, urlRegex, System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+                            foreach (System.Text.RegularExpressions.Match m in matchesImgSrc)
+                            {
+                                string href = m.Groups[1].Value;
+                                if (!href.Contains("http"))
+                                {
+                                    href = item.GetImageUrlFromExtractedUrl(m.Groups[1].Value, _websiteURL);
+                                    listlItem.Description = listlItem.Description.Replace(m.Groups[1].Value, href);
+                                }
+                            }
+                        }
 
                         list.Add(listlItem);
                     }
+                    HasChildItemError = false;
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Exception in WhatsNewService/GenerateWhatsNewChildren: " + e.Message);
+                    HasChildItemError = true;
                 }
             });
             return list;

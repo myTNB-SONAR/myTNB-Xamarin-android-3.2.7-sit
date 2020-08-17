@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
+using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
 using myTNB.SitecoreCMS.Model;
+using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 
 namespace myTNB
@@ -12,6 +16,8 @@ namespace myTNB
         public WhatsNewModel WhatsNewModel;
         private UIBarButtonItem _btnShare;
         private UIScrollView _scrollView;
+        private UITextView _titleTextView;
+        private UITextView _descTextView;
 
         public override void ViewDidLoad()
         {
@@ -113,6 +119,8 @@ namespace myTNB
         {
             nfloat imgHeight = GetScaledHeight(180F);
 
+            bool isImageDetailAvailable = true;
+
             UIView imageContainer = new UIView(new CGRect(0, 0, ViewWidth, imgHeight))
             {
                 BackgroundColor = UIColor.Clear,
@@ -123,9 +131,100 @@ namespace myTNB
                 ContentMode = UIViewContentMode.ScaleAspectFill
             };
 
-            if (WhatsNewModel.Image.IsValid())
+            Dictionary<string, string> listDescription = WhatsNewDetailDescriptionCache.GetImages(WhatsNewModel.ID);
+            Dictionary<string, string> ImageDescriptionDictionary = new Dictionary<string, string>();
+            List<string> imageUrls = new List<string>();
+
+            if (WhatsNewModel.Description.Contains("<img"))
             {
-                NSData imgData = WhatsNewCache.GetImage(WhatsNewModel.ID);
+                string urlHeightWidthRegex = "(<img\\b|(?!^)\\G)[^>]*?\\b(src|width|height)=([\"']?)([^\"]*)\\3";
+                System.Text.RegularExpressions.MatchCollection matcheImgSrc = System.Text.RegularExpressions.Regex.Matches(WhatsNewModel.Description, urlHeightWidthRegex, System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+                bool foundWidth = false;
+                bool foundHeight = false;
+                nfloat textImgWidth = 0;
+                nfloat textImgHeight = 0;
+                for (int index = 0; index < matcheImgSrc.Count; index++)
+                {
+                    if (matcheImgSrc[index].Groups[2].Value == "width")
+                    {
+                        if (foundHeight)
+                        {
+                            textImgWidth = nfloat.Parse(matcheImgSrc[index].Groups[4].Value);
+                            nfloat deviceWidth = ViewWidth - (BaseMarginWidth16 * 2);
+                            WhatsNewModel.Description = WhatsNewModel.Description.Replace("width=\"" + textImgWidth + "\"", "width=\"" + deviceWidth.ToString() + "\"");
+
+                            nfloat calImgRatio = deviceWidth / textImgWidth;
+                            nfloat deviceHeight = textImgHeight * calImgRatio;
+
+                            WhatsNewModel.Description = WhatsNewModel.Description.Replace("height=\"" + textImgHeight + "\"", "height=\"" + deviceHeight.ToString() + "\"");
+
+                            foundHeight = false;
+                        }
+                        else
+                        {
+                            foundWidth = true;
+                            textImgWidth = nfloat.Parse(matcheImgSrc[index].Groups[4].Value);
+                        }
+                    }
+                    else if (matcheImgSrc[index].Groups[2].Value == "height")
+                    {
+                        if (foundWidth)
+                        {
+                            textImgHeight = nfloat.Parse(matcheImgSrc[index].Groups[4].Value);
+                            nfloat deviceWidth = ViewWidth - (BaseMarginWidth16 * 2);
+                            WhatsNewModel.Description = WhatsNewModel.Description.Replace("width=\"" + textImgWidth + "\"", "width=\"" + deviceWidth.ToString() + "\"");
+
+                            nfloat calImgRatio = deviceWidth / textImgWidth;
+                            nfloat deviceHeight = textImgHeight * calImgRatio;
+
+                            WhatsNewModel.Description = WhatsNewModel.Description.Replace("height=\"" + textImgHeight + "\"", "height=\"" + deviceHeight.ToString() + "\"");
+
+                            foundWidth = false;
+                        }
+                        else
+                        {
+                            foundHeight = true;
+                            textImgHeight = nfloat.Parse(matcheImgSrc[index].Groups[4].Value);
+                        }
+                    }
+                }
+
+                string urlRegex = @"<img[^>]*?src\s*=\s*[""']?([^'"" >]+?)[ '""][^>]*?>";
+                System.Text.RegularExpressions.MatchCollection matchesImgSrc = System.Text.RegularExpressions.Regex.Matches(WhatsNewModel.Description, urlRegex, System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+                for(int count = 0; count < matchesImgSrc.Count; count++)
+                {
+                    System.Text.RegularExpressions.Match m = matchesImgSrc[count];
+
+                    string href = m.Groups[1].Value;
+                    if (href.Contains("http"))
+                    {
+                        ImageDescriptionDictionary.Add(WhatsNewModel.ID + "_" + count.ToString(), href);
+                        WhatsNewModel.Description = WhatsNewModel.Description.Replace(href, WhatsNewConstants.defaultDescriptionImage);
+                        imageUrls.Add(href);
+                    }
+                    else if (href.Contains(WhatsNewConstants.defaultDescriptionImage))
+                    {
+                        if (listDescription != null && listDescription.Count > 0)
+                        {
+                            imageUrls.Add(listDescription[WhatsNewModel.ID + "_" + count.ToString()]);
+                        }
+                    }
+                }
+
+                if (listDescription == null)
+                {
+                    WhatsNewDetailDescriptionCache.SaveImages(WhatsNewModel.ID, ImageDescriptionDictionary);
+                    listDescription = ImageDescriptionDictionary;
+                }
+                else
+                {
+                    ImageDescriptionDictionary = listDescription;
+                }
+            }
+
+            if (WhatsNewModel.Image_DetailsView.IsValid())
+            {
+                NSData imgData = WhatsNewDetailCache.GetImage(WhatsNewModel.ID);
                 if (imgData != null)
                 {
                     imageView.Image = UIImage.FromBundle(WhatsNewConstants.Img_WhatsNewDefaultBanner);
@@ -161,7 +260,7 @@ namespace myTNB
 
                         viewShimmerContent.AddSubview(viewImage);
                         imgLoadingView.AddSubview(viewShimmerParent);
-                        NSUrl url = new NSUrl(WhatsNewModel.Image);
+                        NSUrl url = new NSUrl(WhatsNewModel.Image_DetailsView);
                         NSUrlSession session = NSUrlSession
                             .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
                         NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
@@ -175,6 +274,7 @@ namespace myTNB
                                     {
                                         imageView.Image = image;
                                     }
+                                    WhatsNewDetailCache.SaveImage(WhatsNewModel.ID, data);
                                     imgLoadingView.RemoveFromSuperview();
                                 });
                             }
@@ -209,33 +309,118 @@ namespace myTNB
             }
             else
             {
-                InvokeOnMainThread(() =>
-                {
-                    imageView.Image = UIImage.FromBundle(WhatsNewConstants.Img_WhatsNewDefaultBanner);
-                });
+                isImageDetailAvailable = false;
             }
 
             nfloat viewWidth = ViewWidth - (BaseMarginWidth16 * 2);
 
-            UITextView titleTextView = CreateHTMLContent(WhatsNewModel.Title, true);
-            CGSize titleTextViewSize = titleTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
-            ViewHelper.AdjustFrameSetHeight(titleTextView, titleTextViewSize.Height);
-            ViewHelper.AdjustFrameSetX(titleTextView, GetScaledWidth(16F));
-            ViewHelper.AdjustFrameSetY(titleTextView, GetYLocationFromFrame(imageView.Frame, 20F));
-            ViewHelper.AdjustFrameSetWidth(titleTextView, viewWidth);
+            _titleTextView = CreateHTMLContent(WhatsNewModel.Title, true);
+            CGSize titleTextViewSize = _titleTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
+            ViewHelper.AdjustFrameSetHeight(_titleTextView, titleTextViewSize.Height);
+            ViewHelper.AdjustFrameSetX(_titleTextView, GetScaledWidth(16F));
+            if (isImageDetailAvailable)
+            {
+                ViewHelper.AdjustFrameSetY(_titleTextView, GetYLocationFromFrame(imageView.Frame, 20F));
+            }
+            else
+            {
+                ViewHelper.AdjustFrameSetY(_titleTextView, GetScaledHeight(16F));
+            }
+            ViewHelper.AdjustFrameSetWidth(_titleTextView, viewWidth);
+            _descTextView = CreateHTMLContent(WhatsNewModel.Description, false);
+            CGSize descTextViewSize = _descTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
+            ViewHelper.AdjustFrameSetHeight(_descTextView, descTextViewSize.Height);
+            ViewHelper.AdjustFrameSetX(_descTextView, GetScaledWidth(16F));
+            ViewHelper.AdjustFrameSetY(_descTextView, GetYLocationFromFrame(_titleTextView.Frame, 20F));
+            ViewHelper.AdjustFrameSetWidth(_descTextView, viewWidth);
 
-            UITextView descTextView = CreateHTMLContent(WhatsNewModel.Description, false);
-            CGSize descTextViewSize = descTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
-            ViewHelper.AdjustFrameSetHeight(descTextView, descTextViewSize.Height);
-            ViewHelper.AdjustFrameSetX(descTextView, GetScaledWidth(16F));
-            ViewHelper.AdjustFrameSetY(descTextView, GetYLocationFromFrame(titleTextView.Frame, 20F));
-            ViewHelper.AdjustFrameSetWidth(descTextView, viewWidth);
+            if (isImageDetailAvailable)
+            {
+                _scrollView.AddSubview(imageContainer);
+                _scrollView.AddSubview(imageView);
+            }
+            _scrollView.AddSubview(_titleTextView);
+            _scrollView.AddSubview(_descTextView);
+            UpdateScrollViewContentSize(_descTextView);
 
-            _scrollView.AddSubview(imageContainer);
-            _scrollView.AddSubview(imageView);
-            _scrollView.AddSubview(titleTextView);
-            _scrollView.AddSubview(descTextView);
-            UpdateScrollViewContentSize(descTextView);
+            if (imageUrls != null && imageUrls.Count > 0)
+            {
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        bool downloadFailed = false;
+
+                        List<string> downloadImageUrls = new List<string>();
+
+                        for (int imgCount = 0; imgCount < imageUrls.Count; imgCount++)
+                        {
+                            try
+                            {
+                                WebClient webClient = new WebClient();
+                                var outByteArray = webClient.DownloadData(new Uri(imageUrls[imgCount]));
+                                var contentType = webClient.ResponseHeaders["Content-Type"];
+                                if (contentType != null &&
+                                    contentType.StartsWith("image", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    downloadImageUrls.Add("data:" + contentType + ";base64," + System.Convert.ToBase64String(outByteArray));
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                downloadFailed = true;
+                                Debug.WriteLine("Exception in Image Download: " + e.Message);
+                            }
+                        }
+
+                        if (!downloadFailed)
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                try
+                                {
+                                    for (int imgCount = 0; imgCount < downloadImageUrls.Count; imgCount++)
+                                    {
+                                        string urlRegex = @"<img[^>]*?src\s*=\s*[""']?([^'"" >]+?)[ '""][^>]*?>";
+                                        System.Text.RegularExpressions.MatchCollection matchesImgSrc = System.Text.RegularExpressions.Regex.Matches(WhatsNewModel.Description, urlRegex, System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+                                        if (matchesImgSrc != null && matchesImgSrc.Count == downloadImageUrls.Count)
+                                        {
+                                            System.Text.RegularExpressions.Match m = matchesImgSrc[imgCount];
+
+                                            string tag = m.Groups[0].Value;
+                                            string href = m.Groups[1].Value;
+                                            tag = tag.Replace(href, downloadImageUrls[imgCount]);
+                                            WhatsNewModel.Description = WhatsNewModel.Description.Replace(m.Groups[0].Value, tag);
+                                        }
+                                    }
+
+                                    _descTextView.RemoveFromSuperview();
+                                    _descTextView = CreateHTMLContent(WhatsNewModel.Description, false);
+                                    CGSize _descTextViewSize = _descTextView.SizeThatFits(new CGSize(viewWidth, 1000F));
+                                    ViewHelper.AdjustFrameSetHeight(_descTextView, _descTextViewSize.Height);
+                                    ViewHelper.AdjustFrameSetX(_descTextView, GetScaledWidth(16F));
+                                    ViewHelper.AdjustFrameSetY(_descTextView, GetYLocationFromFrame(_titleTextView.Frame, 20F));
+                                    ViewHelper.AdjustFrameSetWidth(_descTextView, viewWidth);
+
+                                    _scrollView.AddSubview(_descTextView);
+                                    UpdateScrollViewContentSize(_descTextView);
+
+                                    WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+                                    whatsNewEntity.UpdateDescription(WhatsNewModel.ID, WhatsNewModel.Description);
+                                }
+                                catch (Exception e)
+                                {
+                                    Debug.WriteLine("Exception in Image Download: " + e.Message);
+                                }
+                            });
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Exception in Image Download: " + e.Message);
+                    }
+                });
+            }
         }
 
         private void UpdateScrollViewContentSize(UIView lastView)
@@ -280,26 +465,7 @@ namespace myTNB
                 WeakLinkTextAttributes = linkAttributes.Dictionary,
                 TextContainerInset = UIEdgeInsets.Zero
             };
-
-            Action<NSUrl> action = new Action<NSUrl>((url) =>
-            {
-                if (url != null)
-                {
-                    BrowserViewController viewController = new BrowserViewController();
-                    if (viewController != null)
-                    {
-                        viewController.NavigationTitle = GetI18NValue(WhatsNewConstants.I18N_Title);
-                        viewController.URL = url.AbsoluteString;
-                        viewController.IsDelegateNeeded = false;
-                        UINavigationController navController = new UINavigationController(viewController)
-                        {
-                            ModalPresentationStyle = UIModalPresentationStyle.FullScreen
-                        };
-                        PresentViewController(navController, true, null);
-                    }
-                }
-            });
-            textView.Delegate = new TextViewDelegate(action)
+            textView.Delegate = new TextViewDelegate(LinkAction)
             {
                 InteractWithURL = false
             };

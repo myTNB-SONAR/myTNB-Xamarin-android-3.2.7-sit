@@ -13,6 +13,7 @@
         //Service
         public static string Service_GetAccountsCharges = "GetAccountsCharges";
         public static string Service_GetAccountBillPayHistory = "GetAccountBillPayHistory";
+        public static string Service_GetBillHistory = "GetBillHistory";
         public static string Param_RE = "RE";
         public static string Param_UTIL = "UTIL";
 

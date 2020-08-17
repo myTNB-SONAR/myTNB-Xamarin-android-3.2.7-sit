@@ -8,13 +8,15 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using myTNB.Payment;
 
+using WebKit;
+
 namespace myTNB
 {
     public partial class MakePaymentViewController : CustomUIViewController
     {
         public GetPaymentTransactionIdResponseModel _paymentTransactionIDResponseModel;
         public CardModel _card;
-        public UIWebView _webView;
+        public WKWebView _webView;
         public UIView _barView;
         string _url = string.Empty;
         public bool _saveCardIsChecked = false;
@@ -66,9 +68,16 @@ namespace myTNB
         {
             if (!string.IsNullOrEmpty(_url))
             {
-                _webView = new UIWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
+
+                var preferences = new WKPreferences();
+                preferences.JavaScriptEnabled = true;
+                var configuration = new WKWebViewConfiguration();
+                configuration.Preferences = preferences;
+
+                _webView = new WKWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height), configuration);
                 _webView.BackgroundColor = UIColor.White;
-                _webView.Delegate = new WebViewDelegate(View, this);
+                _webView.NavigationDelegate = new WebWKNavigationDelegate(View, this);
+                _webView.UIDelegate = new WebWKUIDelegate(View, this);
 
                 try
                 {
