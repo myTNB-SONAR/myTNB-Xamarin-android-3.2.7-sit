@@ -140,6 +140,7 @@ namespace myTNB
                 _whatsNewList = whatsNewEntity.GetAllItems();
                 if (_whatsNewList != null && _whatsNewList.Count > 0)
                 {
+                    _whatsNewList = _whatsNewList.FindAll(x => !x.Donot_Show_In_WhatsNew);
                     _categoryList = new List<WhatsNewModel>();
                     _categoryList = _whatsNewList.GroupBy(x => x.CategoryID).Select(x => x.First()).ToList();
 
@@ -163,7 +164,14 @@ namespace myTNB
                 }
                 else
                 {
-                    SetEmptyView();
+                    if (WhatsNewCache.IsSitecoreRefresh)
+                    {
+                        SetRefreshScreen();
+                    }
+                    else
+                    {
+                        SetEmptyView();
+                    }
                 }
             });
         }
@@ -758,13 +766,33 @@ namespace myTNB
         {
             if (whatsNew != null)
             {
-                WhatsNewDetailsViewController whatsNewDetailView = new WhatsNewDetailsViewController();
-                whatsNewDetailView.WhatsNewModel = whatsNew;
-                UINavigationController navController = new UINavigationController(whatsNewDetailView)
+                if (whatsNew.Infographic_FullView_URL.IsValid())
                 {
-                    ModalPresentationStyle = UIModalPresentationStyle.FullScreen
-                };
-                PresentViewController(navController, true, null);
+                    BrowserViewController viewController = new BrowserViewController();
+                    if (viewController != null)
+                    {
+                        viewController.URL = whatsNew.Infographic_FullView_URL;
+                        viewController.IsDelegateNeeded = false;
+                        viewController.NavigationTitle = GetI18NValue(WhatsNewConstants.I18N_Title);
+                        viewController.IsShareableContent = true;
+                        viewController.ShareID = whatsNew.ID;
+                        UINavigationController navController = new UINavigationController(viewController)
+                        {
+                            ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                        };
+                        PresentViewController(navController, true, null);
+                    }
+                }
+                else
+                {
+                    WhatsNewDetailsViewController whatsNewDetailView = new WhatsNewDetailsViewController();
+                    whatsNewDetailView.WhatsNewModel = whatsNew;
+                    UINavigationController navController = new UINavigationController(whatsNewDetailView)
+                    {
+                        ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                    };
+                    PresentViewController(navController, true, null);
+                }
                 WhatsNewServices.SetIsRead(whatsNew.ID);
                 OnUpdateReadWhatsNew(whatsNew);
             }
@@ -794,7 +822,7 @@ namespace myTNB
 
         private void RefreshTable()
         {
-            if (_whatsNewList != null && _whatsNewList.Count > 0)
+            if (_whatsNewList != null && _whatsNewList.Count > 0 && _categoryList != null)
             {
                 for (int c = 0; c < _categoryList.Count; c++)
                 {

@@ -10,23 +10,37 @@ using System.Linq;
 using System.IO;
 using Sitecore.MobileSDK.PasswordProvider;
 using System.Diagnostics;
+using System.Threading;
 
 namespace myTNB.SitecoreCMS.Services
 {
     public class SitecoreService
     {
-        public async Task<ScItemsResponse> GetItemByPath(string itemPath, PayloadType itemLoadType, List<ScopeType> itemScopeTypes, string websiteUrl = null, string itemLanguage = "en")
+        private TimeSpan timeSpan = TimeSpan.FromMilliseconds(5000);
+
+        public SitecoreService(TimeSpan timeSpan)
+        {
+            this.timeSpan = timeSpan;
+        }
+
+        public async Task<ScItemsResponse> GetItemByPath(string itemPath
+            , PayloadType itemLoadType
+            , List<ScopeType> itemScopeTypes
+            , string websiteUrl = null
+            , string itemLanguage = "en")
         {
             try
             {
                 using (var session = await GetSession(websiteUrl))
                 {
+                    CancellationTokenSource source = new CancellationTokenSource();
+                    source.CancelAfter(timeSpan);
                     IReadItemsByPathRequest request = ItemWebApiRequestBuilder.ReadItemsRequestWithPath(itemPath)
                         .Payload(itemLoadType)
                         .AddScope(itemScopeTypes)
                         .Language(itemLanguage)
                         .Build();
-                    return await session.ReadItemAsync(request);
+                    return await session.ReadItemAsync(request, source.Token);
                 }
             }
             catch (Exception e)
@@ -36,18 +50,24 @@ namespace myTNB.SitecoreCMS.Services
             return new ScItemsResponse(0, 0, new List<ISitecoreItem>());
         }
 
-        public async Task<ScItemsResponse> GetItemById(string itemId, PayloadType itemLoadType, List<ScopeType> itemScopeTypes, string websiteUrl = null, string itemLanguage = "en")
+        public async Task<ScItemsResponse> GetItemById(string itemId
+            , PayloadType itemLoadType
+            , List<ScopeType> itemScopeTypes
+            , string websiteUrl = null
+            , string itemLanguage = "en")
         {
             try
             {
                 using (var session = await GetSession(websiteUrl))
                 {
+                    CancellationTokenSource source = new CancellationTokenSource();
+                    source.CancelAfter(timeSpan);
                     IReadItemsByIdRequest request = ItemWebApiRequestBuilder.ReadItemsRequestWithId(itemId)
                         .Payload(itemLoadType)
                         .AddScope(itemScopeTypes)
                         .Language(itemLanguage)
                         .Build();
-                    return await session.ReadItemAsync(request);
+                    return await session.ReadItemAsync(request, source.Token);
                 }
             }
             catch (Exception e)
@@ -64,12 +84,14 @@ namespace myTNB.SitecoreCMS.Services
                 mediaUrl = CleanUpMediaUrlByReplacingWeirdTildeSignWithCorrect(mediaUrl);
                 using (var session = await SitecoreSession)
                 {
+                    CancellationTokenSource source = new CancellationTokenSource();
+                    source.CancelAfter(timeSpan);
                     IMediaResourceDownloadRequest request = ItemWebApiRequestBuilder.DownloadResourceRequestWithMediaPath(mediaUrl)
                         .Language("en")
                         .Build();
 
                     byte[] data = null;
-                    using (Stream response = await session.DownloadMediaResourceAsync(request))
+                    using (Stream response = await session.DownloadMediaResourceAsync(request, source.Token))
                     using (MemoryStream responseInMemory = new MemoryStream())
                     {
                         await response.CopyToAsync(responseInMemory);
@@ -85,7 +107,8 @@ namespace myTNB.SitecoreCMS.Services
             return null;
         }
 
-        async Task<IList<ScItemsResponse>> GetDataSourceFromFieldName(ISitecoreItem sitecoreItem, string fieldName)
+        async Task<IList<ScItemsResponse>> GetDataSourceFromFieldName(ISitecoreItem sitecoreItem
+            , string fieldName)
         {
             if (sitecoreItem.Fields.All(f => f.Name != fieldName))
             {
@@ -110,7 +133,10 @@ namespace myTNB.SitecoreCMS.Services
 
             foreach (string itemId in itemIds)
             {
-                ScItemsResponse response = await GetItemById(itemId, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, sitecoreItem.Source.Language);
+                ScItemsResponse response = await GetItemById(itemId
+                    , PayloadType.Content
+                    , new List<ScopeType> { ScopeType.Self }
+                    , sitecoreItem.Source.Language);
                 if (response == null)
                 {
                     continue;
@@ -133,7 +159,10 @@ namespace myTNB.SitecoreCMS.Services
 
         async Task<ScItemsResponse> GetDatasourceFromChildren(ISitecoreItem sitecoreItem)
         {
-            return await GetItemById(sitecoreItem.Id, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, sitecoreItem.Source.Language);
+            return await GetItemById(sitecoreItem.Id
+                , PayloadType.Content
+                , new List<ScopeType> { ScopeType.Children }
+                , sitecoreItem.Source.Language);
         }
 
         Task<ISitecoreWebApiReadonlySession> SitecoreSession
@@ -146,7 +175,9 @@ namespace myTNB.SitecoreCMS.Services
 
         async Task<ISitecoreWebApiReadonlySession> GetSession(string websiteUrl = null)
         {
-            if (String.IsNullOrEmpty(websiteUrl) || (!String.IsNullOrEmpty(websiteUrl) && !(Uri.IsWellFormedUriString(websiteUrl, UriKind.Absolute))))
+            if (string.IsNullOrEmpty(websiteUrl)
+                || (!string.IsNullOrEmpty(websiteUrl)
+                && !(Uri.IsWellFormedUriString(websiteUrl, UriKind.Absolute))))
             {
                 websiteUrl = TNBGlobal.SITECORE_URL;
             }

@@ -110,6 +110,7 @@ namespace myTNB
         public static string Common_Processing = "processing";
         public static string Common_RewardIsUsedTitle = "usedRewardTitle";
         public static string Common_RewardIsUsedDesc = "usedRewardMsg";
+        public static string Common_DontShowThisAgain = "dontShowThisAgain";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";
@@ -154,6 +155,8 @@ namespace myTNB
         public static string Error_PaymentCCErrorMsg = "paymentCCErrorMsg";
         public static string Error_ProfileCCErrorMsg = "profileCCErrorMsg";
         public static string Error_RedeemRewardFailMsg = "redeemRewardFailMsg";
+        public static string Error_NoMeterAccessTitle = "noMeterAccessErrorTitle";
+        public static string Error_NoMeterAccessMessage = "noMeterAccessErrorMessage";
 
         //Refresh
         public static string Refresh_BillDetails = "refreshBillDetails";
@@ -192,9 +195,9 @@ namespace myTNB
         //Dictionary
         public static Dictionary<string, string> DynamicLinkDomain = new Dictionary<string, string>
         {
-            { "DEV", "mytnbappsit.page.link"}
-            , { "SIT", "mytnbappsit.page.link" }
-            , { "PROD", "mytnbapp.page.link"}
+            { "DEV", "https://mytnbappsit.page.link"}
+            , { "SIT", "https://mytnbappsit.page.link" }
+            , { "PROD", "https://mytnbapp.page.link"}
         };
     }
 }

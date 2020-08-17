@@ -19,7 +19,19 @@ namespace myTNB
 
         public static string API_KEY_ID = GetAPIKeyID;
         public static string DEVICE_PLATFORM_IOS = "2";
-        public static string SITECORE_URL = "https://sitecore.tnb.com.my/";
+        public static string SITECORE_URL
+        {
+            get
+            {
+#if DEBUG
+                return "http://10.215.70.246/";//"http://tnbcsdevapp.tnb.my/";
+#elif MASTER
+                return "http://10.215.70.248/";//"http://tnbcsstgapp.tnb.my/";
+#else
+                return "https://sitecore.tnb.com.my/";
+#endif
+            }
+        }
         public static string SITECORE_USERNAME = "api_user";
         public static string SITECORE_PASSWORD = "mytnbapiuser!3$@2";
         public static string MobileNoPrefix = "+60";
@@ -54,6 +66,8 @@ namespace myTNB
         public static string ACCOUNT_NO_PATTERN = @"^[0-9]{12}$";
         public static string IC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
         public static string PasswordPattern = @"^(?=.*[A-Za-z])(?=.*\d)[^.]{8,}$";
+        public static string ROC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
+
 
         /// <summary>
         /// Gets the payment URL.
@@ -92,6 +106,7 @@ namespace myTNB
         /// </summary>
         public static int FeedbackMaxCharCount = 250;
         public static int FEEDBACK_FIELD_MAX_HEIGHT = 113;
+        public static int ENQUIRY_FIELD_MAX_HEIGHT = 72;
         public static int AccountNumberLowCharLimit = 12;
         public static int AccountNumberHighCharLimit = 14;
         public static int PaymentMinAmnt = 1;

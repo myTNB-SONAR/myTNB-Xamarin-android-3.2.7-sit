@@ -298,7 +298,8 @@ namespace myTNB
             };
 
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetServiceName(serviceItem)
+            string serviceName = GetServiceName(serviceItem);
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(serviceName.IsValid() ? serviceName : string.Empty
                 , ref htmlBodyError, TNBFont.FONTNAME_500, (float)GetScaledHeight(10F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -400,7 +401,7 @@ namespace myTNB
                         }
                         break;
                     case ServiceEnum.SUBMITFEEDBACK:
-                        name = DashboardHomeConstants.I18N_SubmitFeedback;
+                        name = "submitEnquiry";//DashboardHomeConstants.I18N_SubmitFeedback;
                         break;
                     case ServiceEnum.SELFMETERREADING:
                         name = DashboardHomeConstants.I18N_SelfMeterReading;

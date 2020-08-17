@@ -16,8 +16,12 @@ namespace myTNB.Home.Feedback
         private readonly bool _isBcrmAvailable;
         private readonly FeedbackViewController _controller;
 
+        public Dictionary<string, string> I18NDictionary;
+
         public FeedbackDataSource(FeedbackViewController controller, List<SubmittedFeedbackDataModel> submittedFeedbackList, bool isBcrmAvailable)
         {
+            I18NDictionary = LanguageManager.Instance.GetValuesByPage("SubmitEnquiry");
+
             if (DataManager.DataManager.SharedInstance.FeedbackCategory != null)
             {
                 foreach (FeedbackCategoryDataModel f in DataManager.DataManager.SharedInstance.FeedbackCategory)
@@ -28,10 +32,13 @@ namespace myTNB.Home.Feedback
                         ID = f.FeedbackCategoryId,
                         Subtitle = f.FeedbackCategoryDesc
                     };
+
                     switch (f.FeedbackCategoryId)
                     {
                         case "1":
-                            feedBackRowModel.Icon = "Feedback-Generic";
+                            feedBackRowModel.Icon = "IC-Tile-FeedbackBill";//Feedback-Generic
+                            feedBackRowModel.Name = GetI18NValue("submitEnquiryTitle");//f.FeedbackCategoryName;
+                            feedBackRowModel.Subtitle = GetI18NValue("submitEnquiryDescription");//f.FeedbackCategoryDesc;
                             break;
                         case "2":
                             feedBackRowModel.Icon = "Feedback-Streetlamp";
@@ -41,6 +48,8 @@ namespace myTNB.Home.Feedback
                             break;
                         case "10":
                             feedBackRowModel.Icon = "Feedback-Submitted";
+                            feedBackRowModel.Name = GetI18NValue("viewSubmittedEnquiry");//f.FeedbackCategoryName;
+                            feedBackRowModel.Subtitle = GetI18NValue("viewEnquiryTitle");//f.FeedbackCategoryDesc;
                             break;
                         default:
                             feedBackRowModel.Icon = string.Empty;
@@ -52,6 +61,11 @@ namespace myTNB.Home.Feedback
             _controller = controller;
             _submittedFeedbackList = submittedFeedbackList;
             _isBcrmAvailable = isBcrmAvailable;
+        }
+
+        public string GetI18NValue(string key)
+        {
+            return I18NDictionary != null && I18NDictionary.ContainsKey(key) ? I18NDictionary[key] : string.Empty;
         }
 
         public override nint NumberOfSections(UITableView tableView)

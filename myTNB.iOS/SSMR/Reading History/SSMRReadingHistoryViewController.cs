@@ -3,6 +3,7 @@ using CoreGraphics;
 using Foundation;
 using myTNB.Model;
 using myTNB.SSMR;
+using myTNB.SSMR.ReadingHistory;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,8 +14,8 @@ namespace myTNB
 {
     public partial class SSMRReadingHistoryViewController : CustomUIViewController
     {
-        private SSMRReadingHistoryHeaderComponent _ssmrHeaderComponent;
-        private UITableView _readingHistoryTableView;
+        internal SSMRReadingHistoryHeaderComponent _ssmrHeaderComponent;
+        internal UITableView _readingHistoryTableView;
         private UIView _headerView, _footerView, _navbarView, _viewRefreshContainer;
         private CustomUIButtonV2 _btnDisable;
         private UIImageView _bgImageView;
@@ -25,7 +26,7 @@ namespace myTNB
         private SMRAccountActivityInfoResponseModel _smrActivityInfoResponse;
         private CustomerAccountRecordModel _currAcc;
         private ContactDetailsResponseModel _contactDetails;
-        private nfloat _navBarHeight, _previousScrollOffset;
+        internal nfloat _navBarHeight, _previousScrollOffset;
         private nfloat _tableViewOffset = 64f;
         private nfloat titleBarHeight = ScaleUtility.GetScaledHeight(24f);
         private int _currentIndex = -1;
@@ -42,6 +43,11 @@ namespace myTNB
         private UIView _tutorialContainer;
         private bool IsLoading = true;
         private Timer tutorialOverlayTimer;
+
+        private bool _hasMeterAccess = false;
+
+        internal CustomUIButtonV2 _btnStart;
+        internal CustomUIView _ctaView, _applyContainerView;
 
         public SSMRReadingHistoryViewController(IntPtr handle) : base(handle) { }
 
@@ -177,20 +183,29 @@ namespace myTNB
             _readingHistoryTableView.TableFooterView = null;
             _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, _readingHistoryList, false);
             _readingHistoryTableView.ReloadData();
+            this.SetApplyItemsHidden(true);
         }
 
         private void SetEnableSSMR()
         {
-            _ssmrHeaderComponent.ActionTitle = string.Empty;
-            _ssmrHeaderComponent.SetDescription(GetI18NValue(SSMRConstants.I18N_EnableSSMRDescription));
-            _ssmrHeaderComponent.SetSubmitButtonHidden(null, true, GetI18NValue(SSMRConstants.I18N_EnableSSMRCTA));
-            _ssmrHeaderComponent.OnButtonTap = OnEnableSSMR;
-            AdjustHeader();
-
+            if (_ssmrHeaderComponent != null)
+            {
+                _ssmrHeaderComponent.SetApplySSMRHeader(GetI18NValue(SSMRConstants.I18N_DoYouHaveMeterAccess), GetI18NValue(SSMRConstants.I18N_WhereIsMyMeter));
+                _ssmrHeaderComponent._btnYes.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnYesAction();
+                }));
+                _ssmrHeaderComponent._btnNo.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnNoAction();
+                }));
+                AdjustHeader();
+            }
             _readingHistoryTableView.TableFooterView = null;
             _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, null, false);
             _readingHistoryTableView.ReloadData();
             IsLoading = false;
+            this.SetStartButton();
         }
 
         #region Tutorial Overlay Methods
@@ -251,7 +266,7 @@ namespace myTNB
                 GetI18NValue = GetI18NValue,
                 TopViewYPos = _bgImageView.Frame.Height,
                 OnDismissAction = HideTutorialOverlay,
-                HeaderHeight = _ssmrHeaderComponent?.GetView()?.Frame.Height ?? 0
+                HeaderHeight = (nfloat)(_currAcc.IsSSMR ? _ssmrHeaderComponent?.GetView()?.Frame.Height ?? 0 : _ssmrHeaderComponent?.ApplyTutorialHeight)
             };
             _tutorialContainer.AddSubview(tutorialView.GetView());
         }
@@ -373,6 +388,7 @@ namespace myTNB
                 ClipsToBounds = true
             };
             _ssmrHeaderComponent = new SSMRReadingHistoryHeaderComponent(View, _navBarHeight);
+            _ssmrHeaderComponent.OnInfoBarTap = OnInfoBarTap;
             _headerView.AddSubview(_ssmrHeaderComponent.GetUI());
             _ssmrHeaderComponent.SetTitle(GetI18NValue(SSMRConstants.I18N_SubTitle));
             _ssmrHeaderComponent.ActionTitle = _meterReadingHistory?.HistoryViewTitle ?? string.Empty;
@@ -422,7 +438,7 @@ namespace myTNB
 
         private void AddTableView()
         {
-            _readingHistoryTableView = new UITableView(new CGRect(0, _navbarView.Frame.GetMaxY(), ViewWidth, ViewHeight));
+            _readingHistoryTableView = new UITableView(new CGRect(0, _navbarView.Frame.GetMaxY(), ViewWidth, ViewHeight + DeviceHelper.BottomSafeAreaInset));
             _readingHistoryTableView.RegisterClassForCellReuse(typeof(SSMRReadingHistoryCell), SSMRConstants.Cell_ReadingHistory);
             _readingHistoryTableView.RegisterClassForCellReuse(typeof(NoDataViewCell), Constants.Cell_NoHistoryData);
             _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, _readingHistoryList);
@@ -431,6 +447,7 @@ namespace myTNB
             _readingHistoryTableView.EstimatedRowHeight = GetScaledHeight(68);
             _readingHistoryTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _readingHistoryTableView.Bounces = false;
+            _readingHistoryTableView.ShowsVerticalScrollIndicator = false;
             _readingHistoryTableView.SectionFooterHeight = 0;
             _readingHistoryTableView.TableHeaderView = _headerView;
             _readingHistoryTableView.TableFooterView = _footerView;
@@ -532,14 +549,47 @@ namespace myTNB
             NavigationController.PushViewController(viewController, true);
         }
 
-        private void OnEnableSSMR()
+        internal void OnEnableSSMR()
         {
+            if (!_hasMeterAccess)
+            {
+                DisplayCustomAlert(GetErrorI18NValue(Constants.Error_NoMeterAccessTitle)
+                    , GetErrorI18NValue(Constants.Error_NoMeterAccessMessage)
+                    , new Dictionary<string, Action> {
+                        { GetCommonI18NValue(Constants.Common_GotIt), null}
+                    });
+                return;
+            }
             DisplayApplciationForm(true);
         }
 
         private void OnDisableSSMR()
         {
             DisplayApplciationForm(false);
+        }
+
+        private void OnNoAction()
+        {
+            _hasMeterAccess = false;
+            _ssmrHeaderComponent.UpdateAccessSelection(SSMRReadingHistoryHeaderComponent.HasMeterAccess.No);
+            this.SetStartButtonEnable(true);
+        }
+
+        private void OnYesAction()
+        {
+            _hasMeterAccess = true;
+            _ssmrHeaderComponent.UpdateAccessSelection(SSMRReadingHistoryHeaderComponent.HasMeterAccess.Yes);
+            this.SetStartButtonEnable(true);
+        }
+
+        private void OnInfoBarTap()
+        {
+            DisplayCustomAlert(GetI18NValue(SSMRConstants.I18N_WhereIsMyMeterTitle)
+                , GetI18NValue(SSMRConstants.I18N_WhereIsMyMeterMessage)
+                , new Dictionary<string, Action> {
+                    { GetCommonI18NValue(Constants.Common_GotIt), null}
+                }
+                , UIImage.FromBundle(SSMRConstants.IMG_Meter));
         }
 
         private void DisplayApplciationForm(bool isEnable)
@@ -671,6 +721,7 @@ namespace myTNB
                         _readingHistoryTableView.Hidden = true;
                         DisplayRefresh();
                     }
+                    this.SetApplyItemsHidden(true);
                     ActivityIndicator.Hide();
                 });
             });

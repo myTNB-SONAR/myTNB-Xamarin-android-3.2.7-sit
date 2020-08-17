@@ -26,17 +26,21 @@ namespace myTNB
         private bool isMandatoryExpanded;
         private AccountChargesModel _charges = new AccountChargesModel();
         private GetAccountsChargesResponseModel _accountCharges;
+        private UIView _tutorialContainer;
+        private bool IsLoading = true;
+        private Timer tutorialOverlayTimer;
+        private bool _isTooltipCreated;
+        //Created by Syahmi ICS 05052020
+        private List<EppTooltipModelEntity> _eppToolTipList;
 
+        public bool HasEppToolTip = false;
         public bool IsFreshCall;
         public bool IsRoot { set; private get; } = false;
         public string AccountNumber { set; private get; } = string.Empty;
         public CustomerAccountRecordModel SelectedAccount = new CustomerAccountRecordModel();
         public bool IsFromBillSelection { set; private get; }
         public bool IsPayBtnEnabled = true, HasPendingPayment;
-        private UIView _tutorialContainer;
-        private bool IsLoading = true;
-        private Timer tutorialOverlayTimer;
-        private bool _isTooltipCreated;
+        public bool HasActiveBill { set; private get; } = true;
 
         public BillDetailsViewController(IntPtr handle) : base(handle) { }
 
@@ -106,6 +110,7 @@ namespace myTNB
                                             pendingPaymentResponse.d.IsSuccess && pendingPaymentResponse.d.data != null &&
                                             pendingPaymentResponse.d.data.Count > 0 && pendingPaymentResponse.d.data[0].HasPendingPayment;
                             _accountCharges = await GetAccountsCharges();
+                            _ = await GetBillHistory();
                             InvokeOnMainThread(() =>
                             {
                                 if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
@@ -152,6 +157,7 @@ namespace myTNB
                                         _refreshViewContainer.AddSubview(refreshComponent.GetUI(_refreshViewContainer));
                                     }
                                 }
+                                SetViewBillButtonEnable(HasActiveBill);
                                 ActivityIndicator.Hide();
                             });
                         });
@@ -167,6 +173,7 @@ namespace myTNB
         private void LoadViews()
         {
             _charges = AccountChargesCache.GetAccountCharges(AccountNumber);
+            HasEppToolTip = _charges.ShowEppToolTip; //Created by Syahmi ICS 05052020
             InitializeTooltip();
             AddDetails();
             AddSectionTitle();
@@ -321,6 +328,7 @@ namespace myTNB
             return descList;
         }
 
+
         private void InitializeTooltip()
         {
             if (_isTooltipCreated) { return; }
@@ -440,6 +448,7 @@ namespace myTNB
 
             _viewMandatory = GetMandatoryView(GetYLocationFromFrame(viewMonthBill.Frame, 16));
 
+            //True use _viewMandatory.Frame, False use viewMonthBill.Frame, 16
             nfloat lineYLoc = GetYLocationFromFrame(HasMandatory ? _viewMandatory.Frame : viewMonthBill.Frame, 16);
             _viewLine = new UIView(new CGRect(BaseMargin, lineYLoc, BaseMarginedWidth, GetScaledHeight(1)))
             {
@@ -452,7 +461,7 @@ namespace myTNB
             _viewBreakdown.AddSubviews(new UIView[] { viewOutstanding, viewMonthBill, _viewLine, _viewPayment });
 
             nfloat breakDownViewHeight = _viewPayment.Frame.GetMaxY();
-            if (HasMandatory)
+            if (HasMandatory || HasEppToolTip)
             {
                 _viewBreakdown.AddSubviews(new UIView[] { _viewMandatory, _viewTooltip });
                 breakDownViewHeight = _viewTooltip.Frame.GetMaxY();
@@ -696,9 +705,10 @@ namespace myTNB
             return view;
         }
 
+        //Code Start Here
         private CustomUIView GetTooltipView(nfloat yLoc)
         {
-            if (!HasMandatory)
+            if (!HasMandatory && !HasEppToolTip)
             {
                 return new CustomUIView();
             }
@@ -717,27 +727,66 @@ namespace myTNB
             {
                 Image = UIImage.FromBundle(BillConstants.IMG_InfoBlue)
             };
-            UILabel lblDescription = new UILabel(new CGRect(GetScaledWidth(28)
-                , GetScaledHeight(4), view.Frame.Width - GetScaledWidth(44), GetScaledHeight(16)))
+            //Created by Syahmi ICS 05052020
+            if (HasEppToolTip)
             {
-                TextAlignment = UITextAlignment.Left,
-                Font = TNBFont.MuseoSans_12_500,
-                TextColor = MyTNBColor.WaterBlue,
-                Text = GetI18NValue(BillConstants.I18N_MinimumChargeDescription)
-            };
-            viewInfo.Layer.CornerRadius = GetScaledHeight(12);
-            viewInfo.AddSubviews(new UIView[] { imgView, lblDescription });
-            view.AddSubview(viewInfo);
-            view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                PopupModel popupData = AccountChargesCache.GetPopupDetailsByType(BillConstants.Popup_MandatoryChargesKey);
-                if (popupData != null)
+                UILabel lblDescription = new UILabel(new CGRect(GetScaledWidth(28)
+                    , GetScaledHeight(4), view.Frame.Width - GetScaledWidth(44), GetScaledHeight(16)))
                 {
-                    DisplayCustomAlert(popupData.Title, popupData.Description
-                        , new Dictionary<string, Action> { { popupData.CTA, null } }
-                        , false);
-                }
-            }));
+                    TextAlignment = UITextAlignment.Left,
+                    Font = TNBFont.MuseoSans_11_500,
+                    TextColor = MyTNBColor.WaterBlue,
+                    Text = GetCommonI18NValue("eppToolTipTitle")
+
+                };
+                viewInfo.Layer.CornerRadius = GetScaledHeight(12);
+                viewInfo.AddSubviews(new UIView[] { imgView, lblDescription });
+                view.AddSubview(viewInfo);
+                view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    try
+                    {
+                        EppInfoTooltipEntity wsEppManager = new EppInfoTooltipEntity();
+                        _eppToolTipList = wsEppManager.GetAllItems();
+                        DisplayCustomAlert(_eppToolTipList[0].PopUpTitle, _eppToolTipList[0].PopUpBody,
+                            new Dictionary<string, Action> {
+                                { GetCommonI18NValue(Constants.Common_GotIt), null },
+                                { GetCommonI18NValue("viewBill"), () => ViewBill() }
+                            },
+                        UIImage.LoadFromData(NSData.FromArray(_eppToolTipList[0].ImageByteArray))
+                        );
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Error in EPP: " + e.Message);
+                    }
+                }));
+            }
+            else if (HasEppToolTip.Equals(false) && HasMandatory)
+            {
+                UILabel lblDescription = new UILabel(new CGRect(GetScaledWidth(28)
+                    , GetScaledHeight(4), view.Frame.Width - GetScaledWidth(44), GetScaledHeight(16)))
+                {
+                    TextAlignment = UITextAlignment.Left,
+                    Font = TNBFont.MuseoSans_12_500,
+                    TextColor = MyTNBColor.WaterBlue,
+                    Text = GetI18NValue(BillConstants.I18N_MinimumChargeDescription)
+
+                };
+                viewInfo.Layer.CornerRadius = GetScaledHeight(12);
+                viewInfo.AddSubviews(new UIView[] { imgView, lblDescription });
+                view.AddSubview(viewInfo);
+                view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    PopupModel popupData = AccountChargesCache.GetPopupDetailsByType(BillConstants.Popup_MandatoryChargesKey);
+                    if (popupData != null)
+                    {
+                        DisplayCustomAlert(popupData.Title, popupData.Description
+                            , new Dictionary<string, Action> { { popupData.CTA, null } }
+                            , false);
+                    }
+                }));
+            }
             return view;
         }
 
@@ -760,7 +809,7 @@ namespace myTNB
             _btnViewBill.SetTitle(GetCommonI18NValue(BillConstants.I18N_ViewBill), UIControlState.Normal);
             _btnViewBill.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _btnViewBill.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-
+            SetViewBillButtonEnable(HasActiveBill);
             _btnPay = new CustomUIButtonV2
             {
                 Frame = new CGRect(_btnViewBill.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48)),
@@ -833,35 +882,11 @@ namespace myTNB
                     );
                 }));
             }
+
+            //Created by Syahmi ICS 05052020
             _btnViewBill.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        if (NetworkUtility.isReachable)
-                        {
-                            Debug.WriteLine("_btnViewBill");
-                            DataManager.DataManager.SharedInstance.IsSameAccount = true;
-                            UIStoryboard storyBoard = UIStoryboard.FromName("ViewBill", null);
-                            ViewBillViewController viewController =
-                                storyBoard.InstantiateViewController("ViewBillViewController") as ViewBillViewController;
-                            if (viewController != null)
-                            {
-                                viewController.IsFromUsage = true;
-                                viewController.IsFromBillSelection = IsFromBillSelection;
-                                viewController.SelectedAccount = SelectedAccount;
-                                UINavigationController navController = new UINavigationController(viewController);
-                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                                PresentViewController(navController, true, null);
-                            }
-                        }
-                        else
-                        {
-                            DisplayNoDataAlert();
-                        }
-                    });
-                });
+                ViewBill();
             }));
 
             _btnPay.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -898,6 +923,38 @@ namespace myTNB
             }));
         }
 
+        //Created by Syahmi ICS 05052020
+        private void ViewBill()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        Debug.WriteLine("_btnViewBill");
+                        DataManager.DataManager.SharedInstance.IsSameAccount = true;
+                        UIStoryboard storyBoard = UIStoryboard.FromName("ViewBill", null);
+                        ViewBillViewController viewController =
+                            storyBoard.InstantiateViewController("ViewBillViewController") as ViewBillViewController;
+                        if (viewController != null)
+                        {
+                            viewController.IsFromUsage = true;
+                            viewController.IsFromBillSelection = IsFromBillSelection;
+                            viewController.SelectedAccount = SelectedAccount;
+                            UINavigationController navController = new UINavigationController(viewController);
+                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                            PresentViewController(navController, true, null);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
         private bool HasMandatory
         {
             get
@@ -917,6 +974,38 @@ namespace myTNB
             };
             GetAccountsChargesResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountsChargesResponseModel>(BillConstants.Service_GetAccountsCharges, request);
             return response;
+        }
+
+        private async Task<BillHistoryResponseModel> GetBillHistory()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object requestParameter = new
+            {
+                serviceManager.usrInf,
+                contractAccount = DataManager.DataManager.SharedInstance.SelectedAccount.accNum,
+                isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount,
+            };
+            BillHistoryResponseModel response = serviceManager.OnExecuteAPIV6<BillHistoryResponseModel>(BillConstants.Service_GetBillHistory, requestParameter);
+            ParseHistoryData(response);
+            return response;
+        }
+
+        #region Parse For Bill Availability
+        private void ParseHistoryData(BillHistoryResponseModel response)
+        {
+            HasActiveBill = false;
+            if (response != null && response.d != null && response.d.data != null)
+            {
+                HasActiveBill = response.d.data.Count > 0;
+            }
+        }
+        #endregion
+
+        private void SetViewBillButtonEnable(bool enabled)
+        {
+            _btnViewBill.Enabled = enabled;
+            _btnViewBill.SetTitleColor(enabled ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice, UIControlState.Normal);
+            _btnViewBill.Layer.BorderColor = enabled ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.SilverChalice.CGColor;
         }
     }
 }
