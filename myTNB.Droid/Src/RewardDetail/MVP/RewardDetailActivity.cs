@@ -465,77 +465,26 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     txtRewardConditionContent.TextFormatted = GetFormattedText(item.TandCLabel);
                     btnRewardUse.Text = Utility.GetLocalizedLabel("RewardDetails", "useNow");
 
-                    if (item.LocationLabel != null && (item.LocationLabel.Contains("http") || item.LocationLabel.Contains("www.")))
+                    if (item.LocationLabel != null)
                     {
-                        SpannableString s = new SpannableString(txtRewardLocationContent.TextFormatted);
-
-                        var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
-
-                        List<string> extractedUrls = this.presenter.ExtractUrls(item.LocationLabel);
-
-                        if (urlSpans != null && urlSpans.Length > 0 && extractedUrls != null && extractedUrls.Count > 0)
-                        {
-                            for (int i = 0; i < urlSpans.Length; i++)
-                            {
-                                URLSpan URLItem = urlSpans[i] as URLSpan;
-                                string searchedString = extractedUrls.Find(x => x == URLItem.URL);
-                                if (!string.IsNullOrEmpty(searchedString))
-                                {
-                                    int startIndex = s.GetSpanStart(urlSpans[i]);
-                                    int endIndex = s.GetSpanEnd(urlSpans[i]);
-                                    s.RemoveSpan(urlSpans[i]);
-                                    ClickSpan clickableSpan = new ClickSpan()
-                                    {
-                                        textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
-                                        typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                                    };
-                                    clickableSpan.Click += v =>
-                                    {
-                                        OnClickSpan(searchedString);
-                                    };
-                                    s.SetSpan(clickableSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
-                                }
-                            }
-                        }
-                        txtRewardLocationContent.TextFormatted = s;
-                        txtRewardLocationContent.MovementMethod = new LinkMovementMethod();
+                        txtRewardLocationContent = LinkRedirectionUtils
+                            .Create(this, Title)
+                            .SetTextView(txtRewardLocationContent)
+                            .SetMessage(item.LocationLabel)
+                            .SetAction(HideNoInternetSnackbar)
+                            .Build()
+                            .GetProcessedTextView();
                     }
 
-                    if (item.TandCLabel != null && (item.TandCLabel.Contains("http") || item.TandCLabel.Contains("www.")))
+                    if (item.TandCLabel != null)
                     {
-                        SpannableString se = new SpannableString(txtRewardConditionContent.TextFormatted);
-
-                        var seUrlSpans = se.GetSpans(0, se.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
-
-                        List<string> extractedUrls = this.presenter.ExtractUrls(item.TandCLabel);
-
-                        if (seUrlSpans != null && seUrlSpans.Length > 0 && extractedUrls != null && extractedUrls.Count > 0)
-                        {
-                            for (int i = 0; i < seUrlSpans.Length; i++)
-                            {
-                                URLSpan URLItem = seUrlSpans[i] as URLSpan;
-                                string searchedString = extractedUrls.Find(x => x == URLItem.URL);
-                                if (!string.IsNullOrEmpty(searchedString))
-                                {
-                                    int startIndex = se.GetSpanStart(seUrlSpans[i]);
-                                    int endIndex = se.GetSpanEnd(seUrlSpans[i]);
-                                    se.RemoveSpan(seUrlSpans[i]);
-                                    ClickSpan clickableSpan = new ClickSpan()
-                                    {
-                                        textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
-                                        typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                                    };
-                                    clickableSpan.Click += v =>
-                                    {
-                                        OnClickSpan(searchedString);
-                                    };
-                                    se.SetSpan(clickableSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
-                                }
-                            }
-                        }
-
-                        txtRewardConditionContent.TextFormatted = se;
-                        txtRewardConditionContent.MovementMethod = new LinkMovementMethod();
+                        txtRewardConditionContent = LinkRedirectionUtils
+                            .Create(this, Title)
+                            .SetTextView(txtRewardConditionContent)
+                            .SetMessage(item.TandCLabel)
+                            .SetAction(HideNoInternetSnackbar)
+                            .Build()
+                            .GetProcessedTextView();
                     }
 
                     if (!item.IsUsed)
@@ -690,59 +639,6 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     shimmerRewardImageLayout.SetShimmer(shimmerBuilder?.Build());
                 }
                 shimmerRewardImageLayout.StartShimmer();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        class ClickSpan : ClickableSpan
-        {
-            public Action<View> Click;
-            public Color textColor { get; set; }
-            public Typeface typeFace { get; set; }
-
-            public override void OnClick(View widget)
-            {
-                if (Click != null)
-                {
-                    Click(widget);
-                }
-            }
-
-            public override void UpdateDrawState(TextPaint ds)
-            {
-                base.UpdateDrawState(ds);
-                ds.Color = textColor;
-                ds.SetTypeface(typeFace);
-                ds.UnderlineText = false;
-            }
-        }
-
-        public void OnClickSpan(string url)
-        {
-            try
-            {
-                HideNoInternetSnackbar();
-
-                if (!string.IsNullOrEmpty(url) && (url.Contains("http") || url.Contains("www.")))
-                {
-                    if (!this.GetIsClicked())
-                    {
-                        this.SetIsClicked(true);
-
-                        if (!url.Contains("http"))
-                        {
-                            url = "http://" + url;
-                        }
-
-                        Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
-                        webIntent.PutExtra(Constants.IN_APP_LINK, url);
-                        webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
-                        StartActivity(webIntent);
-                    }
-                }
             }
             catch (Exception e)
             {

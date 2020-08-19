@@ -1,4 +1,5 @@
-﻿using Android.Content;
+﻿
+using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
@@ -23,7 +24,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
     public class WhatsNewDialogFragment : DialogFragment, ViewPager.IOnPageChangeListener
     {
 
-        private Context mContext;
+        private Android.App.Activity mContext;
         private DashboardHomeActivity mActivity;
         private LinearLayout container;
         private LinearLayout mainContainer;
@@ -32,7 +33,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
         private List<WhatsNewModel> whatsnew = new List<WhatsNewModel>();
         private LinearLayout indicator;
 
-        public WhatsNewDialogFragment(Context ctx)
+        public WhatsNewDialogFragment(Android.App.Activity ctx)
         {
             this.mContext = ctx;
             if (this.mContext is DashboardHomeActivity)
