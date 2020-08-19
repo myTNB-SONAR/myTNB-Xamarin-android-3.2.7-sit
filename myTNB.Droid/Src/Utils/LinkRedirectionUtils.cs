@@ -32,6 +32,7 @@ namespace myTNB_Android.Src.Utils
         private string mMessage;
         private TextView mTextView;
 		private string mHeaderTitle;
+		private Action mAction;
 
 		public static List<string> RedirectTypeList = new List<string> {
 			"inAppBrowser=",
@@ -66,7 +67,13 @@ namespace myTNB_Android.Src.Utils
             return this;
         }
 
-        public LinkRedirectionUtils SetMessage(string message, Color? color = null, Typeface? typeface = null)
+		public LinkRedirectionUtils SetAction(Action action)
+		{
+			this.mAction = action;
+			return this;
+		}
+
+		public LinkRedirectionUtils SetMessage(string message, Color? color = null, Typeface? typeface = null)
         {
             this.mMessage = message;
 
@@ -118,6 +125,9 @@ namespace myTNB_Android.Src.Utils
 		{
 			try
 			{
+				if (this.mAction != null)
+					this.mAction();
+
 				if (!string.IsNullOrEmpty(url))
 				{
 					if (url.Contains(RedirectTypeList[0])
