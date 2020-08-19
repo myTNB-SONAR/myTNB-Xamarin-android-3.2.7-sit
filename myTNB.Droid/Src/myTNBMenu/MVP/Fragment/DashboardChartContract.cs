@@ -220,12 +220,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             List<NewAppModel> OnGeneraNewAppTutorialList();
 
-            List<string> ExtractUrls(string text);
-
-            void UpdateWhatsNewRead(string itemID, bool flag);
-
-            void UpdateRewardRead(string itemID, bool flag);
-
 
         }
     }

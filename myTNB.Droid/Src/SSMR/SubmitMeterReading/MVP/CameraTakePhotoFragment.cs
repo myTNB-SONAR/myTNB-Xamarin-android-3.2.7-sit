@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Hardware;
@@ -13,6 +12,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Fragment.App;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.Listener;
 using Camera = Android.Hardware.Camera;
 
