@@ -74,11 +74,20 @@ namespace myTNB
 
         private void ScrollToRow(List<FAQsModel> faqList, string fId)
         {
-            int sectionIndex = faqList.FindIndex(x => x.ID == fId);
-            if (sectionIndex > -1)
+            try
             {
-                NSIndexPath path = NSIndexPath.FromRowSection(0, sectionIndex);
-                tableviewFAQ.ScrollToRow(path, UITableViewScrollPosition.Top, false);
+                int sectionIndex = faqList.FindIndex(x => x.ID == fId);
+                if (sectionIndex > -1)
+                {
+                    NSIndexPath path = NSIndexPath.FromRowSection(0, sectionIndex);
+                    tableviewFAQ.ScrollToRow(path, UITableViewScrollPosition.Top, false);
+                }
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Debug.WriteLine("DEBUG - ScrollToRow Error: " + e.Message);
+#endif
             }
         }
 

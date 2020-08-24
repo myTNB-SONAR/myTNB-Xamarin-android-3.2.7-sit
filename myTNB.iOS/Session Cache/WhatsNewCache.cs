@@ -13,6 +13,7 @@ namespace myTNB
         public static bool WhatsNewIsAvailable { set; get; }
         public static bool RefreshWhatsNew { set; get; } = false;
         public static string DeeplinkWhatsNewId { set; get; }
+        public static bool IsSitecoreRefresh { set; get; }
 
         public static void SaveImage(string key, NSData data)
         {

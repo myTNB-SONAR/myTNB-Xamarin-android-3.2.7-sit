@@ -30,6 +30,7 @@ namespace myTNB
         public string BillDate { set; get; } = string.Empty;
         public double IncrementREDueDateByDays { set; get; } = 0;
         public MandatoryChargesModel MandatoryCharges { set; get; } = new MandatoryChargesModel();
+        public bool ShowEppToolTip { set; get; } //Created by Syahmi ICS 05052020
     }
 
     public class MandatoryChargesModel

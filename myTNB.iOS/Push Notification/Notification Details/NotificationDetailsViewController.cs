@@ -231,7 +231,7 @@ namespace myTNB
         private void AddTitle()
         {
             _lblTitle = new UILabel(new CGRect(BaseMargin, GetYLocationFromFrame(_bgImageView.Frame, 24)
-               , ViewWidth - GetScaledWidth(10), GetScaledHeight(48)))
+               , BaseMarginedWidth, GetScaledHeight(48)))
             {
                 TextAlignment = UITextAlignment.Left,
                 TextColor = MyTNBColor.WaterBlue,
@@ -294,7 +294,7 @@ namespace myTNB
             _txtViewDetails = new UITextView
             {
                 Editable = false,
-                ScrollEnabled = true,
+                ScrollEnabled = false,
                 AttributedText = mutableHTMLBody,
                 WeakLinkTextAttributes = linkAttributes.Dictionary,
                 ContentInset = new UIEdgeInsets(0, -5, 0, -5)
@@ -305,63 +305,9 @@ namespace myTNB
             CGSize size = _txtViewDetails.SizeThatFits(new CGSize(BaseMarginedWidth, ViewHeight));
             _txtViewDetails.Frame = new CGRect(BaseMargin, GetYLocationFromFrame(_lblTitle.Frame, 16), BaseMarginedWidth, size.Height);
             _txtViewDetails.TextAlignment = UITextAlignment.Left;
-            Action<NSUrl> action = new Action<NSUrl>(RedirectAlert);
+            Action<NSUrl> action = LinkAction;
             _txtViewDetails.Delegate = new TextViewDelegate(action);
             _scrollView.Add(_txtViewDetails);
-        }
-
-        private void RedirectAlert(NSUrl url)
-        {
-            string absURL = url?.AbsoluteString;
-            if (!string.IsNullOrEmpty(absURL))
-            {
-                int whileCount = 0;
-                bool isContained = false;
-                while (!isContained && whileCount < AlertHandler.RedirectTypeList.Count)
-                {
-                    isContained = absURL.Contains(AlertHandler.RedirectTypeList[whileCount]);
-                    if (isContained) { break; }
-                    whileCount++;
-                }
-
-                if (isContained)
-                {
-                    if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[0])
-                    {
-                        string key = absURL.Split(AlertHandler.RedirectTypeList[0])[1];
-                        key = key.Replace("%7B", "{").Replace("%7D", "}");
-                        int index = key.IndexOf("}");
-                        if (index > -1 && index < key.Length - 1)
-                        {
-                            key = key.Remove(index + 1);
-                        }
-                        ViewHelper.GoToFAQScreenWithId(key);
-                    }
-                    else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[1])
-                    {
-                        string urlString = absURL.Split(AlertHandler.RedirectTypeList[1])[1];
-                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                        var topVc = AppDelegate.GetTopViewController(baseRootVc);
-                        if (topVc != null)
-                        {
-                            BrowserViewController viewController = new BrowserViewController();
-                            if (viewController != null)
-                            {
-                                viewController.URL = urlString;
-                                viewController.IsDelegateNeeded = false;
-                                UINavigationController navController = new UINavigationController(viewController);
-                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                                topVc.PresentViewController(navController, true, null);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        string urlString = absURL.Split(AlertHandler.RedirectTypeList[2])[1];
-                        UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(urlString)));
-                    }
-                }
-            }
         }
 
         private void SetCTA()
