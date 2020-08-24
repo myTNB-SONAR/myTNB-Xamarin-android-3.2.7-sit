@@ -1,12 +1,13 @@
 ﻿using Foundation;
 using UIKit;
 using CoreGraphics;
+using WebKit;
 
 namespace myTNB
 {
     public partial class BrowserViewController : CustomUIViewController
     {
-        private UIWebView _webView;
+        private WKWebView _webView;
 
         public string NavigationTitle = string.Empty;
         public string URL = string.Empty;
@@ -37,10 +38,10 @@ namespace myTNB
 
         private void SetSubviews()
         {
-            _webView = new UIWebView(new CGRect(0, 0, ViewWidth, ViewHeight));
+            _webView = new WKWebView(new CGRect(0, 0, ViewWidth, ViewHeight), new WKWebViewConfiguration());
             if (IsDelegateNeeded)
             {
-                _webView.Delegate = new WebViewDelegate(View);
+                _webView.NavigationDelegate = new WebWKNavigationDelegate(View);
             }
             _webView.LoadRequest(new NSUrlRequest(new NSUrl(URL)));
             View.AddSubview(_webView);

@@ -317,48 +317,157 @@ namespace myTNB
             {
                 int whileCount = 0;
                 bool isContained = false;
-                while (!isContained && whileCount < AlertHandler.RedirectTypeList.Count)
+                for (int i = 0; i < AlertHandler.RedirectTypeList.Count; i++)
                 {
-                    isContained = absURL.Contains(AlertHandler.RedirectTypeList[whileCount]);
-                    if (isContained) { break; }
-                    whileCount++;
+                    if (absURL.Contains(AlertHandler.RedirectTypeList[i]))
+                    {
+                        whileCount = i;
+                        isContained = true;
+                        break;
+                    }
                 }
 
                 if (isContained)
                 {
                     if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[0])
                     {
-                        string key = absURL.Split(AlertHandler.RedirectTypeList[0])[1];
+                        string urlString = absURL.Split(AlertHandler.RedirectTypeList[0])[1];
+                        BrowserViewController viewController = new BrowserViewController();
+                        if (viewController != null)
+                        {
+                            viewController.URL = urlString;
+                            viewController.IsDelegateNeeded = false;
+                            UINavigationController navController = new UINavigationController(viewController)
+                            {
+                                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                            };
+                            PresentViewController(navController, true, null);
+                        }
+                    }
+                    else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[1])
+                    {
+                        string urlString = absURL.Split(AlertHandler.RedirectTypeList[1])[1];
+                        UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(urlString)));
+                    }
+                    else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[2])
+                    {
+                        string urlString = absURL.Split(AlertHandler.RedirectTypeList[2])[1];
+                        if (!urlString.Contains("tel:"))
+                        {
+                            urlString = "tel:" + urlString;
+                        }
+                        UIApplication.SharedApplication.OpenUrl(new NSUrl(new Uri(urlString).AbsoluteUri));
+                    }
+                    else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[3])
+                    {
+                        string key = absURL.Split(AlertHandler.RedirectTypeList[3])[1];
                         key = key.Replace("%7B", "{").Replace("%7D", "}");
                         int index = key.IndexOf("}");
                         if (index > -1 && index < key.Length - 1)
                         {
                             key = key.Remove(index + 1);
                         }
+                        key = key.Replace("{", "").Replace("}", "");
+                        WhatsNewServices.OpenWhatsNewDetails(key, this);
+                    }
+                    else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[4])
+                    {
+                        string key = absURL.Split(AlertHandler.RedirectTypeList[4])[1];
+                        key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        int index = key.IndexOf("}");
+                        if (index > -1 && index < key.Length - 1)
+                        {
+                            key = key.Remove(index + 1);
+                        }
+                        if (!key.Contains("{"))
+                        {
+                            key = "{" + key;
+                        }
+                        if (!key.Contains("}"))
+                        {
+                            key = key + "}";
+                        }
                         ViewHelper.GoToFAQScreenWithId(key);
                     }
-                    else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[1])
+                    else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[5])
                     {
-                        string urlString = absURL.Split(AlertHandler.RedirectTypeList[1])[1];
-                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                        var topVc = AppDelegate.GetTopViewController(baseRootVc);
-                        if (topVc != null)
+                        string key = absURL.Split(AlertHandler.RedirectTypeList[5])[1];
+                        key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        int index = key.IndexOf("}");
+                        if (index > -1 && index < key.Length - 1)
                         {
-                            BrowserViewController viewController = new BrowserViewController();
-                            if (viewController != null)
+                            key = key.Remove(index + 1);
+                        }
+                        key = key.Replace("{", "").Replace("}", "");
+                        RewardsServices.OpenRewardDetails(key, this);
+                    }
+                    else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[6])
+                    {
+                        string urlString = absURL;
+                        BrowserViewController viewController = new BrowserViewController();
+                        if (viewController != null)
+                        {
+                            viewController.NavigationTitle = "";
+                            viewController.URL = urlString;
+                            viewController.IsDelegateNeeded = false;
+                            UINavigationController navController = new UINavigationController(viewController)
                             {
-                                viewController.URL = urlString;
-                                viewController.IsDelegateNeeded = false;
-                                UINavigationController navController = new UINavigationController(viewController);
-                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                                topVc.PresentViewController(navController, true, null);
-                            }
+                                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                            };
+                            PresentViewController(navController, true, null);
                         }
                     }
-                    else
+                    else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[7])
                     {
-                        string urlString = absURL.Split(AlertHandler.RedirectTypeList[2])[1];
-                        UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(urlString)));
+                        string urlString = absURL;
+                        if (!urlString.Contains("tel:"))
+                        {
+                            urlString = "tel:" + urlString;
+                        }
+                        UIApplication.SharedApplication.OpenUrl(new NSUrl(new Uri(urlString).AbsoluteUri));
+                    }
+                    else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[8])
+                    {
+                        string key = absURL.Split(AlertHandler.RedirectTypeList[8])[1];
+                        key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        int index = key.IndexOf("}");
+                        if (index > -1 && index < key.Length - 1)
+                        {
+                            key = key.Remove(index + 1);
+                        }
+                        key = key.Replace("{", "").Replace("}", "");
+                        WhatsNewServices.OpenWhatsNewDetails(key, this);
+                    }
+                    else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[9])
+                    {
+                        string key = absURL.Split(AlertHandler.RedirectTypeList[9])[1];
+                        key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        int index = key.IndexOf("}");
+                        if (index > -1 && index < key.Length - 1)
+                        {
+                            key = key.Remove(index + 1);
+                        }
+                        if (!key.Contains("{"))
+                        {
+                            key = "{" + key;
+                        }
+                        if (!key.Contains("}"))
+                        {
+                            key = key + "}";
+                        }
+                        ViewHelper.GoToFAQScreenWithId(key);
+                    }
+                    else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[10])
+                    {
+                        string key = absURL.Split(AlertHandler.RedirectTypeList[10])[1];
+                        key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        int index = key.IndexOf("}");
+                        if (index > -1 && index < key.Length - 1)
+                        {
+                            key = key.Remove(index + 1);
+                        }
+                        key = key.Replace("{", "").Replace("}", "");
+                        RewardsServices.OpenRewardDetails(key, this);
                     }
                 }
             }
