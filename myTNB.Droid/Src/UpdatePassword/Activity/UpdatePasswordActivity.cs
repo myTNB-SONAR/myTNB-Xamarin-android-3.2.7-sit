@@ -3,12 +3,15 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
+
+
 using Android.Text;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
+using Google.Android.Material.TextField;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.UpdatePassword.MVP;
 using myTNB_Android.Src.Utils;
@@ -156,21 +159,21 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                 {
                     if (!mPresenter.CheckPasswordIsValid(newPassword))
                     {
+                        ClearNewPasswordError();
                         txtInputLayoutNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
-                        txtInputLayoutNewPassword.ErrorEnabled = true;
+                        if (!txtInputLayoutNewPassword.ErrorEnabled)
+                            txtInputLayoutNewPassword.ErrorEnabled = true;
                     }
                     else
                     {
-                        txtInputLayoutNewPassword.Error = null;
-                        txtInputLayoutNewPassword.ErrorEnabled = false;
+                        ClearNewPasswordError();
                     }
                     txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
                     txtInputLayoutNewPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
                 }
                 else
                 {
-                    txtInputLayoutNewPassword.Error = null;
-                    txtInputLayoutNewPassword.ErrorEnabled = false;
+                    ClearNewPasswordError();
                     txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = false;
                 }
 
@@ -178,21 +181,21 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                 {
                     if (!newPassword.Equals(confirmPassword))
                     {
+                        ClearConfirmPasswordError();
                         txtInputLayoutConfirmPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
-                        txtInputLayoutConfirmPassword.ErrorEnabled = true;
+                        if (!txtInputLayoutConfirmPassword.ErrorEnabled)
+                            txtInputLayoutConfirmPassword.ErrorEnabled = true;
                     }
                     else
                     {
-                        txtInputLayoutConfirmPassword.Error = null;
-                        txtInputLayoutConfirmPassword.ErrorEnabled = false;
+                        ClearConfirmPasswordError();
                     }
                     txtInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = true;
                     txtInputLayoutConfirmPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
                 }
                 else
                 {
-                    txtInputLayoutConfirmPassword.Error = null;
-                    txtInputLayoutConfirmPassword.ErrorEnabled = false;
+                    ClearConfirmPasswordError();
                     txtInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = false;
                 }
 
@@ -223,21 +226,21 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                 {
                     if (!newPassword.Equals(confirmPassword))
                     {
+                        ClearConfirmPasswordError();
                         txtInputLayoutConfirmPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
-                        txtInputLayoutConfirmPassword.ErrorEnabled = true;
+                        if (!txtInputLayoutConfirmPassword.ErrorEnabled)
+                            txtInputLayoutConfirmPassword.ErrorEnabled = true;
                     }
                     else
                     {
-                        txtInputLayoutConfirmPassword.Error = null;
-                        txtInputLayoutConfirmPassword.ErrorEnabled = false;
+                        ClearConfirmPasswordError();
                     }
                     txtInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = true;
                     txtInputLayoutConfirmPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
                 }
                 else
                 {
-                    txtInputLayoutConfirmPassword.Error = null;
-                    txtInputLayoutConfirmPassword.ErrorEnabled = false;
+                    ClearConfirmPasswordError();
                     txtInputLayoutConfirmPassword.PasswordVisibilityToggleEnabled = false;
                 }
 
@@ -294,32 +297,50 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
 
         public void ShowEmptyConfirmPassword()
         {
+            ClearConfirmPasswordError();
             txtInputLayoutConfirmPassword.Error = GetString(Resource.String.update_password_empty_confirm_new_password);
+            if (!txtInputLayoutConfirmPassword.ErrorEnabled)
+                txtInputLayoutConfirmPassword.ErrorEnabled = true;
         }
 
         public void ShowEmptyCurrentPassword()
         {
+            ClearCurrentPasswordError();
             txtInputLayoutCurrentPassword.Error = GetString(Resource.String.update_password_empty_current_password);
+            if (!txtInputLayoutCurrentPassword.ErrorEnabled)
+                txtInputLayoutCurrentPassword.ErrorEnabled = true;
         }
 
         public void ShowEmptyNewPassword()
         {
+            ClearNewPasswordError();
             txtInputLayoutNewPassword.Error = GetString(Resource.String.update_password_empty_new_password);
+            if (!txtInputLayoutNewPassword.ErrorEnabled)
+                txtInputLayoutNewPassword.ErrorEnabled = true;
         }
 
         public void ShowInvalidCurrentPassword()
         {
+            ClearCurrentPasswordError();
             txtInputLayoutCurrentPassword.Error = GetString(Resource.String.update_password_invalid_current_password);
+            if (!txtInputLayoutCurrentPassword.ErrorEnabled)
+                txtInputLayoutCurrentPassword.ErrorEnabled = true;
         }
 
         public void ShowInvalidNewPassword()
         {
+            ClearNewPasswordError();
             txtInputLayoutNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
+            if (!txtInputLayoutNewPassword.ErrorEnabled)
+                txtInputLayoutNewPassword.ErrorEnabled = true;
         }
 
         public void ShowNewPasswordNotEqualToConfirmPassword()
         {
+            ClearConfirmPasswordError();
             txtInputLayoutConfirmPassword.Error = GetString(Resource.String.update_password_invalid_confirm_password);
+            if (!txtInputLayoutConfirmPassword.ErrorEnabled)
+                txtInputLayoutConfirmPassword.ErrorEnabled = true;
         }
 
         private Snackbar mCancelledExceptionSnackBar;
@@ -391,9 +412,36 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
 
         public void ClearErrors()
         {
-            txtInputLayoutConfirmPassword.Error = null;
-            txtInputLayoutCurrentPassword.Error = null;
-            txtInputLayoutNewPassword.Error = null;
+            ClearConfirmPasswordError();
+            ClearCurrentPasswordError();
+            ClearNewPasswordError();
+        }
+
+        private void ClearConfirmPasswordError()
+        {
+            if (!string.IsNullOrEmpty(txtInputLayoutConfirmPassword.Error))
+            {
+                txtInputLayoutConfirmPassword.Error = null;
+                txtInputLayoutConfirmPassword.ErrorEnabled = false;
+            }
+        }
+
+        private void ClearCurrentPasswordError()
+        {
+            if (!string.IsNullOrEmpty(txtInputLayoutCurrentPassword.Error))
+            {
+                txtInputLayoutCurrentPassword.Error = null;
+                txtInputLayoutCurrentPassword.ErrorEnabled = false;
+            }
+        }
+
+        private void ClearNewPasswordError()
+        {
+            if (!string.IsNullOrEmpty(txtInputLayoutNewPassword.Error))
+            {
+                txtInputLayoutNewPassword.Error = null;
+                txtInputLayoutNewPassword.ErrorEnabled = false;
+            }
         }
 
         public void ShowProgress()

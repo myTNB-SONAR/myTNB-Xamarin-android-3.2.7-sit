@@ -2,7 +2,7 @@
 using Android.Content;
 using Android.Graphics;
 using Android.Media;
-using Android.Support.V4.App;
+using AndroidX.Core.App;
 using Firebase.Messaging;
 using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;

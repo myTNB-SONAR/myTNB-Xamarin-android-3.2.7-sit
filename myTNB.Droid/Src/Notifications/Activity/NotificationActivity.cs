@@ -4,7 +4,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.Design.Widget;
+
 using Android.Text;
 using Android.Views;
 using Android.Widget;
@@ -22,11 +22,14 @@ using Refit;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
-using Android.Support.V7.Widget;
-using Android.Support.V7.Widget.Helper;
+
+
 using static Android.Widget.CompoundButton;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.RecyclerView.Widget;
+using Google.Android.Material.Snackbar;
 
 namespace myTNB_Android.Src.Notifications.Activity
 {

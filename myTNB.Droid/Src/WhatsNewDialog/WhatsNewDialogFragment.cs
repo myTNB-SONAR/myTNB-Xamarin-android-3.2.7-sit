@@ -1,11 +1,14 @@
-﻿using Android.Content;
+﻿
+using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Support.V4.App;
-using Android.Support.V4.View;
+
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.Fragment.App;
+using AndroidX.ViewPager.Widget;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
@@ -21,7 +24,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
     public class WhatsNewDialogFragment : DialogFragment, ViewPager.IOnPageChangeListener
     {
 
-        private Context mContext;
+        private Android.App.Activity mContext;
         private DashboardHomeActivity mActivity;
         private LinearLayout container;
         private LinearLayout mainContainer;
@@ -30,7 +33,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
         private List<WhatsNewModel> whatsnew = new List<WhatsNewModel>();
         private LinearLayout indicator;
 
-        public WhatsNewDialogFragment(Context ctx)
+        public WhatsNewDialogFragment(Android.App.Activity ctx)
         {
             this.mContext = ctx;
             if (this.mContext is DashboardHomeActivity)

@@ -1,9 +1,8 @@
 ﻿using System;
 using Android.Content;
-using Android.Runtime;
-using Android.Support.V4.Content;
 using Android.Util;
 using Android.Widget;
+using AndroidX.Core.Content;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.CompoundView

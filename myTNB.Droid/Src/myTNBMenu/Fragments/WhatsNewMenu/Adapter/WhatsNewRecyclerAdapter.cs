@@ -1,9 +1,12 @@
 ﻿using Android.Graphics;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
+
+
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.CardView.Widget;
+using AndroidX.Core.Content;
+using AndroidX.RecyclerView.Widget;
 using Facebook.Shimmer;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Database.Model;

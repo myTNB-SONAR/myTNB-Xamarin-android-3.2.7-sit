@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -41,7 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white">
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/txtInputLayoutAccountNo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                             android:inputType="number"
                             android:maxLength="12"
                             android:maxLines="1" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageButton
                         android:id="@+id/scanNewEnquiry"
@@ -120,7 +120,7 @@
                     android:layout_marginBottom="8dp"
                     android:textSize="16dp"
                     android:textColor="@color/powerBlue"/>
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/generalEnquiryConstraint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -172,16 +172,15 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@+id/GeneralEnquiryIcon"
                         app:layout_constraintTop_toBottomOf="@+id/txtGeneralEnquiry"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0"
                         app:layout_constraintVertical_bias="0.218"/>
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
                 <View
                     android:id="@+id/spaceBillRelated"
                     android:layout_width="match_parent"
                     android:layout_height="6dp"
                     android:background="@color/lightGrey" />
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/updatePersonalInfoConstraint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -231,11 +230,10 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@+id/updatePersoanlInfoIcon"
                         app:layout_constraintTop_toBottomOf="@+id/txtUpdatePersonal"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0"
                         app:layout_constraintVertical_bias="0.218"/>
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </ScrollView>
     </FrameLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

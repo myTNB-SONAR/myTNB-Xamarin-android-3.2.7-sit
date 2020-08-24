@@ -8,18 +8,24 @@ using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
-using Android.Support.V7.App;
-using Android.Support.V7.Widget;
+
+
+
+
 using Android.Text;
 using Android.Text.Method;
 using Android.Text.Style;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
+using AndroidX.AppCompat.App;
+using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.Core.Content;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Facebook.Shimmer;
+using Google.Android.Material.BottomSheet;
+using Google.Android.Material.Snackbar;
 using Java.Lang;
 using Java.Text;
 using Java.Util;
@@ -771,8 +777,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 errorMSG = extras.GetString(Constants.SELECTED_ERROR_MSG);
             }
 
-
-            SetHasOptionsMenu(true);
+            this.HasOptionsMenu = true;
             this.mPresenter = new DashboardChartPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
 
             mIsPendingPayment = false;
@@ -1242,48 +1247,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-        class ClickSpan : ClickableSpan
-        {
-            public Action<View> Click;
-            public override void OnClick(View widget)
-            {
-                if (Click != null)
-                {
-                    Click(widget);
-                }
-            }
-
-            public override void UpdateDrawState(TextPaint ds)
-            {
-                base.UpdateDrawState(ds);
-                ds.UnderlineText = false;
-            }
-        }
-
-        class DPCClickSpan : ClickableSpan
-        {
-            public Action<View> Click;
-            public Color textColor { get; set; }
-            public Typeface typeFace { get; set; }
-
-            public override void OnClick(View widget)
-            {
-                if (Click != null)
-                {
-                    Click(widget);
-                }
-            }
-
-            public override void UpdateDrawState(TextPaint ds)
-            {
-                base.UpdateDrawState(ds);
-                ds.Color = textColor;
-                ds.SetTypeface(typeFace);
-                ds.UnderlineText = false;
-            }
-        }
-
  
         public void ShowBillPDF()
         {
@@ -4983,307 +4946,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
-        private void OnProcessDPCIndicationMessage(string message)
-        {
-            if (!string.IsNullOrEmpty(message))
-            {
-                int whileCount = 0;
-                bool isContained = false;
-                for (int i = 0; i < MyTNBAppToolTipBuilder.RedirectTypeList.Count; i++)
-                {
-                    if (message.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[i]))
-                    {
-                        whileCount = i;
-                        isContained = true;
-                        break;
-                    }
-                }
-
-                if (isContained)
-                {
-                    SpannableString s = new SpannableString(txtTariffBlockLegendDisclaimer.TextFormatted);
-                    var clickableSpan = new DPCClickSpan()
-                    {
-                        textColor = new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)),
-                        typeFace = Typeface.CreateFromAsset(this.Activity.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                    };
-                    clickableSpan.Click += v =>
-                    {
-                        if (!this.GetIsClicked())
-                        {
-                            this.SetIsClicked(true);
-                            if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[0]
-                                || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[1]
-                                || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[6])
-                            {
-                                List<string> extractedUrls = this.mPresenter.ExtractUrls(message);
-                                if (extractedUrls.Count > 0)
-                                {
-                                    string compareText = extractedUrls[0].ToLower();
-                                    if (!compareText.Contains("http"))
-                                    {
-                                        extractedUrls[0] = "http://" + extractedUrls[0];
-                                    }
-
-                                    if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[0]
-                                            || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[6])
-                                    {
-                                        if (compareText.Contains(".pdf") && !compareText.Contains("docs.google"))
-                                        {
-                                            Intent webIntent = new Intent(this.Activity, typeof(BasePDFViewerActivity));
-                                            webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
-                                            webIntent.PutExtra(Constants.IN_APP_TITLE, "");
-                                            this.Activity.StartActivity(webIntent);
-                                        }
-                                        else if (compareText.Contains(".jpeg") || compareText.Contains(".jpg") || compareText.Contains(".png"))
-                                        {
-                                            Intent webIntent = new Intent(this.Activity, typeof(BaseFullScreenImageViewActivity));
-                                            webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
-                                            webIntent.PutExtra(Constants.IN_APP_TITLE, "");
-                                            this.Activity.StartActivity(webIntent);
-                                        }
-                                        else
-                                        {
-                                            Intent webIntent = new Intent(this.Activity, typeof(BaseWebviewActivity));
-                                            webIntent.PutExtra(Constants.IN_APP_LINK, extractedUrls[0]);
-                                            webIntent.PutExtra(Constants.IN_APP_TITLE, "");
-                                            this.Activity.StartActivity(webIntent);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Intent intent = new Intent(Intent.ActionView);
-                                        intent.SetData(Android.Net.Uri.Parse(extractedUrls[0]));
-                                        this.Activity.StartActivity(intent);
-                                    }
-                                }
-                                else
-                                {
-                                    this.SetIsClicked(false);
-                                }
-                            }
-                            else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[2])
-                            {
-                                int startIndex = message.LastIndexOf("=") + 1;
-                                int lastIndex = message.LastIndexOf("\">") - 1;
-                                int lengthOfId = (lastIndex - startIndex) + 1;
-                                if (lengthOfId < message.Length)
-                                {
-                                    string phonenum = message.Substring(startIndex, lengthOfId);
-                                    if (!string.IsNullOrEmpty(phonenum))
-                                    {
-                                        if (!phonenum.Contains("tel:"))
-                                        {
-                                            phonenum = "tel:" + phonenum;
-                                        }
-
-                                        var call = Android.Net.Uri.Parse(phonenum);
-                                        var callIntent = new Intent(Intent.ActionView, call);
-                                        this.Activity.StartActivity(callIntent);
-                                    }
-                                    else
-                                    {
-                                        this.SetIsClicked(false);
-                                    }
-                                }
-                                else
-                                {
-                                    this.SetIsClicked(false);
-                                }
-                            }
-                            else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[3]
-                                        || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[8])
-                            {
-                                int startIndex = message.LastIndexOf("=") + 1;
-                                int lastIndex = message.LastIndexOf("}");
-                                if (lastIndex < 0)
-                                {
-                                    lastIndex = message.LastIndexOf("\">") - 1;
-                                }
-                                int lengthOfId = (lastIndex - startIndex) + 1;
-                                if (lengthOfId < message.Length)
-                                {
-                                    string whatsnewid = message.Substring(startIndex, lengthOfId);
-                                    if (!string.IsNullOrEmpty(whatsnewid))
-                                    {
-                                        if (!whatsnewid.Contains("{"))
-                                        {
-                                            whatsnewid = "{" + whatsnewid;
-                                        }
-
-                                        if (!whatsnewid.Contains("}"))
-                                        {
-                                            whatsnewid = whatsnewid + "}";
-                                        }
-
-                                        WhatsNewEntity wtManager = new WhatsNewEntity();
-
-                                        WhatsNewEntity item = wtManager.GetItem(whatsnewid);
-
-                                        if (item != null)
-                                        {
-                                            if (!item.Read)
-                                            {
-                                                this.mPresenter.UpdateWhatsNewRead(item.ID, true);
-                                            }
-
-                                            Intent activity = new Intent(this.Activity, typeof(WhatsNewDetailActivity));
-                                            activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsnewid);
-                                            activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
-                                            this.Activity.StartActivity(activity);
-                                        }
-                                        else
-                                        {
-                                            this.SetIsClicked(false);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        this.SetIsClicked(false);
-                                    }
-                                }
-                                else
-                                {
-                                    this.SetIsClicked(false);
-                                }
-                            }
-                            else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[4]
-                                        || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[9])
-                            {
-                                int startIndex = message.LastIndexOf("=") + 1;
-                                int lastIndex = message.LastIndexOf("}");
-                                if (lastIndex < 0)
-                                {
-                                    lastIndex = message.LastIndexOf("\">") - 1;
-                                }
-                                int lengthOfId = (lastIndex - startIndex) + 1;
-                                if (lengthOfId < message.Length)
-                                {
-                                    string faqid = message.Substring(startIndex, lengthOfId);
-                                    if (!string.IsNullOrEmpty(faqid))
-                                    {
-                                        if (!faqid.Contains("{"))
-                                        {
-                                            faqid = "{" + faqid;
-                                        }
-
-                                        if (!faqid.Contains("}"))
-                                        {
-                                            faqid = faqid + "}";
-                                        }
-
-                                        Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
-                                        faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
-                                        this.Activity.StartActivity(faqIntent);
-                                    }
-                                    else
-                                    {
-                                        this.SetIsClicked(false);
-                                    }
-                                }
-                                else
-                                {
-                                    this.SetIsClicked(false);
-                                }
-                            }
-                            else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[5]
-                                        || MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[10])
-                            {
-                                int startIndex = message.LastIndexOf("=") + 1;
-                                int lastIndex = message.LastIndexOf("}");
-                                if (lastIndex < 0)
-                                {
-                                    lastIndex = message.LastIndexOf("\">") - 1;
-                                }
-                                int lengthOfId = (lastIndex - startIndex) + 1;
-                                if (lengthOfId < message.Length)
-                                {
-                                    string rewardid = message.Substring(startIndex, lengthOfId);
-                                    if (!string.IsNullOrEmpty(rewardid))
-                                    {
-                                        if (!rewardid.Contains("{"))
-                                        {
-                                            rewardid = "{" + rewardid;
-                                        }
-
-                                        if (!rewardid.Contains("}"))
-                                        {
-                                            rewardid = rewardid + "}";
-                                        }
-
-                                        RewardsEntity wtManager = new RewardsEntity();
-
-                                        RewardsEntity item = wtManager.GetItem(rewardid);
-
-                                        if (item != null)
-                                        {
-                                            if (!item.Read)
-                                            {
-                                                this.mPresenter.UpdateRewardRead(item.ID, true);
-                                            }
-
-                                            Intent activity = new Intent(this.Activity, typeof(RewardDetailActivity));
-                                            activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardid);
-                                            activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
-                                            this.Activity.StartActivity(activity);
-                                        }
-                                        else
-                                        {
-                                            this.SetIsClicked(false);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        this.SetIsClicked(false);
-                                    }
-                                }
-                                else
-                                {
-                                    this.SetIsClicked(false);
-                                }
-                            }
-                            else if (MyTNBAppToolTipBuilder.RedirectTypeList[whileCount] == MyTNBAppToolTipBuilder.RedirectTypeList[7])
-                            {
-                                int startIndex = message.LastIndexOf("\"tel") + 1;
-                                int lastIndex = message.LastIndexOf("\">") - 1;
-                                int lengthOfId = (lastIndex - startIndex) + 1;
-                                if (lengthOfId < message.Length)
-                                {
-                                    string phonenum = message.Substring(startIndex, lengthOfId);
-                                    if (!string.IsNullOrEmpty(phonenum))
-                                    {
-                                        if (!phonenum.Contains("tel:"))
-                                        {
-                                            phonenum = "tel:" + phonenum;
-                                        }
-
-                                        var call = Android.Net.Uri.Parse(phonenum);
-                                        var callIntent = new Intent(Intent.ActionView, call);
-                                        this.Activity.StartActivity(callIntent);
-                                    }
-                                    else
-                                    {
-                                        this.SetIsClicked(false);
-                                    }
-                                }
-                                else
-                                {
-                                    this.SetIsClicked(false);
-                                }
-                            }
-                        }
-                    };
-                    var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
-                    int startFAQLink = s.GetSpanStart(urlSpans[0]);
-                    int endFAQLink = s.GetSpanEnd(urlSpans[0]);
-                    s.RemoveSpan(urlSpans[0]);
-                    s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
-                    txtTariffBlockLegendDisclaimer.TextFormatted = s;
-                    txtTariffBlockLegendDisclaimer.MovementMethod = new LinkMovementMethod();
-                }
-            }
-        }
-
         private void OnGenerateTariffLegendValue(int index, bool isShow)
         {
             try
@@ -5329,7 +4991,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
 
-                                    OnProcessDPCIndicationMessage(message);
+                                    txtTariffBlockLegendDisclaimer = LinkRedirectionUtils
+                                        .Create(this.Activity, "")
+                                        .SetTextView(txtTariffBlockLegendDisclaimer)
+                                        .SetMessage(message, new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)))
+                                        .Build()
+                                        .GetProcessedTextView();
 
                                     isDPCBarClicked = true;
                                     isChangeVirtualHeightNeed = true;
@@ -5363,7 +5030,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
 
-                                    OnProcessDPCIndicationMessage(message);
+                                    txtTariffBlockLegendDisclaimer = LinkRedirectionUtils
+                                        .Create(this.Activity, "")
+                                        .SetTextView(txtTariffBlockLegendDisclaimer)
+                                        .SetMessage(message, new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)))
+                                        .Build()
+                                        .GetProcessedTextView();
 
                                     isDPCBarClicked = true;
                                     isChangeVirtualHeightNeed = true;
@@ -5408,7 +5080,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                                 }
 
-                                OnProcessDPCIndicationMessage(message);
+                                txtTariffBlockLegendDisclaimer = LinkRedirectionUtils
+                                    .Create(this.Activity, "")
+                                    .SetTextView(txtTariffBlockLegendDisclaimer)
+                                    .SetMessage(message, new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)))
+                                    .Build()
+                                    .GetProcessedTextView();
 
                                 isDPCBarClicked = true;
                                 isChangeVirtualHeightNeed = true;
@@ -5452,7 +5129,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
 
-                                    OnProcessDPCIndicationMessage(message);
+                                    txtTariffBlockLegendDisclaimer = LinkRedirectionUtils
+                                        .Create(this.Activity, "")
+                                        .SetTextView(txtTariffBlockLegendDisclaimer)
+                                        .SetMessage(message, new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)))
+                                        .Build()
+                                        .GetProcessedTextView();
 
                                     isDPCBarClicked = true;
                                     isChangeVirtualHeightNeed = true;
@@ -5486,7 +5168,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
 
-                                    OnProcessDPCIndicationMessage(message);
+                                    txtTariffBlockLegendDisclaimer = LinkRedirectionUtils
+                                        .Create(this.Activity, "")
+                                        .SetTextView(txtTariffBlockLegendDisclaimer)
+                                        .SetMessage(message, new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)))
+                                        .Build()
+                                        .GetProcessedTextView();
 
                                     isDPCBarClicked = true;
                                     isChangeVirtualHeightNeed = true;
@@ -5526,7 +5213,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                 }
 
-                                OnProcessDPCIndicationMessage(message);
+                                txtTariffBlockLegendDisclaimer = LinkRedirectionUtils
+                                    .Create(this.Activity, "")
+                                    .SetTextView(txtTariffBlockLegendDisclaimer)
+                                    .SetMessage(message, new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)))
+                                    .Build()
+                                    .GetProcessedTextView();
 
                                 if (isSMR && ssmrHistoryContainer.Visibility == ViewStates.Visible)
                                 {
@@ -5771,7 +5463,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
 
-                                    OnProcessDPCIndicationMessage(message);
+                                    txtTariffBlockLegendDisclaimer = LinkRedirectionUtils
+                                        .Create(this.Activity, "")
+                                        .SetTextView(txtTariffBlockLegendDisclaimer)
+                                        .SetMessage(message, new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)))
+                                        .Build()
+                                        .GetProcessedTextView();
                                 }
                             }
                             else
@@ -5793,7 +5490,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                     }
 
-                                    OnProcessDPCIndicationMessage(message);
+                                    txtTariffBlockLegendDisclaimer = LinkRedirectionUtils
+                                        .Create(this.Activity, "")
+                                        .SetTextView(txtTariffBlockLegendDisclaimer)
+                                        .SetMessage(message, new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)))
+                                        .Build()
+                                        .GetProcessedTextView();
                                 }
                             }
                         }
@@ -5816,7 +5518,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
                                 }
 
-                                OnProcessDPCIndicationMessage(message);
+                                txtTariffBlockLegendDisclaimer = LinkRedirectionUtils
+                                    .Create(this.Activity, "")
+                                    .SetTextView(txtTariffBlockLegendDisclaimer)
+                                    .SetMessage(message, new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sunGlow)))
+                                    .Build()
+                                    .GetProcessedTextView();
                             }
                         }
                     }
@@ -5874,18 +5581,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
 
 
-        public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        public override void OnActivityResult(int requestCode, int resultCode, Intent data)
         {
             if (requestCode == DashboardHomeActivity.PAYMENT_RESULT_CODE)
             {
-                if (resultCode == Result.Ok)
+                if (resultCode == (int) Result.Ok)
                 {
                     ((DashboardHomeActivity)Activity).OnTapRefresh();
                 }
             }
             else if (requestCode == SSMR_METER_HISTORY_ACTIVITY_CODE)
             {
-                if (resultCode == Result.Ok)
+                if (resultCode == (int) Result.Ok)
                 {
                     this.userActionsListener.OnTapRefresh();
                 }

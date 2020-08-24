@@ -6,8 +6,8 @@ using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
+
+
 using Android.Util;
 using Android.Views;
 using Android.Widget;

@@ -23,7 +23,7 @@
           android:paddingTop="1dp"
           android:id="@+id/rootView"
           android:background="@drawable/custom_round_white_background">
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
            android:id="@+id/smrMenuList"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"

@@ -1,11 +1,13 @@
 ﻿using Android.Graphics;
 using Android.Preferences;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
+
+
 using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
+using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.Utils;

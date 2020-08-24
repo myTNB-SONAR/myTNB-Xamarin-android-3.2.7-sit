@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
@@ -8,8 +8,8 @@
     android:layout_centerHorizontal="true"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
+    android:theme="@style/Theme.FaultyStreetLamps"
     android:orientation="vertical">
-
     <LinearLayout
         android:id="@+id/mainView"
         android:layout_width="match_parent"
@@ -84,13 +84,14 @@
                         android:background="@color/white"
                         android:orientation="vertical">
 
-                     <android.support.design.widget.TextInputLayout
+                     <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/txtInputLayoutGeneralEnquiry1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginRight="16dp"
+                            android:layout_marginBottom="4dp"
                             app:counterEnabled="false"
                             app:counterMaxLength="250"
                             app:errorEnabled="true"
@@ -112,13 +113,13 @@
                                 android:scrollbarStyle="insideInset"
                                 android:scrollbars="vertical"
                                 android:textSize="16dp" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
                      <TextView
                             android:id="@+id/TextView_CharLeft"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:textAppearance="@style/TextInputLayoutFeedbackCount"
-                            android:layout_marginTop="-21dp"
+                            android:layout_marginTop="-18dp"
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="16dp"
                             android:layout_marginBottom="16dp"
@@ -163,7 +164,7 @@
                             android:textAllCaps="false"
                             android:textSize="14sp" />
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -222,4 +223,4 @@
     </LinearLayout>
 
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -2,7 +2,7 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Support.Design.Widget;
+
 using Android.Text;
 using Android.Util;
 using Android.Views;
@@ -30,10 +30,11 @@ using System.Linq;
 using static myTNB_Android.Src.MyTNBService.Request.PaymentTransactionIdRequest;
 using myTNB_Android.Src.Utils.Custom;
 using System.Globalization;
+using Google.Android.Material.Snackbar;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
-    public class MPSelectPaymentMethodFragment : Android.App.Fragment, MPSelectPaymentMethodContract.IView
+    public class MPSelectPaymentMethodFragment : AndroidX.Fragment.App.Fragment , MPSelectPaymentMethodContract.IView
     {
 
         private string TOOL_BAR_TITLE = "Select Payment Method";
@@ -507,14 +508,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         }
 
 
-        public override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        public override void OnActivityResult(int requestCode, int resultCode, Intent data)
         {
             try
             {
                 //base.OnActivityResult(requestCode, resultCode, data);
                 if (requestCode == ADD_CARD_REQUEST_CDOE)
                 {
-                    if (resultCode == Result.Ok)
+                    if (resultCode == (int) Result.Ok)
                     {
                         if (data != null)
                         {

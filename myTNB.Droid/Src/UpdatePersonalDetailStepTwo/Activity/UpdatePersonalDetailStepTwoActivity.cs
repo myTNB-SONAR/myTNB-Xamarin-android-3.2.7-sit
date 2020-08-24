@@ -15,12 +15,14 @@ using Android.OS;
 using Android.Preferences;
 using Android.Provider;
 using Android.Runtime;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
+
+
 using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
+using AndroidX.RecyclerView.Widget;
 using Castle.Core.Internal;
 using CheeseBind;
 using myTNB_Android.Src.Base;
@@ -872,7 +874,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                     var intent = new Intent(MediaStore.ActionImageCapture);
                     Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
                     Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
-                                                    ApplicationContext.PackageName + ".provider", file);
+                                                    ApplicationContext.PackageName + ".fileprovider", file);
                     intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
                     StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
                 }

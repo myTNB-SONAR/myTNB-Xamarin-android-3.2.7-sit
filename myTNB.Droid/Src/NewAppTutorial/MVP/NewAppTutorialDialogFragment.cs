@@ -3,11 +3,13 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V4.App;
-using Android.Support.V4.View;
+
+
 using Android.Text;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Fragment.App;
+using AndroidX.ViewPager.Widget;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments;
@@ -39,11 +41,11 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         private TextView txtTopDoubleTapDismiss;
         private List<NewAppModel> NewAppTutorialList = new List<NewAppModel>();
         private GestureDetector mGeatureDetector;
-        private Android.App.Fragment mFragment;
+        private Fragment mFragment;
         private ISharedPreferences mPref;
         private bool IndicationShowTop = false;
 
-        public NewAppTutorialDialogFragment(Android.App.Activity ctx, Android.App.Fragment fragment, ISharedPreferences pref, List<NewAppModel> list, bool mIndicationShowTop = false)
+        public NewAppTutorialDialogFragment(Android.App.Activity ctx, Fragment fragment, ISharedPreferences pref, List<NewAppModel> list, bool mIndicationShowTop = false)
         {
             this.mContext = ctx;
             if (list != null && list.Count > 0)
@@ -765,12 +767,12 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         private class DialogTapDetector : GestureDetector.SimpleOnGestureListener
         {
             DialogFragment mDialog;
-            Android.App.Fragment mFragment;
+            AndroidX.Fragment.App.Fragment mFragment;
             Android.App.Activity mActivity;
             ISharedPreferences mPref;
             List<NewAppModel> NewAppTutorialList = new List<NewAppModel>();
 
-            public DialogTapDetector(DialogFragment dialog, Android.App.Fragment fragment, Android.App.Activity activity, ISharedPreferences pref, List<NewAppModel> list)
+            public DialogTapDetector(DialogFragment dialog, AndroidX.Fragment.App.Fragment fragment, Android.App.Activity activity, ISharedPreferences pref, List<NewAppModel> list)
             {
                 this.mDialog = dialog;
                 this.mFragment = fragment;

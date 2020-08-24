@@ -40,7 +40,7 @@
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Refit" Version="4.6.58" />
+    <PackageReference Include="Refit" Version="5.1.67" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Entities\" />

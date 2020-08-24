@@ -4,13 +4,14 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
-using Android.Support.Design.Widget;
+
 using Android.Text;
 using Android.Text.Method;
 using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Billing.MVP;
@@ -58,7 +59,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         int position;
         UserNotificationDetailPresenter mPresenter;
         AlertDialog removeDialog;
-        ClickSpan clickableSpan;
 
         public override int ResourceId()
         {
@@ -158,7 +158,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             try
             {
                 mPresenter = new UserNotificationDetailPresenter(this);
-                clickableSpan = new ClickSpan();
                 base.OnCreate(savedInstanceState);
                 Bundle extras = Intent.Extras;
                 if (extras != null)
@@ -211,12 +210,15 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     notificationDetailTitle.Text = detailModel.title;
                     notificationDetailMessage.TextFormatted = GetFormattedText(detailModel.message);
 
-                    clickableSpan.Click += delegate
+                    if (detailModel.message != null)
                     {
-                        OnClickSpan(detailModel.message);
-                    };
-                    notificationDetailMessage.TextFormatted = Utility.GetFormattedURLString(clickableSpan, notificationDetailMessage.TextFormatted);
-                    notificationDetailMessage.MovementMethod = new LinkMovementMethod();
+                        notificationDetailMessage = LinkRedirectionUtils
+                            .Create(this, "")
+                            .SetTextView(notificationDetailMessage)
+                            .SetMessage(detailModel.message)
+                            .Build()
+                            .GetProcessedTextView();
+                    }
 
                     if (detailModel.ctaList.Count > 0)
                     {
@@ -430,19 +432,5 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 .Build().Show();
         }
 
-        class ClickSpan : ClickableSpan
-        {
-            public Action<View> Click;
-            public override void OnClick(View widget)
-            {
-                Click?.Invoke(widget);
-            }
-
-            public override void UpdateDrawState(TextPaint ds)
-            {
-                base.UpdateDrawState(ds);
-                ds.UnderlineText = false;
-            }
-        }
     }
 }

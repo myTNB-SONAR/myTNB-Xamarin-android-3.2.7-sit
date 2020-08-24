@@ -4,12 +4,15 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Preferences;
-using Android.Support.Design.Widget;
-using Android.Support.V4.View;
-using Android.Support.V7.App;
+
+
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.AppCompat.App;
+using AndroidX.ViewPager.Widget;
 using CheeseBind;
+using Google.Android.Material.Tabs;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
@@ -63,7 +66,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
         {
             base.OnCreate(savedInstanceState);
 
-            SetHasOptionsMenu(true);
+            this.HasOptionsMenu = true;
             presenter = new WhatsNewMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
 
             WhatsNewMenuUtils.OnSetTouchDisable(false);

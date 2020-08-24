@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
@@ -8,6 +8,7 @@
     android:layout_centerHorizontal="true"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
+    android:theme="@style/Theme.FaultyStreetLamps"
     android:orientation="vertical">
 
     <LinearLayout
@@ -79,13 +80,13 @@
                         android:background="@color/white"
                         android:orientation="vertical">
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/txtInputLayoutName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="16dp"
-
+                            android:layout_marginBottom="4dp"
                             android:layout_marginRight="16dp"
                             app:errorEnabled="true"
                             app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"    
@@ -102,16 +103,16 @@
                                 android:paddingTop="5dp"
                                 android:singleLine="true"
                                 android:textSize="16dp" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/txtInputLayoutEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             app:errorEnabled="true"
-
+                            android:layout_marginBottom="4dp"
                            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                             <EditText
@@ -125,15 +126,16 @@
                                 android:paddingTop="5dp"
                                 android:singleLine="true"
                                 android:textSize="16dp" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/txtInputLayoutPhoneNumber"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             app:errorEnabled="true"
+                            android:layout_marginBottom="4dp"
                            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                             <EditText
@@ -148,7 +150,7 @@
                                 android:paddingTop="5dp"
                                 android:singleLine="true"
                                 android:textSize="16dp" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                     <View
@@ -222,4 +224,4 @@
     </LinearLayout>
 
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

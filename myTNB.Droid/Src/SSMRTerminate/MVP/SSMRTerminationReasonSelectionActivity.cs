@@ -10,11 +10,12 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using Newtonsoft.Json;
 using myTNB_Android.Src.Utils;
 using Android.Content.PM;
-using Android.Support.V7.Widget;
+
 using myTNB_Android.Src.SSMRTerminate.Api;
 using System.Collections.Generic;
 using myTNB_Android.Src.SSMRTerminate.Adapter;
 using CheeseBind;
+using AndroidX.RecyclerView.Widget;
 
 namespace myTNB_Android.Src.SSMRTerminate.MVP
 {

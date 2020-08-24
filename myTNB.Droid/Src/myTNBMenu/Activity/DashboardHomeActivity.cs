@@ -11,8 +11,8 @@ using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
+using AndroidX.Fragment.App;
+
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -44,6 +44,9 @@ using Newtonsoft.Json;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.WhatsNewDialog;
 using System.Globalization;
+using AndroidX.CoordinatorLayout.Widget;
+using Google.Android.Material.BottomNavigation;
+using AndroidX.Core.Content;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -100,7 +103,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private string savedSSMRMeterReadingThreePhaseNoOCRTimeStamp = "0000000";
 
-        public static Fragment currentFragment;
+        public static AndroidX.Fragment.App.Fragment currentFragment;
 
         public static bool GO_TO_INNER_DASHBOARD = false;
 
@@ -148,7 +151,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             return isBackButtonVisible;
         }
 
-        public void SetCurrentFragment(Fragment fragment)
+        public void SetCurrentFragment(AndroidX.Fragment.App.Fragment fragment)
         {
             currentFragment = fragment;
         }
@@ -399,11 +402,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             txtAccountName.Visibility = ViewStates.Gone;
             if (currentFragment != null)
             {
-                FragmentManager.PopBackStack();
+                SupportFragmentManager.PopBackStack();
                 currentFragment = null;
             }
             currentFragment = ItemisedBillingMenuFragment.NewInstance(selectedAccount);
-            FragmentManager.BeginTransaction()
+            SupportFragmentManager.BeginTransaction()
                 .Replace(Resource.Id.content_layout, currentFragment)
                 .CommitAllowingStateLoss();
         }
@@ -585,7 +588,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                         IsRootTutorialShown = false;
                                         if (currentFragment.GetType() == typeof(HomeMenuFragment))
                                         {
-                                            HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                                            HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
                                             fragment.CallOnCheckShowHomeTutorial();
                                         }
                                     })
@@ -623,7 +626,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                         IsRootTutorialShown = false;
                                         if (currentFragment.GetType() == typeof(HomeMenuFragment))
                                         {
-                                            HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                                            HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
                                             fragment.CallOnCheckShowHomeTutorial();
                                         }
                                     })
@@ -673,11 +676,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             ShowBackButton(false);
             if (currentFragment != null)
             {
-                FragmentManager.PopBackStack();
+                SupportFragmentManager.PopBackStack();
                 currentFragment = null;
             }
             currentFragment = new FeedbackMenuFragment();
-            FragmentManager.BeginTransaction()
+            SupportFragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, currentFragment)
                      .CommitAllowingStateLoss();
         }
@@ -686,11 +689,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             if (currentFragment != null)
             {
-                FragmentManager.PopBackStack();
+                SupportFragmentManager.PopBackStack();
                 currentFragment = null;
             }
             currentFragment = new WhatsNewMenuFragment();
-            FragmentManager.BeginTransaction()
+            SupportFragmentManager.BeginTransaction()
                         .Replace(Resource.Id.content_layout, currentFragment)
                         .CommitAllowingStateLoss();
 
@@ -700,11 +703,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             if (currentFragment != null)
             {
-                FragmentManager.PopBackStack();
+                SupportFragmentManager.PopBackStack();
                 currentFragment = null;
             }
             currentFragment = new RewardMenuFragment();
-            FragmentManager.BeginTransaction()
+            SupportFragmentManager.BeginTransaction()
                         .Replace(Resource.Id.content_layout, currentFragment)
                         .CommitAllowingStateLoss();
 
@@ -715,7 +718,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             ProfileMenuFragment profileMenuFragment = new ProfileMenuFragment();
             if (currentFragment != null)
             {
-                FragmentManager.PopBackStack();
+                SupportFragmentManager.PopBackStack();
                 currentFragment = null;
             }
             if (mobileNoUpdated)
@@ -726,7 +729,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 mobileNoUpdated = false;
             }
             currentFragment = profileMenuFragment;
-            FragmentManager.BeginTransaction()
+            SupportFragmentManager.BeginTransaction()
                      .Replace(Resource.Id.content_layout, currentFragment)
                      .CommitAllowingStateLoss();
         }
@@ -1225,11 +1228,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
             if (currentFragment != null)
             {
-                FragmentManager.PopBackStack();
+                SupportFragmentManager.PopBackStack();
                 currentFragment = null;
             }
             currentFragment = new HomeMenuFragment();
-            FragmentManager.BeginTransaction()
+            SupportFragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, currentFragment)
                            .CommitAllowingStateLoss();
 
@@ -1299,7 +1302,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         view.GetGlobalVisibleRect(rect);
                         if (!rect.Contains((int)ev.RawX, (int)ev.RawY))
                         {
-                            HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                            HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
                             LinearLayout searchContainer = fragment.GetSearchLayout();
                             if (IsViewInBounds(searchContainer, (int)ev.RawX, (int)ev.RawY))
                             {
@@ -1316,7 +1319,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_dashboard
                     && currentFragment.GetType() == typeof(DashboardChartFragment))
                 {
-                    DashboardChartFragment fragment = (DashboardChartFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                    DashboardChartFragment fragment = (DashboardChartFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
                     TextView kwhLabel = fragment.GetkwhLabel();
                     TextView rmLabel = fragment.GetRmLabel();
                     LinearLayout rmKwhSelection = fragment.GetRmKwhSelection();
@@ -1396,11 +1399,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             txtAccountName.Visibility = ViewStates.Gone;
             if (currentFragment != null)
             {
-                FragmentManager.PopBackStack();
+                SupportFragmentManager.PopBackStack();
                 currentFragment = null;
             }
             currentFragment = DashboardChartFragment.NewInstance(response, selectedAccount, errorCode, errorMsg);
-            FragmentManager.BeginTransaction()
+            SupportFragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, currentFragment,
                                     typeof(DashboardChartFragment).Name)
                            .CommitAllowingStateLoss();
@@ -1412,11 +1415,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             txtAccountName.Visibility = ViewStates.Gone;
             if (currentFragment != null)
             {
-                FragmentManager.PopBackStack();
+                SupportFragmentManager.PopBackStack();
                 currentFragment = null;
             }
             currentFragment = DashboardChartFragment.NewInstance(response, selectedAccount);
-            FragmentManager.BeginTransaction()
+            SupportFragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, currentFragment,
                                     typeof(DashboardChartFragment).Name)
                            .CommitAllowingStateLoss();
@@ -1891,7 +1894,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
                 else if (this.mPresenter.GetIsWhatsNewDialogShowNeed() && currentFragment.GetType() == typeof(HomeMenuFragment))
                 {
-                    HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                    HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
                     bool flag = fragment.GetHomeTutorialCallState();
 
                     if (flag)
@@ -2212,7 +2215,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         IsRootTutorialShown = false;
                         if (currentFragment.GetType() == typeof(HomeMenuFragment))
                         {
-                            HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                            HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
                             fragment.CallOnCheckShowHomeTutorial();
                         }
                     })
@@ -2238,7 +2241,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         IsRootTutorialShown = false;
                         if (currentFragment.GetType() == typeof(HomeMenuFragment))
                         {
-                            HomeMenuFragment fragment = (HomeMenuFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                            HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
                             fragment.CallOnCheckShowHomeTutorial();
                         }
                     })

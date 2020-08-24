@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content.PM;
+using Android.Content.Res;
 using Android.OS;
 using Android.Views;
 using Android.Webkit;
@@ -85,7 +86,7 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
                                             Console.WriteLine("ReplaceStringOne::" + replacedString);
                                             replacedString = obj.GeneralText.Replace("\\n", string.Empty);
                                             Console.WriteLine("ReplaceStringTwo::" + replacedString);
-                                            tncWebView.LoadData(replacedString, "text/html", "UTF-8");
+                                            tncWebView.LoadDataWithBaseURL("", replacedString, "text/html", "UTF-8", "");
                                             txtVersion.Text = "Version [" + obj.PublishedDate + "]";
                                             txtTitle.Text = "" + obj.Title;
                                         }
@@ -175,7 +176,7 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
                 txtVersion.Text = "Version [" + tncArray[1] + "]";
                 txtTitle.Text = tncArray[0];
                 // txtTnCHtml.TextFormatted = Html.FromHtml(GetString(Resource.String.tnc_html));
-                tncWebView.LoadData(tncArray[3], "text/html", "UTF-8");
+                tncWebView.LoadDataWithBaseURL("", tncArray[3], "text/html", "UTF-8", "");
             }
             catch (Exception e)
             {
@@ -285,7 +286,11 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
             return PAGE_ID;
         }
 
-
+        // AndroidX TODO: Temporary Fix for Android 5,5.1 
+        // AndroidX TODO: Due to this: https://github.com/xamarin/AndroidX/issues/131
+        public override AssetManager Assets =>
+            (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop && Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.M)
+            ? Resources.Assets : base.Assets;
 
         //public override void OnTrimMemory(TrimMemory level)
         //{

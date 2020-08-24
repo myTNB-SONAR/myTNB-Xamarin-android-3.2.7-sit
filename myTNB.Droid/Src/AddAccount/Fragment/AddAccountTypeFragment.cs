@@ -7,7 +7,7 @@ using System;
 
 namespace myTNB_Android.Src.AddAccount.Fragment
 {
-    public class AddAccountTypeFragment : Android.App.Fragment
+    public class AddAccountTypeFragment : AndroidX.Fragment.App.Fragment 
     {
 
         LinearLayout radio_non_owner;

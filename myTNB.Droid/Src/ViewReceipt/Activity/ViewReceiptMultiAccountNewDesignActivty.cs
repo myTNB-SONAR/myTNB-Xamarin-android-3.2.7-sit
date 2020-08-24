@@ -8,12 +8,14 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
+
+
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using myTNB_Android.Src.Base.Activity;
@@ -260,7 +262,14 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                     RECEPT_NO = response.GetData().referenceNum;
                     try
                     {
-                        var directory = new Java.IO.File(Android.OS.Environment.ExternalStorageDirectory, "pdf").ToString();
+                        string rootPath = this.FilesDir.AbsolutePath;
+
+                        if (FileUtils.IsExternalStorageReadable() && FileUtils.IsExternalStorageWritable())
+                        {
+                            rootPath = this.GetExternalFilesDir(null).AbsolutePath;
+                        }
+
+                        var directory = System.IO.Path.Combine(rootPath, "pdf");
                         if (!Directory.Exists(directory))
                         {
                             Directory.CreateDirectory(directory);
@@ -436,7 +445,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                         {
                             Java.IO.File file = new Java.IO.File(path);
                             Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
-                                    ApplicationContext.PackageName + ".provider", file);
+                                    ApplicationContext.PackageName + ".fileprovider", file);
 
                             Intent intent = new Intent(Intent.ActionView);
                             intent.SetDataAndType(fileUri, "application/pdf");

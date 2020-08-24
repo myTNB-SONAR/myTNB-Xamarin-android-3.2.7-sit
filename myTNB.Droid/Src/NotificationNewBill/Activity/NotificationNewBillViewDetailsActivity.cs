@@ -46,7 +46,7 @@ namespace myTNB_Android.Src.NotificationNewBill.Activity
             //    .Replace(Resource.Id.content_layout, ItemisedBillingMenuFragment.NewInstance(selectedAccount))
             //    .CommitAllowingStateLoss();
 
-            FragmentManager.BeginTransaction()
+            SupportFragmentManager.BeginTransaction()
                            .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(null, selectedAccount, "", ""),
                                     typeof(DashboardChartFragment).Name)
                            .CommitAllowingStateLoss();

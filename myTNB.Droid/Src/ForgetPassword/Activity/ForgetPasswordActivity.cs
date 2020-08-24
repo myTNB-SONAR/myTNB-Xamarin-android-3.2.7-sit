@@ -3,13 +3,17 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
+
+
 using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
+using Google.Android.Material.TextField;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.ForgetPassword.MVP;
 using myTNB_Android.Src.Utils;
@@ -65,8 +69,16 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ClearErrorMessages()
         {
-            txtInputLayoutEmail.Error = null;
-            textInputLayoutVerificationCode.Error = null;
+            if (!string.IsNullOrEmpty(txtInputLayoutEmail.Error))
+            {
+                txtInputLayoutEmail.Error = null;
+                txtInputLayoutEmail.ErrorEnabled = false;
+            }
+            if (!string.IsNullOrEmpty(textInputLayoutVerificationCode.Error))
+            {
+                textInputLayoutVerificationCode.Error = null;
+                textInputLayoutVerificationCode.ErrorEnabled = false;
+            }
         }
 
         public bool IsActive()
@@ -86,7 +98,14 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowEmptyEmailError()
         {
+            if (!string.IsNullOrEmpty(txtInputLayoutEmail.Error))
+            {
+                txtInputLayoutEmail.Error = null;
+                txtInputLayoutEmail.ErrorEnabled = false;
+            }
             txtInputLayoutEmail.Error = GetString(Resource.String.forget_password_empty_email_error);
+            if (!txtInputLayoutEmail.ErrorEnabled)
+                txtInputLayoutEmail.ErrorEnabled = true;
             this.SetIsClicked(false);
         }
 
@@ -134,7 +153,14 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowInvalidEmailError()
         {
+            if (!string.IsNullOrEmpty(txtInputLayoutEmail.Error))
+            {
+                txtInputLayoutEmail.Error = null;
+                txtInputLayoutEmail.ErrorEnabled = false;
+            }
             txtInputLayoutEmail.Error = Utility.GetLocalizedLabel("Error", "invalid_email");
+            if (!txtInputLayoutEmail.ErrorEnabled)
+                txtInputLayoutEmail.ErrorEnabled = true;
             this.SetIsClicked(false);
         }
 
@@ -357,7 +383,14 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowEmptyCodeError()
         {
+            if (!string.IsNullOrEmpty(textInputLayoutVerificationCode.Error))
+            {
+                textInputLayoutVerificationCode.Error = null;
+                textInputLayoutVerificationCode.ErrorEnabled = false;
+            }
             textInputLayoutVerificationCode.Error = GetString(Resource.String.forget_password_empty_code_error);
+            if (!textInputLayoutVerificationCode.ErrorEnabled)
+                textInputLayoutVerificationCode.ErrorEnabled = true;
         }
 
         private Snackbar mCodeCancelledExceptionSnackBar;

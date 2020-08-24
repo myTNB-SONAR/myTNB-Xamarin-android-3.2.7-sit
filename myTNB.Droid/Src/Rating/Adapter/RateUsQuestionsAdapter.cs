@@ -1,9 +1,11 @@
 ﻿using Android.Content;
-using Android.Support.Design.Widget;
-using Android.Support.V7.Widget;
+
+
 using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
+using AndroidX.RecyclerView.Widget;
+using Google.Android.Material.TextField;
 using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.Utils;
 using System;

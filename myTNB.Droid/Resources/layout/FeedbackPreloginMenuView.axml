@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/linearLayout2">
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/billRelatedContraint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -90,16 +90,15 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@+id/billRelatedIcon"
                         app:layout_constraintTop_toBottomOf="@+id/txtFeedbackBillingAndPayment"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintVertical_bias="0.218"
                         app:layout_constraintHorizontal_bias="0"/>
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
                 <View
                     android:id="@+id/spaceBillRelated"
                     android:layout_width="match_parent"
                     android:layout_height="6dp"
                     android:background="@color/lightGrey" />
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/faultyStreetLampsContraint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -149,16 +148,15 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@+id/faultyStreetLampsIcon"
                         app:layout_constraintTop_toBottomOf="@+id/txtFeedbackFaultyStreetLamps"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintVertical_bias="0.218"
                         app:layout_constraintHorizontal_bias="0"/>
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
                 <View
                     android:id="@+id/spaceFaultyStreetLamps"
                     android:layout_width="match_parent"
                     android:layout_height="6dp"
                     android:background="@color/lightGrey" />
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/othersContraint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -208,16 +206,15 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@+id/othersIcon"
                         app:layout_constraintTop_toBottomOf="@+id/txtFeedbackOthers"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintVertical_bias="0.218"
                         app:layout_constraintHorizontal_bias="0"/>
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
                 <View
                     android:id="@+id/spaceOthers"
                     android:layout_height="6dp"
                     android:layout_width="match_parent"
                     android:background="@color/lightGrey" />
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/submittedFeedbackConstraint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -267,10 +264,9 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@+id/submittedFeedbackIcon"
                         app:layout_constraintTop_toBottomOf="@+id/txtSubmittedFeedback"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintVertical_bias="0.218"
                         app:layout_constraintHorizontal_bias="0"/>
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

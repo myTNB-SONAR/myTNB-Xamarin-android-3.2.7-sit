@@ -17,7 +17,7 @@
     <item name="colorControlNormal">@color/tunaGrey</item>
     <item name="colorControlActivated">@color/tunaGrey</item>
     <item name="colorControlNormal">@color/tunaGrey</item>
-    <item name="textColorError">@color/errorColor</item>
+    <item name="colorError">@color/errorColor</item>
 
     <item name="android:colorAccent">@color/tunaGrey</item>
     <item name="android:colorControlNormal">@color/silverChalice</item>

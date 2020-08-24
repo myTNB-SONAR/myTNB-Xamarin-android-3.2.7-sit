@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Android.Support.V4.App;
+using AndroidX.Fragment.App;
 using Java.Lang;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
@@ -9,6 +9,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         List<NewWalkthroughModel> newWalkthroughModelList;
         public NewWalkthroughAdapter(FragmentManager fm) : base(fm)
         {
+
         }
 
         public void SetData(List<NewWalkthroughModel> dataList)

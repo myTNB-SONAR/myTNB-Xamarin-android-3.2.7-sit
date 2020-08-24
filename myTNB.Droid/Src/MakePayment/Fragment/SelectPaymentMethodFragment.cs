@@ -2,7 +2,7 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Support.Design.Widget;
+
 using Android.Text;
 using Android.Util;
 using Android.Views;
@@ -27,7 +27,7 @@ using System.Linq;
 
 namespace myTNB_Android.Src.MakePayment.Fragment
 {
-    public class SelectPaymentMethodFragment : Android.App.Fragment, SelectPaymentMethodContract.IView
+    public class SelectPaymentMethodFragment : AndroidX.Fragment.App.Fragment , SelectPaymentMethodContract.IView
     {
 
         private string TOOL_BAR_TITLE = "Select Payment Method";

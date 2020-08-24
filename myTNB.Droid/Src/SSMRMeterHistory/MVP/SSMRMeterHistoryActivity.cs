@@ -7,16 +7,19 @@ using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
-using Android.Support.V4.Widget;
-using Android.Support.V7.Widget;
+
+
+
+
 using Android.Text;
 using Android.Text.Method;
 using Android.Text.Style;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
+using AndroidX.Core.Widget;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
@@ -844,29 +847,6 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             View child = (View)NestedScrollViewContent.GetChildAt(0);
 
             return NestedScrollViewContent.Height < child.Height + NestedScrollViewContent.PaddingTop + NestedScrollViewContent.PaddingBottom;
-        }
-
-        class ClickSpan : ClickableSpan
-        {
-            public Action<View> Click;
-            public Color textColor { get; set; }
-            public Typeface typeFace { get; set; }
-
-            public override void OnClick(View widget)
-            {
-                if (Click != null)
-                {
-                    Click(widget);
-                }
-            }
-
-            public override void UpdateDrawState(TextPaint ds)
-            {
-                base.UpdateDrawState(ds);
-                ds.Color = textColor;
-                ds.SetTypeface(typeFace);
-                ds.UnderlineText = false;
-            }
         }
 
         private void ShowEmptyMeterValidationPopup()

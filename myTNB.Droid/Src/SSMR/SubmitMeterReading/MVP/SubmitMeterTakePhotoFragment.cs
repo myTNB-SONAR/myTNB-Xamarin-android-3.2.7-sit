@@ -22,7 +22,7 @@ using Android.Text;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
-    public class SubmitMeterTakePhotoFragment : Fragment
+    public class SubmitMeterTakePhotoFragment : AndroidX.Fragment.App.Fragment
     {
         // Camera state: Showing camera preview.
         public const int STATE_PREVIEW = 0;

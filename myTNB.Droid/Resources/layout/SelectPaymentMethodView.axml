@@ -36,7 +36,7 @@
                         android:gravity="left"
                         android:textSize="10dp"
                         android:textColor="@color/tunaGrey" />
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/amount_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                             android:inputType="numberDecimal"
                             android:editable="false"
                             android:id="@+id/amount_edittext" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
                     <View
                         android:layout_height="1dp"
                         android:layout_width="match_parent"

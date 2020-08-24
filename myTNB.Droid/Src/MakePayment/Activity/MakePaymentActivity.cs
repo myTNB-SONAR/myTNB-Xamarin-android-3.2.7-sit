@@ -21,7 +21,7 @@ namespace myTNB_Android.Src.MakePayment.Activity
     public class MakePaymentActivity : BaseToolbarAppCompatActivity
     {
         AccountData selectedAccount;
-        Android.App.Fragment currentFragment;
+        AndroidX.Fragment.App.Fragment  currentFragment;
 
         private MaterialDialog mCancelPaymentDialog;
 
@@ -67,7 +67,7 @@ namespace myTNB_Android.Src.MakePayment.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-            //Android.App.Fragment selectPaymentFragment = new SelectPaymentMethodFragment();
+            //AndroidX.Fragment.App.Fragment  selectPaymentFragment = new SelectPaymentMethodFragment();
             //Bundle bundle = new Bundle();
             //bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             //selectPaymentFragment.Arguments = bundle;
@@ -77,7 +77,7 @@ namespace myTNB_Android.Src.MakePayment.Activity
             //currentFragment = selectPaymentFragment;
         }
 
-        public void nextFragment(Android.App.Fragment fragment, Bundle bundle)
+        public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
         {
             if (fragment is SelectPaymentMethodFragment)
             {
@@ -93,7 +93,7 @@ namespace myTNB_Android.Src.MakePayment.Activity
 
         public void OnLoadMainFragment()
         {
-            Android.App.Fragment selectPaymentFragment = new SelectPaymentMethodFragment();
+            AndroidX.Fragment.App.Fragment  selectPaymentFragment = new SelectPaymentMethodFragment();
             Bundle bundle = new Bundle();
             bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             selectPaymentFragment.Arguments = bundle;

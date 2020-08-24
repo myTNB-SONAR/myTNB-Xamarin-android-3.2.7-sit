@@ -11,13 +11,16 @@ using Android.Locations;
 using Android.Net;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
+
+
 using Android.Util;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
+using Google.Android.Material.TextField;
 using Java.Lang;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;

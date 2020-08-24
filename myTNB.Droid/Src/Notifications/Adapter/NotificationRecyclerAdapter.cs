@@ -12,15 +12,17 @@ using Android.Widget;
 using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.Base.Adapter;
 using CheeseBind;
-using Android.Support.V4.Content;
+
 using myTNB_Android.Src.Utils;
-using Android.Support.V7.Widget;
+
 using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.Notifications.MVP;
 using static Android.Widget.CompoundButton;
 using myTNB_Android.Src.Base;
 using System.Text.RegularExpressions;
+using AndroidX.RecyclerView.Widget;
+using AndroidX.Core.Content;
 
 namespace myTNB_Android.Src.Notifications.Adapter
 {

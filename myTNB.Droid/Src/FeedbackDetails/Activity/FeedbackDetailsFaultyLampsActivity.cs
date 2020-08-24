@@ -3,12 +3,16 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
+
+
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.Core.Content;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
+using Google.Android.Material.TextField;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.FeedbackDetails.Adapter;
@@ -195,7 +199,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
                 adapter.SelectClickEvent += Adapter_SelectClickEvent;
 
-                mPresenter = new FeedbackDetailsFaultyLampsPresenter(this, submittedFeedback);
+                mPresenter = new FeedbackDetailsFaultyLampsPresenter(this, submittedFeedback, this);
                 this.userActionsListener.Start();
             }
             catch (Exception e)

@@ -25,14 +25,14 @@ namespace myTNB_Android.Src.AddAccount.Activity
             return Resource.Layout.AddAccountView;
         }
 
-        FragmentTransaction fragmentTransaction;
+        AndroidX.Fragment.App.FragmentTransaction fragmentTransaction;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
-            Android.App.Fragment addAccountTypeFragment = new AddAccountTypeFragment();
-            var fragmentTransaction = FragmentManager.BeginTransaction();
+            AndroidX.Fragment.App.Fragment  addAccountTypeFragment = new AddAccountTypeFragment();
+            var fragmentTransaction = SupportFragmentManager.BeginTransaction();
             fragmentTransaction.Add(Resource.Id.fragment_container, addAccountTypeFragment);
             fragmentTransaction.Commit();
 
@@ -40,7 +40,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             MobileBarcodeScanner.Initialize(Application);
         }
 
-        public void nextFragment(Android.App.Fragment fragment, Bundle bundle)
+        public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
         {
             if (fragment is AddAccountTypeFragment)
             {
@@ -49,7 +49,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 {
                     var addAccountForm = new AddAccountFormFragment();
                     addAccountForm.Arguments = bundle;
-                    var fragmentTransaction = FragmentManager.BeginTransaction();
+                    var fragmentTransaction = SupportFragmentManager.BeginTransaction();
                     fragmentTransaction.Add(Resource.Id.fragment_container, addAccountForm);
                     fragmentTransaction.AddToBackStack(null);
                     fragmentTransaction.Commit();
@@ -58,7 +58,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 {
                     var addAccountForm = new AddAccountByRightsFragment();
                     addAccountForm.Arguments = bundle;
-                    var fragmentTransaction = FragmentManager.BeginTransaction();
+                    var fragmentTransaction = SupportFragmentManager.BeginTransaction();
                     fragmentTransaction.Add(Resource.Id.fragment_container, addAccountForm);
                     fragmentTransaction.AddToBackStack(null);
                     fragmentTransaction.Commit();
@@ -68,7 +68,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             {
                 var addAccountForm = new AddAccountFormFragment();
                 addAccountForm.Arguments = bundle;
-                var fragmentTransaction = FragmentManager.BeginTransaction();
+                var fragmentTransaction = SupportFragmentManager.BeginTransaction();
                 fragmentTransaction.Add(Resource.Id.fragment_container, addAccountForm);
                 fragmentTransaction.AddToBackStack(null);
                 fragmentTransaction.Commit();
@@ -82,7 +82,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public override void OnBackPressed()
         {
-            int count = this.FragmentManager.BackStackEntryCount;
+            int count = this.SupportFragmentManager.BackStackEntryCount;
             Log.Debug("OnBackPressed", "fragment stack count :" + count);
             if (count == 0)
             {
@@ -90,7 +90,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             }
             else
             {
-                this.FragmentManager.PopBackStack();
+                this.SupportFragmentManager.PopBackStack();
             }
 
         }

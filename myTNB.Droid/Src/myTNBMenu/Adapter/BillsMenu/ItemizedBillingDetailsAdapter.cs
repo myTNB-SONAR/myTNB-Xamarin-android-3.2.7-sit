@@ -1,5 +1,5 @@
 ﻿using Android.Icu.Text;
-using Android.Support.V7.Widget;
+
 using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.AddAccount.Models;

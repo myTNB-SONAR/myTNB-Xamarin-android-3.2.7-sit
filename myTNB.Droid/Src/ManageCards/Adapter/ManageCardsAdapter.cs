@@ -1,7 +1,8 @@
-﻿using Android.Support.V7.Widget;
+﻿
 using Android.Text;
 using Android.Views;
 using Android.Widget;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.ManageCards.Models;

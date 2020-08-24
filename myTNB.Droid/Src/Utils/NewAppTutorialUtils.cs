@@ -1,5 +1,5 @@
 ﻿using Android.Content;
-using Android.Support.V7.App;
+using AndroidX.AppCompat.App;
 using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
@@ -16,7 +16,7 @@ namespace myTNB_Android.Src.Utils
     {
         private static NewAppTutorialDialogFragment mDialog;
 
-        public static void OnShowNewAppTutorial(Android.App.Activity ctx, Android.App.Fragment fragment, ISharedPreferences pref, List<NewAppModel> list, bool mIndicationShowTop = false)
+        public static void OnShowNewAppTutorial(Android.App.Activity ctx, AndroidX.Fragment.App.Fragment fragment, ISharedPreferences pref, List<NewAppModel> list, bool mIndicationShowTop = false)
         {
             try
             {

@@ -2,10 +2,12 @@
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Content.Res;
 using Android.OS;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Google.Android.Material.AppBar;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.MultipleAccountPayment.Fragment;
@@ -30,16 +32,15 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         AccountData selectedAccount;
         List<MPAccount> accounts;
         string total;
-        Android.App.Fragment currentFragment;
+        AndroidX.Fragment.App.Fragment  currentFragment;
 
         private MaterialDialog mCancelPaymentDialog;
         public readonly static int SELECT_PAYMENT_ACTIVITY_CODE = 2367;
-
-        private Android.Support.V7.Widget.Toolbar toolbar;
-        private Android.Support.Design.Widget.AppBarLayout appBarLayout;
+        private AndroidX.AppCompat.Widget.Toolbar toolbar;
+        private AppBarLayout appBarLayout;
         private FrameLayout frameContainer;
         private List<AccountChargeModel> accountChargeList;
-        private Android.Support.Design.Widget.CoordinatorLayout coordinatorLayout;
+        private AndroidX.CoordinatorLayout.Widget.CoordinatorLayout coordinatorLayout;
 
         public bool paymentReceiptGenerated = false;
 
@@ -70,7 +71,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 }
 
                 appBarLayout.Visibility = ViewStates.Visible;
-                Android.Support.Design.Widget.CoordinatorLayout.LayoutParams lp = new Android.Support.Design.Widget.CoordinatorLayout.LayoutParams(Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent, Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent);
+                AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams lp = new AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams(AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams.MatchParent, AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams.MatchParent);
                 lp.SetMargins(0, actionBarHeight, 0, 0);
 
                 frameContainer.LayoutParameters = lp;
@@ -82,7 +83,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             if (appBarLayout != null)
             {
                 appBarLayout.Visibility = ViewStates.Gone;
-                Android.Support.Design.Widget.CoordinatorLayout.LayoutParams lp = new Android.Support.Design.Widget.CoordinatorLayout.LayoutParams(Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent, Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent);
+                AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams lp = new AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams(AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams.MatchParent, AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams.MatchParent);
                 lp.SetMargins(0, 0, 0, 0);
 
                 frameContainer.LayoutParameters = lp;
@@ -96,10 +97,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
             try
             {
-                appBarLayout = FindViewById<Android.Support.Design.Widget.AppBarLayout>(Resource.Id.appBar);
-                toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
+                appBarLayout = FindViewById<AppBarLayout>(Resource.Id.appBar);
+                toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
                 frameContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
-                coordinatorLayout = FindViewById<Android.Support.Design.Widget.CoordinatorLayout>(Resource.Id.coordinatorLayout);
+                coordinatorLayout = FindViewById<AndroidX.CoordinatorLayout.Widget.CoordinatorLayout>(Resource.Id.coordinatorLayout);
                 Bundle extras = Intent.Extras;
 
                 if (extras != null)
@@ -129,13 +130,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             }
         }
 
-        public void nextFragment(Android.App.Fragment fragment, Bundle bundle)
+        public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
         {
             if (fragment is MPSelectPaymentMethodFragment)
             {
                 var paymentWebViewFragment = new MPPaymentWebViewFragment();
                 paymentWebViewFragment.Arguments = bundle;
-                var fragmentTransaction = FragmentManager.BeginTransaction();
+                var fragmentTransaction = SupportFragmentManager.BeginTransaction();
                 fragmentTransaction.Add(Resource.Id.fragment_container, paymentWebViewFragment);
                 fragmentTransaction.AddToBackStack(null);
                 fragmentTransaction.Commit();
@@ -147,14 +148,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             if (!IsFinishing && !IsDestroyed)
             {
-                Android.App.Fragment selectPaymentFragment = new MPSelectPaymentMethodFragment();
+                AndroidX.Fragment.App.Fragment  selectPaymentFragment = new MPSelectPaymentMethodFragment();
                 Bundle bundle = new Bundle();
                 bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
                 bundle.PutString("PAYMENT_ITEMS", JsonConvert.SerializeObject(accounts));
                 bundle.PutString("ACCOUNT_CHARGES_LIST", JsonConvert.SerializeObject(accountChargeList));
                 bundle.PutString("TOTAL", total);
                 selectPaymentFragment.Arguments = bundle;
-                var fragmentTransaction = FragmentManager.BeginTransaction();
+                var fragmentTransaction = SupportFragmentManager.BeginTransaction();
                 fragmentTransaction.Add(Resource.Id.fragment_container, selectPaymentFragment);
                 fragmentTransaction.Commit();
                 currentFragment = selectPaymentFragment;
@@ -197,10 +198,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             try
             {
-                FragmentManager manager = this.FragmentManager;
+                var manager = this.SupportFragmentManager;
                 if (manager.BackStackEntryCount > 0)
                 {
-                    manager.PopBackStack(FragmentManager.GetBackStackEntryAt(0).Id, Android.App.PopBackStackFlags.Inclusive);
+                    manager.PopBackStack(SupportFragmentManager.GetBackStackEntryAt(0).Id, (int) Android.App.PopBackStackFlags.Inclusive);
                 }
             }
             catch (Exception e)
@@ -214,7 +215,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             try
             {
-                int count = this.FragmentManager.BackStackEntryCount;
+                int count = this.SupportFragmentManager.BackStackEntryCount;
                 Log.Debug("OnBackPressed", "fragment stack count :" + count);
                 if (count == 0 || paymentReceiptGenerated)
                 {
@@ -237,7 +238,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                             .PositiveColor(Resource.Color.black)
                             .OnPositive((dialog, which) =>
                             {
-                                this.FragmentManager.PopBackStack();
+                                this.SupportFragmentManager.PopBackStack();
                                 this.SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod","title"));
                             })
                             .NeutralText(Utility.GetLocalizedCommonLabel("no"))
@@ -246,7 +247,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     }
                     else
                     {
-                        this.FragmentManager.PopBackStack();
+                        this.SupportFragmentManager.PopBackStack();
                     }
                 }
             }
@@ -304,6 +305,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     break;
             }
         }
+
+        // AndroidX TODO: Temporary Fix for Android 5,5.1 
+        // AndroidX TODO: Due to this: https://github.com/xamarin/AndroidX/issues/131
+        public override AssetManager Assets =>
+            (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop && Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.M)
+            ? Resources.Assets : base.Assets;
 
     }
 }
