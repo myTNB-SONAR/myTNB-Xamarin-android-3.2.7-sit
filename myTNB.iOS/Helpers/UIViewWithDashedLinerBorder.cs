@@ -20,8 +20,7 @@ namespace myTNB
 
             var path = UIBezierPath.FromRoundedRect(rect, 0);
 
-            //MyTNBColor.SectionGrey.SetFill();
-            UIColor.White.SetFill();
+            MyTNBColor.SectionGrey.SetFill();
             path.Fill();
 
             UIColor.LightGray.SetStroke();

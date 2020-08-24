@@ -295,21 +295,5 @@ namespace myTNB
                 return false;
             }
         }
-
-        public static bool IsIOS13AndUp
-        {
-            get
-            {
-                try
-                {
-                    return UIDevice.CurrentDevice.CheckSystemVersion(13, 0);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine("IsIOS13 Exception: " + e.Message);
-                }
-                return false;
-            }
-        }
     }
 }

@@ -111,11 +111,11 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
-                txtFeedback.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitFeedback"), FromHtmlOptions.ModeLegacy);
+                txtFeedback.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitEnquiry"), FromHtmlOptions.ModeLegacy);
             }
             else
             {
-                txtFeedback.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitFeedback"));
+                txtFeedback.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "submitEnquiry"));
             }
 
             DismissProgressDialog();
@@ -154,7 +154,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
         public void SetStatusBarBackground(int resId)
         {
-            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+            if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop)
             {
                 Drawable drawable = Resources.GetDrawable(resId);
                 this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);

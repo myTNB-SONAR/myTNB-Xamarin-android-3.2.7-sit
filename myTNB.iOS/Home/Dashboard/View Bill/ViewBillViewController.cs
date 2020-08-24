@@ -10,7 +10,6 @@ using myTNB.Model;
 using System.Drawing;
 using System.Diagnostics;
 using myTNB.Home.Dashboard.ViewBill;
-using WebKit;
 
 namespace myTNB
 {
@@ -18,7 +17,7 @@ namespace myTNB
     {
         public ViewBillViewController(IntPtr handle) : base(handle) { }
 
-        private WKWebView _webViewBill;
+        private UIWebView _webViewBill;
         private BillHistoryResponseModel _billHistory = new BillHistoryResponseModel();
         private string _url, _pdfFilePath, _titleSuffix, _formattedDate;
 
@@ -146,18 +145,15 @@ namespace myTNB
 
         internal void SetSubviews()
         {
-            _webViewBill = new WKWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height), new WKWebViewConfiguration())
+            _webViewBill = new UIWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height))
             {
-                NavigationDelegate = new WebWKNavigationDelegate(View)
+                Delegate = new WebViewDelegate(View)
             };
             if (!string.IsNullOrEmpty(_url))
             {
                 _webViewBill.LoadRequest(new NSUrlRequest(new NSUrl(_url)));
                 _webViewBill.ScrollView.Delegate = new ScrollViewDelegate(_webViewBill.ScrollView);
-                if(UIDevice.CurrentDevice.CheckSystemVersion(13,0))// check iOS version
-                {
-                    _webViewBill.ScalesLargeContentImage = true;
-                }
+                _webViewBill.ScalesPageToFit = true;
             }
             View.AddSubview(_webViewBill);
         }

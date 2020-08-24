@@ -1,5 +1,6 @@
 ﻿using Android.Graphics;
 using Android.Graphics.Drawables;
+using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
@@ -52,13 +53,13 @@ namespace myTNB_Android.Src.myTNBMenu.Adapter
 
                 if (isLastListHighlighted && (position == 0))
                 {
-                    vh.TariffBlockName.SetTextColor(mActivity.Resources.GetColor(Resource.Color.sunGlow));
-                    vh.TariffBlockUnit.SetTextColor(mActivity.Resources.GetColor(Resource.Color.sunGlow));
+                    vh.TariffBlockName.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(mActivity, Resource.Color.sunGlow)));
+                    vh.TariffBlockUnit.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(mActivity, Resource.Color.sunGlow)));
                 }
                 else
                 {
-                    vh.TariffBlockName.SetTextColor(mActivity.Resources.GetColor(Resource.Color.white));
-                    vh.TariffBlockUnit.SetTextColor(mActivity.Resources.GetColor(Resource.Color.white));
+                    vh.TariffBlockName.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(mActivity, Resource.Color.white)));
+                    vh.TariffBlockUnit.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(mActivity, Resource.Color.white)));
                 }
             }
             catch (Exception e)

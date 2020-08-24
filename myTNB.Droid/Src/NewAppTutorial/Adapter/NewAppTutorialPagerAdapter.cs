@@ -2090,8 +2090,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 if (this.mFragment is HomeMenuFragment)
                 {
                     ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
-                    ((HomeMenuFragment)this.mFragment).RestartHomeMenu();
                     UserSessions.DoHomeTutorialShown(this.mPref);
+                    ((HomeMenuFragment)this.mFragment).RestartHomeMenu();
                 }
                 else if (this.mFragment is ItemisedBillingMenuFragment)
                 {

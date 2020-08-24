@@ -1,32 +1,33 @@
 using System;
 using System.Text.RegularExpressions;
+using CoreGraphics;
 using Foundation;
 using UIKit;
-using WebKit;
 
 namespace myTNB
 {
-    public class WebWKNavigationDelegate : WKNavigationDelegate
+    public class WebViewDelegate : UIWebViewDelegate
     {
         LoadingOverlay loadingOverlay;
         UIView View;
-        public WebWKNavigationDelegate(UIView view) => View = view;
+        public WebViewDelegate(UIView view) => View = view;
         UIViewController Controller;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:myTNB.WebWKNavigationDelegate"/> class.
+        /// Initializes a new instance of the <see cref="T:myTNB.WebViewDelegate"/> class.
         /// </summary>
         /// <param name="view">View.</param>
         /// <param name="controller">Controller.</param>
-        public WebWKNavigationDelegate(UIView view, UIViewController controller)
+        public WebViewDelegate(UIView view, UIViewController controller)
         {
             View = view;
             Controller = controller;
         }
 
-        public override void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, Action<WKNavigationActionPolicy> decisionHandler)
+        public override bool ShouldStartLoad(UIWebView webView
+                                             , NSUrlRequest request
+                                             , UIWebViewNavigationType navigationType)
         {
-            var request = navigationAction.Request.Url;
             if (request != null)
             {
                 if (request.ToString().IsValid())
@@ -35,7 +36,7 @@ namespace myTNB
                     {
                         string rateString = default(string);
                         string transId = default(string);
-                        var url = navigationAction.Request.Url;
+                        var url = request.Url;
                         var paramsStr = url?.Host;
 
                         var parameters = paramsStr?.Split('&');
@@ -139,18 +140,14 @@ namespace myTNB
                         }
                     }
                 }
-                webView.EvaluateJavaScript("return ValidateForm(document.frmPayment);", completionHandler: null);
-                decisionHandler(WKNavigationActionPolicy.Allow);
-            }
-            else
-            {
-                decisionHandler(WKNavigationActionPolicy.Cancel);
             }
 
+            return true;
         }
 
-        public override void DidStartProvisionalNavigation(WKWebView webView, WKNavigation navigation)
+        public override void LoadStarted(UIWebView webView)
         {
+
             if (loadingOverlay == null)
             {
                 loadingOverlay = new LoadingOverlay(View.Bounds);
@@ -168,13 +165,11 @@ namespace myTNB
                 }
                 View.AddSubview(loadingOverlay);
             }
-
         }
 
-
-        public override void DidFinishNavigation(WKWebView webView, WKNavigation navigation)
+        public override void LoadingFinished(UIWebView webView)
         {
-            var webUrl = webView?.Url ?? default(NSUrl);
+            var webUrl = webView?.Request?.Url ?? default(NSUrl);
 
             if (webUrl != null)
             {
@@ -195,5 +190,4 @@ namespace myTNB
             loadingOverlay?.Hide();
         }
     }
-        
 }

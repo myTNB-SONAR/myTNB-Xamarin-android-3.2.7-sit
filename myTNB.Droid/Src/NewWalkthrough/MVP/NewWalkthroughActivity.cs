@@ -21,7 +21,7 @@ using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
 {
-    [Activity(Label = "NewWalkthroughActivity"
+    [Activity(Label = "@string/app_name"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.Dashboard"
         , NoHistory = true
@@ -251,7 +251,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
 
             try
             {
-                if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+                if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop)
                 {
                     Drawable drawable = Resources.GetDrawable(Resource.Drawable.walkthrough_bg_install_1);
                     this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);

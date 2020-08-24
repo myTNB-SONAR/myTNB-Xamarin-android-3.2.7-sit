@@ -43,6 +43,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "IncrementREDueDateByDays")]
             public string IncrementREDueDateByDays { get; set; }
 
+            [JsonProperty(PropertyName = "ShowEppToolTip")]
+            public bool ShowEppToolTip { get; set; }
+
             [JsonProperty(PropertyName = "MandatoryCharges")]
             public MandatoryCharge MandatoryCharges { get; set; }
         }

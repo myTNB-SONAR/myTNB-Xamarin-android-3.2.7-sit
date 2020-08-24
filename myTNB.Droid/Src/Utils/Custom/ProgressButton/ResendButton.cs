@@ -139,7 +139,7 @@ namespace myTNB_Android.Src.Utils.Custom.ProgressButton
             int pR = PaddingRight;
             int pB = PaddingBottom;
 
-            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.JellyBean)
+            if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.JellyBean)
             {
                 Background = drawable;
             }

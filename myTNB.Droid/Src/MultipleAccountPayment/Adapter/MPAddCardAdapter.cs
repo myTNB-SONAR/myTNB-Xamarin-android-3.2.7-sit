@@ -1,7 +1,7 @@
 ﻿using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.MakePayment.Models;
+using myTNB_Android.Src.MultipleAccountPayment.Models;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.Utils;
 using System;
@@ -61,7 +61,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 TextViewUtils.SetMuseoSans500Typeface(cardView);
                 string lastDigit = cardList[position].LastDigits.Substring(cardList[position].LastDigits.Length - 4);
                 string html = "<![CDATA[" + activity.GetString(Resource.String.credit_card_masked) + lastDigit + "]]>";
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     cardView.TextFormatted = Html.FromHtml(html, FromHtmlOptions.ModeLegacy);
                 }

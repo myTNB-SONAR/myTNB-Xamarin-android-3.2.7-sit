@@ -402,45 +402,6 @@ namespace myTNB.SitecoreCMS.Services
             return respModel;
         }
 
-        //Created by Syahmi ICS 05052020
-        public EppInfoTooltipResponseModel GetEppInfoTooltipItem()
-        {
-            EppInfoTooltipResponseModel respModel = new EppInfoTooltipResponseModel();
-            try
-            {
-                EppInfoTooltipService service = new EppInfoTooltipService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetItems();
-                var resp = CheckData(data.ToList<object>());
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<EppInfoTooltipResponseModel>(serializedObj);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Exception in GetItemsService/GetEppInfoTooltipItem: " + e.Message);
-            }
-            return respModel;
-        }
-
-        public EppInfoTooltipTimeStampResponseModel GetEppInfoTooltipTimestampItem()
-        {
-            EppInfoTooltipTimeStampResponseModel respModel = new EppInfoTooltipTimeStampResponseModel();
-            try
-            {
-                EppInfoTooltipService service = new EppInfoTooltipService(OS, ImageSize, WebsiteUrl, Language);
-                var data = service.GetTimeStamp();
-                var listData = AddDataToList(data);
-                var resp = CheckData(listData);
-                string serializedObj = JsonConvert.SerializeObject(resp);
-                respModel = JsonConvert.DeserializeObject<EppInfoTooltipTimeStampResponseModel>(serializedObj);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Exception in GetItemsService/GetEppInfoTooltipTimestampItem: " + e.Message);
-            }
-            return respModel;
-        }
-
-
         public LanguageResponseModel GetLanguageItems()
         {
             LanguageResponseModel respModel = new LanguageResponseModel();
@@ -504,16 +465,9 @@ namespace myTNB.SitecoreCMS.Services
             {
                 RewardsService service = new RewardsService(OS, ImageSize, WebsiteUrl, Language);
                 var data = service.GetCategoryItems();
-                if (service.HasChildItemError)
-                {
-                    return respModel;
-                }
-                else
-                {
-                    var resp = CheckData(data.ToList<object>());
-                    string serializedObj = JsonConvert.SerializeObject(resp);
-                    respModel = JsonConvert.DeserializeObject<RewardsResponseModel>(serializedObj);
-                }
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<RewardsResponseModel>(serializedObj);
             }
             catch (Exception e)
             {
@@ -548,16 +502,9 @@ namespace myTNB.SitecoreCMS.Services
             {
                 WhatsNewService service = new WhatsNewService(OS, ImageSize, WebsiteUrl, Language);
                 var data = service.GetCategoryItems();
-                if (service.HasChildItemError)
-                {
-                    return respModel;
-                }
-                else
-                {
-                    var resp = CheckData(data.ToList<object>());
-                    string serializedObj = JsonConvert.SerializeObject(resp);
-                    respModel = JsonConvert.DeserializeObject<WhatsNewResponseModel>(serializedObj);
-                }
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<WhatsNewResponseModel>(serializedObj);
             }
             catch (Exception e)
             {

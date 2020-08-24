@@ -293,7 +293,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
                     downtimeLayout.Visibility = ViewStates.Visible;
                     greetingLayout.Visibility = ViewStates.Gone;
                     layoutNewRefresh.Visibility = ViewStates.Gone;
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                     {
                         txtDowntimeMessage.TextFormatted = Html.FromHtml(bcrmDownTime.DowntimeMessage, FromHtmlOptions.ModeLegacy);
                     }
@@ -443,7 +443,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
                     downtimeLayout.Visibility = ViewStates.Visible;
                     greetingLayout.Visibility = ViewStates.Gone;
                     layoutNewRefresh.Visibility = ViewStates.Gone;
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                     {
                         txtDowntimeMessage.TextFormatted = Html.FromHtml(bcrmDownTime.DowntimeMessage, FromHtmlOptions.ModeLegacy);
                     }

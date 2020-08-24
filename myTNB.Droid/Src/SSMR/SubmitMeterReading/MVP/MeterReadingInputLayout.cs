@@ -47,7 +47,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public int convertPixelsToDp(float px)
         {
-            return (int)(px / ((float)Resources.DisplayMetrics.DensityDpi / (float)DisplayMetrics.DensityDefault));
+            return (int)(px / ((float)Resources.DisplayMetrics.DensityDpi / (float)DisplayMetricsDensity.Default));
         }
 
         private LayoutParams GetInputBoxLayoutParams()

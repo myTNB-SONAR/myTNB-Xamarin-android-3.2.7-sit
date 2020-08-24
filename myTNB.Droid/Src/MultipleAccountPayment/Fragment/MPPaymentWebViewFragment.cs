@@ -7,6 +7,8 @@ using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
+using Java.IO;
+using Java.Lang;
 using Java.Net;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
@@ -17,7 +19,6 @@ using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewReceipt.Activity;
 using Newtonsoft.Json;
-using Org.Apache.Http.Util;
 using System;
 using System.Web;
 
@@ -167,25 +168,25 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
                     if (isRegisteredCard)
                     {
-                        data = "PAYMENT_METHOD=" + URLEncoder.Encode(payMethod)
-                                    + "&TRANSACTIONTYPE=" + URLEncoder.Encode(transType)
-                                    + "&MERCHANTID=" + URLEncoder.Encode(merchantId)
-                                    + "&MERCHANT_TRANID=" + URLEncoder.Encode(merchantTransId)
-                                    + "&PYMT_IND=" + URLEncoder.Encode(PYMT_IND)
-                                    + "&PYMT_CRITERIA=" + URLEncoder.Encode(PYMT_CRITERIA_PAYMENT)
-                                    + "&CURRENCYCODE=" + URLEncoder.Encode(currencyCode)
-                                    + "&AMOUNT=" + URLEncoder.Encode(payAm)
-                                    + "&MPARAM1=" + URLEncoder.Encode(mparam1)
-                                    + "&SIGNATURE=" + URLEncoder.Encode(signature)
-                                    + "&CUSTNAME=" + URLEncoder.Encode(custName)
-                                    + "&CUSTEMAIL=" + URLEncoder.Encode(custEmail)
-                                    + "&CUSTPHONE=" + URLEncoder.Encode(custPhone)
-                                    + "&PYMT_TOKEN=" + URLEncoder.Encode(tokenizedHashCodeCC)
+                        data = "PAYMENT_METHOD=" + URLEncoder.Encode(payMethod, "UTF-8")
+                                    + "&TRANSACTIONTYPE=" + URLEncoder.Encode(transType, "UTF-8")
+                                    + "&MERCHANTID=" + URLEncoder.Encode(merchantId, "UTF-8")
+                                    + "&MERCHANT_TRANID=" + URLEncoder.Encode(merchantTransId, "UTF-8")
+                                    + "&PYMT_IND=" + URLEncoder.Encode(PYMT_IND, "UTF-8")
+                                    + "&PYMT_CRITERIA=" + URLEncoder.Encode(PYMT_CRITERIA_PAYMENT, "UTF-8")
+                                    + "&CURRENCYCODE=" + URLEncoder.Encode(currencyCode, "UTF-8")
+                                    + "&AMOUNT=" + URLEncoder.Encode(payAm, "UTF-8")
+                                    + "&MPARAM1=" + URLEncoder.Encode(mparam1, "UTF-8")
+                                    + "&SIGNATURE=" + URLEncoder.Encode(signature, "UTF-8")
+                                    + "&CUSTNAME=" + URLEncoder.Encode(custName, "UTF-8")
+                                    + "&CUSTEMAIL=" + URLEncoder.Encode(custEmail, "UTF-8")
+                                    + "&CUSTPHONE=" + URLEncoder.Encode(custPhone, "UTF-8")
+                                    + "&PYMT_TOKEN=" + URLEncoder.Encode(tokenizedHashCodeCC, "UTF-8")
                                     //+ "&SHOPPER_IP=" + URLEncoder.Encode(GetDeviceIPAddress())
-                                    + "&DESCRIPTION=" + URLEncoder.Encode(des)
+                                    + "&DESCRIPTION=" + URLEncoder.Encode(des, "UTF-8")
                                     //+ "&RESPONSE_TYPE=" + URLEncoder.Encode("1") // 1 – Return response via browser redirection, using HTTP GET method
-                                    + "&CARDCVC=" + URLEncoder.Encode(cardCvv) // -- CVV Enabled --
-                                    + "&RETURN_URL=" + URLEncoder.Encode(returnURL)
+                                    + "&CARDCVC=" + URLEncoder.Encode(cardCvv, "UTF-8") // -- CVV Enabled --
+                                    + "&RETURN_URL=" + URLEncoder.Encode(returnURL, "UTF-8")
                                     + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                     }
                     else
@@ -193,61 +194,61 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         string paymentCriteria = saveCard ? PYMT_CRITERIA_REGISTRATION : PYMT_CRITERIA_PAYMENT;
                         if (saveCard)
                         {
-                            data = "PAYMENT_METHOD=" + URLEncoder.Encode(payMethod)
-                                        + "&TRANSACTIONTYPE=" + URLEncoder.Encode(transType)
-                                        + "&MERCHANTID=" + URLEncoder.Encode(merchantId)
-                                        + "&MERCHANT_TRANID=" + URLEncoder.Encode(merchantTransId)
-                                        + "&CURRENCYCODE=" + URLEncoder.Encode(currencyCode)
-                                        + "&AMOUNT=" + URLEncoder.Encode(payAm)
-                                        + "&MPARAM1=" + URLEncoder.Encode(mparam1)
-                                        + "&SIGNATURE=" + URLEncoder.Encode(signature)
-                                        + "&CUSTNAME=" + URLEncoder.Encode(custName)
-                                        + "&CUSTEMAIL=" + URLEncoder.Encode(custEmail)
-                                        + "&CUSTPHONE=" + URLEncoder.Encode(custPhone)
-                                        + "&PYMT_IND=" + URLEncoder.Encode(PYMT_IND)
-                                        + "&PYMT_CRITERIA=" + URLEncoder.Encode(paymentCriteria)
+                            data = "PAYMENT_METHOD=" + URLEncoder.Encode(payMethod, "UTF-8")
+                                        + "&TRANSACTIONTYPE=" + URLEncoder.Encode(transType, "UTF-8")
+                                        + "&MERCHANTID=" + URLEncoder.Encode(merchantId, "UTF-8")
+                                        + "&MERCHANT_TRANID=" + URLEncoder.Encode(merchantTransId, "UTF-8")
+                                        + "&CURRENCYCODE=" + URLEncoder.Encode(currencyCode, "UTF-8")
+                                        + "&AMOUNT=" + URLEncoder.Encode(payAm, "UTF-8")
+                                        + "&MPARAM1=" + URLEncoder.Encode(mparam1, "UTF-8")
+                                        + "&SIGNATURE=" + URLEncoder.Encode(signature, "UTF-8")
+                                        + "&CUSTNAME=" + URLEncoder.Encode(custName, "UTF-8")
+                                        + "&CUSTEMAIL=" + URLEncoder.Encode(custEmail, "UTF-8")
+                                        + "&CUSTPHONE=" + URLEncoder.Encode(custPhone, "UTF-8")
+                                        + "&PYMT_IND=" + URLEncoder.Encode(PYMT_IND, "UTF-8")
+                                        + "&PYMT_CRITERIA=" + URLEncoder.Encode(paymentCriteria, "UTF-8")
                                         //+ "&SHOPPER_IP=" + URLEncoder.Encode(GetDeviceIPAddress())
-                                        + "&DESCRIPTION=" + URLEncoder.Encode(des)
+                                        + "&DESCRIPTION=" + URLEncoder.Encode(des, "UTF-8")
                                         // + "&RESPONSE_TYPE=" + URLEncoder.Encode("1") // 1 – Return response via browser redirection, using HTTP GET method
-                                        + "&RETURN_URL=" + URLEncoder.Encode(returnURL)
-                                        + "&CARDNO=" + URLEncoder.Encode(cardNo)
-                                        + "&CARDNAME=" + URLEncoder.Encode(custName)
-                                        + "&CARDTYPE=" + URLEncoder.Encode(cardType)
-                                        + "&EXPIRYMONTH=" + URLEncoder.Encode(cardExpM)
-                                        + "&EXPIRYYEAR=" + URLEncoder.Encode(cardExpY)
-                                        + "&CARDCVC=" + URLEncoder.Encode(cardCvv)
+                                        + "&RETURN_URL=" + URLEncoder.Encode(returnURL, "UTF-8")
+                                        + "&CARDNO=" + URLEncoder.Encode(cardNo, "UTF-8")
+                                        + "&CARDNAME=" + URLEncoder.Encode(custName, "UTF-8")
+                                        + "&CARDTYPE=" + URLEncoder.Encode(cardType, "UTF-8")
+                                        + "&EXPIRYMONTH=" + URLEncoder.Encode(cardExpM, "UTF-8")
+                                        + "&EXPIRYYEAR=" + URLEncoder.Encode(cardExpY, "UTF-8")
+                                        + "&CARDCVC=" + URLEncoder.Encode(cardCvv, "UTF-8")
                                         + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                         }
                         else
                         {
-                            data = "PAYMENT_METHOD=" + URLEncoder.Encode(payMethod)
-                                       + "&TRANSACTIONTYPE=" + URLEncoder.Encode(transType)
-                                       + "&MERCHANTID=" + URLEncoder.Encode(merchantId)
-                                       + "&MERCHANT_TRANID=" + URLEncoder.Encode(merchantTransId)
-                                       + "&CURRENCYCODE=" + URLEncoder.Encode(currencyCode)
-                                       + "&AMOUNT=" + URLEncoder.Encode(payAm)
-                                       + "&MPARAM1=" + URLEncoder.Encode(mparam1)
-                                       + "&SIGNATURE=" + URLEncoder.Encode(signature)
-                                       + "&CUSTNAME=" + URLEncoder.Encode(custName)
-                                       + "&CUSTEMAIL=" + URLEncoder.Encode(custEmail)
-                                       + "&CUSTPHONE=" + URLEncoder.Encode(custPhone)
+                            data = "PAYMENT_METHOD=" + URLEncoder.Encode(payMethod, "UTF-8")
+                                       + "&TRANSACTIONTYPE=" + URLEncoder.Encode(transType, "UTF-8")
+                                       + "&MERCHANTID=" + URLEncoder.Encode(merchantId, "UTF-8")
+                                       + "&MERCHANT_TRANID=" + URLEncoder.Encode(merchantTransId, "UTF-8")
+                                       + "&CURRENCYCODE=" + URLEncoder.Encode(currencyCode, "UTF-8")
+                                       + "&AMOUNT=" + URLEncoder.Encode(payAm, "UTF-8")
+                                       + "&MPARAM1=" + URLEncoder.Encode(mparam1, "UTF-8")
+                                       + "&SIGNATURE=" + URLEncoder.Encode(signature, "UTF-8")
+                                       + "&CUSTNAME=" + URLEncoder.Encode(custName, "UTF-8")
+                                       + "&CUSTEMAIL=" + URLEncoder.Encode(custEmail, "UTF-8")
+                                       + "&CUSTPHONE=" + URLEncoder.Encode(custPhone, "UTF-8")
                                        //+ "&SHOPPER_IP=" + URLEncoder.Encode(GetDeviceIPAddress())
-                                       + "&DESCRIPTION=" + URLEncoder.Encode(des)
+                                       + "&DESCRIPTION=" + URLEncoder.Encode(des, "UTF-8")
                                        // + "&RESPONSE_TYPE=" + URLEncoder.Encode("1") // 1 – Return response via browser redirection, using HTTP GET method
-                                       + "&RETURN_URL=" + URLEncoder.Encode(returnURL)
-                                       + "&CARDNO=" + URLEncoder.Encode(cardNo)
-                                       + "&CARDNAME=" + URLEncoder.Encode(custName)
-                                       + "&CARDTYPE=" + URLEncoder.Encode(cardType)
-                                       + "&EXPIRYMONTH=" + URLEncoder.Encode(cardExpM)
-                                       + "&EXPIRYYEAR=" + URLEncoder.Encode(cardExpY)
-                                       + "&CARDCVC=" + URLEncoder.Encode(cardCvv)
+                                       + "&RETURN_URL=" + URLEncoder.Encode(returnURL, "UTF-8")
+                                       + "&CARDNO=" + URLEncoder.Encode(cardNo, "UTF-8")
+                                       + "&CARDNAME=" + URLEncoder.Encode(custName, "UTF-8")
+                                       + "&CARDTYPE=" + URLEncoder.Encode(cardType, "UTF-8")
+                                       + "&EXPIRYMONTH=" + URLEncoder.Encode(cardExpM, "UTF-8")
+                                       + "&EXPIRYYEAR=" + URLEncoder.Encode(cardExpY, "UTF-8")
+                                       + "&CARDCVC=" + URLEncoder.Encode(cardCvv, "UTF-8")
                                        + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                         }
                     }
-                    mWebView.PostUrl(action, EncodingUtils.GetBytes(data, "base64"));
+                    mWebView.PostUrl(action, GetBytes(data, "base64"));
                 }
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -370,7 +371,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         ShowErrorMessage(url);
                     }
                 }
-                catch (Exception e)
+                catch (System.Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
                 }
@@ -412,7 +413,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         progressBar.Visibility = ViewStates.Gone;
                     }
                 }
-                catch (Exception e)
+                catch (System.Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
                 }
@@ -428,7 +429,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             {
                 try
                 {
-                    String message = "Please check your internet connection.";
+                    string message = "Please check your internet connection.";
                     if (ConnectionUtils.HasInternetConnection(mActivity))
                     {
                         switch (errorCode)
@@ -459,7 +460,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         mWebView.LoadUrl("");
                     }
                 }
-                catch (Exception e)
+                catch (System.Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
                 }
@@ -528,6 +529,31 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             tv.SetMaxLines(5);
 
             mErrorMessageSnackBar.Show();
+        }
+
+        public byte[] GetBytes(string data, string charset)
+        {
+            if (string.IsNullOrEmpty(data))
+            {
+                throw new IllegalArgumentException("data may not be null");
+            }
+
+            if (string.IsNullOrEmpty(charset))
+            {
+                throw new IllegalArgumentException("charset may not be null or empty");
+            }
+
+            Java.Lang.String ToBeEncoded = new Java.Lang.String(data);
+
+            try
+            {
+                return ToBeEncoded.GetBytes(charset);
+            }
+            catch (UnsupportedEncodingException e)
+            {
+                Utility.LoggingNonFatalError(e);
+                return ToBeEncoded.GetBytes();
+            }
         }
     }
 }

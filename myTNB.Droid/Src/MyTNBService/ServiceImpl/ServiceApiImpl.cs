@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using myTNB_Android.Src.MyTNBService.InterfaceAPI;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
+using Org.Json;
 using Refit;
 
 namespace myTNB_Android.Src.MyTNBService.ServiceImpl
@@ -90,6 +91,17 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
 		}
 
         /// <summary>
+        /// Call ValidateAccisExist with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<GetSearchForAccountResponse> ValidateAccIsExist([Body] Request.BaseRequest request)
+        {
+
+            return api.GetSearchForAccount<GetSearchForAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
         /// Call GetPhoneVerifyStatus with default timeout.
         /// </summary>
         /// <param name="request"></param>
@@ -138,6 +150,17 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.SubmitFeedback<SubmitFeedbackResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
+
+        /// <summary>
+        /// Call submit enquiry with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SubmitFeedbackResponse> SubmitEnquiry([Body] Request.BaseRequest request)
+        {
+            return api.SubmitEnquiry<SubmitFeedbackResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
 
         /// <summary>
         /// Call GetSubmittedFeedbackList with default timeout.
@@ -239,6 +262,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             return api.SubmittedFeedbackDetails<SubmittedFeedbackDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
+          /// <summary>
+        /// Call GetSubmittedFeedbackWithCotactDetails with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SubmittedFeedbackDetailsResponse> SubmittedFeedbackWithContactDetails([Body] Request.BaseRequest request)
+        {
+            return api.SubmittedFeedbackContactDetails<SubmittedFeedbackDetailsResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
         /// <summary>
         /// Call CreateNewUserWithToken with default timeout.
         /// </summary>
@@ -304,9 +337,9 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<SendUpdatePhoneTokenSMSResponse> SendUpdatePhoneTokenSMS([Body] Request.BaseRequest request)
+        public Task<SendUpdatePhoneTokenSMSResponse> SendUpdatePhoneTokenSMSV2([Body] Request.BaseRequest request)
         {
-            return api.SendUpdatePhoneTokenSMS<SendUpdatePhoneTokenSMSResponse>(request, CancellationTokenSourceWrapper.GetToken());
+            return api.SendUpdatePhoneTokenSMSV2<SendUpdatePhoneTokenSMSResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>

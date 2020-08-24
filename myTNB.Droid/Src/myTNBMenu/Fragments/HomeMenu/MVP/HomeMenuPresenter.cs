@@ -35,6 +35,8 @@ using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
 using Android.Text;
+using Android.OS;
+using System.Globalization;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -1850,10 +1852,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void OnCheckMyServiceNewFAQState()
         {
             isMyServiceDone = false;
-            isNeedHelpDone = false;
             isHomeMenuTutorialShown = false;
+            if (UserSessions.HasHomeTutorialShown(this.mPref))
+            {
+                isNeedHelpDone = false;
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    CheckSavedNewFAQTimeStamp();
+                };
+                h.PostDelayed(myAction, 50);
+            }
             RestoreCurrentMyServiceState();
-            GetSavedNewFAQTimeStamp();
         }
 
         public void OnCheckNewFAQState()
@@ -2067,6 +2077,77 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             catch (Exception e)
             {
                 ReadNewFAQFromCache();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void CheckSavedNewFAQTimeStamp()
+        {
+            try
+            {
+                FAQTokenSource = new CancellationTokenSource();
+                Task.Factory.StartNew(() =>
+                {
+                    try
+                    {
+                        FAQTokenSource.Token.ThrowIfCancellationRequested();
+                        string density = DPUtils.GetDeviceDensity(Application.Context);
+                        GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, LanguageUtil.GetAppLanguage());
+                        HelpTimeStampResponseModel responseModel = getItemsService.GetHelpTimestampItem();
+                        FAQTokenSource.Token.ThrowIfCancellationRequested();
+                        if (responseModel != null && responseModel.Status.Equals("Success"))
+                        {
+                            if (responseModel.Data != null && responseModel.Data.Count > 0)
+                            {
+                                if (NewFAQParentManager == null)
+                                {
+                                    NewFAQParentManager = new NewFAQParentEntity();
+                                }
+                                NewFAQParentManager.DeleteTable();
+                                NewFAQParentManager.CreateTable();
+                                NewFAQParentManager.InsertListOfItems(responseModel.Data);
+
+                                HelpTimeStamp checkItem = responseModel.Data[0];
+                                if (checkItem != null)
+                                {
+                                    if (!checkItem.ShowNeedHelp)
+                                    {
+                                        this.mView.HideNewFAQ();
+                                        UpdateNewFAQCompleteState();
+                                    }
+                                    else
+                                    {
+                                        this.mView.ShowFAQFromHide();
+                                    }
+                                }
+                                else
+                                {
+                                    UpdateNewFAQCompleteState();
+                                }
+                            }
+                            else
+                            {
+                                UpdateNewFAQCompleteState();
+                            }
+
+                        }
+                        else
+                        {
+                            UpdateNewFAQCompleteState();
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        UpdateNewFAQCompleteState();
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }).ContinueWith((Task previous) =>
+                {
+                }, FAQTokenSource.Token);
+            }
+            catch (Exception e)
+            {
+                UpdateNewFAQCompleteState();
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -2443,15 +2524,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                     CustomerBillingAccount selected = CustomerBillingAccount.FindByAccNum(userNotification.AccountNum);
                                     if (selected.billingDetails != null)
                                     {
+                                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
                                         SummaryDashBoardDetails cached = JsonConvert.DeserializeObject<SummaryDashBoardDetails>(selected.billingDetails);
                                         double amtDue = 0.00;
                                         if (cached.AccType == "2")
                                         {
-                                            amtDue = double.Parse(cached.AmountDue) * -1;
+                                            amtDue = double.Parse(cached.AmountDue, currCult) * -1;
                                         }
                                         else
                                         {
-                                            amtDue = double.Parse(cached.AmountDue);
+                                            amtDue = double.Parse(cached.AmountDue, currCult);
                                         }
 
                                         if (amtDue <= 0.00)
@@ -2659,14 +2741,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     List<Notifications.Models.UserNotificationData> ToBeDeleteList = new List<Notifications.Models.UserNotificationData>();
                     for (int i = 0; i < summaryDetails.Count; i++)
                     {
+                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
                         double amtDue = 0.00;
                         if (summaryDetails[i].AccType == "2")
                         {
-                            amtDue = double.Parse(summaryDetails[i].AmountDue) * -1;
+                            amtDue = double.Parse(summaryDetails[i].AmountDue, currCult) * -1;
                         }
                         else
                         {
-                            amtDue = double.Parse(summaryDetails[i].AmountDue);
+                            amtDue = double.Parse(summaryDetails[i].AmountDue, currCult);
                         }
 
                         if (amtDue <= 0.00)

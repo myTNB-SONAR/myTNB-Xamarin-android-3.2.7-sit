@@ -4,10 +4,6 @@ using CoreGraphics;
 using Foundation;
 using UIKit;
 
-//Created by Syahmi ICS 05052020
-using myTNB.Home.Bill;
-using myTNB.Model;
-
 namespace myTNB
 {
     public class UsageFooterViewComponent : BaseComponent
@@ -16,12 +12,6 @@ namespace myTNB
         public UIButton _btnViewBill, _btnPay;
         UILabel _lblPaymentTitle, _lblAmount, _lblDate, _lblCommon;
         nfloat _width, _viewHeight, _yPos;
-
-        //Created by Syahmi ICS 05052020
-        public CustomUIView _eppToolTipsView;
-        UIView _containerEppView;
-        DueAmountDataModel dueData;
-        public bool ShowEppToolTip;
 
         public UsageFooterViewComponent(UIView view, nfloat viewHeight, nfloat yPos)
         {
@@ -53,7 +43,6 @@ namespace myTNB
             shimmeringView.SetValues();
 
             CreatePaymentLabels();
-            CreateTooltipsView();   //Created by Syahmi ICS 05052020
             CreatePaymentButtons();
             UpdateUI(true);
         }
@@ -131,24 +120,7 @@ namespace myTNB
 
         private void CreatePaymentButtons()
         {
-            //nfloat yPos = GetScaledHeight(72f);
-
-            //Created by Syahmi ICS 05052020
-            nfloat yPos;
-
-            if (dueData != null && dueData.ShowEppToolTip.Equals(true))
-            {
-                yPos = GetScaledHeight(96f);
-            }
-            else if (dueData != null && dueData.ShowEppToolTip.Equals(false))
-            {
-                yPos = GetScaledHeight(72f);
-            }
-            else
-            {
-                yPos = GetScaledHeight(72f);
-            }
-
+            nfloat yPos = GetScaledHeight(72f);
             _btnViewBill = new UIButton(UIButtonType.Custom)
             {
                 Frame = new CGRect(BaseMarginWidth16, yPos, (_width / 2) - GetScaledWidth(18f), GetScaledHeight(48f))
@@ -205,19 +177,6 @@ namespace myTNB
             }
         }
 
-        //Created by Syahmi ICS 05052020
-        public bool IsShowEppToolTip
-        {
-            set
-            {
-                if (_containerEppView != null)
-                {
-                    _containerEppView.Hidden = !value;
-                    ShowEppToolTip = value;
-                }
-            }
-        }
-
         public void SetAmount(double amount, bool isPendingPayment = false)
         {
             if (amount >= 0)
@@ -243,8 +202,7 @@ namespace myTNB
                 _lblAmount.TextColor = MyTNBColor.LightOrange;
             }
             AdjustLabels(amount, isPendingPayment);
-        }
-
+        }
         private void AdjustLabels(double amount, bool isPendingPayment = false)
         {
             if (_containerView != null)
@@ -328,53 +286,6 @@ namespace myTNB
                 _btnPay.Layer.BackgroundColor = MyTNBColor.SilverChalice.CGColor;
                 _btnPay.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
             }
-        }
-
-        //Created by Syahmi ICS 05052020
-        public void CreateTooltipsView()
-        {
-            dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount?.accNum);
-            if (dueData != null && dueData.ShowEppToolTip.Equals(true))
-            {
-                _containerEppView = new UIView(new CGRect(0, (GetYLocationFromFrame(_lblDate.Frame, 8)), _width, GetScaledHeight(24)))
-                {
-                    BackgroundColor = UIColor.White,
-                    Hidden = true
-                };
-                _containerEppView.AddSubview(GetEPPTooltipView(0));
-                _containerView.AddSubview(_containerEppView);
-            }
-        }
-
-        public CustomUIView GetEPPTooltipView(nfloat yLoc)
-        {
-            _eppToolTipsView = new CustomUIView(new CGRect(0, yLoc, _width, GetScaledHeight(24)))
-            {
-                BackgroundColor = UIColor.White,
-            };
-            CustomUIView viewInfo = new CustomUIView(new CGRect(BaseMarginWidth16, 0, _width - (GetScaledWidth(16) * 2), GetScaledHeight(24)))
-            {
-                BackgroundColor = MyTNBColor.IceBlue
-            };
-            UIImageView imgView = new UIImageView(new CGRect(GetScaledWidth(4)
-                , GetScaledHeight(4), GetScaledWidth(16), GetScaledWidth(16)))
-            {
-                Image = UIImage.FromBundle(BillConstants.IMG_InfoBlue)
-            };
-            UILabel lblDescription = new UILabel(new CGRect(GetScaledWidth(28)
-                , GetScaledHeight(4), _eppToolTipsView.Frame.Width - GetScaledWidth(44), GetScaledHeight(16)))
-            {
-                TextAlignment = UITextAlignment.Left,
-                Font = TNBFont.MuseoSans_11_500,
-                TextColor = MyTNBColor.WaterBlue,
-                Text = GetCommonI18NValue("eppToolTipTitle")
-
-            };
-            viewInfo.Layer.CornerRadius = GetScaledHeight(12);
-            viewInfo.AddSubviews(new UIView[] { imgView, lblDescription });
-            _eppToolTipsView.AddSubview(viewInfo);
-
-            return _eppToolTipsView;
         }
     }
 }

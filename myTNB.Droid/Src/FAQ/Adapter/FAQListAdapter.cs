@@ -43,7 +43,7 @@ namespace myTNB_Android.Src.FAQ.Adapter
                 FAQsModel model = faqList[position];
                 vh.Question.Text = model.Question;
 
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     vh.Answer.TextFormatted = Trim(Html.FromHtml(model.Answer, FromHtmlOptions.ModeLegacy));
                 }

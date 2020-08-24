@@ -50,7 +50,7 @@ namespace myTNB_Android.Src.Common.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+            SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
             countryList = CountryUtil.Instance.GetCountryList();

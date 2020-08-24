@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Support.Design.Internal;
 using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -88,8 +89,8 @@ namespace myTNB_Android.Src.Utils
                 TextView selectedTextView = bottomNavigationMenuView.GetChildAt(i).FindViewById<TextView>(Resource.Id.largeLabel);
                 TextView unselectedTextView = bottomNavigationMenuView.GetChildAt(i).FindViewById<TextView>(Resource.Id.smallLabel);
 
-                selectedTextView.SetTextColor(mActivity.Resources.GetColor(Resource.Color.powerBlue));
-                unselectedTextView.SetTextColor(mActivity.Resources.GetColor(Resource.Color.charcoalGrey));
+                selectedTextView.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(mActivity, Resource.Color.powerBlue)));
+                unselectedTextView.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(mActivity, Resource.Color.charcoalGrey)));
                 selectedTextView.SetTextSize(ComplexUnitType.Dip, textSize);
                 unselectedTextView.SetTextSize(ComplexUnitType.Dip, textSize);
                 selectedTextView.SetPadding(0, 0, 0, paddingTop);

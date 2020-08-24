@@ -297,8 +297,8 @@ namespace myTNB_Android.Src.Base.Fragments
             TextView txtMessage = rationaleDialog.FindViewById<TextView>(Android.Resource.Id.Message);
             Button positiveButton = rationaleDialog.GetButton((int)DialogButtonType.Positive);
             Button negativeButton = rationaleDialog.GetButton((int)DialogButtonType.Negative);
-            positiveButton.SetTextColor(Resources.GetColor(Resource.Color.permissionButtonColor));
-            negativeButton.SetTextColor(Resources.GetColor(Resource.Color.permissionButtonColor));
+            positiveButton.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.permissionButtonColor)));
+            negativeButton.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.permissionButtonColor)));
             TextViewUtils.SetMuseoSans500Typeface(txtTitle, positiveButton);
             TextViewUtils.SetMuseoSans300Typeface(txtMessage);
 

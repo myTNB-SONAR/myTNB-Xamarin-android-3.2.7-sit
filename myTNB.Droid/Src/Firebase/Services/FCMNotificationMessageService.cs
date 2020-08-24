@@ -170,9 +170,9 @@ namespace myTNB_Android.Src.Firebase.Services
 
             Android.Net.Uri defaultSoundUri = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                    .SetSmallIcon(Resource.Drawable.Logo)
+                    .SetSmallIcon(Resource.Drawable.ic_launcher)
                     .SetLargeIcon(BitmapFactory.DecodeResource(this.Resources,
-                            Resource.Drawable.Logo))
+                            Resource.Drawable.ic_launcher))
                     .SetContentTitle(title)
                     .SetContentText(message)
                     .SetAutoCancel(true)

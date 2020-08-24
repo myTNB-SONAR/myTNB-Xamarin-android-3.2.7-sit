@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
 using Firebase.Analytics;
-using Foundation;
 using UIKit;
 
 namespace myTNB
@@ -12,7 +10,7 @@ namespace myTNB
     {
         public string PageName { set; private get; } = string.Empty;
         public string EventName { set; private get; } = string.Empty;
-        private string EventFormat = "{0}_{1}";
+        private string EventFormat = "{0}-{1}";
 
         public CustomUIView() { }
 
@@ -28,18 +26,7 @@ namespace myTNB
                 //Handle Firebase Log Event
                 Debug.WriteLine("Tapped");
                 string pName = PageName.IsValid() ? PageName : "NoPage";
-                Dictionary<string, string> mDic = new Dictionary<string, string>
-                {
-                    { pName, "Tapped" }
-                };
-                List<NSString> keys = new List<NSString>();
-                List<NSString> values = new List<NSString>();
-                foreach (var item in mDic)
-                {
-                    keys.Add(new NSString(item.Key));
-                    values.Add(new NSString(item.Value));
-                }
-                Analytics.LogEvent(string.Format(EventFormat, pName, EventName), NSDictionary<NSString, NSObject>.FromObjectsAndKeys(values.ToArray(), keys.ToArray(), keys.Count));
+                Analytics.LogEvent(string.Format(EventFormat, pName, EventName), null);
             }));
             base.AddGestureRecognizer(gestureRecognizer);
         }
