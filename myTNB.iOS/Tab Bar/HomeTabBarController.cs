@@ -381,7 +381,7 @@ namespace myTNB
             List<WhatsNewModel> whatsNewList = whatsNewEntity.GetAllItems();
             if (!ShowNewIndicator("2") && whatsNewList != null && whatsNewList.Count > 0)
             {
-                int unreadCount = whatsNewList.Where(x => !x.IsRead).Count();
+                int unreadCount = whatsNewList.Where(x => !x.IsRead && !x.Donot_Show_In_WhatsNew).Count();
                 TabBar.Items[2].BadgeColor = _badgeColor;
                 TabBar.Items[2].BadgeValue = unreadCount > 0 ? unreadCount.ToString() : null;
                 TabBar.Items[2].SetBadgeTextAttributes(_badgeAttributes, UIControlState.Normal);

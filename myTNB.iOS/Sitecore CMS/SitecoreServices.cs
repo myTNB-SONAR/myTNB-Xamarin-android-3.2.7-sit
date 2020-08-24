@@ -23,6 +23,7 @@ namespace myTNB.SitecoreCMS
         public bool NeedHelpTimeStampChanged { set; get; }
         public string NeedHelpTimeStamp { set; get; }
         public static bool IsForcedUpdate { get { return _isForcedUpdate; } }
+        private bool isWhatsNewUpdating = false;
 
         public async Task OnExecuteSitecoreCall(bool isforcedUpdate = false)
         {
@@ -32,11 +33,21 @@ namespace myTNB.SitecoreCMS
                 , LoadMeterReadSSMRWalkthroughV2()
                 , LoadBillDetailsTooltip()
                 //, LoadSSMRWalkthrough()
+                , LoadEppInfoTooltip() //Created by Syahmi ICS 05052020
+
+                //, LoadWhereAccountInfoTooltip() //Tooltip for where O
+                //, LoadRegisteredInfoTooltip()
+                //, LoadOwnerConsentInfoTooltip()
+                //, LoadIdentificationInfoTooltip()
+                //, LoadProofConsentInfoTooltip()
              };
             if (_isForcedUpdate)
             {
                 taskList.Add(LoadLanguage());
                 WhatsNewCache.ClearImages();
+                WhatsNewDetailCache.ClearImages();
+                WhatsNewDetailDescriptionCache.ClearImages();
+                WhatsNewPopupCache.ClearImages();
                 RewardsCache.ClearImages();
                 ClearTimeStamps();
             }
@@ -115,6 +126,59 @@ namespace myTNB.SitecoreCMS
             {
                 Debug.WriteLine("Error in ClearSharedPreference: " + e.Message);
             }
+        }
+
+        //Created by Syahmi ICS 05052020
+        private Task LoadEppInfoTooltip()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
+                EppInfoTooltipTimeStampResponseModel timeStamp = iService.GetEppInfoTooltipTimestampItem();
+
+                bool needsUpdate = true;
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                  || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                  || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new EppInfoTooltipTimeStampResponseModel();
+                    timeStamp.Data = new List<EppTooltipTimeStamp> { new EppTooltipTimeStamp { Timestamp = string.Empty } };
+                }
+
+                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "EppInfoTooltipTimeStamp", ref needsUpdate);
+
+                if (needsUpdate)
+                {
+                    EppInfoTooltipResponseModel EpptooltipsItems = iService.GetEppInfoTooltipItem();
+                    if (EpptooltipsItems != null && EpptooltipsItems.Data != null && EpptooltipsItems.Data.Count > 0)
+                    {
+                        List<Task<NSData>> GetImagesTask = new List<Task<NSData>>();
+                        for (int i = 0; i < EpptooltipsItems.Data.Count; i++)
+                        {
+                            EppTooltipModelEntity item = EpptooltipsItems.Data[i];
+                            GetImagesTask.Add(GetImageFromURL(item.Image));
+                        }
+
+                        Task.WaitAll(GetImagesTask.ToArray());
+
+                        for (int j = 0; j < GetImagesTask.Count; j++)
+                        {
+                            if (GetImagesTask[j] == null || GetImagesTask[j].Result == null) { continue; }
+                            byte[] data = GetImagesTask[j].Result.ToByteArray();
+                            EpptooltipsItems.Data[j].ImageByteArray = data;
+                        }
+
+                        EppInfoTooltipEntity wsManager = new EppInfoTooltipEntity();
+                        wsManager.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItems(EpptooltipsItems.Data);
+                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "EppInfoTooltipTimeStamp");
+                        Debug.WriteLine("LoadEppInfoTooltip Done");
+                    }
+                }
+            });
         }
 
         /*private Task LoadSSMRWalkthrough()
@@ -461,8 +525,13 @@ namespace myTNB.SitecoreCMS
 
         public Task LoadLanguage()
         {
+
             return Task.Factory.StartNew(() =>
             {
+#if DEBUG
+            LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE
+                            , TNBGlobal.APP_LANGUAGE == "EN" ? LanguageManager.Language.EN : LanguageManager.Language.MS);
+#else
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS
                     , DataManager.DataManager.SharedInstance.ImageSize
                     , TNBGlobal.SITECORE_URL
@@ -481,7 +550,7 @@ namespace myTNB.SitecoreCMS
 
                 UpdateTimeStamp(timeStamp.Data[0].Timestamp, "LanguageTimeStamp", ref needsUpdate);
 
-                if (needsUpdate || !LanguageUtility.HasSavedContent)
+                if (timeStamp.Status != null && timeStamp.Status == "Success" && (needsUpdate || !LanguageUtility.HasSavedContent))
                 {
                     LanguageResponseModel languageItems = iService.GetLanguageItems();
                     if (languageItems != null
@@ -528,7 +597,13 @@ namespace myTNB.SitecoreCMS
                         UpdateSharedPreference(timeStamp.Data[0].Timestamp, "LanguageJSON");
                     }
                     LanguageUtility.SetLanguageGlobals();
+                    LanguageUtility.SaveLanguageContent(content);
+                    if (_isForcedUpdate)
+                    {
+                        LanguageUtility.SetLanguage(TNBGlobal.APP_LANGUAGE);
+                    }
                 }
+#endif
             });
         }
 
@@ -632,8 +707,23 @@ namespace myTNB.SitecoreCMS
             return needsUpdate;
         }
 
+        public bool WhatsNewHasTimeStamp()
+        {
+            bool hasTimeStamp = false;
+            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+            string currentTS = sharedPreference.StringForKey("SiteCoreWhatsNewTimeStamp");
+
+            if (!string.IsNullOrEmpty(currentTS) && !isWhatsNewUpdating)
+            {
+                hasTimeStamp = true;
+            }
+
+            return hasTimeStamp;
+        }
+
         public Task LoadWhatsNew(bool forceUpdate = false)
         {
+            isWhatsNewUpdating = true;
             return Task.Factory.StartNew(() =>
             {
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS
@@ -659,45 +749,64 @@ namespace myTNB.SitecoreCMS
                     WhatsNewResponseModel whatsNewResponse = iService.GetWhatsNewItems();
                     if (whatsNewResponse != null)
                     {
-                        WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
-                        whatsNewEntity.DeleteTable();
-                        whatsNewEntity.CreateTable();
+                        WhatsNewCache.IsSitecoreRefresh = whatsNewResponse.Status == "Failed" || whatsNewResponse.Status == null;
 
-                        WhatsNewCache.WhatsNewIsAvailable = true;
-                        if (whatsNewResponse.Data != null && whatsNewResponse.Data.Count > 0)
+                        if (!WhatsNewCache.IsSitecoreRefresh)
                         {
-                            List<WhatsNewModel> whatsNewData = new List<WhatsNewModel>();
-                            List<WhatsNewCategoryModel> categoryList = new List<WhatsNewCategoryModel>(whatsNewResponse.Data);
-                            foreach (var category in categoryList)
+                            WhatsNewEntity whatsNewEntity = new WhatsNewEntity();
+                            whatsNewEntity.DeleteTable();
+                            whatsNewEntity.CreateTable();
+
+                            WhatsNewCache.WhatsNewIsAvailable = true;
+                            if (whatsNewResponse.Data != null && whatsNewResponse.Data.Count > 0)
                             {
-                                List<WhatsNewModel> whatsNewList = new List<WhatsNewModel>(category.WhatsNewItems);
-                                if (whatsNewList.Count > 0)
+                                List<WhatsNewModel> whatsNewData = new List<WhatsNewModel>();
+                                List<WhatsNewCategoryModel> categoryList = new List<WhatsNewCategoryModel>(whatsNewResponse.Data);
+                                foreach (var category in categoryList)
                                 {
-                                    foreach (var whatsNew in whatsNewList)
+                                    List<WhatsNewModel> whatsNewList = new List<WhatsNewModel>(category.WhatsNewItems);
+                                    if (whatsNewList.Count > 0)
                                     {
-                                        if (!WhatsNewServices.WhatsNewHasExpired(whatsNew))
+                                        foreach (var whatsNew in whatsNewList)
                                         {
-                                            whatsNew.CategoryID = category.ID;
-                                            whatsNew.CategoryName = category.CategoryName;
-                                            whatsNew.IsRead = WhatsNewServices.GetIsRead(whatsNew.ID);
-                                            whatsNewData.Add(whatsNew);
+                                            if (!WhatsNewServices.WhatsNewHasExpired(whatsNew))
+                                            {
+                                                whatsNew.CategoryID = category.ID;
+                                                whatsNew.CategoryName = category.CategoryName;
+                                                whatsNew.IsRead = WhatsNewServices.GetIsRead(whatsNew.ID);
+                                                whatsNew.ShowDateForDay = WhatsNewServices.GetWhatNewModelShowDate(whatsNew.ID);
+                                                whatsNew.ShowCountForDay = WhatsNewServices.GetWhatNewModelShowCount(whatsNew.ID);
+                                                whatsNew.SkipShowOnAppLaunch = WhatsNewServices.GetIsSkipAppLaunch(whatsNew.ID);
+                                                whatsNewData.Add(whatsNew);
+                                            }
                                         }
                                     }
                                 }
+                                whatsNewEntity.InsertListOfItems(whatsNewData);
+                                if (!string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
+                                {
+                                    UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreWhatsNewTimeStamp");
+                                }
                             }
-                            whatsNewEntity.InsertListOfItems(whatsNewData);
-                            UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreWhatsNewTimeStamp");
+                        }
+                        else
+                        {
+                            WhatsNewCache.WhatsNewIsAvailable = false;
                         }
                     }
                     else
                     {
+                        WhatsNewCache.IsSitecoreRefresh = false;
                         WhatsNewCache.WhatsNewIsAvailable = false;
                     }
                 }
                 else
                 {
+                    WhatsNewCache.IsSitecoreRefresh = false;
                     WhatsNewCache.WhatsNewIsAvailable = true;
                 }
+
+                isWhatsNewUpdating = false;
                 Debug.WriteLine("LoadWhatsNew Done");
             });
         }

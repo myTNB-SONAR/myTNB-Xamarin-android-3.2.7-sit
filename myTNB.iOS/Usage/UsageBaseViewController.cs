@@ -52,6 +52,9 @@ namespace myTNB
         private nfloat _smrCardYPos, _smrCardHeight;
         private MonthItemModel _lastSelectedMonthItem = new MonthItemModel();
 
+        //Code Start Here
+        private List<EppTooltipModelEntity> _eppToolTipList;
+
         public override void ViewDidLoad()
         {
             PageName = UsageConstants.PageName;
@@ -600,9 +603,24 @@ namespace myTNB
         #region DPC Methods
         private void SetDPCNoteOnBarTap(MonthItemModel item)
         {
-            if (item.DPCIndicator && _rMkWhEnum == RMkWhEnum.kWh || (_rMkWhEnum == RMkWhEnum.RM && _tariffIsVisible && item.DPCIndicator))
+            if (item.DPCIndicator && _rMkWhEnum == RMkWhEnum.kWh || (_rMkWhEnum == RMkWhEnum.RM && item.DPCIndicator))
             {
-                var msg = _tariffIsVisible ? item.DPCIndicatorTariffMessage : item.DPCIndicatorUsageMessage;
+                var msg = "";
+                if (_tariffIsVisible)
+                {
+                    msg = item.DPCIndicatorTariffMessage;
+                }
+                else
+                {
+                    if (_rMkWhEnum == RMkWhEnum.kWh)
+                    {
+                        msg = item.DPCIndicatorUsageMessage;
+                    }
+                    else
+                    {
+                        msg = item.DPCIndicatorRMMessage;
+                    }
+                }
                 SetDPCNote(msg);
             }
             else
@@ -614,7 +632,22 @@ namespace myTNB
 
         private void SetCPCNoteForShowHideTariff()
         {
-            var msg = _tariffIsVisible ? _lastSelectedMonthItem.DPCIndicatorTariffMessage : _lastSelectedMonthItem.DPCIndicatorUsageMessage;
+            var msg = "";
+            if (_tariffIsVisible)
+            {
+                msg = _lastSelectedMonthItem.DPCIndicatorTariffMessage;
+            }
+            else
+            {
+                if (_rMkWhEnum == RMkWhEnum.kWh)
+                {
+                    msg = _lastSelectedMonthItem.DPCIndicatorUsageMessage;
+                }
+                else
+                {
+                    msg = _lastSelectedMonthItem.DPCIndicatorRMMessage;
+                }
+            }
             SetDPCNote(msg);
             SetContentView();
         }
@@ -625,7 +658,22 @@ namespace myTNB
             {
                 if (_lastSelectedIsDPC)
                 {
-                    var msg = _tariffIsVisible ? _lastSelectedMonthItem.DPCIndicatorTariffMessage : _lastSelectedMonthItem.DPCIndicatorUsageMessage;
+                    var msg = "";
+                    if (_tariffIsVisible)
+                    {
+                        msg = _lastSelectedMonthItem.DPCIndicatorTariffMessage;
+                    }
+                    else
+                    {
+                        if (_rMkWhEnum == RMkWhEnum.kWh)
+                        {
+                            msg = _lastSelectedMonthItem.DPCIndicatorUsageMessage;
+                        }
+                        else
+                        {
+                            msg = _lastSelectedMonthItem.DPCIndicatorRMMessage;
+                        }
+                    }
                     SetDPCNote(msg);
                 }
             }
@@ -652,7 +700,22 @@ namespace myTNB
             {
                 if (_lastSelectedIsDPC)
                 {
-                    var msg = _tariffIsVisible ? _lastSelectedMonthItem.DPCIndicatorTariffMessage : _lastSelectedMonthItem.DPCIndicatorUsageMessage;
+                    var msg = "";
+                    if (_tariffIsVisible)
+                    {
+                        msg = _lastSelectedMonthItem.DPCIndicatorTariffMessage;
+                    }
+                    else
+                    {
+                        if (_rMkWhEnum == RMkWhEnum.kWh)
+                        {
+                            msg = _lastSelectedMonthItem.DPCIndicatorUsageMessage;
+                        }
+                        else
+                        {
+                            msg = _lastSelectedMonthItem.DPCIndicatorRMMessage;
+                        }
+                    }
                     SetDPCNote(msg);
                 }
             }
@@ -661,39 +724,58 @@ namespace myTNB
 
         private void SetDPCNote(string dpcMessage)
         {
-            _isDPCIndicator = true;
-            UITextView textView = _viewDPCNote.ViewWithTag(1001) as UITextView;
-            if (textView != null) { textView.RemoveFromSuperview(); }
-
-            NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(dpcMessage
-                , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(10F));
-            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
-            mutableHTMLBody.AddAttributes(new UIStringAttributes
+            if (!string.IsNullOrEmpty(dpcMessage.Trim()))
             {
-                ForegroundColor = UIColor.White,
-                ParagraphStyle = new NSMutableParagraphStyle
+                _isDPCIndicator = true;
+                UITextView textView = _viewDPCNote.ViewWithTag(1001) as UITextView;
+                if (textView != null) { textView.RemoveFromSuperview(); }
+
+                NSError htmlBodyError = null;
+                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(dpcMessage
+                    , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(10F));
+                NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+                mutableHTMLBody.AddAttributes(new UIStringAttributes
                 {
-                    Alignment = UITextAlignment.Left,
-                    LineSpacing = 3.0f
-                }
-            }, new NSRange(0, htmlBody.Length));
+                    ForegroundColor = UIColor.White,
+                    ParagraphStyle = new NSMutableParagraphStyle
+                    {
+                        Alignment = UITextAlignment.Left,
+                        LineSpacing = 3.0f
+                    }
+                }, new NSRange(0, htmlBody.Length));
 
-            UITextView dpcNote = new UITextView(new CGRect(GetScaledWidth(24f), 0, _viewDPCNote.Frame.Width - (GetScaledWidth(24f) * 2), GetScaledHeight(60F)))
+                UIStringAttributes linkAttributes = new UIStringAttributes
+                {
+                    ForegroundColor = MyTNBColor.SunGlow,
+                    Font = TNBFont.MuseoSans_10_500,
+                    UnderlineColor = UIColor.Clear,
+                    UnderlineStyle = NSUnderlineStyle.None
+                };
+
+                UITextView dpcNote = new UITextView(new CGRect(GetScaledWidth(24f), 0, _viewDPCNote.Frame.Width - (GetScaledWidth(24f) * 2), GetScaledHeight(60F)))
+                {
+                    BackgroundColor = UIColor.Clear,
+                    Editable = false,
+                    ScrollEnabled = false,
+                    AttributedText = mutableHTMLBody,
+                    WeakLinkTextAttributes = linkAttributes.Dictionary,
+                    TextContainerInset = UIEdgeInsets.Zero,
+                    Tag = 1001
+                };
+                dpcNote.Delegate = new TextViewDelegate(LinkAction)
+                {
+                    InteractWithURL = false
+                };
+                CGSize cGSize = dpcNote.SizeThatFits(new CGSize(dpcNote.Frame.Width, GetScaledHeight(500F)));
+                ViewHelper.AdjustFrameSetHeight(dpcNote, cGSize.Height);
+                _viewDPCNote.AddSubview(dpcNote);
+                ViewHelper.AdjustFrameSetHeight(_viewDPCNote, dpcNote.Frame.Height);
+                _viewDPCNote.Hidden = false;
+            }
+            else
             {
-                BackgroundColor = UIColor.Clear,
-                Editable = false,
-                ScrollEnabled = false,
-                AttributedText = mutableHTMLBody,
-                UserInteractionEnabled = false,
-                TextContainerInset = UIEdgeInsets.Zero,
-                Tag = 1001
-            };
-            CGSize cGSize = dpcNote.SizeThatFits(new CGSize(dpcNote.Frame.Width, GetScaledHeight(500F)));
-            ViewHelper.AdjustFrameSetHeight(dpcNote, cGSize.Height);
-            _viewDPCNote.AddSubview(dpcNote);
-            ViewHelper.AdjustFrameSetHeight(_viewDPCNote, dpcNote.Frame.Height);
-            _viewDPCNote.Hidden = false;
+                RemoveDPCNote();
+            }
         }
 
         private void RemoveDPCNote()
@@ -1364,15 +1446,7 @@ namespace myTNB
                 if (_tariffIsVisible)
                 {
                     _tariffIsVisible = !_tariffIsVisible;
-                    if (_rMkWhEnum == RMkWhEnum.RM)
-                    {
-                        RemoveDPCNote();
-                        SetContentView();
-                    }
-                    else
-                    {
-                        SetCPCNoteForShowHideTariff();
-                    }
+                    SetCPCNoteForShowHideTariff();
                 }
                 else
                 {
@@ -1669,6 +1743,15 @@ namespace myTNB
                     DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                     _rEAmountComponent.SetValues(dueData.billDueDate, dueData.amountDue);
                 }
+                SetREAdviseEnable(!AccountUsageCache.IsDataEmpty);
+            }
+        }
+
+        internal void SetREAdviseEnable(bool enable)
+        {
+            if (_rEAmountComponent != null)
+            {
+                _rEAmountComponent.EnableDisableCTA(enable);
             }
         }
 
@@ -1712,8 +1795,21 @@ namespace myTNB
                 {
                     _viewFooter.RemoveFromSuperview();
                 }
-                nfloat componentHeight = GetScaledHeight(136F);
+                //nfloat componentHeight = GetScaledHeight(136F);
                 nfloat indicatorHeight = GetScaledHeight(33F);
+                nfloat componentHeight;
+
+                //Created by Syahmi ICS 05052020
+                DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount?.accNum);
+                if (dueData != null && dueData.ShowEppToolTip.Equals(true))
+                {
+                    componentHeight = GetScaledHeight(160F);
+                }
+                else
+                {
+                    componentHeight = GetScaledHeight(136F);
+                }
+
                 nfloat footerHeight = indicatorHeight + componentHeight;
                 nfloat footerYPos = _scrollViewContent.Frame.GetMaxY() - footerHeight;
                 _footerYPos = footerYPos + GetScaledHeight(33F);
@@ -1733,6 +1829,28 @@ namespace myTNB
                     GetI18NValue = GetI18NValue
                 };
                 _viewFooter.AddSubview(_footerViewComponent.GetUI());
+                //Created by Syahmi ICS 05052020
+                if ((_footerViewComponent._eppToolTipsView != null))
+                {
+                    _footerViewComponent._eppToolTipsView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        try
+                        {
+                            EppInfoTooltipEntity wsEppManager = new EppInfoTooltipEntity();
+                            _eppToolTipList = wsEppManager.GetAllItems();
+                            DisplayCustomAlert(_eppToolTipList[0].PopUpTitle, _eppToolTipList[0].PopUpBody
+                                , new Dictionary<string, Action> {
+                                    { GetCommonI18NValue(Constants.Common_GotIt), null }
+                                    , { GetCommonI18NValue("viewBill"), () => OnCurrentBillButtonTap() }
+                                },
+                            UIImage.LoadFromData(NSData.FromArray(_eppToolTipList[0].ImageByteArray)));
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine("Error in EPP: " + e.Message);
+                        }
+                    }));
+                }
                 if (_footerViewComponent._btnViewBill != null)
                 {
                     _footerViewComponent._btnViewBill.TouchUpInside += (sender, e) =>
@@ -1744,7 +1862,7 @@ namespace myTNB
                 {
                     _footerViewComponent._btnPay.TouchUpInside += (sender, e) =>
                     {
-                        DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount?.accNum);
+                        dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount?.accNum);
                         OnPayButtonTap(dueData != null ? dueData.amountDue : 0);
                     };
                 }
@@ -1827,15 +1945,25 @@ namespace myTNB
         {
             if (_footerViewComponent != null)
             {
+                DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                if (dueData != null && dueData.ShowEppToolTip.Equals(true))
+                {
+                    SetFooterView();
+                }
+
                 _footerViewComponent.UpdateUI(isUpdating);
                 if (!isUpdating)
                 {
-                    DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                     if (dueData != null)
                     {
                         _footerViewComponent.IsPayEnable = dueData.IsPayEnabled;
                         _footerViewComponent.SetAmount(dueData.amountDue, isPendingPayment);
                         _footerViewComponent.SetDate(dueData.billDueDate);
+                        //Created by Syahmi ICS 05052020
+                        if (dueData.ShowEppToolTip.Equals(true))
+                        {
+                            _footerViewComponent.IsShowEppToolTip = dueData.ShowEppToolTip;
+                        }
                     }
                 }
             }

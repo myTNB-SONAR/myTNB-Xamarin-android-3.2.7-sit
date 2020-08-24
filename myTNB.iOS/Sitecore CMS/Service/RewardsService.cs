@@ -14,6 +14,7 @@ namespace myTNB.SitecoreCMS.Service
     internal class RewardsService
     {
         private string _os, _imgSize, _websiteURL, _language;
+        internal bool HasChildItemError { private set; get; }
         internal RewardsService(string os, string imageSize, string websiteUrl = null, string language = "en")
         {
             _os = os;
@@ -24,9 +25,12 @@ namespace myTNB.SitecoreCMS.Service
 
         internal RewardsTimestamp GetTimeStamp()
         {
-            SitecoreService sitecoreService = new SitecoreService();
+            SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.FiveSecondTimeSpan);
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Rewards
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
+                , PayloadType.Content
+                , new List<ScopeType> { ScopeType.Self }
+                , _websiteURL
+                , _language);
             var item = req.Result;
             var list = ParseToTimestamp(item);
             var itemList = list.Result;
@@ -61,9 +65,11 @@ namespace myTNB.SitecoreCMS.Service
 
         internal List<RewardsCategoryModel> GetCategoryItems()
         {
-            SitecoreService sitecoreService = new SitecoreService();
+            SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.TenSecondTimeSpan);
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Rewards
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
+                , PayloadType.Content
+                , new List<ScopeType> { ScopeType.Children }
+                , _websiteURL, _language);
             var item = req.Result;
             var list = ParseToCategoryItems(item);
             var itemList = list.Result;
@@ -72,13 +78,24 @@ namespace myTNB.SitecoreCMS.Service
 
         internal List<RewardsModel> GetChildItems(ISitecoreItem categoryItem)
         {
-            SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(categoryItem.Path
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
-            var item = req.Result;
-            var list = GenerateRewardsChildren(item);
-            var itemList = list.Result;
-            return itemList.ToList();
+            try
+            {
+                SitecoreService sitecoreService = new SitecoreService(Constants.TimeOut.TenSecondTimeSpan);
+                var req = sitecoreService.GetItemByPath(categoryItem.Path
+                    , PayloadType.Content
+                    , new List<ScopeType> { ScopeType.Children }
+                    , _websiteURL, _language);
+                var item = req.Result;
+                var list = GenerateRewardsChildren(item);
+                var itemList = list.Result;
+                return itemList.ToList();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("What's New GetChildItems Error: " + ex.Message);
+                HasChildItemError = true;
+            }
+            return new List<RewardsModel>();
         }
 
         private async Task<IEnumerable<RewardsCategoryModel>> ParseToCategoryItems(ScItemsResponse itemsResponse)
@@ -88,6 +105,7 @@ namespace myTNB.SitecoreCMS.Service
             {
                 try
                 {
+                    HasChildItemError = false;
                     for (int i = 0; i < itemsResponse.ResultCount; i++)
                     {
                         ISitecoreItem item = itemsResponse[i];
@@ -95,12 +113,21 @@ namespace myTNB.SitecoreCMS.Service
                         {
                             continue;
                         }
-                        list.Add(new RewardsCategoryModel
+
+                        List<RewardsModel> childItems = GetChildItems(item);
+                        if (HasChildItemError)
                         {
-                            ID = GetValidID(item.Id),
-                            CategoryName = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Category),
-                            Rewards = GetChildItems(item)
-                        });
+                            break;
+                        }
+                        else
+                        {
+                            list.Add(new RewardsCategoryModel
+                            {
+                                ID = GetValidID(item.Id),
+                                CategoryName = item.GetValueFromField(Constants.Sitecore.Fields.Rewards.Category),
+                                Rewards = childItems
+                            });
+                        }
                     }
                 }
                 catch (Exception e)
@@ -144,11 +171,13 @@ namespace myTNB.SitecoreCMS.Service
                         };
 
                         list.Add(listlItem);
+                        HasChildItemError = false;
                     }
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine("Exception in RewardsService/GenerateRewardsChildren: " + e.Message);
+                    HasChildItemError = true;
                 }
             });
             return list;

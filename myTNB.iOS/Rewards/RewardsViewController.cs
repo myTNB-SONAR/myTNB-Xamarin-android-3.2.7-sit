@@ -21,7 +21,7 @@ namespace myTNB
         private int _selectedCategoryIndex;
         private bool _isViewDidLoad;
         private UIView _tutorialContainer;
-        private bool _hotspotIsOn;
+        private bool _hotspotIsOn; 
 
         public RewardsViewController(IntPtr handle) : base(handle) { }
 

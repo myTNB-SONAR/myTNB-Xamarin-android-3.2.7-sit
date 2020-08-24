@@ -29,8 +29,7 @@ namespace myTNB
             string Dynamic_Link_Domain = GetDynamicLinkDomain(env);
 
             var link = NSUrl.FromString(dictionary["Link"]);
-            var components = DynamicLinkComponents.FromLink(link, Dynamic_Link_Domain);
-
+            var components = DynamicLinkComponents.Create(link, Dynamic_Link_Domain);
             var bundleId = dictionary["BundleID"];
 
             if (!string.IsNullOrWhiteSpace(bundleId))
