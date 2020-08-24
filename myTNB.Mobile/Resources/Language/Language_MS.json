@@ -284,7 +284,7 @@
     "whereIsMyMeter": "Di manakah boleh saya mencari meter saya?",
     "whereIsMyMeterTitle": "Di manakah boleh saya mencari meter saya?",
     "whereIsMyMeterMessage": "Untuk menghantar bacaan meter bulanan, nilai pada skin paparan meter anda haruslah boleh dibaca dengan jelas. Meter anda kebiasaannya terletak berhampiran pintu atau bangunan meter (bilik riser).",
-    "doYouHaveMeterAccess":"Adakah anda mempunyai akses ke meter?"
+    "doYouHaveMeterAccess": "Adakah anda mempunyai akses ke meter?"
   },
   "SSMRReadingHistory_selector": {
     "SMREligibiltyPopUpDetails": [
@@ -952,8 +952,6 @@
   "SelectCountry": {
     "title": "Pilih Negara/Wilayah"
   },
-
-
   "SubmitEnquiry": {
     "enquireTitle": "Pertanyaan",
     "submitEnquiryTitle": "Hantar Pertanyaan Baru",
@@ -1077,5 +1075,4 @@
     "validElectricityAccountNoError": "Sila masukkan nombor akaun elektrik yang sah.",
     "backLogin": "Kembali ke Log Masuk"
   }
-     
 }

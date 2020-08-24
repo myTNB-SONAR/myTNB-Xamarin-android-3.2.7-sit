@@ -284,7 +284,7 @@
     "whereIsMyMeter": "Where can I look for my meter?",
     "whereIsMyMeterTitle": "Where can I look for my meter?",
     "whereIsMyMeterMessage": "To submit your monthly meter reading, you must be able to view the reading stated in your meter display screen. Your meter usually located near your door, or your building meter room (riser).",
-    "doYouHaveMeterAccess":"Do you have access to your meter?"
+    "doYouHaveMeterAccess": "Do you have access to your meter?"
   },
   "SSMRReadingHistory_selector": {
     "SMREligibiltyPopUpDetails": [
@@ -952,11 +952,11 @@
   "SelectCountry": {
     "title": "Select Country/Region"
   },
-  "SubmitEnquiry" : {
+  "SubmitEnquiry": {
     "enquireTitle": "Enquiry",
     "submitEnquiryTitle": "Submit New Enquiry",
     "submitEnquiryDescription": "Let us know your thoughts and concerns.",
-    "viewSubmittedEnquiry":"View Submitted Enquiry",
+    "viewSubmittedEnquiry": "View Submitted Enquiry",
     "viewEnquiryTitle": "View status updates on your enquiry here.",
     "accNumberHint": "Account Number",
     "accNumberInfo": "Where is my account number?",
@@ -986,21 +986,21 @@
     "stepTitle1of3": "Step 1 of 3",
     "registeredTitle": "Is this electricity account registered under your name?",
     "registeredInfo": "Who is a registered owner?",
-    "registeredInfoDetail":"A registered owner is the person who opened this electricity account under their name with their IC or Passport.",
-    "whichInfoUpdate":"Which information would you like to update?",
+    "registeredInfoDetail": "A registered owner is the person who opened this electricity account under their name with their IC or Passport.",
+    "whichInfoUpdate": "Which information would you like to update?",
     "ownerTitle": "What is your relationship with the owner?",
-    "icTitle":"Identification Number (IC/Passport)",
+    "icTitle": "Identification Number (IC/Passport)",
     "icHint": "Enter New Identification Number / Passport",
-    "accNametitle" : "Account Name",
+    "accNametitle": "Account Name",
     "accNameHint": "Enter new account name",
-    "mobileNumberTitle" : "Mobile Number",
-    "mobileNumberHint":"Enter new mobile number",
-    "emailAddressTitle":"Email Address",
-    "emailAddressHint":"Enter new email address",
-    "mailingAddressTitle":"Mailing Address",
-    "mailingAddressHint":"Enter new mailing address",
-    "premiseAddressTitle":"Premises Address",
-    "premiseAddressHint":"Enter new premises address",
+    "mobileNumberTitle": "Mobile Number",
+    "mobileNumberHint": "Enter new mobile number",
+    "emailAddressTitle": "Email Address",
+    "emailAddressHint": "Enter new email address",
+    "mailingAddressTitle": "Mailing Address",
+    "mailingAddressHint": "Enter new mailing address",
+    "premiseAddressTitle": "Premises Address",
+    "premiseAddressHint": "Enter new premises address",
     "updateOwnerTitle": "Which information would you like to update on your owner's behalf?",
     "relationshipTitle": "Relationship with Owner",
     "childTitle": "Child",
@@ -1043,12 +1043,12 @@
     "viewSubmitted": "View Submitted Enquiry",
     "title": "Submit New Enquiry",
     "scanMessage": "Scan the barcode on your bill to retrieve account details.",
-    "enquiryTnc":"By submitting, I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>",
-    "camera":"Camera",
-    "cameraRoll":"Camera Roll",
-    "imageWhereAcc":"-/media/myTNBapp/SubmitEnquiry/newBillCopy2x.png",
-    "imageCopyIC":"-/media/myTNBapp/SubmitEnquiry/imgIcCopy2x.png",
-    "imageConsent":"-/media/myTNBapp/SubmitEnquiry/imgPoc2x.png",
+    "enquiryTnc": "By submitting, I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>",
+    "camera": "Camera",
+    "cameraRoll": "Camera Roll",
+    "imageWhereAcc": "-/media/myTNBapp/SubmitEnquiry/newBillCopy2x.png",
+    "imageCopyIC": "-/media/myTNBapp/SubmitEnquiry/imgIcCopy2x.png",
+    "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x.png",
     "accNumberDetails": "Your 12-digit account no. can be found at the top left corner of your monthly paper bill.",
     "updateNoOwnerTitle": "Which information you would like to update?",
     "newAccNoOwnerName": "Enter New Account Name",
@@ -1074,8 +1074,6 @@
     "for": "for ",
     "validElectricityAccountNoError": "Please enter a valid electricity account number.",
     "backLogin": "Back to Login"
-    }
-
-
+  }
 }
 
