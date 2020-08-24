@@ -114,7 +114,7 @@ namespace myTNB
         private Dictionary<string, List<CountryModel>> OrderDictionary(Dictionary<string, List<CountryModel>> dictionary)
         {
             Dictionary<string, List<CountryModel>> newdictionary = dictionary.OrderBy(d => d.Key)
-                .ToDictionary(d => d.Key, d => ((IList<CountryModel>)d.Value.OrderBy(c => c.CountryName)).ToList());
+                .ToDictionary(d => d.Key, d => (d.Value.OrderBy(c => c.CountryName)).ToList());
             return newdictionary;
         }
     }
