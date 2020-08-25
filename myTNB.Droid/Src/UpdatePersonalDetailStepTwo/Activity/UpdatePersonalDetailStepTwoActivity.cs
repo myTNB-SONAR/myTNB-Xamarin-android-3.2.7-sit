@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime;
-using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -11,13 +8,9 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
-using Android.OS;
 using Android.Preferences;
 using Android.Provider;
 using Android.Runtime;
-
-
-using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -25,16 +18,13 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using Castle.Core.Internal;
 using CheeseBind;
-using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.Request;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity;
-using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.UpdatePersonalDetailStepTwo.Adapter;
-using myTNB_Android.Src.UpdatePersonalDetailStepTwo.Model;
 using myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -164,7 +154,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
         private ISharedPreferences mSharedPref;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Android.OS.Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             try
@@ -172,9 +162,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 this.mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);  // init shared preference 
                 //1 set presenter
                 mPresenter = new UpdatePersonalDetailStepTwoPresenter(this);
-                
+
                 // get data from prev page
-                Bundle extras = Intent.Extras;
+                Android.OS.Bundle extras = Intent.Extras;
                 if (extras != null)
                 {
 

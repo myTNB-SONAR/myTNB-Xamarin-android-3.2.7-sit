@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using Android.App;
 using Android.Content;
 using Android.Graphics;
-using Android.OS;
-using Android.Runtime;
 using Android.Text;
-using Android.Views;
-using Android.Widget;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;

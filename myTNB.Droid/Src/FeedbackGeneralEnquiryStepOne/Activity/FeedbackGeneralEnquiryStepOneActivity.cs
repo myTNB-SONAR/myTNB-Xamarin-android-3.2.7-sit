@@ -3,8 +3,6 @@ using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Graphics;
-using Android.OS;
 using Android.Preferences;
 using Android.Provider;
 using Android.Runtime;
@@ -23,19 +21,9 @@ using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Common.Activity;
-using myTNB_Android.Src.Common.Model;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Feedback_Login_BillRelated.Adapter;
-using myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP;
-using myTNB_Android.Src.FeedbackFail.Activity;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity;
-using myTNB_Android.Src.FeedbackSuccess.Activity;
-using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
@@ -110,7 +98,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         private string accNo = null;
 
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Android.OS.Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
@@ -118,7 +106,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             {
 
 
-                Bundle extras = Intent.Extras;
+                Android.OS.Bundle extras = Intent.Extras;
 
                 if (extras != null)
                 {

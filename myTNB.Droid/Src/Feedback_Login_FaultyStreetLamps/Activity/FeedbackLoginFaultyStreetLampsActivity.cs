@@ -3,7 +3,6 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
-using Android.OS;
 using Android.Preferences;
 using Android.Provider;
 using Android.Runtime;
@@ -117,7 +116,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
         {
             return true;
         }
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Android.OS.Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Intent intent = Intent;
@@ -405,7 +404,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
             try
             {
                 btnSubmit.Enabled = false;
-                Handler h = new Handler();
+                Android.OS.Handler h = new Android.OS.Handler();
                 Action myAction = () =>
                 {
                     btnSubmit.Enabled = true;

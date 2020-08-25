@@ -6,10 +6,7 @@ using Android.Content.PM;
 using Android.Content.Res;
 using Android.Graphics;
 using Android.Graphics.Drawables;
-using Android.OS;
 using Android.Runtime;
-
-
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -123,7 +120,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             return true;
         }
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Android.OS.Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             baseView.Visibility = ViewStates.Gone;
@@ -156,7 +153,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 totalAmtText.Text = GetLabelCommonByLanguage("totalAmountRM").ToUpper();
                 noteText.Text = GetLabelByLanguage("note");
 
-                Bundle extras = Intent.Extras;
+                Android.OS.Bundle extras = Intent.Extras;
 
                 if (extras != null && extras.ContainsKey("ReceiptResponse"))
                 {

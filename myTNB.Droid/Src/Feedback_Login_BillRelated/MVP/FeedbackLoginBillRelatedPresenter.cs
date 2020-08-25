@@ -1,11 +1,9 @@
 ﻿using Android.App;
 using Android.Content;
-using Android.OS;
 using Android.Runtime;
 using Android.Telephony;
 using Android.Text;
 using Java.Text;
-using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.Request;
 using myTNB_Android.Src.Database.Model;
@@ -17,8 +15,6 @@ using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
 using System.Threading;
 
 namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
@@ -66,7 +62,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
             {
                 if (resultCode == Result.Ok)
                 {
-                    Bundle extras = data.Extras;
+                    Android.OS.Bundle extras = data.Extras;
 
                     AccountData selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                     selectedCustomerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);

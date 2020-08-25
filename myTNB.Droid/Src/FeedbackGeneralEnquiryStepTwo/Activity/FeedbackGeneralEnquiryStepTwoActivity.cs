@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -8,13 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
-using Android.Icu.Text;
-using Android.Opengl;
-using Android.OS;
 using Android.Preferences;
-using Android.Runtime;
-
-
 using Android.Text;
 using Android.Text.Style;
 using Android.Views;
@@ -25,6 +18,7 @@ using Castle.Core.Internal;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
+using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
@@ -32,9 +26,7 @@ using myTNB_Android.Src.Base.Request;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Model;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP;
-using myTNB_Android.Src.FeedbackSuccess.Activity;
 using myTNB_Android.Src.SubmitEnquirySuccess.Activity;
-using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.UpdatePersonalDetailTnC.Activity;
 using myTNB_Android.Src.Utils;
 
@@ -125,7 +117,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         private bool isNeedTNC = false;
 
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Android.OS.Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             try
@@ -133,10 +125,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 //1 set presenter
                 mPresenter = new FeedbackGeneralEnquiryStepTwoPresenter(this);
 
-         
-              
 
-                Bundle extras = Intent.Extras;
+
+
+                Android.OS.Bundle extras = Intent.Extras;
                 
 
                 if (extras != null)
@@ -612,7 +604,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 {
                     this.SetIsClicked(true);
                     btnSubmit.Enabled = false;
-                    Handler h = new Handler();
+                    Android.OS.Handler h = new Android.OS.Handler();
                     Action myAction = () =>
                     {
                         btnSubmit.Enabled = true;
