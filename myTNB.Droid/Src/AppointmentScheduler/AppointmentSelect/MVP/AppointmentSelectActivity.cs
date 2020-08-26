@@ -3,7 +3,7 @@ using System;
 using Android.App;
 using Android.Icu.Util;
 using Android.OS;
-using Android.Support.V4.Content;
+
 using Android.Util;
 using Android.Views;
 using Android.Widget;

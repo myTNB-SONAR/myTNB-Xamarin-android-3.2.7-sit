@@ -8,10 +8,12 @@ using Android.Util;
 using System;
 using CheeseBind;
 using Android.Widget;
-using Android.Support.V4.Content;
-using Android.Support.Design.Widget;
+
+
 using System.Globalization;
 using myTNB_Android.Src.Base.Fragments;
+using Google.Android.Material.TextField;
+using AndroidX.Core.Content;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.ApplicationStatusFilterSelection
 {

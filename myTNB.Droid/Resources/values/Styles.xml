@@ -296,7 +296,7 @@
     <item name="android:colorControlNormal">@color/platinumGrey</item>
     <item name="android:colorControlHighlight">@color/platinumGrey</item>
     <item name="android:colorControlActivated">@color/platinumGrey</item>
-    <item name="textColorError">@color/errorColor</item>
+    <item name="colorError">@color/errorColor</item>
 
   </style>
 

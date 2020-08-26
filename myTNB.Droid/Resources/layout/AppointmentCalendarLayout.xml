@@ -152,14 +152,14 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp">
                
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_gravity="center_horizontal"
             android:background="@color/white"
             android:id="@+id/TimeRecyclerView">
-         </android.support.v7.widget.RecyclerView>
+         </androidx.recyclerview.widget.RecyclerView>
               
          </LinearLayout>
             </LinearLayout>

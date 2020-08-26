@@ -5,9 +5,9 @@ using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using Android.Preferences;
-using Android.Support.V4.Content;
-using Android.Support.V4.Widget;
-using Android.Support.V7.Widget;
+
+
+
 using Android.Text;
 using Android.Text.Method;
 using Android.Text.Style;
@@ -15,6 +15,9 @@ using Android.Util;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
+using AndroidX.Core.Content;
+using AndroidX.Core.Widget;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Facebook.Shimmer;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
@@ -403,29 +406,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             }
         }
 
-        class ClickSpan : ClickableSpan
-        {
-            public Action<View> Click;
-            public Color textColor { get; set; }
-            public Typeface typeFace { get; set; }
-
-            public override void OnClick(View widget)
-            {
-                if (Click != null)
-                {
-                    Click(widget);
-                }
-            }
-
-            public override void UpdateDrawState(TextPaint ds)
-            {
-                base.UpdateDrawState(ds);
-                ds.Color = textColor;
-                ds.SetTypeface(typeFace);
-                ds.UnderlineText = false;
-            }
-        }
-
         private void SetupEmptyLandingText()
         {
             try
@@ -434,259 +414,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 string input = "Looks like you have no applications at the moment.";
                 txtApplicationStatusLandingEmpty.TextFormatted = GetFormattedText(input);
 
-                if (!string.IsNullOrEmpty(input))
-                {
-                    SpannableString s = new SpannableString(txtApplicationStatusLandingEmpty.TextFormatted);
-                    var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
-
-                    if (urlSpans != null && urlSpans.Length > 0)
-                    {
-                        for (int i = 0; i < urlSpans.Length; i++)
-                        {
-                            URLSpan URLItem = urlSpans[i] as URLSpan;
-                            int startIndex = s.GetSpanStart(urlSpans[i]);
-                            int endIndex = s.GetSpanEnd(urlSpans[i]);
-                            s.RemoveSpan(urlSpans[i]);
-                            ClickSpan clickableSpan = new ClickSpan()
-                            {
-                                textColor = new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.powerBlue)),
-                                typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
-                            };
-                            clickableSpan.Click += v =>
-                            {
-                                OnClickSpan(URLItem.URL);
-                            };
-                            s.SetSpan(clickableSpan, startIndex, endIndex, SpanTypes.ExclusiveExclusive);
-                        }
-                        txtApplicationStatusLandingEmpty.TextFormatted = s;
-                        txtApplicationStatusLandingEmpty.MovementMethod = new LinkMovementMethod();
-                    }
-                }
+                txtApplicationStatusLandingEmpty = LinkRedirectionUtils
+                    .Create(this, Title)
+                    .SetTextView(txtApplicationStatusLandingEmpty)
+                    .SetMessage(input)
+                    .Build()
+                    .GetProcessedTextView();
             }
             catch (Exception e)
             {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void OnClickSpan(string url)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(url))
-                {
-                    if (!this.GetIsClicked())
-                    {
-                        this.SetIsClicked(true);
-                        if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[0])
-                            || url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[1])
-                            || url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[6]))
-                        {
-                            string uri = url;
-                            if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[0]))
-                            {
-                                uri = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[0])[1];
-                            }
-                            else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[1]))
-                            {
-                                uri = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[1])[1];
-                            }
-
-                            if (!uri.Contains("http"))
-                            {
-                                uri = "http://" + uri;
-                            }
-
-                            if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[1]))
-                            {
-                                Intent intent = new Intent(Intent.ActionView);
-                                intent.SetData(Android.Net.Uri.Parse(uri));
-                                this.StartActivity(intent);
-                            }
-                            else
-                            {
-                                if (uri.Contains(".pdf") && !uri.Contains("docs.google"))
-                                {
-                                    Intent webIntent = new Intent(this, typeof(BasePDFViewerActivity));
-                                    webIntent.PutExtra(Constants.IN_APP_LINK, uri);
-                                    webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
-                                    this.StartActivity(webIntent);
-                                }
-                                else
-                                {
-                                    Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
-                                    webIntent.PutExtra(Constants.IN_APP_LINK, uri);
-                                    webIntent.PutExtra(Constants.IN_APP_TITLE, Title);
-                                    this.StartActivity(webIntent);
-                                }
-                            }
-                        }
-                        else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[2])
-                                    || url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[7]))
-                        {
-                            string phonenum = url;
-                            if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[2]))
-                            {
-                                phonenum = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[2])[1];
-                            }
-                            if (!string.IsNullOrEmpty(phonenum))
-                            {
-                                if (!phonenum.Contains("tel:"))
-                                {
-                                    phonenum = "tel:" + phonenum;
-                                }
-
-                                var call = Android.Net.Uri.Parse(phonenum);
-                                var callIntent = new Intent(Intent.ActionView, call);
-                                this.StartActivity(callIntent);
-                            }
-                            else
-                            {
-                                this.SetIsClicked(false);
-                            }
-                        }
-                        else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[3])
-                                    || url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[8]))
-                        {
-                            string whatsnewid = url;
-                            if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[3]))
-                            {
-                                whatsnewid = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[3])[1];
-                            }
-                            else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[8]))
-                            {
-                                whatsnewid = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[8])[1];
-                            }
-
-                            if (!string.IsNullOrEmpty(whatsnewid))
-                            {
-                                if (!whatsnewid.Contains("{"))
-                                {
-                                    whatsnewid = "{" + whatsnewid;
-                                }
-
-                                if (!whatsnewid.Contains("}"))
-                                {
-                                    whatsnewid = whatsnewid + "}";
-                                }
-
-                                WhatsNewEntity wtManager = new WhatsNewEntity();
-
-                                WhatsNewEntity item = wtManager.GetItem(whatsnewid);
-
-                                if (item != null)
-                                {
-                                    if (!item.Read)
-                                    {
-                                        this.mPresenter.UpdateWhatsNewRead(item.ID, true);
-                                    }
-
-                                    Intent activity = new Intent(this, typeof(WhatsNewDetailActivity));
-                                    activity.PutExtra(Constants.WHATS_NEW_DETAIL_ITEM_KEY, whatsnewid);
-                                    activity.PutExtra(Constants.WHATS_NEW_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "promotion"));
-                                    this.StartActivity(activity);
-                                }
-                                else
-                                {
-                                    this.SetIsClicked(false);
-                                }
-                            }
-                            else
-                            {
-                                this.SetIsClicked(false);
-                            }
-                        }
-                        else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[4])
-                                    || url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[9]))
-                        {
-                            string faqid = url;
-                            if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[4]))
-                            {
-                                faqid = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[4])[1];
-                            }
-                            else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[9]))
-                            {
-                                faqid = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[9])[1];
-                            }
-
-                            if (!string.IsNullOrEmpty(faqid))
-                            {
-                                if (!faqid.Contains("{"))
-                                {
-                                    faqid = "{" + faqid;
-                                }
-
-                                if (!faqid.Contains("}"))
-                                {
-                                    faqid = faqid + "}";
-                                }
-
-                                Intent faqIntent = new Intent(this, typeof(FAQListActivity));
-                                faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
-                                this.StartActivity(faqIntent);
-                            }
-                            else
-                            {
-                                this.SetIsClicked(false);
-                            }
-                        }
-                        else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[5])
-                                    || url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[10]))
-                        {
-                            string rewardid = url;
-                            if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[5]))
-                            {
-                                rewardid = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[5])[1];
-                            }
-                            else if (url.Contains(MyTNBAppToolTipBuilder.RedirectTypeList[10]))
-                            {
-                                rewardid = url.Split(MyTNBAppToolTipBuilder.RedirectTypeList[10])[1];
-                            }
-
-                            if (!string.IsNullOrEmpty(rewardid))
-                            {
-                                if (!rewardid.Contains("{"))
-                                {
-                                    rewardid = "{" + rewardid;
-                                }
-
-                                if (!rewardid.Contains("}"))
-                                {
-                                    rewardid = rewardid + "}";
-                                }
-
-                                RewardsEntity wtManager = new RewardsEntity();
-
-                                RewardsEntity item = wtManager.GetItem(rewardid);
-
-                                if (item != null)
-                                {
-                                    if (!item.Read)
-                                    {
-                                        this.mPresenter.UpdateRewardRead(item.ID, true);
-                                    }
-
-                                    Intent activity = new Intent(this, typeof(RewardDetailActivity));
-                                    activity.PutExtra(Constants.REWARD_DETAIL_ITEM_KEY, rewardid);
-                                    activity.PutExtra(Constants.REWARD_DETAIL_TITLE_KEY, Utility.GetLocalizedLabel("Tabbar", "rewards"));
-                                    this.StartActivity(activity);
-                                }
-                                else
-                                {
-                                    this.SetIsClicked(false);
-                                }
-                            }
-                            else
-                            {
-                                this.SetIsClicked(false);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }

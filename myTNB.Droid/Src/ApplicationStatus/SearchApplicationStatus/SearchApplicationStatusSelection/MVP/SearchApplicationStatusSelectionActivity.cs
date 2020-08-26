@@ -8,14 +8,16 @@ using Android.Util;
 using System;
 using CheeseBind;
 using Android.Widget;
-using Android.Support.V7.Widget;
+
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
 using System.Collections.Generic;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter;
-using Android.Support.V4.Content;
+
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.Adapter;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models;
 using Newtonsoft.Json;
+using AndroidX.RecyclerView.Widget;
+using AndroidX.Core.Content;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.MVP
 {

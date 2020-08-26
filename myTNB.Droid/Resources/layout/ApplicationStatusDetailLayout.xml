@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
@@ -20,7 +20,7 @@
         android:layout_marginTop="?actionBarSize"
         android:orientation="vertical"
         android:background="@color/greyBackground">
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -83,7 +83,7 @@
                         android:visibility="gone"
                         android:id="@+id/applicationStatusLine"
                         android:background="@color/platinumGrey" />
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/applicationStatusStatusListRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                     android:layout_marginTop="8dp"
                     android:background="@color/white"
                     android:id="@+id/applicationStatusDetailNonLoginLayout">
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/applicationStatusStatusListRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -231,7 +231,7 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -355,4 +355,4 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

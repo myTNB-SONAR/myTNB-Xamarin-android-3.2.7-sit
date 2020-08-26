@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Android.Content;
-using Android.Support.V7.Widget;
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;

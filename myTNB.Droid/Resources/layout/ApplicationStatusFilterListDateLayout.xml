@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
@@ -20,7 +20,7 @@
         android:layout_marginTop="?actionBarSize"
         android:orientation="vertical"
         android:background="@color/greyBackground">
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -36,7 +36,7 @@
                     android:paddingStart="16dp"
                     android:background="@color/white"
                     android:id="@+id/filterDateMainLayour">
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.ColorFix"
@@ -58,8 +58,8 @@
                             android:enabled="false"
                             android:focusable="false"
                             android:inputType="text" />
-                    </android.support.design.widget.TextInputLayout>
-                    <android.support.design.widget.TextInputLayout
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.ColorFix"
@@ -81,9 +81,9 @@
                             android:enabled="false"
                             android:focusable="false"
                             android:inputType="text" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -115,4 +115,4 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

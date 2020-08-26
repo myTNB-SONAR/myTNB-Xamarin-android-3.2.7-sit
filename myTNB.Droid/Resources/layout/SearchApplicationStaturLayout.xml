@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
@@ -20,7 +20,7 @@
         android:layout_marginTop="?actionBarSize"
         android:orientation="vertical"
         android:background="@color/greyBackground">
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -52,7 +52,7 @@
                         android:paddingStart="16dp"
                         android:background="@color/white"
                         android:id="@+id/searchApplicationMainLayour">
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
@@ -74,8 +74,8 @@
                                 android:drawablePadding="6dp"
                                 android:focusable="false"
                                 android:inputType="text" />
-                        </android.support.design.widget.TextInputLayout>
-                        <android.support.design.widget.TextInputLayout
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
@@ -96,8 +96,8 @@
                                 android:drawablePadding="6dp"
                                 android:focusable="false"
                                 android:inputType="text" />
-                        </android.support.design.widget.TextInputLayout>
-                        <android.support.design.widget.TextInputLayout
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
@@ -116,7 +116,7 @@
                                 android:paddingTop="5dp"
                                 android:drawablePadding="6dp"
                                 android:inputType="text" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -136,14 +136,14 @@
                             android:text="We found this application(s) under the electricity account number:"
                             android:textSize="16dp"
                             android:lineSpacingExtra="4dp"/>
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/searchApplicationStatusListRecyclerView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:visibility="visible" />
                     </LinearLayout>
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -175,4 +175,4 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

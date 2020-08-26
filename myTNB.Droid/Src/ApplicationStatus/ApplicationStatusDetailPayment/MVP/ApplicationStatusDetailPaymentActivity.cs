@@ -5,9 +5,11 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
+
+
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.CompoundView;

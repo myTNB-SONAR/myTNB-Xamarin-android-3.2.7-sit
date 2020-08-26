@@ -10,11 +10,12 @@ using Android.Graphics.Drawables;
 using Android.Icu.Util;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
+
+
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.RecyclerView.Widget;
 
 namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 {

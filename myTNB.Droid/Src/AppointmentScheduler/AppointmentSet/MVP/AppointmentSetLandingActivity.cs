@@ -9,8 +9,8 @@ using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
+
+
 using Android.Text;
 using Android.Text.Method;
 using Android.Text.Style;

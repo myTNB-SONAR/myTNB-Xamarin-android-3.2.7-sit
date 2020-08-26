@@ -5,10 +5,11 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V4.Content;
+
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.ApplicationStatusFilterSelection;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
