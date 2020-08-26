@@ -6,12 +6,15 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V7.App;
+
+
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.AppCompat.App;
+using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using Java.Lang;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
@@ -58,7 +61,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
         const string PAGE_ID = "Profile";
 
-        private int APP_LANGUAGE_REQUEST = 1234908;
+        private int APP_LANGUAGE_REQUEST = 32766;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -224,7 +227,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             actionBar.SetDisplayShowHomeEnabled(flag);
         }
 
-        public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        public override void OnActivityResult(int requestCode, int resultCode, Intent data)
         {
             try
             {
@@ -232,7 +235,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
                 if (requestCode == Constants.UPDATE_MOBILE_NO_REQUEST)
                 {
-                    if (resultCode == Result.Ok)
+                    if (resultCode == (int) Result.Ok)
                     {
                         UserEntity userEntity = UserEntity.GetActive();
                         ShowMobileUpdateSuccess(userEntity.MobileNo);
@@ -241,14 +244,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 }
                 else if (requestCode == Constants.UPDATE_PASSWORD_REQUEST)
                 {
-                    if (resultCode == Result.Ok)
+                    if (resultCode == (int) Result.Ok)
                     {
                         MyTNBAccountManagement.GetInstance().SetIsPasswordUpdated(true);
                     }
                 }
                 else if (requestCode == Constants.MANAGE_CARDS_REQUEST)
                 {
-                    if (resultCode == Result.Ok)
+                    if (resultCode == (int) Result.Ok)
                     {
                         CreditCardData creditCard = JsonConvert.DeserializeObject<CreditCardData>(data.Extras.GetString(Constants.REMOVED_CREDIT_CARD));
                         mPresenter.UpdateCardList(creditCard);

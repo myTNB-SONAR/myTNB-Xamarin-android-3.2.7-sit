@@ -1,5 +1,5 @@
-﻿using Android.Support.V7.Widget;
-using Android.Views;
+﻿using Android.Views;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using System.Collections.Generic;
 

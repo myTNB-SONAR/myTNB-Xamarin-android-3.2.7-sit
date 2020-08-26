@@ -1,6 +1,8 @@
-﻿using Android.Support.V7.Widget;
+﻿
 using Android.Views;
 using Android.Widget;
+using AndroidX.AppCompat.Widget;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.SelectNotification.Models;

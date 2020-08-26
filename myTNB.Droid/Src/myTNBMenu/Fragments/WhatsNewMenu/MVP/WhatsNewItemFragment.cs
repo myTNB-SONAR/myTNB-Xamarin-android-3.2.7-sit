@@ -1,9 +1,8 @@
 ﻿using Android.Content;
 using Android.OS;
-using Android.App;
 using Android.Views;
 using myTNB_Android.Src.Utils;
-using Android.Support.V7.Widget;
+
 using static myTNB_Android.Src.Utils.Constants;
 using myTNB.SitecoreCMS.Model;
 using System.Collections.Generic;
@@ -11,6 +10,8 @@ using Android.Preferences;
 using System;
 using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter;
 using myTNB_Android.Src.WhatsNewDetail.MVP;
+using AndroidX.Fragment.App;
+using AndroidX.RecyclerView.Widget;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 {

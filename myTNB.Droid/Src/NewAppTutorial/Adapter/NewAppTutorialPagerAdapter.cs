@@ -2,16 +2,17 @@
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
-using Android.Support.Design.Widget;
-using Android.Support.V4.App;
-using Android.Support.V4.View;
-using Android.Support.V7.App;
+
+
+
+
 using Android.Text;
 using Android.Text.Style;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
+using AndroidX.ViewPager.Widget;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments;
@@ -33,12 +34,12 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
     {
         private Activity mContext;
         private List<NewAppModel> list = new List<NewAppModel>();
-        private Android.Support.V4.App.DialogFragment mDialog;
-        private Android.App.Fragment mFragment;
+        private AndroidX.Fragment.App.DialogFragment mDialog;
+        private AndroidX.Fragment.App.Fragment mFragment;
         private ISharedPreferences mPref;
        
 
-        public NewAppTutorialPagerAdapter(Activity ctx, Android.App.Fragment fragment, ISharedPreferences pref, Android.Support.V4.App.DialogFragment dialog, List<NewAppModel> items)
+        public NewAppTutorialPagerAdapter(Activity ctx, AndroidX.Fragment.App.Fragment fragment, ISharedPreferences pref, AndroidX.Fragment.App.DialogFragment dialog, List<NewAppModel> items)
         {
             this.mContext = ctx;
             this.list = items;

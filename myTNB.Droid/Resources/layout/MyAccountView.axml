@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -46,7 +46,7 @@
                     android:paddingTop="8dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp">
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
@@ -63,8 +63,8 @@
                             android:enabled="false"
                             android:textColor="@color/silverChalice"
                             android:focusable="false" />
-                    </android.support.design.widget.TextInputLayout>
-                    <android.support.design.widget.TextInputLayout
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
@@ -81,8 +81,8 @@
                             android:enabled="false"
                             android:textColor="@color/silverChalice"
                             android:focusable="false" />
-                    </android.support.design.widget.TextInputLayout>
-                    <android.support.design.widget.TextInputLayout
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"
@@ -99,11 +99,11 @@
                             android:enabled="false"
                             android:textColor="@color/silverChalice"
                             android:focusable="false" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/txtInputLayoutMobileNo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
                                 android:inputType="text"
                                 android:maxLines="1"
                                 android:focusable="false" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
                         <TextView
                             android:id="@+id/btnTextUpdateMobileNo"
                             android:layout_width="wrap_content"
@@ -133,7 +133,7 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/txtInputLayoutPassword"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                                 android:inputType="text"
                                 android:maxLines="1"
                                 android:focusable="false" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
                         <TextView
                             android:id="@+id/btnTextUpdatePassword"
                             android:layout_width="wrap_content"
@@ -163,7 +163,7 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <android.support.design.widget.TextInputLayout
+                        <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/txtInputLayoutCards"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -179,7 +179,7 @@
                                 android:inputType="text"
                                 android:maxLines="1"
                                 android:focusable="false" />
-                        </android.support.design.widget.TextInputLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
                         <TextView
                             android:id="@+id/btnTextUpdateCards"
                             android:layout_width="wrap_content"
@@ -295,4 +295,4 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

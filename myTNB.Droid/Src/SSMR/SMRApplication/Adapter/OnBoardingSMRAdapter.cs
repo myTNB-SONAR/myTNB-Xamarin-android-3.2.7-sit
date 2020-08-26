@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Android.Support.V4.App;
+
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 

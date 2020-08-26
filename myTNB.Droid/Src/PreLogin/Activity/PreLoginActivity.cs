@@ -3,11 +3,12 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Support.V7.Widget;
+
 using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.CardView.Widget;
 using CheeseBind;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;

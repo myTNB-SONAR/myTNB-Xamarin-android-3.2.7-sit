@@ -9,11 +9,12 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.V7.Widget;
+
 using Android.Text;
 using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using myTNB_Android.Src.AddAccount.Adapter;
 using myTNB_Android.Src.Base;

@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Google.Android.Material.AppBar;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Rating.Fargment;
 using myTNB_Android.Src.Utils;
@@ -19,12 +20,12 @@ namespace myTNB_Android.Src.Rating.Activity
     public class RatingActivity : BaseActivityCustom
     {
 
-        private Android.Support.V7.Widget.Toolbar toolbar;
-        private Android.Support.Design.Widget.AppBarLayout appBarLayout;
+        private AndroidX.AppCompat.Widget.Toolbar toolbar;
+        private AppBarLayout appBarLayout;
         private FrameLayout frameContainer;
-        private Android.Support.Design.Widget.CoordinatorLayout coordinatorLayout;
+        private AndroidX.CoordinatorLayout.Widget.CoordinatorLayout coordinatorLayout;
 
-        Android.App.Fragment currentFragment;
+        AndroidX.Fragment.App.Fragment  currentFragment;
 
         private string quesIdCategory = "1";
         private string merchantTransID;
@@ -56,7 +57,7 @@ namespace myTNB_Android.Src.Rating.Activity
                     }
 
                     appBarLayout.Visibility = ViewStates.Visible;
-                    Android.Support.Design.Widget.CoordinatorLayout.LayoutParams lp = new Android.Support.Design.Widget.CoordinatorLayout.LayoutParams(Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent, Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent);
+                    AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams lp = new AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams(AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams.MatchParent, AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams.MatchParent);
                     lp.SetMargins(0, actionBarHeight, 0, 0);
 
                     frameContainer.LayoutParameters = lp;
@@ -75,7 +76,7 @@ namespace myTNB_Android.Src.Rating.Activity
                 if (appBarLayout != null)
                 {
                     appBarLayout.Visibility = ViewStates.Gone;
-                    Android.Support.Design.Widget.CoordinatorLayout.LayoutParams lp = new Android.Support.Design.Widget.CoordinatorLayout.LayoutParams(Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent, Android.Support.Design.Widget.CoordinatorLayout.LayoutParams.MatchParent);
+                    AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams lp = new AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams(AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams.MatchParent, AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams.MatchParent);
                     lp.SetMargins(0, 0, 0, 0);
 
                     frameContainer.LayoutParameters = lp;
@@ -92,10 +93,10 @@ namespace myTNB_Android.Src.Rating.Activity
             base.OnCreate(savedInstanceState);
             try
             {
-                appBarLayout = FindViewById<Android.Support.Design.Widget.AppBarLayout>(Resource.Id.appBar);
-                toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
+                appBarLayout = FindViewById<AppBarLayout>(Resource.Id.appBar);
+                toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
                 frameContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
-                coordinatorLayout = FindViewById<Android.Support.Design.Widget.CoordinatorLayout>(Resource.Id.coordinatorLayout);
+                coordinatorLayout = FindViewById<AndroidX.CoordinatorLayout.Widget.CoordinatorLayout>(Resource.Id.coordinatorLayout);
 
                 deviceID = DeviceIdUtils.DeviceId(this);
                 Bundle extras = Intent.Extras;
@@ -139,26 +140,26 @@ namespace myTNB_Android.Src.Rating.Activity
 
         public void OnLoadMainFragment()
         {
-            Android.App.Fragment submitRatingFragment = new SubmitRatingFragment();
+            AndroidX.Fragment.App.Fragment  submitRatingFragment = new SubmitRatingFragment();
             Bundle bundle = new Bundle();
             bundle.PutString(Constants.QUESTION_ID_CATEGORY, quesIdCategory);
             bundle.PutInt(Constants.SELECTED_RATING, selectedRating);
             bundle.PutString(Constants.MERCHANT_TRANS_ID, merchantTransID);
             bundle.PutString(Constants.DEVICE_ID_PARAM, deviceID);
             submitRatingFragment.Arguments = bundle;
-            var fragmentTransaction = FragmentManager.BeginTransaction();
+            var fragmentTransaction = SupportFragmentManager.BeginTransaction();
             fragmentTransaction.Add(Resource.Id.fragment_container, submitRatingFragment);
             fragmentTransaction.Commit();
             currentFragment = submitRatingFragment;
         }
 
-        public void nextFragment(Android.App.Fragment fragment, Bundle bundle)
+        public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
         {
             if (fragment is SubmitRatingFragment)
             {
                 var thankYouFragment = new ThankYouFragment();
                 thankYouFragment.Arguments = bundle;
-                var fragmentTransaction = FragmentManager.BeginTransaction();
+                var fragmentTransaction = SupportFragmentManager.BeginTransaction();
                 fragmentTransaction.Add(Resource.Id.fragment_container, thankYouFragment);
                 fragmentTransaction.AddToBackStack(null);
                 fragmentTransaction.Commit();
@@ -170,7 +171,7 @@ namespace myTNB_Android.Src.Rating.Activity
         {
             try
             {
-                int count = this.FragmentManager.BackStackEntryCount;
+                int count = this.SupportFragmentManager.BackStackEntryCount;
                 Log.Debug("OnBackPressed", "fragment stack count :" + count);
                 if (currentFragment is ThankYouFragment || currentFragment is SubmitRatingFragment)
                 {
@@ -178,7 +179,7 @@ namespace myTNB_Android.Src.Rating.Activity
                 }
                 else
                 {
-                    this.FragmentManager.PopBackStack();
+                    this.SupportFragmentManager.PopBackStack();
                 }
 
             }

@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.Utils
 			mAnalytics.SetCurrentScreen(mActivity, screenName, mActivity.Class.SimpleName);
 		}
 
-		public static void SetFragmentScreenName(this Android.App.Fragment mFragment, string screenName)
+		public static void SetFragmentScreenName(this AndroidX.Fragment.App.Fragment mFragment, string screenName)
 		{
 			SetAnalytics(FirebaseAnalytics.GetInstance(mFragment.Activity));
 			mAnalytics.SetCurrentScreen(mFragment.Activity, screenName, mFragment.Class.SimpleName);
@@ -65,7 +65,7 @@ namespace myTNB_Android.Src.Utils
             mAnalytics.LogEvent(FirebaseAnalytics.Event.SelectContent, bundle);
         }
 
-        public static void LogFragmentClickEvent(this Android.App.Fragment mFragment, string eventName)
+        public static void LogFragmentClickEvent(this AndroidX.Fragment.App.Fragment mFragment, string eventName)
         {
             SetAnalytics(FirebaseAnalytics.GetInstance(mFragment.Activity));
             Bundle bundle = new Bundle();

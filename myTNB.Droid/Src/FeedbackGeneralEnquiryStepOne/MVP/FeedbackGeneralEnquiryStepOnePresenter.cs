@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
-using Android.OS;
 using Android.Runtime;
 using Android.Text;
-using Android.Views;
-using Android.Widget;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
@@ -56,7 +49,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
                 }
                 else
                 {
-                    this.mView.ShowEmptyFeedbackError();
+                  //  this.mView.ShowEmptyFeedbackError();
                     this.mView.DisableSubmitButton();
                 }
             }

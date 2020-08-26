@@ -1,9 +1,10 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Support.Design.Widget;
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Rating.Activity;
@@ -12,7 +13,7 @@ using System;
 
 namespace myTNB_Android.Src.Rating.Fargment
 {
-    public class ThankYouFragment : Fragment
+    public class ThankYouFragment : AndroidX.Fragment.App.Fragment
     {
         private RatingActivity ratingActivity;
 

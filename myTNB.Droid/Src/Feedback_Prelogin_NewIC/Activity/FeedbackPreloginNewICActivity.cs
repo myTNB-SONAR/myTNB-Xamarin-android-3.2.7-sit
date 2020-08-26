@@ -9,16 +9,21 @@ using Android.OS;
 using Android.Preferences;
 using Android.Provider;
 using Android.Runtime;
-using Android.Support.Constraints;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
+
+
+
+
 using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.ConstraintLayout.Widget;
+using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.Core.Content;
 using Castle.Core.Internal;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
+using Google.Android.Material.TextField;
 using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.Barcode.Activity;
@@ -114,7 +119,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
         FeedbackPreloginNewICContract.IUserActionsListener userActionsListener;
         FeedbackPreloginNewICPresenter mPresenter;
-        CustomerBillingAccount selectedCustomerBillingAccount;
+        AccountData selectedAccount;
 
 
         private bool isClicked = false;
@@ -196,9 +201,9 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     updatePersonalInfoConstraint.Visibility = ViewStates.Gone;
                 }
 
-                
 
                
+
 
 
             }
@@ -395,7 +400,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
                 this.SetIsClicked(true);
                 Intent barcodeIntent = new Intent(this, typeof(BarcodeActivity));
-                barcodeIntent.PutExtra(Constants.PAGE_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle"));
+                //barcodeIntent.PutExtra(Constants.PAGE_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle"));
                 StartActivityForResult(barcodeIntent, Constants.BARCODE_REQUEST_CODE);
             }
         }
@@ -407,7 +412,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
                 this.SetIsClicked(true);
                 Intent barcodeIntent = new Intent(this, typeof(BarcodeActivity));
-                barcodeIntent.PutExtra(Constants.PAGE_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle"));
+                //barcodeIntent.PutExtra(Constants.PAGE_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle"));
                 StartActivityForResult(barcodeIntent, Constants.BARCODE_REQUEST_CODE);
             }
         }
@@ -457,10 +462,13 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             //StartActivityForResult(generalEnquiry, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
         }
 
-        public void ShowSelectAccount(AccountData accountData)
+        public void ShowSelectAccount()
         {
             Intent supplyAccount = new Intent(this, typeof(FeedbackSelectAccountActivity));
-            supplyAccount.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            if (selectedAccount!=null)
+            {
+                supplyAccount.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            }
             StartActivityForResult(supplyAccount, Constants.SELECT_ACCOUNT_REQUEST_CODE);
         }
 
@@ -487,10 +495,11 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     {
                         Bundle extras = data.Extras;
 
-                        AccountData selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-                        selectedCustomerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
+                        this.selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                        //selectedCustomerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
+                
                         //injecting string into the accno
-                        txtAccountNo.Text = selectedCustomerBillingAccount.AccNum;
+                        txtAccountNo.Text = selectedAccount.AccountNum;
                     }
                 }
 

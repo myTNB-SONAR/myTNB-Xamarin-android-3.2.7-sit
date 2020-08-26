@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
@@ -108,7 +108,7 @@
                             android:textColor="@color/silverChalice"
                             android:textSize="14sp" />
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView_ownerIC"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -144,7 +144,7 @@
                             android:textColor="@color/silverChalice"
                             android:textSize="14sp" />
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView_your_ic"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -188,7 +188,7 @@
                                     android:id="@+id/TextView_exampleofIC"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="12dp"
+                                    android:textSize="11dp"
                                     android:textColor="#1c79ca"
                                     android:drawablePadding="8dp"
                                     android:text="How does copy of identification look like?"
@@ -210,7 +210,7 @@
                             android:textColor="@color/silverChalice"
                             android:textSize="14sp" />
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -277,7 +277,7 @@
                             android:textColor="@color/silverChalice"
                             android:textSize="14sp" />
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView3"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -364,4 +364,4 @@
     </LinearLayout>
 
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -9,14 +9,18 @@ using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
-using Android.Support.V4.Widget;
-using Android.Support.V7.App;
+
+
+
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.AppCompat.App;
+using AndroidX.Core.Content;
+using AndroidX.Core.Widget;
 using CheeseBind;
 using Facebook.Shimmer;
+using Google.Android.Material.Snackbar;
 using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.Base.Fragments;
@@ -384,14 +388,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
-        public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        public override void OnActivityResult(int requestCode, int resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
             try
             {
                 if (requestCode == 12345)
                 {
-                    if (resultCode == Result.Ok)
+                    if (resultCode == (int) Result.Ok)
                     {
                         UpdateBillingHistory(data.GetStringExtra("SELECTED_ITEM_FILTER"));
                         itemisedBillingScrollView.ScrollTo(0,0);
@@ -420,7 +424,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoShimmer.SetShimmer(ShimmerUtils.ShimmerBuilderConfig().Build());
             itemisedBillingInfoShimmer.StartShimmer();
             billFilterIcon.Enabled = false;
-            SetHasOptionsMenu(true);
+            this.HasOptionsMenu = true;
             BillOnScrollChangeListener billOnScrollChangeListener = new BillOnScrollChangeListener(ShowBillFilterToolbar, bills_list_title_container);
             itemisedBillingScrollView.SetOnScrollChangeListener(billOnScrollChangeListener);
             TextViewUtils.SetMuseoSans500Typeface(accountSelection, itemisedBillingInfoNote,

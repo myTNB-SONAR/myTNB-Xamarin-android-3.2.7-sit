@@ -4,10 +4,12 @@ using Android.Content.PM;
 using Android.Gms.Common.Apis;
 using Android.OS;
 using Android.Preferences;
-using Android.Support.Design.Widget;
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.AppLaunch.Activity;
@@ -124,7 +126,7 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
             txtFeedbackIdTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle");
             if (UserEntity.IsCurrentlyActive())
             {
-                buttonBackToHome.Text = Utility.GetLocalizedLabel("Common", "backToHome");
+                buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backHomeButton");
             }
             else
             {

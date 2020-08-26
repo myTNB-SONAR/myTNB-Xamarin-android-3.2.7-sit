@@ -1,15 +1,13 @@
 ﻿using Android;
-using Android.App;
+using AndroidX.Fragment.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
 using Android.Text;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
 using myTNB_Android.Src.Utils;
 using System;

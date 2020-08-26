@@ -3,13 +3,14 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
 using Android.Text;
 using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
+using Google.Android.Material.TextField;
 using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.MVP;
@@ -23,7 +24,7 @@ using System;
 
 namespace myTNB_Android.Src.AddAccount.Fragment
 {
-    public class AddAccountFormFragment : Android.App.Fragment, AddAccountContract.IView, View.IOnTouchListener
+    public class AddAccountFormFragment : AndroidX.Fragment.App.Fragment , AddAccountContract.IView, View.IOnTouchListener
     {
         private static string TAG = "AddAccountForm";
         private bool isOwner = false;
@@ -274,7 +275,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                         try
                         {
                             ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)btnWhereIsMyAccountNo.LayoutParameters;
-                            lp3.TopMargin = -(int)DPUtils.ConvertDPToPx(26f);
+                            lp3.TopMargin = -(int)DPUtils.ConvertDPToPx(23f);
                             lp3.RightMargin = (int) DPUtils.ConvertDPToPx(2f);
                             btnWhereIsMyAccountNo.LayoutParameters = lp3;
                             btnWhereIsMyAccountNo.RequestLayout();
@@ -349,14 +350,14 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             this.userActionsListener.CheckRequiredFields(accountNo, accountName, isOwner, ic_no);
         }
 
-        public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        public override void OnActivityResult(int requestCode, int resultCode, Intent data)
         {
             try
             {
                 base.OnActivityResult(requestCode, resultCode, data);
                 if (requestCode == Constants.BARCODE_REQUEST_CODE)
                 {
-                    if (resultCode == Result.Ok)
+                    if (resultCode == (int) Result.Ok)
                     {
 
                         string barcodeResultText = data.GetStringExtra(Constants.BARCODE_RESULT);
@@ -367,7 +368,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 else if (requestCode == SELECT_ACCOUNT_TYPE_REQ_CODE)
                 {
 
-                    if (resultCode == Result.Ok)
+                    if (resultCode == (int) Result.Ok)
                     {
                         selectedAccountType = JsonConvert.DeserializeObject<AccountType>(data.GetStringExtra("selectedAccountType"));
                         if (selectedAccountType != null)
@@ -840,7 +841,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     try
                     {
                         ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)btnWhereIsMyAccountNo.LayoutParameters;
-                        lp3.TopMargin = -(int)DPUtils.ConvertDPToPx(26f);
+                        lp3.TopMargin = -(int)DPUtils.ConvertDPToPx(23f);
                         lp3.RightMargin = (int)DPUtils.ConvertDPToPx(2f);
                         btnWhereIsMyAccountNo.LayoutParameters = lp3;
                         btnWhereIsMyAccountNo.RequestLayout();

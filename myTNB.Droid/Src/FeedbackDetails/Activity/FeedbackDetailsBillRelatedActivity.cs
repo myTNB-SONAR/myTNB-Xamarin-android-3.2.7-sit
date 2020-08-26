@@ -3,13 +3,16 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
+
+
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
+using AndroidX.RecyclerView.Widget;
 using Castle.Core.Internal;
 using CheeseBind;
+using Google.Android.Material.TextField;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
@@ -349,7 +352,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 }
                 else
                 {
-                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "submittedEnquiryTitle"));
+                    SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle"));
                 }
 
                 // relationship hide or not
@@ -662,7 +665,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
          
 
-                mPresenter = new FeedbackDetailsBillRelatedPresenter(this, submittedFeedback,isNewScreen);
+                mPresenter = new FeedbackDetailsBillRelatedPresenter(this, submittedFeedback,isNewScreen, this);
                 this.userActionsListener.Start();
             }
             catch (Exception e)

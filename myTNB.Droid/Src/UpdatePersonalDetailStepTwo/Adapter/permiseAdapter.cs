@@ -10,12 +10,14 @@ using Java.Util;
 using Android.Preferences;
 using Android.App;
 using System.IO;
-using Android.Support.V7.Widget;
-using Android.Support.V4.Graphics.Drawable;
+
+
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Java.Text;
 using Android.Views;
+using AndroidX.RecyclerView.Widget;
+using AndroidX.Core.Graphics.Drawable;
 
 namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Adapter
 {

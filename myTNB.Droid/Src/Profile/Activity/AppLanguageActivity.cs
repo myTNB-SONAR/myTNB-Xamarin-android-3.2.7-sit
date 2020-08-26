@@ -15,11 +15,12 @@ using CheeseBind;
 using myTNB_Android.Src.Common;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
-using Android.Support.V4.Content;
+
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Base;
 using System.Threading.Tasks;
 using myTNB_Android.Src.Maintenance.Activity;
+using AndroidX.Core.Content;
 
 namespace myTNB_Android.Src.Profile.Activity
 {

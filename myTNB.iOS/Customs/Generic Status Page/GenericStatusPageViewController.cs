@@ -64,7 +64,8 @@ namespace myTNB
             Feedback,
             SSMRApply,
             SSMRDiscontinue,
-            SSMRReading
+            SSMRReading,
+            Enquiry
         }
 
         public UIViewController NextViewController
@@ -303,6 +304,7 @@ namespace myTNB
                 }
             }
             View.AddSubviews(new UIView[] { btnPrimary, btnSecondary });
+
         }
 
         private void GetCTA(ref CustomUIButtonV2 btn, string title, bool isPrimary, Action ctaAction, bool isWhiteBG = false)

@@ -6,10 +6,11 @@ using Android.Content.PM;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
-using Android.Support.V4.View;
+
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.ViewPager.Widget;
 using CheeseBind;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base;

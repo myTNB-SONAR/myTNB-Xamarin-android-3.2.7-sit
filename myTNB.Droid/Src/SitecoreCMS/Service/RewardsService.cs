@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using myTNB.SitecoreCMS.Extensions;
 using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
+using Sitecore.MobileSDK.API.Exceptions;
 using Sitecore.MobileSDK.API.Items;
 using Sitecore.MobileSDK.API.Request.Parameters;
 
@@ -14,6 +16,7 @@ namespace myTNB.SitecoreCMS.Services
     public class RewardsService
     {
         private string _os, _imgSize, _websiteURL, _language;
+        public bool IsChildItemError = false;
         internal RewardsService(string os, string imageSize, string websiteUrl = null, string language = "en")
         {
             _os = os;
@@ -26,7 +29,7 @@ namespace myTNB.SitecoreCMS.Services
         {
             SitecoreService sitecoreService = new SitecoreService();
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Rewards
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
+                , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, SiteCoreConfig.TenSecondTimeSpan, _websiteURL, _language);
             var item = req.Result;
             var list = ParseItems(item);
             var itemList = list.Result;
@@ -39,14 +42,20 @@ namespace myTNB.SitecoreCMS.Services
             {
                 SitecoreService sitecoreService = new SitecoreService();
                 var req = sitecoreService.GetItemByPath(path
-                    , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
+                    , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, SiteCoreConfig.TenSecondTimeSpan, _websiteURL, _language);
                 var item = req.Result;
                 var list = ParseToChildrenItems(item, rewardCategory);
                 var itemList = list.Result;
                 return itemList.ToList();
             }
+            catch (SitecoreMobileSdkException ex)
+            {
+                IsChildItemError = true;
+                Utility.LoggingNonFatalError(ex);
+            }
             catch (Exception e)
             {
+                IsChildItemError = true;
                 Utility.LoggingNonFatalError(e);
             }
             return new List<RewardsModel>();
@@ -56,7 +65,7 @@ namespace myTNB.SitecoreCMS.Services
         {
             SitecoreService sitecoreService = new SitecoreService();
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Rewards
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
+                , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, SiteCoreConfig.FiveSecondTimeSpan, _websiteURL, _language);
             var item = req.Result;
             var list = ParseToTimestamp(item);
             var itemList = list.Result;
@@ -68,6 +77,8 @@ namespace myTNB.SitecoreCMS.Services
             List<RewardsCategoryModel> list = new List<RewardsCategoryModel>();
             try
             {
+                IsChildItemError = false;
+
                 for (int i = 0; i < itemsResponse.ResultCount; i++)
                 {
                     ISitecoreItem item = itemsResponse[i];
@@ -83,11 +94,23 @@ namespace myTNB.SitecoreCMS.Services
                     };
                     List<RewardsModel> rewardList = GetChildrenItems(item.Path, rewardCategory);
 
-                    if (rewardList != null && rewardList.Count > 0)
+                    if (IsChildItemError)
                     {
-                        rewardCategory.RewardList = rewardList;
-                        list.Add(rewardCategory);
+                        break;
                     }
+                    else
+                    {
+                        if (rewardList != null && rewardList.Count > 0)
+                        {
+                            rewardCategory.RewardList = rewardList;
+                            list.Add(rewardCategory);
+                        }
+                    }
+                }
+
+                if (IsChildItemError)
+                {
+                    return new List<RewardsCategoryModel>();
                 }
             }
             catch (Exception e)
@@ -128,10 +151,13 @@ namespace myTNB.SitecoreCMS.Services
                         ID = item.Id
                     });
                 }
+
+                IsChildItemError = false;
             }
             catch (Exception e)
             {
                 Debug.WriteLine("Exception in RewardsService/GetChildren: " + e.Message);
+                IsChildItemError = true;
             }
             return list;
         }

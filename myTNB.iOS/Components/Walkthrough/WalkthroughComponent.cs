@@ -276,52 +276,99 @@ namespace myTNB
                     BackgroundColor = UIColor.Clear,
                     UserInteractionEnabled = true
                 };
-                nfloat toggleWidth = GetScaledWidth(122);
+                nfloat toggleWidth = GetScaledWidth(DeviceHelper.IsIOS13AndUp ? 114 : 122);
                 nfloat toggleHeight = GetScaledHeight(26);
 
                 _toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, viewContainer)
-                   , 0, toggleWidth, toggleHeight));
+                   , 0, toggleWidth, toggleHeight))
+                { ClipsToBounds = false };
+                CustomUIView segment1View = new CustomUIView();
+                CustomUIView segment2View = new CustomUIView();
+                if (DeviceHelper.IsIOS13AndUp)
+                {
+                    CustomUIView toggleBarView = new CustomUIView(new CGRect(-GetScaledWidth(4), 0
+                        , toggleWidth + GetScaledWidth(8), toggleHeight)) { ClipsToBounds = true };
+                    toggleBarView.Layer.CornerRadius = toggleHeight / 2;
+                    toggleBarView.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                    toggleBarView.Layer.BorderWidth = GetScaledHeight(1);
+                    _toggleBar.AddSubview(toggleBarView);
+                    _toggleBar.SendSubviewToBack(toggleBarView);
+                    segment1View = new CustomUIView(new CGRect(0, 0, toggleBarView.Frame.Width / 2, toggleHeight));
+                    segment2View = new CustomUIView(new CGRect(segment1View.Frame.GetMaxX(), 0, toggleBarView.Frame.Width / 2, toggleHeight));
+                    toggleBarView.AddSubviews(new CustomUIView[] { segment1View, segment2View });
+                    toggleBarView.SendSubviewToBack(segment1View);
+                    toggleBarView.SendSubviewToBack(segment2View);
+                }
+
                 _toggleBar.InsertSegment(LanguageUtility.GetLanguageCodeForDisplayByIndex(0), 0, false);
                 _toggleBar.InsertSegment(LanguageUtility.GetLanguageCodeForDisplayByIndex(1), 1, false);
-                _toggleBar.TintColor = MyTNBColor.WaterBlue;
+                _toggleBar.TintColor = DeviceHelper.IsIOS13AndUp ? UIColor.Clear : MyTNBColor.WaterBlue;
                 _toggleBar.SetTitleTextAttributes(new UITextAttributes
                 {
                     Font = TNBFont.MuseoSans_12_300,
                     TextColor = MyTNBColor.WaterBlue
                 }, UIControlState.Normal);
+
                 _toggleBar.SetTitleTextAttributes(new UITextAttributes
                 {
                     Font = TNBFont.MuseoSans_12_300,
-                    TextColor = UIColor.White
+                    TextColor = UIColor.White,
                 }, UIControlState.Selected);
-                _toggleBar.Layer.CornerRadius = toggleHeight / 2;
-                _toggleBar.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
-                _toggleBar.Layer.BorderWidth = GetScaledHeight(1);
-                _toggleBar.Layer.MasksToBounds = true;
+
+                if (!DeviceHelper.IsIOS13AndUp)
+                {
+                    _toggleBar.Layer.CornerRadius = toggleHeight / 2;
+                    _toggleBar.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                    _toggleBar.Layer.BorderWidth = GetScaledHeight(1);
+                    _toggleBar.Layer.MasksToBounds = true;
+                }
+
                 _toggleBar.ValueChanged += (sender, e) =>
                 {
                     Debug.WriteLine("selected index: " + ((UISegmentedControl)sender).SelectedSegment);
+                    int selectedIndex = (int)((UISegmentedControl)sender).SelectedSegment;
                     AlertHandler.DisplayCustomAlert(GetFormattedString(Constants.Common_ChangeLanguageTitle)
                      , GetFormattedString(Constants.Common_ChangeLanguageMessage)
                      , new Dictionary<string, Action> {
                             { GetFormattedString(Constants.Common_ChangeLanguageNo)
                             , ()=>{
                                 _toggleBar.SelectedSegment = LanguageUtility.CurrentLanguageIndex;
+                                UpdateSegmentBackground(segment1View, segment2View);
                             } }
                             ,{ GetFormattedString(Constants.Common_ChangeLanguageYes)
                             , ()=>{
                                 if (ChangeLanguageAction!=null)
                                 {
-                                    ChangeLanguageAction.Invoke((int)((UISegmentedControl)sender).SelectedSegment);
+                                    ChangeLanguageAction.Invoke(selectedIndex);
                                 }
                             } } }
                      , UITextAlignment.Center
                      , UITextAlignment.Center);
+
+                    if (DeviceHelper.IsIOS13AndUp && segment1View != null && segment2View != null)
+                    {
+                        segment1View.BackgroundColor = selectedIndex == 0 ? MyTNBColor.WaterBlue : UIColor.White;
+                        segment2View.BackgroundColor = selectedIndex == 1 ? MyTNBColor.WaterBlue : UIColor.White;
+                    }
                 };
+                if (DeviceHelper.IsIOS13AndUp)
+                {
+                    _toggleBar.SelectedSegment = LanguageUtility.CurrentLanguageIndex == 0 ? 1 : 0;
+                }
                 _toggleBar.SelectedSegment = LanguageUtility.CurrentLanguageIndex;
+                UpdateSegmentBackground(segment1View, segment2View);
                 _toggleBar.Enabled = true;
                 toggleView.AddSubview(_toggleBar);
                 viewContainer.AddSubview(toggleView);
+            }
+        }
+
+        private void UpdateSegmentBackground(CustomUIView segment1View, CustomUIView segment2View)
+        {
+            if (DeviceHelper.IsIOS13AndUp && segment1View != null && segment2View != null)
+            {
+                segment1View.BackgroundColor = _toggleBar.SelectedSegment == 0 ? MyTNBColor.WaterBlue : UIColor.White;
+                segment2View.BackgroundColor = _toggleBar.SelectedSegment == 1 ? MyTNBColor.WaterBlue : UIColor.White;
             }
         }
 

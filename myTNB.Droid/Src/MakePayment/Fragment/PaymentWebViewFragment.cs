@@ -2,7 +2,7 @@
 using Android.Content;
 using Android.Net.Wifi;
 using Android.OS;
-using Android.Support.Design.Widget;
+
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
@@ -17,7 +17,7 @@ using System.Web;
 
 namespace myTNB_Android.Src.MakePayment.Fragment
 {
-    public class PaymentWebViewFragment : Android.App.Fragment
+    public class PaymentWebViewFragment : AndroidX.Fragment.App.Fragment 
     {
         private string TOOL_BAR_TITLE = "Enter OTP";
         private string PYMT_IND = "tokenization";

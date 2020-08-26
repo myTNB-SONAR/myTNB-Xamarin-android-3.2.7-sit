@@ -260,6 +260,11 @@ namespace myTNB.Registration
 
         private void AddBackButton()
         {
+            if (NavigationController != null && NavigationController.NavigationBar != null)
+            {
+                NavigationController.NavigationBar.Hidden = false;
+            }
+
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {

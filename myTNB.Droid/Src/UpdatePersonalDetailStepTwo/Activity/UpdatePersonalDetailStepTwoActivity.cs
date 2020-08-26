@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime;
-using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -11,28 +8,23 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
-using Android.OS;
 using Android.Preferences;
 using Android.Provider;
 using Android.Runtime;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
-using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
+using AndroidX.RecyclerView.Widget;
 using Castle.Core.Internal;
 using CheeseBind;
-using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.Request;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity;
-using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.UpdatePersonalDetailStepTwo.Adapter;
-using myTNB_Android.Src.UpdatePersonalDetailStepTwo.Model;
 using myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -162,7 +154,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
         private ISharedPreferences mSharedPref;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Android.OS.Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             try
@@ -170,9 +162,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 this.mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);  // init shared preference 
                 //1 set presenter
                 mPresenter = new UpdatePersonalDetailStepTwoPresenter(this);
-                
+
                 // get data from prev page
-                Bundle extras = Intent.Extras;
+                Android.OS.Bundle extras = Intent.Extras;
                 if (extras != null)
                 {
 
@@ -238,7 +230,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
                 //2 set font type , 300 normal 500 button
                 TextViewUtils.SetMuseoSans300Typeface(TextViewtitle_ownerIC, TextViewtitle_yourIC, txtRelatedScreenshotTitle2, txtRelatedScreenshotTitle3);
-                TextViewUtils.SetMuseoSans300Typeface(txtstep1of2, TextView_proofOfConsent_image3, TextView_yourIC_image, TextView_ownerIC);
+                TextViewUtils.SetMuseoSans300Typeface(txtstep1of2, TextView_proofOfConsent_image3, TextView_yourIC_image, TextView_ownerIC, TextView_proofOfConsent_image);
                 TextViewUtils.SetMuseoSans500Typeface(uploadSupportingDoc , TextView_exampleofIC, TextView_proofOfConsent, TextView_agreement);
 
 
@@ -319,7 +311,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 TextView_ownerIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
                 TextView_yourIC_image.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
                 TextView_proofOfConsent_image.Text= Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
-
+                TextView_proofOfConsent_image3.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
 
 
                 uploadSupportingDoc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "uploadDocTitle");
@@ -336,9 +328,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
                 if (isOwner)
                 {
+                    
                     FrameLayout_proofofconsent.Visibility = ViewStates.Gone;
-
-
                     TextView_proofOfConsent_image.Visibility = ViewStates.Gone;
                     TextView_yourIC_image.Visibility = ViewStates.Gone;
 
@@ -644,7 +635,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                             ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
                         });
 
-                        TextView_proofOfConsent.Visibility = ViewStates.Visible;
+                        TextView_proofOfConsent_image.Visibility = ViewStates.Visible;
                     }
                 }
                 OnCheckingAttachment();
@@ -873,7 +864,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                     var intent = new Intent(MediaStore.ActionImageCapture);
                     Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
                     Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
-                                                    ApplicationContext.PackageName + ".provider", file);
+                                                    ApplicationContext.PackageName + ".fileprovider", file);
                     intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
                     StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
                 }

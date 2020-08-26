@@ -4,17 +4,20 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
-using Android.OS;
 using Android.Preferences;
 using Android.Provider;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
+
+
+
 using Android.Text;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
+using Google.Android.Material.TextField;
 using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.Base.Activity;
@@ -95,7 +98,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         {
             return true;
         }
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Android.OS.Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             try
@@ -537,7 +540,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
                     var intent = new Intent(MediaStore.ActionImageCapture);
                     Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
                     Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
-                                                    ApplicationContext.PackageName + ".provider", file);
+                                                    ApplicationContext.PackageName + ".fileprovider", file);
                     intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
                     StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
                 }
@@ -633,7 +636,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
                 {
                     this.SetIsClicked(true);
                     btnSubmit.Enabled = false;
-                    Handler h = new Handler();
+                    Android.OS.Handler h = new Android.OS.Handler();
                     Action myAction = () =>
                     {
                         btnSubmit.Enabled = true;

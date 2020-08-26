@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
@@ -33,7 +33,7 @@
                 android:paddingLeft="18dp"
                 android:paddingRight="18dp"
                 android:paddingStart="18dp">
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputLayoutFeedbackId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -52,8 +52,8 @@
                         android:hint="@string/feedback_others_feedback_id"
                         android:inputType="text"
                         android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputLayoutStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -72,8 +72,8 @@
                         android:hint="@string/feedback_others_feedback_status"
                         android:inputType="text"
                         android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputLayoutDateTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -92,8 +92,8 @@
                         android:hint="@string/feedback_others_feedback_date_time"
                         android:inputType="text"
                         android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputLayoutFeedbackType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -112,8 +112,8 @@
                         android:hint="@string/feedback_others_feedback_type_hint"
                         android:inputType="text"
                         android:maxLines="1" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputLayoutFeedback"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
                         android:hint="@string/feedback_others_feedback"
                         android:inputType="text|textMultiLine"
                         android:background="@android:color/transparent" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
                 <TextView
                     android:id="@+id/txtRelatedScreenshotTitle"
                     android:layout_width="match_parent"
@@ -140,7 +140,7 @@
                     android:textAllCaps="true"
                     android:textColor="@color/silverChalice"
                     android:textSize="9dp" />
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -148,4 +148,4 @@
             </LinearLayout>
         </ScrollView>
     </FrameLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

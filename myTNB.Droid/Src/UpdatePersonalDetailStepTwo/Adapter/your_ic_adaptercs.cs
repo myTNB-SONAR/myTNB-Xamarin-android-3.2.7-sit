@@ -1,8 +1,8 @@
 ﻿using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Icu.Text;
-using Android.Support.V4.Graphics.Drawable;
-using Android.Support.V7.Widget;
+
+
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -16,6 +16,8 @@ using Java.Util;
 using Android.Preferences;
 using Android.App;
 using System.IO;
+using AndroidX.RecyclerView.Widget;
+using AndroidX.Core.Graphics.Drawable;
 
 namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Adapter
 {

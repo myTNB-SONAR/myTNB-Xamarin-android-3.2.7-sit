@@ -194,10 +194,14 @@ namespace myTNB
             _lblDate.Hidden = isUpdating;
             _lblAmount.Hidden = isUpdating;
             _shimmerParent.Hidden = !isUpdating;
+            EnableDisableCTA(!isUpdating);
+        }
 
-            _btnViewPaymentAdvice.Enabled = !isUpdating;
-            _btnViewPaymentAdvice.Layer.BorderColor = isUpdating ? MyTNBColor.SilverChalice.CGColor : MyTNBColor.FreshGreen.CGColor;
-            _btnViewPaymentAdvice.SetTitleColor(isUpdating ? MyTNBColor.SilverChalice : MyTNBColor.FreshGreen, UIControlState.Normal);
+        public void EnableDisableCTA(bool enable)
+        {
+            _btnViewPaymentAdvice.Enabled = enable;
+            _btnViewPaymentAdvice.Layer.BorderColor = enable ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.SilverChalice.CGColor;
+            _btnViewPaymentAdvice.SetTitleColor(enable ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice, UIControlState.Normal);
         }
 
         public void SetRefreshState()

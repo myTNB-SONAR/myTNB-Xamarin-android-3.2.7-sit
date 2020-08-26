@@ -2,42 +2,33 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Preferences;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
 using Android.Text;
 using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using Java.Text;
-using Java.Util;
-using myTNB.SitecoreCMS.Model;
-using myTNB.SitecoreCMS.Services;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
-using myTNB_Android.Src.SiteCore;
-using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewBill.Activity;
 using Newtonsoft.Json;
-using static myTNB_Android.Src.MyTNBService.Model.AccountBillPayHistoryModel;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
@@ -584,29 +575,6 @@ namespace myTNB_Android.Src.Billing.MVP
                     eppTooltip.Show();
                 }
             }            
-        }
-
-        class ClickSpan : ClickableSpan
-        {
-            public Action<View> Click;
-            public Color textColor { get; set; }
-            public Typeface typeFace { get; set; }
-
-            public override void OnClick(View widget)
-            {
-                if (Click != null)
-                {
-                    Click(widget);
-                }
-            }
-
-            public override void UpdateDrawState(TextPaint ds)
-            {
-                base.UpdateDrawState(ds);
-                ds.Color = textColor;
-                ds.SetTypeface(typeFace);
-                ds.UnderlineText = false;
-            }
         }
 
         public void ShowBillPDF()

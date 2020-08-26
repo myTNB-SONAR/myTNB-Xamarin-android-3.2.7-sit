@@ -5,10 +5,10 @@ using System.Linq;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Widget;
-using Android.Support.V7.App;
-using Android.Support.V7.Widget;
+
+
+
+
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -45,7 +45,12 @@ using Android.Preferences;
 using myTNB_Android.Src.RearrangeAccount.MVP;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.MyTNBService.Response;
-using Android.Support.V4.Content;
+using AndroidX.RecyclerView.Widget;
+using AndroidX.Core.Widget;
+using AndroidX.Core.Content;
+using AndroidX.AppCompat.App;
+using Google.Android.Material.Snackbar;
+using AndroidX.CoordinatorLayout.Widget;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -322,11 +327,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        public override void OnActivityResult(int requestCode, int resultCode, Intent data)
         {
             if (requestCode == SSMR_METER_HISTORY_ACTIVITY_CODE)
             {
-                if (resultCode == Result.Ok)
+                if (resultCode == (int) Result.Ok)
                 {
                     try
                     {
@@ -340,7 +345,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             else if (requestCode == Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE)
             {
-                if (resultCode == Result.Ok)
+                if (resultCode == (int)Result.Ok)
                 {
                     Bundle extras = data.Extras;
 
@@ -356,7 +361,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             else if (requestCode == REARRANGE_ACTIVITY_CODE)
             {
-                if (resultCode == Result.Ok)
+                if (resultCode == (int)Result.Ok)
                 {
                     HomeMenuUtils.SetIsShowRearrangeAccountSuccessfulNeed(true);
                     RestartHomeMenu();

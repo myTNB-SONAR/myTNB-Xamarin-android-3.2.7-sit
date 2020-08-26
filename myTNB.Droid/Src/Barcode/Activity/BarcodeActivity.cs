@@ -2,11 +2,11 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Support.Design.Widget;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Barcode.MVP;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;

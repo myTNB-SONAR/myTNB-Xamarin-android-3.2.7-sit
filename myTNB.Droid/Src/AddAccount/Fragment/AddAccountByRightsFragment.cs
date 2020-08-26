@@ -1,10 +1,10 @@
 ﻿using Android.Content;
 using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Support.V4.Content;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Utils;
 using Org.Xml.Sax;
@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace myTNB_Android.Src.AddAccount.Fragment
 {
-    public class AddAccountByRightsFragment : Android.App.Fragment
+    public class AddAccountByRightsFragment : AndroidX.Fragment.App.Fragment 
     {
         bool isOwner = false;
         LinearLayout radio_non_owner;

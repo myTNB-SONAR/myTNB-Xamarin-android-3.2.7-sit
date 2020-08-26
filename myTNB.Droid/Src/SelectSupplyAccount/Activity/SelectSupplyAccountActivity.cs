@@ -4,10 +4,11 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.Design.Widget;
+
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Dashboard.Adapter;
 using myTNB_Android.Src.Database.Model;

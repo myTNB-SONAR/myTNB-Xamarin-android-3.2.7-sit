@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using Android.App;
 using Android.Content;
 using Android.Graphics;
-using Android.OS;
-using Android.Runtime;
 using Android.Text;
-using Android.Views;
-using Android.Widget;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
@@ -25,13 +18,15 @@ namespace myTNB_Android.Src.SubmittedNewEnquiry.MVP
         SubmittedNewEnquiryContract.IView mView;
         CancellationTokenSource cts;
         SubmittedFeedbackDetails feedbackDetails;
+        Context context;
 
-        public SubmittedNewEnquiryPresenter(SubmittedNewEnquiryContract.IView mView, SubmittedFeedbackDetails feedbackDetails)
+        public SubmittedNewEnquiryPresenter(SubmittedNewEnquiryContract.IView mView, SubmittedFeedbackDetails feedbackDetails, Context mContext)
         {
 
             this.mView = mView;
             this.mView.SetPresenter(this);
             this.feedbackDetails = feedbackDetails;
+            this.context = mContext;
         }
 
         public async void Start()
@@ -48,7 +43,7 @@ namespace myTNB_Android.Src.SubmittedNewEnquiry.MVP
                         try
                         {
                             Bitmap bitmap = await FileUtils.GetImageFromHexAsync(image.ImageHex, image.FileSize);
-                            string filePath = await FileUtils.SaveAsync(bitmap, FileUtils.IMAGE_FOLDER, image.FileName);
+                            string filePath = await FileUtils.SaveAsync(this.context, bitmap, FileUtils.IMAGE_FOLDER, image.FileName);
                             var attachImage = new AttachedImage()
                             {
                                 Path = filePath,

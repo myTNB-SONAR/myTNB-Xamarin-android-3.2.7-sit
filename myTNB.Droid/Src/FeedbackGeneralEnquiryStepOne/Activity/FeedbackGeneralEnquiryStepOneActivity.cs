@@ -3,36 +3,27 @@ using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Graphics;
-using Android.OS;
 using Android.Preferences;
 using Android.Provider;
 using Android.Runtime;
-using Android.Support.Constraints;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
+
+
+
+
 using Android.Text;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
+using Google.Android.Material.TextField;
 using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Common.Activity;
-using myTNB_Android.Src.Common.Model;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Feedback_Login_BillRelated.Adapter;
-using myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP;
-using myTNB_Android.Src.FeedbackFail.Activity;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity;
-using myTNB_Android.Src.FeedbackSuccess.Activity;
-using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
@@ -107,7 +98,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         private string accNo = null;
 
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Android.OS.Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
@@ -115,7 +106,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             {
 
 
-                Bundle extras = Intent.Extras;
+                Android.OS.Bundle extras = Intent.Extras;
 
                 if (extras != null)
                 {
@@ -322,7 +313,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                     var intent = new Intent(MediaStore.ActionImageCapture);
                     Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
                     Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
-                                                    ApplicationContext.PackageName + ".provider", file);
+                                                    ApplicationContext.PackageName + ".fileprovider", file);
                     intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
                     StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
                 }
@@ -385,7 +376,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 string feedback = txtGeneralEnquiry1.Text.Trim();
                 if (TextUtils.IsEmpty(feedback))
                 {
-                    ShowEmptyFeedbackError();
+                    //ShowEmptyFeedbackError();
                     DisableSubmitButton();
                     return;
                 }
@@ -404,7 +395,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 
         public void ShowEmptyFeedbackError()
         {
-           
+            TextView_CharLeft.Visibility = ViewStates.Gone;
             txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1.FindViewById<TextView>(Resource.Id.textinput_error));
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);

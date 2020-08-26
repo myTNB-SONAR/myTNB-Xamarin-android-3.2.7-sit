@@ -6,7 +6,7 @@
     android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:orientation="vertical"
         android:layout_gravity="center"
         android:layout_width="284dp"
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:id="@+id/rootView">
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/dialogRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="350dp"/>
@@ -54,5 +54,5 @@
                 android:textSize="16dp" />
             </LinearLayout>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

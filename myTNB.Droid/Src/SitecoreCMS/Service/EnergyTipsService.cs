@@ -1,5 +1,6 @@
 ﻿using myTNB.SitecoreCMS.Extensions;
 using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.SiteCore;
 using Sitecore.MobileSDK.API.Items;
 using Sitecore.MobileSDK.API.Request.Parameters;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace myTNB.SitecoreCMS.Services
         {
             SitecoreService sitecoreService = new SitecoreService();
 
-            var req = sitecoreService.GetItemById(Constants.Sitecore.ItemID.EnergyTips, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, websiteUrl, language);
+            var req = sitecoreService.GetItemById(Constants.Sitecore.ItemID.EnergyTips, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, SiteCoreConfig.FiveSecondTimeSpan, websiteUrl, language);
             var item = req.Result;
             var list = GenerateEnergyTipsChildren(item, OS, imageSize, websiteUrl, language);
             var itemList = list.Result;

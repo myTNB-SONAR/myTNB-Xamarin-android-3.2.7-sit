@@ -3,10 +3,11 @@ using Android.Content;
 using Android.Net.Http;
 using Android.Net.Wifi;
 using Android.OS;
-using Android.Support.Design.Widget;
+
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
+using Google.Android.Material.Snackbar;
 using Java.IO;
 using Java.Lang;
 using Java.Net;
@@ -24,7 +25,7 @@ using System.Web;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
-    public class MPPaymentWebViewFragment : Android.App.Fragment
+    public class MPPaymentWebViewFragment : AndroidX.Fragment.App.Fragment 
     {
         private string PYMT_IND = "tokenization";
         private string PYMT_CRITERIA_REGISTRATION = "registration";

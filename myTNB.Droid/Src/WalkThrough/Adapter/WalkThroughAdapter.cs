@@ -1,5 +1,5 @@
 ﻿using Android.Content;
-using Android.Support.V4.App;
+
 using myTNB.Droid.Models;
 using myTNB_Android.Src.WalkThrough.Fragment;
 

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Android.Content;
 using Android.Graphics;
-using Android.Support.V4.Content;
 using Android.Util;
 using Android.Widget;
+using AndroidX.Core.Content;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.Utils;
 

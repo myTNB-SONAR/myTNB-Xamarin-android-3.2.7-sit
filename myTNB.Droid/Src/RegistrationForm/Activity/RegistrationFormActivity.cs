@@ -4,13 +4,17 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
+
+
 using Android.Text;
 using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
+using Google.Android.Material.TextField;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Common.Activity;
 using myTNB_Android.Src.Common.Model;
@@ -216,7 +220,10 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 {
                     if (!this.mPresenter.CheckPasswordIsValid(password))
                     {
+                        ClearPasswordMinimumOf6CharactersError();
                         textInputLayoutPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
+                        if (!textInputLayoutPassword.ErrorEnabled)
+                            textInputLayoutPassword.ErrorEnabled = true;
                     }
                     else
                     {
@@ -228,7 +235,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 }
                 else
                 {
-                    textInputLayoutPassword.Error = "";
+                    ClearPasswordMinimumOf6CharactersError();
                     TextViewUtils.SetMuseoSans300Typeface(textInputLayoutPassword);
                     textInputLayoutPassword.PasswordVisibilityToggleEnabled = false;
                 }
@@ -275,12 +282,31 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ClearAllErrorFields()
         {
-            textInputLayoutEmail.Error = null;
-            textInputLayoutICNo.Error = null;
-            textInputLayoutEmail.Error = null;
-            textInputLayoutConfirmEmail.Error = null;
-            textInputLayoutPassword.Error = null;
-            textInputLayoutConfirmPassword.Error = null;
+            if (!string.IsNullOrEmpty(textInputLayoutEmail.Error))
+            {
+                textInputLayoutEmail.Error = null;
+                textInputLayoutEmail.ErrorEnabled = false;
+            }
+            if (!string.IsNullOrEmpty(textInputLayoutICNo.Error))
+            {
+                textInputLayoutICNo.Error = null;
+                textInputLayoutICNo.ErrorEnabled = false;
+            }
+            if (!string.IsNullOrEmpty(textInputLayoutConfirmEmail.Error))
+            {
+                textInputLayoutConfirmEmail.Error = null;
+                textInputLayoutConfirmEmail.ErrorEnabled = false;
+            }
+            if (!string.IsNullOrEmpty(textInputLayoutPassword.Error))
+            {
+                textInputLayoutPassword.Error = null;
+                textInputLayoutPassword.ErrorEnabled = false;
+            }
+            if (!string.IsNullOrEmpty(textInputLayoutConfirmPassword.Error))
+            {
+                textInputLayoutConfirmPassword.Error = null;
+                textInputLayoutConfirmPassword.ErrorEnabled = false;
+            }
         }
 
         public bool IsActive()
@@ -301,28 +327,42 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowEmptyConfirmEmailError()
         {
+            ClearNotEqualConfirmEmailError();
             textInputLayoutConfirmEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
+            if (!textInputLayoutConfirmEmail.ErrorEnabled)
+                textInputLayoutConfirmEmail.ErrorEnabled = true;
         }
 
         public void ShowEmptyConfirmPasswordError()
         {
+            ClearNotEqualConfirmPasswordError();
             textInputLayoutConfirmPassword.Error = GetString(Resource.String.registration_form_errors_empty_confirm_password);
+            if (!textInputLayoutConfirmPassword.ErrorEnabled)
+                textInputLayoutConfirmPassword.ErrorEnabled = true;
         }
 
         public void ShowEmptyEmailError()
         {
-            textInputLayoutEmail.Error = null;
+            ClearInvalidEmailError();
             textInputLayoutEmail.Error = GetString(Resource.String.registration_form_errors_empty_email);
+            if (!textInputLayoutEmail.ErrorEnabled)
+                textInputLayoutEmail.ErrorEnabled = true;
         }
 
         public void ShowEmptyFullNameError()
         {
+            ClearFullNameError();
             textInputLayoutFullName.Error = GetString(Resource.String.registration_form_errors_empty_fullname);
+            if (!textInputLayoutFullName.ErrorEnabled)
+                textInputLayoutFullName.ErrorEnabled = true;
         }
 
         public void ShowEmptyICNoError()
         {
+            ClearICError();
             textInputLayoutICNo.Error = GetString(Resource.String.registration_form_errors_empty_icno);
+            if (!textInputLayoutICNo.ErrorEnabled)
+                textInputLayoutICNo.ErrorEnabled = true;
         }
 
         public void ShowEmptyMobileNoError()
@@ -332,12 +372,18 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowEmptyPasswordError()
         {
+            ClearPasswordMinimumOf6CharactersError();
             textInputLayoutPassword.Error = GetString(Resource.String.registration_form_errors_empty_password);
+            if (!textInputLayoutPassword.ErrorEnabled)
+                textInputLayoutPassword.ErrorEnabled = true;
         }
 
         public void ShowPasswordMinimumOf6CharactersError()
         {
+            ClearPasswordMinimumOf6CharactersError();
             textInputLayoutPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
+            if (!textInputLayoutPassword.ErrorEnabled)
+                textInputLayoutPassword.ErrorEnabled = true;
         }
 
         public void ShowInvalidMobileNoError()
@@ -347,22 +393,43 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowInvalidEmailError()
         {
+            ClearInvalidEmailError();
             textInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
+            if (!textInputLayoutEmail.ErrorEnabled)
+                textInputLayoutEmail.ErrorEnabled = true;
         }
 
         public void ShowInvalidICNoError()
         {
+            ClearICError();
             textInputLayoutICNo.Error = GetString(Resource.String.registration_form_errors_invalid_icno);
+            if (!textInputLayoutICNo.ErrorEnabled)
+                textInputLayoutICNo.ErrorEnabled = true;
+        }
+
+        public void ClearICError()
+        {
+            if (!string.IsNullOrEmpty(textInputLayoutICNo.Error))
+            {
+                textInputLayoutICNo.Error = null;
+                textInputLayoutICNo.ErrorEnabled = false;
+            }
         }
 
         public void ShowNotEqualConfirmEmailError()
         {
+            ClearNotEqualConfirmEmailError();
             textInputLayoutConfirmEmail.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedEmail");
+            if (!textInputLayoutConfirmEmail.ErrorEnabled)
+                textInputLayoutConfirmEmail.ErrorEnabled = true;
         }
 
         public void ShowNotEqualConfirmPasswordError()
         {
+            ClearNotEqualConfirmPasswordError();
             textInputLayoutConfirmPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
+            if (!textInputLayoutConfirmPassword.ErrorEnabled)
+                textInputLayoutConfirmPassword.ErrorEnabled = true;
         }
 
         public void ShowTermsAndConditions()
@@ -630,22 +697,38 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ClearInvalidEmailError()
         {
-            textInputLayoutEmail.Error = null;
+            if (!string.IsNullOrEmpty(textInputLayoutEmail.Error))
+            {
+                textInputLayoutEmail.Error = null;
+                textInputLayoutEmail.ErrorEnabled = false;
+            }
         }
 
         public void ClearNotEqualConfirmEmailError()
         {
-            textInputLayoutConfirmEmail.Error = null;
+            if (!string.IsNullOrEmpty(textInputLayoutConfirmEmail.Error))
+            {
+                textInputLayoutConfirmEmail.Error = null;
+                textInputLayoutConfirmEmail.ErrorEnabled = false;
+            }
         }
 
         public void ClearPasswordMinimumOf6CharactersError()
         {
-            textInputLayoutPassword.Error = null;
+            if (!string.IsNullOrEmpty(textInputLayoutPassword.Error))
+            {
+                textInputLayoutPassword.Error = null;
+                textInputLayoutPassword.ErrorEnabled = false;
+            }
         }
 
         public void ClearNotEqualConfirmPasswordError()
         {
-            textInputLayoutConfirmPassword.Error = null;
+            if (!string.IsNullOrEmpty(textInputLayoutConfirmPassword.Error))
+            {
+                textInputLayoutConfirmPassword.Error = null;
+                textInputLayoutConfirmPassword.ErrorEnabled = false;
+            }
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
@@ -708,12 +791,16 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowFullNameError()
         {
+            ClearFullNameError();
             textInputLayoutFullName.Error = GetString(Resource.String.name_error);
+            if (!textInputLayoutFullName.ErrorEnabled)
+                textInputLayoutFullName.ErrorEnabled = true;
         }
 
         public void ClearFullNameError()
         {
             textInputLayoutFullName.Error = null;
+            textInputLayoutFullName.ErrorEnabled = false;
         }
 
 

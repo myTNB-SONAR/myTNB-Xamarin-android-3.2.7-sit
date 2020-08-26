@@ -11,15 +11,11 @@ using System.Drawing;
 using myTNB.DataManager;
 using System.Timers;
 using myTNB.Registration.VerifyPin;
-using System.Diagnostics;
 
 namespace myTNB.Registration
 {
     public partial class VerifyPinViewController : CustomUIViewController
     {
-        public VerifyPinViewController(IntPtr handle) : base(handle) { }
-        public string Email { set; get; } = string.Empty;
-
         private NewUserResponseModel _registerAccountList = new NewUserResponseModel();
         private UserAuthenticationResponseModel _authenticationList = new UserAuthenticationResponseModel();
         private RegistrationTokenSMSResponseModel _smsToken = new RegistrationTokenSMSResponseModel();
@@ -34,17 +30,20 @@ namespace myTNB.Registration
         private bool _isKeyboardDismissed, _isTokenInvalid;
         private string _token = string.Empty;
         private string _mobileNo;
-
-        public bool IsMobileVerification = false;
-        public bool IsFromLogin = false;
-
         private Timer timer;
-        const double INTERVAL = 1000f;
+        private const double INTERVAL = 1000f;
         private int timerCtr;
         private int margin = 0;
         private DateTime _exitTime;
-
         private const int DURATION = 30;
+
+        internal string OldMobileNumber { set; private get; } = string.Empty;
+        internal string NewMobileNumber { set; private get; } = string.Empty;
+
+        public string Email { set; get; } = string.Empty;
+        public bool IsMobileVerification = false;
+        public bool IsFromLogin = false;
+        public VerifyPinViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
@@ -472,13 +471,13 @@ namespace myTNB.Registration
             {
                 _onResendPin = new UITapGestureRecognizer(async () =>
                 {
-                    string mobileNo = DataManager.DataManager.SharedInstance.User.MobileNo;
-                    if (!string.IsNullOrEmpty(mobileNo))
+                    if (NewMobileNumber.IsValid() && OldMobileNumber.IsValid())
                     {
                         ClearTokenField();
-                        _resetCodeList = await ServiceCall.SendUpdatePhoneTokenSMS(mobileNo);
+                        _resetCodeList = await ServiceCall.SendUpdatePhoneTokenSMSV2(NewMobileNumber, OldMobileNumber);
                         if (_resetCodeList != null && _resetCodeList.d != null && _resetCodeList.d.IsSuccess)
                         {
+                            DataManager.DataManager.SharedInstance.User.MobileNo = _mobileNo;
                             ShowViewPinSent();
                             CreateResendView();
                             AnimateResendView();

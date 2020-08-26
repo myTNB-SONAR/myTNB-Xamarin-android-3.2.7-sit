@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
+    android:theme="@style/Theme.RegisterForm"
     android:id="@+id/rootView">
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,35 +17,34 @@
         app:elevation="0dp">
         <include
             layout="@layout/toolbar" />
-    </android.support.design.widget.AppBarLayout>
-    <ScrollView
+    </com.google.android.material.appbar.AppBarLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        android:overScrollMode="never"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:background="@color/white">
-        <FrameLayout
+        android:orientation="vertical">
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="32dp"
-            android:paddingTop="24dp"
-            android:layout_marginLeft="18dp"
-            android:layout_marginRight="18dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="vertical"
+            android:overScrollMode="never"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:background="@color/white">
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginBottom="100dp"
+                android:orientation="vertical"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
                 android:id="@+id/linearLayout2">
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     app:errorEnabled="true"
-                    android:id="@+id/textInputLayoutFullName"
-                    android:layout_marginTop="?attr/actionBarSize">
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="14dp"
+                    android:id="@+id/textInputLayoutFullName">
                     <EditText
                         android:hint="@string/registration_form_full_name_hint"
                         android:layout_width="match_parent"
@@ -54,13 +54,15 @@
                         android:id="@+id/txtFullName"
                         android:digits="@string/name_validation_digits"
                         android:maxLines="1"
+                        android:paddingTop="5dp"
                         android:inputType="textPersonName|textCapWords" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     app:errorEnabled="true"
+                    android:layout_marginBottom="4dp"
                     android:id="@+id/textInputLayoutICNo">
                     <EditText
                         android:hint="@string/registration_form_ic_no_hint"
@@ -70,19 +72,21 @@
                         android:drawablePadding="6dp"
                         android:drawableLeft="@drawable/placeholder_ic"
                         android:maxLines="1"
+                        android:paddingTop="5dp"
                         android:inputType="text" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
                 <LinearLayout
                     android:id="@+id/mobileNumberFieldContainer"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:layout_marginBottom="25dp"
                     android:orientation="vertical"/>
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     app:errorEnabled="true"
+                    android:layout_marginBottom="14dp"
                     android:id="@+id/textInputLayoutEmail">
                     <EditText
                         android:hint="@string/registration_form_email_hint"
@@ -92,13 +96,15 @@
                         android:id="@+id/txtEmail"
                         android:drawableLeft="@drawable/placeholder_email"
                         android:maxLines="1"
+                        android:paddingTop="5dp"
                         android:inputType="textEmailAddress" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     app:errorEnabled="true"
+                    android:layout_marginBottom="14dp"
                     android:id="@+id/textInputLayoutConfirmEmail">
                     <EditText
                         android:hint="@string/registration_form_confirm_email_hint"
@@ -108,14 +114,15 @@
                         android:id="@+id/txtConfirmEmail"
                         android:drawableLeft="@drawable/placeholder_email"
                         android:maxLines="1"
+                        android:paddingTop="5dp"
                         android:inputType="textEmailAddress" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     app:errorEnabled="true"
-                    android:layout_marginBottom="0dp"
+                    android:layout_marginBottom="14dp"
                     android:id="@+id/textInputLayoutPassword">
                     <EditText
                         android:hint="@string/registration_form_password_hint"
@@ -125,13 +132,15 @@
                         android:id="@+id/txtPassword"
                         android:drawableLeft="@drawable/placeholder_password"
                         android:maxLines="1"
+                        android:paddingTop="5dp"
                         android:inputType="textPassword" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     app:errorEnabled="true"
+                    android:layout_marginBottom="14dp"
                     android:id="@+id/textInputLayoutConfirmPassword">
                     <EditText
                         android:hint="@string/registration_form_confirm_password_hint"
@@ -141,31 +150,34 @@
                         android:drawablePadding="6dp"
                         android:drawableLeft="@drawable/placeholder_password"
                         android:maxLines="1"
+                        android:paddingTop="5dp"
                         android:inputType="textPassword" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
-            <LinearLayout
+        </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@color/white"
+            android:layout_gravity="bottom">
+            <TextView
+                android:text="@string/registration_form_terms_conditions"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="bottom">
-                <TextView
-                    android:text="@string/registration_form_terms_conditions"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:id="@+id/txtTermsConditions"
-                    android:textColorLink="@color/powerBlue"
-                    android:gravity="bottom" />
-                <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/registration_form_btn_register"
-                    android:id="@+id/btnRegister"
-                    android:layout_marginTop="24dp"
-                    style="@style/Theme.RegisterButton" />
-            </LinearLayout>
-        </FrameLayout>
-    </ScrollView>
-</android.support.design.widget.CoordinatorLayout>
+                android:textSize="12dp"
+                android:id="@+id/txtTermsConditions"
+                android:textColorLink="@color/powerBlue"
+                android:gravity="bottom" />
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/registration_form_btn_register"
+                android:id="@+id/btnRegister"
+                android:layout_marginTop="24dp"
+                style="@style/Theme.RegisterButton" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

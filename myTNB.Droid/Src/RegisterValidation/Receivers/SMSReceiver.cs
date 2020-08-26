@@ -8,11 +8,11 @@ using System.Text;
 namespace myTNB_Android.Src.RegisterValidation.Receivers
 {
     //[BroadcastReceiver(Enabled = true, Label = "SMSReceiver")]
-    //[IntentFilter(new[] { "android.provider.Telephony.SMS_RECEIVED" })]
+    //[IntentFilter(new[] { "android.fileprovider.Telephony.SMS_RECEIVED" })]
     public class SMSReceiver : BroadcastReceiver
     {
         private const string TAG = "SMSBroadcastReceiver";
-        private const string IntentAction = "android.provider.Telephony.SMS_RECEIVED";
+        private const string IntentAction = "android.fileprovider.Telephony.SMS_RECEIVED";
         private const string TNBTOKEN_SUBJECT = "Your myTnB token code is:";
         private const string TNBTOKEN_SUBJECT_V2 = "Your myTNB OTP is:";
         public override void OnReceive(Context context, Intent intent)

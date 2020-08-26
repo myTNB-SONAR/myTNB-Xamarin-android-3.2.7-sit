@@ -1,9 +1,11 @@
 ﻿using Android.Graphics;
 using Android.Graphics.Drawables;
-using Android.Support.V4.Content;
-using Android.Support.V7.Widget;
+
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
+using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using System;

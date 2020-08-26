@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -8,19 +7,18 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
-using Android.Icu.Text;
-using Android.Opengl;
-using Android.OS;
 using Android.Preferences;
-using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
 using Android.Text;
 using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.Core.Content;
 using Castle.Core.Internal;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
+using Google.Android.Material.TextField;
+using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
@@ -28,9 +26,7 @@ using myTNB_Android.Src.Base.Request;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Model;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP;
-using myTNB_Android.Src.FeedbackSuccess.Activity;
 using myTNB_Android.Src.SubmitEnquirySuccess.Activity;
-using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.UpdatePersonalDetailTnC.Activity;
 using myTNB_Android.Src.Utils;
 
@@ -121,7 +117,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         private bool isNeedTNC = false;
 
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Android.OS.Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             try
@@ -129,10 +125,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 //1 set presenter
                 mPresenter = new FeedbackGeneralEnquiryStepTwoPresenter(this);
 
-         
-              
 
-                Bundle extras = Intent.Extras;
+
+
+                Android.OS.Bundle extras = Intent.Extras;
                 
 
                 if (extras != null)
@@ -354,7 +350,33 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 {
                     txtName.Text = UserEntity.GetActive().DisplayName;
                     txtEmail.Text = UserEntity.GetActive().Email;
-                    txtPhoneNumber.Text = UserEntity.GetActive().MobileNo;
+
+                    string tempPhone = UserEntity.GetActive().MobileNo;
+
+                    if (!tempPhone.IsNullOrEmpty()) {
+                        
+                        string tempSubstring = tempPhone.Substring(0, 2);
+                        if (tempSubstring.Contains("+6"))
+                        {
+                            tempPhone = UserEntity.GetActive().MobileNo;
+                            txtPhoneNumber.Text = tempPhone;
+
+                        }
+                        else if (!tempSubstring.Contains("+"))
+                        {
+                            tempPhone = "+6" + tempPhone.Trim();
+                            txtPhoneNumber.Text = tempPhone;
+                        }
+                        else
+                        {
+                            UpdateMobileNumber("+60");
+                        }
+                    }
+                    else
+                    {
+                        UpdateMobileNumber("+60");
+                    }
+             
 
                 }
                 else
@@ -444,6 +466,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         {
             try
             {
+                txtInputLayoutPhoneNumber.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutPhoneNumber.FindViewById<TextView>(Resource.Id.textinput_error));
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutPhoneNumber);
                 txtInputLayoutPhoneNumber.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
             }
             catch (Exception e)
@@ -517,6 +542,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         {
             //txtInputLayoutNamee = GetString(Resource.String.name_error);
             txtInputLayoutName.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error));
+            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName);
             txtInputLayoutName.Error = Utility.GetLocalizedErrorLabel("invalid_fullname");
 
         }
@@ -539,6 +566,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
         public void ShowInvalidEmailError()
         {
+            txtInputLayoutEmail.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail.FindViewById<TextView>(Resource.Id.textinput_error));
+            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail);
             txtInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
         }
 
@@ -574,7 +604,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 {
                     this.SetIsClicked(true);
                     btnSubmit.Enabled = false;
-                    Handler h = new Handler();
+                    Android.OS.Handler h = new Android.OS.Handler();
                     Action myAction = () =>
                     {
                         btnSubmit.Enabled = true;

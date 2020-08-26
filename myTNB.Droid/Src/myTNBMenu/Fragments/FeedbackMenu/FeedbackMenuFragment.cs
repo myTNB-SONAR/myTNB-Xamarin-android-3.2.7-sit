@@ -1,12 +1,16 @@
 ﻿using AFollestad.MaterialDialogs;
 using Android.Content;
 using Android.OS;
-using Android.Support.Constraints;
-using Android.Support.Design.Widget;
-using Android.Support.V7.App;
+
+
+
 using Android.Views;
 using Android.Widget;
+using AndroidX.AppCompat.App;
+using AndroidX.ConstraintLayout.Widget;
+using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using Java.Lang;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Database.Model;

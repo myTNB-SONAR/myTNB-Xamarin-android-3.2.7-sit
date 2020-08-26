@@ -4,13 +4,15 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.Design.Widget;
-using Android.Support.V4.Content;
+
+
 using Android.Util;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using Java.Net;
 using Java.Text;
 using Java.Util;
@@ -292,7 +294,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
                             .FromFile(file)
                             .Show();
                         isLoadedDocument = true;
-
                     }
                     catch (Exception e)
                     {
@@ -405,7 +406,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
             {
                 Java.IO.File file = new Java.IO.File(path);
                 Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
-                                            ApplicationContext.PackageName + ".provider", file);
+                                            ApplicationContext.PackageName + ".fileprovider", file);
 
                 Intent intent = new Intent(Intent.ActionView);
                 intent.SetDataAndType(fileUri, "application/pdf");

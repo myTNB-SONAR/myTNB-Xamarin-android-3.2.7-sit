@@ -1,10 +1,12 @@
 ﻿using Android.Graphics;
 using Android.Graphics.Drawables;
-using Android.Support.V7.Widget;
+
 using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.CardView.Widget;
+using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.Utils;
 using System;
