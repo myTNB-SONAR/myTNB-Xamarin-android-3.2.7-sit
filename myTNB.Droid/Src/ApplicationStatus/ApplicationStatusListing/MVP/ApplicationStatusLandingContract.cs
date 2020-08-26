@@ -1,4 +1,7 @@
-﻿namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
+﻿using System.Collections.Generic;
+using myTNB_Android.Src.NewAppTutorial.MVP;
+
+namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 {
     public class ApplicationStatusLandingContract
     {
@@ -11,6 +14,8 @@
         {
             void UpdateWhatsNewRead(string itemID, bool flag);
             void UpdateRewardRead(string itemID, bool flag);
+            List<NewAppModel> OnGeneraNewAppTutorialList();
+            List<NewAppModel> OnGeneraNewAppTutorialEmptyList();
         }
     }
 }

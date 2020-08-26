@@ -8,6 +8,7 @@ using Android.Support.V4.View;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments;
@@ -42,6 +43,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         private Android.App.Fragment mFragment;
         private ISharedPreferences mPref;
         private bool IndicationShowTop = false;
+       
 
         public NewAppTutorialDialogFragment(Android.App.Activity ctx, Android.App.Fragment fragment, ISharedPreferences pref, List<NewAppModel> list, bool mIndicationShowTop = false)
         {
@@ -53,6 +55,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
             this.mFragment = fragment;
             this.mPref = pref;
             this.IndicationShowTop = mIndicationShowTop;
+           
         }
 
         public override void OnStart()
@@ -310,7 +313,16 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             }
                         }
                     }
+                    else if (this.mContext != null && this.mContext is ApplicationStatusLandingActivity)
+                    {
+                        if (NewAppTutorialList != null && NewAppTutorialList.Count > 1)
+                        {
+                            swipeTopDoubleTapLayout.Visibility = ViewStates.Gone;
+                            swipeDoubleTapLayout.Visibility = ViewStates.Visible;
+                        }
+                    }
 
+                    
 
                     if (NewAppTutorialList.Count > 1)
                     {
@@ -376,6 +388,20 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                 else
                                 {
                                     selectedTopDot.SetImageResource(Resource.Drawable.white_circle);
+                                }
+                            }
+
+                            if (this.mContext != null && this.mContext is ApplicationStatusLandingActivity)
+                            {
+                                if (e.Position == 0)
+                                {
+                                    swipeTopDoubleTapLayout.Visibility = ViewStates.Gone;
+                                    swipeDoubleTapLayout.Visibility = ViewStates.Visible;
+                                }
+                                else
+                                {
+                                    swipeTopDoubleTapLayout.Visibility = ViewStates.Visible;
+                                    swipeDoubleTapLayout.Visibility = ViewStates.Gone;
                                 }
                             }
 

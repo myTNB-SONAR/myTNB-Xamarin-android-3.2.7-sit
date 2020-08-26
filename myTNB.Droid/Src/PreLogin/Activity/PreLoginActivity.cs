@@ -13,6 +13,10 @@ using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
+using myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP;
+using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
+using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.Test;
+using myTNB_Android.Src.AppointmentScheduler.AppointmentSetLanding.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
@@ -335,7 +339,23 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 Utility.LoggingNonFatalError(ex);
             }
         }
-
+        [OnClick(Resource.Id.cardview_application_set)]
+        void OnAppointmentSet(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.userActionsListener.NavigateToAppointmentSet();
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+        
 
 
         [OnClick(Resource.Id.cardview_feedback)]
@@ -509,8 +529,8 @@ namespace myTNB_Android.Src.PreLogin.Activity
         public void ShowCheckStatus()
         {
             // ApplicationStatus TODO: stub
-            // var applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
-            var applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
+            var applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
+            // var applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
             StartActivity(applicationLandingIntent);
         }
 
@@ -726,6 +746,17 @@ namespace myTNB_Android.Src.PreLogin.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShowAppointmentSet()
+        {
+
+            // ApplicationStatus TODO: stub
+
+            //var appointmentSetLandingIntent = new Intent(this, typeof(AppointmentSetLandingActivity));
+            var appointmentSetLandingIntent = new Intent(this, typeof(AppointmentSelectActivity));
+
+            StartActivity(appointmentSetLandingIntent);
         }
     }
 }

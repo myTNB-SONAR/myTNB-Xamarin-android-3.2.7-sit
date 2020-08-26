@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using Android.Content;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
@@ -15,7 +18,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
     {
         ApplicationStatusLandingContract.IView mView;
         private RewardServiceImpl mApi;
+        private ISharedPreferences mPref;
 
+        public ApplicationStatusLandingPresenter(ApplicationStatusLandingContract.IView view, ISharedPreferences pref   )
+        {
+            mView = view;
+            this.mPref = pref;
+            this.mApi = new RewardServiceImpl();
+        }
         public ApplicationStatusLandingPresenter(ApplicationStatusLandingContract.IView view)
         {
             mView = view;
@@ -104,5 +114,50 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             }
         }
 
+        public List<NewAppModel> OnGeneraNewAppTutorialList()
+        {
+             List<NewAppModel> newList = new List<NewAppModel>();
+
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.BottomLeft,
+                ContentTitle = Utility.GetLocalizedLabel("ApplicationStatus", "tutorialStatusTitle"), // "Keep track of your applications.",
+                ContentMessage = Utility.GetLocalizedLabel("ApplicationStatus", "tutorialStatusDesc"),//"Your submitted applications will automatically appear here so you can view their status. Use the filter to search through the list easily."
+                ItemCount = 0,
+                DisplayMode = "",
+                IsButtonShow = false
+            });
+
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.TopLeft,
+                ContentTitle = "Search other application status.",
+                ContentMessage = "Search and save applications submitted by others with your preferred reference number.",
+                ItemCount = 0,
+                DisplayMode = "",
+                IsButtonShow = true
+            });
+
+            return newList;
+            
+        }
+        public List<NewAppModel> OnGeneraNewAppTutorialEmptyList()
+        {
+            List<NewAppModel> newList = new List<NewAppModel>();
+
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.BottomLeft,
+                ContentTitle = "Keep track of your applications.",
+                ContentMessage = "Your submitted applications will automatically appear so you can view their status. Search and save applications submitted by others.",
+                ItemCount = 0,
+                DisplayMode = "Extra",
+                IsButtonShow = true
+            });
+
+            return newList;
+
+        }
+        
     }
 }

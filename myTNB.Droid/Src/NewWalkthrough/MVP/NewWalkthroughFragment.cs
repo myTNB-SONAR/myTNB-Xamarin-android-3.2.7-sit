@@ -184,6 +184,25 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     imgParam.Width = imgWidth;
                     imgParam.Height = imgHeight;
                     break;
+                case "walkthrough_img_install_6":
+                    imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_6);
+                    if (!IsRewardsDisabled)
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFifthBg);
+                    }
+                    else
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFifthBg);
+                    }
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 175f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
+                    break;
                 case "walkthrough_img_update_1":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_4);
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
@@ -205,6 +224,25 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     else
                     {
                         bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
+                    }
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 175f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
+                    break;
+                case "walkthrough_img_update_3":
+                    imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_6);
+                    if (!IsRewardsDisabled)
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSecondBg);
+                    }
+                    else 
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSixthBg);
                     }
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);

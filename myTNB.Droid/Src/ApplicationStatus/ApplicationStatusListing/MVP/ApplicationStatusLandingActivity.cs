@@ -4,6 +4,7 @@ using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
+using Android.Preferences;
 using Android.Support.V4.Content;
 using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
@@ -30,7 +31,7 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 {
-    [Activity(Label = "Application Status", Theme = "@style/Theme.RegisterForm")]
+    [Activity(Label = "Application Status", Theme = "@style/Theme.AppointmentScheduler")]
     public class ApplicationStatusLandingActivity : BaseActivityCustom, ApplicationStatusLandingContract.IView
     {
         [BindView(Resource.Id.rootview)]
@@ -44,6 +45,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
         [BindView(Resource.Id.txtApplicationStatusLandingTitle)]
         TextView txtApplicationStatusLandingTitle;
+
 
         [BindView(Resource.Id.applicationStatusLandingFilterImg)]
         ImageView applicationStatusLandingFilterImg;
@@ -90,6 +92,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
         RecyclerView.LayoutManager layoutManager;
 
+        ApplicationStatusLandingContract.IPresenter presenter;
+
         private bool isFiltered = false;
 
         IMenuItem applicationFilterMenuItem;
@@ -127,6 +131,90 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         public override bool ShowCustomToolbarTitle()
         {
             return true;
+        }
+        public int GetTopHeight()
+        {
+            int i = 0;
+
+            try
+            {
+                int[] location = new int[2];
+                applicationStatusLandingRecyclerView.GetLocationOnScreen(location);
+                i = location[1];
+
+              
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
+        }
+        public int GetTopSearchHeight()
+        {
+            int i = 0;
+
+            try
+            {
+                Rect offsetViewBounds = new Rect();
+
+                //int[] location = new int[2];
+                //applicationStatusLandingRecyclerView.GetLocationOnScreen(location);
+                //i = location[1];
+
+
+                //returns the visible bounds
+                btnSearchApplicationStatus.GetDrawingRect(offsetViewBounds);
+                // calculates the relative coordinates to the parent
+
+                rootview.OffsetDescendantRectToMyCoords(btnSearchApplicationStatus, offsetViewBounds);
+
+                i = offsetViewBounds.Top + (int)DPUtils.ConvertDPToPx(14f);
+
+
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
+        }
+       
+
+        public int GetHighlightedHeight()
+        {
+            int i = 0;
+
+            try
+            {
+                int aheight;
+                aheight = applicationStatusLandingRecyclerView.Height / applicationStatusLandingAdapter.ItemCount;
+                i = applicationStatusLandingAdapter.ItemCount > 1 ? i = aheight * 2 : aheight;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
+        }
+        public int    GetSearchButtonHeight()
+        {
+            int i = 0;
+
+            try
+            {
+
+                i = btnSearchApplicationStatus.Height;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -231,6 +319,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             ApplicationOnScrollChangeListener applicationOnScrollChangeListener = new ApplicationOnScrollChangeListener(ShowApplicationFilterToolbar, applicationStatusLandingTitleLayout, projectStatusLandingTitleLayout);
             applicationStatusLandingNestedScrollView.SetOnScrollChangeListener(applicationOnScrollChangeListener);
 
+            try
+            {
+                presenter = new ApplicationStatusLandingPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
             // ApplicationStatus TODO: Multilingual
             SetToolBarTitle("Application Status");
 
@@ -284,6 +380,26 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+        public void OnShowApplicationStatusTutorial(int applicationCount)
+        {
+            if (!UserSessions.HasApplicationStatusShown(PreferenceManager.GetDefaultSharedPreferences(this)))
+            {
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    if(applicationCount > 0)
+                    {
+                        NewAppTutorialUtils.OnShowNewAppTutorial(this, null, PreferenceManager.GetDefaultSharedPreferences(this), this.presenter.OnGeneraNewAppTutorialList(), true);
+                    }
+                    else
+                    {
+                        NewAppTutorialUtils.OnShowNewAppTutorial(this, null, PreferenceManager.GetDefaultSharedPreferences(this), this.presenter.OnGeneraNewAppTutorialEmptyList(), true);
+                    }
+                    
+                };
+                h.PostDelayed(myAction, 100);
             }
         }
 
@@ -634,6 +750,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+            OnShowApplicationStatusTutorial(applicationStatusList.Count);
         }
 
         private void StopShimmer()
@@ -914,7 +1031,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                             applicationStatusLandingRecyclerView.Visibility = ViewStates.Gone;
                             applicationStatusLandingFilterImg.Visibility = ViewStates.Gone;
                             applicationStatusLandingEmptyLayout.Visibility = ViewStates.Visible;
-                            applicationStatusLandingBottomLayout.Visibility = ViewStates.Gone;
+                            applicationStatusLandingBottomLayout.Visibility = ViewStates.Visible;
                         }
                         catch (Exception e)
                         {

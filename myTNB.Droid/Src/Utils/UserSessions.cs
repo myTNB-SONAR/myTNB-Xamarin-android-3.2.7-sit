@@ -205,7 +205,16 @@ namespace myTNB_Android.Src.Utils
         {
             return prefs.GetBoolean("hasRewardsDetailShown", false);
         }
-
+        public static System.Boolean HasApplicationStatusShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasApplicationStatusShown", false);
+        }
+        public static void DoApplicationStatusShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasApplicationStatusShown", true);
+            editor.Apply();
+        }
         public static void DoRewardsDetailShown(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();

@@ -43,6 +43,7 @@
   <string name="prelogin_btn_register">Register</string>
   <string name="prelogin_what_would_you_like_today">What would you like to do today?</string>
   <string name="prelogin_select_location">Find Us</string>
+  <string name="prelogin_appointment_set">Appointment Set</string>
   <string name="prelogin_feedback"><![CDATA[Submit<br/>Feedback]]></string>
   <string name="prelogin_call_us">Call Us</string>
   <string name="prelogin_promotion">Promotion</string>

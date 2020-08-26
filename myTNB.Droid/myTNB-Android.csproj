@@ -5496,6 +5496,126 @@
     </AndroidResource>
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\MVP\ApplicationStatusDetailPaymentActivity.cs" />
     <Compile Include="Src\Utils\ZoomImageView\ZoomImageView.cs" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSet\MVP\AppointmentSetLandingActivity.cs" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSet\MVP\AppointmentSetLandingPresenter.cs" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSet\MVP\AppointmentSetLandingContract.cs" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSelect\MVP\AppointmentSelectContract.cs" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSelect\MVP\CalenderAdapter.cs" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSelect\MVP\AppointmentSelectPresenter.cs" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSelect\MVP\AppointmentSelectActivity.cs" />
+    <AndroidResource Include="Resources\layout\AppointmentSelectLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\AppointmentSetLandingLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_Action_Calender_Back.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_Action_Calender_Nextpng.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_Action_Calender_Back.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_Action_Calender_Next.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_Action_Calender_Back.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_Action_Calender_Next.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_Action_Calender_Back.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_Action_Calender_Next.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_Action_Calender_Back.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_Action_Calender_Next.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\values\AppointmentSchedulerStyle.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\AppointmentTestLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\AppointmentScheduler\AppointmentSelect\Test\AppointmentTestActivity.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_img_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_img_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_img_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\InstallWalkthroughSixthBg.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\AppointmentCalendarLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\daySelector.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\AppointmentTimeSelector.xml" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSelect\MVP\TimeAdapter.cs" />
+    <AndroidResource Include="Resources\layout\AppointmentTimeSelectionLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\AppointmentTimeSelectorBackground.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -5751,6 +5871,8 @@
     <AndroidAsset Include="Assets\dashboard_zoom_lottie.json" />
     <AndroidAsset Include="Assets\tnb_general_loading.json" />
     <AndroidAsset Include="Assets\ocr_loading_animation.json" />
+    <None Include="Src\AppointmentScheduler\.DS_Store" />
+    <None Include="Src\AppointmentScheduler\AppointmentSet\.DS_Store" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -5823,6 +5945,7 @@
     <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\MVP\" />
     <Folder Include="Src\Utils\ZoomImageView\" />
+    <Folder Include="Src\AppointmentScheduler\AppointmentSelect\Test\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

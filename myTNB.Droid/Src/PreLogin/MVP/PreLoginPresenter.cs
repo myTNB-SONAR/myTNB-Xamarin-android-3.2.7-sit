@@ -46,7 +46,10 @@ namespace myTNB_Android.Src.PreLogin.MVP
         {
             this.mView.ShowCheckStatus();
         }
-
+        public void NavigateToAppointmentSet()
+        {
+            this.mView.ShowAppointmentSet();
+        }
         public void NavigateToCallUs()
         {
             if (WeblinkEntity.HasRecord("TNBCL"))

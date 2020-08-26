@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:descendantFocusability="beforeDescendants"
+    android:theme="@style/Theme.SMRApplication"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+    <include
+        layout="@layout/toolbar"
+        id="@+id/toolbar" />
+      <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:orientation="vertical"
+        android:background="@color/greyBackground">
+        <TextView 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/appointmentLabel"
+            android:text="I want my appointment to be on:"
+            android:textSize="16dp"
+            android:textColor="#1c79ca"
+            android:paddingTop="16dp"
+            android:layout_marginRight="16dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="16dp"
+            android:layout_marginBottom="8dp"/>
+    <CalendarView
+        android:id="@+id/simpleCalendarView"
+            android:background="@color/white"
+        android:layout_width="fill_parent"
+        android:showWeekNumber="false"
+        android:layout_height="340dp"
+        android:firstDayOfWeek="2"
+        android:maxDate="09/04/2020"
+        android:minDate="08/28/2020"/>
+     </LinearLayout>
+     <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="bottom"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white">
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Confirm"
+                android:id="@+id/btnSubmitAppointment"
+                style="@style/Theme.LoginButton" />
+        </LinearLayout>
+</RelativeLayout>

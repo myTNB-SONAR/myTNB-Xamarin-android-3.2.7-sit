@@ -39,6 +39,8 @@ namespace myTNB_Android.Src.PreLogin.MVP
             /// </summary>
             void ShowCheckStatus();
 
+            void ShowAppointmentSet();
+
             /// <summary>
             /// Show call us
             /// </summary>
@@ -72,6 +74,8 @@ namespace myTNB_Android.Src.PreLogin.MVP
             /// Action to navigate to check status
             /// </summary>
             void NavigateToCheckStatus();
+
+            void NavigateToAppointmentSet();
 
             /// <summary>
             /// Action to navigate to feedback
