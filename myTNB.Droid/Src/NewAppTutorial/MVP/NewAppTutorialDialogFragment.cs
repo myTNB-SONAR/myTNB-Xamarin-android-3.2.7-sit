@@ -92,13 +92,13 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                 if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
-                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeText"), FromHtmlOptions.ModeLegacy);
-                    txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeText"), FromHtmlOptions.ModeLegacy);
+                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "swipeText"), FromHtmlOptions.ModeLegacy);
+                    txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "swipeText"), FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeText"));
-                    txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeText"));
+                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "swipeText"));
+                    txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "swipeText"));
                 }
 
                 TextViewUtils.SetMuseoSans300Typeface(txtDoubleTapDismiss, txtTopDoubleTapDismiss);
@@ -809,7 +809,70 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     this.NewAppTutorialList = list;
                 }
             }
-
+            public override bool OnSingleTapUp(MotionEvent e)
+            {
+                this.mDialog.DismissAllowingStateLoss();
+                NewAppTutorialUtils.CloseNewAppTutorial();
+                if (this.mFragment != null)
+                {
+                    if (this.mFragment is HomeMenuFragment)
+                    {
+                        ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
+                        UserSessions.DoHomeTutorialShown(this.mPref);
+                        ((HomeMenuFragment)this.mFragment).RestartHomeMenu();
+                    }
+                    else if (this.mFragment is ItemisedBillingMenuFragment)
+                    {
+                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                        if (NewAppTutorialList.Count == 2)
+                        {
+                            UserSessions.DoItemizedBillingRETutorialShown(this.mPref);
+                        }
+                        else
+                        {
+                            UserSessions.DoItemizedBillingNMSMTutorialShown(this.mPref);
+                        }
+                    }
+                    else if (this.mFragment is DashboardChartFragment)
+                    {
+                        ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(0);
+                        ((DashboardChartFragment)this.mFragment).ShowBottomSheet();
+                        UserSessions.DoSMRDashboardTutorialShown(this.mPref);
+                    }
+                    else if (this.mFragment is RewardMenuFragment)
+                    {
+                        ((RewardMenuFragment)this.mFragment).StopScrolling();
+                        UserSessions.DoRewardsShown(this.mPref);
+                    }
+                    else if (this.mFragment is WhatsNewMenuFragment)
+                    {
+                        ((WhatsNewMenuFragment)this.mFragment).StopScrolling();
+                        UserSessions.DoWhatsNewShown(this.mPref);
+                    }
+                }
+                else
+                {
+                    if (this.mActivity is BillingDetailsActivity)
+                    {
+                        UserSessions.DoItemizedBillingDetailTutorialShown(this.mPref);
+                    }
+                    else if (this.mActivity is SSMRMeterHistoryActivity)
+                    {
+                        ((SSMRMeterHistoryActivity)this.mActivity).MeterHistoryCustomScrolling(0);
+                        UserSessions.DoSMRMeterHistoryTutorialShown(this.mPref);
+                    }
+                    else if (this.mActivity is SubmitMeterReadingActivity)
+                    {
+                        ((SubmitMeterReadingActivity)mActivity).SubmitMeterCustomScrolling(0);
+                        UserSessions.DoSMRSubmitMeterTutorialShown(this.mPref);
+                    }
+                    else if (this.mActivity is RewardDetailActivity)
+                    {
+                        UserSessions.DoRewardsDetailShown(this.mPref);
+                    }
+                }
+                return true;
+            }
             public override bool OnDoubleTap(MotionEvent e)
             {
                 this.mDialog.DismissAllowingStateLoss();

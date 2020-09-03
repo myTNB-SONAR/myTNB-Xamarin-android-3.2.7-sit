@@ -2081,7 +2081,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 }
             }
             else if (this.mContext is ApplicationStatusLandingActivity)
-            {
+             {
                 if (model.DisplayMode == "Extra")
                 {
                     int topHeight = (int)DPUtils.ConvertDPToPx(55f);
@@ -2195,7 +2195,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
 
                         RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                        innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(177f);
+                        innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(110f);
                         innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                         innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                         innerTopLayout.RequestLayout();

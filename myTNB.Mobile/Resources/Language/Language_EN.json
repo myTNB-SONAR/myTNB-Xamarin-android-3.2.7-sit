@@ -1117,11 +1117,20 @@
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",
+    "skip": "Tap to skip.",
     "applicationStatusLandingTitle": "Keep track of your applications.",
     "applicationStatusLandingDescription": "Your submitted applications will automatically appear here so you can view their status. Use the filter to search through the list easily.",
     "applicationStatusLandingEmptyTitle": "Keep track of your applications.",
     "applicationStatusLandingEmptyDescription": "Your submitted applications will automatically appear so you can view their status.",
     "applicationStatusLandingSearchTitle": "Search other application status.",
-    "applicationStatusLandingSearchDescription": "Search and save applications submitted by others with your preferred reference number."
+    "applicationStatusLandingSearchDescription": "Search and save applications submitted by others with your preferred reference number.",
+    "applicationStatusDetailsNoActionTitle": "View your status progress here.",
+    "applicationStatusDetailsNoActionMessage": "Keep updated with your real-time status progress. Visit the Portal to view full application details.",
+    "applicationStatusDetailsInProgressTitle": "View your status progress here.",
+    "applicationStatusDetailsInProgressMessage": "Keep updated with your real-time status. Visit the Portal to continue or update your application.",
+    "applicationStatusDetailsActionOneTitle": "View your status progress here.",
+    "applicationStatusDetailsActionOneMessage": "Keep updated with your real-time status progress. Visit myTNB portal to view your full application details.",
+    "applicationStatusDetailsActionTwoTitle": "Know when to take action.",
+    "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submited application from here."
   }
 }
