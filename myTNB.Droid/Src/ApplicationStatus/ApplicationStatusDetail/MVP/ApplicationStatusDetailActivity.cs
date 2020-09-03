@@ -31,7 +31,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         {
             base.OnCreate(savedInstanceState);
 
-            // ApplicationStatus TODO: Multilingual
+            //  TODO: ApplicationStatus Multilingual
             SetToolBarTitle("Application Details");
 
             // Create your application here

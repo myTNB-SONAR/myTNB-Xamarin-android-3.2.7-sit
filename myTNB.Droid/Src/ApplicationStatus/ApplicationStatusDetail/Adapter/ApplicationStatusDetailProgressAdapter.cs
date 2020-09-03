@@ -84,7 +84,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
                 this.item = item;
                 try
                 {
-                    // Application Status TODO: Setup whole view
+                    //  TODO: ApplicationStatus Setup whole view
 
                 }
                 catch (Exception e)

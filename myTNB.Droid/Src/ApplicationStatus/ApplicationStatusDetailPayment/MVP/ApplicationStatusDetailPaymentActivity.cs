@@ -84,7 +84,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
             TextViewUtils.SetMuseoSans300Typeface(accountPayAmountValue, refreshBillingDetailMessage);
             TextViewUtils.SetMuseoSans500Typeface(accountPayAmountLabel, accountPayAmountCurrency,
                 btnPayBill, btnBillingDetailefresh);
-            // Application Status TODO: MultiLingual
+            // TODO: ApplicationStatus MultiLingual
             btnPayBill.Text = GetLabelByLanguage("pay");
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             Bundle extras = Intent.Extras;

@@ -32,7 +32,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         public string selectedDate = string.Empty;
         public string selectedTime = string.Empty;
         public bool isDateSelected = false;
-
+        public event EventHandler<bool> DatetimeValidate;
 
 
         public static bool isValidDateTime = false;
@@ -389,6 +389,11 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
                 TimeAdapter timeAdapter = new TimeAdapter(timeNames, pickedDateDay, isDateSelected);
                 timeLayout.SetAdapter(timeAdapter);
+
+                // adapter listener
+
+                timeAdapter.TimeClickEvent += Adapter_TimeClickEvent;
+
                 if (isValidDateTime && isDateSelected)
                 {
                     isValidDateTime = true;
@@ -400,8 +405,15 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             }
         }
 
+        private void Adapter_TimeClickEvent(object sender, bool e)
+        {
+            DatetimeValidate(this, true);
+        }
 
-        private void addDaysinCalendar(LayoutParams buttonParams, Context context,
+       
+
+
+            private void addDaysinCalendar(LayoutParams buttonParams, Context context,
                                        DisplayMetrics metrics)
         {
             int engDaysArrayCounter = 0;

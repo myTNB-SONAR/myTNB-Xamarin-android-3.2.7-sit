@@ -169,7 +169,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
                 {
                     mRequestKey = extras.GetInt(Constants.APPLICATION_STATUS_FILTER_REQUEST_KEY);
 
-                    // ApplicationStatus TODO: add list handling
+                    //  TODO: ApplicationStatus add list handling
                     if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE)
                     {
                         // mTypeList.Clear();

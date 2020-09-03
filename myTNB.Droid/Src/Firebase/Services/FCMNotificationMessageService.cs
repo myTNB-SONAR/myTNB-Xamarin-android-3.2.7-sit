@@ -130,7 +130,7 @@ namespace myTNB_Android.Src.Firebase.Services
 //                                {
 //                                    foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
 //                                    {
-//                                        // tODO : SAVE ALL NOTIFICATIONs
+//                                        // TODO : SAVE ALL NOTIFICATIONs
 //                                        int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
 //                                    }
 //                                }

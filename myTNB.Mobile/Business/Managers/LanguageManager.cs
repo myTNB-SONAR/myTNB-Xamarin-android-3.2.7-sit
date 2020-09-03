@@ -37,6 +37,7 @@ namespace myTNB
         public const string SelectMonth_selector = "SelectMonth_selector";
         private const string Hint = "Hint";
         private const string Error = "Error";
+        private const string Tutorial = "Tutorial";
         private const string LANGUAGE_RESOURCE_PATH = "myTNB.Mobile.Resources.Language.Language_{0}.json";
 
         /// <summary>
@@ -138,6 +139,10 @@ namespace myTNB
         {
             pageName += SELECTOR;
             return GetValues<Dictionary<string, List<PopupSelectorModel>>>(pageName);
+        }
+        public Dictionary<string, string> GetTutorialValuePairs()
+        {
+            return GetValuesByPage(Tutorial);
         }
 
         private T GetValues<T>(string pageName) where T : new()

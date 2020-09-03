@@ -127,7 +127,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             string textFindUs = Utility.GetLocalizedLabel("Prelogin", "findUs");
             string textCallUs = Utility.GetLocalizedLabel("Prelogin", "callUs");
-            // ApplicationStatus TODO: Update Multilingual
+            //  TODO: ApplicationStatus Update Multilingual
             string textCheckStatus = "Application Status";
             string textSubmitFeedback = Utility.GetLocalizedLabel("DashboardHome", "submitEnquiry");
             // textFindUs = textFindUs.Replace(" ", "<br>");
@@ -529,9 +529,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
         public void ShowCheckStatus()
         {
-            // ApplicationStatus TODO: stub
+            //  TODO:  ApplicationStatus stub
             var applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
-            // var applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
+            
             StartActivity(applicationLandingIntent);
         }
 
@@ -607,7 +607,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 currentCard.Height = cardHeight;
                 currentCard.Width = cardWidth;
 
-                float paddingRatio = 13.5f / 72f;
+                float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
                 findUsLayout.SetPadding(padding, padding, padding, padding);
 
@@ -637,7 +637,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 currentCard.Height = cardHeight;
                 currentCard.Width = cardWidth;
 
-                float paddingRatio = 13.5f / 72f;
+                float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
                 callUsLayout.SetPadding(padding, padding, padding, padding);
 
@@ -667,7 +667,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 currentCard.Height = cardHeight;
                 currentCard.Width = cardWidth;
 
-                float paddingRatio = 13.5f / 72f;
+                float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
                 feedbackLayout.SetPadding(padding, padding, padding, padding);
 
@@ -697,7 +697,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 currentCard.Height = cardHeight;
                 currentCard.Width = cardWidth;
 
-                float paddingRatio = 13.5f / 72f;
+                float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
                 checkStatusLayout.SetPadding(padding, padding, padding, padding);
 
@@ -752,7 +752,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
         public void ShowAppointmentSet()
         {
 
-            // ApplicationStatus TODO: stub
+            //  TODO: ApplicationStatus stub
 
             //var appointmentSetLandingIntent = new Intent(this, typeof(AppointmentSetLandingActivity));
             var appointmentSetLandingIntent = new Intent(this, typeof(AppointmentSelectActivity));

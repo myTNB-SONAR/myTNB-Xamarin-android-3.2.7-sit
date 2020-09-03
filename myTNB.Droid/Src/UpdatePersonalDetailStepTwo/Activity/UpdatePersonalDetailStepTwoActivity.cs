@@ -762,8 +762,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 {
                     this.SetIsClicked(true);
 
-                    //todo if owner must have 1 attachment
-                    //todo if non owner must have 3 attachment
+                    //TODO if owner must have 1 attachment
+                    //TODO if non owner must have 3 attachment
                     var Intent = new Intent(this, typeof(FeedbackGeneralEnquiryStepTwoActivity));
 
 
@@ -957,7 +957,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
 
         public override int ResourceId()
-        {   //todo change
+        {   //TODO change
             return Resource.Layout.UpdatePersonalDetailStepTwoView;
         }
 
@@ -1039,7 +1039,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
             //else
             //{
             //    //fallback if sitecore cannot select data
-            //    //todo sitecore
+            //    //TODO sitecore
             //    MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
             // .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "consentTitle"))
             // .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "poc"))

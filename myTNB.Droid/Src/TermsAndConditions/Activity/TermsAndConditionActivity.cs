@@ -286,8 +286,8 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
             return PAGE_ID;
         }
 
-        // AndroidX TODO: Temporary Fix for Android 5,5.1 
-        // AndroidX TODO: Due to this: https://github.com/xamarin/AndroidX/issues/131
+        //  TODO: AndroidX Temporary Fix for Android 5,5.1 
+        //  TODO: AndroidX Due to this: https://github.com/xamarin/AndroidX/issues/131
         public override AssetManager Assets =>
             (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop && Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.M)
             ? Resources.Assets : base.Assets;

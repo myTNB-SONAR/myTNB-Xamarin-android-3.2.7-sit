@@ -188,7 +188,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                 {
                     ctaSelection.Visibility = ViewStates.Visible;
                     filterSelection.Visibility = ViewStates.Gone;
-                    // ApplicationStatus TODO: Multilingual
+                    //  TODO: ApplicationStatus Multilingual
                     whyAccountsNotHere.Text = "Where do I get these numbers?";
                 }
                 else

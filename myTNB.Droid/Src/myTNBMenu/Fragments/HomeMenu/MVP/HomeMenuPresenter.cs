@@ -1715,6 +1715,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         SetMyServiceHideScreen();
                     }
+
+                    // TODO : MyService Adapter Remove this code once backend ready
+                    MyService myService = new MyService();
+                    myService.ServiceCategoryId = "1006";
+                    var servicelist = currentMyServiceList.Find(x => x.ServiceCategoryId == "1006");
+                    if (servicelist == null)
+                    {
+                        currentMyServiceList.Add(myService);
+                    }
                 }
                 else
                 {

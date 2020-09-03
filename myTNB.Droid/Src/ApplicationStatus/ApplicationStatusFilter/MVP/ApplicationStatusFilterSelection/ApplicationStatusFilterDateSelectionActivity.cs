@@ -152,7 +152,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             TextViewUtils.SetMuseoSans300Typeface(txtFromDate, txtToDate);
             TextViewUtils.SetMuseoSans500Typeface(btnApplyFilter);
 
-            // ApplicationStatus TODO: Multilingual
+            //  TODO: ApplicationStatus Multilingual
             SetToolBarTitle("Select Creation Date");
             // txtInputLayoutFromDate.Hint = GetLabelCommonByLanguage("email");
             // txtInputLayoutToDate.Hint = GetLabelCommonByLanguage("password");

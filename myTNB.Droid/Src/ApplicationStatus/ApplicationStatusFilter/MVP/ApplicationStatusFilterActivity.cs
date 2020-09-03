@@ -112,7 +112,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             TextViewUtils.SetMuseoSans300Typeface(filterDateItemTitle, filterDateSubTitle);
             TextViewUtils.SetMuseoSans500Typeface(btnClearFilter, btnApplyFilter);
 
-            // ApplicationStatus TODO: Multilingual
+            //  TODO: ApplicationStatus Multilingual
             SetToolBarTitle("Select Filter");
 
             Bundle extras = Intent.Extras;

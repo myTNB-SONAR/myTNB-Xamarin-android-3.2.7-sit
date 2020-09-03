@@ -208,7 +208,8 @@
     "tutorialNeedHelpDesc": "Kami ketengahkan soalan lazim untuk anda ketahui.",
     "gotIt": "OK!",
     "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
-    "receivedExtra": "terima lebih"
+    "receivedExtra": "terima lebih",
+    "applicationStatus": "Application<br>Status"
   },
   "Tabbar": {
     "home": "Utama",
@@ -672,7 +673,8 @@
     "callUs": "Hubungi Kami",
     "feedback": "Hantar Maklum Balas",
     "enquiry": "Hantar Pertanyaan",
-    "changeLanguage": "Change language to English"
+    "changeLanguage": "Change language to English",
+    "applicationStatus": "Application Status"
   },
   "Login": {
     "loginTitle": "Log Masuk Akaun myTNB",
@@ -756,13 +758,15 @@
     "title5": "Nikmati pelbagai Ganjaran melalui myTNB!",
     "title6": "Apa yang baharu dengan myTNB?",
     "title7": "Gunakan myTNB dengan Nombor Telefon Antarabangsa.",
+    "title8": "MS-Stay Updated with Your Applications!",
     "description1": "Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Pantau dan ketahui penggunaan elektrik anda yang terkini!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan terkini dengan mudah, semuanya di satu tempat.",
     "description4": "Bayar bil elektrik anda semasa di rumah, bercuti, dalam kereta api - bila-bila masa. 'Goodbye' caj lewat dan beratur di kaunter!",
     "description5": "Ya, kini kami berikan hadiah dan ganjaran - segalanya PERCUMA untuk pengguna myTNB! Pergi ke ikon 'Ganjaran' untuk tebus ganjaran anda sekarang!",
     "description6": "Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.<br><br>We’re now bilingual! You can set your preferred language below.",
-    "description7": "Anda kini boleh mendaftar akaun myTNB dengan nombor telefon antarabangsa."
+    "description7": "Anda kini boleh mendaftar akaun myTNB dengan nombor telefon antarabangsa.",
+    "description8": "MS-You can now track all your current and past application status with zero hassle, anytime and anywhere."
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
@@ -922,11 +926,6 @@
     "tutorialUseNowTitle": "Tebus Ganjaran Anda.",
     "tutorialUseNowDesc": "Adakah anda di premis peniaga dan sedia untuk menebus ganjaran? Tekan sini."
   },
-  "ApplicationStatus": {
-
-    "tutorialStatusTitle": "Keep track of your applications.",
-    "tutorialStatusDesc": "Your submitted applications will automatically appear here so you can view their status. Use the filter to search through the list easily."
-  },
   "SavedRewards": {
     "title": "Ganjaran Yang Disimpan",
     "emptyDesc": "Ganjaran yang anda simpan akan dipaparkan di sini.",
@@ -1079,5 +1078,50 @@
     "for": "untuk ",
     "validElectricityAccountNoError": "Sila masukkan nombor akaun elektrik yang sah.",
     "backLogin": "Kembali ke Log Masuk"
+  },
+  "ApplicationStatusLanding": {
+    "title": "Application Status",
+    "search": "Search Application Status",
+    "emptyApplications": "Looks like you have no applications at the moment.",
+    "allApplications": "How do I see all my applications?",
+    "allApplicationsTitle": "View all your applications on myTNB Portal to enjoy the full experience!",
+    "allApplicationsMessage": "Log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my/\">portal</a> using the same log in details. You can view the list of all your applications and full form details, and continue your applications or create new ones.",
+    "viewMore": "View More"
+  },
+  "SearchApplicationStatus": {
+    "title": "Search Application Status",
+    "sectionTitle": "I want to search for:",
+    "searchStatus": "Search Status",
+    "applicationType": "Application Type",
+    "searchBy": "Search by"
+  },
+  "FilterApplicationStatus": {
+    "title": "Select Filter",
+    "applicationType": "Application Type",
+    "status": "Status",
+    "creationDate": "Creation Date",
+    "clear": "Clear",
+    "apply": "Apply"
+  },
+  "SelectApplicationType": {
+    "title": "Select Application Type"
+  },
+  "SelectStatus": {
+    "title": "Select Status"
+  },
+  "SelectCreationDate": {
+    "title": "Select Creation Date",
+    "apply": "Apply",
+    "from": "From",
+    "to": "To"
+  },
+  "Tutorial": {
+    "swipeText": "Swipe to see more, tap to skip.",
+    "applicationStatusLandingTitle": "Keep track of your applications.",
+    "applicationStatusLandingDescription": "Your submitted applications will automatically appear here so you can view their status. Use the filter to search through the list easily.",
+    "applicationStatusLandingEmptyTitle": "Keep track of your applications.",
+    "applicationStatusLandingEmptyDescription": "Your submitted applications will automatically appear so you can view their status.",
+    "applicationStatusLandingSearchTitle": "Search other application status.",
+    "applicationStatusLandingSearchDescription": "Search and save applications submitted by others with your preferred reference number."
   }
 }

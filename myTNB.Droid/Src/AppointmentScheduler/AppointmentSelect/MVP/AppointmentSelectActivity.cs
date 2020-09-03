@@ -19,6 +19,32 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         Button calenderBack;
         private TextView currentMonth;
         Button calenderNext;
+        Button btnSubmitAppointment;
+
+        [BindView(Resource.Id.btnMon)]
+        Button btnMon;
+
+        [BindView(Resource.Id.btnTue)]
+        Button btnTue;
+
+        [BindView(Resource.Id.btnWed)]
+        Button btnWed;
+
+        [BindView(Resource.Id.btnThu)]
+        Button btnThu;
+
+        [BindView(Resource.Id.btnFri)]
+        Button btnFri;
+
+        [BindView(Resource.Id.btnSat)]
+        Button btnSat;
+
+        [BindView(Resource.Id.btnSun)]
+        Button btnSun;
+
+        
+
+
 
         const string PAGE_ID = "ApplicationAppointment";
 
@@ -46,7 +72,14 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
         public void UpdateUI()
         {
-            
+            TextViewUtils.SetMuseoSans500Typeface(btnMon);
+            TextViewUtils.SetMuseoSans500Typeface(btnTue);
+            TextViewUtils.SetMuseoSans500Typeface(btnWed);
+            TextViewUtils.SetMuseoSans500Typeface(btnThu);
+            TextViewUtils.SetMuseoSans500Typeface(btnFri);
+            TextViewUtils.SetMuseoSans500Typeface(btnSat);
+            TextViewUtils.SetMuseoSans500Typeface(btnSun);
+
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -56,7 +89,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             calenderBack = (Button)FindViewById<Button>(Resource.Id.CalenderBack);
             calenderNext = (Button)FindViewById<Button>(Resource.Id.CalenderNext);
             currentMonth = FindViewById<TextView>(Resource.Id.current_month);
-
+            btnSubmitAppointment = (Button)FindViewById<Button>(Resource.Id.btnSubmitAppointment);
             calenderBack.Click += OnClickCalenderBack;
 
             calenderNext.Click += OnClickCalenderNext;
@@ -67,14 +100,21 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             CustomCalendar customCalendar = new CustomCalendar(this,7, "August", 2020, visibleNumbers, timeNames);
             currentMonth.Text = "August" + " " + "2020";
             ll.AddView(customCalendar);
-            if (CustomCalendar.isValidDateTime)
-            {
 
-            }
+            customCalendar.DatetimeValidate += Calendar_DatetimeValidate;
 
-            // ApplicationStatus TODO: Multilingual
+
+            //  TODO: ApplicationStatus Multilingual
             SetToolBarTitle("Set an Appointment");
             UpdateUI();
+        }
+
+        private void Calendar_DatetimeValidate(object sender, bool e)
+        {
+            if (e == true)
+            {
+                btnSubmitAppointment.Visibility = ViewStates.Gone;
+            }
         }
 
         public void OnClickCalenderBack(object sender, System.EventArgs e)
@@ -95,4 +135,3 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         }
     }
 }
-//Doneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee

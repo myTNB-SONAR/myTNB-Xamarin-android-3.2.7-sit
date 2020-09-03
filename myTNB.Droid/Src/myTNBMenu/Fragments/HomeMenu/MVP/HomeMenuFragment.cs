@@ -51,6 +51,7 @@ using AndroidX.Core.Content;
 using AndroidX.AppCompat.App;
 using Google.Android.Material.Snackbar;
 using AndroidX.CoordinatorLayout.Widget;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -1267,6 +1268,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 supplyAccount.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
                                 StartActivity(supplyAccount);
                             }
+                        }
+                        else if (selectedService.ServiceCategoryId == "1006" && (Utility.IsEnablePayment()))
+                        {
+                            //  TODO: ApplicationStatus Service check from Backend
+                            Intent applicationLandingIntent = new Intent(this.Activity, typeof(ApplicationStatusLandingActivity));
+                            StartActivity(applicationLandingIntent);
                         }
                         else
                         {

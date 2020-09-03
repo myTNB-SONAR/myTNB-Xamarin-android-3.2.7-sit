@@ -2085,7 +2085,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 if (model.DisplayMode == "Extra")
                 {
                     int topHeight = (int)DPUtils.ConvertDPToPx(55f);
-                    int middleHeight = (int)DPUtils.ConvertDPToPx(235f);
+                    int middleHeight = (int)DPUtils.ConvertDPToPx(200f);
 
                     int leftWidth = 0;
                     int rightWidth = 0;

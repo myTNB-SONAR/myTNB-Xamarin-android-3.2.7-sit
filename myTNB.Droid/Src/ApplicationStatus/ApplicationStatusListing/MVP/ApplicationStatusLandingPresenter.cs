@@ -121,8 +121,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             newList.Add(new NewAppModel()
             {
                 ContentShowPosition = ContentType.BottomLeft,
-                ContentTitle = Utility.GetLocalizedLabel("ApplicationStatus", "tutorialStatusTitle"), // "Keep track of your applications.",
-                ContentMessage = Utility.GetLocalizedLabel("ApplicationStatus", "tutorialStatusDesc"),//"Your submitted applications will automatically appear here so you can view their status. Use the filter to search through the list easily."
+                ContentTitle = Utility.GetLocalizedLabel("Tutorial", "applicationStatusLandingTitle"), // "Keep track of your applications.",
+                ContentMessage = Utility.GetLocalizedLabel("Tutorial", "applicationStatusLandingDescription"),//"Your submitted applications will automatically appear here so you can view their status. Use the filter to search through the list easily."
                 ItemCount = 0,
                 DisplayMode = "",
                 IsButtonShow = false
@@ -131,8 +131,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             newList.Add(new NewAppModel()
             {
                 ContentShowPosition = ContentType.TopLeft,
-                ContentTitle = "Search other application status.",
-                ContentMessage = "Search and save applications submitted by others with your preferred reference number.",
+                ContentTitle = Utility.GetLocalizedLabel("Tutorial", "applicationStatusLandingSearchTitle"), //"Search other application status.",
+                ContentMessage = Utility.GetLocalizedLabel("Tutorial", "applicationStatusLandingSearchDescription"), // "Search and save applications submitted by others with your preferred reference number.",
                 ItemCount = 0,
                 DisplayMode = "",
                 IsButtonShow = true
@@ -148,11 +148,20 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             newList.Add(new NewAppModel()
             {
                 ContentShowPosition = ContentType.BottomLeft,
-                ContentTitle = "Keep track of your applications.",
-                ContentMessage = "Your submitted applications will automatically appear so you can view their status. Search and save applications submitted by others.",
+                ContentTitle = Utility.GetLocalizedLabel("Tutorial", "applicationStatusLandingEmptyTitle"), //"Keep track of your applications.",
+                ContentMessage = Utility.GetLocalizedLabel("Tutorial", "applicationStatusLandingEmptyDescription"), //"Your submitted applications will automatically appear so you can view their status. Search and save applications submitted by others.",
                 ItemCount = 0,
                 DisplayMode = "Extra",
-                IsButtonShow = true
+                IsButtonShow = false
+            });
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.TopLeft,
+                ContentTitle = Utility.GetLocalizedLabel("Tutorial", "applicationStatusLandingSearchTitle"), //"Search other application status.",
+                ContentMessage = Utility.GetLocalizedLabel("Tutorial", "applicationStatusLandingSearchDescription"), // "Search and save applications submitted by others with your preferred reference number.",
+                ItemCount = 0,
+                DisplayMode = "",
+                IsButtonShow = false
             });
 
             return newList;

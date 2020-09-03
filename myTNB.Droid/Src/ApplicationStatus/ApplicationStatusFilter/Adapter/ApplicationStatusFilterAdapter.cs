@@ -69,7 +69,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
                 mTypeList = new List<ApplicationStatusTypeModel>();
                 if(this.mMultiSelectCapable)
                 {
-                    // ApplicationStatus TODO: Multilingual
+                    //  TODO: ApplicationStatus Multilingual
                     mTypeList.Add(new ApplicationStatusTypeModel()
                     {
                         Type = "Select All",
@@ -85,7 +85,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
                 mStatusCodeList = new List<ApplicationStatusCodeModel>();
                 if (this.mMultiSelectCapable)
                 {
-                    // ApplicationStatus TODO: Multilingual
+                    //  TODO: ApplicationStatus Multilingual
                     mStatusCodeList.Add(new ApplicationStatusCodeModel()
                     {
                         Status = "Select All",
@@ -101,7 +101,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
                 mDisplayStringList = new List<ApplicationStatusStringSelectionModel>();
                 if (this.mMultiSelectCapable)
                 {
-                    // ApplicationStatus TODO: Multilingual
+                    //  TODO: ApplicationStatus Multilingual
                     mDisplayStringList.Add(new ApplicationStatusStringSelectionModel()
                     {
                         Value = "Select All",

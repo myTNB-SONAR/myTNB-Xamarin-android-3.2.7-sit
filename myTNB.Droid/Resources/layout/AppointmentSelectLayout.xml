@@ -9,18 +9,47 @@
     android:theme="@style/Theme.AppointmentScheduler"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
-
-    <include
-        layout="@layout/toolbar"
-        id="@+id/toolbar" />
+   
+    
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?actionBarSize"
+        
         android:theme="@style/Theme.AppointmentScheduler"
         android:id="@+id/rootView">
-    
+         <include
+        layout="@layout/toolbar"
+        id="@+id/toolbar" />
         <LinearLayout
+                android:id="@+id/bottomLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="bottom"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/white"
+            >
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Confirm"
+                    android:id="@+id/btnSubmitAppointment"
+                    style="@style/Theme.LoginButton" />
+            </LinearLayout>
+  
+               <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:layout_below="@+id/toolbar"
+            android:layout_above="@+id/bottomLayout">
+            <LinearLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,8 +69,7 @@
                 android:layout_marginTop="16dp"
                 android:paddingLeft="16dp"
                 android:layout_marginBottom="8dp"/>
-               
-      <LinearLayout
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
             
@@ -84,20 +112,20 @@
                         android:background="@drawable/ic_Action_Calender_Next"/>
                     </RelativeLayout>
                 </LinearLayout>
-                <View
+            <View
                     android:layout_height="1dp"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginTop="0dp"
                     android:background="@color/platinumGrey"/>
-                <LinearLayout
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
+                    android:paddingTop="8dp"
                     android:layout_gravity="center"
                     android:clickable="true"
+                    android:background="@color/white"
                     android:id="@+id/canlenderMainLayout">
                
                     <RelativeLayout
@@ -109,33 +137,23 @@
                     </RelativeLayout>
             
                 </LinearLayout>
-                    
-           <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#F9F9F9"/>
-
-                </LinearLayout>
-   
- 
-        <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="bottom"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="16dp"
-                android:paddingTop="16dp"
-                android:layout_alignParentBottom="true"
-                android:background="@android:color/white">
-                <Button
-                    android:layout_width="fill_parent"
+                android:background="#F9F9F9">
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Confirm"
-                    android:id="@+id/btnSubmitAppointment"
-                    style="@style/Theme.LoginButton" />
-            </LinearLayout>
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="#e44b21"
+                    android:layout_marginBottom="16dp"
+                    android:text="Please select a different date and time slot from your original appointment."
+                    android:textSize="12dp"/>
+                </LinearLayout>
+        </LinearLayout>
+   </ScrollView>
     </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

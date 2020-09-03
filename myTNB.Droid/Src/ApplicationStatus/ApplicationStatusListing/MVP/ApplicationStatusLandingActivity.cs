@@ -24,6 +24,7 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
+using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FAQ.Activity;
@@ -40,18 +41,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         [BindView(Resource.Id.rootview)]
         LinearLayout rootview;
 
-        [BindView(Resource.Id.applicationStatusLandingTitleLayout)]
-        RelativeLayout applicationStatusLandingTitleLayout;
-
-        [BindView(Resource.Id.projectStatusLandingTitleLayout)]
-        RelativeLayout projectStatusLandingTitleLayout;
-
-        [BindView(Resource.Id.txtApplicationStatusLandingTitle)]
-        TextView txtApplicationStatusLandingTitle;
-
-
-        [BindView(Resource.Id.applicationStatusLandingFilterImg)]
-        ImageView applicationStatusLandingFilterImg;
 
         [BindView(Resource.Id.applicationStatusLandingEmptyLayout)]
         LinearLayout applicationStatusLandingEmptyLayout;
@@ -89,6 +78,20 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         [BindView(Resource.Id.applicationStatusLandingNestedScrollView)]
         NestedScrollView applicationStatusLandingNestedScrollView;
 
+        [BindView(Resource.Id.applicationStatusRefreshContainer)]
+        LinearLayout applicationStatusRefreshContainer;
+
+        [BindView(Resource.Id.mappicatinPopup)]
+        LinearLayout mappicatinPopup;
+
+        [OnClick(Resource.Id.btnSearchApplicationStatus)]
+        void OnClickSearchApplicationStatus(object sender, EventArgs eventArgs)
+        {
+            var applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
+
+            StartActivity(applicationLandingIntent);
+        }
+
         ApplicationStatusLandingPresenter mPresenter;
 
         ApplicationStatusLandingAdapter applicationStatusLandingAdapter;
@@ -112,11 +115,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         private string filterDate = "";
 
         private bool isApplicationStatusScrolled = false;
-        private bool isProjectStatusScrolled = false;
+       
         private bool isOnlyHaveOneList = true;
 
         List<ApplicationStatusModel> applicationStatusList = new List<ApplicationStatusModel>();
-        List<ApplicationStatusModel> projectStatusList = new List<ApplicationStatusModel>();
+      
         List<ApplicationStatusColorCodeModel> applicationStatusColorList = new List<ApplicationStatusColorCodeModel>();
         List<ApplicationStatusCodeModel> statusCodeList = new List<ApplicationStatusCodeModel>();
         List<ApplicationStatusTypeModel> typeList = new List<ApplicationStatusTypeModel>();
@@ -225,14 +228,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             switch (item.ItemId)
             {
                 case Resource.Id.action_notification:
-                    if (isProjectStatusScrolled)
-                    {
-
-                    }
-                    else
-                    {
+                    
                         OnNavigateToApplicationStatusFilter();
-                    }
+                   
                     return true;
             }
             return base.OnOptionsItemSelected(item);
@@ -252,12 +250,32 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 StartActivityForResult(filterIntent, Constants.APPLICATION_STATUS_FILTER_REQUEST_CODE);
             }
         }
-
-        [OnClick(Resource.Id.applicationStatusLandingFilterImg)]
-        void OnApplicationStatusFilter(object sender, EventArgs eventArgs)
+        [OnClick(Resource.Id.ApplicationStatusTooltip)]
+        void OnApplicationStatusTooltipClick(object sender, EventArgs eventArgs)
         {
-            OnNavigateToApplicationStatusFilter();
+            try
+            {
+                string textTitle = Utility.GetLocalizedLabel("ApplicationStatusLanding", "allApplicationsTitle");
+                string textMessage = Utility.GetLocalizedLabel("ApplicationStatusLanding", "allApplicationsMessage");
+                string btnLabel = Utility.GetLocalizedCommonLabel("gotIt");
+
+                if (textTitle != "" && textMessage != "" && btnLabel != "")
+                {
+                    MyTNBAppToolTipBuilder whatIsThisTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(textTitle)
+                        .SetMessage(textMessage)
+                        .SetCTALabel(btnLabel)
+                        .Build();
+                    whatIsThisTooltip.Show();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
+
+        
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
@@ -276,32 +294,37 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             return base.OnCreateOptionsMenu(menu);
         }
 
-        public void ShowApplicationFilterToolbar(bool isApplicationShow, bool isProjectShow)
+        public void ShowApplicationFilterToolbar(bool isApplicationShow)
         {
             if (!isOnlyHaveOneList)
             {
-                if (isProjectShow)
+                if (isApplicationShow)
                 {
-                    // ApplicationStatus TODO: Multilingual
-                    SetToolBarTitle("My Project Status");
-                    isProjectStatusScrolled = true;
-                    applicationFilterMenuItem.SetVisible(true);
-                    UpdateFilterIcon();
-                }
-                else if (isApplicationShow)
-                {
-                    // ApplicationStatus TODO: Multilingual
-                    SetToolBarTitle("My Application Status");
-                    isProjectStatusScrolled = false;
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                    {
+                        SetToolBarTitle(Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusLanding", "title"), FromHtmlOptions.ModeLegacy).ToString());
+                    }
+                    else
+                    {
+                        SetToolBarTitle(Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusLanding", "title")).ToString());
+                    }
+
                     isApplicationStatusScrolled = true;
                     applicationFilterMenuItem.SetVisible(true);
                     UpdateFilterIcon();
                 }
                 else
                 {
-                    // ApplicationStatus TODO: Multilingual
-                    SetToolBarTitle("Application Status");
-                    isProjectStatusScrolled = false;
+                   
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                    {
+                        SetToolBarTitle(Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusLanding", "title"), FromHtmlOptions.ModeLegacy).ToString());
+                    }
+                    else
+                    {
+                        SetToolBarTitle(Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusLanding", "title")).ToString());
+                    }
+                    
                     isApplicationStatusScrolled = false;
                     applicationFilterMenuItem.SetVisible(false);
                 }
@@ -314,12 +337,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             mPresenter = new ApplicationStatusLandingPresenter(this);
 
             TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusLandingEmpty);
-            TextViewUtils.SetMuseoSans500Typeface(btnSearchApplicationStatus, txtApplicationStatusLandingTitle, viewMoreLabel);
+            TextViewUtils.SetMuseoSans500Typeface(btnSearchApplicationStatus,  viewMoreLabel);
 
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             applicationStatusLandingRecyclerView.SetLayoutManager(layoutManager);
 
-            ApplicationOnScrollChangeListener applicationOnScrollChangeListener = new ApplicationOnScrollChangeListener(ShowApplicationFilterToolbar, applicationStatusLandingTitleLayout, projectStatusLandingTitleLayout);
+            ApplicationOnScrollChangeListener applicationOnScrollChangeListener = new ApplicationOnScrollChangeListener(ShowApplicationFilterToolbar);
             applicationStatusLandingNestedScrollView.SetOnScrollChangeListener(applicationOnScrollChangeListener);
 
             try
@@ -330,14 +353,30 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
-            // ApplicationStatus TODO: Multilingual
-            SetToolBarTitle("Application Status");
+           
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+            {
+                SetToolBarTitle(Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusLanding", "title"), FromHtmlOptions.ModeLegacy).ToString());
+            }
+            else
+            {
+                SetToolBarTitle(Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusLanding", "title")).ToString());
+            }
+            
 
             ScaleEmptyStateImage();
             SetupEmptyLandingText();
 
-            // ApplicationStatis TODO: Stub
+            //  TODO: ApplicationStatis Stub
             UpdateUI();
+
+            //applicationStatusLandingTitleLayout.Visibility = ViewStates.Gone;
+            //applicationStatusLandingEmptyLayout.Visibility = ViewStates.Gone;
+            //viewMoreContainer.Visibility = ViewStates.Gone;
+            //mappicatinPopup.Visibility = ViewStates.Gone;
+            //applicationStatusRefreshContainer.Visibility = ViewStates.Gone;
+            ////applicationStatusLandingEmptyLayout.Visibility = ViewStates.Visible;
+
         }
 
         public override View OnCreateView(string name, Context context, IAttributeSet attrs)
@@ -410,7 +449,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         {
             try
             {
-                // ApplicationStatus TODO: Multilingual
+                //  TODO: ApplicationStatus Multilingual
                 string input = "Looks like you have no applications at the moment.";
                 txtApplicationStatusLandingEmpty.TextFormatted = GetFormattedText(input);
 
@@ -538,24 +577,24 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             if (isFiltered)
             {
                 applicationFilterMenuItem.SetIcon(Resource.Drawable.filter_filled);
-                applicationStatusLandingFilterImg.SetImageResource(Resource.Drawable.filter_blue);
+                
             }
             else
             {
                 applicationFilterMenuItem.SetIcon(Resource.Drawable.filter_white);
-                applicationStatusLandingFilterImg.SetImageResource(Resource.Drawable.bill_screen_filter_icon);
+                
             }
         }
 
         class ApplicationOnScrollChangeListener : Java.Lang.Object, NestedScrollView.IOnScrollChangeListener
         {
             RelativeLayout mApplicationLandingTitle;
-            RelativeLayout mProjectStatusLandingTitleLayout;
-            Action<bool, bool> mOnScrollMethod;
-            public ApplicationOnScrollChangeListener(Action<bool, bool> onScrollMethod, RelativeLayout applicationLandingTitle, RelativeLayout projectLandingTitle)
+           
+            Action<bool> mOnScrollMethod;
+            public ApplicationOnScrollChangeListener(Action<bool> onScrollMethod)
             {
-                mApplicationLandingTitle = applicationLandingTitle;
-                mProjectStatusLandingTitleLayout = projectLandingTitle;
+                
+               
                 mOnScrollMethod = onScrollMethod;
             }
             public void OnScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)
@@ -563,8 +602,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 try
                 {
                     bool IsApplicationWidgetVisible = isViewVisible(v, mApplicationLandingTitle);
-                    bool IsProjectWidgetVisible = isViewVisible(v, mProjectStatusLandingTitleLayout);
-                    mOnScrollMethod(IsApplicationWidgetVisible, IsProjectWidgetVisible);
+                   
+                    mOnScrollMethod(IsApplicationWidgetVisible);
                 }
                 catch (Exception e)
                 {
@@ -601,7 +640,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         [OnClick(Resource.Id.viewMoreContainer)]
         internal void OnViewMorelick(object sender, EventArgs e)
         {
-            // ApplicationStatus TODO: Api Calling
+            //  TODO: ApplicationStatus Api Calling
             int maxCount = maxIndex * Constants.APPLICATION_STATUS_LISTING_LIMIT;
             // this.mPresenter.DoLoadMoreAccount();
             OnProcessApplicationStatusListing();
@@ -635,8 +674,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
                             currentIndex = 0;
 
-                            // ApplicationStatus TODO: Multilingual
-                            viewMoreLabel.Text = "View More";
+                            viewMoreLabel.Text = Utility.GetLocalizedLabel("ApplicationStatusLanding", "viewMore");
                             AnimationSet animSet = new AnimationSet(true);
                             animSet.Interpolator = new DecelerateInterpolator();
                             animSet.FillAfter = true;
@@ -664,7 +702,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
                             if ((currentIndex + 1) == maxIndex)
                             {
-                                // ApplicationStatus TODO: Multilingual
+                                //  TODO: ApplicationStatus Multilingual
                                 viewMoreLabel.Text = "View Less";
                                 AnimationSet animSet = new AnimationSet(true);
                                 animSet.Interpolator = new DecelerateInterpolator();
@@ -708,16 +746,16 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         {
             try
             {
-                StopShimmer();
+                //StopShimmer();
 
-                // ApplicationStatus TODO: Stub
-                applicationStatusList = JsonConvert.DeserializeObject<List<ApplicationStatusModel>>("[{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}}]");
+                //  TODO: ApplicationStatus Stub
+                //applicationStatusList = JsonConvert.DeserializeObject<List<ApplicationStatusModel>>("[{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}}]");
                 applicationStatusColorList = JsonConvert.DeserializeObject<List<ApplicationStatusColorCodeModel>>("[{\"code\":\"completed\",\"rgb\":{\"r\":32,\"g\":189,\"b\":76}}]");
                 statusCodeList = JsonConvert.DeserializeObject<List<ApplicationStatusCodeModel>>("[{\"status\":\"Completed\",\"statusCode\":\"completed\"}]");
                 typeList = JsonConvert.DeserializeObject<List<ApplicationStatusTypeModel>>("[{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\"}]");
-
+                 
                 bool isApplicationAvailable = false;
-                bool isProjectAvailable = false;
+               
 
                 if (applicationStatusList != null && applicationStatusList.Count > 0)
                 {
@@ -728,9 +766,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                             isApplicationAvailable = true;
                             viewMoreContainer.Visibility = ViewStates.Gone;
                             applicationStatusLandingRecyclerView.Visibility = ViewStates.Visible;
-                            applicationStatusLandingFilterImg.Visibility = ViewStates.Visible;
+                            
                             applicationStatusLandingEmptyLayout.Visibility = ViewStates.Gone;
                             applicationStatusLandingBottomLayout.Visibility = ViewStates.Visible;
+                            mappicatinPopup.Visibility = ViewStates.Visible;
                             List<ApplicationStatusModel> innerList = new List<ApplicationStatusModel>();
                             if (applicationStatusList.Count > 5)
                             {
@@ -765,9 +804,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                         {
                             viewMoreContainer.Visibility = ViewStates.Gone;
                             applicationStatusLandingRecyclerView.Visibility = ViewStates.Gone;
-                            applicationStatusLandingFilterImg.Visibility = ViewStates.Gone;
+                           
                             applicationStatusLandingEmptyLayout.Visibility = ViewStates.Visible;
                             applicationStatusLandingBottomLayout.Visibility = ViewStates.Visible;
+                            mappicatinPopup.Visibility = ViewStates.Gone;
                         }
                         catch (Exception e)
                         {
@@ -776,33 +816,20 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                     });
                 }
 
-                // ApplicationStatus TODO: Project List handling
-                if (projectStatusList != null && projectStatusList.Count > 0)
+                
+
+                if (isApplicationAvailable)
                 {
-                    RunOnUiThread(() =>
+                   
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                     {
-                        try
-                        {
-                            isProjectAvailable = true;
+                        SetToolBarTitle(Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusLanding", "title"), FromHtmlOptions.ModeLegacy).ToString());
+                    }
+                    else
+                    {
+                        SetToolBarTitle(Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusLanding", "title")).ToString());
+                    }
 
-                        }
-                        catch (Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
-                    });
-                }
-                else
-                {
-
-                }
-
-                if (isApplicationAvailable && !isProjectAvailable)
-                {
-                    applicationStatusLandingTitleLayout.Visibility = ViewStates.Gone;
-                    // ApplicationStatus TODO: Multilingual
-                    SetToolBarTitle("My Application Status");
-                    isProjectStatusScrolled = false;
                     isApplicationStatusScrolled = true;
                     applicationFilterMenuItem.SetVisible(true);
                     UpdateFilterIcon();

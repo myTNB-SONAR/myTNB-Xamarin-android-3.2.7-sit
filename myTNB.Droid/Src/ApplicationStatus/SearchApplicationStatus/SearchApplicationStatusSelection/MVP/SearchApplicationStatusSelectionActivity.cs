@@ -168,7 +168,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
 
                     if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE)
                     {
-                        // ApplicationStatus TODO: Multilingual
+                        //  TODO: ApplicationStatus Multilingual
                         SetToolBarTitle("Select Application Type");
 
                         if (extras.ContainsKey(Constants.APPLICATION_STATUS_TYPE_LIST_KEY))
@@ -178,7 +178,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                     }
                     else if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_SEARCH_BY_REQUEST_CODE)
                     {
-                        // ApplicationStatus TODO: Multilingual
+                        //  TODO: ApplicationStatus Multilingual
                         SetToolBarTitle("Search By");
 
                         if (extras.ContainsKey(Constants.APPLICATION_STATUS_SEARCH_BY_LIST_KEY))

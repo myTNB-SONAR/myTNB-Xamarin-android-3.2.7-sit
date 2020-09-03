@@ -437,7 +437,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         public void ShowEnterOrSelectAccNumber()
         {
             txtInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            // txtInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");  //todo  add translation for bm
+            // txtInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");
+            //TODO  add translation for bm
             txtInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc");
 
         }

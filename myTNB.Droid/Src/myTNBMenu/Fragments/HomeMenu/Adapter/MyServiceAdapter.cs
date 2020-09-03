@@ -374,7 +374,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                                 vh.newLabel.Visibility = ViewStates.Gone;
                             }
                             break;
-
+                        case "1006":
+                            vh.serviceImg.SetImageResource(Resource.Drawable.check_status);
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusLanding", "title"), FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusLanding", "title"));
+                            }
+                            
+                            break;
                     }
 
                     ViewGroup.LayoutParams currentCard = vh.myServiceCardView.LayoutParameters;

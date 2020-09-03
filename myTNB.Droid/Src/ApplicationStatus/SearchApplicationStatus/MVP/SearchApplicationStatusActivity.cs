@@ -150,7 +150,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             TextViewUtils.SetMuseoSans300Typeface(txtApplicationType, txtSearchBy, txtServiceRequestNum);
             TextViewUtils.SetMuseoSans500Typeface(btnSearchApplication, txtSearchApplicationTitle);
 
-            // ApplicationStatus TODO: Multilingual
+            //  TODO: ApplicationStatus Multilingual
             SetToolBarTitle("Search Application Status");
             // txtInputLayoutFromDate.Hint = GetLabelCommonByLanguage("email");
             // txtInputLayoutToDate.Hint = GetLabelCommonByLanguage("password");
@@ -174,7 +174,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             txtInputLayoutSearchBy.Visibility = ViewStates.Gone;
             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
 
-            // ApplicationStatus TODO: Mock
+            //  TODO: ApplicationStatus Mock
             mTypeList = JsonConvert.DeserializeObject<List<TypeModel>>("[{\"Title\":\"Change of Tenancy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Change Tariff\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Project\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Renewable Energy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Self Meter Reading\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Start Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Stop Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Upgrade\\/Downgrade Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]}]");
             mSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>("[{\"Title\":\"Application Number\",\"Code\":\"AN\"},{\"Title\":\"Electricity Account Number\",\"Code\":\"EAN\"},{\"Title\":\"Service Notification Number\",\"Code\":\"SNN\"},{\"Title\":\"Service Request Number\",\"Code\":\"SRN\"}]");
         }
@@ -207,7 +207,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         {
                             resultTypeList = JsonConvert.DeserializeObject<List<TypeModel>>(extra.GetString(Constants.APPLICATION_STATUS_TYPE_LIST_KEY));
                             TypeModel selectedType = resultTypeList.Find(x => x.isChecked);
-                            // ApplicationStatus TODO: dummp
+                            //  TODO: ApplicationStatus dummp
                             targetApplicationType = selectedType.Title;
                             txtApplicationType.Text = targetApplicationType;
 

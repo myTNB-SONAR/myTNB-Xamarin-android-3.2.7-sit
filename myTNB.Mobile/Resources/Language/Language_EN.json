@@ -1,56 +1,4 @@
-{
-  "SelectMonth_selector": {
-    "months": [
-      {
-        "key": "1",
-        "value": "January"
-      },
-      {
-        "key": "2",
-        "value": "February"
-      },
-      {
-        "key": "3",
-        "value": "March"
-      },
-      {
-        "key": "4",
-        "value": "April"
-      },
-      {
-        "key": "5",
-        "value": "May"
-      },
-      {
-        "key": "6",
-        "value": "June"
-      },
-      {
-        "key": "7",
-        "value": "July"
-      },
-      {
-        "key": "8",
-        "value": "August"
-      },
-      {
-        "key": "9",
-        "value": "September"
-      },
-      {
-        "key": "10",
-        "value": "October"
-      },
-      {
-        "key": "11",
-        "value": "November"
-      },
-      {
-        "key": "12",
-        "value": "December"
-      }
-    ]
-  },
+﻿{
   "Common": {
     "eppToolTipTitle": "What about Easy Payment Plan (EPP)?",
     "account": "Account",
@@ -260,7 +208,8 @@
     "tutorialNeedHelpDesc": "We’ve highlighted some of the most commonly asked questions for you to browse through.",
     "gotIt": "Got it!",
     "serviceRefreshMessage": "Uh oh, looks like your quick actions have been unplugged. Refresh to stay plugged in!",
-    "receivedExtra": "received extra"
+    "receivedExtra": "received extra",
+    "applicationStatus": "Application<br>Status"
   },
   "Tabbar": {
     "home": "Home",
@@ -724,7 +673,8 @@
     "callUs": "Call Us",
     "feedback": "Submit Feedback",
     "enquiry": "Submit Enquiry",
-    "changeLanguage": "Tukar kepada Bahasa Malaysia"
+    "changeLanguage": "Tukar kepada Bahasa Malaysia",
+    "applicationStatus": "Application Status"
   },
   "Login": {
     "loginTitle": "myTNB Account Login",
@@ -808,13 +758,15 @@
     "title5": "Say hi to myTNB Rewards!",
     "title6": "What’s new with myTNB?",
     "title7": "Use myTNB with Any Mobile Number.",
+    "title8": "Stay Updated with Your Applications!",
     "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.",
     "description2": "Track, monitor and stay on top of your electricity usage!",
     "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
     "description4": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
     "description5": "That's right, we're bringing you exclusive perks and freebies - all of this just for myTNB users! Check out the new Rewards section to claim something now!",
     "description6": "We’re now bilingual! You can set your preferred language below.<br><br>Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.",
-    "description7": "You can now register a myTNB account or update your existing one with an international phone number."
+    "description7": "You can now register a myTNB account or update your existing one with an international phone number.",
+    "description8": "You can now track all your current and past application status with zero hassle, anytime and anywhere."
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
@@ -974,12 +926,6 @@
     "tutorialUseNowTitle": "Redeem your rewards.",
     "tutorialUseNowDesc": "At the merchant’s place and ready to redeem your reward? Tap here."
   },
-  "ApplicationStatus": {
-
-    "tutorialStatusTitle": "Keep track of your applications.",
-    "tutorialStatusDesc": "Your submitted applications will automatically appear here so you can view their status. Use the filter to search through the list easily."
-  },
-
   "SavedRewards": {
     "title": "My Saved Rewards",
     "emptyDesc": "Your saved rewards will appear here.",
@@ -1132,6 +1078,50 @@
     "for": "for ",
     "validElectricityAccountNoError": "Please enter a valid electricity account number.",
     "backLogin": "Back to Login"
+  },
+  "ApplicationStatusLanding": {
+    "title": "Application Status",
+    "search": "Search Application Status",
+    "emptyApplications": "Looks like you have no applications at the moment.",
+    "allApplications": "How do I see all my applications?",
+    "allApplicationsTitle": "View all your applications on myTNB Portal to enjoy the full experience!",
+    "allApplicationsMessage": "Log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my/\">portal</a> using the same log in details. You can view the list of all your applications and full form details, and continue your applications or create new ones.",
+    "viewMore": "View More"
+  },
+  "SearchApplicationStatus": {
+    "title": "Search Application Status",
+    "sectionTitle": "I want to search for:",
+    "searchStatus": "Search Status",
+    "applicationType": "Application Type",
+    "searchBy": "Search by"
+  },
+  "FilterApplicationStatus": {
+    "title": "Select Filter",
+    "applicationType": "Application Type",
+    "status": "Status",
+    "creationDate": "Creation Date",
+    "clear": "Clear",
+    "apply": "Apply"
+  },
+  "SelectApplicationType": {
+    "title": "Select Application Type"
+  },
+  "SelectStatus": {
+    "title": "Select Status"
+  },
+  "SelectCreationDate": {
+    "title": "Select Creation Date",
+    "apply": "Apply",
+    "from": "From",
+    "to": "To"
+  },
+  "Tutorial": {
+    "swipeText": "Swipe to see more, tap to skip.",
+    "applicationStatusLandingTitle": "Keep track of your applications.",
+    "applicationStatusLandingDescription": "Your submitted applications will automatically appear here so you can view their status. Use the filter to search through the list easily.",
+    "applicationStatusLandingEmptyTitle": "Keep track of your applications.",
+    "applicationStatusLandingEmptyDescription": "Your submitted applications will automatically appear so you can view their status.",
+    "applicationStatusLandingSearchTitle": "Search other application status.",
+    "applicationStatusLandingSearchDescription": "Search and save applications submitted by others with your preferred reference number."
   }
 }
-

@@ -18,15 +18,17 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         private static string color_calendar_number = "#424A56";
         private static string colorLight_grey = "#e4e4e4";
         private static string color_blue = "#1c79ca";
-        
 
-        public TimeAdapter(string[] timeNames,int pickedDateDay, bool isDateSelected)
+        public event EventHandler<bool> TimeClickEvent;
+
+        public TimeAdapter(string[] timeNames,int pickedDateDay, bool isDateSelected) 
         {
            
             this.timeNames = timeNames;
             this.pickedDateDay = pickedDateDay;
             this.isDateSelected = isDateSelected;
         }
+      
 
         public override int ItemCount => this.timeNames.Length;
 
@@ -70,9 +72,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             selectedTimeTextView.SetBackgroundResource(Resource.Drawable.AppointmentTimeSelector);
             selectedTimeTextView.SetTextColor(Color.White);
 
-            CustomCalendar.isValidDateTime = true;
+            TimeClickEvent(this,true);
+            //CustomCalendar.isValidDateTime = true;
 
-            NotifyDataSetChanged();
+            //NotifyDataSetChanged();
             //selectedTimeTextView.pare
             //RelativeLayout.LayoutParams param = selectedTimeTextView.LayoutParameters as RelativeLayout.LayoutParams;
             //param.AddRule(LayoutRules.CenterInParent);

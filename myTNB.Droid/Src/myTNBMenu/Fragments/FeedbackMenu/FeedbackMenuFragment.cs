@@ -223,7 +223,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
         //syahmi add
         public void ShowSubmitNewEnquiry()
-        {   //todo change intent location 
+        {   //TODO change intent location 
             var billingPaymentFeedback = new Intent(this.Activity, typeof(FeedbackPreloginNewICActivity));
             billingPaymentFeedback.PutExtra("TITLE", feedbackBillRelatedTitle);
             StartActivity(billingPaymentFeedback);

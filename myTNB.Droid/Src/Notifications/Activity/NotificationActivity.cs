@@ -560,7 +560,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                 }
                 else
                 {
-                    // LinSiong TODO: update bcrmdown to notification
+                    //  TODO: LinSiong update bcrmdown to notification
                     refresh_image.SetImageResource(Resource.Drawable.maintenance_new);
                     if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                     {
