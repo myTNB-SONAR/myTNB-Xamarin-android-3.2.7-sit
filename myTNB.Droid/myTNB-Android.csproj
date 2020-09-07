@@ -5644,7 +5644,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SearchApplicationStaturLayout.xml">
+    <AndroidResource Include="Resources\layout\SearchApplicationStatusLayout.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -5885,6 +5885,8 @@
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\AppointmentTimeSelectorBackground.xml" />
     <Compile Include="Src\Utils\LinkRedirectionUtils.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailContract.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailPresenter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

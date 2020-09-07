@@ -766,7 +766,7 @@
     "description5": "That's right, we're bringing you exclusive perks and freebies - all of this just for myTNB users! Check out the new Rewards section to claim something now!",
     "description6": "We’re now bilingual! You can set your preferred language below.<br><br>Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.",
     "description7": "You can now register a myTNB account or update your existing one with an international phone number.",
-    "description8": "You can now track all your current and past application status with zero hassle, anytime and anywhere."
+    "description8": "You can now track all your application status with zero hassle, anytime and anywhere. Need TNB to install a new meter? You can now set an appointment!"
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
@@ -1088,14 +1088,18 @@
     "allApplicationsMessage": "Log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my/\">portal</a> using the same log in details. You can view the list of all your applications and full form details, and continue your applications or create new ones.",
     "viewMore": "View More"
   },
-  "SearchApplicationStatus": {
+  "ApplicationStatusSearch": {
     "title": "Search Application Status",
-    "sectionTitle": "I want to search for:",
+    "searchForTitle": "I want to search for:",
     "searchStatus": "Search Status",
     "applicationType": "Application Type",
-    "searchBy": "Search by"
+    "searchBy": "Search by",
+    "searhResultTitle": "We found this application(s) under the electricity account number:",
+    "whereToGetThisNumber": "Where do I get this number?",
+    "whereToGetThisNumberTitle": "",
+    "whereToGetThisNumberMessage": ""
   },
-  "FilterApplicationStatus": {
+  "ApplicationStatusFilter": {
     "title": "Select Filter",
     "applicationType": "Application Type",
     "status": "Status",
@@ -1132,5 +1136,28 @@
     "applicationStatusDetailsActionOneMessage": "Keep updated with your real-time status progress. Visit myTNB portal to view your full application details.",
     "applicationStatusDetailsActionTwoTitle": "Know when to take action.",
     "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submited application from here."
+  },
+  "ServiceDetails": {
+    "TimeOut": [
+      {
+        "name": "serviceName",
+        "timeout": 3000,
+        "retry": 3
+      }
+    ],
+    "Services": [
+      {
+        "SearchApplicationType": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "ctaTitle": "",
+            "isSuccess": true,
+            "type": ""
+          }
+        ]
+      }
+    ]
   }
 }

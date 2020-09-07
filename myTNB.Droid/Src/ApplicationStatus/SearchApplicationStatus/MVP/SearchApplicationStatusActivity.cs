@@ -62,7 +62,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
         public override int ResourceId()
         {
-            return Resource.Layout.SearchApplicationStaturLayout;
+            return Resource.Layout.SearchApplicationStatusLayout;
         }
 
         public override string GetPageId()
@@ -144,6 +144,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         {
             base.OnCreate(savedInstanceState);
 
+            txtSearchApplicationTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchForTitle");
+            txtSearchBy.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchBy");
+            txtApplicationType.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "applicationType");
+            btnSearchApplication.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchStatus");
+
             mPresenter = new SearchApplicationStatusPresenter(this);
 
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutApplicationType, txtInputLayoutSearchBy, txtInputLayoutServiceRequestNum);
@@ -151,7 +156,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             TextViewUtils.SetMuseoSans500Typeface(btnSearchApplication, txtSearchApplicationTitle);
 
             //  TODO: ApplicationStatus Multilingual
-            SetToolBarTitle("Search Application Status");
+            SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "title")); 
             // txtInputLayoutFromDate.Hint = GetLabelCommonByLanguage("email");
             // txtInputLayoutToDate.Hint = GetLabelCommonByLanguage("password");
 
@@ -175,7 +180,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
 
             //  TODO: ApplicationStatus Mock
-            mTypeList = JsonConvert.DeserializeObject<List<TypeModel>>("[{\"Title\":\"Change of Tenancy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Change Tariff\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Project\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Renewable Energy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Self Meter Reading\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Start Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Stop Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Upgrade\\/Downgrade Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]}]");
+            mTypeList = JsonConvert.DeserializeObject<List<TypeModel>>("[{\"Title\":\"Change of Tenancy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Change Tariff\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Project\",\"Code\":\"\",\"SearchBy\":[\"AN\"]},{\"Title\":\"Renewable Energy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Self Meter Reading\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Start Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Stop Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Upgrade\\/Downgrade Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]}]");
             mSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>("[{\"Title\":\"Application Number\",\"Code\":\"AN\"},{\"Title\":\"Electricity Account Number\",\"Code\":\"EAN\"},{\"Title\":\"Service Notification Number\",\"Code\":\"SNN\"},{\"Title\":\"Service Request Number\",\"Code\":\"SRN\"}]");
         }
 
@@ -212,6 +217,19 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             txtApplicationType.Text = targetApplicationType;
 
                             txtInputLayoutSearchBy.Visibility = ViewStates.Visible;
+
+                            //if (extra.ContainsKey(Constants.APPLICATION_STATUS_SEARCH_BY_LIST_KEY))
+                            //{
+                            //    List<SearchByModel> resultSearchByList = new List<SearchByModel>();
+                            //    resultSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>(extra.GetString(Constants.APPLICATION_STATUS_SEARCH_BY_LIST_KEY));
+                            //    SearchByModel selectedType2 = resultSearchByList.Find(x => x.isChecked);
+                            //    targetSearchBy = selectedType2.Code;
+                            //    txtSearchBy.Text = selectedType2.Title;
+                            //    txtInputLayoutServiceRequestNum.Visibility = ViewStates.Visible;
+                            //    txtInputLayoutServiceRequestNum.Hint = selectedType.Title;
+                            //}
+
+
                         }
 
                     }

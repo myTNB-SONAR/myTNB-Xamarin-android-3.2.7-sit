@@ -766,7 +766,7 @@
     "description5": "Ya, kini kami berikan hadiah dan ganjaran - segalanya PERCUMA untuk pengguna myTNB! Pergi ke ikon 'Ganjaran' untuk tebus ganjaran anda sekarang!",
     "description6": "Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.<br><br>We’re now bilingual! You can set your preferred language below.",
     "description7": "Anda kini boleh mendaftar akaun myTNB dengan nombor telefon antarabangsa.",
-    "description8": "MS-You can now track all your current and past application status with zero hassle, anytime and anywhere."
+    "description8": "MS-You can now track all your application status with zero hassle, anytime and anywhere. Need TNB to install a new meter? You can now set an appointment!"
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
@@ -1088,14 +1088,18 @@
     "allApplicationsMessage": "Log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my/\">portal</a> using the same log in details. You can view the list of all your applications and full form details, and continue your applications or create new ones.",
     "viewMore": "View More"
   },
-  "SearchApplicationStatus": {
+  "ApplicationStatusSearch": {
     "title": "Search Application Status",
-    "sectionTitle": "I want to search for:",
+    "searchForTitle": "I want to search for:",
     "searchStatus": "Search Status",
     "applicationType": "Application Type",
-    "searchBy": "Search by"
+    "searchBy": "Search by",
+    "searhResultTitle": "We found this application(s) under the electricity account number:",
+    "whereToGetThisNumber": "Where do I get this number?",
+    "whereToGetThisNumberTitle": "",
+    "whereToGetThisNumberMessage": ""
   },
-  "FilterApplicationStatus": {
+  "ApplicationStatusFilter": {
     "title": "Select Filter",
     "applicationType": "Application Type",
     "status": "Status",
@@ -1117,11 +1121,59 @@
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",
+    "skip": "Tap to skip.",
     "applicationStatusLandingTitle": "Keep track of your applications.",
     "applicationStatusLandingDescription": "Your submitted applications will automatically appear here so you can view their status. Use the filter to search through the list easily.",
     "applicationStatusLandingEmptyTitle": "Keep track of your applications.",
     "applicationStatusLandingEmptyDescription": "Your submitted applications will automatically appear so you can view their status.",
     "applicationStatusLandingSearchTitle": "Search other application status.",
-    "applicationStatusLandingSearchDescription": "Search and save applications submitted by others with your preferred reference number."
+    "applicationStatusLandingSearchDescription": "Search and save applications submitted by others with your preferred reference number.",
+    "applicationStatusDetailsNoActionTitle": "View your status progress here.",
+    "applicationStatusDetailsNoActionMessage": "Keep updated with your real-time status progress. Visit the Portal to view full application details.",
+    "applicationStatusDetailsInProgressTitle": "View your status progress here.",
+    "applicationStatusDetailsInProgressMessage": "Keep updated with your real-time status. Visit the Portal to continue or update your application.",
+    "applicationStatusDetailsActionOneTitle": "View your status progress here.",
+    "applicationStatusDetailsActionOneMessage": "Keep updated with your real-time status progress. Visit myTNB portal to view your full application details.",
+    "applicationStatusDetailsActionTwoTitle": "Know when to take action.",
+    "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submited application from here."
+  },
+  "ServiceDetails": {
+    "TimeOut": [
+      {
+        "name": "serviceName",
+        "timeout": 3000,
+        "retry": 3
+      }
+    ],
+    "Services": [
+      {
+        "ApplicationSearchData": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "ctaTitle": "",
+            "isSuccess": true,
+            "type": ""
+          },
+          {
+            "code": "7100",
+            "title": "",
+            "message": "Something went wrong. Please try again later.",
+            "ctaTitle": "Ok",
+            "isSuccess": false,
+            "type": "popup"
+          },
+          {
+            "code": "8200",
+            "title": "",
+            "message": "Something went wrong. Please try again later.",
+            "ctaTitle": "Ok",
+            "isSuccess": false,
+            "type": "refresh"
+          }
+        ]
+      }
+    ]
   }
 }

@@ -16012,7 +16012,7 @@ namespace myTNB_Android
 			public const int sdp_example = 2131493138;
 			
 			// aapt resource value: 0x7F0C0113
-			public const int SearchApplicationStaturLayout = 2131493139;
+			public const int SearchApplicationStatusLayout = 2131493139;
 			
 			// aapt resource value: 0x7F0C0117
 			public const int SelectAccountListItemView = 2131493143;

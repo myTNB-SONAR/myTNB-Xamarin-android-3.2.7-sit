@@ -169,7 +169,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                     if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE)
                     {
                         //  TODO: ApplicationStatus Multilingual
-                        SetToolBarTitle("Select Application Type");
+                        SetToolBarTitle(Utility.GetLocalizedLabel("SelectApplicationType", "title"));
 
                         if (extras.ContainsKey(Constants.APPLICATION_STATUS_TYPE_LIST_KEY))
                         {

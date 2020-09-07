@@ -31,10 +31,13 @@ namespace myTNB
         {
         }
 
-        private string JSONLang = string.Empty;
+        internal string JSONLang
+        {
+            private set;
+            get;
+        } = string.Empty;
         private const string SELECTOR = "_selector";
         private const string COMMON = "Common";
-        public const string SelectMonth_selector = "SelectMonth_selector";
         private const string Hint = "Hint";
         private const string Error = "Error";
         private const string Tutorial = "Tutorial";
@@ -90,14 +93,12 @@ namespace myTNB
             return GetValuesByPage(COMMON);
         }
 
-        /// <summary>
-        /// Gets the Month selector
-        /// Advised to call this when app was launched.
-        /// </summary>
-        /// <returns>Key-value pairs of month selector strings</returns>
-        public Dictionary<string, List<SelectorModel>> GetMonthSelectorValuePairs()
+        public string GetCommonValue(string key)
         {
-            return GetValues<Dictionary<string, List<SelectorModel>>>(SelectMonth_selector);
+            Dictionary<string, string> commonDictionary = GetCommonValuePairs();
+            return commonDictionary != null
+               && commonDictionary.ContainsKey(key)
+               ? commonDictionary[key] : string.Empty;
         }
 
         public Dictionary<string, string> GetHintValuePairs()
@@ -108,6 +109,19 @@ namespace myTNB
         public Dictionary<string, string> GetErrorValuePairs()
         {
             return GetValuesByPage(Error);
+        }
+
+        public string GetErrorValue(string key)
+        {
+            Dictionary<string, string> errorDictionary = GetErrorValuePairs();
+            return errorDictionary != null
+               && errorDictionary.ContainsKey(key)
+               ? errorDictionary[key] : string.Empty;
+        }
+
+        public Dictionary<string, string> GetTutorialValuePairs()
+        {
+            return GetValuesByPage(Tutorial);
         }
         /// <summary>
         /// Gets the key-value pair of texts of a page.
@@ -140,10 +154,6 @@ namespace myTNB
             pageName += SELECTOR;
             return GetValues<Dictionary<string, List<PopupSelectorModel>>>(pageName);
         }
-        public Dictionary<string, string> GetTutorialValuePairs()
-        {
-            return GetValuesByPage(Tutorial);
-        }
 
         private T GetValues<T>(string pageName) where T : new()
         {
@@ -154,7 +164,7 @@ namespace myTNB
             }
             try
             {
-                var jsonObj = JObject.Parse(JSONLang);
+                JObject jsonObj = JObject.Parse(JSONLang);
                 if (jsonObj != null)
                 {
                     string value = jsonObj[pageName]?.ToString() ?? string.Empty;

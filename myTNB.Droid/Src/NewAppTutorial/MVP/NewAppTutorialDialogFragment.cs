@@ -942,7 +942,10 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
             {
                 return true;
             }
-
+            public override bool OnSingleTapConfirmed(MotionEvent e)
+            {
+                return true;
+            }
             public override bool OnDown(MotionEvent e)
             {
                 return true;
