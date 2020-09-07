@@ -8027,7 +8027,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">
-      <Project>{A27A3842-1A8F-47F0-B333-94875BC922ED}</Project>
+      <Project>{61D20414-CF94-4106-B40F-E62E5B282F0C}</Project>
       <Name>myTNB.Mobile</Name>
     </ProjectReference>
   </ItemGroup>

@@ -137,29 +137,29 @@ namespace myTNB_Android.Src.Utils
         public static List<BaseKeyValueModel> GetLocalizedMonthSelectorLabel(string key)
         {
             List<BaseKeyValueModel> monthList = new List<BaseKeyValueModel>();
-            try
-            {
-                Dictionary<string, List<SelectorModel>> monthSelectorList = LanguageManager.Instance.GetMonthSelectorValuePairs();
-                if (monthSelectorList != null && monthSelectorList.Count > 0)
-                {
-                    List<SelectorModel> list = monthSelectorList[key];
-                    if (list != null && list.Count > 0)
-                    {
-                        foreach(var item in list)
-                        {
-                            monthList.Add(new BaseKeyValueModel()
-                            {
-                                Key = item.Key,
-                                Value = item.Value
-                            });
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Debug("DEBUG Error: ", e.Message);
-            }
+            //try
+            //{
+            //    Dictionary<string, List<SelectorModel>> monthSelectorList = LanguageManager.Instance.GetMonthSelectorValuePairs();
+            //    if (monthSelectorList != null && monthSelectorList.Count > 0)
+            //    {
+            //        List<SelectorModel> list = monthSelectorList[key];
+            //        if (list != null && list.Count > 0)
+            //        {
+            //            foreach(var item in list)
+            //            {
+            //                monthList.Add(new BaseKeyValueModel()
+            //                {
+            //                    Key = item.Key,
+            //                    Value = item.Value
+            //                });
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception e)
+            //{
+            //    Log.Debug("DEBUG Error: ", e.Message);
+            //}
             return monthList;
         }
 
