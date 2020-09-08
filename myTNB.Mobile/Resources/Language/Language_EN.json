@@ -208,7 +208,8 @@
     "tutorialNeedHelpDesc": "We’ve highlighted some of the most commonly asked questions for you to browse through.",
     "gotIt": "Got it!",
     "serviceRefreshMessage": "Uh oh, looks like your quick actions have been unplugged. Refresh to stay plugged in!",
-    "receivedExtra": "received extra"
+    "receivedExtra": "received extra",
+    "applicationStatus": "Application<br>Status"
   },
   "Tabbar": {
     "home": "Home",
@@ -672,7 +673,8 @@
     "callUs": "Call Us",
     "feedback": "Submit Feedback",
     "enquiry": "Submit Enquiry",
-    "changeLanguage": "Tukar kepada Bahasa Malaysia"
+    "changeLanguage": "Tukar kepada Bahasa Malaysia",
+    "applicationStatus": "Application Status"
   },
   "Login": {
     "loginTitle": "myTNB Account Login",
@@ -756,13 +758,15 @@
     "title5": "Say hi to myTNB Rewards!",
     "title6": "What’s new with myTNB?",
     "title7": "Use myTNB with Any Mobile Number.",
+    "title8": "Stay Updated with Your Applications!",
     "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.",
     "description2": "Track, monitor and stay on top of your electricity usage!",
     "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
     "description4": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
     "description5": "That's right, we're bringing you exclusive perks and freebies - all of this just for myTNB users! Check out the new Rewards section to claim something now!",
     "description6": "We’re now bilingual! You can set your preferred language below.<br><br>Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.",
-    "description7": "You can now register a myTNB account or update your existing one with an international phone number."
+    "description7": "You can now register a myTNB account or update your existing one with an international phone number.",
+    "description8": "You can now track all your application status with zero hassle, anytime and anywhere. Need TNB to install a new meter? You can now set an appointment!"
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
@@ -1074,6 +1078,178 @@
     "for": "for ",
     "validElectricityAccountNoError": "Please enter a valid electricity account number.",
     "backLogin": "Back to Login"
+  },
+  "ApplicationStatusLanding": {
+    "title": "Application Status",
+    "search": "Search Application Status",
+    "emptyApplications": "Looks like you have no applications at the moment.",
+    "allApplications": "How do I see all my applications?",
+    "allApplicationsTitle": "View all your applications on myTNB Portal to enjoy the full experience!",
+    "allApplicationsMessage": "Log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my/\">portal</a> using the same log in details. You can view the list of all your applications and full form details, and continue your applications or create new ones.",
+    "viewMore": "View More"
+  },
+  "ApplicationStatusSearch": {
+    "title": "Search Application Status",
+    "searchForTitle": "I want to search for:",
+    "searchStatus": "Search Status",
+    "applicationType": "Application Type",
+    "searchBy": "Search by",
+    "searhResultTitle": "We found this application(s) under the electricity account number:",
+    "whereToGetThisNumber": "Where do I get this number?",
+    "whereToGetThisNumberTitle": "",
+    "whereToGetThisNumberMessage": ""
+  },
+  "ApplicationStatusFilter": {
+    "title": "Select Filter",
+    "applicationType": "Application Type",
+    "status": "Status",
+    "creationDate": "Creation Date",
+    "clear": "Clear",
+    "apply": "Apply"
+  },
+  "SelectApplicationType": {
+    "title": "Select Application Type"
+  },
+  "SelectStatus": {
+    "title": "Select Status"
+  },
+  "SelectCreationDate": {
+    "title": "Select Creation Date",
+    "apply": "Apply",
+    "from": "From",
+    "to": "To"
+  },
+  "Tutorial": {
+    "swipeText": "Swipe to see more, tap to skip.",
+    "skip": "Tap to skip.",
+    "applicationStatusLandingTitle": "Keep track of your applications.",
+    "applicationStatusLandingDescription": "Your submitted applications will automatically appear here so you can view their status. Use the filter to search through the list easily.",
+    "applicationStatusLandingEmptyTitle": "Keep track of your applications.",
+    "applicationStatusLandingEmptyDescription": "Your submitted applications will automatically appear so you can view their status.",
+    "applicationStatusLandingSearchTitle": "Search other application status.",
+    "applicationStatusLandingSearchDescription": "Search and save applications submitted by others with your preferred reference number.",
+    "applicationStatusDetailsNoActionTitle": "View your status progress here.",
+    "applicationStatusDetailsNoActionMessage": "Keep updated with your real-time status progress. Visit the Portal to view full application details.",
+    "applicationStatusDetailsInProgressTitle": "View your status progress here.",
+    "applicationStatusDetailsInProgressMessage": "Keep updated with your real-time status. Visit the Portal to continue or update your application.",
+    "applicationStatusDetailsActionOneTitle": "View your status progress here.",
+    "applicationStatusDetailsActionOneMessage": "Keep updated with your real-time status progress. Visit myTNB portal to view your full application details.",
+    "applicationStatusDetailsActionTwoTitle": "Know when to take action.",
+    "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submited application from here."
+  },
+  "ServiceDetails": {
+    "TimeOut": [
+      {
+        "name": "serviceName",
+        "timeout": 3000,
+        "retry": 3
+      }
+    ],
+    "Services": [
+      {
+        "SearchApplicationType": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "ctaTitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "GetApplicationStatus": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "ctaTitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ]
+      }
+    ]
+  },
+  "Mapping": {
+    "ApplicationType": [
+      {
+        "key": "ALL",
+        "value": "All Applications"
+      },
+      {
+        "key": "ASR",
+        "value": "Address Search Request"
+      },
+      {
+        "key": "COT",
+        "value": "Change of Tenancy"
+      },
+      {
+        "key": "RW_PC",
+        "value": "Change Tariff"
+      },
+      {
+        "key": "COA",
+        "value": "Close Electricity"
+      },
+      {
+        "key": "RB_SRQ",
+        "value": "Enquiry Form"
+      },
+      {
+        "key": "RB_GSL",
+        "value": "Guaranteed Service Level"
+      },
+      {
+        "key": "MD",
+        "value": "Merdeka Incentive"
+      },
+      {
+        "key": "GT",
+        "value": "myGreen+"
+      },
+      {
+        "key": "PRJ",
+        "value": "Project"
+      },
+      {
+        "key": "RE_TS",
+        "value": "Renewable Energy"
+      },
+      {
+        "key": "SMR",
+        "value": "Self Meter Reading"
+      },
+      {
+        "key": "NC",
+        "value": "Start Electricity"
+      },
+      {
+        "key": "RW_LC",
+        "value": "Upgrade/Downgrade Electricity"
+      }
+    ],
+    "SearchType": [
+      {
+        "key": "CA",
+        "value": "Electricity Account Number"
+      },
+      {
+        "key": "ApplicationNo",
+        "value": "Application Number"
+      },
+      {
+        "key": "ServiceRequestNo",
+        "value": "Service Request Number"
+      },
+      {
+        "key": "ProjectReferenceNo",
+        "value": "Project Reference No"
+      },
+      {
+        "key": "ServiceNotificationNo",
+        "value": "Service Notification Number"
+      }
+    ]
   }
 }
-
