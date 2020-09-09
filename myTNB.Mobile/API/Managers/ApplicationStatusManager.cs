@@ -260,20 +260,15 @@ namespace myTNB.Mobile
         #endregion
 
         #region SearchApplicationType
-        public async Task<SearchApplicationTypeResponse> SearchApplicationType(object userInfo
-            , object deviceInfo
-            , string roleID
+        public async Task<SearchApplicationTypeResponse> SearchApplicationType(
+              string roleID
             , string userID
             , string userName)
         {
             try
             {
                 var service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
-                var requestParameter = new SearchApplicationTypeRequest
-                {
-                    UserInfo = userInfo,
-                    DeviceInfo = deviceInfo
-                };
+                
                 try
                 {
                     SearchApplicationTypeResponse response = await service.SearchApplicationType(//requestParameter

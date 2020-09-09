@@ -19,6 +19,8 @@ using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicat
 using Android.Runtime;
 using Google.Android.Material.TextField;
 using AndroidX.Core.Content;
+using myTNB.Mobile;
+using System.Linq;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 {
@@ -52,6 +54,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         const string PAGE_ID = "ApplicationStatus";
 
         private string targetApplicationType = "";
+        private string targetApplicationTypeId = "";
         private string targetSearchBy = "";
         private string targetNumber = "";
 
@@ -135,10 +138,14 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         }
 
         [OnClick(Resource.Id.btnSearchApplication)]
-        internal void OnConfirmClick(object sender, EventArgs e)
+        internal async System.Threading.Tasks.Task OnConfirmClickAsync(object sender, EventArgs e)
         {
+            //var x = await ApplicationStatusManager.Instance.GetApplicationStatus("ASR"
+            //                    , "ApplicationNo"
+            //                    , "362");
 
         }
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -180,8 +187,29 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
 
             //  TODO: ApplicationStatus Mock
-            mTypeList = JsonConvert.DeserializeObject<List<TypeModel>>("[{\"Title\":\"Change of Tenancy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Change Tariff\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Project\",\"Code\":\"\",\"SearchBy\":[\"AN\"]},{\"Title\":\"Renewable Energy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Self Meter Reading\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Start Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Stop Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Upgrade\\/Downgrade Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]}]");
-            mSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>("[{\"Title\":\"Application Number\",\"Code\":\"AN\"},{\"Title\":\"Electricity Account Number\",\"Code\":\"EAN\"},{\"Title\":\"Service Notification Number\",\"Code\":\"SNN\"},{\"Title\":\"Service Request Number\",\"Code\":\"SRN\"}]");
+
+            if (extras != null)
+            {
+                if (extras.ContainsKey("searchApplicationType"))
+                {
+                    List<SearhApplicationTypeModel> searhApplicationTypeModels = new List<SearhApplicationTypeModel>();
+                    searhApplicationTypeModels = DeSerialze<List<SearhApplicationTypeModel>>(extras.GetString("searchApplicationType"));
+
+                    foreach(var searchTypeItem in searhApplicationTypeModels)
+                    {
+                        mTypeList.Add(new TypeModel(searchTypeItem)
+                        {
+                            SearchApplicationTypeId = searchTypeItem.SearchApplicationTypeId,
+                            SearchApplicationTypeDesc = searchTypeItem.SearchApplicationTypeDesc,
+                            SearchTypes = searchTypeItem.SearchTypes,
+                            isChecked = false
+                        });
+                    }
+                    
+                }
+            }
+            //mTypeList = JsonConvert.DeserializeObject<List<TypeModel>>("[{\"Title\":\"Change of Tenancy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Change Tariff\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Project\",\"Code\":\"\",\"SearchBy\":[\"AN\"]},{\"Title\":\"Renewable Energy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Self Meter Reading\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Start Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Stop Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Upgrade\\/Downgrade Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]}]");
+            //mSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>("[{\"Title\":\"Application Number\",\"Code\":\"AN\"},{\"Title\":\"Electricity Account Number\",\"Code\":\"EAN\"},{\"Title\":\"Service Notification Number\",\"Code\":\"SNN\"},{\"Title\":\"Service Request Number\",\"Code\":\"SRN\"}]");
         }
 
         private void TxtServiceRequestNum_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
@@ -205,18 +233,38 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 {
                     if (resultCode == Result.Ok)
                     {
+                        targetSearchBy = string.Empty;
                         Bundle extra = data.Extras;
                         List<TypeModel> resultTypeList = new List<TypeModel>();
 
                         if (extra.ContainsKey(Constants.APPLICATION_STATUS_TYPE_LIST_KEY))
                         {
+                            txtSearchBy.Text = "";
                             resultTypeList = JsonConvert.DeserializeObject<List<TypeModel>>(extra.GetString(Constants.APPLICATION_STATUS_TYPE_LIST_KEY));
                             TypeModel selectedType = resultTypeList.Find(x => x.isChecked);
                             //  TODO: ApplicationStatus dummp
-                            targetApplicationType = selectedType.Title;
-                            txtApplicationType.Text = targetApplicationType;
 
-                            txtInputLayoutSearchBy.Visibility = ViewStates.Visible;
+                            targetApplicationType = selectedType.SearchApplicationTypeDesc;
+                            targetApplicationTypeId = selectedType.SearchApplicationTypeId;
+                            txtApplicationType.Text = targetApplicationType;
+                            
+                            if (selectedType.SearchTypes.Count <=1)
+                            {
+                                txtInputLayoutSearchBy.Visibility = ViewStates.Gone;
+                                txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
+                                txtInputLayoutServiceRequestNum.Visibility = ViewStates.Visible;
+                                txtServiceRequestNum.Text = string.Empty;
+                                txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypes[0].SearchTypeDesc;
+                                    
+                            }
+                            else
+                            {
+                                txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
+                                txtInputLayoutSearchBy.Visibility = ViewStates.Visible;
+                            }
+                            
+                          
+                            
 
                             //if (extra.ContainsKey(Constants.APPLICATION_STATUS_SEARCH_BY_LIST_KEY))
                             //{
@@ -245,10 +293,12 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         {
                             resultSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>(extra.GetString(Constants.APPLICATION_STATUS_SEARCH_BY_LIST_KEY));
                             SearchByModel selectedType = resultSearchByList.Find(x => x.isChecked);
-                            targetSearchBy = selectedType.Code;
-                            txtSearchBy.Text = selectedType.Title;
+                            targetSearchBy = selectedType.SearchTypeId;
+                            txtSearchBy.Text = selectedType.SearchTypeDesc;
+                            txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
                             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Visible;
-                            txtInputLayoutServiceRequestNum.Hint = selectedType.Title;
+                            txtServiceRequestNum.Text = string.Empty;
+                            txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypeDesc;
                         }
                     }
                 }
@@ -265,6 +315,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             const int DRAWABLE_TOP = 1;
             const int DRAWABLE_RIGHT = 2;
             const int DRAWABLE_BOTTOM = 3;
+
+            
             if (v is EditText)
             {
                 EditText eTxtView = v as EditText;
@@ -286,7 +338,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             {
                                 for (int i = 0; i < listShowing.Count; i++)
                                 {
-                                    if (listShowing[i].Title == targetApplicationType)
+                                    if (listShowing[i].SearchApplicationTypeDesc == targetApplicationType)
                                     {
                                         listShowing[i].isChecked = true;
                                         break;
@@ -310,16 +362,27 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             this.SetIsClicked(true);
                             Intent filterIntent = new Intent(this, typeof(SearchApplicationStatusSelectionActivity));
                             List<SearchByModel> mList = new List<SearchByModel>();
-                            if (!string.IsNullOrEmpty(targetApplicationType))
+                            if (!string.IsNullOrEmpty(targetApplicationTypeId))
                             {
                                 for (int i = 0; i < mTypeList.Count; i++)
                                 {
-                                    if (mTypeList[i].Title == targetApplicationType)
+                                    if (mTypeList[i].SearchApplicationTypeId == targetApplicationTypeId)
                                     {
-                                        for (int j = 0; j < mTypeList[i].SearchByList.Count; j++)
+                                        for (int j = 0; j < mTypeList[i].SearchTypes.Count; j++)
                                         {
-                                            var foundSearchBy = mSearchByList.Find(x => x.Code == mTypeList[i].SearchByList[j]);
-                                            mList.Add(foundSearchBy);
+                                            var foundSearchBy = mTypeList[i].SearchTypes[j]; 
+
+                                            
+                                            
+
+                                            mList.Add(new SearchByModel(foundSearchBy)
+                                            {
+                                                SearchTypeId = foundSearchBy.SearchTypeId,
+                                                SearchTypeDesc = foundSearchBy.SearchTypeDesc,
+                                                isChecked = false
+                                            });
+
+                                  
                                         }
                                         break;
                                     }
@@ -335,7 +398,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             {
                                 for (int i = 0; i < mList.Count; i++)
                                 {
-                                    if (mList[i].Code == targetSearchBy)
+                                    if (mList[i].SearchTypeId == targetSearchBy)
                                     {
                                         mList[i].isChecked = true;
                                         break;

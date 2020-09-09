@@ -10,6 +10,7 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.CardView.Widget;
 using CheeseBind;
+using myTNB.Mobile;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
@@ -28,6 +29,7 @@ using myTNB_Android.Src.Maintenance.Activity;
 using myTNB_Android.Src.PreLogin.MVP;
 using myTNB_Android.Src.RegistrationForm.Activity;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
@@ -527,11 +529,13 @@ namespace myTNB_Android.Src.PreLogin.Activity
             StartActivity(feedbackIntent);
         }
 
-        public void ShowCheckStatus()
+        public async void ShowCheckStatus()
         {
             //  TODO:  ApplicationStatus stub
-            var applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
-            
+            SearchApplicationTypeResponse searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("0", string.Empty, string.Empty);
+
+            Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
+            applicationLandingIntent.PutExtra("searchApplicationType", JsonConvert.SerializeObject(searchApplicationTypeResponse.Content));
             StartActivity(applicationLandingIntent);
         }
 

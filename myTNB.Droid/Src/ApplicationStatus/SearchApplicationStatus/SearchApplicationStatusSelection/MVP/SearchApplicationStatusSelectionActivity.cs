@@ -173,7 +173,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
 
                         if (extras.ContainsKey(Constants.APPLICATION_STATUS_TYPE_LIST_KEY))
                         {
-                            mTypeList = JsonConvert.DeserializeObject<List<TypeModel>>(extras.GetString(Constants.APPLICATION_STATUS_TYPE_LIST_KEY));
+                            mTypeList = DeSerialze<List<TypeModel>>(extras.GetString(Constants.APPLICATION_STATUS_TYPE_LIST_KEY));
                         }
                     }
                     else if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_SEARCH_BY_REQUEST_CODE)

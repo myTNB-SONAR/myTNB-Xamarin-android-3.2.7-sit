@@ -1,30 +1,35 @@
 ﻿using System.Collections.Generic;
+using myTNB.Mobile;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models
 {
-    public class SearchByModel
+    public class SearchByModel : SearchType
     {
-        [JsonProperty("Title")]
-        public string Title { get; set; }
+        public SearchByModel(SearchType searchType)
+        {
+            SearchTypeId = searchType.SearchTypeId;
+            SearchTypeDesc = searchType.SearchTypeDesc;
+        }
 
-        [JsonProperty("Code")]
-        public string Code { get; set; }
-
+        public SearchByModel() { }
         public bool isChecked { get; set; }
     }
 
-    public class TypeModel
+    public class TypeModel : SearhApplicationTypeModel
     {
-        [JsonProperty("Title")]
-        public string Title { get; set; }
 
-        [JsonProperty("Code")]
-        public string Code { get; set; }
 
-        [JsonProperty("SearchBy")]
-        public List<string> SearchByList { get; set; }
-
+        public TypeModel(SearhApplicationTypeModel searhApplicationTypeModel)
+        {
+            SearchApplicationTypeId = searhApplicationTypeModel.SearchApplicationTypeId;
+            SearchApplicationTypeDesc = searhApplicationTypeModel.SearchApplicationTypeDesc;
+            SearchApplicationNoInputMask = searhApplicationTypeModel.SearchApplicationNoInputMask;
+            SearchTypes = searhApplicationTypeModel.SearchTypes;
+            UserRole = searhApplicationTypeModel.UserRole;
+            isChecked = false;
+        }
+        public TypeModel(){}
         public bool isChecked { get; set; }
     }
 }

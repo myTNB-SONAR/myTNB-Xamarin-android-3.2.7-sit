@@ -105,7 +105,7 @@
                             app:errorEnabled="true"
                             android:layout_marginRight="17dp">
                             <EditText
-                                android:hint="Service Request Number"
+                                android:hint=""
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawableLeft="@drawable/ic_field_account_no"

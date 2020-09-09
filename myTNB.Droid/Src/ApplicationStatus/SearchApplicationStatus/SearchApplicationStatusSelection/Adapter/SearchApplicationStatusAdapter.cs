@@ -68,7 +68,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                     mSearchByList.AddRange(searchByData);
                     mSearchByList.Add(new SearchByModel()
                     {
-                        Code = "NUMBER-CTA-ANDROID"
+                       SearchTypeId = "NUMBER-CTA-ANDROID"
                     });
                 }
                 countNumber = mSearchByList.Count;
@@ -184,7 +184,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         {
             try
             {
-                if (item.Code == "NUMBER-CTA-ANDROID")
+                if (item.SearchTypeId == "NUMBER-CTA-ANDROID")
                 {
                     ctaSelection.Visibility = ViewStates.Visible;
                     filterSelection.Visibility = ViewStates.Gone;
@@ -195,7 +195,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                 {
                     ctaSelection.Visibility = ViewStates.Gone;
                     filterSelection.Visibility = ViewStates.Visible;
-                    txtFilterName.Text = item.Title;
+                    txtFilterName.Text = item.SearchTypeDesc;
                     imgApplicationFilter.Visibility = ViewStates.Gone;
                     chkApplicationFilter.Visibility = ViewStates.Gone;
                     txtFilterName.Clickable = true;
@@ -220,7 +220,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         {
             try
             {
-                txtFilterName.Text = item.Title;
+                txtFilterName.Text = item.SearchApplicationTypeDesc;
                 imgApplicationFilter.Visibility = ViewStates.Gone;
                 chkApplicationFilter.Visibility = ViewStates.Gone;
                 txtFilterName.Clickable = true;
