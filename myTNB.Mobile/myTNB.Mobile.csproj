@@ -54,14 +54,8 @@
     <Folder Include="API\Models\" />
     <Folder Include="API\Base\" />
     <Folder Include="API\Models\Application Status\" />
-    <Folder Include="API\Models\Application Status\GetApplicationStatusMetadata\" />
     <Folder Include="API\Services\" />
     <Folder Include="API\Services\Application Status\" />
-    <Folder Include="API\Models\Application Status\GetApplicationStatusDetails\" />
-    <Folder Include="API\Models\Application Status\GetSavedProjectStatus\" />
-    <Folder Include="API\Models\Application Status\SearchApplicationStatus\" />
-    <Folder Include="API\Models\Application Status\GetSavedApplicationStatus\" />
-    <Folder Include="API\Models\Application Status\PatchUserApplicationStatus\" />
     <Folder Include="Sitecore\" />
     <Folder Include="Sitecore\Services\" />
     <Folder Include="Sitecore\Manager\" />
@@ -69,10 +63,10 @@
     <Folder Include="Sitecore\Base\" />
     <Folder Include="Sitecore\Model\" />
     <Folder Include="Sitecore\Model\Login\" />
-    <Folder Include="Models\" />
-    <Folder Include="Models\Services\" />
     <Folder Include="Extensions\" />
     <Folder Include="API\Models\Application Status\SearchApplicationType\" />
+    <Folder Include="API\Managers\Application Status\" />
+    <Folder Include="API\Models\Application Status\GetApplicationStatus\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />

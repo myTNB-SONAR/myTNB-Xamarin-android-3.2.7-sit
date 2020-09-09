@@ -1154,9 +1154,101 @@
             "message": "",
             "ctaTitle": "",
             "isSuccess": true,
-            "type": ""
+            "type": "none"
+          }
+        ],
+        "GetApplicationStatus": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "ctaTitle": "",
+            "isSuccess": true,
+            "type": "none"
           }
         ]
+      }
+    ]
+  },
+  "Mapping": {
+    "ApplicationType": [
+      {
+        "key": "ALL",
+        "value": "All Applications"
+      },
+      {
+        "key": "ASR",
+        "value": "Address Search Request"
+      },
+      {
+        "key": "COT",
+        "value": "Change of Tenancy"
+      },
+      {
+        "key": "RW_PC",
+        "value": "Change Tariff"
+      },
+      {
+        "key": "COA",
+        "value": "Close Electricity"
+      },
+      {
+        "key": "RB_SRQ",
+        "value": "Enquiry Form"
+      },
+      {
+        "key": "RB_GSL",
+        "value": "Guaranteed Service Level"
+      },
+      {
+        "key": "MD",
+        "value": "Merdeka Incentive"
+      },
+      {
+        "key": "GT",
+        "value": "myGreen+"
+      },
+      {
+        "key": "PRJ",
+        "value": "Project"
+      },
+      {
+        "key": "RE_TS",
+        "value": "Renewable Energy"
+      },
+      {
+        "key": "SMR",
+        "value": "Self Meter Reading"
+      },
+      {
+        "key": "NC",
+        "value": "Start Electricity"
+      },
+      {
+        "key": "RW_LC",
+        "value": "Upgrade/Downgrade Electricity"
+      }
+    ],
+    "SearchType": [
+      {
+        "key": "CA",
+        "value": "Electricity Account Number"
+      },
+      {
+        "key": "ApplicationNo",
+        "value": "Application Number"
+      },
+      {
+        "key": "ServiceRequestNo",
+        "value": "Service Request Number"
+      },
+      {
+        "key": "ProjectReferenceNo",
+        "value": "Project Reference No"
+      },
+      {
+        "key": "ServiceNotificationNo",
+        "value": "Service Notification Number"
       }
     ]
   }

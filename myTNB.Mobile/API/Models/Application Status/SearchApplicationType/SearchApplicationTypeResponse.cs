@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using myTNB.Mobile.API.Base;
 using Newtonsoft.Json;
 
-namespace myTNB.Mobile
+namespace myTNB
 {
     public class SearchApplicationTypeResponse : BaseListResponse<SearhApplicationTypeModel>
     {

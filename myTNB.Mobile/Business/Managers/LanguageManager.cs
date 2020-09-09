@@ -181,5 +181,32 @@ namespace myTNB
             }
             return valuesDictionary;
         }
+
+        public T GetValues<T>(string parentName, string itemName) where T : new()
+        {
+            T valuesDictionary = new T();
+            if (string.IsNullOrEmpty(itemName) || string.IsNullOrWhiteSpace(itemName))
+            {
+                return valuesDictionary;
+            }
+            try
+            {
+                JObject jsonObj = JObject.Parse(LanguageManager.Instance.JSONLang);
+                if (jsonObj != null)
+                {
+                    string value = jsonObj[parentName][itemName]?.ToString() ?? string.Empty;
+                    if (!string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value))
+                    {
+                        valuesDictionary = JsonConvert.DeserializeObject<T>(value);
+                    }
+                }
+                return valuesDictionary;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("DEBUG Error: ", e.Message);
+            }
+            return valuesDictionary;
+        }
     }
 }

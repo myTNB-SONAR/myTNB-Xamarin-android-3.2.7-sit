@@ -2,6 +2,11 @@
 {
     internal static class Constants
     {
+        //Headers
+        internal const string H_RoleID = "RoleId";
+        internal const string H_UserID = "UserId";
+        internal const string H_UserName = "UserName";
+
         internal const int APITimeOut = 60000;
         internal const int SitecoreTimeOut = 5000;
         internal const string SitecoreDomain = "sitecore";
@@ -31,5 +36,16 @@
         internal const string ApiKeyId = "E6148656-205B-494C-BC95-CC241423E72F";
         internal const string SitecoreURL = "https://sitecore.tnb.com.my/";
 #endif
+
+        //Service Name
+        internal const string Service_SearchApplicationType = "SearchApplicationType";
+
+        //Language File Constants
+        internal const string LanguageFile_ServiceDetails = "ServiceDetails";
+        internal const string LanguageFile_Services = "Services";
+
+        internal const string LanguageFile_Mapping = "Mapping";
+        internal const string LanguageFile_ApplicationType = "ApplicationType";
+        internal const string LanguageFile_SearchType = "SearchType";
     }
 }

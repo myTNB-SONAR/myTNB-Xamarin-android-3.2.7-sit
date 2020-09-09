@@ -8,7 +8,7 @@
         /// <param name="serviceName">Name of the service</param>
         /// <param name="statusCode">Status code returned from the Service Response</param>
         /// <returns>Mapped status code details</returns>
-        public static ServiceStatus GetStatusDetails(this string serviceName, string statusCode)
+        public static StatusDetail GetStatusDetails(this string serviceName, string statusCode)
         {
             return ServiceMappingManager.Instance.GetStatusDetails(serviceName, statusCode);
         }
