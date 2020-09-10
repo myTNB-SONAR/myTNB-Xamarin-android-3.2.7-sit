@@ -21,6 +21,8 @@ using Google.Android.Material.TextField;
 using AndroidX.Core.Content;
 using myTNB.Mobile;
 using System.Linq;
+using myTNB;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 {
@@ -138,14 +140,20 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         }
 
         [OnClick(Resource.Id.btnSearchApplication)]
-        internal async System.Threading.Tasks.Task OnConfirmClickAsync(object sender, EventArgs e)
+        internal void OnConfirmClickAsync(object sender, EventArgs e)
         {
-            //var x = await ApplicationStatusManager.Instance.GetApplicationStatus("ASR"
-            //                    , "ApplicationNo"
-            //                    , "362");
+            GetApplicationStatus();
 
         }
+        private async void GetApplicationStatus()
+        {
+            GetApplicationStatusResponse applicationStatusResponse = await ApplicationStatusManager.Instance.GetApplicationStatus("ASR", "ApplicationNo", "362");
+            
 
+            Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+            applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(applicationStatusResponse.Content));
+            StartActivity(applicationStatusDetailIntent);
+        }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -163,7 +171,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             TextViewUtils.SetMuseoSans500Typeface(btnSearchApplication, txtSearchApplicationTitle);
 
             //  TODO: ApplicationStatus Multilingual
-            SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "title")); 
+            SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "title"));
             // txtInputLayoutFromDate.Hint = GetLabelCommonByLanguage("email");
             // txtInputLayoutToDate.Hint = GetLabelCommonByLanguage("password");
 
@@ -182,6 +190,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             txtSearchBy.SetOnTouchListener(this);
 
             txtServiceRequestNum.TextChanged += TxtServiceRequestNum_TextChanged;
+            txtServiceRequestNum.AfterTextChanged += TxtServiceRequestNum_AfterTextChanged;
 
             txtInputLayoutSearchBy.Visibility = ViewStates.Gone;
             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
@@ -195,7 +204,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     List<SearhApplicationTypeModel> searhApplicationTypeModels = new List<SearhApplicationTypeModel>();
                     searhApplicationTypeModels = DeSerialze<List<SearhApplicationTypeModel>>(extras.GetString("searchApplicationType"));
 
-                    foreach(var searchTypeItem in searhApplicationTypeModels)
+                    foreach (var searchTypeItem in searhApplicationTypeModels)
                     {
                         mTypeList.Add(new TypeModel(searchTypeItem)
                         {
@@ -205,18 +214,44 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             isChecked = false
                         });
                     }
-                    
+
                 }
             }
             //mTypeList = JsonConvert.DeserializeObject<List<TypeModel>>("[{\"Title\":\"Change of Tenancy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Change Tariff\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Project\",\"Code\":\"\",\"SearchBy\":[\"AN\"]},{\"Title\":\"Renewable Energy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Self Meter Reading\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Start Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Stop Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Upgrade\\/Downgrade Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]}]");
             //mSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>("[{\"Title\":\"Application Number\",\"Code\":\"AN\"},{\"Title\":\"Electricity Account Number\",\"Code\":\"EAN\"},{\"Title\":\"Service Notification Number\",\"Code\":\"SNN\"},{\"Title\":\"Service Request Number\",\"Code\":\"SRN\"}]");
         }
 
+        private void TxtServiceRequestNum_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e)
+        {
+            try
+            {
+                //if (txtServiceRequestNum.Text != string.Empty)
+                //{
+                //    EnableButton();
+                //}
+                //else
+                //{
+                //    DisableButton();
+                //}
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
         private void TxtServiceRequestNum_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
             try
             {
-
+                if (txtServiceRequestNum.Text != string.Empty)
+                {
+                    EnableButton();
+                }
+                else
+                {
+                    DisableButton();
+                }
             }
             catch (Exception ex)
             {
@@ -247,24 +282,24 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             targetApplicationType = selectedType.SearchApplicationTypeDesc;
                             targetApplicationTypeId = selectedType.SearchApplicationTypeId;
                             txtApplicationType.Text = targetApplicationType;
-                            
-                            if (selectedType.SearchTypes.Count <=1)
+
+                            if (selectedType.SearchTypes.Count <= 1)
                             {
                                 txtInputLayoutSearchBy.Visibility = ViewStates.Gone;
                                 txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
                                 txtInputLayoutServiceRequestNum.Visibility = ViewStates.Visible;
                                 txtServiceRequestNum.Text = string.Empty;
                                 txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypes[0].SearchTypeDesc;
-                                    
+
                             }
                             else
                             {
                                 txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
                                 txtInputLayoutSearchBy.Visibility = ViewStates.Visible;
                             }
-                            
-                          
-                            
+
+
+
 
                             //if (extra.ContainsKey(Constants.APPLICATION_STATUS_SEARCH_BY_LIST_KEY))
                             //{
@@ -316,7 +351,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             const int DRAWABLE_RIGHT = 2;
             const int DRAWABLE_BOTTOM = 3;
 
-            
+
             if (v is EditText)
             {
                 EditText eTxtView = v as EditText;
@@ -370,10 +405,10 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                     {
                                         for (int j = 0; j < mTypeList[i].SearchTypes.Count; j++)
                                         {
-                                            var foundSearchBy = mTypeList[i].SearchTypes[j]; 
+                                            var foundSearchBy = mTypeList[i].SearchTypes[j];
 
-                                            
-                                            
+
+
 
                                             mList.Add(new SearchByModel(foundSearchBy)
                                             {
@@ -382,7 +417,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                                 isChecked = false
                                             });
 
-                                  
+
                                         }
                                         break;
                                     }
@@ -417,3 +452,4 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         }
     }
 }
+

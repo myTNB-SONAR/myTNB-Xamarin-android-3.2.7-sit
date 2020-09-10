@@ -10,6 +10,7 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.CardView.Widget;
 using CheeseBind;
+using myTNB;
 using myTNB.Mobile;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
