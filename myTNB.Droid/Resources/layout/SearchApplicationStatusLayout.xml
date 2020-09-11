@@ -115,7 +115,8 @@
                                 android:singleLine="true"
                                 android:paddingTop="5dp"
                                 android:drawablePadding="6dp"
-                                android:inputType="text" />
+                                android:inputType="number"
+                            />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                     <LinearLayout

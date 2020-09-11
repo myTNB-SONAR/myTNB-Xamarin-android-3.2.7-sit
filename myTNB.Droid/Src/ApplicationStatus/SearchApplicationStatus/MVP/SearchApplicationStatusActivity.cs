@@ -23,6 +23,7 @@ using myTNB.Mobile;
 using System.Linq;
 using myTNB;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using System.Text.RegularExpressions;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 {
@@ -190,7 +191,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             txtSearchBy.SetOnTouchListener(this);
 
             txtServiceRequestNum.TextChanged += TxtServiceRequestNum_TextChanged;
-            txtServiceRequestNum.AfterTextChanged += TxtServiceRequestNum_AfterTextChanged;
+           
 
             txtInputLayoutSearchBy.Visibility = ViewStates.Gone;
             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
@@ -221,29 +222,86 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             //mSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>("[{\"Title\":\"Application Number\",\"Code\":\"AN\"},{\"Title\":\"Electricity Account Number\",\"Code\":\"EAN\"},{\"Title\":\"Service Notification Number\",\"Code\":\"SNN\"},{\"Title\":\"Service Request Number\",\"Code\":\"SRN\"}]");
         }
 
-        private void TxtServiceRequestNum_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e)
-        {
-            try
-            {
-                //if (txtServiceRequestNum.Text != string.Empty)
-                //{
-                //    EnableButton();
-                //}
-                //else
-                //{
-                //    DisableButton();
-                //}
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
-        }
+        
 
         private void TxtServiceRequestNum_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
             try
             {
+                txtServiceRequestNum.Text = FormatApplicationNumber("ASR-###-###-####", e.Text.ToString());
+                //if (c._selectedSearchType == "ApplicationNo")
+                //{
+                //    //CustomUITextField textField = sender as CustomUITextField;
+                //    string input = e.Text.ToString();
+                //    string format = c._selectedFormat;
+                //    int firstIndex = format.IndexOf("#");
+                //    int lastIndex = format.LastIndexOf("#");
+                //    string preffix = string.Empty;
+                //    string suffix = string.Empty;
+                //    int location = e.Text. (int)range.Location;
+
+                //    if (firstIndex > 0)
+                //    {
+                //        preffix = format.Substring(0, firstIndex);
+                //        if (IsValid(preffix) && location < firstIndex)
+                //        {
+                //            //return false;
+                //        }
+                //    }
+
+                //    if (lastIndex < format.Length)
+                //    {
+                //        suffix = format.Substring(lastIndex + 1, format.Length - (lastIndex + 1));
+                //    }
+                //    Log.Debug("preffix: " , preffix);
+                //    Log.Debug("suffix: " , suffix);
+                //    if (input.Length == format.Length && IsValid(suffix))
+                //    {
+                //        input = input.Replace(suffix, string.Empty);
+                //        if (range.Location >= input.Length)
+                //        {
+                //            //return false;
+                //        }
+                //    }
+                //    e.
+                //    string replacedString = (input).Replace(range, replacementString).ToString();
+                //    //if (replacementString == "")
+                //    //{
+                //    //    string currentChar = input[location].ToString();
+                //    //    bool isLetter;
+                //    //    if (currentChar == "-" && location > 0)
+                //    //    {
+                //    //        int preLocation = location - 1;
+                //    //        isLetter = Regex.Matches(format[preLocation].ToString(), @"[a-zA-Z]").Count > 0;
+                //    //        textField.Text = FormatApplicationNumber(format
+                //    //            , isLetter ? input : replacedString);
+                //    //        //return false;
+                //    //    }
+                //    //    else if (location < format.Length && Regex.Matches(format[location].ToString(), @"[a-zA-Z]").Count > 0)
+                //    //    {
+                //    //        //return false;
+                //    //    }
+                //    //}
+                //    txtServiceRequestNum.Text = FormatApplicationNumber(format
+                //        , replacedString);
+                //    //DispatchQueue.MainQueue.DispatchAsync(() =>
+                //    //{
+                //        int cursorLocation = location;
+                //        if (location < textField.Text.Length && textField.Text[location] == '-')
+                //        {
+                //            cursorLocation += 1;
+                //        }
+
+                //        UITextPosition newPosition = textField.GetPosition(textField.BeginningOfDocument
+                //            , cursorLocation + replacementString.Length);
+                //        if (newPosition != null)
+                //        {
+                //            textField.SelectedTextRange = textField.GetTextRange(newPosition, newPosition);
+                //        }
+                //});
+                //return false;
+                // }
+
                 if (txtServiceRequestNum.Text != string.Empty)
                 {
                     EnableButton();
@@ -258,7 +316,83 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 Utility.LoggingNonFatalError(ex);
             }
         }
+        private string FormatApplicationNumber(string format
+            , string replacedString)
+        {
 
+            Log.Debug("format: " , format);
+            Log.Debug("replacedString: " , replacedString);
+
+            string formattedInput = replacedString.Replace("-", "");
+            int lastIndex = format.LastIndexOf("#");
+            string suffix = string.Empty;
+            if (lastIndex < format.Length)
+            {
+                suffix = format.Substring(lastIndex + 1, format.Length - (lastIndex + 1));
+            }
+
+            Log.Debug("suffix: " , suffix);
+            List<int> dashIndices = new List<int>();
+            for (int i = 0; i < format.Length; i++)
+            {
+                if (i < format.Length && format[i] == '-')
+                {
+                    dashIndices.Add(i);
+                }
+            }
+            Log.Debug("removedDash: " , formattedInput);
+            for (int j = 0; j < dashIndices.Count(); j++)
+            {
+                int index = dashIndices[j];
+                if (index < formattedInput.Length)
+                {
+                    formattedInput = formattedInput.Insert(index, "-");
+                    Log.Debug("test: " , formattedInput);
+                }
+                else if (index == formattedInput.Length && index == format.IndexOf("-"))
+                {
+                    formattedInput = formattedInput.Insert(index, "-");
+                    Log.Debug("test: " , formattedInput);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if (IsValid(suffix))
+            {
+                if (dashIndices != null && dashIndices.Count > 0)
+                {
+                    if (dashIndices[dashIndices.Count - 1] < formattedInput.Length)
+                    {
+                        formattedInput = formattedInput.Remove(dashIndices[dashIndices.Count - 1]) + suffix;
+                    }
+                    else if (dashIndices[dashIndices.Count - 1] == formattedInput.Length)
+                    {
+                        formattedInput += suffix;
+                    }
+                    else
+                    {
+                        formattedInput = formattedInput.Replace(suffix, string.Empty);
+                    }
+                }
+                else
+                {
+                    formattedInput = formattedInput.Replace(suffix, string.Empty);
+                }
+            }
+            else if (lastIndex + 1 < formattedInput.Length)
+            {
+                formattedInput = formattedInput.Remove(lastIndex + 1);
+            }
+            Log.Debug("Applied Dash: " ,formattedInput);
+            return formattedInput;
+        }
+        public bool IsValid(string key)
+        {
+            return !string.IsNullOrEmpty(key) && !string.IsNullOrWhiteSpace(key);
+        }
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
