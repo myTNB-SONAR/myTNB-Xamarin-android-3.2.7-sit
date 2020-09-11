@@ -14,46 +14,41 @@ namespace myTNB
             }
         }
 
-        private AppInfoManager()
-        {
-        }
+        private AppInfoManager() { }
+        private object UserInfo;
 
-        private object usrInf = new { };
-        private object deviceInf = new { };
-        private string language = string.Empty;
-
-        public void SetUserInfo(object userInfo)
+        /// <summary>
+        /// Sets User Info to be pased for Service Calls
+        /// </summary>
+        /// <param name="roleID">0 for All 16 for Consumers</param>
+        /// <param name="userID">SSPUID</param>
+        /// <param name="userName">Email or EID</param>
+        /// <param name="language">Language Selected in the App</param>
+        public void SetUserInfo(string roleID
+            , string userID
+            , string userName
+            , LanguageManager.Language language = LanguageManager.Language.EN)
         {
-            if (userInfo != null)
+            UserInfo = new
             {
-                usrInf = userInfo;
-            }
+                RoleId = roleID ?? string.Empty,
+                UserId = userID ?? string.Empty,
+                UserName = userName ?? string.Empty,
+                Lang = language.ToString()
+            };
         }
 
-        public void SetDeviceInfo(object deviceInfo)
+        public string GetUserInfo()
         {
-            if (deviceInfo != null)
-            {
-                deviceInf = deviceInfo;
-            }
+            //TODO: Update Default Value
+            return Newtonsoft.Json.JsonConvert.SerializeObject(UserInfo != null ? UserInfo :
+                new
+                {
+                    RoleId = "16",
+                    UserId = "243A701C-761A-415D-BAC0-DD69490513B1",
+                    UserName = "tester1.tnb@gmail.com",
+                    Lang = LanguageManager.Language.EN.ToString()
+                });
         }
-
-        public void SetAppInfo(object userInfo, object deviceInfo, LanguageManager.Language lang = LanguageManager.Language.EN)
-        {
-            SetUserInfo(userInfo);
-            SetDeviceInfo(deviceInfo);
-            language = lang.ToString();
-        }
-
-        public object GetUserInfo()
-        {
-            return usrInf;
-        }
-
-        public object GetDeviceInfo()
-        {
-            return deviceInf;
-        }
-
     }
 }

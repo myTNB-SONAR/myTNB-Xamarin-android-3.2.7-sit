@@ -6,6 +6,8 @@
         internal const string H_RoleID = "RoleId";
         internal const string H_UserID = "UserId";
         internal const string H_UserName = "UserName";
+        internal const string H_SecureKey = "SecureKey";
+        internal const string H_UserInfo = "UserInfo";
 
         internal const int APITimeOut = 60000;
         internal const int SitecoreTimeOut = 5000;

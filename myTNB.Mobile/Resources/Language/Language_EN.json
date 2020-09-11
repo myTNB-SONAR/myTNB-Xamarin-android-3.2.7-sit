@@ -1096,8 +1096,8 @@
     "searchBy": "Search by",
     "searhResultTitle": "We found this application(s) under the electricity account number:",
     "whereToGetThisNumber": "Where do I get this number?",
-    "whereToGetThisNumberTitle": "",
-    "whereToGetThisNumberMessage": ""
+    "whereToGetThisNumberTitle": "Where do I get this number?",
+    "whereToGetThisNumberMessage": "Your 12-digit electricity account number can be found at the top left corner of your monthly paper bill."
   },
   "ApplicationStatusFilter": {
     "title": "Select Filter",
@@ -1109,6 +1109,12 @@
   },
   "SelectApplicationType": {
     "title": "Select Application Type"
+  },
+  "SearchByNumber": {
+    "title": "Search By",
+    "whereToGetTheseNumber": "Where do I get these numbers?",
+    "whereToGetTheseNumberTitle": "Where do I get these numbers?",
+    "whereToGetTheseNumberMessage": "You can find the <b>Application Number</b>, <b>Service Request Number</b> and <b>Service Notification Number</b> in your submitted application details at ‘Application Status’ page and are available upon request by contacting TNB Careline."
   },
   "SelectStatus": {
     "title": "Select Status"

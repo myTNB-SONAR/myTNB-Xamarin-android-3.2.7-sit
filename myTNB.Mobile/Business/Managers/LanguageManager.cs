@@ -125,13 +125,21 @@ namespace myTNB
         }
         /// <summary>
         /// Gets the key-value pair of texts of a page.
-        /// Asvisable to call on intialisation of the page.
+        /// Advisable to call on intialisation of the page.
         /// </summary>
         /// <param name="pageName">Name of the page, iOS and Android should be the same.</param>
         /// <returns>Key-value pair of page's strings</returns>
         public Dictionary<string, string> GetValuesByPage(string pageName)
         {
             return GetValues<Dictionary<string, string>>(pageName);
+        }
+
+        public string GetPageValueByKey(string pageName, string key)
+        {
+            Dictionary<string, string> pageDictionary = GetValuesByPage(pageName);
+            return pageDictionary != null
+               && pageDictionary.ContainsKey(key)
+               ? pageDictionary[key] : string.Empty;
         }
         /// <summary>
         /// Gets the selector of a page.

@@ -39,15 +39,12 @@ namespace myTNB.Mobile
             , string userID
             , string userName)
         {
-
             try
             {
                 IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
                 try
                 {
-                    SearchApplicationTypeResponse response = await service.SearchApplicationType(roleID
-                        , userID
-                        , userName
+                    SearchApplicationTypeResponse response = await service.SearchApplicationType(AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken());
                     if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
@@ -108,14 +105,10 @@ namespace myTNB.Mobile
                 IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
                 try
                 {
-                    var x = await service.GetApplicationStatus(applicationType
-                        , searchType
-                        , searchTerm
-                        , NetworkService.GetCancellationToken());
-
                     GetApplicationStatusResponse response = await service.GetApplicationStatus(applicationType
                         , searchType
                         , searchTerm
+                        , AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken());
 
                     if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
