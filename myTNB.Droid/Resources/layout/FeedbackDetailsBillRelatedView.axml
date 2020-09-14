@@ -140,6 +140,33 @@
                     android:layout_marginBottom="16dp"></View>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TextInputLayoutIsOwner"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:scrollHorizontally="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    app:errorEnabled="false"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                    <EditText
+                        android:id="@+id/EditTextIsOwner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:drawablePadding="6dp"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:hint=""
+                        android:importantForAutofill="noExcludeDescendants"
+                        android:inputType="text|textMultiLine"
+                        android:maxLines="6"
+                        android:paddingTop="5dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/TextInputLayoutRelationOwner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -166,9 +166,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 mobileNumberFieldContainer.RemoveAllViews();
                 mobileNumberInputComponent = new MobileNumberInputComponent(this);
                 mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
-                mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
                 mobileNumberInputComponent.SetMobileNumberLabel(Utility.GetLocalizedCommonLabel("mobileNo"));
                 mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
+                mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
                 mobileNumberFieldContainer.AddView(mobileNumberInputComponent);
 
                 ClearFields();

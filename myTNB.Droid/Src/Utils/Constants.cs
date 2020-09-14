@@ -126,6 +126,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int RUNTIME_PERMISSION_CAMERA_REQUEST_CODE = 0x06;
         internal static readonly int RUNTIME_PERMISSION_GALLERY_REQUEST_CODE = 0x07;
         internal static readonly int RUNTIME_PERMISSION_LOCATION_REQUEST_CODE = 0x08;
+        internal static readonly int RUNTIME_PERMISSION_GALLERY_PDF_REQUEST_CODE = 0x10;
 
 
 
@@ -136,10 +137,10 @@ namespace myTNB_Android.Src.Utils
         internal struct SERVER_URL
         {
 #if DEBUG || STUB
-            //internal static readonly string END_POINT = "http://10.215.128.191:89";
-            //internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";
-            internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
-            internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
+            internal static readonly string END_POINT = "http://10.215.128.191:89";
+            internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";
+            //internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
+            //internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappdev.page.link";
 #elif DEVELOP || SIT
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";

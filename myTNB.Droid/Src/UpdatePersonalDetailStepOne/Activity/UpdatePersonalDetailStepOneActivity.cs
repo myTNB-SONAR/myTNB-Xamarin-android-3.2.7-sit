@@ -9,8 +9,6 @@ using Android.Content.PM;
 using Android.Opengl;
 using Android.OS;
 using Android.Runtime;
-
-
 using Android.Text;
 using Android.Views;
 using Android.Widget;
@@ -20,6 +18,9 @@ using CheeseBind;
 using Google.Android.Material.TextField;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Common.Activity;
+using myTNB_Android.Src.Common.Model;
+using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.UpdatePersonalDetailStepOne.Fragment;
 using myTNB_Android.Src.UpdatePersonalDetailStepOne.Model;
 using myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP;
@@ -41,16 +42,10 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
     public class UpdatePersonalDetailStepOneActivity : BaseToolbarAppCompatActivity, UpdatePersonalDetailStepOneContract.IView
     {
 
-        // , View.IOnTouchListener
         UpdatePersonalDetailStepOnePresenter mPresenter;
         UpdatePersonalDetailStepOneContract.IUserActionsListener userActionsListener;
         const string PAGE_ID = "UpdatePersonalDetailsFirstStep";
 
-        //[BindView(Resource.Id.infotxtIsThisAcc)]
-        //TextView infotxtIsThisAcc;
-
-        //[BindView(Resource.Id.infoLabeltxtWhoIsRegistered)]
-        //TextView infoLabeltxtWhoIsRegistered;
 
         [BindView(Resource.Id.TextView_whatIsYourRelationship)]
         TextView TextView_whatIsYourRelationship;
@@ -73,13 +68,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
         [BindView(Resource.Id.txtIC)]
         TextView txtIC;
 
-        //[BindView(Resource.Id.txtInputLayoutCurrentICNumber)]
-        //TextInputLayout txtInputLayoutCurrentICNumber;
-
-
-        //[BindView(Resource.Id.txtGeneralCurrentICNumber)]
-        //EditText txtGeneralCurrentICNumber;
-
         [BindView(Resource.Id.txtInputLayoutNewIC)]
         TextInputLayout txtInputLayoutNewIC;
 
@@ -90,20 +78,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
         [BindView(Resource.Id.txtOwnerName)]
         TextView txtOwnerName;
 
-
-
-
         [BindView(Resource.Id.pageStep)]
         TextView pageStep;
-
-
-
-
-        //[BindView(Resource.Id.txtInputLayoutCurrentOwnerName)]
-        //TextInputLayout txtInputLayoutCurrentOwnerName;
-
-        //[BindView(Resource.Id.txtGeneralCurrentOwnerName)]
-        //EditText txtGeneralCurrentOwnerName;
 
         [BindView(Resource.Id.txtInputLayoutNewOwnerName)]
         TextInputLayout txtInputLayoutNewOwnerName;
@@ -113,21 +89,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
         [BindView(Resource.Id.txtMobileNumber)]
         TextView txtMobileNumber;
-
-
-        [BindView(Resource.Id.txtInputLayoutCurrentMobileNumber)]
-        TextInputLayout txtInputLayoutCurrentMobileNumber;
-
-        [BindView(Resource.Id.txtGeneralCurrentMobileNumber)]
-        EditText txtGeneralCurrentMobileNumber;
-
-
-        [BindView(Resource.Id.txtInputLayoutNewMobileNumber)]
-        TextInputLayout txtInputLayoutNewMobileNumber;
-
-        [BindView(Resource.Id.txtNewMobileNumber)]
-        EditText txtNewMobileNumber;
-
 
         [BindView(Resource.Id.txtEmailAddress)]
         TextView txtEmailAddress;
@@ -175,14 +136,11 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
         [BindView(Resource.Id.txtNewPremiseAddress)]
         EditText txtNewPremiseAddress;
 
-
-
         [BindView(Resource.Id.btnNext)]
         Button btnNext;
 
         [BindView(Resource.Id.LinearLayout_relationShipOwner)]
         LinearLayout LinearLayout_relationShipOwner;
-
 
         [BindView(Resource.Id.LinearLayout_IC)]
         LinearLayout LinearLayout_IC;
@@ -201,7 +159,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
         [BindView(Resource.Id.LinearLayout_PremiseAddress)]
         LinearLayout LinearLayout_PremiseAddress;
-
 
         [BindView(Resource.Id.TextView_updateOnOwnerBehalf)]
         TextView TextView_updateOnOwnerBehalf;
@@ -249,15 +206,13 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
         [BindView(Resource.Id.infoLabeltxtWhoIsRegistered)]
         TextView infoLabeltxtWhoIsRegistered;
 
-
         [BindView(Resource.Id.TextViewDoINeedOwnerConsent)]
         TextView TextViewDoINeedOwnerConsent;
-        
 
+        [BindView(Resource.Id.mobileNumberFieldContainer)]
+        LinearLayout mobileNumberFieldContainer;
 
-
-
-
+        private MobileNumberInputComponent mobileNumberInputComponent;
 
         private bool toggleChkBoxIC = false;
 
@@ -270,6 +225,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
         private bool toggleChkMailingAddress = false;
 
         private bool toggleChkPremiseAddress = false;
+
+        private bool isMobileNumberValidated = false;
 
         private bool isRegisteredOwner;
 
@@ -291,6 +248,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
         private string pageStepTitle;
 
+        const int COUNTRY_CODE_SELECT_REQUEST = 1;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -298,12 +257,12 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             try
             {
 
-                //get data form prev page
+                
                 Bundle extras = Intent.Extras;
            
                 if (extras != null)
                 {
-                    ///PAGE TITLE FROM BEFORE PAGE
+                    
                     if (extras.ContainsKey(Constants.ACCOUNT_NUMBER))
                     {
                         caNumber = extras.GetString(Constants.ACCOUNT_NUMBER);
@@ -323,26 +282,16 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                 }
 
 
-                // Intent intent = Intent;
                 SetToolBarTitle(pageTitle);
 
-
-                //Set Presenter
                 this.mPresenter = new UpdatePersonalDetailStepOnePresenter(this);
 
-
-
-                // set font
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountType, selector_account_type,  txtOwnerName, txtIC,txtMobileNumber, txtEmailAddress, txtMailingAddress, txtPremiseAddress); //txtView
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutRelationshipOther,  txtInputLayoutNewIC,   txtInputLayoutNewOwnerName, txtInputLayoutCurrentMobileNumber, txtInputLayoutNewMobileNumber, txtInputLayoutNewPremiseAddress); //inputLay
-                TextViewUtils.SetMuseoSans500Typeface(EditText_relationshipOther,  txtNewIC,  txtNewOwnerName, txtGeneralCurrentMobileNumber, txtNewMobileNumber); //edit text
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutRelationshipOther,  txtInputLayoutNewIC,   txtInputLayoutNewOwnerName, txtInputLayoutNewPremiseAddress); //inputLay
+                TextViewUtils.SetMuseoSans500Typeface(EditText_relationshipOther,  txtNewIC,  txtNewOwnerName); //edit text
                 TextViewUtils.SetMuseoSans500Typeface(infotxtIsThisAcc, TextView_whatIsYourRelationship, infotxtTitle_Which_information, infoLabeltxtWhoIsRegistered, TextViewDoINeedOwnerConsent, TextView_updateOnOwnerBehalf);  //txtView
-                // infoLabeltxtWhoIsRegistered, , infoLabelDoIneedOwnerConsent
-                //  TextViewUtils.SetMuseoSans500Typeface();
-                //txtGeneralCurrentICNumber txtGeneralCurrentOwnerName  txtInputLayoutCurrentICNumber   txtInputLayoutCurrentOwnerName
-
+ 
                 //TRANSLATION 
-
                 infotxtIsThisAcc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "registeredTitle");
                 btnNo.Text = Utility.GetLocalizedLabel("Common", "no");
                 btnYes.Text = Utility.GetLocalizedLabel("Common", "yes");
@@ -362,49 +311,30 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                 TextViewDoINeedOwnerConsent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "ownerConsentInfo");
 
 
-
                 txtInputLayoutNewIC.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "icHint");
                 txtInputLayoutNewOwnerName.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "accNameHint");
-                txtInputLayoutNewMobileNumber.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "mobileNumberHint");
                 txtInputLayoutNewEmailAddress.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "emailAddressHint");
                 txtInputLayoutNewMailingAddress.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "mailingAddressHint");
                 txtInputLayoutNewPremiseAddress.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "premiseAddressHint");
                 txtInputLayoutRelationshipOther.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "otherRelationshipHint");
-              
-
-
-
-
-
-
-
-
+                
                 //disablling the button and other layout
                 this.userActionsListener.OnDisableSubmitButton();
                 this.userActionsListener.OnHideOnCreate();
 
-
                 SelectRelationshipModel Child = new SelectRelationshipModel();
                 Child.Id = "1";
-                Child.Type = Utility.GetLocalizedLabel("SubmitEnquiry", "childTitle"); // translate for child  Utility.GetLocalizedLabel("AddAccount", "residential")
+                Child.Type = Utility.GetLocalizedLabel("SubmitEnquiry", "childTitle"); 
                 Child.IsSelected = true;
                 selectedAccountRelationship = Child;
                 selector_account_type.Text = selectedAccountRelationship.Type;
                 ownerRelationship = Utility.GetLocalizedLabel("SubmitEnquiry", "childTitle");
-                // selector_account_type.SetOnTouchListener(this);  //here
 
-
-                //Add listener to InputLayout
-
-                //     txtNewIC.SetOnTouchListener(this);
                 txtNewIC.TextChanged += TextChanged;
                 txtNewIC.AddTextChangedListener(new InputFilterFormField(txtNewIC, txtInputLayoutNewIC));
 
                 txtNewOwnerName.TextChanged += TextChanged;
                 txtNewOwnerName.AddTextChangedListener(new InputFilterFormField(txtNewOwnerName, txtInputLayoutNewOwnerName));
-
-                txtNewMobileNumber.TextChanged += TextChanged;
-                txtNewMobileNumber.AddTextChangedListener(new InputFilterFormField(txtNewMobileNumber, txtInputLayoutNewMobileNumber));
 
                 txtNewEmailAddress.TextChanged += TextChanged;
                 txtNewEmailAddress.AddTextChangedListener(new InputFilterFormField(txtNewEmailAddress, txtInputLayoutNewEmailAddress));
@@ -417,7 +347,20 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
                 EditText_relationshipOther.TextChanged += TextChanged;
                 EditText_relationshipOther.AddTextChangedListener(new InputFilterFormField(EditText_relationshipOther, txtInputLayoutRelationshipOther));
-                
+
+                //mobile number section
+                mobileNumberFieldContainer.RemoveAllViews();
+                mobileNumberInputComponent = new MobileNumberInputComponent(this);
+                mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
+                mobileNumberInputComponent.SetMobileNumberLabel(Utility.GetLocalizedCommonLabel("mobileNo"));
+                mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
+                mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
+                mobileNumberFieldContainer.AddView(mobileNumberInputComponent);
+
+                mobileNumberFieldContainer.Visibility = ViewStates.Gone;  //hide mobile number when initialize
+
+
+
 
 
 
@@ -427,8 +370,35 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                 Utility.LoggingNonFatalError(e);
             }
 
-            // Create your application here
+            
         }
+
+        public void MobileNumberComponent()
+        {
+           
+        }
+
+    
+
+        private void OnValidateMobileNumber(bool isValidated)
+        {
+            if (isValidated)
+            {
+                isMobileNumberValidated = true;
+            }
+            else
+            {
+                isMobileNumberValidated = false;
+            }
+            parseCheckRequiredField();
+        }
+
+        private void OnTapCountryCode()
+        {
+            Intent intent = new Intent(this, typeof(SelectCountryActivity));
+            StartActivityForResult(intent, COUNTRY_CODE_SELECT_REQUEST);
+        }
+
 
         [Preserve]
         private void TextChanged(object sender, Android.Text.TextChangedEventArgs e)
@@ -450,7 +420,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
             string ownerName = txtNewOwnerName.Text;
 
-            string mobileNumber = txtNewMobileNumber.Text;
+            bool mobileNumber = isMobileNumberValidated;
 
             string emailAddress = txtNewEmailAddress.Text;
 
@@ -504,6 +474,12 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                             }
                         }
                     }
+                }
+                else if (requestCode == COUNTRY_CODE_SELECT_REQUEST)
+                {
+                    string dataString = data.GetStringExtra(Constants.SELECT_COUNTRY_CODE);
+                    Country selectedCountry = JsonConvert.DeserializeObject<Country>(dataString);
+                    mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
                 }
             }
             catch (Exception e)
@@ -649,15 +625,16 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
                 // check checkBox 
                 if (toggleChkMobileNumber)
-                {
-                    if (TextUtils.IsEmpty(txtNewMobileNumber.Text.Trim())|| txtNewMobileNumber.Text.Trim()=="+60")
+                {   //todo checking for mobile number 
+
+                    string mobileNumber = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
+                    if (TextUtils.IsEmpty(mobileNumber) || mobileNumber == "+60")
                     {
-                        //ShowEmptyError(typeOfLayout.mobileNumber);
-                        ShowInvalidMobileNoError();
+                        mobileNumberInputComponent.RaiseError(Utility.GetLocalizedLabel("SubmitEnquiry", "mobileReq"));
                         DisableSubmitButton();
                         return;
                     }
-                
+
                 }
 
                 // check checkBox 
@@ -750,8 +727,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                 Intent.PutExtra(Constants.ACCOUNT_EMAIL_ADDRESS, txtNewEmailAddress.Text.Trim());
             }
             if (toggleChkMobileNumber)
-            {
-                Intent.PutExtra(Constants.ACCOUNT_MOBILE_NUMBER, txtNewMobileNumber.Text.Trim());
+            {   
+                Intent.PutExtra(Constants.ACCOUNT_MOBILE_NUMBER, mobileNumberInputComponent.GetMobileNumberValueWithISDCode());
             }
             if (toggleChkMailingAddress)
             {
@@ -801,11 +778,15 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
         {
             try
             {
+                //todo error hint mobile number
 
-                txtInputLayoutNewMobileNumber.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMobileNumber);
+                //no  implementation
 
-                txtInputLayoutNewMobileNumber.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
+                //txtInputLayoutNewMobileNumber.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMobileNumber);
+                //txtInputLayoutNewMobileNumber.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
+                
+
             }
             catch (Exception e)
             {
@@ -813,20 +794,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             }
         }
 
-        public void UpdateMobileNumber(string mobile_no)
-        {
-            try
-            {
-                if (txtNewMobileNumber.Text != mobile_no)
-                {
-                    txtNewMobileNumber.Text = mobile_no;
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
 
         public void cleanAllField()
         {
@@ -834,7 +801,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
             txtNewOwnerName.Text = "";
 
-            txtNewMobileNumber.Text="";
+            mobileNumberInputComponent.ClearMobileNumber(); 
+
+            mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry()); // set default country
 
             txtNewEmailAddress.Text = "";
 
@@ -854,9 +823,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
             isOtherRelationShip(false);  //  handle ui
 
-
-
-
             toggleChkBoxIC = false;
 
             toggleChkOwnerName = false;
@@ -871,7 +837,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
             txtInputLayoutNewIC.Visibility = ViewStates.Gone;
             txtInputLayoutNewOwnerName.Visibility = ViewStates.Gone;
-            txtInputLayoutNewMobileNumber.Visibility = ViewStates.Gone;
+            mobileNumberFieldContainer.Visibility = ViewStates.Gone;  
             txtInputLayoutNewEmailAddress.Visibility = ViewStates.Gone;
             txtInputLayoutNewMailingAddress.Visibility = ViewStates.Gone;
             txtInputLayoutNewPremiseAddress.Visibility = ViewStates.Gone;
@@ -879,11 +845,14 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
             txtInputLayoutNewIC.Error = "";
             txtInputLayoutNewOwnerName.Error = "";
-            txtInputLayoutNewMobileNumber.Error = "";
+            mobileNumberInputComponent.ClearError();
             txtInputLayoutNewEmailAddress.Error = "";
             txtInputLayoutNewMailingAddress.Error = "";
             txtInputLayoutNewPremiseAddress.Error = "";
             txtInputLayoutRelationshipOther.Error = "";
+
+
+  
 
             toggleCounter = 0;
 
@@ -966,6 +935,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             {
                 txtInputLayoutNewIC.Visibility = ViewStates.Gone;
                 txtNewIC.Text = "";   // remove if untick
+                ClearErrors(typeOfLayout.ic);
                 parseCheckRequiredField();
                 MinustoggleCounter();
             }
@@ -1000,6 +970,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             {
                 txtInputLayoutNewOwnerName.Visibility = ViewStates.Gone;
                 txtNewOwnerName.Text = "";
+                ClearErrors(typeOfLayout.ownerName);
                 parseCheckRequiredField();
                 MinustoggleCounter();
             }
@@ -1023,15 +994,15 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
             if (toggleChkMobileNumber)
             {
-                txtInputLayoutNewMobileNumber.Visibility = ViewStates.Visible;
-                UpdateMobileNumber("+60");
-               // parseCheckRequiredField();
+                mobileNumberFieldContainer.Visibility = ViewStates.Visible;
                 AddtoggleCounter();
             }
             else
-            {
-                txtInputLayoutNewMobileNumber.Visibility = ViewStates.Gone;
-                UpdateMobileNumber("+60");
+            {  
+                 
+                mobileNumberFieldContainer.Visibility = ViewStates.Gone;
+                mobileNumberInputComponent.ClearMobileNumber();
+                mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
                 parseCheckRequiredField();
                 MinustoggleCounter();
             }
@@ -1068,6 +1039,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             {
                 txtInputLayoutNewEmailAddress.Visibility = ViewStates.Gone;
                 txtNewEmailAddress.Text = "";
+                ClearErrors(typeOfLayout.emailAddress);
                 parseCheckRequiredField();
                 MinustoggleCounter();
             }
@@ -1103,6 +1075,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             {
                 txtInputLayoutNewMailingAddress.Visibility = ViewStates.Gone;
                 txtNewMailingAddress.Text = "";
+                ClearErrors(typeOfLayout.mailingAddress);
                 parseCheckRequiredField();
                 MinustoggleCounter();
             }
@@ -1138,6 +1111,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             {
                 txtInputLayoutNewPremiseAddress.Visibility = ViewStates.Gone;
                 txtNewPremiseAddress.Text = "";
+                ClearErrors(typeOfLayout.premiseAddress);
                 parseCheckRequiredField();
                 MinustoggleCounter();
             }
@@ -1352,13 +1326,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                  .Build();
             infoLabelWhoIsRegistered.Show();
 
-
-
-
-
-
-
-
         }
 
 
@@ -1368,16 +1335,24 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             {
                 txtInputLayoutNewIC.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewIC.FindViewById<TextView>(Resource.Id.textinput_error));
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewIC);
-                txtInputLayoutNewIC.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "icReq"); //Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");  // change lang 
+                if (txtInputLayoutNewIC.Error!= Utility.GetLocalizedLabel("SubmitEnquiry", "icReq"))
+                {
+                    txtInputLayoutNewIC.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "icReq");
+                }
+                
             }
 
             if (lay.Equals(typeOfLayout.emailAddress))
             {
                 txtInputLayoutNewEmailAddress.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewEmailAddress.FindViewById<TextView>(Resource.Id.textinput_error));
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewEmailAddress);
-                txtInputLayoutNewEmailAddress.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "emailReq"); //Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");  // change lang 
+                if (txtInputLayoutNewEmailAddress.Error!= Utility.GetLocalizedLabel("SubmitEnquiry", "emailReq"))
+                {
+                    txtInputLayoutNewEmailAddress.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "emailReq");
+                }
+                
+    
+
 
             }
 
@@ -1385,34 +1360,38 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             {
                 txtInputLayoutNewMailingAddress.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMailingAddress.FindViewById<TextView>(Resource.Id.textinput_error));
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMailingAddress);
-            
-                txtInputLayoutNewMailingAddress.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "mailingReq");  //Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");  // change lang 
-
+                if (txtInputLayoutNewMailingAddress.Error!= Utility.GetLocalizedLabel("SubmitEnquiry", "mailingReq"))
+                {
+                    txtInputLayoutNewMailingAddress.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "mailingReq");
+                }
+                
             }
 
             if (lay.Equals(typeOfLayout.mobileNumber))
             {
-                txtInputLayoutNewMobileNumber.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMobileNumber.FindViewById<TextView>(Resource.Id.textinput_error));
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMobileNumber);
-                txtInputLayoutNewMobileNumber.Error= Utility.GetLocalizedLabel("SubmitEnquiry", "mobileReq"); //Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");  // change lang 
+                mobileNumberInputComponent.RaiseError(Utility.GetLocalizedLabel("SubmitEnquiry", "mobileReq"));
             }
 
             if (lay.Equals(typeOfLayout.ownerName))
             {
                 txtInputLayoutNewOwnerName.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewOwnerName.FindViewById<TextView>(Resource.Id.textinput_error));
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewOwnerName);
-                txtInputLayoutNewOwnerName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "ownerReq"); //Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");  // change lang 
+                if (txtInputLayoutNewOwnerName.Error!= Utility.GetLocalizedLabel("SubmitEnquiry", "ownerReq"))
+                {
+                    txtInputLayoutNewOwnerName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "ownerReq");
+                }
+                
             }
 
             if (lay.Equals(typeOfLayout.premiseAddress))
             {
                 txtInputLayoutNewPremiseAddress.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPremiseAddress.FindViewById<TextView>(Resource.Id.textinput_error));
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPremiseAddress);
-                txtInputLayoutNewPremiseAddress.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "permisesReq");  //Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");  // change lang 
+                if(txtInputLayoutNewPremiseAddress.Error!= Utility.GetLocalizedLabel("SubmitEnquiry", "permisesReq"))
+                {
+                    txtInputLayoutNewPremiseAddress.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "permisesReq");
+                }
+                   
             }
         }
 
@@ -1421,45 +1400,58 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             // txtInputLayoutEmail.Error = null;
 
             if (lay.Equals(typeOfLayout.ic)){
-                txtInputLayoutNewIC.Error = null;
+                txtInputLayoutNewIC.Error = "";
             }
             if (lay.Equals(typeOfLayout.emailAddress))
             {
-                txtInputLayoutNewEmailAddress.Error = null;
+                txtInputLayoutNewEmailAddress.Error = "";
+
             }
             if (lay.Equals(typeOfLayout.mailingAddress))
             {
-                txtInputLayoutNewMailingAddress.Error = null;
+                txtInputLayoutNewMailingAddress.Error = "";
+     
             }
             if (lay.Equals(typeOfLayout.mobileNumber))
             {
-                txtInputLayoutNewMobileNumber.Error = null;
+                mobileNumberInputComponent.ClearError();  
             }
             if (lay.Equals(typeOfLayout.ownerName))
             {
-                txtInputLayoutNewOwnerName.Error = null;
+                txtInputLayoutNewOwnerName.Error = "";
+              
             }
             if (lay.Equals(typeOfLayout.premiseAddress))
             {
-                txtInputLayoutNewPremiseAddress.Error = null;
+                txtInputLayoutNewPremiseAddress.Error = "";
+            
             }
 
         }
 
-       public void ClearErrors()
+        public void ClearErrors(typeOfLayout lay) 
         {
-            txtInputLayoutNewIC.Error = null;
-            txtInputLayoutNewEmailAddress.Error = null;
-            txtInputLayoutNewMailingAddress.Error = null;
-            txtInputLayoutNewMobileNumber.Error = null;
-            txtInputLayoutNewOwnerName.Error = null;
-            txtInputLayoutNewPremiseAddress.Error = null;
+            if (lay.Equals(typeOfLayout.ic))
+                txtInputLayoutNewIC.Error = "";
+
+            if (lay.Equals(typeOfLayout.emailAddress))
+                txtInputLayoutNewEmailAddress.Error = "";
+
+            if (lay.Equals(typeOfLayout.mailingAddress))
+                txtInputLayoutNewMailingAddress.Error = "";
+
+            if (lay.Equals(typeOfLayout.mobileNumber))
+                mobileNumberInputComponent.ClearError();
+
+            if (lay.Equals(typeOfLayout.ownerName))
+                txtInputLayoutNewOwnerName.Error = "";
+
+            if (lay.Equals(typeOfLayout.premiseAddress))
+                txtInputLayoutNewPremiseAddress.Error = "";
         }
 
-       public void ShowInvalidError(typeOfLayout lay)
+        public void ShowInvalidError(typeOfLayout lay)
         {
-
-            //Utility.GetLocalizedErrorLabel("invalid_fullname"); 
 
 
             if (lay.Equals(typeOfLayout.ic))
@@ -1467,44 +1459,48 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                 
                 txtInputLayoutNewIC.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewIC.FindViewById<TextView>(Resource.Id.textinput_error));
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewIC);
-                txtInputLayoutNewIC.Error = Utility.GetLocalizedErrorLabel("invalid_icNumber");
+                if(txtInputLayoutNewIC.Error != Utility.GetLocalizedErrorLabel("invalid_icNumber"))
+                {
+                    txtInputLayoutNewIC.Error = Utility.GetLocalizedErrorLabel("invalid_icNumber");
+                }
+               
+
             }
             if (lay.Equals(typeOfLayout.emailAddress))
             {
                 txtInputLayoutNewEmailAddress.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewEmailAddress.FindViewById<TextView>(Resource.Id.textinput_error));
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewEmailAddress);
-                txtInputLayoutNewEmailAddress.Error = Utility.GetLocalizedErrorLabel("invalid_email"); ;
+                if (txtInputLayoutNewEmailAddress.Error!= Utility.GetLocalizedErrorLabel("invalid_email"))
+                {
+                    txtInputLayoutNewEmailAddress.Error = Utility.GetLocalizedErrorLabel("invalid_email");
+                }
+               
+
             }
             if (lay.Equals(typeOfLayout.mailingAddress))
             {
-                txtInputLayoutNewMailingAddress.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMailingAddress.FindViewById<TextView>(Resource.Id.textinput_error));
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMailingAddress);
-                //txtInputLayoutNewMailingAddress.Error = "Invalid mailing address";
+               // txtInputLayoutNewMailingAddress
+               // no implementation
             }
             if (lay.Equals(typeOfLayout.mobileNumber))
-            {
-                txtInputLayoutNewMobileNumber.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMobileNumber.FindViewById<TextView>(Resource.Id.textinput_error));
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMobileNumber);
-                txtInputLayoutNewMobileNumber.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber"); ;
+            {   //no implementation txtInputLayoutNewMobileNumber
+          
             }
             if (lay.Equals(typeOfLayout.ownerName))
             {
                 txtInputLayoutNewOwnerName.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewOwnerName.FindViewById<TextView>(Resource.Id.textinput_error));
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewOwnerName);
-                txtInputLayoutNewOwnerName.Error = Utility.GetLocalizedErrorLabel("invalid_fullname"); 
+                if(txtInputLayoutNewOwnerName.Error!= Utility.GetLocalizedErrorLabel("invalid_fullname"))
+                {   //this func is to cater bouncing effect on error
+                    txtInputLayoutNewOwnerName.Error = Utility.GetLocalizedErrorLabel("invalid_fullname");
+                }
+               
+
             }
             if (lay.Equals(typeOfLayout.premiseAddress))
             {
-
-                txtInputLayoutNewPremiseAddress.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPremiseAddress.FindViewById<TextView>(Resource.Id.textinput_error));
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPremiseAddress);
-               // txtInputLayoutNewPremiseAddress.Error = "Invalid premise address";
+                // no implementation txtInputLayoutNewPremiseAddress
+  
             }
         }
     }

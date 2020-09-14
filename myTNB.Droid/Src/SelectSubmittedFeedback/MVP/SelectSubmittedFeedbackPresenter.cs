@@ -128,16 +128,13 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
         {
             //if (mView.IsActive()) {
             this.mView.ShowProgressDialog();
-            //}
+          //  }
 
             try
             {
                 var submittedFeedbackResponse = await ServiceApiImpl.Instance.SubmittedFeedbackList(new SubmittedFeedbackListRequest());
 
-                //if (mView.IsActive())
-                //{
-                this.mView.HideProgressDialog();
-                //}
+           
 
                 if (submittedFeedbackResponse.IsSuccessResponse())
                 {
@@ -155,12 +152,21 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                         SubmittedFeedbackEntity.InsertOrReplace(sf);
                     }
 
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideProgressDialog();
+                    }
+
                     this.mView.ClearList();
 
                     this.mView.ShowList(submittedFeedbackList);
                 }
                 else
                 {
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideProgressDialog();
+                    }
                     this.mView.ShowRetryOptionsCancelledException(null, "");
                 }
             }

@@ -111,9 +111,8 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                    //handle if acc from outside show only CA number 
                 }
 
-                var tempData = feedbackDetails;
-
-                this.mView.ShowInputData(feedbackDetails.ServiceReqNo, feedbackDetails.StatusDesc, feedbackDetails.StatusCode, dateTime, accountNum, feedbackDetails.FeedbackMessage , feedbackDetails.FeedbackUpdateDetails , feedbackDetails.ContactName,feedbackDetails.ContactEmailAddress,feedbackDetails.ContactMobileNo , feedbackDetails.RelationshipWithCA , feedbackDetails.RelationshipWithCADesc);
+                
+                this.mView.ShowInputData(feedbackDetails.ServiceReqNo, feedbackDetails.StatusDesc, feedbackDetails.StatusCode, dateTime, accountNum, feedbackDetails.FeedbackMessage , feedbackDetails.FeedbackUpdateDetails , feedbackDetails.ContactName,feedbackDetails.ContactEmailAddress,feedbackDetails.ContactMobileNo , feedbackDetails.RelationshipWithCA , feedbackDetails.RelationshipWithCADesc , feedbackDetails.IsOwner);
                 this.mView.ShowImages(attachImageList);
 
                 this.mView.HideProgressDialog();

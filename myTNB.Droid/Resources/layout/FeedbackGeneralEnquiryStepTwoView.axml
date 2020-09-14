@@ -8,8 +8,8 @@
     android:layout_centerHorizontal="true"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
-    android:theme="@style/Theme.FaultyStreetLamps"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:theme="@style/Theme.FaultyStreetLamps">
 
     <LinearLayout
         android:id="@+id/mainView"
@@ -29,9 +29,9 @@
             android:layout_marginRight="20dp"
             android:ellipsize="end"
             android:gravity="top|center"
-            android:paddingTop="4dp"
             android:maxEms="20"
             android:maxLines="1"
+            android:paddingTop="4dp"
             android:text="Step 2 of 2"
             android:textColor="@color/white"
             android:textSize="12dp" />
@@ -64,10 +64,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="16dp"
-                        android:paddingTop="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginBottom="16dp"
                         android:layout_weight="1"
+                        android:paddingTop="16dp"
                         android:text="@string/GeneralEnquiry2of2_who_shouldWeCntct"
                         android:textAllCaps="false"
                         android:textColor="@color/powerBlue"
@@ -86,10 +86,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_marginTop="16dp"
-                            android:layout_marginBottom="4dp"
                             android:layout_marginRight="16dp"
+                            android:layout_marginBottom="4dp"
                             app:errorEnabled="true"
-                            app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"    
+                            app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
                             app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                             <EditText
@@ -111,9 +111,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
-                            app:errorEnabled="true"
                             android:layout_marginBottom="4dp"
-                           app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+                            app:errorEnabled="true"
+                            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                             <EditText
                                 android:id="@+id/txtEmail"
@@ -128,29 +128,15 @@
                                 android:textSize="16dp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/txtInputLayoutPhoneNumber"
-                            android:layout_width="match_parent"
+                        <LinearLayout
+                            android:id="@+id/mobileNumberFieldContainer"
                             android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
-                            app:errorEnabled="true"
-                            android:layout_marginBottom="4dp"
-                           app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+                            android:layout_marginBottom="23dp"
+                            android:orientation="vertical"/>
 
-                            <EditText
-                                android:id="@+id/txtPhoneNumber"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawablePadding="6dp"
-                                android:hint="@string/GeneralEnquiry2of2_mobileNumber"
-                                android:inputType="phone"
-                                android:digits="1234567890"
-                                android:maxLines="1"
-                                android:paddingTop="5dp"
-                                android:singleLine="true"
-                                android:textSize="16dp" />
-                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
 
                     <View
@@ -164,18 +150,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
-                android:paddingBottom="16dp"
                 android:background="@color/white"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="16dp">
 
                 <LinearLayout
                     android:id="@+id/LinearLayout_TNC"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="16dp"
-                     android:paddingTop="16dp"
-                     android:orientation="horizontal"
-                    android:layout_marginRight="16dp">
+                    android:layout_marginRight="16dp"
+                    android:orientation="horizontal"
+                    android:paddingTop="16dp">
 
                     <CheckBox
                         android:id="@+id/agreementCheckbox"
@@ -204,8 +190,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp"
+                    android:layout_marginRight="16dp"
                     android:background="@color/white">
 
                     <Button

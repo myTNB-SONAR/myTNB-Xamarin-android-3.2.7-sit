@@ -9,10 +9,6 @@ using Android.OS;
 using Android.Preferences;
 using Android.Provider;
 using Android.Runtime;
-
-
-
-
 using Android.Text;
 using Android.Util;
 using Android.Views;
@@ -201,8 +197,10 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     updatePersonalInfoConstraint.Visibility = ViewStates.Gone;
                 }
 
-
-               
+                //210031353308
+#if DEBUG
+                txtAccountNo.Text = "210031353308";
+#endif
 
 
 
