@@ -8,10 +8,6 @@ using Android.Util;
 using System;
 using CheeseBind;
 using Android.Widget;
-
-
-using System.Globalization;
-using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models;
 using System.Collections.Generic;
 using Newtonsoft.Json;
@@ -23,7 +19,7 @@ using myTNB.Mobile;
 using System.Linq;
 using myTNB;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
-using System.Text.RegularExpressions;
+using System.Text;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 {
@@ -54,13 +50,14 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         [BindView(Resource.Id.btnSearchApplication)]
         Button btnSearchApplication;
 
+        TypeModel selectedType = new TypeModel();
         const string PAGE_ID = "ApplicationStatus";
 
         private string targetApplicationType = "";
         private string targetApplicationTypeId = "";
         private string targetSearchBy = "";
         private string targetNumber = "";
-
+        private bool isEdiging = false;
         List<TypeModel> mTypeList = new List<TypeModel>();
         List<SearchByModel> mSearchByList = new List<SearchByModel>();
 
@@ -149,7 +146,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         private async void GetApplicationStatus()
         {
             GetApplicationStatusResponse applicationStatusResponse = await ApplicationStatusManager.Instance.GetApplicationStatus("ASR", "ApplicationNo", "362");
-            
+
 
             Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
             applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(applicationStatusResponse.Content));
@@ -189,10 +186,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
             txtSearchBy.EnableClick();
             txtSearchBy.SetOnTouchListener(this);
-
-            txtServiceRequestNum.TextChanged += TxtServiceRequestNum_TextChanged;
-           
-
+            txtServiceRequestNum.AfterTextChanged += TxtServiceRequestNum_AfterTextChanged;
             txtInputLayoutSearchBy.Visibility = ViewStates.Gone;
             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
 
@@ -222,86 +216,134 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             //mSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>("[{\"Title\":\"Application Number\",\"Code\":\"AN\"},{\"Title\":\"Electricity Account Number\",\"Code\":\"EAN\"},{\"Title\":\"Service Notification Number\",\"Code\":\"SNN\"},{\"Title\":\"Service Request Number\",\"Code\":\"SRN\"}]");
         }
 
-        
-
-        private void TxtServiceRequestNum_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
+        private void TxtServiceRequestNum_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e)
         {
             try
             {
-                txtServiceRequestNum.Text = FormatApplicationNumber("ASR-###-###-####", e.Text.ToString());
-                //if (c._selectedSearchType == "ApplicationNo")
-                //{
-                //    //CustomUITextField textField = sender as CustomUITextField;
-                //    string input = e.Text.ToString();
-                //    string format = c._selectedFormat;
-                //    int firstIndex = format.IndexOf("#");
-                //    int lastIndex = format.LastIndexOf("#");
-                //    string preffix = string.Empty;
-                //    string suffix = string.Empty;
-                //    int location = e.Text. (int)range.Location;
+                //if(selectedType.SearchTypes.Where(x=>x.SearchTypeId == ) )
+                if (isEdiging) return;
+                isEdiging = true;
 
-                //    if (firstIndex > 0)
-                //    {
-                //        preffix = format.Substring(0, firstIndex);
-                //        if (IsValid(preffix) && location < firstIndex)
-                //        {
-                //            //return false;
-                //        }
-                //    }
+                string format = "RE-###-###-####-TS";
+                bool isPreffixChange = false;
+                string inputString = txtServiceRequestNum.Text.ToString();
+                int firstIndex = format.IndexOf("#");
+                int lastIndex = format.LastIndexOf("#");
+                string preffix = string.Empty;
+                string suffix = string.Empty;
+                int stringlength = 0;
+                int location = txtServiceRequestNum.SelectionStart;
 
-                //    if (lastIndex < format.Length)
-                //    {
-                //        suffix = format.Substring(lastIndex + 1, format.Length - (lastIndex + 1));
-                //    }
-                //    Log.Debug("preffix: " , preffix);
-                //    Log.Debug("suffix: " , suffix);
-                //    if (input.Length == format.Length && IsValid(suffix))
-                //    {
-                //        input = input.Replace(suffix, string.Empty);
-                //        if (range.Location >= input.Length)
-                //        {
-                //            //return false;
-                //        }
-                //    }
-                //    e.
-                //    string replacedString = (input).Replace(range, replacementString).ToString();
-                //    //if (replacementString == "")
-                //    //{
-                //    //    string currentChar = input[location].ToString();
-                //    //    bool isLetter;
-                //    //    if (currentChar == "-" && location > 0)
-                //    //    {
-                //    //        int preLocation = location - 1;
-                //    //        isLetter = Regex.Matches(format[preLocation].ToString(), @"[a-zA-Z]").Count > 0;
-                //    //        textField.Text = FormatApplicationNumber(format
-                //    //            , isLetter ? input : replacedString);
-                //    //        //return false;
-                //    //    }
-                //    //    else if (location < format.Length && Regex.Matches(format[location].ToString(), @"[a-zA-Z]").Count > 0)
-                //    //    {
-                //    //        //return false;
-                //    //    }
-                //    //}
-                //    txtServiceRequestNum.Text = FormatApplicationNumber(format
-                //        , replacedString);
-                //    //DispatchQueue.MainQueue.DispatchAsync(() =>
-                //    //{
-                //        int cursorLocation = location;
-                //        if (location < textField.Text.Length && textField.Text[location] == '-')
-                //        {
-                //            cursorLocation += 1;
-                //        }
 
-                //        UITextPosition newPosition = textField.GetPosition(textField.BeginningOfDocument
-                //            , cursorLocation + replacementString.Length);
-                //        if (newPosition != null)
-                //        {
-                //            textField.SelectedTextRange = textField.GetTextRange(newPosition, newPosition);
-                //        }
-                //});
-                //return false;
-                // }
+                if (!isEdiging && location > 0 && inputString[location - 1] == '-')
+                {
+                    return;
+                }
 
+
+                preffix = format.Substring(0, firstIndex);
+                if (preffix.Length > inputString.Length)
+                {
+                    inputString = preffix;
+                    location = preffix.Length;
+                }
+                if (lastIndex < format.Length)
+                {
+                    suffix = format.Substring(lastIndex + 1, format.Length - (lastIndex + 1));
+                    stringlength = ((format.Length - preffix.Length) - suffix.Length);
+                    if (format.Length - 1 == location)
+                    {
+                        location = stringlength + preffix.Length;
+                        if (suffix != string.Empty)
+                        {
+                            inputString = inputString != string.Empty ? inputString.Substring(0, preffix.Length + stringlength) : inputString;
+                        }
+                    }
+                }
+                location = (suffix != string.Empty && location > 0 && inputString.Length > 0 && inputString[location - 1] == '-') ? location - 1 : location;
+                 if (inputString.Length > format.Length)
+                {
+
+                    inputString = inputString.Substring(0, stringlength + preffix.Length) + suffix;
+                    location = stringlength + preffix.Length;
+
+                }
+                else if (suffix != string.Empty && inputString.Length < format.Length)
+                {
+                    inputString = inputString.Replace(suffix, string.Empty);
+                }
+                else
+                {
+                    inputString = txtServiceRequestNum.Text.ToString();
+                }
+                if (inputString.Length >= preffix.Length)
+                {
+
+                    inputString = inputString.Remove(0, preffix.Length);
+                }
+                var txtFirstIndex = inputString.IndexOf("-");
+                var txtPreffix = txtFirstIndex > 0 ? inputString.Substring(0, txtFirstIndex) : ".";
+                int preIndexChar = txtServiceRequestNum.Text.ToString().Count(f => f == '-');
+                // removing old dashes
+                StringBuilder sb = new StringBuilder();
+                sb.Append(inputString.Replace("-", ""));
+                if (!preffix.Contains(txtPreffix))
+                {
+                    sb.Insert(0, preffix);
+                }
+                if (sb.Length > preffix.Length + 3)
+                {
+                    sb.Insert(preffix.Length + 3, "-");
+
+                }
+                if (sb.Length > preffix.Length + 7)
+                {
+                    sb.Insert(preffix.Length + 7, "-");
+
+                }
+                if (suffix != string.Empty && inputString.Contains(suffix))
+                {
+                    sb = new StringBuilder();
+                    sb.Append(preffix);
+                    sb.Append(inputString);
+                    txtServiceRequestNum.SetText(sb.ToString(), TextView.BufferType.Editable);
+
+                }
+                else
+                {
+                    if (suffix != string.Empty && sb.Length == format.Length - suffix.Length)
+                    {
+                        sb.Append(suffix);
+                    }
+                    txtServiceRequestNum.SetText(sb.ToString(), TextView.BufferType.Editable);
+                }
+                int postIndexChar = sb.ToString().Count(f => f == '-');
+                
+                if (preIndexChar == 1)
+                {
+                    if (postIndexChar == 2 || postIndexChar == 3)
+                    {
+                        location += 1;
+                    }
+                }
+                if (preIndexChar == 2)
+                {
+                    if (postIndexChar == 3)
+                    {
+                        location += 1;
+                    }
+                }
+                if (location == 1)
+                {
+
+                    txtServiceRequestNum.SetSelection(preffix.Length);
+                }
+                else
+                {
+
+                    txtServiceRequestNum.SetSelection(location);
+                }
+               
                 if (txtServiceRequestNum.Text != string.Empty)
                 {
                     EnableButton();
@@ -310,85 +352,15 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 {
                     DisableButton();
                 }
+                isEdiging = false;
             }
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
         }
-        private string FormatApplicationNumber(string format
-            , string replacedString)
-        {
 
-            Log.Debug("format: " , format);
-            Log.Debug("replacedString: " , replacedString);
-
-            string formattedInput = replacedString.Replace("-", "");
-            int lastIndex = format.LastIndexOf("#");
-            string suffix = string.Empty;
-            if (lastIndex < format.Length)
-            {
-                suffix = format.Substring(lastIndex + 1, format.Length - (lastIndex + 1));
-            }
-
-            Log.Debug("suffix: " , suffix);
-            List<int> dashIndices = new List<int>();
-            for (int i = 0; i < format.Length; i++)
-            {
-                if (i < format.Length && format[i] == '-')
-                {
-                    dashIndices.Add(i);
-                }
-            }
-            Log.Debug("removedDash: " , formattedInput);
-            for (int j = 0; j < dashIndices.Count(); j++)
-            {
-                int index = dashIndices[j];
-                if (index < formattedInput.Length)
-                {
-                    formattedInput = formattedInput.Insert(index, "-");
-                    Log.Debug("test: " , formattedInput);
-                }
-                else if (index == formattedInput.Length && index == format.IndexOf("-"))
-                {
-                    formattedInput = formattedInput.Insert(index, "-");
-                    Log.Debug("test: " , formattedInput);
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            if (IsValid(suffix))
-            {
-                if (dashIndices != null && dashIndices.Count > 0)
-                {
-                    if (dashIndices[dashIndices.Count - 1] < formattedInput.Length)
-                    {
-                        formattedInput = formattedInput.Remove(dashIndices[dashIndices.Count - 1]) + suffix;
-                    }
-                    else if (dashIndices[dashIndices.Count - 1] == formattedInput.Length)
-                    {
-                        formattedInput += suffix;
-                    }
-                    else
-                    {
-                        formattedInput = formattedInput.Replace(suffix, string.Empty);
-                    }
-                }
-                else
-                {
-                    formattedInput = formattedInput.Replace(suffix, string.Empty);
-                }
-            }
-            else if (lastIndex + 1 < formattedInput.Length)
-            {
-                formattedInput = formattedInput.Remove(lastIndex + 1);
-            }
-            Log.Debug("Applied Dash: " ,formattedInput);
-            return formattedInput;
-        }
+  
         public bool IsValid(string key)
         {
             return !string.IsNullOrEmpty(key) && !string.IsNullOrWhiteSpace(key);
@@ -410,7 +382,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         {
                             txtSearchBy.Text = "";
                             resultTypeList = JsonConvert.DeserializeObject<List<TypeModel>>(extra.GetString(Constants.APPLICATION_STATUS_TYPE_LIST_KEY));
-                            TypeModel selectedType = resultTypeList.Find(x => x.isChecked);
+                            selectedType = resultTypeList.Find(x => x.isChecked);
                             //  TODO: ApplicationStatus dummp
 
                             targetApplicationType = selectedType.SearchApplicationTypeDesc;
@@ -422,7 +394,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                 txtInputLayoutSearchBy.Visibility = ViewStates.Gone;
                                 txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
                                 txtInputLayoutServiceRequestNum.Visibility = ViewStates.Visible;
-                                txtServiceRequestNum.Text = string.Empty;
+                                // txtServiceRequestNum.Text = " ";
                                 txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypes[0].SearchTypeDesc;
 
                             }
@@ -466,7 +438,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             txtSearchBy.Text = selectedType.SearchTypeDesc;
                             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
                             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Visible;
-                            txtServiceRequestNum.Text = string.Empty;
+                            txtServiceRequestNum.Text = " ";
                             txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypeDesc;
                         }
                     }
@@ -586,4 +558,3 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         }
     }
 }
-
