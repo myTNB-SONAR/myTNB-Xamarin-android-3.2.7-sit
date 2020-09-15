@@ -107,7 +107,11 @@
     "emptyAcctSelector": "---",
     "nickname": "e.g. My House, Parent's House",
     "businessNickname": "e.g. Bangsar Shopping Centre Branch",
-    "password": "Password must have at least 8 alphanumeric characters."
+    "password": "Password must have at least 8 alphanumeric characters.",
+    "serviceNotificationNo": "eg. 000092494113",
+    "serviceRequestNumber": "eg. 6000924941",
+    "electricityAccountNumber": "eg. 212157864231",
+    "eg": "eg. "
   },
   "Error": {
     "invalid_email": "Invalid email address",
@@ -160,7 +164,8 @@
     "paymentCCErrorMsg": "Sorry, we're unable to retrieve your card information right now. You may still pay by adding another card or by using online banking via FPX.",
     "profileCCErrorMsg": "If you're here to manage your cards, we're unable to perform this action right now. Please try again later.",
     "noMeterAccessErrorTitle": "Sorry this service may not be available to you.",
-    "noMeterAccessErrorMessage": "The meter will need to be accessible so that you can read your meter. You may try again when you have access to the meter."
+    "noMeterAccessErrorMessage": "The meter will need to be accessible so that you can read your meter. You may try again when you have access to the meter.",
+    "invalidReferenceNumber": "Please enter a valid {0}."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -1096,8 +1101,10 @@
     "searchBy": "Search by",
     "searhResultTitle": "We found this application(s) under the electricity account number:",
     "whereToGetThisNumber": "Where do I get this number?",
+    "whereToGetThisNumberTitleCA": "Where do I get this number?",
+    "whereToGetThisNumberMessageCA": "Your 12-digit electricity account number can be found at the top left corner of your monthly paper bill.",
     "whereToGetThisNumberTitle": "Where do I get this number?",
-    "whereToGetThisNumberMessage": "Your 12-digit electricity account number can be found at the top left corner of your monthly paper bill."
+    "whereToGetThisNumberMessage": "You can find the <b>{0}</b> in your submitted application details at ‘Application Status’ page and are available upon request by contacting TNB Careline."
   },
   "ApplicationStatusFilter": {
     "title": "Select Filter",
@@ -1106,6 +1113,15 @@
     "creationDate": "Creation Date",
     "clear": "Clear",
     "apply": "Apply"
+  },
+  "ApplicationStatusDetails": {
+    "title": "Application Details",
+    "status": "Status:",
+    "for": "for ",
+    "creationDate": "Creation Date",
+    "saveMessage": "Save this application to keep track of its up-to-date status in My Applications.",
+    "saveApplication": "Save Application",
+    "portalMessage": "You can take the action to continue or update your application using the myTNB Portal."
   },
   "SelectApplicationType": {
     "title": "Select Application Type"
@@ -1158,7 +1174,8 @@
             "code": "7200",
             "title": "",
             "message": "",
-            "ctaTitle": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
             "isSuccess": true,
             "type": "none"
           }
@@ -1168,9 +1185,39 @@
             "code": "7200",
             "title": "",
             "message": "",
-            "ctaTitle": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
             "isSuccess": true,
             "type": "none"
+          }
+        ],
+        "SaveApplication": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "9000",
+            "title": "This application is already in your list.",
+            "message": "View your application status list.",
+            "primaryCTATitle": "Got It!",
+            "secondaryCTATitle": "Check Status",
+            "isSuccess": false,
+            "type": "popup"
+          },
+          {
+            "code": "9001",
+            "title": "Looks like you’ve already saved this application.",
+            "message": "View it in your application status list.",
+            "primaryCTATitle": "Got It!",
+            "secondaryCTATitle": "Check Status",
+            "isSuccess": false,
+            "type": "popup"
           }
         ]
       }

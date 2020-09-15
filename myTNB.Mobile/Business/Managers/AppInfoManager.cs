@@ -1,4 +1,6 @@
 ﻿using System;
+using static myTNB.LanguageManager;
+
 namespace myTNB
 {
     public sealed class AppInfoManager
@@ -16,6 +18,7 @@ namespace myTNB
 
         private AppInfoManager() { }
         private object UserInfo;
+        internal Language Language { private set; get; } = LanguageManager.Language.EN;
 
         /// <summary>
         /// Sets User Info to be pased for Service Calls
@@ -27,7 +30,7 @@ namespace myTNB
         public void SetUserInfo(string roleID
             , string userID
             , string userName
-            , LanguageManager.Language language = LanguageManager.Language.EN)
+            , Language language = Language.EN)
         {
             UserInfo = new
             {
@@ -36,10 +39,24 @@ namespace myTNB
                 UserName = userName ?? string.Empty,
                 Lang = language.ToString()
             };
+            this.Language = language;
+        }
+
+        public void Clear()
+        {
+            UserInfo = null;
         }
 
         public string GetUserInfo()
         {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(new
+            {
+                RoleId = "16",
+                UserId = "243A701C-761A-415D-BAC0-DD69490513B1",
+                UserName = "tester1.tnb@gmail.com",
+                Lang = Language.EN.ToString()
+            });
+
             //TODO: Update Default Value
             return Newtonsoft.Json.JsonConvert.SerializeObject(UserInfo != null ? UserInfo :
                 new
@@ -47,7 +64,7 @@ namespace myTNB
                     RoleId = "16",
                     UserId = "243A701C-761A-415D-BAC0-DD69490513B1",
                     UserName = "tester1.tnb@gmail.com",
-                    Lang = LanguageManager.Language.EN.ToString()
+                    Lang = Language.EN.ToString()
                 });
         }
     }

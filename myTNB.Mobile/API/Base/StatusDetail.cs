@@ -26,12 +26,19 @@ namespace myTNB
         } = LanguageManager.Instance.GetErrorValue("defaultErrorMessage");
 
 
-        [JsonProperty("ctaTitle")]
-        public string CTATitle
+        [JsonProperty("primaryCTATitle")]
+        public string PrimaryCTATitle
         {
             set;
             get;
         } = LanguageManager.Instance.GetCommonValue("ok");
+
+        [JsonProperty("secondaryCTATitle")]
+        public string SecondaryCTATitle
+        {
+            set;
+            get;
+        } = string.Empty;
 
         [JsonProperty("isSuccess")]
         public bool IsSuccess
@@ -70,6 +77,11 @@ namespace myTNB
                             presentationType = StatusDisplayType.FullScreen;
                             break;
                         }
+                    case "popup":
+                        {
+                            presentationType = StatusDisplayType.Popup;
+                            break;
+                        }
                     case "none":
                         {
                             presentationType = StatusDisplayType.None;
@@ -94,6 +106,7 @@ namespace myTNB
         Default,
         // MARK: Android = SnackBar iOS = Toast
         Toast,
+        Popup,
         FullScreen,
         Refresh,
         None

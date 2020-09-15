@@ -67,6 +67,7 @@
     <Folder Include="API\Models\Application Status\SearchApplicationType\" />
     <Folder Include="API\Managers\Application Status\" />
     <Folder Include="API\Models\Application Status\GetApplicationStatus\" />
+    <Folder Include="API\Models\Application Status\SaveApplication\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />

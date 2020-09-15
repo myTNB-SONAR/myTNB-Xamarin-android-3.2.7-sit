@@ -107,7 +107,11 @@
     "emptyAcctSelector": "---",
     "nickname": "Cth. Rumah Saya, Rumah Ibu & Ayah",
     "businessNickname": "Cth. Bangsar Shopping Centre Branch",
-    "password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka."
+    "password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka.",
+    "serviceNotificationNo": "eg. 000092494113",
+    "serviceRequestNumber": "eg. 6000924941",
+    "electricityAccountNumber": "eg. 212157864231",
+    "eg": "eg. "
   },
   "Error": {
     "invalid_email": "Format e-mel tidak sah.",
@@ -160,7 +164,8 @@
     "paymentCCErrorMsg": "Maaf, kami tidak boleh mendapatkan maklumat kad anda sekarang. Anda masih boleh bayar menggunakan kad lain atau perbankan dalam talian melalui FPX.",
     "profileCCErrorMsg": "Jika anda di sini untuk menguruskan kad anda, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula kemudian.",
     "noMeterAccessErrorTitle": "Maaf, anda mungkin tidak boleh mengakses perkhidmatan ini.",
-    "noMeterAccessErrorMessage": "Anda perlu mempunyai meter yang boleh diakses supaya bacaan meter boleh dilakukan. Sila cuba lagi apabila anda mempunyai akses kepada meter anda."
+    "noMeterAccessErrorMessage": "Anda perlu mempunyai meter yang boleh diakses supaya bacaan meter boleh dilakukan. Sila cuba lagi apabila anda mempunyai akses kepada meter anda.",
+    "invalidReferenceNumber": "Please enter a valid {0}."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -1096,8 +1101,10 @@
     "searchBy": "Search by",
     "searhResultTitle": "We found this application(s) under the electricity account number:",
     "whereToGetThisNumber": "Where do I get this number?",
-    "whereToGetThisNumberTitle": "",
-    "whereToGetThisNumberMessage": ""
+    "whereToGetThisNumberTitleCA": "Where do I get this number?",
+    "whereToGetThisNumberMessageCA": "Your 12-digit electricity account number can be found at the top left corner of your monthly paper bill.",
+    "whereToGetThisNumberTitle": "Where do I get this number?",
+    "whereToGetThisNumberMessage": "You can find the <b>{0}</b> in your submitted application details at ‘Application Status’ page and are available upon request by contacting TNB Careline."
   },
   "ApplicationStatusFilter": {
     "title": "Select Filter",
@@ -1107,8 +1114,22 @@
     "clear": "Clear",
     "apply": "Apply"
   },
+  "ApplicationStatusDetails": {
+    "title": "Application Details",
+    "status": "Status ",
+    "for": "for ",
+    "creationDate": "Creation Date",
+    "saveMessage": "Save this application to keep track of its up-to-date status in My Applications.",
+    "saveApplication": "Save Application"
+  },
   "SelectApplicationType": {
     "title": "Select Application Type"
+  },
+  "SearchByNumber": {
+    "title": "Search By",
+    "whereToGetTheseNumber": "Where do I get these numbers?",
+    "whereToGetTheseNumberTitle": "Where do I get these numbers?",
+    "whereToGetTheseNumberMessage": "You can find the <b>Application Number</b>, <b>Service Request Number</b> and <b>Service Notification Number</b> in your submitted application details at ‘Application Status’ page and are available upon request by contacting TNB Careline."
   },
   "SelectStatus": {
     "title": "Select Status"
@@ -1165,6 +1186,24 @@
             "ctaTitle": "",
             "isSuccess": true,
             "type": "none"
+          }
+        ],
+        "SaveApplication": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "ctaTitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "9001",
+            "title": "Looks like you’ve already saved this application.",
+            "message": "View it in your application status list.",
+            "ctaTitle": "",
+            "isSuccess": false,
+            "type": "default"
           }
         ]
       }

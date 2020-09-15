@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 
 namespace myTNB.Mobile
@@ -22,6 +24,19 @@ namespace myTNB.Mobile
 
         [JsonProperty("applicationActivityLogDetail")]
         public List<ApplicationActivityLogDetail> ApplicationActivityLogDetail { set; get; }
+
+        [JsonIgnore]
+        public int[] StatusColor
+        {
+            get
+            {
+                if (ApplicationStatusDetail.UserAction.IsValid())
+                {
+                    //Todo: Add Color logic for status
+                }
+                return new int[] { 0, 0, 0 };
+            }
+        }
     }
 
     public class ApplicationDetail
@@ -49,6 +64,17 @@ namespace myTNB.Mobile
 
         [JsonProperty("createdDate")]
         public DateTime CreatedDate { set; get; }
+
+        [JsonIgnore]
+        public string DisplayCreatedDate
+        {
+            get
+            {
+                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                string date = CreatedDate.ToString("dd MMM yyyy", dateCultureInfo);
+                return date;
+            }
+        }
     }
 
     public class ApplicationPaymentDetail
@@ -92,8 +118,17 @@ namespace myTNB.Mobile
         [JsonProperty("statusId")]
         public string StatusId { set; get; }
 
+        [JsonProperty("statusCode")]
+        public string StatusCode { set; get; }
+
         [JsonProperty("statusDescription")]
         public string StatusDescription { set; get; }
+
+        [JsonProperty("userAction")]
+        public string UserAction { set; get; }
+
+        [JsonProperty("isPostPayment")]
+        public bool IsPostPayment { set; get; }
 
         [JsonProperty("statusTracker")]
         public List<StatusTracker> StatusTracker { set; get; }
@@ -106,9 +141,6 @@ namespace myTNB.Mobile
 
         [JsonProperty("statusMode")]
         public string StatusMode { set; get; }
-
-        [JsonProperty("userAction")]
-        public string UserAction { set; get; }
 
         [JsonProperty("sequence")]
         public int Sequence { set; get; }

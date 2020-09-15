@@ -1,5 +1,7 @@
-﻿using System.Threading;
+﻿using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
+using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
 using Refit;
 
 namespace myTNB.Mobile.API.Services.ApplicationStatus
@@ -22,5 +24,12 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
             , CancellationToken cancelToken
             , string urlPrefix = Constants.ApiUrlPath
             , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
+
+        [Post("/{urlPrefix}/SaveApplication")]
+        Task<SaveApplicationResponse> SaveApplication([Body] SaveApplicationRequest request
+           , [Header(Constants.H_UserInfo)] string userInfo
+           , CancellationToken cancelToken
+           , string urlPrefix = Constants.ApiUrlPath
+           , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
     }
 }

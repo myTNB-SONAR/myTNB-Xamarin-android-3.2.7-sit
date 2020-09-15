@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Threading.Tasks;
 using myTNB.Mobile.API;
 using myTNB.Mobile.API.Managers.ApplicationStatus;
+using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
 using myTNB.Mobile.API.Services.ApplicationStatus;
 using myTNB.Mobile.Extensions;
 using Refit;
@@ -99,7 +101,6 @@ namespace myTNB.Mobile
             , string searchType
             , string searchTerm)
         {
-
             try
             {
                 IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
@@ -142,6 +143,83 @@ namespace myTNB.Mobile
 #endif
             }
             GetApplicationStatusResponse res = new GetApplicationStatusResponse
+            {
+                StatusDetail = new StatusDetail()
+            };
+            res.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails("default");
+            return res;
+        }
+        #endregion
+
+        #region SaveApplication
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="referenceNo"></param>
+        /// <param name="moduleName"></param>
+        /// <param name="srNo"></param>
+        /// <param name="srType"></param>
+        /// <param name="statusCode"></param>
+        /// <param name="srCreatedDate"></param>
+        /// <returns></returns>
+        public async Task<SaveApplicationResponse> SaveApplication(string referenceNo
+            , string moduleName
+            , string srNo
+            , string srType
+            , string statusCode
+            , string srCreatedDate)
+        {
+            try
+            {
+                IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
+                try
+                {
+                    SaveApplicationResponse response = await service.SaveApplication(new SaveApplicationRequest
+                    {
+                        SaveApplication = new SaveApplication
+                        {
+                            ReferenceNo = referenceNo,
+                            ModuleName = moduleName,
+                            SrNo = srNo,
+                            SrType = srType,
+                            StatusCode = statusCode,
+                            SrCreatedDate = srCreatedDate
+                        }
+                    }
+                        , AppInfoManager.Instance.GetUserInfo()
+                        , NetworkService.GetCancellationToken());
+
+                    if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    {
+                        response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(response.StatusDetail.Code);
+                    }
+                    else
+                    {
+                        response.StatusDetail = new StatusDetail();
+                        response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails("default");
+                    }
+                    return response;
+                }
+                catch (ApiException apiEx)
+                {
+#if DEBUG
+                    Debug.WriteLine("[DEBUG][GetApplicationStatus]Refit Exception: " + apiEx.Message);
+#endif
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    Debug.WriteLine("[DEBUG][GetApplicationStatus]General Exception: " + ex.Message);
+#endif
+                }
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Debug.WriteLine(e.Message);
+#endif
+            }
+            SaveApplicationResponse res = new SaveApplicationResponse
             {
                 StatusDetail = new StatusDetail()
             };
