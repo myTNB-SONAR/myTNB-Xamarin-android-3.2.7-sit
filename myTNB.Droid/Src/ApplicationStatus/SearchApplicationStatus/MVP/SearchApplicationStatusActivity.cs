@@ -20,6 +20,7 @@ using System.Linq;
 using myTNB;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using System.Text;
+using Android.Text;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 {
@@ -60,7 +61,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         private bool isEdiging = false;
         List<TypeModel> mTypeList = new List<TypeModel>();
         List<SearchByModel> mSearchByList = new List<SearchByModel>();
-
+        SearchByModel searchByModel = new SearchByModel();
         SearchApplicationStatusPresenter mPresenter;
 
         public override int ResourceId()
@@ -220,139 +221,157 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         {
             try
             {
-                //if(selectedType.SearchTypes.Where(x=>x.SearchTypeId == ) )
-                if (isEdiging) return;
-                isEdiging = true;
-
-                string format = "RE-###-###-####-TS";
-                bool isPreffixChange = false;
-                string inputString = txtServiceRequestNum.Text.ToString();
-                int firstIndex = format.IndexOf("#");
-                int lastIndex = format.LastIndexOf("#");
-                string preffix = string.Empty;
-                string suffix = string.Empty;
-                int stringlength = 0;
-                int location = txtServiceRequestNum.SelectionStart;
-
-
-                if (!isEdiging && location > 0 && inputString[location - 1] == '-')
-                {
-                    return;
-                }
-
-
-                preffix = format.Substring(0, firstIndex);
-                if (preffix.Length > inputString.Length)
-                {
-                    inputString = preffix;
-                    location = preffix.Length;
-                }
-                if (lastIndex < format.Length)
-                {
-                    suffix = format.Substring(lastIndex + 1, format.Length - (lastIndex + 1));
-                    stringlength = ((format.Length - preffix.Length) - suffix.Length);
-                    if (format.Length - 1 == location)
-                    {
-                        location = stringlength + preffix.Length;
-                        if (suffix != string.Empty)
-                        {
-                            inputString = inputString != string.Empty ? inputString.Substring(0, preffix.Length + stringlength) : inputString;
-                        }
-                    }
-                }
-                location = (suffix != string.Empty && location > 0 && inputString.Length > 0 && inputString[location - 1] == '-') ? location - 1 : location;
-                 if (inputString.Length > format.Length)
+                if (searchByModel != null && searchByModel.Type == ApplicationStatusSearchType.ServiceRequestNo)
                 {
 
-                    inputString = inputString.Substring(0, stringlength + preffix.Length) + suffix;
-                    location = stringlength + preffix.Length;
-
-                }
-                else if (suffix != string.Empty && inputString.Length < format.Length)
-                {
-                    inputString = inputString.Replace(suffix, string.Empty);
-                }
-                else
-                {
-                    inputString = txtServiceRequestNum.Text.ToString();
-                }
-                if (inputString.Length >= preffix.Length)
-                {
-
-                    inputString = inputString.Remove(0, preffix.Length);
-                }
-                var txtFirstIndex = inputString.IndexOf("-");
-                var txtPreffix = txtFirstIndex > 0 ? inputString.Substring(0, txtFirstIndex) : ".";
-                int preIndexChar = txtServiceRequestNum.Text.ToString().Count(f => f == '-');
-                // removing old dashes
-                StringBuilder sb = new StringBuilder();
-                sb.Append(inputString.Replace("-", ""));
-                if (!preffix.Contains(txtPreffix))
-                {
-                    sb.Insert(0, preffix);
-                }
-                if (sb.Length > preffix.Length + 3)
-                {
-                    sb.Insert(preffix.Length + 3, "-");
-
-                }
-                if (sb.Length > preffix.Length + 7)
-                {
-                    sb.Insert(preffix.Length + 7, "-");
-
-                }
-                if (suffix != string.Empty && inputString.Contains(suffix))
-                {
-                    sb = new StringBuilder();
-                    sb.Append(preffix);
-                    sb.Append(inputString);
-                    txtServiceRequestNum.SetText(sb.ToString(), TextView.BufferType.Editable);
-
-                }
-                else
-                {
-                    if (suffix != string.Empty && sb.Length == format.Length - suffix.Length)
-                    {
-                        sb.Append(suffix);
-                    }
-                    txtServiceRequestNum.SetText(sb.ToString(), TextView.BufferType.Editable);
-                }
-                int postIndexChar = sb.ToString().Count(f => f == '-');
-                
-                if (preIndexChar == 1)
-                {
-                    if (postIndexChar == 2 || postIndexChar == 3)
-                    {
-                        location += 1;
-                    }
-                }
-                if (preIndexChar == 2)
-                {
-                    if (postIndexChar == 3)
-                    {
-                        location += 1;
-                    }
-                }
-                if (location == 1)
-                {
-
-                    txtServiceRequestNum.SetSelection(preffix.Length);
-                }
-                else
-                {
-
-                    txtServiceRequestNum.SetSelection(location);
+                        if (txtServiceRequestNum.Text.Count() == 9)
+                        txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(11) });
+                   
                 }
                
-                if (txtServiceRequestNum.Text != string.Empty)
+                if ((searchByModel != null && searchByModel.Type == ApplicationStatusSearchType.CA) || (selectedType != null && selectedType.SearchTypes.Where(x => x.Type == ApplicationStatusSearchType.CA).Count() > 0))
                 {
-                    EnableButton();
+                   
+                        if(txtServiceRequestNum.Text.Count() == 11)
+                        txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(12) });
+                       
+                   
                 }
-                else
+                if (searchByModel != null && searchByModel.Type == ApplicationStatusSearchType.ApplicationNo)
                 {
-                    DisableButton();
+                    if (isEdiging) return;
+                    isEdiging = true;
+
+                    string format = selectedType.SearchApplicationNoInputMask;
+                    txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(format.Length) });
+                    string inputString = txtServiceRequestNum.Text.ToString();
+                    int firstIndex = format.IndexOf("#");
+                    int lastIndex = format.LastIndexOf("#");
+                    string preffix = string.Empty;
+                    string suffix = string.Empty;
+                    int stringlength = 0;
+                    int location = txtServiceRequestNum.SelectionStart;
+
+
+                    if (!isEdiging && location > 0 && inputString[location - 1] == '-')
+                    {
+                        return;
+                    }
+
+
+                    preffix = format.Substring(0, firstIndex);
+                    if (preffix.Length > inputString.Length)
+                    {
+                        inputString = preffix;
+                        location = preffix.Length;
+                    }
+                    if (lastIndex < format.Length)
+                    {
+                        suffix = format.Substring(lastIndex + 1, format.Length - (lastIndex + 1));
+                        stringlength = ((format.Length - preffix.Length) - suffix.Length);
+                        if (format.Length - 1 == location)
+                        {
+                            location = stringlength + preffix.Length;
+                            if (suffix != string.Empty)
+                            {
+                                inputString = inputString != string.Empty ? inputString.Substring(0, preffix.Length + stringlength) : inputString;
+                            }
+                        }
+                    }
+                    location = (suffix != string.Empty && location > 0 && inputString.Length > 0 && inputString[location - 1] == '-') ? location - 1 : location;
+                    if (inputString.Length > format.Length)
+                    {
+
+                        inputString = inputString.Substring(0, stringlength + preffix.Length) + suffix;
+                        location = stringlength + preffix.Length;
+
+                    }
+                    else if (suffix != string.Empty && inputString.Length < format.Length)
+                    {
+                        inputString = inputString.Replace(suffix, string.Empty);
+                    }
+                    else
+                    {
+                        inputString = txtServiceRequestNum.Text.ToString();
+                    }
+                    if (inputString.Length >= preffix.Length)
+                    {
+
+                        inputString = inputString.Remove(0, preffix.Length);
+                    }
+                    var txtFirstIndex = inputString.IndexOf("-");
+                    var txtPreffix = txtFirstIndex > 0 ? inputString.Substring(0, txtFirstIndex) : ".";
+                    int preIndexChar = txtServiceRequestNum.Text.ToString().Count(f => f == '-');
+                    // removing old dashes
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append(inputString.Replace("-", ""));
+                    if (!preffix.Contains(txtPreffix))
+                    {
+                        sb.Insert(0, preffix);
+                    }
+                    if (sb.Length > preffix.Length + 3)
+                    {
+                        sb.Insert(preffix.Length + 3, "-");
+
+                    }
+                    if (sb.Length > preffix.Length + 7)
+                    {
+                        sb.Insert(preffix.Length + 7, "-");
+
+                    }
+                    if (suffix != string.Empty && inputString.Contains(suffix))
+                    {
+                        sb = new StringBuilder();
+                        sb.Append(preffix);
+                        sb.Append(inputString);
+                        txtServiceRequestNum.SetText(sb.ToString(), TextView.BufferType.Editable);
+
+                    }
+                    else
+                    {
+                        if (suffix != string.Empty && sb.Length == format.Length - suffix.Length)
+                        {
+                            sb.Append(suffix);
+                        }
+                        txtServiceRequestNum.SetText(sb.ToString(), TextView.BufferType.Editable);
+                    }
+                    int postIndexChar = sb.ToString().Count(f => f == '-');
+
+                    if (preIndexChar == 1)
+                    {
+                        if (postIndexChar == 2 || postIndexChar == 3)
+                        {
+                            location += 1;
+                        }
+                    }
+                    if (preIndexChar == 2)
+                    {
+                        if (postIndexChar == 3)
+                        {
+                            location += 1;
+                        }
+                    }
+                    if (location == 1)
+                    {
+
+                        txtServiceRequestNum.SetSelection(preffix.Length);
+                    }
+                    else
+                    {
+
+                        txtServiceRequestNum.SetSelection(location);
+                    }
+
+                    if (txtServiceRequestNum.Text != string.Empty)
+                    {
+                        EnableButton();
+                    }
+                    else
+                    {
+                        DisableButton();
+                    }
+                    isEdiging = false;
                 }
-                isEdiging = false;
             }
             catch (Exception ex)
             {
@@ -433,13 +452,13 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         if (extra.ContainsKey(Constants.APPLICATION_STATUS_SEARCH_BY_LIST_KEY))
                         {
                             resultSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>(extra.GetString(Constants.APPLICATION_STATUS_SEARCH_BY_LIST_KEY));
-                            SearchByModel selectedType = resultSearchByList.Find(x => x.isChecked);
-                            targetSearchBy = selectedType.SearchTypeId;
-                            txtSearchBy.Text = selectedType.SearchTypeDesc;
+                            searchByModel = resultSearchByList.Find(x => x.isChecked);
+                            targetSearchBy = searchByModel.SearchTypeId;
+                            txtSearchBy.Text = searchByModel.SearchTypeDesc;
                             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
                             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Visible;
                             txtServiceRequestNum.Text = " ";
-                            txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypeDesc;
+                            txtInputLayoutServiceRequestNum.Hint = searchByModel.SearchTypeDesc;
                         }
                     }
                 }

@@ -16,10 +16,6 @@ using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
-using myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP;
-using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
-using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.Test;
-using myTNB_Android.Src.AppointmentScheduler.AppointmentSetLanding.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
@@ -343,24 +339,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 Utility.LoggingNonFatalError(ex);
             }
         }
-        [OnClick(Resource.Id.cardview_application_set)]
-        void OnAppointmentSet(object sender, EventArgs eventArgs)
-        {
-            try
-            {
-                if (!this.GetIsClicked())
-                {
-                    this.SetIsClicked(true);
-                    this.userActionsListener.NavigateToAppointmentSet();
-                }
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
-        }
-        
-
 
         [OnClick(Resource.Id.cardview_feedback)]
         void OnFeedback(object sender, EventArgs eventArgs)
@@ -754,15 +732,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
             }
         }
 
-        public void ShowAppointmentSet()
-        {
-
-            //  TODO: ApplicationStatus stub
-
-            //var appointmentSetLandingIntent = new Intent(this, typeof(AppointmentSetLandingActivity));
-            var appointmentSetLandingIntent = new Intent(this, typeof(AppointmentSelectActivity));
-
-            StartActivity(appointmentSetLandingIntent);
-        }
+        
     }
 }

@@ -384,7 +384,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             {
                                 vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusLanding", "title"));
                             }
-                            
+                            if (UserSessions.HasApplicationStatusShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
+                            {
+                                vh.newLabel.Visibility = ViewStates.Gone;
+                            }
                             break;
                     }
 

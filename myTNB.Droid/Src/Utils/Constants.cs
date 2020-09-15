@@ -137,7 +137,7 @@ namespace myTNB_Android.Src.Utils
         {
 #if DEBUG || STUB
         
-            internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
+            internal static readonly string END_POINT = "http://10.215.128.191:89";
             internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
             //internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
             //internal static readonly string FPX_PAYMENT = "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";

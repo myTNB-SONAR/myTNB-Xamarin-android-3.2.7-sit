@@ -1272,6 +1272,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         else if (selectedService.ServiceCategoryId == "1006" && (Utility.IsEnablePayment()))
                         {
                             //  TODO: ApplicationStatus Service check from Backend
+                            if (!UserSessions.HasApplicationStatusShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                            {
+                                UserSessions.DoApplicationStatusShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                            }
                             Intent applicationLandingIntent = new Intent(this.Activity, typeof(ApplicationStatusLandingActivity));
                             StartActivity(applicationLandingIntent);
                         }

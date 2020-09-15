@@ -1,4 +1,6 @@
-﻿using Android.App;
+﻿using System;
+using System.Threading.Tasks;
+using Android.App;
 using Android.Util;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
@@ -6,9 +8,6 @@ using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
-using Newtonsoft.Json;
-using System;
-using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.PreLogin.MVP
 {
@@ -46,10 +45,7 @@ namespace myTNB_Android.Src.PreLogin.MVP
         {
             this.mView.ShowCheckStatus();
         }
-        public void NavigateToAppointmentSet()
-        {
-            this.mView.ShowAppointmentSet();
-        }
+       
         public void NavigateToCallUs()
         {
             if (WeblinkEntity.HasRecord("TNBCL"))
