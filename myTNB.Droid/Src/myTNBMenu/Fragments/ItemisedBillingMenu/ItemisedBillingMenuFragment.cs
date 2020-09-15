@@ -555,7 +555,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                             content.IsPayment(data.HistoryType.ToUpper() == "PAYMENT");
                             content.SetDateHistoryType(data.DateAndHistoryType);
                             content.SetPaidVia(data.PaidVia);
-                            content.SetAmount("RM " + mDecimalFormat.Format(double.Parse(data.Amount, currCult)), data.IsPaymentPending);
+                            if (double.Parse(data.Amount, currCult) < 0)
+                            {
+                                content.SetAmount("- RM " + mDecimalFormat.Format(double.Parse(data.Amount, currCult) * -1), data.IsPaymentPending);
+                            }
+                            else
+                            {
+                                content.SetAmount("RM " + mDecimalFormat.Format(double.Parse(data.Amount, currCult)), data.IsPaymentPending);  //ori
+                            }
+
+
                             if (data.DetailedInfoNumber != "" && !data.IsPaymentPending)
                             {
                                 content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this, data));
@@ -578,7 +587,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                 content.IsPayment(data.HistoryType.ToUpper() == "PAYMENT");
                                 content.SetDateHistoryType(data.DateAndHistoryType);
                                 content.SetPaidVia(data.PaidVia);
-                                content.SetAmount("RM " + mDecimalFormat.Format(double.Parse(data.Amount, currCult)), data.IsPaymentPending);
+                                if (double.Parse(data.Amount, currCult) < 0)
+                                {
+                                    content.SetAmount("- RM " + mDecimalFormat.Format(double.Parse(data.Amount, currCult) * -1), data.IsPaymentPending);
+                                }
+                                else
+                                {
+                                    content.SetAmount("RM " + mDecimalFormat.Format(double.Parse(data.Amount, currCult)), data.IsPaymentPending);  //ori
+                                }
+
+
                                 if (data.DetailedInfoNumber != "" && !data.IsPaymentPending)
                                 {
                                     content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this, data));
