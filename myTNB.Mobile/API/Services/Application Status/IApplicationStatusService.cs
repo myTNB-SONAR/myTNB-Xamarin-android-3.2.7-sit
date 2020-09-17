@@ -26,7 +26,7 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
             , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
 
         [Post("/{urlPrefix}/SaveApplication")]
-        Task<SaveApplicationResponse> SaveApplication([Body] SaveApplicationRequest request
+        Task<HttpResponseMessage> SaveApplication([Body] SaveApplicationRequest request
            , [Header(Constants.H_UserInfo)] string userInfo
            , CancellationToken cancelToken
            , string urlPrefix = Constants.ApiUrlPath

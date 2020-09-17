@@ -6,7 +6,7 @@ using myTNB.Mobile.Extensions;
 
 namespace myTNB.Mobile.API.Managers.ApplicationStatus
 {
-    internal static class ApplicationStatusUtility
+    internal static class SearchTypeUtility
     {
         /// <summary>
         /// 
@@ -21,7 +21,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus
                 if (response != null && response.Content != null && response.Content.Count > 0 && roleID.IsValid())
                 {
                     response.Content = response.Content.FindAll(x => x.UserRole.Contains(roleID));
-                    response.MapContent();
+                    //Mark: Codes were disabled as multilingual in list of all values were confirmed.
+                    //response.MapContent();
                 }
             }
             catch (Exception e)

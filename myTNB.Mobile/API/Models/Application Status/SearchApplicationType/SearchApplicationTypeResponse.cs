@@ -37,12 +37,13 @@ namespace myTNB
         [JsonProperty("searchTypeDesc")]
         public string SearchTypeDesc { set; get; }
 
+        //Mark: Display Specific Properties
         [JsonIgnore]
         public ApplicationStatusSearchType Type
         {
             get
             {
-                ApplicationStatusSearchType searchType = ApplicationStatusSearchType.None;
+                ApplicationStatusSearchType searchType;
                 switch (SearchTypeId)
                 {
                     case "CA":

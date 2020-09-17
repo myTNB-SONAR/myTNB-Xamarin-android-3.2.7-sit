@@ -41,6 +41,8 @@
 
         //Service Name
         internal const string Service_SearchApplicationType = "SearchApplicationType";
+        internal const string Service_GetApplicationStatus = "ApplicationStatus";
+        internal const string Service_SaveApplication = "SaveApplication";
 
         //Language File Constants
         internal const string LanguageFile_ServiceDetails = "ServiceDetails";

@@ -48,7 +48,7 @@ namespace myTNB.Mobile
                 {
                     SearchApplicationTypeResponse response = await service.SearchApplicationType(AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken());
-                    if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    if (response.Content != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(response.StatusDetail.Code);
                     }
@@ -57,7 +57,7 @@ namespace myTNB.Mobile
                         response.StatusDetail = new StatusDetail();
                         response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails("default");
                     }
-                    ApplicationStatusUtility.SearchApplicationTypeParser(ref response
+                    SearchTypeUtility.SearchApplicationTypeParser(ref response
                         , roleID);
                     return response;
                 }
@@ -96,10 +96,14 @@ namespace myTNB.Mobile
         /// <param name="applicationType"></param>
         /// <param name="searchType"></param>
         /// <param name="searchTerm"></param>
+        /// <param name="applicationTypeTitle"></param>
+        /// <param name="searchTypeTitle"></param>
         /// <returns></returns>
         public async Task<GetApplicationStatusResponse> GetApplicationStatus(string applicationType
             , string searchType
-            , string searchTerm)
+            , string searchTerm
+            , string applicationTypeTitle
+            , string searchTypeTitle)
         {
             try
             {
@@ -111,15 +115,25 @@ namespace myTNB.Mobile
                         , searchTerm
                         , AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken());
-
                     if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
-                        response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(response.StatusDetail.Code);
+                        if (response.Content == null)
+                        {
+                            response.StatusDetail.Code = "empty";
+                        }
+                        else
+                        {
+                            response.Parse(applicationType
+                                , applicationTypeTitle
+                                , searchTypeTitle
+                                , searchTerm);
+                        }
+                        response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
                         response.StatusDetail = new StatusDetail();
-                        response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails("default");
+                        response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails("default");
                     }
                     return response;
                 }
@@ -174,7 +188,7 @@ namespace myTNB.Mobile
                 IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
                 try
                 {
-                    SaveApplicationResponse response = await service.SaveApplication(new SaveApplicationRequest
+                    HttpResponseMessage rawResponse = await service.SaveApplication(new SaveApplicationRequest
                     {
                         SaveApplication = new SaveApplication
                         {
@@ -188,15 +202,15 @@ namespace myTNB.Mobile
                     }
                         , AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken());
-
+                    SaveApplicationResponse response = await rawResponse.ParseAsync<SaveApplicationResponse>();
                     if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
-                        response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail = Constants.Service_SaveApplication.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
                         response.StatusDetail = new StatusDetail();
-                        response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails("default");
+                        response.StatusDetail = Constants.Service_SaveApplication.GetStatusDetails("default");
                     }
                     return response;
                 }

@@ -1118,10 +1118,11 @@
     "title": "Application Details",
     "status": "Status:",
     "for": "for ",
-    "creationDate": "Creation Date",
+    "creationDate": "Created On",
     "saveMessage": "Save this application to keep track of its up-to-date status in My Applications.",
-    "saveApplication": "Save Application",
-    "portalMessage": "You can take the action to continue or update your application using the myTNB Portal."
+    "saveApplication": "Add to List",
+    "portalMessage": "You can take the action to continue or update your application using the myTNB Portal.",
+    "lastUpdatedDate": "Last updated on {0}"
   },
   "SelectApplicationType": {
     "title": "Select Application Type"
@@ -1180,7 +1181,7 @@
             "type": "none"
           }
         ],
-        "GetApplicationStatus": [
+        "ApplicationStatus": [
           {
             "code": "7200",
             "title": "",
@@ -1189,7 +1190,17 @@
             "secondaryCTATitle": "",
             "isSuccess": true,
             "type": "none"
+          },
+          {
+            "code": "empty",
+            "title": "We are unable to find this application.",
+            "message": "Please try again. Make sure you’ve entered the correct information!",
+            "primaryCTATitle": "Got It!",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
           }
+
         ],
         "SaveApplication": [
           {
