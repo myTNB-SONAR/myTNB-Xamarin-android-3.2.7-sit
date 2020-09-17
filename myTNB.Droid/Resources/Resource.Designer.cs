@@ -15007,31 +15007,34 @@ namespace myTNB_Android
 			public const int whyAccountsNotHere = 2131298010;
 			
 			// aapt resource value: 0x7F0906DB
-			public const int wide = 2131298011;
+			public const int whyAccountsNotHereLayOut = 2131298011;
 			
 			// aapt resource value: 0x7F0906DC
-			public const int withText = 2131298012;
+			public const int wide = 2131298012;
 			
 			// aapt resource value: 0x7F0906DD
-			public const int wrap = 2131298013;
-			
-			// aapt resource value: 0x7F0906DF
-			public const int wrapper_attachments = 2131298015;
-			
-			// aapt resource value: 0x7F0906E0
-			public const int wrapper_feedback = 2131298016;
-			
-			// aapt resource value: 0x7F0906E1
-			public const int wrapper_feedback_scroll = 2131298017;
-			
-			// aapt resource value: 0x7F0906E2
-			public const int wrapper_messages = 2131298018;
-			
-			// aapt resource value: 0x7F0906E3
-			public const int wrapper_messages_buttons = 2131298019;
+			public const int withText = 2131298013;
 			
 			// aapt resource value: 0x7F0906DE
-			public const int wrap_content = 2131298014;
+			public const int wrap = 2131298014;
+			
+			// aapt resource value: 0x7F0906E0
+			public const int wrapper_attachments = 2131298016;
+			
+			// aapt resource value: 0x7F0906E1
+			public const int wrapper_feedback = 2131298017;
+			
+			// aapt resource value: 0x7F0906E2
+			public const int wrapper_feedback_scroll = 2131298018;
+			
+			// aapt resource value: 0x7F0906E3
+			public const int wrapper_messages = 2131298019;
+			
+			// aapt resource value: 0x7F0906E4
+			public const int wrapper_messages_buttons = 2131298020;
+			
+			// aapt resource value: 0x7F0906DF
+			public const int wrap_content = 2131298015;
 			
 			static Id()
 			{

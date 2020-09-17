@@ -1,21 +1,28 @@
 ﻿using Android.Content;
-
-
+using Android.Graphics;
+using Android.OS;
+using Android.Text;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
+using Castle.Core.Internal;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models;
+using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
+using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.MVP;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.Adapter
 {
     public class SearchApplicationStatusAdapter : RecyclerView.Adapter
     {
-        private BaseActivityCustom mActicity;
+        public SearchApplicationStatusSelectionActivity mActivity;
         List<TypeModel> mTypeList = new List<TypeModel>();
         List<SearchByModel> mSearchByList = new List<SearchByModel>();
         public event EventHandler<int> ItemClick;
@@ -46,9 +53,9 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             return mSearchByList;
         }
 
-        public SearchApplicationStatusAdapter(BaseActivityCustom activity, int requestCode, List<TypeModel> typeData = null, List<SearchByModel> searchByData = null)
+        public SearchApplicationStatusAdapter(SearchApplicationStatusSelectionActivity activity, int requestCode, List<TypeModel> typeData = null, List<SearchByModel> searchByData = null)
         {
-            this.mActicity = activity;
+            this.mActivity = activity;
             this.mRequestCode = requestCode;
 
             if (mRequestCode == Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE)
@@ -97,7 +104,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         {
             var id = Resource.Layout.ApplicationStatusFilterListItemLayout;
             var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
-            return new ApplicationStatusFilterViewHolder(itemView, OnClick);
+            return new ApplicationStatusFilterViewHolder(this.mActivity,this.mSearchByList, itemView, OnClick);
         }
 
         void OnClick(int position)
@@ -162,7 +169,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         public TextView whyAccountsNotHere { get; private set; }
         private Context context;
 
-        public ApplicationStatusFilterViewHolder(View itemView, Action<int> listener) : base(itemView)
+        public ApplicationStatusFilterViewHolder(SearchApplicationStatusSelectionActivity activity,List<SearchByModel> mSearchByList, View itemView, Action<int> listener) : base(itemView)
         {
             context = itemView.Context;
             txtFilterName = itemView.FindViewById<TextView>(Resource.Id.txtFilterName);
@@ -176,10 +183,34 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             TextViewUtils.SetMuseoSans500Typeface(whyAccountsNotHere);
             txtFilterName.Click += (sender, e) => listener(base.LayoutPosition);
             chkApplicationFilter.Click += (sender, e) => listener(base.LayoutPosition);
-            whyAccountsNotHere.Click += (sender, e) => listener(base.LayoutPosition);
+            whyAccountsNotHere.Click += (sender, e) => ShowWhereIsMyAcc(activity, mSearchByList);
         }
 
+        public async void ShowWhereIsMyAcc(Android.App.Activity context,List<SearchByModel> mSearchByList)
+        {
+            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                .SetTitle(Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumberTitle"))
+                .SetMessage(Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumberMessage"))
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                .Build();
+                whereisMyacc.Show();
+        }
+        public static Bitmap Base64ToBitmap(string base64String)
+        {
+            Bitmap convertedBitmap = null;
+            try
+            {
+                byte[] imageAsBytes = Android.Util.Base64.Decode(base64String, Base64Flags.Default);
+                convertedBitmap = BitmapFactory.DecodeByteArray(imageAsBytes, 0, imageAsBytes.Length);
+            }
+            catch (Exception e)
+            {
+                convertedBitmap = null;
+                Utility.LoggingNonFatalError(e);
+            }
 
+            return convertedBitmap;
+        }
         public void PopulateSearchByData(SearchByModel item)
         {
             try
@@ -188,8 +219,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                 {
                     ctaSelection.Visibility = ViewStates.Visible;
                     filterSelection.Visibility = ViewStates.Gone;
-                    //  TODO: ApplicationStatus Multilingual
-                    whyAccountsNotHere.Text = "Where do I get these numbers?";
+
+                    whyAccountsNotHere.Text = Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumber");
                 }
                 else
                 {

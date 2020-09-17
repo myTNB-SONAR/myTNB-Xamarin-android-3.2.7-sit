@@ -118,7 +118,38 @@
                                 android:inputType="number"
                             />
                         </com.google.android.material.textfield.TextInputLayout>
-                    </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/whyAccountsNotHereLayOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                   
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    android:clickable="true">
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/info_blue"
+                        android:layout_marginRight="8dp"
+                        android:id="@+id/ApplicationStatsTooltipImg"/>
+                        <TextView
+                            android:id="@+id/whyAccountsNotHere"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/powerBlue"
+                            android:textSize="12dp"
+                            android:layout_gravity="right|center_vertical"
+                            android:text="Why are some of my accounts not here?"/>
+                </LinearLayout>
+                </LinearLayout>
+                  
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

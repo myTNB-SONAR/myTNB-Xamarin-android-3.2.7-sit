@@ -178,8 +178,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                     }
                     else if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_SEARCH_BY_REQUEST_CODE)
                     {
-                        //  TODO: ApplicationStatus Multilingual
-                        SetToolBarTitle("Search By");
+
+                        SetToolBarTitle(Utility.GetLocalizedLabel("SearchByNumber", "title"));
 
                         if (extras.ContainsKey(Constants.APPLICATION_STATUS_SEARCH_BY_LIST_KEY))
                         {

@@ -396,7 +396,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         {
             if (!this.GetIsClicked())
             {
-
+                
 
                 this.SetIsClicked(true);
                 Intent barcodeIntent = new Intent(this, typeof(BarcodeActivity));
@@ -940,7 +940,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 Utility.LoggingNonFatalError(e);
             }
 
-            return convertedBitmap;
+            return convertedBitmap; 
         }
 
         Snackbar newErrorMessageSnackBar;

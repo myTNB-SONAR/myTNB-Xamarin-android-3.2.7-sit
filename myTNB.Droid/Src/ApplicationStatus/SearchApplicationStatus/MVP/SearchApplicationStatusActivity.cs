@@ -21,6 +21,9 @@ using myTNB;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using System.Text;
 using Android.Text;
+using myTNB_Android.Src.Database.Model;
+using Castle.Core.Internal;
+using Android.Graphics;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 {
@@ -50,6 +53,14 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
         [BindView(Resource.Id.btnSearchApplication)]
         Button btnSearchApplication;
+
+        [BindView(Resource.Id.whyAccountsNotHere)]
+        TextView txtWhyAccountsNotHere;
+
+        [BindView(Resource.Id.whyAccountsNotHereLayOut)]
+        LinearLayout whyAccountsNotHereLayOut;
+        
+
 
         TypeModel selectedType = new TypeModel();
         const string PAGE_ID = "ApplicationStatus";
@@ -146,7 +157,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         }
         private async void GetApplicationStatus()
         {
-            GetApplicationStatusResponse applicationStatusResponse = await ApplicationStatusManager.Instance.GetApplicationStatus("ASR", "ApplicationNo", "362");
+            GetApplicationStatusResponse applicationStatusResponse = await ApplicationStatusManager.Instance.GetApplicationStatus("ASR", "ApplicationNo", "362", txtApplicationType.Text, txtSearchBy.Text);
 
 
             Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
@@ -169,7 +180,12 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             TextViewUtils.SetMuseoSans300Typeface(txtApplicationType, txtSearchBy, txtServiceRequestNum);
             TextViewUtils.SetMuseoSans500Typeface(btnSearchApplication, txtSearchApplicationTitle);
 
-            //  TODO: ApplicationStatus Multilingual
+            TextViewUtils.SetMuseoSans500Typeface(txtWhyAccountsNotHere);
+            txtWhyAccountsNotHere.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumber");
+            txtWhyAccountsNotHere.Click += TxtWhyAccountsNotHere_Click; ;
+            txtWhyAccountsNotHere.Visibility = ViewStates.Gone;
+            whyAccountsNotHereLayOut.Visibility = ViewStates.Gone;
+
             SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "title"));
             // txtInputLayoutFromDate.Hint = GetLabelCommonByLanguage("email");
             // txtInputLayoutToDate.Hint = GetLabelCommonByLanguage("password");
@@ -218,6 +234,67 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             //mSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>("[{\"Title\":\"Application Number\",\"Code\":\"AN\"},{\"Title\":\"Electricity Account Number\",\"Code\":\"EAN\"},{\"Title\":\"Service Notification Number\",\"Code\":\"SNN\"},{\"Title\":\"Service Request Number\",\"Code\":\"SRN\"}]");
         }
 
+        private void TxtWhyAccountsNotHere_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (searchByModel != null && selectedType != null && selectedType.SearchTypes != null)
+                {
+                    var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0] : searchByModel;
+                    if (searchType != null && searchType.Type == ApplicationStatusSearchType.CA)
+                    {
+                        string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
+
+                        if (!base64Image.IsNullOrEmpty())
+                        {
+                            var imageCache = Base64ToBitmap(base64Image);
+
+                            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                            .SetHeaderImageBitmap(imageCache)
+                            .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberTitleCA"))
+                            .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberMessageCA"))
+                            .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                            .Build();
+                            whereisMyacc.Show();
+                        }
+                    }
+                    else
+                    {
+                        MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                            .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberTitle"))
+                            .SetMessage(string.Format(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberMessage"),searchType.SearchTypeDesc))
+                            .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                            .Build();
+                        whereisMyacc.Show();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+
+       
+        }
+        public static Bitmap Base64ToBitmap(string base64String)
+        {
+            Bitmap convertedBitmap = null;
+            try
+            {
+                byte[] imageAsBytes = Android.Util.Base64.Decode(base64String, Base64Flags.Default);
+                convertedBitmap = BitmapFactory.DecodeByteArray(imageAsBytes, 0, imageAsBytes.Length);
+            }
+            catch (Exception e)
+            {
+                convertedBitmap = null;
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return convertedBitmap;
+        }
+
+
+
         private void TxtServiceRequestNum_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e)
         {
             try
@@ -233,7 +310,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(11) });
                     }
 
-                    if ((searchByModel != null && searchByModel.Type == ApplicationStatusSearchType.CA) || (selectedType != null && selectedType.SearchTypes.Where(x => x.Type == ApplicationStatusSearchType.CA).Count() > 0))
+                    if (searchType == ApplicationStatusSearchType.CA)
+                      //  || (selectedType != null && selectedType.SearchTypes.Where(x => x.Type == ApplicationStatusSearchType.CA).Count() > 0)
                     {
 
                         if (txtServiceRequestNum.Text.Count() == 11)
@@ -431,12 +509,16 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                 txtServiceRequestNum.Text = null;
                                 txtServiceRequestNum.ClearFocus();
                                 txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypes[0].SearchTypeDesc;
+                                txtWhyAccountsNotHere.Visibility = ViewStates.Visible;
+                                whyAccountsNotHereLayOut.Visibility = ViewStates.Visible;
 
                             }
                             else
                             {
                                 txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
                                 txtInputLayoutSearchBy.Visibility = ViewStates.Visible;
+                                txtWhyAccountsNotHere.Visibility = ViewStates.Gone;
+                                whyAccountsNotHereLayOut.Visibility = ViewStates.Gone;
                             }
 
 
