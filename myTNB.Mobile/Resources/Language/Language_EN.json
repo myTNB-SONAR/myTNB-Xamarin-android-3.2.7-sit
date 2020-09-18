@@ -1122,7 +1122,20 @@
     "saveMessage": "Save this application to keep track of its up-to-date status in My Applications.",
     "saveApplication": "Add to List",
     "portalMessage": "You can take the action to continue or update your application using the myTNB Portal.",
-    "lastUpdatedDate": "Last updated on {0}"
+    "lastUpdatedDate": "Last updated on {0}",
+    "viewActivityLog": "View Activity Log"
+  },
+  "ApplicationStatusActivityLog": {
+    "title": "Activity Log",
+    "updatedDetails": "Updated Details",
+    "comment": "Comment",
+    "submittedBy": "Submitted By",
+    "status": "Status: ",
+    "reasons": "Reason(s)",
+    "attachments": "Previous Attachement(s) Removed",
+    "add": "• Added {0} to {1}",
+    "update": "• Updated {0} from {1} to {2}",
+    "remove": "• Removed {0}"
   },
   "SelectApplicationType": {
     "title": "Select Application Type"
@@ -1200,7 +1213,6 @@
             "isSuccess": false,
             "type": "popup"
           }
-
         ],
         "SaveApplication": [
           {
@@ -1229,6 +1241,17 @@
             "secondaryCTATitle": "Check Status",
             "isSuccess": false,
             "type": "popup"
+          }
+        ],
+        "AllApplications": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
           }
         ]
       }

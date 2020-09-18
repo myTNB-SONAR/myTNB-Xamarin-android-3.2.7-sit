@@ -2,36 +2,35 @@
 using System.Collections.Generic;
 using System.Globalization;
 using myTNB.Mobile.Extensions;
-using Newtonsoft.Json;
 
 namespace myTNB.Mobile
 {
-    public class GetApplicationStatusResponse : BaseResponse<GetApplicationStatusModel>
+    public class ApplicationDetailDisplay
     {
+        public GetApplicationStatusDisplay Content { set; get; }
+        public StatusDetail StatusDetail { set; get; }
     }
 
-    public class GetApplicationStatusModel
+    public class GetApplicationStatusDisplay
     {
-        [JsonProperty("applicationDetail")]
-        public ApplicationDetail ApplicationDetail { set; get; }
-
-        [JsonProperty("applicationPaymentDetail")]
-        public ApplicationPaymentDetail ApplicationPaymentDetail { set; get; }
-
-        [JsonProperty("applicationStatusDetail")]
-        public ApplicationStatusDetail ApplicationStatusDetail { set; get; }
-
-        [JsonProperty("applicationActivityLogDetail")]
-        public List<ApplicationActivityLogDetail> ApplicationActivityLogDetail { set; get; }
+        public ApplicationDetailDisplayModel ApplicationDetail { set; get; }
+        public ApplicationPaymentDisplayModel ApplicationPaymentDetail { set; get; }
+        public ApplicationStatusDetailDisplayModel ApplicationStatusDetail { set; get; }
+        public List<ApplicationActivityLogDetailDisplay> ApplicationActivityLogDetail { set; get; }
 
         //Mark: Display Specific Properties
-        [JsonIgnore]
+        public bool IsActivityLogDisplayed
+        {
+            get
+            {
+                return ApplicationActivityLogDetail != null && ApplicationActivityLogDetail.Count > 0;
+            }
+        }
+
         public List<TitleValueModel> AdditionalInfoList { set; get; } = new List<TitleValueModel>();
 
-        [JsonIgnore]
         public string ApplicationType { set; get; } = string.Empty;
 
-        [JsonIgnore]
         public bool IsPayment
         {
             get
@@ -41,7 +40,6 @@ namespace myTNB.Mobile
             }
         }
 
-        [JsonIgnore]
         public int[] StatusColor
         {
             get
@@ -65,7 +63,6 @@ namespace myTNB.Mobile
             }
         }
 
-        [JsonIgnore]
         public bool IsPortalMessageDisplayed
         {
             get
@@ -74,7 +71,6 @@ namespace myTNB.Mobile
             }
         }
 
-        [JsonIgnore]
         public string PortalMessage
         {
             get
@@ -84,16 +80,9 @@ namespace myTNB.Mobile
         }
 
         //Todo: Add logic to configure from landing and search
-        [JsonIgnore]
-        public bool IsSaveMessageDisplayed
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool IsSaveMessageDisplayed { set; get; }
+        public bool IsFullApplicationTooltipDisplayed { set; get; }
 
-        [JsonIgnore]
         public string SaveMessage
         {
             get
@@ -102,10 +91,8 @@ namespace myTNB.Mobile
             }
         }
 
-        [JsonIgnore]
         public string ApplicationTypeID { set; get; }
 
-        [JsonIgnore]
         private Color StatusColorDisplay
         {
             get
@@ -141,34 +128,18 @@ namespace myTNB.Mobile
         }
     }
 
-    public class ApplicationDetail
+    public class ApplicationDetailDisplayModel
     {
-        [JsonProperty("applicationId")]
         public int ApplicationId { set; get; }
-
-        [JsonProperty("referenceNo")]
         public string ReferenceNo { set; get; }
-
-        [JsonProperty("applicationModuleId")]
         public int ApplicationModuleId { set; get; }
-
-        [JsonProperty("srNo")]
         public string SRNo { set; get; }
-
-        [JsonProperty("srType")]
         public string SRType { set; get; }
-
-        [JsonProperty("statusId")]
         public int StatusID { set; get; }
-
-        [JsonProperty("statusCode")]
         public string StatusCode { set; get; }
-
-        [JsonProperty("createdDate")]
         public DateTime CreatedDate { set; get; }
 
         //Mark: Display Specific Properties
-        [JsonIgnore]
         public string CreatedDateDisplay
         {
             get
@@ -180,7 +151,6 @@ namespace myTNB.Mobile
         }
 
         //Todo: Map with correct property after BE deployed
-        [JsonIgnore]
         public string LastUpdatedDateDisplay
         {
             get
@@ -194,64 +164,33 @@ namespace myTNB.Mobile
         }
     }
 
-    public class ApplicationPaymentDetail
+    public class ApplicationPaymentDisplayModel
     {
-        [JsonProperty("outstandingChargesAmount")]
         public double OutstandingChargesAmount { set; get; }
-
-        [JsonProperty("latestBillAmount")]
         public double LatestBillAmount { set; get; }
-
-        [JsonProperty("oneTimeChargesAmount")]
         public double OneTimeChargesAmount { set; get; }
-
-        [JsonProperty("oneTimeChargesDetail")]
-        public OneTimeChargesDetail OneTimeChargesDetail { set; get; }
-
-        [JsonProperty("totalPayableAmount")]
+        public OneTimeChargesDisplayModel OneTimeChargesDetail { set; get; }
         public double TotalPayableAmount { set; get; }
     }
 
-    public class OneTimeChargesDetail
+    public class OneTimeChargesDisplayModel
     {
-        [JsonProperty("connectionChargesAmount")]
         public double ConnectionChargesAmount { set; get; }
-
-        [JsonProperty("securityDepositAmount")]
         public double SecurityDepositAmount { set; get; }
-
-        [JsonProperty("meterFeeAmount")]
         public double MeterFeeAmount { set; get; }
-
-        [JsonProperty("stampDutyAmount")]
         public double StampDutyAmount { set; get; }
-
-        [JsonProperty("processingFeeAmount")]
         public double ProcessingFeeAmount { set; get; }
     }
 
-    public class ApplicationStatusDetail
+    public class ApplicationStatusDetailDisplayModel
     {
-        [JsonProperty("statusId")]
         public int StatusId { set; get; }
-
-        [JsonProperty("statusCode")]
         public string StatusCode { set; get; }
-
-        [JsonProperty("statusDescription")]
         public string StatusDescription { set; get; }
-
-        [JsonProperty("userAction")]
         public string UserAction { set; get; }
-
-        [JsonProperty("isPostPayment")]
         public bool IsPostPayment { set; get; }
-
-        [JsonProperty("statusTracker")]
-        public List<StatusTracker> StatusTracker { set; get; }
-
+        public List<StatusTrackerDisplay> StatusTracker { set; get; }
         //Mark: Display Specific Properties
-        [JsonIgnore]
         public string StatusDescriptionDisplay
         {
             get
@@ -259,71 +198,100 @@ namespace myTNB.Mobile
                 return LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "for") + StatusDescription;
             }
         }
+
+        public bool IsLastStatusCompleted { set; get; }
     }
 
-    public class StatusTracker
+    public class StatusTrackerDisplay
     {
-        [JsonProperty("statusDescription")]
         public string StatusDescription { set; get; }
-
-        [JsonProperty("statusMode")]
         public string StatusMode { set; get; }
-
-        [JsonProperty("statusMessage")]
         public string StatusMessage { set; get; }
-
-        [JsonProperty("progressDetail")]
         public string ProgressDetail { set; get; }
-
-        [JsonProperty("sequence")]
         public int Sequence { set; get; }
     }
 
-    public class ApplicationActivityLogDetail
+    public class ApplicationActivityLogDetailDisplay
     {
-        [JsonProperty("statusId")]
-        public string StatusID { set; get; }
-
-        [JsonProperty("statusDescription")]
+        public int StatusID { set; get; }
         public string StatusDescription { set; get; }
-
-        [JsonProperty("changeLogs")]
-        public List<ChangeLogs> ChangeLogs { set; get; }
-
-        [JsonProperty("reasons")]
-        public List<string> Reasons { set; get; }
-
-        [JsonProperty("comment")]
+        public List<ChangeLogsDisplay> ChangeLogs { set; get; }
         public string Comment { set; get; }
-
-        [JsonProperty("createdBy")]
         public string CreatedBy { set; get; }
-
-        [JsonProperty("createdDate")]
         public DateTime CreatedDate { set; get; }
+        public List<string> DetailsUpdateList { set; get; }
+        public List<string> DocumentsUpdateList { set; get; }
+        public List<string> Reasons { set; get; }
+        public bool IsAwaitingApproval
+        {
+            get
+            {
+                return StatusID == 17;
+            }
+        }
+        public string DisplayDate
+        {
+            get
+            {
+                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                string date = CreatedDate.ToString("dd MMM yyyy", dateCultureInfo);
+                return date;
+            }
+        }
+
     }
 
-    public class ChangeLogs
+    public class ChangeLogsDisplay
     {
-        [JsonProperty("changeType")]
         public string ChangeType { set; get; }
-
-        [JsonProperty("fieldName")]
         public string FieldName { set; get; }
-
-        [JsonProperty("fieldDescription")]
         public string FieldDescription { set; get; }
-
-        [JsonProperty("beforeValue")]
         public string BeforeValue { set; get; }
-
-        [JsonProperty("beforeValueDescription")]
         public string BeforeValueDescription { set; get; }
-
-        [JsonProperty("afterValue")]
         public string AfterValue { set; get; }
-
-        [JsonProperty("afterValueDescription")]
         public string AfterValueDescription { set; get; }
+
+        public ChangeType Type
+        {
+            get
+            {
+                if (ChangeType == "Documents")
+                {
+                    return Mobile.ChangeType.Documents;
+                }
+                else
+                {
+                    return Mobile.ChangeType.Fields;
+                }
+            }
+        }
+
+        public ChangeEvent Event
+        {
+            get
+            {
+                if (BeforeValueDescription.IsValid())
+                {
+                    return AfterValueDescription.IsValid() ? ChangeEvent.Update : ChangeEvent.Remove;
+                }
+                else
+                {
+                    return AfterValueDescription.IsValid() ? ChangeEvent.Add : ChangeEvent.Remove;
+                }
+            }
+        }
+    }
+
+    public enum ChangeType
+    {
+        Documents,
+        Fields
+    }
+
+    public enum ChangeEvent
+    {
+        Add,
+        Update,
+        Remove
     }
 }

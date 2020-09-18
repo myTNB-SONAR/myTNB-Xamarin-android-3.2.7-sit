@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication
 {
@@ -15,6 +16,6 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication
         public string SrNo { set; get; } = string.Empty;
         public string SrType { set; get; } = string.Empty;
         public string StatusCode { set; get; } = string.Empty;
-        public string SrCreatedDate { set; get; } = string.Empty;
+        public DateTime SrCreatedDate { set; get; }
     }
 }

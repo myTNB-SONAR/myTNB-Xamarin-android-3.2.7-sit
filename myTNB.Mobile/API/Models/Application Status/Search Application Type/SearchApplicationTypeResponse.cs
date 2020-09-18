@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using myTNB.Mobile.API.Base;
+using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 
 namespace myTNB
@@ -26,6 +28,34 @@ namespace myTNB
 
         [JsonProperty("userRole")]
         public List<string> UserRole { set; get; }
+
+        [JsonIgnore]
+        public string ApplicationNoHint
+        {
+            get
+            {
+                string hint = string.Empty;
+                if (SearchApplicationNoInputMask.IsValid())
+                {
+                    string eg = LanguageManager.Instance.GetPageValueByKey("Hint", "eg");
+                    hint += eg;
+                    int counter = 0;
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (int j = 0; j < SearchApplicationNoInputMask.Length; j++)
+                    {
+                        string appendValue = SearchApplicationNoInputMask[j].ToString();
+                        if (appendValue == "#")
+                        {
+                            appendValue = counter.ToString();
+                            counter++;
+                        }
+                        stringBuilder.Append(appendValue);
+                    }
+                    hint += stringBuilder.ToString();
+                }
+                return hint;
+            }
+        }
 
     }
 
