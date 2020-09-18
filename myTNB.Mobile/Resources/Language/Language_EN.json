@@ -1091,7 +1091,10 @@
     "allApplications": "How do I see all my applications?",
     "allApplicationsTitle": "View all your applications on myTNB Portal to enjoy the full experience!",
     "allApplicationsMessage": "Log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my/\">portal</a> using the same log in details. You can view the list of all your applications and full form details, and continue your applications or create new ones.",
-    "viewMore": "View More"
+    "viewMore": "View More",
+    "viewLess": "View Less",
+    "sn": "SN: {0}",
+    "sr": "SR: {0}"
   },
   "ApplicationStatusSearch": {
     "title": "Search Application Status",

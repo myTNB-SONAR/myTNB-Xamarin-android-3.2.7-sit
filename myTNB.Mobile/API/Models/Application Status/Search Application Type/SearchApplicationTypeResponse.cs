@@ -41,9 +41,9 @@ namespace myTNB
                     hint += eg;
                     int counter = 0;
                     StringBuilder stringBuilder = new StringBuilder();
-                    for (int j = 0; j < SearchApplicationNoInputMask.Length; j++)
+                    for (int i = 0; i < SearchApplicationNoInputMask.Length; i++)
                     {
-                        string appendValue = SearchApplicationNoInputMask[j].ToString();
+                        string appendValue = SearchApplicationNoInputMask[i].ToString();
                         if (appendValue == "#")
                         {
                             appendValue = counter.ToString();

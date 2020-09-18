@@ -32,13 +32,18 @@ namespace myTNB
             , string userName
             , Language language = Language.EN)
         {
+            this.Language = language;
             UserInfo = new
             {
                 RoleId = roleID ?? string.Empty,
                 UserId = userID ?? string.Empty,
                 UserName = userName ?? string.Empty,
-                Lang = language.ToString()
+                Lang = this.Language.ToString()
             };
+        }
+
+        public void SetLanguage(Language language = Language.EN)
+        {
             this.Language = language;
         }
 
@@ -54,7 +59,7 @@ namespace myTNB
                 RoleId = "16",
                 UserId = "243A701C-761A-415D-BAC0-DD69490513B1",
                 UserName = "tester1.tnb@gmail.com",
-                Lang = Language.EN.ToString()
+                Lang = this.Language.ToString()
             });
 
             //TODO: Update Default Value

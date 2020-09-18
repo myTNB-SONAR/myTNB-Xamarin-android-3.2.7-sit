@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 
 namespace myTNB.Mobile
@@ -12,7 +13,7 @@ namespace myTNB.Mobile
     public class AllApplicationsModel
     {
         [JsonProperty("applications")]
-        public List<Application> Applications { set; get; }
+        public List<ApplicationModel> Applications { set; get; }
 
         [JsonProperty("currentPage")]
         public int CurrentPage { set; get; }
@@ -25,9 +26,45 @@ namespace myTNB.Mobile
 
         [JsonProperty("nextPage")]
         public string NextPage { set; get; }
+
+        [JsonIgnore]
+        public double Pages
+        {
+            get
+            {
+                return Math.Ceiling((double)Total / 5);
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsEmpty
+        {
+            get
+            {
+                return Applications == null || Applications.Count == 0;
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsShowMoreDisplayed
+        {
+            get
+            {
+                return Total > 5;
+            }
+        }
+
+        [JsonIgnore]
+        public bool IsViewLess
+        {
+            get
+            {
+                return CurrentPage == Pages;
+            }
+        }
     }
 
-    public class Application
+    public class ApplicationModel
     {
         [JsonProperty("savedApplicationId")]
         public string SavedApplicationId { set; get; }
@@ -109,5 +146,24 @@ namespace myTNB.Mobile
 
         [JsonProperty("lastModifiedDate")]
         public DateTime LastModifiedDate { set; get; }
+
+        [JsonIgnore]
+        public string ReferenceNumberDisplay
+        {
+            get
+            {
+                string refno;
+                if (SRNo.IsValid())
+                {
+                    refno = string.Format(LanguageManager.Instance.GetPageValueByKey("ApplicationStatusLanding", SRType.IsValid() ? "sr" : "sn"), SRNo);
+                }
+                else
+                {
+                    refno = ReferenceNo;
+                }
+
+                return refno;
+            }
+        }
     }
 }
