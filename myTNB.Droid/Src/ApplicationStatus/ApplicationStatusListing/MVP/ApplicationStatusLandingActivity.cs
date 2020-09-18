@@ -20,6 +20,8 @@ using AndroidX.Core.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Facebook.Shimmer;
+using myTNB;
+using myTNB.Mobile;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter;
@@ -30,6 +32,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.SessionCache;
 using myTNB_Android.Src.WhatsNewDetail.MVP;
 using Newtonsoft.Json;
 
@@ -87,11 +90,24 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         [OnClick(Resource.Id.btnSearchApplicationStatus)]
         void OnClickSearchApplicationStatus(object sender, EventArgs eventArgs)
         {
-            var applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
-
-            StartActivity(applicationLandingIntent);
+            GetSearchApplicationTypeAsync();
         }
+        private async System.Threading.Tasks.Task GetSearchApplicationTypeAsync()
+        {
+            SearchApplicationTypeResponse searchApplicationTypeResponse = new SearchApplicationTypeResponse();
+            searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
+            if (searchApplicationTypeResponse == null)
+            {
+                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("0", string.Empty, string.Empty);
+                SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+            }
+            Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
+            applicationLandingIntent.PutExtra("searchApplicationType", JsonConvert.SerializeObject(searchApplicationTypeResponse.Content));
+            StartActivity(applicationLandingIntent);
 
+
+
+        }
         ApplicationStatusLandingPresenter mPresenter;
 
         ApplicationStatusLandingAdapter applicationStatusLandingAdapter;

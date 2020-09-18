@@ -26,6 +26,7 @@ using myTNB_Android.Src.Maintenance.Activity;
 using myTNB_Android.Src.PreLogin.MVP;
 using myTNB_Android.Src.RegistrationForm.Activity;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.SessionCache;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -511,11 +512,24 @@ namespace myTNB_Android.Src.PreLogin.Activity
         public async void ShowCheckStatus()
         {
             //  TODO:  ApplicationStatus stub
-            SearchApplicationTypeResponse searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("0", string.Empty, string.Empty);
+            //SearchApplicationTypeResponse searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("0", string.Empty, string.Empty);
 
+            //Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
+            //applicationLandingIntent.PutExtra("searchApplicationType", JsonConvert.SerializeObject(searchApplicationTypeResponse.Content));
+            //StartActivity(applicationLandingIntent);
+
+
+            SearchApplicationTypeResponse searchApplicationTypeResponse = new SearchApplicationTypeResponse();
+            searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
+            if (searchApplicationTypeResponse == null)
+            {
+                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("0", string.Empty, string.Empty);
+                SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+            }
             Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
             applicationLandingIntent.PutExtra("searchApplicationType", JsonConvert.SerializeObject(searchApplicationTypeResponse.Content));
             StartActivity(applicationLandingIntent);
+
         }
 
         public void GetDataFromSiteCore()

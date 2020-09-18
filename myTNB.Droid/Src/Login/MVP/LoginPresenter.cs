@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Text;
 using Android.Util;
 using Firebase.Iid;
+using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
@@ -333,6 +334,12 @@ namespace myTNB_Android.Src.Login.MVP
                                     this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                                 }
                                 await LanguageUtil.SaveUpdatedLanguagePreference();
+
+                                AppInfoManager.Instance.SetUserInfo("16"
+                                           , UserEntity.GetActive().UserID
+                                           , UserEntity.GetActive().UserName
+                                           , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
+
                                 this.mView.ShowDashboard();
                             }
                             else

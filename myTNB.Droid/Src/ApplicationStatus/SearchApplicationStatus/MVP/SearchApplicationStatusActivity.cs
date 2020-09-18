@@ -157,7 +157,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         }
         private async void GetApplicationStatus()
         {
-            GetApplicationStatusResponse applicationStatusResponse = await ApplicationStatusManager.Instance.GetApplicationStatus("ASR", "ApplicationNo", "362", txtApplicationType.Text, txtSearchBy.Text);
+            ApplicationDetailDisplay applicationStatusResponse = await ApplicationStatusManager.Instance.GetApplicationStatus("ASR", "ApplicationNo", "362", txtApplicationType.Text, txtSearchBy.Text);
 
 
             Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
@@ -511,7 +511,10 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                 txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypes[0].SearchTypeDesc;
                                 txtWhyAccountsNotHere.Visibility = ViewStates.Visible;
                                 whyAccountsNotHereLayOut.Visibility = ViewStates.Visible;
-
+                                if (selectedType.SearchTypes[0].Type == ApplicationStatusSearchType.ApplicationNo)
+                                {
+                                    txtInputLayoutServiceRequestNum.HelperText = searchByModel.SearchTypeDesc;
+                                }
                             }
                             else
                             {
@@ -558,6 +561,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             txtServiceRequestNum.Text = null;
                             txtServiceRequestNum.ClearFocus();
                             txtInputLayoutServiceRequestNum.Hint = searchByModel.SearchTypeDesc;
+
+                            if(searchByModel.Type == ApplicationStatusSearchType.ApplicationNo)
+                            {
+                                txtInputLayoutServiceRequestNum.HelperText = searchByModel.SearchTypeDesc;
+                            }
                         }
                     }
                 }
@@ -679,7 +687,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         if (searchType == ApplicationStatusSearchType.ApplicationNo)
                         {
 
-
+                            txtInputLayoutServiceRequestNum.HelperText = selectedType.SearchTypes[0].SearchTypeDesc;
                             string format = selectedType.SearchApplicationNoInputMask;
 
                             string inputString = txtServiceRequestNum.Text.ToString();
@@ -695,6 +703,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                 txtServiceRequestNum.SetSelection(preffix.Length);
                             }
                         }
+                       
                     }
                 }
             }

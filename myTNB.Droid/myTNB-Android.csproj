@@ -5887,6 +5887,7 @@
     <Compile Include="Src\Utils\LinkRedirectionUtils.cs" />
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailContract.cs" />
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailPresenter.cs" />
+    <Compile Include="Src\Utils\SessionCache\SearchApplicationTypeCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -6217,6 +6218,7 @@
     <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\MVP\" />
     <Folder Include="Src\Utils\ZoomImageView\" />
     <Folder Include="Src\AppointmentScheduler\AppointmentSelect\Test\" />
+    <Folder Include="Src\Utils\SessionCache\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

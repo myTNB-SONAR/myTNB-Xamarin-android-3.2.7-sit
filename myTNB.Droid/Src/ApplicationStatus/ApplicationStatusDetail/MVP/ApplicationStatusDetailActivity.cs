@@ -7,6 +7,7 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB.Mobile;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using myTNB.Mobile.API.Models.ApplicationStatus;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {

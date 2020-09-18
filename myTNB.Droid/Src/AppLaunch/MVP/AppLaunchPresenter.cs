@@ -32,6 +32,7 @@ using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
 using System.Net.Http;
 using static myTNB_Android.Src.MyTNBService.Response.AppLaunchMasterDataResponse;
+using myTNB;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -138,8 +139,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     {
                         new MasterApiDBOperation(masterDataResponse, mSharedPref).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
 
-                        
 
+                       
                         bool proceed = true;
 
                         bool appUpdateAvailable = false;
@@ -260,6 +261,13 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         bool isODNType = "ODN".Equals(UserSessions.GetNotificationType(mSharedPref));
                                         //If Notification Email is equals to logged-in email
                                         bool isLoggedInEmail = loggedUser.Email.Equals(UserSessions.GetUserEmailNotification(mSharedPref));
+
+                                        AppInfoManager.Instance.SetUserInfo("16"
+                                            , loggedUser.UserID
+                                            , loggedUser.UserName
+                                            , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS: LanguageManager.Language.EN);
+
+
                                         if (hasNotification && (isODNType || isLoggedInEmail))
                                         {
                                             UserSessions.RemoveNotificationSession(mSharedPref);
@@ -298,6 +306,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         UserSessions.SaveDeviceId(mSharedPref, this.mView.GetDeviceId());
                                     }
                                     this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.PreLogin);
+
+                                    AppInfoManager.Instance.SetUserInfo("0", string.Empty, string.Empty
+                                        ,LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                     mView.ShowPreLogin();
                                 }
                                 else

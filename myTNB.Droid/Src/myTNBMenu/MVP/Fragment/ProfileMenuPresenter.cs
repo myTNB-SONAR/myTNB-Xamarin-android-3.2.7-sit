@@ -11,6 +11,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
+using myTNB;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -231,6 +232,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                     if (logoutResponse.IsSuccessResponse())
                     {
+                        AppInfoManager.Instance.SetUserInfo("0", string.Empty, string.Empty
+                                       , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
+
+
                         UserEntity.RemoveActive();
                         UserRegister.RemoveActive();
                         CustomerBillingAccount.RemoveActive();

@@ -21,6 +21,7 @@ using myTNB_Android.Src.Base;
 using System.Threading.Tasks;
 using myTNB_Android.Src.Maintenance.Activity;
 using AndroidX.Core.Content;
+using myTNB_Android.Src.Utils.SessionCache;
 
 namespace myTNB_Android.Src.Profile.Activity
 {
@@ -220,6 +221,9 @@ namespace myTNB_Android.Src.Profile.Activity
 
         private Task RunUpdateLanguage(Item selectedItem)
         {
+            SearchApplicationTypeCache.Instance.Clear();
+
+
             return Task.Run(() =>
             {
                 LanguageUtil.SaveAppLanguage(selectedItem.type);
