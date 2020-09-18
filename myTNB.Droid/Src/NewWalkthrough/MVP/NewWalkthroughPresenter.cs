@@ -68,8 +68,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 });
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title7"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description7"),
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title8"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description8"),
                     Image = "walkthrough_img_install_6"
                 });
             }
@@ -101,8 +101,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 });
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title7"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description7"),
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title8"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description8"),
                     Image = "walkthrough_img_update_3"
                 });
             }
