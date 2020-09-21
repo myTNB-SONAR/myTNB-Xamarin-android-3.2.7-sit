@@ -269,7 +269,11 @@ namespace myTNB.Mobile
             AllApplicationsResponse response;
             try
             {
-                int limit = 5;
+                if (!int.TryParse(LanguageManager.Instance.GetPageValueByKey("ApplicationStatusLanding", "displayPerQuery"), out int limit))
+                {
+                    limit = 5;
+                }
+                AllApplicationsCache.Instance.Limit = limit;
                 IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
                 try
                 {

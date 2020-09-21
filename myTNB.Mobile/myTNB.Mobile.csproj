@@ -72,6 +72,7 @@
     <Folder Include="API\Display Model\" />
     <Folder Include="API\Display Model\Application Status\" />
     <Folder Include="API\Models\Application Status\All Applications\" />
+    <Folder Include="Session Cache\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />

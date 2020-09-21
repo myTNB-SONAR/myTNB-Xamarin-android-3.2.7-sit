@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.Extensions;
 
 namespace myTNB.Mobile
@@ -29,7 +30,28 @@ namespace myTNB.Mobile
 
         public List<TitleValueModel> AdditionalInfoList { set; get; } = new List<TitleValueModel>();
 
-        public string ApplicationType { set; get; } = string.Empty;
+        private string _applicationType = string.Empty;
+        public string ApplicationType {
+            set
+            {
+                if (value.IsValid())
+                {
+                    _applicationType = value;
+                }
+            }
+            get
+            {
+                return LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "for") + _applicationType;
+            }
+        }
+
+        public string Status
+        {
+            get
+            {
+                return ApplicationStatusDetail.StatusDescription;
+            }
+        }
 
         public bool IsPayment
         {

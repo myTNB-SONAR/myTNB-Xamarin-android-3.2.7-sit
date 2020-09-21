@@ -1084,6 +1084,24 @@
     "validElectricityAccountNoError": "Please enter a valid electricity account number.",
     "backLogin": "Back to Login"
   },
+  "Tutorial": {
+    "swipeText": "Swipe to see more, tap to skip.",
+    "skip": "Tap to skip.",
+    "applicationStatusLandingTitle": "Keep track of your applications.",
+    "applicationStatusLandingDescription": "Your submitted applications will automatically appear here so you can view their status. Use the filter to search through the list easily.",
+    "applicationStatusLandingEmptyTitle": "Keep track of your applications.",
+    "applicationStatusLandingEmptyDescription": "Your submitted applications will automatically appear so you can view their status.",
+    "applicationStatusLandingSearchTitle": "Search other application status.",
+    "applicationStatusLandingSearchDescription": "Search and save applications submitted by others with your preferred reference number.",
+    "applicationStatusDetailsNoActionTitle": "View your status progress here.",
+    "applicationStatusDetailsNoActionMessage": "Keep updated with your real-time status progress. Visit the Portal to view full application details.",
+    "applicationStatusDetailsInProgressTitle": "View your status progress here.",
+    "applicationStatusDetailsInProgressMessage": "Keep updated with your real-time status. Visit the Portal to continue or update your application.",
+    "applicationStatusDetailsActionOneTitle": "View your status progress here.",
+    "applicationStatusDetailsActionOneMessage": "Keep updated with your real-time status progress. Visit myTNB portal to view your full application details.",
+    "applicationStatusDetailsActionTwoTitle": "Know when to take action.",
+    "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submited application from here."
+  },
   "ApplicationStatusLanding": {
     "title": "Application Status",
     "search": "Search Application Status",
@@ -1094,7 +1112,8 @@
     "viewMore": "View More",
     "viewLess": "View Less",
     "sn": "SN: {0}",
-    "sr": "SR: {0}"
+    "sr": "SR: {0}",
+    "displayPerQuery": "5"
   },
   "ApplicationStatusSearch": {
     "title": "Search Application Status",
@@ -1140,41 +1159,128 @@
     "update": "• Updated {0} from {1} to {2}",
     "remove": "• Removed {0}"
   },
-  "SelectApplicationType": {
-    "title": "Select Application Type"
-  },
   "SearchByNumber": {
     "title": "Search By",
     "whereToGetTheseNumber": "Where do I get these numbers?",
     "whereToGetTheseNumberTitle": "Where do I get these numbers?",
     "whereToGetTheseNumberMessage": "You can find the <b>Application Number</b>, <b>Service Request Number</b> and <b>Service Notification Number</b> in your submitted application details at ‘Application Status’ page and are available upon request by contacting TNB Careline."
   },
-  "SelectStatus": {
+  "SelectApplicationType": {
+    "title": "Select Application Type"
+  },
+  "SelectApplicationStatus": {
     "title": "Select Status"
+  },
+  "SelectApplicationStatus_selector": {
+    "status": [
+      {
+        "key": "Submitted",
+        "value": "Submitted"
+      },
+      {
+        "key": "Payment Required",
+        "value": "Payment Required"
+      },
+      {
+        "key": "Setting Up Power Supply",
+        "value": "Setting Up Power Supply"
+      },
+      {
+        "key": "Awaiting Meter Installation",
+        "value": "Awaiting Meter Installation"
+      },
+      {
+        "key": "Connecting Electricity",
+        "value": "Connecting Electricity"
+      },
+      {
+        "key": "Calculating Connection Charges",
+        "value": "Calculating Connection Charges"
+      },
+      {
+        "key": "Action Required",
+        "value": "Action Required"
+      },
+      {
+        "key": "Contractor Required",
+        "value": "Contractor Required"
+      },
+      {
+        "key": "Address Verified",
+        "value": "Address Verified"
+      },
+      {
+        "key": "Draft",
+        "value": "Draft"
+      },
+      {
+        "key": "Completed",
+        "value": "Completed"
+      },
+      {
+        "key": "Cancelled",
+        "value": "Cancelled"
+      }
+    ]
   },
   "SelectCreationDate": {
     "title": "Select Creation Date",
     "apply": "Apply",
     "from": "From",
-    "to": "To"
+    "to": "To",
+    "minimumYear": "2016"
   },
-  "Tutorial": {
-    "swipeText": "Swipe to see more, tap to skip.",
-    "skip": "Tap to skip.",
-    "applicationStatusLandingTitle": "Keep track of your applications.",
-    "applicationStatusLandingDescription": "Your submitted applications will automatically appear here so you can view their status. Use the filter to search through the list easily.",
-    "applicationStatusLandingEmptyTitle": "Keep track of your applications.",
-    "applicationStatusLandingEmptyDescription": "Your submitted applications will automatically appear so you can view their status.",
-    "applicationStatusLandingSearchTitle": "Search other application status.",
-    "applicationStatusLandingSearchDescription": "Search and save applications submitted by others with your preferred reference number.",
-    "applicationStatusDetailsNoActionTitle": "View your status progress here.",
-    "applicationStatusDetailsNoActionMessage": "Keep updated with your real-time status progress. Visit the Portal to view full application details.",
-    "applicationStatusDetailsInProgressTitle": "View your status progress here.",
-    "applicationStatusDetailsInProgressMessage": "Keep updated with your real-time status. Visit the Portal to continue or update your application.",
-    "applicationStatusDetailsActionOneTitle": "View your status progress here.",
-    "applicationStatusDetailsActionOneMessage": "Keep updated with your real-time status progress. Visit myTNB portal to view your full application details.",
-    "applicationStatusDetailsActionTwoTitle": "Know when to take action.",
-    "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submited application from here."
+  "SelectCreationDate_selector": {
+    "months": [
+      {
+        "key": "1",
+        "value": "January"
+      },
+      {
+        "key": "2",
+        "value": "February"
+      },
+      {
+        "key": "3",
+        "value": "March"
+      },
+      {
+        "key": "4",
+        "value": "April"
+      },
+      {
+        "key": "5",
+        "value": "May"
+      },
+      {
+        "key": "6",
+        "value": "June"
+      },
+      {
+        "key": "7",
+        "value": "July"
+      },
+      {
+        "key": "8",
+        "value": "August"
+      },
+      {
+        "key": "9",
+        "value": "September"
+      },
+      {
+        "key": "10",
+        "value": "October"
+      },
+      {
+        "key": "11",
+        "value": "November"
+      },
+      {
+        "key": "12",
+        "value": "December"
+      }
+    ]
   },
   "ServiceDetails": {
     "TimeOut": [
