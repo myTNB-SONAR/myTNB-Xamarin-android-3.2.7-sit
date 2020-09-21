@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using myTNB.Mobile.API.Models.ApplicationStatus;
+using myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails;
 using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
 using Refit;
 
@@ -33,14 +34,14 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
             , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
 
         [Post("/{urlPrefix}/SaveApplication")]
-        Task<HttpResponseMessage> SaveApplication([Body] SaveApplicationRequest request
+        Task<HttpResponseMessage> SaveApplication([Body] PostSaveApplicationRequest request
            , [Header(Constants.H_UserInfo)] string userInfo
            , CancellationToken cancelToken
            , string urlPrefix = Constants.ApiUrlPath
            , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
 
         [Get("/{urlPrefix}/AllApplications?Page={page}&Limit={limit}&SortBy={sortBy}&SortDirection={sortDirection}&ReferenceNo={referenceNo}&SrNo={srNo}&SearchApplicationType={searchApplicationType}&StatusId={statusId}&StatusDescription={statusDescription}&CreatedDateFrom={createdDateFrom}&CreatedDateTo={createdDateTo}")]
-        Task<AllApplicationsResponse> GetAllApplications(int page
+        Task<GetAllApplicationsResponse> GetAllApplications(int page
            , int limit
            , string sortBy
            , string sortDirection
@@ -55,5 +56,13 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
            , CancellationToken cancelToken
            , string urlPrefix = Constants.ApiUrlPath
            , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
+
+        [Get("/{urlPrefix}/ApplicationDetail?applicationType={applicationType}&id={id}")]
+        Task<GetApplicationDetailsResponse> GetApplicationDetail(string applicationType
+            , string id
+            , [Header(Constants.H_UserInfo)] string userInfo
+            , CancellationToken cancelToken
+            , string urlPrefix = Constants.ApiUrlPath
+            , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
     }
 }

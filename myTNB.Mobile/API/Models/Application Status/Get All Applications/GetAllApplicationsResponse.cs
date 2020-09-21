@@ -5,12 +5,12 @@ using Newtonsoft.Json;
 
 namespace myTNB.Mobile
 {
-    public class AllApplicationsResponse : BaseResponse<AllApplicationsModel>
+    public class GetAllApplicationsResponse : BaseResponse<GetAllApplicationsModel>
     {
 
     }
 
-    public class AllApplicationsModel
+    public class GetAllApplicationsModel
     {
         [JsonProperty("applications")]
         public List<ApplicationModel> Applications { set; get; }
@@ -27,12 +27,24 @@ namespace myTNB.Mobile
         [JsonProperty("nextPage")]
         public string NextPage { set; get; }
 
+        private int _limit
+        {
+            get
+            {
+                if (!int.TryParse(LanguageManager.Instance.GetPageValueByKey("ApplicationStatusLanding", "displayPerQuery"), out int limit))
+                {
+                    limit = 5;
+                }
+                return limit;
+            }
+        }
+
         [JsonIgnore]
         public double Pages
         {
             get
             {
-                return Math.Ceiling((double)Total / 5);
+                return Math.Ceiling((double)Total / _limit);
             }
         }
 
@@ -50,7 +62,7 @@ namespace myTNB.Mobile
         {
             get
             {
-                return Total > 5;
+                return Total > _limit;
             }
         }
 

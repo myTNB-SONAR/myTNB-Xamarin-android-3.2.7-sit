@@ -63,14 +63,14 @@ namespace myTNB
             });
 
             //TODO: Update Default Value
-            return Newtonsoft.Json.JsonConvert.SerializeObject(UserInfo != null ? UserInfo :
+            /*return Newtonsoft.Json.JsonConvert.SerializeObject(UserInfo != null ? UserInfo :
                 new
                 {
                     RoleId = "16",
                     UserId = "243A701C-761A-415D-BAC0-DD69490513B1",
                     UserName = "tester1.tnb@gmail.com",
                     Lang = Language.EN.ToString()
-                });
+                });*/
         }
     }
 }

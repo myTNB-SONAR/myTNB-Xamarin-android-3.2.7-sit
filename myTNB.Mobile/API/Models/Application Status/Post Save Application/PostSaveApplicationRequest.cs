@@ -3,13 +3,13 @@ using Newtonsoft.Json;
 
 namespace myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication
 {
-    public class SaveApplicationRequest
+    public class PostSaveApplicationRequest
     {
         [JsonProperty("saveApplication")]
-        public SaveApplication SaveApplication { set; get; }
+        public PostSaveApplication SaveApplication { set; get; }
     }
 
-    public class SaveApplication
+    public class PostSaveApplication
     {
         public string ReferenceNo { set; get; } = string.Empty;
         public string ModuleName { set; get; } = string.Empty;

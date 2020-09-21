@@ -1,7 +1,4 @@
 ﻿namespace myTNB.Mobile.API.Models.ApplicationStatus.AllApplications
 {
-    public class AllApplicationsRequest : BaseRequest
-    {
-
-    }
+    public class GetAllApplicationsRequest : BaseRequest { }
 }

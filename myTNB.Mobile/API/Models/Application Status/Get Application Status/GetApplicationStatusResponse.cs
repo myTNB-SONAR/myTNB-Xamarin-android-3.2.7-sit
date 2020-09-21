@@ -66,6 +66,15 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
 
         [JsonProperty("totalPayableAmount")]
         public double TotalPayableAmount { set; get; }
+
+        [JsonProperty("caNo")]
+        public string CANo { set; get; }
+
+        [JsonProperty("sdDocumentNo")]
+        public string SDDocumentNo { set; get; }
+
+        [JsonProperty("srNo")]
+        public string SRNo { set; get; }
     }
 
     public class OneTimeChargesDetail
@@ -97,6 +106,9 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
         [JsonProperty("statusDescription")]
         public string StatusDescription { set; get; }
 
+        [JsonProperty("statusMessage")]
+        public string StatusMessage { set; get; }
+
         [JsonProperty("userAction")]
         public string UserAction { set; get; }
 
@@ -115,14 +127,19 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
         [JsonProperty("statusMode")]
         public string StatusMode { set; get; }
 
-        [JsonProperty("statusMessage")]
-        public string StatusMessage { set; get; }
-
         [JsonProperty("progressDetail")]
-        public string ProgressDetail { set; get; }
+        public ProgressDetail ProgressDetail { set; get; }
 
         [JsonProperty("sequence")]
         public int Sequence { set; get; }
+    }
+
+    public class ProgressDetail
+    {
+        [JsonProperty("tnB_ProjectID")]
+        public string TNBProjectID { set; get; }
+        [JsonProperty("progressTrackers")]
+        public List<object> ProgressTrackers { set; get; }
     }
 
     public class ApplicationActivityLogDetail
