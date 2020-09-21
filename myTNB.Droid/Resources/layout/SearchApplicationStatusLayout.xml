@@ -103,7 +103,7 @@
                             app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                             android:id="@+id/txtInputLayoutServiceRequestNum"
                             app:errorEnabled="true"
-                            app:helperText="test test test"
+                            app:helperText=""
                            app:helperTextTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                             android:layout_marginRight="17dp">
                             <EditText
@@ -118,7 +118,7 @@
                                 android:paddingTop="5dp"
                                 android:drawablePadding="6dp"
                                 android:inputType="number"
-                                
+                                android:longClickable="false"
                             />
                        
                         </com.google.android.material.textfield.TextInputLayout>

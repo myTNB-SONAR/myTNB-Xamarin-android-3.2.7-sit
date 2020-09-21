@@ -74,7 +74,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         List<SearchByModel> mSearchByList = new List<SearchByModel>();
         SearchByModel searchByModel = new SearchByModel();
         SearchApplicationStatusPresenter mPresenter;
-
+        private bool isTextChange = false;
         public override int ResourceId()
         {
             return Resource.Layout.SearchApplicationStatusLayout;
@@ -299,7 +299,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         {
             try
             {
-                if (searchByModel != null && selectedType != null && selectedType.SearchTypes != null)
+                if (isTextChange && searchByModel != null && selectedType != null && selectedType.SearchTypes != null)
                 {
                     var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].Type : searchByModel.Type;
 
@@ -308,14 +308,18 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     {
                         if (txtServiceRequestNum.Text.Count() == 9)
                             txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(11) });
+                        else
+                            txtInputLayoutServiceRequestNum.HelperText = "Please enter a valid Service Request Number.";
                     }
 
                     if (searchType == ApplicationStatusSearchType.CA)
-                      //  || (selectedType != null && selectedType.SearchTypes.Where(x => x.Type == ApplicationStatusSearchType.CA).Count() > 0)
+                    //  || (selectedType != null && selectedType.SearchTypes.Where(x => x.Type == ApplicationStatusSearchType.CA).Count() > 0)
                     {
 
                         if (txtServiceRequestNum.Text.Count() == 11)
                             txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(12) });
+                        else
+                            txtInputLayoutServiceRequestNum.HelperText = "Please enter a valid Application Number.";
                     }
                     if (searchType == ApplicationStatusSearchType.ServiceNotificationNo)
                     {
@@ -485,6 +489,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 {
                     if (resultCode == Result.Ok)
                     {
+                        isTextChange = false;
                         targetSearchBy = string.Empty;
                         Bundle extra = data.Extras;
                         List<TypeModel> resultTypeList = new List<TypeModel>();
@@ -547,6 +552,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 {
                     if (resultCode == Result.Ok)
                     {
+                        isTextChange = false;
                         Bundle extra = data.Extras;
                         List<SearchByModel> resultSearchByList = new List<SearchByModel>();
 
@@ -565,6 +571,19 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             if(searchByModel.Type == ApplicationStatusSearchType.ApplicationNo)
                             {
                                 txtInputLayoutServiceRequestNum.HelperText = searchByModel.SearchTypeDesc;
+                            }
+                            if (searchByModel.Type == ApplicationStatusSearchType.ServiceNotificationNo)
+                            {
+                                txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "serviceNotificationNo");
+                            }
+                            if (searchByModel.Type == ApplicationStatusSearchType.ServiceRequestNo)
+                            {
+                                txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "serviceRequestNumber");
+                            }
+                            if (searchByModel.Type == ApplicationStatusSearchType.CA)
+                            {
+                                txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "electricityAccountNumber");
+                                
                             }
                         }
                     }
@@ -681,6 +700,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 }
                 else if(eTxtView.Id == Resource.Id.txtServiceRequestNum)
                 {
+                    isTextChange = true;
                     if (searchByModel != null && selectedType != null && selectedType.SearchTypes != null)
                     {
                         var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].Type : searchByModel.Type;

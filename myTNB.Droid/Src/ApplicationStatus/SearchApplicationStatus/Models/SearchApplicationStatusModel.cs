@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models
 {
-    public class SearchByModel : SearchType
+    public class    SearchByModel : SearchType
     {
         public SearchByModel(SearchType searchType)
         {

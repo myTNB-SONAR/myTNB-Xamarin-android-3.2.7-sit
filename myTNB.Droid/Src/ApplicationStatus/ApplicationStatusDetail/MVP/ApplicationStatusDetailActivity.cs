@@ -8,6 +8,8 @@ using myTNB.Mobile;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using myTNB.Mobile.API.Models.ApplicationStatus;
+using CheeseBind;
+using Android.Widget;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -15,6 +17,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
     public class ApplicationStatusDetailActivity : BaseActivityCustom
     {
         const string PAGE_ID = "ApplicationStatus";
+
+        [BindView(Resource.Id.txtApplicationStatusMainTitle)]
+        TextView txtApplicationStatusMainTitle;
+
+        [BindView(Resource.Id.txtApplicationStatusSubTitle)]
+        TextView txtApplicationStatusSubTitle;
+
+
+        
 
         internal string test
         { set; private get; } = string.Empty;
@@ -58,6 +69,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
                         var test = extras.GetString("applicationStatusResponse");
                         searhApplicationTypeModels = JsonConvert.DeserializeObject<GetApplicationStatusModel>(extras.GetString("applicationStatusResponse"));
+
+                        txtApplicationStatusMainTitle.Text = searhApplicationTypeModels.ApplicationStatusDetail.StatusDescription;
 
                         //foreach (var searchTypeItem in searhApplicationTypeModels)
                         //{
