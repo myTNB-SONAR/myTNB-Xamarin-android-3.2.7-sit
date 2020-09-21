@@ -10,6 +10,9 @@ using Newtonsoft.Json;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using CheeseBind;
 using Android.Widget;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter;
+using AndroidX.RecyclerView.Widget;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -17,6 +20,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
     public class ApplicationStatusDetailActivity : BaseActivityCustom
     {
         const string PAGE_ID = "ApplicationStatus";
+        ApplicationStatusDetailProgressAdapter adapter;
+
+        List<StatusTrackerDisplay> StatusTrackerList = new List<StatusTrackerDisplay>();
+        RecyclerView.LayoutManager layoutManager;
 
         [BindView(Resource.Id.txtApplicationStatusMainTitle)]
         TextView txtApplicationStatusMainTitle;
@@ -24,8 +31,17 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [BindView(Resource.Id.txtApplicationStatusSubTitle)]
         TextView txtApplicationStatusSubTitle;
 
+        [BindView(Resource.Id.txtApplicationStatusUpdated)]
+        TextView txtApplicationStatusUpdated;
 
+
+        [BindView(Resource.Id.applicationStatusStatusListRecyclerView)]
+        RecyclerView applicationStatusStatusListRecyclerView;
         
+
+
+
+
 
         internal string test
         { set; private get; } = string.Empty;
@@ -52,6 +68,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             //  TODO: ApplicationStatus Multilingual
             SetToolBarTitle("Application Details");
 
+            layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+            applicationStatusStatusListRecyclerView.SetLayoutManager(layoutManager);
+            applicationStatusStatusListRecyclerView.SetAdapter(adapter);
+
+            
+
+                    
             // Create your application here
             Bundle extras = Intent.Extras;
 
@@ -65,12 +88,24 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
                     if (extras.ContainsKey("applicationStatusResponse"))
                     {
-                        GetApplicationStatusModel searhApplicationTypeModels = new GetApplicationStatusModel();
+                        GetApplicationStatusDisplay applicationDetailDisplay = new GetApplicationStatusDisplay();
+                        applicationDetailDisplay = JsonConvert.DeserializeObject<GetApplicationStatusDisplay>(extras.GetString("applicationStatusResponse"));
 
-                        var test = extras.GetString("applicationStatusResponse");
-                        searhApplicationTypeModels = JsonConvert.DeserializeObject<GetApplicationStatusModel>(extras.GetString("applicationStatusResponse"));
+                        if (applicationDetailDisplay.ApplicationStatusDetail.StatusTracker.Count > 0)
+                        {
+                            adapter = new ApplicationStatusDetailProgressAdapter(this, StatusTrackerList);
+                            applicationStatusStatusListRecyclerView.SetAdapter(adapter);
+                            adapter.NotifyDataSetChanged();
+                        }
 
-                        txtApplicationStatusMainTitle.Text = searhApplicationTypeModels.ApplicationStatusDetail.StatusDescription;
+                        txtApplicationStatusMainTitle.Text = applicationDetailDisplay.ApplicationStatusDetail.StatusDescription;
+                        txtApplicationStatusSubTitle.Text = applicationDetailDisplay.ApplicationStatusDetail.StatusDescriptionDisplay;
+                        txtApplicationStatusUpdated.Text = applicationDetailDisplay.ApplicationDetail.LastUpdatedDateDisplay;
+
+                        TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusMainTitle);
+                        TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle);
+                        TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusUpdated);
+
 
                         //foreach (var searchTypeItem in searhApplicationTypeModels)
                         //{

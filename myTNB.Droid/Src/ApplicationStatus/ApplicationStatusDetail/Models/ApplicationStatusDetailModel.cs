@@ -3,14 +3,14 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Models
 {
-    public class DetailProgressModel
-    {
-        [JsonProperty("status")]
-        public string Status { get; set; }
+    //public class DetailProgressModel
+    //{
+    //    [JsonProperty("status")]
+    //    public string Status { get; set; }
 
-        [JsonProperty("stateCode")]
-        public string StatusCode { get; set; }
-    }
+    //    [JsonProperty("stateCode")]
+    //    public string StatusCode { get; set; }
+    //}
 
     public class SubDetailModel
     {

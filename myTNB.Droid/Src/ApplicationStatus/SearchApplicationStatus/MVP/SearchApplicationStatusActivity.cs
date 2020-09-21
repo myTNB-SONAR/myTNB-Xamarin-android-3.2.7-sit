@@ -157,11 +157,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         }
         private async void GetApplicationStatus()
         {
-            ApplicationDetailDisplay applicationStatusResponse = await ApplicationStatusManager.Instance.GetApplicationStatus("ASR", "ApplicationNo", "362", txtApplicationType.Text, txtSearchBy.Text);
+            ApplicationDetailDisplay applicationDetailDisplay = await ApplicationStatusManager.Instance.GetApplicationStatus("ASR", "ApplicationNo", "362", txtApplicationType.Text, txtSearchBy.Text);
 
 
             Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
-            applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(applicationStatusResponse.Content));
+            applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(applicationDetailDisplay.Content));
             StartActivity(applicationStatusDetailIntent);
         }
 

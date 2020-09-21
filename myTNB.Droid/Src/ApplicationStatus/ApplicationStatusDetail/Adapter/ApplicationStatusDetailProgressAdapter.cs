@@ -5,6 +5,7 @@ using Android.Content;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
+using myTNB.Mobile;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
@@ -14,7 +15,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
     public class ApplicationStatusDetailProgressAdapter : RecyclerView.Adapter
     {
         private BaseActivityCustom mActicity;
-        private List<DetailProgressModel> mProgressList = new List<DetailProgressModel>();
+        private List<StatusTrackerDisplay> mProgressList = new List<StatusTrackerDisplay>();
         public event EventHandler<int> ItemClick;
 
         public void Clear()
@@ -23,7 +24,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
             this.NotifyDataSetChanged();
         }
 
-        public ApplicationStatusDetailProgressAdapter(BaseActivityCustom activity, List<DetailProgressModel> data)
+        public ApplicationStatusDetailProgressAdapter(BaseActivityCustom activity, List<StatusTrackerDisplay> data)
         {
             this.mActicity = activity;
             this.mProgressList.AddRange(data);
@@ -48,7 +49,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
         {
             ApplicationDetailProgressViewHolder vh = holder as ApplicationDetailProgressViewHolder;
 
-            DetailProgressModel item = mProgressList[position];
+            StatusTrackerDisplay item = mProgressList[position];
             vh.PopulateData(item);
         }
 
@@ -63,7 +64,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
 
             private Context context;
 
-            private DetailProgressModel item = null;
+            private StatusTrackerDisplay item = null;
 
             public ApplicationDetailProgressViewHolder(View itemView, Action<int> listener) : base(itemView)
             {
@@ -79,12 +80,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
             }
 
 
-            public void PopulateData(DetailProgressModel item)
+            public void PopulateData(StatusTrackerDisplay item)
             {
                 this.item = item;
                 try
                 {
                     //  TODO: ApplicationStatus Setup whole view
+                   
+                    TxtApplicationStatusDetailWord.Text = item.StatusDescription;
+                    TextViewUtils.SetMuseoSans300Typeface(TxtApplicationStatusDetailWord);
 
                 }
                 catch (Exception e)
