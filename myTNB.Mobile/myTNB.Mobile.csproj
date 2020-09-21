@@ -64,15 +64,16 @@
     <Folder Include="Sitecore\Model\" />
     <Folder Include="Sitecore\Model\Login\" />
     <Folder Include="Extensions\" />
-    <Folder Include="API\Models\Application Status\Search Application Type\" />
+    <Folder Include="API\Models\Application Status\Get Search Application Type\" />
     <Folder Include="API\Managers\Application Status\" />
     <Folder Include="API\Models\Application Status\Get Application Status\" />
-    <Folder Include="API\Models\Application Status\Save Application\" />
+    <Folder Include="API\Models\Application Status\Post Save Application\" />
     <Folder Include="API\Managers\Application Status\Utilities\" />
     <Folder Include="API\Display Model\" />
     <Folder Include="API\Display Model\Application Status\" />
-    <Folder Include="API\Models\Application Status\All Applications\" />
+    <Folder Include="API\Models\Application Status\Get All Applications\" />
     <Folder Include="Session Cache\" />
+    <Folder Include="API\Models\Application Status\Get Application Details\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />

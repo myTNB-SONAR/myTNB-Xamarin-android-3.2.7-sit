@@ -18,7 +18,7 @@ namespace myTNB
         public string SearchApplicationTypeId { set; get; }
 
         [JsonProperty("searchApplicationTypeDesc")]
-        public string SearchApplicationTypeDesc { set; get; }
+        public LanguageDisplayModel SearchApplicationTypeDesc { set; get; }
 
         [JsonProperty("searchApplicationNoInputMask")]
         public string SearchApplicationNoInputMask { set; get; }
@@ -29,6 +29,7 @@ namespace myTNB
         [JsonProperty("userRole")]
         public List<string> UserRole { set; get; }
 
+        //Mark: Display Specific Properties
         [JsonIgnore]
         public string ApplicationNoHint
         {
@@ -57,6 +58,16 @@ namespace myTNB
             }
         }
 
+        [JsonIgnore]
+        public string SearchApplicationTypeDescDisplay
+        {
+            get
+            {
+                return AppInfoManager.Instance.Language == LanguageManager.Language.EN
+                    ? SearchApplicationTypeDesc.EN
+                    : SearchApplicationTypeDesc.MS;
+            }
+        }
     }
 
     public class SearchType
@@ -65,9 +76,20 @@ namespace myTNB
         public string SearchTypeId { set; get; }
 
         [JsonProperty("searchTypeDesc")]
-        public string SearchTypeDesc { set; get; }
+        public LanguageDisplayModel SearchTypeDesc { set; get; }
 
         //Mark: Display Specific Properties
+        [JsonIgnore]
+        public string SearchTypeDescDisplay
+        {
+            get
+            {
+                return AppInfoManager.Instance.Language == LanguageManager.Language.EN
+                    ? SearchTypeDesc.EN
+                    : SearchTypeDesc.MS;
+            }
+        }
+
         [JsonIgnore]
         public ApplicationStatusSearchType Type
         {
@@ -110,6 +132,12 @@ namespace myTNB
                 return searchType;
             }
         }
+    }
+
+    public class LanguageDisplayModel
+    {
+        public string EN { set; get; } = string.Empty;
+        public string MS { set; get; } = string.Empty;
     }
 
     public enum ApplicationStatusSearchType

@@ -33,7 +33,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus
             }
         }
 
-        private static void MapContent(this SearchApplicationTypeResponse response)
+        /*private static void MapContent(this SearchApplicationTypeResponse response)
         {
             try
             {
@@ -80,6 +80,6 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus
                 Debug.WriteLine("[DEBUG] MapContent Error: " + e.Message);
 #endif
             }
-        }
+        }*/
     }
 }

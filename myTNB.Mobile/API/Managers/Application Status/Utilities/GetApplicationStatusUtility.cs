@@ -74,7 +74,10 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus
                             StampDutyAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.StampDutyAmount,
                             ProcessingFeeAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.ProcessingFeeAmount
                         },
-                        TotalPayableAmount = response.Content.ApplicationPaymentDetail.TotalPayableAmount
+                        TotalPayableAmount = response.Content.ApplicationPaymentDetail.TotalPayableAmount,
+                        CANo = response.Content.ApplicationPaymentDetail.CANo,
+                        SDDocumentNo = response.Content.ApplicationPaymentDetail.SDDocumentNo,
+                        SRNo = response.Content.ApplicationPaymentDetail.SRNo
                     };
                 }
                 if (response.Content.ApplicationStatusDetail != null)
@@ -84,6 +87,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus
                         StatusId = response.Content.ApplicationStatusDetail.StatusId,
                         StatusCode = response.Content.ApplicationStatusDetail.StatusCode,
                         StatusDescription = response.Content.ApplicationStatusDetail.StatusDescription,
+                        StatusMessage = response.Content.ApplicationStatusDetail.StatusMessage,
                         UserAction = response.Content.ApplicationStatusDetail.UserAction,
                         IsPostPayment = response.Content.ApplicationStatusDetail.IsPostPayment
                     };
@@ -95,8 +99,12 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus
                             {
                                 StatusDescription = x.StatusDescription,
                                 StatusMode = x.StatusMode,
-                                StatusMessage = x.StatusMessage,
-                                ProgressDetail = x.ProgressDetail,
+                                //Todo: Fix This
+                                /*ProgressDetail = new ProgressDetailDisplay
+                                {
+                                    ProjectID = x.ProgressDetail.TNBProjectID,
+                                    ProgressTrackers = x.ProgressDetail.ProgressTrackers
+                                },*/
                                 Sequence = x.Sequence
                             }).ToList();
                         if (displayModel.Content.ApplicationStatusDetail != null

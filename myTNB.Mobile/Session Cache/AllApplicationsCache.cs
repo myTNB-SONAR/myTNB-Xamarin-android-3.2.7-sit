@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB.Mobile
+namespace myTNB.Mobile.SessionCache
 {
     public sealed class AllApplicationsCache
     {
@@ -16,7 +16,7 @@ namespace myTNB.Mobile
 
         private AllApplicationsCache() { }
 
-        private int CurrentPage;
+        //private int CurrentPage;
 
         public void SetData()
         {

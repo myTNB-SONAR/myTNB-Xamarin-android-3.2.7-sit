@@ -31,7 +31,8 @@ namespace myTNB.Mobile
         public List<TitleValueModel> AdditionalInfoList { set; get; } = new List<TitleValueModel>();
 
         private string _applicationType = string.Empty;
-        public string ApplicationType {
+        public string ApplicationType
+        {
             set
             {
                 if (value.IsValid())
@@ -193,6 +194,9 @@ namespace myTNB.Mobile
         public double OneTimeChargesAmount { set; get; }
         public OneTimeChargesDisplayModel OneTimeChargesDetail { set; get; }
         public double TotalPayableAmount { set; get; }
+        public string CANo { set; get; }
+        public string SDDocumentNo { set; get; }
+        public string SRNo { set; get; }
     }
 
     public class OneTimeChargesDisplayModel
@@ -209,6 +213,7 @@ namespace myTNB.Mobile
         public int StatusId { set; get; }
         public string StatusCode { set; get; }
         public string StatusDescription { set; get; }
+        public string StatusMessage { set; get; }
         public string UserAction { set; get; }
         public bool IsPostPayment { set; get; }
         public List<StatusTrackerDisplay> StatusTracker { set; get; }
@@ -228,9 +233,14 @@ namespace myTNB.Mobile
     {
         public string StatusDescription { set; get; }
         public string StatusMode { set; get; }
-        public string StatusMessage { set; get; }
-        public string ProgressDetail { set; get; }
+        public ProgressDetailDisplay ProgressDetail { set; get; }
         public int Sequence { set; get; }
+    }
+
+    public class ProgressDetailDisplay
+    {
+        public string ProjectID { set; get; }
+        public List<object> ProgressTrackers { set; get; }
     }
 
     public class ApplicationActivityLogDetailDisplay

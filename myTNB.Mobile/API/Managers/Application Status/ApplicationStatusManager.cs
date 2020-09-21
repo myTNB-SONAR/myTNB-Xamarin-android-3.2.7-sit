@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using myTNB.Mobile.API;
 using myTNB.Mobile.API.Managers.ApplicationStatus;
 using myTNB.Mobile.API.Models.ApplicationStatus;
+using myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails;
 using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
 using myTNB.Mobile.API.Services.ApplicationStatus;
 using myTNB.Mobile.Extensions;
+using myTNB.Mobile.SessionCache;
 using Refit;
 
 namespace myTNB.Mobile
@@ -182,7 +184,7 @@ namespace myTNB.Mobile
         /// <param name="statusCode"></param>
         /// <param name="srCreatedDate"></param>
         /// <returns></returns>
-        public async Task<SaveApplicationResponse> SaveApplication(string referenceNo
+        public async Task<PostSaveApplicationResponse> SaveApplication(string referenceNo
             , string moduleName
             , string srNo
             , string srType
@@ -194,7 +196,7 @@ namespace myTNB.Mobile
                 IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
                 try
                 {
-                    SaveApplication request = new SaveApplication
+                    PostSaveApplication request = new PostSaveApplication
                     {
                         ReferenceNo = referenceNo ?? string.Empty,
                         ModuleName = moduleName ?? string.Empty,
@@ -204,13 +206,13 @@ namespace myTNB.Mobile
                         SrCreatedDate = srCreatedDate
                     };
 
-                    HttpResponseMessage rawResponse = await service.SaveApplication(new SaveApplicationRequest
+                    HttpResponseMessage rawResponse = await service.SaveApplication(new PostSaveApplicationRequest
                     {
                         SaveApplication = request
                     }
                         , AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken());
-                    SaveApplicationResponse response = await rawResponse.ParseAsync<SaveApplicationResponse>();
+                    PostSaveApplicationResponse response = await rawResponse.ParseAsync<PostSaveApplicationResponse>();
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         response.StatusDetail = Constants.Service_SaveApplication.GetStatusDetails(response.StatusDetail.Code);
@@ -241,7 +243,7 @@ namespace myTNB.Mobile
                 Debug.WriteLine(e.Message);
 #endif
             }
-            SaveApplicationResponse res = new SaveApplicationResponse
+            PostSaveApplicationResponse res = new PostSaveApplicationResponse
             {
                 StatusDetail = new StatusDetail()
             };
@@ -260,16 +262,18 @@ namespace myTNB.Mobile
         /// <param name="createdDateFrom">yyyy/mm/dd Format</param>
         /// <param name="createdDateTo">yyyy/mm/dd Format</param>
         /// <returns></returns>
-        private async Task<AllApplicationsResponse> AllApplications(int page
+        private async Task<GetAllApplicationsResponse> AllApplications(int page
            , string searchApplicationType
            , string statusDescription
            , string createdDateFrom
            , string createdDateTo)
         {
-            AllApplicationsResponse response;
+            GetAllApplicationsResponse response;
             try
             {
-                if (!int.TryParse(LanguageManager.Instance.GetPageValueByKey("ApplicationStatusLanding", "displayPerQuery"), out int limit))
+                var limitString = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusLanding", "displayPerQuery");
+                //bool isSuccess = int.TryParse(limitString, out int limit);
+                if (!int.TryParse(limitString, out int limit))
                 {
                     limit = 5;
                 }
@@ -320,7 +324,7 @@ namespace myTNB.Mobile
                 Debug.WriteLine(e.Message);
 #endif
             }
-            response = new AllApplicationsResponse
+            response = new GetAllApplicationsResponse
             {
                 StatusDetail = new StatusDetail()
             };
@@ -333,9 +337,9 @@ namespace myTNB.Mobile
         /// </summary>
         /// <param name="page">Page starts from 1 and incrementing</param>
         /// <returns></returns>
-        public async Task<AllApplicationsResponse> GetAllApplications(int page)
+        public async Task<GetAllApplicationsResponse> GetAllApplications(int page)
         {
-            AllApplicationsResponse response = await AllApplications(page
+            GetAllApplicationsResponse response = await AllApplications(page
                 , string.Empty
                 , string.Empty
                 , string.Empty
@@ -352,13 +356,13 @@ namespace myTNB.Mobile
         /// <param name="createdDateFrom">yyyy/mm/dd Format</param>
         /// <param name="createdDateTo">yyyy/mm/dd Format</param>
         /// <returns></returns>
-        public async Task<AllApplicationsResponse> FilterApplications(int page
+        public async Task<GetAllApplicationsResponse> FilterApplications(int page
            , string searchApplicationType
            , string statusDescription
            , string createdDateFrom
            , string createdDateTo)
         {
-            AllApplicationsResponse response = await AllApplications(page
+            GetAllApplicationsResponse response = await AllApplications(page
                , searchApplicationType
                , statusDescription
                , createdDateFrom
@@ -366,6 +370,77 @@ namespace myTNB.Mobile
             return response;
         }
 
+        #endregion
+
+        #region GetApplicationDetail
+        public async Task<ApplicationDetailDisplay> GetApplicationDetail(string id//=searchTerm
+            , string applicationType
+            , string applicationTypeTitle)
+            //, string searchTypeTitle)
+        {
+            ApplicationDetailDisplay displaymodel = new ApplicationDetailDisplay();
+            try
+            {
+                IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
+                try
+                {
+                   GetApplicationDetailsResponse response = await service.GetApplicationDetail(applicationType
+                        , id
+                        , AppInfoManager.Instance.GetUserInfo()
+                        , NetworkService.GetCancellationToken());
+                    Debug.WriteLine("Test");
+                    /*if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    {
+                        if (response.Content == null)
+                        {
+                            response.StatusDetail.Code = "empty";
+                        }
+                        else
+                        {
+                            response.Parse(applicationType
+                                , applicationTypeTitle
+                                , searchTypeTitle
+                                , searchTerm);
+                        }
+                        response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(response.StatusDetail.Code);
+                    }
+                    else
+                    {
+                        response.StatusDetail = new StatusDetail();
+                        response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails("default");
+                    }
+                    displaymodel = response.Parse(applicationType
+                               , applicationTypeTitle
+                               , searchTypeTitle
+                               , searchTerm);*/
+                    return displaymodel;
+                }
+                catch (ApiException apiEx)
+                {
+#if DEBUG
+                    Debug.WriteLine("[DEBUG][GetApplicationDetail]Refit Exception: " + apiEx.Message);
+#endif
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    Debug.WriteLine("[DEBUG][GetApplicationDetail]General Exception: " + ex.Message);
+#endif
+                }
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Debug.WriteLine(e.Message);
+#endif
+            }
+            displaymodel = new ApplicationDetailDisplay
+            {
+                StatusDetail = new StatusDetail()
+            };
+            displaymodel.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails("default");
+            return displaymodel;
+        }
         #endregion
     }
 }
