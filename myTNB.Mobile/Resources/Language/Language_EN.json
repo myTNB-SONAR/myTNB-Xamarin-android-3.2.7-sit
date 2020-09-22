@@ -284,7 +284,7 @@
     "whereIsMyMeter": "Where can I look for my meter?",
     "whereIsMyMeterTitle": "Where can I look for my meter?",
     "whereIsMyMeterMessage": "To submit your monthly meter reading, you must be able to view the reading stated in your meter display screen. Your meter usually located near your door, or your building meter room (riser).",
-    "doYouHaveMeterAccess": "Do you have access to your meter?"
+    "doYouHaveMeterAccess":"Do you have access to your meter?"
   },
   "SSMRReadingHistory_selector": {
     "SMREligibiltyPopUpDetails": [
@@ -964,7 +964,7 @@
     "generalEnquiryTitle": "General Enquiry",
     "generalEnquiryDescription": "I want to submit my thoughts & concerns.",
     "updatePersonalDetTitle": "Update Personal Details",
-    "personalDetailsDescription": "I want to update my personal details.",
+    "personalDetailsDescription": "I want to update personal details.",
     "stepTitle1of2": "Step 1 of 2",
     "enquiryAboutTitle": "I want to enquire about:",
     "messageHint": "Your Message",
@@ -990,7 +990,7 @@
     "whichInfoUpdate": "Which information would you like to update?",
     "ownerTitle": "What is your relationship with the owner?",
     "icTitle": "Identification Number (IC/Passport)",
-    "icHint": "Enter New Identification Number / Passport",
+    "icHint": "Enter New Identification Number",
     "accNametitle": "Account Name",
     "accNameHint": "Enter new account name",
     "mobileNumberTitle": "Mobile Number",
@@ -1048,7 +1048,7 @@
     "cameraRoll": "Camera Roll",
     "imageWhereAcc": "-/media/myTNBapp/SubmitEnquiry/newBillCopy2x.png",
     "imageCopyIC": "-/media/myTNBapp/SubmitEnquiry/imgIcCopy2x.png",
-    "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x.png",
+    "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x2.png",
     "accNumberDetails": "Your 12-digit account no. can be found at the top left corner of your monthly paper bill.",
     "updateNoOwnerTitle": "Which information you would like to update?",
     "newAccNoOwnerName": "Enter New Account Name",
@@ -1060,8 +1060,8 @@
     "copyOfPermiseProof": "Copy of Sales & Purchase Agreement/Cukai Pintu/Tenancy Agreement",
     "nameHintBottom": "Enter your full name as per your identification card.",
     "enquiryTncRead": "I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>",
-    "imagePermises": "-/media/myTNBapp/SubmitEnquiry/permises2x.png",
-    "permisesTooltipTitle": "How does agreement look like?",
+    "imagePermises": "-/media/myTNBapp/SubmitEnquiry/permises2x2.png",
+    "permisesTooltipTitle": "How does supporting document look like?",
     "permisesTitle": "Copy of Sales & Purchase Agreement/Cukai Pintu/Tenancy Agreement",
     "permisesContent": "We only need the pages with your name, identification number and premises address",
     "submitEnquiryEmpty": "Looks like you have no submitted enquiry at the moment.",
@@ -1073,7 +1073,11 @@
     "submitEnquiryNonBRTitle": "Submit Enquiry",
     "for": "for ",
     "validElectricityAccountNoError": "Please enter a valid electricity account number.",
-    "backLogin": "Back to Login"
+    "backLogin": "Back to Login",
+    "registeredView": "Is this electricity account registered under your name?",
+    "viewYes": "Yes",
+    "viewNo": "No"
   }
-}
 
+
+}

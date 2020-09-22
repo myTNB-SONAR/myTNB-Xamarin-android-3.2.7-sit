@@ -373,10 +373,40 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 {
                     txtName.Text = UserEntity.GetActive().DisplayName;
                     txtEmail.Text = UserEntity.GetActive().Email;
-
                     string tempPhone = UserEntity.GetActive().MobileNo;
 
-                    //todo auto fill for number 
+
+
+                    if (!tempPhone.IsNullOrEmpty())
+                    {  
+                        if (tempPhone.Contains("+"))
+                        {
+                            var CountryFromPhoneNumber = CountryUtil.Instance.GetCountryFromPhoneNumber(tempPhone);
+
+                            if (!CountryFromPhoneNumber.ToString().IsNullOrEmpty())
+                            {
+
+                                mobileNumberInputComponent.SetSelectedCountry(CountryFromPhoneNumber);   // set flag and country
+                                mobileNumberInputComponent.SetMobileNumber(int.Parse(tempPhone.Trim().Substring(CountryFromPhoneNumber.isd.Length)));  // set phone number
+                            }
+                        }
+                        else
+                        {
+                            //todo malaysia implementation only remove first two number  and set country as malaysia   60 1110499494
+
+                            if (tempPhone.Trim().Substring(0, 1) == "6")
+                            {
+                                mobileNumberInputComponent.SetMobileNumber(int.Parse(tempPhone.Trim().Substring(2)));
+                            }
+                            else
+                            {
+                                mobileNumberInputComponent.SetMobileNumber(int.Parse(tempPhone.Trim()));
+                            }
+                        }
+
+
+                    }
+
 
                 }
                 else

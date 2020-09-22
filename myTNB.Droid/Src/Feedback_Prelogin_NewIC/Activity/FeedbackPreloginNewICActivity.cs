@@ -198,9 +198,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 }
 
                 //210031353308
-#if DEBUG
-                txtAccountNo.Text = "210031353308";
-#endif
+
 
 
 
@@ -429,14 +427,22 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         public void ShowInvalidAccountNumberError()
         {
             txtInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            txtInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "validElectricityAccountNoError");
+            if (txtInputLayoutAccountNo.Error != Utility.GetLocalizedLabel("SubmitEnquiry", "validElectricityAccountNoError"))
+            {
+                txtInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "validElectricityAccountNoError");
+            }
+          
         }
 
         public void ShowEnterOrSelectAccNumber()
         {
             txtInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             // txtInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");  //todo  add translation for bm
-            txtInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc");
+            if(txtInputLayoutAccountNo.Error != Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc"))
+            {
+               txtInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc");
+            }
+            
 
         }
 
@@ -445,6 +451,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         {
             txtInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             txtInputLayoutAccountNo.Error = "";
+         
         }
 
         public void ShowGeneralEnquiry()

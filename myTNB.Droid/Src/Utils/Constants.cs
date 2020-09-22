@@ -137,11 +137,13 @@ namespace myTNB_Android.Src.Utils
         internal struct SERVER_URL
         {
 #if DEBUG || STUB
-            internal static readonly string END_POINT = "http://10.215.128.191:89";
-            internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";
-            //internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
-            //internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
-            internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappdev.page.link";
+             internal static readonly string END_POINT = "http://10.215.128.191:88";  //dev
+             internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";  //dev
+             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappdev.page.link";  //dev
+        // internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";  //sit
+       //  internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";  //sit
+        // internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link"; //sit
+
 #elif DEVELOP || SIT
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
@@ -160,8 +162,8 @@ namespace myTNB_Android.Src.Utils
         internal struct APP_CONFIG
         {
 #if DEBUG || STUB || DEVELOP || SIT
-            internal static readonly string API_KEY_ID = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
-            //internal static readonly string API_KEY_ID = "E6148656-205B-494C-BC95-CC241423E72F";
+            internal static readonly string API_KEY_ID = "9515F2FA-C267-42C9-8087-FABA77CB84DF";  // DEV && SIT
+            //internal static readonly string API_KEY_ID = "E6148656-205B-494C-BC95-CC241423E72F";  // PROD
             internal static readonly int MAX_IMAGE_QUALITY_IN_PERCENT = 100;
             internal static readonly int IN_SAMPLE_SIZE = 4;
             internal static readonly string ENV = "SIT";

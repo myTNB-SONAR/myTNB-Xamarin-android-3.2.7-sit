@@ -183,8 +183,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                         submitEnquiryRequest.SetFeedbackUpdateDetails(update.FeedbackUpdInfoType, update.FeedbackUpdInfoTypeDesc, update.FeedbackUpdInfoValue);
                     }
                 }
+                
+                submitEnquiryRequest.email = !userEntity.Email.ToString().IsNullOrEmpty() ? userEntity.Email : email;
 
-
+                 var  data= JsonConvert.SerializeObject(submitEnquiryRequest);
 
                 var preLoginFeedbackResponse = await ServiceApiImpl.Instance.SubmitEnquiry(submitEnquiryRequest);
 

@@ -171,13 +171,15 @@ namespace myTNB.SitecoreCMS.Services
         {
             if (String.IsNullOrEmpty(websiteUrl) || (!String.IsNullOrEmpty(websiteUrl) && !(Uri.IsWellFormedUriString(websiteUrl, UriKind.Absolute))))
             {
-#if DEBUG || DEVELOP || STUB
-                websiteUrl = "http://tnbcsdevapp.tnb.my/";
-#elif SIT
-                websiteUrl = "http://tnbcsstgapp.tnb.my/";
-#else
-                websiteUrl = "https://sitecore.tnb.com.my/";
-#endif
+// #if DEBUG || DEVELOP || STUB
+//                 websiteUrl = "http://tnbcsdevapp.tnb.my/";
+// #elif SIT
+//                 websiteUrl = "http://tnbcsstgapp.tnb.my/";
+// #else
+//                 websiteUrl = "https://sitecore.tnb.com.my/";
+// #endif
+
+                websiteUrl=SiteCoreConfig.SITECORE_URL;
             }
             try
             {

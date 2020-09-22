@@ -995,6 +995,10 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (toggleChkMobileNumber)
             {
                 mobileNumberFieldContainer.Visibility = ViewStates.Visible;
+                if (mobileNumberInputComponent.GetMobileNumberValue().IsNullOrEmpty())
+                {
+                    this.userActionsListener.OnDisableSubmitButton();
+                }
                 AddtoggleCounter();
             }
             else

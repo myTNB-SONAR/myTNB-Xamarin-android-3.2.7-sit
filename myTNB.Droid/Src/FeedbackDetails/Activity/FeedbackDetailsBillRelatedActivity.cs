@@ -317,7 +317,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                     TextInputLayoutIsOwner.Visibility = ViewStates.Visible;
                     txtEnquiryDetails.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "reqUpdate");   // translate
                     SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle"));
-                    EditTextIsOwner.Text = isOwner==true ? Utility.GetLocalizedLabel("Common", "yes") : Utility.GetLocalizedLabel("Common", "no");
+                    EditTextIsOwner.Text = isOwner==true ? Utility.GetLocalizedLabel("SubmitEnquiry", "viewYes") : Utility.GetLocalizedLabel("SubmitEnquiry", "viewNo");
                 }
                 else
                 {
@@ -540,7 +540,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
                 TextInputLayoutServiceRequestNumber.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "serviceNoTitle").ToUpper();
 
-                TextInputLayoutIsOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "registeredTitle").ToUpper();
+                TextInputLayoutIsOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "registeredView").ToUpper();
 
 
 

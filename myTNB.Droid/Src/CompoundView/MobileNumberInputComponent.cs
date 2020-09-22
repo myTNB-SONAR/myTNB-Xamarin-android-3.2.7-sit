@@ -163,7 +163,10 @@ namespace myTNB_Android.Src.CompoundView
             return editTextMobileNumber.Text.Trim();
         }
 
-
+        public void SetMobileNumber(int mobileNo)
+        {
+            editTextMobileNumber.Text = mobileNo.ToString();
+        }
         
         public void ClearMobileNumber()
         {

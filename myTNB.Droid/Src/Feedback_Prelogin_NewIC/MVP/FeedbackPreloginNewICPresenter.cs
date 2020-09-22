@@ -85,7 +85,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
         {
 
 
-            this.mView.RemoveNumberErrorMessage();
+           
             try
             {
                 if (!TextUtils.IsEmpty(accno) )
@@ -99,6 +99,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                     }
                     else
                     {
+                        this.mView.RemoveNumberErrorMessage();
                         this.mView.toggleEnableClick();
                     }
 
