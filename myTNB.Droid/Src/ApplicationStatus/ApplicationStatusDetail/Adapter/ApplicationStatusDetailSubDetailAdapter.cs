@@ -5,6 +5,7 @@ using Android.Content;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
+using myTNB.Mobile;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
@@ -14,9 +15,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
     public class ApplicationStatusDetailSubDetailAdapter : RecyclerView.Adapter
     {
         private BaseActivityCustom mActicity;
-        private List<SubDetailModel> mSubDetailList = new List<SubDetailModel>();
+        private List<TitleValueModel> mSubDetailList = new List<TitleValueModel>();
 
-        public ApplicationStatusDetailSubDetailAdapter(BaseActivityCustom activity, List<SubDetailModel> data)
+        public ApplicationStatusDetailSubDetailAdapter(BaseActivityCustom activity, List<TitleValueModel> data)
         {
             this.mActicity = activity;
             this.mSubDetailList.AddRange(data);
@@ -35,7 +36,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
         {
             ApplicationDetailSubDetailViewHolder vh = holder as ApplicationDetailSubDetailViewHolder;
 
-            SubDetailModel item = mSubDetailList[position];
+            TitleValueModel item = mSubDetailList[position];
             vh.PopulateData(item);
         }
 
@@ -46,7 +47,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
 
             private Context context;
 
-            private SubDetailModel item = null;
+            private TitleValueModel item = null;
 
             public ApplicationDetailSubDetailViewHolder(View itemView) : base(itemView)
             {
@@ -57,7 +58,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
             }
 
 
-            public void PopulateData(SubDetailModel item)
+            public void PopulateData(TitleValueModel item)
             {
                 this.item = item;
                 try

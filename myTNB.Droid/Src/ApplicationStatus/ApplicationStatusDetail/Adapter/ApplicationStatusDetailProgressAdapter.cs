@@ -50,7 +50,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
             ApplicationDetailProgressViewHolder vh = holder as ApplicationDetailProgressViewHolder;
 
             StatusTrackerDisplay item = mProgressList[position];
-            vh.PopulateData(item);
+            vh.PopulateData(item,mProgressList,position);
         }
 
         public class ApplicationDetailProgressViewHolder : RecyclerView.ViewHolder
@@ -60,7 +60,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
             public ImageView ImgApplicationStatusNew { get; private set; }
             public View ApplicationStatusLine { get; private set; }
             public TextView TxtApplicationStatusDetailWord { get; private set; }
-            public TextView TxtApplicationStatusDetailCTA { get; private set; }
+            public View applicationStatusLine { get; private set; }
+            //public TextView TxtApplicationStatusDetailCTA { get; private set; }
 
             private Context context;
 
@@ -73,14 +74,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
                 ImgApplicationStatusOther = itemView.FindViewById<ImageView>(Resource.Id.imgApplicationStatusOther);
                 ImgApplicationStatusNew = itemView.FindViewById<ImageView>(Resource.Id.imgApplicationStatusnNew);
                 ApplicationStatusLine = itemView.FindViewById<View>(Resource.Id.applicationStatusLine);
-                TxtApplicationStatusDetailWord = itemView.FindViewById<TextView>(Resource.Id.txtApplicationStatusDetailCTA);
-                TxtApplicationStatusDetailCTA = itemView.FindViewById<TextView>(Resource.Id.txtApplicationStatusDetailCTA);
-                TxtApplicationStatusDetailCTA.Clickable = true;
-                TxtApplicationStatusDetailCTA.Click += (sender, e) => listener(base.LayoutPosition);
+                TxtApplicationStatusDetailWord = itemView.FindViewById<TextView>(Resource.Id.txtApplicationStatusDetailWord);
+                applicationStatusLine = itemView.FindViewById<View>(Resource.Id.applicationStatusLine);
+                //TxtApplicationStatusDetailCTA = itemView.FindViewById<TextView>(Resource.Id.txtApplicationStatusDetailCTA);
+                //TxtApplicationStatusDetailCTA.Clickable = true;
+                //TxtApplicationStatusDetailCTA.Click += (sender, e) => listener(base.LayoutPosition);
             }
 
 
-            public void PopulateData(StatusTrackerDisplay item)
+            public void PopulateData(StatusTrackerDisplay item, List<StatusTrackerDisplay> mProgressList, int position)
             {
                 this.item = item;
                 try
@@ -89,7 +91,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
                    
                     TxtApplicationStatusDetailWord.Text = item.StatusDescription;
                     TextViewUtils.SetMuseoSans300Typeface(TxtApplicationStatusDetailWord);
-
+                   
+                    if(mProgressList.Count == position + 1)
+                    {
+                        applicationStatusLine.Visibility = ViewStates.Gone;
+                    }
+                    else
+                    {
+                        applicationStatusLine.Visibility = ViewStates.Visible;
+                    }
                 }
                 catch (Exception e)
                 {

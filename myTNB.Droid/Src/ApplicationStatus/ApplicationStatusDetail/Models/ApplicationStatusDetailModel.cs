@@ -12,12 +12,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Models
     //    public string StatusCode { get; set; }
     //}
 
-    public class SubDetailModel
-    {
-        [JsonProperty("title")]
-        public string Title { get; set; }
+    //public class SubDetailModel
+    //{
+    //    [JsonProperty("title")]
+    //    public string Title { get; set; }
 
-        [JsonProperty("value")]
-        public string Value { get; set; }
-    }
+    //    [JsonProperty("value")]
+    //    public string Value { get; set; }
+    //}
 }

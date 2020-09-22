@@ -85,6 +85,16 @@
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="8dp"
                         android:text="Last Updated"/>
+                    <TextView
+                        android:id="@+id/txtApplicationStatusDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/tunaGrey"
+                        android:textSize="12dp"
+                        android:lineSpacingExtra="2dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
+                        />
                     <View
                         android:layout_height="1dp"
                         android:layout_width="match_parent"
@@ -101,16 +111,7 @@
                         android:visibility="visible"
                         android:paddingBottom="-5dp"
                         android:scrollIndicators="none" />
-                    <TextView
-                        android:id="@+id/txtApplicationStatusDetail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/tunaGrey"
-                        android:textSize="12dp"
-                        android:lineSpacingExtra="2dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="16dp"
-                        android:text="You can take the action to continue or update your application using the myTNB Portal."/>
+                    
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -122,14 +123,32 @@
                     android:background="@color/white"
                     android:id="@+id/applicationStatusDetailNonLoginLayout">
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/applicationStatusStatusListRecyclerView"
+                        android:id="@+id/applicationStatusAdditionalListRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
                         android:scrollIndicators="none"
                         android:paddingBottom="-6dp"/>
+                     <LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical"
+				android:background="@color/white"
+                android:id="@+id/btnViewActivityLogLayout"
+				android:layout_marginTop="0.0dp">
+				<Button
+					android:layout_width="fill_parent"
+					android:layout_height="48dp"
+					android:text="View Activity Log"
+					android:id="@+id/btnViewActivityLog"
+					android:layout_marginTop="16dp"
+					android:layout_marginLeft="16dp"
+					android:layout_marginRight="16dp"
+					android:layout_marginBottom="16dp"
+					style="@style/Theme.ApplicationStatusLandingButton" />
+			</LinearLayout>
                     <TextView
                         android:id="@+id/txtApplicationStatusDetailNote"
                         android:layout_width="match_parent"
@@ -278,6 +297,7 @@
                     android:gravity="center"
                     android:id="@+id/applicationStatusBotomPayableLayout"
                     android:layout_marginBottom="16dp"
+                    android:visibility="gone"
                     android:orientation="horizontal">
                     <TextView
                         android:id="@+id/txtApplicationStatusBottomPayableTitle"
@@ -324,12 +344,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="1"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:id="@+id/applicationStatusDetailSingleButtonLayout"
                     android:background="@color/white">
                     <Button
                         android:id="@+id/btnSaveApplication"
-                        android:text="Save Application"
+                        android:text="Add to List"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAllCaps="false"
@@ -340,6 +360,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="1"
+                    android:visibility="gone"
                     android:id="@+id/applicationStatusDetailDoubleButtonLayout"
                     android:background="@color/white">
                     <Button

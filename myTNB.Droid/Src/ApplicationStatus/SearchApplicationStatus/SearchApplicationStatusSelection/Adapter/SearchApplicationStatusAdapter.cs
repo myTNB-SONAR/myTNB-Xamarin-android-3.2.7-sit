@@ -226,7 +226,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                 {
                     ctaSelection.Visibility = ViewStates.Gone;
                     filterSelection.Visibility = ViewStates.Visible;
-                    txtFilterName.Text = item.SearchTypeDesc;
+                    txtFilterName.Text = item.SearchTypeDisplay;
                     imgApplicationFilter.Visibility = ViewStates.Gone;
                     chkApplicationFilter.Visibility = ViewStates.Gone;
                     txtFilterName.Clickable = true;
@@ -251,7 +251,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         {
             try
             {
-                txtFilterName.Text = item.SearchApplicationTypeDesc;
+                txtFilterName.Text = item.ApplicationTypeDisplay;
                 imgApplicationFilter.Visibility = ViewStates.Gone;
                 chkApplicationFilter.Visibility = ViewStates.Gone;
                 txtFilterName.Clickable = true;

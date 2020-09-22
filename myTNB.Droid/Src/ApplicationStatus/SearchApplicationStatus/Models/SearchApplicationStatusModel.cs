@@ -12,6 +12,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models
             SearchTypeId = searchType.SearchTypeId;
             SearchTypeDesc = searchType.SearchTypeDesc;
         }
+        public string SearchTypeDisplay { get; set; }
+    
 
         public SearchByModel() { }
         public bool isChecked { get; set; }
@@ -19,8 +21,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models
 
     public class TypeModel : SearhApplicationTypeModel
     {
-
-
         public TypeModel(SearhApplicationTypeModel searhApplicationTypeModel)
         {
             SearchApplicationTypeId = searhApplicationTypeModel.SearchApplicationTypeId;
@@ -32,5 +32,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models
         }
         public TypeModel(){}
         public bool isChecked { get; set; }
+      
+        public string ApplicationTypeDisplay { get; set; }
     }
 }
