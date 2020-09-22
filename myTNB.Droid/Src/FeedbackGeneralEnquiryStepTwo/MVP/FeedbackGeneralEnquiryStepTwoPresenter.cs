@@ -165,9 +165,14 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                     //if empty it is update personal detail which will inject 4
                     category = 4;
                 }
-           
 
-                SubmitEnquiryRequest submitEnquiryRequest  = new SubmitEnquiryRequest(category.ToString(), "", acc, fullname, mobile_no, feedback, "", "", "", mobile_no, fullname, email, isowner, ownerRelationship, relationshipDescription);
+                string devicePhoneNumber = userEntity != null ? userEntity.MobileNo : mobile_no;  //set device phone number
+
+
+                SubmitEnquiryRequest submitEnquiryRequest  = new SubmitEnquiryRequest(category.ToString(), "", acc, fullname, devicePhoneNumber, feedback, "", "", "", mobile_no, fullname, email, isowner, ownerRelationship, relationshipDescription);
+
+                submitEnquiryRequest.email = userEntity != null ? userEntity.Email : email;  //set device email
+
                 foreach (AttachedImageRequest image in imageRequest)
                 {
 
@@ -183,10 +188,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                         submitEnquiryRequest.SetFeedbackUpdateDetails(update.FeedbackUpdInfoType, update.FeedbackUpdInfoTypeDesc, update.FeedbackUpdInfoValue);
                     }
                 }
-                
-                submitEnquiryRequest.email = !userEntity.Email.ToString().IsNullOrEmpty() ? userEntity.Email : email;
 
-                 var  data= JsonConvert.SerializeObject(submitEnquiryRequest);
+                //var tempReq = JsonConvert.SerializeObject(submitEnquiryRequest);
 
                 var preLoginFeedbackResponse = await ServiceApiImpl.Instance.SubmitEnquiry(submitEnquiryRequest);
 
