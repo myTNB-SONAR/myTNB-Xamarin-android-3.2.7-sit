@@ -103,6 +103,7 @@ namespace myTNB.Mobile
 
         //Todo: Add logic to configure from landing and search
         public bool IsSaveMessageDisplayed { set; get; }
+
         public bool IsFullApplicationTooltipDisplayed { set; get; }
 
         public string SaveMessage
@@ -114,6 +115,23 @@ namespace myTNB.Mobile
         }
 
         public string ApplicationTypeID { set; get; }
+
+        public DetailCTAType CTAType
+        {
+            get
+            {
+                DetailCTAType type = DetailCTAType.None;
+                if (IsSaveMessageDisplayed)
+                {
+                    type = DetailCTAType.Save;
+                }
+                else if (IsPayment)
+                {
+                    type = DetailCTAType.Pay;
+                }
+                return type;
+            }
+        }
 
         private Color StatusColorDisplay
         {
@@ -127,26 +145,10 @@ namespace myTNB.Mobile
                     {
                         return Color.Green;
                     }
-                    if(!ApplicationStatusDetail.UserAction.IsValid())
+                    if (!ApplicationStatusDetail.UserAction.IsValid())
                     {
                         return Color.Grey;
                     }
-                    return Color.Orange;
-                }
-                return Color.Grey;
-
-
-                if (ApplicationStatusDetail != null && ApplicationStatusDetail.UserAction.IsValid() && !IsPayment)
-                {
-                    if (ApplicationStatusDetail.StatusTracker != null
-                        && ApplicationStatusDetail.StatusTracker.Count > 0
-                        && ApplicationStatusDetail.StatusTracker[ApplicationStatusDetail.StatusTracker.Count - 1].TrackerItemState == State.Completed)
-                    {
-                        return Color.Green;
-                    }
-                }
-                else
-                {
                     return Color.Orange;
                 }
                 return Color.Grey;
@@ -389,5 +391,17 @@ namespace myTNB.Mobile
         Payment,
         Past,
         Completed
+    }
+
+    public enum DetailCTAType
+    {
+        SetAppointment,
+        Reschedule,
+        Call,
+        Rate,
+        Save,
+        Remove,
+        Pay,
+        None
     }
 }

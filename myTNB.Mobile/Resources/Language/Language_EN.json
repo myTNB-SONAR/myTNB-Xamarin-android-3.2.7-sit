@@ -1214,9 +1214,9 @@
     "status": "Status: ",
     "reasons": "Reason(s)",
     "attachments": "Previous Attachement(s) Removed",
-    "add": "• Added {0} to {1}",
-    "update": "• Updated {0} from {1} to {2}",
-    "remove": "• Removed {0}"
+    "add": "Added {0} to {1}",
+    "update": "Updated {0} from {1} to {2}",
+    "remove": "Removed {0}"
   },
   "SearchByNumber": {
     "title": "Search By",
