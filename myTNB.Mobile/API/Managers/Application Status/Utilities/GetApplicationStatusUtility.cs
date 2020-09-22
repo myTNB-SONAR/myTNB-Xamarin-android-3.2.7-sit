@@ -107,27 +107,6 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                                 },*/
                                 Sequence = x.Sequence
                             }).ToList();
-                        if (displayModel.Content.ApplicationStatusDetail != null
-                            && displayModel.Content.ApplicationStatusDetail.UserAction.IsValid()
-                            && !displayModel.Content.IsPayment)
-                        {
-                            if (displayModel.Content.ApplicationStatusDetail.StatusTracker != null
-                                && displayModel.Content.ApplicationStatusDetail.StatusTracker.Count > 0
-                                && displayModel.Content.ApplicationStatusDetail.StatusTracker
-                                    [displayModel.Content.ApplicationStatusDetail.StatusTracker.Count - 1].StatusMode == "active")
-                            {
-                                //Mark: For ASR, only 127 can be completed
-                                /*if (displayModel.Content.ApplicationTypeID == "ASR"
-                                    && displayModel.Content.ApplicationStatusDetail.StatusId != 127)
-                                {
-                                    displayModel.Content.ApplicationStatusDetail.IsLastStatusCompleted = false;
-                                }
-                                else
-                                {
-                                    displayModel.Content.ApplicationStatusDetail.IsLastStatusCompleted = true;
-                                }*/
-                            }
-                        }
                     }
                 }
                 displayModel.Content.ApplicationActivityLogDetail = new List<ApplicationActivityLogDetailDisplay>();
@@ -147,7 +126,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                         };
                         if (logDetail.Reasons != null)
                         {
-                            displayItem.Reasons = logDetail.Reasons.Select(x => string.Format("• {0}", x)).ToList();
+                            displayItem.Reasons = logDetail.Reasons;
                         }
                         if (logDetail.ChangeLogs != null)
                         {
