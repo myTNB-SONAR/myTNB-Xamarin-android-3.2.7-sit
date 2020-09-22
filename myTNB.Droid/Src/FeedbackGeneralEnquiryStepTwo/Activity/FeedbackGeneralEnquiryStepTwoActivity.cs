@@ -392,7 +392,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                         }
                         else
                         {
-                            //todo malaysia implementation only remove first two number  and set country as malaysia   60 1110499494
+                            
 
                             if (tempPhone.Trim().Substring(0, 1) == "6")
                             {
