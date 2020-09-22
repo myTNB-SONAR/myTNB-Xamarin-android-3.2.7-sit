@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Newtonsoft.Json;
 
 namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
@@ -9,49 +10,50 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
 
     }
 
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
     public class GetApplicationDetailsModel : GetApplicationStatusModel
     {
         [JsonProperty("savedApplicationDetail")]
-        public object SavedApplicationDetail { set; get; }
+        public object savedApplicationDetail { set; get; }
 
         [JsonProperty("addressSearchRequest")]
-        public ASRDetail AddressSearchRequest { set; get; }
+        public ASRDetail addressSearchRequest { set; get; }
 
         [JsonProperty("changeLoadDetail")]
-        public object ChangeLoadDetail { set; get; }
+        public object changeLoadDetail { set; get; }
 
         [JsonProperty("changeOfTenancyDetail")]
-        public object ChangeOfTenancyDetail { set; get; }
+        public object changeOfTenancyDetail { set; get; }
 
         [JsonProperty("changeProductDetail")]
-        public object ChangeProductDetail { set; get; }
+        public object changeProductDetail { set; get; }
 
         [JsonProperty("merdekaIncentiveDetail")]
-        public object MerdekaIncentiveDetail { set; get; }
+        public object merdekaIncentiveDetail { set; get; }
 
         [JsonProperty("closeOfAccountDetail")]
-        public object CloseOfAccountDetail { set; get; }
+        public object closeOfAccountDetail { set; get; }
 
         [JsonProperty("greenTariffDetail")]
-        public object GreenTariffDetail { set; get; }
+        public object greenTariffDetail { set; get; }
 
         [JsonProperty("reTechStudyDetail")]
-        public object RETechStudyDetail { set; get; }
+        public object reTechStudyDetail { set; get; }
 
         [JsonProperty("gslDetail")]
-        public object GSLDetail { set; get; }
+        public object gslDetail { set; get; }
 
         [JsonProperty("helpFormDetail")]
-        public object HelpFormDetail { set; get; }
+        public object helpFormDetail { set; get; }
 
         [JsonProperty("newConnectionDetail")]
-        public NCDetail NewConnectionDetail { set; get; }
+        public NCDetail newConnectionDetail { set; get; }
 
         [JsonProperty("projectDetail")]
-        public PRJDetail ProjectDetail { set; get; }
+        public PRJDetail projectDetail { set; get; }
 
         [JsonProperty("smrDetail")]
-        public object SMRDetail { set; get; }
+        public object smrDetail { set; get; }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
@@ -73,7 +75,20 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string createdByRoleId { set; get; }
 
         [JsonProperty("createdDate")]
-        public string createdDate { set; get; }
+        public DateTime? createdDate { set; get; }
+
+        [JsonIgnore]
+        public string createDateDisplay
+        {
+            get
+            {
+                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                string date = createdDate != null && createdDate.Value != null
+                    ? createdDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
+                    : string.Empty;
+                return date;
+            }
+        }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
@@ -120,10 +135,23 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string accountTypeDescription { set; get; }
 
         [JsonProperty("electricityStartDate")]
-        public string electricityStartDate { set; get; }
+        public DateTime? electricityStartDate { set; get; }
 
         [JsonProperty("statusDate")]
-        public string statusDate { set; get; }
+        public DateTime? statusDate { set; get; }
+
+        [JsonIgnore]
+        public string electricityStartDateDisplay
+        {
+            get
+            {
+                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                string date = electricityStartDate != null && electricityStartDate.Value != null
+                    ? electricityStartDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
+                    : string.Empty;
+                return date;
+            }
+        }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
@@ -151,6 +179,6 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public object lastName { set; get; }
 
         [JsonProperty("statusDate")]
-        public object statusDate { set; get; }
+        public DateTime statusDate { set; get; }
     }
 }

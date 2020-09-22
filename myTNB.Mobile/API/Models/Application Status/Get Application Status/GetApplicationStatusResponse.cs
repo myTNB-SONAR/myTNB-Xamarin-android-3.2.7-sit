@@ -47,7 +47,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
         public string StatusCode { set; get; }
 
         [JsonProperty("createdDate")]
-        public DateTime CreatedDate { set; get; }
+        public DateTime? CreatedDate { set; get; }
     }
 
     public class ApplicationPaymentDetail
@@ -163,7 +163,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
         public string CreatedBy { set; get; }
 
         [JsonProperty("createdDate")]
-        public DateTime CreatedDate { set; get; }
+        public DateTime? CreatedDate { set; get; }
     }
 
     public class ChangeLogs

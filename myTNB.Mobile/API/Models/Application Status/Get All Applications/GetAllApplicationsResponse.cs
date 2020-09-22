@@ -154,10 +154,10 @@ namespace myTNB.Mobile
         public string CreatedByRoleID { set; get; }
 
         [JsonProperty("createdDate")]
-        public DateTime CreatedDate { set; get; }
+        public DateTime? CreatedDate { set; get; }
 
         [JsonProperty("lastModifiedDate")]
-        public DateTime LastModifiedDate { set; get; }
+        public DateTime? LastModifiedDate { set; get; }
 
         [JsonIgnore]
         public string ReferenceNumberDisplay
@@ -171,9 +171,8 @@ namespace myTNB.Mobile
                 }
                 else
                 {
-                    refno = ReferenceNo;
+                    refno = ReferenceNo ?? string.Empty;
                 }
-
                 return refno;
             }
         }

@@ -58,8 +58,7 @@ namespace myTNB.Mobile
         {
             get
             {
-                return ApplicationStatusDetail.UserAction.IsValid()
-                    && ApplicationStatusDetail.UserAction == "payment";
+                return ApplicationStatusDetail.IsPayment;
             }
         }
 
@@ -71,7 +70,7 @@ namespace myTNB.Mobile
                 {
                     case Color.Green:
                         {
-                            return new int[] { 32, 89, 76 };
+                            return new int[] { 32, 189, 76 };
                         }
                     case Color.Orange:
                         {
@@ -104,6 +103,7 @@ namespace myTNB.Mobile
 
         //Todo: Add logic to configure from landing and search
         public bool IsSaveMessageDisplayed { set; get; }
+
         public bool IsFullApplicationTooltipDisplayed { set; get; }
 
         public string SaveMessage
@@ -116,38 +116,43 @@ namespace myTNB.Mobile
 
         public string ApplicationTypeID { set; get; }
 
+        public DetailCTAType CTAType
+        {
+            get
+            {
+                DetailCTAType type = DetailCTAType.None;
+                if (IsSaveMessageDisplayed)
+                {
+                    type = DetailCTAType.Save;
+                }
+                else if (IsPayment)
+                {
+                    type = DetailCTAType.Pay;
+                }
+                return type;
+            }
+        }
+
         private Color StatusColorDisplay
         {
             get
             {
-                if (ApplicationStatusDetail != null && ApplicationStatusDetail.UserAction.IsValid() && !IsPayment)
+                if (ApplicationStatusDetail != null)
                 {
                     if (ApplicationStatusDetail.StatusTracker != null
-                        && ApplicationStatusDetail.StatusTracker.Count > 0
-                        && ApplicationStatusDetail.StatusTracker[ApplicationStatusDetail.StatusTracker.Count - 1].StatusMode == "active")
+                       && ApplicationStatusDetail.StatusTracker.Count > 0
+                       && ApplicationStatusDetail.StatusTracker[ApplicationStatusDetail.StatusTracker.Count - 1].TrackerItemState == State.Completed)
                     {
-                        //Mark: For ASR, only 127 can be completed
-                        if (ApplicationTypeID == "ASR"
-                            && ApplicationStatusDetail.StatusId != 127)
-                        {
-                            return Color.Orange;
-                        }
                         return Color.Green;
                     }
-                }
-                else
-                {
+                    if (!ApplicationStatusDetail.UserAction.IsValid())
+                    {
+                        return Color.Grey;
+                    }
                     return Color.Orange;
                 }
                 return Color.Grey;
             }
-        }
-
-        private enum Color
-        {
-            Grey,
-            Orange,
-            Green
         }
     }
 
@@ -160,7 +165,7 @@ namespace myTNB.Mobile
         public string SRType { set; get; }
         public int StatusID { set; get; }
         public string StatusCode { set; get; }
-        public DateTime CreatedDate { set; get; }
+        public DateTime? CreatedDate { set; get; }
 
         //Mark: Display Specific Properties
         public string CreatedDateDisplay
@@ -168,7 +173,9 @@ namespace myTNB.Mobile
             get
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                string date = CreatedDate.ToString("dd MMM yyyy", dateCultureInfo);
+                string date = CreatedDate != null && CreatedDate.Value != null
+                    ? CreatedDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
+                    : string.Empty;
                 return date;
             }
         }
@@ -180,7 +187,9 @@ namespace myTNB.Mobile
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
                 string message = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "lastUpdatedDate");
-                string date = CreatedDate != null ? CreatedDate.ToString("dd MMM yyyy", dateCultureInfo) : string.Empty;
+                string date = CreatedDate != null && CreatedDate.Value != null
+                    ? CreatedDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
+                    : string.Empty;
                 string displayDate = string.Format(message, date);
                 return displayDate;
             }
@@ -218,15 +227,17 @@ namespace myTNB.Mobile
         public bool IsPostPayment { set; get; }
         public List<StatusTrackerDisplay> StatusTracker { set; get; }
         //Mark: Display Specific Properties
-        public string StatusDescriptionDisplay
+        public bool IsPayment
         {
             get
             {
-                return LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "for") + StatusDescription;
+                if (UserAction != null || UserAction.IsValid())
+                {
+                    return UserAction.ToUpper() == "PAYMENT";
+                }
+                return false;
             }
         }
-
-        public bool IsLastStatusCompleted { set; get; }
     }
 
     public class StatusTrackerDisplay
@@ -235,6 +246,42 @@ namespace myTNB.Mobile
         public string StatusMode { set; get; }
         public ProgressDetailDisplay ProgressDetail { set; get; }
         public int Sequence { set; get; }
+        //Mark: Display Specific Properties
+        public State TrackerItemState
+        {
+            get
+            {
+                State state = State.Inactive;
+                if (StatusMode != null && StatusMode.IsValid())
+                {
+                    switch (StatusMode.ToUpper())
+                    {
+                        case "ACTIVE":
+                            {
+                                state = State.Active;
+                                break;
+                            }
+                        case "PAST":
+                            {
+                                state = State.Past;
+                                break;
+                            }
+                        case "COMPLETED":
+                            {
+                                state = State.Completed;
+                                break;
+                            }
+                        case "INACTIVE":
+                        default:
+                            {
+                                state = State.Inactive;
+                                break;
+                            }
+                    }
+                }
+                return state;
+            }
+        }
     }
 
     public class ProgressDetailDisplay
@@ -250,7 +297,7 @@ namespace myTNB.Mobile
         public List<ChangeLogsDisplay> ChangeLogs { set; get; }
         public string Comment { set; get; }
         public string CreatedBy { set; get; }
-        public DateTime CreatedDate { set; get; }
+        public DateTime? CreatedDate { set; get; }
         public List<string> DetailsUpdateList { set; get; }
         public List<string> DocumentsUpdateList { set; get; }
         public List<string> Reasons { set; get; }
@@ -266,7 +313,9 @@ namespace myTNB.Mobile
             get
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                string date = CreatedDate.ToString("dd MMM yyyy", dateCultureInfo);
+                string date = CreatedDate != null && CreatedDate.Value != null
+                    ? CreatedDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
+                    : string.Empty;
                 return date;
             }
         }
@@ -287,7 +336,7 @@ namespace myTNB.Mobile
         {
             get
             {
-                if (ChangeType == "Documents")
+                if (ChangeType == "Documents" || ChangeType == "documents" || ChangeType == "DOCUMENTS")
                 {
                     return Mobile.ChangeType.Documents;
                 }
@@ -325,5 +374,34 @@ namespace myTNB.Mobile
         Add,
         Update,
         Remove
+    }
+
+    public enum Color
+    {
+        Grey,
+        Orange,
+        Green,
+        VeryLightPink
+    }
+
+    public enum State
+    {
+        Inactive,
+        Active,
+        Payment,
+        Past,
+        Completed
+    }
+
+    public enum DetailCTAType
+    {
+        SetAppointment,
+        Reschedule,
+        Call,
+        Rate,
+        Save,
+        Remove,
+        Pay,
+        None
     }
 }
