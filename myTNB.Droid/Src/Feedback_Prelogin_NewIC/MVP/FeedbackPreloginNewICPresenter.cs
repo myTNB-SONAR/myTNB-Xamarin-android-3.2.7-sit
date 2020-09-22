@@ -142,8 +142,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
           
                 var result = await ServiceApiImpl.Instance.ValidateAccIsExist(con);
 
-                //if (result != null && !result.GetSearchForAccount[0].FullName.IsNullOrEmpty()  && !result.GetSearchForAccount[0].IC.IsNullOrEmpty())
-                if (result != null)
+                if (result != null && !result.GetSearchForAccount[0].FullName.IsNullOrEmpty()  && !result.GetSearchForAccount[0].IC.IsNullOrEmpty())
+               
                 {
                     this.mView.HideProgressDialog();
                     var data = result.GetSearchForAccount[0];
@@ -159,7 +159,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
                     }
 
 
-                   // mView.ShowAddAccountFail(result.Response.DisplayMessage);
+                   
                 }
                 else
                 {   // no data
