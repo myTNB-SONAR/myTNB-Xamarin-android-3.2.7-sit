@@ -44,6 +44,7 @@
         internal const string Service_GetApplicationStatus = "ApplicationStatus";
         internal const string Service_SaveApplication = "SaveApplication";
         internal const string Service_GetAllApplications = "AllApplications";
+        internal const string Service_GetApplicationDetail = "ApplicationDetail";
 
         //Language File Constants
         internal const string LanguageFile_ServiceDetails = "ServiceDetails";

@@ -18,18 +18,20 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
 #endif
     internal interface IApplicationStatusService
     {
-        [Get("/{urlPrefix}/SearchApplicationType")]
+        [Get("/{urlPrefix}/SearchApplicationType?lang={language}")]
         Task<SearchApplicationTypeResponse> SearchApplicationType([Header(Constants.H_UserInfo)] string userInfo
             , CancellationToken cancelToken
+            , string language
             , string urlPrefix = Constants.ApiUrlPath
             , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
 
-        [Get("/{urlPrefix}/ApplicationStatus?applicationType={applicationType}&searchType={searchType}&searchTerm={searchTerm}")]
+        [Get("/{urlPrefix}/ApplicationStatus?lang={language}&applicationType={applicationType}&searchType={searchType}&searchTerm={searchTerm}")]
         Task<GetApplicationStatusResponse> GetApplicationStatus(string applicationType
             , string searchType
             , string searchTerm
             , [Header(Constants.H_UserInfo)] string userInfo
             , CancellationToken cancelToken
+            , string language
             , string urlPrefix = Constants.ApiUrlPath
             , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
 
@@ -40,7 +42,7 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
            , string urlPrefix = Constants.ApiUrlPath
            , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
 
-        [Get("/{urlPrefix}/AllApplications?Page={page}&Limit={limit}&SortBy={sortBy}&SortDirection={sortDirection}&ReferenceNo={referenceNo}&SrNo={srNo}&SearchApplicationType={searchApplicationType}&StatusId={statusId}&StatusDescription={statusDescription}&CreatedDateFrom={createdDateFrom}&CreatedDateTo={createdDateTo}")]
+        [Get("/{urlPrefix}/AllApplications?lang={language}&Page={page}&Limit={limit}&SortBy={sortBy}&SortDirection={sortDirection}&ReferenceNo={referenceNo}&SrNo={srNo}&SearchApplicationType={searchApplicationType}&StatusId={statusId}&StatusDescription={statusDescription}&CreatedDateFrom={createdDateFrom}&CreatedDateTo={createdDateTo}")]
         Task<GetAllApplicationsResponse> GetAllApplications(int page
            , int limit
            , string sortBy
@@ -54,14 +56,16 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
            , string createdDateTo
            , [Header(Constants.H_UserInfo)] string userInfo
            , CancellationToken cancelToken
+           , string language
            , string urlPrefix = Constants.ApiUrlPath
            , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
 
-        [Get("/{urlPrefix}/ApplicationDetail?applicationType={applicationType}&id={id}")]
+        [Get("/{urlPrefix}/ApplicationDetail?lang={language}&applicationType={applicationType}&id={id}")]
         Task<GetApplicationDetailsResponse> GetApplicationDetail(string applicationType
             , string id
             , [Header(Constants.H_UserInfo)] string userInfo
             , CancellationToken cancelToken
+            , string language
             , string urlPrefix = Constants.ApiUrlPath
             , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
     }

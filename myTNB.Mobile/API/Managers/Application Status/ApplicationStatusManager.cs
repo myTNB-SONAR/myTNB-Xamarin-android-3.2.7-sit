@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using myTNB.Mobile.API;
 using myTNB.Mobile.API.Managers.ApplicationStatus;
+using myTNB.Mobile.API.Managers.ApplicationStatus.Utilities;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails;
 using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
@@ -50,7 +51,8 @@ namespace myTNB.Mobile
                 try
                 {
                     SearchApplicationTypeResponse response = await service.SearchApplicationType(AppInfoManager.Instance.GetUserInfo()
-                        , NetworkService.GetCancellationToken());
+                        , NetworkService.GetCancellationToken()
+                        , AppInfoManager.Instance.Language.ToString());
                     if (response.Content != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(response.StatusDetail.Code);
@@ -118,19 +120,13 @@ namespace myTNB.Mobile
                         , searchType
                         , searchTerm
                         , AppInfoManager.Instance.GetUserInfo()
-                        , NetworkService.GetCancellationToken());
+                        , NetworkService.GetCancellationToken()
+                        , AppInfoManager.Instance.Language.ToString());
                     if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         if (response.Content == null)
                         {
                             response.StatusDetail.Code = "empty";
-                        }
-                        else
-                        {
-                            response.Parse(applicationType
-                                , applicationTypeTitle
-                                , searchTypeTitle
-                                , searchTerm);
                         }
                         response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(response.StatusDetail.Code);
                     }
@@ -293,7 +289,8 @@ namespace myTNB.Mobile
                        , createdDateFrom
                        , createdDateTo
                        , AppInfoManager.Instance.GetUserInfo()
-                       , NetworkService.GetCancellationToken());
+                       , NetworkService.GetCancellationToken()
+                       , AppInfoManager.Instance.Language.ToString());
                     if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(response.StatusDetail.Code);
@@ -373,10 +370,9 @@ namespace myTNB.Mobile
         #endregion
 
         #region GetApplicationDetail
-        public async Task<ApplicationDetailDisplay> GetApplicationDetail(string id//=searchTerm
+        public async Task<ApplicationDetailDisplay> GetApplicationDetail(string id
             , string applicationType
             , string applicationTypeTitle)
-            //, string searchTypeTitle)
         {
             ApplicationDetailDisplay displaymodel = new ApplicationDetailDisplay();
             try
@@ -384,23 +380,16 @@ namespace myTNB.Mobile
                 IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
                 try
                 {
-                   GetApplicationDetailsResponse response = await service.GetApplicationDetail(applicationType
-                        , id
-                        , AppInfoManager.Instance.GetUserInfo()
-                        , NetworkService.GetCancellationToken());
-                    Debug.WriteLine("Test");
-                    /*if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    GetApplicationDetailsResponse response = await service.GetApplicationDetail(applicationType
+                         , id
+                         , AppInfoManager.Instance.GetUserInfo()
+                         , NetworkService.GetCancellationToken()
+                         , AppInfoManager.Instance.Language.ToString());
+                    if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         if (response.Content == null)
                         {
                             response.StatusDetail.Code = "empty";
-                        }
-                        else
-                        {
-                            response.Parse(applicationType
-                                , applicationTypeTitle
-                                , searchTypeTitle
-                                , searchTerm);
                         }
                         response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(response.StatusDetail.Code);
                     }
@@ -409,10 +398,7 @@ namespace myTNB.Mobile
                         response.StatusDetail = new StatusDetail();
                         response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails("default");
                     }
-                    displaymodel = response.Parse(applicationType
-                               , applicationTypeTitle
-                               , searchTypeTitle
-                               , searchTerm);*/
+                    displaymodel = response.Parse(applicationType, applicationTypeTitle);
                     return displaymodel;
                 }
                 catch (ApiException apiEx)
@@ -438,7 +424,7 @@ namespace myTNB.Mobile
             {
                 StatusDetail = new StatusDetail()
             };
-            displaymodel.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails("default");
+            displaymodel.StatusDetail = Constants.Service_GetApplicationDetail.GetStatusDetails("default");
             return displaymodel;
         }
         #endregion

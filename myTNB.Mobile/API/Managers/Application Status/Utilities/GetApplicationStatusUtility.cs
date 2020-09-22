@@ -3,7 +3,7 @@ using System.Linq;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.Extensions;
 
-namespace myTNB.Mobile.API.Managers.ApplicationStatus
+namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
 {
     internal static class GetApplicationStatusUtility
     {
@@ -37,7 +37,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus
                 },
                 StatusDetail = response.StatusDetail
             };
-            if (response.Content != null)
+            if (response != null && response.Content != null)
             {
                 displayModel.Content.ApplicationType = applicationTypeTitle;
                 displayModel.Content.ApplicationTypeID = applicationTypeID;
@@ -117,7 +117,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus
                                     [displayModel.Content.ApplicationStatusDetail.StatusTracker.Count - 1].StatusMode == "active")
                             {
                                 //Mark: For ASR, only 127 can be completed
-                                if (displayModel.Content.ApplicationTypeID == "ASR"
+                                /*if (displayModel.Content.ApplicationTypeID == "ASR"
                                     && displayModel.Content.ApplicationStatusDetail.StatusId != 127)
                                 {
                                     displayModel.Content.ApplicationStatusDetail.IsLastStatusCompleted = false;
@@ -125,7 +125,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus
                                 else
                                 {
                                     displayModel.Content.ApplicationStatusDetail.IsLastStatusCompleted = true;
-                                }
+                                }*/
                             }
                         }
                     }
@@ -191,23 +191,25 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus
                                 {
                                     displayItem.DocumentsUpdateList.Add(change);
                                 }
-
                             }
                         }
                         displayModel.Content.ApplicationActivityLogDetail.Add(displayItem);
                     }
                 }
 
-                displayModel.Content.AdditionalInfoList.Add(new TitleValueModel
+                displayModel.Content.AdditionalInfoList = new List<TitleValueModel>
                 {
-                    Title = searchTypeTitle.ToUpper(),
-                    Value = searchTerm
-                });
-                displayModel.Content.AdditionalInfoList.Add(new TitleValueModel
-                {
-                    Title = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "creationDate").ToUpper(),
-                    Value = displayModel.Content.ApplicationDetail.CreatedDateDisplay ?? string.Empty
-                });
+                    new TitleValueModel
+                    {
+                        Title = searchTypeTitle.ToUpper(),
+                        Value = searchTerm
+                    },
+                    new TitleValueModel
+                    {
+                        Title = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "creationDate").ToUpper(),
+                        Value = displayModel.Content.ApplicationDetail.CreatedDateDisplay ?? string.Empty
+                    }
+                };
             }
             return displayModel;
         }

@@ -1142,10 +1142,69 @@
     "for": "for ",
     "creationDate": "Created On",
     "saveMessage": "Save this application to keep track of its up-to-date status in My Applications.",
-    "saveApplication": "Add to List",
+    "addToList": "Add to List",
     "portalMessage": "You can take the action to continue or update your application using the myTNB Portal.",
     "lastUpdatedDate": "Last updated on {0}",
     "viewActivityLog": "View Activity Log"
+  },
+  "ApplicationStatusDetails_selector": {
+    "applicationTypeMapping": [
+      {
+        "key": "ASR",
+        "value": "addressSearchRequest"
+      },
+      {
+        "key": "NC",
+        "value": "newConnectionDetail"
+      },
+      {
+        "key": "PRJ",
+        "value": "projectDetail"
+      }
+    ],
+    "ASR": [
+
+    ],
+    "NC": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number",
+        "value": ""
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On",
+        "value": ""
+      },
+      {
+        "key": "srNo",
+        "description": "Service Request Number",
+        "value": ""
+      },
+      {
+        "key": "caNo",
+        "description": "Electricity Account Number",
+        "value": ""
+      },
+      {
+        "key": "premiseCategoryDescription",
+        "description": "Type of Premise",
+        "value": ""
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "Account Type",
+        "value": ""
+      },
+      {
+        "key": "electricityStartDateDisplay",
+        "description": "Electricity Start Date",
+        "value": ""
+      }
+    ],
+    "PRJ": [
+
+    ]
   },
   "ApplicationStatusActivityLog": {
     "title": "Activity Log",
@@ -1362,89 +1421,26 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "ApplicationDetail": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
   },
   "Mapping": {
-    "ApplicationType": [
+    "Sample": [
       {
-        "key": "ALL",
-        "value": "All Applications"
-      },
-      {
-        "key": "ASR",
-        "value": "Address Search Request"
-      },
-      {
-        "key": "COT",
-        "value": "Change of Tenancy"
-      },
-      {
-        "key": "RW_PC",
-        "value": "Change Tariff"
-      },
-      {
-        "key": "COA",
-        "value": "Close Electricity"
-      },
-      {
-        "key": "RB_SRQ",
-        "value": "Enquiry Form"
-      },
-      {
-        "key": "RB_GSL",
-        "value": "Guaranteed Service Level"
-      },
-      {
-        "key": "MD",
-        "value": "Merdeka Incentive"
-      },
-      {
-        "key": "GT",
-        "value": "myGreen+"
-      },
-      {
-        "key": "PRJ",
-        "value": "Project"
-      },
-      {
-        "key": "RE_TS",
-        "value": "Renewable Energy"
-      },
-      {
-        "key": "SMR",
-        "value": "Self Meter Reading"
-      },
-      {
-        "key": "NC",
-        "value": "Start Electricity"
-      },
-      {
-        "key": "RW_LC",
-        "value": "Upgrade/Downgrade Electricity"
-      }
-    ],
-    "SearchType": [
-      {
-        "key": "CA",
-        "value": "Electricity Account Number"
-      },
-      {
-        "key": "ApplicationNo",
-        "value": "Application Number"
-      },
-      {
-        "key": "ServiceRequestNo",
-        "value": "Service Request Number"
-      },
-      {
-        "key": "ProjectReferenceNo",
-        "value": "Project Reference No"
-      },
-      {
-        "key": "ServiceNotificationNo",
-        "value": "Service Notification Number"
+        "key": "key",
+        "value": "value"
       }
     ]
   }
