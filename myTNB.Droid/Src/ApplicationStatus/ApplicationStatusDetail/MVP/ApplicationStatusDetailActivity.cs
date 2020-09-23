@@ -24,6 +24,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         ApplicationStatusDetailProgressAdapter adapter;
         ApplicationStatusDetailSubDetailAdapter subAdapter;
         RecyclerView.LayoutManager layoutManager;
+        GetApplicationStatusDisplay applicationDetailDisplay; 
 
         [BindView(Resource.Id.txtApplicationStatusMainTitle)]
         TextView txtApplicationStatusMainTitle;
@@ -79,24 +80,26 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         private async void ViewActivityLog()
         {
-            //Todo SaveApplication
+            //Todo ViewActivityLog
+
+
         }
         private async void SaveApplication()
         {
-            //Todo SaveApplication
+          
 
 
-            //PostSaveApplicationResponse postSaveApplicationResponse = await ApplicationStatusManager.Instance.SaveApplication(
-            //      referenceNo
-            //    , moduleName
-            //    , srNo
-            //    , srType
-            //    , statusCode
-            //    , srCreatedDate);
+            PostSaveApplicationResponse postSaveApplicationResponse = await ApplicationStatusManager.Instance.SaveApplication(
+                             applicationDetailDisplay.ApplicationDetail.ReferenceNo
+                    , applicationDetailDisplay.ApplicationTypeID
+                    , applicationDetailDisplay.ApplicationDetail.SRNo
+                    , applicationDetailDisplay.ApplicationDetail.SRType
+                    , applicationDetailDisplay.ApplicationDetail.StatusCode
+                    , applicationDetailDisplay.ApplicationDetail.CreatedDate.Value);
 
-           
 
-            
+
+
         }
 
 
@@ -149,7 +152,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
                     if (extras.ContainsKey("applicationStatusResponse"))
                     {
-                        GetApplicationStatusDisplay applicationDetailDisplay = new GetApplicationStatusDisplay();
+                        applicationDetailDisplay = new GetApplicationStatusDisplay();
                         applicationDetailDisplay = JsonConvert.DeserializeObject<GetApplicationStatusDisplay>(extras.GetString("applicationStatusResponse"));
 
                         if (applicationDetailDisplay != null
