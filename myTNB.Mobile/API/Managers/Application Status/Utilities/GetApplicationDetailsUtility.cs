@@ -18,7 +18,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
 
         internal static ApplicationDetailDisplay Parse(this GetApplicationDetailsResponse response
             , string applicationType
-            , string applicationTypeTitle)
+            , string applicationTypeTitle
+            , string applicationId)
         {
             {
                 ApplicationDetailDisplay displayModel = new ApplicationDetailDisplay
@@ -38,9 +39,11 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     displayModel.Content.ApplicationType = applicationTypeTitle;
                     displayModel.Content.IsSaveMessageDisplayed = false;
                     displayModel.Content.IsFullApplicationTooltipDisplayed = true;
+                    displayModel.Content.IsDeleteEnable = true;
 
                     //Todo: Check where to get last updated date
                     displayModel.Content.ApplicationDetail.CreatedDate = DateTime.Now;
+                    displayModel.Content.ApplicationDetail.ApplicationId = applicationId;
 
                     Dictionary<string, List<SelectorModel>> selectors = LanguageManager.Instance.GetSelectorsByPage("ApplicationStatusDetails");
                     _mappingList = new List<SelectorModel>();
@@ -50,9 +53,18 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     }
 
                     List<SelectorModel> additionalDisplayConfig = new List<SelectorModel>();
-                    if (selectors != null && selectors.ContainsKey(applicationType))
+                    string key = applicationType;
+                    if (displayModel.Content.IsKedaiTenagaApplication)
                     {
-                        additionalDisplayConfig = selectors[applicationType];
+                        key = "KEDAI";
+                    }
+                    if (response.Content.savedApplicationDetail != null)
+                    {
+                        key = "SAVED";
+                    }
+                    if (selectors != null && selectors.ContainsKey(key))
+                    {
+                        additionalDisplayConfig = selectors[key];
                     }
                     if (additionalDisplayConfig != null && additionalDisplayConfig.Count > 0)
                     {
@@ -60,7 +72,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                         AddAdditionalInfo(ref displayModel
                             , response.Content
                             , additionalDisplayConfig
-                            , applicationType);
+                            , key);
                     }
 
                     if (response.Content.ApplicationPaymentDetail != null)
@@ -201,31 +213,28 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                 return;
             }
             object props = GetObjectValue(content, propertyName);
-            for (int i = 0; i < additionalDisplayConfig.Count; i++)
+            if (props != null)
             {
-                SelectorModel item = additionalDisplayConfig[i];
-                string infoValue = GetObjectProperty(props, item.Key);
-                if (infoValue.IsValid())
+                for (int i = 0; i < additionalDisplayConfig.Count; i++)
                 {
-                    displayModel.Content.AdditionalInfoList.Add(new TitleValueModel
+                    SelectorModel item = additionalDisplayConfig[i];
+                    object infoValue = GetObjectValue(props, item.Key);
+                    if (infoValue != null && infoValue.ToString().IsValid())
                     {
-                        Title = item.Description.ToUpper(),
-                        Value = infoValue
-                    });
+                        displayModel.Content.AdditionalInfoList.Add(new TitleValueModel
+                        {
+                            Title = item.Description.ToUpper(),
+                            Value = infoValue.ToString()
+                        });
+                    }
                 }
             }
         }
 
-        private static object GetObjectValue(GetApplicationDetailsModel content
-            , string property)
+        private static object GetObjectValue(object props
+            , string key)
         {
-            object propertyValue = content.GetType().GetProperty(property).GetValue(content, null);
-            return propertyValue;
-        }
-
-        private static string GetObjectProperty(object props, string key)
-        {
-            string value = string.Empty;
+            object value = null;
             Type type = props.GetType();
             if (type == null)
             {
@@ -241,7 +250,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
             {
                 return value;
             }
-            value = objectValue.ToString() ?? string.Empty;
+            value = objectValue;
             return value;
         }
         #endregion

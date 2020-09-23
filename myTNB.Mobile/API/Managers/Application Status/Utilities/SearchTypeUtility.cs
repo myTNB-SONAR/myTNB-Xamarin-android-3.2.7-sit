@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using myTNB.Mobile.API.Models;
 using myTNB.Mobile.Extensions;
 
@@ -13,14 +15,24 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus
         /// </summary>
         /// <param name="response"></param>
         /// <param name="roleID"></param>
-        internal static void SearchApplicationTypeParser(ref SearchApplicationTypeResponse response
+        internal static void SearchApplicationTypeParser(this SearchApplicationTypeResponse response
               , string roleID)
         {
             try
             {
                 if (response != null && response.Content != null && response.Content.Count > 0 && roleID.IsValid())
                 {
-                    response.Content = response.Content.FindAll(x => x.UserRole.Contains(roleID));
+                    List<SearchApplicationTypeModel> content = response.Content.FindAll(x => x.UserRole.Contains(roleID));
+
+                    List<KeyValueModel> excludedList = LanguageManager.Instance
+                        .GetValues<List<KeyValueModel>>(Constants.LanguageFile_Mapping
+                        , Constants.LanguageFile_ExcludedApplicationTypes);
+                    if (excludedList != null && excludedList.Count > 0)
+                    {
+                        List<string> excludedKeys = excludedList.Select(x => x.key).ToList();
+                        content = content.FindAll(x => !excludedKeys.Contains(x.SearchApplicationTypeId));
+                    }
+                    response.Content = content;
                     //Mark: Codes were disabled as multilingual in list of all values were confirmed.
                     //response.MapContent();
                 }

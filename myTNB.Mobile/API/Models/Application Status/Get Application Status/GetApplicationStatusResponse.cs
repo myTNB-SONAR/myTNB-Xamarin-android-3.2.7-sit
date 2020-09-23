@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Newtonsoft.Json;
 
 namespace myTNB.Mobile.API.Models.ApplicationStatus
@@ -11,7 +12,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
     public class GetApplicationStatusModel
     {
         [JsonProperty("applicationDetail")]
-        public ApplicationDetail ApplicationDetail { set; get; }
+        public ApplicationDetail applicationDetail { set; get; }
 
         [JsonProperty("applicationPaymentDetail")]
         public ApplicationPaymentDetail ApplicationPaymentDetail { set; get; }
@@ -25,29 +26,34 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
 
     public class ApplicationDetail
     {
-        [JsonProperty("applicationId")]
-        public int ApplicationId { set; get; }
+        public string applicationId { set; get; }
 
-        [JsonProperty("referenceNo")]
-        public string ReferenceNo { set; get; }
+        public string referenceNo { set; get; }
 
-        [JsonProperty("applicationModuleId")]
-        public int ApplicationModuleId { set; get; }
+        public int applicationModuleId { set; get; }
 
-        [JsonProperty("srNo")]
-        public string SRNo { set; get; }
+        public string srNo { set; get; }
 
-        [JsonProperty("srType")]
-        public string SRType { set; get; }
+        public string srType { set; get; }
 
-        [JsonProperty("statusId")]
-        public int StatusID { set; get; }
+        public int statusId { set; get; }
 
-        [JsonProperty("statusCode")]
-        public string StatusCode { set; get; }
+        public string statusCode { set; get; }
 
-        [JsonProperty("createdDate")]
-        public DateTime? CreatedDate { set; get; }
+        public DateTime? createdDate { set; get; }
+
+        [JsonIgnore]
+        public string createDateDisplay
+        {
+            get
+            {
+                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                string date = createdDate != null && createdDate.Value != null
+                    ? createdDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
+                    : string.Empty;
+                return date;
+            }
+        }
     }
 
     public class ApplicationPaymentDetail

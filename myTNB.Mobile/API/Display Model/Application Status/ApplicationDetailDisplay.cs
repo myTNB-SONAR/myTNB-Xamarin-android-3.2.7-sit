@@ -22,6 +22,27 @@ namespace myTNB.Mobile
         public List<ApplicationActivityLogDetailDisplay> ApplicationActivityLogDetail { set; get; }
 
         //Mark: Display Specific Properties
+        public bool IsPayment
+        {
+            get
+            {
+                return ApplicationStatusDetail.IsPayment;
+            }
+        }
+
+        //Todo: Add logic to configure from landing and search
+        public bool IsSaveMessageDisplayed { set; get; }
+
+        public bool IsFullApplicationTooltipDisplayed { set; get; }
+
+        public bool IsPortalMessageDisplayed
+        {
+            get
+            {
+                return StatusColorDisplay == Color.Orange && !IsPayment;
+            }
+        }
+
         public bool IsActivityLogDisplayed
         {
             get
@@ -30,7 +51,15 @@ namespace myTNB.Mobile
             }
         }
 
-        public List<TitleValueModel> AdditionalInfoList { set; get; } = new List<TitleValueModel>();
+        public bool IsKedaiTenagaApplication
+        {
+            get
+            {
+                return !ApplicationDetail.ApplicationId.IsValid();
+            }
+        }
+
+        public bool IsDeleteEnable { set; get; }
 
         public string ApplicationType
         {
@@ -55,13 +84,35 @@ namespace myTNB.Mobile
             }
         }
 
-        public bool IsPayment
+        public string PayableAmount
         {
             get
             {
-                return ApplicationStatusDetail.IsPayment;
+                if (IsPayment && ApplicationPaymentDetail != null && ApplicationPaymentDetail.TotalPayableAmount != null)
+                {
+                    return ApplicationPaymentDetail.TotalPayableAmount.ToString("N2", CultureInfo.InvariantCulture);
+                }
+                return string.Empty;
             }
         }
+
+        public string PortalMessage
+        {
+            get
+            {
+                return LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "portalMessage");
+            }
+        }
+
+        public string SaveMessage
+        {
+            get
+            {
+                return LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "saveMessage");
+            }
+        }
+
+        public string ApplicationTypeID { set; get; }
 
         public int[] StatusColor
         {
@@ -86,36 +137,7 @@ namespace myTNB.Mobile
             }
         }
 
-        public bool IsPortalMessageDisplayed
-        {
-            get
-            {
-                return StatusColorDisplay == Color.Orange && !IsPayment;
-            }
-        }
-
-        public string PortalMessage
-        {
-            get
-            {
-                return LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "portalMessage");
-            }
-        }
-
-        //Todo: Add logic to configure from landing and search
-        public bool IsSaveMessageDisplayed { set; get; }
-
-        public bool IsFullApplicationTooltipDisplayed { set; get; }
-
-        public string SaveMessage
-        {
-            get
-            {
-                return LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "saveMessage");
-            }
-        }
-
-        public string ApplicationTypeID { set; get; }
+        public List<TitleValueModel> AdditionalInfoList { set; get; } = new List<TitleValueModel>();
 
         public DetailCTAType CTAType
         {
@@ -159,7 +181,7 @@ namespace myTNB.Mobile
 
     public class ApplicationDetailDisplayModel
     {
-        public int ApplicationId { set; get; }
+        public string ApplicationId { set; get; }
         public string ReferenceNo { set; get; }
         public int ApplicationModuleId { set; get; }
         public string SRNo { set; get; }

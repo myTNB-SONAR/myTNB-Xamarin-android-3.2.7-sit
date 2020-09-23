@@ -7,12 +7,12 @@ using Newtonsoft.Json;
 
 namespace myTNB
 {
-    public class SearchApplicationTypeResponse : BaseListResponse<SearhApplicationTypeModel>
+    public class SearchApplicationTypeResponse : BaseListResponse<SearchApplicationTypeModel>
     {
 
     }
 
-    public class SearhApplicationTypeModel
+    public class SearchApplicationTypeModel
     {
         [JsonProperty("searchApplicationTypeId")]
         public string SearchApplicationTypeId { set; get; }

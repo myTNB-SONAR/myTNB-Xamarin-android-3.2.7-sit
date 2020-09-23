@@ -51,8 +51,11 @@
         internal const string LanguageFile_ServiceDetails = "ServiceDetails";
         internal const string LanguageFile_Services = "Services";
 
+        //Mapping
         internal const string LanguageFile_Mapping = "Mapping";
-        internal const string LanguageFile_ApplicationType = "ApplicationType";
-        internal const string LanguageFile_SearchType = "SearchType";
+        internal const string LanguageFile_ExcludedApplicationTypes = "ExcludedApplicationTypes";
+
+        //internal const string LanguageFile_ApplicationType = "ApplicationType";
+        //internal const string LanguageFile_SearchType = "SearchType";
     }
 }
