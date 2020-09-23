@@ -137,12 +137,14 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         }
 
         public void ShowList(List<SubmittedFeedback> list)
-        {
+        {    
             //adapter.AddAll(list);
             if (list != null && list.Count > 0)
             {
+                ShowProgressDialog();
                 adapter = new SelectSubmittedFeedbackAdapter(this, list, true);
                 listView.Adapter = adapter;
+                HideProgressDialog();
             }
             else
             {
@@ -175,6 +177,8 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+
 
 
         private Snackbar mCancelledExceptionSnackBar;

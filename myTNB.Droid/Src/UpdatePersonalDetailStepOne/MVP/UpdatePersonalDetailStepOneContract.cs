@@ -63,11 +63,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
 
             void ShowInvalidError(typeOfLayout lay);
 
-            void ClearErrors();
+            void ClearErrors(typeOfLayout lay);
 
             void ShowUpdatePersonalDetailStepTwoActivity();
-
-            void UpdateMobileNumber(string mobile_no);
 
             void ShowInvalidMobileNoError();
 
@@ -126,7 +124,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
 
             void OninfoLabelDoIneedOwnerConsent();
 
-            void CheckRequiredFields(string iC, bool toggleChkBoxIC, string ownerName, bool toggleChkOwnerName, string mobileNumber, bool toggleChkMobileNumber, string emailAddress, bool toggleChkEmailAddress, string mailingAddress, bool toggleChkMailingAddress, string premiseAddress, bool toggleChkPremiseAddress, string otherRelationstip , bool isOtherChoosed);
+            void CheckRequiredFields(string iC, bool toggleChkBoxIC, string ownerName, bool toggleChkOwnerName, bool mobileNumber, bool toggleChkMobileNumber, string emailAddress, bool toggleChkEmailAddress, string mailingAddress, bool toggleChkMailingAddress, string premiseAddress, bool toggleChkPremiseAddress, string otherRelationstip , bool isOtherChoosed);
 
             void OnShowUpdatePersonalDetailStepTwoActivity();
 

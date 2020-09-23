@@ -1,6 +1,6 @@
 ﻿{
   "Common": {
-    "eppToolTipTitle": "Bagaimana dengan Pelan Bayaran Mudah (PBM)?",
+	"eppToolTipTitle": "Bagaimana dengan Pelan Bayaran Mudah (PBM)?",
     "account": "Akaun",
     "emailAddress": "Alamat E-mel",
     "mobileNumber": "Nombor Telefon",
@@ -284,7 +284,7 @@
     "whereIsMyMeter": "Di manakah boleh saya mencari meter saya?",
     "whereIsMyMeterTitle": "Di manakah boleh saya mencari meter saya?",
     "whereIsMyMeterMessage": "Untuk menghantar bacaan meter bulanan, nilai pada skin paparan meter anda haruslah boleh dibaca dengan jelas. Meter anda kebiasaannya terletak berhampiran pintu atau bangunan meter (bilik riser).",
-    "doYouHaveMeterAccess": "Adakah anda mempunyai akses ke meter?"
+    "doYouHaveMeterAccess":"Adakah anda mempunyai akses ke meter?"
   },
   "SSMRReadingHistory_selector": {
     "SMREligibiltyPopUpDetails": [
@@ -952,6 +952,8 @@
   "SelectCountry": {
     "title": "Pilih Negara/Wilayah"
   },
+
+
   "SubmitEnquiry": {
     "enquireTitle": "Pertanyaan",
     "submitEnquiryTitle": "Hantar Pertanyaan Baru",
@@ -964,7 +966,7 @@
     "generalEnquiryTitle": "Pertanyaan Umum",
     "generalEnquiryDescription": "Saya ingin hantar pendapat & saranan.",
     "updatePersonalDetTitle": "Kemas kini Maklumat Peribadi",
-    "personalDetailsDescription": "Saya ingin mengemaskini maklumat peribadi saya.",
+    "personalDetailsDescription": "Saya ingin mengemaskini maklumat peribadi.",
     "stepTitle1of2": "Langkah 1 dari 2",
     "enquiryAboutTitle": "Saya ingin bertanya mengenai:",
     "messageHint": "Mesej Anda",
@@ -990,7 +992,7 @@
     "whichInfoUpdate": "Maklumat mana yang anda ingin kemas kini?",
     "ownerTitle": "Apakah hubungan anda dengan pemilik akaun?",
     "icTitle": "Nombor Pengenalan (IC / Pasport)",
-    "icHint": "Masukkan Nombor Pengenalan Baru / Pasport",
+    "icHint": "Masukkan Nombor Pengenalan Baru",
     "accNametitle": "Nama Akaun",
     "accNameHint": "Masukkan nama baru akaun",
     "mobileNumberTitle": "Nombor Telefon",
@@ -1048,7 +1050,7 @@
     "cameraRoll": "Roll Kamera",
     "imageWhereAcc": "-/media/myTNBapp/SubmitEnquiry/newBillCopy2x.png",
     "imageCopyIC": "-/media/myTNBapp/SubmitEnquiry/imgIcCopy2x.png",
-    "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x.png",
+    "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x2.png",
     "accNumberDetails": "Nombor akaun 12 digit boleh didapati di sudut kiri atas bil kertas bulanan anda.",
     "updateNoOwnerTitle": "Maklumat mana yang ingin anda kemaskini?",
     "newAccNoOwnerName": "Nama baru akaun",
@@ -1060,19 +1062,23 @@
     "copyOfPermiseProof": "Salinan Perjanjian Jual & Beli / Cukai pintu / Perjanjian Sewa Rumah",
     "nameHintBottom": "Masukkan nama penuh seperti di dalam kad pengenalan anda",
     "enquiryTncRead": "Saya telah membaca dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat</strong></a>",
-    "imagePermises": "-/media/myTNBapp/SubmitEnquiry/permises2x.png",
-    "permisesTooltipTitle": "Apakah contoh salinan dokumen perjanjian?",
+    "imagePermises": "-/media/myTNBapp/SubmitEnquiry/permises2x2.png",
+    "permisesTooltipTitle": "Bagaimanakah contoh dokumen sokongan?",
     "permisesTitle": "Salinan Perjanjian Jual & Beli/ Cukai Pintu/ Perjanjian Penyewaan",
     "permisesContent": "Kami hanya memerlukan halaman dengan nama, nombor pengenalan dan alamat premis anda",
     "submitEnquiryEmpty": "Anda masih belum hantar sebarang pertanyaan buat masa sekarang.",
-    "tncAgreeOwner": "<p><strong>Akujanji oleh Pengguna Berdaftar Akaun</strong></p><p>1. Saya dengan ini mengesahkan bahawa saya, <b>{0}</b> dan e-mel (<b>{1}</b>) adalah pemegang akaun berdaftar untuk pembekalan elektrik <b>{2}</b>, dan saya mempunyai hak untuk membetulkan dan/atau mengemas kini makluman akaun untuk akaun ini.</p><p>2. Saya dengan ini mengesahkan bahawa maklumat yang diberikan semasa permintaan ini dan mana-mana dokumen yang dikemukakan adalah benar dan tepat.</p><p>3. Saya memahami bahawa:</p><p>a. TNB perlu mengesahkan identiti saya/kami;</p><p>b. TNB boleh menghubungi saya/kami untuk maklumat yang lebih terperinci berkenaan &nbsp;permintaan ini; dan</p><p>c. Semua data peribadi yang diberikan oleh saya/kami dalam borang ini akan dikumpulkan dan diproses oleh TNB sebagai data peribadi menurut Akta Perlindungan Data Peribadi 2010.</p><p>4.&nbsp; Saya dengan ini bersetuju untuk menanggung rugi sebarang kerugian, kos dan perbelanjaan, yang ditanggung oleh TNB berkaitan dengan permintaan ini atau sekiranya apa-apa maklumat dan/atau dokumen yang diserahkan oleh saya adalah tidak benar.</p><p>Dimaklumkan bahawa aplikasi ini adalah keistimewaan penggunaan antara TNB dan pemegang akaun berdaftarnya dan mana-mana orang yang berkaitan dengan persetujuan pemegang akaun berdaftar. TNB tidak akan bertanggungjawab atas penggunaan yang tidak betul dan penggunaan maklumat yang dijelaskan dan terkandung di dalamnya dan tidak berkewajiban untuk memeriksa kesahihan persetujuan dan kebenaran yang diberikan. Setelah mengklik butang hantar, anda dianggap telah membaca, memahami dan bersetuju dengan akujanji seperti yang dipaparkan.</p>",
-    "tncAgreeNonOwner": "<p><strong>Akujanji oleh Orang yang Berkaitan (mana-mana orang yang telah diberi kuasa untuk mengemas kini data peribadi bagi pihak pemilik akaun)</strong></p><p>1.&nbsp; Saya dengan ini mengesahkan bahawa saya, <b>{0}</b> dan e-mel (<b>{1}</b>) telah diberi kuasa oleh pemegang akaun berdaftar untuk pembekalan elektrik <b>{2}</b>, untuk membetulkan dan/atau mengemaskini&nbsp; makluman akaun untuk akaun ini.</p><p>2.&nbsp;Saya dengan ini berakujanji bahawa persetujuan pemegang akaun berdaftar telah diperoleh dengan sewajarnya untuk permintaan ini dan bukti kebenaran dilampirkan bersama-sama dengan permintaan ini.&nbsp;</p><p>3. Saya dengan ini mengesahkan bahawa maklumat yang diberikan semasa permintaan ini dan mana-mana dokumen yang dikemukakan adalah benar dan tepat.</p><p>4. Saya memahami bahawa:</p><p>a. TNB perlu mengesahkan identiti saya/kami;</p><p>b. TNB boleh menghubungi saya/kami untuk maklumat yang lebih terperinci berkenaan &nbsp;permintaan ini; dan</p><p>c. Semua data peribadi yang diberikan oleh saya/kami dalam borang ini akan dikumpulkan dan diproses oleh TNB sebagai data peribadi menurut Akta Perlindungan Data Peribadi 2010.</p><p>5. Saya dengan ini bersetuju untuk menanggung rugi sebarang kerugian, kos dan perbelanjaan, yang ditanggung oleh TNB berkaitan dengan permintaan ini atau sekiranya apa-apa maklumat dan/atau dokumen yang diserahkan oleh saya adalah tidak benar.&nbsp;</p><p>Dimaklumkan bahawa aplikasi ini adalah keistimewaan penggunaan antara TNB dan pemegang akaun berdaftarnya dan mana-mana orang yang berkaitan dengan persetujuan pemegang akaun berdaftar. TNB tidak akan bertanggungjawab atas penggunaan yang tidak betul dan penggunaan maklumat yang dijelaskan dan terkandung di dalamnya dan tidak berkewajiban untuk memeriksa kesahihan persetujuan dan kebenaran yang diberikan. Setelah mengklik butang hantar, anda dianggap telah membaca, memahami dan bersetuju dengan akujanji seperti yang dipaparkan.</p>",
+    "tncAgreeOwner": "<p><strong>Akujanji oleh Pengguna Berdaftar Akaun</strong></p><p>1. Saya dengan ini mengesahkan bahawa saya, <strong>{0}</strong> dan e-mel (<strong>{1}</strong>) adalah pemegang akaun berdaftar untuk pembekalan elektrik <strong>{2}</strong>, dan saya mempunyai hak untuk membetulkan dan/atau mengemas kini makluman akaun untuk akaun ini.</p><p>2. Saya dengan ini mengesahkan bahawa maklumat yang diberikan semasa permintaan ini dan mana-mana dokumen yang dikemukakan adalah benar dan tepat.</p><p>3. Saya memahami bahawa:</p><p>a. TNB perlu mengesahkan identiti saya;</p><p>b. TNB boleh menghubungi saya untuk maklumat yang lebih terperinci berkenaan &nbsp;permintaan ini; dan</p><p>c. Semua data peribadi yang diberikan oleh saya dalam borang ini akan dikumpulkan dan diproses oleh TNB sebagai data peribadi menurut Akta Perlindungan Data Peribadi 2010.</p><p>4.&nbsp; Saya dengan ini bersetuju untuk menanggung rugi sebarang kerugian, kos dan perbelanjaan, yang ditanggung oleh TNB berkaitan dengan permintaan ini atau sekiranya apa-apa maklumat dan/atau dokumen yang diserahkan oleh saya adalah tidak benar.</p><p>Dimaklumkan bahawa aplikasi ini adalah keistimewaan penggunaan antara TNB dan pemegang akaun berdaftarnya dan mana-mana orang yang berkaitan dengan persetujuan pemegang akaun berdaftar. TNB tidak akan bertanggungjawab atas apa-apa penggunaan maklumat yang dinyatakan dan terkandung di sini dengan cara yang tidak betul dan tidak wajar, dan tidak berkewajiban untuk memeriksa kesahihan persetujuan dan kebenaran yang diberikan. Setelah mengklik butang hantar, anda dianggap telah membaca, memahami dan bersetuju dengan akujanji seperti yang dipaparkan.</p>",
+    "tncAgreeNonOwner": "<p><strong>Akujanji oleh Orang yang Berkaitan (mana-mana orang yang telah diberi kuasa untuk mengemas kini data peribadi bagi pihak pemilik akaun)</strong></p><p>1.&nbsp; Saya dengan ini mengesahkan bahawa saya, <strong>{0}</strong> dan e-mel (<strong>{1}</strong>) telah diberi kuasa oleh pemegang akaun berdaftar untuk pembekalan elektrik <strong>{2}</strong>, untuk membetulkan dan/atau mengemaskini&nbsp; makluman akaun untuk akaun ini.</p><p>2.&nbsp;Saya dengan ini berakujanji bahawa persetujuan pemegang akaun berdaftar telah diperoleh dengan sewajarnya untuk permintaan ini dan bukti kebenaran dilampirkan bersama-sama dengan permintaan ini.&nbsp;</p><p>3. Saya dengan ini mengesahkan bahawa maklumat yang diberikan semasa permintaan ini dan mana-mana dokumen yang dikemukakan adalah benar dan tepat.</p><p>4. Saya memahami bahawa:</p><p>a. TNB perlu mengesahkan identiti saya;</p><p>b. TNB boleh menghubungi saya untuk maklumat yang lebih terperinci berkenaan &nbsp;permintaan ini; dan</p><p>c. Semua data peribadi yang diberikan oleh saya dalam borang ini akan dikumpulkan dan diproses oleh TNB sebagai data peribadi menurut Akta Perlindungan Data Peribadi 2010.</p><p>5. Saya dengan ini bersetuju untuk menanggung rugi sebarang kerugian, kos dan perbelanjaan, yang ditanggung oleh TNB berkaitan dengan permintaan ini atau sekiranya apa-apa maklumat dan/atau dokumen yang diserahkan oleh saya adalah tidak benar.&nbsp;</p><p>Dimaklumkan bahawa aplikasi ini adalah keistimewaan penggunaan antara TNB dan pemegang akaun berdaftarnya dan mana-mana orang yang berkaitan dengan persetujuan pemegang akaun berdaftar. TNB tidak akan bertanggungjawab atas apa-apa penggunaan maklumat yang dinyatakan dan terkandung di sini dengan cara yang tidak betul dan tidak wajar, dan tidak berkewajiban untuk memeriksa kesahihan persetujuan dan kebenaran yang diberikan. Setelah mengklik butang hantar, anda dianggap telah membaca, memahami dan bersetuju dengan akujanji seperti yang dipaparkan.</p>",
     "antiSpamPolicy": "https://www.tnb.com.my/terms-policy/",
     "privacyPolicy": "https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa",
     "privacyPolicyTitle": "Polisi Privasi",
     "submitEnquiryNonBRTitle": "Hantar Pertanyaan",
     "for": "untuk ",
     "validElectricityAccountNoError": "Sila masukkan nombor akaun elektrik yang sah.",
-    "backLogin": "Kembali ke Log Masuk"
+    "backLogin": "Kembali ke Log Masuk",
+    "registeredView": "Adakah akaun elektrik ini didaftarkan atas nama anda?",
+    "viewYes": "Ya",
+    "viewNo": "Tidak"
   }
+     
 }

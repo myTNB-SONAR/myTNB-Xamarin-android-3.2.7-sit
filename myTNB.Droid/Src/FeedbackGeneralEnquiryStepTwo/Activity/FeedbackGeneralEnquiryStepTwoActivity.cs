@@ -8,6 +8,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.Preferences;
+using Android.Runtime;
 using Android.Text;
 using Android.Text.Style;
 using Android.Views;
@@ -23,12 +24,16 @@ using Java.Util;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.Request;
+using myTNB_Android.Src.Common.Activity;
+using myTNB_Android.Src.Common.Model;
+using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Model;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP;
 using myTNB_Android.Src.SubmitEnquirySuccess.Activity;
 using myTNB_Android.Src.UpdatePersonalDetailTnC.Activity;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 {
@@ -61,8 +66,11 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         [BindView(Resource.Id.txtEmail)]
         EditText txtEmail;
 
-        [BindView(Resource.Id.txtPhoneNumber)]
-        EditText txtPhoneNumber;
+        //[BindView(Resource.Id.txtPhoneNumber)]
+        //EditText txtPhoneNumber;
+
+        [BindView(Resource.Id.mobileNumberFieldContainer)]
+        LinearLayout mobileNumberFieldContainer;
 
         [BindView(Resource.Id.txtstep2of2)]
         TextView txtstep2of2;
@@ -72,9 +80,6 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
         [BindView(Resource.Id.agreementCheckbox)]
         CheckBox agreementCheckbox;
-
-        
-
 
         [BindView(Resource.Id.txtTermsConditionsGeneralEnquiry)]
         TextView txtTermsConditionsGeneralEnquiry;
@@ -88,8 +93,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         [BindView(Resource.Id.txtInputLayoutEmail)]
         TextInputLayout txtInputLayoutEmail;
 
-        [BindView(Resource.Id.txtInputLayoutPhoneNumber)]
-        TextInputLayout txtInputLayoutPhoneNumber;
+        //[BindView(Resource.Id.txtInputLayoutPhoneNumber)]
+        //TextInputLayout txtInputLayoutPhoneNumber;
 
         public List<AttachedImage> attachedImages ;
 
@@ -98,6 +103,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         public List<FeedbackUpdateDetailsModel> feedbackUpdateDetailsModelList = new List<FeedbackUpdateDetailsModel>();
 
         public List<FeedbackUpdateDetailsModel> updateFeedbackList;
+
+        private MobileNumberInputComponent mobileNumberInputComponent;
 
         private string feedback = null;
 
@@ -115,6 +122,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         private string premiseAddress;
         private bool toggleTncData = false;
         private bool isNeedTNC = false;
+        private bool isMobileValidated = false;
+        private bool isSelectCountry = false;
+
+        const int COUNTRY_CODE_SELECT_REQUEST = 1;
 
 
         protected override void OnCreate(Android.OS.Bundle savedInstanceState)
@@ -281,19 +292,14 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 }
 
 
-                //2 set font type , 300 normal 500 button
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName, txtInputLayoutEmail, txtInputLayoutPhoneNumber);
-                TextViewUtils.SetMuseoSans300Typeface(txtPhoneNumber, txtEmail, txtName);
-
-                //, txtTermsConditionsGeneralEnquiry
+       
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit , WhoShouldWeContact);
 
 
                 //SET TRANSLATION
-                //txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
+                
                 txtInputLayoutName.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "nameHint");    
                 txtInputLayoutEmail.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "emailHint");
-                txtInputLayoutPhoneNumber.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "mobileHint");
                 btnSubmit.Text = Utility.GetLocalizedLabel("Common", "submit");
 
 
@@ -322,69 +328,114 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
                 txtName.TextChanged += TextChange;
                 txtEmail.TextChanged += TextChange;   
-                txtPhoneNumber.TextChanged += TextChange;
+
 
                 //bind listener with id and layout
                 txtName.AddTextChangedListener(new InputFilterFormField(txtName, txtInputLayoutName));
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
-                txtPhoneNumber.AddTextChangedListener(new InputFilterFormField(txtPhoneNumber, txtInputLayoutPhoneNumber));
+  
 
 
                 txtName.FocusChange += (sender, e) =>
                 {
-                    txtInputLayoutName.Error = "";
+                 
 
-                    if (e.HasFocus)
-                    {
+                    if (txtName.HasFocus)
+                    {   
                         txtInputLayoutName.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
+                        TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error));
                         txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
+
                     }
+                    else
+                    {
+                        
+                        txtInputLayoutName.Error = null;
+                    }
+                
                 };
 
 
-                //enforce 60
-                UpdateMobileNumber("+60");
+                //mobile number section
+                mobileNumberFieldContainer.RemoveAllViews();
+                mobileNumberInputComponent = new MobileNumberInputComponent(this);
+                mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
+                mobileNumberInputComponent.SetMobileNumberLabel(Utility.GetLocalizedCommonLabel("mobileNo"));
+                mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
+                mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
+                mobileNumberFieldContainer.AddView(mobileNumberInputComponent);
+
+                
+
 
                 //auto populate if login 
                 if (UserEntity.IsCurrentlyActive())
                 {
                     txtName.Text = UserEntity.GetActive().DisplayName;
                     txtEmail.Text = UserEntity.GetActive().Email;
-
                     string tempPhone = UserEntity.GetActive().MobileNo;
 
-                    if (!tempPhone.IsNullOrEmpty()) {
-                        
-                        string tempSubstring = tempPhone.Substring(0, 2);
-                        if (tempSubstring.Contains("+6"))
-                        {
-                            tempPhone = UserEntity.GetActive().MobileNo;
-                            txtPhoneNumber.Text = tempPhone;
 
-                        }
-                        else if (!tempSubstring.Contains("+"))
+
+                    if (!tempPhone.IsNullOrEmpty())
+                    {  
+                        if (tempPhone.Contains("+"))
                         {
-                            tempPhone = "+6" + tempPhone.Trim();
-                            txtPhoneNumber.Text = tempPhone;
+                            var CountryFromPhoneNumber = CountryUtil.Instance.GetCountryFromPhoneNumber(tempPhone);
+
+                            if (!CountryFromPhoneNumber.ToString().IsNullOrEmpty())
+                            {
+
+                                mobileNumberInputComponent.SetSelectedCountry(CountryFromPhoneNumber);   // set flag and country
+                                mobileNumberInputComponent.SetMobileNumber(int.Parse(tempPhone.Trim().Substring(CountryFromPhoneNumber.isd.Length)));  // set phone number
+                            }
                         }
                         else
                         {
-                            UpdateMobileNumber("+60");
+                            
+
+                            if (tempPhone.Trim().Substring(0, 1) == "6")
+                            {
+                                mobileNumberInputComponent.SetMobileNumber(int.Parse(tempPhone.Trim().Substring(2)));
+                            }
+                            else
+                            {
+                                mobileNumberInputComponent.SetMobileNumber(int.Parse(tempPhone.Trim()));
+                            }
                         }
+
+
                     }
-                    else
-                    {
-                        UpdateMobileNumber("+60");
-                    }
-             
+
 
                 }
                 else
                 {
                     txtName.Text = "";
                 }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
-
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            try
+            {
+                base.OnActivityResult(requestCode, resultCode, data);
+                if (resultCode == Result.Ok)
+                {
+                 
+                   if (requestCode == COUNTRY_CODE_SELECT_REQUEST)
+                    {
+                        string dataString = data.GetStringExtra(Constants.SELECT_COUNTRY_CODE);
+                        Country selectedCountry = JsonConvert.DeserializeObject<Country>(dataString);
+                        mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
+                        isSelectCountry = true;
+    }
+                }
             }
             catch (Exception e)
             {
@@ -406,6 +457,40 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
             }
             textView.TextFormatted = spannable;
         }
+
+        private void OnTapCountryCode()
+        {
+            Intent intent = new Intent(this, typeof(SelectCountryActivity));
+            StartActivityForResult(intent, COUNTRY_CODE_SELECT_REQUEST);
+        }
+
+        private void OnValidateMobileNumber(bool isValidated)
+        {
+            if (isValidated)
+            {
+                isMobileValidated = true;
+                mobileNumberInputComponent.ClearError();
+            }
+            else
+            {
+                isMobileValidated = false;
+
+                if (mobileNumberInputComponent.GetIsFromCountryCode())
+                {
+                    // no implementation
+                }
+                else
+                {
+                    mobileNumberInputComponent.RaiseError(Utility.GetLocalizedLabel("SubmitEnquiry", "mobileReq"));
+                }
+                
+
+            }
+
+            passCheck();
+        }
+
+
 
         private void TextChange(object sender, TextChangedEventArgs e)
         {
@@ -434,14 +519,16 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
             }
         }
 
+
+        //todo review this logic
         public void UpdateMobileNumber(string mobile_no)
         {
             try
             {
-                if (txtPhoneNumber.Text != mobile_no)
-                {
-                    txtPhoneNumber.Text = mobile_no;
-                }
+                //if (txtPhoneNumber.Text != mobile_no)
+                //{
+                //  //  txtPhoneNumber.Text = mobile_no;  
+                //}
             }
             catch (Exception e)
             {
@@ -454,7 +541,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         {
             try
             {
-                txtInputLayoutPhoneNumber.Error = null;
+              //  txtInputLayoutPhoneNumber.Error = null;
             }
             catch (Exception e)
             {
@@ -466,10 +553,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         {
             try
             {
-                txtInputLayoutPhoneNumber.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutPhoneNumber.FindViewById<TextView>(Resource.Id.textinput_error));
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutPhoneNumber);
-                txtInputLayoutPhoneNumber.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
+                // no implementation
             }
             catch (Exception e)
             {
@@ -484,7 +568,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         }
 
         public override int ResourceId()
-        {   //todo change
+        {   
             return Resource.Layout.FeedbackGeneralEnquiryStepTwoView;
         }
 
@@ -540,16 +624,15 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
         public void ShowFullNameError()
         {
-            //txtInputLayoutNamee = GetString(Resource.String.name_error);
+ 
             txtInputLayoutName.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error));
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName);
             txtInputLayoutName.Error = Utility.GetLocalizedErrorLabel("invalid_fullname");
+            var handleBounceError = txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error);
+            handleBounceError.SetPadding(top: 4, left: 0, right: 0, bottom: 0);
+
 
         }
-
-
-
         public void DisableRegisterButton()
         {
             btnSubmit.Enabled = false;
@@ -558,10 +641,20 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
         public void ClearFullNameError()
         {
-            txtInputLayoutName.Error = null;
-            txtInputLayoutName.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName);
-            txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
+
+            if (txtName.HasFocus)
+            {
+                txtInputLayoutName.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error));
+                txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
+                var handleBounceError = txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error);
+                handleBounceError.SetPadding(top: 4, left: 0, right: 0, bottom: 0);
+            }
+            else
+            {
+                txtInputLayoutName.Error = null;
+            }
+           
         }
 
         public void ShowInvalidEmailError()
@@ -570,6 +663,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail.FindViewById<TextView>(Resource.Id.textinput_error));
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail);
             txtInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
+            var handleBounceError = txtInputLayoutEmail.FindViewById<TextView>(Resource.Id.textinput_error);
+            handleBounceError.SetPadding(top: 4, left: 0, right: 0, bottom: 0);
+
         }
 
         public void ClearInvalidEmailError()
@@ -648,12 +744,11 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                     {
                         feedback = "";
                     }
-                   
 
 
-
-
-                    this.userActionsListener.OnSubmit(acc, feedback, txtName.Text.ToString().Trim(), txtPhoneNumber.Text.ToString().Trim(),txtEmail.Text.Trim(), attachedImages, updateFeedbackList, isOwner, ownerRelationshipID,  ownerRelationship);
+                   string txtPhoneNumber  = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
+                  
+                   this.userActionsListener.OnSubmit(acc, feedback, txtName.Text.ToString().Trim(), txtPhoneNumber.ToString().Trim(),txtEmail.Text.Trim(), attachedImages, updateFeedbackList, isOwner, ownerRelationshipID,  ownerRelationship);
 
 
                   
@@ -690,7 +785,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         {
 
             string fullname = txtName.Text.ToString().Trim();
-            string mobile_no = txtPhoneNumber.Text.ToString().Trim();
+            bool mobile_no = isMobileValidated;
             string email = txtEmail.Text.ToString().Trim();
             bool tnc = toggleTncData;
             bool varNeedTNC = isNeedTNC;

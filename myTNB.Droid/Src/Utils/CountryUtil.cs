@@ -96,6 +96,27 @@ namespace myTNB_Android.Src.Utils
             return countryList;
         }
 
+
+        public  Country GetCountryFromPhoneNumber(string PhoneNum)
+        {
+
+            var listofCountry = GetCountryList();
+
+
+            var obj = listofCountry.Where(x => x.isd.Equals(PhoneNum.Trim().Substring(0, 3)));
+            if (obj.Count() == 0)
+            {
+                obj = listofCountry.Where(x => x.isd.Equals(PhoneNum.Trim().Substring(0, 4)));
+                if (obj.Count() == 0)
+                {
+                    obj = listofCountry.Where(x => x.isd.Equals(PhoneNum.Trim().Substring(0, 2)));
+                }
+            }
+            return obj.FirstOrDefault();
+               
+        }
+
+
         public Country GetDefaultCountry()
         {
             return new Country("MY", "Malaysia", "+60");

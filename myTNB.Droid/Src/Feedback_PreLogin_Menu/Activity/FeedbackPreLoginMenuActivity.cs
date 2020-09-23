@@ -131,6 +131,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                             txtSubmittedFeedback,
                             txtFeedbackOthers);
 
+                SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "enquireTitle"));
+
 
                 mPresenter = new FeedbackPreLoginMenuPresenter(this, this.DeviceId());
 

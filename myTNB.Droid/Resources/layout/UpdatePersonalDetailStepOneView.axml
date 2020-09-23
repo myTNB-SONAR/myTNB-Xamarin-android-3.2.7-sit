@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
+        android:isScrollContainer="false"
         android:orientation="vertical">
 
             <include
@@ -42,7 +43,7 @@
         android:id="@+id/rootview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-     
+       
         android:background="@color/lightGrey">
               <!-- android:layout_marginTop="?actionBarSize"-->
 
@@ -582,70 +583,15 @@
                         </LinearLayout>
 
                     </LinearLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/txtInputLayoutCurrentMobileNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="19dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginRight="16dp"
-                        app:counterEnabled="false"
-                        app:counterMaxLength="250"
-                        app:errorEnabled="true"
-                        android:visibility="gone"
-                        android:layout_marginBottom="4dp"
-                        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
-                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                        <EditText
-                            android:id="@+id/txtGeneralCurrentMobileNumber"
-                            android:layout_width="match_parent"
+                    <LinearLayout
+                            android:id="@+id/mobileNumberFieldContainer"
                             android:layout_height="wrap_content"
-                            android:hint="CURRENT MOBILE NUMBER"
-                            android:importantForAutofill="noExcludeDescendants"
-                            android:inputType="text|textMultiLine"
-                            android:maxLength="250"
-                            android:maxLines="1"
-                            android:overScrollMode="always"
-                            android:paddingTop="5dp"
-                            android:scrollbarStyle="insideInset"
-                            android:scrollbars="vertical"
-                            android:textSize="16dp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/txtInputLayoutNewMobileNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="19dp"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginRight="16dp"
-                        android:paddingBottom="0dp"
-                        app:counterEnabled="false"
-                        app:counterMaxLength="250"
-                        app:errorEnabled="true"
-                        android:visibility="gone"
-                        android:layout_marginBottom="4dp"
-                        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
-                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                        <EditText
-                            android:id="@+id/txtNewMobileNumber"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="ENTER NEW MOBILE NUMBER"
-                            android:importantForAutofill="noExcludeDescendants"
-                            android:inputType="phone"
-                            android:digits="0123456789+"     
-                            android:maxLength="250"
-                            android:maxLines="5"
-                            android:overScrollMode="always"
-                            android:paddingTop="5dp"
-                            android:scrollbarStyle="insideInset"
-                            android:scrollbars="vertical"
-                            android:textSize="16dp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:layout_marginBottom="23dp"
+                            android:orientation="vertical"/>
+
                 </LinearLayout>
 
                 <LinearLayout
