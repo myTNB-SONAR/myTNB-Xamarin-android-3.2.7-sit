@@ -1,4 +1,4 @@
-﻿{
+{
   "Common": {
     "eppToolTipTitle": "Bagaimana dengan Pelan Bayaran Mudah (PBM)?",
     "account": "Akaun",
@@ -107,11 +107,7 @@
     "emptyAcctSelector": "---",
     "nickname": "Cth. Rumah Saya, Rumah Ibu & Ayah",
     "businessNickname": "Cth. Bangsar Shopping Centre Branch",
-    "password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka.",
-    "serviceNotificationNo": "eg. 000092494113",
-    "serviceRequestNumber": "eg. 6000924941",
-    "electricityAccountNumber": "eg. 212157864231",
-    "eg": "eg. "
+    "password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka."
   },
   "Error": {
     "invalid_email": "Format e-mel tidak sah.",
@@ -164,8 +160,7 @@
     "paymentCCErrorMsg": "Maaf, kami tidak boleh mendapatkan maklumat kad anda sekarang. Anda masih boleh bayar menggunakan kad lain atau perbankan dalam talian melalui FPX.",
     "profileCCErrorMsg": "Jika anda di sini untuk menguruskan kad anda, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula kemudian.",
     "noMeterAccessErrorTitle": "Maaf, anda mungkin tidak boleh mengakses perkhidmatan ini.",
-    "noMeterAccessErrorMessage": "Anda perlu mempunyai meter yang boleh diakses supaya bacaan meter boleh dilakukan. Sila cuba lagi apabila anda mempunyai akses kepada meter anda.",
-    "invalidReferenceNumber": "Please enter a valid {0}."
+    "noMeterAccessErrorMessage": "Anda perlu mempunyai meter yang boleh diakses supaya bacaan meter boleh dilakukan. Sila cuba lagi apabila anda mempunyai akses kepada meter anda."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -213,8 +208,7 @@
     "tutorialNeedHelpDesc": "Kami ketengahkan soalan lazim untuk anda ketahui.",
     "gotIt": "OK!",
     "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
-    "receivedExtra": "terima lebih",
-    "applicationStatus": "Application<br>Status"
+    "receivedExtra": "terima lebih"
   },
   "Tabbar": {
     "home": "Utama",
@@ -678,8 +672,7 @@
     "callUs": "Hubungi Kami",
     "feedback": "Hantar Maklum Balas",
     "enquiry": "Hantar Pertanyaan",
-    "changeLanguage": "Change language to English",
-    "applicationStatus": "Application Status"
+    "changeLanguage": "Change language to English"
   },
   "Login": {
     "loginTitle": "Log Masuk Akaun myTNB",
@@ -763,15 +756,13 @@
     "title5": "Nikmati pelbagai Ganjaran melalui myTNB!",
     "title6": "Apa yang baharu dengan myTNB?",
     "title7": "Gunakan myTNB dengan Nombor Telefon Antarabangsa.",
-    "title8": "MS-Stay Updated with Your Applications!",
     "description1": "Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Pantau dan ketahui penggunaan elektrik anda yang terkini!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan terkini dengan mudah, semuanya di satu tempat.",
     "description4": "Bayar bil elektrik anda semasa di rumah, bercuti, dalam kereta api - bila-bila masa. 'Goodbye' caj lewat dan beratur di kaunter!",
     "description5": "Ya, kini kami berikan hadiah dan ganjaran - segalanya PERCUMA untuk pengguna myTNB! Pergi ke ikon 'Ganjaran' untuk tebus ganjaran anda sekarang!",
     "description6": "Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.<br><br>We’re now bilingual! You can set your preferred language below.",
-    "description7": "Anda kini boleh mendaftar akaun myTNB dengan nombor telefon antarabangsa.",
-    "description8": "MS-You can now track all your application status with zero hassle, anytime and anywhere. Need TNB to install a new meter? You can now set an appointment!"
+    "description7": "Anda kini boleh mendaftar akaun myTNB dengan nombor telefon antarabangsa."
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
@@ -961,6 +952,8 @@
   "SelectCountry": {
     "title": "Pilih Negara/Wilayah"
   },
+
+
   "SubmitEnquiry": {
     "enquireTitle": "Pertanyaan",
     "submitEnquiryTitle": "Hantar Pertanyaan Baru",
@@ -973,7 +966,7 @@
     "generalEnquiryTitle": "Pertanyaan Umum",
     "generalEnquiryDescription": "Saya ingin hantar pendapat & saranan.",
     "updatePersonalDetTitle": "Kemas kini Maklumat Peribadi",
-    "personalDetailsDescription": "Saya ingin mengemaskini maklumat peribadi saya.",
+    "personalDetailsDescription": "Saya ingin mengemaskini maklumat peribadi.",
     "stepTitle1of2": "Langkah 1 dari 2",
     "enquiryAboutTitle": "Saya ingin bertanya mengenai:",
     "messageHint": "Mesej Anda",
@@ -999,7 +992,7 @@
     "whichInfoUpdate": "Maklumat mana yang anda ingin kemas kini?",
     "ownerTitle": "Apakah hubungan anda dengan pemilik akaun?",
     "icTitle": "Nombor Pengenalan (IC / Pasport)",
-    "icHint": "Masukkan Nombor Pengenalan Baru / Pasport",
+    "icHint": "Masukkan Nombor Pengenalan Baru",
     "accNametitle": "Nama Akaun",
     "accNameHint": "Masukkan nama baru akaun",
     "mobileNumberTitle": "Nombor Telefon",
@@ -1057,7 +1050,7 @@
     "cameraRoll": "Roll Kamera",
     "imageWhereAcc": "-/media/myTNBapp/SubmitEnquiry/newBillCopy2x.png",
     "imageCopyIC": "-/media/myTNBapp/SubmitEnquiry/imgIcCopy2x.png",
-    "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x.png",
+    "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x2.png",
     "accNumberDetails": "Nombor akaun 12 digit boleh didapati di sudut kiri atas bil kertas bulanan anda.",
     "updateNoOwnerTitle": "Maklumat mana yang ingin anda kemaskini?",
     "newAccNoOwnerName": "Nama baru akaun",
@@ -1069,226 +1062,22 @@
     "copyOfPermiseProof": "Salinan Perjanjian Jual & Beli / Cukai pintu / Perjanjian Sewa Rumah",
     "nameHintBottom": "Masukkan nama penuh seperti di dalam kad pengenalan anda",
     "enquiryTncRead": "Saya telah membaca dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat</strong></a>",
-    "imagePermises": "-/media/myTNBapp/SubmitEnquiry/permises2x.png",
-    "permisesTooltipTitle": "Apakah contoh salinan dokumen perjanjian?",
+    "imagePermises": "-/media/myTNBapp/SubmitEnquiry/permises2x2.png",
+    "permisesTooltipTitle": "Bagaimanakah contoh dokumen sokongan?",
     "permisesTitle": "Salinan Perjanjian Jual & Beli/ Cukai Pintu/ Perjanjian Penyewaan",
     "permisesContent": "Kami hanya memerlukan halaman dengan nama, nombor pengenalan dan alamat premis anda",
     "submitEnquiryEmpty": "Anda masih belum hantar sebarang pertanyaan buat masa sekarang.",
-    "tncAgreeOwner": "<p><strong>Akujanji oleh Pengguna Berdaftar Akaun</strong></p><p>1. Saya dengan ini mengesahkan bahawa saya, <b>{0}</b> dan e-mel (<b>{1}</b>) adalah pemegang akaun berdaftar untuk pembekalan elektrik <b>{2}</b>, dan saya mempunyai hak untuk membetulkan dan/atau mengemas kini makluman akaun untuk akaun ini.</p><p>2. Saya dengan ini mengesahkan bahawa maklumat yang diberikan semasa permintaan ini dan mana-mana dokumen yang dikemukakan adalah benar dan tepat.</p><p>3. Saya memahami bahawa:</p><p>a. TNB perlu mengesahkan identiti saya/kami;</p><p>b. TNB boleh menghubungi saya/kami untuk maklumat yang lebih terperinci berkenaan &nbsp;permintaan ini; dan</p><p>c. Semua data peribadi yang diberikan oleh saya/kami dalam borang ini akan dikumpulkan dan diproses oleh TNB sebagai data peribadi menurut Akta Perlindungan Data Peribadi 2010.</p><p>4.&nbsp; Saya dengan ini bersetuju untuk menanggung rugi sebarang kerugian, kos dan perbelanjaan, yang ditanggung oleh TNB berkaitan dengan permintaan ini atau sekiranya apa-apa maklumat dan/atau dokumen yang diserahkan oleh saya adalah tidak benar.</p><p>Dimaklumkan bahawa aplikasi ini adalah keistimewaan penggunaan antara TNB dan pemegang akaun berdaftarnya dan mana-mana orang yang berkaitan dengan persetujuan pemegang akaun berdaftar. TNB tidak akan bertanggungjawab atas penggunaan yang tidak betul dan penggunaan maklumat yang dijelaskan dan terkandung di dalamnya dan tidak berkewajiban untuk memeriksa kesahihan persetujuan dan kebenaran yang diberikan. Setelah mengklik butang hantar, anda dianggap telah membaca, memahami dan bersetuju dengan akujanji seperti yang dipaparkan.</p>",
-    "tncAgreeNonOwner": "<p><strong>Akujanji oleh Orang yang Berkaitan (mana-mana orang yang telah diberi kuasa untuk mengemas kini data peribadi bagi pihak pemilik akaun)</strong></p><p>1.&nbsp; Saya dengan ini mengesahkan bahawa saya, <b>{0}</b> dan e-mel (<b>{1}</b>) telah diberi kuasa oleh pemegang akaun berdaftar untuk pembekalan elektrik <b>{2}</b>, untuk membetulkan dan/atau mengemaskini&nbsp; makluman akaun untuk akaun ini.</p><p>2.&nbsp;Saya dengan ini berakujanji bahawa persetujuan pemegang akaun berdaftar telah diperoleh dengan sewajarnya untuk permintaan ini dan bukti kebenaran dilampirkan bersama-sama dengan permintaan ini.&nbsp;</p><p>3. Saya dengan ini mengesahkan bahawa maklumat yang diberikan semasa permintaan ini dan mana-mana dokumen yang dikemukakan adalah benar dan tepat.</p><p>4. Saya memahami bahawa:</p><p>a. TNB perlu mengesahkan identiti saya/kami;</p><p>b. TNB boleh menghubungi saya/kami untuk maklumat yang lebih terperinci berkenaan &nbsp;permintaan ini; dan</p><p>c. Semua data peribadi yang diberikan oleh saya/kami dalam borang ini akan dikumpulkan dan diproses oleh TNB sebagai data peribadi menurut Akta Perlindungan Data Peribadi 2010.</p><p>5. Saya dengan ini bersetuju untuk menanggung rugi sebarang kerugian, kos dan perbelanjaan, yang ditanggung oleh TNB berkaitan dengan permintaan ini atau sekiranya apa-apa maklumat dan/atau dokumen yang diserahkan oleh saya adalah tidak benar.&nbsp;</p><p>Dimaklumkan bahawa aplikasi ini adalah keistimewaan penggunaan antara TNB dan pemegang akaun berdaftarnya dan mana-mana orang yang berkaitan dengan persetujuan pemegang akaun berdaftar. TNB tidak akan bertanggungjawab atas penggunaan yang tidak betul dan penggunaan maklumat yang dijelaskan dan terkandung di dalamnya dan tidak berkewajiban untuk memeriksa kesahihan persetujuan dan kebenaran yang diberikan. Setelah mengklik butang hantar, anda dianggap telah membaca, memahami dan bersetuju dengan akujanji seperti yang dipaparkan.</p>",
+    "tncAgreeOwner": "<p><strong>Akujanji oleh Pengguna Berdaftar Akaun</strong></p><p>1. Saya dengan ini mengesahkan bahawa saya, <strong>{0}</strong> dan e-mel (<strong>{1}</strong>) adalah pemegang akaun berdaftar untuk pembekalan elektrik <strong>{2}</strong>, dan saya mempunyai hak untuk membetulkan dan/atau mengemas kini makluman akaun untuk akaun ini.</p><p>2. Saya dengan ini mengesahkan bahawa maklumat yang diberikan semasa permintaan ini dan mana-mana dokumen yang dikemukakan adalah benar dan tepat.</p><p>3. Saya memahami bahawa:</p><p>a. TNB perlu mengesahkan identiti saya;</p><p>b. TNB boleh menghubungi saya untuk maklumat yang lebih terperinci berkenaan &nbsp;permintaan ini; dan</p><p>c. Semua data peribadi yang diberikan oleh saya dalam borang ini akan dikumpulkan dan diproses oleh TNB sebagai data peribadi menurut Akta Perlindungan Data Peribadi 2010.</p><p>4.&nbsp; Saya dengan ini bersetuju untuk menanggung rugi sebarang kerugian, kos dan perbelanjaan, yang ditanggung oleh TNB berkaitan dengan permintaan ini atau sekiranya apa-apa maklumat dan/atau dokumen yang diserahkan oleh saya adalah tidak benar.</p><p>Dimaklumkan bahawa aplikasi ini adalah keistimewaan penggunaan antara TNB dan pemegang akaun berdaftarnya dan mana-mana orang yang berkaitan dengan persetujuan pemegang akaun berdaftar. TNB tidak akan bertanggungjawab atas apa-apa penggunaan maklumat yang dinyatakan dan terkandung di sini dengan cara yang tidak betul dan tidak wajar, dan tidak berkewajiban untuk memeriksa kesahihan persetujuan dan kebenaran yang diberikan. Setelah mengklik butang hantar, anda dianggap telah membaca, memahami dan bersetuju dengan akujanji seperti yang dipaparkan.</p>",
+    "tncAgreeNonOwner": "<p><strong>Akujanji oleh Orang yang Berkaitan (mana-mana orang yang telah diberi kuasa untuk mengemas kini data peribadi bagi pihak pemilik akaun)</strong></p><p>1.&nbsp; Saya dengan ini mengesahkan bahawa saya, <strong>{0}</strong> dan e-mel (<strong>{1}</strong>) telah diberi kuasa oleh pemegang akaun berdaftar untuk pembekalan elektrik <strong>{2}</strong>, untuk membetulkan dan/atau mengemaskini&nbsp; makluman akaun untuk akaun ini.</p><p>2.&nbsp;Saya dengan ini berakujanji bahawa persetujuan pemegang akaun berdaftar telah diperoleh dengan sewajarnya untuk permintaan ini dan bukti kebenaran dilampirkan bersama-sama dengan permintaan ini.&nbsp;</p><p>3. Saya dengan ini mengesahkan bahawa maklumat yang diberikan semasa permintaan ini dan mana-mana dokumen yang dikemukakan adalah benar dan tepat.</p><p>4. Saya memahami bahawa:</p><p>a. TNB perlu mengesahkan identiti saya;</p><p>b. TNB boleh menghubungi saya untuk maklumat yang lebih terperinci berkenaan &nbsp;permintaan ini; dan</p><p>c. Semua data peribadi yang diberikan oleh saya dalam borang ini akan dikumpulkan dan diproses oleh TNB sebagai data peribadi menurut Akta Perlindungan Data Peribadi 2010.</p><p>5. Saya dengan ini bersetuju untuk menanggung rugi sebarang kerugian, kos dan perbelanjaan, yang ditanggung oleh TNB berkaitan dengan permintaan ini atau sekiranya apa-apa maklumat dan/atau dokumen yang diserahkan oleh saya adalah tidak benar.&nbsp;</p><p>Dimaklumkan bahawa aplikasi ini adalah keistimewaan penggunaan antara TNB dan pemegang akaun berdaftarnya dan mana-mana orang yang berkaitan dengan persetujuan pemegang akaun berdaftar. TNB tidak akan bertanggungjawab atas apa-apa penggunaan maklumat yang dinyatakan dan terkandung di sini dengan cara yang tidak betul dan tidak wajar, dan tidak berkewajiban untuk memeriksa kesahihan persetujuan dan kebenaran yang diberikan. Setelah mengklik butang hantar, anda dianggap telah membaca, memahami dan bersetuju dengan akujanji seperti yang dipaparkan.</p>",
     "antiSpamPolicy": "https://www.tnb.com.my/terms-policy/",
     "privacyPolicy": "https://www.tnb.com.my/terms-policy/personal-data-protection-policy-pdpa",
     "privacyPolicyTitle": "Polisi Privasi",
     "submitEnquiryNonBRTitle": "Hantar Pertanyaan",
     "for": "untuk ",
     "validElectricityAccountNoError": "Sila masukkan nombor akaun elektrik yang sah.",
-    "backLogin": "Kembali ke Log Masuk"
-  },
-  "ApplicationStatusLanding": {
-    "title": "Application Status",
-    "search": "Search Application Status",
-    "emptyApplications": "Looks like you have no applications at the moment.",
-    "allApplications": "How do I see all my applications?",
-    "allApplicationsTitle": "View all your applications on myTNB Portal to enjoy the full experience!",
-    "allApplicationsMessage": "Log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my/\">portal</a> using the same log in details. You can view the list of all your applications and full form details, and continue your applications or create new ones.",
-    "viewMore": "View More"
-  },
-  "ApplicationStatusSearch": {
-    "title": "Search Application Status",
-    "searchForTitle": "I want to search for:",
-    "searchStatus": "Search Status",
-    "applicationType": "Application Type",
-    "searchBy": "Search by",
-    "searhResultTitle": "We found this application(s) under the electricity account number:",
-    "whereToGetThisNumber": "Where do I get this number?",
-    "whereToGetThisNumberTitleCA": "Where do I get this number?",
-    "whereToGetThisNumberMessageCA": "Your 12-digit electricity account number can be found at the top left corner of your monthly paper bill.",
-    "whereToGetThisNumberTitle": "Where do I get this number?",
-    "whereToGetThisNumberMessage": "You can find the <b>{0}</b> in your submitted application details at ‘Application Status’ page and are available upon request by contacting TNB Careline."
-  },
-  "ApplicationStatusFilter": {
-    "title": "Select Filter",
-    "applicationType": "Application Type",
-    "status": "Status",
-    "creationDate": "Creation Date",
-    "clear": "Clear",
-    "apply": "Apply"
-  },
-  "ApplicationStatusDetails": {
-    "title": "Application Details",
-    "status": "Status ",
-    "for": "for ",
-    "creationDate": "Creation Date",
-    "saveMessage": "Save this application to keep track of its up-to-date status in My Applications.",
-    "saveApplication": "Save Application"
-  },
-  "SelectApplicationType": {
-    "title": "Select Application Type"
-  },
-  "SearchByNumber": {
-    "title": "Search By",
-    "whereToGetTheseNumber": "Where do I get these numbers?",
-    "whereToGetTheseNumberTitle": "Where do I get these numbers?",
-    "whereToGetTheseNumberMessage": "You can find the <b>Application Number</b>, <b>Service Request Number</b> and <b>Service Notification Number</b> in your submitted application details at ‘Application Status’ page and are available upon request by contacting TNB Careline."
-  },
-  "SelectStatus": {
-    "title": "Select Status"
-  },
-  "SelectCreationDate": {
-    "title": "Select Creation Date",
-    "apply": "Apply",
-    "from": "From",
-    "to": "To"
-  },
-  "Tutorial": {
-    "swipeText": "Swipe to see more, tap to skip.",
-    "skip": "Tap to skip.",
-    "applicationStatusLandingTitle": "Keep track of your applications.",
-    "applicationStatusLandingDescription": "Your submitted applications will automatically appear here so you can view their status. Use the filter to search through the list easily.",
-    "applicationStatusLandingEmptyTitle": "Keep track of your applications.",
-    "applicationStatusLandingEmptyDescription": "Your submitted applications will automatically appear so you can view their status.",
-    "applicationStatusLandingSearchTitle": "Search other application status.",
-    "applicationStatusLandingSearchDescription": "Search and save applications submitted by others with your preferred reference number.",
-    "applicationStatusDetailsNoActionTitle": "View your status progress here.",
-    "applicationStatusDetailsNoActionMessage": "Keep updated with your real-time status progress. Visit the Portal to view full application details.",
-    "applicationStatusDetailsInProgressTitle": "View your status progress here.",
-    "applicationStatusDetailsInProgressMessage": "Keep updated with your real-time status. Visit the Portal to continue or update your application.",
-    "applicationStatusDetailsActionOneTitle": "View your status progress here.",
-    "applicationStatusDetailsActionOneMessage": "Keep updated with your real-time status progress. Visit myTNB portal to view your full application details.",
-    "applicationStatusDetailsActionTwoTitle": "Know when to take action.",
-    "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submited application from here."
-  },
-  "ServiceDetails": {
-    "TimeOut": [
-      {
-        "name": "serviceName",
-        "timeout": 3000,
-        "retry": 3
-      }
-    ],
-    "Services": [
-      {
-        "SearchApplicationType": [
-          {
-            "code": "7200",
-            "title": "",
-            "message": "",
-            "ctaTitle": "",
-            "isSuccess": true,
-            "type": "none"
-          }
-        ],
-        "GetApplicationStatus": [
-          {
-            "code": "7200",
-            "title": "",
-            "message": "",
-            "ctaTitle": "",
-            "isSuccess": true,
-            "type": "none"
-          }
-        ],
-        "SaveApplication": [
-          {
-            "code": "7200",
-            "title": "",
-            "message": "",
-            "ctaTitle": "",
-            "isSuccess": true,
-            "type": "none"
-          },
-          {
-            "code": "9001",
-            "title": "Looks like you’ve already saved this application.",
-            "message": "View it in your application status list.",
-            "ctaTitle": "",
-            "isSuccess": false,
-            "type": "default"
-          }
-        ]
-      }
-    ]
-  },
-  "Mapping": {
-    "ApplicationType": [
-      {
-        "key": "ALL",
-        "value": "All Applications"
-      },
-      {
-        "key": "ASR",
-        "value": "Address Search Request"
-      },
-      {
-        "key": "COT",
-        "value": "Change of Tenancy"
-      },
-      {
-        "key": "RW_PC",
-        "value": "Change Tariff"
-      },
-      {
-        "key": "COA",
-        "value": "Close Electricity"
-      },
-      {
-        "key": "RB_SRQ",
-        "value": "Enquiry Form"
-      },
-      {
-        "key": "RB_GSL",
-        "value": "Guaranteed Service Level"
-      },
-      {
-        "key": "MD",
-        "value": "Merdeka Incentive"
-      },
-      {
-        "key": "GT",
-        "value": "myGreen+"
-      },
-      {
-        "key": "PRJ",
-        "value": "Project"
-      },
-      {
-        "key": "RE_TS",
-        "value": "Renewable Energy"
-      },
-      {
-        "key": "SMR",
-        "value": "Self Meter Reading"
-      },
-      {
-        "key": "NC",
-        "value": "Start Electricity"
-      },
-      {
-        "key": "RW_LC",
-        "value": "Upgrade/Downgrade Electricity"
-      }
-    ],
-    "SearchType": [
-      {
-        "key": "CA",
-        "value": "Electricity Account Number"
-      },
-      {
-        "key": "ApplicationNo",
-        "value": "Application Number"
-      },
-      {
-        "key": "ServiceRequestNo",
-        "value": "Service Request Number"
-      },
-      {
-        "key": "ProjectReferenceNo",
-        "value": "Project Reference No"
-      },
-      {
-        "key": "ServiceNotificationNo",
-        "value": "Service Notification Number"
-      }
-    ]
+    "backLogin": "Kembali ke Log Masuk",
+    "registeredView": "Adakah akaun elektrik ini didaftarkan atas nama anda?",
+    "viewYes": "Ya",
+    "viewNo": "Tidak"
   }
 }

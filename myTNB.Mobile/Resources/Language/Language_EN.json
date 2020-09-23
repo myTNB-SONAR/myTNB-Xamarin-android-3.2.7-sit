@@ -973,7 +973,7 @@
     "generalEnquiryTitle": "General Enquiry",
     "generalEnquiryDescription": "I want to submit my thoughts & concerns.",
     "updatePersonalDetTitle": "Update Personal Details",
-    "personalDetailsDescription": "I want to update my personal details.",
+    "personalDetailsDescription": "I want to update personal details.",
     "stepTitle1of2": "Step 1 of 2",
     "enquiryAboutTitle": "I want to enquire about:",
     "messageHint": "Your Message",
@@ -999,7 +999,7 @@
     "whichInfoUpdate": "Which information would you like to update?",
     "ownerTitle": "What is your relationship with the owner?",
     "icTitle": "Identification Number (IC/Passport)",
-    "icHint": "Enter New Identification Number / Passport",
+    "icHint": "Enter New Identification Number",
     "accNametitle": "Account Name",
     "accNameHint": "Enter new account name",
     "mobileNumberTitle": "Mobile Number",
@@ -1057,7 +1057,7 @@
     "cameraRoll": "Camera Roll",
     "imageWhereAcc": "-/media/myTNBapp/SubmitEnquiry/newBillCopy2x.png",
     "imageCopyIC": "-/media/myTNBapp/SubmitEnquiry/imgIcCopy2x.png",
-    "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x.png",
+    "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x2.png",
     "accNumberDetails": "Your 12-digit account no. can be found at the top left corner of your monthly paper bill.",
     "updateNoOwnerTitle": "Which information you would like to update?",
     "newAccNoOwnerName": "Enter New Account Name",
@@ -1069,8 +1069,8 @@
     "copyOfPermiseProof": "Copy of Sales & Purchase Agreement/Cukai Pintu/Tenancy Agreement",
     "nameHintBottom": "Enter your full name as per your identification card.",
     "enquiryTncRead": "I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>",
-    "imagePermises": "-/media/myTNBapp/SubmitEnquiry/permises2x.png",
-    "permisesTooltipTitle": "How does agreement look like?",
+    "imagePermises": "-/media/myTNBapp/SubmitEnquiry/permises2x2.png",
+    "permisesTooltipTitle": "How does supporting document look like?",
     "permisesTitle": "Copy of Sales & Purchase Agreement/Cukai Pintu/Tenancy Agreement",
     "permisesContent": "We only need the pages with your name, identification number and premises address",
     "submitEnquiryEmpty": "Looks like you have no submitted enquiry at the moment.",
@@ -1082,7 +1082,10 @@
     "submitEnquiryNonBRTitle": "Submit Enquiry",
     "for": "for ",
     "validElectricityAccountNoError": "Please enter a valid electricity account number.",
-    "backLogin": "Back to Login"
+    "backLogin": "Back to Login",
+    "registeredView": "Is this electricity account registered under your name?",
+    "viewYes": "Yes",
+    "viewNo": "No"
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",
@@ -1108,7 +1111,7 @@
     "emptyApplications": "Looks like you have no applications at the moment.",
     "allApplications": "How do I see all my applications?",
     "allApplicationsTitle": "View all your applications on myTNB Portal to enjoy the full experience!",
-    "allApplicationsMessage": "Log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my/\">portal</a> using the same log in details. You can view the list of all your applications and full form details, and continue your applications or create new ones.",
+    "allApplicationsMessage": "Log in to the <a style=\\\"text-decoration:none\\\" href =\\\"externalBrowser=https://www.mytnb.com.my/\\\">portal</a> using the same log in details. You can view the list of all your applications and full form details, and continue your applications or create new ones.<br><br>Note: Applications submitted via other sources before March 2020(Change this Date) will not be displayed automatically here, but you can manually search and add it to your list.",
     "viewMore": "View More",
     "viewLess": "View Less",
     "sn": "SN: {0}",
@@ -1145,7 +1148,17 @@
     "addToList": "Add to List",
     "portalMessage": "You can take the action to continue or update your application using the myTNB Portal.",
     "lastUpdatedDate": "Last updated on {0}",
-    "viewActivityLog": "View Activity Log"
+    "viewActivityLog": "View Activity Log",
+    "seeFullDetails": "How do I see my full application details?",
+    "seeFullDetailsTitle": "View this application on myTNB Portal to enjoy the full experience!",
+    "seeFullDetailsMessage": "You may log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my/\">portal</a> using the same log in details to view the full application form and details. Alternatively, you can refer to your email or submitted paper form.",
+    "loginTitle": "Login or Register to enjoy this myTNB feature!",
+    "loginMessage": "You may save this application to keep track of its progress with a myTNB account.",
+    "loginPrimaryCTA": "It’s Okay",
+    "loginSecondaryCTA": "Login / Register",
+    "viewDetails": "View Details",
+    "payNow": "Pay Now",
+    "needToPay": "I need to pay"
   },
   "ApplicationStatusDetails_selector": {
     "applicationTypeMapping": [
@@ -1163,47 +1176,58 @@
       }
     ],
     "ASR": [
-
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      }
     ],
     "NC": [
       {
         "key": "referenceNo",
-        "description": "Application Number",
-        "value": ""
+        "description": "Application Number"
       },
       {
         "key": "createDateDisplay",
-        "description": "Created On",
-        "value": ""
+        "description": "Created On"
       },
       {
         "key": "srNo",
-        "description": "Service Request Number",
-        "value": ""
+        "description": "Service Request Number"
       },
       {
         "key": "caNo",
-        "description": "Electricity Account Number",
-        "value": ""
+        "description": "Electricity Account Number"
       },
       {
         "key": "premiseCategoryDescription",
-        "description": "Type of Premise",
-        "value": ""
+        "description": "Type of Premise"
       },
       {
         "key": "accountTypeDescription",
-        "description": "Account Type",
-        "value": ""
+        "description": "Account Type"
       },
       {
         "key": "electricityStartDateDisplay",
-        "description": "Electricity Start Date",
-        "value": ""
+        "description": "Electricity Start Date"
       }
     ],
     "PRJ": [
-
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      },
+      {
+        "key": "srNo",
+        "description": "Service Request Number"
+      }
     ]
   },
   "ApplicationStatusActivityLog": {
@@ -1386,11 +1410,11 @@
           {
             "code": "7200",
             "title": "",
-            "message": "",
+            "message": "Success! You'll see up-to-date progress of the application status.",
             "primaryCTATitle": "",
             "secondaryCTATitle": "",
             "isSuccess": true,
-            "type": "none"
+            "type": "toast"
           },
           {
             "code": "9000",

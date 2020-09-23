@@ -37,6 +37,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                 {
                     displayModel.Content.ApplicationType = applicationTypeTitle;
                     displayModel.Content.IsSaveMessageDisplayed = false;
+                    displayModel.Content.IsFullApplicationTooltipDisplayed = true;
 
                     //Todo: Check where to get last updated date
                     displayModel.Content.ApplicationDetail.CreatedDate = DateTime.Now;

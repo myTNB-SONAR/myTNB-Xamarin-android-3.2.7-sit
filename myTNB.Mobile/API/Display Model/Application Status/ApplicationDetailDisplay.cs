@@ -14,6 +14,8 @@ namespace myTNB.Mobile
 
     public class GetApplicationStatusDisplay
     {
+        private string _applicationType = string.Empty;
+
         public ApplicationDetailDisplayModel ApplicationDetail { set; get; }
         public ApplicationPaymentDisplayModel ApplicationPaymentDetail { set; get; }
         public ApplicationStatusDetailDisplayModel ApplicationStatusDetail { set; get; }
@@ -30,7 +32,6 @@ namespace myTNB.Mobile
 
         public List<TitleValueModel> AdditionalInfoList { set; get; } = new List<TitleValueModel>();
 
-        private string _applicationType = string.Empty;
         public string ApplicationType
         {
             set
@@ -181,6 +182,13 @@ namespace myTNB.Mobile
         }
 
         //Todo: Map with correct property after BE deployed
+        public bool IsDisplayLastUpdatedDate
+        {
+            get
+            {
+                return true;
+            }
+        }
         public string LastUpdatedDateDisplay
         {
             get
