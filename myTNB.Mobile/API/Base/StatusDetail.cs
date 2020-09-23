@@ -60,7 +60,7 @@ namespace myTNB
             get
             {
                 StatusDisplayType presentationType = StatusDisplayType.Default;
-                switch (Type)
+                switch (Type.ToLower())
                 {
                     case "toast":
                         {

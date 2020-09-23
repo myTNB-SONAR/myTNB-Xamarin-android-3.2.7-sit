@@ -9,7 +9,8 @@
         internal const string H_SecureKey = "SecureKey";
         internal const string H_UserInfo = "UserInfo";
 
-        internal const int APITimeOut = 60000;
+        //Todo: Set to 60000
+        internal const int APITimeOut = 10000;
         internal const int SitecoreTimeOut = 5000;
         internal const string SitecoreDomain = "sitecore";
         internal const string SitecoreUsername = "api_user";

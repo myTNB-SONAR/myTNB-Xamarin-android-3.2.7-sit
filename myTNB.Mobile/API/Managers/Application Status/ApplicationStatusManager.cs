@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using myTNB.Mobile.API;
 using myTNB.Mobile.API.Managers.ApplicationStatus;
 using myTNB.Mobile.API.Managers.ApplicationStatus.Utilities;
+using myTNB.Mobile.API.Models;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails;
 using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
 using myTNB.Mobile.API.Services.ApplicationStatus;
 using myTNB.Mobile.Extensions;
 using myTNB.Mobile.SessionCache;
+using Newtonsoft.Json;
 using Refit;
 
 namespace myTNB.Mobile
@@ -116,12 +118,25 @@ namespace myTNB.Mobile
                 IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
                 try
                 {
-                    GetApplicationStatusResponse response = await service.GetApplicationStatus(applicationType
+                    HttpResponseMessage rawResponse = await service.GetApplicationStatus(applicationType
                         , searchType
                         , searchTerm
                         , AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken()
                         , AppInfoManager.Instance.Language.ToString());
+
+                    string responseString = await rawResponse.Content.ReadAsStringAsync();
+                    //Mark: Check for 404 First
+                    NotFoundModel notFoundModel = JsonConvert.DeserializeObject<NotFoundModel>(responseString);
+                    if (notFoundModel != null && notFoundModel.Status.IsValid())
+                    {
+                        displaymodel.Content = null;
+                        displaymodel.StatusDetail = new StatusDetail();
+                        displaymodel.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails("empty");
+                        return displaymodel;
+                    }
+
+                    GetApplicationStatusResponse response = JsonConvert.DeserializeObject<GetApplicationStatusResponse>(responseString);
                     if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         if (response.Content == null)
@@ -204,7 +219,8 @@ namespace myTNB.Mobile
 
                     HttpResponseMessage rawResponse = await service.SaveApplication(new PostSaveApplicationRequest
                     {
-                        SaveApplication = request
+                        SaveApplication = request,
+                        lang = AppInfoManager.Instance.Language.ToString()
                     }
                         , AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken());
@@ -277,20 +293,36 @@ namespace myTNB.Mobile
                 IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
                 try
                 {
-                    response = await service.GetAllApplications(page
-                       , limit
-                       , string.Empty
-                       , string.Empty
-                       , string.Empty
-                       , string.Empty
-                       , searchApplicationType
-                       , string.Empty
-                       , statusDescription
-                       , createdDateFrom
-                       , createdDateTo
-                       , AppInfoManager.Instance.GetUserInfo()
-                       , NetworkService.GetCancellationToken()
-                       , AppInfoManager.Instance.Language.ToString());
+                    HttpResponseMessage rawResponse = await service.GetAllApplications(page
+                        , limit
+                        , string.Empty
+                        , string.Empty
+                        , string.Empty
+                        , string.Empty
+                        , searchApplicationType
+                        , string.Empty
+                        , statusDescription
+                        , createdDateFrom
+                        , createdDateTo
+                        , AppInfoManager.Instance.GetUserInfo()
+                        , NetworkService.GetCancellationToken()
+                        , AppInfoManager.Instance.Language.ToString());
+
+                    string responseString = await rawResponse.Content.ReadAsStringAsync();
+                    //Mark: Check for 404 First
+                    NotFoundModel notFoundModel = JsonConvert.DeserializeObject<NotFoundModel>(responseString);
+                    if (notFoundModel != null && notFoundModel.Status.IsValid())
+                    {
+                        response = new GetAllApplicationsResponse
+                        {
+                            Content = null,
+                            StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails("empty")
+                        };
+                        return response;
+                    }
+
+                    response = JsonConvert.DeserializeObject<GetAllApplicationsResponse>(responseString);
+
                     if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(response.StatusDetail.Code);
@@ -380,11 +412,24 @@ namespace myTNB.Mobile
                 IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
                 try
                 {
-                    GetApplicationDetailsResponse response = await service.GetApplicationDetail(applicationType
+                    HttpResponseMessage rawResponse = await service.GetApplicationDetail(applicationType
                          , id
                          , AppInfoManager.Instance.GetUserInfo()
                          , NetworkService.GetCancellationToken()
                          , AppInfoManager.Instance.Language.ToString());
+
+                    string responseString = await rawResponse.Content.ReadAsStringAsync();
+                    //Mark: Check for 404 First
+                    NotFoundModel notFoundModel = JsonConvert.DeserializeObject<NotFoundModel>(responseString);
+                    if (notFoundModel != null && notFoundModel.Status.IsValid())
+                    {
+                        displaymodel.Content = null;
+                        displaymodel.StatusDetail = new StatusDetail();
+                        displaymodel.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails("empty");
+                        return displaymodel;
+                    }
+
+                    GetApplicationDetailsResponse response = JsonConvert.DeserializeObject<GetApplicationDetailsResponse>(responseString);
                     if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         if (response.Content == null)

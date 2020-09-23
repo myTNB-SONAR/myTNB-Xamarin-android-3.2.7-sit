@@ -7,6 +7,10 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication
     {
         [JsonProperty("saveApplication")]
         public PostSaveApplication SaveApplication { set; get; }
+
+#pragma warning disable IDE1006 // Naming Styles
+        public string lang { set; get; }
+#pragma warning restore IDE1006 // Naming Styles
     }
 
     public class PostSaveApplication

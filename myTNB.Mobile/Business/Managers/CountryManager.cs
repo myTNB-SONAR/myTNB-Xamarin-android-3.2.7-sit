@@ -117,5 +117,21 @@ namespace myTNB
                 .ToDictionary(d => d.Key, d => (d.Value.OrderBy(c => c.CountryName)).ToList());
             return newdictionary;
         }
+
+        public CountryModel GetCountryISDCode(string countryISDCode)
+        {
+            List<CountryModel> countryList = GetCountryList();
+
+            var obj = countryList.Where(x => x.CountryISDCode.Equals(countryISDCode.Trim().Substring(0, 3)));
+            if (obj.Count() == 0)
+            {
+                obj = countryList.Where(x => x.CountryISDCode.Equals(countryISDCode.Trim().Substring(0, 4)));
+                if (obj.Count() == 0)
+                {
+                    obj = countryList.Where(x => x.CountryISDCode.Equals(countryISDCode.Trim().Substring(0, 2)));
+                }
+            }
+            return obj.FirstOrDefault();
+        }
     }
 }
