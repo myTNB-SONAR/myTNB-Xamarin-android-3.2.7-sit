@@ -60,6 +60,8 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         private AlertDialog mProgressDialog;
         private string fromActivity;
 
+        private bool fromManualtextClear = false;
+
 
         private ResetPasswordPresenter mPresenter;
         private ResetPasswordContract.IUserActionsListener userActionsListener;
@@ -131,6 +133,16 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 string confirmPassword = txtConfirmNewPassword.Text;
 
                 this.DisableSubmitButton();
+
+                if (newPassword.Length == 0)
+                {
+                    this.ClearNewPasswordError();
+                }
+
+                if (confirmPassword.Length == 0)
+                {
+                    this.ClearConfirmPasswordError();
+                }
                // this.ClearErrorMessages();
 
                 // validation new password
@@ -177,7 +189,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                         txtInputLayoutConfirmNewPassword.ErrorEnabled = true;
                     if (!newPassword.Equals(confirmPassword))
                     {
-                        this.ShowNotEqualConfirmNewPasswordToNewPasswordError();
+                       this.ShowNotEqualConfirmNewPasswordToNewPasswordError();
                     }
                     else
                     {
@@ -205,7 +217,15 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 string confirmPassword = txtConfirmNewPassword.Text;
 
                 this.DisableSubmitButton();
-               // this.ClearErrorMessages();
+
+                if (fromManualtextClear)
+                {
+                    this.ClearErrorMessages();
+                }
+                else
+                {
+                    this.ChangeIsFromClear(false);
+                }
 
                 // validation confirm password
                 if (!string.IsNullOrEmpty(confirmPassword) || (!string.IsNullOrEmpty(confirmPassword) && !string.IsNullOrEmpty(newPassword)))
@@ -233,7 +253,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 }
                 else
                 {
-                    txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = false;
+                   txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = false;
 
                 }
             }
@@ -241,6 +261,11 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             {
                 Utility.LoggingNonFatalError(ex);
             }
+        }
+
+         public void ChangeIsFromClear(bool isFromClear)
+        {
+            fromManualtextClear = isFromClear;
         }
 
         public override int ResourceId()
@@ -465,8 +490,10 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
         public void ClearTextFields()
         {
+            this.ChangeIsFromClear(true);
             txtNewPassword.Text = "";
             txtConfirmNewPassword.Text = "";
+          
         }
 
         [OnClick(Resource.Id.btnSubmit)]
@@ -499,7 +526,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         {
             if (!string.IsNullOrEmpty(txtInputLayoutNewPassword.Error))
             {
-                txtInputLayoutNewPassword.Error = " ";  //fix bouncing
+                txtInputLayoutNewPassword.Error =null; 
                 txtInputLayoutNewPassword.ErrorEnabled = false;
             }
         }
@@ -508,7 +535,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         {
             if (!string.IsNullOrEmpty(txtInputLayoutConfirmNewPassword.Error))
             {
-                txtInputLayoutConfirmNewPassword.Error = " ";
+                txtInputLayoutConfirmNewPassword.Error =null;
                 txtInputLayoutConfirmNewPassword.ErrorEnabled = false;
             }
         }

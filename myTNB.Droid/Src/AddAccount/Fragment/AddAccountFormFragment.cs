@@ -625,7 +625,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     try
                     {
                         textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                        textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");
+
+                        if (textInputLayoutAccountNo.Error != Utility.GetLocalizedErrorLabel("accountLength"))
+                        {
+                            textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");  // fix bouncing issue
+                        }
+                        
                         textInputLayoutAccountNo.RequestLayout();
                     }
                     catch (Exception ex)
@@ -861,7 +866,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public void ShowSameAccountNameError()
         {
             textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
+
+            if (textInputLayoutAccountLabel.Error != Utility.GetLocalizedErrorLabel("duplicateNickname"))
+            {
+                textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");  // fix bouncing issue
+            }
+            
             try
             {
                 Activity.RunOnUiThread(() =>
