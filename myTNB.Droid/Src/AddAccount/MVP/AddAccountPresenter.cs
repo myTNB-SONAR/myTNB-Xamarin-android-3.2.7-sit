@@ -259,8 +259,20 @@ namespace myTNB_Android.Src.AddAccount.MVP
         {
             try
             {
-                mView.RemoveNameErrorMessage();
-                mView.RemoveNumberErrorMessage();
+
+                
+                if (accountNickName.Length == 0)
+                {
+                    mView.RemoveNameErrorMessage();
+                }
+                    
+
+                if (accountno.Length == 0)
+                {
+                    mView.RemoveNumberErrorMessage();
+                }
+
+             
                 if (!TextUtils.IsEmpty(accountno) && !TextUtils.IsEmpty(accountNickName))
                 {
 
@@ -294,11 +306,15 @@ namespace myTNB_Android.Src.AddAccount.MVP
                             else
                             {
                                 mView.EnableAddAccountButton();
+                                mView.RemoveNameErrorMessage(); // added
+                                mView.RemoveNumberErrorMessage();// added
                             }
                         }
                         else
                         {
                             mView.EnableAddAccountButton();
+                            mView.RemoveNameErrorMessage();  // added
+                            mView.RemoveNumberErrorMessage(); // added
                         }
                     }
                     else

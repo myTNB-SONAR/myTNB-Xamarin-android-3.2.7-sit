@@ -160,6 +160,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                     if (!mPresenter.CheckPasswordIsValid(newPassword))
                     {
                         //ClearNewPasswordError();
+
                         if (txtInputLayoutNewPassword.Error != Utility.GetLocalizedErrorLabel("invalid_password"))
                         {
                             txtInputLayoutNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
