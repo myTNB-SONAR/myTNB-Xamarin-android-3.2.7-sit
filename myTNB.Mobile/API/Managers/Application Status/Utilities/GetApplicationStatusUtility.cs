@@ -9,7 +9,9 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
 {
     internal static class GetApplicationStatusUtility
     {
+#pragma warning disable IDE0044 // Add readonly modifier
         private static List<SelectorModel> _mappingList;
+#pragma warning restore IDE0044 // Add readonly modifier
         private static string _addFormat = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusActivityLog", "add");
         private static string _updateFormat = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusActivityLog", "update");
         private static string _removeFormat = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusActivityLog", "remove");
@@ -169,13 +171,16 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     {
                         Title = searchTypeTitle.ToUpper(),
                         Value = searchTerm
-                    },
-                    new TitleValueModel
+                    }
+                };
+                if (displayModel.Content.ApplicationDetail.CreatedDateDisplay.IsValid())
+                {
+                    displayModel.Content.AdditionalInfoList.Add(new TitleValueModel
                     {
                         Title = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "creationDate").ToUpper(),
                         Value = displayModel.Content.ApplicationDetail.CreatedDateDisplay ?? string.Empty
-                    }
-                };
+                    });
+                }
                 /*
                 Dictionary<string, List<SelectorModel>> selectors = LanguageManager.Instance.GetSelectorsByPage("ApplicationStatusDetails");
                 _mappingList = new List<SelectorModel>();

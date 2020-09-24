@@ -1116,7 +1116,7 @@
     "viewLess": "View Less",
     "sn": "SN: {0}",
     "sr": "SR: {0}",
-    "displayPerQuery": "10"
+    "displayPerQuery": "5"
   },
   "ApplicationStatusSearch": {
     "title": "Search Application Status",
