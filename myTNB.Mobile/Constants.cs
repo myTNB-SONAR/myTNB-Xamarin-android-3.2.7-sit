@@ -3,11 +3,11 @@
     internal static class Constants
     {
         //Headers
-        internal const string H_RoleID = "RoleId";
-        internal const string H_UserID = "UserId";
-        internal const string H_UserName = "UserName";
-        internal const string H_SecureKey = "SecureKey";
-        internal const string H_UserInfo = "UserInfo";
+        internal const string Header_RoleID = "RoleId";
+        internal const string Header_UserID = "UserId";
+        internal const string Header_UserName = "UserName";
+        internal const string Header_SecureKey = "SecureKey";
+        internal const string Header_UserInfo = "UserInfo";
 
         //Todo: Set to 60000
         internal const int APITimeOut = 10000;
@@ -54,6 +54,9 @@
         //Mapping
         internal const string LanguageFile_Mapping = "Mapping";
         internal const string LanguageFile_ExcludedApplicationTypes = "ExcludedApplicationTypes";
+
+        //HardCoded Values
+        internal const string Constants_Currency = "RM";
 
         //internal const string LanguageFile_ApplicationType = "ApplicationType";
         //internal const string LanguageFile_SearchType = "SearchType";

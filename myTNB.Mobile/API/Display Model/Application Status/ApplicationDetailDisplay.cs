@@ -17,12 +17,15 @@ namespace myTNB.Mobile
         private string _applicationType = string.Empty;
 
         public ApplicationDetailDisplayModel ApplicationDetail { set; get; }
-        public ApplicationPaymentDisplayModel ApplicationPaymentDetail { set; get; }
+#pragma warning disable IDE1006 // Naming Styles
+        public ApplicationPaymentDetail applicationPaymentDetail { set; get; }
+#pragma warning restore IDE1006 // Naming Styles
         public ApplicationStatusDetailDisplayModel ApplicationStatusDetail { set; get; }
         public List<ApplicationActivityLogDetailDisplay> ApplicationActivityLogDetail { set; get; }
+        public List<TitleValueModel> PaymentDetailsList { set; get; }
+        public PaymentDisplayModel PaymentDisplay { set; get; }
 
-        //Mark: Display Specific Properties
-        public bool IsPayment
+        private bool IsPayment
         {
             get
             {
@@ -81,18 +84,6 @@ namespace myTNB.Mobile
             get
             {
                 return ApplicationStatusDetail.StatusDescription;
-            }
-        }
-
-        public string PayableAmount
-        {
-            get
-            {
-                if (IsPayment && ApplicationPaymentDetail != null && ApplicationPaymentDetail.TotalPayableAmount != null)
-                {
-                    return ApplicationPaymentDetail.TotalPayableAmount.ToString("N2", CultureInfo.InvariantCulture);
-                }
-                return string.Empty;
             }
         }
 
@@ -179,6 +170,37 @@ namespace myTNB.Mobile
         }
     }
 
+    public class PaymentDisplayModel : ApplicationPaymentDetail
+    {
+        public string TotalPayableAmountDisplay
+        {
+            get
+            {
+#pragma warning disable CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
+                if (totalPayableAmount != null)
+#pragma warning restore CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
+                {
+                    return totalPayableAmount.ToAmountDisplayString();
+                }
+                return string.Empty;
+            }
+        }
+
+        public string OneTimeChargesAmountDisplay
+        {
+            get
+            {
+#pragma warning disable CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
+                if (oneTimeChargesAmount != null)
+#pragma warning restore CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
+                {
+                    return oneTimeChargesAmount.ToAmountDisplayString();
+                }
+                return string.Empty;
+            }
+        }
+    }
+
     public class ApplicationDetailDisplayModel
     {
         public string ApplicationId { set; get; }
@@ -224,27 +246,6 @@ namespace myTNB.Mobile
                 return displayDate;
             }
         }
-    }
-
-    public class ApplicationPaymentDisplayModel
-    {
-        public double OutstandingChargesAmount { set; get; }
-        public double LatestBillAmount { set; get; }
-        public double OneTimeChargesAmount { set; get; }
-        public OneTimeChargesDisplayModel OneTimeChargesDetail { set; get; }
-        public double TotalPayableAmount { set; get; }
-        public string CANo { set; get; }
-        public string SDDocumentNo { set; get; }
-        public string SRNo { set; get; }
-    }
-
-    public class OneTimeChargesDisplayModel
-    {
-        public double ConnectionChargesAmount { set; get; }
-        public double SecurityDepositAmount { set; get; }
-        public double MeterFeeAmount { set; get; }
-        public double StampDutyAmount { set; get; }
-        public double ProcessingFeeAmount { set; get; }
     }
 
     public class ApplicationStatusDetailDisplayModel

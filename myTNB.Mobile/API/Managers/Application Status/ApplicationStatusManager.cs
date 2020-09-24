@@ -29,9 +29,7 @@ namespace myTNB.Mobile
                 return lazy.Value;
             }
         }
-        public ApplicationStatusManager()
-        {
-        }
+        public ApplicationStatusManager() { }
 
         #region SearchApplicationType
         /// <summary>

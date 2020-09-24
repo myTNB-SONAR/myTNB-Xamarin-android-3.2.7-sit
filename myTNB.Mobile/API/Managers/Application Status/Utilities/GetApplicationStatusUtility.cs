@@ -34,7 +34,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                 Content = new GetApplicationStatusDisplay
                 {
                     ApplicationDetail = new ApplicationDetailDisplayModel(),
-                    ApplicationPaymentDetail = new ApplicationPaymentDisplayModel(),
+                    applicationPaymentDetail = new ApplicationPaymentDetail(),
                     ApplicationStatusDetail = new ApplicationStatusDetailDisplayModel(),
                     ApplicationActivityLogDetail = new List<ApplicationActivityLogDetailDisplay>()
                 },
@@ -63,26 +63,9 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                         CreatedDate = response.Content.applicationDetail.createdDate
                     };
                 }
-                if (response.Content.ApplicationPaymentDetail != null)
+                if (response.Content.applicationPaymentDetail != null)
                 {
-                    displayModel.Content.ApplicationPaymentDetail = new ApplicationPaymentDisplayModel
-                    {
-                        OutstandingChargesAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesAmount,
-                        LatestBillAmount = response.Content.ApplicationPaymentDetail.LatestBillAmount,
-                        OneTimeChargesAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesAmount,
-                        OneTimeChargesDetail = new OneTimeChargesDisplayModel
-                        {
-                            ConnectionChargesAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.ConnectionChargesAmount,
-                            SecurityDepositAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.SecurityDepositAmount,
-                            MeterFeeAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.MeterFeeAmount,
-                            StampDutyAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.StampDutyAmount,
-                            ProcessingFeeAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.ProcessingFeeAmount
-                        },
-                        TotalPayableAmount = response.Content.ApplicationPaymentDetail.TotalPayableAmount,
-                        CANo = response.Content.ApplicationPaymentDetail.CANo,
-                        SDDocumentNo = response.Content.ApplicationPaymentDetail.SDDocumentNo,
-                        SRNo = response.Content.ApplicationPaymentDetail.SRNo
-                    };
+                    displayModel.Content.applicationPaymentDetail = response.Content.applicationPaymentDetail;
                 }
                 if (response.Content.ApplicationStatusDetail != null)
                 {

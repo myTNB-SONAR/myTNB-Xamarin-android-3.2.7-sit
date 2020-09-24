@@ -28,8 +28,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     {
                         //Mark: Unused by ApplicationDetail Service
                         ApplicationDetail = new ApplicationDetailDisplayModel(),
-                        ApplicationPaymentDetail = new ApplicationPaymentDisplayModel(),
-                        ApplicationStatusDetail = new ApplicationStatusDetailDisplayModel(),
+                        //applicationPaymentDetail = new ApplicationPaymentDetail(),
+                        //ApplicationStatusDetail = new ApplicationStatusDetailDisplayModel(),
                         ApplicationActivityLogDetail = new List<ApplicationActivityLogDetailDisplay>()
                     },
                     StatusDetail = response.StatusDetail
@@ -45,59 +45,53 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     displayModel.Content.ApplicationDetail.CreatedDate = DateTime.Now;
                     displayModel.Content.ApplicationDetail.ApplicationId = applicationId;
 
-                    Dictionary<string, List<SelectorModel>> selectors = LanguageManager.Instance.GetSelectorsByPage("ApplicationStatusDetails");
-                    _mappingList = new List<SelectorModel>();
-                    if (selectors != null && selectors.ContainsKey("applicationTypeMapping"))
+                    if (response.Content.applicationPaymentDetail != null)
                     {
-                        _mappingList = selectors["applicationTypeMapping"];
-                    }
-
-                    List<SelectorModel> additionalDisplayConfig = new List<SelectorModel>();
-                    string key = applicationType;
-                    if (displayModel.Content.IsKedaiTenagaApplication)
-                    {
-                        key = "KEDAI";
-                    }
-                    if (response.Content.savedApplicationDetail != null)
-                    {
-                        key = "SAVED";
-                    }
-                    if (selectors != null && selectors.ContainsKey(key))
-                    {
-                        additionalDisplayConfig = selectors[key];
-                    }
-                    if (additionalDisplayConfig != null && additionalDisplayConfig.Count > 0)
-                    {
-                        displayModel.Content.AdditionalInfoList = new List<TitleValueModel>();
-                        AddAdditionalInfo(ref displayModel
-                            , response.Content
-                            , additionalDisplayConfig
-                            , key);
-                    }
-
-                    if (response.Content.ApplicationPaymentDetail != null)
-                    {
-                        displayModel.Content.ApplicationPaymentDetail = new ApplicationPaymentDisplayModel
+                        displayModel.Content.applicationPaymentDetail = response.Content.applicationPaymentDetail;
+                        displayModel.Content.PaymentDisplay = new PaymentDisplayModel
                         {
-                            OutstandingChargesAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesAmount,
-                            LatestBillAmount = response.Content.ApplicationPaymentDetail.LatestBillAmount,
-                            OneTimeChargesAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesAmount,
-                            OneTimeChargesDetail = new OneTimeChargesDisplayModel
-                            {
-                                ConnectionChargesAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.ConnectionChargesAmount,
-                                SecurityDepositAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.SecurityDepositAmount,
-                                MeterFeeAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.MeterFeeAmount,
-                                StampDutyAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.StampDutyAmount,
-                                ProcessingFeeAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.ProcessingFeeAmount
-                            },
-                            TotalPayableAmount = response.Content.ApplicationPaymentDetail.TotalPayableAmount,
-                            CANo = response.Content.ApplicationPaymentDetail.CANo,
-                            SDDocumentNo = response.Content.ApplicationPaymentDetail.SDDocumentNo,
-                            SRNo = response.Content.ApplicationPaymentDetail.SRNo
+                            outstandingChargesAmount = response.Content.applicationPaymentDetail.outstandingChargesAmount,
+                            latestBillAmount = response.Content.applicationPaymentDetail.latestBillAmount,
+                            oneTimeChargesAmount = response.Content.applicationPaymentDetail.oneTimeChargesAmount,
+                            oneTimeChargesDetail = response.Content.applicationPaymentDetail.oneTimeChargesDetail,
+                            totalPayableAmount = response.Content.applicationPaymentDetail.totalPayableAmount,
+                            caNo = response.Content.applicationPaymentDetail.caNo,
+                            sdDocumentNo = response.Content.applicationPaymentDetail.sdDocumentNo,
+                            srNo = response.Content.applicationPaymentDetail.srNo
                         };
                     }
                     if (response.Content.ApplicationStatusDetail != null)
                     {
+                        Dictionary<string, List<SelectorModel>> selectors = LanguageManager.Instance.GetSelectorsByPage("ApplicationStatusDetails");
+                        _mappingList = new List<SelectorModel>();
+                        if (selectors != null && selectors.ContainsKey("applicationTypeMapping"))
+                        {
+                            _mappingList = selectors["applicationTypeMapping"];
+                        }
+
+                        List<SelectorModel> additionalDisplayConfig = new List<SelectorModel>();
+                        string key = applicationType;
+                        if (displayModel.Content.IsKedaiTenagaApplication)
+                        {
+                            key = "KEDAI";
+                        }
+                        if (response.Content.savedApplicationDetail != null)
+                        {
+                            key = "SAVED";
+                        }
+                        if (selectors != null && selectors.ContainsKey(key))
+                        {
+                            additionalDisplayConfig = selectors[key];
+                        }
+                        if (additionalDisplayConfig != null && additionalDisplayConfig.Count > 0)
+                        {
+                            displayModel.Content.AdditionalInfoList = new List<TitleValueModel>();
+                            AddAdditionalInfo(ref displayModel
+                                , response.Content
+                                , additionalDisplayConfig
+                                , key);
+                        }
+
                         displayModel.Content.ApplicationStatusDetail = new ApplicationStatusDetailDisplayModel
                         {
                             StatusId = response.Content.ApplicationStatusDetail.StatusId,
@@ -125,9 +119,9 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                                 }).ToList();
                         }
                     }
-                    displayModel.Content.ApplicationActivityLogDetail = new List<ApplicationActivityLogDetailDisplay>();
                     if (response.Content.ApplicationActivityLogDetail != null)
                     {
+                        displayModel.Content.ApplicationActivityLogDetail = new List<ApplicationActivityLogDetailDisplay>();
                         for (int i = 0; i < response.Content.ApplicationActivityLogDetail.Count; i++)
                         {
                             ApplicationActivityLogDetail logDetail = response.Content.ApplicationActivityLogDetail[i];
@@ -192,6 +186,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                             displayModel.Content.ApplicationActivityLogDetail.Add(displayItem);
                         }
                     }
+
+                    SetPaymentDisplay(ref displayModel);
                 }
 
                 return displayModel;
@@ -230,6 +226,41 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                 }
             }
         }
+        #endregion
+        #region Payment Display
+        private static void SetPaymentDisplay(ref ApplicationDetailDisplay displayModel)
+        {
+            if (displayModel.Content.applicationPaymentDetail != null)
+            {
+                displayModel.Content.PaymentDetailsList = new List<TitleValueModel>();
+                Dictionary<string, List<SelectorModel>> selectors = LanguageManager.Instance.GetSelectorsByPage("ApplicationStatusPaymentDetails");
+                if (selectors != null
+                    && selectors.ContainsKey("chargesMapping")
+                    && selectors["chargesMapping"] is List<SelectorModel> mappingList
+                    && mappingList != null
+                    && mappingList.Count > 0)
+                {
+                    for (int i = 0; i < mappingList.Count; i++)
+                    {
+                        SelectorModel item = mappingList[i];
+                        if (GetObjectValue(displayModel.Content.applicationPaymentDetail.oneTimeChargesDetail, item.Key) is object value
+                            && value != null)
+                        {
+                            if (Convert.ToDouble(value) is double convertedValue && convertedValue > 0)
+                            {
+                                displayModel.Content.PaymentDetailsList.Add(new TitleValueModel
+                                {
+                                    Title = item.Description,
+                                    Value = convertedValue.ToAmountDisplayString(true)
+                                });
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+        #endregion
 
         private static object GetObjectValue(object props
             , string key)
@@ -253,6 +284,5 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
             value = objectValue;
             return value;
         }
-        #endregion
     }
 }

@@ -1162,6 +1162,36 @@
     "payNow": "Pay Now",
     "needToPay": "I need to pay"
   },
+  "ApplicationStatusPaymentDetails": {
+    "title": "Payment Details",
+    "oneTimeCharges": "My one-time charges",
+    "needToPay": "I need to pay",
+    "payNow": "Pay Now"
+  },
+  "ApplicationStatusPaymentDetails_selector": {
+    "chargesMapping": [
+      {
+        "key": "connectionChargesAmount",
+        "description": "Connection Fee"
+      },
+      {
+        "key": "securityDepositAmount",
+        "description": "Security Deposit"
+      },
+      {
+        "key": "meterFeeAmount",
+        "description": "Meter Cost"
+      },
+      {
+        "key": "stampDutyAmount",
+        "description": "Stamp Duty"
+      },
+      {
+        "key": "processingFeeAmount",
+        "description": "Processing Fee"
+      }
+    ]
+  },
   "ApplicationStatusDetails_selector": {
     "applicationTypeMapping": [
       {
