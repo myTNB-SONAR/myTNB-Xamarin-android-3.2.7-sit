@@ -25,6 +25,9 @@ using myTNB_Android.Src.Database.Model;
 using Castle.Core.Internal;
 using Android.Graphics;
 using Android.Graphics.Drawables;
+using System.Threading.Tasks;
+using myTNB_Android.Src.SiteCore;
+using System.IO;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 {
@@ -196,8 +199,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             base.OnCreate(savedInstanceState);
 
             txtSearchApplicationTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchForTitle");
-            txtSearchBy.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchBy");
-            txtApplicationType.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "applicationType");
+            txtSearchBy.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchBy");
+            txtApplicationType.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "applicationType");
             btnSearchApplication.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchStatus");
 
             mPresenter = new SearchApplicationStatusPresenter(this);
@@ -265,10 +268,198 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     }
                 }
             }
+
+            onGetTooltipImageContent();
             //mTypeList = JsonConvert.DeserializeObject<List<TypeModel>>("[{\"Title\":\"Change of Tenancy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Change Tariff\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Project\",\"Code\":\"\",\"SearchBy\":[\"AN\"]},{\"Title\":\"Renewable Energy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Self Meter Reading\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Start Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Stop Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Upgrade\\/Downgrade Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]}]");
             //mSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>("[{\"Title\":\"Application Number\",\"Code\":\"AN\"},{\"Title\":\"Electricity Account Number\",\"Code\":\"EAN\"},{\"Title\":\"Service Notification Number\",\"Code\":\"SNN\"},{\"Title\":\"Service Request Number\",\"Code\":\"SRN\"}]");
         }
 
+        public string BitmapToBase64(Bitmap bitmap)
+        {
+            string B64Output = "";
+            try
+            {
+                MemoryStream byteArrayOutputStream = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Png, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.ToArray();
+                B64Output = Android.Util.Base64.EncodeToString(byteArray, Base64Flags.Default);
+            }
+            catch (Exception e)
+            {
+                B64Output = "";
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return B64Output;
+        }
+        private Task onGetTooltipImageContent()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    //check if image is exist in sql lite
+                    var imageWhereAccUrl = SiteCoreConfig.SITECORE_URL + Utility.GetLocalizedLabel("SubmitEnquiry", "imageWhereAcc");
+
+                    if (TooltipImageDirectEntity.isNeedUpdate(imageWhereAccUrl, TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC))
+                    {
+                        TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
+
+                        var image = ImageUtils.GetImageBitmapFromUrl(imageWhereAccUrl);
+                        var base64 = BitmapToBase64(image);
+
+                        TooltipImageDirectEntity newImage_WHERE_MY_ACC = new TooltipImageDirectEntity();
+                        newImage_WHERE_MY_ACC.ImageBase64 = base64;
+                        newImage_WHERE_MY_ACC.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC.ToString();
+                        newImage_WHERE_MY_ACC.Url = imageWhereAccUrl;
+
+                        TooltipImageDirectEntity.InsertItem(newImage_WHERE_MY_ACC);
+
+                    }
+                    else
+                    {
+                        // recheck local is the base64 exist or not is not need update
+                        string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
+                        if (base64Image.IsNullOrEmpty())
+                        {
+                            TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
+
+                            var image = ImageUtils.GetImageBitmapFromUrl(imageWhereAccUrl);
+                            var base64 = BitmapToBase64(image);
+
+                            TooltipImageDirectEntity newImage_WHERE_MY_ACC = new TooltipImageDirectEntity();
+                            newImage_WHERE_MY_ACC.ImageBase64 = base64;
+                            newImage_WHERE_MY_ACC.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC.ToString();
+                            newImage_WHERE_MY_ACC.Url = imageWhereAccUrl;
+
+                            TooltipImageDirectEntity.InsertItem(newImage_WHERE_MY_ACC);
+
+                        }
+
+                    }
+
+                    //check if image is exist in sql lite
+                    var imageIC = SiteCoreConfig.SITECORE_URL + Utility.GetLocalizedLabel("SubmitEnquiry", "imageCopyIC");
+
+                    if (TooltipImageDirectEntity.isNeedUpdate(imageIC, TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE))
+                    {
+                        TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
+
+                        var image = ImageUtils.GetImageBitmapFromUrl(imageIC);
+                        var base64 = BitmapToBase64(image);
+
+                        TooltipImageDirectEntity newImage_WHERE_MY_ACC = new TooltipImageDirectEntity();
+                        newImage_WHERE_MY_ACC.ImageBase64 = base64;
+                        newImage_WHERE_MY_ACC.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE.ToString();
+                        newImage_WHERE_MY_ACC.Url = imageIC;
+
+                        TooltipImageDirectEntity.InsertItem(newImage_WHERE_MY_ACC);
+
+                    }
+                    else
+                    {
+                        // recheck local is the base64 exist or not is not need update
+                        string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
+                        if (base64Image.IsNullOrEmpty())
+                        {
+
+                            TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
+
+                            var image = ImageUtils.GetImageBitmapFromUrl(imageIC);
+                            var base64 = BitmapToBase64(image);
+
+                            TooltipImageDirectEntity newImage_IC_SAMPLE = new TooltipImageDirectEntity();
+                            newImage_IC_SAMPLE.ImageBase64 = base64;
+                            newImage_IC_SAMPLE.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE.ToString();
+                            newImage_IC_SAMPLE.Url = imageIC;
+
+                            TooltipImageDirectEntity.InsertItem(newImage_IC_SAMPLE);
+
+                        }
+                    }
+                    //check if image is exist in sql lite   imagePermises
+                    var imageConsent = SiteCoreConfig.SITECORE_URL + Utility.GetLocalizedLabel("SubmitEnquiry", "imageConsent");
+
+                    if (TooltipImageDirectEntity.isNeedUpdate(imageConsent, TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT))
+                    {
+                        TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
+
+                        var image_consent = ImageUtils.GetImageBitmapFromUrl(imageConsent);
+                        var base64 = BitmapToBase64(image_consent);
+
+                        TooltipImageDirectEntity newImage_PROOF_OF_CONSENT = new TooltipImageDirectEntity();
+                        newImage_PROOF_OF_CONSENT.ImageBase64 = base64;
+                        newImage_PROOF_OF_CONSENT.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT.ToString();
+                        newImage_PROOF_OF_CONSENT.Url = imageConsent;
+
+                        TooltipImageDirectEntity.InsertItem(newImage_PROOF_OF_CONSENT);
+
+                    }
+                    else
+                    {
+                        // recheck local is the base64 exist or not is not need update
+                        string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
+                        if (base64Image.IsNullOrEmpty())
+                        {
+                            TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
+
+                            var image_consent = ImageUtils.GetImageBitmapFromUrl(imageConsent);
+                            var base64 = BitmapToBase64(image_consent);
+
+                            TooltipImageDirectEntity newImage_PROOF_OF_CONSENT = new TooltipImageDirectEntity();
+                            newImage_PROOF_OF_CONSENT.ImageBase64 = base64;
+                            newImage_PROOF_OF_CONSENT.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT.ToString();
+                            newImage_PROOF_OF_CONSENT.Url = imageConsent;
+
+                            TooltipImageDirectEntity.InsertItem(newImage_PROOF_OF_CONSENT);
+                        }
+
+                    }
+                    //check if image is exist in sql lite   
+                    var imagePermises = SiteCoreConfig.SITECORE_URL + Utility.GetLocalizedLabel("SubmitEnquiry", "imagePermises");
+
+                    if (TooltipImageDirectEntity.isNeedUpdate(imagePermises, TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE))
+                    {
+                        TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
+
+                        var image_Permises = ImageUtils.GetImageBitmapFromUrl(imagePermises);
+                        var base64 = BitmapToBase64(image_Permises);
+
+                        TooltipImageDirectEntity newImage_PERMISE_IMAGE = new TooltipImageDirectEntity();
+                        newImage_PERMISE_IMAGE.ImageBase64 = base64;
+                        newImage_PERMISE_IMAGE.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE.ToString();
+                        newImage_PERMISE_IMAGE.Url = imagePermises;
+
+                        TooltipImageDirectEntity.InsertItem(newImage_PERMISE_IMAGE);
+
+                    }
+                    else
+                    {
+                        // recheck local is the base64 exist or not is not need update
+                        string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
+                        if (base64Image.IsNullOrEmpty())
+                        {
+                            TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
+
+                            var image_Permises = ImageUtils.GetImageBitmapFromUrl(imagePermises);
+                            var base64 = BitmapToBase64(image_Permises);
+
+                            TooltipImageDirectEntity newImage_PERMISE_IMAGE = new TooltipImageDirectEntity();
+                            newImage_PERMISE_IMAGE.ImageBase64 = base64;
+                            newImage_PERMISE_IMAGE.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE.ToString();
+                            newImage_PERMISE_IMAGE.Url = imagePermises;
+
+                            TooltipImageDirectEntity.InsertItem(newImage_PERMISE_IMAGE);
+                        }
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
+        }
         private void TxtWhyAccountsNotHere_Click(object sender, EventArgs e)
         {
             try
@@ -584,7 +775,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
                         if (extra.ContainsKey(Constants.APPLICATION_STATUS_TYPE_LIST_KEY))
                         {
-                            txtSearchBy.Text = "";
+                            txtSearchBy.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchBy");
                             resultTypeList = JsonConvert.DeserializeObject<List<TypeModel>>(extra.GetString(Constants.APPLICATION_STATUS_TYPE_LIST_KEY));
                             selectedType = resultTypeList.Find(x => x.isChecked);
                             //  TODO: ApplicationStatus dummp
@@ -592,7 +783,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             targetApplicationType = selectedType.SearchApplicationTypeDescDisplay;
                             targetApplicationTypeId = selectedType.SearchApplicationTypeId;
                             txtApplicationType.Text = targetApplicationType;
-                            txtApplicationType.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "applicationType");
+                           
                             if (selectedType.SearchTypes.Count <= 1)
                             {
                                 txtInputLayoutSearchBy.Visibility = ViewStates.Gone;
@@ -655,29 +846,29 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             targetSearchBy = searchByModel.SearchTypeId;
                             txtSearchBy.Text = searchByModel.SearchTypeDescDisplay;
                             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Visible;
-                            txtInputLayoutServiceRequestNum.ClearFocus();
-                            txtServiceRequestNum.Text = null;
-                            txtServiceRequestNum.ClearFocus();
+
+                            txtServiceRequestNum.SetText("", TextView.BufferType.Editable);
+                         
                            
 
                             if(searchByModel.Type == ApplicationStatusSearchType.ApplicationNo)
                             {
                                 txtInputLayoutServiceRequestNum.HelperText = selectedType.ApplicationNoHint;
-                                txtInputLayoutServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
+                                txtServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
                             }
                             if (searchByModel.Type == ApplicationStatusSearchType.ServiceNotificationNo)
                             {
-                                txtInputLayoutServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
+                                txtServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
                                 txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "serviceNotificationNo");
                             }
                             if (searchByModel.Type == ApplicationStatusSearchType.ServiceRequestNo)
                             {
-                                txtInputLayoutServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
+                                txtServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
                                 txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "serviceRequestNumber");
                             }
                             if (searchByModel.Type == ApplicationStatusSearchType.CA)
                             {
-                                txtInputLayoutServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
+                                txtServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
                                 txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "electricityAccountNumber");
                                 
                             }

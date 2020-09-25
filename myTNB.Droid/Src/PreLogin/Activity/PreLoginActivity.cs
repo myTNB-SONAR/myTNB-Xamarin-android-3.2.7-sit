@@ -390,6 +390,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             return Task.Run(() =>
             {
+                SearchApplicationTypeCache.Instance.Clear();
                 LanguageUtil.SaveAppLanguage(language);
                 MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                 _ = CheckAppMasterDataDone();

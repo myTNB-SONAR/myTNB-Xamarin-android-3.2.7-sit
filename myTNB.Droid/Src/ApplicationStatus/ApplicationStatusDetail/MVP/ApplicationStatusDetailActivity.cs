@@ -269,22 +269,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             btnViewActivityLogLayout.Visibility = Android.Views.ViewStates.Visible;
                         }
 
-                       
-                       
-
                         txtApplicationStatusMainTitle.Text = applicationDetailDisplay.ApplicationStatusDetail.StatusDescription;
-
-
-
-                        string appType = applicationDetailDisplay.ApplicationType;
-                        string[] typeStrings = appType.Split(' ');
-                        string TypeText = applicationDetailDisplay.ApplicationType;
-                        if (typeStrings.Length == 3 && typeStrings[0] == typeStrings[1])
-                        {
-                            TypeText = typeStrings[1] + " " + typeStrings[2];
-                        }
-
-                        txtApplicationStatusSubTitle.Text = TypeText;
+                        txtApplicationStatusSubTitle.Text = applicationDetailDisplay.ApplicationType;
                         txtApplicationStatusUpdated.Text = applicationDetailDisplay.ApplicationDetail.LastUpdatedDateDisplay;
                         if(applicationDetailDisplay.IsPortalMessageDisplayed)
                         {
