@@ -19,9 +19,9 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models
         public bool isChecked { get; set; }
     }
 
-    public class TypeModel : SearhApplicationTypeModel
+    public class TypeModel : SearchApplicationTypeModel
     {
-        public TypeModel(SearhApplicationTypeModel searhApplicationTypeModel)
+        public TypeModel(SearchApplicationTypeModel searhApplicationTypeModel)
         {
             SearchApplicationTypeId = searhApplicationTypeModel.SearchApplicationTypeId;
             SearchApplicationTypeDesc = searhApplicationTypeModel.SearchApplicationTypeDesc;

@@ -374,6 +374,14 @@ namespace myTNB_Android.Src.PreLogin.Activity
             Utility.ShowChangeLanguageDialog(this, selectedLanguage, ()=>
             {
                 ShowProgressDialog();
+                if (tooltipLanguage == "MS")
+                {
+                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
+                }
+                else
+                {
+                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
+                }
                 _ = RunUpdateLanguage(tooltipLanguage);
             });
         }

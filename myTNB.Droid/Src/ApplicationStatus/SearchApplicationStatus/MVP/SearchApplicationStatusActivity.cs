@@ -246,8 +246,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             {
                 if (extras.ContainsKey("searchApplicationType"))
                 {
-                    List<SearhApplicationTypeModel> searhApplicationTypeModels = new List<SearhApplicationTypeModel>();
-                    searhApplicationTypeModels = DeSerialze<List<SearhApplicationTypeModel>>(extras.GetString("searchApplicationType"));
+                    List<SearchApplicationTypeModel> searhApplicationTypeModels = new List<SearchApplicationTypeModel>();
+                    searhApplicationTypeModels = DeSerialze<List<SearchApplicationTypeModel>>(extras.GetString("searchApplicationType"));
 
                     if (searhApplicationTypeModels != null)
                     {

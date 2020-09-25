@@ -340,6 +340,15 @@ namespace myTNB_Android.Src.Login.MVP
                                            , UserEntity.GetActive().UserName
                                            , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
 
+                                if (LanguageUtil.GetAppLanguage() == "MS")
+                                {
+                                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
+                                }
+                                else
+                                {
+                                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
+                                }
+
                                 this.mView.ShowDashboard();
                             }
                             else

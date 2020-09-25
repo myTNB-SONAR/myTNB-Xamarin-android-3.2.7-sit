@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using myTNB_Android.Src.Maintenance.Activity;
 using AndroidX.Core.Content;
 using myTNB_Android.Src.Utils.SessionCache;
+using myTNB;
 
 namespace myTNB_Android.Src.Profile.Activity
 {
@@ -142,6 +143,14 @@ namespace myTNB_Android.Src.Profile.Activity
             Utility.ShowChangeLanguageDialog(this, currentLanguage, ()=>
             {
                 ShowProgressDialog();
+                if (selectedItem.type == "MS")
+                {
+                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
+                }
+                else
+                {
+                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
+                }
                 _ = RunUpdateLanguage(selectedItem);
             });
         }

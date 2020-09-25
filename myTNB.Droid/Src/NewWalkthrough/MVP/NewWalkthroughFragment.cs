@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Database.Model;
@@ -318,6 +319,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 Utility.ShowChangeLanguageDialog(this.Activity, appLanguage, () =>
                 {
                     ((NewWalkthroughActivity)Activity).ShowProgressDialog();
+                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
                     _ = RunUpdateLanguage("EN");
                 }, () =>
                 {
@@ -404,6 +406,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 Utility.ShowChangeLanguageDialog(this.Activity, appLanguage, () =>
                 {
                     ((NewWalkthroughActivity)Activity).ShowProgressDialog();
+                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
                     _ = RunUpdateLanguage("MS");
                 }, () =>
                 {
