@@ -1116,7 +1116,7 @@
     "viewLess": "View Less",
     "sn": "SN: {0}",
     "sr": "SR: {0}",
-    "displayPerQuery": "10"
+    "displayPerQuery": "5"
   },
   "ApplicationStatusSearch": {
     "title": "Search Application Status",
@@ -1152,6 +1152,8 @@
     "seeFullDetails": "How do I see my full application details?",
     "seeFullDetailsTitle": "View this application on myTNB Portal to enjoy the full experience!",
     "seeFullDetailsMessage": "You may log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my/\">portal</a> using the same log in details to view the full application form and details. Alternatively, you can refer to your email or submitted paper form.",
+    "seeFullDetailsTitleKedai": "Refer to your completed application form.",
+    "seeFullDetailsMessageKedai": "You may refer to your email or the submitted paper form completed via Kedai Tenaga for the full application details.",
     "loginTitle": "Login or Register to enjoy this myTNB feature!",
     "loginMessage": "You may save this application to keep track of its progress with a myTNB account.",
     "loginPrimaryCTA": "It’s Okay",
@@ -1159,6 +1161,36 @@
     "viewDetails": "View Details",
     "payNow": "Pay Now",
     "needToPay": "I need to pay"
+  },
+  "ApplicationStatusPaymentDetails": {
+    "title": "Payment Details",
+    "oneTimeCharges": "My one-time charges",
+    "needToPay": "I need to pay",
+    "payNow": "Pay Now"
+  },
+  "ApplicationStatusPaymentDetails_selector": {
+    "chargesMapping": [
+      {
+        "key": "connectionChargesAmount",
+        "description": "Connection Fee"
+      },
+      {
+        "key": "securityDepositAmount",
+        "description": "Security Deposit"
+      },
+      {
+        "key": "meterFeeAmount",
+        "description": "Meter Cost"
+      },
+      {
+        "key": "stampDutyAmount",
+        "description": "Stamp Duty"
+      },
+      {
+        "key": "processingFeeAmount",
+        "description": "Processing Fee"
+      }
+    ]
   },
   "ApplicationStatusDetails_selector": {
     "applicationTypeMapping": [
@@ -1173,6 +1205,48 @@
       {
         "key": "PRJ",
         "value": "projectDetail"
+      },
+      {
+        "key": "SEARCH",
+        "value": "applicationDetail"
+      },
+      {
+        "key": "KEDAI",
+        "value": "savedApplicationDetail"
+      },
+      {
+        "key": "SAVED",
+        "value": "savedApplicationDetail"
+      }
+    ],
+    "SEARCH": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      }
+    ],
+    "KEDAI": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      }
+    ],
+    "SAVED": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
       }
     ],
     "ASR": [
@@ -1461,10 +1535,10 @@
     ]
   },
   "Mapping": {
-    "Sample": [
+    "ExcludedApplicationTypes": [
       {
-        "key": "key",
-        "value": "value"
+        "key": "PRJ",
+        "value": "Project"
       }
     ]
   }

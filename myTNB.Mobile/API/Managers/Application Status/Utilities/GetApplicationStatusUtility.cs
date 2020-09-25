@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.Extensions;
 
@@ -7,6 +9,9 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
 {
     internal static class GetApplicationStatusUtility
     {
+#pragma warning disable IDE0044 // Add readonly modifier
+        private static List<SelectorModel> _mappingList;
+#pragma warning restore IDE0044 // Add readonly modifier
         private static string _addFormat = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusActivityLog", "add");
         private static string _updateFormat = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusActivityLog", "update");
         private static string _removeFormat = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusActivityLog", "remove");
@@ -31,7 +36,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                 Content = new GetApplicationStatusDisplay
                 {
                     ApplicationDetail = new ApplicationDetailDisplayModel(),
-                    ApplicationPaymentDetail = new ApplicationPaymentDisplayModel(),
+                    applicationPaymentDetail = new ApplicationPaymentDetail(),
                     ApplicationStatusDetail = new ApplicationStatusDetailDisplayModel(),
                     ApplicationActivityLogDetail = new List<ApplicationActivityLogDetailDisplay>()
                 },
@@ -44,41 +49,25 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                 //Mark: Values are hardcoded since this is a GetApplicationStatus API
                 displayModel.Content.IsSaveMessageDisplayed = true;
                 displayModel.Content.IsFullApplicationTooltipDisplayed = false;
+                displayModel.Content.IsDeleteEnable = false;
 
-                if (response.Content.ApplicationDetail != null)
+                if (response.Content.applicationDetail != null)
                 {
                     displayModel.Content.ApplicationDetail = new ApplicationDetailDisplayModel
                     {
-                        ApplicationId = response.Content.ApplicationDetail.ApplicationId,
-                        ReferenceNo = response.Content.ApplicationDetail.ReferenceNo,
-                        ApplicationModuleId = response.Content.ApplicationDetail.ApplicationModuleId,
-                        SRNo = response.Content.ApplicationDetail.SRNo,
-                        SRType = response.Content.ApplicationDetail.SRType,
-                        StatusID = response.Content.ApplicationDetail.StatusID,
-                        StatusCode = response.Content.ApplicationDetail.StatusCode,
-                        CreatedDate = response.Content.ApplicationDetail.CreatedDate
+                        ApplicationId = response.Content.applicationDetail.applicationId,
+                        ReferenceNo = response.Content.applicationDetail.referenceNo,
+                        ApplicationModuleId = response.Content.applicationDetail.applicationModuleId,
+                        SRNo = response.Content.applicationDetail.srNo,
+                        SRType = response.Content.applicationDetail.srType,
+                        StatusID = response.Content.applicationDetail.statusId,
+                        StatusCode = response.Content.applicationDetail.statusCode,
+                        CreatedDate = response.Content.applicationDetail.createdDate
                     };
                 }
-                if (response.Content.ApplicationPaymentDetail != null)
+                if (response.Content.applicationPaymentDetail != null)
                 {
-                    displayModel.Content.ApplicationPaymentDetail = new ApplicationPaymentDisplayModel
-                    {
-                        OutstandingChargesAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesAmount,
-                        LatestBillAmount = response.Content.ApplicationPaymentDetail.LatestBillAmount,
-                        OneTimeChargesAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesAmount,
-                        OneTimeChargesDetail = new OneTimeChargesDisplayModel
-                        {
-                            ConnectionChargesAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.ConnectionChargesAmount,
-                            SecurityDepositAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.SecurityDepositAmount,
-                            MeterFeeAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.MeterFeeAmount,
-                            StampDutyAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.StampDutyAmount,
-                            ProcessingFeeAmount = response.Content.ApplicationPaymentDetail.OneTimeChargesDetail.ProcessingFeeAmount
-                        },
-                        TotalPayableAmount = response.Content.ApplicationPaymentDetail.TotalPayableAmount,
-                        CANo = response.Content.ApplicationPaymentDetail.CANo,
-                        SDDocumentNo = response.Content.ApplicationPaymentDetail.SDDocumentNo,
-                        SRNo = response.Content.ApplicationPaymentDetail.SRNo
-                    };
+                    displayModel.Content.applicationPaymentDetail = response.Content.applicationPaymentDetail;
                 }
                 if (response.Content.ApplicationStatusDetail != null)
                 {
@@ -182,15 +171,98 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     {
                         Title = searchTypeTitle.ToUpper(),
                         Value = searchTerm
-                    },
-                    new TitleValueModel
+                    }
+                };
+                if (displayModel.Content.ApplicationDetail.CreatedDateDisplay.IsValid())
+                {
+                    displayModel.Content.AdditionalInfoList.Add(new TitleValueModel
                     {
                         Title = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "creationDate").ToUpper(),
                         Value = displayModel.Content.ApplicationDetail.CreatedDateDisplay ?? string.Empty
-                    }
-                };
+                    });
+                }
+                /*
+                Dictionary<string, List<SelectorModel>> selectors = LanguageManager.Instance.GetSelectorsByPage("ApplicationStatusDetails");
+                _mappingList = new List<SelectorModel>();
+                if (selectors != null && selectors.ContainsKey("applicationTypeMapping"))
+                {
+                    _mappingList = selectors["applicationTypeMapping"];
+                }
+
+                string key = displayModel.Content.IsKedaiTenagaApplication ? "KEDAI" : "SEARCH";
+                List<SelectorModel> additionalDisplayConfig = new List<SelectorModel>();
+                if (selectors != null && selectors.ContainsKey(key))
+                {
+                    additionalDisplayConfig = selectors[key];
+                }
+                if (additionalDisplayConfig != null && additionalDisplayConfig.Count > 0)
+                {
+                    AddAdditionalInfo(ref displayModel
+                        , response.Content
+                        , additionalDisplayConfig
+                        , "SEARCH");
+                }
+                */
             }
             return displayModel;
         }
+
+        #region Additional Info
+        private static void AddAdditionalInfo(ref ApplicationDetailDisplay displayModel
+            , GetApplicationStatusModel content
+            , List<SelectorModel> additionalDisplayConfig
+            , string applicationType)
+        {
+            if (_mappingList == null || _mappingList.Count == 0)
+            {
+                return;
+            }
+            string propertyName = _mappingList.Find(x => x.Key == applicationType).Value ?? string.Empty;
+            if (!propertyName.IsValid())
+            {
+                return;
+            }
+            object props = GetObjectValue(content, propertyName);
+            if (props != null)
+            {
+                for (int i = 0; i < additionalDisplayConfig.Count; i++)
+                {
+                    SelectorModel item = additionalDisplayConfig[i];
+                    object infoValue = GetObjectValue(props, item.Key);
+                    if (infoValue != null && infoValue.ToString().IsValid())
+                    {
+                        displayModel.Content.AdditionalInfoList.Add(new TitleValueModel
+                        {
+                            Title = item.Description.ToUpper(),
+                            Value = infoValue.ToString()
+                        });
+                    }
+                }
+            }
+        }
+
+        private static object GetObjectValue(object props
+            , string key)
+        {
+            object value = null;
+            Type type = props.GetType();
+            if (type == null)
+            {
+                return value;
+            }
+            PropertyInfo property = type.GetProperty(key);
+            if (property == null)
+            {
+                return value;
+            }
+            object objectValue = property.GetValue(props, null);
+            if (objectValue == null)
+            {
+                return value;
+            }
+            value = objectValue;
+            return value;
+        }
+        #endregion
     }
 }

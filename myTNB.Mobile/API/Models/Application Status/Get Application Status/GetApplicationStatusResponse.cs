@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Newtonsoft.Json;
 
 namespace myTNB.Mobile.API.Models.ApplicationStatus
@@ -8,13 +10,12 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
     {
     }
 
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
     public class GetApplicationStatusModel
     {
-        [JsonProperty("applicationDetail")]
-        public ApplicationDetail ApplicationDetail { set; get; }
+        public ApplicationDetail applicationDetail { set; get; }
 
-        [JsonProperty("applicationPaymentDetail")]
-        public ApplicationPaymentDetail ApplicationPaymentDetail { set; get; }
+        public ApplicationPaymentDetail applicationPaymentDetail { set; get; }
 
         [JsonProperty("applicationStatusDetail")]
         public ApplicationStatusDetail ApplicationStatusDetail { set; get; }
@@ -23,76 +24,80 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
         public List<ApplicationActivityLogDetail> ApplicationActivityLogDetail { set; get; }
     }
 
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
     public class ApplicationDetail
     {
-        [JsonProperty("applicationId")]
-        public int ApplicationId { set; get; }
+        public string applicationId { set; get; }
 
-        [JsonProperty("referenceNo")]
-        public string ReferenceNo { set; get; }
+        public string referenceNo { set; get; }
 
-        [JsonProperty("applicationModuleId")]
-        public int ApplicationModuleId { set; get; }
+        public int applicationModuleId { set; get; }
 
-        [JsonProperty("srNo")]
-        public string SRNo { set; get; }
+        public string srNo { set; get; }
 
-        [JsonProperty("srType")]
-        public string SRType { set; get; }
+        public string srType { set; get; }
 
-        [JsonProperty("statusId")]
-        public int StatusID { set; get; }
+        public int statusId { set; get; }
 
-        [JsonProperty("statusCode")]
-        public string StatusCode { set; get; }
+        public string statusCode { set; get; }
 
-        [JsonProperty("createdDate")]
-        public DateTime? CreatedDate { set; get; }
+        public DateTime? createdDate { set; get; }
+
+        [JsonIgnore]
+        public string createDateDisplay
+        {
+            get
+            {
+                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                string date = createdDate != null && createdDate.Value != null
+                    ? createdDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
+                    : string.Empty;
+                return date;
+            }
+        }
     }
 
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
     public class ApplicationPaymentDetail
     {
-        [JsonProperty("outstandingChargesAmount")]
-        public double OutstandingChargesAmount { set; get; }
+        public double outstandingChargesAmount { set; get; }
 
-        [JsonProperty("latestBillAmount")]
-        public double LatestBillAmount { set; get; }
+        public double latestBillAmount { set; get; }
 
-        [JsonProperty("oneTimeChargesAmount")]
-        public double OneTimeChargesAmount { set; get; }
+        public double oneTimeChargesAmount { set; get; }
 
-        [JsonProperty("oneTimeChargesDetail")]
-        public OneTimeChargesDetail OneTimeChargesDetail { set; get; }
+        public OneTimeChargesDetail oneTimeChargesDetail { set; get; }
 
-        [JsonProperty("totalPayableAmount")]
-        public double TotalPayableAmount { set; get; }
+        public double totalPayableAmount { set; get; }
 
-        [JsonProperty("caNo")]
-        public string CANo { set; get; }
+        public string caNo { set; get; }
 
-        [JsonProperty("sdDocumentNo")]
-        public string SDDocumentNo { set; get; }
+        public string sdDocumentNo { set; get; }
 
-        [JsonProperty("srNo")]
-        public string SRNo { set; get; }
+        public string srNo { set; get; }
     }
 
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
     public class OneTimeChargesDetail
     {
-        [JsonProperty("connectionChargesAmount")]
-        public double ConnectionChargesAmount { set; get; }
+        public double connectionChargesAmount { set; get; }
 
-        [JsonProperty("securityDepositAmount")]
-        public double SecurityDepositAmount { set; get; }
+        public ConnectionChargesDetails connectionChargesDetail { set; get; }
 
-        [JsonProperty("meterFeeAmount")]
-        public double MeterFeeAmount { set; get; }
+        public double securityDepositAmount { set; get; }
 
-        [JsonProperty("stampDutyAmount")]
-        public double StampDutyAmount { set; get; }
+        public double meterFeeAmount { set; get; }
 
-        [JsonProperty("processingFeeAmount")]
-        public double ProcessingFeeAmount { set; get; }
+        public double stampDutyAmount { set; get; }
+
+        public double processingFeeAmount { set; get; }
+    }
+
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    public class ConnectionChargesDetails
+    {
+        public double connectionChargesNetAmount { set; get; }
+        public double connectionChargesTaxAmount { set; get; }
     }
 
     public class ApplicationStatusDetail

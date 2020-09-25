@@ -27,7 +27,8 @@ namespace myTNB.Mobile
         [JsonProperty("nextPage")]
         public string NextPage { set; get; }
 
-        private int _limit
+        [JsonIgnore]
+        public int Limit
         {
             get
             {
@@ -44,7 +45,7 @@ namespace myTNB.Mobile
         {
             get
             {
-                return Math.Ceiling((double)Total / _limit);
+                return Math.Ceiling((double)Total / Limit);
             }
         }
 
@@ -62,7 +63,7 @@ namespace myTNB.Mobile
         {
             get
             {
-                return Total > _limit;
+                return Total > Limit;
             }
         }
 
@@ -99,6 +100,9 @@ namespace myTNB.Mobile
         [JsonProperty("searchApplicationType")]
         public string SearchApplicationType { set; get; }
 
+        /// <summary>
+        /// Display Application Type
+        /// </summary>
         [JsonProperty("applicationModuleDescription")]
         public string ApplicationModuleDescription { set; get; }
 
@@ -108,6 +112,9 @@ namespace myTNB.Mobile
         [JsonProperty("statusCode")]
         public string StatusCode { set; get; }
 
+        /// <summary>
+        /// Display Status
+        /// </summary>
         [JsonProperty("statusDescription")]
         public string StatusDescription { set; get; }
 
@@ -159,6 +166,9 @@ namespace myTNB.Mobile
         [JsonProperty("lastModifiedDate")]
         public DateTime? LastModifiedDate { set; get; }
 
+        /// <summary>
+        /// Display reference number under Application Type
+        /// </summary>
         [JsonIgnore]
         public string ReferenceNumberDisplay
         {

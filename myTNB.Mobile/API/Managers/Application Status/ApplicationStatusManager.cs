@@ -29,9 +29,7 @@ namespace myTNB.Mobile
                 return lazy.Value;
             }
         }
-        public ApplicationStatusManager()
-        {
-        }
+        public ApplicationStatusManager() { }
 
         #region SearchApplicationType
         /// <summary>
@@ -64,8 +62,7 @@ namespace myTNB.Mobile
                         response.StatusDetail = new StatusDetail();
                         response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails("default");
                     }
-                    SearchTypeUtility.SearchApplicationTypeParser(ref response
-                        , roleID);
+                    response.SearchApplicationTypeParser(roleID);
                     return response;
                 }
                 catch (ApiException apiEx)
@@ -402,10 +399,20 @@ namespace myTNB.Mobile
         #endregion
 
         #region GetApplicationDetail
-        public async Task<ApplicationDetailDisplay> GetApplicationDetail(string id
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="savedApplicationId"></param>
+        /// <param name="applicationId"></param>
+        /// <param name="applicationType"></param>
+        /// <param name="applicationTypeTitle"></param>
+        /// <returns></returns>
+        public async Task<ApplicationDetailDisplay> GetApplicationDetail(string savedApplicationId
+            , string applicationId
             , string applicationType
             , string applicationTypeTitle)
         {
+            string id = savedApplicationId.IsValid() ? savedApplicationId : applicationId;
             ApplicationDetailDisplay displaymodel = new ApplicationDetailDisplay();
             try
             {
@@ -443,7 +450,9 @@ namespace myTNB.Mobile
                         response.StatusDetail = new StatusDetail();
                         response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails("default");
                     }
-                    displaymodel = response.Parse(applicationType, applicationTypeTitle);
+                    displaymodel = response.Parse(applicationType
+                        , applicationTypeTitle
+                        , applicationId);
                     return displaymodel;
                 }
                 catch (ApiException apiEx)

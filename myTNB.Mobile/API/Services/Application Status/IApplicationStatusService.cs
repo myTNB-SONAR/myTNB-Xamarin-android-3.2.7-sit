@@ -19,28 +19,28 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
     internal interface IApplicationStatusService
     {
         [Get("/{urlPrefix}/SearchApplicationType?lang={language}")]
-        Task<SearchApplicationTypeResponse> SearchApplicationType([Header(Constants.H_UserInfo)] string userInfo
+        Task<SearchApplicationTypeResponse> SearchApplicationType([Header(Constants.Header_UserInfo)] string userInfo
             , CancellationToken cancelToken
             , string language
             , string urlPrefix = Constants.ApiUrlPath
-            , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
+            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
         [Get("/{urlPrefix}/ApplicationStatus?lang={language}&applicationType={applicationType}&searchType={searchType}&searchTerm={searchTerm}")]
         Task<HttpResponseMessage> GetApplicationStatus(string applicationType
             , string searchType
             , string searchTerm
-            , [Header(Constants.H_UserInfo)] string userInfo
+            , [Header(Constants.Header_UserInfo)] string userInfo
             , CancellationToken cancelToken
             , string language
             , string urlPrefix = Constants.ApiUrlPath
-            , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
+            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
         [Post("/{urlPrefix}/SaveApplication")]
         Task<HttpResponseMessage> SaveApplication([Body] PostSaveApplicationRequest request
-           , [Header(Constants.H_UserInfo)] string userInfo
+           , [Header(Constants.Header_UserInfo)] string userInfo
            , CancellationToken cancelToken
            , string urlPrefix = Constants.ApiUrlPath
-           , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
+           , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
         [Get("/{urlPrefix}/AllApplications?lang={language}&Page={page}&Limit={limit}&SortBy={sortBy}&SortDirection={sortDirection}&ReferenceNo={referenceNo}&SrNo={srNo}&SearchApplicationType={searchApplicationType}&StatusId={statusId}&StatusDescription={statusDescription}&CreatedDateFrom={createdDateFrom}&CreatedDateTo={createdDateTo}")]
         Task<HttpResponseMessage> GetAllApplications(int page
@@ -54,19 +54,19 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
            , string statusDescription
            , string createdDateFrom
            , string createdDateTo
-           , [Header(Constants.H_UserInfo)] string userInfo
+           , [Header(Constants.Header_UserInfo)] string userInfo
            , CancellationToken cancelToken
            , string language
            , string urlPrefix = Constants.ApiUrlPath
-           , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
+           , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
         [Get("/{urlPrefix}/ApplicationDetail?lang={language}&applicationType={applicationType}&id={id}")]
         Task<HttpResponseMessage> GetApplicationDetail(string applicationType
             , string id
-            , [Header(Constants.H_UserInfo)] string userInfo
+            , [Header(Constants.Header_UserInfo)] string userInfo
             , CancellationToken cancelToken
             , string language
             , string urlPrefix = Constants.ApiUrlPath
-            , [Header(Constants.H_SecureKey)] string secureKey = Constants.ApiKeyId);
+            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
     }
 }
