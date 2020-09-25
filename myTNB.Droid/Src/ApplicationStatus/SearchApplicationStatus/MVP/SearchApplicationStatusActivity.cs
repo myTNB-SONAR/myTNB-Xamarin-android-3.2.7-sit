@@ -158,6 +158,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         }
         private async void GetApplicationStatus()
         {
+            ShowProgressDialog();
             ApplicationDetailDisplay applicationDetailDisplay = await ApplicationStatusManager.Instance.GetApplicationStatus(
                   targetApplicationTypeId
                 , targetSearchBy
@@ -165,22 +166,31 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 , txtApplicationType.Text
                 , txtSearchBy.Text);
 
-
-            += (sender, e) => ShowWhereIsMyAcc(activity, mSearchByList);
-
-            Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
-            applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(applicationDetailDisplay.Content));
-            StartActivity(applicationStatusDetailIntent);
+            HideProgressDialog();
+            if (!applicationDetailDisplay.StatusDetail.IsSuccess)
+            {
+                ShowApplicaitonPopupMessage(this, applicationDetailDisplay.StatusDetail);
+            }
+            else
+            {
+                Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+                applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(applicationDetailDisplay.Content));
+                StartActivity(applicationStatusDetailIntent);
+            }
         }
-        public async void ShowApplicaitonPopupMessage(Android.App.Activity context, List<SearchByModel> mSearchByList)
+        public async void ShowApplicaitonPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
         {
-            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                .SetTitle(Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumberTitle"))
-                .SetMessage(Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumberMessage"))
-                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+
+
+            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(statusDetail.Title)
+                .SetMessage(statusDetail.Message)
+                .SetCTALabel(statusDetail.PrimaryCTATitle)
                 .Build();
             whereisMyacc.Show();
+
         }
+       
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -270,8 +280,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     {
                         string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
 
-                        if (!base64Image.IsNullOrEmpty())
-                        {
+                        //if (!base64Image.IsNullOrEmpty())
+                        //{
                             var imageCache = Base64ToBitmap(base64Image);
 
                             MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
@@ -281,7 +291,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                             .Build();
                             whereisMyacc.Show();
-                        }
+                        //}
                     }
                     else
                     {
@@ -322,13 +332,17 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
         private void TxtServiceRequestNum_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e)
         {
+            CheckError();
+        }
+        private void CheckError()
+        {
             try
             {
                 if (isTextChange && searchByModel != null && selectedType != null && selectedType.SearchTypes != null)
                 {
                     var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].Type : searchByModel.Type;
 
-                  
+
 
                     if (searchType == ApplicationStatusSearchType.ServiceRequestNo)
                     {
@@ -337,7 +351,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         {
                             txtInputLayoutServiceRequestNum.Error = null;
                             txtInputLayoutServiceRequestNum.ErrorEnabled = false;
-                         
+
                         }
                         if (txtServiceRequestNum.Text.Count() == 10)
                         {
@@ -346,9 +360,9 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             txtInputLayoutServiceRequestNum.Error = null;
                             txtInputLayoutServiceRequestNum.ErrorEnabled = false;
                         }
-                        else if (txtServiceRequestNum.Text.Count() != 10)
-                            {
-                           
+                        else if (txtServiceRequestNum.Text.Count() != 10 && txtServiceRequestNum.Text != string.Empty)
+                        {
+
                             txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[0].SearchTypeDescDisplay);
                             if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
                                 txtInputLayoutServiceRequestNum.ErrorEnabled = true;
@@ -368,7 +382,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         }
                         if (txtServiceRequestNum.Text.Count() == 12)
                         {
-                         
+
                             txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(12) });
                             txtInputLayoutServiceRequestNum.Error = null;
                             txtInputLayoutServiceRequestNum.ErrorEnabled = false;
@@ -378,7 +392,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         {
 
                             txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[0].SearchTypeDescDisplay);
-                         
+
                             if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
                                 txtInputLayoutServiceRequestNum.ErrorEnabled = true;
 
@@ -386,7 +400,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             DisableButton();
                         }
                     }
-                    
+
 
                     if (searchType == ApplicationStatusSearchType.ApplicationNo)
                     {
@@ -547,7 +561,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 Utility.LoggingNonFatalError(ex);
             }
         }
-
   
         public bool IsValid(string key)
         {
@@ -575,11 +588,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             resultTypeList = JsonConvert.DeserializeObject<List<TypeModel>>(extra.GetString(Constants.APPLICATION_STATUS_TYPE_LIST_KEY));
                             selectedType = resultTypeList.Find(x => x.isChecked);
                             //  TODO: ApplicationStatus dummp
-
+                            txtApplicationType.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "applicationType");
                             targetApplicationType = selectedType.SearchApplicationTypeDescDisplay;
                             targetApplicationTypeId = selectedType.SearchApplicationTypeId;
                             txtApplicationType.Text = targetApplicationType;
-
+                            txtApplicationType.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "applicationType");
                             if (selectedType.SearchTypes.Count <= 1)
                             {
                                 txtInputLayoutSearchBy.Visibility = ViewStates.Gone;
@@ -688,10 +701,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
             if (v is EditText)
             {
+                txtApplicationType.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "applicationType");
                 EditText eTxtView = v as EditText;
                 if (eTxtView.Id == Resource.Id.txtApplicationType)
                 {
-
+                    
                     if (e.Action == MotionEventActions.Up)
                     {
                         if (!this.GetIsClicked())
@@ -814,6 +828,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     }
                 }
             }
+            CheckError();
             return false;
         }
     }

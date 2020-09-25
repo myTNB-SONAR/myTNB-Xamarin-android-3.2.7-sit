@@ -5682,19 +5682,11 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\img_application_status_action_required.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\img_application_status_in_progress.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\img_application_status_new.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\img_application_status_action_required.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -5706,10 +5698,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_application_status_action_required.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-xhdpi\img_application_status_in_progress.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -5718,19 +5706,11 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_application_status_action_required.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxhdpi\img_application_status_in_progress.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxhdpi\img_application_status_new.png">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_application_status_action_required.png">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -5888,6 +5868,26 @@
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailContract.cs" />
     <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailPresenter.cs" />
     <Compile Include="Src\Utils\SessionCache\SearchApplicationTypeCache.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\Img_application_Active_Payment.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Img_application_Active_Payment.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Img_application_Active_Payment.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Img_application_Active_Payment.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Img_application_Active_Payment.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

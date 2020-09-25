@@ -74,13 +74,14 @@
                         android:lineSpacingExtra="3dp"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="8dp"
-                        android:text="for Start Electricity"/>
+                        />
                     <TextView
                         android:id="@+id/txtApplicationStatusUpdated"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/tunaGrey"
                         android:textSize="14dp"
+                        android:textStyle="italic"
                         android:lineSpacingExtra="3dp"
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="8dp"
@@ -110,16 +111,17 @@
                         android:layout_marginTop="8dp"
                         android:visibility="visible"
                         android:paddingBottom="-5dp"
-                        android:scrollIndicators="none" />
+                        android:scrollIndicators="none"
+                        android:overScrollMode="never"/>
                     
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="16dp"
+                    
                     android:paddingBottom="16dp"
-                    android:layout_marginTop="8dp"
+                    
                     android:background="@color/white"
                     android:id="@+id/applicationStatusDetailNonLoginLayout">
                     <androidx.recyclerview.widget.RecyclerView
@@ -130,8 +132,14 @@
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
                         android:scrollIndicators="none"
-                        android:paddingBottom="-6dp"/>
-                     <LinearLayout
+                        android:overScrollMode="never"
+                        />
+                       <View
+                            android:layout_height="1dp"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="16dp"
+                            android:background="@color/platinumGrey" />
+                <LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:orientation="vertical"
@@ -149,6 +157,11 @@
 					android:layout_marginBottom="16dp"
 					style="@style/Theme.ApplicationStatusLandingButton" />
 			</LinearLayout>
+                       <View
+                            android:layout_height="1dp"
+                            android:layout_width="match_parent"
+                            android:layout_marginBottom="8dp"
+                            android:background="@color/platinumGrey" />
                     <TextView
                         android:id="@+id/txtApplicationStatusDetailNote"
                         android:layout_width="match_parent"
@@ -268,13 +281,7 @@
             android:gravity="bottom"
             android:background="@color/white"
             android:layout_gravity="bottom">
-            <ImageView
-                android:id="@+id/shadow_layout"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:visibility="visible"
-                android:scaleType="fitXY"
-                android:background="@drawable/shadow_effect" />
+      
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

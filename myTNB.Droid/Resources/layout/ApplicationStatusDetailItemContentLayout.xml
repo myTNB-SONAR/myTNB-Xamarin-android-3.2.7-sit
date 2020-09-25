@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/silverChalice"
         android:textSize="10dp"
+        android:layout_marginTop="16dp"
         android:lineSpacingExtra="2dp"
         android:layout_marginBottom="2dp"
         android:textAllCaps="true"

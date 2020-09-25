@@ -14,6 +14,12 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter;
 using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
 using System;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.PreLogin.Activity;
+using Android.Preferences;
+using AndroidX.Core.Content;
+using Android.Views;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -31,6 +37,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         [BindView(Resource.Id.txtApplicationStatusSubTitle)]
         TextView txtApplicationStatusSubTitle;
+        [BindView(Resource.Id.txtApplicationStatusTitle)]
+        TextView txtApplicationStatusTitle;
+
+        
 
         [BindView(Resource.Id.txtApplicationStatusUpdated)]
         TextView txtApplicationStatusUpdated;
@@ -51,6 +61,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [BindView(Resource.Id.btnViewActivityLogLayout)]
         LinearLayout btnViewActivityLogLayout;
 
+        [BindView(Resource.Id.applicationStatusLine)]
+        View applicationStatusLine;
         
 
         [BindView(Resource.Id.txtApplicationStatusDetail)]
@@ -84,11 +96,32 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
 
         }
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
         private async void SaveApplication()
         {
-          
-
-
+            ShowProgressDialog();
             PostSaveApplicationResponse postSaveApplicationResponse = await ApplicationStatusManager.Instance.SaveApplication(
                              applicationDetailDisplay.ApplicationDetail.ReferenceNo
                     , applicationDetailDisplay.ApplicationTypeID
@@ -97,11 +130,58 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     , applicationDetailDisplay.ApplicationDetail.StatusCode
                     , applicationDetailDisplay.ApplicationDetail.CreatedDate.Value);
 
+            HideProgressDialog();
+
+            UserEntity loggedUser = UserEntity.GetActive();
 
 
+            if (postSaveApplicationResponse.StatusDetail.IsSuccess && loggedUser != null)
+            {
+                Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
+                applicationLandingIntent.PutExtra("SaveApplication", JsonConvert.SerializeObject(postSaveApplicationResponse.StatusDetail));
+                StartActivity(applicationLandingIntent);
+            }
+            else
+            {
+                if (loggedUser != null)
+                {
+                    MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                   .SetTitle(postSaveApplicationResponse.StatusDetail.Title)
+                   .SetMessage(postSaveApplicationResponse.StatusDetail.Message)
+                   .SetCTALabel(postSaveApplicationResponse.StatusDetail.PrimaryCTATitle)
+                   .SetSecondaryCTALabel(postSaveApplicationResponse.StatusDetail.SecondaryCTATitle)
+                   .SetSecondaryCTAaction(() => ShowStatusLanding())
+                   .Build();
+                    whereisMyacc.Show();
+                }
+                else
+                {
+                    MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                  .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginTitle"))
+                  .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginMessage"))
+                  .SetCTALabel(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginPrimaryCTA"))
+                  .SetSecondaryCTALabel(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginSecondaryCTA"))
+                  .SetSecondaryCTAaction(() => ShowPreLogin())
+                  .Build();
+                    whereisMyacc.Show();
+                }
 
+            }
         }
 
+        public void ShowPreLogin()
+        {
+            Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
+            PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(PreLoginIntent);
+        }
+
+        public void ShowStatusLanding()
+        {
+            Intent statusLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
+            //statusLandingIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(statusLandingIntent);
+        }
 
         internal string test
         { set; private get; } = string.Empty;
@@ -133,7 +213,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             applicationStatusStatusListRecyclerView.SetLayoutManager(layoutManager);
             applicationStatusStatusListRecyclerView.SetAdapter(adapter);
-
+            TextViewUtils.SetMuseoSans500Typeface(btnViewActivityLog);
+            
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
 
             applicationStatusAdditionalListRecyclerView.SetLayoutManager(layoutManager);
@@ -160,9 +241,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             && applicationDetailDisplay.ApplicationStatusDetail.StatusTracker != null
                             && applicationDetailDisplay.ApplicationStatusDetail.StatusTracker.Count > 0)
                         {
-                            adapter = new ApplicationStatusDetailProgressAdapter(this, applicationDetailDisplay.ApplicationStatusDetail.StatusTracker);
+                            applicationStatusLine.Visibility = ViewStates.Visible;
+                            adapter = new ApplicationStatusDetailProgressAdapter(this, applicationDetailDisplay.ApplicationStatusDetail.StatusTracker, applicationDetailDisplay.ApplicationStatusDetail.IsPayment);
                             applicationStatusStatusListRecyclerView.SetAdapter(adapter);
                             adapter.NotifyDataSetChanged();
+                        }
+                        else
+                        {
+                            applicationStatusLine.Visibility = ViewStates.Gone;
                         }
 
                         if(applicationDetailDisplay != null
@@ -187,7 +273,18 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                        
 
                         txtApplicationStatusMainTitle.Text = applicationDetailDisplay.ApplicationStatusDetail.StatusDescription;
-                        txtApplicationStatusSubTitle.Text = applicationDetailDisplay.ApplicationType;
+
+
+
+                        string appType = applicationDetailDisplay.ApplicationType;
+                        string[] typeStrings = appType.Split(' ');
+                        string TypeText = applicationDetailDisplay.ApplicationType;
+                        if (typeStrings.Length == 3 && typeStrings[0] == typeStrings[1])
+                        {
+                            TypeText = typeStrings[1] + " " + typeStrings[2];
+                        }
+
+                        txtApplicationStatusSubTitle.Text = TypeText;
                         txtApplicationStatusUpdated.Text = applicationDetailDisplay.ApplicationDetail.LastUpdatedDateDisplay;
                         if(applicationDetailDisplay.IsPortalMessageDisplayed)
                         {
@@ -208,10 +305,23 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         {
                             txtApplicationStatusDetailNote.Visibility = Android.Views.ViewStates.Gone;
                         }
+                        if (applicationDetailDisplay != null && applicationDetailDisplay.StatusColor.Length <= 3)
+                        {
+                            Android.Graphics.Color color = Android.Graphics.Color.Rgb(
+                                applicationDetailDisplay.StatusColor[0]
+                                , applicationDetailDisplay.StatusColor[1]
+                                , applicationDetailDisplay.StatusColor[2]);
 
-                        TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusMainTitle);
+                            txtApplicationStatusMainTitle.SetTextColor(color);
+                        }
+
+                       
+                        TextViewUtils.SetMuseoSans500Typeface(txtApplicationStatusMainTitle);
+                        TextViewUtils.SetMuseoSans500Typeface(txtApplicationStatusTitle);
                         TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle);
-                        TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusUpdated);
+                        //TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusUpdated);
+
+                       
 
 
                         //foreach (var searchTypeItem in searhApplicationTypeModels)

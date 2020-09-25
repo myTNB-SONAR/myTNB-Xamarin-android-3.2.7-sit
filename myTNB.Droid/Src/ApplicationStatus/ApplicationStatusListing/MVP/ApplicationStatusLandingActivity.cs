@@ -15,11 +15,13 @@ using Android.Util;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
 using AndroidX.Core.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Facebook.Shimmer;
+using Google.Android.Material.Snackbar;
 using myTNB;
 using myTNB.Mobile;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
@@ -87,6 +89,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         [BindView(Resource.Id.mappicatinPopup)]
         LinearLayout mappicatinPopup;
 
+
+        [BindView(Resource.Id.rootView)]
+        CoordinatorLayout rootView;
+
+
         [OnClick(Resource.Id.btnSearchApplicationStatus)]
         void OnClickSearchApplicationStatus(object sender, EventArgs eventArgs)
         {
@@ -94,17 +101,18 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         }
         private async System.Threading.Tasks.Task GetSearchApplicationTypeAsync()
         {
+            ShowProgressDialog();
             SearchApplicationTypeResponse searchApplicationTypeResponse = new SearchApplicationTypeResponse();
             searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
             {
-                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("0", string.Empty, string.Empty);
+                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", string.Empty, string.Empty);
                 SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
             }
             Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
             applicationLandingIntent.PutExtra("searchApplicationType", JsonConvert.SerializeObject(searchApplicationTypeResponse.Content));
             StartActivity(applicationLandingIntent);
-
+            HideProgressDialog();
 
 
         }
@@ -355,6 +363,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusLandingEmpty);
             TextViewUtils.SetMuseoSans500Typeface(btnSearchApplicationStatus,  viewMoreLabel);
 
+            btnSearchApplicationStatus.Text = Utility.GetLocalizedLabel("ApplicationStatusLanding", "search");
+
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             applicationStatusLandingRecyclerView.SetLayoutManager(layoutManager);
 
@@ -383,9 +393,29 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             ScaleEmptyStateImage();
             SetupEmptyLandingText();
 
-            //  TODO: ApplicationStatis Stub
+            
             UpdateUI();
 
+            Bundle extras = Intent.Extras;
+            if (extras != null)
+            {
+                if (extras.ContainsKey("SaveApplication"))
+                {
+                    StatusDetail statusDetails = new StatusDetail();
+                    statusDetails = DeSerialze<StatusDetail>(extras.GetString("SaveApplication"));
+                    if (statusDetails != null)
+                    {
+                        Snackbar mSaveSnackbar =  Snackbar.Make(rootView,
+                        statusDetails.Message,
+                        Snackbar.LengthLong);
+                        View v = mSaveSnackbar.View;
+                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                        tv.SetMaxLines(5);
+                        mSaveSnackbar.Show();
+
+                    }
+                }
+            }
             //applicationStatusLandingTitleLayout.Visibility = ViewStates.Gone;
             //applicationStatusLandingEmptyLayout.Visibility = ViewStates.Gone;
             //viewMoreContainer.Visibility = ViewStates.Gone;
@@ -763,6 +793,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             try
             {
                 //StopShimmer();
+
+          //      ApplicationDetailDisplay applicationDetailDisplay = await ApplicationStatusManager.Instance.GetAllApplications( AllApplications(int page
+          //,  searchApplicationType
+          //,  statusDescription
+          //,  createdDateFrom
+          //,  createdDateTo);
+
+
 
                 //  TODO: ApplicationStatus Stub
                 applicationStatusList = JsonConvert.DeserializeObject<List<ApplicationStatusModel>>("[{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}},{\"type\":\"Change Tariff\",\"typeCode\":\"changeTariff\",\"status\":\"Completed\",\"statusCode\":\"completed\",\"refCode\":\"SR\",\"accountNumber\":\"212112345678\",\"applicationNumber\":\"NC-100-456-7800\",\"srNumber\":\"SR: 10045678\",\"isUpdated\":true,\"applicationDate\":{\"month\":6,\"year\":\"2019\",\"formattedDate\":\"16 Jul 2019\"}}]");

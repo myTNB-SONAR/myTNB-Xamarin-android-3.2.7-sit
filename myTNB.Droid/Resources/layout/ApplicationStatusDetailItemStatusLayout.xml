@@ -9,28 +9,36 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical">
+		<ImageView
+			android:id="@+id/imgApplicationStatusGreen"
+			android:layout_height="12.0dp"
+			android:layout_width="12dp"
+			android:layout_marginTop="2dp"
+			android:padding="2dp"
+			android:visibility="visible"
+			android:src="@drawable/application_status_done_indication" />
         <ImageView
-            android:id="@+id/imgApplicationStatusDone"
+            android:id="@+id/imgApplicationStatusOrange"
             android:layout_height="12dp"
             android:layout_width="12dp"
             android:layout_marginTop="2dp"
-            android:padding="2dp"
-            android:visibility="visible"
-            android:src="@drawable/application_status_done_indication" />
+            android:padding="0dp"
+            android:visibility="gone"
+            android:src="@drawable/Img_application_Active_Payment" />
         <ImageView
-            android:id="@+id/imgApplicationStatusOther"
+            android:id="@+id/imgApplicationStatusGray"
             android:layout_height="12dp"
             android:layout_width="12dp"
             android:layout_marginTop="2dp"
             android:visibility="gone"
             android:src="@drawable/img_application_status_in_progress" />
         <ImageView
-            android:id="@+id/imgApplicationStatusnNew"
+            android:id="@+id/imgApplicationStatusnLightGray"
             android:layout_height="12dp"
             android:layout_width="12dp"
             android:layout_marginTop="2dp"
-            android:padding="2dp"
-            android:visibility="gone"
+            android:padding="0dp"
+            android:visibility="visible"
             android:src="@drawable/img_application_status_new" />
         <View
             android:layout_height="match_parent"
@@ -39,6 +47,13 @@
             android:visibility="visible"
             android:id="@+id/applicationStatusLine"
             android:background="#20bd4c" />
+        <View
+            android:layout_height="match_parent"
+            android:layout_width="2dp"
+            android:layout_marginLeft="5dp"
+            android:visibility="gone"
+            android:id="@+id/applicationStatusLineInactive"
+            android:background="#e4e4e4" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

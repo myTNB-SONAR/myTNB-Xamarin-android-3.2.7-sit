@@ -61,7 +61,7 @@
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="17dp">
                             <EditText
-                                android:hint="Application Type"
+                                
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawableLeft="@drawable/ic_field_application_type"
@@ -83,7 +83,7 @@
                             app:errorEnabled="true"
                             android:layout_marginRight="17dp">
                             <EditText
-                                android:hint="Search by"
+                               android:hint="Search by"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawableLeft="@drawable/ic_field_search"
@@ -100,6 +100,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
                             app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                             android:id="@+id/txtInputLayoutServiceRequestNum"
                             app:errorEnabled="true"
@@ -133,7 +134,7 @@
                    
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="16dp"
-                    android:layout_marginTop="16dp"
+                   
                     android:orientation="horizontal"
                     android:visibility="visible"
                     android:clickable="true">
@@ -179,7 +180,9 @@
                             android:layout_height="wrap_content"
                             android:visibility="visible" />
                     </LinearLayout>
+         
             </LinearLayout>
+
         </androidx.core.widget.NestedScrollView>
         <LinearLayout
             android:layout_width="match_parent"
@@ -188,13 +191,7 @@
             android:gravity="bottom"
             android:background="@color/white"
             android:layout_gravity="bottom">
-            <ImageView
-                android:id="@+id/shadow_layout"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:visibility="visible"
-                android:scaleType="fitXY"
-                android:background="@drawable/shadow_effect" />
+          
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

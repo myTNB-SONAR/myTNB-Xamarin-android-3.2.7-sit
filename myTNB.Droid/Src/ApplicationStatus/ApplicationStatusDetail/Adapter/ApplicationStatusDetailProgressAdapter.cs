@@ -17,6 +17,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
         private BaseActivityCustom mActicity;
         private List<StatusTrackerDisplay> mProgressList = new List<StatusTrackerDisplay>();
         public event EventHandler<int> ItemClick;
+        public bool IsPayment;
 
         public void Clear()
         {
@@ -24,8 +25,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
             this.NotifyDataSetChanged();
         }
 
-        public ApplicationStatusDetailProgressAdapter(BaseActivityCustom activity, List<StatusTrackerDisplay> data)
+        public ApplicationStatusDetailProgressAdapter(BaseActivityCustom activity, List<StatusTrackerDisplay> data, bool IsPayment)
         {
+            this.IsPayment = IsPayment;
             this.mActicity = activity;
             this.mProgressList.AddRange(data);
         }
@@ -50,17 +52,21 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
             ApplicationDetailProgressViewHolder vh = holder as ApplicationDetailProgressViewHolder;
 
             StatusTrackerDisplay item = mProgressList[position];
-            vh.PopulateData(item,mProgressList,position);
+            vh.PopulateData(item,mProgressList,position,this.IsPayment);
         }
 
         public class ApplicationDetailProgressViewHolder : RecyclerView.ViewHolder
         {
-            public ImageView ImgApplicationStatusDone { get; private set; }
-            public ImageView ImgApplicationStatusOther { get; private set; }
-            public ImageView ImgApplicationStatusNew { get; private set; }
+            public ImageView ImgApplicationStatusGreen { get; private set; }
+            public ImageView ImgApplicationStatusOrange { get; private set; }
+            public ImageView ImgApplicationStatusGray { get; private set; }
+            public ImageView ImgApplicationStatusnLightGray { get; private set; }
+            
             public View ApplicationStatusLine { get; private set; }
+            public View ApplicationStatusLineInactive { get; private set; }
             public TextView TxtApplicationStatusDetailWord { get; private set; }
             public View applicationStatusLine { get; private set; }
+
             //public TextView TxtApplicationStatusDetailCTA { get; private set; }
 
             private Context context;
@@ -70,35 +76,71 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
             public ApplicationDetailProgressViewHolder(View itemView, Action<int> listener) : base(itemView)
             {
                 context = itemView.Context;
-                ImgApplicationStatusDone = itemView.FindViewById<ImageView>(Resource.Id.imgApplicationStatusDone);
-                ImgApplicationStatusOther = itemView.FindViewById<ImageView>(Resource.Id.imgApplicationStatusOther);
-                ImgApplicationStatusNew = itemView.FindViewById<ImageView>(Resource.Id.imgApplicationStatusnNew);
+                ImgApplicationStatusGreen = itemView.FindViewById<ImageView>(Resource.Id.imgApplicationStatusGreen);
+                ImgApplicationStatusOrange = itemView.FindViewById<ImageView>(Resource.Id.imgApplicationStatusOrange);
+                ImgApplicationStatusGray = itemView.FindViewById<ImageView>(Resource.Id.imgApplicationStatusGray);
+                ImgApplicationStatusnLightGray = itemView.FindViewById<ImageView>(Resource.Id.imgApplicationStatusnLightGray);
+
                 ApplicationStatusLine = itemView.FindViewById<View>(Resource.Id.applicationStatusLine);
+                ApplicationStatusLineInactive = itemView.FindViewById<View>(Resource.Id.applicationStatusLineInactive);
                 TxtApplicationStatusDetailWord = itemView.FindViewById<TextView>(Resource.Id.txtApplicationStatusDetailWord);
-                applicationStatusLine = itemView.FindViewById<View>(Resource.Id.applicationStatusLine);
+                
                 //TxtApplicationStatusDetailCTA = itemView.FindViewById<TextView>(Resource.Id.txtApplicationStatusDetailCTA);
                 //TxtApplicationStatusDetailCTA.Clickable = true;
                 //TxtApplicationStatusDetailCTA.Click += (sender, e) => listener(base.LayoutPosition);
             }
 
 
-            public void PopulateData(StatusTrackerDisplay item, List<StatusTrackerDisplay> mProgressList, int position)
+            public void PopulateData(StatusTrackerDisplay item, List<StatusTrackerDisplay> mProgressList, int position, bool IsPayment)
             {
                 this.item = item;
                 try
                 {
                     //  TODO: ApplicationStatus Setup whole view
-                   
+
+                    ImgApplicationStatusGreen.Visibility = ViewStates.Gone;
+                    ImgApplicationStatusOrange.Visibility = ViewStates.Gone;
+                    ImgApplicationStatusGray.Visibility = ViewStates.Gone;
+                    ImgApplicationStatusnLightGray.Visibility = ViewStates.Gone;
+                    ApplicationStatusLine.Visibility = ViewStates.Gone;
+
                     TxtApplicationStatusDetailWord.Text = item.StatusDescription;
                     TextViewUtils.SetMuseoSans300Typeface(TxtApplicationStatusDetailWord);
-                   
-                    if(mProgressList.Count == position + 1)
+
+                    if(item.TrackerItemState == State.Active)
                     {
-                        applicationStatusLine.Visibility = ViewStates.Gone;
+                        if (IsPayment && mProgressList.Count != position + 1)
+                        {
+                            ImgApplicationStatusOrange.Visibility = ViewStates.Visible;
+                            TextViewUtils.SetMuseoSans500Typeface(TxtApplicationStatusDetailWord);
+                        }
+                        if (!IsPayment )
+                        {
+                            ImgApplicationStatusGray.Visibility = ViewStates.Visible;
+                            TextViewUtils.SetMuseoSans500Typeface(TxtApplicationStatusDetailWord);
+                        }
+                        if(mProgressList.Count != position + 1)
+                        {
+                            ApplicationStatusLineInactive.Visibility = ViewStates.Visible;
+                            TextViewUtils.SetMuseoSans500Typeface(TxtApplicationStatusDetailWord);
+                        }
+
                     }
-                    else
+                    else if (item.TrackerItemState == State.Completed || item.TrackerItemState == State.Past)
                     {
-                        applicationStatusLine.Visibility = ViewStates.Visible;
+                        ImgApplicationStatusGreen.Visibility = ViewStates.Visible;
+                        if (mProgressList.Count != position + 1)
+                        {
+                            ApplicationStatusLine.Visibility = ViewStates.Visible;
+                        }
+                    }
+                    else if (item.TrackerItemState == State.Inactive)
+                    {
+                        ImgApplicationStatusnLightGray.Visibility = ViewStates.Visible;
+                        if (mProgressList.Count != position + 1)
+                        {
+                            ApplicationStatusLineInactive.Visibility = ViewStates.Visible;
+                        }
                     }
                 }
                 catch (Exception e)
