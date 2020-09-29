@@ -30,6 +30,9 @@ namespace myTNB
         public List<string> UserRole { set; get; }
 
         //Mark: Display Specific Properties
+        /// <summary>
+        /// Used to display the hint if Application Number is selected
+        /// </summary>
         [JsonIgnore]
         public string ApplicationNoHint
         {
@@ -58,6 +61,9 @@ namespace myTNB
             }
         }
 
+        /// <summary>
+        /// Search By Description Display based on language
+        /// </summary>
         [JsonIgnore]
         public string SearchApplicationTypeDescDisplay
         {
@@ -79,6 +85,9 @@ namespace myTNB
         public LanguageDisplayModel SearchTypeDesc { set; get; }
 
         //Mark: Display Specific Properties
+        /// <summary>
+        /// Application Type Description Display based on language
+        /// </summary>
         [JsonIgnore]
         public string SearchTypeDescDisplay
         {

@@ -31,17 +31,25 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
 
         public string referenceNo { set; get; }
 
-        public int applicationModuleId { set; get; }
+        public string applicationModuleId { set; get; }
+
+        public string backendReferenceNo { set; get; }
+
+        public string backendApplicationType { set; get; }
+
+        public string backendModule { set; get; }
 
         public string srNo { set; get; }
 
         public string srType { set; get; }
 
-        public int statusId { set; get; }
+        public string statusId { set; get; }
 
         public string statusCode { set; get; }
 
         public DateTime? createdDate { set; get; }
+
+        public DateTime? statusDate { set; get; }
 
         [JsonIgnore]
         public string createDateDisplay

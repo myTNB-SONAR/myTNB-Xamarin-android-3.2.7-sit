@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails;
 using myTNB.Mobile.Extensions;
+using System.Diagnostics;
 
 namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
 {
@@ -15,11 +15,17 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
         private static string _addFormat = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusActivityLog", "add");
         private static string _updateFormat = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusActivityLog", "update");
         private static string _removeFormat = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusActivityLog", "remove");
+        private const string KEDAI = "KEDAI";
+        private const string SAVED = "SAVED";
 
         internal static ApplicationDetailDisplay Parse(this GetApplicationDetailsResponse response
-            , string applicationType
-            , string applicationTypeTitle
-            , string applicationId)
+            , string searchApplicationType
+            , string applicationModuleDescription
+            , string applicationID
+            , string applicationModuleId
+            , string createdByRoleID
+            , bool isPremiseServiceReady
+            , bool isSavedApplication)
         {
             {
                 ApplicationDetailDisplay displayModel = new ApplicationDetailDisplay
@@ -36,14 +42,13 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                 };
                 if (response != null && response.Content != null)
                 {
-                    displayModel.Content.ApplicationType = applicationTypeTitle;
+                    displayModel.Content.ApplicationTypeReference = applicationModuleDescription;
                     displayModel.Content.IsSaveMessageDisplayed = false;
                     displayModel.Content.IsFullApplicationTooltipDisplayed = true;
                     displayModel.Content.IsDeleteEnable = true;
+                    displayModel.Content.IsSavedApplication = isSavedApplication;
 
-                    //Todo: Check where to get last updated date
-                    displayModel.Content.ApplicationDetail.CreatedDate = DateTime.Now;
-                    displayModel.Content.ApplicationDetail.ApplicationId = applicationId;
+                    displayModel.Content.ApplicationDetail.ApplicationId = applicationID;
 
                     if (response.Content.applicationPaymentDetail != null)
                     {
@@ -70,15 +75,20 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                         }
 
                         List<SelectorModel> additionalDisplayConfig = new List<SelectorModel>();
-                        string key = applicationType;
+                        string key = searchApplicationType;
                         if (displayModel.Content.IsKedaiTenagaApplication)
                         {
-                            key = "KEDAI";
+                            key = KEDAI;
                         }
                         if (response.Content.savedApplicationDetail != null)
                         {
-                            key = "SAVED";
+                            key = SAVED;
                         }
+                        GetNCType(ref key
+                            , searchApplicationType
+                            , applicationModuleId
+                            , createdByRoleID
+                            , isPremiseServiceReady);
                         if (selectors != null && selectors.ContainsKey(key))
                         {
                             additionalDisplayConfig = selectors[key];
@@ -89,7 +99,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                             AddAdditionalInfo(ref displayModel
                                 , response.Content
                                 , additionalDisplayConfig
-                                , key);
+                                , searchApplicationType == "NC" ? searchApplicationType : key);
                         }
 
                         displayModel.Content.ApplicationStatusDetail = new ApplicationStatusDetailDisplayModel
@@ -157,7 +167,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
 
                                 for (int j = 0; j < displayItem.ChangeLogs.Count; j++)
                                 {
-                                    ChangeLogsDisplay log = displayItem.ChangeLogs[i];
+                                    ChangeLogsDisplay log = displayItem.ChangeLogs[j];
                                     string change = string.Empty;
                                     if (log.Event == ChangeEvent.Add)
                                     {
@@ -180,7 +190,6 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                                     {
                                         displayItem.DocumentsUpdateList.Add(change);
                                     }
-
                                 }
                             }
                             displayModel.Content.ApplicationActivityLogDetail.Add(displayItem);
@@ -211,6 +220,14 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
             object props = GetObjectValue(content, propertyName);
             if (props != null)
             {
+                if (GetObjectValue(props, "statusDate") is object statusDate && statusDate != null)
+                {
+                    displayModel.Content.ApplicationDetail.StatusDate = Convert.ToDateTime(statusDate);
+                }
+                if (GetObjectValue(props, "createdDate") is object createdDate && createdDate != null)
+                {
+                    displayModel.Content.ApplicationDetail.CreatedDate = Convert.ToDateTime(createdDate);
+                }
                 for (int i = 0; i < additionalDisplayConfig.Count; i++)
                 {
                     SelectorModel item = additionalDisplayConfig[i];
@@ -226,6 +243,47 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                 }
             }
         }
+        #endregion
+        #region Evaluate NC Type
+        private static void GetNCType(ref string key
+            , string applicationType
+            , string applicationModuleId
+            , string createdByRoleID
+            , bool isPremiseServiceReady)
+        {
+            if (applicationType != "NC" || key == KEDAI || key == SAVED) { return; }
+            if (applicationModuleId == "101011" || applicationModuleId == "101010")
+            {
+                key = "NC_GROUPMOVEIN";
+            }
+            else if (applicationModuleId == "101012")
+            {
+                key = "NC_PREMISECREATION";
+            }
+            else if (applicationModuleId == "101001" && isPremiseServiceReady)
+            {
+                if (createdByRoleID == "16")
+                {
+                    key = "NC_PREMISEINDIVUDUAL";
+                }
+                else if (createdByRoleID == "2")
+                {
+                    key = "NC_PREMISECONTRACTOR";
+                }
+            }
+            else if (createdByRoleID == "2")
+            {
+                key = "NC_CONTRACTOR";
+            }
+        }
+        /*
+        "NC": [],
+    "NC_GROUPMOVEIN": [],       DONE
+    "NC_PREMISECREATION": [],   DONE
+    "NC_CONTRACTOR": [],
+    "NC_PREMISEINDIVUDUAL": [], DONE
+    "NC_PREMISECONTRACTOR": [], DONE
+        */
         #endregion
         #region Payment Display
         private static void SetPaymentDisplay(ref ApplicationDetailDisplay displayModel)

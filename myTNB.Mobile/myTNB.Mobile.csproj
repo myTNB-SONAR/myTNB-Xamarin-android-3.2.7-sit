@@ -74,6 +74,11 @@
     <Folder Include="API\Models\Application Status\Get All Applications\" />
     <Folder Include="Session Cache\" />
     <Folder Include="API\Models\Application Status\Get Application Details\" />
+    <Folder Include="API\Managers\Payment\" />
+    <Folder Include="API\Services\Payment\" />
+    <Folder Include="API\Models\Payment\" />
+    <Folder Include="API\Models\Payment\Application Payment\" />
+    <Folder Include="Helpers\Application Status\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />

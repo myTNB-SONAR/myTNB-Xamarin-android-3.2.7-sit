@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.Extensions;
+using System.Diagnostics;
 
 namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
 {
@@ -44,12 +45,13 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
             };
             if (response != null && response.Content != null)
             {
-                displayModel.Content.ApplicationType = applicationTypeTitle;
+                displayModel.Content.ApplicationTypeReference = applicationTypeTitle;
                 displayModel.Content.ApplicationTypeID = applicationTypeID;
                 //Mark: Values are hardcoded since this is a GetApplicationStatus API
                 displayModel.Content.IsSaveMessageDisplayed = true;
                 displayModel.Content.IsFullApplicationTooltipDisplayed = false;
                 displayModel.Content.IsDeleteEnable = false;
+                displayModel.Content.IsSavedApplication = false;
 
                 if (response.Content.applicationDetail != null)
                 {
@@ -58,11 +60,15 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                         ApplicationId = response.Content.applicationDetail.applicationId,
                         ReferenceNo = response.Content.applicationDetail.referenceNo,
                         ApplicationModuleId = response.Content.applicationDetail.applicationModuleId,
+                        BackendApplicationType = response.Content.applicationDetail.backendApplicationType,
+                        BackendModule = response.Content.applicationDetail.backendModule,
+                        BackendReferenceNo = response.Content.applicationDetail.backendReferenceNo,
                         SRNo = response.Content.applicationDetail.srNo,
                         SRType = response.Content.applicationDetail.srType,
                         StatusID = response.Content.applicationDetail.statusId,
                         StatusCode = response.Content.applicationDetail.statusCode,
-                        CreatedDate = response.Content.applicationDetail.createdDate
+                        CreatedDate = response.Content.applicationDetail.createdDate,
+                        StatusDate = response.Content.applicationDetail.statusDate
                     };
                 }
                 if (response.Content.applicationPaymentDetail != null)
@@ -104,7 +110,6 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     for (int i = 0; i < response.Content.ApplicationActivityLogDetail.Count; i++)
                     {
                         ApplicationActivityLogDetail logDetail = response.Content.ApplicationActivityLogDetail[i];
-
                         ApplicationActivityLogDetailDisplay displayItem = new ApplicationActivityLogDetailDisplay
                         {
                             StatusID = logDetail.StatusID,
@@ -136,7 +141,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
 
                             for (int j = 0; j < displayItem.ChangeLogs.Count; j++)
                             {
-                                ChangeLogsDisplay log = displayItem.ChangeLogs[i];
+                                ChangeLogsDisplay log = displayItem.ChangeLogs[j];
                                 string change = string.Empty;
                                 if (log.Event == ChangeEvent.Add)
                                 {

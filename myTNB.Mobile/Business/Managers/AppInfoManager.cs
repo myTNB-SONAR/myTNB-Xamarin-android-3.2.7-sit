@@ -54,12 +54,13 @@ namespace myTNB
 
         public string GetUserInfo()
         {
+            //return Newtonsoft.Json.JsonConvert.SerializeObject(UserInfo);
+
             return Newtonsoft.Json.JsonConvert.SerializeObject(new
             {
                 RoleId = "16",
-                UserId = "243A701C-761A-415D-BAC0-DD69490513B1",
-                UserName = "tester1.tnb@gmail.com",
-                Lang = this.Language.ToString()
+                UserId = "2EA0AF57-0B9F-4A41-81F3-BBEF6AAD680C",
+                UserName = "kingkong@gmail.com"
             });
 
             //TODO: Update Default Value

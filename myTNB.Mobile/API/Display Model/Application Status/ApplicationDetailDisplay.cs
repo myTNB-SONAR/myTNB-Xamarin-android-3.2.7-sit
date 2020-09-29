@@ -43,6 +43,29 @@ namespace myTNB.Mobile
         }
 
         /// <summary>
+        /// Determines if the application was saved or not
+        /// Searched application defaults to false
+        /// </summary>
+        public bool IsSavedApplication { set; get; }
+
+        /// <summary>
+        /// This Determines if the Linked with section of NC should be displayed
+        /// </summary>
+        public bool IsLinkedWithDisplayed
+        {
+            get
+            {
+                //Mark: Saved and Searched application shouldn't see this
+                if (IsSavedApplication || IsSaveMessageDisplayed)
+                {
+                    return false;
+                }
+                //Todo: Map property once available in unified service
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Determines if the save message whould be hidden or not
         /// </summary>
         public bool IsSaveMessageDisplayed { set; get; }
@@ -84,21 +107,16 @@ namespace myTNB.Mobile
         /// Determines if Delete is displayed or not
         /// </summary>
         public bool IsDeleteEnable { set; get; }
+
+        public string ApplicationTypeReference { set; get; }
         /// <summary>
         /// Application Type Text
         /// </summary>
         public string ApplicationType
         {
-            set
-            {
-                if (value.IsValid())
-                {
-                    _applicationType = value;
-                }
-            }
             get
             {
-                return LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "for") + _applicationType;
+                return LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "for") + ApplicationTypeReference;
             }
         }
         /// <summary>
@@ -245,12 +263,16 @@ namespace myTNB.Mobile
     {
         public string ApplicationId { set; get; }
         public string ReferenceNo { set; get; }
-        public int ApplicationModuleId { set; get; }
+        public string ApplicationModuleId { set; get; }
+        public string BackendReferenceNo { set; get; }
+        public string BackendApplicationType { set; get; }
+        public string BackendModule { set; get; }
         public string SRNo { set; get; }
         public string SRType { set; get; }
-        public int StatusID { set; get; }
+        public string StatusID { set; get; }
         public string StatusCode { set; get; }
         public DateTime? CreatedDate { set; get; }
+        public DateTime? StatusDate { set; get; }
 
         /// <summary>
         /// Formatted Created date display
@@ -275,7 +297,7 @@ namespace myTNB.Mobile
         {
             get
             {
-                return true;
+                return StatusDate != null && StatusDate.Value != null;
             }
         }
         /// <summary>
@@ -287,8 +309,8 @@ namespace myTNB.Mobile
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
                 string message = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "lastUpdatedDate");
-                string date = CreatedDate != null && CreatedDate.Value != null
-                    ? CreatedDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
+                string date = StatusDate != null && StatusDate.Value != null
+                    ? StatusDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
                     : string.Empty;
                 string displayDate = string.Format(message, date);
                 return displayDate;

@@ -97,8 +97,8 @@ namespace myTNB.Mobile
         [JsonProperty("srType")]
         public string SRType { set; get; }
 
-        [JsonProperty("searchApplicationType")]
-        public string SearchApplicationType { set; get; }
+        [JsonProperty("applicationType")]
+        public string ApplicationType { set; get; }
 
         /// <summary>
         /// Display Application Type
@@ -119,34 +119,34 @@ namespace myTNB.Mobile
         public string StatusDescription { set; get; }
 
         [JsonProperty("isPremiseServiceReady")]
-        public string IsPremiseServiceReady { set; get; }
+        public bool IsPremiseServiceReady { set; get; }
 
         [JsonProperty("reTsType")]
         public string RETSType { set; get; }
 
         [JsonProperty("isSmartMeter")]
-        public string IsSmartMeter { set; get; }
+        public bool IsSmartMeter { set; get; }
 
         [JsonProperty("isOpc")]
-        public string IsOpc { set; get; }
+        public bool IsOpc { set; get; }
 
         [JsonProperty("isLpc")]
-        public string IsLpc { set; get; }
+        public bool IsLpc { set; get; }
 
         [JsonProperty("isExpress")]
-        public string IsExpress { set; get; }
+        public bool IsExpress { set; get; }
 
         [JsonProperty("isGe")]
-        public string IsGe { set; get; }
+        public bool IsGe { set; get; }
 
         [JsonProperty("isMeterChanged")]
-        public string IsMeterChanged { set; get; }
+        public bool IsMeterChanged { set; get; }
 
         [JsonProperty("isLegacyAndInvalid")]
-        public string IsLegacyAndInvalid { set; get; }
+        public bool IsLegacyAndInvalid { set; get; }
 
         [JsonProperty("isViewable")]
-        public string IsViewable { set; get; }
+        public bool IsViewable { set; get; }
 
         [JsonProperty("ViewMode")]
         public string ViewMode { set; get; }
@@ -165,6 +165,9 @@ namespace myTNB.Mobile
 
         [JsonProperty("lastModifiedDate")]
         public DateTime? LastModifiedDate { set; get; }
+
+        [JsonProperty("system")]
+        public string System { set; get; }
 
         /// <summary>
         /// Display reference number under Application Type
@@ -186,5 +189,49 @@ namespace myTNB.Mobile
                 return refno;
             }
         }
+
+        /// <summary>
+        /// This Determines if the Application was Saved in the user listing or it was added by default
+        /// </summary>
+        [JsonIgnore]
+        public bool IsSavedApplication
+        {
+            get
+            {
+                return SavedApplicationId.IsValid();
+            }
+        }
+
+        public RoleType Role
+        {
+            get
+            {
+                RoleType rType = RoleType.None;
+                if (CreatedByRoleID.IsValid())
+                {
+                    if (CreatedByRoleID == "2")
+                    {
+                        rType = RoleType.Contractor;
+                    }
+                    else if (CreatedByRoleID == "16")
+                    {
+                        rType = RoleType.Individual;
+                    }
+                    else if (CreatedByRoleID == "36")
+                    {
+                        rType = RoleType.Developer;
+                    }
+                }
+                return rType;
+            }
+        }
+    }
+
+    public enum RoleType
+    {
+        Developer,  //36
+        Contractor, //2
+        Individual, //16
+        None
     }
 }

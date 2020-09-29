@@ -1116,7 +1116,7 @@
     "viewLess": "View Less",
     "sn": "SN: {0}",
     "sr": "SR: {0}",
-    "displayPerQuery": "5"
+    "displayPerQuery": "20"
   },
   "ApplicationStatusSearch": {
     "title": "Search Application Status",
@@ -1135,7 +1135,7 @@
     "title": "Select Filter",
     "applicationType": "Application Type",
     "status": "Status",
-    "creationDate": "Creation Date",
+    "creationDate": "Creation On",
     "clear": "Clear",
     "apply": "Apply"
   },
@@ -1160,7 +1160,12 @@
     "loginSecondaryCTA": "Login / Register",
     "viewDetails": "View Details",
     "payNow": "Pay Now",
-    "needToPay": "I need to pay"
+    "needToPay": "I need to pay",
+    "linkedWith": "LINKED WITH",
+    "linkedWithView": "View",
+    "viewReceipt": "View Receipt",
+    "taxInvoice": "TAX INVOICE",
+    "taxInvoiceView": "View Tax Invoice"
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Payment Details",
@@ -1207,6 +1212,46 @@
         "value": "projectDetail"
       },
       {
+        "key": "COA",
+        "value": "closeOfAccountDetail"
+      },
+      {
+        "key": "COT",
+        "value": "changeOfTenancyDetail"
+      },
+      {
+        "key": "RB_GSL",
+        "value": "gslDetail"
+      },
+      {
+        "key": "RB_SRQ",
+        "value": "helpFormDetail"
+      },
+      {
+        "key": "SMR",
+        "value": "smrDetail"
+      },
+      {
+        "key": "MD",
+        "value": "merdekaIncentiveDetail"
+      },
+      {
+        "key": "RE_TS",
+        "value": "reTechStudyDetail"
+      },
+      {
+        "key": "RW_LC",
+        "value": "changeLoadDetail"
+      },
+      {
+        "key": "RW_PC",
+        "value": "changeProductDetail"
+      },
+      {
+        "key": "GT",
+        "value": "greenTariffDetail"
+      },
+      {
         "key": "SEARCH",
         "value": "applicationDetail"
       },
@@ -1249,16 +1294,6 @@
         "description": "Created On"
       }
     ],
-    "ASR": [
-      {
-        "key": "referenceNo",
-        "description": "Application Number"
-      },
-      {
-        "key": "createDateDisplay",
-        "description": "Created On"
-      }
-    ],
     "NC": [
       {
         "key": "referenceNo",
@@ -1271,22 +1306,226 @@
       {
         "key": "srNo",
         "description": "Service Request Number"
+      }
+    ],
+    "NC_GROUPMOVEIN": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
       },
       {
-        "key": "caNo",
-        "description": "Electricity Account Number"
+        "key": "createDateDisplay",
+        "description": "Created On"
       },
       {
-        "key": "premiseCategoryDescription",
-        "description": "Type of Premise"
+        "key": "srNo",
+        "description": "Service Request Number"
+      }
+    ],
+    "NC_PREMISECREATION": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
       },
       {
-        "key": "accountTypeDescription",
-        "description": "Account Type"
+        "key": "createDateDisplay",
+        "description": "Created On"
       },
       {
-        "key": "electricityStartDateDisplay",
-        "description": "Electricity Start Date"
+        "key": "srNo",
+        "description": "Service Request Number"
+      }
+    ],
+    "NC_CONTRACTOR": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      },
+      {
+        "key": "srNo",
+        "description": "Service Request Number"
+      }
+    ],
+    "NC_PREMISEINDIVUDUAL": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      },
+      {
+        "key": "srNo",
+        "description": "Service Request Number"
+      }
+    ],
+    "NC_PREMISECONTRACTOR": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      },
+      {
+        "key": "srNo",
+        "description": "Service Request Number"
+      }
+    ],
+    "ASR": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      }
+    ],
+    "RB_GSL": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      },
+      {
+        "key": "srNo",
+        "description": "Service Request Number"
+      }
+    ],
+    "GT": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      },
+      {
+        "key": "srNo",
+        "description": "Service Request Number"
+      }
+    ],
+    "RW_PC": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      },
+      {
+        "key": "srNo",
+        "description": "Service Request Number"
+      }
+    ],
+    "RW_LC": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      },
+      {
+        "key": "srNo",
+        "description": "Service Request Number"
+      }
+    ],
+    "RE_TS": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      },
+      {
+        "key": "srNo",
+        "description": "Service Request Number"
+      }
+    ],
+    "MD": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      },
+      {
+        "key": "srNo",
+        "description": "Service Request Number"
+      }
+    ],
+    "SMR": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      },
+      {
+        "key": "srNo",
+        "description": "Service Request Number"
+      }
+    ],
+    "RB_SRQ": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      },
+      {
+        "key": "srNo",
+        "description": "Service Request Number"
+      }
+    ],
+    "COT": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      },
+      {
+        "key": "srNo",
+        "description": "Service Request Number"
+      }
+    ],
+    "COA": [
+      {
+        "key": "referenceNo",
+        "description": "Application Number"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Created On"
+      },
+      {
+        "key": "srNo",
+        "description": "Service Request Number"
       }
     ],
     "PRJ": [

@@ -25,6 +25,12 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
             , string urlPrefix = Constants.ApiUrlPath
             , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
+        [Get("/{urlPrefix}/SearchApplicationType?lang={language}")]
+        Task<SearchApplicationTypeResponse> SearchApplicationType(CancellationToken cancelToken
+            , string language
+            , string urlPrefix = Constants.ApiUrlPath
+            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+
         [Get("/{urlPrefix}/ApplicationStatus?lang={language}&applicationType={applicationType}&searchType={searchType}&searchTerm={searchTerm}")]
         Task<HttpResponseMessage> GetApplicationStatus(string applicationType
             , string searchType
@@ -34,6 +40,15 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
             , string language
             , string urlPrefix = Constants.ApiUrlPath
             , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+
+        [Get("/{urlPrefix}/ApplicationStatus?lang={language}&applicationType={applicationType}&searchType={searchType}&searchTerm={searchTerm}")]
+        Task<HttpResponseMessage> GetApplicationStatus(string applicationType
+           , string searchType
+           , string searchTerm
+           , CancellationToken cancelToken
+           , string language
+           , string urlPrefix = Constants.ApiUrlPath
+           , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
         [Post("/{urlPrefix}/SaveApplication")]
         Task<HttpResponseMessage> SaveApplication([Body] PostSaveApplicationRequest request
@@ -60,9 +75,10 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
            , string urlPrefix = Constants.ApiUrlPath
            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
-        [Get("/{urlPrefix}/ApplicationDetail?lang={language}&applicationType={applicationType}&id={id}")]
+        [Get("/{urlPrefix}/ApplicationDetail?lang={language}&applicationType={applicationType}&searchTerm={searchTerm}&system={system}")]
         Task<HttpResponseMessage> GetApplicationDetail(string applicationType
-            , string id
+            , string searchTerm
+            , string system
             , [Header(Constants.Header_UserInfo)] string userInfo
             , CancellationToken cancelToken
             , string language

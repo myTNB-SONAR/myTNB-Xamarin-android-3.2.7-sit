@@ -17,33 +17,33 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
 
         public ASRDetail addressSearchRequest { set; get; }
 
-        public object changeLoadDetail { set; get; }
+        public RW_LCDetail changeLoadDetail { set; get; }
 
-        public object changeOfTenancyDetail { set; get; }
+        public COTDetail changeOfTenancyDetail { set; get; }
 
-        public object changeProductDetail { set; get; }
+        public RW_PCDetail changeProductDetail { set; get; }
 
-        public object merdekaIncentiveDetail { set; get; }
+        public MDDetail merdekaIncentiveDetail { set; get; }
 
-        public object closeOfAccountDetail { set; get; }
+        public COADetail closeOfAccountDetail { set; get; }
 
-        public object greenTariffDetail { set; get; }
+        public GTDetail greenTariffDetail { set; get; }
 
-        public object reTechStudyDetail { set; get; }
+        public RE_TSDetail reTechStudyDetail { set; get; }
 
-        public object gslDetail { set; get; }
+        public RB_GSLDetail gslDetail { set; get; }
 
-        public object helpFormDetail { set; get; }
+        public RB_SRQDetail helpFormDetail { set; get; }
 
         public NCDetail newConnectionDetail { set; get; }
 
         public PRJDetail projectDetail { set; get; }
 
-        public object smrDetail { set; get; }
+        public SMRDetail smrDetail { set; get; }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-    public class BaseApplicationDetails
+    public class BaseApplicationDetail
     {
         public string referenceNo { set; get; }
 
@@ -55,7 +55,15 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
 
         public string createdByRoleId { set; get; }
 
+        public string srNo { set; get; }
+
+        public string srType { set; get; }
+
+        public string statusCode { set; get; }
+
         public DateTime? createdDate { set; get; }
+
+        public DateTime? statusDate { set; get; }
 
         [JsonIgnore]
         public string createDateDisplay
@@ -72,19 +80,13 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-    public class SavedDetail : BaseApplicationDetails
+    public class SavedDetail : BaseApplicationDetail
     {
         public string applicationId { set; get; }
-
-        public string srNo { set; get; }
-
-        public string srType { set; get; }
-
-        public string statusCode { set; get; }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-    public class ASRDetail : BaseApplicationDetails
+    public class ASRDetail : BaseApplicationDetail
     {
         public string addressSearchRequestId { set; get; }
 
@@ -92,15 +94,9 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-    public class NCDetail : BaseApplicationDetails
+    public class NCDetail : BaseApplicationDetail
     {
         public string newConnectionId { set; get; }
-
-        public string srNo { set; get; }
-
-        public string srType { set; get; }
-
-        public string statusCode { set; get; }
 
         public string firstName { set; get; }
 
@@ -115,8 +111,6 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string accountTypeDescription { set; get; }
 
         public DateTime? electricityStartDate { set; get; }
-
-        public DateTime? statusDate { set; get; }
 
         [JsonIgnore]
         public string electricityStartDateDisplay
@@ -133,23 +127,76 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-    public class PRJDetail : BaseApplicationDetails
+    public class PRJDetail : BaseApplicationDetail
     {
-        public object projectId { set; get; }
+        public string projectId { set; get; }
 
-        public object tnB_ProjectID { set; get; }
+        public string tnB_ProjectID { set; get; }
 
-        public object srNo { set; get; }
+        public string firstName { set; get; }
 
-        public object srType { set; get; }
-
-        public object statusCode { set; get; }
-
-        public object firstName { set; get; }
-
-        public object lastName { set; get; }
-
-        public DateTime statusDate { set; get; }
+        public string lastName { set; get; }
     }
 
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    public class RB_SRQDetail : BaseApplicationDetail
+    {
+        public string helpFormDetail { set; get; }
+
+        public string helpFormId { set; get; }
+    }
+
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    public class COADetail : BaseApplicationDetail
+    {
+        public string closeOfAccountId { set; get; }
+    }
+
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    public class RB_GSLDetail : BaseApplicationDetail
+    {
+        public string gslId { set; get; }
+    }
+
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    public class SMRDetail : BaseApplicationDetail
+    {
+        public string smrId { set; get; }
+    }
+
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    public class COTDetail : BaseApplicationDetail
+    {
+        public string changeOfTenancyId { set; get; }
+    }
+
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    public class MDDetail : BaseApplicationDetail
+    {
+
+    }
+
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    public class RE_TSDetail : BaseApplicationDetail
+    {
+
+    }
+
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    public class RW_LCDetail : BaseApplicationDetail
+    {
+
+    }
+
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    public class RW_PCDetail : BaseApplicationDetail
+    {
+
+    }
+
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    public class GTDetail : BaseApplicationDetail
+    {
+
+    }
 }
