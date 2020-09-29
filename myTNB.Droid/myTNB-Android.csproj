@@ -5888,6 +5888,65 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\ApplicationActivityLog.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\activity_log_status_required.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\activity_log_status_required.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\activity_log_status_required.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\activity_log_status_required.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\activity_log_status_required.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ApplicationDetailActivityLogLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\activity_log_Awaiting_Approval.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\activity_log_Awaiting_Approval.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\activity_log_Awaiting_Approval.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\activity_log_Awaiting_Approval.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\activity_log_Awaiting_Approval.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\ApplicationDetailActivityLog\Adapter\ApplicationDetailActivityAdapter.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationDetailActivityLog\MVP\ApplicationDetailActivityLogActivity.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationDetailActivityLog\Adapter\UpdatedDetailsListAdapter.cs" />
+    <AndroidResource Include="Resources\drawable\bullet.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ApplicationActivityListItemView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -6219,6 +6278,9 @@
     <Folder Include="Src\Utils\ZoomImageView\" />
     <Folder Include="Src\AppointmentScheduler\AppointmentSelect\Test\" />
     <Folder Include="Src\Utils\SessionCache\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\MVP\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\Adapter\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

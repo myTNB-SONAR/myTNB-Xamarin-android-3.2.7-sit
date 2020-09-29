@@ -20,6 +20,7 @@ using myTNB_Android.Src.PreLogin.Activity;
 using Android.Preferences;
 using AndroidX.Core.Content;
 using Android.Views;
+using myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -93,6 +94,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         private async void ViewActivityLog()
         {
             //Todo ViewActivityLog
+            
+
+            Intent applicationDetailActivityLogIntent = new Intent(this, typeof(ApplicationDetailActivityLogActivity));
+            applicationDetailActivityLogIntent.PutExtra("applicationActivityLogDetail", JsonConvert.SerializeObject(applicationDetailDisplay.ApplicationActivityLogDetail));
+            //statusLandingIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(applicationDetailActivityLogIntent);
 
 
         }
@@ -180,6 +187,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         {
             Intent statusLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
             //statusLandingIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            statusLandingIntent.PutExtra("ApplicationActivityLogDetail", JsonConvert.SerializeObject(applicationDetailDisplay.ApplicationActivityLogDetail));
             StartActivity(statusLandingIntent);
         }
 
