@@ -12,6 +12,7 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
+using myTNB.Mobile;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapter;
 using myTNB_Android.Src.Base.Activity;
@@ -28,7 +29,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP
         [BindView(Resource.Id.layout_activitylog)]
         RecyclerView layout_activitylog;
 
-        List<ApplicationActivityLogDetail> applicationActivityLogDetail;
+        List<ApplicationActivityLogDetailDisplay> applicationActivityLogDetail;
         ApplicationDetailActivityAdapter applicationDetailActivityAdapter;
 
         RecyclerView.LayoutManager layoutManager;
@@ -61,12 +62,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP
                 if (extras.ContainsKey("applicationActivityLogDetail"))
                 {
 
-                    applicationActivityLogDetail = new List<ApplicationActivityLogDetail>();
-                    applicationActivityLogDetail = JsonConvert.DeserializeObject<List<ApplicationActivityLogDetail>>(extras.GetString("applicationActivityLogDetail"));
+                    applicationActivityLogDetail = new List<ApplicationActivityLogDetailDisplay>();
+                    applicationActivityLogDetail = JsonConvert.DeserializeObject<List<ApplicationActivityLogDetailDisplay>>(extras.GetString("applicationActivityLogDetail"));
 
                     if (applicationActivityLogDetail != null && applicationActivityLogDetail.Count > 0)
                     {
-                        applicationActivityLogDetail.Add(applicationActivityLogDetail[0]);
+                        
                         applicationDetailActivityAdapter = new ApplicationDetailActivityAdapter(this, applicationActivityLogDetail);
 
                         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);

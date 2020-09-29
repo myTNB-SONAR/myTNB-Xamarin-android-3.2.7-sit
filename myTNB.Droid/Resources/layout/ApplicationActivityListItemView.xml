@@ -7,5 +7,5 @@
     android:drawableLeft="@drawable/bullet"
     android:drawablePadding="8dp"
     android:padding="5dp"
-    android:textSize="20sp"
+    android:textSize="14sp"
     android:text="List Item"/>

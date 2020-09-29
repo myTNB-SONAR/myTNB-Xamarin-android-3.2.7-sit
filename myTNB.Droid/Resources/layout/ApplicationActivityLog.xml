@@ -84,9 +84,54 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:paddingBottom="16dp"
+               android:id="@+id/layout_details"
                 android:orientation="vertical">
              <ListView
                 android:id="@+id/listview_updated_details"
+                android:layout_width="fill_parent"
+                android:listSelector="@android:color/transparent"
+                android:layout_height="wrap_content"
+                android:divider="@null"/>
+                
+            </LinearLayout>
+        <TextView
+                android:id="@+id/lbl_reason"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="14dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textColor="@color/hoverGrey"
+                android:text="REASON(S)" />
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingBottom="16dp"
+                android:orientation="vertical">
+             <ListView
+                android:id="@+id/listview_reason_details"
+                android:layout_width="fill_parent"
+                android:listSelector="@android:color/transparent"
+                android:layout_height="wrap_content"
+                android:divider="@null"/>
+                
+            </LinearLayout>
+    <TextView
+                android:id="@+id/lbl_attachments"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="14dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textColor="@color/hoverGrey"
+                android:text="PREVIOUS ATTACHMENT(S) REMOVED" />
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingBottom="16dp"
+                android:orientation="vertical">
+             <ListView
+                android:id="@+id/listview_attachments_details"
                 android:layout_width="fill_parent"
                 android:listSelector="@android:color/transparent"
                 android:layout_height="wrap_content"

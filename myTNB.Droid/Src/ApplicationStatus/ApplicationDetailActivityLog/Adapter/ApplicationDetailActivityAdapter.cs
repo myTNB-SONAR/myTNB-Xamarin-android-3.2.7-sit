@@ -7,6 +7,7 @@ using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using myTNB;
+using myTNB.Mobile;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
@@ -17,7 +18,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
     public class ApplicationDetailActivityAdapter : RecyclerView.Adapter
     {
         BaseAppCompatActivity mActivity;
-        List<ApplicationActivityLogDetail> mApplicationActivityLogDetail = new List<ApplicationActivityLogDetail>();
+        List<ApplicationActivityLogDetailDisplay> mApplicationActivityLogDetail = new List<ApplicationActivityLogDetailDisplay>();
 
      
 
@@ -27,7 +28,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
             this.NotifyDataSetChanged();
         }
 
-        public ApplicationDetailActivityAdapter(BaseAppCompatActivity activity, List<ApplicationActivityLogDetail> data)
+        public ApplicationDetailActivityAdapter(BaseAppCompatActivity activity, List<ApplicationActivityLogDetailDisplay> data)
         {
             this.mActivity = activity;
             this.mApplicationActivityLogDetail.AddRange(data);
@@ -37,10 +38,17 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-            ApplicationActivityLogViewHolder vh = holder as ApplicationActivityLogViewHolder;
+            try
+            {
+                ApplicationActivityLogViewHolder vh = holder as ApplicationActivityLogViewHolder;
 
-            ApplicationActivityLogDetail item = mApplicationActivityLogDetail[position];
-            vh.PopulateData(item, mApplicationActivityLogDetail, position);
+                ApplicationActivityLogDetailDisplay item = mApplicationActivityLogDetail[position];
+                vh.PopulateData(item, mApplicationActivityLogDetail, position);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -70,13 +78,19 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
 
             public ListView listview_updated_details { get; private set; }
 
-         
+            public TextView lbl_reason { get; private set; }
+            public ListView listview_reason_details { get; private set; }
+            public LinearLayout layout_details { get; private set; }
+            public TextView lbl_attachments { get; private set; }
+
+            public ListView listview_attachments_details { get; private set; }
+
 
             //public TextView TxtApplicationStatusDetailCTA { get; private set; }
 
             private Context context;
 
-            private ApplicationActivityLogDetail item = null;
+            private ApplicationActivityLogDetailDisplay item = null;
 
             public ApplicationActivityLogViewHolder(View itemView) : base(itemView)
             {
@@ -97,19 +111,27 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
 
                 listview_updated_details = itemView.FindViewById<ListView>(Resource.Id.listview_updated_details);
 
-               
+                lbl_reason = itemView.FindViewById<TextView>(Resource.Id.lbl_reason);
+                listview_reason_details = itemView.FindViewById<ListView>(Resource.Id.listview_reason_details);
+
+                layout_details = itemView.FindViewById<LinearLayout>(Resource.Id.layout_details);
+                lbl_attachments = itemView.FindViewById<TextView>(Resource.Id.lbl_attachments);
+
+                listview_attachments_details = itemView.FindViewById<ListView>(Resource.Id.listview_attachments_details);
+
                 //TxtApplicationStatusDetailCTA = itemView.FindViewById<TextView>(Resource.Id.txtApplicationStatusDetailCTA);
                 //TxtApplicationStatusDetailCTA.Clickable = true;
                 //TxtApplicationStatusDetailCTA.Click += (sender, e) => listener(base.LayoutPosition);
             }
 
 
-            public void PopulateData(ApplicationActivityLogDetail item, List<ApplicationActivityLogDetail> mApplicationActivityLogDetail, int position)
+            public void PopulateData(ApplicationActivityLogDetailDisplay item, List<ApplicationActivityLogDetailDisplay> mApplicationActivityLogDetail, int position)
             {
                 this.item = item;
                 try
                 {
-                 
+
+                    ListView mainList;
                     TextViewUtils.SetMuseoSans300Typeface(text_status);
                     TextViewUtils.SetMuseoSans300Typeface(lbl_date_text);
                     TextViewUtils.SetMuseoSans300Typeface(lbl_comment_text);
@@ -121,12 +143,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                     TextViewUtils.SetMuseoSans300Typeface(lbl_Status);
 
 
-                    lbl_Status.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "status");
-                    lbl_comment.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "comment");
-                    lbl_submittedby.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "submittedBy");
-                    lbl_details.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "updatedDetails");
-
-
+                    lbl_Status.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "status").ToUpper();
+                    lbl_comment.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "comment").ToUpper();
+                    lbl_submittedby.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "submittedBy").ToUpper();
+                    lbl_details.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "updatedDetails").ToUpper();
+                    lbl_reason.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "reasons").ToUpper();
+                    lbl_attachments.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "attachments").ToUpper();
 
                     text_status.Text = item.StatusDescription;
 
@@ -153,19 +175,58 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
 
                     }
 
-                    if(mApplicationActivityLogDetail.Count > 0 && mApplicationActivityLogDetail.Count == position +1)
+                   
+                
+                    if(item.DetailsUpdateList.Count != 0)
+                    {
+                        listview_updated_details.Visibility = ViewStates.Visible;
+                        lbl_details.Visibility = ViewStates.Visible;
+                        listview_updated_details.Adapter = new ArrayAdapter(context, Resource.Layout.ApplicationActivityListItemView, item.DetailsUpdateList);
+                    }
+                    else
+                    {
+                        listview_updated_details.Visibility = ViewStates.Gone;
+                        lbl_details.Visibility = ViewStates.Gone;
+                        layout_details.Visibility = ViewStates.Gone;
+                    }
+
+                    if (item.Reasons.Count != 0)
+                    {
+                        listview_reason_details.Visibility = ViewStates.Visible;
+                        lbl_reason.Visibility = ViewStates.Visible;
+                        listview_reason_details.Adapter = new ArrayAdapter(context, Resource.Layout.ApplicationActivityListItemView, item.Reasons);
+                    }
+                    else
+                    {
+                        listview_reason_details.Visibility = ViewStates.Gone;
+                        lbl_reason.Visibility = ViewStates.Gone;
+                    }
+                    if (item.DocumentsUpdateList.Count != 0)
+                    {
+                        listview_attachments_details.Visibility = ViewStates.Visible;
+                        lbl_attachments.Visibility = ViewStates.Visible;
+                        listview_reason_details.Adapter = new ArrayAdapter(context, Resource.Layout.ApplicationActivityListItemView, item.DocumentsUpdateList);
+                    }
+                    else
+                    {
+                        listview_attachments_details.Visibility = ViewStates.Gone;
+                        lbl_attachments.Visibility = ViewStates.Gone;
+                    }
+
+
+                    if (mApplicationActivityLogDetail.Count > 0 && mApplicationActivityLogDetail.Count == position + 1)
                     {
                         activityLogLine.Visibility = ViewStates.Gone;
+                       
                     }
-                  
-                    //listview_updated_details.SetAdapter(new ArrayAdapter<String>(
-                    //                    this, R.layout.list_item, listCountry));
+
                 }
                 catch (Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
                 }
             }
+            
 
         }
     }
