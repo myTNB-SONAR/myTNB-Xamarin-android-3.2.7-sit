@@ -130,12 +130,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         {
             ShowProgressDialog();
             PostSaveApplicationResponse postSaveApplicationResponse = await ApplicationStatusManager.Instance.SaveApplication(
-                             applicationDetailDisplay.ApplicationDetail.ReferenceNo
-                    , applicationDetailDisplay.ApplicationTypeID
-                    , applicationDetailDisplay.ApplicationDetail.SRNo
-                    , applicationDetailDisplay.ApplicationDetail.SRType
-                    , applicationDetailDisplay.ApplicationDetail.StatusCode
-                    , applicationDetailDisplay.ApplicationDetail.CreatedDate.Value);
+                applicationDetailDisplay.ApplicationDetail.ReferenceNo
+                , applicationDetailDisplay.ApplicationDetail.ApplicationModuleId
+                , applicationDetailDisplay.ApplicationType
+                , applicationDetailDisplay.ApplicationDetail.BackendReferenceNo
+                , applicationDetailDisplay.ApplicationDetail.BackendApplicationType
+                , applicationDetailDisplay.ApplicationDetail.BackendModule
+                , applicationDetailDisplay.ApplicationDetail.StatusCode
+                , applicationDetailDisplay.ApplicationDetail.CreatedDate.Value);
 
             HideProgressDialog();
 

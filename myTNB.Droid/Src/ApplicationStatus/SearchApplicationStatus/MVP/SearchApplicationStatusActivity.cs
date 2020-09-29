@@ -63,7 +63,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
         [BindView(Resource.Id.whyAccountsNotHereLayOut)]
         LinearLayout whyAccountsNotHereLayOut;
-        
+
 
 
         TypeModel selectedType = new TypeModel();
@@ -167,7 +167,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 , targetSearchBy
                 , txtServiceRequestNum.Text
                 , txtApplicationType.Text
-                , txtSearchBy.Text);
+                , txtSearchBy.Text
+                , UserEntity.GetActive() != null);
 
             HideProgressDialog();
             if (!applicationDetailDisplay.StatusDetail.IsSuccess)
@@ -193,7 +194,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             whereisMyacc.Show();
 
         }
-       
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -227,7 +228,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             Drawable d = ContextCompat.GetDrawable(this, Resource.Drawable.ic_field_search);
             d.SetBounds(0, 0, d.IntrinsicWidth, d.IntrinsicHeight);
 
-           // Drawable img = (Drawable)Resource.Drawable.ic_field_search;
+            // Drawable img = (Drawable)Resource.Drawable.ic_field_search;
             txtSearchBy.SetCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
             Bundle extras = Intent.Extras;
 
@@ -473,22 +474,22 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
                         //if (!base64Image.IsNullOrEmpty())
                         //{
-                            var imageCache = Base64ToBitmap(base64Image);
+                        var imageCache = Base64ToBitmap(base64Image);
 
-                            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                            .SetHeaderImageBitmap(imageCache)
-                            .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberTitleCA"))
-                            .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberMessageCA"))
-                            .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                            .Build();
-                            whereisMyacc.Show();
+                        MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                        .SetHeaderImageBitmap(imageCache)
+                        .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberTitleCA"))
+                        .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberMessageCA"))
+                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                        .Build();
+                        whereisMyacc.Show();
                         //}
                     }
                     else
                     {
                         MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
                             .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberTitle"))
-                            .SetMessage(string.Format(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberMessage"),searchType.SearchTypeDescDisplay))
+                            .SetMessage(string.Format(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberMessage"), searchType.SearchTypeDescDisplay))
                             .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                             .Build();
                         whereisMyacc.Show();
@@ -500,7 +501,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 Utility.LoggingNonFatalError(ex);
             }
 
-       
+
         }
         public static Bitmap Base64ToBitmap(string base64String)
         {
@@ -752,7 +753,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 Utility.LoggingNonFatalError(ex);
             }
         }
-  
+
         public bool IsValid(string key)
         {
             return !string.IsNullOrEmpty(key) && !string.IsNullOrWhiteSpace(key);
@@ -783,11 +784,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             targetApplicationType = selectedType.SearchApplicationTypeDescDisplay;
                             targetApplicationTypeId = selectedType.SearchApplicationTypeId;
                             txtApplicationType.Text = targetApplicationType;
-                           
+
                             if (selectedType.SearchTypes.Count <= 1)
                             {
                                 txtInputLayoutSearchBy.Visibility = ViewStates.Gone;
-                               
+
                                 txtInputLayoutServiceRequestNum.Visibility = ViewStates.Visible;
                                 txtInputLayoutServiceRequestNum.ClearFocus();
                                 txtServiceRequestNum.Text = null;
@@ -848,10 +849,10 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Visible;
 
                             txtServiceRequestNum.SetText("", TextView.BufferType.Editable);
-                         
-                           
 
-                            if(searchByModel.Type == ApplicationStatusSearchType.ApplicationNo)
+
+
+                            if (searchByModel.Type == ApplicationStatusSearchType.ApplicationNo)
                             {
                                 txtInputLayoutServiceRequestNum.HelperText = selectedType.ApplicationNoHint;
                                 txtServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
@@ -870,7 +871,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             {
                                 txtServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
                                 txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "electricityAccountNumber");
-                                
+
                             }
                         }
                     }
@@ -896,7 +897,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 EditText eTxtView = v as EditText;
                 if (eTxtView.Id == Resource.Id.txtApplicationType)
                 {
-                    
+
                     if (e.Action == MotionEventActions.Up)
                     {
                         if (!this.GetIsClicked())
@@ -989,7 +990,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         return true;
                     }
                 }
-                else if(eTxtView.Id == Resource.Id.txtServiceRequestNum)
+                else if (eTxtView.Id == Resource.Id.txtServiceRequestNum)
                 {
                     isTextChange = true;
                     if (searchByModel != null && selectedType != null && selectedType.SearchTypes != null)
@@ -999,14 +1000,14 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         {
 
                             txtInputLayoutServiceRequestNum.HelperText = selectedType.ApplicationNoHint;
-                            
+
                             string format = selectedType.SearchApplicationNoInputMask;
 
                             string inputString = txtServiceRequestNum.Text.ToString();
                             int firstIndex = format.IndexOf("#");
                             int lastIndex = format.LastIndexOf("#");
                             string preffix = string.Empty;
-                           
+
                             preffix = format.Substring(0, firstIndex);
                             if (preffix.Length >= inputString.Length)
                             {
@@ -1015,7 +1016,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                 txtServiceRequestNum.SetSelection(preffix.Length);
                             }
                         }
-                       
+
                     }
                 }
             }

@@ -371,7 +371,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
             {
                 tooltipLanguage = "MS";
             }
-            Utility.ShowChangeLanguageDialog(this, selectedLanguage, ()=>
+            Utility.ShowChangeLanguageDialog(this, selectedLanguage, () =>
             {
                 ShowProgressDialog();
                 if (tooltipLanguage == "MS")
@@ -399,7 +399,8 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
         private Task CheckAppMasterDataDone()
         {
-            return Task.Delay(Constants.LANGUAGE_MASTER_DATA_CHECK_TIMEOUT).ContinueWith(_ => {
+            return Task.Delay(Constants.LANGUAGE_MASTER_DATA_CHECK_TIMEOUT).ContinueWith(_ =>
+            {
                 if (MyTNBAccountManagement.GetInstance().GetIsAppMasterComplete())
                 {
                     if (MyTNBAccountManagement.GetInstance().GetIsAppMasterFailed())
@@ -532,7 +533,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
             searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
             {
-                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("0", string.Empty, string.Empty);
+                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("0", UserEntity.GetActive() != null);
                 SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
             }
             Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
@@ -755,6 +756,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
             }
         }
 
-        
+
     }
 }
