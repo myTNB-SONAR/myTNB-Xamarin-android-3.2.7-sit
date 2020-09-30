@@ -1,0 +1,84 @@
+{
+    "content": {
+        "applicationDetail": {
+            "applicationId": 360,
+            "referenceNo": "ASR-000-000-0360",
+            "applicationModuleId": 101019,
+            "backendReferenceNo": null,
+            "backendApplicationType": null,
+            "backendModule": null,
+            "statusId": 127,
+            "statusCode": null,
+            "createdDate": "2020-08-03T09:05:13.367"
+        },
+        "applicationPaymentDetail": null,
+        "applicationStatusDetail": {
+            "statusId": 127,
+            "statusCode": null,
+            "statusDescription": "Address Created",
+            "statusMessage": null,
+            "userAction": null,
+            "isPostPayment": false,
+            "statusTracker": [
+                {
+                    "statusDescription": "Submitted",
+                    "statusMode": "past",
+                    "progressDetail": null,
+                    "sequence": 1
+                },
+                {
+                    "statusDescription": "Creating Address",
+                    "statusMode": "past",
+                    "progressDetail": null,
+                    "sequence": 2
+                },
+                {
+                    "statusDescription": "Address Created",
+                    "statusMode": "completed",
+                    "progressDetail": null,
+                    "sequence": 4
+                }
+            ]
+        },
+        "applicationActivityLogDetail": [
+            {
+                "statusId": 127,
+                "statusDescription": "Address Created",
+                "changeLogs": [
+                    {
+                        "changeType": "Documents",
+                        "fieldName":"1",
+                        "fieldDescription": "Passport",
+                        "beforeValue":"",
+                        "beforeValueDescription":"",
+                        "afterValue":"",
+                        "afterValueDescription":"New Passport"
+                    },
+                    {
+                        "changeType": "Fields",
+                        "fieldName":"2",
+                        "fieldDescription": "Name",
+                        "beforeValue":"0",
+                        "beforeValueDescription":"Ron",
+                        "afterValue":"1",
+                        "afterValueDescription":"Ron Reyes"
+                    }
+                ],
+                "reasons": [
+                    "Reason 1"
+                    , "Reason 2"
+                ],
+                "comment": "This is a comment",
+                "createdBy": "supplyoffering@tnb.com.my",
+                "createdDate": "2020-08-03T09:05:13.367"
+            }
+        ]
+    },
+    "statusDetail": {
+        "code": "7200",
+        "title": "Success",
+        "description": "Success",
+        "displayMode": null,
+        "ctaText": null
+    }
+}

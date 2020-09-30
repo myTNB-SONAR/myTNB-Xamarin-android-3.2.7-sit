@@ -13,6 +13,7 @@ using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
 using myTNB.Mobile.API.Services.ApplicationStatus;
 using myTNB.Mobile.Extensions;
 using myTNB.Mobile.SessionCache;
+using myTNB.Mobile.TestData.ApplicationSearch;
 using Newtonsoft.Json;
 using Refit;
 
@@ -133,6 +134,8 @@ namespace myTNB.Mobile
                             , AppInfoManager.Instance.Language.ToString());
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
+                    //Todo: Comment to connect to real response
+                    responseString = SearchTestManager.Instance.GetData();
                     //Mark: Check for 404 First
                     NotFoundModel notFoundModel = JsonConvert.DeserializeObject<NotFoundModel>(responseString);
                     if (notFoundModel != null && notFoundModel.Status.IsValid())
