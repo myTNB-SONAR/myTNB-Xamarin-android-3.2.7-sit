@@ -164,9 +164,9 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
                 mobileNumberFieldContainer.RemoveAllViews();
                 mobileNumberInputComponent = new MobileNumberInputComponent(this);
                 mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
-                mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
                 mobileNumberInputComponent.SetMobileNumberLabel(Utility.GetLocalizedCommonLabel("mobileNo"));
                 mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
+                mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
                 mobileNumberFieldContainer.AddView(mobileNumberInputComponent);
 
                 txtFeedback.TextChanged += TextChanged;

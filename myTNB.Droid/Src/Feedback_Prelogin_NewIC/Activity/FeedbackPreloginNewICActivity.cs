@@ -9,10 +9,6 @@ using Android.OS;
 using Android.Preferences;
 using Android.Provider;
 using Android.Runtime;
-
-
-
-
 using Android.Text;
 using Android.Util;
 using Android.Views;
@@ -201,8 +197,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                     updatePersonalInfoConstraint.Visibility = ViewStates.Gone;
                 }
 
+                //210031353308
 
-               
 
 
 
@@ -396,7 +392,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         {
             if (!this.GetIsClicked())
             {
-                
+
 
                 this.SetIsClicked(true);
                 Intent barcodeIntent = new Intent(this, typeof(BarcodeActivity));
@@ -431,15 +427,22 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         public void ShowInvalidAccountNumberError()
         {
             txtInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            txtInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "validElectricityAccountNoError");
+            if (txtInputLayoutAccountNo.Error != Utility.GetLocalizedLabel("SubmitEnquiry", "validElectricityAccountNoError"))
+            {
+                txtInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "validElectricityAccountNoError");
+            }
+          
         }
 
         public void ShowEnterOrSelectAccNumber()
         {
             txtInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            // txtInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");
-            //TODO  add translation for bm
-            txtInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc");
+            // txtInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");  //todo  add translation for bm
+            if(txtInputLayoutAccountNo.Error != Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc"))
+            {
+               txtInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc");
+            }
+            
 
         }
 
@@ -448,6 +451,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         {
             txtInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             txtInputLayoutAccountNo.Error = "";
+         
         }
 
         public void ShowGeneralEnquiry()
@@ -940,7 +944,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 Utility.LoggingNonFatalError(e);
             }
 
-            return convertedBitmap; 
+            return convertedBitmap;
         }
 
         Snackbar newErrorMessageSnackBar;

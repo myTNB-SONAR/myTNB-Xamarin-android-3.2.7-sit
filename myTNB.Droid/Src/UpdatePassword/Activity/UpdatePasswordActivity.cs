@@ -159,8 +159,13 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                 {
                     if (!mPresenter.CheckPasswordIsValid(newPassword))
                     {
-                        ClearNewPasswordError();
-                        txtInputLayoutNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
+                        //ClearNewPasswordError();
+
+                        if (txtInputLayoutNewPassword.Error != Utility.GetLocalizedErrorLabel("invalid_password"))
+                        {
+                            txtInputLayoutNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
+                        }
+                       
                         if (!txtInputLayoutNewPassword.ErrorEnabled)
                             txtInputLayoutNewPassword.ErrorEnabled = true;
                     }
@@ -181,8 +186,11 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                 {
                     if (!newPassword.Equals(confirmPassword))
                     {
-                        ClearConfirmPasswordError();
-                        txtInputLayoutConfirmPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
+                        //ClearConfirmPasswordError();
+                        if (txtInputLayoutConfirmPassword.Error != Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword")) {
+                            txtInputLayoutConfirmPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
+                        }
+                        
                         if (!txtInputLayoutConfirmPassword.ErrorEnabled)
                             txtInputLayoutConfirmPassword.ErrorEnabled = true;
                     }
@@ -226,8 +234,12 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                 {
                     if (!newPassword.Equals(confirmPassword))
                     {
-                        ClearConfirmPasswordError();
-                        txtInputLayoutConfirmPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
+                        // ClearConfirmPasswordError();
+                        if (txtInputLayoutConfirmPassword.Error != Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword"))
+                        {
+                            txtInputLayoutConfirmPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");
+                        }
+                       
                         if (!txtInputLayoutConfirmPassword.ErrorEnabled)
                             txtInputLayoutConfirmPassword.ErrorEnabled = true;
                     }

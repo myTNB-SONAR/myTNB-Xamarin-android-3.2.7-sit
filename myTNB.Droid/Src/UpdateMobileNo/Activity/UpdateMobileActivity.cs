@@ -137,9 +137,9 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 mobileNumberFieldContainer.RemoveAllViews();
                 mobileNumberInputComponent = new MobileNumberInputComponent(this);
                 mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
-                mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
                 mobileNumberInputComponent.SetMobileNumberLabel(Utility.GetLocalizedCommonLabel("mobileNo"));
                 mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
+                mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
                 mobileNumberFieldContainer.AddView(mobileNumberInputComponent);
             }
             catch (Exception e)

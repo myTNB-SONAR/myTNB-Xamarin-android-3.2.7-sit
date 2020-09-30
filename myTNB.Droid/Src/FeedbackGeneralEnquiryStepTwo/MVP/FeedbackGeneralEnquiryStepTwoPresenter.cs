@@ -55,152 +55,72 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
 
         }
 
-        public void CheckRequiredFields(string fullname, string mobile_no, string email, bool tnc ,bool isNeedTNC)
+        public void CheckRequiredFields(string fullname, bool mobile_no, string email, bool tnc ,bool isNeedTNC)
         {
+            bool enableButton = true;
 
             try
             {
-                if (!TextUtils.IsEmpty(fullname)  && !TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(email) )
-                {
 
+                if (!TextUtils.IsEmpty(fullname))
+                {
                     if (!Utility.isAlphaNumeric(fullname))
                     {
                         this.mView.ShowFullNameError();
-                        this.mView.DisableRegisterButton();
+                        enableButton = false;
                     }
                     else
                     {
                         this.mView.ClearFullNameError();
                     }
+                }
 
 
-                    if (!Patterns.EmailAddress.Matcher(email).Matches())
+                    if (!TextUtils.IsEmpty(email))
                     {
-                        this.mView.ShowInvalidEmailError();
-                        this.mView.DisableRegisterButton();
-                        return;
-                    }
-                    else
-                    {
-                        this.mView.ClearInvalidEmailError();
-                    }
-
-                    if (TextUtils.IsEmpty(mobile_no) || mobile_no.Length < 3 || !mobile_no.Contains("+60"))
-                    {
-                        this.mView.UpdateMobileNumber("+60");
-                        this.mView.ClearInvalidMobileError();
-                        this.mView.DisableRegisterButton();
-                        return;
-                    }
-                    else if (mobile_no == "+60")
-                    {
-                        this.mView.UpdateMobileNumber("+60");
-                        this.mView.ClearInvalidMobileError();
-                        this.mView.DisableRegisterButton();
-                        return;
-                    }
-                    else if (mobile_no.Contains("+60") && mobile_no.IndexOf("+60") > 0)
-                    {
-                        mobile_no = mobile_no.Substring(mobile_no.IndexOf("+60"));
-                        if (mobile_no == "+60")
+                        if (!Patterns.EmailAddress.Matcher(email).Matches())
                         {
-                            this.mView.UpdateMobileNumber("+60");
-                            this.mView.ClearInvalidMobileError();
-                            this.mView.DisableRegisterButton();
-                            return;
-                        }
-                        else if (!Utility.IsValidMobileNumber(mobile_no))
-                        {
-                            this.mView.ShowInvalidMobileNoError();
-                            this.mView.DisableRegisterButton();
-                            return;
+                            this.mView.ShowInvalidEmailError();
+                            enableButton = false;
                         }
                         else
                         {
-                            this.mView.ClearInvalidMobileError();
-                        }
-                    }
-                    else
-                    {
-                        if (!Utility.IsValidMobileNumber(mobile_no))
-                        {
-                            this.mView.ShowInvalidMobileNoError();
-                            this.mView.DisableRegisterButton();
-                            return;
-                        }
-                        else
-                        {
-                            this.mView.ClearInvalidMobileError();
+                            this.mView.ClearInvalidEmailError();
                         }
                     }
 
+                   
                     if (isNeedTNC)
                     {
                         if (tnc == false)
                         {
-                            this.mView.DisableRegisterButton();
-                            return;
+                            enableButton = false;
                         }
                     }
 
-
-                    this.mView.EnableRegisterButton();
-                }
-                else
-                {
-
-                    if (TextUtils.IsEmpty(mobile_no) || mobile_no.Length < 3 || !mobile_no.Contains("+60"))
+                    if (!mobile_no)
                     {
-                        this.mView.UpdateMobileNumber("+60");
-                        this.mView.ClearInvalidMobileError();
+                        enableButton = false;
+                    }
+
+                    //disable if 3 item is not filled
+
+                   if (TextUtils.IsEmpty(fullname) || TextUtils.IsEmpty(email) || ! mobile_no)
+                    {
+                    enableButton = false;
+                    }
+
+
+                    //disable or enable button
+                    if (enableButton == false)
+                    {
                         this.mView.DisableRegisterButton();
-                        return;
-                    }
-                    else if (mobile_no == "+60")
-                    {
-                        this.mView.UpdateMobileNumber("+60");
-                        this.mView.ClearInvalidMobileError();
-                        this.mView.DisableRegisterButton();
-                        return;
-                    }
-                    else if (mobile_no.Contains("+60") && mobile_no.IndexOf("+60") > 0)
-                    {
-                        mobile_no = mobile_no.Substring(mobile_no.IndexOf("+60"));
-                        if (mobile_no == "+60")
-                        {
-                            this.mView.UpdateMobileNumber("+60");
-                            this.mView.ClearInvalidMobileError();
-                            this.mView.DisableRegisterButton();
-                            return;
-                        }
-                        else if (!Utility.IsValidMobileNumber(mobile_no))
-                        {
-                            this.mView.ShowInvalidMobileNoError();
-                            this.mView.DisableRegisterButton();
-                            return;
-                        }
-                        else
-                        {
-                            this.mView.ClearInvalidMobileError();
-                        }
                     }
                     else
                     {
-                        if (!Utility.IsValidMobileNumber(mobile_no))
-                        {
-                            this.mView.ShowInvalidMobileNoError();
-                            this.mView.DisableRegisterButton();
-                            return;
-                        }
-                        else
-                        {
-                            this.mView.ClearInvalidMobileError();
-                        }
+                        this.mView.EnableRegisterButton();
                     }
 
-
-                    this.mView.DisableRegisterButton();
-                }
             }
             catch (System.Exception e)
             {
@@ -245,9 +165,14 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                     //if empty it is update personal detail which will inject 4
                     category = 4;
                 }
-           
 
-                SubmitEnquiryRequest submitEnquiryRequest  = new SubmitEnquiryRequest(category.ToString(), "", acc, fullname, mobile_no, feedback, "", "", "", mobile_no, fullname, email, isowner, ownerRelationship, relationshipDescription);
+                string devicePhoneNumber = userEntity != null ? userEntity.MobileNo : mobile_no;  //set device phone number
+
+
+                SubmitEnquiryRequest submitEnquiryRequest  = new SubmitEnquiryRequest(category.ToString(), "", acc, fullname, devicePhoneNumber, feedback, "", "", "", mobile_no, fullname, email, isowner, ownerRelationship, relationshipDescription);
+
+                submitEnquiryRequest.email = userEntity != null ? userEntity.Email : email;  //set device email
+
                 foreach (AttachedImageRequest image in imageRequest)
                 {
 
@@ -264,7 +189,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                     }
                 }
 
-
+                //var tempReq = JsonConvert.SerializeObject(submitEnquiryRequest);
 
                 var preLoginFeedbackResponse = await ServiceApiImpl.Instance.SubmitEnquiry(submitEnquiryRequest);
 

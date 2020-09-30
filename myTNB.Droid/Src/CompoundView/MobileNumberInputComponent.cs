@@ -1,24 +1,40 @@
 ﻿using System;
 using Android.Content;
+using Android.Content.Res;
+using Android.Graphics;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Graphics.Drawable;
+using Android.Support.V4.View;
 using Android.Text;
 using Android.Util;
 using Android.Widget;
 using myTNB_Android.Src.Common.Model;
 using myTNB_Android.Src.Utils;
+using static Android.Resource;
 
 namespace myTNB_Android.Src.CompoundView
 {
     public class MobileNumberInputComponent : LinearLayout
     {
         private ImageView imgFlag;
-        private TextView countryCodeHeaderTitle, countryISDCode;
+        private TextView countryCodeHeaderTitle, countryISDCode, countryCodeError;
         private EditText editTextMobileNumber;
+        //private TextInputLayout TextInputLayoutMobileNo;
         private Action<bool> validateAction;
         private Country selectedCountry;
         public static bool isSelectionTapped;
         private Action onSelectCountryISDCodeAction;
+        private bool isFromCountryCode = false;
+        
         private const int MAX_NUMBER_INPUT = 15;
         private const string PLUS_CHARACTER = "+";
+
+
+        /// <summary>
+        /// Make sure SetValidationAction called last before added to view
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         public MobileNumberInputComponent(Context context) : base(context)
         {
             Init(context);
@@ -45,14 +61,31 @@ namespace myTNB_Android.Src.CompoundView
             countryCodeHeaderTitle = FindViewById<TextView>(Resource.Id.countryCodeHeaderTitle);
             imgFlag = FindViewById<ImageView>(Resource.Id.countryIcon);
             countryISDCode = FindViewById<TextView>(Resource.Id.coutryCodeValue);
+            countryCodeError= FindViewById<TextView>(Resource.Id.countryCodeError);
             editTextMobileNumber = FindViewById<EditText>(Resource.Id.txtMobileNo);
+          //  TextInputLayoutMobileNo = FindViewById<TextInputLayout>(Resource.Id.TextInputLayoutMobileNo);
             isSelectionTapped = false;
 
             LinearLayout countryISDCodeContainer = FindViewById<LinearLayout>(Resource.Id.countryISDCodeContainer);
             countryISDCodeContainer.Click += CountryISDCodeContainer_Click;
 
-            TextViewUtils.SetMuseoSans300Typeface(countryCodeHeaderTitle,countryISDCode,editTextMobileNumber);
+            TextViewUtils.SetMuseoSans300Typeface(countryCodeHeaderTitle,countryISDCode,editTextMobileNumber, countryCodeError);
             editTextMobileNumber.TextChanged += OnMobileNumberChangeValue;
+
+            editTextMobileNumber.FocusChange += EditTextMobileNumber_FocusChange;
+        }
+
+        private void EditTextMobileNumber_FocusChange(object sender, FocusChangeEventArgs e)
+        {
+           
+            if (editTextMobileNumber.IsFocused)
+            {
+                ViewCompat.SetBackgroundTintList(editTextMobileNumber, ColorStateList.ValueOf(Android.Graphics.Color.ParseColor("#1c79ca")));  //blue color
+            }
+            else
+            {
+                ViewCompat.SetBackgroundTintList(editTextMobileNumber, ColorStateList.ValueOf(Android.Graphics.Color.ParseColor("#a6a6a6")));  //silver chalice
+            }
         }
 
         private void OnMobileNumberChangeValue(object sender, TextChangedEventArgs e)
@@ -63,8 +96,15 @@ namespace myTNB_Android.Src.CompoundView
                 editTextMobileNumber.Text = validatedMobileNumber;
             }
 
+            isFromCountryCode = false;  // any changes will set from country code false
+
             validateAction?.Invoke(!string.IsNullOrEmpty(editTextMobileNumber.Text));
+      
         }
+
+        
+
+    
 
         public void SetOnTapCountryCodeAction(Action onTapAction)
         {
@@ -82,7 +122,7 @@ namespace myTNB_Android.Src.CompoundView
 
         public void SetValidationAction(Action<bool> action)
         {
-            validateAction = action;
+                validateAction = action;
         }
 
         public void SetMobileNumberLabel(string label)
@@ -97,6 +137,20 @@ namespace myTNB_Android.Src.CompoundView
             selectedCountry = country;
             ClearMobileNumber();
             SetMaxNumberInputValue();
+            isFromCountryCode = true;
+            ClearError();
+        }
+
+        public bool GetIsFromCountryCode()
+        {
+            bool holdIsFromCountryCode = isFromCountryCode;
+            isFromCountryCode =false;   
+            return holdIsFromCountryCode;
+        }
+
+        public bool IsTextClear()
+        {
+            return string.IsNullOrEmpty(editTextMobileNumber.Text);
         }
 
         public string GetMobileNumberValueWithISDCode()
@@ -109,9 +163,38 @@ namespace myTNB_Android.Src.CompoundView
             return editTextMobileNumber.Text.Trim();
         }
 
+        public void SetMobileNumber(int mobileNo)
+        {
+            editTextMobileNumber.Text = mobileNo.ToString();
+        }
+        
         public void ClearMobileNumber()
         {
-            editTextMobileNumber.Text = "";
+            
+            editTextMobileNumber.Text="";
+            
+        }
+        public void RaiseError(string errText)
+        {
+            countryCodeError.Visibility = Android.Views.ViewStates.Visible;
+            countryCodeHeaderTitle.SetTextColor(Android.Graphics.Color.ParseColor("#e44b21"));//red color
+            ViewCompat.SetBackgroundTintList(editTextMobileNumber, ColorStateList.ValueOf(Android.Graphics.Color.ParseColor("#e44b21"))); //red color
+            countryCodeError.Text = errText;
+        }
+        public void ClearError()
+        {
+            if (editTextMobileNumber.IsFocused)
+            {
+                ViewCompat.SetBackgroundTintList(editTextMobileNumber, ColorStateList.ValueOf(Android.Graphics.Color.ParseColor("#1c79ca"))); //blue focus
+            }
+            else
+            {
+                ViewCompat.SetBackgroundTintList(editTextMobileNumber, ColorStateList.ValueOf(Android.Graphics.Color.ParseColor("#a6a6a6"))); //silver chalice
+            }
+
+            countryCodeHeaderTitle.SetTextColor(Android.Graphics.Color.ParseColor("#a6a6a6"));//title to grey color
+            countryCodeError.Visibility = Android.Views.ViewStates.Gone;
+            countryCodeError.Text = "";
         }
 
         private void SetMaxNumberInputValue()

@@ -402,7 +402,15 @@ namespace myTNB_Android.Src.Billing.MVP
             }
 
             CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-            accountChargeValue.Text = "RM " + (Math.Abs(selectedAccountChargeModel.OutstandingCharges)).ToString("#,##0.00", currCult);
+            if (selectedAccountChargeModel.OutstandingCharges < 0f)
+            {
+                accountChargeValue.Text = "- RM " + (Math.Abs(selectedAccountChargeModel.OutstandingCharges)*-1).ToString("#,##0.00", currCult);
+            }
+            else
+            {
+                accountChargeValue.Text = "RM " + (Math.Abs(selectedAccountChargeModel.OutstandingCharges)).ToString("#,##0.00", currCult);
+            }
+            
             if (selectedAccountChargeModel.OutstandingCharges < 0f)
             {
                 accountChargeLabel.Text = GetLabelByLanguage("paidExtra");
@@ -413,7 +421,17 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountChargeLabel.Text = GetLabelByLanguage("outstandingCharges");// "My outstanding charges";
                 accountChargeValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
-            accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00", currCult);
+
+            if (selectedAccountChargeModel.CurrentCharges < 0f)
+            {
+                accountBillThisMonthValue.Text = "- RM " + (selectedAccountChargeModel.CurrentCharges*-1).ToString("#,##0.00", currCult);
+            }
+            else
+            {
+                accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00", currCult);  //ori code
+            }
+
+           
             accountPayAmountValue.Text = selectedAccountChargeModel.AmountDue.ToString("#,##0.00", currCult);
             if (selectedAccountChargeModel.IsNeedPay)
             {

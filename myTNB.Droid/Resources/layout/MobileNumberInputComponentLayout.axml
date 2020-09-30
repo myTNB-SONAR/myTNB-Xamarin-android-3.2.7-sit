@@ -58,17 +58,41 @@
                     android:src="@drawable/ic_action_dropdown"/>
             </LinearLayout>
         </LinearLayout>
-        <EditText
-            android:id="@+id/txtMobileNo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="phone"
-            android:maxLines="1"
-            android:digits="0123456789"
-            android:maxLength="15"
-            android:textColor="#49494a"
-            android:longClickable="false"
-        />
+
+            <EditText
+                android:id="@+id/txtMobileNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="phone"
+                android:maxLines="1"
+                android:textSize="16dp"
+                android:digits="0123456789"
+                android:maxLength="15"
+                android:textColor="#49494a"
+                android:longClickable="false"/>
+
+            
     </LinearLayout>
+    
+<!--        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/TextInputLayoutMobileNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:counterEnabled="false"
+            app:errorEnabled="true"
+            app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
+            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+         </com.google.android.material.textfield.TextInputLayout>-->
+    <TextView
+        android:id="@+id/countryCodeError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:includeFontPadding="false"
+        android:textColor="@color/errorColor"
+        android:visibility="gone"
+        android:lineSpacingExtra="0dp"
+        android:textSize="12dp"
+        />
 </LinearLayout>

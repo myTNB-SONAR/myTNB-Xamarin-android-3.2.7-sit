@@ -168,34 +168,27 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
             this.mView.ShowinfoLabelDoIneedOwnerConsent();
         }
 
-        public void CheckRequiredFields(string iC, bool toggleChkBoxIC, string ownerName,bool toggleChkOwnerName,string  mobileNumber, bool toggleChkMobileNumber, string emailAddress, bool toggleChkEmailAddress, string mailingAddress, bool toggleChkMailingAddress, string premiseAddress, bool toggleChkPremiseAddress, string otherRelationstip, bool isOtherChoosed)
+        public void CheckRequiredFields(string iC, bool toggleChkBoxIC, string ownerName,bool toggleChkOwnerName,bool  mobileNumber, bool toggleChkMobileNumber, string emailAddress, bool toggleChkEmailAddress, string mailingAddress, bool toggleChkMailingAddress, string premiseAddress, bool toggleChkPremiseAddress, string otherRelationstip, bool isOtherChoosed)
         {
             try
             {
                 bool shoudButtonEnable=true;
-                this.mView.ClearErrors();
-                
-
-                // check checkBox 
+               // this.mView.ClearErrors();
                 if (toggleChkBoxIC)
                 {
                     if (!TextUtils.IsEmpty(iC.Trim()))
                     {
                         this.mView.ClearInvalidError(typeOfLayout.ic);
-      
                         this.mView.EnableSubmitButton();
                     }
                     else
                     {
                         this.mView.ShowEmptyError(typeOfLayout.ic);
-
-                        //this.mView.DisableSubmitButton();
                         shoudButtonEnable = false;
 
                     }
                 }
 
-                // check checkBox 
                 if (toggleChkOwnerName)
                 {
                     if (!TextUtils.IsEmpty(ownerName.Trim()))
@@ -206,93 +199,26 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                     }
                     else
                     {
-                        // this.mView.ShowEmptyFeedbackError();
                         this.mView.ShowEmptyError(typeOfLayout.ownerName);
-
-                        //this.mView.DisableSubmitButton();
                         shoudButtonEnable = false;
                     }
                 }
 
-                // check checkBox 
                 if (toggleChkMobileNumber)
-                {
-                    if (!TextUtils.IsEmpty(mobileNumber.Trim()))
+                { //mobileNumber
+                    if (mobileNumber == false)
                     {
-
-                        if (TextUtils.IsEmpty(mobileNumber) || mobileNumber.Length < 3 || !mobileNumber.Contains("+60"))
-                        {
-                            this.mView.UpdateMobileNumber("+60");
-                            this.mView.ClearInvalidError(typeOfLayout.mobileNumber);
-                            //this.mView.DisableSubmitButton();
-                            shoudButtonEnable = false;
-
-                        }
-                        else if (mobileNumber == "+60")
-                        {
-                            this.mView.UpdateMobileNumber("+60");
-                            this.mView.ClearInvalidError(typeOfLayout.mobileNumber);
-                            //this.mView.DisableSubmitButton();
-                            shoudButtonEnable = false;
-
-                        }
-                        else if (mobileNumber.Contains("+60") && mobileNumber.IndexOf("+60") > 0)
-                        {
-                            mobileNumber = mobileNumber.Substring(mobileNumber.IndexOf("+60"));
-                            if (mobileNumber == "+60")
-                            {
-                                this.mView.UpdateMobileNumber("+60");
-                                this.mView.ClearInvalidError(typeOfLayout.mobileNumber);
-                                //this.mView.DisableSubmitButton();
-                                shoudButtonEnable = false;
-
-                            }
-                            else if (!Utility.IsValidMobileNumber(mobileNumber))
-                            {
-                                this.mView.ShowInvalidMobileNoError();
-                                //this.mView.DisableSubmitButton();
-                                shoudButtonEnable = false;
-
-                            }
-                            else
-                            {
-                                this.mView.ClearInvalidError(typeOfLayout.mobileNumber);
-                                this.mView.EnableSubmitButton();
-                            }
-                        }
-                        else
-                        {
-                            if (!Utility.IsValidMobileNumber(mobileNumber))
-                            {
-                                this.mView.ShowInvalidMobileNoError();
-                                //this.mView.DisableSubmitButton();
-                                shoudButtonEnable = false;
-
-                            }
-                            else
-                            {
-                                this.mView.ClearInvalidError(typeOfLayout.mobileNumber);
-                                this.mView.EnableSubmitButton();
-                            }
-                        }
-
-
-              
-                        
-                       
+                        this.mView.ShowEmptyError(typeOfLayout.mobileNumber);
+                        shoudButtonEnable = false;
                     }
                     else
                     {
-                        // this.mView.ShowEmptyFeedbackError();
-                        this.mView.ShowEmptyError(typeOfLayout.mobileNumber);
-
-                        //this.mView.DisableSubmitButton();
-                        shoudButtonEnable = false;
+                        this.mView.EnableSubmitButton();
+                        this.mView.ClearInvalidError(typeOfLayout.mobileNumber);
                     }
 
                 }
 
-                // check checkBox 
                 if (toggleChkEmailAddress)
                 {
                     if (!TextUtils.IsEmpty(emailAddress.Trim()))
@@ -300,28 +226,22 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                         if (!Patterns.EmailAddress.Matcher(emailAddress).Matches())
                         {
                             this.mView.ShowInvalidError(typeOfLayout.emailAddress);
-                 
-                            //this.mView.DisableSubmitButton();
                             shoudButtonEnable = false;
                         }
                         else
                         {
                             this.mView.EnableSubmitButton();
                             this.mView.ClearInvalidError(typeOfLayout.emailAddress);
-                          
                         }
-                       
                     }
                     else
                     {
                         this.mView.ShowEmptyError(typeOfLayout.emailAddress);
-
-                        // this.mView.DisableSubmitButton();
                         shoudButtonEnable = false;
                     }
                 }
 
-                // check checkBox 
+                
                 if (toggleChkMailingAddress)
                 {
                     if (!TextUtils.IsEmpty(mailingAddress.Trim()))
@@ -334,26 +254,22 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                     {
                    
                         this.mView.ShowEmptyError(typeOfLayout.mailingAddress);
-                        //this.mView.DisableSubmitButton();
                         shoudButtonEnable = false;
                     }
                 }
       
-                // check checkBox 
+                
                 if (toggleChkPremiseAddress)
                 {
                     if (!TextUtils.IsEmpty(premiseAddress.Trim()))
                     {
-
-
                         this.mView.EnableSubmitButton();
                         this.mView.ClearInvalidError(typeOfLayout.premiseAddress);
                     }
                     else
                     {
-                       
+
                         this.mView.ShowEmptyError(typeOfLayout.premiseAddress);
-                        //this.mView.DisableSubmitButton();
                         shoudButtonEnable = false;
                     }
                 }
@@ -362,16 +278,10 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
                 {
                     if (!TextUtils.IsEmpty(otherRelationstip.Trim()))
                     {
-
                         // do nothing , enable only if other input is tick
-                       
-                     //   this.mView.ClearInvalidError(typeOfLayout.premiseAddress);
                     }
                     else
                     {
-
-                        ///  this.mView.ShowEmptyError(typeOfLayout.premiseAddress);
-                        //this.mView.DisableSubmitButton();
                         shoudButtonEnable = false;
                     }
                 }
