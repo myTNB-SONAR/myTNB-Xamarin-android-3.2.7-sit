@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
         BaseAppCompatActivity mActivity;
         List<ApplicationActivityLogDetailDisplay> mApplicationActivityLogDetail = new List<ApplicationActivityLogDetailDisplay>();
 
-     
+
 
         public void Clear()
         {
@@ -59,7 +59,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
             
             return new ApplicationActivityLogViewHolder(itemView);
         }
-
+        
         public class ApplicationActivityLogViewHolder : RecyclerView.ViewHolder
         {
             public ImageView imgstatus_required { get; private set; }
@@ -76,15 +76,23 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
             public TextView lbl_comment { get; private set; }
             public TextView lbl_submittedby { get; private set; }
 
-            public ListView listview_updated_details { get; private set; }
+            public RecyclerView listview_updated_details { get; private set; }
 
             public TextView lbl_reason { get; private set; }
-            public ListView listview_reason_details { get; private set; }
-            public LinearLayout layout_details { get; private set; }
+            public RecyclerView listview_reason_details { get; private set; }
+            public LinearLayout Layout_updated_details { get; private set; }
+            public LinearLayout Layout_reason { get; private set; }
+            public LinearLayout Layout_attachments { get; private set; }
+            public LinearLayout Layout_comment { get; private set; }
+            public LinearLayout Layout_submittedby { get; private set; }
+
+            
             public TextView lbl_attachments { get; private set; }
 
-            public ListView listview_attachments_details { get; private set; }
+            public RecyclerView listview_attachments_details { get; private set; }
 
+            private UpdatedDetailsListAdapter updatedDetailsListAdapter;
+            RecyclerView.LayoutManager layoutManagerService;
 
             //public TextView TxtApplicationStatusDetailCTA { get; private set; }
 
@@ -109,29 +117,33 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                 lbl_comment = itemView.FindViewById<TextView>(Resource.Id.lbl_comment);
                 lbl_submittedby = itemView.FindViewById<TextView>(Resource.Id.lbl_submittedby);
 
-                listview_updated_details = itemView.FindViewById<ListView>(Resource.Id.listview_updated_details);
+                listview_updated_details = itemView.FindViewById<RecyclerView>(Resource.Id.listview_updated_details);
 
                 lbl_reason = itemView.FindViewById<TextView>(Resource.Id.lbl_reason);
-                listview_reason_details = itemView.FindViewById<ListView>(Resource.Id.listview_reason_details);
+                listview_reason_details = itemView.FindViewById<RecyclerView>(Resource.Id.listview_reason_details);
 
-                layout_details = itemView.FindViewById<LinearLayout>(Resource.Id.layout_details);
+                Layout_updated_details = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_updated_details);
+                Layout_reason = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_updated_details);
+                Layout_attachments = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_updated_details);
+                Layout_comment = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_comment);
+
                 lbl_attachments = itemView.FindViewById<TextView>(Resource.Id.lbl_attachments);
 
-                listview_attachments_details = itemView.FindViewById<ListView>(Resource.Id.listview_attachments_details);
-
+                listview_attachments_details = itemView.FindViewById<RecyclerView>(Resource.Id.listview_attachments_details);
+                Layout_submittedby = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_submittedby);
                 //TxtApplicationStatusDetailCTA = itemView.FindViewById<TextView>(Resource.Id.txtApplicationStatusDetailCTA);
                 //TxtApplicationStatusDetailCTA.Clickable = true;
                 //TxtApplicationStatusDetailCTA.Click += (sender, e) => listener(base.LayoutPosition);
             }
-
+            
 
             public void PopulateData(ApplicationActivityLogDetailDisplay item, List<ApplicationActivityLogDetailDisplay> mApplicationActivityLogDetail, int position)
             {
                 this.item = item;
                 try
                 {
-
-                    ListView mainList;
+                   
+                   
                     TextViewUtils.SetMuseoSans300Typeface(text_status);
                     TextViewUtils.SetMuseoSans300Typeface(lbl_date_text);
                     TextViewUtils.SetMuseoSans300Typeface(lbl_comment_text);
@@ -141,9 +153,17 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                     TextViewUtils.SetMuseoSans300Typeface(lbl_comment);
                     TextViewUtils.SetMuseoSans300Typeface(lbl_submittedby);
                     TextViewUtils.SetMuseoSans300Typeface(lbl_Status);
+                    TextViewUtils.SetMuseoSans300Typeface(lbl_Status);
+
+                    TextViewUtils.SetMuseoSans300Typeface(lbl_reason);
+                    TextViewUtils.SetMuseoSans300Typeface(lbl_attachments);
 
 
-                    lbl_Status.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "status").ToUpper();
+
+
+
+
+                    lbl_Status.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "status");
                     lbl_comment.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "comment").ToUpper();
                     lbl_submittedby.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "submittedBy").ToUpper();
                     lbl_details.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "updatedDetails").ToUpper();
@@ -158,59 +178,81 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                         : string.Empty;
 
                     lbl_date_text.Text = date;
+
+
+                    if(item.IsAwaitingApproval)
+                    {
+                        imgstatus_Approval.Visibility = ViewStates.Visible;
+                        imgstatus_required.Visibility = ViewStates.Gone;
+                    }
+                    else
+                    {
+                        imgstatus_Approval.Visibility = ViewStates.Gone;
+                        imgstatus_required.Visibility = ViewStates.Visible;
+                    }
+
+
                     if (item.Comment != string.Empty)
                     {
+                        Layout_comment.Visibility = ViewStates.Visible;
                         lbl_comment_text.Text = item.Comment;
                     }
                     else
                     {
-                        lbl_comment_text.Visibility = ViewStates.Gone;
+                        Layout_comment.Visibility = ViewStates.Gone;
                     }
                     if(item.CreatedBy != string.Empty)
                     {
+                        Layout_submittedby.Visibility = ViewStates.Visible;
                         lbl_submittedby_email.Text = item.CreatedBy;
                     }
                    else
                     {
-
+                        Layout_submittedby.Visibility = ViewStates.Gone;
                     }
 
                    
                 
                     if(item.DetailsUpdateList.Count != 0)
                     {
-                        listview_updated_details.Visibility = ViewStates.Visible;
-                        lbl_details.Visibility = ViewStates.Visible;
-                        listview_updated_details.Adapter = new ArrayAdapter(context, Resource.Layout.ApplicationActivityListItemView, item.DetailsUpdateList);
+                        Layout_updated_details.Visibility = ViewStates.Visible;
+                        updatedDetailsListAdapter = new UpdatedDetailsListAdapter( item.DetailsUpdateList);
+                        layoutManagerService = new LinearLayoutManager(context, LinearLayoutManager.Vertical, false);
+                        listview_updated_details.SetLayoutManager(layoutManagerService);
+                        listview_updated_details.SetAdapter(updatedDetailsListAdapter);
+                        updatedDetailsListAdapter.NotifyDataSetChanged();
                     }
                     else
                     {
-                        listview_updated_details.Visibility = ViewStates.Gone;
-                        lbl_details.Visibility = ViewStates.Gone;
-                        layout_details.Visibility = ViewStates.Gone;
+                        Layout_updated_details.Visibility = ViewStates.Gone;
                     }
 
                     if (item.Reasons.Count != 0)
                     {
-                        listview_reason_details.Visibility = ViewStates.Visible;
-                        lbl_reason.Visibility = ViewStates.Visible;
-                        listview_reason_details.Adapter = new ArrayAdapter(context, Resource.Layout.ApplicationActivityListItemView, item.Reasons);
+                        Layout_reason.Visibility = ViewStates.Visible;
+                        updatedDetailsListAdapter = new UpdatedDetailsListAdapter( item.Reasons);
+                        layoutManagerService = new LinearLayoutManager(context, LinearLayoutManager.Vertical, false);
+                        listview_updated_details.SetLayoutManager(layoutManagerService);
+                        listview_updated_details.SetAdapter(updatedDetailsListAdapter);
+                        updatedDetailsListAdapter.NotifyDataSetChanged();
+                      
                     }
                     else
                     {
-                        listview_reason_details.Visibility = ViewStates.Gone;
-                        lbl_reason.Visibility = ViewStates.Gone;
+                        Layout_reason.Visibility = ViewStates.Gone;
                     }
                     if (item.DocumentsUpdateList.Count != 0)
                     {
-                        listview_attachments_details.Visibility = ViewStates.Visible;
-                        lbl_attachments.Visibility = ViewStates.Visible;
-                        listview_reason_details.Adapter = new ArrayAdapter(context, Resource.Layout.ApplicationActivityListItemView, item.DocumentsUpdateList);
+                        Layout_attachments.Visibility = ViewStates.Visible;
+                        updatedDetailsListAdapter = new UpdatedDetailsListAdapter(item.Reasons);
+                        layoutManagerService = new LinearLayoutManager(context, LinearLayoutManager.Vertical, false);
+                        listview_attachments_details.SetLayoutManager(layoutManagerService);
+                        listview_attachments_details.SetAdapter(updatedDetailsListAdapter);
+                        updatedDetailsListAdapter.NotifyDataSetChanged();
                     }
                     else
                     {
-                        listview_attachments_details.Visibility = ViewStates.Gone;
-                        lbl_attachments.Visibility = ViewStates.Gone;
+                        Layout_attachments.Visibility = ViewStates.Gone;
                     }
 
 

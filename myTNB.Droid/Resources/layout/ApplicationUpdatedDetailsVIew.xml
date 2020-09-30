@@ -9,9 +9,9 @@
         android:id="@+id/text_bullet"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:layout_weight="0.05"
+        android:layout_weight="0.1"
         android:gravity="center"
-        android:textSize="14dp"
+        android:textSize="16dp"
         android:textColor="@color/tunaGrey"
         android:text="•" />
     <TextView
@@ -20,6 +20,6 @@
         android:layout_width="0dp"
         android:layout_weight="0.9"
         android:textColor="@color/tunaGrey"
-        android:textSize="14dp"
+        android:textSize="16dp"
         android:text="service" />
 </LinearLayout>

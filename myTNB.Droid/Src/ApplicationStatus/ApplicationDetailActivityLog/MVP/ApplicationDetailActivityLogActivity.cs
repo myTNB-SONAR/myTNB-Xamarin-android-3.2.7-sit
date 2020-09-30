@@ -8,6 +8,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
@@ -18,6 +19,7 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapter;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.FindUs.MVP;
 using myTNB_Android.Src.FindUs.Response;
+using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP
@@ -54,7 +56,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP
             base.OnCreate(savedInstanceState);
 
             //layoutManagerService = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+            {
+                SetToolBarTitle(Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "title"), FromHtmlOptions.ModeLegacy).ToString());
+            }
+            else
+            {
+                SetToolBarTitle(Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "title")).ToString());
+            }
             Bundle extras = Intent.Extras;
 
             if (extras != null)
@@ -80,6 +89,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP
             }
             // Create your application here
         }
+
         public override void OnBackPressed()
         {
             Finish();
