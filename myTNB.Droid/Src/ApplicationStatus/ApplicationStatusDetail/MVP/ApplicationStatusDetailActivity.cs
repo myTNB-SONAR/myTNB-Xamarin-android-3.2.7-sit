@@ -21,7 +21,6 @@ using Android.Preferences;
 using AndroidX.Core.Content;
 using Android.Views;
 using myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP;
-using Google.Android.Material.Snackbar;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -41,9 +40,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         TextView txtApplicationStatusSubTitle;
         [BindView(Resource.Id.txtApplicationStatusTitle)]
         TextView txtApplicationStatusTitle;
-        [BindView(Resource.Id.rootView)]
-        RelativeLayout rootView;
 
+        
 
         [BindView(Resource.Id.txtApplicationStatusUpdated)]
         TextView txtApplicationStatusUpdated;
@@ -83,14 +81,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [OnClick(Resource.Id.btnSaveApplication)]
         internal void OnSaveApplication(object sender, EventArgs e)
         {
-            if (ConnectionUtils.HasInternetConnection(this))
-            {
-                SaveApplication();
-            }
-            else
-            {
-                ShowNoInternetSnackbar();
-            }
+            SaveApplication();
 
         }
 
@@ -135,86 +126,56 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        private Snackbar mNoInternetSnackbar;
-        public void ShowNoInternetSnackbar()
-        {
-            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
-            {
-                mNoInternetSnackbar.Dismiss();
-            }
-
-            mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
-            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
-            {
-
-                mNoInternetSnackbar.Dismiss();
-            }
-            );
-            View v = mNoInternetSnackbar.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
-            mNoInternetSnackbar.Show();
-        }
         private async void SaveApplication()
         {
-            if (ConnectionUtils.HasInternetConnection(this))
+            ShowProgressDialog();
+            PostSaveApplicationResponse postSaveApplicationResponse = await ApplicationStatusManager.Instance.SaveApplication(
+                applicationDetailDisplay.ApplicationDetail.ReferenceNo
+                , applicationDetailDisplay.ApplicationDetail.ApplicationModuleId
+                , applicationDetailDisplay.ApplicationType
+                , applicationDetailDisplay.ApplicationDetail.BackendReferenceNo
+                , applicationDetailDisplay.ApplicationDetail.BackendApplicationType
+                , applicationDetailDisplay.ApplicationDetail.BackendModule
+                , applicationDetailDisplay.ApplicationDetail.StatusCode
+                , applicationDetailDisplay.ApplicationDetail.CreatedDate.Value);
+
+            HideProgressDialog();
+
+            UserEntity loggedUser = UserEntity.GetActive();
+
+
+            if (postSaveApplicationResponse.StatusDetail.IsSuccess && loggedUser != null)
             {
-                ShowProgressDialog();
-                PostSaveApplicationResponse postSaveApplicationResponse = await ApplicationStatusManager.Instance.SaveApplication(
-              applicationDetailDisplay.ApplicationDetail.ReferenceNo
-              , applicationDetailDisplay.ApplicationDetail.ApplicationModuleId
-              , applicationDetailDisplay.ApplicationType
-              , applicationDetailDisplay.ApplicationDetail.BackendReferenceNo
-              , applicationDetailDisplay.ApplicationDetail.BackendApplicationType
-              , applicationDetailDisplay.ApplicationDetail.BackendModule
-              , applicationDetailDisplay.ApplicationDetail.StatusCode
-              , applicationDetailDisplay.ApplicationDetail.CreatedDate.Value);
-
-                HideProgressDialog();
-
-                UserEntity loggedUser = UserEntity.GetActive();
-
-
-                if (postSaveApplicationResponse.StatusDetail.IsSuccess && loggedUser != null)
-                {
-                    Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
-                    applicationLandingIntent.PutExtra("SaveApplication", JsonConvert.SerializeObject(postSaveApplicationResponse.StatusDetail));
-                    StartActivity(applicationLandingIntent);
-                }
-                else
-                {
-                    if (loggedUser != null)
-                    {
-                        MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                       .SetTitle(postSaveApplicationResponse.StatusDetail.Title)
-                       .SetMessage(postSaveApplicationResponse.StatusDetail.Message)
-                       .SetCTALabel(postSaveApplicationResponse.StatusDetail.PrimaryCTATitle)
-                       .SetSecondaryCTALabel(postSaveApplicationResponse.StatusDetail.SecondaryCTATitle)
-                       .SetSecondaryCTAaction(() => ShowStatusLanding())
-                       .Build();
-                        whereisMyacc.Show();
-                    }
-                    else
-                    {
-                        MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                      .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginTitle"))
-                      .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginMessage"))
-                      .SetCTALabel(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginPrimaryCTA"))
-                      .SetSecondaryCTALabel(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginSecondaryCTA"))
-                      .SetSecondaryCTAaction(() => ShowPreLogin())
-                      .Build();
-                        whereisMyacc.Show();
-                    }
-
-                }
+                Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
+                applicationLandingIntent.PutExtra("SaveApplication", JsonConvert.SerializeObject(postSaveApplicationResponse.StatusDetail));
+                StartActivity(applicationLandingIntent);
             }
             else
             {
+                if (loggedUser != null)
+                {
+                    MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                   .SetTitle(postSaveApplicationResponse.StatusDetail.Title)
+                   .SetMessage(postSaveApplicationResponse.StatusDetail.Message)
+                   .SetCTALabel(postSaveApplicationResponse.StatusDetail.PrimaryCTATitle)
+                   .SetSecondaryCTALabel(postSaveApplicationResponse.StatusDetail.SecondaryCTATitle)
+                   .SetSecondaryCTAaction(() => ShowStatusLanding())
+                   .Build();
+                    whereisMyacc.Show();
+                }
+                else
+                {
+                    MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                  .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginTitle"))
+                  .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginMessage"))
+                  .SetCTALabel(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginPrimaryCTA"))
+                  .SetSecondaryCTALabel(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginSecondaryCTA"))
+                  .SetSecondaryCTAaction(() => ShowPreLogin())
+                  .Build();
+                    whereisMyacc.Show();
+                }
 
-                ShowNoInternetSnackbar();
             }
-               
-          
         }
 
         public void ShowPreLogin()

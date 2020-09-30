@@ -28,16 +28,12 @@ using Android.Graphics.Drawables;
 using System.Threading.Tasks;
 using myTNB_Android.Src.SiteCore;
 using System.IO;
-using Google.Android.Material.Snackbar;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 {
     [Activity(Label = "Search Application Status", Theme = "@style/Theme.RegisterForm")]
     public class SearchApplicationStatusActivity : BaseActivityCustom, SearchApplicationStatusContract.IView, View.IOnTouchListener
     {
-        [BindView(Resource.Id.rootView)]
-        LinearLayout rootView;
-
         [BindView(Resource.Id.txtSearchApplicationTitle)]
         TextView txtSearchApplicationTitle;
 
@@ -160,35 +156,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         [OnClick(Resource.Id.btnSearchApplication)]
         internal void OnConfirmClickAsync(object sender, EventArgs e)
         {
-            if (ConnectionUtils.HasInternetConnection(this))
-            {
-                GetApplicationStatus();
-            }
-            else
-            {
-                ShowNoInternetSnackbar();
-            }
+            GetApplicationStatus();
 
-        }
-        private Snackbar mNoInternetSnackbar;
-        public void ShowNoInternetSnackbar()
-        {
-            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
-            {
-                mNoInternetSnackbar.Dismiss();
-            }
-
-            mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
-            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
-            {
-
-                mNoInternetSnackbar.Dismiss();
-            }
-            );
-            View v = mNoInternetSnackbar.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
-            mNoInternetSnackbar.Show();
         }
         private async void GetApplicationStatus()
         {
