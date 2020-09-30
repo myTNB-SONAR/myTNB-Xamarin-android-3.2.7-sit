@@ -196,7 +196,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.ViewBillReceiptMenu, menu);
+          //  MenuInflater.Inflate(Resource.Menu.ViewBillReceiptMenu, menu);  //disable due to legal issue
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -205,16 +205,15 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             switch (item.ItemId)
             {
                 case Resource.Id.action_download:
-                    if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) == (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) == (int)Permission.Granted)
+                    if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted)
+                    {
+                        RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+                    }
+                    else
                     {
                         downloadClicked = true;
                         //OnDownloadPDF();
                         createPDF(response);
-
-                    }
-                    else
-                    {
-                        RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
                     }
                     return true;
             }
