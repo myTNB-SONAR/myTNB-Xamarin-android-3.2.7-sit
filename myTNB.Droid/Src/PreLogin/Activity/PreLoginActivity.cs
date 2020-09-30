@@ -10,6 +10,7 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.CardView.Widget;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
 using myTNB;
 using myTNB.Mobile;
 using myTNB.SitecoreCMS.Model;
@@ -44,6 +45,8 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
         private PreLoginPresenter mPresenter;
         private PreLoginContract.IUserActionsListener userActionsListener;
+        [BindView(Resource.Id.rootView)]
+        LinearLayout rootView;
 
         [BindView(Resource.Id.txtWelcome)]
         TextView txtWelcome;
@@ -518,28 +521,53 @@ namespace myTNB_Android.Src.PreLogin.Activity
             var feedbackIntent = new Intent(this, typeof(FeedbackPreLoginMenuActivity));
             StartActivity(feedbackIntent);
         }
+        private Snackbar mNoInternetSnackbar;
+        public void ShowNoInternetSnackbar()
+        {
+            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+            {
+                mNoInternetSnackbar.Dismiss();
+            }
 
+            mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+
+                mNoInternetSnackbar.Dismiss();
+            }
+            );
+            View v = mNoInternetSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mNoInternetSnackbar.Show();
+        }
         public async void ShowCheckStatus()
         {
-            //  TODO:  ApplicationStatus stub
-            //SearchApplicationTypeResponse searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("0", string.Empty, string.Empty);
-
-            //Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
-            //applicationLandingIntent.PutExtra("searchApplicationType", JsonConvert.SerializeObject(searchApplicationTypeResponse.Content));
-            //StartActivity(applicationLandingIntent);
-
-
-            SearchApplicationTypeResponse searchApplicationTypeResponse = new SearchApplicationTypeResponse();
-            searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
-            if (searchApplicationTypeResponse == null)
+            if (ConnectionUtils.HasInternetConnection(this))
             {
-                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("0", UserEntity.GetActive() != null);
-                SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
-            }
-            Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
-            applicationLandingIntent.PutExtra("searchApplicationType", JsonConvert.SerializeObject(searchApplicationTypeResponse.Content));
-            StartActivity(applicationLandingIntent);
+                //  TODO:  ApplicationStatus stub
+                //SearchApplicationTypeResponse searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("0", string.Empty, string.Empty);
 
+                //Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
+                //applicationLandingIntent.PutExtra("searchApplicationType", JsonConvert.SerializeObject(searchApplicationTypeResponse.Content));
+                //StartActivity(applicationLandingIntent);
+
+
+                SearchApplicationTypeResponse searchApplicationTypeResponse = new SearchApplicationTypeResponse();
+                searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
+                if (searchApplicationTypeResponse == null)
+                {
+                    searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("0", UserEntity.GetActive() != null);
+                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+                }
+                Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
+                applicationLandingIntent.PutExtra("searchApplicationType", JsonConvert.SerializeObject(searchApplicationTypeResponse.Content));
+                StartActivity(applicationLandingIntent);
+            }
+            else
+            {
+                ShowNoInternetSnackbar();
+            }
         }
 
         public void GetDataFromSiteCore()
