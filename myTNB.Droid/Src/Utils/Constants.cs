@@ -137,10 +137,10 @@ namespace myTNB_Android.Src.Utils
         internal struct SERVER_URL
         {
 #if DEBUG || STUB
-            // internal static readonly string END_POINT = "http://10.215.128.191:88";  //dev
+            internal static readonly string END_POINT = "http://10.215.128.191:88";  //dev
             // internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";  //dev
             // internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappdev.page.link";  //dev
-         internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";  //sit
+         //internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";  //sit
          internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";  //sit
          internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link"; //sit
 
@@ -385,5 +385,23 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int LANGUAGE_MASTER_DATA_CHECK_TIMEOUT = 500;
         
         internal static readonly int REWARDS_DATA_CHECK_TIMEOUT = 500;
+
+        // Application Status8jhpegc3
+        internal static readonly int APPLICATION_STATUS_LISTING_LIMIT = 5;
+        internal static readonly string APPLICATION_STATUS_FILTER_TYPE_KEY = "applicationType";
+        internal static readonly string APPLICATION_STATUS_FILTER_STATUS_KEY = "status";
+        internal static readonly string APPLICATION_STATUS_FILTER_DATE_KEY = "date";
+        internal static readonly string APPLICATION_STATUS_TYPE_LIST_KEY = "typeList";
+        internal static readonly string APPLICATION_STATUS_STATUS_LIST_KEY = "statusList";
+        internal static readonly string APPLICATION_STATUS_SEARCH_BY_LIST_KEY = "searchByList";
+        internal static readonly string APPLICATION_STATUS_FILTER_REQUEST_KEY = "filterRequest";
+        internal static readonly string APPLICATION_STATUS_FILTER_MULTI_SELECT_KEY = "multiSelect";
+        internal static readonly string APPLICATION_STATUS_DETAIL_TITLE_KEY = "applicationStatusTitle";
+        internal static readonly int APPLICATION_STATUS_FILTER_REQUEST_CODE = 29800;
+        internal static readonly int APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE = 29801;
+        internal static readonly int APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE = 29802;
+        internal static readonly int APPLICATION_STATUS_FILTER_DATE_REQUEST_CODE = 29803;
+        internal static readonly int APPLICATION_STATUS_FILTER_SEARCH_BY_REQUEST_CODE = 29804;
+
     }
 }
