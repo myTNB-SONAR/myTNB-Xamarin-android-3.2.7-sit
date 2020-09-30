@@ -94,9 +94,9 @@ namespace myTNB_Android.Src.Utils
                 siteCoreLanguageId = SitecoreCmsEntity.SITE_CORE_ID.LANGUAGE_MS;
             }
 
-//#if DEBUG
-//            LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
-//#else
+#if DEBUG
+            LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
+#else
             string currentTimestamp = SitecoreCmsEntity.GetItemTimestampById(siteCoreLanguageId);
             string currentLanguageResource = SitecoreCmsEntity.GetItemById(siteCoreLanguageId);
             string updatedTimestamp;
@@ -153,7 +153,7 @@ namespace myTNB_Android.Src.Utils
                     LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
                 }
             }
-//#endif
+#endif
         }
 
         public static void SetInitialAppLanguage()
