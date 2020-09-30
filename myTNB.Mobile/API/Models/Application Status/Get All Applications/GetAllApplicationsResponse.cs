@@ -67,8 +67,11 @@ namespace myTNB.Mobile
             }
         }
 
+        /// <summary>
+        /// Determines if the response already hit the last results of all applications
+        /// </summary>
         [JsonIgnore]
-        public bool IsViewLess
+        public bool IsLastResults
         {
             get
             {

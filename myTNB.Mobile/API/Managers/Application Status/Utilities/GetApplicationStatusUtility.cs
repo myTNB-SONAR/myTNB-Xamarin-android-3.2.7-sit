@@ -222,7 +222,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
             {
                 return;
             }
-            string propertyName = _mappingList.Find(x => x.Key == applicationType).Value ?? string.Empty;
+            string propertyName = _mappingList.Find(x => x.Key == applicationType)?.Value ?? string.Empty;
             if (!propertyName.IsValid())
             {
                 return;

@@ -1116,7 +1116,7 @@
     "viewLess": "View Less",
     "sn": "SN: {0}",
     "sr": "SR: {0}",
-    "displayPerQuery": "20"
+    "displayPerQuery": "5"
   },
   "ApplicationStatusSearch": {
     "title": "Search Application Status",
@@ -1135,7 +1135,7 @@
     "title": "Select Filter",
     "applicationType": "Application Type",
     "status": "Status",
-    "creationDate": "Creation On",
+    "creationDate": "Created On",
     "clear": "Clear",
     "apply": "Apply"
   },
@@ -1775,6 +1775,12 @@
   },
   "Mapping": {
     "ExcludedApplicationTypes": [
+      {
+        "key": "PRJ",
+        "value": "Project"
+      }
+    ],
+    "ExcludedSaveTypes": [
       {
         "key": "PRJ",
         "value": "Project"

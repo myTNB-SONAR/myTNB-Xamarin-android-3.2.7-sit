@@ -202,7 +202,7 @@ namespace myTNB.Mobile
         /// <param name="backendApplicationType">From status search, pass backendApplicationType property</param>
         /// <param name="backendModule">From status search, pass backendModule property</param>
         /// <param name="statusCode">From status search, pass statusCode property</param>
-        /// <param name="srCreatedDate">From status search, pass srCreatedDate property</param>
+        /// <param name="createdDate">From status search, pass createdDate property</param>
         /// <returns></returns>
         public async Task<PostSaveApplicationResponse> SaveApplication(string referenceNo
             , string applicationModuleId
@@ -211,7 +211,7 @@ namespace myTNB.Mobile
             , string backendApplicationType
             , string backendModule
             , string statusCode
-            , DateTime srCreatedDate)
+            , DateTime createdDate)
         {
             try
             {
@@ -227,7 +227,7 @@ namespace myTNB.Mobile
                         BackendApplicationType = backendApplicationType,
                         BackendModule = backendModule,
                         StatusCode = statusCode,
-                        SrCreatedDate = srCreatedDate
+                        SrCreatedDate = createdDate
                     };
 
                     HttpResponseMessage rawResponse = await service.SaveApplication(new PostSaveApplicationRequest
@@ -276,23 +276,31 @@ namespace myTNB.Mobile
             return res;
         }
         #endregion
+        //Todo: Remove this Test
         private int count = 0;
         #region GetAllApplication
         /// <summary>
         /// 
         /// </summary>
         /// <param name="page">Page starts from 1 and incrementing</param>
-        /// <param name="searchApplicationType">Application Type ID</param>
+        /// <param name="applicationType">Application Type ID</param>
         /// <param name="statusDescription">Full description of status.</param>
         /// <param name="createdDateFrom">yyyy/mm/dd Format</param>
         /// <param name="createdDateTo">yyyy/mm/dd Format</param>
         /// <returns></returns>
         private async Task<GetAllApplicationsResponse> AllApplications(int page
-           , string searchApplicationType
-           , string statusDescription
-           , string createdDateFrom
-           , string createdDateTo)
+            , string applicationType
+            , string statusDescription
+            , string createdDateFrom
+            , string createdDateTo
+            , bool isFilter)
         {
+            Debug.WriteLine("[DEBUG] [page] : " + page);
+            Debug.WriteLine("[DEBUG] [applicationType] : " + applicationType);
+            Debug.WriteLine("[DEBUG] [statusDescription] : " + statusDescription);
+            Debug.WriteLine("[DEBUG] [createdDateFrom] : " + createdDateFrom);
+            Debug.WriteLine("[DEBUG] [createdDateTo] : " + createdDateTo);
+
             GetAllApplicationsResponse response;
             try
             {
@@ -305,7 +313,7 @@ namespace myTNB.Mobile
                         , string.Empty
                         , string.Empty
                         , string.Empty
-                        , searchApplicationType
+                        , applicationType
                         , string.Empty
                         , statusDescription
                         , createdDateFrom
@@ -328,9 +336,17 @@ namespace myTNB.Mobile
                     }
 
                     response = JsonConvert.DeserializeObject<GetAllApplicationsResponse>(responseString);
-                    if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
-                        response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(response.StatusDetail.Code);
+                        //Mark: Check for 0 Applications
+                        if (response.Content != null && response.Content.Applications != null && response.Content.Applications.Count == 0)
+                        {
+                            response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(EMPTY);
+                        }
+                        else
+                        {
+                            response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(response.StatusDetail.Code);
+                        }
                     }
                     else
                     {
@@ -339,7 +355,14 @@ namespace myTNB.Mobile
                     }
                     if (response.StatusDetail.IsSuccess)
                     {
-                        AllApplicationsCache.Instance.SetData(response.Content);
+                        AllApplicationsCache.Instance.SetData(response.Content, isFilter);
+                        if (isFilter)
+                        {
+                            //Mark: If this is filter, always set to 1.
+                            AllApplicationsCache.Instance.QueryPage = 1;
+                        }
+                        //Mark: Increment Query Page Every Success Call
+                        AllApplicationsCache.Instance.QueryPage += 1;
                     }
                     /*if (count < 2)
                     {
@@ -380,7 +403,7 @@ namespace myTNB.Mobile
         /// </summary>
         /// <param name="page">Page starts from 1 and incrementing</param>
         /// <returns></returns>
-        public async Task<GetAllApplicationsResponse> GetAllApplications(int page)
+        /*public async Task<GetAllApplicationsResponse> GetAllApplications(int page)
         {
             GetAllApplicationsResponse response = await AllApplications(page
                 , string.Empty
@@ -388,28 +411,31 @@ namespace myTNB.Mobile
                 , string.Empty
                 , string.Empty);
             return response;
-        }
+        }*/
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="page">Page starts from 1 and incrementing</param>
-        /// <param name="searchApplicationType">Application Type ID</param>
+        /// <param name="page">Page starts from 1 and incrementing. Pass 1 for filter</param>
+        /// <param name="applicationType">Application Type ID</param>
         /// <param name="statusDescription">Full description of status.</param>
         /// <param name="createdDateFrom">yyyy/mm/dd Format</param>
         /// <param name="createdDateTo">yyyy/mm/dd Format</param>
+        /// <param name="isFilter">Determines if the query is for filter or not</param>
         /// <returns></returns>
         public async Task<GetAllApplicationsResponse> GetAllApplications(int page
-           , string searchApplicationType
-           , string statusDescription
-           , string createdDateFrom
-           , string createdDateTo)
+            , string applicationType
+            , string statusDescription
+            , string createdDateFrom
+            , string createdDateTo
+            , bool isFilter = false)
         {
             GetAllApplicationsResponse response = await AllApplications(page
-               , searchApplicationType
+               , applicationType
                , statusDescription
                , createdDateFrom
-               , createdDateTo);
+               , createdDateTo
+               , isFilter);
             return response;
         }
 

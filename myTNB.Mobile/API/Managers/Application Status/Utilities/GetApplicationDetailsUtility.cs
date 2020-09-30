@@ -99,7 +99,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                             AddAdditionalInfo(ref displayModel
                                 , response.Content
                                 , additionalDisplayConfig
-                                , searchApplicationType == "NC" ? searchApplicationType : key);
+                                , key.Contains("NC") ? searchApplicationType : key);// searchApplicationType == "NC" ? searchApplicationType : key);
                         }
 
                         displayModel.Content.ApplicationStatusDetail = new ApplicationStatusDetailDisplayModel
@@ -212,7 +212,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
             {
                 return;
             }
-            string propertyName = _mappingList.Find(x => x.Key == applicationType).Value ?? string.Empty;
+            string propertyName = _mappingList.Find(x => x.Key == applicationType)?.Value ?? string.Empty;
             if (!propertyName.IsValid())
             {
                 return;
@@ -276,14 +276,6 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                 key = "NC_CONTRACTOR";
             }
         }
-        /*
-        "NC": [],
-    "NC_GROUPMOVEIN": [],       DONE
-    "NC_PREMISECREATION": [],   DONE
-    "NC_CONTRACTOR": [],
-    "NC_PREMISEINDIVUDUAL": [], DONE
-    "NC_PREMISECONTRACTOR": [], DONE
-        */
         #endregion
         #region Payment Display
         private static void SetPaymentDisplay(ref ApplicationDetailDisplay displayModel)
