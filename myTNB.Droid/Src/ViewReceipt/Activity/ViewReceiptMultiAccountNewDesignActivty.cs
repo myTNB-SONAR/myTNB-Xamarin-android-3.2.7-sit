@@ -196,7 +196,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-          //  MenuInflater.Inflate(Resource.Menu.ViewBillReceiptMenu, menu);  //disable due to legal issue
+            MenuInflater.Inflate(Resource.Menu.ViewBillReceiptMenu, menu);  
             return base.OnCreateOptionsMenu(menu);
         }
 

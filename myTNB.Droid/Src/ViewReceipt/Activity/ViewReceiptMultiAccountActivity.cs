@@ -222,16 +222,16 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             switch (item.ItemId)
             {
                 case Resource.Id.action_download:
-                    if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) == (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) == (int)Permission.Granted)
+                    if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted)
                     {
-                        downloadClicked = true;
-                        OnDownloadPDF();
-
+                      
+                        RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
 
                     }
                     else
                     {
-                        RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+                        downloadClicked = true;
+                        OnDownloadPDF();
                     }
                     return true;
             }
