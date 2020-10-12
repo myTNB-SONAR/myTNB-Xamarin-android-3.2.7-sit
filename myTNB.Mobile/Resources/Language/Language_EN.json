@@ -1076,7 +1076,8 @@
     "backLogin": "Back to Login",
     "registeredView": "Is this electricity account registered under your name?",
     "viewYes": "Yes",
-    "viewNo": "No"
+    "viewNo": "No",
+    "choosePdf": "Choose PDF"
   }
 
 

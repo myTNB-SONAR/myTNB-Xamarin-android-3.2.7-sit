@@ -1078,7 +1078,8 @@
     "backLogin": "Kembali ke Log Masuk",
     "registeredView": "Adakah akaun elektrik ini didaftarkan atas nama anda?",
     "viewYes": "Ya",
-    "viewNo": "Tidak"
+    "viewNo": "Tidak",
+    "choosePdf": "Pilih PDF"
   }
      
 }

@@ -124,6 +124,24 @@ namespace myTNB_Android.Src.Utils
             return bitmapData;
         }
 
+        public static byte[]GetCompress(Context context, Bitmap bitmap)
+        {
+            byte[] bitmapData;
+            using (var stream = new MemoryStream())
+            {
+                bitmap.Compress(Bitmap.CompressFormat.Jpeg, 50, stream);
+                bitmapData = stream.ToArray();
+            }
+
+            return bitmapData;
+        }
+
+        public static byte[] GetPDFByte(Context context ,string path)
+        {
+            byte[] pdfdata = File.ReadAllBytes(path);
+            return pdfdata;
+        }
+
         public static string ByteArrayToString(byte[] ba)
         {
             StringBuilder hex = new StringBuilder(ba.Length * 2);

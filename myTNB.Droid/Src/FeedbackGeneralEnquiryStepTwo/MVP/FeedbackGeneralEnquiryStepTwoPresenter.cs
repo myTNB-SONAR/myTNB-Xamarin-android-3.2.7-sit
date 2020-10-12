@@ -152,7 +152,17 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                 int ctr = 1;
                 foreach (AttachedImage image in attachedImages)
                 {
-                    image.Name = this.mView.GetImageName(ctr) + ".jpeg";
+                    string filetype;
+                    if (image.Name.Contains(".pdf"))
+                    {
+                        filetype = ".pdf";
+                    }
+                    else
+                    {
+                        filetype = ".jpeg";
+                    }
+
+                    image.Name = this.mView.GetImageName(ctr) + filetype;
                     var newImage = await this.mView.SaveImage(image);
                     imageRequest.Add(newImage);
                     ctr++;
@@ -175,8 +185,16 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
 
                 foreach (AttachedImageRequest image in imageRequest)
                 {
-
-                        string fileFormat = "jpeg";
+                    string fileFormat;
+                    if (image.FileName.Contains("pdf"))
+                    {
+                        fileFormat = "pdf";
+                    }
+                    else
+                    {
+                        fileFormat = "jpeg";
+                    }
+                       
                         submitEnquiryRequest.SetFeedbackImage(image.ImageHex, image.FileName, image.FileSize.ToString(), fileFormat);
 
                 }

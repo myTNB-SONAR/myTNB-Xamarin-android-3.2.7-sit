@@ -29,6 +29,8 @@ using System.Threading.Tasks;
 using System.Web;
 
 
+
+
 namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 {
  
@@ -232,6 +234,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             {
                 string[] items = { Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")  ,
                                Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary") ,
+                               Utility.GetLocalizedLabel("SubmitEnquiry", "choosePdf") ,
                                Utility.GetLocalizedCommonLabel("cancel")};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this)
@@ -248,6 +251,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                     else if (items[args.Which].Equals(Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary")))
                     {
                         this.userActionsListener.OnAttachPhotoGallery();
+                    }
+                    else if (items[args.Which].Equals(Utility.GetLocalizedLabel("SubmitEnquiry", "choosePdf")))
+                    {
+                        this.userActionsListener.OnAttachPDF();
                     }
                     else if (items[args.Which].Equals(Utility.GetLocalizedCommonLabel("cancel")))
                     {
@@ -312,6 +319,21 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 galleryIntent.SetType("image/*");
                 StartActivityForResult(Intent.CreateChooser(galleryIntent, GetString(Resource.String.bill_related_feedback_select_images)), Constants.RUNTIME_PERMISSION_GALLERY_REQUEST_CODE);
             }
+        }
+
+        public void ShowPDF()
+        {
+
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+
+             
+                Intent galleryIntent = new Intent(Intent.ActionGetContent);
+                galleryIntent.SetType("application/pdf");
+                StartActivityForResult(Intent.CreateChooser(galleryIntent, GetString(Resource.String.bill_related_feedback_select_images)), Constants.RUNTIME_PERMISSION_GALLERY_PDF_REQUEST_CODE);
+            }
+
         }
 
 
@@ -512,11 +534,13 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         public Task<string> SaveGalleryImage(Android.Net.Uri selectedImage, string pTempImagePath, string pFileName)
         {
             return Task.Run<string>(() =>
-            {
+            {  
                 return FileUtils.ProcessGalleryImage(this, selectedImage, pTempImagePath, pFileName);
             });
 
         }
+
+
 
         public Task<string> SaveCameraImage(string tempImagePath, string fileName)
         {

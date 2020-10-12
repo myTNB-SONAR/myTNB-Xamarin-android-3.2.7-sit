@@ -34,8 +34,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
 
             void ShowGallery();
 
-  
- 
+            void ShowPDF();
+
 
 
 
@@ -74,8 +74,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
             void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data);
 
 
+            void OnAttachPDF();
 
-          
 
 
         }

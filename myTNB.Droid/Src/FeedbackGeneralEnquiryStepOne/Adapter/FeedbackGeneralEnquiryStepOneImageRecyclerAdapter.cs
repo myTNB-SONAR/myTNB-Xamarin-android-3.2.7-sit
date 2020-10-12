@@ -18,12 +18,15 @@ using Android.App;
 using System.IO;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Graphics.Drawable;
+using Android.Content.Res;
 
 namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter
 {
     public class FeedbackGeneralEnquiryStepOneImageRecyclerAdapter : BaseRecyclerAdapter<AttachedImage>
     {
-        private int countFileName =1 ;
+        private int countFileName = 1;
+
+        public Resources Resources { get; private set; }
 
         public event EventHandler<int> RemoveClickEvent;
 
@@ -75,7 +78,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter
 
         //public string GetImageName( )
         //{   
-            
+
         //    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
         //    Calendar calendar = Calendar.GetInstance(Locale.Default);
         //    return GetString(Resource.String.feedback_image_name_convention, dateFormatter.Format(calendar.TimeInMillis), UserSessions.GetCurrentImageCount(PreferenceManager.GetDefaultSharedPreferences(this)) + itemCount);
@@ -91,52 +94,100 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter
             if (holder is FeedbackGeneralEnquiryStepOneImageViewHolder)
             {
                 // the actual image
-                
+
                 var viewHolder = holder as FeedbackGeneralEnquiryStepOneImageViewHolder;
-                Picasso.With(viewHolder.ItemView.Context)
-                    .Load(new Java.IO.File(image.Path))
-                    .Fit()
-                    .Into(viewHolder.imageView
-                            , delegate
-                            {
-                                Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
-                                if (imageBitmap != null && !imageBitmap.IsRecycled)
-                                {
-                                    RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
-                                    imageDrawable.CornerRadius = 5f;
-                                    viewHolder.imageView.SetImageDrawable(imageDrawable);
 
-                                    if(image.Name == null)
-                                    {
-                                        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
-                                        Calendar calendar = Calendar.GetInstance(Locale.Default);
+                bool isPDF = image.Path.Contains("pdf");
 
-                                        var name = Resource.String.feedback_image_name_convention + dateFormatter.Format(calendar.TimeInMillis) + countFileName + ".jpeg";
-                                        countFileName++;
+                if (isPDF == true)
+                {
 
-                                        viewHolder.filename.Text = name;
-                                    }
-                                    else
-                                    {
-                                        viewHolder.filename.Text = image.Name;
-                                    }
+                    Picasso.With(viewHolder.ItemView.Context)
+                   .Load( Resource.Drawable.ic_feedback_submitted)
+                   .Fit()
+                   .Into(viewHolder.imageView
+                           , delegate
+                           {
+                               Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
+                               if (imageBitmap != null && !imageBitmap.IsRecycled)
+                               {
+                                   RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
+                                   imageDrawable.CornerRadius = 5f;
+                                   viewHolder.imageView.SetImageDrawable(imageDrawable);
 
-                            
+                                   if (image.Name == null)
+                                   {
+                                       SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+                                       Calendar calendar = Calendar.GetInstance(Locale.Default);
+
+                                       var name = Resource.String.feedback_image_name_convention + dateFormatter.Format(calendar.TimeInMillis) + countFileName + ".jpeg";
+                                       countFileName++;
+
+                                       viewHolder.filename.Text = name;
+                                   }
+                                   else
+                                   {
+                                       viewHolder.filename.Text = image.Name;
+                                   }
+                               }
+                           }
+                           , delegate
+                           {
+
+                           });
+
+                    ;
+
+                }
+                else
+                {
+                    Picasso.With(viewHolder.ItemView.Context)
+                             .Load(new Java.IO.File(image.Path))
+                             .Fit()
+                             .Into(viewHolder.imageView
+                                     , delegate
+                                     {
+                                         Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
+                                         if (imageBitmap != null && !imageBitmap.IsRecycled)
+                                         {
+                                             RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
+                                             imageDrawable.CornerRadius = 5f;
+                                             viewHolder.imageView.SetImageDrawable(imageDrawable);
+
+                                             if (image.Name == null)
+                                             {
+                                                 SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+                                                 Calendar calendar = Calendar.GetInstance(Locale.Default);
+
+                                                 var name = Resource.String.feedback_image_name_convention + dateFormatter.Format(calendar.TimeInMillis) + countFileName + ".jpeg";
+                                                 countFileName++;
+
+                                                 viewHolder.filename.Text = name;
+                                             }
+                                             else
+                                             {
+                                                 viewHolder.filename.Text = image.Name;
+                                             }
 
 
 
 
 
 
-                                }
 
-                            }
-                            , delegate
-                            {
 
-                            });
+                                         }
 
-                ;
+                                     }
+                                     , delegate
+                                     {
+
+                                     });
+
+                    ;
+                }
+
+
             }
             else
             {
@@ -154,6 +205,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter
                 }
             }
         }
+
 
         private void RemoveClick(int position)
         {

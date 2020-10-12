@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Runtime;
@@ -71,6 +72,11 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
             this.mView.ShowGallery();
         }
 
+        public void OnAttachPDF()
+        {
+            this.mView.ShowPDF();
+        }
+
         private async void OnSaveCameraImage(string tempImagePath, string fileName)
         {
             this.mView.DisableSubmitButton();
@@ -87,11 +93,34 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
             this.mView.DisableSubmitButton();
             this.mView.ShowLoadingImage();
             string resultFilePath = await this.mView.SaveGalleryImage(selectedImage, FileUtils.TEMP_IMAGE_FOLDER, fileName);
+          
+
+            this.mView.UpdateAdapter(resultFilePath, fileName);
+            this.mView.HideLoadingImage();
+            this.mView.EnableSubmitButton();
+        }
+
+        private async void OnSaveGalleryPDF(Android.Net.Uri selectedImage, string fileName)
+        {
+            this.mView.DisableSubmitButton();
+            this.mView.ShowLoadingImage();
+            //  string resultFilePath = await this.mView.SaveGalleryImage(selectedImage, FileUtils.TEMP_IMAGE_FOLDER, fileName);
+            string resultFilePath = removeRawtag(selectedImage.LastPathSegment);
+           // string cutRawtag = resultFilePath.Substring(4, resultFilePath.Length);
+
 
 
             this.mView.UpdateAdapter(resultFilePath, fileName);
             this.mView.HideLoadingImage();
             this.mView.EnableSubmitButton();
+        }
+
+        public string removeRawtag(string data)
+        { string removedString;
+
+            removedString = data.Substring(4);
+
+            return removedString;
         }
 
         public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -116,6 +145,18 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
                     string fileName = string.Format("{0}.jpeg", Guid.NewGuid());
 
                     OnSaveGalleryImage(selectedImage, fileName);
+                    GC.Collect();
+                }
+            }
+            else if (requestCode == Constants.RUNTIME_PERMISSION_GALLERY_PDF_REQUEST_CODE)
+            {
+                if (resultCode == Result.Ok)
+                {  
+                  
+                    Android.Net.Uri selectedImage = data.Data;
+                    string fileName = string.Format("{0}.pdf", Guid.NewGuid());
+
+                    OnSaveGalleryPDF(selectedImage, fileName);
                     GC.Collect();
                 }
             }
