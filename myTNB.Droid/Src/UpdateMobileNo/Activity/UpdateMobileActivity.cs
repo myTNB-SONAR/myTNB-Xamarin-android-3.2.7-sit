@@ -115,6 +115,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 {
                     lblVerifyMobileNo.Visibility = ViewStates.Visible;
                     SetToolBarTitle(GetLabelByLanguage("verifyDeviceTitle"));
+                    
                 }
                 else
                 {
@@ -184,7 +185,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 if (ConnectionUtils.HasInternetConnection(this))
                 {
                     string newMobile = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
-                    this.userActionsListener.OnUpdatePhoneNo(newMobile, loginRequest);
+                    this.userActionsListener.OnUpdatePhoneNo(newMobile, loginRequest, forceUpdatePhoneNo);
                 }
                 else
                 {
