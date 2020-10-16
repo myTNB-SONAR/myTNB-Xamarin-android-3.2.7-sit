@@ -115,19 +115,19 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter
                                    imageDrawable.CornerRadius = 5f;
                                    viewHolder.imageView.SetImageDrawable(imageDrawable);
 
-                                   if (image.Name == null)
+                                   if (image.FileName == null)
                                    {
                                        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
                                        Calendar calendar = Calendar.GetInstance(Locale.Default);
 
-                                       var name = Resource.String.feedback_image_name_convention + dateFormatter.Format(calendar.TimeInMillis) + countFileName + ".jpeg";
+                                       var name = Resource.String.feedback_image_name_convention + dateFormatter.Format(calendar.TimeInMillis) + countFileName + ".pdf";
                                        countFileName++;
 
                                        viewHolder.filename.Text = name;
                                    }
                                    else
                                    {
-                                       viewHolder.filename.Text = image.Name;
+                                       viewHolder.filename.Text = image.FileName;
                                    }
                                }
                            }

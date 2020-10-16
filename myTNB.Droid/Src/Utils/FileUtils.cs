@@ -111,6 +111,68 @@ namespace myTNB_Android.Src.Utils
             });
         }
 
+        public static Task<string> SaveAsyncPDF(Context context, byte[] fileArray, string pFolder, string pFileName)
+        {
+            return Task.Run<string>(() =>
+            {
+            string rootPath = context.FilesDir.AbsolutePath;
+            string path = "";
+
+            if (IsExternalStorageReadable() && IsExternalStorageWritable())
+            {
+                rootPath = context.GetExternalFilesDir(null).AbsolutePath;
+            }
+
+            var directory = System.IO.Path.Combine(rootPath, "pdf");
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            string filename = pFileName;
+
+            path = System.IO.Path.Combine(directory, filename);
+
+            if (!string.IsNullOrEmpty(path))
+            {
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+
+
+            }
+
+
+            FileStream fileStream = new FileStream(path, FileMode.Create);
+                {
+                    // Write the data to the file, byte by byte.
+                    for (int i = 0; i < fileArray.Length; i++)
+                    {
+                        fileStream.WriteByte(fileArray[i]);
+                    }
+
+                    // Set the stream position to the beginning of the file.
+                    fileStream.Seek(0, SeekOrigin.Begin);
+
+                    // Read and verify the data.
+                    for (int i = 0; i < fileStream.Length; i++)
+                    {
+                        if (fileArray[i] != fileStream.ReadByte())
+                        {
+                            Console.WriteLine("Error writing data.");
+
+                            return "";
+                        }
+                    }
+                    Console.WriteLine("The data was written to {0} " +
+                        "and verified.", fileStream.Name);
+                }
+                fileStream.Close();
+                return path;
+            });
+        }
+
 
         public static byte[] Get(Context context, Bitmap bitmap)
         {
@@ -124,7 +186,7 @@ namespace myTNB_Android.Src.Utils
             return bitmapData;
         }
 
-        public static byte[]GetCompress(Context context, Bitmap bitmap)
+        public static byte[] GetCompress(Context context, Bitmap bitmap)
         {
             byte[] bitmapData;
             using (var stream = new MemoryStream())
@@ -136,7 +198,7 @@ namespace myTNB_Android.Src.Utils
             return bitmapData;
         }
 
-        public static byte[] GetPDFByte(Context context ,string path)
+        public static byte[] GetPDFByte(Context context, string path)
         {
             byte[] pdfdata = File.ReadAllBytes(path);
             return pdfdata;

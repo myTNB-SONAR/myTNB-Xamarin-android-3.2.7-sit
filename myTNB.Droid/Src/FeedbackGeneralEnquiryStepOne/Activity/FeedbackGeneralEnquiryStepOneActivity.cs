@@ -27,6 +27,7 @@ using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using Java.Text;
 
 
 
@@ -166,7 +167,6 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 Utility.LoggingNonFatalError(e);
             }
 
-            // Create your application hereGetImageName
         }
 
         public override void Ready()
@@ -552,14 +552,14 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 
         }
 
-        public void UpdateAdapter(string pFilePath, string pFileName)
+        public void UpdateAdapter(string pFilePath, string pFileName ,string tfileName = "")
         {
             adapter.Update(adapter.ItemCount - 1, new AttachedImage()
             {
                 ViewType = Constants.VIEW_TYPE_REAL_RECORD,
                 Name = pFileName,
-                Path = pFilePath
-
+                Path = pFilePath,
+                FileName= tfileName
             });
             if (adapter.ItemCount < 2)
             {
@@ -599,11 +599,6 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-
-
-
-
 
 
 

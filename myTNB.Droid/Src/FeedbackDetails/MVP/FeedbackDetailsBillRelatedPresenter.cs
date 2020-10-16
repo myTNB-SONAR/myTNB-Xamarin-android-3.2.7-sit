@@ -47,6 +47,33 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                         {
                             try
                             {
+                            if (image.FileName.Contains("pdf"))
+                            {
+                                //todo hex to file  --done
+                                //store at certain path with its name
+                                //set as the attached file
+
+                                try
+                                {
+                                    byte[] byteOfPdf = FileUtils.StringToByteArray(image.ImageHex);
+                                    string filePath = await FileUtils.SaveAsyncPDF(this.context, byteOfPdf, FileUtils.IMAGE_FOLDER, image.FileName);
+                                    var attachImage = new AttachedImage()
+                                    {
+                                        Path = filePath,
+                                        Name = image.FileName
+                                    };
+                                    attachImageList.Add(attachImage);
+                                }
+                                catch (Exception e)
+                                {
+                                    Utility.LoggingNonFatalError(e);
+                                }
+
+
+                              
+                            }
+                            else
+                            {
                                 Bitmap bitmap = await FileUtils.GetImageFromHexAsync(image.ImageHex, image.FileSize);
                                 string filePath = await FileUtils.SaveAsync(this.context, bitmap, FileUtils.IMAGE_FOLDER, image.FileName);
                                 var attachImage = new AttachedImage()
@@ -55,6 +82,9 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                                     Name = image.FileName
                                 };
                                 attachImageList.Add(attachImage);
+                            }
+
+                                
                             }
                             catch (Exception e)
                             {

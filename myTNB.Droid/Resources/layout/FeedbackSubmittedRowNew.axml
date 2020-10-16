@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtFeedbackTitle"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+
+        android:ellipsize="end"
+        android:maxEms="15"
+        android:maxLines="3"
+        android:orientation="vertical"
+        android:singleLine="true"
+        android:text="Update Personal Details - sample"
+        android:textColor="@color/tunaGrey"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/txtSRstatus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtSRNumber"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="16dp"
+        android:ellipsize="end"
+        android:maxEms="20"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="SR: 10045678 - sample"
+        android:textColor="@color/silverChalice"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/completeIndicator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtFeedbackTitle" />
+
+    <TextView
+        android:id="@+id/txtFeedbackDate"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+
+
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:text="10 September 2017"
+        android:textColor="@color/tunaGrey"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/rightArrow"
+        app:layout_constraintTop_toBottomOf="@+id/txtSRstatus"
+        tools:layout_constraintRight_creator="1" />
+
+
+    <TextView
+        android:id="@+id/txtSRstatus"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="Completed"
+        android:textColor="@color/completedColor"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/rightArrow"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintRight_creator="1" />
+
+    <ImageView
+        android:id="@+id/completeIndicator"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
+        android:src="@drawable/ic_notifications_unread"
+        app:layout_constraintBottom_toBottomOf="@+id/txtFeedbackDate"
+        app:layout_constraintEnd_toStartOf="@+id/txtFeedbackDate"
+        app:layout_constraintTop_toTopOf="@+id/txtFeedbackDate" />
+
+    <ImageView
+        android:id="@+id/rightArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/expand_right_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.489" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

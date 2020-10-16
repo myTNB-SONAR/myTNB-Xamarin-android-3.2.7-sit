@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Runtime;
 using Android.Text;
 using myTNB_Android.Src.Utils;
+
 
 namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
 {
@@ -12,6 +12,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
     {
 
         FeedbackGeneralEnquiryStepOneContract.IView mView;
+
+        private int countUserPick = 1; 
 
 
         public FeedbackGeneralEnquiryStepOnePresenter(FeedbackGeneralEnquiryStepOneContract.IView mView)
@@ -104,17 +106,25 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
         {
             this.mView.DisableSubmitButton();
             this.mView.ShowLoadingImage();
-            //  string resultFilePath = await this.mView.SaveGalleryImage(selectedImage, FileUtils.TEMP_IMAGE_FOLDER, fileName);
+          
             string resultFilePath = removeRawtag(selectedImage.LastPathSegment);
-           // string cutRawtag = resultFilePath.Substring(4, resultFilePath.Length);
+
+            string result = selectedImage.Path;
+            int cut = result.LastIndexOf('/');
+            if (cut != -1)
+            {
+                result = result.Substring(cut + 1);
+            }
+
+            string actualPdfName = result;
 
 
-
-            this.mView.UpdateAdapter(resultFilePath, fileName);
+            this.mView.UpdateAdapter(resultFilePath, fileName, actualPdfName);
             this.mView.HideLoadingImage();
             this.mView.EnableSubmitButton();
         }
 
+    
         public string removeRawtag(string data)
         { string removedString;
 
@@ -130,7 +140,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
                 if (resultCode == Result.Ok)
                 {
                     // TODO : ADD PROGRESS
-                    string fileName = string.Format("{0}.jpeg", Guid.NewGuid());
+                    string fileName = string.Format("{0}.jpeg",   this.mView.GetImageName(countUserPick));
+                    countUserPick++; //increament picked file number
                     string tempImagePath = this.mView.GetTemporaryImageFilePath(FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage"));
                     OnSaveCameraImage(tempImagePath, fileName);
 
@@ -142,8 +153,11 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
                 if (resultCode == Result.Ok)
                 {
                     Android.Net.Uri selectedImage = data.Data;
-                    string fileName = string.Format("{0}.jpeg", Guid.NewGuid());
 
+                    
+
+                    string fileName = string.Format("{0}.jpeg", this.mView.GetImageName(countUserPick));
+                    countUserPick++;
                     OnSaveGalleryImage(selectedImage, fileName);
                     GC.Collect();
                 }
@@ -151,17 +165,18 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
             else if (requestCode == Constants.RUNTIME_PERMISSION_GALLERY_PDF_REQUEST_CODE)
             {
                 if (resultCode == Result.Ok)
-                {  
-                  
+                {
+                       // Guid.NewGuid()
                     Android.Net.Uri selectedImage = data.Data;
-                    string fileName = string.Format("{0}.pdf", Guid.NewGuid());
-
+                    string fileName = string.Format("{0}.pdf", this.mView.GetImageName(countUserPick));
+                    countUserPick++;
                     OnSaveGalleryPDF(selectedImage, fileName);
                     GC.Collect();
                 }
             }
 
         }
+
 
 
 

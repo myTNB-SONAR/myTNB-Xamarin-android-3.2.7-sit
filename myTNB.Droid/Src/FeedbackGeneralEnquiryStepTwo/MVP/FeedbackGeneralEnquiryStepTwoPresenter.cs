@@ -162,7 +162,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                         filetype = ".jpeg";
                     }
 
-                    image.Name = this.mView.GetImageName(ctr) + filetype;
+                    //image.Name = this.mView.GetImageName(ctr) + filetype;
                     var newImage = await this.mView.SaveImage(image);
                     imageRequest.Add(newImage);
                     ctr++;
@@ -207,7 +207,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                     }
                 }
 
-                //var tempReq = JsonConvert.SerializeObject(submitEnquiryRequest);
+                var tempReq = JsonConvert.SerializeObject(submitEnquiryRequest);
 
                 var preLoginFeedbackResponse = await ServiceApiImpl.Instance.SubmitEnquiry(submitEnquiryRequest);
 

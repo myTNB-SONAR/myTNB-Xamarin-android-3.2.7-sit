@@ -49,9 +49,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
 
             Task<string> SaveGalleryImage(Android.Net.Uri selectedImage, string pTempImagePath, string pFileName);
 
+            string GetImageName(int itemCount);
 
-
-            void UpdateAdapter(string pFilePath, string pFileName);
+            void UpdateAdapter(string pFilePath, string pFileName, string tfileName="");
 
             Task<string> SaveCameraImage(string tempImagePath, string fileName);
 
@@ -75,6 +75,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
 
 
             void OnAttachPDF();
+
+         
 
 
 
