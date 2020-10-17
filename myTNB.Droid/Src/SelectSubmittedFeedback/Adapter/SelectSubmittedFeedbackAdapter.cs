@@ -9,7 +9,6 @@ using Java.Util;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.SelectSubmittedFeedback.Model;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
