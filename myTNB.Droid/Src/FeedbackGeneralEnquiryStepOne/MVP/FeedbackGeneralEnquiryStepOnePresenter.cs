@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Android.App;
 using Android.Content;
 using Android.Runtime;
@@ -102,14 +103,21 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
             this.mView.EnableSubmitButton();
         }
 
-        private async void OnSaveGalleryPDF(Android.Net.Uri selectedImage, string fileName)
+        private async void OnSaveGalleryPDF(string filePath, string fileName =null)
         {
             this.mView.DisableSubmitButton();
             this.mView.ShowLoadingImage();
-          
-            string resultFilePath = removeRawtag(selectedImage.LastPathSegment);
 
-            string result = selectedImage.Path;
+
+            string result = filePath;
+
+            int cutFiletype = result.IndexOf(':');
+            if (cutFiletype != -1)
+            {
+                filePath = result.Substring(cutFiletype + 1);
+            }
+
+
             int cut = result.LastIndexOf('/');
             if (cut != -1)
             {
@@ -118,8 +126,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
 
             string actualPdfName = result;
 
-
-            this.mView.UpdateAdapter(resultFilePath, fileName, actualPdfName);
+            
+            this.mView.UpdateAdapter(filePath, actualPdfName, actualPdfName);
             this.mView.HideLoadingImage();
             this.mView.EnableSubmitButton();
         }
@@ -170,7 +178,34 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
                     Android.Net.Uri selectedImage = data.Data;
                     string fileName = string.Format("{0}.pdf", this.mView.GetImageName(countUserPick));
                     countUserPick++;
-                    OnSaveGalleryPDF(selectedImage, fileName);
+
+                    //todo uri to absolute path
+
+                
+
+                    string filepath = selectedImage.LastPathSegment;
+
+                    if (!filepath.ToLower().Contains(".pdf"))
+                    {
+                        //reselect path if from uri is not valid
+                        string absolutePath = this.mView.getActualPath(selectedImage);
+
+                        if (!absolutePath.ToLower().Contains(".pdf"))
+                        {
+                            this.mView.ShowError();
+                        }
+                        else
+                        {
+                            OnSaveGalleryPDF(absolutePath, fileName);
+                        }
+                    }
+                    else
+                    {
+                        OnSaveGalleryPDF(filepath, fileName);
+                    }
+
+                 
+                  
                     GC.Collect();
                 }
             }

@@ -53,10 +53,10 @@ namespace myTNB_Android.Src.FeedbackDetails.Adapter
                 AttachedImage image = GetItemObject(position);
                 var viewHolder = holder as FeedbackPreLoginImageViewHolder;
 
-                if (image.Name.Contains("pdf"))
+                if (image.Name.ToLower().Contains("pdf"))
                 {
                     Picasso.With(viewHolder.ItemView.Context)
-                   .Load(Resource.Drawable.ic_feedback_submitted)
+                   .Load(Resource.Drawable.pdfIcon)
                    .Fit()
                    .Into(viewHolder.imageView
                            , delegate

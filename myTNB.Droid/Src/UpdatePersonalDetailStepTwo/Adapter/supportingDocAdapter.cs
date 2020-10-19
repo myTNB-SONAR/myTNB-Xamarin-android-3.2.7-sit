@@ -82,12 +82,12 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Adapter
 
                 var viewHolder = holder as FeedbackGeneralEnquiryStepOneImageViewHolder;
 
-                bool isPDF = image.Path.Contains("pdf");
+                bool isPDF = image.Path.ToLower().Contains("pdf");
 
                 if (isPDF == true)
                 {
                     Picasso.With(viewHolder.ItemView.Context)
-                .Load(Resource.Drawable.ic_feedback_submitted)
+                .Load(Resource.Drawable.pdfIcon)
                 .Fit()
                 .Into(viewHolder.imageView
                         , delegate

@@ -27,10 +27,7 @@ using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Java.Text;
-
-
-
+using Android.Support.Design.Widget;
 
 namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 {
@@ -51,6 +48,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         FeedbackGeneralEnquiryStepOnePresenter mPresenter;
 
 
+        [BindView(Resource.Id.rootView)]
+        CoordinatorLayout rootView;
+
         [BindView(Resource.Id.recyclerView)]
          RecyclerView recyclerView;
 
@@ -58,7 +58,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         EditText txtGeneralEnquiry1;
 
         [BindView(Resource.Id.txtInputLayoutGeneralEnquiry1)]
-        TextInputLayout txtInputLayoutGeneralEnquiry1;
+        Google.Android.Material.TextField.TextInputLayout txtInputLayoutGeneralEnquiry1;
 
         [BindView(Resource.Id.txtMaxCharacters)]
         TextView txtMaxCharacters;
@@ -303,7 +303,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                     var intent = new Intent(MediaStore.ActionImageCapture);
                     Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
                     Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
-                                                    ApplicationContext.PackageName + ".fileprovider", file);
+                    ApplicationContext.PackageName + ".fileprovider", file);
                     intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
                     StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
                 }
@@ -331,12 +331,44 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
              
                 Intent galleryIntent = new Intent(Intent.ActionGetContent);
                 galleryIntent.SetType("application/pdf");
+                galleryIntent.PutExtra(Intent.ExtraLocalOnly, true);
                 StartActivityForResult(Intent.CreateChooser(galleryIntent, GetString(Resource.String.bill_related_feedback_select_images)), Constants.RUNTIME_PERMISSION_GALLERY_PDF_REQUEST_CODE);
             }
 
         }
 
 
+        public string getActualPath(Android.Net.Uri uri)
+        {  
+           string path = FileUtils.GetActualPathForFile(uri, this);
+           return path;
+        }
+
+
+        Snackbar mErrorMessageSnackBar;
+        public void ShowError(string message = null)
+        {
+            if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+            {
+                mErrorMessageSnackBar.Dismiss();
+            }
+
+
+            if (string.IsNullOrEmpty(message))
+            {
+                message = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
+            }
+
+            mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
+            );
+            View v = mErrorMessageSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+
+            mErrorMessageSnackBar.Show();
+            this.SetIsClicked(false);
+        }
 
 
 

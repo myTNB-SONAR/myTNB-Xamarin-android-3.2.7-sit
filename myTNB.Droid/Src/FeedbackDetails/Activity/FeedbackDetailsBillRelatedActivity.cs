@@ -642,7 +642,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                     selectedImage = adapter.GetItemObject(e);
                 }
 
-                if (selectedImage.Name.Contains(".pdf"))
+                if (selectedImage.Name.ToLower().Contains(".pdf"))
                 {
                    
 

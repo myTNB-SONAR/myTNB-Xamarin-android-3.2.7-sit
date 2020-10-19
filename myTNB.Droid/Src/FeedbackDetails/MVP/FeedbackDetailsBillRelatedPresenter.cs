@@ -47,7 +47,7 @@ namespace myTNB_Android.Src.FeedbackDetails.MVP
                         {
                             try
                             {
-                            if (image.FileName.Contains("pdf"))
+                            if (image.FileName.ToLower().Contains("pdf"))
                             {
                                 //todo hex to file  --done
                                 //store at certain path with its name

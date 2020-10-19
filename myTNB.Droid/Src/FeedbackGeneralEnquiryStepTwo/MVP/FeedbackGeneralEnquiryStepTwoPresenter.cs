@@ -153,7 +153,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                 foreach (AttachedImage image in attachedImages)
                 {
                     string filetype;
-                    if (image.Name.Contains(".pdf"))
+                    if (image.Name.ToLower().Contains(".pdf"))
                     {
                         filetype = ".pdf";
                     }
@@ -186,7 +186,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
                 foreach (AttachedImageRequest image in imageRequest)
                 {
                     string fileFormat;
-                    if (image.FileName.Contains("pdf"))
+                    if (image.FileName.ToLower().Contains("pdf"))
                     {
                         fileFormat = "pdf";
                     }

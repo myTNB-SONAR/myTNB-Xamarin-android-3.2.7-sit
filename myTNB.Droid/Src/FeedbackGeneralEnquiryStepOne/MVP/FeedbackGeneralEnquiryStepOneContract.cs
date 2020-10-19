@@ -36,7 +36,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
 
             void ShowPDF();
 
-
+            void ShowError(string message = null);
 
 
 
@@ -54,6 +54,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
             void UpdateAdapter(string pFilePath, string pFileName, string tfileName="");
 
             Task<string> SaveCameraImage(string tempImagePath, string fileName);
+
+            string getActualPath(Android.Net.Uri uri);
 
         }
 

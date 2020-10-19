@@ -822,7 +822,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
             {
                 BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 
-                if (attachedImage.Name.Contains("pdf"))
+                if (attachedImage.Name.ToLower().Contains("pdf"))
                 {
                     try
                     {

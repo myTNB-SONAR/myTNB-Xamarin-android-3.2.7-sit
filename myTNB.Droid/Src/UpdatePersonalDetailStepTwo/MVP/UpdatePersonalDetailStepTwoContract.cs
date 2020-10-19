@@ -25,6 +25,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP
 
             void ShowinfoLabelCopyOfIdentification();
 
+            string getActualPath(Android.Net.Uri uri);
+            void ShowError(string message=null);
+
 
             void ShowCamera();
 
