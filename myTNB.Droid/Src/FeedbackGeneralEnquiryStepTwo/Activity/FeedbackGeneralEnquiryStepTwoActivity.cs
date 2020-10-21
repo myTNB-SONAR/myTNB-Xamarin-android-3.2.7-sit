@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -821,27 +822,71 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
             {
                 BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 
-                Bitmap bitmap = BitmapFactory.DecodeFile(attachedImage.Path, bmOptions);
-             
+                if (attachedImage.Name.ToLower().Contains("pdf"))
+                {
+                    try
+                    {
+                        byte[] pdfByteData = FileUtils.GetPDFByte(this, attachedImage.Path);
 
-                byte[] imageBytes = FileUtils.Get(this, bitmap);
-                int size = imageBytes.Length;
-                string hexString = HttpUtility.UrlEncode(FileUtils.ByteArrayToString(imageBytes), Encoding.UTF8);
-                if (bitmap != null && !bitmap.IsRecycled)
-                {
-                    bitmap.Recycle();
+                        int size = pdfByteData.Length;
+                        string hexString = HttpUtility.UrlEncode(FileUtils.ByteArrayToString(pdfByteData), Encoding.UTF8);
+                        System.Console.WriteLine(string.Format("Hex string {0}", hexString));
+                        return new AttachedImageRequest()
+                        {
+                            ImageHex = hexString,
+                            FileSize = size,
+                            FileName = attachedImage.Name
+                        };
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+
+                        Bitmap bitmap = BitmapFactory.DecodeFile(attachedImage.Path, bmOptions);
+                        byte[] imageBytes = FileUtils.GetCompress(this, bitmap);
+
+                        int size = imageBytes.Length;
+                        string hexString = HttpUtility.UrlEncode(FileUtils.ByteArrayToString(imageBytes), Encoding.UTF8);
+                        if (bitmap != null && !bitmap.IsRecycled)
+                        {
+                            bitmap.Recycle();
+                        }
+                        System.Console.WriteLine(string.Format("Hex string {0}", hexString));
+                        return new AttachedImageRequest()
+                        {
+                            ImageHex = hexString,
+                            FileSize = size,
+                            FileName = attachedImage.Name
+                        };
+                    }
+
                 }
-                Console.WriteLine(string.Format("Hex string {0}", hexString));
-                return new AttachedImageRequest()
-                {
-                    ImageHex = hexString,
-                    FileSize = size,
-                    FileName = attachedImage.Name
-                };
+                else {
+                    Bitmap bitmap = BitmapFactory.DecodeFile(attachedImage.Path, bmOptions);
+                    byte[] imageBytes = FileUtils.GetCompress(this, bitmap);
+                
+                    int size = imageBytes.Length;
+                    string hexString = HttpUtility.UrlEncode(FileUtils.ByteArrayToString(imageBytes), Encoding.UTF8);
+                    if (bitmap != null && !bitmap.IsRecycled)
+                    {
+                        bitmap.Recycle();
+                    }
+                    System.Console.WriteLine(string.Format("Hex string {0}", hexString));
+                    return new AttachedImageRequest()
+                    {
+                        ImageHex = hexString,
+                        FileSize = size,
+                        FileName = attachedImage.Name
+                    };
+                }
+
             });
         }
 
-        public void HideProgressDialog()
+
+
+
+public void HideProgressDialog()
         {
             try
             {

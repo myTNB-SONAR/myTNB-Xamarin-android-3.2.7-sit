@@ -11,7 +11,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP
 
         UpdatePersonalDetailStepTwoContract.IView mView;
         private ISharedPreferences mSharedPref;
-
+        private int countUserPick = 1;
         public UpdatePersonalDetailStepTwoPresenter(UpdatePersonalDetailStepTwoContract.IView mView)
         {
             this.mView = mView;
@@ -61,7 +61,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP
                 if (resultCode == Result.Ok)
                 {
                     // TODO : ADD PROGRESS
-                    string fileName = string.Format("{0}.jpeg", Guid.NewGuid());
+                    string fileName = string.Format("{0}.jpeg", this.mView.GetImageName(countUserPick));
+                    countUserPick++;
                     string tempImagePath = this.mView.GetTemporaryImageFilePath(FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage"));
 
 
@@ -75,13 +76,50 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP
                 if (resultCode == Result.Ok)
                 {
                     Android.Net.Uri selectedImage = data.Data;
-                    string fileName = string.Format("{0}.jpeg", Guid.NewGuid());
-
+                    string fileName = string.Format("{0}.jpeg", this.mView.GetImageName(countUserPick));
+                    countUserPick++;
                     OnSaveGalleryImage(selectedImage, fileName);
                     GC.Collect();
                 }
             }
-          
+
+            else if (requestCode == Constants.RUNTIME_PERMISSION_GALLERY_PDF_REQUEST_CODE)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    Android.Net.Uri selectedImage = data.Data;
+                    string fileName = string.Format("{0}.pdf", this.mView.GetImageName(countUserPick));
+                    countUserPick++;
+
+
+                    string filepath = selectedImage.LastPathSegment;
+
+                    if (!filepath.ToLower().Contains(".pdf"))
+                    {
+                        //reselect path if from uri is not valid
+                        string absolutePath = this.mView.getActualPath(selectedImage);
+
+                        if (!absolutePath.ToLower().Contains(".pdf"))
+                        {
+                            this.mView.ShowError();
+                        }
+                        else
+                        {
+                            OnSaveGalleryPDF(absolutePath, fileName);
+                        }
+                    }
+                    else
+                    {
+                        OnSaveGalleryPDF(filepath, fileName);
+                    }
+
+
+
+
+                    GC.Collect();
+                }
+            }
+
         }
 
         private async void OnSaveCameraImage(string tempImagePath, string fileName)
@@ -101,13 +139,46 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP
             string resultFilePath = await this.mView.SaveGalleryImage(selectedImage, FileUtils.TEMP_IMAGE_FOLDER, fileName);
             this.mView.UpdateAdapter(resultFilePath, fileName);
             this.mView.HideLoadingImage();
-            //this.mView.EnableSubmitButton();
+     
         }
 
+        private async void OnSaveGalleryPDF(string filePath, string fileName)
+        {
+            this.mView.DisableSubmitButton();
+            this.mView.ShowLoadingImage();
+ 
+
+            string result = filePath;
+
+            int cutFiletype = result.IndexOf(':');
+            if (cutFiletype != -1)
+            {
+                filePath = result.Substring(cutFiletype + 1);
+            }
+
+            int cut = result.LastIndexOf('/');
+            if (cut != -1)
+            {
+                result = result.Substring(cut + 1);
+            }
+
+            string actualPdfName = result;
+
+            this.mView.UpdateAdapter(filePath, actualPdfName, actualPdfName);
+            this.mView.HideLoadingImage();
+          
+        }
+
+  
         public void OninfoLabelPermise()
         {
 
             this.mView.ShowinfoLabelPermise();
+        }
+
+        public void OnAttachPDF()
+        {
+            this.mView.ShowPDF();
         }
 
 

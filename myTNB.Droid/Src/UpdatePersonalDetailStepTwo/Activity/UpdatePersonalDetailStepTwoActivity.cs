@@ -11,6 +11,7 @@ using Android.Graphics;
 using Android.Preferences;
 using Android.Provider;
 using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -18,6 +19,8 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using Castle.Core.Internal;
 using CheeseBind;
+using Java.Text;
+using Java.Util;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base.Request;
@@ -40,7 +43,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
         UpdatePersonalDetailStepTwoPresenter mPresenter;
 
-
+        [BindView(Resource.Id.rootView)]
+        CoordinatorLayout rootView;
 
         [BindView(Resource.Id.txtstep1of2)]
         TextView txtstep1of2;
@@ -442,7 +446,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
         }
 
 
-        public void UpdateAdapter(string pFilePath, string pFileName)
+        public void UpdateAdapter(string pFilePath, string pFileName, string tFullname="")
 
         {
             ADAPTER_TYPE type;
@@ -454,7 +458,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 {
                     ViewType = Constants.VIEW_TYPE_REAL_RECORD,
                     Name = pFileName,
-                    Path = pFilePath
+                    Path = pFilePath,
+                    FileName = tFullname
 
                 });
                 if (adapter.ItemCount < 1)
@@ -472,7 +477,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 {
                     ViewType = Constants.VIEW_TYPE_REAL_RECORD,
                     Name = pFileName,
-                    Path = pFilePath
+                    Path = pFilePath,
+                    FileName = tFullname
 
                 });
                 if (ic_adapter.ItemCount < 1)
@@ -490,7 +496,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 {
                     ViewType = Constants.VIEW_TYPE_REAL_RECORD,
                     Name = pFileName,
-                    Path = pFilePath
+                    Path = pFilePath,
+                    FileName = tFullname
 
                 });
                 if (SupportingDocAdapter.ItemCount < 1)
@@ -507,7 +514,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 {
                     ViewType = Constants.VIEW_TYPE_REAL_RECORD,
                     Name = pFileName,
-                    Path = pFilePath
+                    Path = pFilePath,
+                    FileName = tFullname
 
                 });
                 if (permiseAdapter.ItemCount < 1)
@@ -720,6 +728,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
                 string[] items = { Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")  ,
                                Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary") ,
+                               Utility.GetLocalizedLabel("SubmitEnquiry", "documentPdf") ,
                                Utility.GetLocalizedCommonLabel("cancel")};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this)
@@ -736,6 +745,10 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                     else if (items[args.Which].Equals(Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary")))
                     {
                         this.userActionsListener.OnAttachPhotoGallery();
+                    }
+                    else if (items[args.Which].Equals(Utility.GetLocalizedLabel("SubmitEnquiry", "documentPdf")))
+                    {
+                        this.userActionsListener.OnAttachPDF();
                     }
                     else if (items[args.Which].Equals(Utility.GetLocalizedCommonLabel("cancel")))
                     {
@@ -1186,6 +1199,14 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
             btnNext.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
         }
 
+        public string GetImageName(int itemCount)
+        {
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+            Calendar calendar = Calendar.GetInstance(Locale.Default);
+            return GetString(Resource.String.feedback_image_name_convention, dateFormatter.Format(calendar.TimeInMillis), UserSessions.GetCurrentImageCount(PreferenceManager.GetDefaultSharedPreferences(this)) + itemCount);
+        }
+
+
 
         public void ShowLoadingImage()
         {
@@ -1332,6 +1353,12 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
             }
         }
 
+        public string getActualPath(Android.Net.Uri uri)
+        {
+            string path = FileUtils.GetActualPathForFile(uri, this);
+            return path;
+        }
+
         public static Bitmap Base64ToBitmap(string base64String)
         {
             Bitmap convertedBitmap = null;
@@ -1348,6 +1375,47 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
             return convertedBitmap;
         }
+
+        public void ShowPDF()
+        {
+
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+
+                Intent galleryIntent = new Intent(Intent.ActionGetContent);
+                galleryIntent.SetType("application/pdf");
+                galleryIntent.PutExtra(Intent.ExtraLocalOnly, true);
+                StartActivityForResult(Intent.CreateChooser(galleryIntent, GetString(Resource.String.bill_related_feedback_select_images)), Constants.RUNTIME_PERMISSION_GALLERY_PDF_REQUEST_CODE);
+            }
+
+        }
+
+        Snackbar mErrorMessageSnackBar;
+        public void ShowError(string message = null)
+        {
+            if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+            {
+                mErrorMessageSnackBar.Dismiss();
+            }
+
+
+            if (string.IsNullOrEmpty(message))
+            {
+                message = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
+            }
+
+            mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
+            );
+            View v = mErrorMessageSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+
+            mErrorMessageSnackBar.Show();
+            this.SetIsClicked(false);
+        }
+
 
 
 

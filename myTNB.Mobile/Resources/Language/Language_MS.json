@@ -707,7 +707,8 @@
     "details": "Kata laluan baharu ini akan menggantikan kata laluan sedia ada. Semua butiran akaun tidak berubah.",
     "newPassword": "Masukkan kata laluan baharu",
     "confirmNewPassword": "Sahkan kata laluan baharu",
-    "confirmPassword": "Sahkan Kata Laluan"
+    "confirmPassword": "Sahkan Kata Laluan baharu",
+    "newPasswordNoEnter":"Kata laluan baharu"
   },
   "UpdateMobileNumber": {
     "verifyDeviceTitle": "Sahkan Nombor Telefon",
@@ -1078,7 +1079,8 @@
     "backLogin": "Kembali ke Log Masuk",
     "registeredView": "Adakah akaun elektrik ini didaftarkan atas nama anda?",
     "viewYes": "Ya",
-    "viewNo": "Tidak"
+    "viewNo": "Tidak",
+    "documentPdf": "Dokumen"
   }
      
 }

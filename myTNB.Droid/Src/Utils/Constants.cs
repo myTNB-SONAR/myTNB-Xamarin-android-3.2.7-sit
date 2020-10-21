@@ -137,9 +137,9 @@ namespace myTNB_Android.Src.Utils
         internal struct SERVER_URL
         {
 #if DEBUG || STUB
-            // internal static readonly string END_POINT = "http://10.215.128.191:88";  //dev
-            // internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";  //dev
-            // internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappdev.page.link";  //dev
+         //    internal static readonly string END_POINT = "http://10.215.128.191:99";  //dev
+         //    internal static readonly string FPX_PAYMENT = "http://10.215.128.191:99/v5/PayRedirect.aspx?Param1=3&Param2=";  //dev
+         //    internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappdev.page.link";  //dev
          internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";  //sit
          internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";  //sit
          internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link"; //sit

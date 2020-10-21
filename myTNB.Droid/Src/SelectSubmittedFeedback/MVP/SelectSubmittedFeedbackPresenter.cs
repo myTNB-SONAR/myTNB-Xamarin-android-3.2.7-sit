@@ -134,7 +134,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
             {
                 var submittedFeedbackResponse = await ServiceApiImpl.Instance.SubmittedFeedbackList(new SubmittedFeedbackListRequest());
 
-           
+                
 
                 if (submittedFeedbackResponse.IsSuccessResponse())
                 {
@@ -148,6 +148,9 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
                         sf.FeedbackMessage = responseData.FeedbackMessage;
                         sf.FeedbackCategoryName = responseData.FeedbackCategoryName;
                         sf.FeedbackNameInListView = responseData.FeedbackNameInListView;
+                        sf.StatusCode = responseData.StatusCode;
+                        sf.StatusDesc = responseData.StatusDesc;
+                        sf.IsRead = responseData.IsRead;
                         submittedFeedbackList.Add(sf);
                         SubmittedFeedbackEntity.InsertOrReplace(sf);
                     }

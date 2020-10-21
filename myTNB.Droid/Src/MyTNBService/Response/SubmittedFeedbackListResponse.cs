@@ -30,6 +30,16 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "FeedbackNameInListView")]
             public string FeedbackNameInListView { get; set; }
+
+            [JsonProperty(PropertyName = "StatusCode")]
+            public string StatusCode { get; set; }
+
+            [JsonProperty(PropertyName = "StatusDesc")]
+            public string StatusDesc { get; set; }
+
+            [JsonProperty(PropertyName = "IsRead")]
+            public string IsRead { get; set; }
+            
         }
     }
 }
