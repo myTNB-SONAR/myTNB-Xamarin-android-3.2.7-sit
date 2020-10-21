@@ -234,7 +234,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             {
                 string[] items = { Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")  ,
                                Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary") ,
-                               Utility.GetLocalizedLabel("SubmitEnquiry", "choosePdf") ,
+                               Utility.GetLocalizedLabel("SubmitEnquiry", "documentPdf") ,
                                Utility.GetLocalizedCommonLabel("cancel")};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this)
@@ -252,7 +252,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                     {
                         this.userActionsListener.OnAttachPhotoGallery();
                     }
-                    else if (items[args.Which].Equals(Utility.GetLocalizedLabel("SubmitEnquiry", "choosePdf")))
+                    else if (items[args.Which].Equals(Utility.GetLocalizedLabel("SubmitEnquiry", "documentPdf")))
                     {
                         this.userActionsListener.OnAttachPDF();
                     }

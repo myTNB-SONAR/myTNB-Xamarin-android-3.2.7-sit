@@ -1236,6 +1236,7 @@
     <Compile Include="Src\Utils\Custom\ProgressButton\ProgressGenerator.cs" />
     <Compile Include="Src\Utils\Custom\ProgressButton\ResendButton.cs" />
     <Compile Include="Src\Utils\HttpLoggingHandler.cs" />
+    <Compile Include="Src\Utils\ResetPasswordNewChangeListener.cs" />
     <Compile Include="Src\Utils\RestrictTextChangeListener.cs" />
     <Compile Include="Src\Utils\SSLFactoryHelper.cs" />
     <Compile Include="Src\Utils\StringUtils.cs" />

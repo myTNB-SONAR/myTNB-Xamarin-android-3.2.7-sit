@@ -707,7 +707,8 @@
     "details": "This new password will replace your current one. All other account details remain unchanged.",
     "newPassword": "Enter new password",
     "confirmNewPassword": "Confirm new password",
-    "confirmPassword": "Confirm Password"
+    "confirmPassword": "Confirm Password",
+    "newPasswordNoEnter":"New Password"
   },
   "UpdateMobileNumber": {
     "verifyDeviceTitle": "Verify Device",
@@ -1077,7 +1078,7 @@
     "registeredView": "Is this electricity account registered under your name?",
     "viewYes": "Yes",
     "viewNo": "No",
-    "choosePdf": "Choose PDF"
+    "documentPdf": "Document"
   }
 
 
