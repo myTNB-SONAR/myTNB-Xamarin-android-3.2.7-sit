@@ -172,6 +172,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         public override void Ready()
         {
             FileUtils.CreateDirectory(this, FileUtils.TEMP_IMAGE_FOLDER);
+            FileUtils.CreateDirectory(this, FileUtils.PDF_FOLDER);
+
         }
 
         public string GetImageName(int itemCount)
@@ -179,6 +181,12 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
             Calendar calendar = Calendar.GetInstance(Locale.Default);
             return GetString(Resource.String.feedback_image_name_convention, dateFormatter.Format(calendar.TimeInMillis), UserSessions.GetCurrentImageCount(PreferenceManager.GetDefaultSharedPreferences(this)) + itemCount);
+        }
+
+        public string copyPDFGetFilePath(Android.Net.Uri realFilePath , string filename)
+        {
+            string filePath = FileUtils.CopyPDF(this, realFilePath, FileUtils.PDF_FOLDER, filename);
+            return filePath;
         }
 
         public override void OnTrimMemory(TrimMemory level)
