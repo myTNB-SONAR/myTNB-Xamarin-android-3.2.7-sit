@@ -380,6 +380,13 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
             return true;
         }
 
+        public string copyPDFGetFilePath(Android.Net.Uri realFilePath, string filename)
+        {
+            string filePath = FileUtils.CopyPDF(this, realFilePath, FileUtils.PDF_FOLDER, filename);
+            return filePath;
+        }
+
+
         public void OnCheckingAttachment()
         {
             if (isOwner)
@@ -860,7 +867,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
         public override void Ready()
         {
             FileUtils.CreateDirectory(this, FileUtils.TEMP_IMAGE_FOLDER);
-
+            FileUtils.CreateDirectory(this, FileUtils.PDF_FOLDER);
 
 
         }

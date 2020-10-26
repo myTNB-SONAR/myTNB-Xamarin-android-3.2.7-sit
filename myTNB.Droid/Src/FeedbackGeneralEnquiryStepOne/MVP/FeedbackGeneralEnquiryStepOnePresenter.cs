@@ -108,6 +108,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
             this.mView.DisableSubmitButton();
             this.mView.ShowLoadingImage();
 
+           
 
             string result = filePath;
 
@@ -126,8 +127,14 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
 
             string actualPdfName = result;
 
+        
+
+
+           this.mView.UpdateAdapter(filePath, actualPdfName, actualPdfName);
             
-            this.mView.UpdateAdapter(filePath, actualPdfName, actualPdfName);
+
+       
+
             this.mView.HideLoadingImage();
             this.mView.EnableSubmitButton();
         }
@@ -179,32 +186,50 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
                     string fileName = string.Format("{0}.pdf", this.mView.GetImageName(countUserPick));
                     countUserPick++;
 
-                    //todo uri to absolute path
 
-                
 
-                    string filepath = selectedImage.LastPathSegment;
+                    string fileNameIfonlyLocal ="";
 
-                    if (!filepath.ToLower().Contains(".pdf"))
+                    //get filename
+                    int cut = selectedImage.LastPathSegment.LastIndexOf('/');
+                    if (cut != -1)
                     {
-                        //reselect path if from uri is not valid
-                        string absolutePath = this.mView.getActualPath(selectedImage);
+                        fileNameIfonlyLocal = selectedImage.LastPathSegment.Substring(cut + 1);
+                    }
 
-                        if (!absolutePath.ToLower().Contains(".pdf"))
-                        {
-                            this.mView.ShowError();
-                        }
-                        else
-                        {
-                            OnSaveGalleryPDF(absolutePath, fileName);
-                        }
+                                   // reacreate from uri path
+                    string copiedpath = this.mView.copyPDFGetFilePath(selectedImage, fileNameIfonlyLocal);
+
+
+                    if (!string.IsNullOrEmpty(copiedpath)&& copiedpath.ToLower().Contains(".pdf") && fileNameIfonlyLocal.ToLower().Contains(".pdf"))
+                    {
+                        OnSaveGalleryPDF(copiedpath, fileNameIfonlyLocal);
                     }
                     else
                     {
-                        OnSaveGalleryPDF(filepath, fileName);
-                    }
+                        string filepath = selectedImage.LastPathSegment;
 
-                 
+                        if (!filepath.ToLower().Contains(".pdf"))
+                        {
+                            //reselect path if from uri is not valid
+                            string absolutePath = this.mView.getActualPath(selectedImage);
+
+                            if (!absolutePath.ToLower().Contains(".pdf"))
+                            {
+                                this.mView.ShowError();
+                            }
+                            else
+                            {
+                                OnSaveGalleryPDF(absolutePath, fileName);
+                                this.mView.ShowError(absolutePath);  // todo delete
+                            }
+                        }
+                        else
+                        {
+                            OnSaveGalleryPDF(filepath, fileName);
+                        }
+                    }
+                           
                   
                     GC.Collect();
                 }

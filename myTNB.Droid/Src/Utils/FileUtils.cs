@@ -34,6 +34,7 @@ namespace myTNB_Android.Src.Utils
 
 
         internal const string TEMP_IMAGE_FOLDER = "tmpImages";
+        internal const string PDF_FOLDER = "Pdf";
         internal const string IMAGE_FOLDER = "Images";
 
         internal const string PROMO_IMAGE_FOLDER = "PromoImages";
@@ -110,6 +111,65 @@ namespace myTNB_Android.Src.Utils
 
 
             return filePath;
+        }
+
+        public static string CopyPDF(Context context, Android.Net.Uri realFilepath, string pFolder, string pFileName)
+        {
+
+            string path = context.FilesDir.AbsolutePath;
+
+            string filePath = System.IO.Path.Combine(path, pFolder, pFileName);
+            Console.WriteLine(string.Format("Folder Personal {0} File Path {1}", path, filePath));
+            if (IsExternalStorageReadable() && IsExternalStorageWritable())
+            {
+                string externalPath = context.GetExternalFilesDir(null).AbsolutePath;
+                filePath = System.IO.Path.Combine(externalPath, pFolder, pFileName);
+                Console.WriteLine(string.Format("Folder External {0} File Path {1}", path, filePath));
+            }
+
+            if (!Directory.Exists(System.IO.Path.Combine(path, pFolder)))
+            {
+                Directory.CreateDirectory(System.IO.Path.Combine(path, pFolder));
+            }
+
+            //var stream = new FileStream(filePath, FileMode.Create);
+
+            try {
+
+                const int bufferSize = 1024;
+                using (var inputStream = context.ContentResolver.OpenInputStream(realFilepath))
+                {
+                    using (var outputStream = File.Create(filePath))
+                    {
+                        var buffer = new byte[bufferSize];
+                        while (true)
+                        {
+                            var count = inputStream.Read(buffer, 0, bufferSize);
+                            if (count > 0)
+                            {
+                                outputStream.Write(buffer, 0, count);
+                            }
+
+                            if (count < bufferSize) break;
+                        }
+                    }
+                }
+
+
+
+                return filePath;
+                } catch {
+
+                return "";
+                }
+
+
+
+            // bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
+            // stream.Close();
+
+            return "";
+
         }
 
         public static Task<string> SaveAsync(Context context, Bitmap bitmap, string pFolder, string pFileName)
@@ -225,6 +285,9 @@ namespace myTNB_Android.Src.Utils
             byte[] pdfdata = File.ReadAllBytes(path);
             return pdfdata;
         }
+
+    
+        
 
         public static string ByteArrayToString(byte[] ba)
         {

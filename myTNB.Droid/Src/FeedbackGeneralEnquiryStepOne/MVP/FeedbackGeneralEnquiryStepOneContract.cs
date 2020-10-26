@@ -38,7 +38,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
 
             void ShowError(string message = null);
 
-
+            string copyPDFGetFilePath(Android.Net.Uri realFilePath, string filename);
 
             string GetTemporaryImageFilePath(string pFolder, string pFileName);
 
