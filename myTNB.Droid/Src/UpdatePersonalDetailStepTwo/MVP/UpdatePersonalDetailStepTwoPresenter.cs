@@ -92,13 +92,14 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP
                     countUserPick++;
 
 
-                    string fileNameIfonlyLocal = "";
+                    string fileNameIfonlyLocal = fileName;
+                    string tempFileName = selectedImage.Path;
 
                     //get filename
-                    int cut = selectedImage.LastPathSegment.LastIndexOf('/');
+                    int cut = tempFileName.LastIndexOf('/');
                     if (cut != -1)
                     {
-                        fileNameIfonlyLocal = selectedImage.LastPathSegment.Substring(cut + 1);
+                        fileNameIfonlyLocal = tempFileName.Substring(cut + 1);
                     }
 
                     // reacreate from uri path
