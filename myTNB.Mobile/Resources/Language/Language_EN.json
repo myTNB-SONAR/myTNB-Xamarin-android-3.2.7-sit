@@ -1,4 +1,4 @@
-﻿{
+{
   "Common": {
     "eppToolTipTitle": "What about Easy Payment Plan (EPP)?",
     "account": "Account",
@@ -707,8 +707,8 @@
     "details": "This new password will replace your current one. All other account details remain unchanged.",
     "newPassword": "Enter new password",
     "confirmNewPassword": "Confirm new password",
-    "confirmPassword": "Confirm Password",
-    "newPasswordNoEnter":"New Password"
+    "confirmPassword": "Confirm new Password",
+    "newPasswordNoEnter": "New Password"
   },
   "UpdateMobileNumber": {
     "verifyDeviceTitle": "Verify Device",
