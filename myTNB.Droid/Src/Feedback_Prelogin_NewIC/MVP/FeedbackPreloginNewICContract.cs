@@ -53,7 +53,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
 
             void OnSelectAccount();
 
-            void CheckRequiredFields(string accno);
+            bool CheckRequiredFields(string accno);
 
            void onUpdatePersonalDetail();
 

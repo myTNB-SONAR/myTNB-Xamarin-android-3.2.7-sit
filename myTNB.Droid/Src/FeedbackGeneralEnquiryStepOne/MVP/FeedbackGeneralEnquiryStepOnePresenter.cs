@@ -186,24 +186,28 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
                     string fileName = string.Format("{0}.pdf", this.mView.GetImageName(countUserPick));
                     countUserPick++;
 
+      
 
-
-                    string fileNameIfonlyLocal ="";
-
+                    string fileNameIfonlyLocal = fileName;  // temporary file name
+                    string tempPath = selectedImage.Path;
                     //get filename
-                    int cut = selectedImage.LastPathSegment.LastIndexOf('/');
+                    int cut = tempPath.LastIndexOf('/');
                     if (cut != -1)
                     {
-                        fileNameIfonlyLocal = selectedImage.LastPathSegment.Substring(cut + 1);
+                        fileNameIfonlyLocal = tempPath.Substring(cut + 1);
                     }
 
-                                   // reacreate from uri path
+                    // reacreate from uri path
                     string copiedpath = this.mView.copyPDFGetFilePath(selectedImage, fileNameIfonlyLocal);
 
+                    
 
+
+                    //from 
                     if (!string.IsNullOrEmpty(copiedpath)&& copiedpath.ToLower().Contains(".pdf") && fileNameIfonlyLocal.ToLower().Contains(".pdf"))
                     {
                         OnSaveGalleryPDF(copiedpath, fileNameIfonlyLocal);
+                   
                     }
                     else
                     {
@@ -221,12 +225,13 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
                             else
                             {
                                 OnSaveGalleryPDF(absolutePath, fileName);
-                                this.mView.ShowError(absolutePath);  // todo delete
+                           
                             }
                         }
                         else
                         {
                             OnSaveGalleryPDF(filepath, fileName);
+                      
                         }
                     }
                            

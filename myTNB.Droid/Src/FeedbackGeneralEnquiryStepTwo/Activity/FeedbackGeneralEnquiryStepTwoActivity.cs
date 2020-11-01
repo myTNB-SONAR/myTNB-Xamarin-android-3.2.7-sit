@@ -292,8 +292,12 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
                 }
 
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName,txtInputLayoutEmail);
 
-       
+                txtName.AddTextChangedListener(new InputFilterFormField(txtName, txtInputLayoutName));
+                txtEmail.AddTextChangedListener(new InputFilterFormField(txtName, txtInputLayoutEmail));
+
+
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit , WhoShouldWeContact);
 
 

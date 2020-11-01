@@ -136,32 +136,45 @@ namespace myTNB_Android.Src.Utils
 
             try {
 
-                const int bufferSize = 1024;
-                using (var inputStream = context.ContentResolver.OpenInputStream(realFilepath))
-                {
-                    using (var outputStream = File.Create(filePath))
-                    {
-                        var buffer = new byte[bufferSize];
-                        while (true)
-                        {
-                            var count = inputStream.Read(buffer, 0, bufferSize);
-                            if (count > 0)
-                            {
-                                outputStream.Write(buffer, 0, count);
-                            }
 
-                            if (count < bufferSize) break;
+                // SaveFileFromUri(context, realFilepath, filePath);
+
+                if (IsExternalStorageReadable() && IsExternalStorageWritable())
+                {
+
+                    const int bufferSize = 1024;
+                    using (var inputStream = context.ContentResolver.OpenInputStream(realFilepath))
+                    {
+                        using (var outputStream = File.Create(filePath))
+                        {
+                            var buffer = new byte[bufferSize];
+                            while (true)
+                            {
+                                var count = inputStream.Read(buffer, 0, bufferSize);
+                                if (count > 0)
+                                {
+                                    outputStream.Write(buffer, 0, count);
+                                }
+
+                                if (count < bufferSize) break;
+                            }
                         }
                     }
+
+                    return filePath;
+
                 }
-
-
-
-                return filePath;
-                } catch {
-
-                return "";
+                else
+                {
+                    return "no file access";
                 }
+               
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                return e.ToString();
+            }
 
 
 

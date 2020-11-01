@@ -340,6 +340,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 Intent galleryIntent = new Intent(Intent.ActionGetContent);
                 galleryIntent.SetType("application/pdf");
                 galleryIntent.AddFlags(ActivityFlags.GrantReadUriPermission);
+                galleryIntent.AddFlags(ActivityFlags.GrantWriteUriPermission);
+                galleryIntent.AddFlags(ActivityFlags.GrantPersistableUriPermission);
                 galleryIntent.PutExtra(Intent.ExtraLocalOnly, true);
                 StartActivityForResult(Intent.CreateChooser(galleryIntent, GetString(Resource.String.bill_related_feedback_select_images)), Constants.RUNTIME_PERMISSION_GALLERY_PDF_REQUEST_CODE);
             }
