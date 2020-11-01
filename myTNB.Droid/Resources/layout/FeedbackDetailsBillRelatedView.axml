@@ -72,17 +72,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:layout_marginBottom="9dp"
                         android:layout_weight="1"
-                        android:paddingBottom="16dp"
                         android:text=""
                         android:textAllCaps="false"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
-                     <View
+
+                    <View
                         android:id="@+id/barLine"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
+                        android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
                         android:background="@color/platinumGrey" />
                     <com.google.android.material.textfield.TextInputLayout

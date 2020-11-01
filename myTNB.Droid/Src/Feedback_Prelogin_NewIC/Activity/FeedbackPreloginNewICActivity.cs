@@ -180,6 +180,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
                 txtAccountNo.SetOnTouchListener(this);  //set listener on dropdown arrow at TextLayout
                 txtAccountNo.TextChanged += TextChange;  //adding listener on text change
+                txtAccountNo.FocusChange += TxtAccountNo_FocusChange;
 
                 txtAccountNo.AddTextChangedListener(new InputFilterFormField(txtAccountNo, txtInputLayoutAccountNo));  //adding listener on text change
 
@@ -209,7 +210,25 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             }
         }
 
+        private void TxtAccountNo_FocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            try
+            {
 
+                if (!e.HasFocus)
+                {
+                    string accno = txtAccountNo.Text.ToString().Trim();
+                    this.userActionsListener.CheckRequiredFields(accno);
+                }
+
+           
+
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
 
         public override int ResourceId()
         {   //todo change
@@ -293,7 +312,12 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             try
             {
                 string accno = txtAccountNo.Text.ToString().Trim();
-                this.userActionsListener.CheckRequiredFields(accno);
+
+                if (!string.IsNullOrEmpty(accno))
+                {
+                    txtInputLayoutAccountNo.Error = null;
+                }
+              //  this.userActionsListener.CheckRequiredFields(accno);
 
             }
             catch (Exception ex)
@@ -437,13 +461,14 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         public void ShowEnterOrSelectAccNumber()
         {
             txtInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            // txtInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");  //todo  add translation for bm
-            if(txtInputLayoutAccountNo.Error != Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc"))
+            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo.FindViewById<TextView>(Resource.Id.textinput_error));
+      
+            if (txtInputLayoutAccountNo.Error != Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc"))
             {
                txtInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc");
             }
-            
 
+            txtInputLayoutAccountNo.RequestFocus();
         }
 
 
@@ -533,20 +558,18 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 }
                 else
                 {
-                    //please paste here
-                    if (isAccChoosed)
-                    {
-                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim() , false);
-                        //this.userActionsListener.OnGeneralEnquiry();
-                    }
-                    else
-                    {   //checking 
                         string accno = txtAccountNo.Text.ToString().Trim();
-                        this.userActionsListener.CheckRequiredFields(accno);
-                        this.SetIsClicked(false);
-                    }
+                        bool isAllowedToPass  = this.userActionsListener.CheckRequiredFields(accno);
 
-
+                        if (isAllowedToPass)
+                        {
+                        this.SetIsClicked(true);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false);                    
+                        }
+                        else
+                        {
+                            this.SetIsClicked(false);
+                        }
                 }
             }
         }
@@ -562,22 +585,22 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 {
                     OnBCRMDownTimeErrorMessage();
                     this.SetIsClicked(false);
-                }
-
-                else if (isAccChoosed)
-                {
-                    this.SetIsClicked(true);
-                    this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim() , true);
-                    //this.userActionsListener.onUpdatePersonalDetail();
-                }
-                else
+                }else
                 {
                     string accno = txtAccountNo.Text.ToString().Trim();
-                    this.userActionsListener.CheckRequiredFields(accno);  // if person is not enter any acc or choose
-                    this.SetIsClicked(false);
+                    bool isAllowed=this.userActionsListener.CheckRequiredFields(accno);
+
+                    if (isAllowed)
+                    {
+                        this.SetIsClicked(true);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), true);
+                    }
+                    else
+                    {
+                        this.SetIsClicked(false);
+                    }
+                  
                 }
-
-
             }
         }
 
@@ -640,11 +663,6 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
                 this.SetIsClicked(true);
                 this.userActionsListener.onShowWhereIsMyAcc();
-
-
-
-
-
             }
         }
 

@@ -971,7 +971,7 @@
     "messageHint": "Your Message",
     "uploadDocTitle": "Upload supporting documents:",
     "attachTitle": "Upload Supporting Documents (optional)",
-    "attachDescription": "Maximum document size is 1MB. (JPG & JPEG format only)",
+    "attachDescription": "Maximum document size is 1MB. (PDF, JPG & JPEG format only)",
     "stepTitle2of2": "Step 2 of 2",
     "contactEnquiryTitle": "How can we contact you regarding this enquiry?",
     "nameHint": "Your Full Name",
