@@ -81,43 +81,53 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
             this.mView.onScan();
         }
 
-        public void CheckRequiredFields(string accno)
+        public bool CheckRequiredFields(string accno)
         {
-
-
-           
             try
             {
+
+                bool allowToProceed = true;
+
                 if (!TextUtils.IsEmpty(accno) )
                 {
 
                     if (!Utility.AddAccountNumberValidation(accno.Length))
                     {
                         this.mView.ShowInvalidAccountNumberError();
-                        this.mView.toggleDisableClick();
+                        allowToProceed = false;
 
                     }
                     else
                     {
                         this.mView.RemoveNumberErrorMessage();
-                        this.mView.toggleEnableClick();
+                    
                     }
 
-
-          
                 }
                 else
                 {   
-
                     //if empty
                     this.mView.ShowEnterOrSelectAccNumber();
-                    this.mView.toggleDisableClick();
+                    allowToProceed = false;
 
                 }
+
+                if (allowToProceed)
+                {
+                    this.mView.toggleEnableClick();
+                }
+                else
+                {
+                    this.mView.toggleDisableClick();
+                }
+
+                return allowToProceed;
+
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+                return false;
             }
         }
 
