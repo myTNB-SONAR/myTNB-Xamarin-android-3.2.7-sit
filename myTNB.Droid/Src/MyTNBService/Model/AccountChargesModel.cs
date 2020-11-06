@@ -36,6 +36,7 @@ namespace myTNB_Android.Src.MyTNBService.Model
 		public string Key { get; set; }
 		public string Title { get; set; }
 		public double Amount { get; set; }
+		public string AmountDisplay { get; set; }
 	}
 
 	public class MandatoryChargesPopupModel

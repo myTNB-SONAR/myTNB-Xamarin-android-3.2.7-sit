@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace myTNB.Mobile.TestData.ApplicationSearch
 {
@@ -28,7 +25,6 @@ namespace myTNB.Mobile.TestData.ApplicationSearch
                 {
                     return reader.ReadToEnd();
                 }
-                Debug.WriteLine("DEBUG >> SUCCESS");
             }
             catch (Exception e)
             {

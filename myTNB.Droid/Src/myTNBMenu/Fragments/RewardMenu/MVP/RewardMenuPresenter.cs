@@ -611,7 +611,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 ContentMessage = Utility.GetLocalizedLabel("Rewards", "tutorialSaveDesc"), // "Here you’ll find all the rewards<br/>you’ve saved for later use.",
                 ItemCount = 0,
                 DisplayMode = "",
-                IsButtonShow = true
+                IsButtonShow = false
             });
 
             return newList;

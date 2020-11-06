@@ -2,10 +2,6 @@
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
-
-
-
-
 using Android.Text;
 using Android.Text.Style;
 using Android.Util;
@@ -27,6 +23,7 @@ using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 
 namespace myTNB_Android.Src.NewAppTutorial.Adapter
 {
@@ -37,7 +34,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
         private AndroidX.Fragment.App.DialogFragment mDialog;
         private AndroidX.Fragment.App.Fragment mFragment;
         private ISharedPreferences mPref;
-       
+
 
         public NewAppTutorialPagerAdapter(Activity ctx, AndroidX.Fragment.App.Fragment fragment, ISharedPreferences pref, AndroidX.Fragment.App.DialogFragment dialog, List<NewAppModel> items)
         {
@@ -46,7 +43,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             this.mDialog = dialog;
             this.mFragment = fragment;
             this.mPref = pref;
-           
+
         }
 
         public NewAppTutorialPagerAdapter()
@@ -2081,7 +2078,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 }
             }
             else if (this.mContext is ApplicationStatusLandingActivity)
-             {
+            {
                 if (model.DisplayMode == "Extra")
                 {
                     int topHeight = (int)DPUtils.ConvertDPToPx(55f);
@@ -2203,6 +2200,123 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                 }
             }
+            else if (this.mContext is ApplicationStatusDetailActivity)
+            {
+                if (model.DisplayMode == "Extra")
+                {
+                    int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetTopHeight() + (int)DPUtils.ConvertDPToPx(195f);
+                    int middleHeight = (int)DPUtils.ConvertDPToPx(180f);
+
+                    int leftWidth = 0;
+                    int rightWidth = 0;
+                    int middleWidth = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+
+                    LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    topLayoutParam.Height = topHeight;
+                    topLayout.RequestLayout();
+                    LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    middleLayoutParam.Height = middleHeight;
+                    middleLayout.RequestLayout();
+                    LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    highlightedLeftLayoutParam.Width = leftWidth;
+                    highlightedLeftLayout.RequestLayout();
+                    LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    highlightedLayoutParam.Width = middleWidth;
+                    highlightedLayout.RequestLayout();
+                    LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    highlightedRightLayoutParam.Width = rightWidth;
+                    highlightedRightLayout.RequestLayout();
+                    LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                    bottomLayout.RequestLayout();
+
+                    RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(100f);
+                    innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                    innerTopLayout.RequestLayout();
+                }
+                else
+                {
+                    if (position == 0)
+                    {
+
+                        int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetTopHeight() + (int)DPUtils.ConvertDPToPx(95f);
+                        int middleHeight = ((ApplicationStatusDetailActivity)this.mContext).GetHighlightedHeight();
+
+                        int leftWidth = 0;
+                        int rightWidth = 0;
+                        int middleWidth = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+
+                        LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        topLayoutParam.Height = topHeight;
+                        topLayout.RequestLayout();
+                        LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        middleLayoutParam.Height = middleHeight;
+                        middleLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedLeftLayoutParam.Width = leftWidth;
+                        highlightedLeftLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedLayoutParam.Width = middleWidth;
+                        highlightedLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedRightLayoutParam.Width = rightWidth;
+                        highlightedRightLayout.RequestLayout();
+                        LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                        bottomLayout.RequestLayout();
+
+                        LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(44f);
+                        innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(24f);
+                        innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                        innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
+                        innerUpperBottomLayout.RequestLayout();
+
+                        LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(24f);
+                        innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                        innerTxtBtnBottomLayout.RequestLayout();
+                    }
+                    else
+                    {
+                        int middleHeight = ((ApplicationStatusDetailActivity)this.mContext).GetCtaButtonHeight() + (int)DPUtils.ConvertDPToPx(45f);
+                        int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetTopCtaHeight() + (int)DPUtils.ConvertDPToPx(45f);
+
+                        int leftWidth = 0;
+                        int rightWidth = 0;
+                        int middleWidth = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+
+                        LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        topLayoutParam.Height = topHeight;
+                        topLayout.RequestLayout();
+                        LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        middleLayoutParam.Height = middleHeight;
+                        middleLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedLeftLayoutParam.Width = leftWidth;
+                        highlightedLeftLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedLayoutParam.Width = middleWidth;
+                        highlightedLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedRightLayoutParam.Width = rightWidth;
+                        highlightedRightLayout.RequestLayout();
+                        LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                        bottomLayout.RequestLayout();
+
+
+                        RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                        innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(100f);
+                        innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                        innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                        innerTopLayout.RequestLayout();
+                    }
+
+                }
+            }
 
             container.AddView(rootView);
             return rootView;
@@ -2269,7 +2383,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 {
                     UserSessions.DoRewardsDetailShown(this.mPref);
                 }
-                else if(this.mContext is ApplicationStatusLandingActivity)
+                else if (this.mContext is ApplicationStatusLandingActivity)
                 {
                     UserSessions.DoApplicationStatusShown(this.mPref);
                 }

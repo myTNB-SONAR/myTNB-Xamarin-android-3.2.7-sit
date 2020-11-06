@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="bottom"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_gravity="bottom"
             android:background="@color/white"
             android:id="@+id/multiSelectBottomLayout">

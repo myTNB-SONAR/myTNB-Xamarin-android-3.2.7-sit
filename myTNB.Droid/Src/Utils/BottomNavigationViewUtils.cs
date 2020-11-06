@@ -1,8 +1,4 @@
 ﻿using Android.App;
-
-
-
-
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -62,7 +58,6 @@ namespace myTNB_Android.Src.Utils
         {
             DisplayMetrics displayMetrics = Application.Context.Resources.DisplayMetrics;
             var bottomNavigationMenuView = bottomNavigationView.GetChildAt(0) as BottomNavigationMenuView;
-            ViewGroup.LayoutParams bottomViewParams = bottomNavigationMenuView.LayoutParameters;
             for (int i = 0; i < bottomNavigationMenuView.ChildCount; i++)
             {
                 View iconView = bottomNavigationMenuView.GetChildAt(i).FindViewById(Resource.Id.icon);

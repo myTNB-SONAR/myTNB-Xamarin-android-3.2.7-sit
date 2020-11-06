@@ -1,12 +1,9 @@
 ﻿using Android.Content;
-using Android.Graphics;
-
-
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
+using myTNB.Mobile;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
 using System;
@@ -17,8 +14,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
     public class ApplicationStatusLandingAdapter : RecyclerView.Adapter
     {
         private BaseActivityCustom mActicity;
-        private List<ApplicationStatusColorCodeModel> mStatusCodeColorList = new List<ApplicationStatusColorCodeModel>();
-        private List<ApplicationStatusModel> mApplicationStatusList = new List<ApplicationStatusModel>();
+        //private List<ApplicationStatusColorCodeModel> mStatusCodeColorList = new List<ApplicationStatusColorCodeModel>();
+        private List<ApplicationModel> mApplicationStatusList = new List<ApplicationModel>();
         public event EventHandler<int> ItemClick;
 
 
@@ -28,22 +25,22 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
             this.NotifyDataSetChanged();
         }
 
-        public List<ApplicationStatusModel> GetApplicationStatusList()
+        public List<ApplicationModel> GetApplicationStatusList()
         {
             return mApplicationStatusList;
         }
 
-        public void UpdateAddList(List<ApplicationStatusModel> data)
+        public void UpdateAddList(List<ApplicationModel> data)
         {
             this.mApplicationStatusList.AddRange(data);
             this.NotifyDataSetChanged();
         }
 
-        public ApplicationStatusLandingAdapter(BaseActivityCustom activity, List<ApplicationStatusModel> data, List<ApplicationStatusColorCodeModel> color)
+        public ApplicationStatusLandingAdapter(BaseActivityCustom activity, List<ApplicationModel> data)
         {
             this.mActicity = activity;
             this.mApplicationStatusList.AddRange(data);
-            this.mStatusCodeColorList.AddRange(color);
+            //this.mStatusCodeColorList.AddRange(color);
         }
 
         public override int ItemCount => mApplicationStatusList.Count;
@@ -52,9 +49,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
         {
             ApplicationStatusViewHolder vh = holder as ApplicationStatusViewHolder;
 
-            ApplicationStatusModel item = mApplicationStatusList[position];
-            ApplicationStatusColorCodeModel color = mStatusCodeColorList.Find(x => x.Code == item.StatusCode);
-            vh.PopulateData(item, color);
+            ApplicationModel item = mApplicationStatusList[position];
+            //ApplicationStatusColorCodeModel color = mStatusCodeColorList.Find(x => x.Code == item.StatusCode);
+            vh.PopulateData(item);
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -71,7 +68,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
         }
     }
 
-
     public class ApplicationStatusViewHolder : RecyclerView.ViewHolder
     {
         public TextView ApplicationStatusItemTitle { get; private set; }
@@ -83,7 +79,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
         public ImageView ApplicationStatusItemRightArrow { get; private set; }
         private Context context;
 
-        private ApplicationStatusModel item = null;
+        private ApplicationModel item = null;
 
         public ApplicationStatusViewHolder(View itemView, Action<int> listener) : base(itemView)
         {
@@ -104,15 +100,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
             AppicationStatusListMainLayout.Click += (sender, e) => listener(base.LayoutPosition);
         }
 
-
-        public void PopulateData(ApplicationStatusModel item, ApplicationStatusColorCodeModel colorMode)
+        public void PopulateData(ApplicationModel item)
         {
             this.item = item;
             try
             {
                 if (this.item.IsUpdated)
                 {
-
                     ApplicationStatusItemNewIndicator.Visibility = ViewStates.Visible;
                     ApplicationStatusItemDate.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.tunaGrey)));
                 }
@@ -122,22 +116,17 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
                     ApplicationStatusItemDate.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.receipt_note_text)));
                 }
 
-                ApplicationStatusItemTitle.Text = this.item.Type;
-                ApplicationStatusItemStatus.Text = this.item.Status;
-                ApplicationStatusItemSubTitle.Text = this.item.SrNumber;
-                ApplicationStatusItemDate.Text = this.item.ApplicationDate.FormattedDate;
-
-                if (colorMode != null)
-                {
-                    ApplicationStatusItemStatus.SetTextColor(Color.Rgb(colorMode.ColorList.Red, colorMode.ColorList.Green, colorMode.ColorList.Blue));
-                }
-
+                ApplicationStatusItemTitle.Text = this.item.ApplicationModuleDescription;
+                ApplicationStatusItemStatus.Text = this.item.StatusDescription;
+                ApplicationStatusItemSubTitle.Text = this.item.ReferenceNumberDisplay;
+                ApplicationStatusItemDate.Visibility = ViewStates.Gone;
+                //ApplicationStatusItemDate.Text = this.item.CreatedDate.ToString();
+                ApplicationStatusItemStatus.SetTextColor(Android.Graphics.Color.Rgb(this.item.StatusColor[0], this.item.StatusColor[1], this.item.StatusColor[2]));
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
-
     }
 }

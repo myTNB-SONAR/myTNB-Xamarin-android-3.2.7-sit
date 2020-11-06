@@ -108,10 +108,10 @@
     "nickname": "e.g. My House, Parent's House",
     "businessNickname": "e.g. Bangsar Shopping Centre Branch",
     "password": "Password must have at least 8 alphanumeric characters.",
-    "serviceNotificationNo": "eg. 000092494113",
-    "serviceRequestNumber": "eg. 6000924941",
-    "electricityAccountNumber": "eg. 212157864231",
-    "eg": "eg. "
+    "serviceNotificationNo": "Enter a 12-digit service notification number. eg. 000456879313",
+    "serviceRequestNumber": "Enter a 10-digit service request number. eg. 1000046986",
+    "electricityAccountNumber": "Enter a 12-digit electricity account number. eg. 212313467423",
+    "eg": "Enter a 10-digit application number. eg. "
   },
   "Error": {
     "invalid_email": "Invalid email address",
@@ -534,8 +534,8 @@
   "MakePayment": {
     "enterOTP": "Enter the OTP",
     "onlineBanking": "Online Banking",
-    "abortTitle": "Abort Payment",
-    "abortMessage": "Are you sure you want to abort payment?"
+    "abortTitle": "Cancel Payment",
+    "abortMessage": "Are you sure you want to cancel payment?"
   },
   "PushNotificationList": {
     "allNotifications": "All Notifications",
@@ -714,7 +714,8 @@
     "details": "This new password will replace your current one. All other account details remain unchanged.",
     "newPassword": "Enter new password",
     "confirmNewPassword": "Confirm new password",
-    "confirmPassword": "Confirm Password"
+    "confirmPassword": "Confirm new Password",
+    "newPasswordNoEnter": "New Password"
   },
   "UpdateMobileNumber": {
     "verifyDeviceTitle": "Verify Device",
@@ -828,7 +829,8 @@
     "salutation": "Dear Customer,",
     "trnDate": "TRANSACTION DATE",
     "trnID": "TRANSACTION ID",
-    "trnMethod": "TRANSACTION METHOD"
+    "trnMethod": "TRANSACTION METHOD",
+    "paymentType": "Payment Type"
   },
   "FeedbackList": {
     "title": "Feedback"
@@ -979,7 +981,7 @@
     "messageHint": "Your Message",
     "uploadDocTitle": "Upload supporting documents:",
     "attachTitle": "Upload Supporting Documents (optional)",
-    "attachDescription": "Maximum document size is 1MB. (JPG & JPEG format only)",
+    "attachDescription": "Maximum document size is 1MB. (PDF, JPG & JPEG format only)",
     "stepTitle2of2": "Step 2 of 2",
     "contactEnquiryTitle": "How can we contact you regarding this enquiry?",
     "nameHint": "Your Full Name",
@@ -1085,7 +1087,8 @@
     "backLogin": "Back to Login",
     "registeredView": "Is this electricity account registered under your name?",
     "viewYes": "Yes",
-    "viewNo": "No"
+    "viewNo": "No",
+    "documentPdf": "Document"
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",
@@ -1097,13 +1100,13 @@
     "applicationStatusLandingSearchTitle": "Search other application status.",
     "applicationStatusLandingSearchDescription": "Search and save applications submitted by others with your preferred reference number.",
     "applicationStatusDetailsNoActionTitle": "View your status progress here.",
-    "applicationStatusDetailsNoActionMessage": "Keep updated with your real-time status progress. Visit the Portal to view full application details.",
+    "applicationStatusDetailsNoActionMessage": "Stay updated with your real-time status. Visit the myTNB Portal to continue or update your application.",
     "applicationStatusDetailsInProgressTitle": "View your status progress here.",
-    "applicationStatusDetailsInProgressMessage": "Keep updated with your real-time status. Visit the Portal to continue or update your application.",
+    "applicationStatusDetailsInProgressMessage": "Stay updated with your real-time status. Visit the myTNB Portal to continue or update your application.",
     "applicationStatusDetailsActionOneTitle": "View your status progress here.",
-    "applicationStatusDetailsActionOneMessage": "Keep updated with your real-time status progress. Visit myTNB portal to view your full application details.",
+    "applicationStatusDetailsActionOneMessage": "Stay updated with your real-time status. Visit the myTNB Portal to continue or update your application.",
     "applicationStatusDetailsActionTwoTitle": "Know when to take action.",
-    "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submited application from here."
+    "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submitted application here."
   },
   "ApplicationStatusLanding": {
     "title": "Application Status",
@@ -1111,7 +1114,7 @@
     "emptyApplications": "Looks like you have no applications at the moment.",
     "allApplications": "How do I see all my applications?",
     "allApplicationsTitle": "View all your applications on myTNB Portal to enjoy the full experience!",
-    "allApplicationsMessage": "Log in to the <a style=\\\"text-decoration:none\\\" href =\\\"externalBrowser=https://www.mytnb.com.my/\\\">portal</a> using the same log in details. You can view the list of all your applications and full form details, and continue your applications or create new ones.<br><br>Note: Applications submitted via other sources before March 2020(Change this Date) will not be displayed automatically here, but you can manually search and add it to your list.",
+    "allApplicationsMessage": "Log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> using the same log in details. You can view the list of all your applications and full form details, and continue your applications or create new ones.<br><br>Note: Applications submitted via other sources before <insert Mmm YYYY eg. Mar 2021> will not be displayed automatically here, but you can manually search and add it to your list.",
     "viewMore": "View More",
     "viewLess": "View Less",
     "sn": "SN: {0}",
@@ -1124,18 +1127,18 @@
     "searchStatus": "Search Status",
     "applicationType": "Application Type",
     "searchBy": "Search by",
-    "searhResultTitle": "We found this application(s) under the electricity account number:",
+    "searchResultTitle": "We found this application(s) under the electricity account number:",
     "whereToGetThisNumber": "Where do I get this number?",
     "whereToGetThisNumberTitleCA": "Where do I get this number?",
     "whereToGetThisNumberMessageCA": "Your 12-digit electricity account number can be found at the top left corner of your monthly paper bill.",
     "whereToGetThisNumberTitle": "Where do I get this number?",
-    "whereToGetThisNumberMessage": "You can find the <b>{0}</b> in your submitted application details at ‘Application Status’ page and are available upon request by contacting TNB Careline."
+    "whereToGetThisNumberMessage": "You can find the <b>{0}</b> in your submitted application details at ‘Application Status’ page and is available upon request by contacting TNB CareLine."
   },
   "ApplicationStatusFilter": {
     "title": "Select Filter",
     "applicationType": "Application Type",
     "status": "Status",
-    "creationDate": "Created On",
+    "creationDate": "Request Date",
     "clear": "Clear",
     "apply": "Apply"
   },
@@ -1143,35 +1146,41 @@
     "title": "Application Details",
     "status": "Status:",
     "for": "for ",
-    "creationDate": "Created On",
-    "saveMessage": "Save this application to keep track of its up-to-date status in My Applications.",
+    "saveMessage": "Save this application to keep track of its status by adding it to your application status list.",
     "addToList": "Add to List",
     "portalMessage": "You can take the action to continue or update your application using the myTNB Portal.",
     "lastUpdatedDate": "Last updated on {0}",
     "viewActivityLog": "View Activity Log",
     "seeFullDetails": "How do I see my full application details?",
     "seeFullDetailsTitle": "View this application on myTNB Portal to enjoy the full experience!",
-    "seeFullDetailsMessage": "You may log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my/\">portal</a> using the same log in details to view the full application form and details. Alternatively, you can refer to your email or submitted paper form.",
+    "seeFullDetailsMessage": "You may log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> using the same login details to view the full application form and details. Alternatively, you may also refer to your email or submitted paper form.",
     "seeFullDetailsTitleKedai": "Refer to your completed application form.",
     "seeFullDetailsMessageKedai": "You may refer to your email or the submitted paper form completed via Kedai Tenaga for the full application details.",
     "loginTitle": "Login or Register to enjoy this myTNB feature!",
-    "loginMessage": "You may save this application to keep track of its progress with a myTNB account.",
-    "loginPrimaryCTA": "It’s Okay",
+    "loginMessage": "You may only add this application to your application Status list with a myTNB account. Register for an account or log in if you already have one.",
+    "loginPrimaryCTA": "Got it!",
     "loginSecondaryCTA": "Login / Register",
     "viewDetails": "View Details",
     "payNow": "Pay Now",
     "needToPay": "I need to pay",
-    "linkedWith": "LINKED WITH",
+    "linkedWith": "Linked With",
     "linkedWithView": "View",
     "viewReceipt": "View Receipt",
-    "taxInvoice": "TAX INVOICE",
-    "taxInvoiceView": "View Tax Invoice"
+    "taxInvoice": "Tax Invoice",
+    "taxInvoiceView": "View Tax Invoice",
+    "removeTitle": "Remove this saved application?",
+    "removeMessage": "You are about to remove this application from your list.<br><br>Note: This does not delete or cancel the application.",
+    "confirm": "Confirm",
+    "on": "on ",
+    "paymentReceiptTitle": " - Payment",
+    "paymentInProgress": "My payment is being processed"
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Payment Details",
     "oneTimeCharges": "My one-time charges",
     "needToPay": "I need to pay",
-    "payNow": "Pay Now"
+    "payNow": "Pay Now",
+    "paymentInProgress": "My payment is being processed"
   },
   "ApplicationStatusPaymentDetails_selector": {
     "chargesMapping": [
@@ -1266,10 +1275,6 @@
     ],
     "SEARCH": [
       {
-        "key": "referenceNo",
-        "description": "Application Number"
-      },
-      {
         "key": "createDateDisplay",
         "description": "Created On"
       }
@@ -1348,6 +1353,18 @@
       {
         "key": "srNo",
         "description": "Service Request Number"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Electricity Account Number"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
+      },
+      {
+        "key": "loadRequirement",
+        "description": "Load Category"
       }
     ],
     "NC_PREMISEINDIVUDUAL": [
@@ -1362,6 +1379,30 @@
       {
         "key": "srNo",
         "description": "Service Request Number"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Electricity Account Number"
+      },
+      {
+        "key": "premiseCategoryDescription",
+        "description": "Premises Type"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "I'm Applying As"
+      },
+      {
+        "key": "loadRequirement",
+        "description": "Load Category"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
       }
     ],
     "NC_PREMISECONTRACTOR": [
@@ -1376,6 +1417,26 @@
       {
         "key": "srNo",
         "description": "Service Request Number"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Electricity Account Number"
+      },
+      {
+        "key": "premiseCategoryDescription",
+        "description": "Building Type"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "I'm Applying As"
+      },
+      {
+        "key": "loadRequirement",
+        "description": "Load Category"
       }
     ],
     "ASR": [
@@ -1386,6 +1447,10 @@
       {
         "key": "createDateDisplay",
         "description": "Created On"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
       }
     ],
     "RB_GSL": [
@@ -1400,6 +1465,18 @@
       {
         "key": "srNo",
         "description": "Service Request Number"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Electricity Account Number"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
+      },
+      {
+        "key": "gsL_CategoryDescription",
+        "description": "Rebate Type"
       }
     ],
     "GT": [
@@ -1414,6 +1491,18 @@
       {
         "key": "srNo",
         "description": "Service Request Number"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Electricity Account Number"
+      },
+      {
+        "key": "premiseTypeItemDescription",
+        "description": "Activity Description"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
       }
     ],
     "RW_PC": [
@@ -1428,6 +1517,26 @@
       {
         "key": "srNo",
         "description": "Service Request Number"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Electricity Account Number"
+      },
+      {
+        "key": "premiseType",
+        "description": "Premises Type"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "I'm Applying As"
+      },
+      {
+        "key": "loadType",
+        "description": "Load Category"
       }
     ],
     "RW_LC": [
@@ -1442,6 +1551,34 @@
       {
         "key": "srNo",
         "description": "Service Request Number"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "contractAccountNo"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "I'm Applying As"
+      },
+      {
+        "key": "identificationNo",
+        "description": "Customer's Identification Number"
+      },
+      {
+        "key": "loadRequirement",
+        "description": "Load Category"
+      },
+      {
+        "key": "currentVoltage",
+        "description": "Current Voltage"
+      },
+      {
+        "key": "newVoltage",
+        "description": "New Voltage"
       }
     ],
     "RE_TS": [
@@ -1470,6 +1607,14 @@
       {
         "key": "srNo",
         "description": "Service Request Number"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Electricity Account Number"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
       }
     ],
     "SMR": [
@@ -1512,6 +1657,22 @@
       {
         "key": "srNo",
         "description": "Service Request Number"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "I'm Applying As"
+      },
+      {
+        "key": "ownershipTypeDescription",
+        "description": "Ownership Type"
+      },
+      {
+        "key": "hasExistingOwnerSupportingDocumentDisplay",
+        "description": "Do you have supporting documents from the current owner?"
       }
     ],
     "COA": [
@@ -1526,6 +1687,14 @@
       {
         "key": "srNo",
         "description": "Service Request Number"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Electricity Account Number"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
       }
     ],
     "PRJ": [
@@ -1559,7 +1728,7 @@
     "title": "Search By",
     "whereToGetTheseNumber": "Where do I get these numbers?",
     "whereToGetTheseNumberTitle": "Where do I get these numbers?",
-    "whereToGetTheseNumberMessage": "You can find the <b>Application Number</b>, <b>Service Request Number</b> and <b>Service Notification Number</b> in your submitted application details at ‘Application Status’ page and are available upon request by contacting TNB Careline."
+    "whereToGetTheseNumberMessage": "You can find the <b>Application Number</b>, <b>Service Request Number</b> and <b>Service Notification Number</b> in your submitted application details at ‘Application Status’ page. These details are also available upon request by contacting TNB CareLine."
   },
   "SelectApplicationType": {
     "title": "Select Application Type"
@@ -1620,7 +1789,7 @@
     ]
   },
   "SelectCreationDate": {
-    "title": "Select Creation Date",
+    "title": "Select Request Date",
     "apply": "Apply",
     "from": "From",
     "to": "To",
@@ -1757,6 +1926,24 @@
             "secondaryCTATitle": "",
             "isSuccess": true,
             "type": "none"
+          },
+          {
+            "code": "empty",
+            "title": "",
+            "message": "Looks like you have no applications at the moment.",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "fullscreen"
+          },
+          {
+            "code": "emptyFilter",
+            "title": "We are unable to find this application.",
+            "message": "Please try again. Make sure you’ve entered the correct information!",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "fullscreen"
           }
         ],
         "ApplicationDetail": [
@@ -1768,6 +1955,37 @@
             "secondaryCTATitle": "",
             "isSuccess": true,
             "type": "none"
+          }
+        ],
+        "RemoveApplication": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "The saved application has been removed.",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "toast"
+          }
+        ],
+        "SearchApplicationByCA": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "empty",
+            "title": "We are unable to find this application.",
+            "message": "Please try again. Make sure you’ve entered the correct information!",
+            "primaryCTATitle": "Got It!",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
           }
         ]
       }

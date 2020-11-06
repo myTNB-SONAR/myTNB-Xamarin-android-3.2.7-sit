@@ -1,7 +1,7 @@
 ﻿using myTNB.Mobile.API.Models.ApplicationStatus;
 using Newtonsoft.Json;
 
-namespace myTNB.Mobile.API.Models.Payment.ApplicationPayment
+namespace myTNB.Mobile.API.Models.Payment.PostApplicationPayment
 {
     public class PostApplicationPaymentRequest : BaseRequest
     {

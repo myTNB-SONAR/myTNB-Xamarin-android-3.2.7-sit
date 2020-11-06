@@ -44,7 +44,7 @@
                     android:textSize="16dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginBottom="18dp"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.18"
                     android:layout_marginTop="18dp"
                     android:textColor="@color/tunaGrey"
                     android:text="Status:" />
@@ -54,7 +54,7 @@
                     android:layout_width="0dp"
                     android:textSize="16dp"
                     android:layout_marginBottom="18dp"
-                    android:layout_weight="0.6"
+                    android:layout_weight="0.65"
                     android:layout_marginTop="18dp"
                     android:textColor="@color/tunaGrey"
                     android:text="Action Required" />
@@ -70,11 +70,12 @@
                     tools:text="10 Jul 2020"
                 />
             </LinearLayout>
-     <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-             android:id="@+id/Layout_updated_details"
-              android:orientation="vertical">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:id="@+id/Layout_updated_details"
+        android:orientation="vertical">       
     <TextView
                 android:id="@+id/lbl_details"
                 android:layout_height="wrap_content"
@@ -88,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:paddingBottom="16dp"
-               android:id="@+id/layout_details"
+               
                 android:orientation="vertical">
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/listview_updated_details"
@@ -97,12 +98,12 @@
              
                 
             </LinearLayout>
-        </LinearLayout>
-     <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-             android:id="@+id/Layout_reason"
-              android:orientation="vertical">
+       </LinearLayout>
+   <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:id="@+id/Layout_reason"
+        android:orientation="vertical">       
         <TextView
                 android:id="@+id/lbl_reason"
                 android:layout_height="wrap_content"
@@ -124,12 +125,13 @@
             
                 
             </LinearLayout>
-        </LinearLayout>
-     <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-             android:id="@+id/Layout_attachments"
-              android:orientation="vertical">
+       </LinearLayout>
+
+   <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:id="@+id/Layout_attachments"
+        android:orientation="vertical">  
     <TextView
                 android:id="@+id/lbl_attachments"
                 android:layout_height="wrap_content"
@@ -151,12 +153,14 @@
              
                 
             </LinearLayout>
-        </LinearLayout>
+       
+    </LinearLayout>
      <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-             android:id="@+id/Layout_comment"
-              android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:id="@+id/Layout_comment"
+        android:orientation="vertical"> 
+    
     <TextView
                 android:id="@+id/lbl_comment"
                 android:layout_height="wrap_content"
@@ -181,12 +185,14 @@
                
                 android:textColor="#49494a"/>
             </LinearLayout>
-        </LinearLayout>
-     <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-             android:id="@+id/Layout_submittedby"
-              android:orientation="vertical">
+     
+     </LinearLayout>
+
+ <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:id="@+id/Layout_submittedby"
+        android:orientation="vertical">
     <TextView
                 android:id="@+id/lbl_submittedby"
                 android:layout_height="wrap_content"
@@ -212,11 +218,11 @@
                 android:textColor="#49494a"
                 android:text="careline@tnb.com.my" />
             </LinearLayout>
-        </LinearLayout>
+      </LinearLayout> 
      <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="10dp"
+                
                
                 android:layout_marginRight="16dp"
                 android:layout_marginLeft="16dp"

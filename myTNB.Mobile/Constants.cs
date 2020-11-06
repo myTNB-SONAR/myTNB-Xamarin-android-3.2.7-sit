@@ -9,8 +9,12 @@
         internal const string Header_SecureKey = "SecureKey";
         internal const string Header_UserInfo = "UserInfo";
 
+        //String Constants
+        internal const string EMPTY = "empty";
+        internal const string DEFAULT = "default";
+
         //Todo: Set to 60000
-        internal const int APITimeOut = 10000;
+        internal const int APITimeOut = 60000;
         internal const int SitecoreTimeOut = 5000;
         internal const string SitecoreDomain = "sitecore";
         internal const string SitecoreUsername = "api_user";
@@ -28,8 +32,8 @@
         internal const string PaymentURL = "http://10.215.128.191:89/v5/PayRedirect.aspx";
         internal const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         internal const string SitecoreURL = "https://sitecore.tnb.com.my/";// "http://10.215.70.246/";    //"http://tnbcsdevapp.tnb.my/";
-#elif MASTER
-        internal static string ApiDomain = "https://mobiletestingws.tnb.com.my";
+#elif MASTER || SIT
+        internal static string ApiDomain = "http://10.215.128.191:89";//"https://mobiletestingws.tnb.com.my";
         internal const string PaymentURL = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx";
         internal const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         internal const string SitecoreURL = "http://10.215.70.248/";    //"http://tnbcsstgapp.tnb.my/";
@@ -46,6 +50,10 @@
         internal const string Service_SaveApplication = "SaveApplication";
         internal const string Service_GetAllApplications = "AllApplications";
         internal const string Service_GetApplicationDetail = "ApplicationDetail";
+        internal const string Service_RemoveApplication = "RemoveApplication";
+        internal const string Service_SearchApplicationByCA = "SearchApplicationByCA";
+        internal const string Service_GetTaxInvoice = "GetTaxInvoiceForApplicationPayment";
+        internal const string Service_TaxInvoice = "GetTaxInvoiceApplicationPayment";
 
         //Language File Constants
         internal const string LanguageFile_ServiceDetails = "ServiceDetails";
@@ -58,7 +66,7 @@
         //HardCoded Values
         internal const string Constants_Currency = "RM";
 
-        //internal const string LanguageFile_ApplicationType = "ApplicationType";
-        //internal const string LanguageFile_SearchType = "SearchType";
+        //API Key
+        internal const string APIKey = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJDaGFubmVsIjoibXlUTkJfQVBJX01vYmlsZSIsIkNoYW5uZWxLZXkiOiJGNUFEQjU0QzM1MkM0NzYwQjUzMkNEOUU1ODdBRTRGNiIsIm5iZiI6MTU5OTE5OTc0OSwiZXhwIjoxNTk5MjAzMzQ5LCJpYXQiOjE1OTkxOTk3NDksImlzcyI6Im15VE5CIEFQSSIsImF1ZCI6Im15VE5CIEFQSSBBdWRpZW5jZSJ9.Sy_xahwMgt2izUgztYq_BQeGECGsahP9oSNHeB1kwB0Ij8Grpg3kQZPCa_b_bbiyngzpjKy38_DFU12wToQAiA";
     }
 }

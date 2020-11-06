@@ -4,18 +4,15 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-
-
 using Android.Util;
 using Android.Views;
-using Android.Webkit;
 using Android.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using Java.Net;
 using Java.Text;
 using Java.Util;
+using myTNB.Mobile.API.Managers.Payment;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Response;
@@ -35,14 +32,8 @@ namespace myTNB_Android.Src.ViewBill.Activity
           , Theme = "@style/Theme.AddAccount")]
     public class ViewBillActivity : BaseToolbarAppCompatActivity, ViewBillContract.IView
     {
-
         AccountData selectedAccount;
         GetBillHistoryResponse.ResponseData selectedBill;
-
-        BillHistoryResponseV5 billsHistoryResponseV5;
-
-        //[BindView(Resource.Id.webView)]
-        //private static WebView webView;
 
         [BindView(Resource.Id.progressBar)]
         public ProgressBar mProgressBar;
@@ -51,16 +42,12 @@ namespace myTNB_Android.Src.ViewBill.Activity
         public static LinearLayout baseView;
 
         private static Snackbar mErrorNoInternet;
-
-        Snackbar mErrorMessageSnackBar;
-        private IMenuItem downloadOption;
-        private string pdfURL = "http://drive.google.com/viewerng/viewer?embedded=true&url=";
-        private string getPDFUrl = "";
+        private string getPDFUrl = string.Empty;
+        private string srNumber = string.Empty;
         private bool downloadClicked = false;
         private bool isLoadedDocument = false;
-
         private bool isFromQuickAction = false;
-
+        private bool isTaxInvoice = false;
 
         CancellationTokenSource cts;
 
@@ -74,7 +61,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
         ViewBillContract.IUserActionsListener userActionsListener;
         ViewBillPresenter mPresenter;
 
-        string savedPDFPath = "";
+        string savedPDFPath = string.Empty;
 
         public override int ResourceId()
         {
@@ -88,7 +75,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
         public override string ToolbarTitle()
         {
-
             Date d = null;
             string title = Utility.GetLocalizedLabel("ViewBill", "titleBill");
             if (selectedAccount != null)
@@ -124,7 +110,12 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
             if (d != null)
             {
-                title = simpleDateFormat.Format(d) + " " +  title;
+                title = simpleDateFormat.Format(d) + " " + title;
+            }
+
+            if (isTaxInvoice)
+            {
+                title = Utility.GetLocalizedLabel("ApplicationStatusDetails", "taxInvoice");
             }
 
             return title;
@@ -163,30 +154,24 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     isFromQuickAction = true;
                 }
 
+                if (extras.ContainsKey("IsTaxInvoice") && extras.GetBoolean("IsTaxInvoice"))
+                {
+                    isTaxInvoice = true;
+                    if (extras.ContainsKey("SRNumber"))
+                    {
+                        srNumber = extras.GetString("SRNumber");
+                    }
+                }
             }
-
-
-
-
             base.OnCreate(savedInstanceState);
             try
             {
                 this.mPresenter = new ViewBillPresenter(this);
-
-                //webView = FindViewById<WebView>(Resource.Id.webView);
                 baseView = FindViewById<LinearLayout>(Resource.Id.rootView);
                 mProgressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
                 mProgressBar.Visibility = ViewStates.Gone;
                 cts = new CancellationTokenSource();
-
-                //webView.Settings.JavaScriptEnabled = (true);
-                ////webView.SetWebChromeClient(new WebChromeClient());
-                //webView.SetWebViewClient(new MyTNBWebViewClient(this, mProgressBar, downloadOption));
                 pdfViewer = FindViewById<PDFView>(Resource.Id.pdf_viewer_control_view);
-                //InputMethodManager inputMethodManager = (InputMethodManager)baseView.Context.GetSystemService(Context.InputMethodService);
-                //inputMethodManager.HideSoftInputFromWindow(baseView.WindowToken, HideSoftInputFlags.None);
-
-
                 try
                 {
                     if (isFromQuickAction)
@@ -199,19 +184,21 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     }
                     else
                     {
-                        if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.NrBill))
+                        if (isTaxInvoice)
                         {
-                            getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
-                            pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
-                            //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/GetBillPDF?apiKeyID="+Constants.APP_CONFIG.API_KEY_ID+"&accNum=" + selectedAccount.AccountNum+"&billingNo="+selectedBill.NrBill, "utf-8"));
+                            getPDFUrl = PaymentManager.Instance.GetTaxInvoiceURL(srNumber);
                         }
                         else
                         {
-                            getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
-                            pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
-                            //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/GetBillPDF?apiKeyID="+Constants.APP_CONFIG.API_KEY_ID+"&accNum=" + selectedAccount.AccountNum , "utf-8"));
+                            if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.NrBill))
+                            {
+                                getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
+                            }
+                            else
+                            {
+                                getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
+                            }
                         }
-
                         downloadClicked = true;
                         RunOnUiThread(() =>
                         {
@@ -228,13 +215,10 @@ namespace myTNB_Android.Src.ViewBill.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-           // MenuInflater.Inflate(Resource.Menu.ViewBillReceiptMenu, menu);  //disable due to legal issue 
-            //downloadOption = menu.GetItem(Resource.Id.action_download);
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -277,7 +261,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     Utility.LoggingNonFatalError(e);
                 }
 
-                savedPDFPath = "";
+                savedPDFPath = string.Empty;
 
                 await Task.Run(() =>
                 {
@@ -289,7 +273,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     try
                     {
                         Java.IO.File file = new Java.IO.File(savedPDFPath);
-
                         pdfViewer
                             .FromFile(file)
                             .Show();
@@ -314,8 +297,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-
-
         }
 
         public void OnSavePDF()
@@ -340,61 +321,70 @@ namespace myTNB_Android.Src.ViewBill.Activity
             }
         }
 
-
         public string OnDownloadPDF()
         {
-            string path = "";
+            string path = string.Empty;
 
             try
             {
-                if (!string.IsNullOrEmpty(getPDFUrl) && !string.IsNullOrEmpty(selectedAccount?.AccountNum))
+                if (!string.IsNullOrEmpty(getPDFUrl))
                 {
-                    string rootPath = this.FilesDir.AbsolutePath;
-
-                    if (Utils.FileUtils.IsExternalStorageReadable() && Utils.FileUtils.IsExternalStorageWritable())
+                    string filename = string.Empty;
+                    if (isTaxInvoice)
                     {
-                        rootPath = this.GetExternalFilesDir(null).AbsolutePath;
+                        filename = srNumber + ".pdf";
                     }
-
-                    var directory = System.IO.Path.Combine(rootPath, "pdf");
-                    if (!Directory.Exists(directory))
+                    else if (!string.IsNullOrEmpty(selectedAccount?.AccountNum))
                     {
-                        Directory.CreateDirectory(directory);
-                    }
-
-                    string filename = selectedAccount?.AccountNum + ".pdf";
-                    if (!string.IsNullOrEmpty(selectedBill?.NrBill))
-                    {
-                        filename = selectedAccount?.AccountNum + "_" + selectedBill?.NrBill + ".pdf";
-                    }
-                    path = System.IO.Path.Combine(directory, filename);
-
-                    if (!string.IsNullOrEmpty(path))
-                    {
-                        if (File.Exists(path))
+                        filename = selectedAccount?.AccountNum + ".pdf";
+                        if (!string.IsNullOrEmpty(selectedBill?.NrBill))
                         {
-                            File.Delete(path);
+                            filename = selectedAccount?.AccountNum + "_" + selectedBill?.NrBill + ".pdf";
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(filename))
+                    {
+                        string rootPath = this.FilesDir.AbsolutePath;
+                        if (Utils.FileUtils.IsExternalStorageReadable() && Utils.FileUtils.IsExternalStorageWritable())
+                        {
+                            rootPath = this.GetExternalFilesDir(null).AbsolutePath;
                         }
 
-                        try
+                        var directory = Path.Combine(rootPath, "pdf");
+                        if (!Directory.Exists(directory))
                         {
-                            using (WebClient client = new WebClient())
+                            Directory.CreateDirectory(directory);
+                        }
+
+                        path = Path.Combine(directory, filename);
+
+                        if (!string.IsNullOrEmpty(path))
+                        {
+                            if (File.Exists(path))
                             {
-                                client.DownloadFile(getPDFUrl, path);
+                                File.Delete(path);
                             }
-                        }
-                        catch (Exception e)
-                        {
-                            Log.Debug("ViewBillActivity", e.StackTrace);
-                            path = "";
-                            Utility.LoggingNonFatalError(e);
+
+                            try
+                            {
+                                using (WebClient client = new WebClient())
+                                {
+                                    client.DownloadFile(getPDFUrl, path);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Log.Debug("ViewBillActivity", e.StackTrace);
+                                path = string.Empty;
+                                Utility.LoggingNonFatalError(e);
+                            }
                         }
                     }
                 }
             }
             catch (Exception e)
             {
-                path = "";
+                path = string.Empty;
                 Utility.LoggingNonFatalError(e);
             }
             return path;
@@ -421,11 +411,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
         }
 
-        //public override bool StoragePermissionRequired()
-        //{
-        //    return true;
-        //}
-
         public static void ShowErrorMessageNoInternet(string failingUrl)
         {
             try
@@ -438,8 +423,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 mErrorNoInternet = Snackbar.Make(baseView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
                 .SetAction(Utility.GetLocalizedLabel("Common", "tryAgain"), delegate
                 {
-                //webView.LoadUrl(failingUrl);
-                mErrorNoInternet.Dismiss();
+                    mErrorNoInternet.Dismiss();
                 });
                 View v = mErrorNoInternet.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
@@ -555,12 +539,10 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.NrBill))
                 {
                     getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
-                    pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
                 }
                 else
                 {
                     getPDFUrl = Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
-                    pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v6/mytnbappws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
                 }
 
                 Date d = null;

@@ -63,8 +63,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                         BackendApplicationType = response.Content.applicationDetail.backendApplicationType,
                         BackendModule = response.Content.applicationDetail.backendModule,
                         BackendReferenceNo = response.Content.applicationDetail.backendReferenceNo,
-                        SRNo = response.Content.applicationDetail.srNo,
-                        SRType = response.Content.applicationDetail.srType,
+                        //SRNo = response.Content.applicationDetail.srNo,
+                        //SRType = response.Content.applicationDetail.srType,
                         StatusID = response.Content.applicationDetail.statusId,
                         StatusCode = response.Content.applicationDetail.statusCode,
                         CreatedDate = response.Content.applicationDetail.createdDate,
@@ -84,7 +84,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                         StatusDescription = response.Content.ApplicationStatusDetail.StatusDescription,
                         StatusMessage = response.Content.ApplicationStatusDetail.StatusMessage,
                         UserAction = response.Content.ApplicationStatusDetail.UserAction,
-                        IsPostPayment = response.Content.ApplicationStatusDetail.IsPostPayment
+                        IsPostPayment = response.Content.ApplicationStatusDetail.IsPostPayment,
+                        StatusDescriptionColor = response.Content.ApplicationStatusDetail.StatusDescriptionColor
                     };
                     if (response.Content.ApplicationStatusDetail.StatusTracker != null)
                     {
@@ -94,13 +95,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                             {
                                 StatusDescription = x.StatusDescription,
                                 StatusMode = x.StatusMode,
-                                //Todo: Fix This
-                                /*ProgressDetail = new ProgressDetailDisplay
-                                {
-                                    ProjectID = x.ProgressDetail.TNBProjectID,
-                                    ProgressTrackers = x.ProgressDetail.ProgressTrackers
-                                },*/
-                                Sequence = x.Sequence
+                                Sequence = x.Sequence,
+                                StatusDate = x.StatusDate
                             }).ToList();
                     }
                 }
@@ -178,15 +174,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                         Value = searchTerm
                     }
                 };
-                if (displayModel.Content.ApplicationDetail.CreatedDateDisplay.IsValid())
-                {
-                    displayModel.Content.AdditionalInfoList.Add(new TitleValueModel
-                    {
-                        Title = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "creationDate").ToUpper(),
-                        Value = displayModel.Content.ApplicationDetail.CreatedDateDisplay ?? string.Empty
-                    });
-                }
-                /*
+
                 Dictionary<string, List<SelectorModel>> selectors = LanguageManager.Instance.GetSelectorsByPage("ApplicationStatusDetails");
                 _mappingList = new List<SelectorModel>();
                 if (selectors != null && selectors.ContainsKey("applicationTypeMapping"))
@@ -207,7 +195,6 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                         , additionalDisplayConfig
                         , "SEARCH");
                 }
-                */
             }
             return displayModel;
         }
@@ -218,31 +205,38 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
             , List<SelectorModel> additionalDisplayConfig
             , string applicationType)
         {
-            if (_mappingList == null || _mappingList.Count == 0)
+            try
             {
-                return;
-            }
-            string propertyName = _mappingList.Find(x => x.Key == applicationType)?.Value ?? string.Empty;
-            if (!propertyName.IsValid())
-            {
-                return;
-            }
-            object props = GetObjectValue(content, propertyName);
-            if (props != null)
-            {
-                for (int i = 0; i < additionalDisplayConfig.Count; i++)
+                if (_mappingList == null || _mappingList.Count == 0)
                 {
-                    SelectorModel item = additionalDisplayConfig[i];
-                    object infoValue = GetObjectValue(props, item.Key);
-                    if (infoValue != null && infoValue.ToString().IsValid())
+                    return;
+                }
+                string propertyName = _mappingList.Find(x => x.Key == applicationType)?.Value ?? string.Empty;
+                if (!propertyName.IsValid())
+                {
+                    return;
+                }
+                object props = GetObjectValue(content, propertyName);
+                if (props != null)
+                {
+                    for (int i = 0; i < additionalDisplayConfig.Count; i++)
                     {
-                        displayModel.Content.AdditionalInfoList.Add(new TitleValueModel
+                        SelectorModel item = additionalDisplayConfig[i];
+                        object infoValue = GetObjectValue(props, item.Key);
+                        if (infoValue != null && infoValue.ToString().IsValid())
                         {
-                            Title = item.Description.ToUpper(),
-                            Value = infoValue.ToString()
-                        });
+                            displayModel.Content.AdditionalInfoList.Add(new TitleValueModel
+                            {
+                                Title = item.Description.ToUpper(),
+                                Value = infoValue.ToString()
+                            });
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG] AddAdditionalInfo Error: " + e.Message);
             }
         }
 
@@ -250,22 +244,29 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
             , string key)
         {
             object value = null;
-            Type type = props.GetType();
-            if (type == null)
+            try
             {
-                return value;
+                Type type = props.GetType();
+                if (type == null)
+                {
+                    return value;
+                }
+                PropertyInfo property = type.GetProperty(key);
+                if (property == null)
+                {
+                    return value;
+                }
+                object objectValue = property.GetValue(props, null);
+                if (objectValue == null)
+                {
+                    return value;
+                }
+                value = objectValue;
             }
-            PropertyInfo property = type.GetProperty(key);
-            if (property == null)
+            catch (Exception e)
             {
-                return value;
+                Debug.WriteLine("[DEBUG] GetObjectValue App Status Error: " + e.Message);
             }
-            object objectValue = property.GetValue(props, null);
-            if (objectValue == null)
-            {
-                return value;
-            }
-            value = objectValue;
             return value;
         }
         #endregion

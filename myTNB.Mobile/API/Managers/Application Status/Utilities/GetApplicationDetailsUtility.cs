@@ -6,6 +6,7 @@ using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails;
 using myTNB.Mobile.Extensions;
 using System.Diagnostics;
+using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
 
 namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
 {
@@ -22,9 +23,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
             , string searchApplicationType
             , string applicationModuleDescription
             , string applicationID
-            , string applicationModuleId
-            , string createdByRoleID
-            , bool isPremiseServiceReady
+            , string system
+            , string savedApplicationID
             , bool isSavedApplication)
         {
             {
@@ -45,10 +45,13 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     displayModel.Content.ApplicationTypeReference = applicationModuleDescription;
                     displayModel.Content.IsSaveMessageDisplayed = false;
                     displayModel.Content.IsFullApplicationTooltipDisplayed = true;
-                    displayModel.Content.IsDeleteEnable = true;
+                    displayModel.Content.IsDeleteEnable = isSavedApplication;
                     displayModel.Content.IsSavedApplication = isSavedApplication;
 
                     displayModel.Content.ApplicationDetail.ApplicationId = applicationID;
+                    displayModel.Content.System = system ?? string.Empty;
+                    displayModel.Content.SavedApplicationID = savedApplicationID ?? string.Empty;
+                    displayModel.Content.ApplicationTypeCode = searchApplicationType ?? string.Empty;
 
                     if (response.Content.applicationPaymentDetail != null)
                     {
@@ -86,9 +89,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                         }
                         GetNCType(ref key
                             , searchApplicationType
-                            , applicationModuleId
-                            , createdByRoleID
-                            , isPremiseServiceReady);
+                            , response.Content
+                            , out bool isPremiseServiceReady);
                         if (selectors != null && selectors.ContainsKey(key))
                         {
                             additionalDisplayConfig = selectors[key];
@@ -99,7 +101,22 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                             AddAdditionalInfo(ref displayModel
                                 , response.Content
                                 , additionalDisplayConfig
-                                , key.Contains("NC") ? searchApplicationType : key);// searchApplicationType == "NC" ? searchApplicationType : key);
+                                , key.Contains("NC") ? searchApplicationType : key
+                                , isPremiseServiceReady);
+
+                            if (_mappingList != null && _mappingList.Count > 0)
+                            {
+                                string propertyName = _mappingList.Find(x =>
+                                    x.Key == (key.Contains("NC") ? searchApplicationType : key))?.Value ?? string.Empty;
+                                object props = GetObjectValue(response.Content, propertyName);
+                                if (props != null)
+                                {
+                                    if (GetObjectValue(props, "srNo") is string srNo && srNo.IsValid())
+                                    {
+                                        displayModel.Content.SRNumber = srNo;
+                                    }
+                                }
+                            }
                         }
 
                         displayModel.Content.ApplicationStatusDetail = new ApplicationStatusDetailDisplayModel
@@ -109,7 +126,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                             StatusDescription = response.Content.ApplicationStatusDetail.StatusDescription,
                             StatusMessage = response.Content.ApplicationStatusDetail.StatusMessage,
                             UserAction = response.Content.ApplicationStatusDetail.UserAction,
-                            IsPostPayment = response.Content.ApplicationStatusDetail.IsPostPayment
+                            IsPostPayment = response.Content.ApplicationStatusDetail.IsPostPayment,
+                            StatusDescriptionColor = response.Content.ApplicationStatusDetail.StatusDescriptionColor
                         };
                         if (response.Content.ApplicationStatusDetail.StatusTracker != null)
                         {
@@ -119,13 +137,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                                 {
                                     StatusDescription = x.StatusDescription,
                                     StatusMode = x.StatusMode,
-                                    //Todo: Fix This
-                                    /*ProgressDetail = new ProgressDetailDisplay
-                                    {
-                                        ProjectID = x.ProgressDetail.TNBProjectID,
-                                        ProgressTrackers = x.ProgressDetail.ProgressTrackers
-                                    },*/
-                                    Sequence = x.Sequence
+                                    Sequence = x.Sequence,
+                                    StatusDate = x.StatusDate
                                 }).ToList();
                         }
                     }
@@ -206,108 +219,179 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
         private static void AddAdditionalInfo(ref ApplicationDetailDisplay displayModel
             , GetApplicationDetailsModel content
             , List<SelectorModel> additionalDisplayConfig
-            , string applicationType)
+            , string applicationType
+            , bool isPremiseServiceReady)
         {
-            if (_mappingList == null || _mappingList.Count == 0)
+            try
             {
-                return;
-            }
-            string propertyName = _mappingList.Find(x => x.Key == applicationType)?.Value ?? string.Empty;
-            if (!propertyName.IsValid())
-            {
-                return;
-            }
-            object props = GetObjectValue(content, propertyName);
-            if (props != null)
-            {
-                if (GetObjectValue(props, "statusDate") is object statusDate && statusDate != null)
+                if (_mappingList == null || _mappingList.Count == 0)
                 {
-                    displayModel.Content.ApplicationDetail.StatusDate = Convert.ToDateTime(statusDate);
+                    return;
                 }
-                if (GetObjectValue(props, "createdDate") is object createdDate && createdDate != null)
+                string propertyName = _mappingList.Find(x => x.Key == applicationType)?.Value ?? string.Empty;
+                if (!propertyName.IsValid())
                 {
-                    displayModel.Content.ApplicationDetail.CreatedDate = Convert.ToDateTime(createdDate);
+                    return;
                 }
-                for (int i = 0; i < additionalDisplayConfig.Count; i++)
+                object props = GetObjectValue(content, propertyName);
+                if (props != null)
                 {
-                    SelectorModel item = additionalDisplayConfig[i];
-                    object infoValue = GetObjectValue(props, item.Key);
-                    if (infoValue != null && infoValue.ToString().IsValid())
+                    if (GetObjectValue(props, "statusDate") is object statusDate && statusDate != null)
                     {
-                        displayModel.Content.AdditionalInfoList.Add(new TitleValueModel
+                        displayModel.Content.ApplicationDetail.StatusDate = Convert.ToDateTime(statusDate);
+                    }
+                    if (GetObjectValue(props, "createdDate") is object createdDate && createdDate != null)
+                    {
+                        displayModel.Content.ApplicationDetail.CreatedDate = Convert.ToDateTime(createdDate);
+                    }
+                    bool shouldShowLinkedWith = false;
+
+                    for (int i = 0; i < additionalDisplayConfig.Count; i++)
+                    {
+                        SelectorModel item = additionalDisplayConfig[i];
+                        object infoValue = GetObjectValue(props, item.Key);
+                        if (infoValue != null
+                            && infoValue.ToString().IsValid())
                         {
-                            Title = item.Description.ToUpper(),
-                            Value = infoValue.ToString()
-                        });
+                            displayModel.Content.AdditionalInfoList.Add(new TitleValueModel
+                            {
+                                Title = item.Description.ToUpper(),
+                                Value = infoValue.ToString()
+                            });
+                        }
+                        else if (item.Key == "shouldShowLinkedWith"
+                            && bool.Parse(item.Description) is bool shouldShowLinkedWithValue
+                            && shouldShowLinkedWithValue)
+                        {
+                            shouldShowLinkedWith = shouldShowLinkedWithValue;
+                        }
+                    }
+
+                    if (shouldShowLinkedWith)
+                    {
+                        if (applicationType == "ASR"
+                            && GetObjectValue(props, "linkedApplicationId") is string linkedApplicationId && linkedApplicationId.IsValid()
+                            && GetObjectValue(props, "linkedApplicationNo") is string linkedApplicationNo && linkedApplicationNo.IsValid()
+                            && GetObjectValue(props, "linkedApplicationType") is string linkedApplicationType && linkedApplicationType.IsValid())
+                        {
+                            displayModel.Content.LinkedWithDisplay = new LinkedWithDisplay
+                            {
+                                ID = linkedApplicationId,
+                                ReferenceNo = linkedApplicationNo,
+                                Type = linkedApplicationType,
+                                IsPremiseServiceReady = isPremiseServiceReady
+                            };
+                        }
+                        else if (GetObjectValue(props, "linkedAsrId") is string linkedAsrId && linkedAsrId.IsValid()
+                            && GetObjectValue(props, "linkedAsrReferenceNo") is string linkedAsrReferenceNo && linkedAsrReferenceNo.IsValid())
+                        {
+                            displayModel.Content.LinkedWithDisplay = new LinkedWithDisplay
+                            {
+                                ID = linkedAsrId,
+                                ReferenceNo = linkedAsrReferenceNo,
+                                Type = "ASR",
+                                IsPremiseServiceReady = isPremiseServiceReady
+                            };
+                        }
+
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG] AddAdditionalInfo Error: " + e.Message);
             }
         }
         #endregion
         #region Evaluate NC Type
         private static void GetNCType(ref string key
             , string applicationType
-            , string applicationModuleId
-            , string createdByRoleID
-            , bool isPremiseServiceReady)
+            , GetApplicationDetailsModel content
+            , out bool isPremiseServiceReady)
         {
-            if (applicationType != "NC" || key == KEDAI || key == SAVED) { return; }
-            if (applicationModuleId == "101011" || applicationModuleId == "101010")
+            try
             {
-                key = "NC_GROUPMOVEIN";
-            }
-            else if (applicationModuleId == "101012")
-            {
-                key = "NC_PREMISECREATION";
-            }
-            else if (applicationModuleId == "101001" && isPremiseServiceReady)
-            {
-                if (createdByRoleID == "16")
+                isPremiseServiceReady = false;
+                if (applicationType != "NC" || key == KEDAI || key == SAVED)
                 {
-                    key = "NC_PREMISEINDIVUDUAL";
+                    isPremiseServiceReady = false;
+                    return;
+                }
+                string createdByRoleID = content.newConnectionDetail.createdByRoleId;
+                string applicationModuleId = content.newConnectionDetail.applicationModuleId;
+                isPremiseServiceReady = content.newConnectionDetail.isPremiseServiceReady == null
+                    ? false
+                    : content.newConnectionDetail.isPremiseServiceReady.Value;
+
+                if (applicationModuleId == "101011" || applicationModuleId == "101010")
+                {
+                    key = "NC_GROUPMOVEIN";
+                }
+                else if (applicationModuleId == "101012")
+                {
+                    key = "NC_PREMISECREATION";
+                }
+                else if (applicationModuleId == "101001" && isPremiseServiceReady)
+                {
+                    if (createdByRoleID == "16")
+                    {
+                        key = "NC_PREMISEINDIVUDUAL";
+                    }
+                    else if (createdByRoleID == "2")
+                    {
+                        key = "NC_PREMISECONTRACTOR";
+                    }
                 }
                 else if (createdByRoleID == "2")
                 {
-                    key = "NC_PREMISECONTRACTOR";
+                    key = "NC_CONTRACTOR";
                 }
             }
-            else if (createdByRoleID == "2")
+            catch (Exception e)
             {
-                key = "NC_CONTRACTOR";
+                isPremiseServiceReady = false;
+                Debug.WriteLine("[DEBUG] GetNCType Error: " + e.Message);
             }
         }
         #endregion
         #region Payment Display
         private static void SetPaymentDisplay(ref ApplicationDetailDisplay displayModel)
         {
-            if (displayModel.Content.applicationPaymentDetail != null)
+            try
             {
-                displayModel.Content.PaymentDetailsList = new List<TitleValueModel>();
-                Dictionary<string, List<SelectorModel>> selectors = LanguageManager.Instance.GetSelectorsByPage("ApplicationStatusPaymentDetails");
-                if (selectors != null
-                    && selectors.ContainsKey("chargesMapping")
-                    && selectors["chargesMapping"] is List<SelectorModel> mappingList
-                    && mappingList != null
-                    && mappingList.Count > 0)
+                if (displayModel.Content.applicationPaymentDetail != null)
                 {
-                    for (int i = 0; i < mappingList.Count; i++)
+                    displayModel.Content.PaymentDetailsList = new List<TitleValueModel>();
+                    Dictionary<string, List<SelectorModel>> selectors = LanguageManager.Instance.GetSelectorsByPage("ApplicationStatusPaymentDetails");
+                    if (selectors != null
+                        && selectors.ContainsKey("chargesMapping")
+                        && selectors["chargesMapping"] is List<SelectorModel> mappingList
+                        && mappingList != null
+                        && mappingList.Count > 0)
                     {
-                        SelectorModel item = mappingList[i];
-                        if (GetObjectValue(displayModel.Content.applicationPaymentDetail.oneTimeChargesDetail, item.Key) is object value
-                            && value != null)
+                        for (int i = 0; i < mappingList.Count; i++)
                         {
-                            if (Convert.ToDouble(value) is double convertedValue && convertedValue > 0)
+                            SelectorModel item = mappingList[i];
+                            if (GetObjectValue(displayModel.Content.applicationPaymentDetail.oneTimeChargesDetail, item.Key) is object value
+                                && value != null)
                             {
-                                displayModel.Content.PaymentDetailsList.Add(new TitleValueModel
+                                if (Convert.ToDouble(value) is double convertedValue && convertedValue > 0)
                                 {
-                                    Title = item.Description,
-                                    Value = convertedValue.ToAmountDisplayString(true)
-                                });
+                                    displayModel.Content.PaymentDetailsList.Add(new TitleValueModel
+                                    {
+                                        Title = item.Description,
+                                        Value = convertedValue.ToAmountDisplayString(true)
+                                    });
+                                }
                             }
                         }
-                    }
 
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG] SetPaymentDisplay Error: " + e.Message);
             }
         }
         #endregion
@@ -316,23 +400,96 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
             , string key)
         {
             object value = null;
-            Type type = props.GetType();
-            if (type == null)
+            try
             {
-                return value;
+                Type type = props.GetType();
+                if (type == null)
+                {
+                    return value;
+                }
+                PropertyInfo property = type.GetProperty(key);
+                if (property == null)
+                {
+                    return value;
+                }
+                object objectValue = property.GetValue(props, null);
+                if (objectValue == null)
+                {
+                    return value;
+                }
+                value = objectValue;
             }
-            PropertyInfo property = type.GetProperty(key);
-            if (property == null)
+            catch (Exception e)
             {
-                return value;
+                Debug.WriteLine("[DEBUG] GetObjectValue App Details Error: " + e.Message);
             }
-            object objectValue = property.GetValue(props, null);
-            if (objectValue == null)
-            {
-                return value;
-            }
-            value = objectValue;
             return value;
+        }
+
+        internal static void ParseDisplayModel(this ApplicationDetailDisplay detail
+            , PostApplicationsPaidDetailsResponse paymentResponse)
+        {
+            try
+            {
+                if (paymentResponse != null && paymentResponse.D != null && paymentResponse.D.IsError == "false"
+                    && paymentResponse.D.Data != null && paymentResponse.D.Data.Count > 0)
+                {
+                    detail.Content.ReceiptDisplay = paymentResponse.D.Data.Select(x => new ReceiptDisplay
+                    {
+                        SRNumber = x.SRNumber,
+                        MerchantTransID = x.MerchantTransID,
+                        PaymentDoneDate = x.PaymentDoneDate,
+                        Amount = x.Amount,
+                        AccNumber = x.AccNumber,
+                        IsPaymentPending = x.IsPaymentPending,
+                        AccountPayments = x.AccountPayments
+                    }).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                Debug.WriteLine("[DEBUG][ParseDisplayModel Payment Receipt]General Exception: " + ex.Message);
+#endif
+            }
+
+            try
+            {
+                if (detail.Content.IsTaxInvoiceDisplayed)
+                {
+                    if (paymentResponse != null && paymentResponse.D != null && paymentResponse.D.IsError == "false"
+                        && paymentResponse.D.Data != null && paymentResponse.D.Data.Count > 0)
+                    {
+                        detail.Content.TaxInvoiceDisplay = new TaxInvoiceDisplay();
+                        for (int i = 0; i < paymentResponse.D.Data.Count; i++)
+                        {
+                            PostApplicationsPaidDetailsDataModel paymentDetail = paymentResponse.D.Data[i];
+                            List<AccountPaymentsModel> accountPayments = paymentDetail.AccountPayments;
+                            if (accountPayments != null && accountPayments.Count > 0)
+                            {
+                                for (int j = 0; j < accountPayments.Count; j++)
+                                {
+                                    AccountPaymentsModel accountPayment = accountPayments[j];
+                                    if (accountPayment.PaymentType == "CONNECTIONCHARGES")
+                                    {
+                                        detail.Content.TaxInvoiceDisplay = new TaxInvoiceDisplay
+                                        {
+                                            SRNumber = paymentDetail.SRNumber,
+                                            Amount = accountPayment.PaymentAmount
+                                        };
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+#if DEBUG
+                Debug.WriteLine("[DEBUG][ParseDisplayModel Tax Invoice]General Exception: " + ex.Message);
+#endif
+            }
         }
     }
 }

@@ -39,9 +39,9 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
 
         public string backendModule { set; get; }
 
-        public string srNo { set; get; }
+        //public string srNo { set; get; }
 
-        public string srType { set; get; }
+        //public string srType { set; get; }
 
         public string statusId { set; get; }
 
@@ -83,6 +83,8 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
         public string sdDocumentNo { set; get; }
 
         public string srNo { set; get; }
+
+        public bool? hasInvoiceAttachment { set; get; } = false;
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
@@ -91,6 +93,8 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
         public double connectionChargesAmount { set; get; }
 
         public ConnectionChargesDetails connectionChargesDetail { set; get; }
+
+        public double technicalStudyFeeAmount { set; get; }
 
         public double securityDepositAmount { set; get; }
 
@@ -119,6 +123,9 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
         [JsonProperty("statusDescription")]
         public string StatusDescription { set; get; }
 
+        [JsonProperty("statusDescriptionColor")]
+        public string StatusDescriptionColor { set; get; }
+
         [JsonProperty("statusMessage")]
         public string StatusMessage { set; get; }
 
@@ -145,6 +152,9 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
 
         [JsonProperty("sequence")]
         public int Sequence { set; get; }
+
+        [JsonProperty("statusDate")]
+        public DateTime? StatusDate { set; get; }
     }
 
     public class ProgressDetail

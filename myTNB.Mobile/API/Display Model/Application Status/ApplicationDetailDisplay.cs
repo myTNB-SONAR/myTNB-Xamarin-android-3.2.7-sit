@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using myTNB.Mobile.API.Models.ApplicationStatus;
+using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
 using myTNB.Mobile.Extensions;
+using myTNB.Mobile.SessionCache;
 
 namespace myTNB.Mobile
 {
@@ -14,9 +17,8 @@ namespace myTNB.Mobile
 
     public class GetApplicationStatusDisplay
     {
-        private string _applicationType = string.Empty;
-
         public ApplicationDetailDisplayModel ApplicationDetail { set; get; }
+
 #pragma warning disable IDE1006 // Naming Styles
         /// <summary>
         /// To be passed in payment service
@@ -25,14 +27,55 @@ namespace myTNB.Mobile
 #pragma warning restore IDE1006 // Naming Styles
         public ApplicationStatusDetailDisplayModel ApplicationStatusDetail { set; get; }
         public List<ApplicationActivityLogDetailDisplay> ApplicationActivityLogDetail { set; get; }
+
         /// <summary>
         /// List of Title and Value used for payment details
         /// </summary>
         public List<TitleValueModel> PaymentDetailsList { set; get; }
+
         /// <summary>
         /// Get the total payable and one time charges display amounts
         /// </summary>
         public PaymentDisplayModel PaymentDisplay { set; get; }
+
+        /// <summary>
+        /// Used for Linked With Information
+        /// </summary>
+        public LinkedWithDisplay LinkedWithDisplay { set; get; }
+
+        /// <summary>
+        /// Used to display details of Receipt
+        /// </summary>
+        public List<ReceiptDisplay> ReceiptDisplay { set; get; }
+
+        /// <summary>
+        /// Used to display details of Tax Invoice
+        /// </summary>
+        public TaxInvoiceDisplay TaxInvoiceDisplay { set; get; }
+
+        /// <summary>
+        /// Determines if receipt segment is displayed or not
+        /// </summary>
+        public bool IsReceiptDisplayed
+        {
+            get
+            {
+                return ReceiptDisplay != null && ReceiptDisplay.Count > 0;
+            }
+        }
+
+        /// <summary>
+        /// Determines if Tax Invoice is displayed or not
+        /// </summary>
+        public bool IsTaxInvoiceDisplayed
+        {
+            get
+            {
+                return PaymentDisplay != null
+                    && PaymentDisplay.hasInvoiceAttachment != null
+                    && PaymentDisplay.hasInvoiceAttachment.Value;
+            }
+        }
 
         private bool IsPayment
         {
@@ -47,7 +90,6 @@ namespace myTNB.Mobile
         /// Searched application defaults to false
         /// </summary>
         public bool IsSavedApplication { set; get; }
-
         /// <summary>
         /// This Determines if the Linked with section of NC should be displayed
         /// </summary>
@@ -55,13 +97,14 @@ namespace myTNB.Mobile
         {
             get
             {
-                //Mark: Saved and Searched application shouldn't see this
-                if (IsSavedApplication || IsSaveMessageDisplayed)
+                //Mark: Saved, Searched and Kedai application shouldn't see this
+                if (IsSavedApplication || IsSaveMessageDisplayed || IsKedaiTenagaApplication)
                 {
                     return false;
                 }
-                //Todo: Map property once available in unified service
-                return false;
+                return LinkedWithDisplay != null
+                    && LinkedWithDisplay.ReferenceNo.IsValid()
+                    && LinkedWithDisplay.ID.IsValid();
             }
         }
 
@@ -151,6 +194,22 @@ namespace myTNB.Mobile
         }
 
         public string ApplicationTypeID { set; get; }
+
+        /// <summary>
+        /// Used to pass in Remove Application
+        /// </summary>
+        public string System { set; get; } = string.Empty;
+
+        /// <summary>
+        /// Used to pass in Remove Application
+        /// </summary>
+        public string SavedApplicationID { set; get; } = string.Empty;
+
+        /// <summary>
+        /// Used to pass in Remove Application
+        /// </summary>
+        public string ApplicationTypeCode { set; get; } = string.Empty;
+
         /// <summary>
         /// RGB of the Status
         /// </summary>
@@ -192,33 +251,100 @@ namespace myTNB.Mobile
                 {
                     type = DetailCTAType.Save;
                 }
-                else if (IsPayment)
+                else if (IsPayment && applicationPaymentDetail != null)
                 {
                     type = DetailCTAType.Pay;
+                    if (ReceiptDisplay != null && ReceiptDisplay.Count > 0)
+                    {
+                        int isPendingIndex = ReceiptDisplay.FindIndex(x => x.IsPaymentPending);
+                        if (isPendingIndex > -1)
+                        {
+                            type = DetailCTAType.PayInProgress;
+                        }
+                    }
+                }
+                return type;
+            }
+        }
+        /// <summary>
+        /// Returns the type of tutorial to display
+        /// </summary>
+        public DetailTutorialType TutorialType
+        {
+            get
+            {
+                DetailTutorialType type = DetailTutorialType.NoAction;
+                if (IsSaveMessageDisplayed)
+                {
+                    return DetailTutorialType.None;
+                }
+                if (ApplicationStatusDetail != null
+                    && ApplicationStatusDetail.StatusDescriptionColor is string descriptionColor
+                    && descriptionColor.IsValid())
+                {
+                    switch (descriptionColor.ToUpper())
+                    {
+                        case "COMPLETED":
+                        case "CANCELLED":
+                        default:
+                            {
+                                type = DetailTutorialType.NoAction;
+                                break;
+                            }
+                        case "ACTION":
+                            {
+                                if (CTAType == DetailCTAType.None)
+                                {
+                                    type = DetailTutorialType.InProgress;
+                                }
+                                else
+                                {
+                                    type = DetailTutorialType.Action;
+                                }
+                                break;
+                            }
+                    }
                 }
                 return type;
             }
         }
 
+        /// <summary>
+        /// Used for getting ASMX Payment Details
+        /// </summary>
+        public string SRNumber { set; get; }
+
         private Color StatusColorDisplay
         {
             get
             {
-                if (ApplicationStatusDetail != null)
+                Color color = Color.Grey;
+                if (ApplicationStatusDetail != null
+                    && ApplicationStatusDetail.StatusDescriptionColor is string descriptionColor
+                    && descriptionColor.IsValid())
                 {
-                    if (ApplicationStatusDetail.StatusTracker != null
-                       && ApplicationStatusDetail.StatusTracker.Count > 0
-                       && ApplicationStatusDetail.StatusTracker[ApplicationStatusDetail.StatusTracker.Count - 1].TrackerItemState == State.Completed)
+
+                    switch (descriptionColor.ToUpper())
                     {
-                        return Color.Green;
+                        case "COMPLETED":
+                            {
+                                color = Color.Green;
+                                break;
+                            }
+                        case "ACTION":
+                            {
+                                color = Color.Orange;
+                                break;
+                            }
+                        case "CANCELLED":
+                        default:
+                            {
+                                color = Color.Grey;
+                                break;
+                            }
                     }
-                    if (!ApplicationStatusDetail.UserAction.IsValid())
-                    {
-                        return Color.Grey;
-                    }
-                    return Color.Orange;
                 }
-                return Color.Grey;
+                return color;
             }
         }
     }
@@ -267,8 +393,8 @@ namespace myTNB.Mobile
         public string BackendReferenceNo { set; get; }
         public string BackendApplicationType { set; get; }
         public string BackendModule { set; get; }
-        public string SRNo { set; get; }
-        public string SRType { set; get; }
+        //public string SRNo { set; get; }
+        //public string SRType { set; get; }
         public string StatusID { set; get; }
         public string StatusCode { set; get; }
         public DateTime? CreatedDate { set; get; }
@@ -323,6 +449,7 @@ namespace myTNB.Mobile
         public int StatusId { set; get; }
         public string StatusCode { set; get; }
         public string StatusDescription { set; get; }
+        public string StatusDescriptionColor { set; get; }
         public string StatusMessage { set; get; }
         public string UserAction { set; get; }
         public bool IsPostPayment { set; get; }
@@ -349,6 +476,28 @@ namespace myTNB.Mobile
         public string StatusMode { set; get; }
         public ProgressDetailDisplay ProgressDetail { set; get; }
         public int Sequence { set; get; }
+        public DateTime? StatusDate { set; get; }
+        /// <summary>
+        /// Displays Completed Date
+        /// </summary>
+        public string CompletedDateDisplay
+        {
+            get
+            {
+                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                string date = string.Empty;
+                if (StatusDate != null && StatusDate.Value != null)
+                {
+                    string dateString = StatusDate.Value.ToString("dd MMM yyyy", dateCultureInfo);
+                    if (dateString.IsValid())
+                    {
+                        date = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "on") + dateString;
+                    }
+                }
+                return date;
+            }
+        }
+
         /// <summary>
         /// Determines the state of each item in progress tracker
         /// </summary>
@@ -487,6 +636,73 @@ namespace myTNB.Mobile
         }
     }
 
+    public class LinkedWithDisplay
+    {
+        public string ID { set; get; }
+        public string ReferenceNo { set; get; }
+        public string Type { set; get; }
+        public string System
+        {
+            get
+            {
+                return "myTNB";
+            }
+        }
+        public string ApplicationModuleDescription
+        {
+            get
+            {
+                return SearchApplicationTypeCache.Instance.GetApplicationTypeDescription(Type);
+            }
+        }
+        public bool IsPremiseServiceReady { set; get; }
+    }
+
+    public class ReceiptDisplay : PostApplicationsPaidDetailsDataModel
+    {
+        public string PaymentDateDisplay
+        {
+            get
+            {
+                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                string date = string.Empty;
+                if (PaymentDoneDate != null && PaymentDoneDate.Value != null)
+                {
+                    string dateString = PaymentDoneDate.Value.ToString("dd MMM", dateCultureInfo);
+                    if (dateString.IsValid())
+                    {
+                        date = dateString.ToUpper() + LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "paymentReceiptTitle");
+                    }
+                }
+                return date;
+            }
+        }
+
+        public string AmountDisplay
+        {
+            get
+            {
+                return Amount.ToAmountDisplayString(true);
+            }
+        }
+    }
+
+    public class TaxInvoiceDisplay
+    {
+        public string SRNumber { set; get; } = string.Empty;
+        public string Amount { set; get; }
+        public string AmountDisplay
+        {
+            get
+            {
+                string format = "{0} {1}";
+                string amountString = Amount.IsValid() ? Amount : "0.00";
+                return string.Format(format, Constants.Constants_Currency, amountString);
+            }
+        }
+    }
+
+    #region Enums
     public enum ChangeType
     {
         Documents,
@@ -526,6 +742,16 @@ namespace myTNB.Mobile
         Save,
         Remove,
         Pay,
+        PayInProgress,
         None
     }
+
+    public enum DetailTutorialType
+    {
+        NoAction,
+        InProgress,
+        Action,
+        None
+    }
+    #endregion
 }

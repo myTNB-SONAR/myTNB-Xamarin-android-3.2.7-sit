@@ -215,6 +215,16 @@ namespace myTNB_Android.Src.Utils
             editor.PutBoolean("hasApplicationStatusShown", true);
             editor.Apply();
         }
+        public static System.Boolean HasApplicationDetailShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasApplicationDetailShown", false);
+        }
+        public static void DoApplicationDetailShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasApplicationDetailShown", true);
+            editor.Apply();
+        }
         public static void DoRewardsDetailShown(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
@@ -433,7 +443,7 @@ namespace myTNB_Android.Src.Utils
 
         public static string GetFeedbackUpdateDetailDisabled(ISharedPreferences prefs)
         {
-            return prefs.GetString("IsFeedbackUpdateDetailDisabled",  null);
+            return prefs.GetString("IsFeedbackUpdateDetailDisabled", null);
         }
 
         public static void SaveGetAccountIsExist(ISharedPreferences prefs, string data)
@@ -611,7 +621,7 @@ namespace myTNB_Android.Src.Utils
 
         public static void SaveAppLanguage(string language)
         {
-            ISharedPreferences sharedPreferences =  Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
             ISharedPreferencesEditor editor = sharedPreferences.Edit();
             editor.PutString(Constants.SHARED_PREF_LANGUAGE_KEY, language);
             editor.Apply();
@@ -620,7 +630,7 @@ namespace myTNB_Android.Src.Utils
         public static string GetAppLanguage()
         {
             ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
-            return sharedPreferences.GetString(Constants.SHARED_PREF_LANGUAGE_KEY,null);
+            return sharedPreferences.GetString(Constants.SHARED_PREF_LANGUAGE_KEY, null);
         }
 
         public static void SaveIsAppLanguageChanged(bool isChanged)

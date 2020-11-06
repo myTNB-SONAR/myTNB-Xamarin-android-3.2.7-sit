@@ -94,6 +94,9 @@ namespace myTNB.Mobile
         [JsonProperty("applicationModuleId")]
         public string ApplicationModuleId { set; get; }
 
+        [JsonProperty("system")]
+        public string System { set; get; }
+
         [JsonProperty("srNo")]
         public string SRNo { set; get; }
 
@@ -120,6 +123,9 @@ namespace myTNB.Mobile
         /// </summary>
         [JsonProperty("statusDescription")]
         public string StatusDescription { set; get; }
+
+        [JsonProperty("statusDescriptionColor")]
+        public string StatusDescriptionColor { set; get; }
 
         [JsonProperty("isPremiseServiceReady")]
         public bool IsPremiseServiceReady { set; get; }
@@ -169,8 +175,8 @@ namespace myTNB.Mobile
         [JsonProperty("lastModifiedDate")]
         public DateTime? LastModifiedDate { set; get; }
 
-        [JsonProperty("system")]
-        public string System { set; get; }
+        [JsonProperty("sequence")]
+        public int Sequence { set; get; }
 
         /// <summary>
         /// Display reference number under Application Type
@@ -205,6 +211,66 @@ namespace myTNB.Mobile
             }
         }
 
+        /// <summary>
+        /// RGB of the Status
+        /// </summary>
+        [JsonIgnore]
+        public int[] StatusColor
+        {
+            get
+            {
+                switch (StatusColorDisplay)
+                {
+                    case Color.Green:
+                        {
+                            return new int[] { 32, 189, 76 };
+                        }
+                    case Color.Orange:
+                        {
+                            return new int[] { 255, 158, 67 };
+                        }
+                    case Color.Grey:
+                    default:
+                        {
+                            return new int[] { 73, 73, 74 };
+                        }
+                }
+            }
+        }
+
+        [JsonIgnore]
+        private Color StatusColorDisplay
+        {
+            get
+            {
+                Color color = Color.Grey;
+                if (StatusDescriptionColor.IsValid())
+                {
+
+                    switch (StatusDescriptionColor.ToUpper())
+                    {
+                        case "COMPLETED":
+                            {
+                                color = Color.Green;
+                                break;
+                            }
+                        case "ACTION":
+                            {
+                                color = Color.Orange;
+                                break;
+                            }
+                        case "CANCELLED":
+                        default:
+                            {
+                                color = Color.Grey;
+                                break;
+                            }
+                    }
+                }
+                return color;
+            }
+        }
+
         public RoleType Role
         {
             get
@@ -228,13 +294,16 @@ namespace myTNB.Mobile
                 return rType;
             }
         }
+
+        [JsonIgnore]
+        public bool IsUpdated { set; get; }
     }
 
     public enum RoleType
     {
-        Developer,  //36
-        Contractor, //2
-        Individual, //16
-        None
+        Developer,  //Mark: 36
+        Contractor, //Mark: 2
+        Individual, //Mark: 16
+        None        //Mark: 0
     }
 }

@@ -108,10 +108,10 @@
     "nickname": "Cth. Rumah Saya, Rumah Ibu & Ayah",
     "businessNickname": "Cth. Bangsar Shopping Centre Branch",
     "password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka.",
-    "serviceNotificationNo": "eg. 000092494113",
-    "serviceRequestNumber": "eg. 6000924941",
-    "electricityAccountNumber": "eg. 212157864231",
-    "eg": "eg. "
+    "serviceNotificationNo": "Masukkan nombor 12-digit pemberitahuan perkhidmatan. Contoh: 000456879313",
+    "serviceRequestNumber": "Masukkan nombor 10-digit permintaan perkhidmatan. Contoh: 1000046986",
+    "electricityAccountNumber": "Masukkan nombor 12-digit akaun elektrik. Contoh: 212313467423",
+    "eg": "Masukkan nombor 10-digit permintaan permohonan. Contoh: "
   },
   "Error": {
     "invalid_email": "Format e-mel tidak sah.",
@@ -165,7 +165,7 @@
     "profileCCErrorMsg": "Jika anda di sini untuk menguruskan kad anda, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula kemudian.",
     "noMeterAccessErrorTitle": "Maaf, anda mungkin tidak boleh mengakses perkhidmatan ini.",
     "noMeterAccessErrorMessage": "Anda perlu mempunyai meter yang boleh diakses supaya bacaan meter boleh dilakukan. Sila cuba lagi apabila anda mempunyai akses kepada meter anda.",
-    "invalidReferenceNumber": "Please enter a valid {0}."
+    "invalidReferenceNumber": "Sila masukkan {0} yang sah."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -214,7 +214,7 @@
     "gotIt": "OK!",
     "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
     "receivedExtra": "terima lebih",
-    "applicationStatus": "Application<br>Status"
+    "applicationStatus": "Status<br>Permohonan"
   },
   "Tabbar": {
     "home": "Utama",
@@ -529,7 +529,7 @@
     "otherPaymentMethods": "Kaedah Pembayaran Lain",
     "maxCCAmountMessage": "Untuk bayaran lebih daripada RM 5000, sila gunakan mod pembayaran FPX.",
     "addCard": "Tambah kad",
-    "fpxTitle": " Perbankan dalam talian melalui FPX "
+    "fpxTitle": "Perbankan dalam talian melalui FPX"
   },
   "MakePayment": {
     "enterOTP": "Masukkan Kod OTP",
@@ -679,7 +679,7 @@
     "feedback": "Hantar Maklum Balas",
     "enquiry": "Hantar Pertanyaan",
     "changeLanguage": "Change language to English",
-    "applicationStatus": "Application Status"
+    "applicationStatus": "Status Permohonan"
   },
   "Login": {
     "loginTitle": "Log Masuk Akaun myTNB",
@@ -714,7 +714,8 @@
     "details": "Kata laluan baharu ini akan menggantikan kata laluan sedia ada. Semua butiran akaun tidak berubah.",
     "newPassword": "Masukkan kata laluan baharu",
     "confirmNewPassword": "Sahkan kata laluan baharu",
-    "confirmPassword": "Sahkan Kata Laluan"
+    "confirmPassword": "Sahkan kata laluan baharu",
+    "newPasswordNoEnter": "Kata laluan baharu"
   },
   "UpdateMobileNumber": {
     "verifyDeviceTitle": "Sahkan Nombor Telefon",
@@ -763,13 +764,15 @@
     "title5": "Nikmati pelbagai Ganjaran melalui myTNB!",
     "title6": "Apa yang baharu dengan myTNB?",
     "title7": "Gunakan myTNB dengan Nombor Telefon Antarabangsa.",
+    "title8": "Sentiasa ketahui status permohonan anda!",
     "description1": "Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Pantau dan ketahui penggunaan elektrik anda yang terkini!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan terkini dengan mudah, semuanya di satu tempat.",
     "description4": "Bayar bil elektrik anda semasa di rumah, bercuti, dalam kereta api - bila-bila masa. 'Goodbye' caj lewat dan beratur di kaunter!",
     "description5": "Ya, kini kami berikan hadiah dan ganjaran - segalanya PERCUMA untuk pengguna myTNB! Pergi ke ikon 'Ganjaran' untuk tebus ganjaran anda sekarang!",
     "description6": "Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.<br><br>We’re now bilingual! You can set your preferred language below.",
-    "description7": "Anda kini boleh mendaftar akaun myTNB dengan nombor telefon antarabangsa."
+    "description7": "Anda kini boleh mendaftar akaun myTNB dengan nombor telefon antarabangsa.",
+    "description8": "Anda boleh jejaki semua status permohonan tanpa kerumitan, bila bila masa dan dimana sahaja. Mahu TNB memasang meter baharu? Anda boleh tetapkan janji temu sekarang!"
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
@@ -826,7 +829,8 @@
     "salutation": "Pelanggan yang dihargai,",
     "trnDate": "TARIKH TRANSAKSI",
     "trnID": "ID TRANSAKSI",
-    "trnMethod": "KAEDAH TRANSAKSI"
+    "trnMethod": "KAEDAH TRANSAKSI",
+    "paymentType": "MS-Payment Type"
   },
   "FeedbackList": {
     "title": "Maklum Balas"
@@ -959,8 +963,6 @@
   "SelectCountry": {
     "title": "Pilih Negara/Wilayah"
   },
-
-
   "SubmitEnquiry": {
     "enquireTitle": "Pertanyaan",
     "submitEnquiryTitle": "Hantar Pertanyaan Baru",
@@ -979,7 +981,7 @@
     "messageHint": "Mesej Anda",
     "uploadDocTitle": "Muat naik dokumen sokongan:",
     "attachTitle": "Muat naik dokumen sokongan  (tidak wajib)",
-    "attachDescription": "Saiz maksimum dokumen adalah 1MB. (Format JPG & JPEG sahaja)",
+    "attachDescription": "Saiz maksimum dokumen adalah 1MB. (Format PDF, JPG & JPEG sahaja)",
     "stepTitle2of2": "Langkah 2 dari 2",
     "contactEnquiryTitle": "Bagaimanakah kami boleh menghubungi anda mengenai pertanyaan ini?",
     "nameHint": "Nama Penuh Anda",
@@ -999,17 +1001,17 @@
     "whichInfoUpdate": "Maklumat mana yang anda ingin kemas kini?",
     "ownerTitle": "Apakah hubungan anda dengan pemilik akaun?",
     "icTitle": "Nombor Pengenalan (IC / Pasport)",
-    "icHint": "Masukkan Nombor Pengenalan Baru",
+    "icHint": "Masukkan Nombor Pengenalan Baharu",
     "accNametitle": "Nama Akaun",
-    "accNameHint": "Masukkan nama baru akaun",
+    "accNameHint": "Masukkan nama baharu akaun",
     "mobileNumberTitle": "Nombor Telefon",
-    "mobileNumberHint": "Masukkan nombor telefon baru",
+    "mobileNumberHint": "Masukkan nombor telefon baharu",
     "emailAddressTitle": "Alamat E-mel",
-    "emailAddressHint": "Masukkan alamat e-mel baru",
+    "emailAddressHint": "Masukkan alamat e-mel baharu",
     "mailingAddressTitle": "Alamat Surat Menyurat",
-    "mailingAddressHint": "Masukkan alamat surat-menyurat baru",
+    "mailingAddressHint": "Masukkan alamat surat-menyurat baharu",
     "premiseAddressTitle": "Alamat Premis",
-    "premiseAddressHint": "Masukkan alamat premis baru",
+    "premiseAddressHint": "Masukkan alamat premis baharu",
     "updateOwnerTitle": "Apakah maklumat yang ingin anda kemaskini bagi pihak pemilik?",
     "relationshipTitle": "Hubungan dengan pemilik akaun",
     "childTitle": "Anak",
@@ -1042,12 +1044,12 @@
     "copyICTitle": "Salinan Pengenalan",
     "ownerConsentTitle": "Adakah saya memerlukan persetujuan pemilik akaun?",
     "reqUpdate": "Kemas kini yang Diminta",
-    "newIC": "Nombor Pengenalan Baru",
-    "newAccName": "Nama baru akaun",
-    "newMobileNumber": "Nombor Telefon Baru",
-    "newEmailAdd": "Alamat E-mel baru",
-    "newMailing": "Alamat Surat Menyurat Baru",
-    "newPremisesAdd": "Alamat Premis Baru",
+    "newIC": "Nombor Pengenalan Baharu",
+    "newAccName": "Nama baharu akaun",
+    "newMobileNumber": "Nombor Telefon Baharu",
+    "newEmailAdd": "Alamat E-mel baharu",
+    "newMailing": "Alamat Surat Menyurat Baharu",
+    "newPremisesAdd": "Alamat Premis Baharu",
     "plsEnterAcc": "Sila masukkan atau pilih nombor akaun elektrik anda terlebih dahulu.",
     "viewSubmitted": "Lihat Pertanyaan yang Dihantar",
     "title": "Hantar Pertanyaan Baru",
@@ -1060,7 +1062,7 @@
     "imageConsent": "-/media/myTNBapp/SubmitEnquiry/imgPoc2x2.png",
     "accNumberDetails": "Nombor akaun 12 digit boleh didapati di sudut kiri atas bil kertas bulanan anda.",
     "updateNoOwnerTitle": "Maklumat mana yang ingin anda kemaskini?",
-    "newAccNoOwnerName": "Nama baru akaun",
+    "newAccNoOwnerName": "Nama baharu akaun",
     "newAccNoOwnerNameReq": "Nama akaun diperlukan",
     "tnc": "Terma dan Syarat",
     "personalDisclamer": "Akujanji Permintaan Pembetulan Data Peribadi",
@@ -1085,88 +1087,100 @@
     "backLogin": "Kembali ke Log Masuk",
     "registeredView": "Adakah akaun elektrik ini didaftarkan atas nama anda?",
     "viewYes": "Ya",
-    "viewNo": "Tidak"
+    "viewNo": "Tidak",
+    "documentPdf": "Dokumen"
   },
   "Tutorial": {
-    "swipeText": "Swipe to see more, tap to skip.",
-    "skip": "Tap to skip.",
-    "applicationStatusLandingTitle": "Keep track of your applications.",
-    "applicationStatusLandingDescription": "Your submitted applications will automatically appear here so you can view their status. Use the filter to search through the list easily.",
-    "applicationStatusLandingEmptyTitle": "Keep track of your applications.",
-    "applicationStatusLandingEmptyDescription": "Your submitted applications will automatically appear so you can view their status.",
-    "applicationStatusLandingSearchTitle": "Search other application status.",
-    "applicationStatusLandingSearchDescription": "Search and save applications submitted by others with your preferred reference number.",
-    "applicationStatusDetailsNoActionTitle": "View your status progress here.",
-    "applicationStatusDetailsNoActionMessage": "Keep updated with your real-time status progress. Visit the Portal to view full application details.",
-    "applicationStatusDetailsInProgressTitle": "View your status progress here.",
-    "applicationStatusDetailsInProgressMessage": "Keep updated with your real-time status. Visit the Portal to continue or update your application.",
-    "applicationStatusDetailsActionOneTitle": "View your status progress here.",
-    "applicationStatusDetailsActionOneMessage": "Keep updated with your real-time status progress. Visit myTNB portal to view your full application details.",
-    "applicationStatusDetailsActionTwoTitle": "Know when to take action.",
-    "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submited application from here."
+    "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",
+    "skip": "Tekan untuk melangkau.",
+    "applicationStatusLandingTitle": "Ikuti perkembangan permohonan anda.",
+    "applicationStatusLandingDescription": "Permohonan yang telah dihantar akan dipaparkan disini secara automatik supaya anda boleh melihat statusnya. Gunakan tapisan untuk mencari menerusi senarai dengan mudah.",
+    "applicationStatusLandingEmptyTitle": "Ikuti perkembangan permohonan anda.",
+    "applicationStatusLandingEmptyDescription": "Permohonan yang telah dihantar akan dipaparkan secara automatik supaya anda boleh melihat statusnya.",
+    "applicationStatusLandingSearchTitle": "Cari status permohonan yang lain.",
+    "applicationStatusLandingSearchDescription": "Cari dan simpan permohonan yang dihantar oleh pihak lain dengan mengunakan nombor rujukan pilihan anda.",
+    "applicationStatusDetailsNoActionTitle": "Lihat perkembangan status anda di sini.",
+    "applicationStatusDetailsNoActionMessage": "Ikuti status perkembangan semasa anda. Layari Portal myTNB untuk meneruskan atau kemas kini permohonan anda.",
+    "applicationStatusDetailsInProgressTitle": "Lihat perkembangan status anda di sini.",
+    "applicationStatusDetailsInProgressMessage": "Ikuti status perkembangan semasa anda. Layari Portal myTNB untuk melihat maklumat penuh permohonan anda.",
+    "applicationStatusDetailsActionOneTitle": "Lihat perkembangan status anda di sini.",
+    "applicationStatusDetailsActionOneMessage": "Ikuti status perkembangan semasa anda. Layari Portal myTNB untuk melihat maklumat penuh permohonan anda.",
+    "applicationStatusDetailsActionTwoTitle": "Ketahui bila tindakan perlu diambil.",
+    "applicationStatusDetailsActionTwoMessage": "Ambil tindakan yang diperlukan untuk permohonan anda dengan mudah di sini."
   },
   "ApplicationStatusLanding": {
-    "title": "Application Status",
-    "search": "Search Application Status",
-    "emptyApplications": "Looks like you have no applications at the moment.",
-    "allApplications": "How do I see all my applications?",
-    "allApplicationsTitle": "View all your applications on myTNB Portal to enjoy the full experience!",
-    "allApplicationsMessage": "Log in to the <a style=\\\"text-decoration:none\\\" href =\\\"externalBrowser=https://www.mytnb.com.my/\\\">portal</a> using the same log in details. You can view the list of all your applications and full form details, and continue your applications or create new ones.<br><br>Note: Applications submitted via other sources before March 2020(Change this Date) will not be displayed automatically here, but you can manually search and add it to your list.",
-    "viewMore": "View More",
-    "viewLess": "View Less",
+    "title": "Status Permohonan",
+    "search": "Cari Status Permohonan",
+    "emptyApplications": "Nampaknya anda tidak mempunyai apa-apa permohonan pada waktu ini.",
+    "allApplications": "Bagaimana boleh saya melihat semua permohonan?",
+    "allApplicationsTitle": "Lihat semua permohonan anda di myTNB Portal untuk pengalaman yang menyeluruh.",
+    "allApplicationsMessage": "Log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> dengan mengunakan butiran log masuk yang sama. Anda boleh melihat senarai permohonan dan butiran borang penuh, teruskan permohonan anda atau mohon yang baharu.<br><br>Peringatan: Permohonan yag telah dihantar oleh sumber lain sebelum <tarikh> tidak dipaparkan secara automatik di sini, tetapi anda boleh mencari secara manual dan masukkan ke dalam senarai anda.",
+    "viewMore": "Selebihnya",
+    "viewLess": "Kurangkan Paparan",
     "sn": "SN: {0}",
     "sr": "SR: {0}",
     "displayPerQuery": "5"
   },
   "ApplicationStatusSearch": {
-    "title": "Search Application Status",
-    "searchForTitle": "I want to search for:",
-    "searchStatus": "Search Status",
-    "applicationType": "Application Type",
-    "searchBy": "Search by",
-    "searhResultTitle": "We found this application(s) under the electricity account number:",
-    "whereToGetThisNumber": "Where do I get this number?",
-    "whereToGetThisNumberTitleCA": "Where do I get this number?",
-    "whereToGetThisNumberMessageCA": "Your 12-digit electricity account number can be found at the top left corner of your monthly paper bill.",
-    "whereToGetThisNumberTitle": "Where do I get this number?",
-    "whereToGetThisNumberMessage": "You can find the <b>{0}</b> in your submitted application details at ‘Application Status’ page and are available upon request by contacting TNB Careline."
+    "title": "Cari Status Permohonan",
+    "searchForTitle": "Saya ingin mencari:",
+    "searchStatus": "Cari Status",
+    "applicationType": "Jenis Permohonan",
+    "searchBy": "Cari Dengan",
+    "searchResultTitle": "Terdapat satu permohonan bawah akaun elektrik ini:",
+    "whereToGetThisNumber": "Di manakah boleh saya perolehi nombor ini?",
+    "whereToGetThisNumberTitleCA": "Di manakah boleh saya perolehi nombor ini?",
+    "whereToGetThisNumberMessageCA": "Nombor akaun elektrik anda juga tertera pada bahagian atas kiri bil kertas bulanan anda.",
+    "whereToGetThisNumberTitle": "Di manakah boleh saya perolehi nombor ini?",
+    "whereToGetThisNumberMessage": "Anda boleh memperolehi <b>{0}</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’ dan juga boleh diperolehi dengan menghubungi TNB CareLine."
   },
   "ApplicationStatusFilter": {
     "title": "Select Filter",
-    "applicationType": "Application Type",
+    "applicationType": "Jenis Permohonan",
     "status": "Status",
-    "creationDate": "Creation Date",
-    "clear": "Clear",
-    "apply": "Apply"
+    "creationDate": "Tarikh Permintaan",
+    "clear": "Padam",
+    "apply": "Gunakan Pilihan"
   },
   "ApplicationStatusDetails": {
-    "title": "Application Details",
+    "title": "Butiran Permohonan",
     "status": "Status:",
     "for": "untuk ",
-    "creationDate": "Created On",
-    "saveMessage": "Save this application to keep track of its up-to-date status in My Applications.",
-    "addToList": "Add to List",
-    "portalMessage": "You can take the action to continue or update your application using the myTNB Portal.",
-    "lastUpdatedDate": "Last updated on {0}",
-    "viewActivityLog": "View Activity Log",
-    "seeFullDetails": "How do I see my full application details?",
-    "seeFullDetailsTitle": "View this application on myTNB Portal to enjoy the full experience!",
-    "seeFullDetailsMessage": "You may log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my/\">portal</a> using the same log in details to view the full application form and details. Alternatively, you can refer to your email or submitted paper form.",
-    "seeFullDetailsTitleKedai": "Refer to your completed application form.",
-    "seeFullDetailsMessageKedai": "You may refer to your email or the submitted paper form completed via Kedai Tenaga for the full application details.",
-    "loginTitle": "Login or Register to enjoy this myTNB feature!",
-    "loginMessage": "You may save this application to keep track of its progress with a myTNB account.",
-    "loginPrimaryCTA": "It’s Okay",
-    "loginSecondaryCTA": "Login / Register",
-    "viewDetails": "View Details",
+    "saveMessage": "Simpan permohonan ini untuk mengetahui status terkini dengan menambahkannya ke senarai permohonan anda.",
+    "addToList": "Tambah ke Senarai",
+    "portalMessage": "Anda boleh pilih untuk meneruskan atau kemas kini permohonan anda di Portal myTNB.",
+    "lastUpdatedDate": "Kemas kini terakhir pada {0}",
+    "viewActivityLog": "Lihat Log Aktiviti",
+    "seeFullDetails": "Bagaimana boleh saya dapatkan maklumat penuh permohonan ini?",
+    "seeFullDetailsTitle": "Lihat permohonan ini di Portal myTNB untuk menikmati pengalaman sepenuhnya.",
+    "seeFullDetailsMessage": "Anda boleh log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> myTNB dengan mengunakan butiran log masuk yang sama untuk melihat borang permohonan yang lengkap. Sebagai alternatif, anda juga boleh rujuk pada e-mel anda atau borang kertas.",
+    "seeFullDetailsTitleKedai": "Rujuk permohonan anda yang telah dihantar.",
+    "seeFullDetailsMessageKedai": "Anda boleh merujuk pada e-mel atau borang kertas lengkap yang telah dihantar di Kedai Tenaga untuk mengetahui butiran penuh permohonan anda.",
+    "loginTitle": "Log masuk atau daftar untuk menikmati ciri myTNB ini!",
+    "loginMessage": "Anda boleh menambahkan permohonan ini ke senarai permohonan anda melalui akaun myTNB. Daftar untuk akaun baru atau log masuk jika anda sudah memiliki akaun.",
+    "loginPrimaryCTA": "Ok",
+    "loginSecondaryCTA": "Log Masuk / Daftar",
+    "viewDetails": "Lihat Butiran",
     "payNow": "Bayar Sekarang",
-    "needToPay": "I need to pay"
+    "needToPay": "Saya perlu bayar",
+    "linkedWith": "Dihubungkan Bersama",
+    "linkedWithView": "Lihat",
+    "viewReceipt": "Lihat Resit",
+    "taxInvoice": "Invois Cukai",
+    "taxInvoiceView": "Lihat Invois Cukai",
+    "removeTitle": "Alih keluar permohonan ini?",
+    "removeMessage": "Anda sedang di dalam proses mengalih keluar permohonan yang telah disimpan di dalam senarai anda.<br><br>Peringatan: Pengalihan keluar permohonan ini tidak akan membatalkan permohonan anda.",
+    "confirm": "Sahkan",
+    "on": "on ",
+    "paymentReceiptTitle": " - Pembayaran",
+    "paymentInProgress": "Pembayaran sedang diproses"
   },
   "ApplicationStatusPaymentDetails": {
-    "title": "Payment Details",
-    "oneTimeCharges": "My one-time charges",
-    "needToPay": "I need to pay",
-    "payNow": "Bayar Sekarang"
+    "title": "Maklumat pembayaran",
+    "oneTimeCharges": "Caj sekali bayar",
+    "needToPay": "Saya perlu bayar",
+    "payNow": "Bayar Sekarang",
+    "paymentInProgress": "Pembayaran sedang diproses"
   },
   "ApplicationStatusPaymentDetails_selector": {
     "chargesMapping": [
@@ -1176,7 +1190,7 @@
       },
       {
         "key": "securityDepositAmount",
-        "description": "Security Deposit"
+        "description": "Wang Cagaran"
       },
       {
         "key": "meterFeeAmount",
@@ -1184,11 +1198,11 @@
       },
       {
         "key": "stampDutyAmount",
-        "description": "Stamp Duty"
+        "description": "Duit Setem"
       },
       {
         "key": "processingFeeAmount",
-        "description": "Processing Fee"
+        "description": "Caj Pemprosesan"
       }
     ]
   },
@@ -1207,6 +1221,46 @@
         "value": "projectDetail"
       },
       {
+        "key": "COA",
+        "value": "closeOfAccountDetail"
+      },
+      {
+        "key": "COT",
+        "value": "changeOfTenancyDetail"
+      },
+      {
+        "key": "RB_GSL",
+        "value": "gslDetail"
+      },
+      {
+        "key": "RB_SRQ",
+        "value": "helpFormDetail"
+      },
+      {
+        "key": "SMR",
+        "value": "smrDetail"
+      },
+      {
+        "key": "MD",
+        "value": "merdekaIncentiveDetail"
+      },
+      {
+        "key": "RE_TS",
+        "value": "reTechStudyDetail"
+      },
+      {
+        "key": "RW_LC",
+        "value": "changeLoadDetail"
+      },
+      {
+        "key": "RW_PC",
+        "value": "changeProductDetail"
+      },
+      {
+        "key": "GT",
+        "value": "greenTariffDetail"
+      },
+      {
         "key": "SEARCH",
         "value": "applicationDetail"
       },
@@ -1221,109 +1275,463 @@
     ],
     "SEARCH": [
       {
-        "key": "referenceNo",
-        "description": "Application Number"
-      },
-      {
         "key": "createDateDisplay",
-        "description": "Created On"
+        "description": "Dicipta Pada"
       }
     ],
     "KEDAI": [
       {
         "key": "referenceNo",
-        "description": "Application Number"
+        "description": "Nombor Permohonan"
       },
       {
         "key": "createDateDisplay",
-        "description": "Created On"
+        "description": "Dicipta Pada"
       }
     ],
     "SAVED": [
       {
         "key": "referenceNo",
-        "description": "Application Number"
+        "description": "Nombor Permohonan"
       },
       {
         "key": "createDateDisplay",
-        "description": "Created On"
-      }
-    ],
-    "ASR": [
-      {
-        "key": "referenceNo",
-        "description": "Application Number"
-      },
-      {
-        "key": "createDateDisplay",
-        "description": "Created On"
+        "description": "Dicipta Pada"
       }
     ],
     "NC": [
       {
         "key": "referenceNo",
-        "description": "Application Number"
+        "description": "Nombor Permohonan"
       },
       {
         "key": "createDateDisplay",
-        "description": "Created On"
+        "description": "Dicipta Pada"
       },
       {
         "key": "srNo",
-        "description": "Service Request Number"
+        "description": "Nombor Permintaan Perkhidmatan"
+      }
+    ],
+    "NC_GROUPMOVEIN": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
       },
       {
-        "key": "caNo",
-        "description": "Electricity Account Number"
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      }
+    ],
+    "NC_PREMISECREATION": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      }
+    ],
+    "NC_CONTRACTOR": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
+      },
+      {
+        "key": "loadRequirement",
+        "description": "Load Category"
+      }
+    ],
+    "NC_PREMISEINDIVUDUAL": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
       },
       {
         "key": "premiseCategoryDescription",
-        "description": "Type of Premise"
+        "description": "Jenis Premis"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
       },
       {
         "key": "accountTypeDescription",
-        "description": "Account Type"
+        "description": "I'm Applying As"
       },
       {
-        "key": "electricityStartDateDisplay",
-        "description": "Electricity Start Date"
+        "key": "loadRequirement",
+        "description": "Load Category"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
+      }
+    ],
+    "NC_PREMISECONTRACTOR": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseCategoryDescription",
+        "description": "Building Type"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "I'm Applying As"
+      },
+      {
+        "key": "loadRequirement",
+        "description": "Load Category"
+      }
+    ],
+    "ASR": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
+      }
+    ],
+    "RB_GSL": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
+      },
+      {
+        "key": "gsL_CategoryDescription",
+        "description": "Rebate Type"
+      }
+    ],
+    "GT": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseTypeItemDescription",
+        "description": "Activity Description"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
+      }
+    ],
+    "RW_PC": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseType",
+        "description": "Jenis Premis"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "I'm Applying As"
+      },
+      {
+        "key": "loadType",
+        "description": "Load Category"
+      }
+    ],
+    "RW_LC": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "I'm Applying As"
+      },
+      {
+        "key": "identificationNo",
+        "description": "Customer's Identification Number"
+      },
+      {
+        "key": "loadRequirement",
+        "description": "Load Category"
+      },
+      {
+        "key": "currentVoltage",
+        "description": "Current Voltage"
+      },
+      {
+        "key": "newVoltage",
+        "description": "New Voltage"
+      }
+    ],
+    "RE_TS": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      }
+    ],
+    "MD": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
+      }
+    ],
+    "SMR": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      }
+    ],
+    "RB_SRQ": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      }
+    ],
+    "COT": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "I'm Applying As"
+      },
+      {
+        "key": "ownershipTypeDescription",
+        "description": "Ownership Type"
+      },
+      {
+        "key": "hasExistingOwnerSupportingDocumentDisplay",
+        "description": "Do you have supporting documents from the current owner?"
+      }
+    ],
+    "COA": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Premises Address"
       }
     ],
     "PRJ": [
       {
         "key": "referenceNo",
-        "description": "Application Number"
+        "description": "Nombor Permohonan"
       },
       {
         "key": "createDateDisplay",
-        "description": "Created On"
+        "description": "Dicipta Pada"
       },
       {
         "key": "srNo",
-        "description": "Service Request Number"
+        "description": "Nombor Permintaan Perkhidmatan"
       }
     ]
   },
   "ApplicationStatusActivityLog": {
-    "title": "Activity Log",
-    "updatedDetails": "Updated Details",
-    "comment": "Comment",
-    "submittedBy": "Submitted By",
+    "title": "Log Aktiviti",
+    "updatedDetails": "Butiran Terbaharu",
+    "comment": "Komen",
+    "submittedBy": "Dihantar Oleh",
     "status": "Status: ",
-    "reasons": "Reason(s)",
-    "attachments": "Previous Attachement(s) Removed",
+    "reasons": "Sebab-sebab",
+    "attachments": "Lampiran sebelumnya yang dikeluarkan",
     "add": "Added {0} to {1}",
     "update": "Updated {0} from {1} to {2}",
     "remove": "Removed {0}"
   },
   "SearchByNumber": {
-    "title": "Search By",
-    "whereToGetTheseNumber": "Where do I get these numbers?",
-    "whereToGetTheseNumberTitle": "Where do I get these numbers?",
-    "whereToGetTheseNumberMessage": "You can find the <b>Application Number</b>, <b>Service Request Number</b> and <b>Service Notification Number</b> in your submitted application details at ‘Application Status’ page and are available upon request by contacting TNB Careline."
+    "title": "Cari Dengan",
+    "whereToGetTheseNumber": "Di manakah boleh saya perolehi nombor ini?",
+    "whereToGetTheseNumberTitle": "Di manakah boleh saya perolehi nombor ini? ",
+    "whereToGetTheseNumberMessage": "Anda boleh memperolehi <b>Nombor Permohonan</b>, <b>Nombor Permintaan Perkhidmatan</b> and <b>Nombor Permintaan Perkhidmatan</b> perkhidmatan di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’. Butiran ini juga boleh diperolehi dengan menghubungi TNB CareLine."
   },
   "SelectApplicationType": {
-    "title": "Select Application Type"
+    "title": "Pilih Jenis Permohonan"
   },
   "SelectApplicationStatus": {
     "title": "Select Status"
@@ -1332,19 +1740,19 @@
     "status": [
       {
         "key": "Submitted",
-        "value": "Submitted"
+        "value": "Telah Dihantar"
       },
       {
         "key": "Payment Required",
-        "value": "Payment Required"
+        "value": "Bayaran Diperlukan"
       },
       {
         "key": "Setting Up Power Supply",
-        "value": "Setting Up Power Supply"
+        "value": "Menyediakan Bekalan Kuasa"
       },
       {
         "key": "Awaiting Meter Installation",
-        "value": "Awaiting Meter Installation"
+        "value": "Menunggu Pemasangan Meter"
       },
       {
         "key": "Connecting Electricity",
@@ -1356,11 +1764,11 @@
       },
       {
         "key": "Action Required",
-        "value": "Action Required"
+        "value": "Tindakan Diperlukan"
       },
       {
         "key": "Contractor Required",
-        "value": "Contractor Required"
+        "value": "Kontraktor Diperlukan"
       },
       {
         "key": "Address Verified",
@@ -1368,38 +1776,38 @@
       },
       {
         "key": "Draft",
-        "value": "Draft"
+        "value": "Draf"
       },
       {
         "key": "Completed",
-        "value": "Completed"
+        "value": "Selesai"
       },
       {
         "key": "Cancelled",
-        "value": "Cancelled"
+        "value": "Dibatalkan"
       }
     ]
   },
   "SelectCreationDate": {
-    "title": "Select Creation Date",
-    "apply": "Apply",
-    "from": "From",
-    "to": "To",
+    "title": "Pilih Tarikh Permintaan",
+    "apply": "Gunakan Pilihan",
+    "from": "Dari",
+    "to": "Hingga",
     "minimumYear": "2016"
   },
   "SelectCreationDate_selector": {
     "months": [
       {
         "key": "1",
-        "value": "January"
+        "value": "Januari"
       },
       {
         "key": "2",
-        "value": "February"
+        "value": "Februari"
       },
       {
         "key": "3",
-        "value": "March"
+        "value": "Mac"
       },
       {
         "key": "4",
@@ -1407,19 +1815,19 @@
       },
       {
         "key": "5",
-        "value": "May"
+        "value": "Mei"
       },
       {
         "key": "6",
-        "value": "June"
+        "value": "Jun"
       },
       {
         "key": "7",
-        "value": "July"
+        "value": "Julai"
       },
       {
         "key": "8",
-        "value": "August"
+        "value": "Ogos"
       },
       {
         "key": "9",
@@ -1427,7 +1835,7 @@
       },
       {
         "key": "10",
-        "value": "October"
+        "value": "Oktober"
       },
       {
         "key": "11",
@@ -1435,7 +1843,7 @@
       },
       {
         "key": "12",
-        "value": "December"
+        "value": "Disember"
       }
     ]
   },
@@ -1474,7 +1882,7 @@
             "code": "empty",
             "title": "We are unable to find this application.",
             "message": "Please try again. Make sure you’ve entered the correct information!",
-            "primaryCTATitle": "Got It!",
+            "primaryCTATitle": "Ok",
             "secondaryCTATitle": "",
             "isSuccess": false,
             "type": "popup"
@@ -1484,7 +1892,7 @@
           {
             "code": "7200",
             "title": "",
-            "message": "Success! You'll see up-to-date progress of the application status.",
+            "message": "Berjaya! Anda akan melihat kemas kini perkembangan status permohonan tersebut.",
             "primaryCTATitle": "",
             "secondaryCTATitle": "",
             "isSuccess": true,
@@ -1494,8 +1902,8 @@
             "code": "9000",
             "title": "This application is already in your list.",
             "message": "View your application status list.",
-            "primaryCTATitle": "Got It!",
-            "secondaryCTATitle": "Check Status",
+            "primaryCTATitle": "Ok",
+            "secondaryCTATitle": "Semak Status",
             "isSuccess": false,
             "type": "popup"
           },
@@ -1503,8 +1911,8 @@
             "code": "9001",
             "title": "Looks like you’ve already saved this application.",
             "message": "View it in your application status list.",
-            "primaryCTATitle": "Got It!",
-            "secondaryCTATitle": "Check Status",
+            "primaryCTATitle": "Ok",
+            "secondaryCTATitle": "Semak Status",
             "isSuccess": false,
             "type": "popup"
           }
@@ -1518,6 +1926,24 @@
             "secondaryCTATitle": "",
             "isSuccess": true,
             "type": "none"
+          },
+          {
+            "code": "empty",
+            "title": "",
+            "message": "Nampaknya anda tidak mempunyai apa-apa permohonan pada waktu ini.",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "fullscreen"
+          },
+          {
+            "code": "emptyFilter",
+            "title": "We are unable to find this application.",
+            "message": "Please try again. Make sure you’ve entered the correct information!",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "fullscreen"
           }
         ],
         "ApplicationDetail": [
@@ -1530,12 +1956,49 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "RemoveApplication": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "Permohonan ini telah dialih keluar.",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "toast"
+          }
+        ],
+        "SearchApplicationByCA": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "empty",
+            "title": "We are unable to find this application.",
+            "message": "Please try again. Make sure you’ve entered the correct information!",
+            "primaryCTATitle": "Ok",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          }
         ]
       }
     ]
   },
   "Mapping": {
     "ExcludedApplicationTypes": [
+      {
+        "key": "PRJ",
+        "value": "Project"
+      }
+    ],
+    "ExcludedSaveTypes": [
       {
         "key": "PRJ",
         "value": "Project"

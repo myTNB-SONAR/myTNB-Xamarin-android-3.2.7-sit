@@ -9,9 +9,10 @@
         android:id="@+id/text_bullet"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:layout_weight="0.1"
+        android:layout_weight="0.03"
         android:gravity="center"
         android:textSize="16dp"
+        android:layout_marginLeft="14dp"
         android:textColor="@color/tunaGrey"
         android:text="•" />
     <TextView

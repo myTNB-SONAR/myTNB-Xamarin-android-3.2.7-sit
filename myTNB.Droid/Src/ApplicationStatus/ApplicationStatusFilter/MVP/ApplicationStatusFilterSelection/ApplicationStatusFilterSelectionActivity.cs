@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.ApplicationStatusFilterSelection
 {
@@ -40,6 +41,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
 
         private string filterMonth = "";
         List<ApplicationStatusStringSelectionModel> displayMonth = new List<ApplicationStatusStringSelectionModel>();
+        List<ApplicationStatusCodeModel> statusCodeList = new List<ApplicationStatusCodeModel>();
+        List<ApplicationStatusTypeModel> typeList = new List<ApplicationStatusTypeModel>();
 
         public override int ResourceId()
         {
@@ -126,11 +129,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             Intent finishIntent = new Intent();
             if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE)
             {
-                // mTypeList.Clear();
+                finishIntent.PutExtra(Constants.APPLICATION_STATUS_TYPE_LIST_KEY, JsonConvert.SerializeObject(typeList));
             }
             else if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE)
             {
-                // mStatusCodeList.Clear();
+                finishIntent.PutExtra(Constants.APPLICATION_STATUS_STATUS_LIST_KEY, JsonConvert.SerializeObject(statusCodeList));
             }
             SetResult(Result.Ok, finishIntent);
             Finish();
@@ -172,17 +175,44 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
                     //  TODO: ApplicationStatus add list handling
                     if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE)
                     {
-                        // mTypeList.Clear();
+                        SetToolBarTitle(Utility.GetLocalizedLabel("SelectApplicationType", "title"));
                     }
                     else if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE)
                     {
-                        // mStatusCodeList.Clear();
+                        SetToolBarTitle(Utility.GetLocalizedLabel("SelectApplicationStatus", "title"));
                     }
+
+                   
                 }
 
                 if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_MULTI_SELECT_KEY))
                 {
                     mMultipleSelectCapable = extras.GetBoolean(Constants.APPLICATION_STATUS_FILTER_MULTI_SELECT_KEY);
+                }
+                if (extras.ContainsKey(Constants.APPLICATION_STATUS_STATUS_LIST_KEY))
+                {
+                    try
+                    {
+                        string statusListKey = extras.GetString(Constants.APPLICATION_STATUS_STATUS_LIST_KEY);
+                        statusCodeList = JsonConvert.DeserializeObject<List<ApplicationStatusCodeModel>>(statusListKey);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
+
+                if (extras.ContainsKey(Constants.APPLICATION_STATUS_TYPE_LIST_KEY))
+                {
+                    try
+                    {
+                        string typeListKey = extras.GetString(Constants.APPLICATION_STATUS_TYPE_LIST_KEY);
+                        typeList = JsonConvert.DeserializeObject<List<ApplicationStatusTypeModel>>(typeListKey);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
                 }
             }
 
@@ -196,7 +226,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
                 multiSelectBottomLayout.Visibility = ViewStates.Gone;
             }
 
-            mAdapter = new ApplicationStatusFilterAdapter(this, mRequestKey, mMultipleSelectCapable, null, null, displayMonth);
+
+            mAdapter = new ApplicationStatusFilterAdapter(this, mRequestKey, mMultipleSelectCapable, statusCodeList, typeList, displayMonth);
 
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             filterListView.SetLayoutManager(layoutManager);

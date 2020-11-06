@@ -1,19 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using myTNB.Mobile.API;
 using myTNB.Mobile.API.Managers.ApplicationStatus;
 using myTNB.Mobile.API.Managers.ApplicationStatus.Utilities;
+using myTNB.Mobile.API.Managers.Payment;
 using myTNB.Mobile.API.Models;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails;
+using myTNB.Mobile.API.Models.ApplicationStatus.GetApplicationsByCA;
+using myTNB.Mobile.API.Models.ApplicationStatus.PostRemoveApplication;
 using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
+using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
 using myTNB.Mobile.API.Services.ApplicationStatus;
 using myTNB.Mobile.Extensions;
 using myTNB.Mobile.SessionCache;
-using myTNB.Mobile.TestData.ApplicationSearch;
 using Newtonsoft.Json;
 using Refit;
 
@@ -33,8 +35,6 @@ namespace myTNB.Mobile
         }
         public ApplicationStatusManager() { }
 
-        private const string EMPTY = "empty";
-        private const string DEFAULT = "default";
 
         #region SearchApplicationType
         /// <summary>
@@ -64,7 +64,7 @@ namespace myTNB.Mobile
                     else
                     {
                         response.StatusDetail = new StatusDetail();
-                        response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(DEFAULT);
+                        response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(Constants.DEFAULT);
                     }
                     response.SearchApplicationTypeParser(roleID);
                     return response;
@@ -92,7 +92,7 @@ namespace myTNB.Mobile
             {
                 StatusDetail = new StatusDetail()
             };
-            res.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(DEFAULT);
+            res.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(Constants.DEFAULT);
             return res;
         }
         #endregion
@@ -106,6 +106,7 @@ namespace myTNB.Mobile
         /// <param name="searchTerm"></param>
         /// <param name="applicationTypeTitle"></param>
         /// <param name="searchTypeTitle"></param>
+        /// <param name="isLoggedIn"></param>
         /// <returns></returns>
         public async Task<ApplicationDetailDisplay> GetApplicationStatus(string applicationType
             , string searchType
@@ -134,15 +135,13 @@ namespace myTNB.Mobile
                             , AppInfoManager.Instance.Language.ToString());
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
-                    //Todo: Comment to connect to real response
-                    responseString = SearchTestManager.Instance.GetData();
                     //Mark: Check for 404 First
                     NotFoundModel notFoundModel = JsonConvert.DeserializeObject<NotFoundModel>(responseString);
                     if (notFoundModel != null && notFoundModel.Status.IsValid())
                     {
                         displaymodel.Content = null;
                         displaymodel.StatusDetail = new StatusDetail();
-                        displaymodel.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(EMPTY);
+                        displaymodel.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(Constants.EMPTY);
                         return displaymodel;
                     }
 
@@ -151,14 +150,14 @@ namespace myTNB.Mobile
                     {
                         if (response.Content == null)
                         {
-                            response.StatusDetail.Code = EMPTY;
+                            response.StatusDetail.Code = Constants.EMPTY;
                         }
                         response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
                         response.StatusDetail = new StatusDetail();
-                        response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(DEFAULT);
+                        response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(Constants.DEFAULT);
                     }
                     displaymodel = response.Parse(applicationType
                                , applicationTypeTitle
@@ -189,7 +188,7 @@ namespace myTNB.Mobile
             {
                 StatusDetail = new StatusDetail()
             };
-            displaymodel.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(DEFAULT);
+            displaymodel.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(Constants.DEFAULT);
             return displaymodel;
         }
         #endregion
@@ -248,7 +247,7 @@ namespace myTNB.Mobile
                     else
                     {
                         response.StatusDetail = new StatusDetail();
-                        response.StatusDetail = Constants.Service_SaveApplication.GetStatusDetails(DEFAULT);
+                        response.StatusDetail = Constants.Service_SaveApplication.GetStatusDetails(Constants.DEFAULT);
                     }
                     return response;
                 }
@@ -275,12 +274,11 @@ namespace myTNB.Mobile
             {
                 StatusDetail = new StatusDetail()
             };
-            res.StatusDetail = Constants.Service_SaveApplication.GetStatusDetails(DEFAULT);
+            res.StatusDetail = Constants.Service_SaveApplication.GetStatusDetails(Constants.DEFAULT);
             return res;
         }
         #endregion
-        //Todo: Remove this Test
-        private int count = 0;
+
         #region GetAllApplication
         /// <summary>
         /// 
@@ -333,7 +331,7 @@ namespace myTNB.Mobile
                         response = new GetAllApplicationsResponse
                         {
                             Content = null,
-                            StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(EMPTY)
+                            StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(isFilter ? "Constants. EMPTYFilter" : Constants.EMPTY)
                         };
                         return response;
                     }
@@ -344,17 +342,17 @@ namespace myTNB.Mobile
                         //Mark: Check for 0 Applications
                         if (response.Content != null && response.Content.Applications != null && response.Content.Applications.Count == 0)
                         {
-                            response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(EMPTY);
+                            response.StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(isFilter ? "Constants. EMPTYFilter" : Constants.EMPTY);
                         }
                         else
                         {
-                            response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(response.StatusDetail.Code);
+                            response.StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(response.StatusDetail.Code);
                         }
                     }
                     else
                     {
                         response.StatusDetail = new StatusDetail();
-                        response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(DEFAULT);
+                        response.StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(Constants.DEFAULT);
                     }
                     if (response.StatusDetail.IsSuccess)
                     {
@@ -363,15 +361,11 @@ namespace myTNB.Mobile
                         {
                             //Mark: If this is filter, always set to 1.
                             AllApplicationsCache.Instance.QueryPage = 1;
+                            AllApplicationsCache.Instance.IsFiltertriggered = true;
                         }
                         //Mark: Increment Query Page Every Success Call
                         AllApplicationsCache.Instance.QueryPage += 1;
                     }
-                    /*if (count < 2)
-                    {
-                        response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(DEFAULT);
-                    }
-                    count++;*/
                     return response;
                 }
                 catch (ApiException apiEx)
@@ -397,24 +391,9 @@ namespace myTNB.Mobile
             {
                 StatusDetail = new StatusDetail()
             };
-            response.StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(DEFAULT);
+            response.StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(Constants.DEFAULT);
             return response;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="page">Page starts from 1 and incrementing</param>
-        /// <returns></returns>
-        /*public async Task<GetAllApplicationsResponse> GetAllApplications(int page)
-        {
-            GetAllApplicationsResponse response = await AllApplications(page
-                , string.Empty
-                , string.Empty
-                , string.Empty
-                , string.Empty);
-            return response;
-        }*/
 
         /// <summary>
         /// 
@@ -450,21 +429,15 @@ namespace myTNB.Mobile
         /// </summary>
         /// <param name="savedApplicationID">From all applications, pass SavedApplicationId property</param>
         /// <param name="applicationID">From all applications, pass ApplicationId property</param>
-        /// <param name="searchApplicationType">From all applications, pass SearchApplicationType property</param>
+        /// <param name="applicationType">From all applications, pass ApplicationType property</param>
         /// <param name="applicationModuleDescription">From all applications, pass ApplicationModuleDescription property</param>
-        /// <param name="applicationModuleId">From all applications, pass applicationModuleId property. Used to determine NC Display.</param>
-        /// <param name="createdByRoleID">From all applications, pass createdByRoleID property. Used to determine NC Display.</param>
         /// <param name="system">From all applications, pass system property.</param>
-        /// <param name="isPremiseServiceReady">From all applications, pass isPremiseServiceReady property. Used to determine NC Display.</param>
         /// <returns></returns>
         public async Task<ApplicationDetailDisplay> GetApplicationDetail(string savedApplicationID
             , string applicationID
-            , string searchApplicationType
+            , string applicationType
             , string applicationModuleDescription
-            , string applicationModuleId
-            , string createdByRoleID
-            , string system
-            , bool isPremiseServiceReady)
+            , string system)
         {
             string searchTerm = savedApplicationID.IsValid() ? savedApplicationID : applicationID;
             ApplicationDetailDisplay displaymodel = new ApplicationDetailDisplay();
@@ -473,7 +446,7 @@ namespace myTNB.Mobile
                 IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
                 try
                 {
-                    HttpResponseMessage rawResponse = await service.GetApplicationDetail(searchApplicationType
+                    HttpResponseMessage rawResponse = await service.GetApplicationDetail(applicationType
                          , searchTerm
                          , system
                          , AppInfoManager.Instance.GetUserInfo()
@@ -487,7 +460,7 @@ namespace myTNB.Mobile
                     {
                         displaymodel.Content = null;
                         displaymodel.StatusDetail = new StatusDetail();
-                        displaymodel.StatusDetail = Constants.Service_GetApplicationDetail.GetStatusDetails(EMPTY);
+                        displaymodel.StatusDetail = Constants.Service_GetApplicationDetail.GetStatusDetails(Constants.EMPTY);
                         return displaymodel;
                     }
 
@@ -496,22 +469,36 @@ namespace myTNB.Mobile
                     {
                         if (response.Content == null)
                         {
-                            response.StatusDetail.Code = EMPTY;
+                            response.StatusDetail.Code = Constants.EMPTY;
                         }
                         response.StatusDetail = Constants.Service_GetApplicationDetail.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
                         response.StatusDetail = new StatusDetail();
-                        response.StatusDetail = Constants.Service_GetApplicationDetail.GetStatusDetails(DEFAULT);
+                        response.StatusDetail = Constants.Service_GetApplicationDetail.GetStatusDetails(Constants.DEFAULT);
                     }
-                    displaymodel = response.Parse(searchApplicationType
+                    displaymodel = response.Parse(applicationType
                         , applicationModuleDescription
                         , applicationID
-                        , applicationModuleId
-                        , createdByRoleID
-                        , isPremiseServiceReady
+                        , system
+                        , savedApplicationID
                         , savedApplicationID.IsValid());
+                    try
+                    {
+                        //Mark: Call ASMX Payment Details
+                        PostApplicationsPaidDetailsResponse paymentResponse = await PaymentManager.Instance.GetApplicationsPaidDetails(
+                            AppInfoManager.Instance.GetPlatformUserInfo()
+                            , displaymodel.Content.SRNumber);
+                        displaymodel.ParseDisplayModel(paymentResponse);
+                    }
+                    catch (Exception ex)
+                    {
+#if DEBUG
+                        Debug.WriteLine("[DEBUG][GetApplicationDetail ASMX Payment Details]General Exception: " + ex.Message);
+#endif
+                    }
+
                     return displaymodel;
                 }
                 catch (ApiException apiEx)
@@ -537,8 +524,165 @@ namespace myTNB.Mobile
             {
                 StatusDetail = new StatusDetail()
             };
-            displaymodel.StatusDetail = Constants.Service_GetApplicationDetail.GetStatusDetails(DEFAULT);
+            displaymodel.StatusDetail = Constants.Service_GetApplicationDetail.GetStatusDetails(Constants.DEFAULT);
             return displaymodel;
+        }
+        #endregion
+
+        #region RemoveApplication
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="applicationType">Application Type Code. ie: ASR/NC/COA</param>
+        /// <param name="appID">SavedApplicationID</param>
+        /// <param name="system">System</param>
+        /// <returns></returns>
+        public async Task<PostRemoveApplicationResponse> RemoveApplication(string applicationType
+            , string appID
+            , string system)
+        {
+            try
+            {
+                IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
+                try
+                {
+                    PostRemoveApplicationRequest request = new PostRemoveApplicationRequest
+                    {
+                        ApplicationType = applicationType,
+                        AppId = appID,
+                        System = system
+                    };
+
+                    HttpResponseMessage rawResponse = await service.RemoveApplication(request
+                        , AppInfoManager.Instance.GetUserInfo()
+                        , NetworkService.GetCancellationToken());
+                    PostRemoveApplicationResponse response = await rawResponse.ParseAsync<PostRemoveApplicationResponse>();
+                    if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    {
+                        response.StatusDetail = Constants.Service_RemoveApplication.GetStatusDetails(response.StatusDetail.Code);
+                    }
+                    else
+                    {
+                        response.StatusDetail = new StatusDetail();
+                        response.StatusDetail = Constants.Service_RemoveApplication.GetStatusDetails(Constants.DEFAULT);
+                    }
+                    return response;
+                }
+                catch (ApiException apiEx)
+                {
+#if DEBUG
+                    Debug.WriteLine("[DEBUG][RemoveApplication]Refit Exception: " + apiEx.Message);
+#endif
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    Debug.WriteLine("[DEBUG][RemoveApplication]General Exception: " + ex.Message);
+#endif
+                }
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Debug.WriteLine(e.Message);
+#endif
+            }
+            PostRemoveApplicationResponse res = new PostRemoveApplicationResponse
+            {
+                StatusDetail = new StatusDetail()
+            };
+            res.StatusDetail = Constants.Service_RemoveApplication.GetStatusDetails(Constants.DEFAULT);
+            return res;
+        }
+        #endregion
+
+        #region GetApplicationByCA
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="accountNumber">CA Number</param>
+        /// <returns></returns>
+        public async Task<GetApplicationsByCAResponse> GetApplicationByCA(string accountNumber)
+        {
+            GetApplicationsByCAResponse response;
+            try
+            {
+                IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
+                try
+                {
+                    HttpResponseMessage rawResponse = await service.GetApplicationsByCA(accountNumber
+                        , AppInfoManager.Instance.GetUserInfo()
+                        , NetworkService.GetCancellationToken()
+                        , AppInfoManager.Instance.Language.ToString());
+
+                    string responseString = await rawResponse.Content.ReadAsStringAsync();
+                    //Mark: Check for 404 First.
+                    NotFoundModel notFoundModel = JsonConvert.DeserializeObject<NotFoundModel>(responseString);
+                    if (notFoundModel != null && notFoundModel.Status.IsValid())
+                    {
+                        response = new GetApplicationsByCAResponse
+                        {
+                            Content = null,
+                            StatusDetail = Constants.Service_SearchApplicationByCA.GetStatusDetails(Constants.EMPTY)
+                        };
+                        return response;
+                    }
+
+                    response = JsonConvert.DeserializeObject<GetApplicationsByCAResponse>(responseString);
+                    if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    {
+                        //Mark: Check for 0 Applications
+                        if (response.Content != null && response.Content.Count == 0)
+                        {
+                            response.StatusDetail = Constants.Service_SearchApplicationByCA.GetStatusDetails(Constants.EMPTY);
+                        }
+                        else
+                        {
+                            response.StatusDetail = Constants.Service_SearchApplicationByCA.GetStatusDetails(response.StatusDetail.Code);
+                        }
+                    }
+                    else
+                    {
+                        response.StatusDetail = new StatusDetail();
+                        response.StatusDetail = Constants.Service_SearchApplicationByCA.GetStatusDetails(Constants.DEFAULT);
+                    }
+
+                    //Mark: Stub
+                    /*if (response.StatusDetail.IsSuccess)
+                    {
+                        response.Content[0].ApplicationModuleId = "101013";
+                        response.Content[0].ApplicationType = "NC";
+                        response.Content[0].BackendReferenceNo = "4000005515";
+                        response.Content[0].StatusDescription = "Payment Required";
+                        response.Content[0].StatusDescriptionColor = "action";
+                    }*/
+                    return response;
+                }
+                catch (ApiException apiEx)
+                {
+#if DEBUG
+                    Debug.WriteLine("[DEBUG][GetAllApplications]Refit Exception: " + apiEx.Message);
+#endif
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    Debug.WriteLine("[DEBUG][GetAllApplications]General Exception: " + ex.Message);
+#endif
+                }
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Debug.WriteLine(e.Message);
+#endif
+            }
+            response = new GetApplicationsByCAResponse
+            {
+                StatusDetail = new StatusDetail()
+            };
+            response.StatusDetail = Constants.Service_SearchApplicationByCA.GetStatusDetails(Constants.DEFAULT);
+            return response;
         }
         #endregion
     }

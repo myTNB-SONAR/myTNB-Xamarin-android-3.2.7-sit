@@ -3,9 +3,6 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.ViewReceipt.Api;
-using myTNB_Android.Src.ViewReceipt.Model;
-using Refit;
 using System;
 using System.Net;
 

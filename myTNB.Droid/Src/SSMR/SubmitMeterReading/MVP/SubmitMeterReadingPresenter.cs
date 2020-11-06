@@ -388,7 +388,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 ContentMessage = Utility.GetLocalizedLabel("SSMRSubmitMeterReading", "tutorialReadMeterDesc"),
                 ItemCount = 0,
                 DisplayMode = isOCRDown ? "DOWN" : "UP",
-                IsButtonShow = true
+                IsButtonShow = false
             });
 
             return newList;

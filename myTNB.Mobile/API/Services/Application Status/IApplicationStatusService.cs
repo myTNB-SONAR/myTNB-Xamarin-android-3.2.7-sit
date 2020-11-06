@@ -1,8 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using myTNB.Mobile.API.Models.ApplicationStatus;
-using myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails;
+using myTNB.Mobile.API.Models.ApplicationStatus.PostRemoveApplication;
 using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
 using Refit;
 
@@ -84,5 +83,20 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
             , string language
             , string urlPrefix = Constants.ApiUrlPath
             , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+
+        [Post("/{urlPrefix}/RemoveApplication")]
+        Task<HttpResponseMessage> RemoveApplication([Body] PostRemoveApplicationRequest request
+           , [Header(Constants.Header_UserInfo)] string userInfo
+           , CancellationToken cancelToken
+           , string urlPrefix = Constants.ApiUrlPath
+           , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+
+        [Get("/{urlPrefix}/SearchApplicationByCA?CANumber={accountNumber}")]
+        Task<HttpResponseMessage> GetApplicationsByCA(string accountNumber
+           , [Header(Constants.Header_UserInfo)] string userInfo
+           , CancellationToken cancelToken
+           , string language
+           , string urlPrefix = Constants.ApiUrlPath
+           , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
     }
 }

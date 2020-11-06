@@ -116,24 +116,18 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                 lbl_details = itemView.FindViewById<TextView>(Resource.Id.lbl_details);
                 lbl_comment = itemView.FindViewById<TextView>(Resource.Id.lbl_comment);
                 lbl_submittedby = itemView.FindViewById<TextView>(Resource.Id.lbl_submittedby);
-
                 listview_updated_details = itemView.FindViewById<RecyclerView>(Resource.Id.listview_updated_details);
-
                 lbl_reason = itemView.FindViewById<TextView>(Resource.Id.lbl_reason);
                 listview_reason_details = itemView.FindViewById<RecyclerView>(Resource.Id.listview_reason_details);
+                lbl_attachments = itemView.FindViewById<TextView>(Resource.Id.lbl_attachments);
+                listview_attachments_details = itemView.FindViewById<RecyclerView>(Resource.Id.listview_attachments_details);
 
                 Layout_updated_details = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_updated_details);
-                Layout_reason = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_updated_details);
-                Layout_attachments = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_updated_details);
+                Layout_reason = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_reason);
+                Layout_attachments = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_attachments);
                 Layout_comment = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_comment);
-
-                lbl_attachments = itemView.FindViewById<TextView>(Resource.Id.lbl_attachments);
-
-                listview_attachments_details = itemView.FindViewById<RecyclerView>(Resource.Id.listview_attachments_details);
                 Layout_submittedby = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_submittedby);
-                //TxtApplicationStatusDetailCTA = itemView.FindViewById<TextView>(Resource.Id.txtApplicationStatusDetailCTA);
-                //TxtApplicationStatusDetailCTA.Clickable = true;
-                //TxtApplicationStatusDetailCTA.Click += (sender, e) => listener(base.LayoutPosition);
+                
             }
             
 
@@ -192,7 +186,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                     }
 
 
-                    if (item.Comment != string.Empty)
+                    if (item.Comment != null && item.Comment != string.Empty)
                     {
                         Layout_comment.Visibility = ViewStates.Visible;
                         lbl_comment_text.Text = item.Comment;
@@ -201,7 +195,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                     {
                         Layout_comment.Visibility = ViewStates.Gone;
                     }
-                    if(item.CreatedBy != string.Empty)
+                    if(item.CreatedBy!=null && item.CreatedBy != string.Empty)
                     {
                         Layout_submittedby.Visibility = ViewStates.Visible;
                         lbl_submittedby_email.Text = item.CreatedBy;
@@ -213,7 +207,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
 
                    
                 
-                    if(item.DetailsUpdateList.Count != 0)
+                    if(item.DetailsUpdateList != null && item.DetailsUpdateList.Count != 0)
                     {
                         Layout_updated_details.Visibility = ViewStates.Visible;
                         updatedDetailsListAdapter = new UpdatedDetailsListAdapter( item.DetailsUpdateList);
@@ -227,24 +221,24 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                         Layout_updated_details.Visibility = ViewStates.Gone;
                     }
 
-                    if (item.Reasons.Count != 0)
+                    if (item.Reasons != null && item.Reasons.Count != 0)
                     {
                         Layout_reason.Visibility = ViewStates.Visible;
                         updatedDetailsListAdapter = new UpdatedDetailsListAdapter( item.Reasons);
                         layoutManagerService = new LinearLayoutManager(context, LinearLayoutManager.Vertical, false);
-                        listview_updated_details.SetLayoutManager(layoutManagerService);
-                        listview_updated_details.SetAdapter(updatedDetailsListAdapter);
+                        listview_reason_details.SetLayoutManager(layoutManagerService);
+                        listview_reason_details.SetAdapter(updatedDetailsListAdapter);
                         updatedDetailsListAdapter.NotifyDataSetChanged();
                       
                     }
                     else
                     {
-                        Layout_reason.Visibility = ViewStates.Gone;
+                         Layout_reason.Visibility = ViewStates.Gone;
                     }
-                    if (item.DocumentsUpdateList.Count != 0)
+                    if (item.DocumentsUpdateList != null && item.DocumentsUpdateList.Count != 0)
                     {
                         Layout_attachments.Visibility = ViewStates.Visible;
-                        updatedDetailsListAdapter = new UpdatedDetailsListAdapter(item.Reasons);
+                        updatedDetailsListAdapter = new UpdatedDetailsListAdapter(item.DocumentsUpdateList);
                         layoutManagerService = new LinearLayoutManager(context, LinearLayoutManager.Vertical, false);
                         listview_attachments_details.SetLayoutManager(layoutManagerService);
                         listview_attachments_details.SetAdapter(updatedDetailsListAdapter);
@@ -252,7 +246,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                     }
                     else
                     {
-                        Layout_attachments.Visibility = ViewStates.Gone;
+                      Layout_attachments.Visibility = ViewStates.Gone;
                     }
 
 

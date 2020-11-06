@@ -77,10 +77,13 @@
     <Folder Include="API\Managers\Payment\" />
     <Folder Include="API\Services\Payment\" />
     <Folder Include="API\Models\Payment\" />
-    <Folder Include="API\Models\Payment\Application Payment\" />
+    <Folder Include="API\Models\Payment\Post Application Payment\" />
     <Folder Include="Helpers\Application Status\" />
-    <Folder Include="Test Data\" />
-    <Folder Include="Test Data\Application Search\" />
+    <Folder Include="API\Models\Application Status\Post Remove Application\" />
+    <Folder Include="API\Models\Application Status\Get Applications By CA\" />
+    <Folder Include="API\Models\Application Status\Get Applications Paid Details\" />
+    <Folder Include="API\Models\Payment\Post Applications Paid Details\" />
+    <Folder Include="API\Models\Payment\Get Tax Invoice\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -100,7 +103,6 @@
     <EmbeddedResource Include="Resources\TnC\TermsAndConditions_MS.txt" />
     <EmbeddedResource Include="Resources\Language\Language_EN.json" />
     <EmbeddedResource Include="Resources\Country\CountryList.json" />
-    <EmbeddedResource Include="Test Data\Application Search\Search01.json" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Remove="Resources\FAQ\FAQ_MS.json" />
@@ -138,5 +140,6 @@
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />
     <Compile Remove="Business\Managers\UserNotificationManager.cs" />
     <Compile Remove="Business\Managers\AccountUsageManager.cs" />
+    <Compile Remove="Test Data\Application Search\SearchTestManager.cs" />
   </ItemGroup>
 </Project>

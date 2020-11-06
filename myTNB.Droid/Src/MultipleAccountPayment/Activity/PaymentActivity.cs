@@ -8,6 +8,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Google.Android.Material.AppBar;
+using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.MultipleAccountPayment.Fragment;
@@ -32,7 +33,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         AccountData selectedAccount;
         List<MPAccount> accounts;
         string total;
-        AndroidX.Fragment.App.Fragment  currentFragment;
+        AndroidX.Fragment.App.Fragment currentFragment;
 
         private MaterialDialog mCancelPaymentDialog;
         public readonly static int SELECT_PAYMENT_ACTIVITY_CODE = 2367;
@@ -41,6 +42,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private FrameLayout frameContainer;
         private List<AccountChargeModel> accountChargeList;
         private AndroidX.CoordinatorLayout.Widget.CoordinatorLayout coordinatorLayout;
+
+     // Mark: Application Payment
+        private bool IsApplicationPayment;
+        private ApplicationPaymentDetail ApplicationPaymentDetail;
 
         public bool paymentReceiptGenerated = false;
 
@@ -120,7 +125,20 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     {
                         accountChargeList = DeSerialze<List<AccountChargeModel>>(extras.GetString("ACCOUNT_CHARGES_LIST"));
                     }
-                    total = Intent.Extras.GetString("TOTAL");
+                    
+                    if (extras.ContainsKey("ISAPPLICATIONPAYMENT"))
+                    {
+                        IsApplicationPayment = Intent.Extras.GetBoolean("ISAPPLICATIONPAYMENT");
+                    }
+
+                    if (extras.ContainsKey("APPLICATIONPAYMENTDETAIL"))
+                    {
+                        ApplicationPaymentDetail = DeSerialze<ApplicationPaymentDetail>(extras.GetString("APPLICATIONPAYMENTDETAIL"));
+                    }
+                    if (extras.ContainsKey("TOTAL"))
+                    {
+                        total = Intent.Extras.GetString("TOTAL");
+                    }
                 }
                 OnLoadMainFragment();
             }
@@ -130,7 +148,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             }
         }
 
-        public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
+        public void nextFragment(AndroidX.Fragment.App.Fragment fragment, Bundle bundle)
         {
             if (fragment is MPSelectPaymentMethodFragment)
             {
@@ -148,11 +166,19 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             if (!IsFinishing && !IsDestroyed)
             {
-                AndroidX.Fragment.App.Fragment  selectPaymentFragment = new MPSelectPaymentMethodFragment();
+                AndroidX.Fragment.App.Fragment selectPaymentFragment = new MPSelectPaymentMethodFragment();
                 Bundle bundle = new Bundle();
-                bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-                bundle.PutString("PAYMENT_ITEMS", JsonConvert.SerializeObject(accounts));
-                bundle.PutString("ACCOUNT_CHARGES_LIST", JsonConvert.SerializeObject(accountChargeList));
+                if (IsApplicationPayment)
+                 {
+                    bundle.PutBoolean("ISAPPLICATIONPAYMENT", IsApplicationPayment);
+                    bundle.PutString("APPLICATIONPAYMENTDETAILS", JsonConvert.SerializeObject(ApplicationPaymentDetail));
+                }
+                else
+                {
+                    bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                    bundle.PutString("PAYMENT_ITEMS", JsonConvert.SerializeObject(accounts));
+                    bundle.PutString("ACCOUNT_CHARGES_LIST", JsonConvert.SerializeObject(accountChargeList));
+                }
                 bundle.PutString("TOTAL", total);
                 selectPaymentFragment.Arguments = bundle;
                 var fragmentTransaction = SupportFragmentManager.BeginTransaction();
@@ -201,7 +227,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 var manager = this.SupportFragmentManager;
                 if (manager.BackStackEntryCount > 0)
                 {
-                    manager.PopBackStack(SupportFragmentManager.GetBackStackEntryAt(0).Id, (int) Android.App.PopBackStackFlags.Inclusive);
+                    manager.PopBackStack(SupportFragmentManager.GetBackStackEntryAt(0).Id, (int)Android.App.PopBackStackFlags.Inclusive);
                 }
             }
             catch (Exception e)
@@ -239,7 +265,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                             .OnPositive((dialog, which) =>
                             {
                                 this.SupportFragmentManager.PopBackStack();
-                                this.SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod","title"));
+                                this.SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod", "title"));
                             })
                             .NeutralText(Utility.GetLocalizedCommonLabel("no"))
                             .NeutralColor(Resource.Color.black)

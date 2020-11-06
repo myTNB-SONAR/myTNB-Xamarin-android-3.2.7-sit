@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using myTNB.Mobile.Extensions;
 
 namespace myTNB.Mobile.SessionCache
 {
@@ -36,7 +37,11 @@ namespace myTNB.Mobile.SessionCache
         {
             get
             {
-                return ApplicationTypeID.ToUpper() == "ALL" ? string.Empty : ApplicationTypeID;
+                if (ApplicationTypeID.IsValid())
+                {
+                    return ApplicationTypeID.ToUpper() == "ALL" ? string.Empty : ApplicationTypeID;
+                }
+                return string.Empty;
             }
         }
         /// <summary>
@@ -76,6 +81,11 @@ namespace myTNB.Mobile.SessionCache
         }
         public int Total { private set; get; }
         public double Pages { private set; get; }
+
+        /// <summary>
+        /// Response Cache if needed
+        /// </summary>
+        public GetAllApplicationsResponse AllApplicationResponse { set; get; }
 
         /// <summary>
         /// Set Data after service call. Binded directly to common service call
@@ -156,6 +166,16 @@ namespace myTNB.Mobile.SessionCache
             DisplayType = string.Empty;
             DisplayStatus = string.Empty;
             DisplayDate = string.Empty;
+            AllApplicationResponse = null;
+        }
+        /// <summary>
+        /// Reset bool properties
+        /// </summary>
+        public void Reset()
+        {
+            IsFiltertriggered = false;
+            IsCleartriggered = false;
+            HasFilterResult = false;
         }
 
         private void AppendResultList(List<ApplicationModel> list)

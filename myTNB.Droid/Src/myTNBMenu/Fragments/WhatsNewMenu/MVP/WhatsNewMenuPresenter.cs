@@ -457,7 +457,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                 ContentMessage = Utility.GetLocalizedLabel("WhatsNew", "tutorialItemDesc"), // "Tap on the promotion or announcement for more details.",
                 ItemCount = 0,
                 DisplayMode = "",
-                IsButtonShow = true
+                IsButtonShow = false
             });
 
             return newList;

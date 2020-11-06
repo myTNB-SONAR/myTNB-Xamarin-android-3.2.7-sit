@@ -3,8 +3,6 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
-
-
 using Android.Text;
 using Android.Views;
 using Android.Widget;
@@ -25,6 +23,7 @@ using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 
 namespace myTNB_Android.Src.NewAppTutorial.MVP
 {
@@ -45,7 +44,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         private Fragment mFragment;
         private ISharedPreferences mPref;
         private bool IndicationShowTop = false;
-       
+
 
         public NewAppTutorialDialogFragment(Android.App.Activity ctx, Fragment fragment, ISharedPreferences pref, List<NewAppModel> list, bool mIndicationShowTop = false)
         {
@@ -57,7 +56,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
             this.mFragment = fragment;
             this.mPref = pref;
             this.IndicationShowTop = mIndicationShowTop;
-           
+
         }
 
         public override void OnStart()
@@ -70,7 +69,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 Dialog.Window.SetDimAmount(0.0f);
                 Dialog.SetCancelable(false);
                 Dialog.SetCanceledOnTouchOutside(false);
-               
+
                 Dialog.Window.SetLayout(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
 
             }
@@ -324,7 +323,22 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         }
                     }
 
-                    
+                    else if (this.mContext != null && this.mContext is ApplicationStatusDetailActivity)
+                    {
+                        if (NewAppTutorialList != null && NewAppTutorialList.Count > 1)
+                        {
+
+                            //RelativeLayout.LayoutParams parameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MatchParent, RelativeLayout.LayoutParams.WrapContent);
+                            //parameters.AddRule(LayoutRules.AlignParentTop);
+                            //swipeDoubleTapLayout.LayoutParameters = parameters;
+                            
+
+                            swipeTopDoubleTapLayout.Visibility = ViewStates.Visible;
+                            swipeDoubleTapLayout.Visibility = ViewStates.Gone;
+                        }
+                    }
+
+
 
                     if (NewAppTutorialList.Count > 1)
                     {
@@ -369,7 +383,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                     if (NewAppTutorialList.Count > 1)
                     {
-                        pager.PageSelected += (object sender, ViewPager.PageSelectedEventArgs e) => {
+                        pager.PageSelected += (object sender, ViewPager.PageSelectedEventArgs e) =>
+                        {
                             for (int i = 0; i < NewAppTutorialList.Count; i++)
                             {
                                 ImageView selectedDot = (ImageView)indicator.GetChildAt(i);
@@ -417,7 +432,16 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                 txtDoubleTapDismiss.Visibility = ViewStates.Visible;
                                 txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
                             }
-
+                            if (this.mContext != null && this.mContext is ApplicationStatusLandingActivity)
+                            {
+                                txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                                txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
+                            }
+                            if (this.mContext != null && this.mContext is ApplicationStatusDetailActivity)
+                            {
+                                txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                                txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
+                            }
                             if (this.mFragment != null)
                             {
                                 if (this.mFragment is HomeMenuFragment)
@@ -869,6 +893,14 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     else if (this.mActivity is RewardDetailActivity)
                     {
                         UserSessions.DoRewardsDetailShown(this.mPref);
+                    }
+                    else if (this.mActivity is ApplicationStatusLandingActivity)
+                    {
+                        UserSessions.DoApplicationStatusShown(this.mPref);
+                    }
+                    else if (this.mActivity is ApplicationStatusDetailActivity)
+                    {
+                        UserSessions.DoApplicationDetailShown(this.mPref);
                     }
                 }
                 return true;

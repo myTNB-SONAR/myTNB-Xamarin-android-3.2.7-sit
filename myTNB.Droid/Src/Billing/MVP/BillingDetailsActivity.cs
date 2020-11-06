@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Android.App;
@@ -8,8 +7,6 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Preferences;
-using Android.Text;
-using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
@@ -119,7 +116,7 @@ namespace myTNB_Android.Src.Billing.MVP
         AccountChargeModel selectedAccountChargeModel;
         AccountData selectedAccountData;
         BillingDetailsContract.IPresenter billingDetailsPresenter;
-		private bool fromSelectAccountPage;
+        private bool fromSelectAccountPage;
         private const string PAGE_ID = "BillDetails";
         ISharedPreferences mPref;
 
@@ -207,14 +204,14 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 selectedAccountChargeModel = JsonConvert.DeserializeObject<AccountChargeModel>(extras.GetString("SELECTED_BILL_DETAILS"));
             }
-			if (extras.ContainsKey("PEEK_BILL_DETAILS"))
-			{
+            if (extras.ContainsKey("PEEK_BILL_DETAILS"))
+            {
                 fromSelectAccountPage = extras.GetBoolean("PEEK_BILL_DETAILS");
-			}
-			else
-			{
-				fromSelectAccountPage = false;
-			}
+            }
+            else
+            {
+                fromSelectAccountPage = false;
+            }
             if (extras.ContainsKey("PENDING_PAYMENT"))
             {
                 isCheckPendingPaymentNeeded = false;
@@ -225,7 +222,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 isCheckPendingPaymentNeeded = true;
                 isPendingPayment = false;
             }
-			SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+            SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
             accountName.Text = selectedAccountData.AccountNickName;
@@ -261,7 +258,7 @@ namespace myTNB_Android.Src.Billing.MVP
             }
         }
 
-         private void EnableEppTooltip(bool isTooltipShown)
+        private void EnableEppTooltip(bool isTooltipShown)
         {
             if (isTooltipShown == true)
             {
@@ -272,7 +269,7 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 infoLabelContainerDetailEPP.Visibility = ViewStates.Gone;
             }
-            
+
         }
 
         private void EnablePayBillButtons()
@@ -387,7 +384,7 @@ namespace myTNB_Android.Src.Billing.MVP
 
             EnableEppTooltip(selectedAccountChargeModel.ShowEppToolTip);
 
-            if (selectedAccountChargeModel.MandatoryCharges.TotalAmount > 0f && selectedAccountChargeModel.ShowEppToolTip == false )
+            if (selectedAccountChargeModel.MandatoryCharges.TotalAmount > 0f && selectedAccountChargeModel.ShowEppToolTip == false)
             {
                 otherChargesExpandableView.Visibility = ViewStates.Visible;
                 accountMinChargeLabelContainer.Visibility = ViewStates.Visible;
@@ -404,13 +401,13 @@ namespace myTNB_Android.Src.Billing.MVP
             CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
             if (selectedAccountChargeModel.OutstandingCharges < 0f)
             {
-                accountChargeValue.Text = "- RM " + (Math.Abs(selectedAccountChargeModel.OutstandingCharges)*-1).ToString("#,##0.00", currCult);
+                accountChargeValue.Text = "- RM " + (Math.Abs(selectedAccountChargeModel.OutstandingCharges) * -1).ToString("#,##0.00", currCult);
             }
             else
             {
                 accountChargeValue.Text = "RM " + (Math.Abs(selectedAccountChargeModel.OutstandingCharges)).ToString("#,##0.00", currCult);
             }
-            
+
             if (selectedAccountChargeModel.OutstandingCharges < 0f)
             {
                 accountChargeLabel.Text = GetLabelByLanguage("paidExtra");
@@ -424,14 +421,14 @@ namespace myTNB_Android.Src.Billing.MVP
 
             if (selectedAccountChargeModel.CurrentCharges < 0f)
             {
-                accountBillThisMonthValue.Text = "- RM " + (selectedAccountChargeModel.CurrentCharges*-1).ToString("#,##0.00", currCult);
+                accountBillThisMonthValue.Text = "- RM " + (selectedAccountChargeModel.CurrentCharges * -1).ToString("#,##0.00", currCult);
             }
             else
             {
                 accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00", currCult);  //ori code
             }
 
-           
+
             accountPayAmountValue.Text = selectedAccountChargeModel.AmountDue.ToString("#,##0.00", currCult);
             if (selectedAccountChargeModel.IsNeedPay)
             {
@@ -443,7 +440,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
                 accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
-            else if(selectedAccountChargeModel.IsPaidExtra)
+            else if (selectedAccountChargeModel.IsPaidExtra)
             {
                 accountPayAmountLabel.Visibility = ViewStates.Visible;
                 accountPayAmountDate.Visibility = ViewStates.Gone;
@@ -592,7 +589,7 @@ namespace myTNB_Android.Src.Billing.MVP
 
                     eppTooltip.Show();
                 }
-            }            
+            }
         }
 
         public void ShowBillPDF()
@@ -702,7 +699,7 @@ namespace myTNB_Android.Src.Billing.MVP
 
                 rootView.OffsetDescendantRectToMyCoords(bottomLayout, offsetViewBounds);
 
-                i = offsetViewBounds.Top + (int) DPUtils.ConvertDPToPx(14f);
+                i = offsetViewBounds.Top + (int)DPUtils.ConvertDPToPx(14f);
 
             }
             catch (System.Exception e)

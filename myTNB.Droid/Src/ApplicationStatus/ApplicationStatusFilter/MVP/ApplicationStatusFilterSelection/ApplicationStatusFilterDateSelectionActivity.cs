@@ -152,8 +152,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             TextViewUtils.SetMuseoSans300Typeface(txtFromDate, txtToDate);
             TextViewUtils.SetMuseoSans500Typeface(btnApplyFilter);
 
-            //  TODO: ApplicationStatus Multilingual
-            SetToolBarTitle("Select Creation Date");
+          
+                SetToolBarTitle(Utility.GetLocalizedLabel("SelectCreationDate", "title"));
+          
+          
             // txtInputLayoutFromDate.Hint = GetLabelCommonByLanguage("email");
             // txtInputLayoutToDate.Hint = GetLabelCommonByLanguage("password");
 
@@ -170,46 +172,103 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
                 {
                     filterDate = extras.GetString(Constants.APPLICATION_STATUS_FILTER_DATE_KEY);
                 }
-            }
-
-            if (!string.IsNullOrEmpty(filterDate) && filterDate.Contains(","))
-            {
-                string[] filterDateArray = filterDate.Split(",");
-                for (int i = 0; i < filterDateArray.Length; i++)
+                if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_FROM_DATE_KEY))
                 {
-                    string tempDateTime = "";
-                    DateTime dateTimeParse = DateTime.ParseExact(filterDateArray[i], "yyyyMMddTHHmmss",
-                                CultureInfo.InvariantCulture, DateTimeStyles.None);
-                    TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
-                    DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
-                    if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
-                    {
-                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
-                        tempDateTime = dateTimeMalaysia.ToString("MMMM yyyy", currCult);
-                    }
-                    else
-                    {
-                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-                        tempDateTime = dateTimeMalaysia.ToString("MMMM yyyy", currCult);
-                    }
-
-                    if (i == 0)
-                    {
-                        startDisplayDate = tempDateTime;
-                        startDateTime = DateTime.ParseExact(filterDateArray[i], "yyyyMMddTHHmmss",
-                                CultureInfo.InvariantCulture, DateTimeStyles.None);
-                    }
-                    else
-                    {
-                        endDisplayDate = tempDateTime;
-                        endDateTime = DateTime.ParseExact(filterDateArray[i], "yyyyMMddTHHmmss",
-                            CultureInfo.InvariantCulture, DateTimeStyles.None);
-                    }
+                    startDisplayDate = extras.GetString(Constants.APPLICATION_STATUS_FILTER_FROM_DATE_KEY);
                 }
-
-                txtFromDate.Text = startDisplayDate;
-                txtToDate.Text = endDisplayDate;
+                if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_TO_DATE_KEY))
+                {
+                    endDisplayDate = extras.GetString(Constants.APPLICATION_STATUS_FILTER_TO_DATE_KEY);
+                }
             }
+
+            if (startDisplayDate != string.Empty)
+            {
+
+                DateTime dateTimeParse = DateTime.ParseExact(startDisplayDate, "yyyy/MM/dd",
+                            CultureInfo.InvariantCulture, DateTimeStyles.None);
+                TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
+                DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
+                startDateTime = dateTimeMalaysia;
+                if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                {
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
+                    txtFromDate.Text = dateTimeMalaysia.ToString("MMMM yyyy", currCult);
+                   
+                }
+                else
+                {
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                    txtFromDate.Text = dateTimeMalaysia.ToString("MMMM yyyy", currCult);
+                  
+                }
+            }
+            if (endDisplayDate != string.Empty)
+            {
+
+                DateTime dateTimeParse = DateTime.ParseExact(endDisplayDate, "yyyy/MM/dd",
+                            CultureInfo.InvariantCulture, DateTimeStyles.None);
+                TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
+                DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
+                endDateTime = dateTimeMalaysia;
+                if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                {
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
+                    txtToDate.Text = dateTimeMalaysia.ToString("MMMM yyyy", currCult);
+                }
+                else
+                {
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                    txtToDate.Text = dateTimeMalaysia.ToString("MMMM yyyy", currCult);
+                }
+            }
+
+            //if (!string.IsNullOrEmpty(filterDate) && filterDate.Contains("-"))
+            //{
+            //    string[] filterDateArray = filterDate.Split("-");
+            //    for (int i = 0; i < filterDateArray.Length; i++)
+            //    {
+            //        if(i==0)
+            //        {
+            //            txtFromDate.Text = filterDateArray[i].Trim();
+            //        }
+            //        else
+            //        {
+            //            txtToDate.Text = filterDateArray[i].Trim();
+            //        }
+            //        //    string tempDateTime = "";
+            //        //    DateTime dateTimeParse = DateTime.ParseExact(filterDateArray[i], "yyyyMMddTHHmmss",
+            //        //                CultureInfo.InvariantCulture, DateTimeStyles.None);
+            //        //    TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
+            //        //    DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
+            //        //    if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+            //        //    {
+            //        //        CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
+            //        //        tempDateTime = dateTimeMalaysia.ToString("MMMM yyyy", currCult);
+            //        //    }
+            //        //    else
+            //        //    {
+            //        //        CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            //        //        tempDateTime = dateTimeMalaysia.ToString("MMMM yyyy", currCult);
+            //        //    }
+
+            //        //    if (i == 0)
+            //        //    {
+            //        //        startDisplayDate = tempDateTime;
+            //        //        startDateTime = DateTime.ParseExact(filterDateArray[i], "yyyyMMddTHHmmss",
+            //        //                CultureInfo.InvariantCulture, DateTimeStyles.None);
+            //        //    }
+            //        //    else
+            //        //    {
+            //        //        endDisplayDate = tempDateTime;
+            //        //        endDateTime = DateTime.ParseExact(filterDateArray[i], "yyyyMMddTHHmmss",
+            //        //            CultureInfo.InvariantCulture, DateTimeStyles.None);
+            //        //    }
+            //    }
+
+            //    //txtFromDate.Text = startDisplayDate;
+            //    //txtToDate.Text = endDisplayDate;
+            //}
 
             txtFromDate.Enabled = true;
             txtToDate.Enabled = true;
@@ -241,15 +300,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
         {
             if (isStartPickerPopup && !string.IsNullOrEmpty(startDisplayDate))
             {
-               pd = new MonthYearPickerDialog(this, 2000, 2099, 1, 12, startDateTime);
+               pd = new MonthYearPickerDialog(this,Convert.ToInt32( Utility.GetLocalizedLabel("SelectCreationDate", "minimumYear")), DateTime.Now.Year, 1, 12, startDateTime);
             }
             else if (isEndPickerPopup && !string.IsNullOrEmpty(endDisplayDate))
             {
-                pd = new MonthYearPickerDialog(this, 2000, 2099, 1, 12, endDateTime);
+                pd = new MonthYearPickerDialog(this, Convert.ToInt32(Utility.GetLocalizedLabel("SelectCreationDate", "minimumYear")), DateTime.Now.Year, 1, 12, endDateTime);
             }
             else
             {
-                pd = new MonthYearPickerDialog(this, 2000, 2099, 1, 12, DateTime.Now);
+                pd = new MonthYearPickerDialog(this, Convert.ToInt32(Utility.GetLocalizedLabel("SelectCreationDate", "minimumYear")), DateTime.Now.Year, 1, 12, DateTime.Now);
             }
 
             pd.SetListener(this);

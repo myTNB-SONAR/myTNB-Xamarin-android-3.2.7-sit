@@ -11,6 +11,9 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
+using myTNB.Mobile;
+using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.ApplicationStatusFilterSelection;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
 using myTNB_Android.Src.Base.Activity;
@@ -76,16 +79,24 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
         [BindView(Resource.Id.btnApplyFilter)]
         Button btnApplyFilter;
 
+        bool isApplications = false;
+        bool isApplyFilter = false;
         ApplicationStatusFilterPresenter mPresenter;
 
         const string PAGE_ID = "ApplicationStatus";
 
-        private string filterApplicationType = "";
-        private string filterStatus = "";
+       
         private string filterDate = "";
+        private string targetApplicationTypeId = "";
+        private string targetApplicationStatusCode = "";
+        internal GetAllApplicationsResponse AllApplicationResponse;
         List<ApplicationStatusCodeModel> statusCodeList = new List<ApplicationStatusCodeModel>();
         List<ApplicationStatusTypeModel> typeList = new List<ApplicationStatusTypeModel>();
+        ApplicationStatusTypeModel selectedType = new ApplicationStatusTypeModel();
+        ApplicationStatusCodeModel selectedStatus = new ApplicationStatusCodeModel();
         private string displayDate = "";
+        private string fromDate = "";
+        private string toDate = "";
 
         public override int ResourceId()
         {
@@ -112,25 +123,42 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             TextViewUtils.SetMuseoSans300Typeface(filterDateItemTitle, filterDateSubTitle);
             TextViewUtils.SetMuseoSans500Typeface(btnClearFilter, btnApplyFilter);
 
-            //  TODO: ApplicationStatus Multilingual
-            SetToolBarTitle("Select Filter");
 
+            SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusFilter", "title"));
             Bundle extras = Intent.Extras;
             if (extras != null)
             {
+                AllApplicationsCache.Instance.ApplicationTypeID = string.Empty;
+                AllApplicationsCache.Instance.StatusDescription = string.Empty;
+                AllApplicationsCache.Instance.CreatedDateFrom = string.Empty;
+                AllApplicationsCache.Instance.CreatedDateTo = string.Empty;
+
                 if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_TYPE_KEY))
                 {
-                    filterApplicationType = extras.GetString(Constants.APPLICATION_STATUS_FILTER_TYPE_KEY);
+                    targetApplicationTypeId = extras.GetString(Constants.APPLICATION_STATUS_FILTER_TYPE_KEY);
+                    AllApplicationsCache.Instance.ApplicationTypeID = targetApplicationTypeId;
                 }
 
                 if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_STATUS_KEY))
                 {
-                    filterStatus = extras.GetString(Constants.APPLICATION_STATUS_FILTER_STATUS_KEY);
+                    targetApplicationStatusCode = extras.GetString(Constants.APPLICATION_STATUS_FILTER_STATUS_KEY);
+                    AllApplicationsCache.Instance.StatusDescription = targetApplicationStatusCode;
                 }
 
                 if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_DATE_KEY))
                 {
                     filterDate = extras.GetString(Constants.APPLICATION_STATUS_FILTER_DATE_KEY);
+                    filterDateSubTitle.Text = filterDate;
+                }
+                if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_FROM_DATE_KEY))
+                {
+                    fromDate = extras.GetString(Constants.APPLICATION_STATUS_FILTER_FROM_DATE_KEY);
+                    AllApplicationsCache.Instance.CreatedDateFrom = fromDate;
+                }
+                if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_TO_DATE_KEY))
+                {
+                    toDate = extras.GetString(Constants.APPLICATION_STATUS_FILTER_TO_DATE_KEY);
+                    AllApplicationsCache.Instance.CreatedDateTo = toDate;
                 }
 
                 if (extras.ContainsKey(Constants.APPLICATION_STATUS_STATUS_LIST_KEY))
@@ -160,9 +188,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 }
             }
 
-            if (!string.IsNullOrEmpty(filterStatus) && statusCodeList != null && statusCodeList.Count > 0)
+            if (!string.IsNullOrEmpty(targetApplicationStatusCode) && statusCodeList != null && statusCodeList.Count > 0)
             {
-                ApplicationStatusCodeModel displayStatusModel = statusCodeList.Find(x => x.StateCode == filterStatus);
+                ApplicationStatusCodeModel displayStatusModel = statusCodeList.Find(x => x.StateCode == targetApplicationStatusCode);
                 if (displayStatusModel != null)
                 {
                     statusSubTitle.Text = displayStatusModel.Status;
@@ -177,9 +205,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 statusSubTitle.Text = "";
             }
 
-            if (!string.IsNullOrEmpty(filterApplicationType) && typeList != null && typeList.Count > 0)
+            if (!string.IsNullOrEmpty(targetApplicationTypeId) && typeList != null && typeList.Count > 0)
             {
-                ApplicationStatusTypeModel displayTypeModel = typeList.Find(x => x.TypeCode == filterApplicationType);
+                ApplicationStatusTypeModel displayTypeModel = typeList.Find(x => x.TypeCode == targetApplicationTypeId);
                 if (displayTypeModel != null)
                 {
                     applicationStatusSubTitle.Text = displayTypeModel.Type;
@@ -194,64 +222,71 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 applicationStatusSubTitle.Text = "";
             }            
 
-            if (!string.IsNullOrEmpty(filterDate) && filterDate.Contains(","))
-            {
-                string[] filterDateArray = filterDate.Split(",");
-                string displayDate = "";
-                for (int i = 0; i < filterDateArray.Length; i++)
-                {
-                    string tempDateTime = "";
-                    DateTime dateTimeParse = DateTime.ParseExact(filterDateArray[i], "yyyyMMddTHHmmss",
-                                CultureInfo.InvariantCulture, DateTimeStyles.None);
-                    TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
-                    DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
-                    if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
-                    {
-                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
-                        tempDateTime = dateTimeMalaysia.ToString("MMM yyyy", currCult);
-                    }
-                    else
-                    {
-                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-                        tempDateTime = dateTimeMalaysia.ToString("MMM yyyy", currCult);
-                    }
+            //if (!string.IsNullOrEmpty(filterDate) && filterDate.Contains(","))
+            //{
+            //    string[] filterDateArray = filterDate.Split(",");
+            //    string displayDate = "";
+            //    for (int i = 0; i < filterDateArray.Length; i++)
+            //    {
+            //        string tempDateTime = "";
+            //        DateTime dateTimeParse = DateTime.ParseExact(filterDateArray[i], "yyyyMMddTHHmmss",
+            //                    CultureInfo.InvariantCulture, DateTimeStyles.None);
+            //        TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
+            //        DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
+            //        if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+            //        {
+            //            CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
+            //            tempDateTime = dateTimeMalaysia.ToString("MMM yyyy", currCult);
+            //        }
+            //        else
+            //        {
+            //            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            //            tempDateTime = dateTimeMalaysia.ToString("MMM yyyy", currCult);
+            //        }
 
-                    if (i == 0)
-                    {
-                        displayDate += tempDateTime;
-                    }
-                    else
-                    {
-                        displayDate += " - " + tempDateTime;
-                    }
-                }
+            //        if (i == 0)
+            //        {
+            //            displayDate += tempDateTime;
+            //        }
+            //        else
+            //        {
+            //            displayDate += " - " + tempDateTime;
+            //        }
+            //    }
 
-                filterDateSubTitle.Text = displayDate;
-            }
-            else
-            {
-                filterDateSubTitle.Text = "";
-            }
+            //    filterDateSubTitle.Text = displayDate;
+            //}
+            //else
+            //{
+            //    filterDateSubTitle.Text = "";
+            //}
 
             DisableButtons();
         }
 
         public void DisableButtons()
         {
-            btnClearFilter.Enabled = false;
-            btnClearFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_outline);
-            btnClearFilter.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.silverChalice));
-            btnApplyFilter.Enabled = false;
-            btnApplyFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            if (string.IsNullOrEmpty(targetApplicationTypeId) && string.IsNullOrEmpty(targetApplicationStatusCode) && string.IsNullOrEmpty(filterDate))
+            {
+                btnClearFilter.Enabled = false;
+                btnClearFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_outline);
+                btnClearFilter.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.silverChalice));
+                btnApplyFilter.Enabled = false;
+                btnApplyFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            }
         }
 
         public void EnableButtons()
         {
-            btnClearFilter.Enabled = true;
-            btnClearFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
-            btnClearFilter.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
-            btnApplyFilter.Enabled = true;
-            btnApplyFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+            if (!string.IsNullOrEmpty(targetApplicationTypeId)  || !string.IsNullOrEmpty(targetApplicationStatusCode) || !string.IsNullOrEmpty(filterDate))
+            {
+                btnClearFilter.Enabled = true;
+                btnClearFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
+                btnClearFilter.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
+                btnApplyFilter.Enabled = true;
+                btnApplyFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+
+            }
         }
 
         public override View OnCreateView(string name, Context context, IAttributeSet attrs)
@@ -264,6 +299,42 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             base.OnActivityResult(requestCode, resultCode, data);
             try
             {
+                if (requestCode == Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        
+                        Bundle extra = data.Extras;
+                        List<ApplicationStatusTypeModel> resultTypeList = new List<ApplicationStatusTypeModel>();
+
+                        if (extra.ContainsKey(Constants.APPLICATION_STATUS_TYPE_LIST_KEY))
+                        {
+                            resultTypeList = JsonConvert.DeserializeObject<List<ApplicationStatusTypeModel>>(extra.GetString(Constants.APPLICATION_STATUS_TYPE_LIST_KEY));
+                            selectedType = resultTypeList.Find(x => x.isChecked);
+                            targetApplicationTypeId = selectedType.TypeCode;
+                            AllApplicationsCache.Instance.ApplicationTypeID = targetApplicationTypeId;
+                            applicationStatusSubTitle.Text = selectedType.Type;
+                        }
+                    }
+                }
+                if (requestCode == Constants.APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+
+                        Bundle extra = data.Extras;
+                        List<ApplicationStatusCodeModel> resultTypeList = new List<ApplicationStatusCodeModel>();
+
+                        if (extra.ContainsKey(Constants.APPLICATION_STATUS_STATUS_LIST_KEY))
+                        {
+                            resultTypeList = JsonConvert.DeserializeObject<List<ApplicationStatusCodeModel>>(extra.GetString(Constants.APPLICATION_STATUS_STATUS_LIST_KEY));
+                            selectedStatus = resultTypeList.Find(x => x.isChecked);
+                            targetApplicationStatusCode = selectedStatus.StateCode;
+                            AllApplicationsCache.Instance.StatusDescription = targetApplicationStatusCode;
+                            statusSubTitle.Text = selectedStatus.Status;
+                        }
+                    }
+                }
                 if (requestCode == Constants.APPLICATION_STATUS_FILTER_DATE_REQUEST_CODE)
                 {
                     if (resultCode == Result.Ok)
@@ -301,10 +372,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                                 if (i == 0)
                                 {
                                     displayDate += tempDateTime;
+                                    fromDate = dateTimeMalaysia.ToString("yyyy/MM/dd");
+                                    AllApplicationsCache.Instance.CreatedDateFrom = fromDate;
                                 }
                                 else
                                 {
                                     displayDate += " - " + tempDateTime;
+                                    toDate = dateTimeMalaysia.ToString("yyyy/MM/dd");
+                                    AllApplicationsCache.Instance.CreatedDateTo = toDate;
                                 }
                             }
                         }
@@ -318,6 +393,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
 
                         EnableButtons();
                     }
+                }
+                if (targetApplicationTypeId != string.Empty || targetApplicationStatusCode != string.Empty || filterDate != string.Empty)
+                {
+                    EnableButtons();
+                }
+                else
+                {
+                    DisableButtons();
                 }
             }
             catch (Exception e)
@@ -394,24 +477,36 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
         [OnClick(Resource.Id.applicationTypeMainLayout)]
         internal void OnFilterTypeClick(object sender, EventArgs e)
         {
-            /*if (!this.GetIsClicked())
+            if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
                 Intent filterIntent = new Intent(this, typeof(ApplicationStatusFilterSelectionActivity));
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_REQUEST_KEY, Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE);
-                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_STATUS_KEY, filterStatus);
-                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_YEAR_KEY, filterYear);
-                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_MONTH_KEY, filterMonth);
-                filterIntent.PutExtra(Constants.APPLICATION_STATUS_STATUS_LIST_KEY, JsonConvert.SerializeObject(statusCodeList));
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_STATUS_KEY, targetApplicationStatusCode);
+               
+                //filterIntent.PutExtra(Constants.APPLICATION_STATUS_STATUS_LIST_KEY, JsonConvert.SerializeObject(statusCodeList));
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_TYPE_LIST_KEY, JsonConvert.SerializeObject(typeList));
-                StartActivityForResult(filterIntent, Constants.APPLICATION_STATUS_FILTER_REQUEST_CODE);
-            }*/
+                StartActivityForResult(filterIntent, Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE);
+            }
+
+  
         }
 
         [OnClick(Resource.Id.statusMainLayout)]
         internal void OnFilterStatusClick(object sender, EventArgs e)
         {
-            
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent filterIntent = new Intent(this, typeof(ApplicationStatusFilterSelectionActivity));
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_REQUEST_KEY, Constants.APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE);
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_STATUS_KEY, targetApplicationStatusCode);
+                //filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_YEAR_KEY, filterYear);
+                //filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_MONTH_KEY, filterMonth);
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_STATUS_LIST_KEY, JsonConvert.SerializeObject(statusCodeList));
+                //filterIntent.PutExtra(Constants.APPLICATION_STATUS_TYPE_LIST_KEY, JsonConvert.SerializeObject(typeList));
+                StartActivityForResult(filterIntent, Constants.APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE);
+            }
         }
 
         [OnClick(Resource.Id.filterDateMainLayout)]
@@ -421,24 +516,160 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             {
                 this.SetIsClicked(true);
                 Intent filterIntent = new Intent(this, typeof(ApplicationStatusFilterDateSelectionActivity));
+               
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_DATE_KEY, filterDate);
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_FROM_DATE_KEY, fromDate);
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_TO_DATE_KEY, toDate);
                 StartActivityForResult(filterIntent, Constants.APPLICATION_STATUS_FILTER_DATE_REQUEST_CODE);
             }
         }
 
+        [OnClick(Resource.Id.btnApplyFilter)]
+        internal void OnConfirmClick(object sender, EventArgs e)
+        {
+            OnConfirmFilterAsync();
+        }
+        private async System.Threading.Tasks.Task OnConfirmFilterAsync()
+        {
+            try
+            {
+                if (ConnectionUtils.HasInternetConnection(this))
+                {
+                    isApplyFilter = true;
+                    //AllApplicationsCache.Instance.Clear();
+                    //AllApplicationsCache.Instance.Reset();
+
+                    ShowProgressDialog();
+                    AllApplicationResponse = await ApplicationStatusManager.Instance.GetAllApplications(1
+                                           , targetApplicationTypeId
+                                           , targetApplicationStatusCode
+                                           , fromDate
+                                           , toDate
+                                           , true);
+                    if (AllApplicationResponse != null)
+                    {
+                        if (AllApplicationResponse.StatusDetail.IsSuccess && AllApplicationResponse.Content.Applications.Count > 0)
+                        {
+                            isApplyFilter = true;
+                            AllApplicationsCache.Instance.HasFilterResult = true;
+                            AllApplicationsCache.Instance.AllApplicationResponse = AllApplicationResponse;
+
+                            Intent finishIntent = new Intent();
+
+                            finishIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_TYPE_KEY, JsonConvert.SerializeObject(targetApplicationTypeId));
+                            finishIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_STATUS_KEY, JsonConvert.SerializeObject(targetApplicationStatusCode));
+                            finishIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_DATE_KEY, JsonConvert.SerializeObject(displayDate));
+                            finishIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_FROM_DATE_KEY, JsonConvert.SerializeObject(fromDate));
+                            finishIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_TO_DATE_KEY, JsonConvert.SerializeObject(toDate));
+                            finishIntent.PutExtra("ApplicaitonFlilterList", JsonConvert.SerializeObject(AllApplicationResponse));
+                            SetResult(Result.Ok, finishIntent);
+                            Finish();
+                        }
+
+                        else
+                        {
+                            isApplications = true;
+                            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                            .SetTitle(AllApplicationResponse.StatusDetail.Title)
+                            .SetMessage(AllApplicationResponse.StatusDetail.Message)
+                            .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                            .Build();
+                            whereisMyacc.Show();
+                        }
+                    }
+                    HideProgressDialog();
+                }
+                else
+                {
+                    ShowNoInternetSnackbar(); 
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+        private Snackbar mNoInternetSnackbar;
+        public void ShowNoInternetSnackbar()
+        {
+            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+            {
+                mNoInternetSnackbar.Dismiss();
+            }
+
+            mNoInternetSnackbar = Snackbar.Make(rootview, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+
+                mNoInternetSnackbar.Dismiss();
+            }
+            );
+            View v = mNoInternetSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mNoInternetSnackbar.Show();
+            this.SetIsClicked(false);
+        }
         [OnClick(Resource.Id.btnClearFilter)]
         internal void OnClearFilterClick(object sender, EventArgs e)
         {
+            isApplyFilter = true;
+            filterDate = string.Empty;
+            displayDate = string.Empty;
+            targetApplicationTypeId = string.Empty;
+            targetApplicationStatusCode = string.Empty;
+            applicationStatusSubTitle.Text = string.Empty;
+            statusSubTitle.Text = string.Empty;
+            filterDateSubTitle.Text = string.Empty;
+            AllApplicationsCache.Instance.ApplicationTypeID = string.Empty;
+            AllApplicationsCache.Instance.StatusDescription = string.Empty;
+            AllApplicationsCache.Instance.CreatedDateFrom = string.Empty;
+            AllApplicationsCache.Instance.CreatedDateTo = string.Empty;
+            AllApplicationsCache.Instance.Clear();
+           
+            AllApplicationsCache.Instance.Reset();
             DisableButtons();
-            filterApplicationType = "";
-            filterStatus = "";
-            filterDate = "";
-            displayDate = "";
-
-            applicationStatusSubTitle.Text = "";
-            statusSubTitle.Text = "";
-            filterDateSubTitle.Text = "";
         }
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Android.Resource.Id.Home:
+                    SetFilterData();
+                    return true;
+                        
+                  
+                  
+            }
+            return base.OnOptionsItemSelected(item);
+        }
+        private void SetFilterData()
+        {
+            Intent finishIntent = new Intent();
+            if (!isApplications && isApplyFilter) 
+            {
 
+                isApplyFilter = false;
+                finishIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_TYPE_KEY, JsonConvert.SerializeObject(targetApplicationTypeId));
+                finishIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_STATUS_KEY, JsonConvert.SerializeObject(targetApplicationStatusCode));
+                finishIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_DATE_KEY, JsonConvert.SerializeObject(displayDate));
+                finishIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_FROM_DATE_KEY, JsonConvert.SerializeObject(fromDate));
+                finishIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_TO_DATE_KEY, JsonConvert.SerializeObject(toDate));
+                finishIntent.PutExtra("ApplicaitonFlilterList", JsonConvert.SerializeObject(new GetAllApplicationsResponse()));
+                SetResult(Result.Ok, finishIntent);
+                Finish();
+            }
+            else
+            {
+                isApplications = false;
+               SetResult(Result.Ok, finishIntent);
+                Finish();
+            }
+        }
+        public override void OnBackPressed()
+        {
+            SetFilterData();
+            
+        }
     }
 }

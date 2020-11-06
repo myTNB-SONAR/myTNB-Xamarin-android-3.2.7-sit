@@ -94,7 +94,7 @@ namespace myTNB_Android.Src.Utils
                 siteCoreLanguageId = SitecoreCmsEntity.SITE_CORE_ID.LANGUAGE_MS;
             }
 
-#if DEBUG
+#if DEBUG || SIT
             LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
 #else
             string currentTimestamp = SitecoreCmsEntity.GetItemTimestampById(siteCoreLanguageId);

@@ -14,7 +14,6 @@ using myTNB_Android.Src.AppLaunch.Async;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
@@ -91,7 +90,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     Console.WriteLine("GooglePlayServices is Installed");
                     ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-                    
+
                     if (UserSessions.GetDeviceId() == null)
                     {
                         UserSessions.SaveDeviceId(this.mView.GetDeviceId());
@@ -128,11 +127,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 #else
             var updateAppUserDeviceApi = RestService.For<IUpdateAppUserDeviceApi>(Constants.SERVER_URL.END_POINT);
 #endif
-			try
+            try
             {
-              UserEntity.UpdateDeviceId(this.mView.GetDeviceId());
-              AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
-                    (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));
+                UserEntity.UpdateDeviceId(this.mView.GetDeviceId());
+                AppLaunchMasterDataResponse masterDataResponse = await ServiceApiImpl.Instance.GetAppLaunchMasterData
+                      (new AppLaunchMasterDataRequest(), CancellationTokenSourceWrapper.GetTokenWithDelay(appLaunchMasterDataTimeout));
                 if (masterDataResponse != null && masterDataResponse.Response != null)
                 {
                     if (masterDataResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
@@ -140,7 +139,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         new MasterApiDBOperation(masterDataResponse, mSharedPref).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
 
 
-                       
+
                         bool proceed = true;
 
                         bool appUpdateAvailable = false;
@@ -159,7 +158,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                 this.mView.ShowUpdateAvailable(modalTitle, modalMessage, modalBtnLabel);
                             }
                             else
-                            {  
+                            {
 
 
 
@@ -169,7 +168,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     {
                                         UserEntity entity = UserEntity.GetActive();
 
-                                      
+
 
                                         bool phoneVerified = UserSessions.GetPhoneVerifiedFlag(mSharedPref);
                                         if (!phoneVerified)
@@ -265,8 +264,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         AppInfoManager.Instance.SetUserInfo("16"
                                             , loggedUser.UserID
                                             , loggedUser.UserName
-                                            , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS: LanguageManager.Language.EN);
-
+                                            , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
+                                        AppInfoManager.Instance.SetPlatformUserInfo(new BaseRequest().usrInf);
 
                                         if (hasNotification && (isODNType || isLoggedInEmail))
                                         {
@@ -308,7 +307,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.PreLogin);
 
                                     AppInfoManager.Instance.SetUserInfo("0", string.Empty, string.Empty
-                                        ,LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
+                                        , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                     mView.ShowPreLogin();
                                 }
                                 else
@@ -462,7 +461,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             });
         }
 
-       
+
 
         public void GetSavedTimeStamp()
         {

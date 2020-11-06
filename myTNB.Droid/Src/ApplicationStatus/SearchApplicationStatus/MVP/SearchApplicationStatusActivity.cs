@@ -22,12 +22,10 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using System.Text;
 using Android.Text;
 using myTNB_Android.Src.Database.Model;
-using Castle.Core.Internal;
-using Android.Graphics;
 using Android.Graphics.Drawables;
-using System.Threading.Tasks;
-using myTNB_Android.Src.SiteCore;
-using System.IO;
+using myTNB.Mobile.API.Models.ApplicationStatus.GetApplicationsByCA;
+using AndroidX.RecyclerView.Widget;
+using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Adapter;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 {
@@ -64,21 +62,34 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         [BindView(Resource.Id.whyAccountsNotHereLayOut)]
         LinearLayout whyAccountsNotHereLayOut;
 
+        [BindView(Resource.Id.searchApplicatioStatuListResult)]
+        LinearLayout searchApplicatioStatuListResult;
 
+        [BindView(Resource.Id.searchApplicationStatusListRecyclerView)]
+        RecyclerView searchApplicationStatusListRecyclerView;
+
+        [BindView(Resource.Id.txtSearchApplicationStatusListResult)]
+        TextView txtSearchApplicationStatusListResult;
 
         TypeModel selectedType = new TypeModel();
         const string PAGE_ID = "ApplicationStatus";
 
-        private string targetApplicationType = "";
-        private string targetApplicationTypeId = "";
-        private string targetSearchBy = "";
-        private string targetNumber = "";
+        private string targetApplicationType = string.Empty;
+        private string targetApplicationTypeId = string.Empty;
+        private string targetSearchBy = string.Empty;
+        private string targetNumber = string.Empty;
+        private bool isSearchByCA = false;
         private bool isEdiging = false;
         List<TypeModel> mTypeList = new List<TypeModel>();
-        List<SearchByModel> mSearchByList = new List<SearchByModel>();
         SearchByModel searchByModel = new SearchByModel();
         SearchApplicationStatusPresenter mPresenter;
         private bool isTextChange = false;
+        RecyclerView.LayoutManager layoutManager;
+        SearchApplicationAdapter searchApplicationAdapter;
+        GetApplicationsByCAResponse applicationsByCAResponse;
+        ApplicationDetailDisplay applicationDetailDisplay;
+        int searchApplicationPosition;
+
         public override int ResourceId()
         {
             return Resource.Layout.SearchApplicationStatusLayout;
@@ -156,19 +167,92 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         [OnClick(Resource.Id.btnSearchApplication)]
         internal void OnConfirmClickAsync(object sender, EventArgs e)
         {
-            GetApplicationStatus();
-
+            searchApplicatioStatuListResult.Visibility = ViewStates.Gone;
+            if (isSearchByCA)
+            {
+                GetSearchByCA();
+            }
+            else
+            {
+                GetApplicationStatus();
+            }
         }
+
+        private void GetSearchByCA()
+        {
+            RunOnUiThread(async () =>
+            {
+                ShowProgressDialog();
+
+                applicationsByCAResponse = await ApplicationStatusManager.Instance.GetApplicationByCA(txtServiceRequestNum.Text);
+
+                if (applicationsByCAResponse != null && applicationsByCAResponse.Content != null
+                    && applicationsByCAResponse.StatusDetail != null && applicationsByCAResponse.StatusDetail.IsSuccess)
+                {
+                    List<GetApplicationsByCAModel> innerList = new List<GetApplicationsByCAModel>();
+                    innerList = applicationsByCAResponse.Content;
+                    searchApplicationAdapter = new SearchApplicationAdapter(this, innerList);
+                    layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+                    searchApplicationStatusListRecyclerView.SetLayoutManager(layoutManager);
+                    searchApplicationStatusListRecyclerView.SetAdapter(searchApplicationAdapter);
+                    searchApplicationAdapter.ItemClick += OnItemClick;
+                    searchApplicationAdapter.NotifyDataSetChanged();
+                    searchApplicatioStatuListResult.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    searchApplicatioStatuListResult.Visibility = ViewStates.Gone;
+                    ShowApplicaitonPopupMessage(this, applicationsByCAResponse.StatusDetail);
+                }
+                HideProgressDialog();
+            });
+        }
+
+        void OnItemClick(object sender, int position)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    searchApplicationPosition = position;
+                    GetApplicationStatus();
+                    this.SetIsClicked(false);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         private async void GetApplicationStatus()
         {
             ShowProgressDialog();
-            ApplicationDetailDisplay applicationDetailDisplay = await ApplicationStatusManager.Instance.GetApplicationStatus(
-                  targetApplicationTypeId
-                , targetSearchBy
-                , txtServiceRequestNum.Text
-                , txtApplicationType.Text
-                , txtSearchBy.Text
-                , UserEntity.GetActive() != null);
+            if (isSearchByCA)
+            {
+                if (applicationsByCAResponse != null && applicationsByCAResponse.Content.Count > 0)
+                {
+                    GetApplicationsByCAModel applicationSearch = applicationsByCAResponse.Content[searchApplicationPosition];
+                    applicationDetailDisplay = await ApplicationStatusManager.Instance.GetApplicationStatus(
+                         applicationSearch.ApplicationType
+                       , applicationSearch.SearchType
+                       , applicationSearch.BackendReferenceNo
+                       , applicationSearch.ApplicationTypeDisplay
+                       , applicationSearch.SearchTypeDisplay
+                       , UserEntity.GetActive() != null);
+                }
+            }
+            else
+            {
+                applicationDetailDisplay = await ApplicationStatusManager.Instance.GetApplicationStatus(
+                      targetApplicationTypeId
+                    , targetSearchBy
+                    , txtServiceRequestNum.Text
+                    , txtApplicationType.Text
+                    , txtSearchBy.Text
+                    , UserEntity.GetActive() != null);
+            }
 
             HideProgressDialog();
             if (!applicationDetailDisplay.StatusDetail.IsSuccess)
@@ -179,20 +263,18 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             {
                 Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
                 applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(applicationDetailDisplay.Content));
-                StartActivity(applicationStatusDetailIntent);
+                StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE);
             }
         }
+
         public async void ShowApplicaitonPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
         {
-
-
-            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+            MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                 .SetTitle(statusDetail.Title)
                 .SetMessage(statusDetail.Message)
                 .SetCTALabel(statusDetail.PrimaryCTATitle)
                 .Build();
-            whereisMyacc.Show();
-
+            errorPopup.Show();
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -200,9 +282,10 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             base.OnCreate(savedInstanceState);
 
             txtSearchApplicationTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchForTitle");
-            txtSearchBy.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchBy");
-            txtApplicationType.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "applicationType");
+            txtInputLayoutApplicationType.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "applicationType");
+            txtInputLayoutSearchBy.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchBy");
             btnSearchApplication.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchStatus");
+            txtSearchApplicationStatusListResult.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchResultTitle");
 
             mPresenter = new SearchApplicationStatusPresenter(this);
 
@@ -212,13 +295,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
             TextViewUtils.SetMuseoSans500Typeface(txtWhyAccountsNotHere);
             txtWhyAccountsNotHere.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumber");
-            txtWhyAccountsNotHere.Click += TxtWhyAccountsNotHere_Click; ;
+            txtWhyAccountsNotHere.Click += OnWhereAreTheseNoClick; ;
             txtWhyAccountsNotHere.Visibility = ViewStates.Gone;
             whyAccountsNotHereLayOut.Visibility = ViewStates.Gone;
 
             SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "title"));
-            // txtInputLayoutFromDate.Hint = GetLabelCommonByLanguage("email");
-            // txtInputLayoutToDate.Hint = GetLabelCommonByLanguage("password");
 
             txtApplicationType.AddTextChangedListener(new InputFilterFormField(txtApplicationType, txtInputLayoutApplicationType));
             txtSearchBy.AddTextChangedListener(new InputFilterFormField(txtSearchBy, txtInputLayoutSearchBy));
@@ -228,8 +309,17 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             Drawable d = ContextCompat.GetDrawable(this, Resource.Drawable.ic_field_search);
             d.SetBounds(0, 0, d.IntrinsicWidth, d.IntrinsicHeight);
 
+            Drawable dropdown = ContextCompat.GetDrawable(this, Resource.Drawable.ic_action_dropdown1);
+            dropdown.SetBounds(0, 0, dropdown.IntrinsicWidth, dropdown.IntrinsicHeight);
+
             // Drawable img = (Drawable)Resource.Drawable.ic_field_search;
-            txtSearchBy.SetCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
+            txtSearchBy.SetCompoundDrawablesWithIntrinsicBounds(d, null, dropdown, null);
+
+            Drawable accountNo = ContextCompat.GetDrawable(this, Resource.Drawable.ic_field_account_no);
+            accountNo.SetBounds(0, 0, accountNo.IntrinsicWidth, accountNo.IntrinsicHeight);
+
+            txtServiceRequestNum.SetCompoundDrawablesWithIntrinsicBounds(accountNo, null, null, null);
+
             Bundle extras = Intent.Extras;
 
             DisableButton();
@@ -244,224 +334,28 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             txtInputLayoutSearchBy.Visibility = ViewStates.Gone;
             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
 
-            //  TODO: ApplicationStatus Mock
-
-            if (extras != null)
+            if (extras != null && extras.ContainsKey("searchApplicationType"))
             {
-                if (extras.ContainsKey("searchApplicationType"))
+                List<SearchApplicationTypeModel> searhApplicationTypeModels = new List<SearchApplicationTypeModel>();
+                searhApplicationTypeModels = DeSerialze<List<SearchApplicationTypeModel>>(extras.GetString("searchApplicationType"));
+                if (searhApplicationTypeModels != null)
                 {
-                    List<SearchApplicationTypeModel> searhApplicationTypeModels = new List<SearchApplicationTypeModel>();
-                    searhApplicationTypeModels = DeSerialze<List<SearchApplicationTypeModel>>(extras.GetString("searchApplicationType"));
-
-                    if (searhApplicationTypeModels != null)
+                    foreach (var searchTypeItem in searhApplicationTypeModels)
                     {
-                        foreach (var searchTypeItem in searhApplicationTypeModels)
+                        mTypeList.Add(new TypeModel(searchTypeItem)
                         {
-                            mTypeList.Add(new TypeModel(searchTypeItem)
-                            {
-                                SearchApplicationTypeId = searchTypeItem.SearchApplicationTypeId,
-                                SearchApplicationTypeDesc = searchTypeItem.SearchApplicationTypeDesc,
-                                ApplicationTypeDisplay = searchTypeItem.SearchApplicationTypeDescDisplay,
-                                SearchTypes = searchTypeItem.SearchTypes,
-                                isChecked = false
-                            });
-                        }
+                            SearchApplicationTypeId = searchTypeItem.SearchApplicationTypeId,
+                            SearchApplicationTypeDesc = searchTypeItem.SearchApplicationTypeDesc,
+                            ApplicationTypeDisplay = searchTypeItem.SearchApplicationTypeDescDisplay,
+                            SearchTypes = searchTypeItem.SearchTypes,
+                            isChecked = false
+                        });
                     }
                 }
             }
-
-            onGetTooltipImageContent();
-            //mTypeList = JsonConvert.DeserializeObject<List<TypeModel>>("[{\"Title\":\"Change of Tenancy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Change Tariff\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Project\",\"Code\":\"\",\"SearchBy\":[\"AN\"]},{\"Title\":\"Renewable Energy\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Self Meter Reading\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Start Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Stop Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]},{\"Title\":\"Upgrade\\/Downgrade Electricity\",\"Code\":\"\",\"SearchBy\":[\"AN\",\"EAN\",\"SNN\",\"SRN\"]}]");
-            //mSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>("[{\"Title\":\"Application Number\",\"Code\":\"AN\"},{\"Title\":\"Electricity Account Number\",\"Code\":\"EAN\"},{\"Title\":\"Service Notification Number\",\"Code\":\"SNN\"},{\"Title\":\"Service Request Number\",\"Code\":\"SRN\"}]");
         }
 
-        public string BitmapToBase64(Bitmap bitmap)
-        {
-            string B64Output = "";
-            try
-            {
-                MemoryStream byteArrayOutputStream = new MemoryStream();
-                bitmap.Compress(Bitmap.CompressFormat.Png, 100, byteArrayOutputStream);
-                byte[] byteArray = byteArrayOutputStream.ToArray();
-                B64Output = Android.Util.Base64.EncodeToString(byteArray, Base64Flags.Default);
-            }
-            catch (Exception e)
-            {
-                B64Output = "";
-                Utility.LoggingNonFatalError(e);
-            }
-
-            return B64Output;
-        }
-        private Task onGetTooltipImageContent()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    //check if image is exist in sql lite
-                    var imageWhereAccUrl = SiteCoreConfig.SITECORE_URL + Utility.GetLocalizedLabel("SubmitEnquiry", "imageWhereAcc");
-
-                    if (TooltipImageDirectEntity.isNeedUpdate(imageWhereAccUrl, TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC))
-                    {
-                        TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
-
-                        var image = ImageUtils.GetImageBitmapFromUrl(imageWhereAccUrl);
-                        var base64 = BitmapToBase64(image);
-
-                        TooltipImageDirectEntity newImage_WHERE_MY_ACC = new TooltipImageDirectEntity();
-                        newImage_WHERE_MY_ACC.ImageBase64 = base64;
-                        newImage_WHERE_MY_ACC.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC.ToString();
-                        newImage_WHERE_MY_ACC.Url = imageWhereAccUrl;
-
-                        TooltipImageDirectEntity.InsertItem(newImage_WHERE_MY_ACC);
-
-                    }
-                    else
-                    {
-                        // recheck local is the base64 exist or not is not need update
-                        string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
-                        if (base64Image.IsNullOrEmpty())
-                        {
-                            TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
-
-                            var image = ImageUtils.GetImageBitmapFromUrl(imageWhereAccUrl);
-                            var base64 = BitmapToBase64(image);
-
-                            TooltipImageDirectEntity newImage_WHERE_MY_ACC = new TooltipImageDirectEntity();
-                            newImage_WHERE_MY_ACC.ImageBase64 = base64;
-                            newImage_WHERE_MY_ACC.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC.ToString();
-                            newImage_WHERE_MY_ACC.Url = imageWhereAccUrl;
-
-                            TooltipImageDirectEntity.InsertItem(newImage_WHERE_MY_ACC);
-
-                        }
-
-                    }
-
-                    //check if image is exist in sql lite
-                    var imageIC = SiteCoreConfig.SITECORE_URL + Utility.GetLocalizedLabel("SubmitEnquiry", "imageCopyIC");
-
-                    if (TooltipImageDirectEntity.isNeedUpdate(imageIC, TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE))
-                    {
-                        TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
-
-                        var image = ImageUtils.GetImageBitmapFromUrl(imageIC);
-                        var base64 = BitmapToBase64(image);
-
-                        TooltipImageDirectEntity newImage_WHERE_MY_ACC = new TooltipImageDirectEntity();
-                        newImage_WHERE_MY_ACC.ImageBase64 = base64;
-                        newImage_WHERE_MY_ACC.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE.ToString();
-                        newImage_WHERE_MY_ACC.Url = imageIC;
-
-                        TooltipImageDirectEntity.InsertItem(newImage_WHERE_MY_ACC);
-
-                    }
-                    else
-                    {
-                        // recheck local is the base64 exist or not is not need update
-                        string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
-                        if (base64Image.IsNullOrEmpty())
-                        {
-
-                            TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
-
-                            var image = ImageUtils.GetImageBitmapFromUrl(imageIC);
-                            var base64 = BitmapToBase64(image);
-
-                            TooltipImageDirectEntity newImage_IC_SAMPLE = new TooltipImageDirectEntity();
-                            newImage_IC_SAMPLE.ImageBase64 = base64;
-                            newImage_IC_SAMPLE.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE.ToString();
-                            newImage_IC_SAMPLE.Url = imageIC;
-
-                            TooltipImageDirectEntity.InsertItem(newImage_IC_SAMPLE);
-
-                        }
-                    }
-                    //check if image is exist in sql lite   imagePermises
-                    var imageConsent = SiteCoreConfig.SITECORE_URL + Utility.GetLocalizedLabel("SubmitEnquiry", "imageConsent");
-
-                    if (TooltipImageDirectEntity.isNeedUpdate(imageConsent, TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT))
-                    {
-                        TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
-
-                        var image_consent = ImageUtils.GetImageBitmapFromUrl(imageConsent);
-                        var base64 = BitmapToBase64(image_consent);
-
-                        TooltipImageDirectEntity newImage_PROOF_OF_CONSENT = new TooltipImageDirectEntity();
-                        newImage_PROOF_OF_CONSENT.ImageBase64 = base64;
-                        newImage_PROOF_OF_CONSENT.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT.ToString();
-                        newImage_PROOF_OF_CONSENT.Url = imageConsent;
-
-                        TooltipImageDirectEntity.InsertItem(newImage_PROOF_OF_CONSENT);
-
-                    }
-                    else
-                    {
-                        // recheck local is the base64 exist or not is not need update
-                        string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
-                        if (base64Image.IsNullOrEmpty())
-                        {
-                            TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
-
-                            var image_consent = ImageUtils.GetImageBitmapFromUrl(imageConsent);
-                            var base64 = BitmapToBase64(image_consent);
-
-                            TooltipImageDirectEntity newImage_PROOF_OF_CONSENT = new TooltipImageDirectEntity();
-                            newImage_PROOF_OF_CONSENT.ImageBase64 = base64;
-                            newImage_PROOF_OF_CONSENT.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT.ToString();
-                            newImage_PROOF_OF_CONSENT.Url = imageConsent;
-
-                            TooltipImageDirectEntity.InsertItem(newImage_PROOF_OF_CONSENT);
-                        }
-
-                    }
-                    //check if image is exist in sql lite   
-                    var imagePermises = SiteCoreConfig.SITECORE_URL + Utility.GetLocalizedLabel("SubmitEnquiry", "imagePermises");
-
-                    if (TooltipImageDirectEntity.isNeedUpdate(imagePermises, TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE))
-                    {
-                        TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
-
-                        var image_Permises = ImageUtils.GetImageBitmapFromUrl(imagePermises);
-                        var base64 = BitmapToBase64(image_Permises);
-
-                        TooltipImageDirectEntity newImage_PERMISE_IMAGE = new TooltipImageDirectEntity();
-                        newImage_PERMISE_IMAGE.ImageBase64 = base64;
-                        newImage_PERMISE_IMAGE.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE.ToString();
-                        newImage_PERMISE_IMAGE.Url = imagePermises;
-
-                        TooltipImageDirectEntity.InsertItem(newImage_PERMISE_IMAGE);
-
-                    }
-                    else
-                    {
-                        // recheck local is the base64 exist or not is not need update
-                        string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
-                        if (base64Image.IsNullOrEmpty())
-                        {
-                            TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
-
-                            var image_Permises = ImageUtils.GetImageBitmapFromUrl(imagePermises);
-                            var base64 = BitmapToBase64(image_Permises);
-
-                            TooltipImageDirectEntity newImage_PERMISE_IMAGE = new TooltipImageDirectEntity();
-                            newImage_PERMISE_IMAGE.ImageBase64 = base64;
-                            newImage_PERMISE_IMAGE.ImageCategory = TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE.ToString();
-                            newImage_PERMISE_IMAGE.Url = imagePermises;
-
-                            TooltipImageDirectEntity.InsertItem(newImage_PERMISE_IMAGE);
-                        }
-
-                    }
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            });
-        }
-        private void TxtWhyAccountsNotHere_Click(object sender, EventArgs e)
+        private void OnWhereAreTheseNoClick(object sender, EventArgs e)
         {
             try
             {
@@ -470,29 +364,22 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0] : searchByModel;
                     if (searchType != null && searchType.Type == ApplicationStatusSearchType.CA)
                     {
-                        string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
-
-                        //if (!base64Image.IsNullOrEmpty())
-                        //{
-                        var imageCache = Base64ToBitmap(base64Image);
-
-                        MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                        .SetHeaderImageBitmap(imageCache)
-                        .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberTitleCA"))
-                        .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberMessageCA"))
-                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                        .Build();
-                        whereisMyacc.Show();
-                        //}
+                        MyTNBAppToolTipBuilder whereAreTheseNumbers = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                            .SetHeaderImage(Resource.Drawable.img_register_acct_no)
+                            .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberTitleCA"))
+                            .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberMessageCA"))
+                            .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                            .Build();
+                        whereAreTheseNumbers.Show();
                     }
                     else
                     {
-                        MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                        MyTNBAppToolTipBuilder whereAreTheseNumbers = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
                             .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberTitle"))
                             .SetMessage(string.Format(Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumberMessage"), searchType.SearchTypeDescDisplay))
                             .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                             .Build();
-                        whereisMyacc.Show();
+                        whereAreTheseNumbers.Show();
                     }
                 }
             }
@@ -500,32 +387,13 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             {
                 Utility.LoggingNonFatalError(ex);
             }
-
-
         }
-        public static Bitmap Base64ToBitmap(string base64String)
-        {
-            Bitmap convertedBitmap = null;
-            try
-            {
-                byte[] imageAsBytes = Android.Util.Base64.Decode(base64String, Base64Flags.Default);
-                convertedBitmap = BitmapFactory.DecodeByteArray(imageAsBytes, 0, imageAsBytes.Length);
-            }
-            catch (Exception e)
-            {
-                convertedBitmap = null;
-                Utility.LoggingNonFatalError(e);
-            }
-
-            return convertedBitmap;
-        }
-
-
 
         private void TxtServiceRequestNum_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e)
         {
             CheckError();
         }
+
         private void CheckError()
         {
             try
@@ -533,9 +401,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 if (isTextChange && searchByModel != null && selectedType != null && selectedType.SearchTypes != null)
                 {
                     var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].Type : searchByModel.Type;
-
-
-
                     if (searchType == ApplicationStatusSearchType.ServiceRequestNo)
                     {
                         txtServiceRequestNum.SetFilters(new IInputFilter[] { });
@@ -564,7 +429,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     }
 
                     if (searchType == ApplicationStatusSearchType.CA)
-                    //  || (selectedType != null && selectedType.SearchTypes.Where(x => x.Type == ApplicationStatusSearchType.CA).Count() > 0)
                     {
                         txtServiceRequestNum.SetFilters(new IInputFilter[] { });
                         if (txtServiceRequestNum.Text.Count() == 0 || txtServiceRequestNum.Text.Count() == 12)
@@ -574,7 +438,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         }
                         if (txtServiceRequestNum.Text.Count() == 12)
                         {
-
                             txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(12) });
                             txtInputLayoutServiceRequestNum.Error = null;
                             txtInputLayoutServiceRequestNum.ErrorEnabled = false;
@@ -582,17 +445,14 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         }
                         else if (txtServiceRequestNum.Text.Count() != 12)
                         {
-
                             txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[0].SearchTypeDescDisplay);
-
                             if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
+                            {
                                 txtInputLayoutServiceRequestNum.ErrorEnabled = true;
-
-
+                            }
                             DisableButton();
                         }
                     }
-
 
                     if (searchType == ApplicationStatusSearchType.ApplicationNo)
                     {
@@ -600,8 +460,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         isEdiging = true;
 
                         string format = selectedType.SearchApplicationNoInputMask;
-
-
 
                         txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(format.Length) });
                         string inputString = txtServiceRequestNum.Text.ToString();
@@ -612,12 +470,10 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         int stringlength = 0;
                         int location = txtServiceRequestNum.SelectionStart;
 
-
                         if (!isEdiging && location > 0 && inputString[location - 1] == '-')
                         {
                             return;
                         }
-
 
                         preffix = format.Substring(0, firstIndex);
                         if (preffix.Length >= inputString.Length)
@@ -669,7 +525,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         int preIndexChar = txtServiceRequestNum.Text.ToString().Count(f => f == '-');
                         // removing old dashes
                         StringBuilder sb = new StringBuilder();
-                        sb.Append(inputString.Replace("-", ""));
+                        sb.Append(inputString.Replace("-", string.Empty));
                         if (!preffix.Contains(txtPreffix))
                         {
                             sb.Insert(0, preffix);
@@ -758,6 +614,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         {
             return !string.IsNullOrEmpty(key) && !string.IsNullOrWhiteSpace(key);
         }
+
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
@@ -776,11 +633,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
                         if (extra.ContainsKey(Constants.APPLICATION_STATUS_TYPE_LIST_KEY))
                         {
-                            txtSearchBy.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchBy");
                             resultTypeList = JsonConvert.DeserializeObject<List<TypeModel>>(extra.GetString(Constants.APPLICATION_STATUS_TYPE_LIST_KEY));
                             selectedType = resultTypeList.Find(x => x.isChecked);
-                            //  TODO: ApplicationStatus dummp
-                            txtApplicationType.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "applicationType");
                             targetApplicationType = selectedType.SearchApplicationTypeDescDisplay;
                             targetApplicationTypeId = selectedType.SearchApplicationTypeId;
                             txtApplicationType.Text = targetApplicationType;
@@ -788,7 +642,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             if (selectedType.SearchTypes.Count <= 1)
                             {
                                 txtInputLayoutSearchBy.Visibility = ViewStates.Gone;
-
                                 txtInputLayoutServiceRequestNum.Visibility = ViewStates.Visible;
                                 txtInputLayoutServiceRequestNum.ClearFocus();
                                 txtServiceRequestNum.Text = null;
@@ -802,32 +655,20 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                     txtSearchBy.Text = selectedType.SearchTypes[0].SearchTypeDescDisplay;
                                     targetSearchBy = selectedType.SearchTypes[0].SearchTypeId;
                                 }
+                                if (selectedType.SearchTypes[0].Type == ApplicationStatusSearchType.CA)
+                                {
+                                    isSearchByCA = true;
+                                }
                             }
                             else
                             {
+                                txtSearchBy.Text = string.Empty;
                                 txtInputLayoutServiceRequestNum.Visibility = ViewStates.Gone;
                                 txtInputLayoutSearchBy.Visibility = ViewStates.Visible;
                                 txtWhyAccountsNotHere.Visibility = ViewStates.Gone;
                                 whyAccountsNotHereLayOut.Visibility = ViewStates.Gone;
                             }
-
-
-
-
-                            //if (extra.ContainsKey(Constants.APPLICATION_STATUS_SEARCH_BY_LIST_KEY))
-                            //{
-                            //    List<SearchByModel> resultSearchByList = new List<SearchByModel>();
-                            //    resultSearchByList = JsonConvert.DeserializeObject<List<SearchByModel>>(extra.GetString(Constants.APPLICATION_STATUS_SEARCH_BY_LIST_KEY));
-                            //    SearchByModel selectedType2 = resultSearchByList.Find(x => x.isChecked);
-                            //    targetSearchBy = selectedType2.Code;
-                            //    txtSearchBy.Text = selectedType2.Title;
-                            //    txtInputLayoutServiceRequestNum.Visibility = ViewStates.Visible;
-                            //    txtInputLayoutServiceRequestNum.Hint = selectedType.Title;
-                            //}
-
-
                         }
-
                     }
                 }
                 else if (requestCode == Constants.APPLICATION_STATUS_FILTER_SEARCH_BY_REQUEST_CODE)
@@ -848,32 +689,42 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             txtSearchBy.Text = searchByModel.SearchTypeDescDisplay;
                             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Visible;
 
-                            txtServiceRequestNum.SetText("", TextView.BufferType.Editable);
+                            txtServiceRequestNum.Text = null;
+                            txtServiceRequestNum.ClearFocus();
+                            txtServiceRequestNum.SetText(string.Empty, TextView.BufferType.Editable);
 
-
+                            txtInputLayoutServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
 
                             if (searchByModel.Type == ApplicationStatusSearchType.ApplicationNo)
                             {
                                 txtInputLayoutServiceRequestNum.HelperText = selectedType.ApplicationNoHint;
-                                txtServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
                             }
-                            if (searchByModel.Type == ApplicationStatusSearchType.ServiceNotificationNo)
+                            else if (searchByModel.Type == ApplicationStatusSearchType.ServiceNotificationNo)
                             {
-                                txtServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
                                 txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "serviceNotificationNo");
                             }
-                            if (searchByModel.Type == ApplicationStatusSearchType.ServiceRequestNo)
+                            else if (searchByModel.Type == ApplicationStatusSearchType.ServiceRequestNo)
                             {
-                                txtServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
                                 txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "serviceRequestNumber");
                             }
-                            if (searchByModel.Type == ApplicationStatusSearchType.CA)
+                            else if (searchByModel.Type == ApplicationStatusSearchType.CA)
                             {
-                                txtServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
+                                isSearchByCA = true;
                                 txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "electricityAccountNumber");
-
                             }
                         }
+                    }
+                }
+
+                Drawable accountNo = ContextCompat.GetDrawable(this, Resource.Drawable.ic_field_account_no);
+                accountNo.SetBounds(0, 0, accountNo.IntrinsicWidth, accountNo.IntrinsicHeight);
+                txtServiceRequestNum.SetCompoundDrawablesWithIntrinsicBounds(accountNo, null, null, null);
+
+                if (requestCode == Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        Finish();
                     }
                 }
             }
@@ -885,19 +736,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
         public bool OnTouch(View v, MotionEvent e)
         {
-            const int DRAWABLE_LEFT = 0;
-            const int DRAWABLE_TOP = 1;
-            const int DRAWABLE_RIGHT = 2;
-            const int DRAWABLE_BOTTOM = 3;
-
-
             if (v is EditText)
             {
-                txtApplicationType.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "applicationType");
                 EditText eTxtView = v as EditText;
                 if (eTxtView.Id == Resource.Id.txtApplicationType)
                 {
-
                     if (e.Action == MotionEventActions.Up)
                     {
                         if (!this.GetIsClicked())
@@ -931,7 +774,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 }
                 else if (eTxtView.Id == Resource.Id.txtSearchBy)
                 {
-
                     if (e.Action == MotionEventActions.Up)
                     {
                         if (!this.GetIsClicked())
@@ -948,10 +790,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                         for (int j = 0; j < mTypeList[i].SearchTypes.Count; j++)
                                         {
                                             var foundSearchBy = mTypeList[i].SearchTypes[j];
-
-
-
-
                                             mList.Add(new SearchByModel(foundSearchBy)
                                             {
                                                 SearchTypeId = foundSearchBy.SearchTypeId,
@@ -959,8 +797,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                                 SearchTypeDisplay = foundSearchBy.SearchTypeDescDisplay,
                                                 isChecked = false
                                             });
-
-
                                         }
                                         break;
                                     }
@@ -998,17 +834,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].Type : searchByModel.Type;
                         if (searchType == ApplicationStatusSearchType.ApplicationNo)
                         {
-
                             txtInputLayoutServiceRequestNum.HelperText = selectedType.ApplicationNoHint;
-
                             string format = selectedType.SearchApplicationNoInputMask;
-
                             string inputString = txtServiceRequestNum.Text.ToString();
                             int firstIndex = format.IndexOf("#");
-                            int lastIndex = format.LastIndexOf("#");
-                            string preffix = string.Empty;
-
-                            preffix = format.Substring(0, firstIndex);
+                            string preffix = firstIndex > -1 ? format.Substring(0, firstIndex) : string.Empty;
                             if (preffix.Length >= inputString.Length)
                             {
                                 inputString = preffix;
@@ -1016,7 +846,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                 txtServiceRequestNum.SetSelection(preffix.Length);
                             }
                         }
-
                     }
                 }
             }

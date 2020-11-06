@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using myTNB_Android.Src.Base.Models;
+using myTNB.Mobile.Helpers;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -137,29 +138,29 @@ namespace myTNB_Android.Src.Utils
         public static List<BaseKeyValueModel> GetLocalizedMonthSelectorLabel(string key)
         {
             List<BaseKeyValueModel> monthList = new List<BaseKeyValueModel>();
-            //try
-            //{
-            //    Dictionary<string, List<SelectorModel>> monthSelectorList = LanguageManager.Instance.GetMonthSelectorValuePairs();
-            //    if (monthSelectorList != null && monthSelectorList.Count > 0)
-            //    {
-            //        List<SelectorModel> list = monthSelectorList[key];
-            //        if (list != null && list.Count > 0)
-            //        {
-            //            foreach(var item in list)
-            //            {
-            //                monthList.Add(new BaseKeyValueModel()
-            //                {
-            //                    Key = item.Key,
-            //                    Value = item.Value
-            //                });
-            //            }
-            //        }
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    Log.Debug("DEBUG Error: ", e.Message);
-            //}
+            try
+            {
+                //Dictionary<string, List<SelectorModel>> monthSelectorList =
+                //if (monthSelectorList != null && monthSelectorList.Count > 0)
+                //{
+                    List<SelectorModel> list = FilterHelper.GetMonthList();
+                    if (list != null && list.Count > 0)
+                    {
+                        foreach (var item in list)
+                        {
+                            monthList.Add(new BaseKeyValueModel()
+                            {
+                                Key = item.Key,
+                                Value = item.Value
+                            });
+                        }
+                    }
+               // }
+            }
+            catch (Exception e)
+            {
+                Log.Debug("DEBUG Error: ", e.Message);
+            }
             return monthList;
         }
 
@@ -202,6 +203,21 @@ namespace myTNB_Android.Src.Utils
             return popupSelectorModels;
         }
 
+        /// <summary>
+        /// Gets the tooltip selector based on selected language.
+        /// </summary>
+        /// <param name="pageId"></param>
+        /// <param name="keyId"></param>
+        /// <returns></returns>
+        public static List<SelectorModel> GetSelectoryByKey(string page, string key)
+        {
+            Dictionary<string, List<SelectorModel>> selector = GetSelectorByPage(page);
+            return selector != null && selector.ContainsKey(key) ? selector[key] : new List<SelectorModel>();
+        }
+        public static Dictionary<string, List<SelectorModel>> GetSelectorByPage(string page)
+        {
+            return LanguageManager.Instance.GetSelectorsByPage(page);
+        }
         /// <summary>
         /// Gets the Error labels by key
         /// </summary>

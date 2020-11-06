@@ -83,6 +83,14 @@ namespace myTNB
             }
         }
 
+        public string GetLanguageFile
+        {
+            get
+            {
+                return JSONLang ?? string.Empty;
+            }
+        }
+
         /// <summary>
         /// Gets the commonly used strings within the app like "OK", "Cancel".
         /// Advised to call this when app was launched.

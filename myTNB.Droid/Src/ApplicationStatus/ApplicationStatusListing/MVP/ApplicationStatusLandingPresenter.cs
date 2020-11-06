@@ -135,7 +135,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 ContentMessage = Utility.GetLocalizedLabel("Tutorial", "applicationStatusLandingSearchDescription"), // "Search and save applications submitted by others with your preferred reference number.",
                 ItemCount = 0,
                 DisplayMode = "",
-                IsButtonShow = true
+                IsButtonShow = false
             });
 
             return newList;

@@ -17,7 +17,12 @@ namespace myTNB
         }
 
         private AppInfoManager() { }
-        private object UserInfo;
+        private object PlatformUserInfo;
+        private string RoleId = string.Empty;
+        private string UserId = string.Empty;
+        private string UserName = string.Empty;
+        private string Lang = string.Empty;
+
         internal Language Language { private set; get; } = LanguageManager.Language.EN;
 
         /// <summary>
@@ -33,45 +38,51 @@ namespace myTNB
             , Language language = Language.EN)
         {
             this.Language = language;
-            UserInfo = new
-            {
-                RoleId = roleID ?? string.Empty,
-                UserId = userID ?? string.Empty,
-                UserName = userName ?? string.Empty,
-                Lang = this.Language.ToString()
-            };
+            RoleId = roleID ?? string.Empty;
+            UserId = userID ?? string.Empty;
+            UserName = userName ?? string.Empty;
+            Lang = this.Language.ToString();
+        }
+
+        public void SetPlatformUserInfo(object userInfo)
+        {
+            PlatformUserInfo = userInfo;
         }
 
         public void SetLanguage(Language language = Language.EN)
         {
             this.Language = language;
+            Lang = this.Language.ToString();
+        }
+
+        public string GetLanguage()
+        {
+            return Lang;
         }
 
         public void Clear()
         {
-            UserInfo = null;
+            RoleId = string.Empty;
+            UserId = string.Empty;
+            UserName = string.Empty;
+            PlatformUserInfo = null;
         }
 
         public string GetUserInfo()
         {
-            //return Newtonsoft.Json.JsonConvert.SerializeObject(UserInfo);
-
-            return Newtonsoft.Json.JsonConvert.SerializeObject(new
+            object userInfo = new
             {
-                RoleId = "16",
-                UserId = "243A701C-761A-415D-BAC0-DD69490513B1",
-                UserName = "tester1.tnb@gmail.com"
-            });
+                RoleId,
+                UserId,
+                UserName,
+                Lang
+            };
+            return Newtonsoft.Json.JsonConvert.SerializeObject(userInfo);
+        }
 
-            //TODO: Update Default Value
-            /*return Newtonsoft.Json.JsonConvert.SerializeObject(UserInfo != null ? UserInfo :
-                new
-                {
-                    RoleId = "16",
-                    UserId = "243A701C-761A-415D-BAC0-DD69490513B1",
-                    UserName = "tester1.tnb@gmail.com",
-                    Lang = Language.EN.ToString()
-                });*/
+        public object GetPlatformUserInfo()
+        {
+            return PlatformUserInfo;
         }
     }
 }

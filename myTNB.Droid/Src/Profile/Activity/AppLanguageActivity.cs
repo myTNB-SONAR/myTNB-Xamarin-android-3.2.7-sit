@@ -1,9 +1,6 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -15,14 +12,12 @@ using CheeseBind;
 using myTNB_Android.Src.Common;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
-
-using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Base;
 using System.Threading.Tasks;
 using myTNB_Android.Src.Maintenance.Activity;
 using AndroidX.Core.Content;
-using myTNB_Android.Src.Utils.SessionCache;
 using myTNB;
+using myTNB.Mobile.SessionCache;
 
 namespace myTNB_Android.Src.Profile.Activity
 {
@@ -106,7 +101,7 @@ namespace myTNB_Android.Src.Profile.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            TextViewUtils.SetMuseoSans500Typeface(appLanguageMessage,btnSaveChanges);
+            TextViewUtils.SetMuseoSans500Typeface(appLanguageMessage, btnSaveChanges);
             savedLanguage = LanguageUtil.GetAppLanguage();
             languageItemList = new List<Item>();
             isSelectionChange = false;
@@ -138,9 +133,9 @@ namespace myTNB_Android.Src.Profile.Activity
         [OnClick(Resource.Id.btnSaveChanges)]
         void OnSaveChanges(object sender, EventArgs eventArgs)
         {
-            Item selectedItem = languageItemList.Find(item => { return item.selected;});
+            Item selectedItem = languageItemList.Find(item => { return item.selected; });
             string currentLanguage = LanguageUtil.GetAppLanguage();
-            Utility.ShowChangeLanguageDialog(this, currentLanguage, ()=>
+            Utility.ShowChangeLanguageDialog(this, currentLanguage, () =>
             {
                 ShowProgressDialog();
                 if (selectedItem.type == "MS")
@@ -231,8 +226,6 @@ namespace myTNB_Android.Src.Profile.Activity
         private Task RunUpdateLanguage(Item selectedItem)
         {
             SearchApplicationTypeCache.Instance.Clear();
-
-
             return Task.Run(() =>
             {
                 LanguageUtil.SaveAppLanguage(selectedItem.type);
@@ -243,7 +236,8 @@ namespace myTNB_Android.Src.Profile.Activity
 
         private Task CheckAppMasterDataDone()
         {
-            return Task.Delay(Constants.LANGUAGE_MASTER_DATA_CHECK_TIMEOUT).ContinueWith(_ => {
+            return Task.Delay(Constants.LANGUAGE_MASTER_DATA_CHECK_TIMEOUT).ContinueWith(_ =>
+            {
                 if (MyTNBAccountManagement.GetInstance().GetIsAppMasterComplete())
                 {
                     if (MyTNBAccountManagement.GetInstance().GetIsAppMasterFailed())

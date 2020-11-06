@@ -12,9 +12,9 @@ using AndroidX.CardView.Widget;
 using CheeseBind;
 using myTNB;
 using myTNB.Mobile;
+using myTNB.Mobile.SessionCache;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
@@ -26,7 +26,6 @@ using myTNB_Android.Src.Maintenance.Activity;
 using myTNB_Android.Src.PreLogin.MVP;
 using myTNB_Android.Src.RegistrationForm.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.SessionCache;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -329,11 +328,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             try
             {
-                if (!this.GetIsClicked())
-                {
-                    this.SetIsClicked(true);
-                    this.userActionsListener.NavigateToCheckStatus();
-                }
+                this.userActionsListener.NavigateToCheckStatus();
             }
             catch (Exception ex)
             {
@@ -521,25 +516,36 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
         public async void ShowCheckStatus()
         {
-            //  TODO:  ApplicationStatus stub
-            //SearchApplicationTypeResponse searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("0", string.Empty, string.Empty);
-
-            //Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
-            //applicationLandingIntent.PutExtra("searchApplicationType", JsonConvert.SerializeObject(searchApplicationTypeResponse.Content));
-            //StartActivity(applicationLandingIntent);
-
-
-            SearchApplicationTypeResponse searchApplicationTypeResponse = new SearchApplicationTypeResponse();
-            searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
+            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
             if (searchApplicationTypeResponse == null)
             {
+                ShowProgressDialog();
                 searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("0", UserEntity.GetActive() != null);
-                SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+                if (searchApplicationTypeResponse != null
+                    && searchApplicationTypeResponse.StatusDetail != null
+                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                {
+                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+                }
+                DismissProgressDialog();
             }
-            Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
-            applicationLandingIntent.PutExtra("searchApplicationType", JsonConvert.SerializeObject(searchApplicationTypeResponse.Content));
-            StartActivity(applicationLandingIntent);
-
+            if (searchApplicationTypeResponse != null
+                && searchApplicationTypeResponse.StatusDetail != null
+                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+            {
+                Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
+                applicationLandingIntent.PutExtra("searchApplicationType", JsonConvert.SerializeObject(searchApplicationTypeResponse.Content));
+                StartActivity(applicationLandingIntent);
+            }
+            else
+            {
+                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                     .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
+                     .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
+                     .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
+                     .Build();
+                errorPopup.Show();
+            }
         }
 
         public void GetDataFromSiteCore()

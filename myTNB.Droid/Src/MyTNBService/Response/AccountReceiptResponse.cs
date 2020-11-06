@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using Refit;
 
@@ -90,6 +89,10 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "accMultiPay")]
             [AliasAs("accMultiPay")]
             public List<AccMultiPay> accMultiPay { get; set; }
+
+            [JsonProperty(PropertyName = "paymentType")]
+            [AliasAs("paymentType")]
+            public string paymentType { get; set; }
         }
 
         public class AccMultiPay

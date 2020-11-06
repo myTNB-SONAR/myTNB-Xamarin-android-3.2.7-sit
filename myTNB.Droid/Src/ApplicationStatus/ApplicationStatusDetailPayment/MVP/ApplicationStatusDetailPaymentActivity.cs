@@ -1,19 +1,21 @@
-﻿
-using System;
+﻿using System;
+using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
-
-
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
+using myTNB.Mobile;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.CompoundView;
+using myTNB_Android.Src.MultipleAccountPayment.Activity;
+using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
 {
@@ -62,10 +64,30 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
         private const string PAGE_ID = "ApplicationStatus";
         ISharedPreferences mPref;
 
+        GetApplicationStatusDisplay applicationDetailDisplay;
+
         [OnClick(Resource.Id.btnPayBill)]
         void OnPayBill(object sender, EventArgs eventArgs)
         {
+            System.Diagnostics.Debug.WriteLine("[DEBUG] OnPayBill");
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent payment_activity = new Intent(this, typeof(PaymentActivity));
+                payment_activity.PutExtra("ISAPPLICATIONPAYMENT", true);
+                payment_activity.PutExtra("APPLICATIONPAYMENTDETAIL", JsonConvert.SerializeObject(applicationDetailDisplay.applicationPaymentDetail));
+                payment_activity.PutExtra("TOTAL", applicationDetailDisplay.PaymentDisplay.TotalPayableAmountDisplay);
+                StartActivityForResult(payment_activity, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
 
+                try
+                {
+                    FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
+            }
         }
 
         public override int ResourceId()
@@ -81,30 +103,21 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusPaymentDetails", "title"));
+            btnPayBill.Text = Utility.GetLocalizedLabel("ApplicationStatusPaymentDetails", "payNow");
             TextViewUtils.SetMuseoSans300Typeface(accountPayAmountValue, refreshBillingDetailMessage);
-            TextViewUtils.SetMuseoSans500Typeface(accountPayAmountLabel, accountPayAmountCurrency,
-                btnPayBill, btnBillingDetailefresh);
-            // TODO: ApplicationStatus MultiLingual
-            btnPayBill.Text = GetLabelByLanguage("pay");
+            TextViewUtils.SetMuseoSans500Typeface(accountPayAmountLabel, accountPayAmountCurrency
+              , btnPayBill, btnBillingDetailefresh);
+
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             Bundle extras = Intent.Extras;
 
+            if (extras != null)
+                applicationDetailDisplay = JsonConvert.DeserializeObject<GetApplicationStatusDisplay>(extras.GetString("applicationDetailDisplay"));
+
+            PopulateCharges();
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-        }
-
-        private void EnablePayBillButtons()
-        {
-            bool isPaymentButtonEnable = Utility.IsEnablePayment();
-            btnPayBill.Enabled = isPaymentButtonEnable;
-            if (isPaymentButtonEnable)
-            {
-                btnPayBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
-            }
-            else
-            {
-                btnPayBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
-            }
         }
 
         protected override void OnResume()
@@ -146,5 +159,40 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
             return PAGE_ID;
         }
 
+        private void PopulateCharges()
+        {
+            if (applicationDetailDisplay != null & applicationDetailDisplay.PaymentDetailsList != null)
+            {
+                List<ChargeModel> chargeList = new List<ChargeModel>();
+
+                foreach (var charge in applicationDetailDisplay.PaymentDetailsList)
+                {
+                    ChargeModel chargeModel = new ChargeModel();
+                    chargeModel.Title = charge.Title;
+                    chargeModel.AmountDisplay = charge.Value;
+                    chargeList.Add(chargeModel);
+                }
+                accountPayAmountValue.Text = applicationDetailDisplay.PaymentDisplay.TotalPayableAmountDisplay;
+                if (applicationDetailDisplay.CTAType == DetailCTAType.Pay)
+                {
+                    accountPayAmountLabel.Text = Utility.GetLocalizedLabel("ApplicationStatusPaymentDetails", "needToPay");
+                    accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
+                    accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
+                    bottomLayout.Visibility = Android.Views.ViewStates.Visible;
+                }
+                else if (applicationDetailDisplay.CTAType == DetailCTAType.PayInProgress)
+                {
+                    accountPayAmountLabel.Text = Utility.GetLocalizedLabel("ApplicationStatusPaymentDetails", "paymentInProgress");
+                    accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.lightOrange)));
+                    accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.lightOrange)));
+                    bottomLayout.Visibility = Android.Views.ViewStates.Gone;
+                }
+                otherChargesExpandableView.SetApplicationChargesLabel(GetLabelByLanguage("applicationCharges"));
+                otherChargesExpandableView.SetApplicationOtherCharges(
+                    Utility.GetLocalizedLabel("ApplicationStatusPaymentDetails", "oneTimeCharges")
+                    , "RM " + applicationDetailDisplay.PaymentDisplay.OneTimeChargesAmountDisplay, chargeList);
+                otherChargesExpandableView.RequestLayout();
+            }
+        }
     }
 }
