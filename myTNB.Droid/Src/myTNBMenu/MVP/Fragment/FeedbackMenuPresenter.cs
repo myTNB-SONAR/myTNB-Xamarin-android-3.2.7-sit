@@ -90,6 +90,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         sf.FeedbackMessage = responseData.FeedbackMessage;
                         sf.FeedbackCategoryName = responseData.FeedbackCategoryName;
                         sf.FeedbackNameInListView = responseData.FeedbackNameInListView;
+                        sf.StatusDesc = responseData.StatusDesc;
+                        sf.StatusCode = responseData.StatusCode;
                         SubmittedFeedbackEntity.InsertOrReplace(sf);
                     }
 

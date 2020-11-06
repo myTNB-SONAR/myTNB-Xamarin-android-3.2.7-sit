@@ -25,7 +25,10 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP
 
             void ShowinfoLabelCopyOfIdentification();
 
+            string getActualPath(Android.Net.Uri uri);
+            void ShowError(string message=null);
 
+            string copyPDFGetFilePath(Android.Net.Uri realFilePath, string filename);
             void ShowCamera();
 
             void ShowGallery();
@@ -46,10 +49,14 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP
 
             Task<string> SaveGalleryImage(Android.Net.Uri selectedImage, string pTempImagePath, string pFileName);
 
-            void UpdateAdapter(string pFilePath, string pFileName);
+            void UpdateAdapter(string pFilePath, string pFileName, string tFullname = "");
 
 
             void ShowinfoLabelPermise();
+
+            string GetImageName(int itemCount);
+
+            void ShowPDF();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -67,6 +74,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP
             void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data);
 
             void OninfoLabelPermise();
+
+            void OnAttachPDF();
         }
     }
 }

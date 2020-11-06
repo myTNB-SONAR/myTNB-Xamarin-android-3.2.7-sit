@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
@@ -172,7 +173,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
         [BindView(Resource.Id.EditTextIsOwner)]
         EditText EditTextIsOwner;
 
-        private bool isNewScreen= true;
+        private bool isNewScreen = true;
 
         FeedbackImageRecyclerAdapterNew adapter2;
 
@@ -237,53 +238,55 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
             }
 
-        
+
         }
 
-        public void ShowInputData(string feedbackId, string feedbackStatus, string feedbackCode, string dateTime, string accountNoName, string feedback, List<FeedbackUpdate> feedbackUpdateList , string name, string email, string mobile , int? relationShip ,string relationshipDesc ,bool? isOwner)
+        public void ShowInputData(string feedbackId, string feedbackStatus, string feedbackCode, string dateTime, string accountNoName, string feedback, List<FeedbackUpdate> feedbackUpdateList, string name, string email, string mobile, int? relationShip, string relationshipDesc, bool? isOwner)
         {
             try
             {
-                
+
                 isNewScreen = true;
 
-               
-
-                    adapter2 = new FeedbackImageRecyclerAdapterNew(true);
-                    layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-                    recyclerView.SetLayoutManager(layoutManager2);
-                    recyclerView.SetAdapter(adapter2);
-                    adapter2.SelectClickEvent += Adapter_SelectClickEvent;
-            
-                    barLine.Visibility = ViewStates.Visible;
-                    TextInputLayoutServiceRequestNumber.Visibility = ViewStates.Visible;
-                    txtStatus.Visibility = ViewStates.Visible;
-
-                    txtInputLayoutFeedbackId.Visibility = ViewStates.Gone;
-                    txtInputLayoutStatus.Visibility = ViewStates.Gone;
-                    txtInputLayoutDateTime.Visibility = ViewStates.Gone;
-                    txtInputLayoutAccountNo.Visibility = ViewStates.Gone;
-                    TextInputLayoutname.Visibility = ViewStates.Gone;
 
 
+                adapter2 = new FeedbackImageRecyclerAdapterNew(true);
+                layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+                recyclerView.SetLayoutManager(layoutManager2);
+                recyclerView.SetAdapter(adapter2);
+                adapter2.SelectClickEvent += Adapter_SelectClickEvent;
 
-                    FrameLayoutEnquiryDetails.Visibility = ViewStates.Visible;
-                    txtFeedback_status_new.Visibility = ViewStates.Visible;
+                barLine.Visibility = ViewStates.Visible;
+                TextInputLayoutServiceRequestNumber.Visibility = ViewStates.Visible;
+                txtStatus.Visibility = ViewStates.Visible;
+
+                txtInputLayoutFeedbackId.Visibility = ViewStates.Gone;
+                txtInputLayoutStatus.Visibility = ViewStates.Gone;
+                txtInputLayoutDateTime.Visibility = ViewStates.Gone;
+                txtInputLayoutAccountNo.Visibility = ViewStates.Gone;
+                TextInputLayoutname.Visibility = ViewStates.Gone;
+
+
+
+                FrameLayoutEnquiryDetails.Visibility = ViewStates.Visible;
+                txtFeedback_status_new.Visibility = ViewStates.Visible;
 
 
 
 
                 EditTextServiceRequestNumber.Text = feedbackId;
-                    txtFeedbackId.Text = feedbackId;  //not use
-           
+                txtFeedbackId.Text = feedbackId;  //not use
 
-             
+
+
+
+
 
                 txtFeedback_status_new.Text = feedbackStatus;  //set status new one
 
 
 
-                if ((!name.IsNullOrEmpty() || !email.IsNullOrEmpty() || !mobile.IsNullOrEmpty())&& isNewScreen)
+                if ((!name.IsNullOrEmpty() || !email.IsNullOrEmpty() || !mobile.IsNullOrEmpty()) && isNewScreen)
                 {
                     FrameLayoutContactDetails.Visibility = ViewStates.Visible;
                 }
@@ -305,7 +308,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 {
                     TextInputLayoutMobileNumber.Visibility = ViewStates.Visible;
                     EditTextMobileNumber.Text = mobile;
-                    TextInputLayoutMobileNumber.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "mobileHint").ToUpper();
+                    TextInputLayoutMobileNumber.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "mobileHint").ToUpper();
                 }
 
 
@@ -317,7 +320,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                     TextInputLayoutIsOwner.Visibility = ViewStates.Visible;
                     txtEnquiryDetails.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "reqUpdate");   // translate
                     SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle"));
-                    EditTextIsOwner.Text = isOwner==true ? Utility.GetLocalizedLabel("SubmitEnquiry", "viewYes") : Utility.GetLocalizedLabel("SubmitEnquiry", "viewNo");
+                    EditTextIsOwner.Text = isOwner == true ? Utility.GetLocalizedLabel("SubmitEnquiry", "viewYes") : Utility.GetLocalizedLabel("SubmitEnquiry", "viewNo");
                 }
                 else
                 {
@@ -328,7 +331,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
                 if (relationShip != null && isNewScreen)
                 {
-                   
+
 
                     if (relationShip == 0)
                     {
@@ -340,7 +343,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                         EditTextRElationOwner.Text = relationshipDesc;
                         TextInputLayoutRelationOwner.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "relationshipTitle").ToUpper();
                     }
-            
+
                 }
                 else
                 {
@@ -348,7 +351,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 }
 
 
-                
+
 
 
                 foreach (FeedbackUpdate item in feedbackUpdateList)
@@ -372,12 +375,12 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                         string maskedICNo = icNo;
 
                         TextInputLayoutNewIC.Visibility = ViewStates.Visible;
-                        EditTextNewIC.Text = item.FeedbackUpdInfoValue.Length>4 ? maskedICNo : item.FeedbackUpdInfoValue;
+                        EditTextNewIC.Text = item.FeedbackUpdInfoValue.Length > 4 ? maskedICNo : item.FeedbackUpdInfoValue;
                         TextInputLayoutNewIC.Hint = item.FeedbackUpdInfoTypeDesc.ToUpper();
 
                     }
 
-                    if(item.FeedbackUpdInfoType == 2 && isNewScreen)
+                    if (item.FeedbackUpdInfoType == 2 && isNewScreen)
                     {
                         TextInputLayoutNewAccName.Visibility = ViewStates.Visible;
                         EditTextNewAccName.Text = item.FeedbackUpdInfoValue;
@@ -459,7 +462,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                     txtFeedback.Text = feedback;
                 }
 
-           
+
                 txtforMyhouse.Text = accountNoName;
             }
             catch (Exception e)
@@ -474,7 +477,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
             try
             {
-                if(Intent.HasExtra("TITLE") && !string.IsNullOrEmpty(Intent.GetStringExtra("TITLE")))
+                if (Intent.HasExtra("TITLE") && !string.IsNullOrEmpty(Intent.GetStringExtra("TITLE")))
                 {
                     SetToolBarTitle(Intent.GetStringExtra("TITLE"));
                 }
@@ -484,7 +487,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 if (Intent.HasExtra("NEWSCREEN") && !string.IsNullOrEmpty(Intent.GetStringExtra("NEWSCREEN")))
                 {
 
-                     isNewScreen = bool.Parse(Intent.GetStringExtra("NEWSCREEN"));
+                    isNewScreen = bool.Parse(Intent.GetStringExtra("NEWSCREEN"));
 
                 }
 
@@ -498,8 +501,8 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 }
 
 
-                
-           
+
+
                 if (isNewScreen)
                 {
                     SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "submittedEnquiryTitle"));  // translate
@@ -512,19 +515,19 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo, txtInputLayoutFeedback, txtInputLayoutFeedbackId, txtInputLayoutDateTime, txtInputLayoutStatus);
                 TextViewUtils.SetMuseoSans300Typeface(TextInputLayoutname, TextInputLayoutMobileNumber, TextInputLayoutEmailAddress, TextInputLayoutServiceRequestNumber, TextInputLayoutIsOwner);
                 TextViewUtils.SetMuseoSans300Typeface(EditTextName, EditTextEmailAddress, EditTextMobileNumber, EditTextIsOwner);
-                TextViewUtils.SetMuseoSans300Typeface(txtFeedbackId, txtFeedbackDateTime, txtAccountNo, txtFeedback, txtRelatedScreenshotTitle,  txtforMyhouse);
+                TextViewUtils.SetMuseoSans300Typeface(txtFeedbackId, txtFeedbackDateTime, txtAccountNo, txtFeedback, txtRelatedScreenshotTitle, txtforMyhouse);
                 TextViewUtils.SetMuseoSans500Typeface(txtStatus, txtFeedback_status_new, txtEnquiryDetails, TextView_contactDetails);
                 TextViewUtils.SetMuseoSans300Typeface(EditTextServiceRequestNumber, EditTextRElationOwner, EditTextNewIC, EditTextNewAccName, EditTextNewMobileNumber, EditTextNewEmailAddress, EditTextNewMailingAddress, EditTextNewPremiseAddress);
-                TextViewUtils.SetMuseoSans300Typeface(TextInputLayoutServiceRequestNumber,TextInputLayoutRelationOwner, TextInputLayoutNewIC, TextInputLayoutNewAccName, TextInputLayoutNewMobileNumber, TextInputLayoutNewEmailAddress, TextInputLayoutNewMailingAddress, TextInputLayoutNewPremiseAddress);
-                
+                TextViewUtils.SetMuseoSans300Typeface(TextInputLayoutServiceRequestNumber, TextInputLayoutRelationOwner, TextInputLayoutNewIC, TextInputLayoutNewAccName, TextInputLayoutNewMobileNumber, TextInputLayoutNewEmailAddress, TextInputLayoutNewMailingAddress, TextInputLayoutNewPremiseAddress);
+
                 //TRANSLATION
                 txtEnquiryDetails.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryDetailsTitle");
 
-                TextInputLayoutNewIC.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "newIC");
+                TextInputLayoutNewIC.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "newIC");
 
                 TextInputLayoutNewAccName.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "newAccName");
 
-                TextInputLayoutNewMobileNumber.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "newMobileNumber");
+                TextInputLayoutNewMobileNumber.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "newMobileNumber");
 
                 TextInputLayoutNewEmailAddress.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "newEmailAdd");
 
@@ -555,7 +558,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 txtInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("Common", "accountNo");
                 txtInputLayoutFeedback.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "messageHint");
                 txtRelatedScreenshotTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "supportingDocTitle");
-          
+
 
 
                 txtFeedbackId.AddTextChangedListener(new InputFilterFormField(txtFeedbackId, txtInputLayoutFeedbackId));
@@ -565,7 +568,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 txtFeedback.AddTextChangedListener(new InputFilterFormField(txtFeedback, txtInputLayoutFeedback));
 
 
-               
+
                 //requested update lay
                 TextInputLayoutRelationOwner.Visibility = ViewStates.Gone;
                 TextInputLayoutNewIC.Visibility = ViewStates.Gone;
@@ -600,7 +603,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
 
 
-                mPresenter = new FeedbackDetailsBillRelatedPresenter(this, submittedFeedback,isNewScreen, this);
+                mPresenter = new FeedbackDetailsBillRelatedPresenter(this, submittedFeedback, isNewScreen, this);
                 this.userActionsListener.Start();
             }
             catch (Exception e)
@@ -632,19 +635,57 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
                 if (isNewScreen)
                 {
-                    selectedImage= adapter2.GetItemObject(e);
+                    selectedImage = adapter2.GetItemObject(e);
                 }
                 else
                 {
                     selectedImage = adapter.GetItemObject(e);
                 }
 
-               
+                if (selectedImage.Name.ToLower().Contains(".pdf"))
+                {
+                   
 
-                var fullImageIntent = new Intent(this, typeof(FeedbackDetailsFullScreenImageActivity));
-                fullImageIntent.PutExtra(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE, JsonConvert.SerializeObject(selectedImage));
-                StartActivity(fullImageIntent);
+                    try
+                    {
+                        OpenPDF(selectedImage.Path);
+                    }
+                    catch (Exception g)
+                    {
+                        Utility.LoggingNonFatalError(g);
+                    }
+
+                }
+                else
+                {
+                    var fullImageIntent = new Intent(this, typeof(FeedbackDetailsFullScreenImageActivity));
+                    fullImageIntent.PutExtra(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE, JsonConvert.SerializeObject(selectedImage));
+                    StartActivity(fullImageIntent);
+                }
+
+           
             }
+        }
+
+        public void OpenPDF(string path)
+        {
+            try
+            {
+                Java.IO.File file = new Java.IO.File(path);
+                Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
+                                            ApplicationContext.PackageName + ".fileprovider", file);
+
+                Intent intent = new Intent(Intent.ActionView);
+                intent.SetDataAndType(fileUri, "application/pdf");
+                intent.AddFlags(ActivityFlags.GrantReadUriPermission);
+                StartActivity(intent);
+            }
+            catch (Exception e)
+            {
+                Log.Debug("ViewSubmittedEnquiryPDF", e.StackTrace);
+                Utility.LoggingNonFatalError(e);
+            }
+
         }
 
         public override void OnTrimMemory(TrimMemory level)

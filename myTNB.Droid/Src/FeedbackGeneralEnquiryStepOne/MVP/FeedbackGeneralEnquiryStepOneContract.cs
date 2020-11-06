@@ -34,11 +34,11 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
 
             void ShowGallery();
 
-  
- 
+            void ShowPDF();
 
+            void ShowError(string message = null);
 
-
+            string copyPDFGetFilePath(Android.Net.Uri realFilePath, string filename);
 
             string GetTemporaryImageFilePath(string pFolder, string pFileName);
 
@@ -49,11 +49,13 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
 
             Task<string> SaveGalleryImage(Android.Net.Uri selectedImage, string pTempImagePath, string pFileName);
 
+            string GetImageName(int itemCount);
 
-
-            void UpdateAdapter(string pFilePath, string pFileName);
+            void UpdateAdapter(string pFilePath, string pFileName, string tfileName="");
 
             Task<string> SaveCameraImage(string tempImagePath, string fileName);
+
+            string getActualPath(Android.Net.Uri uri);
 
         }
 
@@ -74,8 +76,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.MVP
             void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data);
 
 
+            void OnAttachPDF();
 
-          
+         
+
 
 
         }

@@ -27,6 +27,12 @@ namespace myTNB_Android.Src.Database.Model
         [Column("FeedbackNameInListView")]
         public string FeedbackNameInListView { get; set; }
 
+        [Column("StatusCode")]
+        public string StatusCode { get; set; }
+
+        [Column("StatusDesc")]
+        public string StatusDesc { get; set; }
+
         public static int CreateTable()
         {
             //var db = new SQLiteConnection(Constants.DB_PATH);
@@ -48,7 +54,9 @@ namespace myTNB_Android.Src.Database.Model
                 FeedbackMessage = submittedFeedback.FeedbackMessage,
                 FeedbackCategoryName = submittedFeedback.FeedbackCategoryName,
                 FeedbackCategoryId = submittedFeedback.FeedbackCategoryId,
-                FeedbackNameInListView = submittedFeedback.FeedbackNameInListView
+                FeedbackNameInListView = submittedFeedback.FeedbackNameInListView,
+                StatusCode = submittedFeedback.StatusCode,
+                StatusDesc = submittedFeedback.StatusDesc
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);

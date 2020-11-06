@@ -80,44 +80,94 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Adapter
                 // the actual image
 
                 var viewHolder = holder as FeedbackGeneralEnquiryStepOneImageViewHolder;
-                Picasso.With(viewHolder.ItemView.Context)
-                    .Load(new Java.IO.File(image.Path))
-                    .Fit()
-                    .Into(viewHolder.imageView
-                            , delegate
-                            {
-                                Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
-                                if (imageBitmap != null && !imageBitmap.IsRecycled)
-                                {
-                                    RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
-                                    imageDrawable.CornerRadius = 5f;
-                                    viewHolder.imageView.SetImageDrawable(imageDrawable);
 
-                                    if (image.Name == null)
-                                    {
-                                        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
-                                        Calendar calendar = Calendar.GetInstance(Locale.Default);
+                bool isPDF = image.Path.ToLower().Contains("pdf");
 
-                                        var name = Resource.String.feedback_image_name_convention + dateFormatter.Format(calendar.TimeInMillis) + countFileName + ".jpeg";
-                                        countFileName++;
+                if (isPDF == true)
+                {
+                    Picasso.With(viewHolder.ItemView.Context)
+                     .Load(Resource.Drawable.pdfIcon)
+                     .Fit()
+                     .Into(viewHolder.imageView
+                             , delegate
+                             {
+                                 Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
+                                 if (imageBitmap != null && !imageBitmap.IsRecycled)
+                                 {
+                                     RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
+                                     imageDrawable.CornerRadius = 5f;
+                                     viewHolder.imageView.SetImageDrawable(imageDrawable);
 
-                                        viewHolder.filename.Text = name;
-                                    }
-                                    else
-                                    {
-                                        viewHolder.filename.Text = image.Name;
-                                    }
+                                     if (image.FileName == null)
+                                     {
+                                         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+                                         Calendar calendar = Calendar.GetInstance(Locale.Default);
+
+                                         var name = Resource.String.feedback_image_name_convention + dateFormatter.Format(calendar.TimeInMillis) + countFileName + ".pdf";
+                                         countFileName++;
+
+                                         viewHolder.filename.Text = name;
+                                     }
+                                     else
+                                     {
+                                         viewHolder.filename.Text = image.FileName;
+                                     }
 
 
-                                }
+                                 }
 
-                            }
-                            , delegate
-                            {
+                             }
+                             , delegate
+                             {
 
-                            });
+                             });
 
-                ;
+                    ;
+                }
+                else
+                {
+                    Picasso.With(viewHolder.ItemView.Context)
+                     .Load(new Java.IO.File(image.Path))
+                     .Fit()
+                     .Into(viewHolder.imageView
+                             , delegate
+                             {
+                                 Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
+                                 if (imageBitmap != null && !imageBitmap.IsRecycled)
+                                 {
+                                     RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
+                                     imageDrawable.CornerRadius = 5f;
+                                     viewHolder.imageView.SetImageDrawable(imageDrawable);
+
+                                     if (image.Name == null)
+                                     {
+                                         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+                                         Calendar calendar = Calendar.GetInstance(Locale.Default);
+
+                                         var name = Resource.String.feedback_image_name_convention + dateFormatter.Format(calendar.TimeInMillis) + countFileName + ".jpeg";
+                                         countFileName++;
+
+                                         viewHolder.filename.Text = name;
+                                     }
+                                     else
+                                     {
+                                         viewHolder.filename.Text = image.Name;
+                                     }
+
+
+                                 }
+
+                             }
+                             , delegate
+                             {
+
+                             });
+
+                    ;
+
+                }
+
+                  
             }
             else
             {

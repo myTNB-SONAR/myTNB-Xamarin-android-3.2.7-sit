@@ -219,6 +219,8 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
+            MenuInflater.Inflate(Resource.Menu.ViewBillReceiptMenu, menu);
+            //downloadOption = menu.GetItem(Resource.Id.action_download);
             return base.OnCreateOptionsMenu(menu);
         }
 
