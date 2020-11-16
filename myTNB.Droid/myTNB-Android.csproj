@@ -989,8 +989,6 @@
     <Compile Include="Src\MultipleAccountPayment\Requests\MPGetAccountDueAmountRequest.cs" />
     <Compile Include="Src\MultipleAccountPayment\Requests\MPInitiatePaymentRequestV3.cs" />
     <Compile Include="Src\MultipleAccountPayment\Requests\MPSubmitPaymentRequestPG.cs" />
-    <Compile Include="Src\MyAccount\Adapter\ArraySwipeAdapter.cs" />
-    <Compile Include="Src\MyAccount\Adapter\MyAccountAdapterTest.cs" />
     <Compile Include="Src\MyLearnMoreAboutTnb\Activity\MyLearnMoreActivity.cs" />
     <Compile Include="Src\MyLearnMoreAboutTnb\MVP\MyLearnMoreContract.cs" />
     <Compile Include="Src\MyLearnMoreAboutTnb\MVP\MyLearnMorePresenter.cs" />
@@ -1009,7 +1007,6 @@
     <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsMonthFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\SelectedMarkerView\SMSelectedMarkerView.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\FeedbackMenu\FeedbackMenuFragment.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\ProfileMenu\TestProfileMenuFragment.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\ProfileMenu\ProfileMainMenuFragment.cs" />
     <Compile Include="Src\myTNBMenu\Listener\SMChartHScrollView.cs" />
     <Compile Include="Src\myTNBMenu\Listener\SMDashboardScrollView.cs" />
@@ -1037,8 +1034,8 @@
     <Compile Include="Src\myTNBMenu\Models\UserNotificationTypeResponse.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\FeedbackMenuContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\FeedbackMenuPresenter.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\MainProfileMenuContract.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\MainProfileMenuPresenter.cs" />
+
+ 
     <Compile Include="Src\myTNBMenu\Requests\AccountDueAmountRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\BillHistoryRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\PaymentHistoryRequest.cs" />
