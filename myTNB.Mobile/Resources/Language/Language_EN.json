@@ -115,7 +115,7 @@
     "updateIdMessage" : "Please make sure your identification number is correct as you can only update this once.",
     "confirm" : "Confirm",
     "re_enter" : "Re-enter",
-    "titleNonOwnerAddAcc" : "Continue adding the account and give it a name for your easy reference.",
+    "titleNonOwnerAddAcc" : "Continue adding the account and give it a name for your easy reference."
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -234,7 +234,7 @@
     "later": "Later",
     "update": "Update",
     "titleIcUpdate": "Complete your myTNB profile now for a better myTNB experience!",
-    "bodyIcUpdate": "Your identification number is not captured in your myTNB profile, update it now to have better access and controls over your electricity accounts!",
+    "bodyIcUpdate": "Your identification number is not captured in your myTNB profile, update it now to have better access and controls over your electricity accounts!"
   },
   "Tabbar": {
     "home": "Home",
@@ -642,7 +642,7 @@
      "mobileNumberVerified": "You've successfully updated your phone number!",
      "NameUpdateSuccess": "Your name has been changed successfully.",
      "EmailUpdateSuccess": "An email verification link has been sent to ",
-     "IDUpdateSuccess": "Thank you for updating! Your update has been recorded above.",
+     "IDUpdateSuccess": "Thank you for updating! Your update has been recorded above."
   },
 
   "NameUpdate" : {
@@ -650,14 +650,14 @@
      "passwordUpdateSuccess": "Your password has been changed successfully.",
      "mobileNumberVerified": "You've successfully updated your phone number!",
      "NameUpdateSuccess": "Your name has been changed successfully.",
-     "EmailUpdateSuccess": "An email verification link has been sent to ",
+     "EmailUpdateSuccess": "An email verification link has been sent to "
   },
 
   "LearnMoreAboutTnb" : {
     "title": "Learn More About TNB",
     "tnc": "Terms & Conditions",
     "findUs": "Find Us",
-    "faq": "FAQ",
+    "faq": "FAQ"
   },
   "Profile": {
     "title": "Profile",
@@ -1172,6 +1172,6 @@
     "updateIdLabelTitle" : "Provide your identification number for better experience!",
     "updateIdLabelDetails" : "Get better access and controls over your electricity accounts on myTNB by helping us validate your identification",
     "confrimButton" : "Confirm"
-  },
+  }
 
 }
