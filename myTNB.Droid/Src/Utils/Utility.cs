@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Graphics.Drawables;
 using Android.Text;
 using Android.Text.Style;
 using Android.Util;
@@ -12,6 +13,7 @@ using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.SSMR.Util;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -192,6 +194,33 @@ namespace myTNB_Android.Src.Utils
             return label;
         }
 
+        public static void ShowUpdateIdDialog(Activity context, string ic_no, Action confirmAction, Action cancelAction = null)
+        {
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(Utility.GetLocalizedLabel("Common", "updateIdTitle"))
+                        .SetMessage(Utility.GetLocalizedLabel("Common", "updateIdMessage"))
+                        .SetContentGravity(Android.Views.GravityFlags.Center)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "re_enter"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+        }
+
         public static void ShowChangeLanguageDialog(Activity context, string selectedLanguage, Action confirmAction, Action cancelAction = null)
         {
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
@@ -200,6 +229,111 @@ namespace myTNB_Android.Src.Utils
                         .SetContentGravity(Android.Views.GravityFlags.Center)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageNo_" + selectedLanguage))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageYes_" + selectedLanguage))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+        }
+
+        public static void ShowIdentificationUpdateProfileDialog(Activity context, Action confirmAction, Action cancelAction = null)
+        {
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+                        .SetHeaderImage(Resource.Drawable.welcome_illustration)
+                        .SetTitle(Utility.GetLocalizedLabel("DashboardHome", "titleIcUpdate"))
+                        .SetMessage(Utility.GetLocalizedLabel("DashboardHome", "bodyIcUpdate"))
+                        .SetContentGravity(Android.Views.GravityFlags.Center)
+                        .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "later"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "update"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+        }
+
+        public static void ShowEmailErrorDialog(Activity context, string selectedAction, Action confirmAction, Action cancelAction = null)
+        {
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(Utility.GetLocalizedLabel("Register", "EmailHeaderError"))
+                        .SetMessage(Utility.GetLocalizedLabel("Register", "EmailBodyError"))
+                        .SetContentGravity(Android.Views.GravityFlags.Center)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Register", "Reset"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "tryAgain"))
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    confirmAction();
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+        }
+
+        public static void ShowEmailVerificationDialog(Activity context, Action confirmAction, Action cancelAction = null)
+        {
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(Utility.GetLocalizedLabel("Register", "EmailHeaderVerification"))
+                        .SetMessage(Utility.GetLocalizedLabel("Register", "EmailBodyVerification"))
+                        .SetContentGravity(Android.Views.GravityFlags.Center)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Register", "gotIt"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "resend"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+        }
+
+        public static void ShowIdentificationErrorDialog(Activity context, Action confirmAction, Action cancelAction = null)
+        {
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(Utility.GetLocalizedLabel("Register", "IdHeaderError"))
+                        .SetMessage(Utility.GetLocalizedLabel("Register", "IdBodyError"))
+                        .SetContentGravity(Android.Views.GravityFlags.Center)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Register", "gotIt"))
                         .SetSecondaryCTAaction(() =>
                         {
                             confirmAction();
