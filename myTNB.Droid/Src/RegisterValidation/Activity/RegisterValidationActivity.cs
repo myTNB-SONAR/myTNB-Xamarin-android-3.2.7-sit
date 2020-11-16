@@ -17,6 +17,7 @@ using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.RegisterValidation.Activity;
 using myTNB_Android.Src.RegisterValidation.MVP;
 using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.Utils;
@@ -407,6 +408,14 @@ namespace myTNB_Android.Src.RegisterValidation
             LinkAccountIntent.PutExtra("fromDashboard", true);
             StartActivity(LinkAccountIntent);
         }
+
+        public void ShowEmailRegisterPopUp()
+        {
+            Intent LinkAccountIntent = new Intent(this, typeof(EmailRegisterPopupActivity));
+            LinkAccountIntent.PutExtra("fromDashboard", true);
+            StartActivity(LinkAccountIntent);
+        }
+
 
         public override bool ShowCustomToolbarTitle()
         {

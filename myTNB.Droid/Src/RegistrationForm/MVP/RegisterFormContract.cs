@@ -52,6 +52,8 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             /// </summary>
             void ShowInvalidEmailError();
 
+            
+
             void ClearInvalidEmailError();
 
             /// <summary>

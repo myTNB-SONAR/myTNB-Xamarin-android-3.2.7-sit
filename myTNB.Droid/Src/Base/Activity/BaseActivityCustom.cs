@@ -1,4 +1,5 @@
 ﻿using System;
+using Android.Content;
 using Android.OS;
 using Android.Util;
 using myTNB_Android.Src.Utils;
@@ -38,5 +39,6 @@ namespace myTNB_Android.Src.Base.Activity
         {
             return Utility.GetLocalizedLabel("Common", key);
         }
+
     }
 }

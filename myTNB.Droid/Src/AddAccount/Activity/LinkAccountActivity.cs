@@ -5,9 +5,11 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Text;
+using Android.Text.Style;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
@@ -17,6 +19,7 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.SSMR.Util;
+using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
@@ -36,6 +39,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
         RecyclerView.LayoutManager layoutManager2;
 
         private readonly int ADD_ACCOUNT_REQUEST_CODE = 4129;
+        private readonly int FROM_REGISTER_CODE = 4130;
         private readonly string EG_ACCOUNT_LABEL = "Account ";
         private int ACCOUNT_COUNT = 0;
         private int TOTAL_NO_OF_ACCOUNTS_TO_ADD = 0;
@@ -72,11 +76,20 @@ namespace myTNB_Android.Src.AddAccount.Activity
         [BindView(Resource.Id.text_additional_accounts)]
         TextView textAdditionalAcoount;
 
+        [BindView(Resource.Id.label_additional_accounts)]
+        TextView textlabelAdditionalAcoount;
+
         [BindView(Resource.Id.layout_additional_accounts)]
         LinearLayout layoutAdditionalAccounts;
 
         [BindView(Resource.Id.no_account_layout)]
         LinearLayout NoAccountLayout;
+
+        [BindView(Resource.Id.txtTermsConditions)]
+        TextView txtTermsConditions;
+
+        [BindView(Resource.Id.checkboxCondition)]
+        CheckBox txtboxcondition;
 
         [BindView(Resource.Id.btnAddAnotherAccount)]
         Button btnAddAnotherAccount;
@@ -88,6 +101,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
         private LinkAccountContract.IUserActionsListener userActionsListener;
 
         private bool fromDashboard = false;
+        private bool fromRegisterPage = false;
         const string PAGE_ID = "AddAccount";
 
         public bool IsActive()
@@ -150,7 +164,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       }
                       if (accountList.Count() > 0)
                       {
-                          textNoOfAcoount.Text = accountList.Count() + " " + GetLabelByLanguage("supplyAcctCount");
+                          textNoOfAcoount.Text = accountList.Count() + " " + GetLabelByLanguage("supplyAccountCount");
                       }
                       else
                       {
@@ -201,6 +215,10 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       if (additionalAccountList.Count == 0)
                       {
                           textAdditionalAcoount.Visibility = ViewStates.Gone;
+                          textlabelAdditionalAcoount.Visibility = ViewStates.Gone;
+                          textNoOfAcoount.Visibility = ViewStates.Visible;
+                          labelAccountLabel.Visibility = ViewStates.Visible;
+                          NoAccountLayout.Visibility = ViewStates.Visible;
                       }
                       int totalAccountAdded = adapter.GetAccountList().Count + additionalAdapter.GetAccountList().Count();
                       if (accountList != null && totalAccountAdded < Constants.ADD_ACCOUNT_LIMIT)
@@ -238,7 +256,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
         public void ShowAddAnotherAccountScreen()
         {
             AddAccountUtils.SetAccountList(accountList, additionalAccountList);
-            RunOnUiThread(() => StartActivityForResult(typeof(AddAccountActivity), ADD_ACCOUNT_REQUEST_CODE));
+            Intent nextIntent = new Intent(this, typeof(AddAccountActivity));
+            nextIntent.PutExtra("fromRegisterPage", fromRegisterPage);
+            RunOnUiThread(() => StartActivityForResult(nextIntent, ADD_ACCOUNT_REQUEST_CODE));
+            //AddAccountUtils.SetAccountList(accountList, additionalAccountList);
+            //RunOnUiThread(() => StartActivityForResult(typeof(AddAccountActivity), ADD_ACCOUNT_REQUEST_CODE));
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -258,6 +280,10 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 {
                     fromDashboard = Intent.Extras.GetBoolean("fromDashboard", false);
                 }
+                if (Intent.HasExtra("fromRegisterPage"))
+                {
+                    fromRegisterPage = Intent.Extras.GetBoolean("fromRegisterPage", false);
+                }
 
                 TextViewUtils.SetMuseoSans500Typeface(textNoOfAcoount, btnAddAnotherAccount, btnConfirm);
                 TextViewUtils.SetMuseoSans300Typeface(labelAccountLabel);
@@ -266,7 +292,10 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 labelAccountLabel.Text = GetLabelByLanguage("noAcctFoundMsg");
                 btnAddAnotherAccount.Text = GetLabelByLanguage("addAnotherAcct");
                 btnConfirm.Text = GetLabelCommonByLanguage("confirm");
-                textAdditionalAcoount.Text = GetLabelByLanguage("additionalAccts");
+                textAdditionalAcoount.Text = GetLabelByLanguage("additionalAddAccts");
+                textlabelAdditionalAcoount.Text = GetLabelByLanguage("labeladditionalAccts");
+                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tncNew"));
+                StripUnderlinesFromLinks(txtTermsConditions);
 
                 adapter = new AccountListAdapter(this, accountList);
                 layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
@@ -278,6 +307,13 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 additionalAccountListRecyclerView.SetLayoutManager(layoutManager2);
                 additionalAccountListRecyclerView.SetAdapter(additionalAdapter);
 
+                var boxcondition = new CheckBox(this)
+                {
+                    ScaleX = 0.8f,
+                    ScaleY = 0.8f
+                };
+
+                txtboxcondition.CheckedChange += CheckedChange;
 
                 //Get apiId and userId from the bundle
                 string email = UserEntity.GetActive().UserID;
@@ -396,6 +432,66 @@ namespace myTNB_Android.Src.AddAccount.Activity
             // CLEARS ADAPTER
         }
 
+        private void CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
+        {
+            if (!txtboxcondition.Checked)
+            {
+                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tncNew"));
+                StripUnderlinesFromLinks(txtTermsConditions);
+            }
+            else
+            {
+                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc_checked"));
+                StripUnderlinesFromLinks(txtTermsConditions);
+            }
+            int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
+            string totalAcc = totalAccountAdded.ToString();
+            this.userActionsListener.CheckRequiredFields(totalAcc, txtboxcondition.Checked);
+        }
+
+        [OnClick(Resource.Id.txtTermsConditions)]
+        void OnTermsConditions(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.NavigateToTermsAndConditions();
+            }
+        }
+
+        public void StripUnderlinesFromLinks(TextView textView)
+        {
+            var spannable = new SpannableStringBuilder(textView.TextFormatted);
+            var spans = spannable.GetSpans(0, spannable.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+            foreach (URLSpan span in spans)
+            {
+                var start = spannable.GetSpanStart(span);
+                var end = spannable.GetSpanEnd(span);
+                spannable.RemoveSpan(span);
+                var newSpan = new URLSpanNoUnderline(span.URL);
+                spannable.SetSpan(newSpan, start, end, 0);
+            }
+            textView.TextFormatted = spannable;
+        }
+
+        class URLSpanNoUnderline : URLSpan
+        {
+            public URLSpanNoUnderline(string url) : base(url)
+            {
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
+            }
+        }
+
+        public void ShowTermsAndConditions()
+        {
+            StartActivity(typeof(TermsAndConditionActivity));
+        }
+
         public void ShowDashboard()
         {
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
@@ -412,8 +508,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     ACCOUNT_COUNT = CustomerBillingAccount.List().Count() + 1;
                     if (response.Count > 0)
                     {
-                        textNoOfAcoount.Text = response.Count + " " + GetLabelByLanguage("supplyAcctCount");
-                        
+                        textNoOfAcoount.Text = response.Count + " " + GetLabelByLanguage("supplyAccountCount");
+                        labelAccountLabel.Text = GetLabelByLanguage("AcctFoundMsg");
                         labelAccountLabel.Visibility = ViewStates.Visible;
                         for (int i = 0; i < response.Count; i++)
                         {
@@ -827,6 +923,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 additionalAdapter.AdditionalItemClick += OnAdditionalItemClick;
                                 additionalAdapter.NotifyDataSetChanged();
                                 textAdditionalAcoount.Visibility = ViewStates.Visible;
+                                textlabelAdditionalAcoount.Visibility = ViewStates.Visible;
+
                             }
                             else
                             {
@@ -1082,6 +1180,17 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 this.Finish();
         }
 
+        public void EnableConfirmButton()
+        {
+            btnConfirm.Enabled = true;
+            btnConfirm.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+        }
+
+        public void DisableConfirmButton()
+        {
+            btnConfirm.Enabled = false;
+            btnConfirm.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+        }
 
         public void ShowServiceError(string title, string message)
         {

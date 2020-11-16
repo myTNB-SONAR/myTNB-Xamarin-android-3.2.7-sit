@@ -64,22 +64,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     {
                         cardList.Add(CreditCardData.Copy(card));
                     }
-
-                    this.mView.ShowUserData(userEntity, cardList.Count);
-
-                    if (cardList.Count > 0)
-                    {
-                        this.mView.EnableManageCards();
-                    }
-                    else
-                    {
-                        this.mView.DisableManageCards();
-                    }
                 }
                 else
                 {
-                    this.mView.DisableManageCards();
-                    this.mView.ShowUserData(userEntity, 0);
                     this.mView.ShowCCErrorSnakebar();
                 }
 
@@ -91,8 +78,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideNotificationsProgressDialog();
                 }
                 // ADD OPERATION CANCELLED HERE
-                this.mView.DisableManageCards();
-                this.mView.ShowUserData(userEntity, 0);
+                //this.mView.DisableManageCards();
+                //this.mView.ShowUserData(userEntity, 0);
                 this.mView.ShowCCErrorSnakebar();
                 Utility.LoggingNonFatalError(e);
             }
@@ -103,8 +90,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideNotificationsProgressDialog();
                 }
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                this.mView.DisableManageCards();
-                this.mView.ShowUserData(userEntity, 0);
+                //this.mView.DisableManageCards();
+                //this.mView.ShowUserData(userEntity, 0);
                 this.mView.ShowCCErrorSnakebar();
                 Utility.LoggingNonFatalError(apiException);
             }
@@ -115,8 +102,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideNotificationsProgressDialog();
                 }
                 // ADD UNKNOWN EXCEPTION HERE
-                this.mView.DisableManageCards();
-                this.mView.ShowUserData(userEntity, 0);
+                //this.mView.DisableManageCards();
+                //this.mView.ShowUserData(userEntity, 0);
                 this.mView.ShowCCErrorSnakebar();
                 Utility.LoggingNonFatalError(e);
             }
@@ -293,11 +280,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             this.mView.ShowRemovedCardSuccess(creditCard, cardList.Count);
             if (cardList.Count > 0)
             {
-                this.mView.EnableManageCards();
+                //this.mView.EnableManageCards();
             }
             else
             {
-                this.mView.DisableManageCards();
+                //this.mView.DisableManageCards();
             }
         }
     }

@@ -12,9 +12,11 @@ using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ManageCards.Adapter;
 using myTNB_Android.Src.ManageCards.Models;
 using myTNB_Android.Src.ManageCards.MVP;
+using myTNB_Android.Src.MyAccount.Adapter;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
@@ -33,9 +35,17 @@ namespace myTNB_Android.Src.ManageCards.Activity
         [BindView(Resource.Id.layout_cards)]
         LinearLayout layoutCards;
 
+        [BindView(Resource.Id.layout_autopay)]
+        LinearLayout layoutAutopay;
+
+        [BindView(Resource.Id.layout_label_autopay)]
+        LinearLayout layoutLabelAutopay;
+
+        [BindView(Resource.Id.layout_autopay_listview)]
+        LinearLayout layoutListviewAutopay;
+
         [BindView(Resource.Id.layout_empty_cards)]
         LinearLayout layoutEmptyCards;
-
 
         [BindView(Resource.Id.recyclerView)]
         RecyclerView mRecyclerView;
@@ -49,10 +59,30 @@ namespace myTNB_Android.Src.ManageCards.Activity
         [BindView(Resource.Id.txtEmptyCard)]
         TextView txtEmptyCard;
 
+        [BindView(Resource.Id.txtManageAutoPayTitle)]
+        TextView txtManageAutoPayTitle;
+
+        [BindView(Resource.Id.txtTitle)]
+        TextView txtTitle;
+
+        [BindView(Resource.Id.txtValue)]
+        TextView txtValue;
+
+        [BindView(Resource.Id.listView)]
+        ListView listView;
+
+        [BindView(Resource.Id.btnAutoPay)]
+        Button btnAutoPay;
+
+/*        [BindView(Resource.Id.btnLoadMore)]
+        Button btnLoadMore;*/
+
         [BindView(Resource.Id.imgEmptyCard)]
         ImageView imgEmptyCard;
 
         ManageCardsAdapter mAdapter;
+
+        MyAccountAdapter AccAdapter;
 
         LinearLayoutManager mLayoutManager;
 
@@ -99,10 +129,18 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 mRecyclerView.SetLayoutManager(mLayoutManager);
                 mRecyclerView.SetAdapter(mAdapter);
 
-                TextViewUtils.SetMuseoSans300Typeface(txtManageCardsTitle, txtEmptyCard);
+                TextViewUtils.SetMuseoSans300Typeface(txtEmptyCard, txtValue);
+                TextViewUtils.SetMuseoSans500Typeface(txtManageAutoPayTitle, txtManageCardsTitle, txtTitle);
 
-                txtManageCardsTitle.Text = GetLabelByLanguage("details");
+                txtManageAutoPayTitle.Text = GetLabelByLanguage("titleAutoPay");
+                txtTitle.Text = GetLabelByLanguage("titleNoAutoPay");
+                txtValue.Text = GetLabelByLanguage("bodyNoAutoPay");
+                txtManageCardsTitle.Text = GetLabelByLanguage("titleCard");
                 txtEmptyCard.Text = GetLabelByLanguage("noCards");
+
+                AccAdapter = new MyAccountAdapter(this, false);
+                listView.Adapter = AccAdapter;
+
 
                 mPresenter = new ManageCardsPresenter(this);
                 this.userActionsListener.Start();
@@ -155,7 +193,7 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
         public override int ResourceId()
         {
-            return Resource.Layout.ManageCardsView;
+            return Resource.Layout.ManageCardsViewNew;
         }
 
         public void SetPresenter(ManageCardsContract.IUserActionsListener userActionListener)
@@ -176,6 +214,43 @@ namespace myTNB_Android.Src.ManageCards.Activity
             }
         }
 
+        [OnClick(Resource.Id.btnAutoPay)]
+        void OnClickAddAccount(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                ShowAutoPayAccount();
+            }
+        }
+
+        public void ShowAutoPayAccount()
+        {
+            try
+            {
+                if (cardsList.Count == 0)
+                {
+                    layoutEmptyCards.Visibility = ViewStates.Visible;
+                    layoutCards.Visibility = ViewStates.Gone;
+                    layoutLabelAutopay.Visibility = ViewStates.Gone;
+                    layoutAutopay.Visibility = ViewStates.Gone;
+                    layoutListviewAutopay.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    layoutLabelAutopay.Visibility = ViewStates.Visible;
+                    layoutAutopay.Visibility = ViewStates.Gone;
+                    layoutCards.Visibility = ViewStates.Visible;
+                    layoutListviewAutopay.Visibility = ViewStates.Visible;
+                    layoutEmptyCards.Visibility = ViewStates.Gone;
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowCards()
         {
             try
@@ -184,13 +259,33 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 {
                     layoutEmptyCards.Visibility = ViewStates.Visible;
                     layoutCards.Visibility = ViewStates.Gone;
+                    layoutLabelAutopay.Visibility = ViewStates.Gone;
+                    layoutAutopay.Visibility = ViewStates.Gone;
                 }
                 else
                 {
+                    layoutLabelAutopay.Visibility = ViewStates.Visible;
+                    layoutAutopay.Visibility = ViewStates.Visible;
                     layoutCards.Visibility = ViewStates.Visible;
                     layoutEmptyCards.Visibility = ViewStates.Gone;
                     mAdapter.AddAll(cardsList);
                 }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowAccountList(List<CustomerBillingAccount> accountList)
+        {
+            try
+            {
+                AccAdapter.AddAll(accountList);
+                AccAdapter.NotifyDataSetChanged();
+                listView.SetNoScroll();
+                //listView.AddFooterView(btnLoadMore);
+
             }
             catch (Exception e)
             {
@@ -243,6 +338,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
                     layoutEmptyCards.Visibility = ViewStates.Visible;
                     layoutCards.Visibility = ViewStates.Gone;
+                    layoutLabelAutopay.Visibility = ViewStates.Gone;
+                    layoutAutopay.Visibility = ViewStates.Gone;
+                    listView.Visibility = ViewStates.Gone;
                     this.userActionsListener.OnRemoveStay(RemovedCard, position);
 
                 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="18dp"
+    android:id="@+id/rootView">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInputLayoutNameFull"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_margin="18dp"
+            app:errorEnabled="true"
+            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+            <EditText
+                android:id="@+id/txtNameFull"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/placeholder_name"
+                android:drawablePadding="6dp"
+                android:hint="@string/update_account_hint_account_nickname"
+                android:inputType="text"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:id="@+id/btnSave"
+            style="@style/DisabledButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="18dp"
+            android:text="@string/update_account_btn_save"
+            android:textAllCaps="false" />
+    </FrameLayout>
+</LinearLayout>

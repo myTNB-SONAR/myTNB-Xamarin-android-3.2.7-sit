@@ -1517,4 +1517,20 @@ Please try again later.]]>
 <string name="walkthrough_btn_skip">Skip</string>
 
 <string name="tutorial_arrow_down"><![CDATA[<font style="color:#ffffff;font-size="5px"">&#x25BC;</font>]]></string>
+
+<!--Email Registration-->
+<string name="registration_form_email_page">Lets Get Started!</string>
+<string name="registration_to_manage_account">Create your account with the details below:</string>
+<string name="registration_next_btn">NEXT</string>
+<string name="identification_detail_form_page">IDENTIFICATION NUMBER</string>
+<!--End Email Registration-->
+
+<!--Profile Page Name-->
+<string name="learn_more_about_tnb_title">Learn More About TNB</string>
+<string name="profile_tnb_title">MyTNB Profile</string>
+<!--Profile Page Name-->
+
+
+
+	
 </resources>

@@ -47,6 +47,8 @@ using System.Globalization;
 using AndroidX.CoordinatorLayout.Widget;
 using Google.Android.Material.BottomNavigation;
 using AndroidX.Core.Content;
+using myTNB_Android.Src.ForgetPassword.Activity;
+using myTNB_Android.Src.UpdateID.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -260,6 +262,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     this.mPresenter.OnGetEPPTooltipContentDetail();
                     this.mPresenter.OnGetBillTooltipContent();
                     alreadyStarted = true;
+                    PopulateIdentificationDetails();
                 }
             }
             catch (System.Exception e)
@@ -394,6 +397,32 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             base.OnActivityResult(requestCode, resultCode, data);
             this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
 
+        }
+
+        private void PopulateIdentificationDetails()
+        {
+            UserEntity user = UserEntity.GetActive();
+
+            try
+            {
+                if(user.IdentificationNo == null)
+                {
+                    Utility.ShowIdentificationUpdateProfileDialog(this, () =>
+                    {
+                        ShowIdentificationUpdate();
+                    });
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowIdentificationUpdate()
+        {
+            // TODO : START ACTIVITY FORGET PASSWORD
+            StartActivity(typeof(UpdateIDActivity));
         }
 
         public void ShowBillMenu(AccountData selectedAccount)
@@ -715,7 +744,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowMoreMenu()
         {
-            ProfileMenuFragment profileMenuFragment = new ProfileMenuFragment();
+            //ProfileMenuFragment profileMenuFragment = new ProfileMenuFragment();
+            ProfileMainMenuFragment profileMenuFragment = new ProfileMainMenuFragment();
+
             if (currentFragment != null)
             {
                 SupportFragmentManager.PopBackStack();

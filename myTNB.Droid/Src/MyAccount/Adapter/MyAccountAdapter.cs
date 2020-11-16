@@ -1,6 +1,8 @@
 ﻿using Android.Content;
 using Android.Views;
 using Android.Widget;
+using AndroidSwipeLayout;
+using AndroidViewAnimations;
 using CheeseBind;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.Database.Model;
@@ -27,34 +29,46 @@ namespace myTNB_Android.Src.MyAccount.Adapter
         {
         }
 
-
-
+      
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             MyAccountViewHolder viewHolder = null;
+
             CustomerBillingAccount account = GetItemObject(position);
             if (convertView == null)
             {
-                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.MyAccountRow, parent, false);
+                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.MyAccountRowNew, parent, false);
+                Button btn_delete = (Button)convertView.FindViewById(Resource.Id.delete);
+                SwipeLayout swipeLayout = (SwipeLayout)convertView.FindViewById(Resource.Id.swipe);
                 viewHolder = new MyAccountViewHolder(convertView);
                 convertView.Tag = viewHolder;
+
+                swipeLayout.Opened += (sender, e) =>
+                {
+                    YoYo.With(Techniques.Tada)
+                        .Duration(500)
+                        .Delay(100)
+                        .PlayOn(e.Layout.FindViewById(Resource.Id.trash));
+                };
+
+                btn_delete.SetBackgroundResource(Resource.Drawable.delete_icon_acc);
+                viewHolder.txtAccountName.Text = account.AccDesc;
+                viewHolder.txtAccountNum.Text = account.AccNum;
+                //viewHolder.txtAccountManage.Text = Utility.GetLocalizedLabel("Common", "manage");
+
+                /*if (account.AccountCategoryId.Equals("2"))
+                {
+                    viewHolder.imageLeaf.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    viewHolder.imageLeaf.Visibility = ViewStates.Invisible;
+                }*/
+
             }
             else
             {
                 viewHolder = convertView.Tag as MyAccountViewHolder;
-            }
-
-            viewHolder.txtAccountName.Text = account.AccDesc;
-            viewHolder.txtAccountNum.Text = account.AccNum;
-            viewHolder.txtAccountManage.Text = Utility.GetLocalizedLabel("Common","manage");
-
-            if (account.AccountCategoryId.Equals("2"))
-            {
-                viewHolder.imageLeaf.Visibility = ViewStates.Visible;
-            }
-            else
-            {
-                viewHolder.imageLeaf.Visibility = ViewStates.Invisible;
             }
 
             return convertView;
@@ -68,16 +82,11 @@ namespace myTNB_Android.Src.MyAccount.Adapter
             [BindView(Resource.Id.txtAccountNum)]
             internal TextView txtAccountNum;
 
-            [BindView(Resource.Id.txtAccountManage)]
-            internal TextView txtAccountManage;
-
-            [BindView(Resource.Id.imageLeaf)]
-            public ImageView imageLeaf;
 
             public MyAccountViewHolder(View itemView) : base(itemView)
             {
-                TextViewUtils.SetMuseoSans300Typeface(txtAccountName, txtAccountNum);
-                TextViewUtils.SetMuseoSans500Typeface(txtAccountManage);
+                TextViewUtils.SetMuseoSans300Typeface( txtAccountNum);
+                TextViewUtils.SetMuseoSans500Typeface(txtAccountName);
             }
         }
     }

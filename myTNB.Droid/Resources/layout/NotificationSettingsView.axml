@@ -59,7 +59,7 @@
             <LinearLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:minHeight="25px"
                 android:minWidth="25px"
                 android:orientation="vertical">
@@ -71,8 +71,7 @@
                     android:layout_marginLeft="18dp"
                     android:layout_marginRight="18dp"
                     android:background="@color/lightGrey"
-                    android:padding="10dp"
-                    android:text="@string/notification_settings_channel_title"
+                    android:text=""
                     android:textColor="@color/powerBlue"
                     android:textSize="16dp" />
 
@@ -84,6 +83,51 @@
                     android:minHeight="25px"
                     android:minWidth="25px" />
             </LinearLayout>
+
+            <LinearLayout
+            android:id="@+id/appLanguageContainer"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/linearLayout3"
+            android:orientation="vertical"
+            android:background="@color/lightGrey">
+            <LinearLayout
+            android:id="@+id/appLanguageMessageContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/lightGrey"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/appLanguageMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:paddingTop="16dp"
+                android:paddingLeft="12dp"
+                android:paddingBottom="8dp"
+                android:text="Select Your Preferred Language"
+                android:textColor="@color/blue"
+                android:textSize="16dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/appLanguageListContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <ListView
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginRight="18dp"
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/language_list_view"
+                    android:background="@color/white"/>
+            </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

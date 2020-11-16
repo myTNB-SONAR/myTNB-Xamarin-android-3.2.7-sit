@@ -144,7 +144,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 textInputLayoutPassword.Hint = GetLabelCommonByLanguage("password");
                 textInputLayoutConfirmPassword.Hint = GetLabelCommonByLanguage("confirmPassword");
 
-                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc"));
+                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tncNew"));
                 StripUnderlinesFromLinks(txtTermsConditions);
                 btnRegister.Text = GetLabelByLanguage("ctaTitle");
 

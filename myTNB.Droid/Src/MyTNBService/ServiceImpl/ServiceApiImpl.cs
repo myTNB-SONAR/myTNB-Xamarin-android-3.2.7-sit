@@ -192,6 +192,31 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             return api.UserAuthenticate<UserAuthenticateResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
+        public Task<UserAuthenticateResponseEmail> UserAuthenticateEmail([Body] Request.BaseRequest request)
+        {
+            return api.UserAuthenticate<UserAuthenticateResponseEmail>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        public Task<UserAuthenticateResponseEmail> UserAuthenticateEmailOnly([Body] Request.BaseRequest request)
+        {
+            return api.UserAuthenticateEmail<UserAuthenticateResponseEmail>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
+        }
+
+        public Task<UserAuthenticateResponseID> UserAuthenticateIDOnly([Body] Request.BaseRequest request)
+        {
+            return api.UserAuthenticateID<UserAuthenticateResponseID>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
+        }
+
+        public Task<UserAuthenticateResponseID> UserAuthenticateUpdateID([Body] Request.BaseRequest request)
+        {
+            return api.UserUpdateIdentifcationNo<UserAuthenticateResponseID>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
+        }
+
+        public Task<UserAuthenticateResponseName> UserAuthenticateUpdateName([Body] Request.BaseRequest request)
+        {
+            return api.UserUpdateName<UserAuthenticateResponseName>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
+        }
+
         /// <summary>
         /// Call SaveUserNotificationTypePreference with default timeout.
         /// </summary>

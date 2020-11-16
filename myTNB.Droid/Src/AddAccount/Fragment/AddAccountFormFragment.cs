@@ -395,7 +395,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                             {
                                 edtOwnerMotherName.Visibility = ViewStates.Gone;
                                 edtOwnersIC.RemoveTextChangedListener(mFormField);
-                                textInputLayoutOwnerIC.Hint = Utility.GetLocalizedLabel("AddAccount", "rocNumber");
+                                textInputLayoutOwnerIC.Hint = Utility.GetLocalizedLabel("AddAccount", "rocNumberOptional");
                                 mFormField = new InputFilterFormField(edtOwnersIC, textInputLayoutOwnerIC);
                                 edtOwnersIC.AddTextChangedListener(mFormField);
                                 if (edtOwnersIC.HasFocus)

@@ -44,7 +44,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public void OnNavigateToAccountListActivity()
         {
-            this.mView.ShowAccountListActivity();
+            //this.mView.ShowAccountListActivity();
+            this.mView.ShowEmailRegisterPopUp();
+;
         }
 
         public async void OnRegister(string num1, string num2, string num3, string num4, string deviceId)
@@ -190,7 +192,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                             MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                             HomeMenuUtils.ResetAll();
-                            this.mView.ShowAccountListActivity();
+                            //this.mView.ShowAccountListActivity();
+                            this.mView.ShowEmailRegisterPopUp();
                             UserSessions.SavePhoneVerified(mSharedPref, true);
                         }
                         else

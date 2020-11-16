@@ -48,6 +48,11 @@ namespace myTNB_Android.Src.CompoundView
             itemHeaderTitle.Text = title;
         }
 
+        public void HideHeaderTitle()
+        {
+            itemHeaderTitle.Visibility = ViewStates.Gone;
+        }
+
         public void AddComponentView(View view)
         {
             profileItemContent.AddView(view);
@@ -70,5 +75,6 @@ namespace myTNB_Android.Src.CompoundView
             separatorView.SetBackgroundColor(Color.ParseColor("#e4e4e4"));
             profileItemContent.AddView(separatorView);
         }
+
     }
 }

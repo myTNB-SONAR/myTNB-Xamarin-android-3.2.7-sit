@@ -65,6 +65,18 @@
                 android:id="@+id/txtTitleInfo"
                 android:layout_gravity="center|center_vertical"
                 android:layout_marginTop="10.2dp" />
+             <TextView
+                android:paddingTop="10dp"
+                android:id="@+id/txtVerifyNotification"
+                android:text="@string/dashboard_chartview_no_account_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#49494a"
+                android:textSize="14sp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:gravity="center"
+                android:layout_gravity="center|center_vertical" />
         <!--<View
                 android:layout_height="1dp"
                 android:layout_width="match_parent"

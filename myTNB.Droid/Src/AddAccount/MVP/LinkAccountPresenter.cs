@@ -1,4 +1,5 @@
-﻿using Android.Util;
+﻿using Android.Text;
+using Android.Util;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.Requests;
 using myTNB_Android.Src.Base;
@@ -48,6 +49,31 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 CustomerBillingAccount.MakeFirstAsSelected();
             }
             this.mView.ShowDashboard();
+        }
+
+        public void CheckRequiredFields(string total, bool checkbox)
+        {
+
+            try
+            {
+                if (!TextUtils.IsEmpty(total) && (checkbox))
+                {
+                    if(total.Equals("0"))
+                    {
+                        this.mView.DisableConfirmButton();
+                        return;
+                    }
+                    this.mView.EnableConfirmButton();
+                }
+                else
+                {
+                    this.mView.DisableConfirmButton();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void GetAccountByIC(string apiKeyID, string currentLinkedAccounts, string userID, string identificationNo)
@@ -231,6 +257,10 @@ namespace myTNB_Android.Src.AddAccount.MVP
         private async void CallSummaryAPI(SummaryDashBordRequest summaryDashBoardRequest)
         {
             await SummaryDashBoardApiCall.GetSummaryDetails(summaryDashBoardRequest);
+        }
+        public void NavigateToTermsAndConditions()
+        {
+            this.mView.ShowTermsAndConditions();
         }
     }
 }

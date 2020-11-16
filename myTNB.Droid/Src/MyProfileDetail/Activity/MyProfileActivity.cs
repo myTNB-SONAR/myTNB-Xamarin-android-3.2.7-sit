@@ -1,0 +1,610 @@
+﻿using AFollestad.MaterialDialogs;
+using Android.App;
+using Android.Content;
+using Android.Content.PM;
+using Android.OS;
+using Android.Runtime;
+
+using Android.Views;
+using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
+using CheeseBind;
+using Google.Android.Material.Snackbar;
+using myTNB_Android.Src.AddAccount.Activity;
+using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.CompoundView;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.ManageSupplyAccount.Activity;
+using myTNB_Android.Src.MyProfileDetail.Adapter;
+using myTNB_Android.Src.MyProfileDetail.MVP;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.NotificationSettings.Activity;
+using myTNB_Android.Src.UpdateID.Activity;
+using myTNB_Android.Src.UpdateMobileNo.Activity;
+using myTNB_Android.Src.UpdateNameFull.Activity;
+using myTNB_Android.Src.UpdatePassword.Activity;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using Refit;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace myTNB_Android.Src.MyAccount.Activity
+{
+    [Activity(Label = "MyTNB Pofile"
+      //, NoHistory = false
+      //, Icon = "@drawable/ic_launcher"
+      , ScreenOrientation = ScreenOrientation.Portrait
+      , Theme = "@style/Theme.RegisterForm")]
+    public class MyProfileActivity : BaseActivityCustom, ProfileDetailContract.IView
+    {
+        [BindView(Resource.Id.profileMenuRootContent)]
+        CoordinatorLayout rootView;
+
+        [BindView(Resource.Id.rootView)]
+        LinearLayout profileMenuLinear;
+
+        [BindView(Resource.Id.profileMenuItemsContent)]
+        LinearLayout profileMenuItemsContent;
+
+        ProfileDetailPresenter mPresenter;
+        private ProfileMenuItemContentComponent fullName, referenceNumber, email, mobileNumber, password;
+        private bool mobileNoUpdated = false;
+
+        const string PAGE_ID = "Tnb_Profile";
+
+        private bool fromIDFlag = false;
+
+        private int APP_LANGUAGE_REQUEST = 32766;
+
+        ProfileDetailContract.IUserActionsListener userActionsListener;
+
+
+        public override int ResourceId()
+        {
+            return Resource.Layout.ProfileDetailPage;
+        }
+
+        public override bool ShowCustomToolbarTitle()
+        {
+            return true;
+        }
+
+        protected override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
+
+            try
+            {
+                UserEntity user = UserEntity.GetActive();
+                if(string.IsNullOrEmpty(user.IdentificationNo))
+                {
+                    fromIDFlag = true;
+                }
+
+                ProfileDetailItemComponent myTNBProfileItem = GetMyTNBAccountItems();
+                profileMenuItemsContent.AddView(myTNBProfileItem);
+                ProfileDetailItemComponent MyTNBPasswordItem = GetPasswordItem();
+                profileMenuItemsContent.AddView(MyTNBPasswordItem);
+
+
+                PopulateActiveAccountDetails();
+                mPresenter = new ProfileDetailPresenter(this);
+                //this.userActionsListener.Start();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+        [Preserve]
+
+        private ProfileDetailItemComponent GetMyTNBAccountItems()
+        {
+
+            ProfileDetailItemComponent myTNBAccountItem = new ProfileDetailItemComponent(this);
+
+            List<View> myTNBAccountItems = new List<View>();
+
+            fullName = new ProfileMenuItemContentComponent(this);
+            fullName.SetTitle(GetLabelCommonByLanguage("fullname").ToUpper());
+            fullName.SetValue("");
+            fullName.SetItemActionVisibility(true);
+            fullName.SetItemActionTitle(GetLabelCommonByLanguage("update"));
+            fullName.SetItemActionCall(UpdateName);
+            myTNBAccountItems.Add(fullName);
+
+            referenceNumber = new ProfileMenuItemContentComponent(this);
+            referenceNumber.SetTitle(GetLabelCommonByLanguage("idNumber").ToUpper());
+            referenceNumber.SetValue("");
+            referenceNumber.SetFlagID(fromIDFlag);
+            referenceNumber.SetItemActionTitle(GetLabelCommonByLanguage("update"));
+            referenceNumber.SetItemActionCall(UpdateICNumber);
+            myTNBAccountItems.Add(referenceNumber);
+
+            email = new ProfileMenuItemContentComponent(this);
+            email.SetTitle(GetLabelCommonByLanguage("email").ToUpper());
+            email.SetValue("");
+            email.SetIconEmailNotVerify(1);
+            email.SetItemActionVisibility(true);
+            email.SetItemActionTitle(GetLabelCommonByLanguage("verify"));
+            email.SetItemActionCall(ShowEmailResendSuccess);
+            myTNBAccountItems.Add(email);
+
+            mobileNumber = new ProfileMenuItemContentComponent(this);
+            mobileNumber.SetTitle(GetLabelCommonByLanguage("mobileNumber").ToUpper());
+            mobileNumber.SetValue("");
+            mobileNumber.SetItemActionVisibility(true);
+            mobileNumber.SetItemActionTitle(GetLabelCommonByLanguage("update"));
+            mobileNumber.SetItemActionCall(UpdateMobileNumber);
+            myTNBAccountItems.Add(mobileNumber);
+
+            /*password = new ProfileMenuItemContentComponent(this);
+            password.SetTitle(GetLabelCommonByLanguage("password").ToUpper());
+            password.SetValue("");
+            password.SetItemActionVisibility(true);
+            password.SetItemActionTitle(GetLabelCommonByLanguage("update"));
+            password.SetItemActionCall(UpdatePassword);
+            myTNBAccountItems.Add(password);*/
+
+            myTNBAccountItem.AddComponentView(myTNBAccountItems);
+            return myTNBAccountItem;
+        }
+
+        private ProfileDetailItemComponent GetPasswordItem()
+        {
+
+            ProfileDetailItemComponent passItem = new ProfileDetailItemComponent(this);
+
+            List<View> passItems = new List<View>();
+
+            ProfileMenuItemSingleContentComponent password = new ProfileMenuItemSingleContentComponent(this);
+            password.SetTitle(GetLabelCommonByLanguage("passwordchange"));
+            password.SetItemActionCall(UpdatePassword);
+            passItems.Add(password);
+
+            passItem.AddComponentView(passItems);
+            return passItem;
+        }
+
+        private void UpdateName()
+        {
+            if (!this.GetIsClicked())
+            {
+                try
+                {
+                    Intent updateName = new Intent(this, typeof(UpdateNameFullActivity));
+                    StartActivityForResult(updateName, Constants.UPDATE_NAME_REQUEST);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+        }
+
+        private void UpdateICNumber()
+        {
+            if (!this.GetIsClicked())
+            {
+                try
+                {
+                    Intent updateMobileNo = new Intent(this, typeof(UpdateIDActivity));
+                    StartActivityForResult(updateMobileNo, Constants.UPDATE_IC_REQUEST);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+        }
+
+        private void UpdateMobileNumber()
+        {
+            if (!this.GetIsClicked())
+            {
+                try
+                {
+                    Intent updateMobileNo = new Intent(this, typeof(UpdateMobileActivity));
+                    StartActivityForResult(updateMobileNo, Constants.UPDATE_MOBILE_NO_REQUEST);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+        }
+
+        private void UpdatePassword()
+        {
+            if (!this.GetIsClicked())
+            {
+                try
+                {
+                    Intent updateMobileNo = new Intent(this, typeof(UpdatePasswordActivity));
+                    StartActivityForResult(updateMobileNo, Constants.UPDATE_PASSWORD_REQUEST);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+        }
+
+        private void PopulateActiveAccountDetails()
+        {
+            UserEntity user = UserEntity.GetActive();
+            fullName.SetValue(user.DisplayName);
+            try
+            {
+                string maskedNo = !string.IsNullOrEmpty(user?.IdentificationNo) ? user.IdentificationNo : "";
+
+                if (!string.IsNullOrEmpty(maskedNo) && maskedNo.Count() > 4)
+                {
+                    string lastDigit = maskedNo.Substring(maskedNo.Length - 4);
+
+                    maskedNo = GetString(Resource.String.my_account_ic_no_mask) + " " + lastDigit;
+                }
+
+                referenceNumber.SetValue(maskedNo);
+
+                email.SetValue(user.Email);
+                mobileNumber.SetValue(user.MobileNo);
+                password.SetValue(GetString(Resource.String.my_account_dummy_password));
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowEmailResendSuccess()
+        {
+
+            Utility.ShowEmailVerificationDialog(this, () =>
+            {
+                //ShowProgressDialog();
+                ShowEmailUpdateSuccess();
+            });
+
+        }
+
+        private void ShowMobileUpdateSuccess(string newPhone)
+        {
+            try
+            {
+                mobileNumber.SetValue(newPhone);
+                Snackbar updatePhoneSnackBar = Snackbar.Make(rootView, GetLabelByLanguage("mobileNumberVerified"), Snackbar.LengthIndefinite)
+                            .SetAction(GetLabelCommonByLanguage("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = updatePhoneSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                updatePhoneSnackBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ShowPasswordUpdateSuccess()
+        {
+            try
+            {
+                Snackbar updatePassWordBar = Snackbar.Make(rootView, GetLabelByLanguage("passwordUpdateSuccess"), Snackbar.LengthIndefinite)
+                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = updatePassWordBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                updatePassWordBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+        private void ShowNameUpdateSuccess()
+        {
+            try
+            {
+                Snackbar updateNameBar = Snackbar.Make(rootView, GetLabelByLanguage("NameUpdateSuccess"), Snackbar.LengthIndefinite)
+                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = updateNameBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                updateNameBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+        private void ShowEmailUpdateSuccess()
+        {
+            try
+            {
+                string Email = "";
+                UserEntity userEntity = UserEntity.GetActive();
+                Email = userEntity.Email;
+                Snackbar updateEmailBar = Snackbar.Make(rootView, GetLabelByLanguage("EmailUpdateSuccess") + Email, Snackbar.LengthIndefinite)
+                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = updateEmailBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                updateEmailBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ShowIDUpdateSuccess()
+        {
+            try
+            {
+                Snackbar updateEmailBar = Snackbar.Make(rootView, GetLabelByLanguage("IDUpdateSuccess"), Snackbar.LengthIndefinite)
+                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = updateEmailBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                updateEmailBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+        private Snackbar mCancelledExceptionSnackBar;
+        public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
+        {
+            try
+            {
+                if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
+                {
+                    mCancelledExceptionSnackBar.Dismiss();
+                }
+
+                mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+                {
+
+                    mCancelledExceptionSnackBar.Dismiss();
+                }
+                );
+                View v = mCancelledExceptionSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mCancelledExceptionSnackBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private Snackbar mApiExcecptionSnackBar;
+        public void ShowRetryOptionsApiException(ApiException apiException)
+        {
+            try
+            {
+                if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
+                {
+                    mApiExcecptionSnackBar.Dismiss();
+                }
+
+                mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+                {
+
+                    mApiExcecptionSnackBar.Dismiss();
+                }
+                );
+                View v = mApiExcecptionSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mApiExcecptionSnackBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private Snackbar mUknownExceptionSnackBar;
+        public void ShowRetryOptionsUnknownException(Exception exception)
+        {
+            try
+            {
+                if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
+                {
+                    mUknownExceptionSnackBar.Dismiss();
+
+                }
+
+                mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+                {
+
+                    mUknownExceptionSnackBar.Dismiss();
+                }
+                );
+                View v = mUknownExceptionSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mUknownExceptionSnackBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Tnb_Profile");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
+        public void HideShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void SetPresenter(ProfileDetailContract.IUserActionsListener userActionListener)
+        {
+            this.userActionsListener = userActionListener;
+        }
+
+        public bool IsActive()
+        {
+            return Window.DecorView.RootView.IsShown;
+        }
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            try
+            {
+                base.OnActivityResult(requestCode, resultCode, data);
+                //this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
+                if (requestCode == Constants.UPDATE_MOBILE_NO_REQUEST)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        UserEntity userEntity = UserEntity.GetActive();
+                        ShowMobileUpdateSuccess(userEntity.MobileNo);
+                        MyTNBAccountManagement.GetInstance().SetIsUpdatedMobile(true);
+                    }
+                }
+                else if (requestCode == Constants.UPDATE_PASSWORD_REQUEST)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsPasswordUpdated(true);
+                        {
+                            ShowPasswordUpdateSuccess();
+                            MyTNBAccountManagement.GetInstance().SetIsPasswordUpdated(false);
+                        }
+                    }
+                }
+                else if (requestCode == Constants.UPDATE_NAME_REQUEST)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsNameUpdated(true);
+                        {
+                            ShowNameUpdateSuccess();
+                            MyTNBAccountManagement.GetInstance().SetIsNameUpdated(false);
+                        }
+                    }
+                }
+                else if (requestCode == Constants.UPDATE_EMAIL_REQUEST)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsEmailUpdated(true);
+                        {
+                            ShowEmailUpdateSuccess();
+                            MyTNBAccountManagement.GetInstance().SetIsEmailUpdated(false);
+                        }
+                    }
+                }
+                else if (requestCode == Constants.UPDATE_IC_REQUEST)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        MyTNBAccountManagement.GetInstance().SetIsIDUpdated(true);
+                        {
+                            ShowIDUpdateSuccess();
+                            MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
+    }
+}

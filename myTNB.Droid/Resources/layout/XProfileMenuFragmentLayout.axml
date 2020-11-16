@@ -1,0 +1,441 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightGrey"
+    android:gravity="center|bottom"
+    android:id="@+id/rootView">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/profileMenuRootContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ScrollView
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:overScrollMode="never"
+            android:layout_height="match_parent"
+            android:id="@+id/profileContentScrollView"
+            android:fillViewport="true">
+          <LinearLayout
+            android:id="@+id/profileMenuItemsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="25px"
+            android:minWidth="25px"
+            android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        app:cardCornerRadius="4dp"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardElevation="4dp"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:id="@+id/cardview_profile">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/img_profile"
+                                android:layout_height="28dp"
+                                android:layout_width="28dp"
+                                android:layout_gravity="left"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="10dp"
+                                android:src="@drawable/update_personal_details"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="myTNBProfile"
+                                android:textColor="@color/new_grey"
+                                android:layout_marginTop="10dp"
+                                android:textSize="15dp"
+                                android:gravity="left"
+                                android:layout_marginLeft="40dp"/>
+
+                            <TextView
+                                android:id="@+id/profile_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Name"
+                                android:textColor="@color/new_grey"
+                                android:layout_marginTop="8dp"
+                                android:textSize="10dp"
+                                android:gravity="left"
+                                android:layout_marginLeft="40dp"/>
+                            <TextView
+                                android:id="@+id/profile_email"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Emel"
+                                android:textColor="@color/new_grey"
+                                android:layout_marginTop="8dp"
+                                android:textSize="10dp"
+                                android:gravity="left"
+                                android:layout_marginLeft="40dp"/>
+                        </LinearLayout>
+
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <ImageView
+                                android:id="@+id/appSettingRightArrow"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/expand_right_arrow"
+                                android:layout_gravity="right"/>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                    
+                <View
+                    android:id="@+id/profileGroupContentSeparator"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:background="@color/platinumGrey"
+                    />
+
+                <androidx.cardview.widget.CardView
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    app:cardCornerRadius="4dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardElevation="4dp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:id="@+id/cardview_payment_method">
+                    <LinearLayout 
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                           
+                        <ImageView
+                            android:id="@+id/img_payment_method"
+                            android:layout_height="30dp"
+                            android:layout_width="30dp"
+                            android:layout_gravity="left"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/ic_payment_card_amex"/>
+                    </LinearLayout>
+
+                    <LinearLayout 
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="My Payment Method"
+                            android:textColor="@color/new_grey"
+                            android:layout_marginTop="10dp"
+                            android:textSize="15dp"
+                            android:gravity="left"
+                            android:layout_marginLeft="40dp"/>
+                             
+                    </LinearLayout>
+
+                    <LinearLayout 
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                        <ImageView
+                        android:id="@+id/paymentMethodRightArrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/expand_right_arrow"
+                        android:layout_gravity="right"/>
+                    </LinearLayout>
+                 </androidx.cardview.widget.CardView>
+                <View
+                    android:id="@+id/paymentMethodGroupContentSeparator"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:background="@color/platinumGrey"
+                   />
+
+                 <androidx.cardview.widget.CardView
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    app:cardCornerRadius="4dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardElevation="4dp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:id="@+id/cardview_electricAcc"
+                   >
+                    <LinearLayout 
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                           
+                        <ImageView
+                            android:id="@+id/img_electric_acc"
+                            android:layout_height="28dp"
+                            android:layout_width="28dp"
+                            android:layout_gravity="left"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/ic_menu_dashboard_toggled"/>
+                    </LinearLayout>
+
+                    <LinearLayout 
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="My Electrical Account"
+                            android:textColor="@color/new_grey"
+                            android:layout_marginTop="10dp"
+                            android:textSize="15dp"
+                            android:gravity="left"
+                            android:layout_marginLeft="40dp"/>
+                             
+                    </LinearLayout>
+
+                    <LinearLayout 
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                        <ImageView
+                        android:id="@+id/electricalAccRightArrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/expand_right_arrow"
+                        android:layout_gravity="right"/>
+                    </LinearLayout>
+                 </androidx.cardview.widget.CardView>
+
+                 <View
+                    android:id="@+id/electricalAccGroupContentSeparator"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:background="@color/platinumGrey"
+                   />
+
+                  <androidx.cardview.widget.CardView
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    app:cardCornerRadius="4dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardElevation="4dp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:id="@+id/cardview_app_settings"
+                    >
+                    <LinearLayout 
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                           
+                        <ImageView
+                            android:id="@+id/img_app_setting"
+                            android:layout_height="28dp"
+                            android:layout_width="28dp"
+                            android:layout_gravity="left"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/notification_settings"/>
+                    </LinearLayout>
+
+                    <LinearLayout 
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="App Settings"
+                            android:textColor="@color/new_grey"
+                            android:layout_marginTop="10dp"
+                            android:textSize="15dp"
+                            android:gravity="left"
+                            android:layout_marginLeft="40dp"/>
+                             
+                    </LinearLayout>
+
+                    <LinearLayout 
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                        <ImageView
+                        android:id="@+id/appSettingRightArrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/expand_right_arrow"
+                        android:layout_gravity="right"/>
+                    </LinearLayout>
+                 </androidx.cardview.widget.CardView>
+
+                  <View
+                    android:id="@+id/appSettingGroupContentSeparator"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:background="@color/platinumGrey"
+                    />
+
+                  <androidx.cardview.widget.CardView
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    app:cardCornerRadius="4dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardElevation="4dp"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:id="@+id/cardview_learn_more">
+
+                  
+                    <LinearLayout 
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                           
+                        <ImageView
+                            android:id="@+id/img_learn_more"
+                            android:layout_height="28dp"
+                            android:layout_width="28dp"
+                            android:layout_gravity="left"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:src="@drawable/notification_generic"/>
+                    </LinearLayout>
+
+                    <LinearLayout 
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Learn More about TNB"
+                            android:textColor="@color/new_grey"
+                            android:layout_marginTop="10dp"
+                            android:textSize="15dp"
+                            android:gravity="left"
+                            android:layout_marginLeft="40dp"/>
+                             
+                    </LinearLayout>
+
+                    <LinearLayout 
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center">
+                        <ImageView
+                        android:id="@+id/appSettingRightArrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/expand_right_arrow"
+                        android:layout_gravity="right"/>
+                     </LinearLayout>
+                 </androidx.cardview.widget.CardView>
+                <View
+                    android:id="@+id/learnMoreGroupContentSeparator"
+                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/platinumGrey"
+                    />
+            
+
+              <LinearLayout
+                android:id="@+id/profileMenuItemsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="25px"
+                android:minWidth="25px"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/profileMenuItemsContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="25px"
+                    android:minWidth="25px"
+                    android:orientation="vertical"/>
+                  <TextView
+                    android:id="@+id/appVersion"
+                    android:text="App Version"
+                    android:gravity="left"
+                    android:textSize="9dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                 <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="16dp"
+                    android:padding="16dp"
+                    android:background="@color/white">
+                    <Button
+                        android:id="@+id/btnLogout"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:textAllCaps="false"
+                        android:text="@string/my_account_btn_logout"
+                        style="@style/DarkButton"/>
+                 </LinearLayout>
+                </LinearLayout>
+              </LinearLayout>  
+
+                 
+        </ScrollView>
+       </LinearLayout>       
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

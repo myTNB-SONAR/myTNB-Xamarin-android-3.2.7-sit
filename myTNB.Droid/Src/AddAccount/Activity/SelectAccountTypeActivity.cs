@@ -49,7 +49,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
             AccountType Commercial = new AccountType();
             Commercial.Id = "2";
-            Commercial.Type = GetLabelByLanguage("commercial");
+            Commercial.Type = GetLabelByLanguage("business");
 
             //AccountType Government = new AccountType();
             //Government.Id = "3";

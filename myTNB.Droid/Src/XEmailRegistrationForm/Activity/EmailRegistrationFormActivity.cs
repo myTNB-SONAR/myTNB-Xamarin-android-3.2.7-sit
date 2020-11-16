@@ -1,0 +1,748 @@
+﻿using Android;
+using Android.App;
+using Android.Content;
+using Android.Content.PM;
+using Android.OS;
+using Android.Runtime;
+
+
+using Android.Text;
+using Android.Text.Style;
+using Android.Views;
+using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.Core.Content;
+using CheeseBind;
+using Google.Android.Material.Snackbar;
+using Google.Android.Material.TextField;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Common.Activity;
+using myTNB_Android.Src.ForgetPassword.Activity;
+using myTNB_Android.Src.Common.Model;
+using myTNB_Android.Src.CompoundView;
+using myTNB_Android.Src.RegisterValidation;
+using myTNB_Android.Src.XEmailRegistrationForm.Models;
+using myTNB_Android.Src.XEmailRegistrationForm.MVP;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
+using Refit;
+using System;
+using System.Runtime;
+using myTNB_Android.Src.PreLogin.Activity;
+using myTNB_Android.Src.RegistrationForm.Activity;
+using System.Threading.Tasks;
+using Android.Util;
+using System.Timers;
+
+namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
+{
+    [Activity(Label = "@string/registration_activity_title"
+      , NoHistory = false
+              , Icon = "@drawable/ic_launcher"
+      , ScreenOrientation = ScreenOrientation.Portrait
+      , Theme = "@style/Theme.RegisterForm")]
+    public class EmailRegistrationFormActivity : BaseActivityCustom, EmailRegisterFormContract.IView, ITextWatcher
+    {
+        private EmailRegisterFormPresenter mPresenter;
+        private EmailRegisterFormContract.IUserActionsListener userActionsListener;
+
+        private AlertDialog mVerificationProgressDialog;
+        private AlertDialog mRegistrationProgressDialog;
+        const string PAGE_ID = "Register";
+
+        Snackbar mRegistrationSnackBar;
+
+        [BindView(Resource.Id.rootView)]
+        CoordinatorLayout rootView;
+
+        [BindView(Resource.Id.txtEmailReg)]
+        EditText txtEmailReg;
+
+        [BindView(Resource.Id.txtPasswordReg)]
+        EditText txtPasswordReg;
+       
+        [BindView(Resource.Id.textInputLayoutEmailReg)]
+        TextInputLayout textInputLayoutEmailReg;
+
+        [BindView(Resource.Id.textInputLayoutPasswordReg)]
+        TextInputLayout textInputLayoutPasswordReg;
+
+        [BindView(Resource.Id.btnNext)]
+        Button btnNext;
+
+        Timer searchTimer;
+
+        protected override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
+
+
+            try
+            {
+                this.mPresenter = new EmailRegisterFormPresenter(this);
+
+
+                mVerificationProgressDialog = new AlertDialog.Builder(this)
+                    .SetTitle(GetString(Resource.String.verification_alert_dialog_title))
+                    .SetMessage(GetString(Resource.String.verification_alert_dialog_message))
+                    .SetCancelable(false)
+                    .Create();
+
+                mRegistrationProgressDialog = new AlertDialog.Builder(this)
+                     .SetTitle(GetString(Resource.String.registration_alert_dialog_title))
+                     .SetMessage(GetString(Resource.String.registration_alert_dialog_message))
+                     .SetCancelable(false)
+                     .Create();
+
+                TextViewUtils.SetMuseoSans300Typeface(
+                    txtEmailReg,
+                    txtPasswordReg
+                   );
+
+                TextViewUtils.SetMuseoSans300Typeface(
+                    textInputLayoutEmailReg,
+                    textInputLayoutPasswordReg);
+
+                TextViewUtils.SetMuseoSans500Typeface(btnNext);
+
+
+                textInputLayoutEmailReg.Hint = GetLabelCommonByLanguage("email");
+                textInputLayoutPasswordReg.Hint = GetLabelCommonByLanguage("password");
+                btnNext.Text = GetLabelByLanguage("ctaTitle");
+
+
+                //txtEmailReg.TextChanged += TextChange;
+                //txtPasswordReg.TextChanged += TextChange;
+                //txtEmailReg.AddTextChangedListener += AddTextChangedListener;
+                //txtPasswordReg.AfterTextChanged += AddTextChangedListener;
+
+
+                txtEmailReg.AddTextChangedListener(new InputFilterFormField(txtEmailReg, textInputLayoutEmailReg));
+                txtPasswordReg.AddTextChangedListener(new InputFilterFormField(txtPasswordReg, textInputLayoutPasswordReg));
+
+                txtEmailReg.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
+                txtPasswordReg.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
+
+                ClearFields();
+
+                this.userActionsListener.Start();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            //#if DEBUG
+            //            txtFullName.Text = "David Montecillo";
+            //            txtICNumber.Text = "123131312";
+            //            txtMobileNumber.Text = "639299920799";
+            //            txtEmail.Text = "montecillodavid.acn1001@gmail.com";
+            //            txtConfirmEmail.Text = "montecillodavid.acn1001@gmail.com";
+            //            txtPassword.Text = "password123";
+            //            txtConfirmPassword.Text = "password123";
+            //#endif
+        }
+
+        private void AddTextChangedListener(object sender, AfterTextChangedEventArgs e)
+        {
+            try
+            {
+                string email = txtEmailReg.Text.ToString().Trim();
+                string password = txtPasswordReg.Text.ToString().Trim();
+                ClearInvalidEmailError();
+                ClearInvalidEmailHint();
+                ClearPasswordMinimumOf6CharactersError();
+                this.userActionsListener.CheckRequiredFields(email, password);
+
+                if (password.Length == 1 || email.Length == 1)
+                {
+                    new Handler().PostDelayed(delegate
+                    {
+                        // Your code here
+                        if (!string.IsNullOrEmpty(email))
+                        {
+                            if (!Patterns.EmailAddress.Matcher(email).Matches())
+                            {
+                                ShowInvalidEmailError();
+                            }
+                            else
+                            {
+                                ShowEmailHint();
+                            }
+                        }
+                        else
+                        {
+                            ClearInvalidEmailError();
+                        }
+                        if (!string.IsNullOrEmpty(password))
+                        {
+                            if (!this.mPresenter.CheckPasswordIsValid(password))
+                            {
+                                ShowPasswordMinimumOf6CharactersError();
+                            }
+                            else
+                            {
+                                ClearPasswordMinimumOf6CharactersError();
+                            }
+                            textInputLayoutPasswordReg.PasswordVisibilityToggleEnabled = true;
+                            textInputLayoutPasswordReg.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
+                        }
+                        else
+                        {
+                            //ShowEmailHint();
+                            ClearPasswordMinimumOf6CharactersError();
+                            textInputLayoutPasswordReg.PasswordVisibilityToggleEnabled = false;
+                        }
+                    }, 1000);
+                }
+                else if (password.Length >= 2 || email.Length >= 2)
+                {                    
+                    if (!string.IsNullOrEmpty(email))
+                    {
+                        if (!Patterns.EmailAddress.Matcher(email).Matches())
+                        {
+                            ShowInvalidEmailError();
+                        }
+                        else
+                        {
+                            ShowEmailHint();
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(password))
+                    {
+                        if (!this.mPresenter.CheckPasswordIsValid(password))
+                        {
+                            ShowPasswordMinimumOf6CharactersError();
+                        }
+                        else
+                        {
+                            ClearPasswordMinimumOf6CharactersError();
+                        }
+                        textInputLayoutPasswordReg.PasswordVisibilityToggleEnabled = true;
+                        textInputLayoutPasswordReg.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
+                    }
+                    else
+                    {
+                        //ShowEmailHint();
+                        ClearPasswordMinimumOf6CharactersError();
+                        textInputLayoutPasswordReg.PasswordVisibilityToggleEnabled = false;
+                    }
+                }
+                else
+                {
+                    ClearInvalidEmailError();
+                    ClearInvalidEmailHint();
+                    ClearPasswordMinimumOf6CharactersError();
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        public override int ResourceId()
+        {
+            return Resource.Layout.EmailRegistrationView;
+        }
+
+        public void SetPresenter(EmailRegisterFormContract.IUserActionsListener userActionListener)
+        {
+            this.userActionsListener = userActionListener;
+        }
+
+        public void ShowRegister(UserCredentialsEntity userCredentialEntity)
+        {
+            // TODO : ADD START ACTIVITY REGISTER ACTIVITY
+            Intent registrationdetail = new Intent(this, typeof(DetailRegistrationFormActivity));
+            registrationdetail.PutExtra(Constants.USER_CREDENTIALS_ENTRY, JsonConvert.SerializeObject(userCredentialEntity));
+            StartActivity(registrationdetail);
+            //StartActivity(typeof(DetailRegistrationFormActivity));
+
+        }
+
+        [OnClick(Resource.Id.btnNext)]
+        void OnRegister(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+
+
+
+                    string eml_str = txtEmailReg.Text.ToString().Trim();
+                    string password = txtPasswordReg.Text;
+                    this.userActionsListener.OnAcquireToken(eml_str, password);
+                    //this.userActionsListener.NavigateToRegister();
+                }
+                this.SetIsClicked(false);
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+        public void ClearFields()
+        {
+
+            txtEmailReg.Text = "";
+            txtPasswordReg.Text = "";
+
+            txtEmailReg.ClearFocus();
+            txtPasswordReg.ClearFocus();
+        }
+
+        public void ClearAllErrorFields()
+        {
+            if (!string.IsNullOrEmpty(textInputLayoutEmailReg.Error))
+            {
+                textInputLayoutEmailReg.Error = null;
+                textInputLayoutEmailReg.ErrorEnabled = false;
+            }
+          
+          
+            if (!string.IsNullOrEmpty(textInputLayoutPasswordReg.Error))
+            {
+                textInputLayoutPasswordReg.Error = null;
+                textInputLayoutPasswordReg.ErrorEnabled = false;
+            }
+          
+        }
+
+        public bool IsActive()
+        {
+            return Window.DecorView.RootView.IsShown;
+        }
+
+
+      
+        public void ShowBackScreen()
+        {
+            Finish();
+        }
+
+       
+        public void ShowEmptyEmailError()
+        {
+            //ClearInvalidEmailError();
+            if(textInputLayoutEmailReg.Error != GetString(Resource.String.registration_form_errors_empty_email))
+            {
+                textInputLayoutEmailReg.Error = GetString(Resource.String.registration_form_errors_empty_email);
+            }
+        
+            if (!textInputLayoutEmailReg.ErrorEnabled)
+                textInputLayoutEmailReg.ErrorEnabled = true;
+        }
+
+       
+        public void ShowEmptyPasswordError()
+        {
+            ClearPasswordMinimumOf6CharactersError();
+            if (textInputLayoutPasswordReg.Error != GetString(Resource.String.registration_form_errors_empty_password))
+            {
+                textInputLayoutPasswordReg.Error = GetString(Resource.String.registration_form_errors_empty_password);
+            }
+            textInputLayoutPasswordReg.Error = GetString(Resource.String.registration_form_errors_empty_password);
+            if (!textInputLayoutPasswordReg.ErrorEnabled)
+                textInputLayoutPasswordReg.ErrorEnabled = true;
+        }
+
+        public void ShowPasswordMinimumOf6CharactersError()
+        {
+            //ClearPasswordMinimumOf6CharactersError();
+
+            if (textInputLayoutPasswordReg.Error != Utility.GetLocalizedErrorLabel("passwordHint")) {
+                textInputLayoutPasswordReg.Error = Utility.GetLocalizedErrorLabel("passwordHint");
+            }
+
+            textInputLayoutPasswordReg.Error = Utility.GetLocalizedErrorLabel("passwordHint");
+            if (!textInputLayoutPasswordReg.ErrorEnabled)
+                textInputLayoutPasswordReg.ErrorEnabled = true;
+        }
+
+       
+
+        public void ShowInvalidEmailError()
+        {
+            //ClearInvalidEmailError();
+            if(textInputLayoutEmailReg.Error != Utility.GetLocalizedErrorLabel("invalid_email"))
+            {
+                textInputLayoutEmailReg.Error = Utility.GetLocalizedErrorLabel("invalid_email");
+            }
+            textInputLayoutEmailReg.Error = Utility.GetLocalizedErrorLabel("invalid_email");
+            if (!textInputLayoutEmailReg.ErrorEnabled)
+                textInputLayoutEmailReg.ErrorEnabled = true;
+        }
+
+        public void ShowEmailHint()
+        {
+            //ClearInvalidEmailError();
+            if (textInputLayoutEmailReg.HelperText != Utility.GetLocalizedErrorLabel("EmailHint"))
+            {
+                textInputLayoutEmailReg.HelperText = Utility.GetLocalizedErrorLabel("EmailHint");
+            }
+
+            if (!textInputLayoutEmailReg.HelperTextEnabled)
+                textInputLayoutEmailReg.HelperTextEnabled = true;
+        }
+
+        // private Snackbar mSnackBar;
+        public void ShowInvalidEmailPasswordError()
+         {
+            string selectedAction = "1";
+            this.SetIsClicked(false);
+            Utility.ShowEmailErrorDialog(this, selectedAction, () =>
+            {
+                //ShowProgressDialog();
+                if (selectedAction.Equals("1"))
+                {
+                    ShowForgetPassword();
+                }
+
+            });
+
+        }
+
+        public void ShowForgetPassword()
+        {
+            // TODO : START ACTIVITY FORGET PASSWORD
+            StartActivity(typeof(ForgetPasswordActivity));
+        }
+
+        public void ClearErrors()
+        {
+            this.textInputLayoutEmailReg.Error = null;
+            this.textInputLayoutPasswordReg.Error = null;
+        }
+
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Register New User");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+        public void ShowVerificationCodeProgressDialog()
+        {
+            try
+            {
+                if (this.mVerificationProgressDialog != null && !this.mVerificationProgressDialog.IsShowing)
+                {
+                    this.mVerificationProgressDialog.Show();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideVerificationCodeProgressDialog()
+        {
+            try
+            {
+                if (this.mVerificationProgressDialog != null && this.mVerificationProgressDialog.IsShowing)
+                {
+                    this.mVerificationProgressDialog.Dismiss();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowRegistrationProgressDialog()
+        {
+            try
+            {
+                if (this.mRegistrationProgressDialog != null && !this.mRegistrationProgressDialog.IsShowing)
+                {
+                    this.mRegistrationProgressDialog.Show();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideRegistrationProgressDialog()
+        {
+            try
+            {
+                if (this.mRegistrationProgressDialog != null && this.mRegistrationProgressDialog.IsShowing)
+                {
+                    this.mRegistrationProgressDialog.Dismiss();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+        public void ShowInvalidAcquiringTokenThruSMS(string errorMessage)
+        {
+            if (mRegistrationSnackBar != null && mRegistrationSnackBar.IsShown)
+            {
+                mRegistrationSnackBar.Dismiss();
+            }
+
+            mRegistrationSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mRegistrationSnackBar.Dismiss(); }
+            );
+            View v = mRegistrationSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+
+            mRegistrationSnackBar.Show();
+            this.SetIsClicked(false);
+        }
+        private Snackbar mCancelledExceptionSnackBar;
+        public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
+        {
+            if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
+            {
+                mCancelledExceptionSnackBar.Dismiss();
+            }
+
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
+            {
+
+                mCancelledExceptionSnackBar.Dismiss();
+               
+                string email = txtEmailReg.Text;
+                string password = txtPasswordReg.Text;
+                
+                this.userActionsListener.OnAcquireToken(email, password);
+
+            }
+            );
+            mCancelledExceptionSnackBar.Show();
+            this.SetIsClicked(false);
+
+        }
+
+        private Snackbar mApiExcecptionSnackBar;
+        public void ShowRetryOptionsApiException(ApiException apiException)
+        {
+            if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
+            {
+                mApiExcecptionSnackBar.Dismiss();
+            }
+
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
+            {
+
+                mApiExcecptionSnackBar.Dismiss();
+                
+                string email = txtEmailReg.Text;
+                string password = txtPasswordReg.Text;
+                
+                this.userActionsListener.OnAcquireToken(email,  password);
+
+            }
+            );
+            mApiExcecptionSnackBar.Show();
+            this.SetIsClicked(false);
+
+        }
+        private Snackbar mUknownExceptionSnackBar;
+        public void ShowRetryOptionsUnknownException(Exception exception)
+        {
+            if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
+            {
+                mUknownExceptionSnackBar.Dismiss();
+
+            }
+
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
+            {
+
+                mUknownExceptionSnackBar.Dismiss();
+               
+               
+                string email = txtEmailReg.Text;
+                string password = txtPasswordReg.Text;
+                
+                this.userActionsListener.OnAcquireToken( email,  password);
+
+            }
+            );
+            mUknownExceptionSnackBar.Show();
+            this.SetIsClicked(false);
+
+        }
+
+        public override bool ShowCustomToolbarTitle()
+        {
+            return true;
+        }
+
+        public override bool TelephonyPermissionRequired()
+        {
+            return false;
+        }
+
+        public override void Ready()
+        {
+            base.Ready();
+        }
+
+        public void EnableRegisterButton()
+        {
+            btnNext.Enabled = true;
+            btnNext.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+        }
+
+        public void DisableRegisterButton()
+        {
+            btnNext.Enabled = false;
+            btnNext.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+        }
+
+       
+
+        public void ClearInvalidEmailError()
+        {
+            if (!string.IsNullOrEmpty(textInputLayoutEmailReg.Error))
+            {
+                textInputLayoutEmailReg.Error = null;
+                textInputLayoutEmailReg.ErrorEnabled = false;
+            }
+        }
+        public void ClearInvalidEmailHint()
+        {
+                textInputLayoutEmailReg.HelperTextEnabled = false;
+        }
+
+        public void ClearPasswordMinimumOf6CharactersError()
+        {
+            if (!string.IsNullOrEmpty(textInputLayoutPasswordReg.Error))
+            {
+                textInputLayoutPasswordReg.Error = null;
+                textInputLayoutPasswordReg.ErrorEnabled = false;
+            }
+        }
+
+
+        public override void OnTrimMemory(TrimMemory level)
+        {
+            base.OnTrimMemory(level);
+
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
+        }
+
+        public void OnClickSpan(string textMessage)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                //this.userActionsListener.NavigateToTermsAndConditions();
+            }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void StripUnderlinesFromLinks(TextView textView)
+        {
+            var spannable = new SpannableStringBuilder(textView.TextFormatted);
+            var spans = spannable.GetSpans(0, spannable.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+            foreach (URLSpan span in spans)
+            {
+                var start = spannable.GetSpanStart(span);
+                var end = spannable.GetSpanEnd(span);
+                spannable.RemoveSpan(span);
+                var newSpan = new URLSpanNoUnderline(span.URL);
+                spannable.SetSpan(newSpan, start, end, 0);
+            }
+            textView.TextFormatted = spannable;
+        }
+
+        public void AfterTextChanged(IEditable s)
+        {
+            throw new NotImplementedException();
+
+        }
+
+        public void BeforeTextChanged(Java.Lang.ICharSequence s, int start, int count, int after)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnTextChanged(Java.Lang.ICharSequence s, int start, int before, int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        class URLSpanNoUnderline : URLSpan
+        {
+            public URLSpanNoUnderline(string url) : base(url)
+            {
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
+            }
+        }
+
+    }
+}

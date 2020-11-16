@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ManageCards.Models;
+using myTNB_Android.Src.MultipleAccountPayment.Models;
 using Refit;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
@@ -57,6 +58,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// </summary>
             void ShowManageCards(List<CreditCardData> cardsList);
 
+            //void ShowRegisterCard(CreditCard creditCardData);
+
+
             /// <summary>
             /// Shows Logout Screen
             /// </summary>
@@ -71,12 +75,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// <summary>
             /// Enable manage cards button
             /// </summary>
-            void EnableManageCards();
+            //void EnableManageCards();
 
             /// <summary>
             /// Disable manage cards button
             /// </summary>
-            void DisableManageCards();
+            //void DisableManageCards();
 
             /// <summary>
             /// Show removed card success

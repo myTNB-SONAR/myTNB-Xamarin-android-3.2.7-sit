@@ -11,6 +11,11 @@ namespace myTNB_Android.Src.AddAccount.MVP
     {
         public interface IView : IBaseView<IUserActionsListener>
         {
+            /// <summary>
+            /// Shows terms & conditions activity/dialog
+            /// </summary>
+            void ShowTermsAndConditions();
+
             void ShowNoAccountAddedError(string message);
 
             //navigte user to add another account screen
@@ -79,6 +84,10 @@ namespace myTNB_Android.Src.AddAccount.MVP
             void ShowServiceError(string title, string message);
 
             string GetDeviceId();
+
+            void EnableConfirmButton();
+
+            void DisableConfirmButton();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -103,6 +112,16 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
             void InsertingInSummarydashBoard(List<CustomerBillingAccount> customerBillingAccounts);
 
+            /// <summary>
+            /// Called when user click on Confirm button
+            /// </summary>
+            /// <param name="exception"></param>
+            void CheckRequiredFields(string totalacc, bool checkbox);
+
+            /// <summary>
+            /// User actions to navigate to terms & condition screen
+            /// </summary>
+            void NavigateToTermsAndConditions();
         }
     }
 }

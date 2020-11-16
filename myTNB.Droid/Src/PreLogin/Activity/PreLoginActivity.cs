@@ -20,7 +20,7 @@ using myTNB_Android.Src.FindUs.Activity;
 using myTNB_Android.Src.Login.Activity;
 using myTNB_Android.Src.Maintenance.Activity;
 using myTNB_Android.Src.PreLogin.MVP;
-using myTNB_Android.Src.RegistrationForm.Activity;
+using myTNB_Android.Src.XEmailRegistrationForm.Activity;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
@@ -188,7 +188,8 @@ namespace myTNB_Android.Src.PreLogin.Activity
         public void ShowRegister()
         {
             // TODO : ADD START ACTIVITY REGISTER ACTIVITY
-            StartActivity(typeof(RegistrationFormActivity));
+            StartActivity(typeof(EmailRegistrationFormActivity));
+           
         }
 
         protected override void OnResume()

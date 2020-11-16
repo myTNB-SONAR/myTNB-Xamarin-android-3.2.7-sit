@@ -7,6 +7,8 @@ using Android.Runtime;
 
 using Android.Views;
 using Android.Widget;
+using AndroidSwipeLayout;
+using AndroidSwipeLayout.Util;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.AddAccount.Activity;
@@ -60,6 +62,9 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         MyAccountAdapter adapter;
 
+        MyAccountAdapterTest adapter1;
+
+
         MyAccountContract.IUserActionsListener userActionsListener;
         MyAccountPresenter mPresenter;
 
@@ -69,7 +74,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         public override int ResourceId()
         {
-            return Resource.Layout.MyAccountView;
+            return Resource.Layout.MyAccountViewNew;
         }
 
         public override bool ShowCustomToolbarTitle()
@@ -99,8 +104,23 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
                 adapter = new MyAccountAdapter(this, false);
                 listView.Adapter = adapter;
+                //adapter1 = new MyAccountAdapterTest(this);
+                //listView.Adapter = adapter1;
                 listView.SetNoScroll();
+                //adapter1.Mode = Attributes.Mode.Single;
                 listView.ItemClick += ListView_ItemClick;
+                /*listView.ItemClick += (sender, e) =>
+                {
+                    // ((SwipeLayout)(listView.GetChildAt(e.Position - listView.FirstVisiblePosition))).Open(SwipeLayout.DragEdge.Right);
+                };*/
+
+                listView.Touch += (sender, e) =>
+                {
+                    ((SwipeLayout)(listView.GetChildAt(listView.FirstVisiblePosition))).Open(SwipeLayout.DragEdge.Right);
+                    Console.WriteLine("ListView: OnTouch");
+                    e.Handled = true;
+                };
+
 
                 mPresenter = new MyAccountPresenter(this);
                 this.userActionsListener.Start();
@@ -111,6 +131,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
         }
         [Preserve]
+
         private void ListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             if (!this.GetIsClicked())
@@ -120,6 +141,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 ShowManageSupplyAccount(AccountData.Copy(customerBillingAccount, false), e.Position);
             }
         }
+
 
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
@@ -236,7 +258,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
         {
             try
             {
-                Intent manageAccount = new Intent(this, typeof(ManageSupplyAccountActivity));
+                Intent manageAccount = new Intent(this, typeof(ManageSupplyAccountActivityEdit));
                 manageAccount.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
                 manageAccount.PutExtra(Constants.SELECTED_ACCOUNT_POSITION, position);
                 StartActivityForResult(manageAccount, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);

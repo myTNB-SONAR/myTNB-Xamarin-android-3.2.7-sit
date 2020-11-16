@@ -9,7 +9,7 @@ namespace myTNB_Android.Src.CompoundView
 {
     public class ProfileMenuItemContentComponent : RelativeLayout
     {
-        private TextView itemTitle, itemValue, itemAction;
+        private TextView itemTitle, itemValue, itemAction, itemVerifyLabel;
         private LinearLayout itemActionContainer;
 
         public ProfileMenuItemContentComponent(Context context) : base(context)
@@ -38,6 +38,7 @@ namespace myTNB_Android.Src.CompoundView
             itemTitle = FindViewById<TextView>(Resource.Id.itemTitle);
             itemValue = FindViewById<TextView>(Resource.Id.itemValue);
             itemAction = FindViewById<TextView>(Resource.Id.itemAction);
+            itemVerifyLabel = FindViewById<TextView>(Resource.Id.infoLabel);
             itemActionContainer = FindViewById<LinearLayout>(Resource.Id.itemActionContainer);
 
             TextViewUtils.SetMuseoSans300Typeface(itemTitle, itemValue);
@@ -47,6 +48,21 @@ namespace myTNB_Android.Src.CompoundView
         public void SetTitle(string title)
         {
             itemTitle.Text = title;
+        }
+
+        public void SetFlagID(bool FlagID)
+        {
+            if (FlagID)
+            {
+                itemVerifyLabel.Visibility = Android.Views.ViewStates.Visible;
+                itemActionContainer.Visibility = Android.Views.ViewStates.Visible;
+                itemVerifyLabel.SetBackgroundResource(Resource.Drawable.icons_verify_email);
+            }
+            else
+            {
+                itemVerifyLabel.Visibility = Android.Views.ViewStates.Gone;
+                itemActionContainer.Visibility = Android.Views.ViewStates.Gone;
+            }
         }
 
         public void SetValue(string value)
@@ -66,10 +82,35 @@ namespace myTNB_Android.Src.CompoundView
 
         public void SetItemActionCall(Action action)
         {
-            itemActionContainer.Click += delegate
+            itemAction.Click += delegate
             {
                 action();
             };
+        }
+
+        public void SetIconEmailNotVerifyVisibility(bool isVisible)
+        {
+            itemVerifyLabel.Visibility = isVisible ? Android.Views.ViewStates.Visible : Android.Views.ViewStates.Gone;
+            //itemVerifyLabel.SetBackgroundResource(Resource.Drawable.smr_why_accounts_info);
+        }
+
+        public void SetIconEmailNotVerify(int value)
+        {
+            if(value == 1)
+            {
+                itemVerifyLabel.Visibility = Android.Views.ViewStates.Visible;
+                itemVerifyLabel.SetBackgroundResource(Resource.Drawable.icons_verify_email);
+            }
+            else
+            {
+                itemVerifyLabel.Visibility = Android.Views.ViewStates.Gone;
+            }
+        }
+
+
+        public void SetEmailVerify()
+        {
+            itemVerifyLabel.SetBackgroundResource(Resource.Drawable.smr_why_accounts_info);
         }
 
         public void EnableActionCall(bool isEnable)

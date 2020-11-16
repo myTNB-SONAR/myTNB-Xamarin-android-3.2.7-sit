@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:padding="16dp"
+    android:background="#2a97fb"
+    android:orientation="vertical">
+        <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="20dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/white">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="42dp"
+                    android:layout_marginRight="42dp"
+                    android:gravity="center"
+                    android:id="@+id/linearLayout2">
+                    <ImageView
+                        android:id="@+id/imgRight"
+                        android:layout_width="79.6dp"
+                        android:layout_height="79.6dp"
+                        android:src="@drawable/ic_display_successful_new"
+                        android:layout_gravity="center|center_vertical"
+                        android:padding="7.2dp" />
+                    <TextView
+                        android:id="@+id/txtAccCreated"
+                        android:text="Account Created!"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#1c79ca"
+                        android:textSize="16sp"
+                        android:gravity="center_vertical" />
+                    <TextView
+                        android:id="@+id/txtVerifyEmail"
+                        android:text="Please verify your email."
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#1c79ca"
+                        android:textSize="16sp"
+                        android:gravity="center" />
+                    <TextView
+                        android:paddingTop="10dp"
+                        android:id="@+id/txtVerifyNotification"
+                        android:text="@string/dashboard_chartview_no_account_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#49494a"
+                        android:textSize="12sp"
+                        android:gravity="center" />
+                </LinearLayout>
+            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/bottomLayout"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true">
+            <Button
+                android:id="@+id/btnContinue"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="Continue"
+                android:textSize="16dp"
+                android:textAllCaps="false"
+                style="@style/DarkButton1"/>
+        </LinearLayout>
+</RelativeLayout>
