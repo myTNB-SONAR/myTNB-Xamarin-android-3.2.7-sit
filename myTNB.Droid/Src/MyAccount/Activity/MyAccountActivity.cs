@@ -62,7 +62,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         MyAccountAdapter adapter;
 
-        MyAccountAdapterTest adapter1;
 
 
         MyAccountContract.IUserActionsListener userActionsListener;
