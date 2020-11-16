@@ -1099,14 +1099,11 @@
     <Compile Include="Src\RegisterValidation\MVP\EmelPopupPresenter.cs" />
     <Compile Include="Src\RegisterValidation\Receivers\PinDisplayerSMSReceiver.cs" />
     <Compile Include="Src\RegisterValidation\Receivers\SMSReceiver.cs" />
-    <Compile Include="Src\UpdateID\Activity\SelectIdTypeActivity.cs" />
     <Compile Include="Src\UpdateID\Activity\UpdateIDActivity.cs" />
     <Compile Include="Src\UpdateID\Adapter\IdTypeAdapter.cs" />
     <Compile Include="Src\UpdateID\Model\IdType.cs" />
     <Compile Include="Src\UpdateID\MVP\UpdateIDContract.cs" />
-    <Compile Include="Src\UpdateID\MVP\AddIdContract.cs" />
     <Compile Include="Src\UpdateID\MVP\UpdateIDPresenter.cs" />
-    <Compile Include="Src\UpdateID\MVP\AddIdPresenter.cs" />
     <Compile Include="Src\UpdateNameFull\Activity\UpdateNameFullActivity.cs" />
     <Compile Include="Src\UpdateNameFull\MVP\UpdateNicknameContract.cs" />
     <Compile Include="Src\UpdateNameFull\MVP\UpdateNicknamePresenter.cs" />
