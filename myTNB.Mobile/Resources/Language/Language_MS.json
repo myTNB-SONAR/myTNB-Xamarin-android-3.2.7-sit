@@ -115,8 +115,7 @@
     "updateIdTitle" : "Sahkan Nombor Pengenalan anda:",
     "updateIdMessage" : "Pastikan nombor pengenalan anda betul kerana anda hanya boleh mengemas kini sekali.",
     "re_enter" : "Masukkan balik",
-    "titleNonOwnerAddAcc" : "Terus tambahkan akaun dan beri nama untuk rujukan mudah anda.",
-
+    "titleNonOwnerAddAcc" : "Terus tambahkan akaun dan beri nama untuk rujukan mudah anda."
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -235,7 +234,7 @@
     "later": "Later",
     "update": "Update",
     "titleIcUpdate": "Complete your myTNB profile now for a better myTNB experience!",
-    "bodyIcUpdate": "Your identification number is not captured in your myTNB profile, update it now to have better access and controls over your electricity accounts!",
+    "bodyIcUpdate": "Your identification number is not captured in your myTNB profile, update it now to have better access and controls over your electricity accounts!"
   },
   "Tabbar": {
     "home": "Utama",
@@ -642,7 +641,7 @@
      "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
      "NameUpdateSuccess": "Nama anda telah berjaya ditukar.",
      "EmailUpdateSuccess": "An email verification link has been sent to ",
-     "IDUpdateSuccess": "Thank you for updating! Your update has been recorded above.",
+     "IDUpdateSuccess": "Thank you for updating! Your update has been recorded above."
   },
 
   "NameUpdate" : {
@@ -650,14 +649,14 @@
      "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
      "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
      "NameUpdateSuccess": "Nama anda telah berjaya ditukar.",
-     "EmailUpdateSuccess": "An email verification link has been sent to ",
+     "EmailUpdateSuccess": "An email verification link has been sent to "
   },
 
   "LearnMoreAboutTnb" : {
      "title": "Learn More About TNB",
     "tnc": "Soalan Lazim",
     "findUs": "Temui Kami",
-    "faq": "FAQ",
+    "faq": "FAQ"
   },
   "Profile": {
     "title": "Profil",
@@ -1041,8 +1040,6 @@
   "SelectCountry": {
     "title": "Pilih Negara/Wilayah"
   },
-
-
   "SubmitEnquiry": {
     "enquireTitle": "Pertanyaan",
     "submitEnquiryTitle": "Hantar Pertanyaan Baru",
@@ -1174,6 +1171,5 @@
     "updateIdLabelTitle" : "Provide your identification number for better experience!",
     "updateIdLabelDetails" : "Get better access and controls over your electricity accounts on myTNB by helping us validate your identification",
     "confrimButton" : "Confirm"
-  }
-     
+  }     
 }
