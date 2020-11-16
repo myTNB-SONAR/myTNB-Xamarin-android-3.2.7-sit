@@ -27,7 +27,7 @@ using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-
+using Android.Support.Design.Widget;
 
 namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 {
@@ -48,6 +48,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         FeedbackGeneralEnquiryStepOnePresenter mPresenter;
 
 
+        [BindView(Resource.Id.rootView)]
+        CoordinatorLayout rootView;
+
         [BindView(Resource.Id.recyclerView)]
          RecyclerView recyclerView;
 
@@ -55,7 +58,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         EditText txtGeneralEnquiry1;
 
         [BindView(Resource.Id.txtInputLayoutGeneralEnquiry1)]
-        TextInputLayout txtInputLayoutGeneralEnquiry1;
+        Google.Android.Material.TextField.TextInputLayout txtInputLayoutGeneralEnquiry1;
 
         [BindView(Resource.Id.txtMaxCharacters)]
         TextView txtMaxCharacters;
@@ -146,7 +149,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 // set font
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
                 TextViewUtils.SetMuseoSans300Typeface(txtRelatedScreenshotTitle, txtMaxImageContent, TextView_CharLeft);
-                TextViewUtils.SetMuseoSans500Typeface(txtstep1of2, IwantToEnquire, uploadSupportingDoc);
+                TextViewUtils.SetMuseoSans500Typeface(txtstep1of2, IwantToEnquire, uploadSupportingDoc, btnNext);
 
                 //set translation 
                 txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
@@ -164,12 +167,13 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 Utility.LoggingNonFatalError(e);
             }
 
-            // Create your application hereGetImageName
         }
 
         public override void Ready()
         {
             FileUtils.CreateDirectory(this, FileUtils.TEMP_IMAGE_FOLDER);
+            FileUtils.CreateDirectory(this, FileUtils.PDF_FOLDER);
+
         }
 
         public string GetImageName(int itemCount)
@@ -177,6 +181,12 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
             Calendar calendar = Calendar.GetInstance(Locale.Default);
             return GetString(Resource.String.feedback_image_name_convention, dateFormatter.Format(calendar.TimeInMillis), UserSessions.GetCurrentImageCount(PreferenceManager.GetDefaultSharedPreferences(this)) + itemCount);
+        }
+
+        public string copyPDFGetFilePath(Android.Net.Uri realFilePath , string filename)
+        {
+            string filePath = FileUtils.CopyPDF(this, realFilePath, FileUtils.PDF_FOLDER, filename);
+            return filePath;
         }
 
         public override void OnTrimMemory(TrimMemory level)
@@ -232,6 +242,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             {
                 string[] items = { Utility.GetLocalizedLabel("FeedbackForm", "takePhoto")  ,
                                Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary") ,
+                               Utility.GetLocalizedLabel("SubmitEnquiry", "documentPdf") ,
                                Utility.GetLocalizedCommonLabel("cancel")};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(this)
@@ -248,6 +259,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                     else if (items[args.Which].Equals(Utility.GetLocalizedLabel("FeedbackForm", "chooseFromLibrary")))
                     {
                         this.userActionsListener.OnAttachPhotoGallery();
+                    }
+                    else if (items[args.Which].Equals(Utility.GetLocalizedLabel("SubmitEnquiry", "documentPdf")))
+                    {
+                        this.userActionsListener.OnAttachPDF();
                     }
                     else if (items[args.Which].Equals(Utility.GetLocalizedCommonLabel("cancel")))
                     {
@@ -296,7 +311,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                     var intent = new Intent(MediaStore.ActionImageCapture);
                     Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
                     Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
-                                                    ApplicationContext.PackageName + ".fileprovider", file);
+                    ApplicationContext.PackageName + ".fileprovider", file);
                     intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
                     StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
                 }
@@ -314,7 +329,57 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             }
         }
 
+        public void ShowPDF()
+        {
 
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+
+             
+                Intent galleryIntent = new Intent(Intent.ActionGetContent);
+                galleryIntent.SetType("application/pdf");
+                galleryIntent.AddFlags(ActivityFlags.GrantReadUriPermission);
+                galleryIntent.AddFlags(ActivityFlags.GrantWriteUriPermission);
+                galleryIntent.AddFlags(ActivityFlags.GrantPersistableUriPermission);
+                galleryIntent.PutExtra(Intent.ExtraLocalOnly, true);
+                StartActivityForResult(Intent.CreateChooser(galleryIntent, GetString(Resource.String.bill_related_feedback_select_images)), Constants.RUNTIME_PERMISSION_GALLERY_PDF_REQUEST_CODE);
+            }
+
+        }
+
+
+        public string getActualPath(Android.Net.Uri uri)
+        {  
+           string path = FileUtils.GetActualPathForFile(uri, this);
+           return path;
+        }
+
+
+        Snackbar mErrorMessageSnackBar;
+        public void ShowError(string message = null)
+        {
+            if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+            {
+                mErrorMessageSnackBar.Dismiss();
+            }
+
+
+            if (string.IsNullOrEmpty(message))
+            {
+                message = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
+            }
+
+            mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
+            );
+            View v = mErrorMessageSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+
+            mErrorMessageSnackBar.Show();
+            this.SetIsClicked(false);
+        }
 
 
 
@@ -512,11 +577,13 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         public Task<string> SaveGalleryImage(Android.Net.Uri selectedImage, string pTempImagePath, string pFileName)
         {
             return Task.Run<string>(() =>
-            {
+            {  
                 return FileUtils.ProcessGalleryImage(this, selectedImage, pTempImagePath, pFileName);
             });
 
         }
+
+
 
         public Task<string> SaveCameraImage(string tempImagePath, string fileName)
         {
@@ -528,14 +595,14 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 
         }
 
-        public void UpdateAdapter(string pFilePath, string pFileName)
+        public void UpdateAdapter(string pFilePath, string pFileName ,string tfileName = "")
         {
             adapter.Update(adapter.ItemCount - 1, new AttachedImage()
             {
                 ViewType = Constants.VIEW_TYPE_REAL_RECORD,
                 Name = pFileName,
-                Path = pFilePath
-
+                Path = pFilePath,
+                FileName= tfileName
             });
             if (adapter.ItemCount < 2)
             {
@@ -575,11 +642,6 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-
-
-
-
 
 
 

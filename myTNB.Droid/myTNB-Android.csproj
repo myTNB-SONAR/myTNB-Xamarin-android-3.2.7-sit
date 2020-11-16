@@ -1322,6 +1322,7 @@
     <Compile Include="Src\Utils\Custom\ProgressButton\ProgressGenerator.cs" />
     <Compile Include="Src\Utils\Custom\ProgressButton\ResendButton.cs" />
     <Compile Include="Src\Utils\HttpLoggingHandler.cs" />
+    <Compile Include="Src\Utils\ResetPasswordNewChangeListener.cs" />
     <Compile Include="Src\Utils\RestrictTextChangeListener.cs" />
     <Compile Include="Src\Utils\SSLFactoryHelper.cs" />
     <Compile Include="Src\Utils\StringUtils.cs" />
@@ -8195,6 +8196,28 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\user_access.png" />
+    <AndroidResource Include="Resources\layout\FeedbackSubmittedRowNew.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\pdfIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\pdfIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\pdfIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\pdfIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\pdfIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\solid_border_background_submit_enquiry.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\dashed_border_background_submit_enquiry.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

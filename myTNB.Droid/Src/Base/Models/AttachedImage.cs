@@ -15,5 +15,8 @@ namespace myTNB_Android.Src.Base.Models
 
         [JsonProperty("IsLoading")]
         public bool IsLoading { get; set; }
+
+        [JsonProperty("FileName")]
+        public string FileName { get; set; }
     }
 }

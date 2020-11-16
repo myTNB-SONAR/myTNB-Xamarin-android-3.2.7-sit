@@ -87,7 +87,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
             /// V2 service to generate sms token
             /// to verfiy mobile number
             /// </summary>
-            void OnUpdatePhoneNo(string newPhoneNumber, UserAuthenticationRequest request);
+            void OnUpdatePhoneNo(string newPhoneNumber, UserAuthenticationRequest request , bool isForceUpdate=false );
 
             string OnVerfiyCellularCode(string mobile_no);
         }

@@ -25,7 +25,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
             this.mView.SetPresenter(this);
         }
 
-        public async void OnUpdatePhoneNo(string newPhoneNumber, UserAuthenticationRequest request)
+        public async void OnUpdatePhoneNo(string newPhoneNumber, UserAuthenticationRequest request, bool isForceUpdate=false)
         {
             this.mView.ClearErrors();
 
@@ -40,8 +40,16 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
 
                 try
                 {
-                    UserEntity userEntity = UserEntity.GetActive();
-                    oldPhoneNumber = userEntity.MobileNo;
+                    if (isForceUpdate == true)
+                    {
+                        // no implemetation
+                    }
+                    else {
+                        UserEntity userEntity = UserEntity.GetActive();
+                        oldPhoneNumber = userEntity.MobileNo;
+                    }
+
+                  
                 }
                 catch (Exception ex)
                 {

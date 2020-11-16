@@ -49,29 +49,58 @@ namespace myTNB_Android.Src.FeedbackDetails.Adapter
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             try
-            {
+            {  
                 AttachedImage image = GetItemObject(position);
                 var viewHolder = holder as FeedbackPreLoginImageViewHolder;
-                Picasso.With(viewHolder.ItemView.Context)
-                    .Load(new Java.IO.File(image.Path))
-                    .Fit()
-                    .Into(viewHolder.imageView
-                            , delegate
-                            {
-                                Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
-                                if (imageBitmap != null && !imageBitmap.IsRecycled)
-                                {
-                                    RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
-                                    imageDrawable.CornerRadius = 5f;
-                                    viewHolder.imageView.SetImageDrawable(imageDrawable);
-                                    viewHolder.fileName.Text = image.Name;
 
-                                }
-                            }
-                            , delegate
-                            {
+                if (image.Name.ToLower().Contains("pdf"))
+                {
+                    Picasso.With(viewHolder.ItemView.Context)
+                   .Load(Resource.Drawable.pdfIcon)
+                   .Fit()
+                   .Into(viewHolder.imageView
+                           , delegate
+                           {
+                               Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
+                               if (imageBitmap != null && !imageBitmap.IsRecycled)
+                               {
+                                   RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
+                                   imageDrawable.CornerRadius = 5f;
+                                   viewHolder.imageView.SetImageDrawable(imageDrawable);
+                                   viewHolder.fileName.Text = image.Name;
 
-                            });
+                               }
+                           }
+                           , delegate
+                           {
+
+                           });
+                }
+                else
+                {
+                    Picasso.With(viewHolder.ItemView.Context)
+                   .Load(new Java.IO.File(image.Path))
+                   .Fit()
+                   .Into(viewHolder.imageView
+                           , delegate
+                           {
+                               Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
+                               if (imageBitmap != null && !imageBitmap.IsRecycled)
+                               {
+                                   RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
+                                   imageDrawable.CornerRadius = 5f;
+                                   viewHolder.imageView.SetImageDrawable(imageDrawable);
+                                   viewHolder.fileName.Text = image.Name;
+
+                               }
+                           }
+                           , delegate
+                           {
+
+                           });
+                }
+
+               
             }
             catch (Exception e)
             {

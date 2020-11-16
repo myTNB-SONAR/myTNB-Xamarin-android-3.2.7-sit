@@ -23,6 +23,15 @@ namespace myTNB_Android.Src.Base.Models
         [JsonProperty("FeedbackNameInListView")]
         public string FeedbackNameInListView { get; set; }
 
+        [JsonProperty("StatusCode")]
+        public string StatusCode { get; set; }
+
+        [JsonProperty("StatusDesc")]
+        public string StatusDesc { get; set; }
+
+        [JsonProperty("IsRead")]
+        public string IsRead { get; set; }
+
         public static SubmittedFeedback Copy(SubmittedFeedbackEntity entity)
         {
             return new SubmittedFeedback()

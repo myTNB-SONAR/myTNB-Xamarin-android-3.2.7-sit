@@ -212,7 +212,11 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 txtEmailLinkInfo.Text = GetLabelByLanguage("details");
                 btnSubmit.Text = GetLabelCommonByLanguage("submit");
 
-                txtEmail.TextChanged += EmailTextChange;
+
+                txtEmail.TextChanged += TxtEmail_TextChanged;
+
+
+
                 DisableSubmitButton();
             }
             catch (Exception e)
@@ -221,25 +225,46 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
         }
 
-        //[OnClick(Resource.Id.btnSubmit)]
-        //void OnSubmit(object sender, EventArgs eventArgs)
-        //{
-        //    string email = txtEmail.Text;
-        //    string code = txtVerificationCode.Text;
-        //    this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, email , email , code);
-        //}
+        private void TxtEmail_TextChanged(object sender, TextChangedEventArgs e)
+        { 
+            // when typed there will be no error only raised when validated
+            txtInputLayoutEmail.Error = null;
+
+            if (txtEmail.Text.Length == 0)
+            {
+                this.DisableSubmitButton();
+            }
+            else
+            {
+                this.EnableSubmitButton();
+            }
+            
+            
+        }
+
 
         [OnClick(Resource.Id.btnSubmit)]
         void OnGetCode(object sender, EventArgs eventArgs)
         {
             if (!this.GetIsClicked())
             {
-                this.SetIsClicked(true);
-                string email = txtEmail.Text;
-                this.userActionsListener.GetCode(Constants.APP_CONFIG.API_KEY_ID, email);
+
+                bool isEmailLegit = ValidateEmail();
+                if (isEmailLegit)
+                {
+                    this.SetIsClicked(true);
+                    string email = txtEmail.Text;
+                    this.userActionsListener.GetCode(Constants.APP_CONFIG.API_KEY_ID, email);
+                }
+                else
+                {
+                    this.SetIsClicked(false);
+                }
+
+         
             }
         }
-
+        
         public void EnableSubmitButton()
         {
             btnSubmit.Enabled = true;
@@ -545,7 +570,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         }
 
-        private void EmailTextChange(object sender, TextChangedEventArgs e)
+        private bool ValidateEmail()
         {
             try
             {
@@ -557,22 +582,23 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                     {
                         ShowInvalidEmailError();
                         DisableSubmitButton();
+                        return false;
                     }
                     else
                     {
                         EnableSubmitButton();
                         ClearErrorMessages();
+                        return true;
                     }
                 }
-                else
-                {
-                    DisableSubmitButton();
-                    ClearErrorMessages();
-                }
+
+                return false;
+           
             }
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
+                return false;
             }
         }
     }

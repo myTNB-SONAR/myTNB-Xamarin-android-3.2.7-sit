@@ -111,9 +111,15 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                     enteredUserName = Intent.Extras.GetString(Constants.ENTERED_USERNAME, null);
                 }
 
-                txtNewPassword.TextChanged += TextNewChange;
+                txtNewPassword.FocusChange += FocusChange;
+                txtNewPassword.TextChanged += TxtNewPassword_TextChanged;
+                txtNewPassword.EditorAction += TxtNewPassword_EditorAction;
                 txtNewPassword.AddTextChangedListener(new InputFilterFormField(txtNewPassword, txtInputLayoutNewPassword));
-                txtConfirmNewPassword.TextChanged += TextConfirmChange;
+                txtNewPassword.AddTextChangedListener(new ResetPasswordNewChangeListener(txtNewPassword, txtInputLayoutNewPassword));
+
+                txtConfirmNewPassword.FocusChange += TextConfirmChange;
+                txtConfirmNewPassword.TextChanged += TxtConfirmNewPassword_TextChanged;
+                txtConfirmNewPassword.EditorAction += TxtConfirmNewPassword_EditorAction;
                 txtConfirmNewPassword.AddTextChangedListener(new InputFilterFormField(txtConfirmNewPassword, txtInputLayoutConfirmNewPassword));
 
                 this.ClearErrorMessages();
@@ -125,145 +131,209 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
         }
 
-        private void TextNewChange(object sender, TextChangedEventArgs e)
+        private void TxtConfirmNewPassword_EditorAction(object sender, TextView.EditorActionEventArgs e)
+        {
+            e.Handled = false;
+            if (e != null && (e.ActionId == Android.Views.InputMethods.ImeAction.Done ||
+                e.ActionId == Android.Views.InputMethods.ImeAction.Next ||
+                e.ActionId == Android.Views.InputMethods.ImeAction.Search ||
+                e.ActionId == Android.Views.InputMethods.ImeAction.Send ||
+                e.ActionId == Android.Views.InputMethods.ImeAction.Go))
+            {
+                this.validateBothPassword();
+                e.Handled = true;
+            }
+
+        }
+
+        /// <summary>
+        /// Handle keyboard button 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TxtNewPassword_EditorAction(object sender, TextView.EditorActionEventArgs e)
+        {
+            e.Handled = false;
+            if (e != null && (
+                e.ActionId == Android.Views.InputMethods.ImeAction.Done ||
+                e.ActionId == Android.Views.InputMethods.ImeAction.Next ||
+                e.ActionId == Android.Views.InputMethods.ImeAction.Search ||
+                e.ActionId == Android.Views.InputMethods.ImeAction.Send ||
+                e.ActionId == Android.Views.InputMethods.ImeAction.Go
+                ))
+            {
+                this.validateBothPassword();
+                e.Handled = true;
+            }
+        }
+
+
+        /// <summary>
+        /// Handle when text is null and handle show and hidden eye at password  (confirm new password) 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TxtConfirmNewPassword_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            //clear error if typed
+            txtInputLayoutConfirmNewPassword.Error = null;
+
+
+            if (txtConfirmNewPassword.Text.Length == 0)
+            {
+                this.DisableSubmitButton();
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(txtNewPassword.Text) && !string.IsNullOrEmpty(txtConfirmNewPassword.Text))
+                {
+
+                    this.EnableSubmitButton();
+                }
+               
+            }
+
+
+            if (!string.IsNullOrEmpty(txtNewPassword.Text))
+            {
+                txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = true;
+                txtInputLayoutConfirmNewPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
+            }
+            else
+            {
+                txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = false;
+            }
+
+            //this.clearErrorIfTyped_forConfirmPass(true);
+        }
+
+        private void TxtNewPassword_TextChanged(object sender, TextChangedEventArgs e)
+        {   
+            //always clear error if typed
+            txtInputLayoutNewPassword.Error = null;
+
+            if (txtNewPassword.Text.Length == 0)
+            {
+                this.DisableSubmitButton();
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(txtNewPassword.Text) && !string.IsNullOrEmpty(txtConfirmNewPassword.Text)) {
+
+                    this.EnableSubmitButton();
+                }
+
+                
+            }
+
+            if (!string.IsNullOrEmpty(txtNewPassword.Text))
+            {
+                txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
+                txtInputLayoutNewPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
+            }
+            else
+            {
+                txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = false;
+            }
+
+           // this.clearErrorIfTyped_forConfirmPass(false);
+
+        }
+
+
+        private void FocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            if (!e.HasFocus)
+            {
+                this.validateBothPassword();
+            }
+
+        }
+
+        private bool validateBothPassword()
         {
             try
             {
+
                 string newPassword = txtNewPassword.Text;
                 string confirmPassword = txtConfirmNewPassword.Text;
+                bool isCorrect = true;
 
                 this.DisableSubmitButton();
 
-                if (newPassword.Length == 0)
-                {
-                    this.ClearNewPasswordError();
-                }
-
-                if (confirmPassword.Length == 0)
-                {
-                    this.ClearConfirmPasswordError();
-                }
-               // this.ClearErrorMessages();
-
-                // validation new password
                 if (!string.IsNullOrEmpty(newPassword))
                 {
-                    txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
-                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
-                    txtInputLayoutNewPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
-                   // ClearNewPasswordError();
-                    if (txtInputLayoutNewPassword.Error != Utility.GetLocalizedErrorLabel("invalid_password")) {
-                        txtInputLayoutNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");  //fix bounce issue
-                    }
-                    txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                    if (!txtInputLayoutNewPassword.ErrorEnabled)
-                        txtInputLayoutNewPassword.ErrorEnabled = true;
                     if (!this.userActionsListener.CheckPasswordIsValid(newPassword))
                     {
                         this.ShowPasswordMinimumOf6CharactersError();
+                        isCorrect = false;
                     }
                     else
                     {
-                        
                         this.ClearNewPasswordError();
                     }
                 }
                 else
-                {
-                    txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = false;
+                {   //disable button if no text
+                    isCorrect = false;
                 }
 
-                // validation confirm password
-                if (!string.IsNullOrEmpty(confirmPassword) || (!string.IsNullOrEmpty(confirmPassword) && !string.IsNullOrEmpty(newPassword)))
+
+                if (!string.IsNullOrEmpty(newPassword) && !string.IsNullOrEmpty(confirmPassword))
                 {
-                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutConfirmNewPassword);
-                    txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = true;
-                    txtInputLayoutConfirmNewPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
-                   // ClearConfirmPasswordError();
-                    if(txtInputLayoutConfirmNewPassword.Error != Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword"))
-                    {
-                     txtInputLayoutConfirmNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword");  //fix bounce issue
-                    }
-                    txtInputLayoutConfirmNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                    if (!txtInputLayoutConfirmNewPassword.ErrorEnabled)
-                        txtInputLayoutConfirmNewPassword.ErrorEnabled = true;
                     if (!newPassword.Equals(confirmPassword))
                     {
-                       this.ShowNotEqualConfirmNewPasswordToNewPasswordError();
-                    }
-                    else
-                    {
-                        this.ClearErrorMessages();
-                        this.EnableSubmitButton();
-                    }
-                }
-                else
-                {
-                    txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = false;
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
-        }
-
-        private void TextConfirmChange(object sender, TextChangedEventArgs e)
-        {
-            try
-            {
-                string newPassword = txtNewPassword.Text;
-                string confirmPassword = txtConfirmNewPassword.Text;
-
-                this.DisableSubmitButton();
-
-                if (fromManualtextClear)
-                {
-                    this.ClearErrorMessages();
-                }
-                else
-                {
-                    this.ChangeIsFromClear(false);
-                }
-
-                // validation confirm password
-                if (!string.IsNullOrEmpty(confirmPassword) || (!string.IsNullOrEmpty(confirmPassword) && !string.IsNullOrEmpty(newPassword)))
-                {
-                    txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = true;
-                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutConfirmNewPassword);
-                    txtInputLayoutConfirmNewPassword.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
-                   // ClearConfirmPasswordError();
-                    if (txtInputLayoutConfirmNewPassword.Error != Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword")) {
-                        txtInputLayoutConfirmNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword"); //fix bounce issue
-                    }
-                    
-                    txtInputLayoutConfirmNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                    if (!txtInputLayoutConfirmNewPassword.ErrorEnabled)
-                        txtInputLayoutConfirmNewPassword.ErrorEnabled = true;
-                    if (!newPassword.Equals(confirmPassword))
-                    {
+                        //if password not equals
                         this.ShowNotEqualConfirmNewPasswordToNewPasswordError();
+                        isCorrect = false;
                     }
                     else
                     {
-                        this.ClearErrorMessages();
-                        this.EnableSubmitButton();
+                        this.ClearConfirmPasswordError();
                     }
                 }
                 else
                 {
-                   txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = false;
-
+                    //disable button if no text
+                    isCorrect = false;
                 }
+
+
+                //handle button to enable or disable
+                if (isCorrect == true)
+                {
+                    this.EnableSubmitButton();
+                    return true;
+                }
+                else
+                {
+                    this.DisableSubmitButton();
+                    return true;
+                }
+
+
             }
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
+                return false;
             }
         }
 
-         public void ChangeIsFromClear(bool isFromClear)
+
+
+
+
+        private void TextConfirmChange(object sender, View.FocusChangeEventArgs e)
+        {
+            if (!e.HasFocus)
+            {
+                this.validateBothPassword();
+            }
+
+        }
+
+        public void ChangeIsFromClear(bool isFromClear)
         {
             fromManualtextClear = isFromClear;
         }
@@ -300,7 +370,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 txtInputLayoutNewPassword.Error = GetString(Resource.String.reset_password_empty_new_password_error);
             }
 
-           
+
             if (!txtInputLayoutNewPassword.ErrorEnabled)
                 txtInputLayoutNewPassword.ErrorEnabled = true;
         }
@@ -308,11 +378,12 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         public void ShowEmptyConfirmNewPasswordError()
         {
             //ClearConfirmPasswordError();
-            if (txtInputLayoutConfirmNewPassword.Error != GetString(Resource.String.reset_password_empty_confirm_new_password_error)) {
+            if (txtInputLayoutConfirmNewPassword.Error != GetString(Resource.String.reset_password_empty_confirm_new_password_error))
+            {
 
                 txtInputLayoutConfirmNewPassword.Error = GetString(Resource.String.reset_password_empty_confirm_new_password_error);
             }
-   
+
             if (!txtInputLayoutConfirmNewPassword.ErrorEnabled)
                 txtInputLayoutConfirmNewPassword.ErrorEnabled = true;
         }
@@ -321,12 +392,12 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         {
             //ClearConfirmPasswordError();
 
-            if(txtInputLayoutConfirmNewPassword.Error != Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword"))
+            if (txtInputLayoutConfirmNewPassword.Error != Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword"))
             {
                 txtInputLayoutConfirmNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedPassword"); //fix bounce animation
             }
 
-          
+
             if (!txtInputLayoutConfirmNewPassword.ErrorEnabled)
                 txtInputLayoutConfirmNewPassword.ErrorEnabled = true;
         }
@@ -334,11 +405,11 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         public void ShowPasswordMinimumOf6CharactersError()
         {
             //ClearNewPasswordError();
-            if(txtInputLayoutNewPassword.Error != Utility.GetLocalizedErrorLabel("invalid_password"))
+            if (txtInputLayoutNewPassword.Error != Utility.GetLocalizedErrorLabel("invalid_password"))
             {
                 txtInputLayoutNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
             }
-            
+
             txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             if (!txtInputLayoutNewPassword.ErrorEnabled)
                 txtInputLayoutNewPassword.ErrorEnabled = true;
@@ -493,7 +564,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             this.ChangeIsFromClear(true);
             txtNewPassword.Text = "";
             txtConfirmNewPassword.Text = "";
-          
+
         }
 
         [OnClick(Resource.Id.btnSubmit)]
@@ -503,10 +574,23 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             {
                 if (!this.GetIsClicked())
                 {
-                    this.SetIsClicked(true);
+
                     string newPassword = txtNewPassword.Text;
                     string confirmPassword = txtConfirmNewPassword.Text;
-                    this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, newPassword, confirmPassword, enteredPassword, enteredUserName, this.DeviceId());
+                    bool isCorrect = this.validateBothPassword();
+                    if (isCorrect)
+                    {
+
+                        this.SetIsClicked(true);
+
+                        this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, newPassword, confirmPassword, enteredPassword, enteredUserName, this.DeviceId());
+
+                    }
+                    else
+                    {
+                        this.SetIsClicked(false);
+                    }
+
                 }
             }
             catch (Exception e)
@@ -526,7 +610,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         {
             if (!string.IsNullOrEmpty(txtInputLayoutNewPassword.Error))
             {
-                txtInputLayoutNewPassword.Error =null; 
+                txtInputLayoutNewPassword.Error = null;
                 txtInputLayoutNewPassword.ErrorEnabled = false;
             }
         }
@@ -535,7 +619,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         {
             if (!string.IsNullOrEmpty(txtInputLayoutConfirmNewPassword.Error))
             {
-                txtInputLayoutConfirmNewPassword.Error =null;
+                txtInputLayoutConfirmNewPassword.Error = null;
                 txtInputLayoutConfirmNewPassword.ErrorEnabled = false;
             }
         }

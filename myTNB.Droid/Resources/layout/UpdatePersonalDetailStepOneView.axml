@@ -141,6 +141,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:drawableLeft="@drawable/smr_why_accounts_info"
+                                android:gravity="center_vertical"
                                 android:drawablePadding="8dp"
                                 android:text="Who is registered owner?"
                                 android:textColor="#1c79ca"
@@ -992,6 +993,7 @@
                             android:drawableLeft="@drawable/smr_why_accounts_info"
                             android:drawablePadding="8dp"
                             android:text="Do I need owner’s consent?"
+                            android:gravity="center_vertical"
                             android:textColor="#1c79ca"
                             android:textSize="11dp" />
                     </LinearLayout>

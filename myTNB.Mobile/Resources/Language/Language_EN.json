@@ -1,4 +1,4 @@
-﻿{
+{
   "Common": {
     "eppToolTipTitle": "What about Easy Payment Plan (EPP)?",
     "account": "Account",
@@ -773,7 +773,8 @@
     "details": "This new password will replace your current one. All other account details remain unchanged.",
     "newPassword": "Enter new password",
     "confirmNewPassword": "Confirm new password",
-    "confirmPassword": "Confirm Password"
+    "confirmPassword": "Confirm new Password",
+    "newPasswordNoEnter": "New Password"
   },
   "UpdateMobileNumber": {
     "verifyDeviceTitle": "Verify Device",
@@ -1059,7 +1060,7 @@
     "messageHint": "Your Message",
     "uploadDocTitle": "Upload supporting documents:",
     "attachTitle": "Upload Supporting Documents (optional)",
-    "attachDescription": "Maximum document size is 1MB. (JPG & JPEG format only)",
+    "attachDescription": "Maximum document size is 1MB. (PDF, JPG & JPEG format only)",
     "stepTitle2of2": "Step 2 of 2",
     "contactEnquiryTitle": "How can we contact you regarding this enquiry?",
     "nameHint": "Your Full Name",
@@ -1165,7 +1166,8 @@
     "backLogin": "Back to Login",
     "registeredView": "Is this electricity account registered under your name?",
     "viewYes": "Yes",
-    "viewNo": "No"
+    "viewNo": "No",
+    "documentPdf": "Document"
   },
   "UpdateID": {
     "title" : "Update Identification Number",
