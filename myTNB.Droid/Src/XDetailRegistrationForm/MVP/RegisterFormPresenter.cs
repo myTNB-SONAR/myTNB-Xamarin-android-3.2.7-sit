@@ -232,7 +232,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
                             MobileNo = mobile_no,
                             Email = email,
                             Password = password,
-
+                            IdType = idtype,
                         };
 
                         // TODO : SHOW OTP SCREEN

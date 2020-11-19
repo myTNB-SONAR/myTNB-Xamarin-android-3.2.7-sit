@@ -84,9 +84,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             try
             {
                 CreateNewUserWithTokenRequest createNewUserWithTokenRequest = new CreateNewUserWithTokenRequest(userCredentialsEntity.Fullname, string.Format("{0}{1}{2}{3}", num1, num2, num3, num4),
-                    userCredentialsEntity.Password, userCredentialsEntity.ICNo, userCredentialsEntity.MobileNo);
+                    userCredentialsEntity.Password, userCredentialsEntity.ICNo, userCredentialsEntity.IdType, userCredentialsEntity.MobileNo);
                 createNewUserWithTokenRequest.SetUserName(userCredentialsEntity.Email);
-                var userRegistrationResponse = await ServiceApiImpl.Instance.CreateNewUserWithToken(createNewUserWithTokenRequest);
+                var userRegistrationResponse = await ServiceApiImpl.Instance.CreateNewUserWithToken_OT(createNewUserWithTokenRequest);
 
                 if (userRegistrationResponse.IsSuccessResponse())
                 {
@@ -99,7 +99,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     }
                     UserAuthenticateRequest userAuthenticateRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), userCredentialsEntity.Password);
                     userAuthenticateRequest.SetUserName(userCredentialsEntity.Email);
-                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthenticateRequest);
+                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticateLogin(userAuthenticateRequest);
 
                     if (!userResponse.IsSuccessResponse())
                     {

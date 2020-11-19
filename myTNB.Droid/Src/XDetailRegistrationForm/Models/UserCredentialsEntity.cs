@@ -19,7 +19,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.Models
         [JsonProperty("password")]
         public string Password { get; set; }
 
-
-
+        [JsonProperty("idtype")]
+        public string IdType { get; set; }
     }
 }

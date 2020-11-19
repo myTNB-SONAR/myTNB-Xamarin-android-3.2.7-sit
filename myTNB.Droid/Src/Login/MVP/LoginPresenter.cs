@@ -112,7 +112,7 @@ namespace myTNB_Android.Src.Login.MVP
                 }
                 UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);
                 userAuthRequest.SetUserName(usrNme);
-                var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthRequest);
+                var userResponse = await ServiceApiImpl.Instance.UserAuthenticateLogin(userAuthRequest);
 
                 if (!userResponse.IsSuccessResponse())
                 {

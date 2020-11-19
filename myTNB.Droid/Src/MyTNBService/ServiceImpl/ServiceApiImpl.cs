@@ -192,6 +192,26 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             return api.UserAuthenticate<UserAuthenticateResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
+        /// <summary>
+        /// Call CreateNewUserWithToken with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<CreateNewUserWithTokenResponse> CreateNewUserWithToken_OT([Body] Request.BaseRequest request)
+        {
+            return api.CreateNewUserWithToken_OT<CreateNewUserWithTokenResponse>(request, CancellationTokenSourceWrapper.GetToken());     //2enapps wan   //api register baru
+        }
+
+        /// <summary>
+        /// Call IsUserAuth with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<UserAuthenticateResponse> UserAuthenticateLogin([Body] Request.BaseRequest request)
+        {
+            return api.UserAuthenticateLoginNew<UserAuthenticateResponse>(request, CancellationTokenSourceWrapper.GetToken());  //2enapss wan //api login baru
+        }
+
         public Task<UserAuthenticateResponseEmail> UserAuthenticateEmail([Body] Request.BaseRequest request)
         {
             return api.UserAuthenticate<UserAuthenticateResponseEmail>(request, CancellationTokenSourceWrapper.GetToken());
