@@ -79,7 +79,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
             string title = Utility.GetLocalizedLabel("ViewBill", "titleBill");
             if (selectedAccount != null)
             {
-                if (selectedAccount.AccountCategoryId.Equals("2"))
+                if (selectedAccount.AccountCategoryId != null && selectedAccount.AccountCategoryId.Equals("2"))
                 {
                     title = Utility.GetLocalizedLabel("ViewBill", "titleAdvice");
                 }
@@ -551,7 +551,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 string title = Utility.GetLocalizedLabel("ViewBill", "titleBill");
                 if (selectedAccount != null)
                 {
-                    if (selectedAccount.AccountCategoryId.Equals("2"))
+                    if (selectedAccount.AccountCategoryId != null && selectedAccount.AccountCategoryId.Equals("2"))
                     {
                         title = Utility.GetLocalizedLabel("ViewBill", "titleAdvice");
                     }
@@ -569,7 +569,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
                             d = simpleDateParser.Parse(selectedAccount?.DateBill);
                         }
                     }
-
                 }
                 catch (Java.Text.ParseException e)
                 {

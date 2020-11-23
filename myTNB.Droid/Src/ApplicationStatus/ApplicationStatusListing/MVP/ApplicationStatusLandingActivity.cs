@@ -718,10 +718,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
                     var application = GetAllApplications[position];
                     ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(application.SavedApplicationId
-                            , application.ApplicationId
-                            , application.ApplicationType
-                            , application.ApplicationModuleDescription
-                            , application.System);
+                        , application.ApplicationId
+                        , application.ApplicationType
+                        , application.System);
 
                     HideProgressDialog();
                     if (!response.StatusDetail.IsSuccess)
@@ -745,10 +744,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        public async void ShowApplicaitonPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
+        public async void ShowApplicaitonPopupMessage(Activity context, StatusDetail statusDetail)
         {
-
-
             MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                 .SetTitle(statusDetail.Title)
                 .SetMessage(statusDetail.Message)

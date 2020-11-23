@@ -114,7 +114,36 @@
 						android:paddingBottom="-5dp"
 						android:scrollIndicators="none"
 						android:overScrollMode="never"/>
-
+					<LinearLayout
+						android:orientation="vertical"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_weight="0.3"
+						android:layout_gravity="center"
+						android:gravity="center"
+						android:id="@+id/bcrmDownContainer"
+						android:visibility="gone"
+						android:layout_marginBottom="16dp">
+						<ImageView
+							android:layout_width="90dp"
+							android:layout_height="64dp"
+							android:src="@drawable/bcrm_offline"/>
+						<TextView
+							android:id="@+id/txtBCRMDownMessage"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textColor="@color/all_cleared_amount"
+							android:textSize="12dp"
+							android:clickable="true"
+							android:lineSpacingExtra="2dp"
+							android:gravity="center"
+							android:layout_marginLeft="16dp"
+							android:layout_marginRight="16dp"
+							android:layout_marginTop="16dp"
+							android:text="UI - Looks like your statuses can’t be loaded at 
+the moment. However, you may proceed to make any changes to the application as it 
+will be recorded. Check back again later to view its update."/>
+					</LinearLayout>
 				</LinearLayout>
 				<LinearLayout
 					android:layout_width="match_parent"
@@ -551,7 +580,7 @@
 					android:id="@+id/applicationStatusDetailSingleButtonLayout"
 					android:background="@color/white">
 					<Button
-						android:id="@+id/btnSaveApplication"
+						android:id="@+id/btnPrimaryCTA"
 						android:text="UI - Add to List"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"

@@ -26,6 +26,7 @@ using Android.Graphics.Drawables;
 using myTNB.Mobile.API.Models.ApplicationStatus.GetApplicationsByCA;
 using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Adapter;
+using myTNB.Mobile.SessionCache;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 {
@@ -144,6 +145,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             base.OnResume();
             try
             {
+                ApplicationStatusSearchDetailCache.Instance.Clear();
                 FirebaseAnalyticsUtils.SetScreenName(this, "Search Application Status");
             }
             catch (Exception e)
@@ -408,7 +410,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         {
                             txtInputLayoutServiceRequestNum.Error = null;
                             txtInputLayoutServiceRequestNum.ErrorEnabled = false;
-
                         }
                         if (txtServiceRequestNum.Text.Count() == 10)
                         {
@@ -419,11 +420,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         }
                         else if (txtServiceRequestNum.Text.Count() != 10 && txtServiceRequestNum.Text != string.Empty)
                         {
-
                             txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[0].SearchTypeDescDisplay);
                             if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
+                            {
                                 txtInputLayoutServiceRequestNum.ErrorEnabled = true;
-
+                            }
                             DisableButton();
                         }
                     }
@@ -601,6 +602,32 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             }
                         }
                         isEdiging = false;
+                    }
+
+                    if (searchType == ApplicationStatusSearchType.ServiceNotificationNo)
+                    {
+                        txtServiceRequestNum.SetFilters(new IInputFilter[] { });
+                        if (txtServiceRequestNum.Text.Count() == 0 || txtServiceRequestNum.Text.Count() == 12)
+                        {
+                            txtInputLayoutServiceRequestNum.Error = null;
+                            txtInputLayoutServiceRequestNum.ErrorEnabled = false;
+                        }
+                        if (txtServiceRequestNum.Text.Count() == 12)
+                        {
+                            EnableButton();
+                            txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(10) });
+                            txtInputLayoutServiceRequestNum.Error = null;
+                            txtInputLayoutServiceRequestNum.ErrorEnabled = false;
+                        }
+                        else if (txtServiceRequestNum.Text.Count() != 10 && txtServiceRequestNum.Text != string.Empty)
+                        {
+                            txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[0].SearchTypeDescDisplay);
+                            if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
+                            {
+                                txtInputLayoutServiceRequestNum.ErrorEnabled = true;
+                            }
+                            DisableButton();
+                        }
                     }
                 }
             }

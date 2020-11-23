@@ -2,9 +2,7 @@
 using Android.Content;
 using Android.Runtime;
 using Android.Text;
-using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.Utils;
@@ -12,14 +10,8 @@ using Refit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading;
 using Newtonsoft.Json;
-using myTNB_Android.Src.AppLaunch.Api;
-using myTNB_Android.Src.AppLaunch.Requests;
-using static Android.Widget.CompoundButton;
-using myTNB_Android.Src.NotificationDetails.Requests;
 using System.Threading.Tasks;
 using myTNB_Android.Src.Notifications.Api;
 using myTNB_Android.Src.MyTNBService.Response;
@@ -89,7 +81,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                         notificationReadResponse = await ServiceApiImpl.Instance.ReadUserNotification(new UserNotificationReadRequest(selectedNotificationList));
                         if (notificationReadResponse.IsSuccessResponse())
                         {
-                            foreach(UserNotificationData userNotificationData in selectedNotificationList)
+                            foreach (UserNotificationData userNotificationData in selectedNotificationList)
                             {
                                 UserNotificationEntity.UpdateIsRead(userNotificationData.Id, true);
                             }
@@ -368,7 +360,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                         MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                                     }
                                 }
-                                else if(response != null && response.Response != null && response.Response.ErrorCode == "8400")
+                                else if (response != null && response.Response != null && response.Response.ErrorCode == "8400")
                                 {
                                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                                     // TODO: Show Maintenance Screen

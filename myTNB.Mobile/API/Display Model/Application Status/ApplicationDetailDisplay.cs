@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
 using myTNB.Mobile.Extensions;
@@ -151,6 +150,15 @@ namespace myTNB.Mobile
         /// </summary>
         public bool IsDeleteEnable { set; get; }
 
+        /// <summary>
+        /// Determines if BCRM is Offline and if need to show BCRM Downtime
+        /// </summary>
+        public bool IsOffLine
+        {
+            set;
+            get;
+        }
+
         public string ApplicationTypeReference { set; get; }
         /// <summary>
         /// Application Type Text
@@ -251,6 +259,10 @@ namespace myTNB.Mobile
                 {
                     type = DetailCTAType.Save;
                 }
+                else if (IsPayment && IsOffLine)
+                {
+                    type = DetailCTAType.PayOffline;
+                }
                 else if (IsPayment && applicationPaymentDetail != null)
                 {
                     type = DetailCTAType.Pay;
@@ -262,6 +274,11 @@ namespace myTNB.Mobile
                             type = DetailCTAType.PayInProgress;
                         }
                     }
+                }
+                //Todo: Check CTA Type for Rating
+                else if (ApplicationStatusDetail.StatusDescriptionColor is string description && description.IsValid())
+                {
+                    //type = DetailCTAType.Rate;
                 }
                 return type;
             }
@@ -743,6 +760,7 @@ namespace myTNB.Mobile
         Remove,
         Pay,
         PayInProgress,
+        PayOffline,
         None
     }
 

@@ -282,6 +282,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 accountData.AccountNum = account.AccNum;
                 accountData.AccountNickName = account.AccDesc;
                 accountData.AddStreet = account.AccountStAddress;
+                accountData.AccountCategoryId = account.AccountCategoryId;
                 mView.ViewDetails(accountData);
             }
         }

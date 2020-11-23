@@ -7,7 +7,6 @@ namespace myTNB.Mobile
 {
     public class GetAllApplicationsResponse : BaseResponse<GetAllApplicationsModel>
     {
-
     }
 
     public class GetAllApplicationsModel

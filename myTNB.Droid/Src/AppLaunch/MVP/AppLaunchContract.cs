@@ -37,6 +37,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// </summary>
             void ShowDashboard();
 
+            /// <summary>
+            /// Redirects to Application Status Details
+            /// </summary>
+            void ShowApplicationStatusDetails();
 
             /// <summary>
             /// The unique id of the device
@@ -90,13 +94,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// <param name="count">integer representation of no of badges</param>
             void ShowNotificationCount(int count);
 
-
             void OnSavedTimeStampRecievd(string timestamp);
 
             void OnTimeStampRecieved(string timestamp);
 
             void OnSiteCoreServiceFailed(string message);
-
 
             void OnSavedAppLaunchTimeStampRecievd(string timestamp);
 

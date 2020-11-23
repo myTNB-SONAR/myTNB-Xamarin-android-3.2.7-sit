@@ -1,4 +1,5 @@
 ﻿using Android.Content;
+using Android.OS;
 using Android.Text;
 using Android.Util;
 using Firebase.Iid;
@@ -89,7 +90,7 @@ namespace myTNB_Android.Src.Login.MVP
             Log.Debug(TAG, "Awaiting...");
             try
             {
-                string fcmToken = String.Empty;
+                string fcmToken = string.Empty;
 
                 if (FirebaseTokenEntity.HasLatest())
                 {
@@ -100,6 +101,7 @@ namespace myTNB_Android.Src.Login.MVP
                     fcmToken = FirebaseInstanceId.Instance.Token;
                     FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
                 }
+                System.Diagnostics.Debug.WriteLine("[DEBUG] FCM TOKEN: " + fcmToken);
                 UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);
                 userAuthRequest.SetUserName(usrNme);
                 var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthRequest);

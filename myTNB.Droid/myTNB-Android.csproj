@@ -5976,6 +5976,26 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\Adapter\SearchApplicationAdapter.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\bcrm_offline.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\bcrm_offline.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\bcrm_offline.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\bcrm_offline.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\bcrm_offline.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -6231,8 +6251,6 @@
     <AndroidAsset Include="Assets\dashboard_zoom_lottie.json" />
     <AndroidAsset Include="Assets\tnb_general_loading.json" />
     <AndroidAsset Include="Assets\ocr_loading_animation.json" />
-    <None Include="Src\AppointmentScheduler\.DS_Store" />
-    <None Include="Src\AppointmentScheduler\AppointmentSet\.DS_Store" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">

@@ -11,7 +11,6 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter;
 using AndroidX.RecyclerView.Widget;
 using System;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.PreLogin.Activity;
 using AndroidX.Core.Content;
 using Android.Views;
 using myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP;
@@ -22,6 +21,9 @@ using myTNB_Android.Src.ViewReceipt.Activity;
 using myTNB_Android.Src.ViewBill.Activity;
 using Android.Preferences;
 using Android.Graphics;
+using myTNB_Android.Src.Login.Activity;
+using myTNB.Mobile.SessionCache;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -94,8 +96,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [BindView(Resource.Id.txtApplicationStatusDetailNote)]
         TextView txtApplicationStatusDetailNote;
 
-        [BindView(Resource.Id.btnSaveApplication)]
-        Button btnSaveApplication;
+        [BindView(Resource.Id.btnPrimaryCTA)]
+        Button btnPrimaryCTA;
 
         [BindView(Resource.Id.btnViewActivityLog)]
         Button btnViewActivityLog;
@@ -160,12 +162,30 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [BindView(Resource.Id.ctaParentLayout)]
         LinearLayout ctaParentLayout;
 
-        private bool IsFromLinkedWith = false;
+        [BindView(Resource.Id.bcrmDownContainer)]
+        LinearLayout bcrmDownContainer;
 
-        [OnClick(Resource.Id.btnSaveApplication)]
-        internal void OnSaveApplication(object sender, EventArgs e)
+        [BindView(Resource.Id.txtBCRMDownMessage)]
+        TextView txtBCRMDownMessage;
+
+        private bool IsSaveFlow = false;
+        private bool IsFromLinkedWith = false;
+        private Snackbar mNoInternetSnackbar;
+
+        [OnClick(Resource.Id.btnPrimaryCTA)]
+        internal void OnPrimaryCTAClick(object sender, EventArgs e)
         {
-            SaveApplication();
+            if (applicationDetailDisplay != null)
+            {
+                if (applicationDetailDisplay.CTAType == DetailCTAType.Save)
+                {
+                    SaveApplication();
+                }
+                else if (applicationDetailDisplay.CTAType == DetailCTAType.Rate)
+                {
+                    //Todo: Route to rating
+                }
+            }
         }
 
         [OnClick(Resource.Id.btnViewActivityLog)]
@@ -271,6 +291,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             StartActivity(applicationDetailActivityLogIntent);
             HideProgressDialog();
         }
+
         public void ShowProgressDialog()
         {
             try
@@ -294,6 +315,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+
         private async void SaveApplication()
         {
             try
@@ -328,6 +350,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         if (postSaveApplicationResponse.StatusDetail.IsSuccess)
                         {
                             Toast.MakeText(this, postSaveApplicationResponse.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
+                            if (IsSaveFlow)
+                            {
+                                Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
+                                StartActivity(applicationLandingIntent);
+                                IsSaveFlow = false;
+                            }
                             SetResult(Result.Ok, new Intent());
                             Finish();
                         }
@@ -354,7 +382,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        private Snackbar mNoInternetSnackbar;
+
         public void ShowNoInternetSnackbar()
         {
             if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
@@ -365,7 +393,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             mNoInternetSnackbar = Snackbar.Make(rootview, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
-
                 mNoInternetSnackbar.Dismiss();
             }
             );
@@ -378,13 +405,19 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         public void ShowPreLogin()
         {
-            Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
-            PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            StartActivity(PreLoginIntent);
+            ApplicationStatusSearchDetailCache.Instance.SetData(applicationDetailDisplay);
+            StartActivity(typeof(LoginActivity));
         }
 
         public void ShowStatusLanding()
         {
+            ApplicationStatusSearchDetailCache.Instance.Clear();
+            if (IsSaveFlow)
+            {
+                Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
+                StartActivity(applicationLandingIntent);
+                IsSaveFlow = false;
+            }
             SetResult(Result.Ok, new Intent());
             Finish();
         }
@@ -413,7 +446,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             presenter = new ApplicationStatusDetailPresenter(this);
             applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
             applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
-            btnSaveApplication.Visibility = ViewStates.Visible;
+            btnPrimaryCTA.Visibility = ViewStates.Visible;
             linkedWithLayout.Visibility = ViewStates.Gone;
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             applicationStatusStatusListRecyclerView.SetLayoutManager(layoutManager);
@@ -441,6 +474,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
                     IsFromLinkedWith = extras.GetBoolean("IsFromLinkedWith");
                 }
+                if (extras.ContainsKey("IsSaveFlow"))
+                {
+                    IsSaveFlow = extras.GetBoolean("IsSaveFlow");
+                }
                 if (extras != null)
                 {
                     if (extras.ContainsKey("applicationStatusResponse"))
@@ -449,6 +486,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         txtApplicationStatusUpdated.Visibility = ViewStates.Gone;
                         txtApplicationStatusDetail.Visibility = ViewStates.Gone;
                         applicationStatusLine.Visibility = ViewStates.Gone;
+                        bcrmDownContainer.Visibility = ViewStates.Gone;
                         applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Gone;
                         btnViewActivityLogLayout.Visibility = ViewStates.Gone;
                         txtApplicationStatusDetailNote.Visibility = ViewStates.Gone;
@@ -462,16 +500,23 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
                         if (applicationDetailDisplay != null)
                         {
-                            if (applicationDetailDisplay.ApplicationStatusDetail != null
+                            if (applicationDetailDisplay.IsOffLine)
+                            {
+                                applicationStatusLine.Visibility = ViewStates.Visible;
+                                bcrmDownContainer.Visibility = ViewStates.Visible;
+                                txtBCRMDownMessage.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "bcrmDownMessage");
+                            }
+                            else if (applicationDetailDisplay.ApplicationStatusDetail != null
                                 && applicationDetailDisplay.ApplicationStatusDetail.StatusTracker != null
                                 && applicationDetailDisplay.ApplicationStatusDetail.StatusTracker.Count > 0)
                             {
                                 applicationStatusLine.Visibility = ViewStates.Visible;
-                                adapter = new ApplicationStatusDetailProgressAdapter(this, applicationDetailDisplay.ApplicationStatusDetail.StatusTracker, applicationDetailDisplay.ApplicationStatusDetail.IsPayment);
+                                adapter = new ApplicationStatusDetailProgressAdapter(this
+                                    , applicationDetailDisplay.ApplicationStatusDetail.StatusTracker
+                                    , applicationDetailDisplay.ApplicationStatusDetail.IsPayment);
                                 applicationStatusStatusListRecyclerView.SetAdapter(adapter);
                                 adapter.NotifyDataSetChanged();
                             }
-                            btnSaveApplication.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "addToList");
                             txtApplicationStatusTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "status") + " ";
                             btnViewActivityLog.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "viewActivityLog");
                             howDoISeeApplicaton.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "seeFullDetails");
@@ -519,14 +564,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 ? ViewStates.Visible
                                 : ViewStates.Gone;
 
-                            if (applicationDetailDisplay.PaymentDisplay != null
-                                && applicationDetailDisplay.PaymentDisplay.TotalPayableAmountDisplay != string.Empty)
-                            {
-                                txtApplicationStatusBottomPayableCurrency.Text = "RM";
-                                txtApplicationStatusBottomPayable.Text = applicationDetailDisplay.PaymentDisplay.TotalPayableAmountDisplay;
-                                applicationStatusBotomPayableLayout.Visibility = ViewStates.Visible;
-                            }
-
                             if (applicationDetailDisplay.StatusColor.Length > 2)
                             {
                                 Android.Graphics.Color color = Android.Graphics.Color.Rgb(
@@ -541,7 +578,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                  ? ViewStates.Visible
                                  : ViewStates.Gone;
 
-
                             if (applicationDetailDisplay.AdditionalInfoList != null
                                 && applicationDetailDisplay.AdditionalInfoList.Count > 0)
                             {
@@ -550,11 +586,36 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 subAdapter.NotifyDataSetChanged();
                             }
 
-                            ctaParentLayout.Visibility = ViewStates.Visible;
-                            if (applicationDetailDisplay.CTAType == DetailCTAType.Pay)
+                            if (applicationDetailDisplay.PaymentDisplay != null
+                                && applicationDetailDisplay.PaymentDisplay.TotalPayableAmountDisplay != string.Empty)
                             {
-                                btnApplicationStatusViewBill.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "viewDetails");
-                                btnApplicationStatusPay.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "payNow");
+                                txtApplicationStatusBottomPayableCurrency.Text = "RM";
+                                txtApplicationStatusBottomPayable.Text = applicationDetailDisplay.PaymentDisplay.TotalPayableAmountDisplay;
+                                applicationStatusBotomPayableLayout.Visibility = ViewStates.Visible;
+                            }
+
+                            ctaParentLayout.Visibility = ViewStates.Visible;
+                            btnApplicationStatusViewBill.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "viewDetails");
+                            btnApplicationStatusPay.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "payNow");
+
+                            if (applicationDetailDisplay.CTAType == DetailCTAType.PayOffline)
+                            {
+                                txtApplicationStatusBottomPayable.Text = "--";
+                                txtApplicationStatusBottomPayableTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "needToPay");
+                                txtApplicationStatusBottomPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
+                                txtApplicationStatusBottomPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
+                                applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Visible;
+                                applicationStatusBotomPayableLayout.Visibility = ViewStates.Visible;
+                                btnApplicationStatusPay.Visibility = ViewStates.Visible;
+                                btnApplicationStatusPay.Enabled = false;
+                                btnApplicationStatusPay.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.white));
+                                btnApplicationStatusPay.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+                                btnApplicationStatusViewBill.Enabled = false;
+                                btnApplicationStatusViewBill.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.silverChalice));
+                                btnApplicationStatusViewBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_outline);
+                            }
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.Pay)
+                            {
                                 txtApplicationStatusBottomPayableTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "needToPay");
                                 txtApplicationStatusBottomPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
                                 txtApplicationStatusBottomPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
@@ -564,12 +625,25 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.PayInProgress)
                             {
-                                btnApplicationStatusViewBill.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "viewDetails");
                                 txtApplicationStatusBottomPayableTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "paymentInProgress");
                                 txtApplicationStatusBottomPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.lightOrange)));
                                 txtApplicationStatusBottomPayable.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.lightOrange)));
                                 applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Visible;
                                 btnApplicationStatusPay.Visibility = ViewStates.Gone;
+                            }
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.Save)
+                            {
+                                btnPrimaryCTA.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "addToList");
+                                applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
+                                applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
+                                applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
+                            }
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.Rate)
+                            {
+                                btnPrimaryCTA.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "rateCTA");
+                                applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
+                                applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
+                                applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.None)
                             {
@@ -578,16 +652,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Gone;
                                 ctaParentLayout.Visibility = ViewStates.Gone;
                             }
-                            else if (applicationDetailDisplay.CTAType == DetailCTAType.Save)
-                            {
-                                applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
-                                applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
-                                applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
-                            }
 
                             TextViewUtils.SetMuseoSans500Typeface(txtApplicationStatusMainTitle, txtApplicationStatusTitle, txtApplicationStatusBottomPayableTitle);
-                            TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle, txtApplicationStatusDetailNote);
+                            TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle, txtApplicationStatusDetailNote, txtBCRMDownMessage);
                         }
+                    }
+
+                    if (IsSaveFlow)
+                    {
+                        SaveApplication();
                     }
                 }
             }
@@ -671,8 +744,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
             if (applicationDetailDisplay != null && applicationDetailDisplay.TutorialType != null)
             {
-                // OnShowApplicationDetailTutorial(applicationDetailDisplay.TutorialType);
-
                 if (!UserSessions.HasApplicationDetailShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                 {
                     Handler h = new Handler();
@@ -694,7 +765,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             NewAppTutorialUtils.OnShowNewAppTutorial(this, null, PreferenceManager.GetDefaultSharedPreferences(this)
                                , this.presenter.OnGeneraNewAppTutorialInProgressList(), true);
                         }
-
                     };
                     h.PostDelayed(myAction, 100);
                 }
@@ -846,7 +916,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(string.Empty
                         , applicationDetailDisplay.LinkedWithDisplay.ID
                         , applicationDetailDisplay.LinkedWithDisplay.Type
-                        , applicationDetailDisplay.LinkedWithDisplay.ApplicationModuleDescription
                         , applicationDetailDisplay.LinkedWithDisplay.System);
                     HideProgressDialog();
                     if (response.StatusDetail.IsSuccess)
@@ -945,7 +1014,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         public void UpdateUI()
         {
-            throw new NotImplementedException();
         }
     }
 }

@@ -54,6 +54,7 @@
         internal const string Service_SearchApplicationByCA = "SearchApplicationByCA";
         internal const string Service_GetTaxInvoice = "GetTaxInvoiceForApplicationPayment";
         internal const string Service_TaxInvoice = "GetTaxInvoiceApplicationPayment";
+        internal const string Service_GetCustomerRatingMaster = "CustomerRatingMaster";
 
         //Language File Constants
         internal const string LanguageFile_ServiceDetails = "ServiceDetails";

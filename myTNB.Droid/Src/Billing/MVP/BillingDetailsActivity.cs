@@ -128,10 +128,10 @@ namespace myTNB_Android.Src.Billing.MVP
         {
             if (!this.GetIsClicked())
             {
-                this.SetIsClicked(true);
-                ShowBillPDF();
                 try
                 {
+                    this.SetIsClicked(true);
+                    ShowBillPDF();
                     FirebaseAnalyticsUtils.LogClickEvent(this, "View Bill Buttom Clicked");
                 }
                 catch (System.Exception ne)

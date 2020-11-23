@@ -3,7 +3,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics.Drawables;
 using Android.OS;
-
 using Android.Text;
 using Android.Util;
 using Android.Views;

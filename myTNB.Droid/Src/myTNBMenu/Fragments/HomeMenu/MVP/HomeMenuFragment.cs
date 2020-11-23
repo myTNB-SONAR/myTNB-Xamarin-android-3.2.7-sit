@@ -500,7 +500,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 StartActivity(LaunchViewIntent);
                 Utility.LoggingNonFatalError(e);
             }
-          
+
         }
 
         public void SetRefreshLayoutParams()
@@ -737,9 +737,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Utility.LoggingNonFatalError(e);
                         }
                         myServiceShimmerView.Visibility = ViewStates.Gone;
-                      
+
                         myServiceView.Visibility = ViewStates.Visible;
-                        
+
 
                     }
                     catch (System.Exception ex)
@@ -1191,7 +1191,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-
         async void OnClickChanged(object sender, int position)
         {
             try
@@ -1274,10 +1273,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 && searchApplicationTypeResponse.StatusDetail != null
                                 && searchApplicationTypeResponse.StatusDetail.IsSuccess)
                             {
-                                //if (!UserSessions.HasApplicationStatusShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
-                                //{
-                                //    UserSessions.DoApplicationStatusShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
-                                //}
                                 AllApplicationsCache.Instance.Clear();
                                 AllApplicationsCache.Instance.Reset();
                                 Intent applicationLandingIntent = new Intent(this.Activity, typeof(ApplicationStatusLandingActivity));

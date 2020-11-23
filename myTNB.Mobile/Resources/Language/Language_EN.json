@@ -1119,7 +1119,8 @@
     "viewLess": "View Less",
     "sn": "SN: {0}",
     "sr": "SR: {0}",
-    "displayPerQuery": "5"
+    "displayPerQuery": "5",
+    "saveMessage": "Success! You'll see up-to-date progress of the application status."
   },
   "ApplicationStatusSearch": {
     "title": "Search Application Status",
@@ -1173,7 +1174,10 @@
     "confirm": "Confirm",
     "on": "on ",
     "paymentReceiptTitle": " - Payment",
-    "paymentInProgress": "My payment is being processed"
+    "paymentInProgress": "My payment is being processed",
+    "bcrmDownMessage": "Looks like your statuses can’t be loaded at the moment. However, you may proceed to make any changes to the application as it will be recorded. Check back again later to view its update.",
+    "rateCTA": "Rate Our Service",
+    "rateSuccessMessage": "Thank you for your feedback!"
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Payment Details",
@@ -1847,6 +1851,13 @@
       }
     ]
   },
+  "ApplicationStatusRating": {
+    "title": "Rate",
+    "submit": "Submit",
+    "noMaximoRateMessage": "How did your meter installation go?",
+    "rateMessage": "How did your appointment go?",
+    "charactersLeft": "{0} characters left"
+  },
   "ServiceDetails": {
     "TimeOut": [
       {
@@ -1883,6 +1894,15 @@
             "title": "We are unable to find this application.",
             "message": "Please try again. Make sure you’ve entered the correct information!",
             "primaryCTATitle": "Got It!",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          },
+          {
+            "code": "7001",
+            "title": "",
+            "message": "Oops! There is an error occured in processing your request. Please try again later.",
+            "primaryCTATitle": "Ok",
             "secondaryCTATitle": "",
             "isSuccess": false,
             "type": "popup"
@@ -1955,6 +1975,15 @@
             "secondaryCTATitle": "",
             "isSuccess": true,
             "type": "none"
+          },
+          {
+            "code": "7001",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
           }
         ],
         "RemoveApplication": [
@@ -1986,6 +2015,26 @@
             "secondaryCTATitle": "",
             "isSuccess": false,
             "type": "popup"
+          },
+          {
+            "code": "7001",
+            "title": "",
+            "message": "Oops! There is an error occured in processing your request. Please try again later.",
+            "primaryCTATitle": "Ok",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          }
+        ],
+        "CustomerRatingMaster": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
           }
         ]
       }

@@ -47,6 +47,8 @@ using System.Globalization;
 using AndroidX.CoordinatorLayout.Widget;
 using Google.Android.Material.BottomNavigation;
 using AndroidX.Core.Content;
+using myTNB.Mobile.SessionCache;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -262,13 +264,22 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     alreadyStarted = true;
                 }
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Intent LaunchViewIntent = new Intent(this, typeof(LaunchViewActivity));
                 LaunchViewActivity.MAKE_INITIAL_CALL = true;
                 LaunchViewIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 StartActivity(LaunchViewIntent);
                 Utility.LoggingNonFatalError(e);
+            }
+
+            if (ApplicationStatusSearchDetailCache.Instance.ShouldSave)
+            {
+                Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+                applicationStatusDetailIntent.PutExtra("applicationStatusResponse"
+                    , JsonConvert.SerializeObject(ApplicationStatusSearchDetailCache.Instance.GetData()));
+                applicationStatusDetailIntent.PutExtra("IsSaveFlow", true);
+                StartActivity(applicationStatusDetailIntent);
             }
         }
 
@@ -393,7 +404,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             base.OnActivityResult(requestCode, resultCode, data);
             this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
-
         }
 
         public void ShowBillMenu(AccountData selectedAccount)
@@ -896,7 +906,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        private void SetReadUnReadNewBottomView(bool flag, bool isGotRead, int count,IMenuItem promotionMenuItem)
+        private void SetReadUnReadNewBottomView(bool flag, bool isGotRead, int count, IMenuItem promotionMenuItem)
         {
             try
             {
@@ -1277,7 +1287,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowHideActionBar(bool flag)
         {
-            if(flag)
+            if (flag)
             {
                 this.SupportActionBar.Show();
             }
@@ -1955,7 +1965,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                                         if ((showDateTime.Date == nowDateTime.Date && FilteredItem.ShowCountForDay >= FilteredItem.ShowEveryCountDays_PopUp))
                                         {
-                                            
+
                                         }
                                         else
                                         {

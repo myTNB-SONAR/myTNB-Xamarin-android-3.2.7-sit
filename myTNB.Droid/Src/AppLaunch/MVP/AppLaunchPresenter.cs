@@ -29,9 +29,9 @@ using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.Request;
-using System.Net.Http;
 using static myTNB_Android.Src.MyTNBService.Response.AppLaunchMasterDataResponse;
 using myTNB;
+using Firebase.Iid;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -119,6 +119,20 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
         private async void LoadAppMasterData()
         {
+            //For Testing Start
+            string fcmToken = string.Empty;
+            if (FirebaseTokenEntity.HasLatest())
+            {
+                fcmToken = FirebaseTokenEntity.GetLatest().FBToken;
+            }
+            else
+            {
+                fcmToken = FirebaseInstanceId.Instance.Token;
+                FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
+            }
+            System.Diagnostics.Debug.WriteLine("[DEBUG] FCM TOKEN: " + fcmToken);
+            Console.WriteLine("[DEBUG] FCM TOKEN: " + fcmToken);
+            //Testing End
             this.mView.SetAppLaunchSuccessfulFlag(false, AppLaunchNavigation.Nothing);
             cts = new CancellationTokenSource();
 #if DEBUG
@@ -159,17 +173,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             }
                             else
                             {
-
-
-
                                 if (UserEntity.IsCurrentlyActive())
                                 {
                                     try
                                     {
                                         UserEntity entity = UserEntity.GetActive();
-
-
-
                                         bool phoneVerified = UserSessions.GetPhoneVerifiedFlag(mSharedPref);
                                         if (!phoneVerified)
                                         {
@@ -267,7 +275,12 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                         AppInfoManager.Instance.SetPlatformUserInfo(new BaseRequest().usrInf);
 
-                                        if (hasNotification && (isODNType || isLoggedInEmail))
+                                        if ("APPLICATIONDETAILS".Equals(UserSessions.GetNotificationType(mSharedPref))
+                                            && UserSessions.ApplicationStatusNotification != null)
+                                        {
+                                            this.mView.ShowApplicationStatusDetails();
+                                        }
+                                        else if (hasNotification && (isODNType || isLoggedInEmail))
                                         {
                                             UserSessions.RemoveNotificationSession(mSharedPref);
                                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Notification);

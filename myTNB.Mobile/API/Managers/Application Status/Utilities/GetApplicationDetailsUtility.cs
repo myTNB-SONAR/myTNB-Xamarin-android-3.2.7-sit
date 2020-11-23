@@ -7,6 +7,7 @@ using myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails;
 using myTNB.Mobile.Extensions;
 using System.Diagnostics;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
+using myTNB.Mobile.SessionCache;
 
 namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
 {
@@ -21,13 +22,13 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
 
         internal static ApplicationDetailDisplay Parse(this GetApplicationDetailsResponse response
             , string searchApplicationType
-            , string applicationModuleDescription
             , string applicationID
             , string system
             , string savedApplicationID
             , bool isSavedApplication)
         {
             {
+                string applicationModuleDescription = SearchApplicationTypeCache.Instance.GetApplicationTypeDescription(searchApplicationType);
                 ApplicationDetailDisplay displayModel = new ApplicationDetailDisplay
                 {
                     Content = new GetApplicationStatusDisplay
@@ -40,6 +41,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     },
                     StatusDetail = response.StatusDetail
                 };
+                displayModel.EvaluateStatus();
                 if (response != null && response.Content != null)
                 {
                     displayModel.Content.ApplicationTypeReference = applicationModuleDescription;
@@ -489,6 +491,23 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
 #if DEBUG
                 Debug.WriteLine("[DEBUG][ParseDisplayModel Tax Invoice]General Exception: " + ex.Message);
 #endif
+            }
+        }
+
+        private static void EvaluateStatus(this ApplicationDetailDisplay displayModel)
+        {
+            try
+            {
+                if (displayModel.StatusDetail != null
+                    && displayModel.StatusDetail.Code.IsValid()
+                    && displayModel.StatusDetail.Code == "7001")
+                {
+                    displayModel.Content.IsOffLine = true;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG] EvaluateStatus App Details Error: " + e.Message);
             }
         }
     }

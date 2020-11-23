@@ -35,7 +35,6 @@ namespace myTNB.Mobile
         }
         public ApplicationStatusManager() { }
 
-
         #region SearchApplicationType
         /// <summary>
         /// 
@@ -430,14 +429,12 @@ namespace myTNB.Mobile
         /// <param name="savedApplicationID">From all applications, pass SavedApplicationId property</param>
         /// <param name="applicationID">From all applications, pass ApplicationId property</param>
         /// <param name="applicationType">From all applications, pass ApplicationType property</param>
-        /// <param name="applicationModuleDescription">From all applications, pass ApplicationModuleDescription property</param>
         /// <param name="system">From all applications, pass system property.</param>
         /// <returns></returns>
         public async Task<ApplicationDetailDisplay> GetApplicationDetail(string savedApplicationID
             , string applicationID
             , string applicationType
-            , string applicationModuleDescription
-            , string system)
+            , string system = "myTNB")
         {
             string searchTerm = savedApplicationID.IsValid() ? savedApplicationID : applicationID;
             ApplicationDetailDisplay displaymodel = new ApplicationDetailDisplay();
@@ -479,7 +476,6 @@ namespace myTNB.Mobile
                         response.StatusDetail = Constants.Service_GetApplicationDetail.GetStatusDetails(Constants.DEFAULT);
                     }
                     displaymodel = response.Parse(applicationType
-                        , applicationModuleDescription
                         , applicationID
                         , system
                         , savedApplicationID

@@ -14,10 +14,10 @@ namespace myTNB_Android.Src
     //The Android Manifest contains the android:debuggable attribute, which controls whether or not the application may be debugged.
     //It is considered a good practice to set the android:debuggable attribute to false.
     //The simplest way to do this is by adding a conditional compile statement in AssemblyInfo.cs:
-#if DEBUG
+#if DEBUG || SIT
     [Application(Debuggable = true, LargeHeap = true)]
 #else
-    [Application(Debuggable=false , LargeHeap = true)]
+    [Application(Debuggable = false, LargeHeap = true)]
 #endif
     public class MyTNBApplication : Android.App.Application
     {
@@ -36,9 +36,6 @@ namespace myTNB_Android.Src
             Fabric.Fabric.With(Context, new Crashlytics.Crashlytics());
             Crashlytics.Crashlytics.HandleManagedExceptions();
             FacebookSdk.SdkInitialize(ApplicationContext);
-            //# if DEBUG
-            //Stetho.InitializeWithDefaults(this);
-            //#endif
             AccountTypeEntity.CreateTable();
             UserEntity.CreateTable();
             UserRegister.CreateTable();
@@ -69,11 +66,9 @@ namespace myTNB_Android.Src
             SitecoreCmsEntity.CreateTable();
             AccountSortingEntity.CreateTable();
             TooltipImageDirectEntity.CreateTable();   // syahmi add
-
             AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironment_UnhandledExceptionRaiser;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             Thread.DefaultUncaughtExceptionHandler = new CustomExceptionHandler();
-
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
