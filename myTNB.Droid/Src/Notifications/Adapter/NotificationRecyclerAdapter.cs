@@ -238,6 +238,9 @@ namespace myTNB_Android.Src.Notifications.Adapter
             {
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationTitle);
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationContent, txtNotificationDate);
+                txtNotificationTitle.TextSize = TextViewUtils.GetFontSize(14f);
+                txtNotificationContent.TextSize = TextViewUtils.GetFontSize(10f);
+                txtNotificationDate.TextSize = TextViewUtils.GetFontSize(10f);
                 itemView.SetOnLongClickListener(new NotificationLongItemClickListener(this, adapter));
                 itemView.SetOnClickListener(new NotificationItemClickListener(this, adapter));
                 selectItemCheckbox.SetOnCheckedChangeListener(new NotificationItemSelectedListener(this, adapter));

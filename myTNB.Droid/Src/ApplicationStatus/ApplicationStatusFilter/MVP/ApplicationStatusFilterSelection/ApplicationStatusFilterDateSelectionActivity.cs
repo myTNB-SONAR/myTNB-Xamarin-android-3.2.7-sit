@@ -152,8 +152,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             TextViewUtils.SetMuseoSans300Typeface(txtFromDate, txtToDate);
             TextViewUtils.SetMuseoSans500Typeface(btnApplyFilter);
 
-          
-                SetToolBarTitle(Utility.GetLocalizedLabel("SelectCreationDate", "title"));
+            txtInputLayoutFromDate.SetHintTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayout_TextAppearance_ColorFixLarge : Resource.Style.TextInputLayout_TextAppearance_ColorFix);
+            txtInputLayoutToDate.SetHintTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayout_TextAppearance_ColorFixLarge : Resource.Style.TextInputLayout_TextAppearance_ColorFix);
+            txtFromDate.TextSize = TextViewUtils.GetFontSize(16f);
+            txtToDate.TextSize = TextViewUtils.GetFontSize(16f);
+            btnApplyFilter.TextSize = TextViewUtils.GetFontSize(16f);
+
+
+            SetToolBarTitle(Utility.GetLocalizedLabel("SelectCreationDate", "title"));
           
           
             // txtInputLayoutFromDate.Hint = GetLabelCommonByLanguage("email");

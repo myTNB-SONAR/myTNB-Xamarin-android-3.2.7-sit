@@ -90,7 +90,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.Adapter
                 ssmrDescription = itemView.FindViewById<TextView>(Resource.Id.ssmrDescription);
                 ssmrKWhValue = itemView.FindViewById<TextView>(Resource.Id.ssmrKWhValue);
                 ssmrForDate = itemView.FindViewById<TextView>(Resource.Id.ssmrForDate);
-            }
+
+				ssmrDate.TextSize = TextViewUtils.GetFontSize(12f);
+				ssmrDescription.TextSize = TextViewUtils.GetFontSize(12f);
+				ssmrKWhValue.TextSize = TextViewUtils.GetFontSize(12f);
+				ssmrForDate.TextSize = TextViewUtils.GetFontSize(12f);
+			}
 		}
 
 	}

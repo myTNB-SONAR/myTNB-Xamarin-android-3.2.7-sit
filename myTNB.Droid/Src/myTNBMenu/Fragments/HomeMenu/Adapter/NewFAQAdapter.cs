@@ -170,6 +170,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 faqTitle = itemView.FindViewById<TextView>(Resource.Id.faq_title);
                 faqCardView = itemView.FindViewById<CardView>(Resource.Id.card_view_click);
 
+                faqTitle.TextSize = TextViewUtils.GetFontSize(12f);
+
                 faqCardView.Click += (s, e) => listener((this), base.LayoutPosition);
             }
 		}

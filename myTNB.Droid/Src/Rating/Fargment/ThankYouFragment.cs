@@ -52,6 +52,13 @@ namespace myTNB_Android.Src.Rating.Fargment
 
                 TextViewUtils.SetMuseoSans300Typeface(txtContentInfo, txtFeedbackIdContent, txtTransactionScheduleContent);
                 TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, txtFeedbackIdTitle, txtTransactionScheduleTitle, btnBackToFeedback);
+                txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16f);
+                txtContentInfo.TextSize = TextViewUtils.GetFontSize(14f);
+                txtTransactionScheduleTitle.TextSize = TextViewUtils.GetFontSize(9f);
+                txtFeedbackIdTitle.TextSize = TextViewUtils.GetFontSize(9f);
+                txtTransactionScheduleContent.TextSize = TextViewUtils.GetFontSize(14f);
+                txtFeedbackIdContent.TextSize = TextViewUtils.GetFontSize(14f);
+                btnBackToFeedback.TextSize = TextViewUtils.GetFontSize(16f);
 
                 btnBackToFeedback.Text = Utility.GetLocalizedLabel("RatingResults", "backToHome");
                 txtTitleInfo.Text = Utility.GetLocalizedLabel("RatingResults", "thankyou");

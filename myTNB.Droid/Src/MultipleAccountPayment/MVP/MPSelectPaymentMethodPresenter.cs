@@ -1,15 +1,19 @@
 ﻿using Android.Util;
+using myTNB.Mobile;
 using myTNB.Mobile.API.Managers.Payment;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
+using myTNB_Android.Src.MultipleAccountPayment.Requests;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using static myTNB_Android.Src.MyTNBService.Request.PaymentTransactionIdRequest;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.MVP
@@ -37,7 +41,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             GetPaymentTransactionId(custName, custPhone, platform, registeredCardId, paymentMode, totalAmount, paymentItems);
         }
         
-        public void InitializeApplicationPaymentTransaction(object userInfo
+public void InitializeApplicationPaymentTransaction(object userInfo
             , string customerName
             , string phoneNo
             , string osType

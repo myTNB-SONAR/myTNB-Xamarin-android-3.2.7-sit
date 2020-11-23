@@ -136,6 +136,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                     textInputLayoutPassword);
 
                 TextViewUtils.SetMuseoSans500Typeface(btnRegister);
+                txtTermsConditions.TextSize = TextViewUtils.GetFontSize(12f);
+                btnRegister.TextSize = TextViewUtils.GetFontSize(16f);
 
                 textInputLayoutFullName.Hint = GetLabelCommonByLanguage("fullname");
                 textInputLayoutICNo.Hint = GetLabelCommonByLanguage("idNumber");
@@ -174,6 +176,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 ClearFields();
 
                 this.userActionsListener.Start();
+
             }
             catch (Exception e)
             {

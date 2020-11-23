@@ -38,6 +38,12 @@ namespace myTNB_Android.Src.Base.Activity
             SetContentView(ResourceId());
             Cheeseknife.Bind(this);
             EvaluateRequestPermissions();
+
+            Android.Content.Res.Configuration configuration = Resources.Configuration;
+            configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
+            var metrics = this.ApplicationContext.Resources.DisplayMetrics;
+            metrics.ScaledDensity = configuration.FontScale * metrics.Density;
+            this.Resources.UpdateConfiguration(configuration, metrics);
         }
 
         protected override void OnResume()

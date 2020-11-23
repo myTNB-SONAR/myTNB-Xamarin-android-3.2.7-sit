@@ -144,8 +144,17 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, txtAccountNo);
                 TextViewUtils.SetMuseoSans500Typeface(infoLabeltxtWhereIsMyAcc, howCanWeHelpYou, txtGeneralEnquiry, txtUpdatePersonal);
 
+
+                txtAccountNo.TextSize = TextViewUtils.GetFontSize(16f);
+                infoLabeltxtWhereIsMyAcc.TextSize = TextViewUtils.GetFontSize(12f);
+                howCanWeHelpYou.TextSize = TextViewUtils.GetFontSize(16f);
+                txtGeneralEnquiry.TextSize = TextViewUtils.GetFontSize(14f);
+                txtGeneralEnquiry_subContent.TextSize = TextViewUtils.GetFontSize(12f);
+                txtUpdatePersonal.TextSize = TextViewUtils.GetFontSize(14f);
+                txtUpdatePersonalContent.TextSize = TextViewUtils.GetFontSize(12f);
+              
                 //set translation of string 
-             
+
 
                 txtInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberHint");
                 infoLabeltxtWhereIsMyAcc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo");
@@ -181,7 +190,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 txtAccountNo.SetOnTouchListener(this);  //set listener on dropdown arrow at TextLayout
                 txtAccountNo.TextChanged += TextChange;  //adding listener on text change
                 txtAccountNo.FocusChange += TxtAccountNo_FocusChange;
-
+                
                 txtAccountNo.AddTextChangedListener(new InputFilterFormField(txtAccountNo, txtInputLayoutAccountNo));  //adding listener on text change
 
                 infoLabeltxtWhereIsMyAcc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "accNumberInfo");  // inject translation to text
@@ -312,7 +321,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             try
             {
                 string accno = txtAccountNo.Text.ToString().Trim();
-
+                
                 if (!string.IsNullOrEmpty(accno))
                 {
                     txtInputLayoutAccountNo.Error = null;
@@ -450,7 +459,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
         public void ShowInvalidAccountNumberError()
         {
-            txtInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+            txtInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            
             if (txtInputLayoutAccountNo.Error != Utility.GetLocalizedLabel("SubmitEnquiry", "validElectricityAccountNoError"))
             {
                 txtInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "validElectricityAccountNoError");
@@ -460,21 +470,22 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
         public void ShowEnterOrSelectAccNumber()
         {
-            txtInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo.FindViewById<TextView>(Resource.Id.textinput_error));
-      
+            txtInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            
             if (txtInputLayoutAccountNo.Error != Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc"))
             {
                txtInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc");
             }
-
-            txtInputLayoutAccountNo.RequestFocus();
+            
+           txtInputLayoutAccountNo.RequestFocus();
         }
-
+ 
 
         public void RemoveNumberErrorMessage()
         {
-            txtInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+            txtInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            
+           
             txtInputLayoutAccountNo.Error = "";
          
         }
@@ -585,7 +596,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 {
                     OnBCRMDownTimeErrorMessage();
                     this.SetIsClicked(false);
-                }else
+                }
+                else
                 {
                     string accno = txtAccountNo.Text.ToString().Trim();
                     bool isAllowed=this.userActionsListener.CheckRequiredFields(accno);
@@ -663,7 +675,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
                 this.SetIsClicked(true);
                 this.userActionsListener.onShowWhereIsMyAcc();
-            }
+                }
         }
 
 

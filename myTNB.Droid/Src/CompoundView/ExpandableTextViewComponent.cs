@@ -53,7 +53,8 @@ namespace myTNB_Android.Src.CompoundView
             myApplicationChargesLabel.CompoundDrawablePadding = (int) DPUtils.ConvertDPToPx(4f);
 
             TextViewUtils.SetMuseoSans500Typeface(myApplicationChargesLabel, myApplicationChargesValue);
-
+            myApplicationChargesLabel.TextSize = TextViewUtils.GetFontSize(14f);
+            myApplicationChargesValue.TextSize = TextViewUtils.GetFontSize(14f);
             SetOnClickListener(new OnExpandListener(this));
             expandableContainer.Visibility = ViewStates.Gone;
             expandableContainer.RemoveAllViews();
@@ -103,6 +104,8 @@ namespace myTNB_Android.Src.CompoundView
                     textView.Text = charge.Title;
                     textValue.Text = "RM" + charge.Amount.ToString("#,##0.00", currCult);
                     TextViewUtils.SetMuseoSans300Typeface(textView, textValue);
+                    textView.TextSize = TextViewUtils.GetFontSize(14f);
+                    textValue.TextSize = TextViewUtils.GetFontSize(14f);
                     expandableContainer.AddView(item);
                 }
             });
@@ -126,6 +129,9 @@ namespace myTNB_Android.Src.CompoundView
                     textView.Text = charge.Title;
                     textValue.Text = charge.AmountDisplay;
                     TextViewUtils.SetMuseoSans300Typeface(textView, textValue);
+
+                    textView.TextSize = TextViewUtils.GetFontSize(14f);
+                    textValue.TextSize = TextViewUtils.GetFontSize(14f);
                     expandableContainer.AddView(item);
                 }
             });

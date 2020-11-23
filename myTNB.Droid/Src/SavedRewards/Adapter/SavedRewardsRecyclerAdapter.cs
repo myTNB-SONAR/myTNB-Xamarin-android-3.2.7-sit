@@ -530,7 +530,10 @@ namespace myTNB_Android.Src.SavedRewards.Adapter
                 rewardUsedLayout = itemView.FindViewById<LinearLayout>(Resource.Id.rewardUsedLayout);
                 txtRewardUsed = itemView.FindViewById<TextView>(Resource.Id.txtRewardUsed);
 
-                rewardCardView.Click += (s, e) => listener((this), base.LayoutPosition);
+				txtRewardUsed.TextSize = TextViewUtils.GetFontSize(12f);
+				txtTitle.TextSize = TextViewUtils.GetFontSize(12f);
+
+				rewardCardView.Click += (s, e) => listener((this), base.LayoutPosition);
 
 			}
 		}

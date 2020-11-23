@@ -270,7 +270,18 @@
     <item name="colorError">@color/errorColor</item>
 
   </style>
+    <style name="TextInputLayout.TextAppearance.Large" parent="TextAppearance.AppCompat">
+    <!-- Hint color and label color in FALSE state -->
+    <item name="android:textColorHint">@color/silverChalice</item>
+    <item name="android:textSize">14dp</item>
 
+    <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+    <item name="colorAccent">@color/tunaGrey</item>
+    <item name="colorControlNormal">@color/silverChalice</item>
+    <item name="colorControlActivated">@color/tunaGrey</item>
+    <item name="colorError">@color/errorColor</item>
+
+  </style>
   <style name="TextInputLayout.TextAppearance.LightBackground" parent="TextAppearance.AppCompat">
     <!-- Hint color and label color in FALSE state -->
     <item name="android:textColorHint">@color/silverChalice</item>
@@ -299,7 +310,22 @@
     <item name="colorError">@color/errorColor</item>
 
   </style>
+    <style name="TextInputLayout.TextAppearance.ColorFixLarge" parent="TextAppearance.AppCompat">
+    <!-- Hint color and label color in FALSE state -->
+    <item name="android:textColorHint">@color/silverChalice</item>
+    <item name="android:textSize">10dp</item>
 
+    <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+    <item name="colorAccent">@color/tunaGrey</item>
+    <item name="colorControlNormal">@color/platinumGrey</item>
+    <item name="colorControlHighlight">@color/platinumGrey</item>
+    <item name="colorControlActivated">@color/platinumGrey</item>
+    <item name="android:colorControlNormal">@color/platinumGrey</item>
+    <item name="android:colorControlHighlight">@color/platinumGrey</item>
+    <item name="android:colorControlActivated">@color/platinumGrey</item>
+    <item name="colorError">@color/errorColor</item>
+
+  </style>
   <!-- End Floating Label -->
 
   <!-- Floating Label -->
@@ -451,6 +477,10 @@
     <item name="android:textColor">@color/tunaGrey</item>
     <item name="android:textSize">10sp</item>
   </style>
+    <style name="TextInputLayoutFeedbackCountLarge" parent="@android:style/TextAppearance.Medium">
+    <item name="android:textColor">@color/tunaGrey</item>
+    <item name="android:textSize">14sp</item>
+  </style>
 
   <style name="SMDashboardRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
     <item name="android:button">@drawable/radio_button_selector</item>
@@ -474,6 +504,16 @@
     <!-- Hint color and label color in FALSE state -->
     <item name="android:textColorHint">@color/silverChalice</item>
     <item name="android:textSize">10dp</item>
+    <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+    <item name="colorAccent">@color/tunaGrey</item>
+    <item name="colorControlNormal">@color/silverChalice</item>
+    <item name="colorControlActivated">@color/tunaGrey</item>
+    <item name="colorError">@color/errorColor</item>
+  </style>
+     <style name="AmountHint.TextInputLayout.TextAppearance.LightBackgroundLarge" parent="TextAppearance.AppCompat">
+    <!-- Hint color and label color in FALSE state -->
+    <item name="android:textColorHint">@color/silverChalice</item>
+    <item name="android:textSize">14dp</item>
     <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
     <item name="colorAccent">@color/tunaGrey</item>
     <item name="colorControlNormal">@color/silverChalice</item>

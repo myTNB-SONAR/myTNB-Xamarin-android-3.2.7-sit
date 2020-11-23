@@ -127,6 +127,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Adapter
                 ApplicationStatusItemTitle.Text = this.item.ApplicationTypeDisplay;
                 ApplicationStatusItemStatus.Text = this.item.StatusDisplay;
                 ApplicationStatusItemSubTitle.Text = this.item.ReferenceIDDisplay;
+
+                ApplicationStatusItemTitle.TextSize = TextViewUtils.GetFontSize(12);
+                ApplicationStatusItemStatus.TextSize = TextViewUtils.GetFontSize(12);
+                ApplicationStatusItemSubTitle.TextSize = TextViewUtils.GetFontSize(12);
+                //ApplicationStatusItemDate.TextSize = TextViewUtils.GetFontSize(12);
                 ApplicationStatusItemDate.Visibility = ViewStates.Gone;
                 //ApplicationStatusItemDate.Text = this.item.CreatedDate.ToString();
                 ApplicationStatusItemStatus.SetTextColor(Android.Graphics.Color.Rgb(this.item.StatusColor[0],this.item.StatusColor[1],this.item.StatusColor[2]));

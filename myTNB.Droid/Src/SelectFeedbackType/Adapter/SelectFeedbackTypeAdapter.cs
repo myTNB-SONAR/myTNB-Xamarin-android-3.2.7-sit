@@ -82,6 +82,7 @@ namespace myTNB_Android.Src.SelectFeedbackType.Adapter
         public FeedbackTypeViewHolder(View itemView) : base(itemView)
         {
             TextViewUtils.SetMuseoSans300Typeface(txtFeedbackType);
+            txtFeedbackType.TextSize = TextViewUtils.GetFontSize(16f);
         }
     }
 

@@ -132,7 +132,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             try
             {
                 isFromQuickAction = false;

@@ -38,6 +38,7 @@ namespace myTNB_Android.Src.CompoundView
             Inflate(context,Resource.Layout.ItemisedBillingHistoryGroupingLayout,this);
             TextView monthYearLabel = FindViewById<TextView>(Resource.Id.itemisedBillingGroupLabel);
             TextViewUtils.SetMuseoSans500Typeface(monthYearLabel);
+            monthYearLabel.TextSize = TextViewUtils.GetFontSize(12f);
         }
 
         public void AddContent(LinearLayout contentLayout)

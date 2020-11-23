@@ -90,6 +90,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                     btnLogout,
                     btnAddAccount);
 
+                txtTnBSupplyAccountTitle.TextSize = TextViewUtils.GetFontSize(18f);
+                txtMyAccountNoAccountTitle.TextSize = TextViewUtils.GetFontSize(14f);
+                txtMyAccountNoAccountContent.TextSize = TextViewUtils.GetFontSize(12f);
+                btnAddAccount.TextSize = TextViewUtils.GetFontSize(16f);
+                btnAddAnotherAccount.TextSize = TextViewUtils.GetFontSize(16f);
                 txtTnBSupplyAccountTitle.Text = GetLabelByLanguage("accountSectionTitle");
                 btnAddAnotherAccount.Text = GetLabelCommonByLanguage("addAnotherAcct");
                 btnLogout.Text = GetLabelByLanguage("logout");

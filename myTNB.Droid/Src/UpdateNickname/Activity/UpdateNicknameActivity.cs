@@ -51,7 +51,7 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_UpdateMobileLarge : Resource.Style.Theme_UpdateMobile);
             try
             {
                 Bundle extras = Intent.Extras;
@@ -296,14 +296,16 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
 
         public void ShowEnterValidAccountName()
         {
-            txtInputLayoutAccountNickname.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+            txtInputLayoutAccountNickname.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+           
             txtInputLayoutAccountNickname.Error = GetString(Resource.String.invalid_charac);
         }
 
 
         public void ClearError()
         {
-            txtInputLayoutAccountNickname.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+            txtInputLayoutAccountNickname.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            
             txtInputLayoutAccountNickname.Error = "";
         }
 

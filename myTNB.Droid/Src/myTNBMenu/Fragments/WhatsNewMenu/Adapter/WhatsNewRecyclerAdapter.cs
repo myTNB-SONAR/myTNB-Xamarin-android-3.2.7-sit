@@ -532,7 +532,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter
                 txtDate = itemView.FindViewById<TextView>(Resource.Id.txtDate);
                 whatsNewUnreadImg = itemView.FindViewById<ImageView>(Resource.Id.whatsNewUnreadImg);
 
-                whatsNewMainShimmerTxtLayout = itemView.FindViewById<LinearLayout>(Resource.Id.whatsNewMainShimmerTxtLayout);
+				txtTitle.TextSize = TextViewUtils.GetFontSize(12f);
+				txtDate.TextSize = TextViewUtils.GetFontSize(10f);
+	
+				whatsNewMainShimmerTxtLayout = itemView.FindViewById<LinearLayout>(Resource.Id.whatsNewMainShimmerTxtLayout);
                 shimmerWhatsNewTxtLayout = itemView.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerWhatsNewTxtLayout);
 
                 whatsNewCardView.Click += (s, e) => listener((this), base.LayoutPosition);

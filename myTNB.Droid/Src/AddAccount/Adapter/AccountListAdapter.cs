@@ -101,8 +101,13 @@ namespace myTNB_Android.Src.AddAccount
             TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress, AccountLabel);
             TextViewUtils.SetMuseoSans300Typeface(textInputLayoutAccountLabel);
             textInputLayoutAccountLabel.Hint = Utility.GetLocalizedCommonLabel("acctNickname");
+            textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
             context = itemView.Context;
             AccountLabel.AddTextChangedListener(new InputFilterFormField(AccountLabel, textInputLayoutAccountLabel));
+            AccountLabel.TextSize = TextViewUtils.GetFontSize(16);
+            AccountNumber.TextSize = TextViewUtils.GetFontSize(14);
+            AccountAddress.TextSize = TextViewUtils.GetFontSize(12);
+
             AccountLabel.FocusChange += (sender, e) =>
             {
                 textInputLayoutAccountLabel.Error = null;

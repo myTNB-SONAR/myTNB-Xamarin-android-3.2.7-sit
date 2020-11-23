@@ -117,6 +117,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             public ImageView serviceImg { get; private set; }
 
             public TextView serviceTitle { get; private set; }
+            public TextView serviceTitle_Two { get; private set; }
 
             public LinearLayout myServiceCardView { get; private set; }
 
@@ -130,10 +131,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             {
                 serviceImg = itemView.FindViewById<ImageView>(Resource.Id.service_img);
                 serviceTitle = itemView.FindViewById<TextView>(Resource.Id.service_title);
+                serviceTitle_Two = itemView.FindViewById<TextView>(Resource.Id.service_title_two);
                 myServiceCardView = itemView.FindViewById<LinearLayout>(Resource.Id.rootView);
                 myServiceShimmerImg = itemView.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerMyServiceImg);
                 myServiceShimmerText = itemView.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerMyServiceTitle);
                 myServiceShimmerTextTwo = itemView.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerMyServiceTitleTwo);
+
+                serviceTitle.TextSize = TextViewUtils.GetFontSize(12f);
+                serviceTitle_Two.TextSize = TextViewUtils.GetFontSize(12f);
+             
             }
         }
 

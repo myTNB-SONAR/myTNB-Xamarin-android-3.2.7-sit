@@ -175,6 +175,23 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
                 TextViewUtils.SetMuseoSans500Typeface(txtMeterAccessTitle, btnNo, btnYes, meterLookLabel);
 
+                SMRMessageTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                SMRAccountTitle.TextSize = TextViewUtils.GetFontSize(9f);
+                SMRAccountSelected.TextSize = TextViewUtils.GetFontSize(16f);
+                SMRMainTitle.TextSize = TextViewUtils.GetFontSize(14f);
+                SMRMainContent.TextSize = TextViewUtils.GetFontSize(14f);
+                txtMeterAccessTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                meterLookLabel.TextSize = TextViewUtils.GetFontSize(12f);
+                SMRListHeader.TextSize = TextViewUtils.GetFontSize(16f);
+                EmptySMRHistoryMessage.TextSize = TextViewUtils.GetFontSize(14f);
+                refreshMsg.TextSize = TextViewUtils.GetFontSize(16f);
+                btnEnableSubmitMeter.TextSize = TextViewUtils.GetFontSize(16f);
+                btnRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+                btnNo.TextSize = TextViewUtils.GetFontSize(16f);
+                btnYes.TextSize = TextViewUtils.GetFontSize(16f);
+                btnSubmitMeter.TextSize = TextViewUtils.GetFontSize(16f);
+                btnDisableSubmitMeter.TextSize = TextViewUtils.GetFontSize(16f);
+
                 SMRMessageTitle.Text = GetLabelByLanguage("subTitle");
                 SMRAccountTitle.Text = GetLabelCommonByLanguage("account").ToUpper();
                 SMRAccountSelected.Text = GetLabelCommonByLanguage("selectAccount");

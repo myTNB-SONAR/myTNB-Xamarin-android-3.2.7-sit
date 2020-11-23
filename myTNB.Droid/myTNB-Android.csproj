@@ -43,8 +43,7 @@
     <MandroidI18n />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>
-    </DebugType>
+    <DebugType></DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE;RELEASE</DefineConstants>
@@ -58,19 +57,16 @@
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
-    <DebugType>
-    </DebugType>
-    <Optimize>True</Optimize>
+    <DebugType></DebugType>
+    <Optimize>true</Optimize>
     <OutputPath>bin\SIT\</OutputPath>
     <DefineConstants>TRACE;SIT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
-    <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <MandroidI18n>West</MandroidI18n>
+<AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -1132,7 +1128,6 @@
     <Compile Include="Src\SitecoreCMS\Model\HowDoesProofOfConsentModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\LocationsModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\PreLoginPromoModel.cs" />
-    <Compile Include="Src\SitecoreCMS\Model\TimestampModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\TimestampResponseModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\WalkthroughScreensModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\PreLoginPromoResponseModel.cs" />
@@ -1236,7 +1231,6 @@
     <Compile Include="Src\Utils\Custom\ProgressButton\ProgressGenerator.cs" />
     <Compile Include="Src\Utils\Custom\ProgressButton\ResendButton.cs" />
     <Compile Include="Src\Utils\HttpLoggingHandler.cs" />
-    <Compile Include="Src\Utils\ResetPasswordNewChangeListener.cs" />
     <Compile Include="Src\Utils\RestrictTextChangeListener.cs" />
     <Compile Include="Src\Utils\SSLFactoryHelper.cs" />
     <Compile Include="Src\Utils\StringUtils.cs" />
@@ -5555,10 +5549,8 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\BaseFullScreenImageViewLayout.xml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
+      <SubType></SubType>
+      <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ApplicationStatusListGroupItemLayout.xml">
       <SubType></SubType>
@@ -5976,6 +5968,18 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\Adapter\SearchApplicationAdapter.cs" />
+    <Compile Include="Src\Database\Model\LargeFontEntity.cs" />
+    <Compile Include="Src\Database\Model\LargeFontModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\TimestampModel.cs" />
+    <Compile Include="Src\Profile\Activity\AppLargeFontActivity.cs" />
+    <AndroidResource Include="Resources\layout\AppSetFontLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\solid_border_background_submit_enquiry.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\bcrm_offline.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -5993,6 +5997,35 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\bcrm_offline.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\pdfIcon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\pdfIcon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\pdfIcon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\pdfIcon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\pdfIcon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedbackSubmittedRowNew.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Utils\ResetPasswordNewChangeListener.cs" />
+    <AndroidResource Include="Resources\drawable\new_labelLarge.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -6251,6 +6284,8 @@
     <AndroidAsset Include="Assets\dashboard_zoom_lottie.json" />
     <AndroidAsset Include="Assets\tnb_general_loading.json" />
     <AndroidAsset Include="Assets\ocr_loading_animation.json" />
+    <None Include="Src\AppointmentScheduler\.DS_Store" />
+    <None Include="Src\AppointmentScheduler\AppointmentSet\.DS_Store" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -8291,30 +8326,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\group_4.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\FeedbackSubmittedRowNew.axml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\pdfIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\pdfIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\pdfIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\pdfIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\pdfIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\solid_border_background_submit_enquiry.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\dashed_border_background_submit_enquiry.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

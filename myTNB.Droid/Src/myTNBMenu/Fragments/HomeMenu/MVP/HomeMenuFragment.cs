@@ -391,6 +391,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     , addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel
                     , myServiceLoadMoreLabel, txtNewLabel, btnMyServiceRefresh);
 
+                accountGreeting.TextSize = TextViewUtils.GetFontSize(16f);
+                accountGreetingName.TextSize = TextViewUtils.GetFontSize(16f);
+                txtNewLabel.TextSize = TextViewUtils.GetFontSize(8f);
+                refreshMsg.TextSize = TextViewUtils.GetFontSize(14f);
+                addActionLabel.TextSize = TextViewUtils.GetFontSize(12f);
+                searchActionLabel.TextSize = TextViewUtils.GetFontSize(12f);
+                txtAdd.TextSize = TextViewUtils.GetFontSize(14f);
+                rearrangeLabel.TextSize = TextViewUtils.GetFontSize(12f);
+                loadMoreLabel.TextSize = TextViewUtils.GetFontSize(12f);
+                myServiceLoadMoreLabel.TextSize = TextViewUtils.GetFontSize(12f);
+                txtMyServiceRefreshMessage.TextSize = TextViewUtils.GetFontSize(12f);
+                newFAQTitle.TextSize = TextViewUtils.GetFontSize(14f);
+                btnMyServiceRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+                btnRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+
+
                 addActionLabel.Text = GetLabelByLanguage("add");
                 searchActionLabel.Text = GetLabelByLanguage("search");
                 txtAdd.Text = GetLabelByLanguage("addElectricityAcct");

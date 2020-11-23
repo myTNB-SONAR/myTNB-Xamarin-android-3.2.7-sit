@@ -84,6 +84,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         [BindView(Resource.Id.btnViewDetails)]
         Button btnViewDetails;
 
+        [BindView(Resource.Id.btnChargeRefresh)]
+        Button btnChargeRefresh;
+
         [BindView(Resource.Id.btnRefresh)]
         Button btnRefresh;
 
@@ -128,9 +131,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         [BindView(Resource.Id.unavailableChargeMsg)]
         TextView unavailableChargeMsg;
-
-        [BindView(Resource.Id.btnChargeRefresh)]
-        Button btnChargeRefresh;
 
         [BindView(Resource.Id.refreshItemisedBillingList)]
         LinearLayout refreshItemisedBillingList;
@@ -432,6 +432,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 btnChargeRefresh, btnBillingHistoryRefresh, accountSelectionRefresh);
             TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount, emptyBillingHistoryMessage, unavailableBillMsg,
                                             unavailableChargeMsg, refreshBillingHistoryMessage);
+
+            unavailableChargeMsg.TextSize = TextViewUtils.GetFontSize(14f);
+            itemisedBillingInfoNote.TextSize = TextViewUtils.GetFontSize(14f);
+            itemisedBillingInfoAmountCurrency.TextSize = TextViewUtils.GetFontSize(16f);
+            itemisedBillingInfoAmount.TextSize = TextViewUtils.GetFontSize(36f);
+            itemisedBillingInfoDate.TextSize = TextViewUtils.GetFontSize(14f);
+            btnViewDetails.TextSize = TextViewUtils.GetFontSize(16f);
+            btnPayBill.TextSize = TextViewUtils.GetFontSize(16f);
+            myBillHistoryTitle.TextSize = TextViewUtils.GetFontSize(16f);
+            emptyBillingHistoryMessage.TextSize = TextViewUtils.GetFontSize(14f);
+            refreshBillingHistoryMessage.TextSize = TextViewUtils.GetFontSize(12f);
+            accountSelection.TextSize = TextViewUtils.GetFontSize(16f);
+            unavailableBillMsg.TextSize = TextViewUtils.GetFontSize(14f);
+            accountSelectionRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+            btnChargeRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+            btnBillingHistoryRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+            btnRefresh.TextSize = TextViewUtils.GetFontSize(16f);
             RenderUI();
 
             mPresenter.GetBillingHistoryDetails(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner, (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");

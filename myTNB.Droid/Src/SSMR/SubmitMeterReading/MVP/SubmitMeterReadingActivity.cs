@@ -176,6 +176,13 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             EnableSubmitButton(false);
             TextViewUtils.SetMuseoSans500Typeface(btnTakeUploadPictureText, btnSubmitReading);
 
+            btnSubmitReading.TextSize = TextViewUtils.GetFontSize(16f);
+            meterReadingTitle.TextSize = TextViewUtils.GetFontSize(14f);
+            btnTakeUploadPictureText.TextSize = TextViewUtils.GetFontSize(16f);
+            meterReadingManualTitle.TextSize = TextViewUtils.GetFontSize(14f);
+            meterReadingError.TextSize = TextViewUtils.GetFontSize(10f);
+            meterReadingNote.TextSize = TextViewUtils.GetFontSize(12f);
+
             btnSubmitReading.Text = GetLabelByLanguage("submitReading");
             btnTakeUploadPictureText.Text = GetLabelByLanguage("takeOrUploadPhoto");
 
@@ -285,6 +292,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_SubmitMeterReadingInputLarge : Resource.Style.Theme_SubmitMeterReadingInput);
             mPresenter = new SubmitMeterReadingPresenter(this);
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             InitializePage();

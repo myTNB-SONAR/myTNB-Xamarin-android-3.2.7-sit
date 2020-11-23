@@ -90,6 +90,9 @@ namespace myTNB_Android.Src.AddAccount.Adapter
             AccountNumber = itemView.FindViewById<TextView>(Resource.Id.text_account_number);
             AccountAddress = itemView.FindViewById<TextView>(Resource.Id.text_account_address);
             bottomLine = itemView.FindViewById<View>(Resource.Id.bottom_line);
+            AccountLabel.TextSize = TextViewUtils.GetFontSize(16);
+            AccountNumber.TextSize = TextViewUtils.GetFontSize(14);
+            AccountAddress.TextSize = TextViewUtils.GetFontSize(12);
         }
 
     }

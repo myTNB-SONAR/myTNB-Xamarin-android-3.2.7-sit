@@ -2,6 +2,7 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
+
 using Android.Text;
 using Android.Util;
 using Android.Views;
@@ -27,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using static myTNB_Android.Src.MyTNBService.Request.PaymentTransactionIdRequest;
+using myTNB_Android.Src.Utils.Custom;
 using System.Globalization;
 using Google.Android.Material.Snackbar;
 using myTNB.Mobile.API.Models.ApplicationStatus;
@@ -87,7 +89,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         private bool isClicked = false;
 
-        //Mark: Application Payment
+   //Mark: Application Payment
         private bool IsApplicationPayment;
         private ApplicationPaymentDetail ApplicationPaymentDetail;
 
@@ -132,7 +134,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     .Cancelable(false)
                     .Build();
 
-                ((PaymentActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod", "title"));
+                ((PaymentActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod", "title"));        
                 if (Arguments.ContainsKey("ISAPPLICATIONPAYMENT"))
                 {
                     IsApplicationPayment = Arguments.GetBoolean("ISAPPLICATIONPAYMENT");
@@ -156,46 +158,46 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     if (accounts != null)
                     {
                         foreach (MPAccount item in accounts)
+                {
+                    CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(item.accountNumber);
+                    AccountChargeModel chargeModel = accountChargeList.Find(accountCharge =>
+                    {
+                        return accountCharge.ContractAccount == item.accountNumber;
+                    });
+
+                    CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                    if (chargeModel != null)
+                    {
+                        if (chargeModel.MandatoryCharges.TotalAmount > 0f)
                         {
-                            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(item.accountNumber);
-                            AccountChargeModel chargeModel = accountChargeList.Find(accountCharge =>
+                            PaymentItemAccountPayment paymentItemAccountPayment = new PaymentItemAccountPayment();
+                            paymentItemAccountPayment.AccountOwnerName = customerBillingAccount.OwnerName;
+                            paymentItemAccountPayment.AccountNo = chargeModel.ContractAccount;
+                            paymentItemAccountPayment.AccountAmount = item.amount.ToString(currCult);
+
+                            List<AccountPayment> accountPaymentList = new List<AccountPayment>();
+                            chargeModel.MandatoryCharges.ChargeModelList.ForEach(charge =>
                             {
-                                return accountCharge.ContractAccount == item.accountNumber;
+                                AccountPayment accountPayment = new AccountPayment();
+                                accountPayment.PaymentType = charge.Key;
+                                accountPayment.PaymentAmount = charge.Amount.ToString(currCult);
+                                accountPaymentList.Add(accountPayment);
                             });
-
-                            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-                            if (chargeModel != null)
-                            {
-                                if (chargeModel.MandatoryCharges.TotalAmount > 0f)
-                                {
-                                    PaymentItemAccountPayment paymentItemAccountPayment = new PaymentItemAccountPayment();
-                                    paymentItemAccountPayment.AccountOwnerName = customerBillingAccount.OwnerName;
-                                    paymentItemAccountPayment.AccountNo = chargeModel.ContractAccount;
-                                    paymentItemAccountPayment.AccountAmount = item.amount.ToString(currCult);
-
-                                    List<AccountPayment> accountPaymentList = new List<AccountPayment>();
-                                    chargeModel.MandatoryCharges.ChargeModelList.ForEach(charge =>
-                                    {
-                                        AccountPayment accountPayment = new AccountPayment();
-                                        accountPayment.PaymentType = charge.Key;
-                                        accountPayment.PaymentAmount = charge.Amount.ToString(currCult);
-                                        accountPaymentList.Add(accountPayment);
-                                    });
-                                    paymentItemAccountPayment.AccountPayments = accountPaymentList;
-                                    selectedPaymentItemList.Add(paymentItemAccountPayment);
-                                }
-                                else
-                                {
-                                    PaymentItem payItem = new PaymentItem();
-                                    payItem.AccountOwnerName = customerBillingAccount.OwnerName;
-                                    payItem.AccountNo = chargeModel.ContractAccount;
-                                    payItem.AccountAmount = item.amount.ToString(currCult);
-                                    selectedPaymentItemList.Add(payItem);
-                                }
-                            }
-
+                            paymentItemAccountPayment.AccountPayments = accountPaymentList;
+                            selectedPaymentItemList.Add(paymentItemAccountPayment);
+                        }
+                        else
+                        {
+                            PaymentItem payItem = new PaymentItem();
+                            payItem.AccountOwnerName = customerBillingAccount.OwnerName;
+                            payItem.AccountNo = chargeModel.ContractAccount;
+                            payItem.AccountAmount = item.amount.ToString(currCult);
+                            selectedPaymentItemList.Add(payItem);
                         }
                     }
+
+                } 
+                }
                 }
                 if (Arguments.ContainsKey("TOTAL"))
                 {
@@ -278,7 +280,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         selectedCard = null;
                         InitiatePaymentRequest();
                     }
-                };
+                    };
 
                 listAddedCards = rootView.FindViewById<ListView>(Resource.Id.listAddedCards);
                 cardAdapter = new MPAddCardAdapter(Activity, registerdCards);
@@ -289,10 +291,21 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 TextViewUtils.SetMuseoSans500Typeface(lblCreditDebitCard, lblOtherPaymentMethods, txtTotalAmount);
                 TextViewUtils.SetMuseoSans300Typeface(btnAddCard, btnFPXPayment);
 
+                lblTotalAmount.TextSize = TextViewUtils.GetFontSize(10f);
+                txtTotalAmount.TextSize = TextViewUtils.GetFontSize(16f);
+                btnFPXPayment.TextSize = TextViewUtils.GetFontSize(16f);
+                btnAddCard.TextSize = TextViewUtils.GetFontSize(16f);
+                lblCreditDebitCard.TextSize = TextViewUtils.GetFontSize(18f);
+                lblOtherPaymentMethods.TextSize = TextViewUtils.GetFontSize(18f);
+                edtNumber1.TextSize = TextViewUtils.GetFontSize(22f);
+                edtNumber2.TextSize = TextViewUtils.GetFontSize(22f);
+                edtNumber3.TextSize = TextViewUtils.GetFontSize(22f);
+                edtNumber4.TextSize = TextViewUtils.GetFontSize(22f);
+
                 TextViewUtils.SetMuseoSans300Typeface(lblCvvInfo);
                 TextViewUtils.SetMuseoSans300Typeface(edtNumber1, edtNumber2, edtNumber3, edtNumber4);
 
-                lblCreditDebitCard.Text = Utility.GetLocalizedLabel("Common", "cards");
+                lblCreditDebitCard.Text = Utility.GetLocalizedLabel("Common", "cards"); 
                 lblOtherPaymentMethods.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "otherPaymentMethods");
                 lblTotalAmount.Text = Utility.GetLocalizedLabel("Common", "totalAmountRM").ToUpper();
                 btnAddCard.Text = Utility.GetLocalizedLabel("SelectPaymentMethod", "addCard");
@@ -523,7 +536,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     string registeredCardId = selectedCard == null ? string.Empty : selectedCard.Id;
                     DeletePaymentHistory();
                     //this.userActionsListener.RequestPayment(apiKeyID, custName, custEmail, custPhone, sspUserID, platform, registeredCardId, paymentMode, total, selectedPaymentItems);
-
+                    
                     if (IsApplicationPayment)
                     {
                         MyTNBService.Request.BaseRequest baseRequest = new MyTNBService.Request.BaseRequest();
@@ -1069,7 +1082,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 {
                     Log.Debug("Initiate Payment Response", "Response Count" + response.ToString());
                     if (response.IsSuccessResponse())
-                    {
+                    { 
                         if (selectedPaymentMethod.Equals(METHOD_CREDIT_CARD))
                         {
                             InitiateSubmitPayment(response, cardDetails);

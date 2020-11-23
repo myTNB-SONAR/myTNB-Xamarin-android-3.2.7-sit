@@ -49,6 +49,8 @@ namespace myTNB_Android.Src.myTNBMenu.Adapter
 			try
 			{
 				vh.Title.Text = model.Title;
+				vh.Title.TextSize = TextViewUtils.GetFontSize(12.5f);
+				vh.Message.TextSize = TextViewUtils.GetFontSize(12.5f);
 
 				if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
 				{

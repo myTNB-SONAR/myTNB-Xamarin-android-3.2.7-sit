@@ -49,9 +49,9 @@ namespace myTNB_Android.Src.Notifications.Activity
     }
 
     [Activity(Label = "@string/notification_activity_title"
-        , Icon = "@drawable/ic_launcher"
-        , ScreenOrientation = ScreenOrientation.Portrait
-        , Theme = "@style/Theme.Notification")]
+    , Icon = "@drawable/ic_launcher"
+      , ScreenOrientation = ScreenOrientation.Portrait
+      , Theme = "@style/Theme.Notification")]
     public class NotificationActivity : BaseActivityCustom, NotificationContract.IView, IOnCheckedChangeListener
     {
         [BindView(Resource.Id.rootView)]
@@ -131,6 +131,11 @@ namespace myTNB_Android.Src.Notifications.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationName, selectAllNotificationLabel, btnNewRefresh);
                 TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage, txtNotificationsContent);
+                txtNotificationName.TextSize = TextViewUtils.GetFontSize(12f);
+                selectAllNotificationLabel.TextSize = TextViewUtils.GetFontSize(14f);
+                txtNewRefreshMessage.TextSize = TextViewUtils.GetFontSize(16f);
+                txtNotificationsContent.TextSize = TextViewUtils.GetFontSize(16f);
+                btnNewRefresh.TextSize = TextViewUtils.GetFontSize(16f);
 
                 selectAllNotificationLabel.Text = GetLabelCommonByLanguage("selectAll");
                 txtNotificationsContent.Text = GetLabelByLanguage("noNotification");
@@ -482,8 +487,8 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationRecyclerAdapter = new NotificationRecyclerAdapter(this, this, true);
             notificationRecyclerView.SetAdapter(notificationRecyclerAdapter);
             notificationSwipeDelete = new NotificationSwipeDeleteCallback(this, GetDrawable(Resource.Drawable.notification_delete_active), GetDrawable(Resource.Drawable.ic_header_markread));
-            notificationSwipeDelete.SetInitialState();
-            itemTouchHelper = new ItemTouchHelper(notificationSwipeDelete);
+			notificationSwipeDelete.SetInitialState();
+			itemTouchHelper = new ItemTouchHelper(notificationSwipeDelete);
             itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
         }
 
@@ -654,7 +659,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
 
             mCancelledErrorSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate 
             {
                 mCancelledErrorSnackBar.Dismiss();
             }
@@ -858,7 +863,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
             else
             {
-                UpdatedSelectedNotifications();
+				UpdatedSelectedNotifications();
             }
         }
 
@@ -925,7 +930,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             selectedNotification = notificationPos;
             notificationRecyclerAdapter.GetItemObject(selectedNotification).IsSelected = true;
             this.mPresenter.DeleteAllSelectedNotifications();
-        }
+		}
 
         public void ReadNotificationByPosition(int notificationPos)
         {
@@ -935,7 +940,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         }
 
         public void UpdatedSelectedNotifications()
-        {
+		{
             if (editState == EditNotificationStates.SHOW)
             {
                 int selectedCount = GetSelectedNotificationCount();
@@ -982,14 +987,14 @@ namespace myTNB_Android.Src.Notifications.Activity
         }
 
         public void ShowNotificationDetails(int itemPosition)
-        {
+		{
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
                 UserNotificationData userNotificationData = notificationRecyclerAdapter.GetAllNotifications()[itemPosition];
                 mPresenter.OnShowNotificationDetails(userNotificationData, itemPosition);
             }
-        }
+		}
 
         public void ShowEditMode()
         {

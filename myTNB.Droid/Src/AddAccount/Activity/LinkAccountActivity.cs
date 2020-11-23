@@ -2,6 +2,7 @@
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Content.Res;
 using Android.OS;
 using Android.Runtime;
 using Android.Text;
@@ -156,6 +157,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       {
                           textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
                       }
+                      textNoOfAcoount.TextSize = TextViewUtils.GetFontSize(18);
+
                       mDeleteDialog.Dismiss();
                   })
                  .SetNegativeButton(GetLabelCommonByLanguage("cancel"), (senderAlert, args) =>
@@ -278,7 +281,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 additionalAccountListRecyclerView.SetLayoutManager(layoutManager2);
                 additionalAccountListRecyclerView.SetAdapter(additionalAdapter);
 
+                labelAccountLabel.TextSize = TextViewUtils.GetFontSize(16f);
+                textAdditionalAcoount.TextSize = TextViewUtils.GetFontSize(18f);
+                btnAddAnotherAccount.TextSize = TextViewUtils.GetFontSize(16f);
 
+                
                 //Get apiId and userId from the bundle
                 string email = UserEntity.GetActive().UserID;
                 string idNumber = UserEntity.GetActive().IdentificationNo; // Get IC number from registration;
@@ -558,7 +565,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
                                 if (vh != null)
                                 {
-                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                                   
                                     vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                 }
                             }
@@ -575,7 +583,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                     AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(index);
                                     if (vh != null)
                                     {
-                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                                         vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                     }
                                 }
@@ -601,7 +609,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
                                 if (vh != null)
                                 {
-                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                                   
+                                  
                                     vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                 }
                             }
@@ -618,7 +628,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                     AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(additioanlIndex);
                                     if (vh != null)
                                     {
-                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                                        
                                         vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                     }
                                 }
@@ -644,6 +655,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public bool ValidateAddtionalAccountNames(List<NewAccount> aditionallist, List<NewAccount> newlist)
         {
+
             bool flag = true;
             try
             {
@@ -664,7 +676,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
                                 if (vh != null)
                                 {
-                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                                   
                                     vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                 }
                             }
@@ -681,7 +694,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                     AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(index);
                                     if (vh != null)
                                     {
-                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                                       
                                         vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                     }
                                 }
@@ -706,7 +720,10 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
                                 if (vh != null)
                                 {
-                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                                    
+                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge: Resource.Style.TextInputLayoutBottomErrorHint);
+                                   
+                                    
                                     vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                 }
                             }
@@ -723,7 +740,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                     AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(newlistIndex);
                                     if (vh != null)
                                     {
-                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                                       
                                         vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                     }
                                 }
@@ -951,6 +969,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         TextView infoText = view.FindViewById<TextView>(Resource.Id.txtMessage);
                         titleText.Text = title;
                         infoText.Text = message;
+
+                        titleText.TextSize = TextViewUtils.GetFontSize(16);
+                        infoText.TextSize = TextViewUtils.GetFontSize(16);
                         if (titleText != null && infoText != null)
                         {
                             TextViewUtils.SetMuseoSans500Typeface(titleText);

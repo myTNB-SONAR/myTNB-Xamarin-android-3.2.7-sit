@@ -112,7 +112,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             btnMultiFilterApply.Enabled = false;
             btnMultiFilterApply.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
         }
-
+        
         public void EnableButton()
         {
             btnMultiFilterApply.Enabled = true;
@@ -157,6 +157,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             base.OnCreate(savedInstanceState);
 
             TextViewUtils.SetMuseoSans500Typeface(btnMultiFilterApply);
+            btnMultiFilterApply.TextSize = TextViewUtils.GetFontSize(16f);
 
             Bundle extras = Intent.Extras;
 

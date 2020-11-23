@@ -25,6 +25,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
             ServiceListViewHolder h = holder as ServiceListViewHolder;
             TextViewUtils.SetMuseoSans300Typeface(h.ServiceLabel, h.ServiceBullet);
             h.ServiceLabel.Text = services[position];
+            h.ServiceLabel.TextSize = TextViewUtils.GetFontSize(16);
+            h.ServiceBullet.TextSize = TextViewUtils.GetFontSize(16);
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

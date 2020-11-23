@@ -69,7 +69,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
                 //listView.EmptyView = layoutEmptyFeedback;
 
                 TextViewUtils.SetMuseoSans300Typeface(txtEmptyFeedback);
-
+                txtEmptyFeedback.TextSize = TextViewUtils.GetFontSize(12f);
                 txtEmptyFeedback.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryEmpty");
 
                 mPresenter = new SelectSubmittedFeedbackPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));

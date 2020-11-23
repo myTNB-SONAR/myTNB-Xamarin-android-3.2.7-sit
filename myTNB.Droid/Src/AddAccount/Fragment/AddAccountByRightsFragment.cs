@@ -51,9 +51,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             txtNonOwnerRights = rootView.FindViewById<TextView>(Resource.Id.txtNonOwnerConstrain);
             txtYes = rootView.FindViewById<TextView>(Resource.Id.txtYes);
             txtNo = rootView.FindViewById<TextView>(Resource.Id.txtNo);
-
+            
             layoutOtherInfo = rootView.FindViewById<LinearLayout>(Resource.Id.layoutOtherInfo);
             layoutOtherInfo.Visibility = ViewStates.Visible;
+           
+           
 
             txtTitleInfo = rootView.FindViewById<TextView>(Resource.Id.txtTitleInfo);
 
@@ -74,6 +76,18 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             txtBillHistory.Text = Utility.GetLocalizedLabel("AddAccount", "paymentHistory");
             txtAllTransactionDetails.Text = Utility.GetLocalizedLabel("AddAccount", "currentBill");
             txtUsageHistory.Text = Utility.GetLocalizedLabel("AddAccount", "pastBills");
+
+            txtNo.TextSize = TextViewUtils.GetFontSize(18);
+            txtOwnerRights.TextSize = TextViewUtils.GetFontSize(18);
+            txtTitle.TextSize = TextViewUtils.GetFontSize(18);
+            txtTitleInfo.TextSize = TextViewUtils.GetFontSize(18);
+            txtOutstandingPayment.TextSize = TextViewUtils.GetFontSize(14);
+            txtCurrentBill.TextSize = TextViewUtils.GetFontSize(14);
+            txtBillHistory.TextSize = TextViewUtils.GetFontSize(14);
+            txtAllTransactionDetails.TextSize = TextViewUtils.GetFontSize(14);
+            txtUsageHistory.TextSize = TextViewUtils.GetFontSize(14);
+            txtYes.TextSize = TextViewUtils.GetFontSize(18);
+            txtNonOwnerRights.TextSize = TextViewUtils.GetFontSize(18);
 
             radio_non_owner.Click += delegate
             {

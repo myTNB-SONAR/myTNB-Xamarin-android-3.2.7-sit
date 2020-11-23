@@ -88,6 +88,10 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword, txtInputLayoutConfirmNewPassword);
 
+                txtResetPasswordTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                btnSubmit.TextSize = TextViewUtils.GetFontSize(16f);
+                txtTitleInfo.TextSize = TextViewUtils.GetFontSize(14f);
+                txtInputLayoutNewPassword.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                 txtResetPasswordTitle.Text = GetLabelByLanguage("subTitle");
                 txtTitleInfo.Text = GetLabelByLanguage("details");
                 txtInputLayoutNewPassword.Hint = GetLabelByLanguage("newPassword");
@@ -203,7 +207,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             {
                 txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = false;
             }
-
+            txtInputLayoutConfirmNewPassword.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
             //this.clearErrorIfTyped_forConfirmPass(true);
         }
 
@@ -410,7 +414,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 txtInputLayoutNewPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
             }
 
-            txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+            txtInputLayoutNewPassword.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
             if (!txtInputLayoutNewPassword.ErrorEnabled)
                 txtInputLayoutNewPassword.ErrorEnabled = true;
         }

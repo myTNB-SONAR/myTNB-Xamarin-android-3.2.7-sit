@@ -89,6 +89,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
             appBarLayout = FindViewById<AppBarLayout>(Resource.Id.appBar);
             appBarLayout.Visibility = ViewStates.Gone;
+            textAddAccountSuccess.TextSize = TextViewUtils.GetFontSize(16);
         }
 
         public override void OnBackPressed()

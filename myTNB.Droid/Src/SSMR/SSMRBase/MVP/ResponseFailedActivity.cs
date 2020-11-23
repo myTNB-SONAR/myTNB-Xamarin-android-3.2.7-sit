@@ -49,7 +49,11 @@ namespace myTNB_Android.Src.SSMR.SSMRBase.MVP
             // Create your application here
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfoError, btnBackToHomeFailed, btnTryAgainFailed);
             TextViewUtils.SetMuseoSans300Typeface(txtMessageInfoError);
-
+            btnBackToHomeFailed.TextSize = TextViewUtils.GetFontSize(16f);
+            btnTryAgainFailed.TextSize = TextViewUtils.GetFontSize(16f);
+            txtTitleInfoError.TextSize = TextViewUtils.GetFontSize(16f);
+            txtMessageInfoError.TextSize = TextViewUtils.GetFontSize(12f);
+            btnTryAgainFailed.TextSize = TextViewUtils.GetFontSize(16f);
             btnBackToHomeFailed.Text = "Back to My Usage";
             btnTryAgainFailed.Text = "Try Again";
 

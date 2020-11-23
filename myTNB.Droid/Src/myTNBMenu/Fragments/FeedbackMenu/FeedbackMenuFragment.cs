@@ -146,8 +146,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                         txtFeedbackOthers, txtViewid_FeedbackNewIC);
 
 
+            txtViewid_FeedbackNewIC.TextSize = TextViewUtils.GetFontSize(14f);
+            textviewid_subContent_FeedbackNewIC.TextSize = TextViewUtils.GetFontSize(12f);
+            txtFeedbackBillingAndPayment.TextSize = TextViewUtils.GetFontSize(14f);
+            txtFeedbackBillingAndPaymentContent.TextSize = TextViewUtils.GetFontSize(12f);
+            txtFeedbackFaultyStreetLamps.TextSize = TextViewUtils.GetFontSize(14f);
+            txtFeedbackFaultyStreetLampsContent.TextSize = TextViewUtils.GetFontSize(12f);
+            txtFeedbackOthers.TextSize = TextViewUtils.GetFontSize(14f);
+            txtFeedbackOthersContent.TextSize = TextViewUtils.GetFontSize(12f);
+            txtSubmittedFeedback.TextSize = TextViewUtils.GetFontSize(14f);
+            txtSubmittedFeedbackContent.TextSize = TextViewUtils.GetFontSize(12f);
+            txtFeedbackOthers.TextSize = TextViewUtils.GetFontSize(14f);
 
-          
+
             //if (UserEntity.IsCurrentlyActive())
             //{
             //    ;

@@ -62,7 +62,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         const string PAGE_ID = "Profile";
 
         private int APP_LANGUAGE_REQUEST = 32766;
-
+        private int APP_FONTCHANGE_REQUEST = 32767;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -142,7 +142,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
                 TextViewUtils.SetMuseoSans500Typeface(btnLogout);
                 TextViewUtils.SetMuseoSans300Typeface(appVersion);
-
+                appVersion.TextSize = TextViewUtils.GetFontSize(9f);
                 appVersion.Text = Utility.GetAppVersionName(context);
                 btnLogout.Text = GetLabelByLanguage("logout");
                 PopulateActiveAccountDetails();
@@ -362,6 +362,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             language.SetItemActionCall(ShowAppLanguageSetting);
             settingItems.Add(language);
 
+            ProfileMenuItemSingleContentComponent largefont = new ProfileMenuItemSingleContentComponent(context);
+            largefont.SetTitle(GetLabelByLanguage("displaySize"));
+            largefont.SetItemActionCall(ShowAppLargeFontSetting);
+            settingItems.Add(largefont);
+
+
             settingItem.AddComponentView(settingItems);
             return settingItem;
         }
@@ -535,6 +541,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 this.SetIsClicked(true);
                 Intent nextIntent = new Intent(this.Activity, typeof(AppLanguageActivity));
                 StartActivityForResult(nextIntent, APP_LANGUAGE_REQUEST);
+            }
+        }
+
+        private void ShowAppLargeFontSetting()
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent nextIntent = new Intent(this.Activity, typeof(AppLargeFontActivity));
+                StartActivityForResult(nextIntent, APP_FONTCHANGE_REQUEST);
             }
         }
 

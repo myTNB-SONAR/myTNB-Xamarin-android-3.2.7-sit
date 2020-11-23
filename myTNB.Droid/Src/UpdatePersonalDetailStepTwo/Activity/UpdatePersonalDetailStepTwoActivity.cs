@@ -238,6 +238,21 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 TextViewUtils.SetMuseoSans500Typeface(uploadSupportingDoc , TextView_exampleofIC, TextView_proofOfConsent, TextView_agreement);
 
 
+                txtstep1of2.TextSize = TextViewUtils.GetFontSize(12f);
+                uploadSupportingDoc.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewtitle_ownerIC.TextSize = TextViewUtils.GetFontSize(14f);
+                TextView_ownerIC.TextSize = TextViewUtils.GetFontSize(9f);
+                TextViewtitle_yourIC.TextSize = TextViewUtils.GetFontSize(14f);
+                TextView_yourIC_image.TextSize = TextViewUtils.GetFontSize(9f);
+                TextView_exampleofIC.TextSize = TextViewUtils.GetFontSize(11f);
+                txtRelatedScreenshotTitle2.TextSize = TextViewUtils.GetFontSize(14f);
+                TextView_proofOfConsent_image.TextSize = TextViewUtils.GetFontSize(9f);
+                TextView_proofOfConsent.TextSize = TextViewUtils.GetFontSize(12f);
+                txtRelatedScreenshotTitle3.TextSize = TextViewUtils.GetFontSize(14f);
+                TextView_proofOfConsent_image3.TextSize = TextViewUtils.GetFontSize(9f);
+                TextView_agreement.TextSize = TextViewUtils.GetFontSize(12f);
+
+
                //owner adapter
 
                 adapter = new FeedbackGeneralEnquiryStepOneImageRecyclerAdapter(true);

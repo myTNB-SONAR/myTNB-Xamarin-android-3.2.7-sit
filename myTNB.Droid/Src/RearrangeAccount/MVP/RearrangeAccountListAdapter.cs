@@ -70,6 +70,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             {
                 CustomerBillingAccount item = GetItemObject(position);
                 vh.txtSupplyAccountName.Text = item.AccDesc;
+                vh.txtSupplyAccountName.TextSize = TextViewUtils.GetFontSize(16);
 
                 if (item.AccountCategoryId.Equals("2"))
                 {

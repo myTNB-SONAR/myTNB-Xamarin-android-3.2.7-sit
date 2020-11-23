@@ -72,6 +72,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         [BindView(Resource.Id.btnSearchApplicationStatus)]
         Button btnSearchApplicationStatus;
 
+        [BindView(Resource.Id.btnRefresh)]
+        Button btnRefresh;
+
         [BindView(Resource.Id.applicationStatusLandingNestedScrollView)]
         NestedScrollView applicationStatusLandingNestedScrollView;
 
@@ -89,6 +92,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
         [BindView(Resource.Id.txtApplicationStatsTooltip)]
         TextView txtApplicationStatsTooltip;
+
+        [BindView(Resource.Id.refreshMsg)]
+        TextView refreshMsg;
 
         bool isFilter = false;
         bool isFilterVisible = false;
@@ -163,12 +169,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         private bool isApplicationStatusScrolled = false;
 
         private bool isOnlyHaveOneList = true;
-
-        // List<ApplicationStatusModel> applicationStatusList = new List<ApplicationStatusModel>();
-
-        //List<ApplicationStatusColorCodeModel> applicationStatusColorList = new List<ApplicationStatusColorCodeModel>();
-        //List<ApplicationStatusCodeModel> statusCodeList = new List<ApplicationStatusCodeModel>();
-        //List<ApplicationStatusTypeModel> typeList = new List<ApplicationStatusTypeModel>();
 
         public override int ResourceId()
         {
@@ -464,8 +464,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             applicationStatusLandingShimmerLayout.Visibility = ViewStates.Visible;
             applicationStatusLandingListContentShimmer.StartShimmer();
 
-            TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusLandingEmpty);
+            TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusLandingEmpty, refreshMsg);
             TextViewUtils.SetMuseoSans500Typeface(btnSearchApplicationStatus, viewMoreLabel, txtApplicationStatsTooltip);
+
+            txtApplicationStatusLandingEmpty.TextSize = TextViewUtils.GetFontSize(14f);
+            viewMoreLabel.TextSize = TextViewUtils.GetFontSize(12f);
+            refreshMsg.TextSize = TextViewUtils.GetFontSize(16f);
+            btnSearchApplicationStatus.TextSize = TextViewUtils.GetFontSize(16f);
+            txtApplicationStatsTooltip.TextSize = TextViewUtils.GetFontSize(12f);
+            btnRefresh.TextSize = TextViewUtils.GetFontSize(16f);
 
             btnSearchApplicationStatus.Text = Utility.GetLocalizedLabel("ApplicationStatusLanding", "search");
             txtApplicationStatsTooltip.Text = Utility.GetLocalizedLabel("ApplicationStatusLanding", "allApplications");
@@ -718,9 +725,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
                     var application = GetAllApplications[position];
                     ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(application.SavedApplicationId
-                        , application.ApplicationId
-                        , application.ApplicationType
-                        , application.System);
+                            , application.ApplicationId
+                            , application.ApplicationType
+                            , application.System);
 
                     HideProgressDialog();
                     if (!response.StatusDetail.IsSuccess)

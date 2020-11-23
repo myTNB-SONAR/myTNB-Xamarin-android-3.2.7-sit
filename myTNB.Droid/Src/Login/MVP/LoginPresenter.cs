@@ -1,22 +1,32 @@
-﻿using Android.Content;
-using Android.OS;
+﻿using Android.App;
+using Android.Content;
 using Android.Text;
 using Android.Util;
 using Firebase.Iid;
 using myTNB;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
+using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.AddAccount.Models;
+using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Login.MVP
 {
@@ -284,7 +294,7 @@ namespace myTNB_Android.Src.Login.MVP
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
                                 UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new BaseRequest());
-                                if (response.IsSuccessResponse())
+                                if(response.IsSuccessResponse())
                                 {
                                     if (response.GetData() != null)
                                     {
@@ -310,7 +320,7 @@ namespace myTNB_Android.Src.Login.MVP
                                         MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                                     }
                                 }
-                                else if (response != null && response.Response != null && response.Response.ErrorCode == "8400")
+                                else if(response != null && response.Response != null && response.Response.ErrorCode == "8400")
                                 {
                                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                                 }
@@ -330,7 +340,7 @@ namespace myTNB_Android.Src.Login.MVP
                                            , UserEntity.GetActive().UserID
                                            , UserEntity.GetActive().UserName
                                            , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
-                                AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
+                                           AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
 
                                 if (LanguageUtil.GetAppLanguage() == "MS")
                                 {
@@ -521,7 +531,7 @@ namespace myTNB_Android.Src.Login.MVP
                     {
                         newExisitingListArray.Sort();
 
-                        foreach (int index in newExisitingListArray)
+                        foreach(int index in newExisitingListArray)
                         {
                             CustomerBillingAccount oldAcc = existingSortedList[index];
 

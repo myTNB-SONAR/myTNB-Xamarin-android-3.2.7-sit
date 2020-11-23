@@ -89,6 +89,7 @@ namespace myTNB_Android.Src.NotificationSettings.Adapter
             public NotificationTypeViewHolder(View itemView, Action<int> listener) : base(itemView)
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationTitle);
+                txtNotificationTitle.TextSize = TextViewUtils.GetFontSize(14f);
                 notificationActionSwitch.Click += (sender, e) => listener(base.LayoutPosition);
             }
         }

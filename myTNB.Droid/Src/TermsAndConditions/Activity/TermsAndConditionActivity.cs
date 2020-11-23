@@ -139,6 +139,9 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtTitle);
                 TextViewUtils.SetMuseoSans300Typeface(txtVersion/*, txtTnCHtml*/);
 
+                txtTitle.TextSize = TextViewUtils.GetFontSize(14f);
+                txtVersion.TextSize = TextViewUtils.GetFontSize(14f);
+           
                 progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
 
                 txtTitle.Text = "";

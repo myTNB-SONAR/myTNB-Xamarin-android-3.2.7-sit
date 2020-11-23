@@ -90,6 +90,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             calenderNext = (Button)FindViewById<Button>(Resource.Id.CalenderNext);
             currentMonth = FindViewById<TextView>(Resource.Id.current_month);
             btnSubmitAppointment = (Button)FindViewById<Button>(Resource.Id.btnSubmitAppointment);
+
+            btnSubmitAppointment.TextSize = TextViewUtils.GetFontSize(16f);
+
             calenderBack.Click += OnClickCalenderBack;
 
             calenderNext.Click += OnClickCalenderNext;

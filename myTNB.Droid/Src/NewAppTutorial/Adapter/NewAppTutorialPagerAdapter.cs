@@ -34,7 +34,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
         private AndroidX.Fragment.App.DialogFragment mDialog;
         private AndroidX.Fragment.App.Fragment mFragment;
         private ISharedPreferences mPref;
-
+       
 
         public NewAppTutorialPagerAdapter(Activity ctx, AndroidX.Fragment.App.Fragment fragment, ISharedPreferences pref, AndroidX.Fragment.App.DialogFragment dialog, List<NewAppModel> items)
         {
@@ -43,7 +43,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             this.mDialog = dialog;
             this.mFragment = fragment;
             this.mPref = pref;
-
+           
         }
 
         public NewAppTutorialPagerAdapter()
@@ -85,6 +85,13 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
             TextViewUtils.SetMuseoSans300Typeface(txtBottomContent, txtTopContent);
             TextViewUtils.SetMuseoSans500Typeface(txtBottomTitle, txtTopTitle, btnBottomGotIt, btnTopGotIt);
+
+            txtTopTitle.TextSize = TextViewUtils.GetFontSize(14f);
+            txtTopContent.TextSize = TextViewUtils.GetFontSize(14f);
+            txtBottomTitle.TextSize = TextViewUtils.GetFontSize(14f);
+            txtBottomContent.TextSize = TextViewUtils.GetFontSize(14f);
+            btnTopGotIt.TextSize = TextViewUtils.GetFontSize(16f);
+            btnBottomGotIt.TextSize = TextViewUtils.GetFontSize(16f);
 
             btnTopGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
             btnBottomGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
@@ -2078,7 +2085,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 }
             }
             else if (this.mContext is ApplicationStatusLandingActivity)
-            {
+             {
                 if (model.DisplayMode == "Extra")
                 {
                     int topHeight = (int)DPUtils.ConvertDPToPx(55f);

@@ -47,11 +47,19 @@
   <style name="TextInputLayoutBottomHint" parent="@android:style/TextAppearance.Medium">    
     <item name="android:textColor">@color/tunaGrey</item>
     <item name="android:textSize">12sp</item>
+        </style>
+  <style name="TextInputLayoutBottomHintLarge" parent="@android:style/TextAppearance.Medium">    
+    <item name="android:textColor">@color/tunaGrey</item>
+    <item name="android:textSize">16sp</item>
   </style>
 
   <style name="TextInputLayoutBottomErrorHint" parent="@android:style/TextAppearance.Medium">
     <item name="android:textColor">@color/errorColor</item>
     <item name="android:textSize">12sp</item>
+  </style>
+        <style name="TextInputLayoutBottomErrorHintLarge" parent="@android:style/TextAppearance.Medium">
+    <item name="android:textColor">@color/errorColor</item>
+    <item name="android:textSize">14sp</item>
   </style>
 
   <style name="LoadingOverlyDialogStyle" parent="@android:Theme.Dialog">

@@ -295,6 +295,13 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             TextViewUtils.SetMuseoSans300Typeface(txtApplicationType, txtSearchBy, txtServiceRequestNum);
             TextViewUtils.SetMuseoSans500Typeface(btnSearchApplication, txtSearchApplicationTitle);
 
+            txtSearchApplicationTitle.TextSize = TextViewUtils.GetFontSize(16f);
+            txtApplicationType.TextSize = TextViewUtils.GetFontSize(16f);
+            txtSearchBy.TextSize = TextViewUtils.GetFontSize(16f);
+            txtServiceRequestNum.TextSize = TextViewUtils.GetFontSize(16f);
+            txtWhyAccountsNotHere.TextSize = TextViewUtils.GetFontSize(12f);
+            txtSearchApplicationStatusListResult.TextSize = TextViewUtils.GetFontSize(16f);
+            btnSearchApplication.TextSize = TextViewUtils.GetFontSize(16f);
             TextViewUtils.SetMuseoSans500Typeface(txtWhyAccountsNotHere);
             txtWhyAccountsNotHere.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "whereToGetThisNumber");
             txtWhyAccountsNotHere.Click += OnWhereAreTheseNoClick; ;
@@ -425,7 +432,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             {
                                 txtInputLayoutServiceRequestNum.ErrorEnabled = true;
                             }
-                            DisableButton();
+                                 DisableButton();
                         }
                     }
 

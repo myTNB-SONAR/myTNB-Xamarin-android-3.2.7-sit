@@ -127,7 +127,18 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                 Layout_attachments = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_attachments);
                 Layout_comment = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_comment);
                 Layout_submittedby = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_submittedby);
-                
+
+                lbl_Status.TextSize = TextViewUtils.GetFontSize(16);
+                text_status.TextSize = TextViewUtils.GetFontSize(16);
+                lbl_date_text.TextSize = TextViewUtils.GetFontSize(10);
+                lbl_details.TextSize = TextViewUtils.GetFontSize(10);
+                lbl_reason.TextSize = TextViewUtils.GetFontSize(10);
+                lbl_attachments.TextSize = TextViewUtils.GetFontSize(10);
+                lbl_comment.TextSize = TextViewUtils.GetFontSize(10);
+                lbl_comment_text.TextSize = TextViewUtils.GetFontSize(14);
+                lbl_submittedby.TextSize = TextViewUtils.GetFontSize(10);
+                lbl_submittedby_email.TextSize = TextViewUtils.GetFontSize(14);
+
             }
             
 
@@ -165,7 +176,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                     lbl_attachments.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "attachments").ToUpper();
 
                     text_status.Text = item.StatusDescription;
-
+                    
                     CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(LanguageUtil.GetAppLanguage());
                     string date = item.CreatedDate != null && item.CreatedDate.Value != null
                         ? item.CreatedDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty

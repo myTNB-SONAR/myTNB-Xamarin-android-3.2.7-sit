@@ -224,6 +224,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             TextViewUtils.SetMuseoSans500Typeface(accountNameShimmer, billDueAmountShimmer);
             TextViewUtils.SetMuseoSans300Typeface(accountNumberShimmer, billDueNoteShimmer);
 
+            accountNameShimmer.TextSize = TextViewUtils.GetFontSize(12f);
+            accountNumberShimmer.TextSize = TextViewUtils.GetFontSize(12f);
+            billDueAmountShimmer.TextSize = TextViewUtils.GetFontSize(12f);
+            billDueNoteShimmer.TextSize = TextViewUtils.GetFontSize(12f);
+
             ShimmerLoadingLayout.GetInstance().AddViewWithShimmer(parentGroup.Context, viewHolder.linearLayout, CreateAccountCard(cardModel),
                 shimmerLayoutContainer,
                 () =>
@@ -261,6 +266,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             TextView accountNumber = card.FindViewById(Resource.Id.accountNumber) as TextView;
             TextView billDueAmount = card.FindViewById(Resource.Id.billDueAmount) as TextView;
             TextView billDueNote = card.FindViewById(Resource.Id.billDueDate) as TextView;
+
+            accountName.TextSize = TextViewUtils.GetFontSize(12f);
+            accountNumber.TextSize = TextViewUtils.GetFontSize(12f);
+            billDueAmount.TextSize = TextViewUtils.GetFontSize(12f);
+            billDueNote.TextSize = TextViewUtils.GetFontSize(12f);
 
             accountName.Id = cardModel.Id + 1;
             accountNumber.Id = cardModel.Id + 2;

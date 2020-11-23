@@ -245,6 +245,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
     public class ApplicationStatusFilterViewHolder : RecyclerView.ViewHolder
     {
         public TextView txtFilterName { get; private set; }
+        public TextView whyAccountsNotHere { get; private set; }
+        
         public ImageView imgApplicationFilter { get; private set; }
         public CheckBox chkApplicationFilter { get; private set; }
         private Context context;
@@ -253,12 +255,16 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
         {
             context = itemView.Context;
             txtFilterName = itemView.FindViewById<TextView>(Resource.Id.txtFilterName);
+            whyAccountsNotHere = itemView.FindViewById<TextView>(Resource.Id.whyAccountsNotHere);
             imgApplicationFilter = itemView.FindViewById<ImageView>(Resource.Id.imgApplicationFilter);
             chkApplicationFilter = itemView.FindViewById<CheckBox>(Resource.Id.chkApplicationFilter);
             txtFilterName.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.tunaGrey)));
             TextViewUtils.SetMuseoSans300Typeface(txtFilterName);
             txtFilterName.Click += (sender, e) => listener(base.LayoutPosition);
             chkApplicationFilter.Click += (sender, e) => listener(base.LayoutPosition);
+
+            txtFilterName.TextSize = TextViewUtils.GetFontSize(16);
+            whyAccountsNotHere.TextSize = TextViewUtils.GetFontSize(12);
         }
 
 

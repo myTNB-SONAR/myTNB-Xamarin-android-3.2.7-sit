@@ -175,6 +175,15 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtWelcome, txtFindUs, txtFeedback, txtCallUs, txtCheckStatus, txtChangeLanguage);
                 TextViewUtils.SetMuseoSans300Typeface(txtManageAccount, txtPromotion);
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin, btnRegister);
+                txtWelcome.TextSize = TextViewUtils.GetFontSize(16f);
+                txtManageAccount.TextSize = TextViewUtils.GetFontSize(12f);
+                txtFindUs.TextSize = TextViewUtils.GetFontSize(10f);
+                txtCallUs.TextSize = TextViewUtils.GetFontSize(10f);
+                txtCheckStatus.TextSize = TextViewUtils.GetFontSize(10f);
+                txtFeedback.TextSize = TextViewUtils.GetFontSize(10f);
+                txtChangeLanguage.TextSize = TextViewUtils.GetFontSize(12f);
+                txtPromotion.TextSize = TextViewUtils.GetFontSize(14f);
+                btnRegister.TextSize = TextViewUtils.GetFontSize(16f);
                 UpdateLabels();
 
                 GenerateTopLayoutLayout();

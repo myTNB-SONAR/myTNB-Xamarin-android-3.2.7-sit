@@ -131,6 +131,16 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                             txtSubmittedFeedback,
                             txtFeedbackOthers);
 
+                txtFeedbackBillingAndPayment.TextSize = TextViewUtils.GetFontSize(16f);
+                txtFeedbackBillingAndPaymentContent.TextSize = TextViewUtils.GetFontSize(12f);
+                txtFeedbackFaultyStreetLamps.TextSize = TextViewUtils.GetFontSize(16f);
+                txtFeedbackFaultyStreetLampsContent.TextSize = TextViewUtils.GetFontSize(12f);
+                txtFeedbackOthers.TextSize = TextViewUtils.GetFontSize(16f);
+                txtFeedbackOthersContent.TextSize = TextViewUtils.GetFontSize(12f);
+                txtSubmittedFeedback.TextSize = TextViewUtils.GetFontSize(16f);
+                txtSubmittedFeedbackContent.TextSize = TextViewUtils.GetFontSize(12f);
+         
+
                 SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "enquireTitle"));
 
 

@@ -404,7 +404,13 @@
             android:gravity="bottom"
             android:layout_gravity="bottom"
             android:id="@+id/applicationStatusLandingBottomLayout">
-         
+         <ImageView
+				android:id="@+id/shadow_layout"
+				android:layout_width="match_parent"
+				android:layout_height="4dp"
+				android:visibility="visible"
+				android:scaleType="fitXY"
+				android:background="@drawable/shadow_effect" />
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"

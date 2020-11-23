@@ -32,6 +32,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using static myTNB_Android.Src.MyTNBService.Response.AppLaunchMasterDataResponse;
 using myTNB;
 using Firebase.Iid;
+using System.Net.Http;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -119,6 +120,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
         private async void LoadAppMasterData()
         {
+
             //For Testing Start
             string fcmToken = string.Empty;
             if (FirebaseTokenEntity.HasLatest())
@@ -273,7 +275,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             , loggedUser.UserID
                                             , loggedUser.UserName
                                             , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
-                                        AppInfoManager.Instance.SetPlatformUserInfo(new BaseRequest().usrInf);
+                                             AppInfoManager.Instance.SetPlatformUserInfo(new BaseRequest().usrInf);
 
                                         if ("APPLICATIONDETAILS".Equals(UserSessions.GetNotificationType(mSharedPref))
                                             && UserSessions.ApplicationStatusNotification != null)

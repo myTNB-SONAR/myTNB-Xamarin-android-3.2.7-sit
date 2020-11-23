@@ -65,6 +65,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
                 {
                     TxtApplicationStatusHeader.Text = this.item.Title;
                     TxtApplicationStatusDetail.Text = this.item.Value;
+
+                    TxtApplicationStatusHeader.TextSize = TextViewUtils.GetFontSize(10);
+                    TxtApplicationStatusDetail.TextSize = TextViewUtils.GetFontSize(10);
                 }
                 catch (Exception e)
                 {

@@ -623,7 +623,9 @@
     "electricityAccount": "Akaun Elektrik",
     "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
-    "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah."
+    "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah.",
+    "fontChangeSuccess": "Anda berjaya mengemaskini saiz teks paparan anda kepada saiz {0}!",
+    "displaySize": "Tetapkan Saiz Teks Paparan"
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",
@@ -757,6 +759,7 @@
   "Onboarding": {
     "letsStart": "Jom mulakan!",
     "skip": "Langkau",
+    "setSize": "MS-Set Display Text Size",
     "title1": "Selamat datang ke myTNB!",
     "title2": "Ketahui penggunaan terkini anda.",
     "title3": "Bil di hujung jari anda.",
@@ -765,6 +768,7 @@
     "title6": "Apa yang baharu dengan myTNB?",
     "title7": "Gunakan myTNB dengan Nombor Telefon Antarabangsa.",
     "title8": "Sentiasa ketahui status permohonan anda!",
+    "title9": "MS-Personalise Your Text Size.",
     "description1": "Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Pantau dan ketahui penggunaan elektrik anda yang terkini!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan terkini dengan mudah, semuanya di satu tempat.",
@@ -772,7 +776,10 @@
     "description5": "Ya, kini kami berikan hadiah dan ganjaran - segalanya PERCUMA untuk pengguna myTNB! Pergi ke ikon 'Ganjaran' untuk tebus ganjaran anda sekarang!",
     "description6": "Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.<br><br>We’re now bilingual! You can set your preferred language below.",
     "description7": "Anda kini boleh mendaftar akaun myTNB dengan nombor telefon antarabangsa.",
-    "description8": "Anda boleh jejaki semua status permohonan tanpa kerumitan, bila bila masa dan dimana sahaja. Mahu TNB memasang meter baharu? Anda boleh tetapkan janji temu sekarang!"
+    "description8": "Anda boleh jejaki semua status permohonan tanpa kerumitan, bila bila masa dan dimana sahaja. Mahu TNB memasang meter baharu? Anda boleh tetapkan janji temu sekarang!",
+    "description9": "MS-Customize your app with your preferred display text size so you can experience myTNB more comfortably! Choose between normal and large.  You can change this anytime in your Profile.",
+    "fontChangeSuccess": "Anda berjaya mengemaskini saiz teks paparan anda kepada saiz {0}!",
+    "displaySize": "Tetapkan Saiz Teks Paparan"
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
@@ -1848,6 +1855,25 @@
       {
         "key": "12",
         "value": "Disember"
+      }
+    ]
+  },
+  "SelectFontSize": {
+    "title": "Tetapkan Saiz Teks Paparan",
+    "sectionTitle": "Pilih Saiz Teks Pilihan Anda",
+    "ctaTitle": "Simpan",
+    "popupTitleFormat": "Tukar saiz teks paparan anda?",
+    "popupMessage": "Anda akan menukar saiz teks paparan Aplikasi myTNB anda kepada saiz {0}."
+  },
+  "SelectFontSize_selector": {
+    "fonts": [
+      {
+        "key": "R",
+        "value": "Normal"
+      },
+      {
+        "key": "L",
+        "value": "Besar"
       }
     ]
   },

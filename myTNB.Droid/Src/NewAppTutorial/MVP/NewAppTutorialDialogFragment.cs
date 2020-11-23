@@ -44,7 +44,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         private Fragment mFragment;
         private ISharedPreferences mPref;
         private bool IndicationShowTop = false;
-
+       
 
         public NewAppTutorialDialogFragment(Android.App.Activity ctx, Fragment fragment, ISharedPreferences pref, List<NewAppModel> list, bool mIndicationShowTop = false)
         {
@@ -56,8 +56,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
             this.mFragment = fragment;
             this.mPref = pref;
             this.IndicationShowTop = mIndicationShowTop;
-
-        }
+           
+        } 
 
         public override void OnStart()
         {
@@ -69,7 +69,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 Dialog.Window.SetDimAmount(0.0f);
                 Dialog.SetCancelable(false);
                 Dialog.SetCanceledOnTouchOutside(false);
-
+               
                 Dialog.Window.SetLayout(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
 
             }
@@ -78,7 +78,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View rootView = inflater.Inflate(Resource.Layout.NewAppTutorialLayout, container, false);
-
+            
             try
             {
                 pager = rootView.FindViewById<ViewPager>(Resource.Id.viewPager);
@@ -88,6 +88,9 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 swipeTopDoubleTapLayout = rootView.FindViewById<LinearLayout>(Resource.Id.swipeTopDoubleTapLayout);
                 txtDoubleTapDismiss = rootView.FindViewById<TextView>(Resource.Id.txtDoubleTapDismiss);
                 txtTopDoubleTapDismiss = rootView.FindViewById<TextView>(Resource.Id.txtTopDoubleTapDismiss);
+
+                txtDoubleTapDismiss.TextSize = TextViewUtils.GetFontSize(12f);
+                txtTopDoubleTapDismiss.TextSize = TextViewUtils.GetFontSize(12f);
 
                 if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
@@ -383,7 +386,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                     if (NewAppTutorialList.Count > 1)
                     {
-                        pager.PageSelected += (object sender, ViewPager.PageSelectedEventArgs e) =>
+                        pager.PageSelected += (object sender, ViewPager.PageSelectedEventArgs e) => 
                         {
                             for (int i = 0; i < NewAppTutorialList.Count; i++)
                             {

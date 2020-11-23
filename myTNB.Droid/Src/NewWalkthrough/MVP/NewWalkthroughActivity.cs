@@ -140,6 +140,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             };
 
             TextViewUtils.SetMuseoSans500Typeface(btnSkip, btnStart);
+            btnSkip.TextSize = TextViewUtils.GetFontSize(12f);
+            btnStart.TextSize = TextViewUtils.GetFontSize(16f);
             btnSkip.Text = Utility.GetLocalizedLabel("Onboarding", "skip");
             btnStart.Text = Utility.GetLocalizedLabel("Onboarding", "letsStart");
         }

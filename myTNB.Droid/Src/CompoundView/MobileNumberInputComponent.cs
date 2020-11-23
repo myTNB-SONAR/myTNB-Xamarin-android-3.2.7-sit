@@ -73,6 +73,11 @@ namespace myTNB_Android.Src.CompoundView
             editTextMobileNumber.TextChanged += OnMobileNumberChangeValue;
 
             editTextMobileNumber.FocusChange += EditTextMobileNumber_FocusChange;
+
+            countryCodeHeaderTitle.TextSize = TextViewUtils.GetFontSize(10f);
+            countryISDCode.TextSize = TextViewUtils.GetFontSize(16f);
+            editTextMobileNumber.TextSize = TextViewUtils.GetFontSize(16f);
+            countryCodeError.TextSize = TextViewUtils.GetFontSize(12f);
         }
 
         private void EditTextMobileNumber_FocusChange(object sender, FocusChangeEventArgs e)

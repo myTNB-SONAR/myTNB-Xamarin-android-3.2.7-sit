@@ -168,6 +168,8 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtFeedbackId, txtFeedbackDateTime, txtFeedbackType, txtFeedback, txtRelatedScreenshotTitle, txtFeedbackStatus);
 
 
+                txtRelatedScreenshotTitle.TextSize = TextViewUtils.GetFontSize(9f);
+
                 adapter = new FeedbackImageRecyclerAdapter(true);
                 layoutManager = new GridLayoutManager(this, Constants.GRID_IMAGE_COUNT);
                 recyclerView.SetLayoutManager(layoutManager);

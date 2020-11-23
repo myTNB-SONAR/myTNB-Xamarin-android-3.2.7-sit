@@ -101,9 +101,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             Bundle extras = Intent.Extras;
             TextViewUtils.SetMuseoSans500Typeface(billFilterMessage, btnBillFilter);
             TextViewUtils.SetMuseoSans300Typeface(txtFilterLabel, txtFilterSelected);
+            btnBillFilter.TextSize = TextViewUtils.GetFontSize(16f);
+            billFilterMessage.TextSize = TextViewUtils.GetFontSize(16f);
+            txtFilterLabel.TextSize = TextViewUtils.GetFontSize(9f);
+            txtFilterSelected.TextSize = TextViewUtils.GetFontSize(16f);
+
             btnBillFilter.Text = GetLabelByLanguage("applyFilter");
             txtFilterLabel.Text = GetLabelByLanguage("filterBy").ToUpper();
             txtFilterSelected.Text = "";

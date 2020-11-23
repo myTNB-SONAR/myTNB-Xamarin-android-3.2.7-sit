@@ -44,6 +44,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Adapter
 
             AccountData item = GetItemObject(position);
             vh.txtSupplyAccountName.Text = item.AccountNickName;
+            vh.txtSupplyAccountName.TextSize = TextViewUtils.GetFontSize(16);
 
             if (item.IsSelected)
             {

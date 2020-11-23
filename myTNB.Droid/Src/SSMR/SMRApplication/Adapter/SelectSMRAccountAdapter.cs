@@ -47,6 +47,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
                 accountName = itemView.FindViewById(Resource.Id.account_name_value) as TextView;
                 accountSelected = itemView.FindViewById(Resource.Id.select_smr_account) as CheckBox;
                 TextViewUtils.SetMuseoSans300Typeface(accountName);
+                accountName.TextSize = TextViewUtils.GetFontSize(16f);
             }
         }
 

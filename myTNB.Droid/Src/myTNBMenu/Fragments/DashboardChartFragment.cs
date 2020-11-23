@@ -876,6 +876,58 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans300Typeface(txtReNoPayable, txtReNoPayableCurrency);
                 TextViewUtils.SetMuseoSans500Typeface(txtReNoPayableTitle);
 
+                txtNewRefreshMessage.TextSize = TextViewUtils.GetFontSize(14f);
+                dashboardAccountName.TextSize = TextViewUtils.GetFontSize(18f);
+                txtAddress.TextSize = TextViewUtils.GetFontSize(11f);
+                btnToggleDay.TextSize = TextViewUtils.GetFontSize(13f);
+                btnToggleMonth.TextSize = TextViewUtils.GetFontSize(13f);
+                txtEnergyDisconnection.TextSize = TextViewUtils.GetFontSize(13f);
+                newAccountContent.TextSize = TextViewUtils.GetFontSize(15f);
+                txtRange.TextSize = TextViewUtils.GetFontSize(13f);
+                txtMdmsDayViewDown.TextSize = TextViewUtils.GetFontSize(15f);
+                txtDayViewZoomInIndicator.TextSize = TextViewUtils.GetFontSize(11f);
+                txtTariffBlockLegendDisclaimer.TextSize = TextViewUtils.GetFontSize(11f);
+                kwhLabel.TextSize = TextViewUtils.GetFontSize(13f);
+                rmLabel.TextSize = TextViewUtils.GetFontSize(13f);
+                rmKwhLabel.TextSize = TextViewUtils.GetFontSize(13f);
+                txtTarifToggle.TextSize = TextViewUtils.GetFontSize(13f);
+                reTotalPayableTitle.TextSize = TextViewUtils.GetFontSize(13f);
+                reTotalPayable.TextSize = TextViewUtils.GetFontSize(17f);
+                reTotalPayableCurrency.TextSize = TextViewUtils.GetFontSize(11f);
+                reDueDate.TextSize = TextViewUtils.GetFontSize(13f);
+                txtReNoPayableTitle.TextSize = TextViewUtils.GetFontSize(13f);
+                txtReNoPayable.TextSize = TextViewUtils.GetFontSize(17f);
+                txtReNoPayableCurrency.TextSize = TextViewUtils.GetFontSize(13f);
+                ssmrAccountStatusText.TextSize = TextViewUtils.GetFontSize(13f);
+                btnTxtSsmrViewHistory.TextSize = TextViewUtils.GetFontSize(13f);
+                smStatisticBillTitle.TextSize = TextViewUtils.GetFontSize(13f);
+                smStatisticBill.TextSize = TextViewUtils.GetFontSize(17f);
+                smStatisticBillCurrency.TextSize = TextViewUtils.GetFontSize(11f);
+                smStatisticBillKwhUnit.TextSize = TextViewUtils.GetFontSize(11f);
+                smStatisticBillKwh.TextSize = TextViewUtils.GetFontSize(17f);
+                smStatisticBillSubTitle.TextSize = TextViewUtils.GetFontSize(13f);
+                smStatisticPredictTitle.TextSize = TextViewUtils.GetFontSize(13f);
+                smStatisticPredict.TextSize = TextViewUtils.GetFontSize(17f);
+                smStatisticPredictCurrency.TextSize = TextViewUtils.GetFontSize(13f);
+                smStatisticPredictSubTitle.TextSize = TextViewUtils.GetFontSize(13f);
+                smStatisticTrendTitle.TextSize = TextViewUtils.GetFontSize(13f);
+                smStatisticTrend.TextSize = TextViewUtils.GetFontSize(17f);
+                smStatisticTrendSubTitle.TextSize = TextViewUtils.GetFontSize(13f);
+                txtSmStatisticTooltip.TextSize = TextViewUtils.GetFontSize(13f);
+                txtNoPayableTitle.TextSize = TextViewUtils.GetFontSize(15f);
+                txtNoPayable.TextSize = TextViewUtils.GetFontSize(25f);
+                txtNoPayableCurrency.TextSize = TextViewUtils.GetFontSize(13f);
+                txtTotalPayableTitle.TextSize = TextViewUtils.GetFontSize(15f);
+                txtTotalPayable.TextSize = TextViewUtils.GetFontSize(25f);
+                txtTotalPayableCurrency.TextSize = TextViewUtils.GetFontSize(13f);
+                txtDueDate.TextSize = TextViewUtils.GetFontSize(15f);
+                lblinfoLabelEPP.TextSize = TextViewUtils.GetFontSize(11f);
+                btnPay.TextSize = TextViewUtils.GetFontSize(16f);
+                btnNewRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+                btnMDMSDownRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+                btnReView.TextSize = TextViewUtils.GetFontSize(16f);
+                btnViewBill.TextSize = TextViewUtils.GetFontSize(16f);
+                btnReadingHistory.TextSize = TextViewUtils.GetFontSize(16f);
 
                 txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                 btnViewBill.Text = Utility.GetLocalizedLabel("Usage", "viewDetails");
@@ -5792,6 +5844,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 txtMessage.Text = Utility.GetLocalizedLabel("Usage", "missedReadTitle");
                 txtTitle.Text = Utility.GetLocalizedLabel("Usage", "missedReadMsg");
                 btnGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
+
+                txtTitle.TextSize = TextViewUtils.GetFontSize(14);
+                txtMessage.TextSize = TextViewUtils.GetFontSize(14);
+                btnGotIt.TextSize = TextViewUtils.GetFontSize(16);
+
 
 
                 foreach (SMUsageHistoryData.SmartMeterToolTips costValue in selectedSMHistoryData.ToolTips)

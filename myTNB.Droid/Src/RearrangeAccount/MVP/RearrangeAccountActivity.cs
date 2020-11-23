@@ -44,7 +44,7 @@ namespace myTNB_Android.Src.RearrangeAccount.MVP
             try
             {
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
-
+                btnSubmit.TextSize = TextViewUtils.GetFontSize(16f);
                 btnSubmit.Text = GetLabelByLanguage("btnTitle");
 
                 listView = FindViewById<RearrangeAccountListView>(Resource.Id.list_view);

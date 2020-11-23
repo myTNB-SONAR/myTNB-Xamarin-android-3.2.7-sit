@@ -57,6 +57,7 @@ namespace myTNB_Android.Src.Common
             {
                 try
                 {
+                    txtItemTitle.TextSize = TextViewUtils.GetFontSize(16f);
                     if (mContext is AppLanguageActivity)
                     {
                         TextViewUtils.SetMuseoSans500Typeface(txtItemTitle);

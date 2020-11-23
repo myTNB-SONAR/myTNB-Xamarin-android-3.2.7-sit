@@ -1,8 +1,6 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime;
-using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -11,8 +9,6 @@ using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
-using AndroidX.Fragment.App;
-
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -33,7 +29,6 @@ using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.SelectSupplyAccount.Activity;
-using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewReceipt.Activity;
@@ -47,6 +42,8 @@ using System.Globalization;
 using AndroidX.CoordinatorLayout.Widget;
 using Google.Android.Material.BottomNavigation;
 using AndroidX.Core.Content;
+using Android.Text;
+using Android.Text.Style;
 using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 
@@ -162,26 +159,53 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             try
             {
+                RelativeSizeSpan relativeSizeSpan = TextViewUtils.SelectedFontSize() == "L" ? new RelativeSizeSpan(1.5f) : new RelativeSizeSpan(1f);
+
                 IMenu bottomMenu = bottomNavigationView.Menu;
                 IMenuItem item;
 
                 item = bottomMenu.FindItem(Resource.Id.menu_dashboard);
-                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "home"));
+
+
+                SpannableString spanStringhome = new SpannableString(Utility.GetLocalizedLabel("Tabbar", "home"));
+
+                spanStringhome.SetSpan(relativeSizeSpan, 0, spanStringhome.Length(), SpanTypes.ExclusiveExclusive);
+                item.SetTitle(spanStringhome);
 
                 item = bottomMenu.FindItem(Resource.Id.menu_bill);
-                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "bill"));
+
+
+                SpannableString spanStringbill = new SpannableString(Utility.GetLocalizedLabel("Tabbar", "bill"));
+
+                spanStringbill.SetSpan(relativeSizeSpan, 0, spanStringbill.Length(), SpanTypes.ExclusiveExclusive);
+                item.SetTitle(spanStringbill);
 
                 item = bottomMenu.FindItem(Resource.Id.menu_promotion);
-                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
+
+
+                SpannableString spanStringpromotion = new SpannableString(Utility.GetLocalizedLabel("Tabbar", "promotion"));
+
+                spanStringpromotion.SetSpan(relativeSizeSpan, 0, spanStringpromotion.Length(), SpanTypes.ExclusiveExclusive);
+                item.SetTitle(spanStringpromotion);
 
                 item = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (item != null)
                 {
                     item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "rewards"));
+
+                    SpannableString spanStringprofile = new SpannableString(Utility.GetLocalizedLabel("Tabbar", "rewards"));
+
+                    spanStringprofile.SetSpan(relativeSizeSpan, 0, spanStringprofile.Length(), SpanTypes.ExclusiveExclusive);
+                    item.SetTitle(spanStringprofile);
                 }
 
                 item = bottomMenu.FindItem(Resource.Id.menu_more);
-                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "profile"));
+
+
+                SpannableString spanString = new SpannableString(Utility.GetLocalizedLabel("Tabbar", "profile"));
+                int end = spanString.Length();
+                spanString.SetSpan(relativeSizeSpan, 0, end, SpanTypes.ExclusiveExclusive);
+                item.SetTitle(spanString);
             }
             catch (Exception e)
             {
@@ -192,6 +216,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_DashboardHomeLarge : Resource.Style.Theme_DashboardHome);
             dashboardHomeActivity = this;
             base.SetToolBarTitle(GetString(Resource.String.dashboard_activity_title));
             mPresenter = new DashboardHomePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
@@ -264,7 +289,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     alreadyStarted = true;
                 }
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Intent LaunchViewIntent = new Intent(this, typeof(LaunchViewActivity));
                 LaunchViewActivity.MAKE_INITIAL_CALL = true;
@@ -272,6 +297,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 StartActivity(LaunchViewIntent);
                 Utility.LoggingNonFatalError(e);
             }
+            txtAccountName.TextSize = TextViewUtils.GetFontSize(18);
 
             if (ApplicationStatusSearchDetailCache.Instance.ShouldSave)
             {
@@ -404,6 +430,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             base.OnActivityResult(requestCode, resultCode, data);
             this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
+
         }
 
         public void ShowBillMenu(AccountData selectedAccount)
@@ -930,6 +957,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                             txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
                             txtNewLabel.Text = count.ToString();
+                            txtNewLabel.TextSize = TextViewUtils.GetFontSize(8);
                             txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.white)));
                             newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
                             if (count > 0 && count <= 9)
@@ -1022,6 +1050,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                         txtNewLabel.Text = word;
+                        txtNewLabel.TextSize = TextViewUtils.GetFontSize(8f);
                         txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
                         TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                         if (!flag)
@@ -1099,6 +1128,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                         txtNewLabel.Text = word;
+                        txtNewLabel.TextSize = TextViewUtils.GetFontSize(8);
                         txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
                         TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                         if (!flag)
@@ -1168,6 +1198,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                             txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
                             txtNewLabel.Text = count.ToString();
+                            txtNewLabel.TextSize = TextViewUtils.GetFontSize(8);
                             txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.white)));
                             newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
                             if (count > 0 && count <= 9)

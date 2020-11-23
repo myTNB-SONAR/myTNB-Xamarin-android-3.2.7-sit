@@ -232,9 +232,13 @@ namespace myTNB_Android.Src.Rating.Adapter
                 TextViewUtils.SetMuseoSans300Typeface(txtComments, txtContentInfo);
                 TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo);
 
+                txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16f);
+                txtContentInfo.TextSize = TextViewUtils.GetFontSize(12f);
+
                 txtComments.MovementMethod = new ScrollingMovementMethod();
                 txtComments.SetOnTouchListener(this);
                 txtInputLayoutComments.Hint = Utility.GetLocalizedCommonLabel("comments");
+                txtInputLayoutComments.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                 txtComments.Hint = "";
                 txtComments.AddTextChangedListener(new InputFilterFormField(txtComments, txtInputLayoutComments));
             }

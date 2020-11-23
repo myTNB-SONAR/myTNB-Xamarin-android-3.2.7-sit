@@ -101,6 +101,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
                 TextViewUtils.SetMuseoSans300Typeface(txtManageCardsTitle, txtEmptyCard);
 
+                txtManageCardsTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                txtEmptyCard.TextSize = TextViewUtils.GetFontSize(14f);
+
                 txtManageCardsTitle.Text = GetLabelByLanguage("details");
                 txtEmptyCard.Text = GetLabelByLanguage("noCards");
 

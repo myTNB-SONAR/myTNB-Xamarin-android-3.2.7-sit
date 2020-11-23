@@ -26,6 +26,13 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [BindView(Resource.Id.txtMessageInfoError)]
         TextView txtMessageInfoError;
 
+        [BindView(Resource.Id.btnBackToHomeFailed)]
+        Button btnBackToHomeFailed;
+
+        [BindView(Resource.Id.btnTryAgainFailed)]
+        Button btnTryAgainFailed;
+        
+
         public override int ResourceId()
         {
             return Resource.Layout.SubmitSMRAccountFailedView;
@@ -39,10 +46,15 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             // Create your application here
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfoError);
             TextViewUtils.SetMuseoSans300Typeface(txtMessageInfoError);
+
+            btnBackToHomeFailed.TextSize = TextViewUtils.GetFontSize(16f);
+            btnTryAgainFailed.TextSize = TextViewUtils.GetFontSize(16f);
+            txtTitleInfoError.TextSize = TextViewUtils.GetFontSize(16f);
+            txtMessageInfoError.TextSize = TextViewUtils.GetFontSize(12f);
         }
 
         [OnClick(Resource.Id.btnBackToHomeFailed)]

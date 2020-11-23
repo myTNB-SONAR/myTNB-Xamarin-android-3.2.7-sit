@@ -520,6 +520,16 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 TextViewUtils.SetMuseoSans300Typeface(EditTextServiceRequestNumber, EditTextRElationOwner, EditTextNewIC, EditTextNewAccName, EditTextNewMobileNumber, EditTextNewEmailAddress, EditTextNewMailingAddress, EditTextNewPremiseAddress);
                 TextViewUtils.SetMuseoSans300Typeface(TextInputLayoutServiceRequestNumber, TextInputLayoutRelationOwner, TextInputLayoutNewIC, TextInputLayoutNewAccName, TextInputLayoutNewMobileNumber, TextInputLayoutNewEmailAddress, TextInputLayoutNewMailingAddress, TextInputLayoutNewPremiseAddress);
 
+                txtStatus.TextSize = TextViewUtils.GetFontSize(16f);
+                txtFeedback_status_new.TextSize = TextViewUtils.GetFontSize(14f);
+                txtforMyhouse.TextSize = TextViewUtils.GetFontSize(16f);
+                txtEnquiryDetails.TextSize = TextViewUtils.GetFontSize(16f);
+                txtRelatedScreenshotTitle.TextSize = TextViewUtils.GetFontSize(9f);
+                TextView_contactDetails.TextSize = TextViewUtils.GetFontSize(16f);
+                
+         
+
+
                 //TRANSLATION
                 txtEnquiryDetails.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryDetailsTitle");
 

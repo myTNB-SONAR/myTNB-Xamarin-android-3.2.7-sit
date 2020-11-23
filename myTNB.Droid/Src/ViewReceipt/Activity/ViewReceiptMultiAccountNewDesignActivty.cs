@@ -127,6 +127,9 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             baseView.Visibility = ViewStates.Gone;
             try
             {
+                SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+
+
                 mPresenter = new ViewReceiptMultiAccountNewDesignPresenter(this);
 
                 mProgressBar.Visibility = ViewStates.Gone;

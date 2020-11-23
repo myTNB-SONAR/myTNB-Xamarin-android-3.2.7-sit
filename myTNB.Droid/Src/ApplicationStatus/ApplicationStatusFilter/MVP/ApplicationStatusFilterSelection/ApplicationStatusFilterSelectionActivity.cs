@@ -163,6 +163,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             base.OnCreate(savedInstanceState);
 
             TextViewUtils.SetMuseoSans500Typeface(btnMultiFilterApply);
+            btnMultiFilterApply.TextSize = TextViewUtils.GetFontSize(16f);
 
             Bundle extras = Intent.Extras;
 

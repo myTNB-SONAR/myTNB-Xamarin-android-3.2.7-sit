@@ -610,6 +610,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
                 rewardUsedLayout = itemView.FindViewById<LinearLayout>(Resource.Id.rewardUsedLayout);
                 txtRewardUsed = itemView.FindViewById<TextView>(Resource.Id.txtRewardUsed);
 
+                txtRewardUsed.TextSize = TextViewUtils.GetFontSize(12f);
+                txtTitle.TextSize = TextViewUtils.GetFontSize(12f);
+            
                 rewardCardView.Click += (s, e) => listener((this), base.LayoutPosition);
                 btnRewardSaveImg.Click += (s, e) => saveListener((this), base.LayoutPosition);
 

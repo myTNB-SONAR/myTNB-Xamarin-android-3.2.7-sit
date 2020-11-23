@@ -40,13 +40,14 @@ using myTNB;
 using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using Newtonsoft.Json;
+using Firebase.Iid;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
     [Activity(Label = "@string/app_name"
         , NoHistory = true
         , MainLauncher = true
-        , Icon = "@drawable/ic_launcher"
+              , Icon = "@drawable/ic_launcher"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.Launch")]
     [IntentFilter(new[] { Android.Content.Intent.ActionView },
@@ -84,7 +85,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         private Snackbar mUnknownExceptionSnackBar;
 
         private AppLaunchNavigation currentNavigation = AppLaunchNavigation.Nothing;
-
+       
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -149,12 +150,14 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+
         }
 
         public bool IsActive()
         {
             return this.Window.DecorView.RootView.IsShown;
         }
+
 
         public override int ResourceId()
         {
@@ -369,6 +372,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             return this.DeviceId();
         }
+
 
         public void ShowDeviceNotSupported()
         {
@@ -707,7 +711,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
+       
         public void ShowSMSPermissionRationale()
         {
             try
@@ -800,6 +804,10 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 txtDialogTitle.Text = title;
                 txtDialogMessage.Text = message;
                 btnUpdateNow.Text = btnLabel;
+                txtDialogTitle.TextSize = TextViewUtils.GetFontSize(16);
+                txtDialogMessage.TextSize = TextViewUtils.GetFontSize(14);
+                btnUpdateNow.TextSize = TextViewUtils.GetFontSize(18);
+
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     txtDialogMessage.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);

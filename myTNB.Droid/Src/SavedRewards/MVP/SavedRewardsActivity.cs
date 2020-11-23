@@ -49,6 +49,7 @@ namespace myTNB_Android.Src.SavedRewards.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             try
             {
                 presenter = new SavedRewardsPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));

@@ -3,7 +3,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
-
 using Android.Text;
 using Android.Views;
 using Android.Widget;
@@ -108,6 +107,16 @@ namespace myTNB_Android.Src.Login.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtRegisterAccount, txtAccountLogin, txtForgotPassword);
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail, txtInputLayoutPassword);
+
+                btnLogin.TextSize = TextViewUtils.GetFontSize(16f);
+                txtAccountLogin.TextSize = TextViewUtils.GetFontSize(16f);
+                txtEmail.TextSize = TextViewUtils.GetFontSize(16f);
+                chkRemeberMe.TextSize = TextViewUtils.GetFontSize(12f);
+                txtPassword.TextSize = TextViewUtils.GetFontSize(16f);
+                txtForgotPassword.TextSize = TextViewUtils.GetFontSize(12f);
+                txtNoAccount.TextSize = TextViewUtils.GetFontSize(12f);
+                txtRegisterAccount.TextSize = TextViewUtils.GetFontSize(12f);
+
 
                 txtAccountLogin.Text = GetLabelByLanguage("loginTitle");
                 chkRemeberMe.Text = GetLabelByLanguage("rememberEmail");

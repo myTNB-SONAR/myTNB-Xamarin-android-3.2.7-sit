@@ -110,6 +110,18 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 TextViewUtils.SetMuseoSans500Typeface(btnResend, OnCompleteResend);
                 TextViewUtils.SetMuseoSans300Typeface(txtErrorPin);
 
+                txtInfoTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                txtErrorPin.TextSize = TextViewUtils.GetFontSize(12f);
+                txtDidntReceive.TextSize = TextViewUtils.GetFontSize(16f);
+                OnCompleteResend.TextSize = TextViewUtils.GetFontSize(18f);
+                btnResend.TextSize = TextViewUtils.GetFontSize(18f);
+                txtNumber_1.TextSize = TextViewUtils.GetFontSize(22f);
+                txtNumber_2.TextSize = TextViewUtils.GetFontSize(22f);
+                txtNumber_3.TextSize = TextViewUtils.GetFontSize(22f);
+                txtNumber_4.TextSize = TextViewUtils.GetFontSize(22f);
+
+
+
                 txtDidntReceive.Text = GetLabelByLanguage("emailNotReceived");
                 btnResend.Text = Utility.GetLocalizedLabel("Common", "resend");
                 OnCompleteResend.Text = Utility.GetLocalizedLabel("Common", "resend");
