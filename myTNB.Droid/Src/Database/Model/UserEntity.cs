@@ -89,6 +89,24 @@ namespace myTNB_Android.Src.Database.Model
             //}
         }
 
+        public static int UpdateFullname(string fullname)
+        {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            return db.Execute("UPDATE UserEntity SET displayName = ?", fullname);
+            //}
+        }
+
+        public static int UpdateICno(string icno)
+        {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            return db.Execute("UPDATE UserEntity SET identificationNo = ?", icno);
+            //}
+        }
+
         public static int UpdatePhoneNumber(string newPhoneNumber)
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH))

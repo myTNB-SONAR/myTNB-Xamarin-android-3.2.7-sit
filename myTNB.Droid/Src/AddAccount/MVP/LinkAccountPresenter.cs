@@ -78,6 +78,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         public void GetAccountByIC(string apiKeyID, string currentLinkedAccounts, string userID, string identificationNo)
         {
+            this.mView.DisableConfirmButton();
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             GetCustomerAccountsByIC(apiKeyID, currentLinkedAccounts, userID, identificationNo);
         }

@@ -44,7 +44,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
       , NoHistory = false
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
-      , Theme = "@style/Theme.RegisterForm")]
+      , Theme = "@style/Theme.DashboardHome")]
     public class DetailRegistrationFormActivity : BaseActivityCustom, RegisterFormContract.IView
     {
         private RegisterFormPresenter mPresenter;
@@ -120,6 +120,12 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         [BindView(Resource.Id.checkboxCondition)]
         CheckBox txtboxcondition;
 
+        [BindView(Resource.Id.txtTitleRegister)]
+        TextView txtTitleRegister;
+
+        [BindView(Resource.Id.txtBodyRegister)]
+        TextView txtBodyRegister;
+
         private bool isClicked = false;
 
         UserCredentialsEntity entity = new UserCredentialsEntity();
@@ -155,12 +161,15 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                      .SetCancelable(false)
                      .Create();
 
-                TextViewUtils.SetMuseoSans300Typeface(
+               TextViewUtils.SetMuseoSans500Typeface(txtTitleRegister);
+
+               TextViewUtils.SetMuseoSans300Typeface(
                     txtAccountType,
                     identityType,
                     txtFullName,
                     txtICNumber,
-                    txtTermsConditions);
+                    txtTermsConditions,
+                    txtBodyRegister);
 
                 TextViewUtils.SetMuseoSans300Typeface(
                     textInputLayoutFullName,
@@ -168,13 +177,15 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(btnRegister);
 
+                txtTitleRegister.Text = GetLabelCommonByLanguage("dtitleRegister");
+                txtBodyRegister.Text = GetLabelCommonByLanguage("dbodyRegister");
                 txtAccountType.Text = GetLabelCommonByLanguage("idtypeTitle");
                 textInputLayoutFullName.Hint = GetLabelCommonByLanguage("fullname");
                 textInputLayoutICNo.Hint = GetLabelCommonByLanguage("idNumberhint");
 
                 txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tncNew"));
                 StripUnderlinesFromLinks(txtTermsConditions);
-                btnRegister.Text = GetLabelByLanguage("ctaTitle");
+                btnRegister.Text = GetLabelByLanguage("ctaTitleNew");
 
                 var boxcondition = new CheckBox(this)
                 {
@@ -182,6 +193,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                     ScaleY = 0.8f
                 };
 
+                txtICNumber.FocusChange += txtICNumber_FocusChange;
                 txtboxcondition.CheckedChange += CheckedChange;
 
                 txtFullName.AddTextChangedListener(new InputFilterFormField(txtFullName, textInputLayoutFullName));
@@ -312,6 +324,16 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         }
 
 
+        private void txtICNumber_FocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            string ic_no = txtICNumber.Text.ToString().Trim();
+            string Idtype = selectedIdentificationType.Id;
+            if (!e.HasFocus)
+            {
+                this.userActionsListener.OnCheckID(ic_no, Idtype);
+            }
+        }
+
         private void CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
             if (!txtboxcondition.Checked)
@@ -353,11 +375,14 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 string fullname = txtFullName.Text.ToString().Trim();
                 string ic_no = txtICNumber.Text.ToString().Trim();
                 string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
-                ClearICHint();
-                ClearICMinimumCharactersError();
                 this.userActionsListener.CheckRequiredFields(fullname, ic_no, mobile_no, Idtype, txtboxcondition.Checked);
-               
-                if (ic_no.Length == 1 || ic_no.Length == 2)
+
+                if (ic_no.Length == 0 )
+                {
+                    ClearICError();
+                    ClearICHint();
+                }
+                else if (ic_no.Length == 1 || ic_no.Length == 2)
                 {
                     new Handler().PostDelayed(delegate
                     {
@@ -395,11 +420,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                                 if (!this.mPresenter.CheckPassportIsValid(ic_no))
                                 {
                                     ShowFullPassportError();
-                                    ClearICHint();
                                 }
                                 else
                                 {
-                                    ClearICMinimumCharactersError();
                                     ShowIdentificationHint();
                                 }
                                 TextViewUtils.SetMuseoSans300Typeface(textInputLayoutICNo);
@@ -418,7 +441,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                         else
                         {
                             ShowIdentificationHint();
-                            this.userActionsListener.OnCheckID(ic_no, Idtype);
                         }
                     }
                     else if (Idtype.Equals("2"))
@@ -430,7 +452,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                         else
                         {
                             ShowIdentificationHint();
-                            this.userActionsListener.OnCheckID(ic_no, Idtype);
                         }
                     }
                     else
@@ -442,7 +463,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                         else
                         {
                             ShowIdentificationHint();
-                            this.userActionsListener.OnCheckID(ic_no, Idtype);
                         }
                     }
                 }
@@ -612,6 +632,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowIdentificationHint()
         {
+            ClearICMinimumCharactersError();
             if (textInputLayoutICNo.HelperText != Utility.GetLocalizedErrorLabel("identificationhint"))
             {
                 textInputLayoutICNo.HelperText = Utility.GetLocalizedErrorLabel("identificationhint");
@@ -640,11 +661,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ClearICError()
         {
-            if (!string.IsNullOrEmpty(textInputLayoutICNo.Error))
-            {
-                textInputLayoutICNo.Error = null;
-                textInputLayoutICNo.ErrorEnabled = false;
-            }
+            textInputLayoutICNo.ErrorEnabled = false;
         }
 
         public void ShowNotEqualConfirmEmailError()
@@ -964,11 +981,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ClearICMinimumCharactersError()
         {
-            if (!string.IsNullOrEmpty(textInputLayoutICNo.Error))
-            {
-                textInputLayoutICNo.Error = null;
-                textInputLayoutICNo.ErrorEnabled = false;
-            }
+            textInputLayoutICNo.Error = null;
+            textInputLayoutICNo.ErrorEnabled = false;
         }
 
         public void ClearNotEqualConfirmPasswordError()
@@ -1052,6 +1066,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowFullICError()
         {
+            ClearICHint();
             if (textInputLayoutICNo.Error != Utility.GetLocalizedErrorLabel("mykadhint"))
             {
                 textInputLayoutICNo.Error = Utility.GetLocalizedErrorLabel("mykadhint");
@@ -1063,7 +1078,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowFullArmyIdError()
         {
-            // ClearFullNameError();
+            ClearICHint();
             if (textInputLayoutICNo.Error != Utility.GetLocalizedErrorLabel("armyidhint"))
             {
                 textInputLayoutICNo.Error = Utility.GetLocalizedErrorLabel("armyidhint");
@@ -1075,7 +1090,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowFullPassportError()
         {
-            // ClearFullNameError();
+            ClearICHint();
             if (textInputLayoutICNo.Error != Utility.GetLocalizedErrorLabel("passporthint"))
             {
                 textInputLayoutICNo.Error = Utility.GetLocalizedErrorLabel("passporthint");
@@ -1212,6 +1227,14 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                             if (selectedIdentificationType != null)
                             {
                                 identityType.Text = selectedIdentificationType.Type;
+                                if(selectedIdentificationType.Id.Equals("1"))
+                                {
+
+                                }
+                                else
+                                {
+                                    txtICNumber.Text = "";
+                                }
                             }
                         }
                     }

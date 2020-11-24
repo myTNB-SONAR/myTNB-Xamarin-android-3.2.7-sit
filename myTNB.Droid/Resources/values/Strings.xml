@@ -804,6 +804,7 @@ You acknowledge that you have been provided with and have read and understood th
   <!--End Notification Detail-->
 
   <!--My Account-->
+  <string name="my_account_activity_title_new">My Electricity Accounts</string>
   <string name="my_account_activity_title">My Account</string>
   <string name="my_account_title">myTNB Account</string>
   <string name="my_account_hint_name">NAME</string>

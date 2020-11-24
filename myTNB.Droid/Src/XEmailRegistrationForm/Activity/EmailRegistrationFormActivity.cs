@@ -40,7 +40,7 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
       , NoHistory = false
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
-      , Theme = "@style/Theme.RegisterForm")]
+      , Theme = "@style/Theme.DashboardHome")]
     public class EmailRegistrationFormActivity : BaseActivityCustom, EmailRegisterFormContract.IView, ITextWatcher
     {
         private EmailRegisterFormPresenter mPresenter;
@@ -70,6 +70,12 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
         [BindView(Resource.Id.btnNext)]
         Button btnNext;
 
+        [BindView(Resource.Id.txtTitleRegister)]
+        TextView txtTitleRegister;
+
+        [BindView(Resource.Id.txtBodyRegister)]
+        TextView txtBodyRegister;
+
         Timer searchTimer;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -94,9 +100,12 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
                      .SetCancelable(false)
                      .Create();
 
+                TextViewUtils.SetMuseoSans500Typeface(txtTitleRegister);
+
                 TextViewUtils.SetMuseoSans300Typeface(
                     txtEmailReg,
-                    txtPasswordReg
+                    txtPasswordReg,
+                    txtBodyRegister
                    );
 
                 TextViewUtils.SetMuseoSans300Typeface(
@@ -105,16 +114,18 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(btnNext);
 
-
-                textInputLayoutEmailReg.Hint = GetLabelCommonByLanguage("email");
+                txtTitleRegister.Text = GetLabelCommonByLanguage("etitleRegister");
+                txtBodyRegister.Text = GetLabelCommonByLanguage("ebodyRegister");
+                textInputLayoutEmailReg.Hint = GetLabelCommonByLanguage("email_address");
                 textInputLayoutPasswordReg.Hint = GetLabelCommonByLanguage("password");
-                btnNext.Text = GetLabelByLanguage("ctaTitle");
+                btnNext.Text = GetLabelCommonByLanguage("next");
 
 
                 //txtEmailReg.TextChanged += TextChange;
                 //txtPasswordReg.TextChanged += TextChange;
                 //txtEmailReg.AddTextChangedListener += AddTextChangedListener;
                 //txtPasswordReg.AfterTextChanged += AddTextChangedListener;
+                txtPasswordReg.FocusChange += txtPasswordReg_FocusChange;
 
 
                 txtEmailReg.AddTextChangedListener(new InputFilterFormField(txtEmailReg, textInputLayoutEmailReg));
@@ -143,37 +154,36 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
             //#endif
         }
 
+        private void txtPasswordReg_FocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            if (!e.HasFocus)
+           {
+                //this.ValidateAllPassword();
+            }
+        }
+
         private void AddTextChangedListener(object sender, AfterTextChangedEventArgs e)
         {
             try
             {
                 string email = txtEmailReg.Text.ToString().Trim();
                 string password = txtPasswordReg.Text.ToString().Trim();
-                ClearInvalidEmailError();
-                ClearInvalidEmailHint();
-                ClearPasswordMinimumOf6CharactersError();
+                //ClearInvalidEmailError();
+                //ClearInvalidEmailHint();
+                //ClearPasswordMinimumOf6CharactersError();
                 this.userActionsListener.CheckRequiredFields(email, password);
 
-                if (password.Length == 1 || email.Length == 1)
+                if (password.Length == 0 || email.Length == 0)
+                {
+                    ClearInvalidEmailError();
+                    ClearPasswordMinimumOf6CharactersError();
+                    textInputLayoutPasswordReg.PasswordVisibilityToggleEnabled = false;
+                }
+                else if (password.Length == 1)
                 {
                     new Handler().PostDelayed(delegate
                     {
                         // Your code here
-                        if (!string.IsNullOrEmpty(email))
-                        {
-                            if (!Patterns.EmailAddress.Matcher(email).Matches())
-                            {
-                                ShowInvalidEmailError();
-                            }
-                            else
-                            {
-                                ShowEmailHint();
-                            }
-                        }
-                        else
-                        {
-                            ClearInvalidEmailError();
-                        }
                         if (!string.IsNullOrEmpty(password))
                         {
                             if (!this.mPresenter.CheckPasswordIsValid(password))
@@ -195,19 +205,8 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
                         }
                     }, 1000);
                 }
-                else if (password.Length >= 2 || email.Length >= 2)
-                {                    
-                    if (!string.IsNullOrEmpty(email))
-                    {
-                        if (!Patterns.EmailAddress.Matcher(email).Matches())
-                        {
-                            ShowInvalidEmailError();
-                        }
-                        else
-                        {
-                            ShowEmailHint();
-                        }
-                    }
+                else if (password.Length >= 2)
+                {                                       
                     if (!string.IsNullOrEmpty(password))
                     {
                         if (!this.mPresenter.CheckPasswordIsValid(password))
@@ -215,8 +214,9 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
                             ShowPasswordMinimumOf6CharactersError();
                         }
                         else
-                        {
+                       {
                             ClearPasswordMinimumOf6CharactersError();
+                            ShowPasswordHint();
                         }
                         textInputLayoutPasswordReg.PasswordVisibilityToggleEnabled = true;
                         textInputLayoutPasswordReg.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
@@ -241,6 +241,7 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
             }
         }
 
+        
         public override int ResourceId()
         {
             return Resource.Layout.EmailRegistrationView;
@@ -354,8 +355,7 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
         public void ShowPasswordMinimumOf6CharactersError()
         {
-            //ClearPasswordMinimumOf6CharactersError();
-
+            ClearInvalidPasswordHint();
             if (textInputLayoutPasswordReg.Error != Utility.GetLocalizedErrorLabel("passwordHint")) {
                 textInputLayoutPasswordReg.Error = Utility.GetLocalizedErrorLabel("passwordHint");
             }
@@ -365,12 +365,22 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
                 textInputLayoutPasswordReg.ErrorEnabled = true;
         }
 
-       
+        public void ShowPasswordHint()
+        {
+            ClearPasswordMinimumOf6CharactersError();
+            if (textInputLayoutPasswordReg.HelperText != Utility.GetLocalizedErrorLabel("passwordHint"))
+            {
+                textInputLayoutPasswordReg.HelperText = Utility.GetLocalizedErrorLabel("passwordHint");
+            }
+
+            if (!textInputLayoutPasswordReg.HelperTextEnabled)
+                textInputLayoutPasswordReg.HelperTextEnabled = true;
+        }
 
         public void ShowInvalidEmailError()
         {
-            //ClearInvalidEmailError();
-            if(textInputLayoutEmailReg.Error != Utility.GetLocalizedErrorLabel("invalid_email"))
+            ClearInvalidEmailHint();
+            if (textInputLayoutEmailReg.Error != Utility.GetLocalizedErrorLabel("invalid_email"))
             {
                 textInputLayoutEmailReg.Error = Utility.GetLocalizedErrorLabel("invalid_email");
             }
@@ -381,7 +391,7 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
         public void ShowEmailHint()
         {
-            //ClearInvalidEmailError();
+            ClearInvalidEmailError();
             if (textInputLayoutEmailReg.HelperText != Utility.GetLocalizedErrorLabel("EmailHint"))
             {
                 textInputLayoutEmailReg.HelperText = Utility.GetLocalizedErrorLabel("EmailHint");
@@ -644,6 +654,10 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
             }
         }
 
+        public void ClearInvalidPasswordHint()
+        {
+            textInputLayoutPasswordReg.HelperTextEnabled = false;
+        }
 
         public override void OnTrimMemory(TrimMemory level)
         {
@@ -729,6 +743,13 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
         public void OnTextChanged(Java.Lang.ICharSequence s, int start, int before, int count)
         {
             throw new NotImplementedException();
+        }
+
+        public void EnableOnSubmitButton(bool IsEnable)
+        {
+            btnNext.Enabled = IsEnable;
+            btnNext.Background = IsEnable ? ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background) : ContextCompat.GetDrawable(this,
+                Resource.Drawable.silver_chalice_button_background);
         }
 
         class URLSpanNoUnderline : URLSpan

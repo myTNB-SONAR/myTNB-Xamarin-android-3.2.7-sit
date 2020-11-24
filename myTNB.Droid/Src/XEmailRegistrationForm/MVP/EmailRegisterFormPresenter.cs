@@ -46,14 +46,14 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
                     if (!Patterns.EmailAddress.Matcher(email).Matches())
                     {
                         this.mView.ShowInvalidEmailError();
-                        this.mView.ClearInvalidEmailHint();
+                        //this.mView.ClearInvalidEmailHint();
                         //this.mView.ShowInvalidEmailPasswordError(string errorMessage);
                         this.mView.DisableRegisterButton();
                         return;
                     }
                     else
                     {
-                        this.mView.ClearInvalidEmailError();
+                        //this.mView.ClearInvalidEmailError();
                         this.mView.ShowEmailHint();
                     }
 

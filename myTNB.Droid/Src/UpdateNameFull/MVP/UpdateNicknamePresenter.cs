@@ -4,6 +4,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB_Android.Src.RegistrationForm.Models;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -58,8 +59,13 @@ namespace myTNB_Android.Src.UpdateNameFull.MVP
 
                 if (!userNameResponse.IsSuccessResponse())
                 {
-                    this.mView.ShowSuccessUpdateName();
-                    MyTNBAccountManagement.GetInstance().SetIsNameUpdated(true);
+                    if (UserEntity.IsCurrentlyActive())
+                    {
+                        UserEntity.UpdateFullname(newName);
+                        this.mView.ShowSuccessUpdateName();
+                        MyTNBAccountManagement.GetInstance().SetIsNameUpdated(true);
+                    };
+
                 }
                 else
                 {

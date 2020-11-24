@@ -13,6 +13,7 @@ using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Common;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Maintenance.Activity;
 using myTNB_Android.Src.NotificationSettings.Adapter;
 using myTNB_Android.Src.NotificationSettings.MVP;
@@ -21,6 +22,7 @@ using myTNB_Android.Src.Utils;
 using Refit;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Runtime;
 using System.Threading.Tasks;
 
@@ -136,7 +138,12 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             //SetToolBarTitle(GetLabelCommonByLanguage("setAppLanguage"));
             txtNotificationTypeTitle.Text = GetLabelByLanguage("typeDescription");
             appLanguageMessage.Text = GetLabelCommonByLanguage("setAppLanguageDescription");
+        }
+
+        private void UpdateTypesList()
+        {
             typeAdapter.ClearAll();
+            mPresenter.OnNotification(this.DeviceId());
         }
 
         public void ShowNotificationChannelList(List<NotificationChannelUserPreference> channelPreferenceList)
@@ -348,6 +355,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                                     SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
                                     SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                                     UpdateLanguage();
+                                    UpdateTypesList();
                                     MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(false);
                                     OnMaintenanceProceed();
                                 }
@@ -376,9 +384,10 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                                     HomeMenuUtils.ResetAll();
                                     SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
                                     SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
+                                    MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                                     UpdateLanguage();
                                     MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(true);
-                                    //OnBackProceed();
+                                    UpdateTypesList();                                    
                                     ShowLanguageUpdateSuccess();
                                     HideShowProgressDialog();
                                 }
@@ -473,62 +482,60 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
         }
 
 
-
         private Snackbar mCancelledExceptionSnackBar;
-        //public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
-        //{
-        //    if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
-        //    {
-        //        mCancelledExceptionSnackBar.Dismiss();
-        //    }
+        public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
+        {
+            if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
+            {
+                mCancelledExceptionSnackBar.Dismiss();
+            }
 
-        //    mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_cancelled_exception_error), Snackbar.LengthIndefinite)
-        //    .SetAction(GetString(Resource.String.notification_settings_cancelled_exception_btn_close), delegate {
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_cancelled_exception_error), Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.notification_settings_cancelled_exception_btn_close), delegate {
 
-        //        mCancelledExceptionSnackBar.Dismiss();
-        //    }
-        //    );
-        //    mCancelledExceptionSnackBar.Show();
+               mCancelledExceptionSnackBar.Dismiss();
+            }
+            );
+            mCancelledExceptionSnackBar.Show();
 
-        //}
+        }
 
         private Snackbar mApiExcecptionSnackBar;
-        //public void ShowRetryOptionsApiException(ApiException apiException)
-        //{
-        //    if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
-        //    {
-        //        mApiExcecptionSnackBar.Dismiss();
-        //    }
+        public void ShowRetryOptionsApiException(ApiException apiException)
+        {
+            if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
+            {
+                mApiExcecptionSnackBar.Dismiss();
+            }
 
-        //    mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_api_exception_error), Snackbar.LengthIndefinite)
-        //    .SetAction(GetString(Resource.String.notification_settings_api_exception_btn_close), delegate {
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_api_exception_error), Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.notification_settings_api_exception_btn_close), delegate {
 
-        //        mApiExcecptionSnackBar.Dismiss();
+                mApiExcecptionSnackBar.Dismiss();
 
-        //    }
-        //    );
-        //    mApiExcecptionSnackBar.Show();
+            }
+            );
+            mApiExcecptionSnackBar.Show();
+        }
 
-        //}
         private Snackbar mUknownExceptionSnackBar;
-        //public void ShowRetryOptionsUnknownException(Exception exception)
-        //{
-        //    if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
-        //    {
-        //        mUknownExceptionSnackBar.Dismiss();
+        public void ShowRetryOptionsUnknownException(Exception exception)
+        {
+            if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
+            {
+                mUknownExceptionSnackBar.Dismiss();
 
-        //    }
+            }
 
-        //    mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_unknown_exception_error), Snackbar.LengthIndefinite)
-        //    .SetAction(GetString(Resource.String.notification_settings_unknown_exception_btn_close), delegate {
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_unknown_exception_error), Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.notification_settings_unknown_exception_btn_close), delegate {
 
-        //        mUknownExceptionSnackBar.Dismiss();
+                mUknownExceptionSnackBar.Dismiss();
 
-        //    }
-        //    );
-        //    mUknownExceptionSnackBar.Show();
-
-        //}
+           }
+            );
+            mUknownExceptionSnackBar.Show();
+        }
 
         public void ShowSuccessUpdatedNotificationType(NotificationTypeUserPreference typePreference, int position)
         {

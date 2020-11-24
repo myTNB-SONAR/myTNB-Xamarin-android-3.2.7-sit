@@ -73,7 +73,7 @@
                     android:layout_height="match_parent">
                     <ImageView
                         android:id="@+id/itemIcon"
-                        android:src="@drawable/update_personal_details"
+                        android:src="@drawable/ic_display_autopay"
                         android:layout_height="match_parent"
                         android:layout_width="60dp"
                         android:layout_gravity="center"/>

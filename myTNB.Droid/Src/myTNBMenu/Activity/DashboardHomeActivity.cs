@@ -250,7 +250,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     urlSchemaPath = extras.GetString("urlSchemaPath");
                 }
             }
-
             this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
 
             try
@@ -927,6 +926,91 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
+        public void HideUnverifiedProfile(bool keypress)
+        {
+            if (bottomNavigationView != null && bottomNavigationView.Menu != null)
+            {
+                IMenu bottomMenu = bottomNavigationView.Menu;
+
+                IMenuItem profileMenuItem = bottomMenu.FindItem(Resource.Id.menu_more);
+                if (profileMenuItem != null)
+                {
+                    SetReadUnReadNewBottomView(profileMenuItem.IsChecked, false, 0, profileMenuItem);
+                    bottomNavigationView.SetImageFontSize(this, 28, 5, 10f);
+                }
+            }
+        }
+
+        public void ShowUnverifiedProfile(bool keypress)
+        {
+            if (bottomNavigationView != null && bottomNavigationView.Menu != null)
+            {
+                IMenu bottomMenu = bottomNavigationView.Menu;
+
+                IMenuItem profileMenuItem = bottomMenu.FindItem(Resource.Id.menu_more);
+                if (profileMenuItem != null)
+                {
+                    SetUnverifiedMenuMoreBottomView(keypress, true, 0, profileMenuItem);
+                    bottomNavigationView.SetImageFontSize(this, 28, 5, 10f);
+                }
+            }
+        }
+
+        public void SetUnverifiedMenuMoreBottomView(bool flag, bool Indicator, int count, IMenuItem profileMenuItem)
+        {
+            try
+            {
+                RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayoutProfile, null, false);
+                        ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
+                        if (Indicator)
+                        {
+                            RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
+                            if (!flag)
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.profile_unverified);
+                            }
+                            else
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_more_toggled);
+                            }
+                        }
+                        else
+                        {
+                            if (!flag)
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_more);
+                            }
+                            else
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_more_toggled);
+                            }
+                        }
+                        int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
+                        v.Measure(specWidth, specWidth);
+                        Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                        Canvas c = new Canvas(b);
+                        v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f));
+                        v.Draw(c);
+
+                        var bitmapDrawable = new BitmapDrawable(b);
+                        profileMenuItem.SetIcon(bitmapDrawable);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
         private void SetReadUnReadNewBottomView(bool flag, bool isGotRead, int count,IMenuItem promotionMenuItem)
         {
             try
@@ -1271,6 +1355,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 isWhatNewDialogOnHold = false;
                 OnCheckWhatsNewTab();
+            }
+
+            UserEntity user = UserEntity.GetActive();
+            if (string.IsNullOrEmpty(user.IdentificationNo) || !string.IsNullOrEmpty(user.Email))
+            { 
+                //isWhatNewDialogOnHold = false;
+                OnCheckProfileTab(false);
             }
         }
 
@@ -1839,6 +1930,23 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             }
                         }
                     }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnCheckProfileTab(bool key)
+        {
+            try
+            {
+                //WhatsNewMenuUtils.OnSetWhatsNewLoading(false);
+
+                if (this.mPresenter != null)
+                {
+                    this.mPresenter.OnResumeUpdateProfileUnRead(key);
                 }
             }
             catch (Exception e)

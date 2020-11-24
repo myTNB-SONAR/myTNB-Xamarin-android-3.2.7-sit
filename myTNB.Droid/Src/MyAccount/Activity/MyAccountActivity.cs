@@ -23,15 +23,16 @@ using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
+using static myTNB_Android.Src.MyAccount.Adapter.MyAccountAdapter;
 
 namespace myTNB_Android.Src.MyAccount.Activity
 {
-    [Activity(Label = "@string/my_account_activity_title"
+    [Activity(Label = "@string/my_account_activity_title_new"
         //, Icon = "@drawable/Logo"
         //, MainLauncher = true
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.MyAccount")]
-    public class MyAccountActivity : BaseActivityCustom, MyAccountContract.IView
+    public class MyAccountActivity : BaseActivityCustom, MyAccountContract.IView, customButtonListener
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -62,14 +63,14 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         MyAccountAdapter adapter;
 
-
+        AccountData accountData;
 
         MyAccountContract.IUserActionsListener userActionsListener;
         MyAccountPresenter mPresenter;
 
         MaterialDialog accountRetrieverDialog;
 
-        const string PAGE_ID = "MyAccount";
+        const string PAGE_ID = "ManageAccount";
 
         public override int ResourceId()
         {
@@ -103,15 +104,12 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
                 adapter = new MyAccountAdapter(this, false);
                 listView.Adapter = adapter;
+                adapter.setCustomButtonListner(this);
                 //adapter1 = new MyAccountAdapterTest(this);
                 //listView.Adapter = adapter1;
                 listView.SetNoScroll();
                 //adapter1.Mode = Attributes.Mode.Single;
                 listView.ItemClick += ListView_ItemClick;
-                /*listView.ItemClick += (sender, e) =>
-                {
-                    // ((SwipeLayout)(listView.GetChildAt(e.Position - listView.FirstVisiblePosition))).Open(SwipeLayout.DragEdge.Right);
-                };*/
 
                 listView.Touch += (sender, e) =>
                 {
@@ -119,7 +117,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
                     Console.WriteLine("ListView: OnTouch");
                     e.Handled = true;
                 };
-
 
                 mPresenter = new MyAccountPresenter(this);
                 this.userActionsListener.Start();
@@ -141,6 +138,21 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
         }
 
+        AlertDialog removeDialog;
+        public void onButtonClickListner(int position)
+        {
+            ShowDeleteAccDialog(this, position, () =>
+            {
+                CustomerBillingAccount account = adapter.GetItemObject(position);
+                CustomerBillingAccount.Remove(account.AccNum);
+                this.mPresenter.OnRemoveAccount(account.AccNum);
+                adapter.Clear();
+                listView.Adapter = null;
+                listView.Adapter = adapter;
+                adapter.setCustomButtonListner(this);
+                this.userActionsListener.Start();
+            });           
+        }
 
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
@@ -281,6 +293,86 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
         }
 
+        void ShowDeleteAccDialog(Android.App.Activity context, int position, Action confirmAction, Action cancelAction = null)
+        {
+            CustomerBillingAccount account = adapter.GetItemObject(position);
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(Utility.GetLocalizedLabel("ManageAccount", "popupremoveAccountTitle"))
+                        //.SetMessage(Utility.GetLocalizedLabel("Common", "updateIdMessage"))
+                        .SetMessage(string.Format(Utility.GetLocalizedLabel("ManageAccount", "popupremoveAccountMessage"), account.AccDesc, account.AccNum))
+                        .SetContentGravity(Android.Views.GravityFlags.Center)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "ok"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+        }
+
+        public void ShowDeleteMessageResponse(bool click)
+        {
+            try
+            {
+                if (removeDialog != null && removeDialog.IsShowing)
+                {
+                    removeDialog.Dismiss();
+                }
+
+                removeDialog = new AlertDialog.Builder(this)
+
+                    .SetTitle(Utility.GetLocalizedLabel("ManageAccount", "popupremoveAccountTitle"))
+                    .SetMessage(GetFormattedText(string.Format(Utility.GetLocalizedLabel("ManageAccount", "popupremoveAccountMessage"), accountData.AccountNickName, accountData.AccountNum)))
+                    .SetNegativeButton(GetLabelCommonByLanguage("cancel"),
+                    delegate
+                    {
+                        removeDialog.Dismiss();
+                    })
+                    .SetPositiveButton(GetLabelCommonByLanguage("ok"),
+                    delegate
+                    {
+                        return;
+                    })
+                    .Show()
+                    ;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            //int titleId = Resources.GetIdentifier("alertTitle", "id", "android");
+            //TextView txtTitle = removeDialog.FindViewById<TextView>(titleId);
+            //txtTitle.SetTextSize(ComplexUnitType.Sp ,17);
+        }
+
+        public void ShowErrorMessageResponse(string error)
+        {
+            Snackbar errorMessageSnackbar =
+            Snackbar.Make(rootView, error, Snackbar.LengthIndefinite)
+                        .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                         (view) =>
+                         {
+                             // EMPTY WILL CLOSE SNACKBAR
+                         }
+                        );//.Show();
+            View snackbarView = errorMessageSnackbar.View;
+            TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            textView.SetMaxLines(4);
+            errorMessageSnackbar.Show();
+        }
+
         public void ShowProgressDialog()
         {
             try
@@ -308,6 +400,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         protected override void OnPause()
         {
+            //ShowAddAccount();
             base.OnPause();
         }
 
@@ -340,7 +433,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 adapter.AddAll(accountList);
                 adapter.NotifyDataSetChanged();
                 listView.SetNoScroll();
-                btnAddAnotherAccount.Visibility = ViewStates.Visible;
+                //btnAddAnotherAccount.Visibility = ViewStates.Visible;
             }
             catch (Exception e)
             {
@@ -376,7 +469,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         public void ShowGetCardsProgressDialog()
         {
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void HideGetCardsProgressDialog()
@@ -413,6 +506,9 @@ namespace myTNB_Android.Src.MyAccount.Activity
         public void ClearAccountsAdapter()
         {
             adapter.Clear();
+            listView.Adapter = null;
+            listView.Adapter = adapter;
+            adapter.setCustomButtonListner(this);
         }
 
         public void ShowAccountRemovedSuccess()
@@ -445,5 +541,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
         {
             return PAGE_ID;
         }
+
     }
 }

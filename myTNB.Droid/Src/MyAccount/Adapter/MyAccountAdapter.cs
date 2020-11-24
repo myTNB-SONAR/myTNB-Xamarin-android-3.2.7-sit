@@ -1,18 +1,32 @@
-﻿using Android.Content;
+﻿using Android.App;
+using Android.Content;
+using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AndroidSwipeLayout;
 using AndroidViewAnimations;
 using CheeseBind;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MyAccount.Activity;
+using myTNB_Android.Src.MyAccount.MVP;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
+using Refit;
+using System;
 using System.Collections.Generic;
 
 namespace myTNB_Android.Src.MyAccount.Adapter
 {
-    internal class MyAccountAdapter : BaseCustomAdapter<CustomerBillingAccount>
+    internal class MyAccountAdapter : BaseCustomAdapter<CustomerBillingAccount>, MyAccountContract.IUserActionsListener
     {
+        private MyAccountContract.IView mView;
+        private AccountData accountData;
+        customButtonListener customListner;
+
         public MyAccountAdapter(Context context) : base(context)
         {
         }
@@ -29,7 +43,16 @@ namespace myTNB_Android.Src.MyAccount.Adapter
         {
         }
 
-      
+        public interface customButtonListener
+        {
+            public void onButtonClickListner(int position);
+        }
+
+        public void setCustomButtonListner(customButtonListener listener)
+        {
+            this.customListner = listener;
+        }
+
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             MyAccountViewHolder viewHolder = null;
@@ -51,9 +74,27 @@ namespace myTNB_Android.Src.MyAccount.Adapter
                         .PlayOn(e.Layout.FindViewById(Resource.Id.trash));
                 };
 
+                btn_delete.Click += (sender, e) =>
+                {
+                    if (customListner != null)
+                    {
+                        customListner.onButtonClickListner(position);
+                        return;
+                    }
+
+                    //CustomerBillingAccount account = GetItemObject(position);
+                    //CustomerBillingAccount.Remove(account.AccNum);
+                    //OnRemoveAccount(account.AccNum);
+                    //NotifyDataSetChanged();
+                    //((MyAccountActivity)mContext).ShowAddAccount();
+                };
+
+
+
                 btn_delete.SetBackgroundResource(Resource.Drawable.delete_icon_acc);
                 viewHolder.txtAccountName.Text = account.AccDesc;
                 viewHolder.txtAccountNum.Text = account.AccNum;
+
                 //viewHolder.txtAccountManage.Text = Utility.GetLocalizedLabel("Common", "manage");
 
                 /*if (account.AccountCategoryId.Equals("2"))
@@ -72,6 +113,26 @@ namespace myTNB_Android.Src.MyAccount.Adapter
             }
 
             return convertView;
+        }
+
+        public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void OnAddAccount()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Start()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void OnRemoveAccount(string numacc)
+        {
+            throw new NotImplementedException();
         }
 
         class MyAccountViewHolder : BaseAdapterViewHolder

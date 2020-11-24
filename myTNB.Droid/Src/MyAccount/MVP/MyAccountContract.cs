@@ -15,6 +15,9 @@ namespace myTNB_Android.Src.MyAccount.MVP
     {
         public interface IView : IBaseView<IUserActionsListener>
         {
+            void ShowDeleteMessageResponse(bool click);
+
+            void ShowErrorMessageResponse(string error);
 
             /// <summary>
             /// Show Account Data per list item row click 
@@ -96,6 +99,9 @@ namespace myTNB_Android.Src.MyAccount.MVP
 
         public interface IUserActionsListener : IBasePresenter
         {
+
+            void OnRemoveAccount(string numacc);
+
             /// <summary>
             /// Action to add accounts
             /// </summary>

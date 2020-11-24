@@ -374,6 +374,17 @@
     <item name="android:stateListAnimator">@null</item>
   </style>
 
+  <style name="LightButtonRed">
+	<item name="android:layout_width">fill_parent</item>
+	<item name="android:layout_height">wrap_content</item>
+	<item name="android:textColor">#e44b21</item>
+	<item name="android:background">@drawable/light_button_red_background</item>
+	<item name="android:gravity">center</item>
+	<item name="android:layout_margin">3dp</item>
+	<item name="android:textSize">16dp</item>
+	<item name="android:stateListAnimator">@null</item>
+  </style>	
+
   <style name="LightButtonDisabled">
     <item name="android:layout_width">fill_parent</item>
     <item name="android:layout_height">wrap_content</item>

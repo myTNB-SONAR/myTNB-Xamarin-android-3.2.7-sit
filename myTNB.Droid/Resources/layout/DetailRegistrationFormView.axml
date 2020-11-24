@@ -36,35 +36,27 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:orientation="vertical"
-                        android:paddingTop="21dp"
+                        android:layout_marginTop="60dp"
                         android:paddingRight="16dp"
                         android:paddingLeft="16dp">
                         <ImageView
-                            android:id="@+id/img_logo"
-                            android:layout_height="40dp"
-                            android:layout_width="40dp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_marginTop="30dp"
-                            android:layout_gravity="center_horizontal"
-                            android:src="@drawable/ic_splash_logo" />
-                        <ImageView
                             android:id="@+id/img_display"
-                            android:layout_height="132dp"
-                            android:layout_width="203dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:paddingTop="30dp"
                             android:layout_marginBottom="6dp"
-                            android:src="@drawable/welcome_illustration" />
+                            android:src="@drawable/group_8" />
                         <TextView
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
                             android:layout_marginTop="10dp"
                             android:textSize="16dp"
                             android:textColor="@color/water_blue"
-                            android:textStyle="bold"
+                            android:textStyle="normal"
                             android:gravity="center_horizontal"
                             android:text="@string/registration_form_email_page"
-                            android:id="@+id/txtAccountLogin" />
+                            android:id="@+id/txtTitleRegister" />
 
                         <TextView
                             android:layout_height="wrap_content"
@@ -78,7 +70,7 @@
                             android:layout_marginLeft="8dp"
                             android:layout_marginRight="8dp"
                             android:text="@string/registration_to_manage_account"
-                            android:id="@+id/txtManageAccount" />
+                            android:id="@+id/txtBodyRegister" />
 
                     </LinearLayout>
                 </RelativeLayout>
@@ -103,7 +95,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawablePadding="6dp"
-                            android:drawableLeft="@drawable/placeholder_label"
+                            android:drawableLeft="@drawable/placeholder_name"
                             android:id="@+id/txtFullName"
                             android:digits="@string/name_validation_digits"
                             android:maxLines="1"
@@ -149,7 +141,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/txtICNumber"
                             android:drawablePadding="6dp"
-                            android:drawableLeft="@drawable/placeholder_ic"
+                            android:drawableLeft="@drawable/placeholder_account_no"
                             android:maxLines="1"
                             android:paddingTop="5dp"
                             android:inputType="text" />

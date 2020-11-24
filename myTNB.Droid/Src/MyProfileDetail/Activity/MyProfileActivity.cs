@@ -109,7 +109,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             List<View> myTNBAccountItems = new List<View>();
 
             fullName = new ProfileMenuItemContentComponent(this);
-            fullName.SetTitle(GetLabelCommonByLanguage("fullname").ToUpper());
+            fullName.SetTitle(GetLabelCommonByLanguage("name").ToUpper());
             fullName.SetValue("");
             fullName.SetItemActionVisibility(true);
             fullName.SetItemActionTitle(GetLabelCommonByLanguage("update"));
@@ -252,7 +252,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
                 email.SetValue(user.Email);
                 mobileNumber.SetValue(user.MobileNo);
-                password.SetValue(GetString(Resource.String.my_account_dummy_password));
+                //password.SetValue(GetString(Resource.String.my_account_dummy_password));
             }
             catch (System.Exception e)
             {
@@ -595,6 +595,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                         }
                     }
                 }
+                PopulateActiveAccountDetails();
             }
             catch (Exception e)
             {

@@ -294,7 +294,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 btnConfirm.Text = GetLabelCommonByLanguage("confirm");
                 textAdditionalAcoount.Text = GetLabelByLanguage("additionalAddAccts");
                 textlabelAdditionalAcoount.Text = GetLabelByLanguage("labeladditionalAccts");
-                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tncNew"));
+                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc"));
                 StripUnderlinesFromLinks(txtTermsConditions);
 
                 adapter = new AccountListAdapter(this, accountList);
@@ -436,7 +436,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             if (!txtboxcondition.Checked)
             {
-                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tncNew"));
+                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc"));
                 StripUnderlinesFromLinks(txtTermsConditions);
             }
             else

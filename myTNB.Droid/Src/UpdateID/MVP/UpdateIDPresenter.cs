@@ -42,7 +42,7 @@ namespace myTNB_Android.Src.UpdateID.MVP
         }
 
 
-        public async void OnUpdateIC(string no_ic, string idtype)
+        public async void OnUpdateIC(string idtype, string no_ic)
         {
             this.mView.ClearErrors();
 
@@ -70,9 +70,13 @@ namespace myTNB_Android.Src.UpdateID.MVP
 
                     if (!userResponse.IsSuccessResponse())
                     {
-                        this.mView.ShowSuccessUpdateID();
-                        this.mView.HideProgress();
-                        //MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(true);
+                        if (UserEntity.IsCurrentlyActive())
+                        {
+                            UserEntity.UpdateICno(no_ic);
+                            this.mView.ShowSuccessUpdateID();
+                            this.mView.HideProgress();
+                            //MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(true);
+                        }
                     }
                     else
                     {
@@ -153,7 +157,7 @@ namespace myTNB_Android.Src.UpdateID.MVP
                     }
                     else
                     {
-                        this.mView.ShowIdentificationHint();
+                        //this.mView.ShowIdentificationHint();
                     }
                     this.mView.EnableRegisterButton();
                 }

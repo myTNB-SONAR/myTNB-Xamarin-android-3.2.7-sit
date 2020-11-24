@@ -102,7 +102,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 profileMenuItemsContent.AddView(manageSupplyItem);
 
                
-
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNickName);
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountAddress, txtNickName);
                 TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName);

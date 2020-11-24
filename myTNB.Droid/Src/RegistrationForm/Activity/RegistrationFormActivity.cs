@@ -146,7 +146,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tncNew"));
                 StripUnderlinesFromLinks(txtTermsConditions);
-                btnRegister.Text = GetLabelByLanguage("ctaTitle");
+                btnRegister.Text = GetLabelByLanguage("ctaTitleNew");
 
                 txtFullName.TextChanged += TextChange;
                 txtICNumber.TextChanged += TextChange;

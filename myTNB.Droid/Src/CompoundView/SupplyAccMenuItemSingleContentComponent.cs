@@ -58,12 +58,12 @@ namespace myTNB_Android.Src.CompoundView
 
             if (code == 1)
             {
-                supplyIcon.SetBackgroundResource(Resource.Drawable.update_personal_details);
+                supplyIcon.SetBackgroundResource(Resource.Drawable.user_access);
 
             }
             else
             {
-                supplyIcon.SetBackgroundResource(Resource.Drawable.ic_payment_card_amex);
+                supplyIcon.SetBackgroundResource(Resource.Drawable.autopay_yellow);
             }
 
         }

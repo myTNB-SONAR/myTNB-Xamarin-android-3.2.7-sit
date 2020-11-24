@@ -62,21 +62,18 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
                     if (!CheckIdentificationIsValid(icno) && idtype.Equals("1"))
                     {
                         this.mView.ShowFullICError();
-                        this.mView.ClearICHint();
                         this.mView.DisableRegisterButton();
                         return;
                     }
                     else if (!CheckArmyIdIsValid(icno) && idtype.Equals("2"))
                     {
                         this.mView.ShowFullArmyIdError();
-                        this.mView.ClearICHint();
                         this.mView.DisableRegisterButton();
                         return;
                     }
                     else if (!CheckPassportIsValid(icno) && idtype.Equals("3"))
                     {
                         this.mView.ShowFullPassportError();
-                        this.mView.ClearICHint();
                         this.mView.DisableRegisterButton();
                         return;
                     }

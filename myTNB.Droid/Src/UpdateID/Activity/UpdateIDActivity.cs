@@ -43,7 +43,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
       , NoHistory = false
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
-      , Theme = "@style/Theme.RegisterForm")]
+      , Theme = "@style/Theme.DashboardHome")]
     public class UpdateIDActivity : BaseActivityCustom, UpdateIDContract.IView
     {
         private UpdateIDPresenter mPresenter;
@@ -119,7 +119,8 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 TextViewUtils.SetMuseoSans300Typeface(
                     txtAccountType,
                     identityType,
-                    txtICNumber);
+                    txtICNumber,
+                    LabelDetails);
 
                 TextViewUtils.SetMuseoSans300Typeface(
                     textInputLayoutICNo);
@@ -244,7 +245,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                                 }
                                 else
                                 {
-                                    ShowIdentificationHint();
+                                    //ShowIdentificationHint();
                                 }
                                 TextViewUtils.SetMuseoSans300Typeface(textInputLayoutICNo);
                             }
@@ -256,7 +257,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                                 }
                                 else
                                 {
-                                    ShowIdentificationHint();
+                                    //ShowIdentificationHint();
                                 }
                                 TextViewUtils.SetMuseoSans300Typeface(textInputLayoutICNo);
                             }
@@ -270,7 +271,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                                 else
                                 {
                                     ClearICMinimumCharactersError();
-                                    ShowIdentificationHint();
+                                    //ShowIdentificationHint();
                                 }
                                 TextViewUtils.SetMuseoSans300Typeface(textInputLayoutICNo);
                             }
@@ -287,7 +288,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                         }
                         else
                         {
-                            ShowIdentificationHint();
+                            //ShowIdentificationHint();
                         }
                     }
                     else if (Idtype.Equals("2"))
@@ -298,7 +299,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                         }
                         else
                         {
-                            ShowIdentificationHint();
+                            //ShowIdentificationHint();
                         }
                     }
                     else
@@ -309,7 +310,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                         }
                         else
                         {
-                            ShowIdentificationHint();
+                            //ShowIdentificationHint();
                         }
                     }
                 }
@@ -431,7 +432,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                     this.SetIsClicked(true);
                     string idtype = selectedIdentificationType.Id;
                     string ic_no = txtICNumber.Text.ToString().Trim();
-                    Utility.ShowUpdateIdDialog(this, ic_no, () =>
+                    ShowUpdateIdDialog(this, () =>
                     {
                         // _ = RunUpdateID(idtype,ic_no);
                         ShowProgress();
@@ -444,6 +445,36 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        void ShowUpdateIdDialog(Android.App.Activity context, Action confirmAction, Action cancelAction = null)
+        {
+            string ic_no = txtICNumber.Text.ToString().Trim();
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.THREE_PART_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(Utility.GetLocalizedLabel("Common", "updateIdTitle"))
+                        .SetSubTitle(ic_no)
+                        .SetMessage(Utility.GetLocalizedLabel("Common", "updateIdMessage"))
+                        .SetContentGravity(Android.Views.GravityFlags.Center)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "re_enter"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+            this.SetIsClicked(false);
         }
 
 
