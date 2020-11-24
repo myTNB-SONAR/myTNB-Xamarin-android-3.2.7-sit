@@ -282,6 +282,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 accountData.AccountNum = account.AccNum;
                 accountData.AccountNickName = account.AccDesc;
                 accountData.AddStreet = account.AccountStAddress;
+                accountData.AccountCategoryId = account.AccountCategoryId ?? string.Empty;
                 mView.ViewDetails(accountData);
             }
         }
@@ -295,6 +296,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 accountData.AccountNum = account.AccNum;
                 accountData.AccountNickName = account.AccDesc;
                 accountData.AddStreet = account.AccountStAddress;
+                accountData.AccountCategoryId = account.AccountCategoryId ?? string.Empty;
                 this.mView.PayNow(accountData);
             }
             else
@@ -323,6 +325,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 accountData.AccountNum = account.AccNum;
                 accountData.AccountNickName = account.AccDesc;
                 accountData.AddStreet = account.AccountStAddress;
+                accountData.AccountCategoryId = account.AccountCategoryId ?? string.Empty;
                 this.mView.ViewUsage(accountData);
             }
             else
@@ -357,7 +360,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(httpClient);
 
 #else
-            var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(Constants.SERVER_URL.END_POINT);
+                var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
                 SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(new myTNB_Android.Src.myTNBMenu.Requests.SMRAccountActivityInfoRequest()
@@ -408,6 +411,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             accountData.AccountNum = notificationDetails.AccountNum;
             accountData.AddStreet = account.AccountStAddress;
             accountData.AccountNickName = account.AccDesc;
+            accountData.AccountCategoryId = account.AccountCategoryId ?? string.Empty;
             this.mView.EnableSelfMeterReading(accountData);
         }
 
@@ -570,7 +574,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             {
                 GetPaymentReceiptResponse result = await ServiceApiImpl.Instance.GetPaymentReceipt(new GetPaymentReceiptRequest(selectedAccountNumber, detailedInfoNumber, isOwnedAccount, showAllReceipt),
                     CancellationTokenSourceWrapper.GetTokenWithDelay(Constants.PAYMENT_RECEIPT_TIMEOUT));
-                
+
                 if (result.IsSuccessResponse())
                 {
                     this.mView.ShowPaymentReceipt(result);
