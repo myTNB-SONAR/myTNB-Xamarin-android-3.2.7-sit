@@ -401,7 +401,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 if (char_count > 0)
                 {
                     int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
-                    txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
+                    txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCountSubmitEnquiry);
                     //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1.FindViewById<TextView>(Resource.Id.textinput_error));
                     TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
                     txtInputLayoutGeneralEnquiry1.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), char_left);

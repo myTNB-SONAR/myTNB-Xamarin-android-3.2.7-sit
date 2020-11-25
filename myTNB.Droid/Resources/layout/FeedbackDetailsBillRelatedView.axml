@@ -7,15 +7,15 @@
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
     android:orientation="vertical">
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?actionBarSize"
-        android:background="@color/white"
-        android:paddingTop="5dp">
+        android:background="@color/lightGrey"
+     >
 
         <ScrollView
             android:layout_width="match_parent"
@@ -24,552 +24,561 @@
             android:clipToPadding="false"
             android:fillViewport="false"
             android:overScrollMode="never">
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="16dp"
-                android:paddingBottom="16dp">
-
+                android:background="@color/white"
+                >
                 <LinearLayout
-                    android:id="@+id/LinearLayout_topBanner"
-
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp">
 
                     <LinearLayout
+                        android:id="@+id/LinearLayout_topBanner"
+
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/txtStatus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+
+                                android:text="Status:"
+                                android:textAllCaps="false"
+                                android:textColor="@color/charcoalGrey"
+                                android:textSize="16dp" />
+
+                            <TextView
+                                android:id="@+id/txtFeedback_status_new"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text=""
+                                android:textAllCaps="false"
+                                android:textSize="16dp" />
+                        </LinearLayout>
 
                         <TextView
-                            android:id="@+id/txtStatus"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/txtforMyhouse"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-
-                            android:text="Status:"
-                            android:textAllCaps="false"
-                            android:textColor="@color/charcoalGrey"
-                            android:textSize="16dp" />
-
-                        <TextView
-                            android:id="@+id/txtFeedback_status_new"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_weight="1"
                             android:text=""
                             android:textAllCaps="false"
-                            android:textSize="16dp" />
+                            android:textColor="@color/black"
+                            android:textSize="14dp" />
+
+                        <View
+                            android:id="@+id/barLine"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="@color/platinumGrey" />
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/TextInputLayoutServiceRequestNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_marginBottom="16dp"
+                            app:errorEnabled="false"
+                            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                            <EditText
+                                android:id="@+id/EditTextServiceRequestNumber"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@android:color/transparent"
+                                android:drawablePadding="6dp"
+                                android:enabled="false"
+                                android:focusable="false"
+                                android:hint="SERVICE REQUEST NUMBER"
+                                android:importantForAutofill="noExcludeDescendants"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:paddingTop="5dp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/txtforMyhouse"
+                    <FrameLayout
+                        android:id="@+id/FrameLayoutEnquiryDetails"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_weight="1"
-                        android:text=""
-                        android:textAllCaps="false"
-                        android:textColor="@color/black"
-                        android:textSize="14dp" />
+                        android:background="@color/lightGrey">
+
+                        <TextView
+                            android:id="@+id/txtEnquiryDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_weight="1"
+                            android:text=""
+                            android:textAllCaps="false"
+                            android:textColor="@color/powerBlue"
+                            android:textSize="16dp" />
+
+                    </FrameLayout>
 
                     <View
-                        android:id="@+id/barLine"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="16dp"
-                        android:background="@color/platinumGrey" />
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/TextInputLayoutServiceRequestNumber"
+                        android:id="@+id/viewSpacer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"></View>
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/TextInputLayoutIsOwner"
+                        android:layout_width="match_parent"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content"
+                        android:scrollHorizontally="true"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
                         android:layout_marginBottom="16dp"
                         app:errorEnabled="false"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
 
                         <EditText
-                            android:id="@+id/EditTextServiceRequestNumber"
+                            android:id="@+id/EditTextIsOwner"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:drawablePadding="6dp"
                             android:enabled="false"
                             android:focusable="false"
-                            android:hint="SERVICE REQUEST NUMBER"
+                            android:hint=""
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLines="6"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/TextInputLayoutRelationOwner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        app:errorEnabled="false"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/EditTextRElationOwner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint=""
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLines="6"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/TextInputLayoutNewIC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        app:errorEnabled="false"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/EditTextNewIC"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint=""
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/TextInputLayoutNewAccName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        app:errorEnabled="false"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/EditTextNewAccName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint=""
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLines="6"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/TextInputLayoutNewMobileNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        app:errorEnabled="false"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/EditTextNewMobileNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint=""
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/TextInputLayoutNewEmailAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        app:errorEnabled="false"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/EditTextNewEmailAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint=""
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLines="1"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/TextInputLayoutNewMailingAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        app:errorEnabled="false"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/EditTextNewMailingAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint=""
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLines="6"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/TextInputLayoutNewPremiseAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        app:errorEnabled="false"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/EditTextNewPremiseAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint=""
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:maxLines="6"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txtInputLayoutFeedbackId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        app:errorEnabled="false"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtFeedbackId"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint="@string/bill_related_feedback_id"
                             android:importantForAutofill="noExcludeDescendants"
                             android:inputType="text"
                             android:maxLines="1"
                             android:paddingTop="5dp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txtInputLayoutStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        app:errorEnabled="false"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtFeedbackStatus"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint="@string/bill_related_feedback_status"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txtInputLayoutDateTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        app:errorEnabled="true"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtFeedbackDateTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint="@string/bill_related_feedback_date_time"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txtInputLayoutAccountNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="16dp"
+                        app:errorEnabled="true"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtAccountNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint="@string/bill_related_account_no_hint"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/txtInputLayoutFeedback"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        app:errorEnabled="true"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/txtFeedback"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint="@string/bill_related_feedback"
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/txtRelatedScreenshotTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="9dp"
+                        android:layout_weight="1"
+                        android:text="@string/bill_related_screenshot_detailed_title"
+                        android:textAllCaps="true"
+                        android:textColor="@color/silverChalice"
+                        android:textSize="9dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="8dp" />
+                    <FrameLayout
+                        android:id="@+id/FrameLayoutContactDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/lightGrey">
+
+                        <TextView
+                            android:id="@+id/TextView_contactDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_weight="1"
+                            android:text=""
+                            android:textAllCaps="false"
+                            android:textColor="@color/powerBlue"
+                            android:textSize="16dp" />
+
+                    </FrameLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/TextInputLayoutname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="16dp"
+                        app:errorEnabled="true"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/EditTextName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint=""
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/TextInputLayoutEmailAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        app:errorEnabled="true"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/EditTextEmailAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint=""
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/TextInputLayoutMobileNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        app:errorEnabled="true"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                        <EditText
+                            android:id="@+id/EditTextMobileNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:drawablePadding="6dp"
+                            android:enabled="false"
+                            android:focusable="false"
+                            android:hint=""
+                            android:importantForAutofill="noExcludeDescendants"
+                            android:inputType="text|textMultiLine"
+                            android:paddingTop="5dp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
                 </LinearLayout>
-
-                <FrameLayout
-                    android:id="@+id/FrameLayoutEnquiryDetails"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/lightGrey">
-
-                    <TextView
-                        android:id="@+id/txtEnquiryDetails"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_weight="1"
-                        android:text=""
-                        android:textAllCaps="false"
-                        android:textColor="@color/powerBlue"
-                        android:textSize="16dp" />
-
-                </FrameLayout>
-
-                <View
-                    android:id="@+id/viewSpacer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"></View>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/TextInputLayoutIsOwner"
-                    android:layout_width="match_parent"
-                    android:visibility="gone"
-                    android:layout_height="wrap_content"
-                    android:scrollHorizontally="true"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:errorEnabled="false"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/EditTextIsOwner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint=""
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text|textMultiLine"
-                        android:maxLines="6"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/TextInputLayoutRelationOwner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:errorEnabled="false"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/EditTextRElationOwner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint=""
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text|textMultiLine"
-                        android:maxLines="6"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/TextInputLayoutNewIC"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:errorEnabled="false"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/EditTextNewIC"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint=""
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/TextInputLayoutNewAccName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:errorEnabled="false"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/EditTextNewAccName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint=""
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text|textMultiLine"
-                        android:maxLines="6"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/TextInputLayoutNewMobileNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:errorEnabled="false"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/EditTextNewMobileNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint=""
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/TextInputLayoutNewEmailAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:errorEnabled="false"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/EditTextNewEmailAddress"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint=""
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text|textMultiLine"
-                        android:maxLines="1"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/TextInputLayoutNewMailingAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:errorEnabled="false"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/EditTextNewMailingAddress"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint=""
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text|textMultiLine"
-                        android:maxLines="6"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/TextInputLayoutNewPremiseAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:errorEnabled="false"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/EditTextNewPremiseAddress"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint=""
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text|textMultiLine"
-                        android:maxLines="6"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txtInputLayoutFeedbackId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:errorEnabled="false"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/txtFeedbackId"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint="@string/bill_related_feedback_id"
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txtInputLayoutStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:errorEnabled="false"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/txtFeedbackStatus"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint="@string/bill_related_feedback_status"
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txtInputLayoutDateTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:errorEnabled="true"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/txtFeedbackDateTime"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint="@string/bill_related_feedback_date_time"
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txtInputLayoutAccountNo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:errorEnabled="true"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/txtAccountNo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint="@string/bill_related_account_no_hint"
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txtInputLayoutFeedback"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    app:errorEnabled="true"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/txtFeedback"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint="@string/bill_related_feedback"
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text|textMultiLine"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:id="@+id/txtRelatedScreenshotTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="9dp"
-                    android:layout_weight="1"
-                    android:text="@string/bill_related_screenshot_detailed_title"
-                    android:textAllCaps="true"
-                    android:textColor="@color/silverChalice"
-                    android:textSize="9dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="8dp" />
-                <FrameLayout
-                    android:id="@+id/FrameLayoutContactDetails"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/lightGrey">
-
-                    <TextView
-                        android:id="@+id/TextView_contactDetails"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_weight="1"
-                        android:text=""
-                        android:textAllCaps="false"
-                        android:textColor="@color/powerBlue"
-                        android:textSize="16dp" />
-
-                </FrameLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/TextInputLayoutname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="16dp"
-                    app:errorEnabled="true"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/EditTextName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint=""
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text|textMultiLine"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/TextInputLayoutEmailAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    app:errorEnabled="true"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/EditTextEmailAddress"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint=""
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text|textMultiLine"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/TextInputLayoutMobileNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    app:errorEnabled="true"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-
-                    <EditText
-                        android:id="@+id/EditTextMobileNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:drawablePadding="6dp"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint=""
-                        android:importantForAutofill="noExcludeDescendants"
-                        android:inputType="text|textMultiLine"
-                        android:paddingTop="5dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
             </LinearLayout>
+
+
         </ScrollView>
     </FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
