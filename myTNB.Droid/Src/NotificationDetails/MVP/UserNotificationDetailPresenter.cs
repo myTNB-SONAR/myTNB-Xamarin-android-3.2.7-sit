@@ -282,7 +282,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 accountData.AccountNum = account.AccNum;
                 accountData.AccountNickName = account.AccDesc;
                 accountData.AddStreet = account.AccountStAddress;
-                accountData.AccountCategoryId = account.AccountCategoryId ?? string.Empty;
+                accountData.AccountCategoryId = account.AccountCategoryId;
                 mView.ViewDetails(accountData);
             }
         }
@@ -296,7 +296,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 accountData.AccountNum = account.AccNum;
                 accountData.AccountNickName = account.AccDesc;
                 accountData.AddStreet = account.AccountStAddress;
-                accountData.AccountCategoryId = account.AccountCategoryId ?? string.Empty;
+                accountData.AccountCategoryId = account.AccountCategoryId;
                 this.mView.PayNow(accountData);
             }
             else
@@ -325,7 +325,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 accountData.AccountNum = account.AccNum;
                 accountData.AccountNickName = account.AccDesc;
                 accountData.AddStreet = account.AccountStAddress;
-                accountData.AccountCategoryId = account.AccountCategoryId ?? string.Empty;
+                accountData.AccountCategoryId = account.AccountCategoryId;
                 this.mView.ViewUsage(accountData);
             }
             else
@@ -411,7 +411,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             accountData.AccountNum = notificationDetails.AccountNum;
             accountData.AddStreet = account.AccountStAddress;
             accountData.AccountNickName = account.AccDesc;
-            accountData.AccountCategoryId = account.AccountCategoryId ?? string.Empty;
+            accountData.AccountCategoryId = account.AccountCategoryId;
             this.mView.EnableSelfMeterReading(accountData);
         }
 

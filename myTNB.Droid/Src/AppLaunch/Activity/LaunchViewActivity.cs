@@ -1092,20 +1092,31 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 deepLink = pendingResult.Link;
                 string deepLinkUrl = deepLink.ToString();
-                if (!string.IsNullOrEmpty(deepLinkUrl) && deepLinkUrl.Contains("rewards"))
+                if (!string.IsNullOrEmpty(deepLinkUrl))
                 {
-                    urlSchemaData = "rewards";
-                    string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
-                    urlSchemaPath = "rewardId=" + id;
-                }
-                else if (!string.IsNullOrEmpty(deepLinkUrl) && deepLinkUrl.Contains("whatsnew"))
-                {
-                    urlSchemaData = "whatsnew";
-                    string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
-                    urlSchemaPath = "whatsNewId=" + id;
+                    if (deepLinkUrl.Contains("rewards"))
+                    {
+                        urlSchemaData = "rewards";
+                        string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
+                        urlSchemaPath = "rewardId=" + id;
+                    }
+                    else if (deepLinkUrl.Contains("whatsnew"))
+                    {
+                        urlSchemaData = "whatsnew";
+                        string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
+                        urlSchemaPath = "whatsNewId=" + id;
+                    }
+                    else if (deepLinkUrl.Contains("applicationListing"))
+                    {
+                        urlSchemaData = "applicationListing";
+                    }
+                    else if (deepLinkUrl.Contains("applicationDetails"))
+                    {
+                        urlSchemaData = "applicationDetails";
+                        ApplicationDetailsDeeplinkCache.Instance.SetData(deepLinkUrl);
+                    }
                 }
             }
-
         }
 
         void Android.Gms.Tasks.IOnFailureListener.OnFailure(Java.Lang.Exception e)

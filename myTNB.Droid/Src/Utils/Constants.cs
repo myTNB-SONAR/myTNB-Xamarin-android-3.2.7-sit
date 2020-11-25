@@ -69,7 +69,6 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string IMAGE_PERMISES = ".imagePermises";
         internal static readonly string ENTERED_NAME = ".enteredName";
 
-
         internal static readonly string PAGE_TITLE = ".pageTitle";
         internal static readonly string PAGE_STEP_TITLE = ".pageStepTitle";
         internal static readonly string ACCOUNT_NUMBER = ".accountNumber";
