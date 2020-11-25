@@ -385,5 +385,8 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int LANGUAGE_MASTER_DATA_CHECK_TIMEOUT = 500;
         
         internal static readonly int REWARDS_DATA_CHECK_TIMEOUT = 500;
+
+        //Dynatrace Action
+        internal static readonly string WEBVIEW_PAYMENT = "WebViewPayment";
     }
 }

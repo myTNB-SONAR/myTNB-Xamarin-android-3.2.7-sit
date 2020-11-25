@@ -32,6 +32,8 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
             void OnUpdateFullScreenPdf(string path);
 
             void UpdateWhatsNewDetail(WhatsNewModel item);
+
+            void dynaAction(string eventName);
         }
 
         public interface IWhatsNewDetailPresenter

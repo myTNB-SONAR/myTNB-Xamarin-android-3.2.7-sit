@@ -17,6 +17,7 @@ using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
 using Com.Davemorrissey.Labs.Subscaleview;
+using DynatraceAndroid;
 using Facebook.Shimmer;
 using Firebase.DynamicLinks;
 using Google.Android.Material.Snackbar;
@@ -105,6 +106,8 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 
 		private bool fullScreenFirstLoaded = false;
 
+		private IDTXAction DynAction;
+
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
@@ -151,6 +154,12 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 			{
 				Utility.LoggingNonFatalError(e);
 			}
+		}
+
+		public void dynaAction(string eventName)
+        {
+			this.DynAction = DynatraceAndroid.Dynatrace.EnterAction(eventName);
+		
 		}
 
 		protected override void OnStart()
@@ -204,6 +213,8 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 
 		public override void OnBackPressed()
 		{
+			this.DynAction.LeaveAction();
+			this.DynAction.Dispose();
 			base.OnBackPressed();
 		}
 
