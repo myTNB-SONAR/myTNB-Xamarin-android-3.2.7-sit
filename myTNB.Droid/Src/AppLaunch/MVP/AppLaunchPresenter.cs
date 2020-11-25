@@ -638,7 +638,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     try
                     {
-                        imageCache = ImageUtils.GetImageBitmapFromUrl(item.Image);
+                         //imageCache = ImageUtils.GetImageBitmapFromUrl(item.Image);  
+                         imageCache = ImageUtils.GetImageBitmapFromUrlWithTimeOut(item.Image);   
                         sw.Stop();
                         AppLaunchTimeOutMillisecond = 0;
 

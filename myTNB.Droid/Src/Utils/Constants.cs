@@ -361,6 +361,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int APP_LAUNCH_MASTER_DATA_TIMEOUT = 3000;
         internal static readonly int APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT = 2000;
         internal static readonly int PAYMENT_RECEIPT_TIMEOUT = 30000;
+        internal static readonly int SPLASHSCREEN_DOWNLOAD_TIMEOUT_MILISEC = 4000;
 
         //SharedPreference ids
         public const string ACCOUNT_SHARED_PREF_ID = "myTNB.account.pref";
