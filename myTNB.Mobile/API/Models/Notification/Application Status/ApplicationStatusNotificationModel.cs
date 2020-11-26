@@ -6,6 +6,6 @@
         public string ApplicationID { set; get; } = string.Empty;
         public string ApplicationType { set; get; } = string.Empty;
 
-        public static string TYPE_APPLICATIONDETAILS = "APPLICATIONDETAILS";
+        public static string TYPE_APPLICATIONDETAILS = "APPLICATIONSTATUS";
     }
 }

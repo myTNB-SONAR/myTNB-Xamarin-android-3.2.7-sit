@@ -46,6 +46,9 @@ using Android.Text;
 using Android.Text.Style;
 using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using myTNB;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -563,7 +566,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        public void OnDataSchemeShow()
+        public async void OnDataSchemeShow()
         {
             try
             {
@@ -698,6 +701,90 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                                 this.mPresenter.OnStartWhatsNewThread();
                             }
+                        }
+                        else if (!string.IsNullOrEmpty(urlSchemaPath) && urlSchemaPath.Contains("applicationListing"))
+                        {
+                            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
+                            if (searchApplicationTypeResponse == null)
+                            {
+                                ShowProgressDialog();
+                                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+                                if (searchApplicationTypeResponse != null
+                                    && searchApplicationTypeResponse.StatusDetail != null
+                                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                                {
+                                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+                                }
+                                HideProgressDialog();
+                            }
+                            if (searchApplicationTypeResponse != null
+                                && searchApplicationTypeResponse.StatusDetail != null
+                                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                            {
+                                AllApplicationsCache.Instance.Clear();
+                                AllApplicationsCache.Instance.Reset();
+                                Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
+                                StartActivity(applicationLandingIntent);
+                            }
+                            else
+                            {
+                                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                     .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
+                                     .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
+                                     .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
+                                     .Build();
+                                errorPopup.Show();
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(urlSchemaPath) && urlSchemaPath.Contains("applicationDetails"))
+                        {
+                            ShowProgressDialog();
+                            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
+                            if (searchApplicationTypeResponse == null)
+                            {
+                                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+                                if (searchApplicationTypeResponse != null
+                                    && searchApplicationTypeResponse.StatusDetail != null
+                                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                                {
+                                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+                                }
+                            }
+                            if (searchApplicationTypeResponse != null
+                                && searchApplicationTypeResponse.StatusDetail != null
+                                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                            {
+                                ApplicationDetailDisplay detailsResponse = await ApplicationStatusManager.Instance.GetApplicationDetail(ApplicationDetailsDeeplinkCache.Instance.SaveID
+                                    , ApplicationDetailsDeeplinkCache.Instance.ID
+                                    , ApplicationDetailsDeeplinkCache.Instance.Type
+                                    , ApplicationDetailsDeeplinkCache.Instance.System);
+
+                                if (detailsResponse.StatusDetail.IsSuccess)
+                                {
+                                    Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+                                    applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(detailsResponse.Content));
+                                    StartActivity(applicationStatusDetailIntent);
+                                }
+                                else
+                                {
+                                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                     .SetTitle(detailsResponse.StatusDetail.Title)
+                                     .SetMessage(detailsResponse.StatusDetail.Message)
+                                     .SetCTALabel(detailsResponse.StatusDetail.PrimaryCTATitle)
+                                     .Build();
+                                    errorPopup.Show();
+                                }
+                            }
+                            else
+                            {
+                                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                     .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
+                                     .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
+                                     .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
+                                     .Build();
+                                errorPopup.Show();
+                            }
+                            HideProgressDialog();
                         }
                     }
                 }
