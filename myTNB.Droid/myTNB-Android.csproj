@@ -8173,7 +8173,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">
-      <Project>{61D20414-CF94-4106-B40F-E62E5B282F0C}</Project>
+      <Project>{95E2CCD6-81B8-4F85-A295-9863AB7402AB}</Project>
       <Name>myTNB.Mobile</Name>
     </ProjectReference>
   </ItemGroup>

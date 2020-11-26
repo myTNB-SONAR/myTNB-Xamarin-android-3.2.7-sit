@@ -13,7 +13,7 @@ namespace myTNB_Android.Src.Utils
 
         public static string MuseoSans300 = "MuseoSans_300.otf";
         public static string MuseoSans500 = "MuseoSans_500.otf";
-        
+        public static bool isLargeFontVisible = false;
 
         public static void SetTypeface(string family, params EditText[] editTexts)
         {
@@ -92,7 +92,7 @@ namespace myTNB_Android.Src.Utils
 
         public static string SelectedFontSize()
         {
-            LargeFontModel largeFontModel = new LargeFontModel();   
+            LargeFontModel largeFontModel = new LargeFontModel();
             LargeFontEntity largeFont = new LargeFontEntity();
             var db = DBHelper.GetSQLiteConnection();
 
@@ -111,25 +111,25 @@ namespace myTNB_Android.Src.Utils
         }
         public static float GetFontSize(float font)
         {
-           
+
             var Key = SelectedFontSize();
-            
-                if(Key != null && Key == "L")
-                {
-                   
-                    return font + 4; 
-                }
-           
+
+            if (Key != null && Key == "L")
+            {
+
+                return font + 4;
+            }
+
             return font;
         }
-       
+
         public static void SaveFontSize(Item selectedItem)
         {
             LargeFontEntity largeFontEntity = new LargeFontEntity();
             largeFontEntity.Key = selectedItem.type;
             largeFontEntity.Value = selectedItem.title;
             largeFontEntity.selected = selectedItem.selected;
-          
+
             largeFontEntity.DeleteTable();
             largeFontEntity.CreateTable();
 

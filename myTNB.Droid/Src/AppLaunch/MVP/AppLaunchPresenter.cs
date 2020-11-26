@@ -155,7 +155,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         new MasterApiDBOperation(masterDataResponse, mSharedPref).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
 
 
-
+                        TextViewUtils.isLargeFontVisible = masterDataResponse.Response.LargeFontOn;
+                      
                         bool proceed = true;
 
                         bool appUpdateAvailable = false;
@@ -275,7 +276,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             , loggedUser.UserID
                                             , loggedUser.UserName
                                             , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
-                                             AppInfoManager.Instance.SetPlatformUserInfo(new BaseRequest().usrInf);
+                                        AppInfoManager.Instance.SetPlatformUserInfo(new BaseRequest().usrInf);
 
                                         if ("APPLICATIONDETAILS".Equals(UserSessions.GetNotificationType(mSharedPref))
                                             && UserSessions.ApplicationStatusNotification != null)

@@ -45,6 +45,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "IsPayEnabled")]
             public bool IsPayEnabled { get; set; }
 
+            [JsonProperty(PropertyName = "LargeFontOn")]
+            public bool LargeFontOn { get; set; }
+
             [JsonProperty(PropertyName = "status")]
             public string Status { get; set; }
 
@@ -74,6 +77,7 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "RefreshBtnText")]
             public string RefreshBtnText { get; set; }
+
         }
     }
 }
