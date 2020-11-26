@@ -777,9 +777,8 @@
     "description6": "We’re now bilingual! You can set your preferred language below.<br><br>Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.",
     "description7": "You can now register a myTNB account or update your existing one with an international phone number.",
     "description8": "You can now track all your application status with zero hassle, anytime and anywhere. Need TNB to install a new meter? You can now set an appointment!",
-    "description9": "Customize your app with your preferred display text size so you can experience myTNB more comfortably! Choose between normal and large.  You can change this anytime in your Profile.",
+    "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
     "fontChangeSuccess": "You've successfully updated your display text size to {0}!",
-    "displaySize": "Set Display Text Size"
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
