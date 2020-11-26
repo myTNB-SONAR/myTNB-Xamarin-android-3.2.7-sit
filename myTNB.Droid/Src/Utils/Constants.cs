@@ -389,5 +389,12 @@ namespace myTNB_Android.Src.Utils
 
         //Dynatrace Action
         internal static readonly string WEBVIEW_PAYMENT = "WebViewPayment";
+        internal static readonly string WEBVIEW_PAYMENT_FPX = "WebViewPaymentFPX";
+        internal static readonly string WEBVIEW_PAYMENT_CC = "WebViewPaymentCC";
+        internal static readonly string WEBVIEW_PAYMENT_SUCCESS = "WebViewPayment_Success";
+        internal static readonly string WEBVIEW_PAYMENT_FAIL = "WebViewPayment_Fail";
+        internal static readonly string WEBVIEW_PAYMENT_FINISH_DASHBOARD = "WebViewPaymentFINISH_DASHBOARD";
+        internal static readonly string DYNA_SITECORE_REFFER_LOCAL = "sitecore_refer_local";
+        internal static readonly string DYNA_SITECORE_REFFER_ONLINE = "sitecore_refer_online";
     }
 }

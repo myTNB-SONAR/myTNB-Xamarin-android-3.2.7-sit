@@ -7,6 +7,7 @@ using Android.OS;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
+using DynatraceAndroid;
 using Google.Android.Material.Snackbar;
 using Java.IO;
 using Java.Lang;
@@ -280,6 +281,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             public ProgressBar progressBar;
             private bool isRedirected = false;
             private SummaryDashBordRequest summaryDashBoardRequest = null;
+            private IDTXAction DynAction;
 
             public MyTNBWebViewClient(Android.App.Activity mActivity, ProgressBar progress, SummaryDashBordRequest summaryDashBoardRequest)
             {
@@ -323,6 +325,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                     else if (url.ToLower().Contains("mytnbapp://payment/"))
                     {
+                        try
+                        {
+                            this.DynAction.ReportEvent(Constants.WEBVIEW_PAYMENT_FINISH_DASHBOARD);
+                            this.DynAction.LeaveAction();
+                            this.DynAction.Dispose();
+
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
                         isRedirected = true;
                         /* This call inject JavaScript into the page which just finished loading. */
                         //((PaymentActivity)this.mActivity).SetResult(Result.Ok);
@@ -371,6 +384,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         ShowErrorMessage(url);
                     }
+                    this.DynAction = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT);  // DYNA
                 }
                 catch (System.Exception e)
                 {
@@ -386,6 +400,15 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     if (url.ToLower().Contains("statusreceipt.aspx") && url.ToLower().Contains("approved") || url.ToLower().Contains("paystatusreceipt"))
                     {
 
+                        try
+                        {
+                            this.DynAction.ReportEvent(Constants.WEBVIEW_PAYMENT_SUCCESS);
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+
                         ((PaymentActivity)mActivity).SetPaymentReceiptFlag(true, summaryDashBoardRequest);
                         //((PaymentActivity)mActivity).SetToolBarTitle("Success");
                         ((PaymentActivity)mActivity).HideToolBar();
@@ -393,6 +416,15 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                     else if (url.ToLower().Contains("statusreceipt.aspx") || url.ToLower().Contains("paystatusreceipt") && url.ToLower().Contains("failed"))
                     {
+
+                        try
+                        {
+                            this.DynAction.ReportEvent(Constants.WEBVIEW_PAYMENT_FAIL);
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
                         progressBar.Visibility = ViewStates.Gone;
                         ((PaymentActivity)mActivity).SetPaymentReceiptFlag(false, null);
                         //((PaymentActivity)mActivity).SetToolBarTitle("Unsuccessful");
@@ -401,6 +433,18 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                     else if (url.ToLower().Contains("mytnbapp://payment/") && !isRedirected)
                     {
+                        try
+                        {
+                            this.DynAction.ReportEvent(Constants.WEBVIEW_PAYMENT_FINISH_DASHBOARD);
+                            this.DynAction.LeaveAction();
+                            this.DynAction.Dispose();
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+
+
                         isRedirected = true;
                         progressBar.Visibility = ViewStates.Gone;
                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
