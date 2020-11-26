@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using myTNB.Mobile.API.Models;
 using myTNB.Mobile.Extensions;
 
@@ -31,6 +30,15 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus
                     {
                         List<string> excludedKeys = excludedList.Select(x => x.key).ToList();
                         content = content.FindAll(x => !excludedKeys.Contains(x.SearchApplicationTypeId));
+                    }
+                    //Mark: Remove All Applications / Search By CA for Pre-Login
+                    if (roleID == "0")
+                    {
+                        int allIndex = content.FindIndex(x => x.SearchApplicationTypeId == "ALL");
+                        if (allIndex > -1)
+                        {
+                            content.RemoveAt(allIndex);
+                        }
                     }
                     response.Content = content;
                     //Mark: Codes were disabled as multilingual in list of all values were confirmed.

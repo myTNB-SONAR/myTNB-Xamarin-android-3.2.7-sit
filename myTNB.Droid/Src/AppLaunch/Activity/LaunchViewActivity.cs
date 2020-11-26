@@ -130,7 +130,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     {
                         string email = Intent.Extras.GetString("Email");
                         UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
-                        if (!"APPLICATIONDETAILS".Equals(UserSessions.GetNotificationType(PreferenceManager.GetDefaultSharedPreferences(this))))
+                        if (!"APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(PreferenceManager.GetDefaultSharedPreferences(this))))
                         {
                             UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                         }

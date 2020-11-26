@@ -275,7 +275,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                         AppInfoManager.Instance.SetPlatformUserInfo(new BaseRequest().usrInf);
 
-                                        if ("APPLICATIONDETAILS".Equals(UserSessions.GetNotificationType(mSharedPref))
+                                        if ("APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(mSharedPref))
                                             && UserSessions.ApplicationStatusNotification != null)
                                         {
                                             this.mView.ShowApplicationStatusDetails();

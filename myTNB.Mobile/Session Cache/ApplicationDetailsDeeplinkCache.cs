@@ -22,6 +22,8 @@ namespace myTNB.Mobile.SessionCache
         public string Type { private set; get; } = string.Empty;
         public string System { private set; get; } = string.Empty;
         public string SaveID { private set; get; } = string.Empty;
+        public bool IsListingDeepLink { private set; get; } = false;
+        public bool IsDetailsDeepLink { private set; get; } = false;
 
         public void SetData(string deepLinkURL)
         {
@@ -54,6 +56,16 @@ namespace myTNB.Mobile.SessionCache
                     }
                 }
             }
+        }
+
+        public void SetIsListingDeepLink(bool isDeepLink)
+        {
+            IsListingDeepLink = isDeepLink;
+        }
+
+        public void SetIsDetailsDeepLink(bool isDetailsDeepLink)
+        {
+            IsDetailsDeepLink = isDetailsDeepLink;
         }
     }
 }
