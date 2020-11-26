@@ -365,13 +365,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
             if (TextViewUtils.isLargeFontVisible)
             {
-                ProfileMenuItemSingleContentComponent largefont = new ProfileMenuItemSingleContentComponent(context);
-                largefont.SetTitle(GetLabelByLanguage("displaySize"));
-                largefont.SetItemActionCall(ShowAppLargeFontSetting);
-                settingItems.Add(largefont);
-            }
-            else
-            {
+               
                 Item selectedItem = new Item();
                 selectedItem.type = "R";
                 selectedItem.title = "Normal";
@@ -379,6 +373,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
                 TextViewUtils.isLargeFontVisible = false;
                 TextViewUtils.SaveFontSize(selectedItem);
+            }
+            else
+            {
+                ProfileMenuItemSingleContentComponent largefont = new ProfileMenuItemSingleContentComponent(context);
+                largefont.SetTitle(GetLabelByLanguage("displaySize"));
+                largefont.SetItemActionCall(ShowAppLargeFontSetting);
+                settingItems.Add(largefont);
 
             }
 
