@@ -836,7 +836,7 @@
     "trnDate": "TARIKH TRANSAKSI",
     "trnID": "ID TRANSAKSI",
     "trnMethod": "KAEDAH TRANSAKSI",
-    "paymentType": "MS-Payment Type"
+    "paymentType": "JENIS PEMBAYARAN"
   },
   "FeedbackList": {
     "title": "Maklum Balas"
@@ -1142,7 +1142,7 @@
     "whereToGetThisNumberMessage": "Anda boleh memperolehi <b>{0}</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’ dan juga boleh diperolehi dengan menghubungi TNB CareLine."
   },
   "ApplicationStatusFilter": {
-    "title": "Select Filter",
+    "title": "Pilih Tapisan",
     "applicationType": "Jenis Permohonan",
     "status": "Status",
     "creationDate": "Tarikh Permintaan",
@@ -1178,12 +1178,13 @@
     "removeTitle": "Alih keluar permohonan ini?",
     "removeMessage": "Anda sedang di dalam proses mengalih keluar permohonan yang telah disimpan di dalam senarai anda.<br><br>Peringatan: Pengalihan keluar permohonan ini tidak akan membatalkan permohonan anda.",
     "confirm": "Sahkan",
-    "on": "on ",
+    "on": "pada ",
     "paymentReceiptTitle": " - Pembayaran",
     "paymentInProgress": "Pembayaran sedang diproses",
-    "bcrmDownMessage": "MS-Looks like your statuses can’t be loaded at the moment. However, you may proceed to make any changes to the application as it will be recorded. Check back again later to view its update.",
-    "rateCTA": "MS-Rate Our Service",
-    "rateSuccessMessage": "MS-Thank you for your feedback!"
+    "bcrmDownMessage": "Nampaknya status anda tidak dapat dimuat turun pada masa ini. Walaubagaimanapun, anda masih boleh melakukan sebarang perubahan pada permohonan anda kerana ianya akan direkod. Sila lihat sebentar lagi untuk kemas kini status anda.",
+    "rateCTA": "Nilaikan Perkhidmatan Kami",
+    "rateSuccessMessage": "Terima kasih atas maklum balas anda.",
+    "youRated": "Anda nilaikan:"
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Maklumat pembayaran",
@@ -1196,7 +1197,7 @@
     "chargesMapping": [
       {
         "key": "connectionChargesAmount",
-        "description": "Connection Fee"
+        "description": "Caj Sambungan"
       },
       {
         "key": "securityDepositAmount",
@@ -1204,7 +1205,7 @@
       },
       {
         "key": "meterFeeAmount",
-        "description": "Meter Cost"
+        "description": "Kos Meter"
       },
       {
         "key": "stampDutyAmount",
@@ -1730,9 +1731,9 @@
     "status": "Status: ",
     "reasons": "Sebab-sebab",
     "attachments": "Lampiran sebelumnya yang dikeluarkan",
-    "add": "Added {0} to {1}",
-    "update": "Updated {0} from {1} to {2}",
-    "remove": "Removed {0}"
+    "add": "Menambahkan {0} ke {1}",
+    "update": "Mengemaskini {0} dari {1} ke {2}",
+    "remove": "{0} telah dialih keluar"
   },
   "SearchByNumber": {
     "title": "Cari Dengan",
@@ -1744,7 +1745,7 @@
     "title": "Pilih Jenis Permohonan"
   },
   "SelectApplicationStatus": {
-    "title": "Select Status"
+    "title": "Pilih Status"
   },
   "SelectApplicationStatus_selector": {
     "status": [
@@ -1766,11 +1767,11 @@
       },
       {
         "key": "Connecting Electricity",
-        "value": "Connecting Electricity"
+        "value": "Memutuskan Bekalan Elektrik"
       },
       {
         "key": "Calculating Connection Charges",
-        "value": "Calculating Connection Charges"
+        "value": "Mengira Caj Sambungan"
       },
       {
         "key": "Action Required",
@@ -1781,8 +1782,8 @@
         "value": "Kontraktor Diperlukan"
       },
       {
-        "key": "Address Verified",
-        "value": "Address Verified"
+        "key": "Address Confirmed",
+        "value": "Alamat Disahkan"
       },
       {
         "key": "Draft",
@@ -1877,11 +1878,11 @@
     ]
   },
   "ApplicationStatusRating": {
-    "title": "MS-Rate",
-    "submit": "MS-Submit",
+    "title": "Nilaikan",
+    "submit": "Hantar",
     "noMaximoRateMessage": "MS-How did your meter installation go?",
-    "rateMessage": "MS-How did your appointment go?",
-    "charactersLeft": "MS-{0} characters left"
+    "rateMessage": "Bagaimana janji temu anda?",
+    "charactersLeft": "Tinggal {0} perkataan"
   },
   "ServiceDetails": {
     "TimeOut": [
@@ -1916,8 +1917,8 @@
           },
           {
             "code": "empty",
-            "title": "We are unable to find this application.",
-            "message": "Please try again. Make sure you’ve entered the correct information!",
+            "title": "Kami tidak dapat mencari permohonan ini.",
+            "message": "Sila cuba lagi. Pastikan anda memasukkan maklumat yang betul!",
             "primaryCTATitle": "Ok",
             "secondaryCTATitle": "",
             "isSuccess": false,
@@ -1926,7 +1927,7 @@
           {
             "code": "7001",
             "title": "",
-            "message": "Oops! There is an error occured in processing your request. Please try again later.",
+            "message": "Nampaknya permintaan anda tidak dapat dimuat turun pada masa ini. Sila cuba sebentar lagi.",
             "primaryCTATitle": "Ok",
             "secondaryCTATitle": "",
             "isSuccess": false,
@@ -1983,8 +1984,8 @@
           },
           {
             "code": "emptyFilter",
-            "title": "We are unable to find this application.",
-            "message": "Please try again. Make sure you’ve entered the correct information!",
+            "title": "Kami tidak dapat mencari permohonan ini.",
+            "message": "Sila cuba lagi. Pastikan anda memasukkan maklumat yang betul!",
             "primaryCTATitle": "",
             "secondaryCTATitle": "",
             "isSuccess": false,
@@ -2034,8 +2035,8 @@
           },
           {
             "code": "empty",
-            "title": "We are unable to find this application.",
-            "message": "Please try again. Make sure you’ve entered the correct information!",
+            "title": "Kami tidak dapat mencari permohonan ini.",
+            "message": "Sila cuba lagi. Pastikan anda memasukkan maklumat yang betul!",
             "primaryCTATitle": "Ok",
             "secondaryCTATitle": "",
             "isSuccess": false,
