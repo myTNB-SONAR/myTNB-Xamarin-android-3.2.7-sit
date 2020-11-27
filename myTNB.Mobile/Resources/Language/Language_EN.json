@@ -777,9 +777,8 @@
     "description6": "We’re now bilingual! You can set your preferred language below.<br><br>Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.",
     "description7": "You can now register a myTNB account or update your existing one with an international phone number.",
     "description8": "You can now track all your application status with zero hassle, anytime and anywhere. Need TNB to install a new meter? You can now set an appointment!",
-    "description9": "Customize your app with your preferred display text size so you can experience myTNB more comfortably! Choose between normal and large.  You can change this anytime in your Profile.",
+    "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
     "fontChangeSuccess": "You've successfully updated your display text size to {0}!",
-    "displaySize": "Set Display Text Size"
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
@@ -1184,7 +1183,8 @@
     "paymentInProgress": "My payment is being processed",
     "bcrmDownMessage": "Looks like your statuses can’t be loaded at the moment. However, you may proceed to make any changes to the application as it will be recorded. Check back again later to view its update.",
     "rateCTA": "Rate Our Service",
-    "rateSuccessMessage": "Thank you for your feedback!"
+    "rateSuccessMessage": "Thank you for your feedback!",
+    "youRated": "You rated:"
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Payment Details",
@@ -1197,7 +1197,7 @@
     "chargesMapping": [
       {
         "key": "connectionChargesAmount",
-        "description": "Connection Fee"
+        "description": "Connection Charges"
       },
       {
         "key": "securityDepositAmount",
@@ -1782,8 +1782,8 @@
         "value": "Contractor Required"
       },
       {
-        "key": "Address Verified",
-        "value": "Address Verified"
+        "key": "Address Confirmed",
+        "value": "Address Confirmed"
       },
       {
         "key": "Draft",
@@ -1927,7 +1927,7 @@
           {
             "code": "7001",
             "title": "",
-            "message": "Oops! There is an error occured in processing your request. Please try again later.",
+            "message": "Looks like your request can't loaded at the moment. Please try again later.",
             "primaryCTATitle": "Ok",
             "secondaryCTATitle": "",
             "isSuccess": false,
@@ -1955,7 +1955,7 @@
           },
           {
             "code": "9001",
-            "title": "Looks like you’ve already saved this application.",
+            "title": "Looks like you’ve already added this application to your list.",
             "message": "View it in your application status list.",
             "primaryCTATitle": "Got It!",
             "secondaryCTATitle": "Check Status",
