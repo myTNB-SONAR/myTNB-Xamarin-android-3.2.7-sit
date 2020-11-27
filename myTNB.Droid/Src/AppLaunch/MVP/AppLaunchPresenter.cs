@@ -223,7 +223,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         string userEmail = loggedUser.Email;
                                         if (!String.IsNullOrEmpty(userEmail))
                                         {   //dynatrace infomation for logged user
-                                            DynatraceAndroid.Dynatrace.IdentifyUser(userEmail); 
+                                            try
+                                            {
+                                                DynatraceAndroid.Dynatrace.IdentifyUser(userEmail);
+                                            }
+                                            catch (System.Exception e){
+                                                Utility.LoggingNonFatalError(e);
+
+                                            }
                                         }
                                        
                                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();

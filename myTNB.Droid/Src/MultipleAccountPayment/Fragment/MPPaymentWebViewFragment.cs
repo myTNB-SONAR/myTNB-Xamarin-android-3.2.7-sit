@@ -281,7 +281,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             public ProgressBar progressBar;
             private bool isRedirected = false;
             private SummaryDashBordRequest summaryDashBoardRequest = null;
-            private IDTXAction DynAction;
+           
 
             public MyTNBWebViewClient(Android.App.Activity mActivity, ProgressBar progress, SummaryDashBordRequest summaryDashBoardRequest)
             {
@@ -327,10 +327,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         try
                         {
-                            this.DynAction.ReportEvent(Constants.WEBVIEW_PAYMENT_FINISH_DASHBOARD);
-                            this.DynAction.LeaveAction();
-                            this.DynAction.Dispose();
-
+                            IDTXAction WEBVIEW_PAYMENT_FINISH_DASHBOARD = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_FINISH_DASHBOARD);  // DYNA
+                            WEBVIEW_PAYMENT_FINISH_DASHBOARD.LeaveAction();
                         }
                         catch (System.Exception e)
                         {
@@ -384,7 +382,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         ShowErrorMessage(url);
                     }
-                    this.DynAction = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT);  // DYNA
+
+                    IDTXAction DynAction = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT);  // DYNA
+                    DynAction.LeaveAction();
+
                 }
                 catch (System.Exception e)
                 {
@@ -402,7 +403,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
                         try
                         {
-                            this.DynAction.ReportEvent(Constants.WEBVIEW_PAYMENT_SUCCESS);
+                           
+                            IDTXAction WEBVIEW_PAYMENT_SUCCESS = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_SUCCESS);  // DYNA
+                            WEBVIEW_PAYMENT_SUCCESS.LeaveAction();
                         }
                         catch (System.Exception e)
                         {
@@ -419,7 +422,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
                         try
                         {
-                            this.DynAction.ReportEvent(Constants.WEBVIEW_PAYMENT_FAIL);
+  
+                            IDTXAction WEBVIEW_PAYMENT_FAIL = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_FAIL);  // DYNA
+                            WEBVIEW_PAYMENT_FAIL.LeaveAction();
                         }
                         catch (System.Exception e)
                         {
@@ -435,9 +440,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         try
                         {
-                            this.DynAction.ReportEvent(Constants.WEBVIEW_PAYMENT_FINISH_DASHBOARD);
-                            this.DynAction.LeaveAction();
-                            this.DynAction.Dispose();
+                            IDTXAction WEBVIEW_PAYMENT_FINISH_DASHBOARD = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_FINISH_DASHBOARD);  // DYNA
+                            WEBVIEW_PAYMENT_FINISH_DASHBOARD.LeaveAction();
                         }
                         catch (System.Exception e)
                         {

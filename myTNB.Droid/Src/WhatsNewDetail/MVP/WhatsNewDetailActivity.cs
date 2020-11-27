@@ -158,8 +158,14 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 
 		public void dynaAction(string eventName)
         {
-			this.DynAction = DynatraceAndroid.Dynatrace.EnterAction(eventName);
-		
+            try
+            {
+				this.DynAction = DynatraceAndroid.Dynatrace.EnterAction(eventName);
+			}
+            catch (System.Exception e)
+			{
+				Utility.LoggingNonFatalError(e);
+			}
 		}
 
 		protected override void OnStart()
