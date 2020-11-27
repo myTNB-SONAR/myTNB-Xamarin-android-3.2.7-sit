@@ -4,8 +4,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-
-
 using Android.Util;
 using Android.Views;
 using Android.Webkit;
@@ -93,7 +91,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
             string title = Utility.GetLocalizedLabel("ViewBill", "titleBill");
             if (selectedAccount != null)
             {
-                if (selectedAccount.AccountCategoryId.Equals("2"))
+                if (selectedAccount.AccountCategoryId != null && selectedAccount.AccountCategoryId.Equals("2"))
                 {
                     title = Utility.GetLocalizedLabel("ViewBill", "titleAdvice");
                 }
@@ -124,7 +122,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
             if (d != null)
             {
-                title = simpleDateFormat.Format(d) + " " +  title;
+                title = simpleDateFormat.Format(d) + " " + title;
             }
 
             return title;
@@ -233,7 +231,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.ViewBillReceiptMenu, menu);  
+            MenuInflater.Inflate(Resource.Menu.ViewBillReceiptMenu, menu);
             //downloadOption = menu.GetItem(Resource.Id.action_download);
             return base.OnCreateOptionsMenu(menu);
         }
@@ -438,8 +436,8 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 mErrorNoInternet = Snackbar.Make(baseView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
                 .SetAction(Utility.GetLocalizedLabel("Common", "tryAgain"), delegate
                 {
-                //webView.LoadUrl(failingUrl);
-                mErrorNoInternet.Dismiss();
+                    //webView.LoadUrl(failingUrl);
+                    mErrorNoInternet.Dismiss();
                 });
                 View v = mErrorNoInternet.View;
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
@@ -567,7 +565,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 string title = Utility.GetLocalizedLabel("ViewBill", "titleBill");
                 if (selectedAccount != null)
                 {
-                    if (selectedAccount.AccountCategoryId.Equals("2"))
+                    if (selectedAccount.AccountCategoryId != null && selectedAccount.AccountCategoryId.Equals("2"))
                     {
                         title = Utility.GetLocalizedLabel("ViewBill", "titleAdvice");
                     }
