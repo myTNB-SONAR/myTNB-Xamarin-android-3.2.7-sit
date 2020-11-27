@@ -143,7 +143,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             btnSkip.TextSize = TextViewUtils.GetFontSize(12f);
             btnStart.TextSize = TextViewUtils.GetFontSize(16f);
             btnSkip.Text = Utility.GetLocalizedLabel("Onboarding", "skip");
-            btnStart.Text = Utility.GetLocalizedLabel("Onboarding", "letsStart");
+            btnStart.Text = Utility.GetLocalizedLabel("Onboarding", MyTNBAccountManagement.GetInstance().IsLargeFontDisabled() ? "letsStart" : "displaySize");
         }
 
         private void ShowSubmitButton(bool isShow)
@@ -276,7 +276,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         public void UpdateContent()
         {
             btnSkip.Text = Utility.GetLocalizedLabel("Onboarding", "skip");
-            btnStart.Text = Utility.GetLocalizedLabel("Onboarding", "letsStart");
+           
+            btnStart.Text = Utility.GetLocalizedLabel("Onboarding", MyTNBAccountManagement.GetInstance().IsLargeFontDisabled()? "letsStart":"displaySize");
             newWalkthroughAdapter.SetData(this.presenter.GenerateNewWalkthroughList(currentAppNavigation));
             newWalkthroughAdapter.NotifyDataSetChanged();
             viewPager.Invalidate();

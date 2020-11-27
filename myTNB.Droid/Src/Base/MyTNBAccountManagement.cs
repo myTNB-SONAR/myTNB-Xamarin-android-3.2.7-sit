@@ -324,6 +324,11 @@ namespace myTNB_Android.Src.Base
             return appMasterDataResponse.Response.IsRewardsDisabled;
         }
 
+        public bool IsLargeFontDisabled()
+        {
+            return appMasterDataResponse.Response.IsLargeFontDisabled;
+        }
+
         public bool IsMaintenanceDialogShown()
         {
             return IsMaintenanceShown;

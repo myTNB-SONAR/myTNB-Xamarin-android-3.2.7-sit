@@ -104,6 +104,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             float heightRatio;
             btnToggleContainer.Visibility = ViewStates.Gone;
             bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
+            bool IsLargeFontDisabled = MyTNBAccountManagement.GetInstance().IsLargeFontDisabled();
             switch (imageUrl)
             {
                 case "walkthrough_img_install_0":
@@ -200,6 +201,20 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     {
                         bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFifthBg);
                     }
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 175f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
+                    break;
+                case "walkthrough_img_install_7":
+                    imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_7);
+                    
+                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSeventhBg);
+                    
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 

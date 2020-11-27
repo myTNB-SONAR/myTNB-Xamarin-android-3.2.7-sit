@@ -72,6 +72,15 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Description = Utility.GetLocalizedLabel("Onboarding", "description8"),
                     Image = "walkthrough_img_install_6"
                 });
+                if (!MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
+                {
+                    newWalkthroughList.Add(new NewWalkthroughModel()
+                    {
+                        Title = Utility.GetLocalizedLabel("Onboarding", "title9"),
+                        Description = Utility.GetLocalizedLabel("Onboarding", "description9"),
+                        Image = "walkthrough_img_install_7"
+                    });
+                }
             }
             else
             {

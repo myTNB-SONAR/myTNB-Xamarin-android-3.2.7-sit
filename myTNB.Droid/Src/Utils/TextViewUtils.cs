@@ -114,7 +114,7 @@ namespace myTNB_Android.Src.Utils
 
             var Key = SelectedFontSize();
 
-            if (Key != null && Key == "L")
+            //if (Key != null && Key == "L")
             {
 
                 return font + 4;
