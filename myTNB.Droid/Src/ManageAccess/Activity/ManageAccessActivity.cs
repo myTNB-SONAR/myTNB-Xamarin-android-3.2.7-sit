@@ -404,7 +404,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 adapter.NotifyDataSetChanged();
                 listView.SetNoScroll();
                 bottomLayout.Visibility = ViewStates.Visible;
-                txtManageAccessTitle.Visibility = ViewStates.Gone;
+                //txtManageAccessTitle.Visibility = ViewStates.Gone;
                 layout_btnAddUser.Visibility = ViewStates.Gone;
                 manage_user_layout.Visibility = ViewStates.Gone;
             }
@@ -419,6 +419,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             try
             {
                 listView.EmptyView = manage_user_layout;
+                txtManageAccessTitle.Visibility = ViewStates.Gone;
                 layout_btnAddUser.Visibility = ViewStates.Visible;
             }
             catch (Exception e)
