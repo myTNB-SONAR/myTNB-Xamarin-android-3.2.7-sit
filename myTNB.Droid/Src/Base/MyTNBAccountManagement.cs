@@ -37,6 +37,8 @@ namespace myTNB_Android.Src.Base
         private bool IsAccessUsageFromNotification = false;
         private bool IsNotificationListFromLaunch = false;
         private bool IsUpdateAppLanguage = false;
+        private bool IsUpdateAppLargeFont = false;
+        
         private MyTNBAccountManagement()
         {
             appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_TIMEOUT;
@@ -554,7 +556,14 @@ namespace myTNB_Android.Src.Base
         {
             IsUpdateAppLanguage = isUpdated;
         }
-
+        public void SetIsUpdateLargeFont(bool isUpdated)
+        {
+            IsUpdateAppLargeFont = isUpdated;
+        }
+        public bool IsUpdateLargeFont()
+        {
+            return IsUpdateAppLargeFont;
+        }
         public bool IsUpdateLanguage()
         {
             return IsUpdateAppLanguage;

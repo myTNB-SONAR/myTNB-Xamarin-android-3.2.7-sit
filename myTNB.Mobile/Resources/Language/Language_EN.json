@@ -778,7 +778,7 @@
     "description7": "You can now register a myTNB account or update your existing one with an international phone number.",
     "description8": "You can now track all your application status with zero hassle, anytime and anywhere. Need TNB to install a new meter? You can now set an appointment!",
     "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
-    "fontChangeSuccess": "You've successfully updated your display text size to {0}!",
+    "fontChangeSuccess": "You've successfully updated your display text size to {0}!"
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",

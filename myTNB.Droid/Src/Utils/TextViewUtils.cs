@@ -13,7 +13,7 @@ namespace myTNB_Android.Src.Utils
 
         public static string MuseoSans300 = "MuseoSans_300.otf";
         public static string MuseoSans500 = "MuseoSans_500.otf";
-      
+        public static string FontSelected = string.Empty;
 
         public static void SetTypeface(string family, params EditText[] editTexts)
         {
@@ -105,10 +105,12 @@ namespace myTNB_Android.Src.Utils
                     largeFontModel.selected = selected[0].selected;
                     largeFontModel.Key = selected[0].Key;
                     largeFontModel.Value = selected[0].Value;
+                    FontSelected = selected[0].Value;
                 }
             }
             return largeFontModel.Key;
         }
+       
         public static float GetFontSize(float font)
         {
 

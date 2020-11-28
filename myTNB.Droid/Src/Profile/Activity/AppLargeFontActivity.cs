@@ -239,7 +239,14 @@ namespace myTNB_Android.Src.Profile.Activity
 
                 Intent WalkthroughIntent = new Intent(this, typeof(NewWalkthroughActivity));
                 WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, AppLaunchNavigation.Walkthrough.ToString());
+                if (MyTNBAccountManagement.GetInstance().IsUpdateLargeFont())
+                {
+                    WalkthroughIntent.PutExtra("APP_FONTCHANGE_REQUEST", AppLaunchNavigation.LargeFont.ToString());
+
+                }
                 StartActivity(WalkthroughIntent);
+
+             
             }
             else
             {
@@ -257,6 +264,7 @@ namespace myTNB_Android.Src.Profile.Activity
                 ShowProgressDialog();
                 TextViewUtils.SaveFontSize(selectedItem);
                 UpdateFont();
+                MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(true);
                 OnBackProceed();
                 HideShowProgressDialog();
                 
