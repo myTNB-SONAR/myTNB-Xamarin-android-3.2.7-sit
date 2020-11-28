@@ -25,6 +25,7 @@ using myTNB_Android.Src.UpdatePassword.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using Org.BouncyCastle.Crypto.Signers;
 using myTNB_Android.Src.FAQ.Activity;
+using myTNB_Android.Src.ManageAccess.Activity;
 
 namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 {
@@ -57,7 +58,10 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [BindView(Resource.Id.btnRemoveAccount)]
         Button btnRemoveAccount;
 
+        [BindView(Resource.Id.infoAddress)]
+        TextView infoAddress;
 
+        private IMenu ManageSupplyAccountMenu;
         AccountData accountData;
         int position;
 
@@ -175,6 +179,38 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
         }
 
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
+            ManageSupplyAccountMenu = menu;
+            ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.icon_activity_log)).SetVisible(true);
+
+/*            ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
+            ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
+
+
+            ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(false);
+
+            ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true);*/
+
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.icon_log_activity_unread:
+                    //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled).SetVisible(true).SetEnabled(false);
+                    //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_disabled).SetVisible(true).SetEnabled(false);
+                    SetToolBarTitle(GetLabelByLanguage("title"));
+                    break;                
+            }
+
+
+            return base.OnOptionsItemSelected(item);
+        }
+
         public bool IsActive()
         {
             return Window.DecorView.RootView.IsShown;
@@ -233,24 +269,20 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             autoPay.SetTitle(GetLabelCommonByLanguage("manageAutopay"));
             autoPay.SetIcon(2);
             autoPay.SetItemActionVisibility(true);
-            autoPay.SetItemActionCall(ShowManageUser);
+            autoPay.SetItemActionCall(ShowManageAutopay);
             manageItems.Add(autoPay);
 
             manageItem.AddComponentView(manageItems);
             return manageItem;
         }
 
-        private void ShowAutoPay()
+        private void ShowManageUser()
         {
-
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                StartActivity(new Intent(this, typeof(FAQListActivity)));
-            }
+            //Intent updateNickName = new Intent(this, typeof(ManageAccessActivity));
+            //StartActivityForResult(updateNickName, Constants.UPDATE_NICKNAME_REQUEST);
         }
 
-        private void ShowManageUser()
+        private void ShowManageAutopay()
         {
         }
 
@@ -320,6 +352,48 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             try
             {
                 LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        MaterialDialog addressInfoDialog;
+        //AlertDialog addressInfo;
+        [OnClick(Resource.Id.infoAddress)]
+        void OnClickAddressInfo(object sender, EventArgs eventArgs)
+        {
+
+            try
+            {
+                if (addressInfoDialog != null && addressInfoDialog.IsShowing)
+                {
+                    addressInfoDialog.Dismiss();
+                }
+
+                addressInfoDialog = new MaterialDialog.Builder(this)
+                    .CustomView(Resource.Layout.WhyCantSeeFullAddressView, false)
+                    .Cancelable(true)
+                    .PositiveText(GetLabelCommonByLanguage("gotIt"))
+                    .PositiveColor(Resource.Color.blue)
+                    .Build();
+
+                View view = addressInfoDialog.View;
+                if (view != null)
+                {
+                    TextView titleText = view.FindViewById<TextView>(Resource.Id.textDialogTitle);
+                    TextView infoText = view.FindViewById<TextView>(Resource.Id.textDialogInfo);
+                    if (titleText != null && infoText != null)
+                    {
+                        TextViewUtils.SetMuseoSans500Typeface(titleText);
+                        TextViewUtils.SetMuseoSans300Typeface(infoText);
+
+                        titleText.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogAddrress");
+                        infoText.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogAddrressMessage");
+                    }
+                }
+                addressInfoDialog.Show();
             }
             catch (Exception e)
             {

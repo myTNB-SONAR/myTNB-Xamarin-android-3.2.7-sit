@@ -951,6 +951,7 @@
     <Compile Include="Src\Maintenance\Activity\MaintenanceActivity.cs" />
     <Compile Include="Src\Maintenance\MVP\MaintenanceContract.cs" />
     <Compile Include="Src\Maintenance\MVP\MaintenancePresenter.cs" />
+    <Compile Include="Src\ManageAccess\Adapter\ManageAccessAdapter.cs" />
     <Compile Include="Src\ManageCards\Activity\ManageCardsActivity.cs" />
     <Compile Include="Src\ManageCards\Adapter\ManageCardsAdapter.cs" />
     <Compile Include="Src\ManageCards\Models\CreditCardData.cs" />
@@ -989,6 +990,9 @@
     <Compile Include="Src\MultipleAccountPayment\Requests\MPGetAccountDueAmountRequest.cs" />
     <Compile Include="Src\MultipleAccountPayment\Requests\MPInitiatePaymentRequestV3.cs" />
     <Compile Include="Src\MultipleAccountPayment\Requests\MPSubmitPaymentRequestPG.cs" />
+    <Compile Include="Src\ManageAccess\Activity\ManageAccessActivity.cs" />
+    <Compile Include="Src\ManageAccess\MVP\ManageAccessContract.cs" />
+    <Compile Include="Src\ManageAccess\MVP\ManageAccessPresenter.cs" />
     <Compile Include="Src\MyLearnMoreAboutTnb\Activity\MyLearnMoreActivity.cs" />
     <Compile Include="Src\MyLearnMoreAboutTnb\MVP\MyLearnMoreContract.cs" />
     <Compile Include="Src\MyLearnMoreAboutTnb\MVP\MyLearnMorePresenter.cs" />
@@ -5924,6 +5928,7 @@
     <Folder Include="Src\ForgetPassword\Api\" />
     <Folder Include="Src\Login\Api\" />
     <Folder Include="Src\LogoutRate\Api\" />
+    <Folder Include="Src\ManageAccess\Models\" />
     <Folder Include="Src\ManageCards\Api\" />
     <Folder Include="Src\ManageSupplyAccount\Api\" />
     <Folder Include="Src\MultipleAccountPayment\Api\" />
@@ -8287,13 +8292,55 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\profile_unverified.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\ic_menu_more_unverified_selector.xml">
+    <AndroidResource Include="Resources\layout\BottomViewNavigationItemLayoutProfile.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\menu\ManageSupplyAccountToolbarMenu.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\manage_account.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\manage_account.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\manage_account.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\manage_account.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\manage_account.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\menu\AccountManageToolbarMenu.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\ManageAccessView.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\BottomViewNavigationItemLayoutProfile.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\user_access_empty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\user_access_empty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\user_access_empty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\user_access_empty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\user_access_empty.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\WhyCantSeeFullAddressView.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

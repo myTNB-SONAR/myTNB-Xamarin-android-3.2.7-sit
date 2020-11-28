@@ -825,7 +825,9 @@
     "accountDeleteSuccess": "Your electricity supply account has been removed from myTNB account.",
     "passwordUpdateSuccess": "Your password has been changed successfully.",
     "noAccounts": "No Electricity Account",
-    "addAccountMessage": "Add your existing TNB Electricity Supply Account to view usage and transaction details."
+    "addAccountMessage": "Add your existing TNB Electricity Supply Account to view usage and transaction details.",
+    "dialogAddrress":"Why can't I see my full address?",
+    "dialogAddrressMessage":"We mask sensitive information to safeguard owner's privacy. You are seeing masked information as you are not the owner of this electricity account."
   },
   "Onboarding": {
     "letsStart": "Let's get started!",
@@ -1189,6 +1191,13 @@
     "updateIdLabelTitle" : "Provide your identification number for better experience!",
     "updateIdLabelDetails" : "Get better access and controls over your electricity accounts on myTNB by helping us validate your identification",
     "confrimButton" : "Confirm"
+  },
+  "UserAccess" : {
+    "title" : "User Access",
+    "LabelTitle" : "User that have access to this account:",
+    "LabelEmptyTitle" : "Looks like your electricity account is not viewed or accessed by anyone else. You can help them by adding this account to their view below.",
+    "addUserBtn" : "Add User",
+    "AddTitle" : "Add",
+    "RemoveTitle" : "Remove"
   }
-
 }

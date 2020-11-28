@@ -824,7 +824,9 @@
     "accountDeleteSuccess": "Akaun elektrik anda telah dialih keluar daripada akaun myTNB.",
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
     "noAccounts": "Tiada Akaun Elektrik",
-    "addAccountMessage": "Tambah Akaun Elektrik TNB sedia ada untuk melihat butiran penggunaan dan transaksi."
+    "addAccountMessage": "Tambah Akaun Elektrik TNB sedia ada untuk melihat butiran penggunaan dan transaksi.",
+    "dialogAddrress":"Mengapa saya tidak boleh melihat alamat penuh saya?",
+    "dialogAddrressMessage":"Kami menyembunyikan maklumat sensitif untuk melindungi privasi pemilik. Anda melihat maklumat tersembunyi kerana anda bukan pemilik akaun elektrik ini."
   },
   "Onboarding": {
     "letsStart": "Jom mulakan!",
@@ -1188,5 +1190,13 @@
     "updateIdLabelTitle" : "Provide your identification number for better experience!",
     "updateIdLabelDetails" : "Get better access and controls over your electricity accounts on myTNB by helping us validate your identification",
     "confrimButton" : "Confirm"
-  }     
+  },
+  "UserAccess" : {
+    "title" : "User Access",
+    "LabelTitle" : "User that have access to this account:",
+    "LabelEmptyTitle" : "Looks like your electricity account is not viewed or accessed by anyone else. You can help them by adding this account to their view below.",
+    "addUserBtn" : "Add User",
+    "AddTitle" : "Add",
+    "RemoveTitle" : "Remove"
+  }
 }

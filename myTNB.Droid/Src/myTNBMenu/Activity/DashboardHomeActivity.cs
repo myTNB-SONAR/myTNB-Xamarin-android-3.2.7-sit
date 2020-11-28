@@ -49,6 +49,7 @@ using Google.Android.Material.BottomNavigation;
 using AndroidX.Core.Content;
 using myTNB_Android.Src.ForgetPassword.Activity;
 using myTNB_Android.Src.UpdateID.Activity;
+using myTNB_Android.Src.ManageSupplyAccount.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -116,6 +117,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         private static bool isFirstInitiate = false;
 
         private static bool isWhatNewDialogOnHold = false;
+
+        private IMenu ManageSupplyAccountMenu;
+
 
         public bool IsActive()
         {
@@ -356,9 +360,39 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.userActionsListener.OnMenuSelect(e.Item.ItemId);
         }
 
-        public override bool OnCreateOptionsMenu(IMenu menu)
+        /*public override bool OnCreateOptionsMenu(IMenu menu)
         {
             return base.OnCreateOptionsMenu(menu);
+        }*/
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            if (DashboardHomeActivity.GO_TO_INNER_DASHBOARD)
+            {
+                DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
+                MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
+                ManageSupplyAccountMenu = menu;
+                ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.manage_account)).SetVisible(true);
+            }
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            string mAccountNumber = null;
+            switch (item.ItemId)
+            {
+                case Resource.Id.icon_log_activity_unread:
+                    CustomerBillingAccount selected = new CustomerBillingAccount();
+                    selected = CustomerBillingAccount.GetSelected();
+                    UsageHistoryEntity storedEntity = new UsageHistoryEntity();
+                    storedEntity = UsageHistoryEntity.GetItemByAccountNo(selected.AccNum);
+                    ShowManageSupplyAccount(AccountData.Copy(selected, false));
+                    break;
+
+            }
+
+            return base.OnOptionsItemSelected(item);
         }
 
         protected override void OnResume()
@@ -380,6 +414,22 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             this.userActionsListener.SelectSupplyAccount();
         }
+
+        public void ShowManageSupplyAccount(AccountData accountData)
+        {
+            try
+            {
+                Intent manageAccount = new Intent(this, typeof(ManageSupplyAccountActivityEdit));
+                manageAccount.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+                //manageAccount.PutExtra(Constants.SELECTED_ACCOUNT_POSITION);
+                StartActivityForResult(manageAccount, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         public void ShowSelectSupplyAccount()
         {
@@ -1512,6 +1562,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void OnSelectAccount()
         {
+
             this.userActionsListener.SelectSupplyAccount();
         }
 
