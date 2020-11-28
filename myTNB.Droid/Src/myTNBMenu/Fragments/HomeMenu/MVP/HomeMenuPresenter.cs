@@ -97,6 +97,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return UserEntity.GetActive().DisplayName;
         }
 
+        public void SetDynaUserTAG()
+        {
+            UserEntity loggedUser = UserEntity.GetActive();
+            string userEmail = loggedUser.Email;
+            if (!String.IsNullOrEmpty(userEmail))
+            {   //dynatrace infomation for logged user
+                try
+                {
+                    DynatraceAndroid.Dynatrace.IdentifyUser(userEmail);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+
+                }
+            }
+        }
+
         public Constants.GREETING GetGreeting()
         {
             DateTime dt = DateTime.Now.ToLocalTime();
