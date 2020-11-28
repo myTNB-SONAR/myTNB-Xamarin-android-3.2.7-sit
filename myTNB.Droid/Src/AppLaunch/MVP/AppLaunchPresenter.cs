@@ -32,6 +32,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using static myTNB_Android.Src.MyTNBService.Response.AppLaunchMasterDataResponse;
 using myTNB;
 using Firebase.Iid;
+using System.Net.Http;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {

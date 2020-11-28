@@ -40,6 +40,7 @@ using myTNB;
 using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using Newtonsoft.Json;
+using Firebase.Iid;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
