@@ -92,19 +92,12 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             try
             {
                 // Create your application here
-                TextViewUtils.SetMuseoSans300Typeface(txtEmptyManageAccess,
-                    txtManageAccessTitle);
-
-                TextViewUtils.SetMuseoSans500Typeface(btnAddUser,
-                    btnRemoveAccess,
-                    btnAddAccessUser);
 
                 txtEmptyManageAccess.Text = GetLabelByLanguage("LabelEmptyTitle");
                 txtManageAccessTitle.Text = GetLabelByLanguage("LabelTitle");
                 btnAddUser.Text = GetLabelByLanguage("addUserBtn");
                 btnRemoveAccess.Text = GetLabelByLanguage("RemoveTitle");
                 btnAddAccessUser.Text = GetLabelByLanguage("AddTitle");
-                //btnAddAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
 
                 adapter = new ManageAccessAdapter(this, false);
                 listView.Adapter = adapter;
@@ -133,8 +126,8 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                CustomerBillingAccount customerBillingAccount = adapter.GetItemObject(e.Position);
-                ShowManageSupplyAccount(AccountData.Copy(customerBillingAccount, false), e.Position);
+                /*CustomerBillingAccount customerBillingAccount = adapter.GetItemObject(e.Position);
+                ShowManageSupplyAccount(AccountData.Copy(customerBillingAccount, false), e.Position);*/
             }
         }
 
@@ -143,14 +136,14 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         {
             ShowDeleteAccDialog(this, position, () =>
             {
-                CustomerBillingAccount account = adapter.GetItemObject(position);
+                /*CustomerBillingAccount account = adapter.GetItemObject(position);
                 CustomerBillingAccount.Remove(account.AccNum);
                 this.mPresenter.OnRemoveAccount(account.AccNum);
                 adapter.Clear();
                 listView.Adapter = null;
                 listView.Adapter = adapter;
                 adapter.setCustomButtonListner(this);
-                this.userActionsListener.Start();
+                this.userActionsListener.Start();*/
             });           
         }
 
@@ -245,17 +238,6 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             }
         }
 
-        [OnClick(Resource.Id.btnAddAccount)]
-        void OnClickAddAccount(object sender, EventArgs eventArgs)
-        {
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                ShowAddAccount();
-            }
-        }
-
-
         public void ShowManageSupplyAccount(AccountData accountData, int position)
         {
             try
@@ -343,9 +325,6 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-            //int titleId = Resources.GetIdentifier("alertTitle", "id", "android");
-            //TextView txtTitle = removeDialog.FindViewById<TextView>(titleId);
-            //txtTitle.SetTextSize(ComplexUnitType.Sp ,17);
         }
 
         public void ShowErrorMessageResponse(string error)
@@ -424,7 +403,10 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 adapter.AddAll(accountList);
                 adapter.NotifyDataSetChanged();
                 listView.SetNoScroll();
-                //btnAddAnotherAccount.Visibility = ViewStates.Visible;
+                bottomLayout.Visibility = ViewStates.Visible;
+                txtManageAccessTitle.Visibility = ViewStates.Gone;
+                layout_btnAddUser.Visibility = ViewStates.Gone;
+                manage_user_layout.Visibility = ViewStates.Gone;
             }
             catch (Exception e)
             {
@@ -437,7 +419,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             try
             {
                 listView.EmptyView = manage_user_layout;
-                btnAddAccessUser.Visibility = ViewStates.Gone;
+                layout_btnAddUser.Visibility = ViewStates.Visible;
             }
             catch (Exception e)
             {

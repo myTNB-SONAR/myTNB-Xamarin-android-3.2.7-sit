@@ -278,8 +278,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
         private void ShowManageUser()
         {
-            //Intent updateNickName = new Intent(this, typeof(ManageAccessActivity));
-            //StartActivityForResult(updateNickName, Constants.UPDATE_NICKNAME_REQUEST);
+            Intent updateNickName = new Intent(this, typeof(ManageAccessActivity));
+            StartActivityForResult(updateNickName, Constants.UPDATE_NICKNAME_REQUEST);
         }
 
         private void ShowManageAutopay()
