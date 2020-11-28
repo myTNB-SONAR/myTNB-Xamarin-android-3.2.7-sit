@@ -25,6 +25,7 @@ using static Android.Views.View;
 using Android.Text.Style;
 using Google.Android.Material.TextField;
 using AndroidX.Core.Content;
+using myTNB_Android.Src.FAQ.Activity;
 
 namespace myTNB_Android.Src.SSMRTerminate.MVP
 {
@@ -71,6 +72,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
         [BindView(Resource.Id.txtTermsConditions)]
         TextView txtTermsConditions;
+
+        [BindView(Resource.Id.txtTermsConditionsFAQ)]
+        TextView txtTermsConditionsFAQ;
 
         [BindView(Resource.Id.txtEmail)]
         EditText txtEmail;
@@ -181,7 +185,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutReason, txtInputLayoutEmail, txtInputLayoutMobileNo, txtInputLayoutTxtReason);
             TextViewUtils.SetMuseoSans500Typeface(btnDisconnectionSubmit, disconnectionTtile, disconnectionAccountTtile, contactDetailTtile, terminationReasonTitle);
-            TextViewUtils.SetMuseoSans300Typeface(disconnectionAccountAddress, contactDetailConsent, txtTermsConditions, txtEmail, txtMobileNo, txtSelectReason, txtReason);
+            TextViewUtils.SetMuseoSans300Typeface(disconnectionAccountAddress, contactDetailConsent, txtTermsConditions , txtTermsConditionsFAQ, txtEmail, txtMobileNo, txtSelectReason, txtReason);
 
             contactDetailTtile.Text = GetLabelByLanguage("contactDetails");
             txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("emailAddress");
@@ -194,11 +198,21 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
-                txtTermsConditions.TextFormatted = Html.FromHtml(GetLabelByLanguage("tncSubscribe"), FromHtmlOptions.ModeLegacy);
+                txtTermsConditionsFAQ.Visibility = ViewStates.Visible;
+                txtTermsConditions.TextFormatted = Html.FromHtml(GetLabelByLanguage("tncSubscribeTNC"), FromHtmlOptions.ModeLegacy);
+                txtTermsConditionsFAQ.TextFormatted = Html.FromHtml(GetLabelByLanguage("tncSubscribeFAQ"), FromHtmlOptions.ModeLegacy);
+
+                StripUnderlinesFromLinks(txtTermsConditions);
+                StripUnderlinesFromLinks(txtTermsConditionsFAQ);
             }
             else
             {
-                txtTermsConditions.TextFormatted = Html.FromHtml(GetLabelByLanguage("tncSubscribe"));
+                txtTermsConditionsFAQ.Visibility = ViewStates.Visible;
+                txtTermsConditions.TextFormatted = Html.FromHtml(GetLabelByLanguage("tncSubscribeTNC"));
+                txtTermsConditionsFAQ.TextFormatted = Html.FromHtml(GetLabelByLanguage("tncSubscribeFAQ"));
+
+                StripUnderlinesFromLinks(txtTermsConditions);
+                StripUnderlinesFromLinks(txtTermsConditionsFAQ);
             }
 
             contactDetailConsent.Visibility = ViewStates.Gone;
@@ -267,11 +281,20 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 reasonDetailContainer.Visibility = ViewStates.Gone;
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
-                    txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribe"), FromHtmlOptions.ModeLegacy);
+                    txtTermsConditionsFAQ.Visibility = ViewStates.Visible;
+                    txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribeTNC"), FromHtmlOptions.ModeLegacy);
+                    txtTermsConditionsFAQ.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribeFAQ"), FromHtmlOptions.ModeLegacy);
+                    StripUnderlinesFromLinks(txtTermsConditions);
+                    StripUnderlinesFromLinks(txtTermsConditionsFAQ);
                 }
                 else
                 {
-                    txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribe"));
+                    txtTermsConditionsFAQ.Visibility = ViewStates.Visible;
+                    txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribeTNC"));
+                    txtTermsConditionsFAQ.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribeFAQ"));
+
+                    StripUnderlinesFromLinks(txtTermsConditions);
+                    StripUnderlinesFromLinks(txtTermsConditionsFAQ);
                 }
                 ShowContactDetails();
             }
@@ -287,13 +310,18 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncUnsubscribe"), FromHtmlOptions.ModeLegacy);
+                    txtTermsConditionsFAQ.Visibility = ViewStates.Gone;
+
+
                 }
                 else
                 {
                     txtTermsConditions.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("SSMRApplication", "tncUnsubscribe"));
+                    txtTermsConditionsFAQ.Visibility = ViewStates.Gone;
                 }
 
                 StripUnderlinesFromLinks(txtTermsConditions);
+       
 
                 EnableSubmitButton();
             }
@@ -500,6 +528,37 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             {
                 this.SetIsClicked(true);
                 this.mPresenter.NavigateToTermsAndConditions();
+            }
+        }
+
+        [OnClick(Resource.Id.txtTermsConditionsFAQ)]
+        void OnFAQ(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.mPresenter.NavigateToFAQ();
+            }
+        }
+
+        public void ShowFAQ()
+        {
+            //Lauch FAQ
+
+            string textMessage = Utility.GetLocalizedLabel("SSMRApplication", "tncSubscribeFAQ");
+
+            int startIndex = textMessage.LastIndexOf("=") + 1;
+            int lastIndex = textMessage.LastIndexOf("}");
+            int lengthOfId = (lastIndex - startIndex) + 1;
+            if (lengthOfId < textMessage.Length)
+            {
+                string faqid = textMessage.Substring(startIndex, lengthOfId);
+                if (!string.IsNullOrEmpty(faqid))
+                {
+                    Intent faqIntent = new Intent(this, typeof(FAQListActivity));
+                    faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                    this.StartActivity(faqIntent);
+                }
             }
         }
 

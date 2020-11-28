@@ -30,6 +30,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             void ShowTermsAndConditions();
             void OnRequestSuccessful(SMRregistrationSubmitResponse response);
             void OnRequestFailed(SMRregistrationSubmitResponse response);
+            void ShowFAQ();
         }
 
         public interface IPresenter
@@ -41,6 +42,8 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             void InitiateTerminationReasonsList();
 
             void NavigateToTermsAndConditions();
+
+            void NavigateToFAQ();
 
             void OnSubmitApplication(string accountNum, string oldEmail, string oldPhoneNum, string newEmail, string newPhoneNum, string terminationReason, string mode);
         }
