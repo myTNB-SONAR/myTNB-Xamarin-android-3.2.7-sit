@@ -32,6 +32,7 @@ using myTNB_Android.Src.Utils.Custom;
 using System.Globalization;
 using Google.Android.Material.Snackbar;
 using myTNB.Mobile.API.Models.ApplicationStatus;
+using DynatraceAndroid;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
@@ -262,7 +263,21 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         HideErrorMessageSnakebar();
                         AddNewCard();
+
+                        try
+                        {// dynatrace
+
+                            IDTXAction WEBVIEW_PAYMENT_CC = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_CC);
+                            WEBVIEW_PAYMENT_CC.LeaveAction();
+
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
                     }
+
+                  
                 };
 
                 btnFPXPayment = rootView.FindViewById<Button>(Resource.Id.btnFPXPayment);
@@ -279,6 +294,18 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         selectedPaymentMethod = METHOD_FPX;
                         selectedCard = null;
                         InitiatePaymentRequest();
+
+                        try
+                        {   //dynatrace
+
+                            IDTXAction WEBVIEW_PAYMENT_FPX = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_FPX);
+                            WEBVIEW_PAYMENT_FPX.LeaveAction();
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+
                     }
                     };
 

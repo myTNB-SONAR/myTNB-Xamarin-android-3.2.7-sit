@@ -78,7 +78,7 @@ namespace myTNB_Android.Src.CompoundView
                     }
                     else
                     {
-                        //content.ShowSeparator(true);
+                        content.ShowSeparator(true);
                     }
                 }
             }

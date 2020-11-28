@@ -312,7 +312,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 else
                 {
                     this.DisableSubmitButton();
-                    return true;
+                    return false;
                 }
 
 

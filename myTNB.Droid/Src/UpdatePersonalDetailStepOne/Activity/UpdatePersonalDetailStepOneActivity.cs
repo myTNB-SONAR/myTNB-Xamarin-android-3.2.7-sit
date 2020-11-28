@@ -6,6 +6,7 @@ using System.Text;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Graphics.Drawables;
 using Android.Opengl;
 using Android.OS;
 using Android.Runtime;
@@ -973,6 +974,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (toggleChkBoxIC)
             {
                 txtInputLayoutNewIC.Visibility = ViewStates.Visible;
+                Drawable icon = ContextCompat.GetDrawable(this, Resource.Drawable.placeholder_ic);
+                txtNewIC.SetCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+
                 if (txtNewIC.Text.IsNullOrEmpty())
                 {
                     this.userActionsListener.OnDisableSubmitButton();
@@ -1009,6 +1013,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             {
                 txtInputLayoutNewOwnerName.Visibility = ViewStates.Visible;
                 // parseCheckRequiredField();
+                Drawable icon = ContextCompat.GetDrawable(this, Resource.Drawable.placeholder_name);
+                txtNewOwnerName.SetCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+
                 if (txtNewOwnerName.Text.IsNullOrEmpty())
                 {
                     this.userActionsListener.OnDisableSubmitButton();
@@ -1082,6 +1089,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             {
                 txtInputLayoutNewEmailAddress.Visibility = ViewStates.Visible;
                 //  parseCheckRequiredField();
+                Drawable icon = ContextCompat.GetDrawable(this, Resource.Drawable.placeholder_email);
+                txtNewEmailAddress.SetCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
                 if (txtNewEmailAddress.Text.IsNullOrEmpty())
                 {
                     this.userActionsListener.OnDisableSubmitButton();
@@ -1117,6 +1126,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (toggleChkMailingAddress)
             {
                 txtInputLayoutNewMailingAddress.Visibility = ViewStates.Visible;
+                Drawable icon = ContextCompat.GetDrawable(this, Resource.Drawable.placeholder_email);
+                txtNewMailingAddress.SetCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+
                 //parseCheckRequiredField();
                 if (txtNewMailingAddress.Text.IsNullOrEmpty())
                 {
@@ -1153,6 +1165,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (toggleChkPremiseAddress)
             {
                 txtInputLayoutNewPremiseAddress.Visibility = ViewStates.Visible;
+                Drawable icon = ContextCompat.GetDrawable(this, Resource.Drawable.ic_field_address);
+                txtNewPremiseAddress.SetCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
                 //parseCheckRequiredField();
                 if (txtNewPremiseAddress.Text.IsNullOrEmpty())
                 {

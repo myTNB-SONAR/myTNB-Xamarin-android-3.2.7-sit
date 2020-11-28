@@ -107,6 +107,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             Constants.GREETING GetGreeting();
             string GetAccountDisplay();
+            void SetDynaUserTAG();
             void LoadAccounts();
             void InitiateService();
             Task InitiateMyService();

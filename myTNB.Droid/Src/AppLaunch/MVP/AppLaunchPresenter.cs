@@ -33,6 +33,7 @@ using static myTNB_Android.Src.MyTNBService.Response.AppLaunchMasterDataResponse
 using myTNB;
 using Firebase.Iid;
 using System.Net.Http;
+using DynatraceAndroid;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -230,6 +231,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     if (proceed)
                                     {
                                         UserEntity loggedUser = UserEntity.GetActive();
+                                                                          
                                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                                         HomeMenuUtils.ResetAll();
                                         SummaryDashBoardAccountEntity.RemoveAll();
@@ -664,7 +666,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     try
                     {
-                        imageCache = ImageUtils.GetImageBitmapFromUrl(item.Image);
+                         //imageCache = ImageUtils.GetImageBitmapFromUrl(item.Image);  
+                         imageCache = ImageUtils.GetImageBitmapFromUrlWithTimeOut(item.Image);   
                         sw.Stop();
                         AppLaunchTimeOutMillisecond = 0;
 

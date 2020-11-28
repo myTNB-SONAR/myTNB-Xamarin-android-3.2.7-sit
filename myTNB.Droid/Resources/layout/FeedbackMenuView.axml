@@ -54,13 +54,13 @@
                             android:paddingBottom="18dp"
                             tools:layout_editor_absoluteX="0dp"
                             tools:layout_editor_absoluteY="47dp">
+
                             <ImageView
                                 android:id="@+id/ImageView_idFeedbackNewIC"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="23dp"
-                                android:layout_marginTop="23dp"
-                                android:layout_marginStart="16dp"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginTop="13dp"
                                 android:src="@drawable/ic_tile_feedback_bill"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
