@@ -242,7 +242,10 @@
     "editContactInfo": "By editing, you will update your myTNB profile and electricity account contact details.",
     "selectReason": "Select Reason",
     "stateReason": "Please state your reason",
-    "selectAnAccount": "Select an account"
+    "selectAnAccount": "Select an account",
+    "tncSubscribeFAQ":"By submitting, you are agreeing to the <a href =\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Self Meter Reading FAQ</strong></a>,",
+    "tncSubscribeTNC":"<a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>."
+    
   },
   "Status": {
     "feedbackSuccessTitle": "Feedback Successful",
@@ -973,7 +976,7 @@
     "accNumberInfo": "Where is my account number?",
     "enquiringTitle": "What are you enquiring about?",
     "generalEnquiryTitle": "General Enquiry",
-    "generalEnquiryDescription": "I want to submit my thoughts & concerns.",
+    "generalEnquiryDescription": "I want to submit my thoughts and concerns.",
     "updatePersonalDetTitle": "Update Personal Details",
     "personalDetailsDescription": "I want to update personal details.",
     "stepTitle1of2": "Step 1 of 2",

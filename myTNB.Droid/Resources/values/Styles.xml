@@ -449,9 +449,14 @@
 
   <style name="TextInputLayoutFeedbackCount" parent="@android:style/TextAppearance.Medium">
     <item name="android:textColor">@color/tunaGrey</item>
-    <item name="android:textSize">10sp</item>
+	  <item name="android:textSize">10sp</item>
   </style>
 
+	<style name="TextInputLayoutFeedbackCountSubmitEnquiry" parent="@android:style/TextAppearance.Medium">
+		<item name="android:textColor">@color/tunaGrey</item>
+		<item name="android:textSize">10sp</item>
+	</style>
+  
   <style name="SMDashboardRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
     <item name="android:button">@drawable/radio_button_selector</item>
   </style>
