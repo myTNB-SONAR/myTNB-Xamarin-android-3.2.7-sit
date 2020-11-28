@@ -18,6 +18,7 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Maintenance.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.PreLogin.Activity;
+using myTNB_Android.Src.Profile.Activity;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
@@ -48,6 +49,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
 
         NewWalkthroughPresenter presenter;
         NewWalkthroughAdapter newWalkthroughAdapter;
+      
 
         string currentAppNavigation;
 
@@ -83,7 +85,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     }
                 }
 
-                if (position == (newWalkthroughAdapter.Count - 1))
+                if ((position == (newWalkthroughAdapter.Count - 1)))
                 {
                     ShowSubmitButton(true);
                 }
@@ -125,25 +127,39 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 }
             }
 
-            btnStart.Click += delegate
+            if (MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
             {
-                UserSessions.DoSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
-                UserSessions.DoUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
-                StartActivity();
-            };
+                btnStart.Click += delegate
+                {
+                    UserSessions.DoSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
+                    UserSessions.DoUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
+                    StartActivity();
+                };
+            }
+            else
+            {
+                btnStart.Click += delegate
+                {
+                    this.SetIsClicked(true);
+                    Intent nextIntent = new Intent(this, typeof(AppLargeFontActivity));
+                    nextIntent.PutExtra("APP_FONTCHANGE_REQUEST", AppLaunchNavigation.LargeFont.ToString());
+                    StartActivity(nextIntent);
 
-            btnSkip.Click += delegate
-            {
-                UserSessions.DoSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
-                UserSessions.DoUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
-                StartActivity();
-            };
+                };
+            }
+                btnSkip.Click += delegate
+                {
+                    UserSessions.DoSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
+                    UserSessions.DoUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
+                    StartActivity();
+                };
+            
 
             TextViewUtils.SetMuseoSans500Typeface(btnSkip, btnStart);
             btnSkip.TextSize = TextViewUtils.GetFontSize(12f);
             btnStart.TextSize = TextViewUtils.GetFontSize(16f);
             btnSkip.Text = Utility.GetLocalizedLabel("Onboarding", "skip");
-            btnStart.Text = Utility.GetLocalizedLabel("Onboarding", MyTNBAccountManagement.GetInstance().IsLargeFontDisabled() ? "letsStart" : "displaySize");
+            btnStart.Text = Utility.GetLocalizedLabel("Onboarding", MyTNBAccountManagement.GetInstance().IsLargeFontDisabled() ? "letsStart" : "setSize");
         }
 
         private void ShowSubmitButton(bool isShow)
@@ -277,7 +293,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         {
             btnSkip.Text = Utility.GetLocalizedLabel("Onboarding", "skip");
            
-            btnStart.Text = Utility.GetLocalizedLabel("Onboarding", MyTNBAccountManagement.GetInstance().IsLargeFontDisabled()? "letsStart":"displaySize");
+            btnStart.Text = Utility.GetLocalizedLabel("Onboarding", MyTNBAccountManagement.GetInstance().IsLargeFontDisabled()? "letsStart": "setSize");
             newWalkthroughAdapter.SetData(this.presenter.GenerateNewWalkthroughList(currentAppNavigation));
             newWalkthroughAdapter.NotifyDataSetChanged();
             viewPager.Invalidate();

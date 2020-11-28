@@ -326,7 +326,8 @@ namespace myTNB_Android.Src.Base
 
         public bool IsLargeFontDisabled()
         {
-            return appMasterDataResponse.Response.IsLargeFontDisabled;
+           return appMasterDataResponse.Response.IsLargeFontDisabled;
+           
         }
 
         public bool IsMaintenanceDialogShown()

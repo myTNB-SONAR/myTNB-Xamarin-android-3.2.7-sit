@@ -18,6 +18,8 @@ using myTNB_Android.Src.Maintenance.Activity;
 using AndroidX.Core.Content;
 using myTNB;
 using myTNB.Mobile.SessionCache;
+using myTNB_Android.Src.NewWalkthrough.MVP;
+using myTNB_Android.Src.AppLaunch.Models;
 
 namespace myTNB_Android.Src.Profile.Activity
 {
@@ -39,6 +41,7 @@ namespace myTNB_Android.Src.Profile.Activity
         private string FontName;
         private bool isSelectionChange;
         List<SelectorModel> _mappingList;
+        bool LargeFontOnBoard = false;
         public override string GetPageId()
         {
             return "";
@@ -92,6 +95,16 @@ namespace myTNB_Android.Src.Profile.Activity
             appFontMessage.TextSize = TextViewUtils.GetFontSize(16);
             btnSaveChanges.TextSize = TextViewUtils.GetFontSize(16);
 
+            Bundle extras = Intent.Extras;
+
+            if (extras != null)
+            {
+                if (extras.ContainsKey("APP_FONTCHANGE_REQUEST"))
+                {
+                    LargeFontOnBoard = true;
+                }
+            }
+
             savedFont = TextViewUtils.SelectedFontSize();
             FontItemList = new List<Item>();
             isSelectionChange = false;
@@ -135,11 +148,11 @@ namespace myTNB_Android.Src.Profile.Activity
             Item selectedItem = FontItemList.Find(item => { return item.selected; });
             //string currentFont = TextViewUtils.SelectedFontSize();
 
-            ShowProgressDialog();
+           
                
                 _ = RunUpdateFont(selectedItem);
 
-            HideShowProgressDialog();
+          
            
         }
 
@@ -221,9 +234,19 @@ namespace myTNB_Android.Src.Profile.Activity
 
         public void OnBackProceed()
         {
-            SetResult(Result.Ok);
-            Finish();
-            base.OnBackPressed();
+            if (LargeFontOnBoard)
+            {
+
+                Intent WalkthroughIntent = new Intent(this, typeof(NewWalkthroughActivity));
+                WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, AppLaunchNavigation.Walkthrough.ToString());
+                StartActivity(WalkthroughIntent);
+            }
+            else
+            {
+                SetResult(Result.Ok);
+                Finish();
+                base.OnBackPressed();
+            }
         }
 
         private Task RunUpdateFont(Item selectedItem)
@@ -231,9 +254,12 @@ namespace myTNB_Android.Src.Profile.Activity
             SearchApplicationTypeCache.Instance.Clear();
             return Task.Run(() =>
             {
+                ShowProgressDialog();
                 TextViewUtils.SaveFontSize(selectedItem);
                 UpdateFont();
                 OnBackProceed();
+                HideShowProgressDialog();
+                
             });
         }
 

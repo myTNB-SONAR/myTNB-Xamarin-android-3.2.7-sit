@@ -363,7 +363,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             language.SetItemActionCall(ShowAppLanguageSetting);
             settingItems.Add(language);
 
-            if (TextViewUtils.isLargeFontVisible)
+            if (MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
             {
                
                 Item selectedItem = new Item();
@@ -371,7 +371,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 selectedItem.title = "Normal";
                 selectedItem.selected = true;
 
-                TextViewUtils.isLargeFontVisible = false;
+               
                 TextViewUtils.SaveFontSize(selectedItem);
             }
             else

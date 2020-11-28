@@ -13,7 +13,7 @@ namespace myTNB_Android.Src.Utils
 
         public static string MuseoSans300 = "MuseoSans_300.otf";
         public static string MuseoSans500 = "MuseoSans_500.otf";
-        public static bool isLargeFontVisible = false;
+      
 
         public static void SetTypeface(string family, params EditText[] editTexts)
         {
@@ -114,7 +114,7 @@ namespace myTNB_Android.Src.Utils
 
             var Key = SelectedFontSize();
 
-            //if (Key != null && Key == "L")
+            if (Key != null && Key == "L")
             {
 
                 return font + 4;

@@ -155,7 +155,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         new MasterApiDBOperation(masterDataResponse, mSharedPref).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
 
 
-                        TextViewUtils.isLargeFontVisible = masterDataResponse.Response.IsLargeFontDisabled;
+                       
                       
                         bool proceed = true;
 
