@@ -34,7 +34,6 @@ using myTNB;
 using Firebase.Iid;
 using DynatraceAndroid;
 using System.Net.Http;
-
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
 
@@ -229,19 +228,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     if (proceed)
                                     {
                                         UserEntity loggedUser = UserEntity.GetActive();
-                                        string userEmail = loggedUser.Email;
-                                        if (!String.IsNullOrEmpty(userEmail))
-                                        {   //dynatrace infomation for logged user
-                                            try
-                                            {
-                                                DynatraceAndroid.Dynatrace.IdentifyUser(userEmail);
-                                            }
-                                            catch (System.Exception e){
-                                                Utility.LoggingNonFatalError(e);
-
-                                            }
-                                        }
-                                       
+                                                                          
                                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                                         HomeMenuUtils.ResetAll();
                                         SummaryDashBoardAccountEntity.RemoveAll();
