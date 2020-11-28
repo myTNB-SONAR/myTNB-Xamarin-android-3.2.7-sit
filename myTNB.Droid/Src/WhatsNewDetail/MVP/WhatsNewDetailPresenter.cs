@@ -75,6 +75,9 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
                     fetchItem.Infographic_FullView_URL = item.Infographic_FullView_URL;
                     fetchItem.Infographic_FullView_URL_ImageB64 = item.Infographic_FullView_URL_ImageB64;
 
+                    //send dynatrace name
+                    this.mView.dynaAction(item.Title);
+
                     if (!string.IsNullOrEmpty(fetchItem.Infographic_FullView_URL))
                     {
                         this.mView.SetupFullScreenShimmer();

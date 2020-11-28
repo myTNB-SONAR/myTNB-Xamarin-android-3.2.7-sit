@@ -345,6 +345,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int APP_LAUNCH_MASTER_DATA_TIMEOUT = 3000;
         internal static readonly int APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT = 2000;
         internal static readonly int PAYMENT_RECEIPT_TIMEOUT = 30000;
+        internal static readonly int SPLASHSCREEN_DOWNLOAD_TIMEOUT_MILISEC = 4000;
 
         //SharedPreference ids
         public const string ACCOUNT_SHARED_PREF_ID = "myTNB.account.pref";
@@ -370,8 +371,6 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly int REWARDS_DATA_CHECK_TIMEOUT = 500;
 
-        // Application Status
-        internal static readonly int APPLICATION_STATUS_LISTING_LIMIT = 5;
         internal static readonly string APPLICATION_STATUS_FILTER_TYPE_KEY = "applicationType";
         internal static readonly string APPLICATION_STATUS_FILTER_STATUS_KEY = "status";
         internal static readonly string APPLICATION_STATUS_FILTER_DATE_KEY = "date";
@@ -389,5 +388,14 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int APPLICATION_STATUS_FILTER_DATE_REQUEST_CODE = 29803;
         internal static readonly int APPLICATION_STATUS_FILTER_SEARCH_BY_REQUEST_CODE = 29804;
         internal static readonly int APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE = 29805;
+
+        internal static readonly string WEBVIEW_PAYMENT = "WebViewPayment";
+        internal static readonly string WEBVIEW_PAYMENT_FPX = "WebViewPaymentFPX";
+        internal static readonly string WEBVIEW_PAYMENT_CC = "WebViewPaymentCC";
+        internal static readonly string WEBVIEW_PAYMENT_SUCCESS = "WebViewPayment_Success";
+        internal static readonly string WEBVIEW_PAYMENT_FAIL = "WebViewPayment_Fail";
+        internal static readonly string WEBVIEW_PAYMENT_FINISH_DASHBOARD = "WebViewPaymentFINISH_DASHBOARD";
+        internal static readonly string DYNA_SITECORE_REFFER_LOCAL = "sitecore_refer_local";
+        internal static readonly string DYNA_SITECORE_REFFER_ONLINE = "sitecore_refer_online";
     }
 }

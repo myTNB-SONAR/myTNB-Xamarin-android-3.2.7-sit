@@ -32,7 +32,8 @@ using myTNB_Android.Src.MyTNBService.Request;
 using static myTNB_Android.Src.MyTNBService.Response.AppLaunchMasterDataResponse;
 using myTNB;
 using Firebase.Iid;
-using System.Net.Http;
+using DynatraceAndroid;
+
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -228,6 +229,19 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     if (proceed)
                                     {
                                         UserEntity loggedUser = UserEntity.GetActive();
+                                        string userEmail = loggedUser.Email;
+                                        if (!String.IsNullOrEmpty(userEmail))
+                                        {   //dynatrace infomation for logged user
+                                            try
+                                            {
+                                                DynatraceAndroid.Dynatrace.IdentifyUser(userEmail);
+                                            }
+                                            catch (System.Exception e){
+                                                Utility.LoggingNonFatalError(e);
+
+                                            }
+                                        }
+                                       
                                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                                         HomeMenuUtils.ResetAll();
                                         SummaryDashBoardAccountEntity.RemoveAll();
@@ -662,7 +676,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     try
                     {
-                        imageCache = ImageUtils.GetImageBitmapFromUrl(item.Image);
+                         //imageCache = ImageUtils.GetImageBitmapFromUrl(item.Image);  
+                         imageCache = ImageUtils.GetImageBitmapFromUrlWithTimeOut(item.Image);   
                         sw.Stop();
                         AppLaunchTimeOutMillisecond = 0;
 

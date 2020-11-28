@@ -238,11 +238,12 @@
     "contactDetails": "Maklumat saya:",
     "terminateTitle": "Mengapakah anda ingin hentikan perkhidmatan ini?",
     "tncUnsubscribe": "Nota: Pendaftaran semula bagi perkhidmatan Self Meter Reading tiada buat sementara waktu.<br><br>Dengan menghantar, anda bersetuju pada <a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>.",
-    "tncSubscribe": "Dengan menghantar, anda bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat Self Meter Reading</strong></a>, <a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>.",
+    "tncSubscribe": "<a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>.",
     "editContactInfo": "Dengan mengedit, anda akan mengemas kini profil myTNB dan maklumat akaun elektrik anda.",
     "selectReason": "Pilih Sebab",
     "stateReason": "Sila nyatakan sebab anda",
-    "selectAnAccount": "Pilih Akaun"
+    "selectAnAccount": "Pilih Akaun",
+    "tncSubscribeFAQ": "Dengan menghantar, anda bersetuju pada <a href=\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Soalan Lazim Self Meter Reading</strong></a>, "
   },
   "Status": {
     "feedbackSuccessTitle": "Maklum Balas Berjaya",
@@ -973,7 +974,7 @@
     "accNumberInfo": "Dimanakah nombor akaun saya?",
     "enquiringTitle": "Apakah yang anda ingin tanyakan?",
     "generalEnquiryTitle": "Pertanyaan Umum",
-    "generalEnquiryDescription": "Saya ingin hantar pendapat & saranan.",
+    "generalEnquiryDescription": "Saya ingin hantar pendapat dan saranan.",
     "updatePersonalDetTitle": "Kemas kini Maklumat Peribadi",
     "personalDetailsDescription": "Saya ingin mengemaskini maklumat peribadi.",
     "stepTitle1of2": "Langkah 1 dari 2",

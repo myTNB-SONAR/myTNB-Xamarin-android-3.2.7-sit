@@ -90,6 +90,11 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             this.mView.ShowTermsAndConditions();
         }
 
+        public void NavigateToFAQ()
+        {
+            this.mView.ShowFAQ();
+        }
+
         private async void GetCARegisteredContactInfoAsync(AccountData selectedAccount)
         {
             SMRAccount selectedSMRAccount = new SMRAccount();
