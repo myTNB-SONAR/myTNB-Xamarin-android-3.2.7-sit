@@ -242,7 +242,7 @@ namespace myTNB_Android.Src.Profile.Activity
                 if (MyTNBAccountManagement.GetInstance().IsUpdateLargeFont())
                 {
                     WalkthroughIntent.PutExtra("APP_FONTCHANGE_REQUEST", AppLaunchNavigation.LargeFont.ToString());
-
+                    MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
                 }
                 StartActivity(WalkthroughIntent);
 
