@@ -89,7 +89,7 @@ namespace myTNB_Android.Src.Utils
              
                 if (!string.IsNullOrEmpty(_hint) && string.IsNullOrEmpty(mEditText.Text.ToString()))
                 {
-                    _txtLayout.Hint = Utility.GetLocalizedLabel("ResetPassword", "newPasswordNoEnter"); 
+                    _txtLayout.Hint = Utility.GetLocalizedLabel("ResetPassword", "newPasswordNoEnter").ToUpper();
                     mEditText.Hint = "";
                 }
             }
