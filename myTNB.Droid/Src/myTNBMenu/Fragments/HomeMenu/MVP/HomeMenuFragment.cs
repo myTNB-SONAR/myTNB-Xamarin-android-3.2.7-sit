@@ -489,8 +489,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 ShowSearchAction(false);
                 SMRPopUpUtils.SetFromUsageFlag(false);
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
-
+                this.presenter.SetDynaUserTAG();  //call dyna set username
                 OnStartLoadAccount();
+                
             }
             catch (System.Exception e)
             {
