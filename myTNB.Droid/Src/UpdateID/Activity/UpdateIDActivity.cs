@@ -88,6 +88,8 @@ namespace myTNB_Android.Src.UpdateID.Activity
         private bool isClicked = false;
         private bool fromAddAccPage = false;
 
+        Snackbar mUpdateIc;
+
         UserCredentialsEntity entity = new UserCredentialsEntity();
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -922,6 +924,24 @@ namespace myTNB_Android.Src.UpdateID.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShowErrorMessage(string displayMessage)
+        {
+            if (mUpdateIc != null && mUpdateIc.IsShown)
+            {
+                mUpdateIc.Dismiss();
+            }
+
+            mUpdateIc = Snackbar.Make(rootView, displayMessage, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mUpdateIc.Dismiss(); }
+            );
+            View v = mUpdateIc.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+
+            mUpdateIc.Show();
+            this.SetIsClicked(false);
         }
     }
 }

@@ -43,6 +43,8 @@ namespace myTNB_Android.Src.UpdateNameFull.Activity
         UpdateNicknameContract.IUserActionsListener userActionsListener;
         UpdateNicknamePresenter mPresenter;
 
+        Snackbar mUpdateFullName;
+
         MaterialDialog progress;
         const string PAGE_ID = "NameUpdate";
 
@@ -162,10 +164,24 @@ namespace myTNB_Android.Src.UpdateNameFull.Activity
             }
         }
 
-        public void ShowResponseError(string error)
+        public void ShowResponseError(string errorMessage)
         {
-            txtInputLayoutNameFull.Error = error;
+            if (mUpdateFullName != null && mUpdateFullName.IsShown)
+            {
+                mUpdateFullName.Dismiss();
+            }
+
+            mUpdateFullName = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mUpdateFullName.Dismiss(); }
+            );
+            View v = mUpdateFullName.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+
+            mUpdateFullName.Show();
+            this.SetIsClicked(false);
         }
+
 
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
