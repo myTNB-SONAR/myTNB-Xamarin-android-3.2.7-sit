@@ -12,8 +12,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
         public interface IPresenter
         {
-            void UpdateWhatsNewRead(string itemID, bool flag);
-            void UpdateRewardRead(string itemID, bool flag);
             List<NewAppModel> OnGeneraNewAppTutorialList();
             List<NewAppModel> OnGeneraNewAppTutorialEmptyList();
         }

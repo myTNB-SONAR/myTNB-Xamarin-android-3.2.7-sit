@@ -30,7 +30,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         , NoHistory = true
         , Icon = "@drawable/ic_launcher"
        , LaunchMode = LaunchMode.SingleInstance)]
-    public class NewWalkthroughActivity : BaseAppCompatActivity, ViewPager.IOnPageChangeListener , NewWalkthroughContract.IView
+    public class NewWalkthroughActivity : BaseAppCompatActivity, ViewPager.IOnPageChangeListener, NewWalkthroughContract.IView
     {
         [BindView(Resource.Id.rootView)]
         RelativeLayout rootView;
@@ -53,7 +53,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
 
         NewWalkthroughPresenter presenter;
         NewWalkthroughAdapter newWalkthroughAdapter;
-      
+
 
         string currentAppNavigation;
         private Snackbar mLanguageSnackbar;
@@ -115,7 +115,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             viewPager = (ViewPager)FindViewById(Resource.Id.viewPager);
             viewPager.AddOnPageChangeListener(this);
             newWalkthroughAdapter = new NewWalkthroughAdapter(SupportFragmentManager);
-             
+
             Bundle extras = Intent.Extras;
 
             if (extras != null)
@@ -129,27 +129,6 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     viewPager.Adapter = newWalkthroughAdapter;
 
                     UpdateAccountListIndicator();
-                }
-                if (extras.ContainsKey("APP_FONTCHANGE_REQUEST"))
-                {
-                    if (mLanguageSnackbar != null && mLanguageSnackbar.IsShown)
-                    {
-                        mLanguageSnackbar.Dismiss();
-                    }
-                   
-                    mLanguageSnackbar = Snackbar.Make(rootView,
-                       string.Format(Utility.GetLocalizedLabel("Onboarding", "fontChangeSuccess"), TextViewUtils.FontSelected),
-                        Snackbar.LengthIndefinite)
-                                .SetAction(Utility.GetLocalizedCommonLabel("close"),
-                                 (view) =>
-                                 {
-                                 // EMPTY WILL CLOSE SNACKBAR
-                             }
-                                );
-                    View v = mLanguageSnackbar.View;
-                    TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                    tv.SetMaxLines(5);
-                    mLanguageSnackbar.Show();
                 }
             }
 
@@ -173,13 +152,13 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
 
                 };
             }
-                btnSkip.Click += delegate
-                {
-                    UserSessions.DoSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
-                    UserSessions.DoUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
-                    StartActivity();
-                };
-            
+            btnSkip.Click += delegate
+            {
+                UserSessions.DoSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
+                UserSessions.DoUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this));
+                StartActivity();
+            };
+
 
             TextViewUtils.SetMuseoSans500Typeface(btnSkip, btnStart);
             btnSkip.TextSize = TextViewUtils.GetFontSize(12f);
@@ -319,8 +298,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         public void UpdateContent()
         {
             btnSkip.Text = Utility.GetLocalizedLabel("Onboarding", "skip");
-           
-            btnStart.Text = Utility.GetLocalizedLabel("Onboarding", MyTNBAccountManagement.GetInstance().IsLargeFontDisabled()? "letsStart": "setSize");
+
+            btnStart.Text = Utility.GetLocalizedLabel("Onboarding", MyTNBAccountManagement.GetInstance().IsLargeFontDisabled() ? "letsStart" : "setSize");
             newWalkthroughAdapter.SetData(this.presenter.GenerateNewWalkthroughList(currentAppNavigation));
             newWalkthroughAdapter.NotifyDataSetChanged();
             viewPager.Invalidate();
