@@ -1,13 +1,12 @@
 ﻿using System;
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class UpdateIdentificationNo : BaseRequest
+    public class UpdateIdentificationNo : BaseRequestId
     {
-        public string IdNo, IdType, usrId;
+        public string IdNo, IdType;
 
-        public UpdateIdentificationNo(string email, string idType, string idNo)
+        public UpdateIdentificationNo(string idType, string idNo)
         {
-            this.usrId = email;
             this.IdType = idType;
             this.IdNo = idNo;
         }

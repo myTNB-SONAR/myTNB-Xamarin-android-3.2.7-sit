@@ -48,16 +48,16 @@ namespace myTNB_Android.Src.UpdateNameFull.MVP
                 string mobile = userEntity.MobileNo;
                 string usrId = userEntity.DeviceId;
 
-                //UpdateIdentificationNo userAuthRequest = new UpdateIdentificationNo(idtype, no_ic);
-                //userAuthRequest.SetUserIdentification(userEntity.Email);
-                var userNameResponse = await ServiceApiImpl.Instance.UserAuthenticateUpdateName(new UpdateUserInfo(usrId, mobile, newName));
+                UpdateUserInfo userAuthRequest = new UpdateUserInfo(mobile, newName);
+                var userNameResponse = await ServiceApiImpl.Instance.UserAuthenticateUpdateName(userAuthRequest);
+                //var userNameResponse = await ServiceApiImpl.Instance.UserAuthenticateUpdateName(new UpdateUserInfo(usrId, mobile, newName));
                 
                 if (mView.IsActive())
                 {
                     this.mView.HideProgressDialog();
                 }
 
-                if (!userNameResponse.IsSuccessResponse())
+                if (userNameResponse.Response.Data.IsSuccess)
                 {
                     if (UserEntity.IsCurrentlyActive())
                     {
@@ -65,13 +65,10 @@ namespace myTNB_Android.Src.UpdateNameFull.MVP
                         this.mView.ShowSuccessUpdateName();
                         MyTNBAccountManagement.GetInstance().SetIsNameUpdated(true);
                     };
-
                 }
                 else
                 {
-                    this.mView.ShowSuccessUpdateName();
-                    MyTNBAccountManagement.GetInstance().SetIsNameUpdated(true);
-                    //this.mView.ShowResponseError(updateNickNameResponse.Response.DisplayMessage);
+                    this.mView.ShowResponseError(userNameResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)

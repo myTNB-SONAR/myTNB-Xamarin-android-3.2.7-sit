@@ -524,7 +524,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             {
                 Intent nextIntent = new Intent(this.Activity, typeof(NotificationSettingsActivity));
                 //nextIntent.PutExtra(Constants.FORCE_UPDATE_PHONE_NO, mobileNoUpdated);
-                StartActivityForResult(nextIntent, APP_LANGUAGE_REQUEST);
+                StartActivity(nextIntent);
                 //StartActivity(new Intent(this.Activity, typeof(NotificationSettingsActivity)));
             }
             catch (System.Exception e)

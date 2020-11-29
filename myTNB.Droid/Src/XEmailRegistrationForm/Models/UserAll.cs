@@ -49,8 +49,16 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Models
         [AliasAs("statusCode")]
         public string StatusCode { get; set; }
 
+        [JsonProperty(PropertyName = "IsSuccess")]
+        [AliasAs("isSuccess")]
+        public bool IsSuccess { get; set; }
 
-        public UserAll(string __type, string userId, string displayName, string userName, string email, string dateCreated, string lastLoginDate, string statusCode, bool isRegistered)
+        [JsonProperty(PropertyName = "UpdatedDate")]
+        [AliasAs("updatedDate")]
+        public string UpdatedDate { get; set; }
+
+
+        public UserAll(string __type, string userId, string displayName, string userName, string email, string dateCreated, string lastLoginDate, string statusCode, bool isRegistered, bool isSuccess, string updatedDate)
         {
             this.__type = __type ?? "";
             UserId = userId ?? "";
@@ -61,12 +69,14 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Models
             LastLoginDate = lastLoginDate ?? "";
             StatusCode = statusCode ?? "";
             IsRegistered = isRegistered;
+            IsSuccess = isSuccess;
+            UpdatedDate = updatedDate ?? "";
 
         }
 
         public override string ToString()
         {
-            return __type + " " + UserId + " " + DisplayName + " " + UserName + " " + Email + " " + DateCreated + " " + LastLoginDate + " " + StatusCode;
+            return __type + " " + UserId + " " + DisplayName + " " + UserName + " " + Email + " " + DateCreated + " " + LastLoginDate + " " + StatusCode + " " + IsSuccess + " " + UpdatedDate;
         }
     }
 }

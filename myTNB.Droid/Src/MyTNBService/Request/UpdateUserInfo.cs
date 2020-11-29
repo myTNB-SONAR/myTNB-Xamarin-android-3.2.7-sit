@@ -1,15 +1,13 @@
 ﻿using System;
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class UpdateUserInfo : BaseRequest
+    public class UpdateUserInfo : BaseRequestId
     {
-        public DeviceInfoRequest deviceInf;
-        public string name, mobileNo, usrId;
+        public string name, mobileNo;
 
-        public UpdateUserInfo(string usrid, string clientType, string fname)
+        public UpdateUserInfo(string mobile, string fname)
         {
-            this.usrId = usrid;
-            this.mobileNo = clientType;
+            this.mobileNo = mobile;
             this.name = fname;
         }
     }

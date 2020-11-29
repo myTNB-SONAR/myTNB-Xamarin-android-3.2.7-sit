@@ -227,12 +227,12 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             return api.UserAuthenticateID<UserAuthenticateResponseID>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
         }
 
-        public Task<UserAuthenticateResponseID> UserAuthenticateUpdateID([Body] Request.BaseRequest request)
+        public Task<UserAuthenticateResponseID> UserAuthenticateUpdateID([Body] Request.BaseRequestId request)
         {
             return api.UserUpdateIdentifcationNo<UserAuthenticateResponseID>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
         }
 
-        public Task<UserAuthenticateResponseName> UserAuthenticateUpdateName([Body] Request.BaseRequest request)
+        public Task<UserAuthenticateResponseName> UserAuthenticateUpdateName([Body] Request.BaseRequestId request)
         {
             return api.UserUpdateName<UserAuthenticateResponseName>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
         }

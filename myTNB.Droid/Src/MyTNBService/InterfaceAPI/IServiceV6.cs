@@ -83,11 +83,11 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/UpdateIdentificationNo")]
-        Task<T> UserUpdateIdentifcationNo<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan
+        Task<T> UserUpdateIdentifcationNo<T>([Body] MyTNBService.Request.BaseRequestId request, CancellationToken token);        //2enapps wan
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/UpdateUserInfo")]
-        Task<T> UserUpdateName<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan
+        Task<T> UserUpdateName<T>([Body] MyTNBService.Request.BaseRequestId request, CancellationToken token);        //2enapps wan
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/SaveUserNotificationTypePreference")]
