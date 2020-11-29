@@ -28,7 +28,7 @@
         private const string PROD = "https://mytnbapp.tnb.com.my";
         private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
 
-        internal static string ApiDomain = DEV2;
+        internal static string ApiDomain = SIT;
         internal const string PaymentURL = "http://10.215.128.191:89/v5/PayRedirect.aspx";
         internal const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         internal const string SitecoreURL = "https://sitecore.tnb.com.my/";// "http://10.215.70.246/";    //"http://tnbcsdevapp.tnb.my/";
