@@ -28,29 +28,38 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:padding="18dp">
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/txtValue"
+                    android:gravity="left"
+                    android:text="We'll invite them to register for an account if they don't have any."
+                    android:textSize="14dp"
+                    android:textColor="#49494a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
                 <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+                    app:errorEnabled="true"
+                    android:layout_marginTop="12dp"
+                    android:id="@+id/textInputLayoutUserEmail">
+                    <EditText
+                        android:hint="@string/registration_form_full_name_hint"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-                        app:errorEnabled="true"
-                        android:layout_marginTop="12dp"
-                        android:id="@+id/textInputLayoutUserEmail">
-                        <EditText
-                            android:hint="@string/registration_form_full_name_hint"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:drawablePadding="6dp"
-                            android:drawableLeft="@drawable/placeholder_name"
-                            android:id="@+id/txtUserEmail"
-                            android:digits="@string/name_validation_digits"
-                            android:maxLines="1"
-                            android:paddingTop="5dp"
-                            android:inputType="textPersonName|textCapWords" />
-                    </com.google.android.material.textfield.TextInputLayout>
-            </RelativeLayout>
+                        android:drawablePadding="6dp"
+                        android:drawableLeft="@drawable/placeholder_name"
+                        android:id="@+id/txtUserEmail"
+                        android:digits="@string/name_validation_digits"
+                        android:maxLines="1"
+                        android:paddingTop="5dp"
+                        android:inputType="textPersonName|textCapWords" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
         </FrameLayout>
         <TextView
                 android:visibility="visible"
@@ -74,7 +83,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="vertical"
-            android:padding="18dp">
+            android:padding="16dp">
              <TextView
                     android:id="@+id/infoAddress"
                     android:layout_width="match_parent"
@@ -83,8 +92,6 @@
                     android:textSize="12dp"
                     android:textColor="#1c79ca"
                     android:drawablePadding="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="10dp"
                     android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
                     android:text="What does this mean?"
                     android:drawableLeft="@drawable/smr_why_accounts_info"/>

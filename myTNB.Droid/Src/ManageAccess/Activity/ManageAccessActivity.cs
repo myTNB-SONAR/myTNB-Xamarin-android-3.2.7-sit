@@ -24,6 +24,7 @@ using Refit;
 using System;
 using System.Collections.Generic;
 using static myTNB_Android.Src.ManageAccess.Adapter.ManageAccessAdapter;
+using myTNB_Android.Src.AddNewUser.Activity;
 
 namespace myTNB_Android.Src.ManageAccess.Activity
 {
@@ -145,6 +146,48 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 adapter.setCustomButtonListner(this);
                 this.userActionsListener.Start();*/
             });           
+        }
+
+        [OnClick(Resource.Id.btnAddUser)]
+        void AddUser(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    Intent addAccountIntent = new Intent(this, typeof(AddNewUserActivity));
+                    StartActivity(addAccountIntent);
+
+                }
+                this.SetIsClicked(false);
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        [OnClick(Resource.Id.btnAddAccessUser)]
+        void AddAccessUser(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    Intent addAccountIntent = new Intent(this, typeof(AddNewUserActivity));
+                    StartActivity(addAccountIntent);
+
+                }
+                this.SetIsClicked(false);
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private Snackbar mCancelledExceptionSnackBar;

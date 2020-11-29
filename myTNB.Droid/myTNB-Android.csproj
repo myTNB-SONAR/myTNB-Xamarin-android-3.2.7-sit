@@ -800,6 +800,7 @@
     <Compile Include="Src\Base\Request\SubmittedFeedbackDetailsRequest.cs" />
     <Compile Include="Src\Base\Request\SubmittedFeedbackRequest.cs" />
     <Compile Include="Src\CompoundView\CreditDebitCardMenuItemContentComponent.cs" />
+    <Compile Include="Src\CompoundView\ManageAccessItemComponent.cs" />
     <Compile Include="Src\CompoundView\ManageSupplyItemComponent.cs" />
     <Compile Include="Src\CompoundView\ManageSupplyItemContentComponent.cs" />
     <Compile Include="Src\CompoundView\ProfileDetailItemComponent.cs" />
@@ -808,6 +809,7 @@
     <Compile Include="Src\CompoundView\ProfileMainMenuItemContentComponent.cs" />
     <Compile Include="Src\CompoundView\ProfileDetailMainMenuItemComponent.cs" />
     <Compile Include="Src\CompoundView\LearnMoreTnbItemComponent.cs" />
+    <Compile Include="Src\CompoundView\ManageUserMenuItemSingleContentComponent.cs" />
     <Compile Include="Src\CompoundView\SupplyAccMenuItemSingleContentComponent.cs" />
     <Compile Include="Src\Database\Model\AccountDataEntity.cs" />
     <Compile Include="Src\Database\Model\AccountDataModel.cs" />
@@ -959,6 +961,9 @@
     <Compile Include="Src\ManageCards\MVP\ManageCardsContract.cs" />
     <Compile Include="Src\ManageCards\MVP\ManageCardsPresenter.cs" />
     <Compile Include="Src\ManageCards\Request\RemoveRegisteredCardRequest.cs" />
+    <Compile Include="Src\AddNewUser\Activity\AddNewUserActivity.cs" />
+    <Compile Include="Src\AddNewUser\MVP\AddNewUserContract.cs" />
+    <Compile Include="Src\AddNewUser\MVP\AddNewUserPresenter.cs" />
     <Compile Include="Src\ManageSupplyAccount\Activity\ManageSupplyAccountActivity.cs" />
     <Compile Include="Src\ManageSupplyAccount\Activity\ManageSupplyAccountActivityEdit.cs" />
     <Compile Include="Src\ManageSupplyAccount\Models\CustomerAccount.cs" />
@@ -5923,6 +5928,8 @@
     <Folder Include="Resources\mipmap-xxhdpi\" />
     <Folder Include="Resources\mipmap-xxxhdpi\" />
     <Folder Include="Src\AddAccount\Api\" />
+    <Folder Include="Src\AddNewUser\Api\" />
+    <Folder Include="Src\AddNewUser\Models\" />
     <Folder Include="Src\FeedbackDetails\Model\" />
     <Folder Include="Src\Feedback_Prelogin_NewIC\Adapter\" />
     <Folder Include="Src\ForgetPassword\Api\" />
@@ -8338,6 +8345,24 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\WhyCantSeeFullAddressView.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\AddNewUserView.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\ManageUserItemLayout.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\ManageUserMenuItemSingleLayout.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>

@@ -40,6 +40,9 @@ namespace myTNB_Android.Src.AddNewUser.Activity
         [BindView(Resource.Id.txtAddNewUserTitle)]
         TextView txtAddNewUserTitle;
 
+        [BindView(Resource.Id.txtValue)]
+        TextView txtValue;
+
         [BindView(Resource.Id.textInputLayoutUserEmail)]
         TextInputLayout textInputLayoutUserEmail;
 
@@ -98,21 +101,28 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                     .Cancelable(false)
                     .Build();
 
-                ManageSupplyItemComponent manageSupplyItem = GetManageSupply();
-                manageSupplyItem.SetHeaderTitle(GetLabelByLanguage("myTNBAccount"));
-                profileMenuItemsContent.AddView(manageSupplyItem);
+                ManageAccessItemComponent manageAccessUserItem = GetManageUserAccess();
+                profileMenuItemsContent.AddView(manageAccessUserItem);
 
-               
+                var boxcondition = new CheckBox(this)
+                {
+                    ScaleX = 0.8f,
+                    ScaleY = 0.8f
+                };
+
                 TextViewUtils.SetMuseoSans300Typeface(textInputLayoutUserEmail);
                 TextViewUtils.SetMuseoSans300Typeface(txtUserEmail);
+                TextViewUtils.SetMuseoSans300Typeface(txtValue);
                 TextViewUtils.SetMuseoSans500Typeface(txtAddNewUserTitle, txtNewUserOptionalTitle);
                 TextViewUtils.SetMuseoSans500Typeface(btnAddUser);
 
-                textInputLayoutUserEmail.Hint = GetLabelCommonByLanguage("acctNickname");
-                btnAddUser.Text = GetLabelByLanguage("removeAccount");
+
+                txtAddNewUserTitle.Text = Utility.GetLocalizedLabel("UserAccess", "titleAddNewUser");
+                txtNewUserOptionalTitle.Text = Utility.GetLocalizedLabel("UserAccess", "bodyAddNewUser");
+                textInputLayoutUserEmail.Hint = Utility.GetLocalizedLabel("UserAccess", "usremail");
+                btnAddUser.Text = Utility.GetLocalizedLabel("UserAccess", "addUserBtn");
 
                 txtUserEmail.AddTextChangedListener(new InputFilterFormField(txtUserEmail, textInputLayoutUserEmail));
-
 
                 mPresenter = new AddNewUserPresenter(this, accountData);
                 this.userActionsListener.Start();
@@ -123,49 +133,28 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             }
         }
 
-        [OnClick(Resource.Id.btnTextUpdateNickName)]
-        void OnClickUpdateNickname(object sender, EventArgs eventArgs)
-        {
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                this.userActionsListener.OnUpdateNickname();
-            }
-        }
-        AlertDialog removeDialog;
-        [OnClick(Resource.Id.btnRemoveAccount)]
-        void OnClickRemoveAccount(object sender, EventArgs eventArgs)
+        [OnClick(Resource.Id.btnAddUser)]
+        void AddUser(object sender, EventArgs eventArgs)
         {
             try
             {
-                if (removeDialog != null && removeDialog.IsShowing)
+                if (!this.GetIsClicked())
                 {
-                    removeDialog.Dismiss();
+                    this.SetIsClicked(true);
+                    Intent addAccountIntent = new Intent(this, typeof(ManageAccessActivity));
+                    StartActivity(addAccountIntent);
+
                 }
-
-                removeDialog = new AlertDialog.Builder(this)
-
-                    .SetTitle(GetLabelByLanguage("popupremoveAccountTitle"))
-                    .SetMessage(GetFormattedText(string.Format(GetLabelByLanguage("popupremoveAccountMessage"), accountData.AccountNickName, accountData.AccountNum)))
-                    .SetNegativeButton(GetLabelCommonByLanguage("cancel"),
-                    delegate
-                    {
-                        removeDialog.Dismiss();
-                    })
-                    .SetPositiveButton(GetLabelCommonByLanguage("ok"),
-                    delegate
-                    {
-                        this.userActionsListener.OnRemoveAccount(accountData);
-                    })
-                    .Show()
-                    ;
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
-  
+
+
         public bool IsActive()
         {
             return Window.DecorView.RootView.IsShown;
@@ -173,7 +162,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
 
         public override int ResourceId()
         {
-            return Resource.Layout.ManageSupplyAccountsViewEdit;
+            return Resource.Layout.AddNewUserView;
         }
 
 
@@ -205,39 +194,31 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             base.OnPause();
         }
 
-        private ManageSupplyItemComponent GetManageSupply()
+        private ManageAccessItemComponent GetManageUserAccess()
         {
             //Context context = Activity.ApplicationContext;
 
-            ManageSupplyItemComponent manageItem = new ManageSupplyItemComponent(this);
+            ManageAccessItemComponent manageItem = new ManageAccessItemComponent(this);
 
             List<View> manageItems = new List<View>();
 
-            SupplyAccMenuItemSingleContentComponent manageUser = new SupplyAccMenuItemSingleContentComponent(this);
-            manageUser.SetTitle(GetLabelCommonByLanguage("manageUserAccess"));
-            manageUser.SetIcon(1);
-            manageUser.SetItemActionVisibility(true);
-            manageUser.SetItemActionCall(ShowManageUser);
-            manageItems.Add(manageUser);
+            ManageUserMenuItemSingleContentComponent electricityBill = new ManageUserMenuItemSingleContentComponent(this);
+            electricityBill.SetTitle(GetLabelCommonByLanguage("manageUserAccess"));
+            electricityBill.SetItemActionVisibility(true);
+            electricityBill.SetItemActionCall(ClickCheck);
+            manageItems.Add(electricityBill);
 
-            SupplyAccMenuItemSingleContentComponent autoPay = new SupplyAccMenuItemSingleContentComponent(this);
-            autoPay.SetTitle(GetLabelCommonByLanguage("manageAutopay"));
-            autoPay.SetIcon(2);
-            autoPay.SetItemActionVisibility(true);
-            autoPay.SetItemActionCall(ShowManageAutopay);
-            manageItems.Add(autoPay);
+            ManageUserMenuItemSingleContentComponent eBilling = new ManageUserMenuItemSingleContentComponent(this);
+            eBilling.SetTitle(GetLabelCommonByLanguage("manageAutopay"));
+            eBilling.SetItemActionVisibility(true);
+            eBilling.SetItemActionCall(ClickCheck);
+            manageItems.Add(eBilling);
 
             manageItem.AddComponentView(manageItems);
             return manageItem;
         }
 
-        private void ShowManageUser()
-        {
-            Intent updateNickName = new Intent(this, typeof(ManageAccessActivity));
-            StartActivityForResult(updateNickName, Constants.UPDATE_NICKNAME_REQUEST);
-        }
-
-        private void ShowManageAutopay()
+        private void ClickCheck()
         {
         }
 
@@ -305,7 +286,8 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                     .CustomView(Resource.Layout.WhyCantSeeFullAddressView, false)
                     .Cancelable(true)
                     .PositiveText(GetLabelCommonByLanguage("gotIt"))
-                    .PositiveColor(Resource.Color.blue)
+                    .PositiveColor(Resource.Color.gradientPurple)
+                    .ItemsGravity(GravityEnum.Center)
                     .Build();
 
                 View view = addressInfoDialog.View;

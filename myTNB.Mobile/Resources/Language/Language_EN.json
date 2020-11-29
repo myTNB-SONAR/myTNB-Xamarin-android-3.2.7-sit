@@ -1198,6 +1198,13 @@
     "LabelEmptyTitle" : "Looks like your electricity account is not viewed or accessed by anyone else. You can help them by adding this account to their view below.",
     "addUserBtn" : "Add User",
     "AddTitle" : "Add",
-    "RemoveTitle" : "Remove"
+    "RemoveTitle" : "Remove",
+    "bodyDialogWhatIsThis" : "To protect your information, we’re not showing non-owners your personal infromation and some application features. However, you can grant them access listed here if you see fit and they will be notified about it.",
+    "titleDialogWhatIsThis"  : "Giving your users more access.",
+    "fullElectricity" : "View Full Electricity Bill",
+    "e_billing" : "Apply for e-Billing",
+    "usremail" : "USER EMAIL ADDRESS",
+    "titleAddNewUser" : "Provide user’s email address they use for their myTNB account.",
+    "bodyAddNewUser" : "Do you want to give this user more access (optional)?"
   }
 }
