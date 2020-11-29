@@ -141,8 +141,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                 textInputLayoutOwnerIC.SetHintTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
                 textInputLayoutMotherMaidenName.SetHintTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
-                txtAccountType.TextSize = TextViewUtils.GetFontSize(10);
-                accountType.TextSize = TextViewUtils.GetFontSize(16);
+                txtAccountType.TextSize = TextViewUtils.GetFontSize(10f);
+                accountType.TextSize = TextViewUtils.GetFontSize(16f);
 
                 TextViewUtils.SetMuseoSans300Typeface(edtAccountLabel
                     , edtAccountNo

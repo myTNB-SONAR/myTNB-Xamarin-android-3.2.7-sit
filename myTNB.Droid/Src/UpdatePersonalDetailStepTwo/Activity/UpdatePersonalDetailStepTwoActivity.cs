@@ -251,9 +251,9 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 txtRelatedScreenshotTitle3.TextSize = TextViewUtils.GetFontSize(14f);
                 TextView_proofOfConsent_image3.TextSize = TextViewUtils.GetFontSize(9f);
                 TextView_agreement.TextSize = TextViewUtils.GetFontSize(12f);
+                btnNext.TextSize = TextViewUtils.GetFontSize(16f);
 
-
-               //owner adapter
+                //owner adapter
 
                 adapter = new FeedbackGeneralEnquiryStepOneImageRecyclerAdapter(true);
                 adapter.Insert(new Base.Models.AttachedImage()

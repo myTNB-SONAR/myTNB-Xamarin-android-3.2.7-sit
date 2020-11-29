@@ -166,7 +166,8 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 uploadSupportingDoc.TextSize = TextViewUtils.GetFontSize(16f);
                 txtRelatedScreenshotTitle.TextSize = TextViewUtils.GetFontSize(14f);
                 txtMaxImageContent.TextSize = TextViewUtils.GetFontSize(9f);
-              
+                btnNext.TextSize = TextViewUtils.GetFontSize(16f);
+
 
                 //set feedback setting
                 TextView_CharLeft.Text = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), Constants.FEEDBACK_CHAR_LIMIT);

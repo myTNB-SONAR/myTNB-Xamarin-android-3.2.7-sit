@@ -207,7 +207,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 textTotalPayableTitle.TextSize = TextViewUtils.GetFontSize(16f);
                 textTotalPayable.TextSize = TextViewUtils.GetFontSize(24f);
                 textTotalPayableCurrency.TextSize = TextViewUtils.GetFontSize(14f);
-
+                btnPayBill.TextSize = TextViewUtils.GetFontSize(16f);
                 SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 

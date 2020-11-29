@@ -141,8 +141,9 @@ namespace myTNB_Android.Src.AddCard.Activity
 
                 txtCVV.TextChanged += CvvTextChange;
 
-                txtTitle.TextSize = TextViewUtils.GetFontSize(16);
-                saveCard.TextSize = TextViewUtils.GetFontSize(16);
+                txtTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                saveCard.TextSize = TextViewUtils.GetFontSize(16f);
+                btnNext.TextSize = TextViewUtils.GetFontSize(16f);
                 SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_AddCardLarge : Resource.Style.Theme_AddCard);
             }
             catch (Exception e)

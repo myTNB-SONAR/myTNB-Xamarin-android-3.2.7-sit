@@ -405,7 +405,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 newFAQTitle.TextSize = TextViewUtils.GetFontSize(14f);
                 btnMyServiceRefresh.TextSize = TextViewUtils.GetFontSize(16f);
                 btnRefresh.TextSize = TextViewUtils.GetFontSize(16f);
-
+                accountHeaderTitle.TextSize = TextViewUtils.GetFontSize(14f);
 
                 addActionLabel.Text = GetLabelByLanguage("add");
                 searchActionLabel.Text = GetLabelByLanguage("search");

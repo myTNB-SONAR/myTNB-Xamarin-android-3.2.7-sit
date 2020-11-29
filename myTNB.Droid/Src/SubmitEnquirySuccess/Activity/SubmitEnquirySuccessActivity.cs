@@ -99,6 +99,7 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
                 txtFeedbackIdTitle.TextSize = TextViewUtils.GetFontSize(10f);
                 txtFeedbackIdContent.TextSize = TextViewUtils.GetFontSize(14f);
                 btnViewSubmitted.TextSize = TextViewUtils.GetFontSize(16f);
+                buttonBackToHome.TextSize = TextViewUtils.GetFontSize(16f);
                 mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
 

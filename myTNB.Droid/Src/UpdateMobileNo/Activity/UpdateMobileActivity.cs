@@ -102,7 +102,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
                 lblInfoLabel.TextSize = TextViewUtils.GetFontSize(12f);
                 lblVerifyMobileNo.TextSize = TextViewUtils.GetFontSize(14f);
-                
+                btnSave.TextSize = TextViewUtils.GetFontSize(16f);
 
                 progress = new MaterialDialog.Builder(this)
                     .Title(GetString(Resource.String.update_mobile_progress_title))

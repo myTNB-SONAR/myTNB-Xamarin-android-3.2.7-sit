@@ -318,7 +318,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                 txtAccountType.TextSize = TextViewUtils.GetFontSize(10f);
                 selector_account_type.TextSize = TextViewUtils.GetFontSize(16f);
                 EditText_relationshipOther.TextSize = TextViewUtils.GetFontSize(16f);
-
+                btnNext.TextSize = TextViewUtils.GetFontSize(16f);
                 TextView_updateOnOwnerBehalf.TextSize = TextViewUtils.GetFontSize(16f);
                 txtIC.TextSize = TextViewUtils.GetFontSize(14f);
                 txtGeneralCurrentICNumber.TextSize = TextViewUtils.GetFontSize(16f);
@@ -377,7 +377,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                 Child.IsSelected = true;
                 selectedAccountRelationship = Child;
                 selector_account_type.Text = selectedAccountRelationship.Type;
-                selector_account_type.TextSize = TextViewUtils.GetFontSize(16);
+                selector_account_type.TextSize = TextViewUtils.GetFontSize(16f);
                 ownerRelationship = Utility.GetLocalizedLabel("SubmitEnquiry", "childTitle");
 
                 txtNewIC.TextChanged += TextChanged;
