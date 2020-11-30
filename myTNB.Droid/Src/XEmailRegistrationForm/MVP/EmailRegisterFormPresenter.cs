@@ -141,13 +141,14 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
                     FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
                 }
 
-                var userResponse = await ServiceApiImpl.Instance.UserAuthenticateEmailOnly(new GetVerifyRequest(email));
+                GetVerifyRequest getEmailVerify = new GetVerifyRequest();
+                getEmailVerify.SetUserName(email);
+                var userResponse = await ServiceApiImpl.Instance.UserAuthenticateEmailOnly(getEmailVerify);
+                
                 if (userResponse.IsSuccessResponse())
                 {
                     if (this.mView.IsActive())
-                    {       
-                        //this.mView.ShowInvalidEmailPasswordError();
-                        //this.mView.ShowInvalidAcquiringTokenThruSMS(userResponse.Response.DisplayMessage);                    
+                    {                           
                         this.mView.HideProgressDialog();
                     }
                 }

@@ -135,7 +135,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
         private void UpdateLabels()
         {
-            //SetToolBarTitle(GetLabelCommonByLanguage("setAppLanguage"));
+            SetToolBarTitle(GetLabelCommonByLanguage("appSetting"));
             txtNotificationTypeTitle.Text = GetLabelByLanguage("typeDescription");
             appLanguageMessage.Text = GetLabelCommonByLanguage("setAppLanguageDescription");
         }

@@ -129,7 +129,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 }
 
                 UserEntity user = UserEntity.GetActive();
-                if (string.IsNullOrEmpty(user.IdentificationNo) || !string.IsNullOrEmpty(user.Email))
+                if (string.IsNullOrEmpty(user.IdentificationNo) || !user.IsActivated)
                 {
                     fromIDFlag = true;
                 }
@@ -522,6 +522,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         {
             try
             {
+                MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(false);
                 Intent nextIntent = new Intent(this.Activity, typeof(NotificationSettingsActivity));
                 //nextIntent.PutExtra(Constants.FORCE_UPDATE_PHONE_NO, mobileNoUpdated);
                 StartActivity(nextIntent);

@@ -470,7 +470,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowIdentificationUpdate()
         {
-            // TODO : START ACTIVITY FORGET PASSWORD
+            // TODO : START ACTIVITY
             StartActivity(typeof(UpdateIDActivity));
         }
 
@@ -985,7 +985,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem profileMenuItem = bottomMenu.FindItem(Resource.Id.menu_more);
                 if (profileMenuItem != null)
                 {
-                    SetReadUnReadNewBottomView(profileMenuItem.IsChecked, false, 0, profileMenuItem);
+                    SetUnverifiedMenuMoreBottomView(keypress, false, 0, profileMenuItem);
                     bottomNavigationView.SetImageFontSize(this, 28, 5, 10f);
                 }
             }
@@ -1408,9 +1408,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
 
             UserEntity user = UserEntity.GetActive();
-            if (string.IsNullOrEmpty(user.IdentificationNo) || !string.IsNullOrEmpty(user.Email))
+            if (string.IsNullOrEmpty(user.IdentificationNo) || !user.IsActivated)
             { 
                 //isWhatNewDialogOnHold = false;
+                OnCheckProfileTab(true);
+            }
+            else
+            {
                 OnCheckProfileTab(false);
             }
         }

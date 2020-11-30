@@ -57,6 +57,9 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         private bool fromIDFlag = false;
 
+        private bool fromEmailVerify = false;
+
+
         private int APP_LANGUAGE_REQUEST = 32766;
 
         ProfileDetailContract.IUserActionsListener userActionsListener;
@@ -82,6 +85,10 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 if(string.IsNullOrEmpty(user.IdentificationNo))
                 {
                     fromIDFlag = true;
+                }
+                if (user.IsActivated)
+                {
+                    fromEmailVerify = true;
                 }
 
                 ProfileDetailItemComponent myTNBProfileItem = GetMyTNBAccountItems();
@@ -129,6 +136,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             email.SetValue("");
             email.SetIconEmailNotVerify(1);
             email.SetItemActionVisibility(true);
+            email.SetFlagEmailVerify(fromEmailVerify);
             email.SetItemActionTitle(GetLabelCommonByLanguage("verify"));
             email.SetItemActionCall(ShowEmailResendSuccess);
             myTNBAccountItems.Add(email);
