@@ -46,6 +46,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("selectedLanguage")]
         public string SelectedLanguage { get; set; }
 
+        [Column("isActivated")]
+        public bool IsActivated { get; set; }
+
 
         public static int CreateTable()
         {
@@ -76,7 +79,8 @@ namespace myTNB_Android.Src.Database.Model
                 LastLoginDate = user.LastLoginDate ?? "",
                 MobileNo = user.MobileNo,
                 IdentificationNo = user.IdentificationNo,
-                Status = Constants.ACTIVE
+                Status = Constants.ACTIVE,
+                IsActivated = user.IsActivated
             };
 
             int newRecordId = db.InsertOrReplace(newRecord);

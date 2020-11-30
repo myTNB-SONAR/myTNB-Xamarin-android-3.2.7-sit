@@ -617,7 +617,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         public void OnResumeUpdateProfileUnRead(bool key)
         {
             UserEntity user = UserEntity.GetActive();
-            if (string.IsNullOrEmpty(user.IdentificationNo) || !string.IsNullOrEmpty(user.Email))
+            if (string.IsNullOrEmpty(user.IdentificationNo) || !user.IsActivated)
             {
                 this.mView.ShowUnverifiedProfile(key);
 

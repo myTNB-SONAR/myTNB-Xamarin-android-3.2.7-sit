@@ -9,7 +9,7 @@ namespace myTNB_Android.Src.CompoundView
 {
     public class ProfileMenuItemContentComponent : RelativeLayout
     {
-        private TextView itemTitle, itemValue, itemAction, itemVerifyLabel;
+        private TextView itemTitle, itemValue, itemAction, itemVerifyLabel, infoVerifyIcon;
         private LinearLayout itemActionContainer;
 
         public ProfileMenuItemContentComponent(Context context) : base(context)
@@ -39,6 +39,7 @@ namespace myTNB_Android.Src.CompoundView
             itemValue = FindViewById<TextView>(Resource.Id.itemValue);
             itemAction = FindViewById<TextView>(Resource.Id.itemAction);
             itemVerifyLabel = FindViewById<TextView>(Resource.Id.infoLabel);
+            infoVerifyIcon = FindViewById<TextView>(Resource.Id.infoVerifyIcon);
             itemActionContainer = FindViewById<LinearLayout>(Resource.Id.itemActionContainer);
 
             TextViewUtils.SetMuseoSans300Typeface(itemTitle, itemValue);
@@ -62,6 +63,20 @@ namespace myTNB_Android.Src.CompoundView
             {
                 itemVerifyLabel.Visibility = Android.Views.ViewStates.Gone;
                 itemActionContainer.Visibility = Android.Views.ViewStates.Gone;
+            }
+        }
+
+        public void SetFlagEmailVerify(bool FlagID)
+        {
+            if (FlagID)
+            {
+                infoVerifyIcon.Visibility = Android.Views.ViewStates.Visible;
+                itemVerifyLabel.Visibility = Android.Views.ViewStates.Gone;
+                itemActionContainer.Visibility = Android.Views.ViewStates.Gone;
+            }
+            else
+            {
+                infoVerifyIcon.Visibility = Android.Views.ViewStates.Gone;
             }
         }
 

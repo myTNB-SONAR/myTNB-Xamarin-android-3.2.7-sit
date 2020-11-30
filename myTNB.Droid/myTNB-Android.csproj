@@ -1050,6 +1050,7 @@
     <Compile Include="Src\myTNBMenu\Requests\SMUsageHistoryRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationChannelRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationTypeRequest.cs" />
+    <Compile Include="Src\MyTNBService\Request\BaseRequestRegister.cs" />
     <Compile Include="Src\MyTNBService\Request\BaseRequestId.cs" />
     <Compile Include="Src\MyTNBService\Request\GetSearchForAccountRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetRegisteredUser.cs" />
@@ -8367,6 +8368,21 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\icons_email_verified.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\icons_email_verified.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\icons_email_verified.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\icons_email_verified.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\icons_email_verified.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
