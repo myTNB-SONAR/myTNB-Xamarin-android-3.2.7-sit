@@ -60,27 +60,26 @@ namespace myTNB_Android.Src.UpdateID.MVP
                     UserEntity userEntity = UserEntity.GetActive();
                     no_ic = no_ic.Replace("-", string.Empty);
                     string email = userEntity.Email;
-                    //UpdateIdentificationNo userAuthRequest = new UpdateIdentificationNo(idtype, no_ic);
-                    //userAuthRequest.SetUserIdentification(userEntity.Email);
-                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticateUpdateID(new UpdateIdentificationNo(email, idtype, no_ic));
+                    UpdateIdentificationNo userAuthRequest = new UpdateIdentificationNo(idtype, no_ic);
+                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticateUpdateID(userAuthRequest);
+                    
                     if (mView.IsActive())
                     {
                         this.mView.HideProgress();
                     }
 
-                    if (!userResponse.IsSuccessResponse())
+                    if (userResponse.Response.Data.IsSuccess)
                     {
                         if (UserEntity.IsCurrentlyActive())
                         {
                             UserEntity.UpdateICno(no_ic);
                             this.mView.ShowSuccessUpdateID();
                             this.mView.HideProgress();
-                            //MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(true);
                         }
                     }
                     else
                     {
-                        //this.mView.ShowErrorMessage(updatePasswordResponse.Response.DisplayMessage);
+                        this.mView.ShowErrorMessage(userResponse.Response.DisplayMessage);
                     }
                 }
                 catch (Exception ex)

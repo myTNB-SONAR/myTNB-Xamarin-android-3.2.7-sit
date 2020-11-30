@@ -25,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using static myTNB_Android.Src.ManageAccess.Adapter.ManageAccessAdapter;
 using myTNB_Android.Src.ManageUser.Activity;
+using myTNB_Android.Src.AddNewUser.Activity;
 
 namespace myTNB_Android.Src.ManageAccess.Activity
 {
@@ -147,6 +148,48 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 adapter.setCustomButtonListner(this);
                 this.userActionsListener.Start();*/
             });           
+        }
+
+        [OnClick(Resource.Id.btnAddUser)]
+        void AddUser(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    Intent addAccountIntent = new Intent(this, typeof(AddNewUserActivity));
+                    StartActivity(addAccountIntent);
+
+                }
+                this.SetIsClicked(false);
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        [OnClick(Resource.Id.btnAddAccessUser)]
+        void AddAccessUser(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    Intent addAccountIntent = new Intent(this, typeof(AddNewUserActivity));
+                    StartActivity(addAccountIntent);
+
+                }
+                this.SetIsClicked(false);
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private Snackbar mCancelledExceptionSnackBar;
@@ -406,7 +449,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 adapter.NotifyDataSetChanged();
                 listView.SetNoScroll();
                 bottomLayout.Visibility = ViewStates.Visible;
-                txtManageAccessTitle.Visibility = ViewStates.Gone;
+                //txtManageAccessTitle.Visibility = ViewStates.Gone;
                 layout_btnAddUser.Visibility = ViewStates.Gone;
                 manage_user_layout.Visibility = ViewStates.Gone;
             }
@@ -421,6 +464,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             try
             {
                 listView.EmptyView = manage_user_layout;
+                txtManageAccessTitle.Visibility = ViewStates.Gone;
                 layout_btnAddUser.Visibility = ViewStates.Visible;
             }
             catch (Exception e)

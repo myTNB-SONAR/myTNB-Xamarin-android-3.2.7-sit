@@ -98,7 +98,7 @@ namespace myTNB_Android.Src.UpdateID.MVP
             /// </summary>
             /// <param name="exception">the returned exception</param>
             void ShowRetryOptionsUnknownException(Exception exception);
-
+            void ShowErrorMessage(string displayMessage);
 
             void ShowFullICError();
 

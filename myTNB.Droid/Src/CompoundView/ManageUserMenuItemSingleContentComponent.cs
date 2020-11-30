@@ -12,7 +12,8 @@ namespace myTNB_Android.Src.CompoundView
     public class ManageUserMenuItemSingleContentComponent : RelativeLayout
     {
         private TextView itemTitle;
-        private ImageView supplyIcon, itemAction;
+        private ImageView supplyIcon;
+        private CheckBox itemAction;
         private LinearLayout itemContainer, itemActionContainer;
 
         public ManageUserMenuItemSingleContentComponent(Context context) : base(context)
@@ -37,11 +38,10 @@ namespace myTNB_Android.Src.CompoundView
 
         public void InitializeViews(Context context)
         {
-            Inflate(context, Resource.Layout.ManageUserItemContentActionLayout, this);
+            Inflate(context, Resource.Layout.ManageUserMenuItemSingleLayout, this);
             itemContainer = FindViewById<LinearLayout>(Resource.Id.itemContainer);
             itemTitle = FindViewById<TextView>(Resource.Id.itemTitle);
-            supplyIcon = FindViewById<ImageView>(Resource.Id.img_profile);
-            itemAction = FindViewById<ImageView>(Resource.Id.itemAction);
+            itemAction = FindViewById<CheckBox>(Resource.Id.itemAction);
             itemActionContainer = FindViewById<LinearLayout>(Resource.Id.itemActionContainer);
 
             TextViewUtils.SetMuseoSans500Typeface(itemTitle);
@@ -50,22 +50,6 @@ namespace myTNB_Android.Src.CompoundView
         public void SetTitle(string title)
         {
             itemTitle.Text = title;
-        }
-
-        public void SetIcon(int code)
-        {
-            itemAction.SetBackgroundResource(Resource.Drawable.expand_right_arrow);
-
-            if (code == 1)
-            {
-                supplyIcon.SetBackgroundResource(Resource.Drawable.user_access);
-
-            }
-            else
-            {
-                supplyIcon.SetBackgroundResource(Resource.Drawable.autopay_yellow);
-            }
-
         }
 
         public void SetItemActionVisibility(bool isVisible)

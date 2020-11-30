@@ -454,7 +454,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             try
             {
-                if(user.IdentificationNo == null)
+                if(user.IdentificationNo.Equals(""))
                 {
                     Utility.ShowIdentificationUpdateProfileDialog(this, () =>
                     {
