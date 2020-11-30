@@ -33,10 +33,10 @@
         internal const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         internal const string SitecoreURL = "https://sitecore.tnb.com.my/";// "http://10.215.70.246/";    //"http://tnbcsdevapp.tnb.my/";
 #elif MASTER || SIT
-        internal static string ApiDomain = "http://10.215.128.191:89";//"https://mobiletestingws.tnb.com.my";
+        internal static string ApiDomain = "https://mobiletestingws.tnb.com.my";
         internal const string PaymentURL = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx";
         internal const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
-        internal const string SitecoreURL = "http://10.215.70.248/";    //"http://tnbcsstgapp.tnb.my/";
+        internal const string SitecoreURL = "http://tnbcsstgapp.tnb.my/"; //"http://10.215.70.248/
 #else
         internal static string ApiDomain = "https://mytnbapp.tnb.com.my";
         internal const string PaymentURL = "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx";
