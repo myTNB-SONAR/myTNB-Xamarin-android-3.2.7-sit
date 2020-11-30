@@ -808,6 +808,7 @@
     <Compile Include="Src\CompoundView\ProfileMainMenuItemContentComponent.cs" />
     <Compile Include="Src\CompoundView\ProfileDetailMainMenuItemComponent.cs" />
     <Compile Include="Src\CompoundView\LearnMoreTnbItemComponent.cs" />
+    <Compile Include="Src\CompoundView\ManageUserMenuItemSingleContentComponent.cs" />
     <Compile Include="Src\CompoundView\SupplyAccMenuItemSingleContentComponent.cs" />
     <Compile Include="Src\Database\Model\AccountDataEntity.cs" />
     <Compile Include="Src\Database\Model\AccountDataModel.cs" />
@@ -959,6 +960,10 @@
     <Compile Include="Src\ManageCards\MVP\ManageCardsContract.cs" />
     <Compile Include="Src\ManageCards\MVP\ManageCardsPresenter.cs" />
     <Compile Include="Src\ManageCards\Request\RemoveRegisteredCardRequest.cs" />
+    <Compile Include="Src\ManageUser\Activity\ManageUserActivity.cs" />
+    <Compile Include="Src\ManageUser\Models\CustomerAcc.cs" />
+    <Compile Include="Src\ManageUser\MVP\ManageUserContract.cs" />
+    <Compile Include="Src\ManageUser\MVP\ManageUserPresenter.cs" />
     <Compile Include="Src\ManageSupplyAccount\Activity\ManageSupplyAccountActivity.cs" />
     <Compile Include="Src\ManageSupplyAccount\Activity\ManageSupplyAccountActivityEdit.cs" />
     <Compile Include="Src\ManageSupplyAccount\Models\CustomerAccount.cs" />
@@ -5931,6 +5936,8 @@
     <Folder Include="Src\ManageAccess\Models\" />
     <Folder Include="Src\ManageCards\Api\" />
     <Folder Include="Src\ManageSupplyAccount\Api\" />
+    <Folder Include="Src\ManageUser\Api\" />
+    <Folder Include="Src\ManageUser\Request\" />
     <Folder Include="Src\MultipleAccountPayment\Api\" />
     <Folder Include="Src\MyAccount\Models\" />
     <Folder Include="Src\MyLearnMoreAboutTnb\Adapter\" />
@@ -8338,6 +8345,18 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\WhyCantSeeFullAddressView.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\ManageUserView.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\ManageUserItemContentActionLayout.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>

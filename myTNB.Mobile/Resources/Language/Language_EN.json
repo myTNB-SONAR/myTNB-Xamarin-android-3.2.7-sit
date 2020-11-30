@@ -117,10 +117,14 @@
     "re_enter" : "Re-enter",
     "titleNonOwnerAddAcc" : "Continue adding the account and give it a name for your easy reference.",
     "email_address" : "Email Address",
+    "email_user_address" : "User Email Address",
     "etitleRegister" : "Let's Get Started!",
     "ebodyRegister" : "Create your account with the details below.",
     "dtitleRegister" : "One last Thing",
-    "dbodyRegister" : "Please provide us your personal details so that we can get to know you better."
+    "dbodyRegister" : "Please provide us your personal details so that we can get to know you better.",
+    "viewFullBill" : "View Full Electricity Bill",
+    "Applyfore-Billing" : "Apply for e-Billing",
+    "ManageUserTitle" : "Give this user access to:"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",

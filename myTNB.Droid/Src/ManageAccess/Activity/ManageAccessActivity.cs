@@ -24,6 +24,7 @@ using Refit;
 using System;
 using System.Collections.Generic;
 using static myTNB_Android.Src.ManageAccess.Adapter.ManageAccessAdapter;
+using myTNB_Android.Src.ManageUser.Activity;
 
 namespace myTNB_Android.Src.ManageAccess.Activity
 {
@@ -122,12 +123,13 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         [Preserve]
 
         private void ListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
-        {
+        { 
+
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                /*CustomerBillingAccount customerBillingAccount = adapter.GetItemObject(e.Position);
-                ShowManageSupplyAccount(AccountData.Copy(customerBillingAccount, false), e.Position);*/
+                CustomerBillingAccount customerBillingAccount = adapter.GetItemObject(e.Position);
+                ShowManageSupplyAccount(AccountData.Copy(customerBillingAccount, false), e.Position);
             }
         }
 
@@ -242,7 +244,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         {
             try
             {
-                Intent manageAccount = new Intent(this, typeof(ManageSupplyAccountActivityEdit));
+                Intent manageAccount = new Intent(this, typeof(ManageUserActivity));
                 manageAccount.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
                 manageAccount.PutExtra(Constants.SELECTED_ACCOUNT_POSITION, position);
                 StartActivityForResult(manageAccount, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
