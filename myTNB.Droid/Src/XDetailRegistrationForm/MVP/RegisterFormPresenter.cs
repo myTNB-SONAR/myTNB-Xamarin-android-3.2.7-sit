@@ -15,7 +15,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Firebase.Iid;
-
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
 {
@@ -218,6 +218,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
 
                     SendRegistrationTokenSMSRequest sendRegistrationTokenSMSRequest = new SendRegistrationTokenSMSRequest(mobile_no);
                     sendRegistrationTokenSMSRequest.SetUserName(email);
+                    var tempReq = JsonConvert.SerializeObject(sendRegistrationTokenSMSRequest);
                     var verificationResponse = await ServiceApiImpl.Instance.SendRegistrationTokenSMS(sendRegistrationTokenSMSRequest);
 
                     if (verificationResponse.IsSuccessResponse())

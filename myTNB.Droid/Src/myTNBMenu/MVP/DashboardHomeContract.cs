@@ -15,11 +15,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 	{
 		public interface IView : IBaseView<IUserActionsListener>
 		{
-			void OnCheckProfileTab(bool key);
+			void OnCheckProfileTab(bool key, bool isFromHome);
 
-			void HideUnverifiedProfile(bool key);
+			void HideUnverifiedProfile(bool key, bool isFromHome);
 
-			void ShowUnverifiedProfile(bool key);
+			void ShowUnverifiedProfile(bool key, bool isFromHome);
 
 			/// <summary>
 			/// Shows the bill menu

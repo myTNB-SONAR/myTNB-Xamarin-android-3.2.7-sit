@@ -343,14 +343,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         this.mView.DisableBillMenu();
                     }
 
-                    this.mView.OnCheckProfileTab(false);
+                    this.mView.OnCheckProfileTab(false, false);
                     OnUpdateRewardUnRead();
                     break;
 				case Resource.Id.menu_promotion:
                     currentBottomNavigationMenu = Resource.Id.menu_promotion;
                     trackBottomNavigationMenu = Resource.Id.menu_promotion;
                     this.mView.ShowWhatsNewMenu();
-                    this.mView.OnCheckProfileTab(false);
+                    this.mView.OnCheckProfileTab(false, false);
 
                     isWhatNewClicked = true;
 
@@ -374,7 +374,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     currentBottomNavigationMenu = Resource.Id.menu_reward;
                     trackBottomNavigationMenu = Resource.Id.menu_reward;
                     this.mView.ShowRewardsMenu();
-                    this.mView.OnCheckProfileTab(false);
+                    this.mView.OnCheckProfileTab(false, false);
 
                     isRewardClicked = true;
 
@@ -404,7 +404,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             currentBottomNavigationMenu = Resource.Id.menu_more;
             trackBottomNavigationMenu = Resource.Id.menu_more;
             OnUpdateRewardUnRead();
-            this.mView.OnCheckProfileTab(true);
+            this.mView.OnCheckProfileTab(true, false);
             this.mView.ShowMoreMenu();
         }
 
@@ -614,17 +614,17 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
         }
 
-        public void OnResumeUpdateProfileUnRead(bool key)
+        public void OnResumeUpdateProfileUnRead(bool key, bool isfromHome)
         {
             UserEntity user = UserEntity.GetActive();
             if (string.IsNullOrEmpty(user.IdentificationNo) || !user.IsActivated)
             {
-                this.mView.ShowUnverifiedProfile(key);
+                this.mView.ShowUnverifiedProfile(key, isfromHome);
 
             }
             else
             {
-                this.mView.HideUnverifiedProfile(key);
+                this.mView.HideUnverifiedProfile(key, isfromHome);
             }
         }
 

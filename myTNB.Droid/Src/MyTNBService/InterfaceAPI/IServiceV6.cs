@@ -75,7 +75,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetVerifyEmailStatus")]
-        Task<T> UserAuthenticateEmail<T>([Body] MyTNBService.Request.BaseRequestRegister request, CancellationToken token);        //2enapps wan
+        Task<T> UserAuthenticateEmail<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetRegisteredUser")]
@@ -83,7 +83,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/UpdateIdentificationNo")]
-        Task<T> UserUpdateIdentifcationNo<T>([Body] MyTNBService.Request.BaseRequestId request, CancellationToken token);        //2enapps wan
+        Task<T> UserUpdateIdentifcationNo<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/UpdateUserInfo")]
@@ -106,7 +106,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> UserNotificationChannelPreferences<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/SendRegistrationTokenSMS")]
+        [Post("/v6/mytnbappws.asmx/SendRegistrationTokenSMS_OT")]
         Task<T> SendRegistrationTokenSMS<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]

@@ -42,6 +42,9 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         [BindView(Resource.Id.listView)]
         ListView listView;
 
+        [BindView(Resource.Id.listViewRemoveAcc)]
+        ListView listViewRemoveAcc;
+
         [BindView(Resource.Id.bottomLayout)]
         LinearLayout bottomLayout;
 
@@ -160,6 +163,31 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                     this.SetIsClicked(true);
                     Intent addAccountIntent = new Intent(this, typeof(AddNewUserActivity));
                     StartActivity(addAccountIntent);
+
+                }
+                this.SetIsClicked(false);
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        [OnClick(Resource.Id.btnRemoveAccess)]
+        void DeleteUser(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    txtManageAccessTitle.Text = GetLabelByLanguage("HeaderRemoveTitle");
+                    listViewRemoveAcc.Visibility = ViewStates.Visible;
+                    bottomLayout.Visibility = ViewStates.Visible;
+                    listView.Visibility = ViewStates.Gone;
+                    layout_btnAddUser.Visibility = ViewStates.Gone;
+                    manage_user_layout.Visibility = ViewStates.Gone;
 
                 }
                 this.SetIsClicked(false);
