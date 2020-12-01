@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Threading.Tasks;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
 using myTNB.Mobile.API.Services.Rating;
@@ -22,11 +23,12 @@ namespace myTNB.Mobile.API.Managers.Rating
         }
         public RatingManager() { }
 
-        #region SearchApplicationType
-        public async Task<GetCustomerRatingMasterResponse> GetCustomerRatingMaster(string categoryID)
+        #region GetCustomerRatingMaster
+        public async Task<GetCustomerRatingMasterResponse> GetCustomerRatingMaster()
         {
             try
             {
+                const string categoryID = "8";
                 IRatingService service = RestService.For<IRatingService>(Constants.ApiDomain);
                 try
                 {

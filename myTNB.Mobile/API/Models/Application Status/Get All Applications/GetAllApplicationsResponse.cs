@@ -84,6 +84,9 @@ namespace myTNB.Mobile
         [JsonProperty("savedApplicationId")]
         public string SavedApplicationId { set; get; }
 
+        [JsonProperty("backendAppId")]
+        public string BackendAppId { set; get; }
+
         [JsonProperty("applicationId")]
         public string ApplicationId { set; get; }
 
@@ -96,11 +99,17 @@ namespace myTNB.Mobile
         [JsonProperty("system")]
         public string System { set; get; }
 
-        [JsonProperty("srNo")]
-        public string SRNo { set; get; }
+        [JsonProperty("backendReferenceNo")]
+        public string BackendReferenceNo { set; get; }
 
-        [JsonProperty("srType")]
-        public string SRType { set; get; }
+        [JsonProperty("backendApplicationType")]
+        public string BackendApplicationType { set; get; }
+
+        [JsonProperty("srApplicationDetail")]
+        public string SRApplicationDetail { set; get; }
+
+        [JsonProperty("backendModule")]
+        public string BackendModule { set; get; }
 
         [JsonProperty("applicationType")]
         public string ApplicationType { set; get; }
@@ -110,6 +119,9 @@ namespace myTNB.Mobile
         /// </summary>
         [JsonProperty("applicationModuleDescription")]
         public string ApplicationModuleDescription { set; get; }
+
+        [JsonProperty("applicantName")]
+        public string ApplicantName { set; get; }
 
         [JsonProperty("statusId")]
         public string StatusID { set; get; }
@@ -156,6 +168,9 @@ namespace myTNB.Mobile
         [JsonProperty("isViewable")]
         public bool IsViewable { set; get; }
 
+        [JsonProperty("isUnread")]
+        public bool IsUnread { set; get; }
+
         [JsonProperty("ViewMode")]
         public string ViewMode { set; get; }
 
@@ -185,14 +200,18 @@ namespace myTNB.Mobile
         {
             get
             {
-                string refno;
-                if (SRNo.IsValid())
-                {
-                    refno = string.Format(LanguageManager.Instance.GetPageValueByKey("ApplicationStatusLanding", SRType.IsValid() ? "sr" : "sn"), SRNo);
-                }
-                else
+                string refno = string.Empty;
+                if (ReferenceNo.IsValid())
                 {
                     refno = ReferenceNo ?? string.Empty;
+                }
+                else if (BackendApplicationType.IsValid())
+                {
+                    refno = string.Format("{0}: {1}", BackendApplicationType, BackendReferenceNo);
+                }
+                else if (BackendReferenceNo.IsValid())
+                {
+                    refno = BackendReferenceNo;
                 }
                 return refno;
             }
@@ -294,8 +313,19 @@ namespace myTNB.Mobile
             }
         }
 
+        /// <summary>
+        /// Use this to show th dot.
+        /// true - display
+        /// false - hide
+        /// </summary>
         [JsonIgnore]
-        public bool IsUpdated { set; get; }
+        public bool IsUpdated
+        {
+            get
+            {
+                return IsUnread;
+            }
+        }
     }
 
     public enum RoleType

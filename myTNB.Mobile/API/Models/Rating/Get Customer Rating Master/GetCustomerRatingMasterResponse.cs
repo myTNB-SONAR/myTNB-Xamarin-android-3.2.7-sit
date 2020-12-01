@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
+using System;
 
 namespace myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster
 {
@@ -14,6 +17,27 @@ namespace myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster
         public string QuestionCategoryDescription { set; get; }
         [JsonProperty("questionAnswerSets")]
         public List<QuestionAnswerSetsModel> QuestionAnswerSets { set; get; }
+
+        [JsonIgnore]
+        public QuestionAnswerSetsModel StarSelection
+        {
+            get
+            {
+                try
+                {
+                    int index = QuestionAnswerSets.FindIndex(x=>x.AnswerDetail.AnswerTypeValue == "Star");
+                    if (index >-1)
+                    {
+                        return QuestionAnswerSets[index];
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("[DEBUG] StarSelection Exception: " + e.Message);
+                }
+                return null;
+            }
+        }
     }
 
     public class QuestionAnswerSetsModel
@@ -26,7 +50,7 @@ namespace myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster
         public AnswerDetailModel AnswerDetail { set; get; }
 
         [JsonIgnore]
-        public RateType RateTpe
+        public RateType RateType
         {
             get
             {

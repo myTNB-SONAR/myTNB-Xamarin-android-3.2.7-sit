@@ -1119,8 +1119,6 @@
     "allApplicationsMessage": "Log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> using the same log in details. You can view the list of all your applications and full form details, and continue your applications or create new ones.<br><br>Note: Applications submitted via other sources before <insert Mmm YYYY eg. Mar 2021> will not be displayed automatically here, but you can manually search and add it to your list.",
     "viewMore": "View More",
     "viewLess": "View Less",
-    "sn": "SN: {0}",
-    "sr": "SR: {0}",
     "displayPerQuery": "5",
     "saveMessage": "Success! You'll see up-to-date progress of the application status."
   },
@@ -1180,7 +1178,7 @@
     "bcrmDownMessage": "Looks like your statuses can’t be loaded at the moment. However, you may proceed to make any changes to the application as it will be recorded. Check back again later to view its update.",
     "rateCTA": "Rate Our Service",
     "rateSuccessMessage": "Thank you for your feedback!",
-    "youRated": "You rated:"
+    "youRated": "You rated: "
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Payment Details",
@@ -2037,6 +2035,26 @@
             "primaryCTATitle": "",
             "secondaryCTATitle": "",
             "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "CustomerRating": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "empty",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
             "type": "none"
           }
         ]
