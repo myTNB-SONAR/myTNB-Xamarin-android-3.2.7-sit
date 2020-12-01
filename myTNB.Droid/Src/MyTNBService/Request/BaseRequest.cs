@@ -18,11 +18,6 @@ namespace myTNB_Android.Src.MyTNBService.Request
             usrInf.eid = userName;
         }
 
-        public void SetUserIdentification(string email)
-        {
-            usrInf.usrId = email;
-        }
-
         public void SetSSPID(string sspID)
         {
             usrInf.sspuid = sspID;
@@ -31,11 +26,10 @@ namespace myTNB_Android.Src.MyTNBService.Request
 
     public class UserInfo
     {
-        public string eid, sspuid, did, ft, lang, sec_auth_k1, sec_auth_k2, ses_param1, ses_param2, usrId;
+        public string eid, sspuid, did, ft, lang, sec_auth_k1, sec_auth_k2, ses_param1, ses_param2;
 
         public UserInfo()
         {
-            usrId = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().UserName : "";
             eid = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().UserName : "";
             sspuid = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().UserID : "";
             did = UserSessions.GetDeviceId();
