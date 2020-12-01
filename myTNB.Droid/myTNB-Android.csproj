@@ -961,6 +961,10 @@
     <Compile Include="Src\ManageCards\MVP\ManageCardsContract.cs" />
     <Compile Include="Src\ManageCards\MVP\ManageCardsPresenter.cs" />
     <Compile Include="Src\ManageCards\Request\RemoveRegisteredCardRequest.cs" />
+    <Compile Include="Src\ManageUser\Activity\ManageUserActivity.cs" />
+    <Compile Include="Src\ManageUser\Models\CustomerAcc.cs" />
+    <Compile Include="Src\ManageUser\MVP\ManageUserContract.cs" />
+    <Compile Include="Src\ManageUser\MVP\ManageUserPresenter.cs" />
     <Compile Include="Src\AddNewUser\Activity\AddNewUserActivity.cs" />
     <Compile Include="Src\AddNewUser\MVP\AddNewUserContract.cs" />
     <Compile Include="Src\AddNewUser\MVP\AddNewUserPresenter.cs" />
@@ -5940,6 +5944,8 @@
     <Folder Include="Src\ManageAccess\Models\" />
     <Folder Include="Src\ManageCards\Api\" />
     <Folder Include="Src\ManageSupplyAccount\Api\" />
+    <Folder Include="Src\ManageUser\Api\" />
+    <Folder Include="Src\ManageUser\Request\" />
     <Folder Include="Src\MultipleAccountPayment\Api\" />
     <Folder Include="Src\MyAccount\Models\" />
     <Folder Include="Src\MyLearnMoreAboutTnb\Adapter\" />
@@ -8352,12 +8358,24 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\layout\ManageUserView.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
     <AndroidResource Include="Resources\layout\AddNewUserView.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
+    <AndroidResource Include="Resources\layout\ManageUserItemContentActionLayout.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+   <ItemGroup>
     <AndroidResource Include="Resources\layout\ManageUserItemLayout.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>

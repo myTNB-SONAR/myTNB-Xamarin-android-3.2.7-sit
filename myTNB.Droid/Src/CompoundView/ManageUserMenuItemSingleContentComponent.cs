@@ -12,6 +12,7 @@ namespace myTNB_Android.Src.CompoundView
     public class ManageUserMenuItemSingleContentComponent : RelativeLayout
     {
         private TextView itemTitle;
+        private ImageView supplyIcon;
         private CheckBox itemAction;
         private LinearLayout itemContainer, itemActionContainer;
 
