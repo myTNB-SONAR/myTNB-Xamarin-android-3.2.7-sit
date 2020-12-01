@@ -106,7 +106,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> UserNotificationChannelPreferences<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/SendRegistrationTokenSMS")]
+        [Post("/v6/mytnbappws.asmx/SendRegistrationTokenSMS_OT")]
         Task<T> SendRegistrationTokenSMS<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
