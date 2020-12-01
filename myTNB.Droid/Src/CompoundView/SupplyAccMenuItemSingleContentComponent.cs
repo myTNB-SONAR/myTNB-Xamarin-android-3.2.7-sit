@@ -76,7 +76,7 @@ namespace myTNB_Android.Src.CompoundView
 
         public void SetItemActionCall(Action action)
         {
-            itemContainer.Click += delegate
+            itemActionContainer.Click += delegate
             {
                 action();
             };

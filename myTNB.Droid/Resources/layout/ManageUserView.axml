@@ -13,7 +13,6 @@
         android:layout_height="match_parent"
         android:background="@color/lightGrey"
         android:orientation="vertical">
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +21,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-               
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputLayoutNickName"
                     android:layout_width="match_parent"
@@ -39,8 +37,7 @@
                         android:background="@android:color/transparent"
                         android:enabled="false"
                         android:focusable="false"
-                        android:hint="ACCOUNT NICKNAME"
-                        android:paddingTop="0dp"
+                        android:paddingTop="6dp"
                         android:inputType="text"
                         android:singleLine="true"
                         android:ellipsize="end"
@@ -78,7 +75,7 @@
                         android:enabled="false"
                         android:focusable="false"
                         android:hint="EMAIL ADDRESS"
-                        android:paddingTop="0dp"
+                        android:paddingTop="6dp"
                         android:inputType="text"
                         android:singleLine="true"
                         android:ellipsize="end"
@@ -87,21 +84,6 @@
                         android:maxWidth="200dp" />
                 </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
-
-
-         <!--<TextView
-                android:visibility="visible"
-                android:id="@+id/txtManageUserTitle"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:textSize="18sp"
-                android:paddingBottom="0dp"
-                android:paddingTop="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:textColor="@color/blue"
-                android:text="Give this user access to:"
-                android:background="@color/lightGrey" />    -->
         <LinearLayout
             android:id="@+id/profileMenuItemsContent"
             android:layout_width="match_parent"
@@ -109,23 +91,12 @@
             android:minHeight="25px"
             android:minWidth="25px"
             android:orientation="vertical"/>
-       
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/lightGrey"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="0dp">
-
-             <LinearLayout
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:paddingBottom="16dp"
-                android:paddingTop="16dp"
-                android:background="@color/white">
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="16dp">
              <TextView
                     android:id="@+id/infoManageUser"
                     android:layout_width="match_parent"
@@ -134,12 +105,16 @@
                     android:textSize="12dp"
                     android:textColor="#1c79ca"
                     android:drawablePadding="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
                     android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
-                    android:text="What does this means?"
+                    android:text="What does this mean?"
                     android:drawableLeft="@drawable/smr_why_accounts_info"/>
-             </LinearLayout>
+        </LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/lightGrey"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp">
             <LinearLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -150,7 +125,6 @@
                 android:paddingTop="16dp"
                 android:background="@color/white"
                 android:layout_gravity="bottom | center">
-
                 <Button
                     android:id="@+id/btnSave"
                     style="@style/DarkButton"

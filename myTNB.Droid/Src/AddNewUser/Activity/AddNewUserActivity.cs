@@ -300,8 +300,8 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                         TextViewUtils.SetMuseoSans500Typeface(titleText);
                         TextViewUtils.SetMuseoSans300Typeface(infoText);
 
-                        titleText.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogAddrress");
-                        infoText.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogAddrressMessage");
+                        titleText.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogManageUser");
+                        infoText.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogManageUserMessage");
                     }
                 }
                 addressInfoDialog.Show();
