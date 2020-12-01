@@ -1,7 +1,7 @@
 ﻿using System;
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class UpdateIdentificationNo : BaseRequestId
+    public class UpdateIdentificationNo : BaseRequest
     {
         public string IdNo, IdType;
 

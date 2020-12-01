@@ -276,21 +276,15 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             public void OnTextChanged(Java.Lang.ICharSequence s, int start, int before, int count)
             {
                 string Idtype = idText.Text;
-                int str = s.ToString().Length;
 
                if (Idtype.Equals("IC / Mykad"))
                 {
                     int len = eText.Text.Length;
-                    if ((len == 6 || len == 9) && before == 0)
+                    if ((len == 6 || len == 9 || start == 5 || start == 8) && before == 0)
                     {
                         eText.Text = eText.Text + "-";
                         eText.SetSelection(eText.Text.Length);
 
-                    }
-                    if ((start == 6 || start == 9) && str != start && before == 0)
-                    {
-                        eText.Text = "-" + eText.Text;
-                        eText.SetSelection(eText.Text.Length);
                     }
                     /*if (KeyListener.KeyDel == 0)
                     {
