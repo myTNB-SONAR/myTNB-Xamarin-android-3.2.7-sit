@@ -278,12 +278,10 @@ namespace myTNB.Mobile
                         }
                     }
                 }
-                //Todo: Check CTA Type for Rating
                 else if (ApplicationRatingDetail != null && !ApplicationRatingDetail.TransactionId.IsValid())
                 {
                     type = DetailCTAType.Rate;
                 }
-                type = DetailCTAType.Rate;
                 return type;
             }
         }

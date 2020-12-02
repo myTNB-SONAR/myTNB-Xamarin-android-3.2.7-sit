@@ -26,6 +26,10 @@ namespace myTNB.Mobile.API.Managers.Rating
         public RatingManager() { }
 
         #region GetCustomerRatingMaster
+        /// <summary>
+        /// Get All Rating fields
+        /// </summary>
+        /// <returns></returns>
         public async Task<GetCustomerRatingMasterResponse> GetCustomerRatingMaster()
         {
             try
@@ -44,7 +48,10 @@ namespace myTNB.Mobile.API.Managers.Rating
                     }
                     else
                     {
-                        response.StatusDetail = new StatusDetail();
+                        response = new GetCustomerRatingMasterResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
                         response.StatusDetail = Constants.Service_GetCustomerRatingMaster.GetStatusDetails(Constants.DEFAULT);
                     }
                     return response;
