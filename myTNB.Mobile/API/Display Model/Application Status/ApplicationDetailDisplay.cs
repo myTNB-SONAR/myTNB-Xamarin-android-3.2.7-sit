@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using myTNB.Mobile.API.Models.ApplicationStatus;
+using myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
 using myTNB.Mobile.Extensions;
 using myTNB.Mobile.SessionCache;
@@ -26,6 +27,8 @@ namespace myTNB.Mobile
 #pragma warning restore IDE1006 // Naming Styles
         public ApplicationStatusDetailDisplayModel ApplicationStatusDetail { set; get; }
         public List<ApplicationActivityLogDetailDisplay> ApplicationActivityLogDetail { set; get; }
+
+        public ApplicationRatingDetail ApplicationRatingDetail { set; get; }
 
         /// <summary>
         /// List of Title and Value used for payment details
@@ -276,10 +279,11 @@ namespace myTNB.Mobile
                     }
                 }
                 //Todo: Check CTA Type for Rating
-                else if (ApplicationStatusDetail.StatusDescriptionColor is string description && description.IsValid())
+                else if (ApplicationRatingDetail != null && !ApplicationRatingDetail.TransactionId.IsValid())
                 {
-                    //type = DetailCTAType.Rate;
+                    type = DetailCTAType.Rate;
                 }
+                type = DetailCTAType.Rate;
                 return type;
             }
         }
@@ -330,6 +334,35 @@ namespace myTNB.Mobile
         /// Used for getting ASMX Payment Details
         /// </summary>
         public string SRNumber { set; get; }
+
+        /// <summary>
+        /// Display Rating
+        /// </summary>
+        public string RatingDisplay
+        {
+            get
+            {
+                string rating = string.Empty;
+                if (ApplicationRatingDetail != null && ApplicationRatingDetail.TransactionId.IsValid() && ApplicationRatingDetail.Rating > 0)
+                {
+                    rating = string.Format("{0}{1}"
+                        , LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "youRated")
+                        , ApplicationRatingDetail.Rating.ToString());
+                }
+                return rating;
+            }
+        }
+
+        /// <summary>
+        /// Determines if Rating is Displayed or Not
+        /// </summary>
+        public bool IsRatingDisplayed
+        {
+            get
+            {
+                return RatingDisplay.IsValid();
+            }
+        }
 
         private Color StatusColorDisplay
         {

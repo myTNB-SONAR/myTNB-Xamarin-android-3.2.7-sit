@@ -27,6 +27,9 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public NCDetail newConnectionDetail { set; get; }
         public PRJDetail projectDetail { set; get; }
         public SMRDetail smrDetail { set; get; }
+
+        [JsonProperty("applicationRatingDetail")]
+        public ApplicationRatingDetail ApplicationRatingDetail { set; get; }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
@@ -228,5 +231,15 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string premiseTypeItem { set; get; }
         public string premiseTypeItemDescription { set; get; }
         public string premiseAddress { set; get; }
+    }
+
+    public class ApplicationRatingDetail
+    {
+        [JsonProperty("srNo")]
+        public string SRNo { set; get; }
+        [JsonProperty("transactionId")]
+        public string TransactionId { set; get; }
+        [JsonProperty("rating")]
+        public int Rating { set; get; }
     }
 }

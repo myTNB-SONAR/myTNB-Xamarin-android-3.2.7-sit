@@ -29,17 +29,16 @@
         private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
 
         internal static string ApiDomain = DEV2;
-        internal const string PaymentURL = "http://10.215.128.191:89/v5/PayRedirect.aspx";
         internal const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
-        internal const string SitecoreURL = "https://sitecore.tnb.com.my/";// "http://10.215.70.246/";    //"http://tnbcsdevapp.tnb.my/";
+        //Mark: IP: http://10.215.70.246/   URL: http://tnbcsdevapp.tnb.my/
+        internal const string SitecoreURL = "http://10.215.70.246/";
 #elif MASTER || SIT
-        internal static string ApiDomain = "http://10.215.128.191:89";//"https://mobiletestingws.tnb.com.my";
-        internal const string PaymentURL = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx";
+        internal static string ApiDomain = "https://mobiletestingws.tnb.com.my";
         internal const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
-        internal const string SitecoreURL = "http://10.215.70.248/";    //"http://tnbcsstgapp.tnb.my/";
+        //Mark: IP: http://10.215.70.248/   URL: http://tnbcsstgapp.tnb.my/
+        internal const string SitecoreURL = "http://10.215.70.248/";
 #else
         internal static string ApiDomain = "https://mytnbapp.tnb.com.my";
-        internal const string PaymentURL = "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx";
         internal const string ApiKeyId = "E6148656-205B-494C-BC95-CC241423E72F";
         internal const string SitecoreURL = "https://sitecore.tnb.com.my/";
 #endif
@@ -55,6 +54,7 @@
         internal const string Service_GetTaxInvoice = "GetTaxInvoiceForApplicationPayment";
         internal const string Service_TaxInvoice = "GetTaxInvoiceApplicationPayment";
         internal const string Service_GetCustomerRatingMaster = "CustomerRatingMaster";
+        internal const string Service_PostSubmitRating = "SubmitRating";
 
         //Language File Constants
         internal const string LanguageFile_ServiceDetails = "ServiceDetails";
