@@ -24,6 +24,9 @@ using Android.Graphics;
 using myTNB_Android.Src.Login.Activity;
 using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
+using myTNB_Android.Src.ApplicationStatusRating.Activity;
+using myTNB.Mobile.API.Managers.Rating;
+using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -173,7 +176,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         private Snackbar mNoInternetSnackbar;
 
         [OnClick(Resource.Id.btnPrimaryCTA)]
-        internal void OnPrimaryCTAClick(object sender, EventArgs e)
+        internal async void OnPrimaryCTAClick(object sender, EventArgs e)
         {
             if (applicationDetailDisplay != null)
             {
@@ -183,7 +186,16 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 }
                 else if (applicationDetailDisplay.CTAType == DetailCTAType.Rate)
                 {
-                    //Todo: Route to rating
+        
+                    GetCustomerRatingMasterResponse response = await RatingManager.Instance.GetCustomerRatingMaster();
+                        
+                    HideProgressDialog();
+                    if (response.StatusDetail.IsSuccess)
+                    {
+                        Intent rating_activity = new Intent(this, typeof(RatingActivity));
+                        rating_activity.PutExtra("CustomerRatingMasterResponse", JsonConvert.SerializeObject(response.Content));
+                        StartActivity(rating_activity);
+                    }
                 }
             }
         }
