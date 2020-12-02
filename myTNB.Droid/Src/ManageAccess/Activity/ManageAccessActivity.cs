@@ -162,7 +162,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 {
                     this.SetIsClicked(true);
                     Intent addAccountIntent = new Intent(this, typeof(AddNewUserActivity));
-                    StartActivity(addAccountIntent);
+                    StartActivityForResult(addAccountIntent, Constants.ADD_USER);
 
                 }
                 this.SetIsClicked(false);
@@ -208,7 +208,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 {
                     this.SetIsClicked(true);
                     Intent addAccountIntent = new Intent(this, typeof(AddNewUserActivity));
-                    StartActivity(addAccountIntent);
+                    StartActivityForResult(addAccountIntent, Constants.ADD_USER);
 
                 }
                 this.SetIsClicked(false);
@@ -513,6 +513,55 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        public void ShowAddNewUserEmailExistSuccess()
+        {
+            try
+            {
+                Snackbar updateNameBar = Snackbar.Make(rootView, GetLabelByLanguage("NameUpdateSuccess"), Snackbar.LengthIndefinite)
+                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = updateNameBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                updateNameBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowAddNewUserEmailNotExistSuccess()
+        {
+            try
+            {
+                Snackbar updateNameBar = Snackbar.Make(rootView, GetLabelByLanguage("NameUpdateSuccess"), Snackbar.LengthIndefinite)
+                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = updateNameBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                updateNameBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         public void ShowGetCardsProgressDialog()
         {

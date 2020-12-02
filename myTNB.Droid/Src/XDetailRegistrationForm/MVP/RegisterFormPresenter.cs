@@ -16,6 +16,8 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using Firebase.Iid;
 using Newtonsoft.Json;
+using myTNB_Android.Src.Base;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
 {
@@ -26,7 +28,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
         private Regex hasNumber = new Regex(@"[0-9]+");
         private Regex hasUpperChar = new Regex(@"[a-zA-Z]+");
         private Regex hasMinimum8Chars = new Regex(@".{8,}");
-        private Regex hasMinimum12Chars = new Regex(@".{14,}");
+        private Regex hasMinimum12Chars = new Regex(@".{12,12}$");
         private Regex hasMinimum5until50Chars = new Regex(@".{5,50}");
         private Regex hasHyphens = new Regex(@"/(?([0-9]{3}))?([ .-]?)([0-9]{3})\2([0-9]{4})/");
 
@@ -113,16 +115,25 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
 
             try
             {
+                var task = Task.Run(async () => {  
+
+                UserCredentialsEntity userEntity =  new UserCredentialsEntity();
                 icno = icno.Replace("-", string.Empty);
-                var userResponse = await ServiceApiImpl.Instance.UserAuthenticateIDOnly(new GetRegisteredUser(idtype, icno));
-                if (!userResponse.IsSuccessResponse())
+                GetRegisteredUser getICVerify = new GetRegisteredUser(idtype, icno);
+                getICVerify.SetUserName(userEntity.Email);
+                var userResponse = await ServiceApiImpl.Instance.UserAuthenticateIDOnly(getICVerify);
+                
+                if (userResponse.GetDataAll().IsRegistered)
                 {
-                   if (userResponse.GetDataAll().IsRegistered)
-                    {
-                        this.mView.ShowInvalidIdentificationError();
-                        this.mView.DisableRegisterButton();
-                    }
+                    MyTNBAccountManagement.GetInstance().SetIsEmailUpdated(false);
                 }
+                else
+                {
+                    MyTNBAccountManagement.GetInstance().SetIsEmailUpdated(true);
+                     //this.mView.ShowInvalidAcquiringTokenThruSMS(userResponse.Response.DisplayMessage);
+                }
+                });
+                Task.WaitAll(task);
 
             }
             catch (System.OperationCanceledException e)
@@ -197,6 +208,48 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             {
                 this.mView.ShowPasswordMinimumOf6CharactersError();
                 return;
+            }
+
+            if (idtype.Equals("1"))
+            {
+                if (!CheckIdentificationIsValid(icno))
+                {
+                    this.mView.ShowFullICError();
+                    this.mView.DisableRegisterButton();
+                    return;
+
+                }
+                else
+                {
+                    this.mView.ShowIdentificationHint();
+                }
+            }
+            else if (idtype.Equals("2"))
+            {
+                if (!CheckArmyIdIsValid(icno))
+                {
+                    this.mView.ShowFullArmyIdError();
+                    this.mView.DisableRegisterButton();
+                    return;
+
+                }
+                else
+                {
+                    this.mView.ShowIdentificationHint();
+                }
+            }
+            else
+            {
+                if (!CheckPassportIsValid(icno))
+                {
+                    this.mView.ShowFullPassportError();
+                    this.mView.DisableRegisterButton();
+                    return;
+                }
+                else
+                {
+                    this.mView.ShowIdentificationHint();
+                }
             }
 
             this.mView.ShowProgressDialog();

@@ -32,6 +32,7 @@ namespace myTNB_Android.Src.Base
         private bool IsUpdatedName = false;
         private bool IsUpdatedEmail = false;
         private bool IsUpdatedID = false;
+        private bool IsAddedNewUser = false;
         private bool IsAppMasterComplete = false;
         private bool IsAppMasterFailed = false;
         private string MaintenanceTitle = "";
@@ -526,6 +527,17 @@ namespace myTNB_Android.Src.Base
                 //EvaluateServiceRetry();
             }
         }
+
+        public void AddNewUserAdded(bool AddedNewUser)
+        {
+            IsAddedNewUser = AddedNewUser;
+        }
+
+        public bool IsNewUserAdd()
+        {
+            return IsAddedNewUser;
+        }
+
         public void SetIsNameUpdated(bool isUpdated)
         {
             IsUpdatedName = isUpdated;

@@ -343,14 +343,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         this.mView.DisableBillMenu();
                     }
 
-                    this.mView.OnCheckProfileTab(false, false);
+                    this.mView.OnCheckProfileTab(false, true);
                     OnUpdateRewardUnRead();
                     break;
 				case Resource.Id.menu_promotion:
                     currentBottomNavigationMenu = Resource.Id.menu_promotion;
                     trackBottomNavigationMenu = Resource.Id.menu_promotion;
                     this.mView.ShowWhatsNewMenu();
-                    this.mView.OnCheckProfileTab(false, false);
+                    this.mView.OnCheckProfileTab(false, true);
 
                     isWhatNewClicked = true;
 
@@ -374,7 +374,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     currentBottomNavigationMenu = Resource.Id.menu_reward;
                     trackBottomNavigationMenu = Resource.Id.menu_reward;
                     this.mView.ShowRewardsMenu();
-                    this.mView.OnCheckProfileTab(false, false);
+                    this.mView.OnCheckProfileTab(false, true);
 
                     isRewardClicked = true;
 

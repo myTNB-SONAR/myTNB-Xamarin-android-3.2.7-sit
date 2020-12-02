@@ -56,6 +56,13 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                         }
                     }
                 }
+                else if (requestCode == Constants.ADD_USER)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        this.mView.ShowAddNewUserEmailExistSuccess();
+                    }
+                }
             }
             catch (Exception e)
             {

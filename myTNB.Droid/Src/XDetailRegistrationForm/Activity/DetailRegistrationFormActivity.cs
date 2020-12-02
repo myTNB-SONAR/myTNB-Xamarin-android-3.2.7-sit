@@ -37,6 +37,7 @@ using Android.Content.Res;
 using System.Linq;
 using Android.InputMethodServices;
 using static myTNB_Android.Src.RegistrationForm.Activity.DetailRegistrationFormActivity.KeyListener;
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.RegistrationForm.Activity
 {
@@ -126,6 +127,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         [BindView(Resource.Id.txtBodyRegister)]
         TextView txtBodyRegister;
 
+        private bool isExistId = false;
+
         private bool isClicked = false;
 
         UserCredentialsEntity entity = new UserCredentialsEntity();
@@ -195,12 +198,10 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 txtICNumber.FocusChange += txtICNumber_FocusChange;
                 txtboxcondition.CheckedChange += CheckedChange;
+                txtICNumber.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
 
                 txtFullName.AddTextChangedListener(new InputFilterFormField(txtFullName, textInputLayoutFullName));
                 txtICNumber.AddTextChangedListener(new InputFilterFormField(txtICNumber, textInputLayoutICNo));
-
-                txtFullName.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
-                txtICNumber.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
 
                 IdentificationType Individual = new IdentificationType();
                 Individual.Id = "1";
@@ -230,7 +231,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
                 mobileNumberFieldContainer.AddView(mobileNumberInputComponent);
 
-                ClearFields();
+                //ClearFields();
 
                 this.userActionsListener.Start();
             }
@@ -286,19 +287,11 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                         eText.SetSelection(eText.Text.Length);
 
                     }
-                    /*if (KeyListener.KeyDel == 0)
+                    if (len > 14)
                     {
-                        int len = eText.Text.Length;
-                        if (len == 6 || len == 9)
-                        {
-                            eText.Text = eText.Text + "-";
-                            eText.SetSelection(eText.Text.Length);
-                        }
+                        eText.Text = eText.Text.ToString().Substring(0, 14);
+                        eText.SetSelection(eText.Text.Length);
                     }
-                    else
-                    {
-                        KeyListener.KeyDel = 0;
-                    }*/
                 }
 
             }
@@ -326,13 +319,93 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         private void txtICNumber_FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-            string ic_no = txtICNumber.Text.ToString().Trim();
-            string Idtype = selectedIdentificationType.Id;
-            if (!e.HasFocus)
+            try
             {
-                this.userActionsListener.OnCheckID(ic_no, Idtype);
+                bool checkbox = txtboxcondition.Checked;
+                string Idtype = selectedIdentificationType.Id;
+                string fullname = txtFullName.Text.ToString().Trim();
+                string ic_no = txtICNumber.Text.ToString().Trim();
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
+                ic_no = ic_no.Replace("-", string.Empty);
+
+                if (!e.HasFocus)
+                {
+                    this.userActionsListener.CheckRequiredFields(fullname, ic_no, mobile_no, Idtype, txtboxcondition.Checked);
+
+                    if (ic_no.Equals(""))
+                    {
+                        ClearICMinimumCharactersError();
+                        ClearICHint();
+                    }
+                    else
+                    {
+                        if (Idtype.Equals("1"))
+                        {
+                            if (!this.mPresenter.CheckIdentificationIsValid(ic_no))
+                            {
+                                ShowFullICError();
+                            }
+                            else
+                            {
+                                ShowIdentificationHint();
+                            }
+                        }
+                        else if (Idtype.Equals("2"))
+                        {
+                            if (!this.mPresenter.CheckArmyIdIsValid(ic_no))
+                            {
+                                ShowFullArmyIdError();
+                            }
+                            else
+                            {
+                                ShowIdentificationHint();
+                            }
+                        }
+                        else if (Idtype.Equals("3"))
+                        {
+                            if (!this.mPresenter.CheckPassportIsValid(ic_no))
+                            {
+                                ShowFullPassportError();
+                            }
+                            else
+                            {
+                                ShowIdentificationHint();
+                            }
+                        }
+                        else
+                        {
+                            ClearICMinimumCharactersError();
+                            ClearICHint();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+
+        }
+
+        private void AddTextChangedListener(object sender, AfterTextChangedEventArgs e)
+        {
+            try
+            {
+                string ic_no = txtICNumber.Text.ToString().Trim();
+                if (TextUtils.IsEmpty(ic_no))
+                {
+                     ClearICMinimumCharactersError();
+                     ClearICHint();
+                }
+                ClearICMinimumCharactersError();
+                ClearICHint();
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
             }
         }
+
 
         private void CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
@@ -351,8 +424,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             string ic_no = txtICNumber.Text.ToString().Trim(); 
             string Idtype = selectedIdentificationType.Id;
             string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
+            ic_no = ic_no.Replace("-", string.Empty);
             this.userActionsListener.CheckRequiredFields(fullname, ic_no, mobile_no, Idtype, txtboxcondition.Checked);
-            this.userActionsListener.OnCheckID(ic_no, Idtype);
 
         }
 
@@ -362,120 +435,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             string ic_no = txtICNumber.Text.ToString().Trim();
             string Idtype = selectedIdentificationType.Id;
             string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
+            ic_no = ic_no.Replace("-", string.Empty);
             this.userActionsListener.CheckRequiredFields(fullname, ic_no, mobile_no, Idtype, txtboxcondition.Checked);
-        }
-
-        private void AddTextChangedListener(object sender, AfterTextChangedEventArgs e)
-        {
-            try
-            {
-                
-                bool checkbox = txtboxcondition.Checked;
-                string Idtype = selectedIdentificationType.Id;
-                string fullname = txtFullName.Text.ToString().Trim();
-                string ic_no = txtICNumber.Text.ToString().Trim();
-                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
-                this.userActionsListener.CheckRequiredFields(fullname, ic_no, mobile_no, Idtype, txtboxcondition.Checked);
-
-                if (ic_no.Length == 0 )
-                {
-                    ClearICError();
-                    ClearICHint();
-                }
-                else if (ic_no.Length == 1 || ic_no.Length == 2)
-                {
-                    new Handler().PostDelayed(delegate
-                    {
-                        // Your code here
-                        if (!string.IsNullOrEmpty(ic_no))
-                        {
-                            if (Idtype.Equals("1"))
-                            {
-
-                                if (!this.mPresenter.CheckIdentificationIsValid(ic_no))
-                                {
-                                    ShowFullICError();
-                                }
-                                else
-                                {
-                                    ShowIdentificationHint();
-
-                                }
-                                TextViewUtils.SetMuseoSans300Typeface(textInputLayoutICNo);
-                            }
-                            else if (Idtype.Equals("2"))
-                            {
-                                if (!this.mPresenter.CheckArmyIdIsValid(ic_no))
-                                {
-                                    ShowFullArmyIdError();
-                                }
-                                else
-                                {
-                                    ShowIdentificationHint();
-                                }
-                                TextViewUtils.SetMuseoSans300Typeface(textInputLayoutICNo);
-                            }
-                            else
-                            {
-                                if (!this.mPresenter.CheckPassportIsValid(ic_no))
-                                {
-                                    ShowFullPassportError();
-                                }
-                                else
-                                {
-                                    ShowIdentificationHint();
-                                }
-                                TextViewUtils.SetMuseoSans300Typeface(textInputLayoutICNo);
-                            }
-                        }                        
-                    }, 600);
-                }
-                else if (ic_no.Length >= 3)
-                {
-                    if (Idtype.Equals("1"))
-                    {
-                        if (!this.mPresenter.CheckIdentificationIsValid(ic_no))
-                        {
-                            ShowFullICError();
-                        }
-                        else
-                        {
-                            ShowIdentificationHint();
-                        }
-                    }
-                    else if (Idtype.Equals("2"))
-                    {
-                        if (!this.mPresenter.CheckArmyIdIsValid(ic_no))
-                        {
-                            ShowFullArmyIdError();
-                        }
-                        else
-                        {
-                            ShowIdentificationHint();
-                        }
-                    }
-                    else
-                    {
-                        if (!this.mPresenter.CheckPassportIsValid(ic_no))
-                        {
-                            ShowFullPassportError();
-                        }
-                        else
-                        {
-                            ShowIdentificationHint();
-                        }
-                    }
-                }
-                else
-                {
-                    ClearICMinimumCharactersError();
-                    ClearICHint();
-                }
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
         }
 
         public void OnPause()
@@ -708,8 +669,36 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                     string mobile_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
                     string eml_str = entity.Email.Trim();
                     string password = entity.Password.Trim();
-                    this.userActionsListener.OnAcquireToken(fName, ic_no, mobile_no, eml_str,password, idtype);
+                    string Idtype = selectedIdentificationType.Id;
+
+                    ic_no = ic_no.Replace("-", string.Empty);
+                    this.userActionsListener.OnCheckID(ic_no, Idtype);
+
+                    bool hasExistedEmail = MyTNBAccountManagement.GetInstance().IsEmailUpdated();
+                    
+                    if (hasExistedEmail)
+                    {
+                        this.userActionsListener.OnAcquireToken(fName, ic_no, mobile_no, eml_str, password, idtype);
+                    }
+                    else
+                    {
+                        ShowInvalidIdentificationError();
+                        DisableRegisterButton();
+                        if (Idtype.Equals("1"))
+                        {
+                           ShowFullICError();
+                        }
+                        else if (Idtype.Equals("2"))
+                        {
+                          ShowFullArmyIdError();
+                        }
+                        else
+                        {
+                          ShowFullPassportError();
+                        }                    
+                    }
                 }
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
@@ -847,9 +836,10 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 string fullname = txtFullName.Text;
                 string ic_no = txtICNumber.Text;
                 string mobile_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
-                string email = txtEmail.Text;
-                string password = txtPassword.Text;
+                string email = entity.Email;
+                string password = entity.Password;
                 string idtype = selectedIdentificationType.Id.ToString().Trim();
+                ic_no = ic_no.Replace("-", string.Empty);
                 this.userActionsListener.OnAcquireToken(fullname, ic_no, mobile_no, email, password,idtype);
 
             }
@@ -875,9 +865,10 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 string fullname = txtFullName.Text;
                 string ic_no = txtICNumber.Text;
                 string mobile_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
-                string email = txtEmail.Text;
-                string password = txtPassword.Text;
+                string email = entity.Email;
+                string password = entity.Password;
                 string idtype = selectedIdentificationType.Id.ToString().Trim();
+                ic_no = ic_no.Replace("-", string.Empty);
                 this.userActionsListener.OnAcquireToken(fullname, ic_no, mobile_no, email, password, idtype);
 
             }
@@ -903,9 +894,10 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 string fullname = txtFullName.Text;
                 string ic_no = txtICNumber.Text;
                 string mobile_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
-                string email = txtEmail.Text;
-                string password = txtPassword.Text;
+                string email = entity.Email;
+                string password = entity.Password;
                 string idtype = selectedIdentificationType.Id.ToString().Trim();
+                ic_no = ic_no.Replace("-", string.Empty);
                 this.userActionsListener.OnAcquireToken(fullname, ic_no, mobile_no, email, password, idtype);
 
             }

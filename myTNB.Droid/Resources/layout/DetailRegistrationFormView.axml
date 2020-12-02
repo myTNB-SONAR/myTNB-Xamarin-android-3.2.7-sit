@@ -88,7 +88,6 @@
                         android:layout_height="wrap_content"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                         app:errorEnabled="true"
-                        android:layout_marginTop="12dp"
                         android:id="@+id/textInputLayoutFullName">
                         <EditText
                             android:hint="@string/registration_form_full_name_hint"
@@ -99,7 +98,6 @@
                             android:id="@+id/txtFullName"
                             android:digits="@string/name_validation_digits"
                             android:maxLines="1"
-                            android:paddingTop="5dp"
                             android:inputType="textPersonName|textCapWords" />
                     </com.google.android.material.textfield.TextInputLayout>
                     <TextView
@@ -109,7 +107,7 @@
                     android:id="@+id/txtAccountType"
                     android:textSize="10dp"
                     android:textColor="@color/silverChalice"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="2dp"
                     android:layout_marginStart="6dp"
                     android:layout_marginEnd="5dp" />
@@ -133,7 +131,7 @@
                         android:layout_height="wrap_content"
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                         app:errorEnabled="true"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="8dp"
                         android:id="@+id/textInputLayoutICNo">
                         <EditText
                             android:hint="@string/identification_detail_form_page"
@@ -143,14 +141,13 @@
                             android:drawablePadding="6dp"
                             android:drawableLeft="@drawable/placeholder_account_no"
                             android:maxLines="1"
-                            android:paddingTop="5dp"
                             android:inputType="text" />
                     </com.google.android.material.textfield.TextInputLayout>
                     <LinearLayout
                         android:id="@+id/mobileNumberFieldContainer"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
-                        android:layout_marginBottom="25dp"
+                        android:layout_margin="8dp"
                         android:orientation="vertical"/>
                </LinearLayout>
             </LinearLayout>
@@ -172,7 +169,7 @@
                 android:background="@color/white">
                 <CheckBox
                     android:id="@+id/checkboxCondition"
-                    android:layout_height="25dp"
+                    android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:checked="false"
                     android:textSize="12dp"
