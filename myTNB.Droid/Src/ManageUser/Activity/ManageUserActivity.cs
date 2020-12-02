@@ -75,6 +75,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
         ManageUserPresenter mPresenter;
 
         MaterialDialog progress;
+        private bool isSelectionChange;
 
         const string PAGE_ID = "ManageAccount";
 
@@ -164,7 +165,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 case Resource.Id.icon_log_activity_unread:
                     //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled).SetVisible(true).SetEnabled(false);
                     //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_disabled).SetVisible(true).SetEnabled(false);
-                    SetToolBarTitle(GetLabelByLanguage("title"));
+                    SetToolBarTitle(GetLabelByLanguage("titleManageUser"));
                     break;                
             }
 
@@ -228,7 +229,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
          
 
             ManageUserMenuItemSingleContentComponent applyBill = new ManageUserMenuItemSingleContentComponent(this);
-            applyBill.SetTitle(GetLabelCommonByLanguage("Applyfore-Billing"));
+            applyBill.SetTitle(GetLabelCommonByLanguage("ApplyforBilling"));
             applyBill.SetItemActionVisibility(true);
             applyBill.SetItemActionCall(ClickCheck);
             manageItems.Add(applyBill);
@@ -246,47 +247,17 @@ namespace myTNB_Android.Src.ManageUser.Activity
             DisableSaveButton();
         }
 
-        MaterialDialog infoManageUserDialog;
-        //AlertDialog addressInfo;
+       
         [OnClick(Resource.Id.infoManageUser)]
         void OnClickAddressInfo(object sender, EventArgs eventArgs)
         {
-
-            try
-            {
-                if (infoManageUserDialog != null && infoManageUserDialog.IsShowing)
-                {
-                    infoManageUserDialog.Dismiss();
-                }
-
-                infoManageUserDialog = new MaterialDialog.Builder(this)
-                    .CustomView(Resource.Layout.WhyCantSeeFullAddressView, false)
-                    .Cancelable(true)
-                    .PositiveText(GetLabelCommonByLanguage("gotIt"))
-                    .PositiveColor(Resource.Color.gradientPurple)
-                    .ItemsGravity(GravityEnum.Center)
-                    .Build();
-
-                View view = infoManageUserDialog.View;
-                if (view != null)
-                {
-                    TextView titleText = view.FindViewById<TextView>(Resource.Id.textDialogTitle);
-                    TextView infoText = view.FindViewById<TextView>(Resource.Id.textDialogInfo);
-                    if (titleText != null && infoText != null)
-                    {
-                        TextViewUtils.SetMuseoSans500Typeface(titleText);
-                        TextViewUtils.SetMuseoSans300Typeface(infoText);
-
-                        titleText.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogManageUser");
-                        infoText.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogManageUserMessage");
-                    }
-                }
-                infoManageUserDialog.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                       .SetTitle((string.Format(GetLabelByLanguage("dialogManageUser"))))
+                       .SetMessage(string.Format(GetLabelByLanguage("dialogManageUserMessage")))
+                       .SetContentGravity(GravityFlags.Center)
+                       .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                       .Build().Show();
+         
         }
 
         [OnClick(Resource.Id.btnSave)]
@@ -316,13 +287,29 @@ namespace myTNB_Android.Src.ManageUser.Activity
             }
         }
 
-        void ShowSaveDialog(Android.App.Activity context, Action confirmAction, Action cancelAction = null)
+        public override void OnBackPressed()
         {
+            if (isSelectionChange)
+            {
+                ShowSaveDialog(this, () =>
+                {
+                    
+                    ShowProgress();
+                    
+                });
+            }
+            else
+            {
+                OnBackProceed();
+            }
+        }
+
+         void ShowSaveDialog(Android.App.Activity context, Action confirmAction, Action cancelAction = null)
+         {
             string nickname = txtNickName.Text.ToString().Trim();
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                        //.SetTitle(Utility.GetLocalizedLabel("ManageAccount", "manageUserTitle"))
+                        
                         .SetTitle((string.Format(GetLabelByLanguage("manageUserTitle"), nickname)))
-                        //.SetSubTitle(nickname)
                         .SetMessage(string.Format(GetLabelByLanguage("manageUserMessage"),nickname))
                         .SetContentGravity(Android.Views.GravityFlags.Center)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
@@ -345,6 +332,44 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 }
             }).Show();
             this.SetIsClicked(false);
+        }
+
+        void ShowBackDialog(Android.App.Activity context, Action confirmAction, Action cancelAction = null)
+        {
+            string nickname = txtNickName.Text.ToString().Trim();
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        //.SetTitle(Utility.GetLocalizedLabel("ManageAccount", "manageUserTitle"))
+                        .SetTitle((string.Format(GetLabelByLanguage("manageUserBackTitle"), nickname)))
+                        //.SetSubTitle(nickname)
+                        .SetMessage(string.Format(GetLabelByLanguage("manageUserBackMessage"), nickname))
+                        .SetContentGravity(Android.Views.GravityFlags.Center)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+            this.SetIsClicked(false);
+        }
+
+        public void OnBackProceed()
+        {
+            SetResult(Result.Ok);
+            Finish();
+            base.OnBackPressed();
         }
 
         public void ShowProgress()
@@ -419,6 +444,8 @@ namespace myTNB_Android.Src.ManageUser.Activity
             }
         }
 
+       
+
         public void ShowRemoveProgress()
         {
             try
@@ -443,48 +470,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
             }
         }
 
-       /* MaterialDialog addressInfoDialog;
-        //AlertDialog addressInfo;
-        [OnClick(Resource.Id.infoManageUser)]
-        void OnClickAddressInfo(object sender, EventArgs eventArgs)
-        {
-
-            try
-            {
-                if (addressInfoDialog != null && addressInfoDialog.IsShowing)
-                {
-                    addressInfoDialog.Dismiss();
-                }
-
-                addressInfoDialog = new MaterialDialog.Builder(this)
-                    .CustomView(Resource.Layout.WhyCantSeeFullAddressView, false)
-                    .Cancelable(true)
-                    .PositiveText(GetLabelCommonByLanguage("gotIt"))
-                    .PositiveColor(Resource.Color.blue)
-                    .Build();
-
-                View view = addressInfoDialog.View;
-                if (view != null)
-                {
-                    TextView titleText = view.FindViewById<TextView>(Resource.Id.textDialogTitle);
-                    TextView infoText = view.FindViewById<TextView>(Resource.Id.textDialogInfo);
-                    if (titleText != null && infoText != null)
-                    {
-                        TextViewUtils.SetMuseoSans500Typeface(titleText);
-                        TextViewUtils.SetMuseoSans300Typeface(infoText);
-
-                        titleText.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogAddrress");
-                        infoText.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogAddrressMessage");
-                    }
-                }
-                addressInfoDialog.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }*/
-
+      
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
         {

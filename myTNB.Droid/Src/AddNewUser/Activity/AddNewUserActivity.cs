@@ -7,6 +7,7 @@ using Android.Runtime;
 
 using Android.Views;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
@@ -26,6 +27,8 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using Org.BouncyCastle.Crypto.Signers;
 using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.ManageAccess.Activity;
+using Android.Support.V4.Content;
+using Android.Text;
 
 namespace myTNB_Android.Src.AddNewUser.Activity
 {
@@ -35,7 +38,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
     public class AddNewUserActivity : BaseActivityCustom, AddNewUserContract.IView
     {
         [BindView(Resource.Id.rootView)]
-        LinearLayout rootView;
+        CoordinatorLayout rootView;
 
         [BindView(Resource.Id.txtAddNewUserTitle)]
         TextView txtAddNewUserTitle;
@@ -122,7 +125,9 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                 textInputLayoutUserEmail.Hint = Utility.GetLocalizedLabel("UserAccess", "usremail");
                 btnAddUser.Text = Utility.GetLocalizedLabel("UserAccess", "addUserBtn");
 
+
                 txtUserEmail.AddTextChangedListener(new InputFilterFormField(txtUserEmail, textInputLayoutUserEmail));
+                txtUserEmail.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
 
                 mPresenter = new AddNewUserPresenter(this, accountData);
                 this.userActionsListener.Start();
@@ -203,13 +208,13 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             List<View> manageItems = new List<View>();
 
             ManageUserMenuItemSingleContentComponent electricityBill = new ManageUserMenuItemSingleContentComponent(this);
-            electricityBill.SetTitle(GetLabelCommonByLanguage("manageUserAccess"));
+            electricityBill.SetTitle(GetLabelCommonByLanguage("viewFullBill"));
             electricityBill.SetItemActionVisibility(true);
             electricityBill.SetItemActionCall(ClickCheck);
             manageItems.Add(electricityBill);
 
             ManageUserMenuItemSingleContentComponent eBilling = new ManageUserMenuItemSingleContentComponent(this);
-            eBilling.SetTitle(GetLabelCommonByLanguage("manageAutopay"));
+            eBilling.SetTitle(GetLabelCommonByLanguage("ApplyforBilling"));
             eBilling.SetItemActionVisibility(true);
             eBilling.SetItemActionCall(ClickCheck);
             manageItems.Add(eBilling);
@@ -245,6 +250,19 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
         }
 
+        private void AddTextChangedListener(object sender, AfterTextChangedEventArgs e)
+        {
+            try
+            {
+                string email = txtUserEmail.Text.ToString().Trim();
+                this.userActionsListener.CheckRequiredFields(email);
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
         public void ShowRemoveProgress()
         {
             try
@@ -269,47 +287,30 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             }
         }
 
-        MaterialDialog addressInfoDialog;
+       // MaterialDialog addressInfoDialog;
         //AlertDialog addressInfo;
         [OnClick(Resource.Id.infoAddress)]
         void OnClickAddressInfo(object sender, EventArgs eventArgs)
         {
 
-            try
-            {
-                if (addressInfoDialog != null && addressInfoDialog.IsShowing)
-                {
-                    addressInfoDialog.Dismiss();
-                }
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                       .SetTitle((string.Format(GetLabelByLanguage("dialogManageUser"))))
+                       .SetMessage(string.Format(GetLabelByLanguage("dialogManageUserMessage")))
+                       .SetContentGravity(GravityFlags.Center)
+                       .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                       .Build().Show();
+        }
 
-                addressInfoDialog = new MaterialDialog.Builder(this)
-                    .CustomView(Resource.Layout.WhyCantSeeFullAddressView, false)
-                    .Cancelable(true)
-                    .PositiveText(GetLabelCommonByLanguage("gotIt"))
-                    .PositiveColor(Resource.Color.gradientPurple)
-                    .ItemsGravity(GravityEnum.Center)
-                    .Build();
+        public void EnableAddUserButton()
+        {
+            btnAddUser.Enabled = true;
+            btnAddUser.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+        }
 
-                View view = addressInfoDialog.View;
-                if (view != null)
-                {
-                    TextView titleText = view.FindViewById<TextView>(Resource.Id.textDialogTitle);
-                    TextView infoText = view.FindViewById<TextView>(Resource.Id.textDialogInfo);
-                    if (titleText != null && infoText != null)
-                    {
-                        TextViewUtils.SetMuseoSans500Typeface(titleText);
-                        TextViewUtils.SetMuseoSans300Typeface(infoText);
-
-                        titleText.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogManageUser");
-                        infoText.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogManageUserMessage");
-                    }
-                }
-                addressInfoDialog.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+        public void DisableAddUserButton()
+        {
+            btnAddUser.Enabled = false;
+            btnAddUser.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
         }
 
         private Snackbar mCancelledExceptionSnackBar;

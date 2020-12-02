@@ -1,6 +1,8 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Runtime;
+using Android.Text;
+using Android.Util;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -41,6 +43,26 @@ namespace myTNB_Android.Src.AddNewUser.MVP
                 }
             }
             catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void CheckRequiredFields(string email)
+        {
+
+            try
+            {
+                if (!Patterns.EmailAddress.Matcher(email).Matches())
+                {
+                    //this.mView.ShowInvalidEmailError();
+                    this.mView.DisableAddUserButton();
+                    return;
+                }
+                else
+                    this.mView.EnableAddUserButton();
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -142,7 +164,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
 
         public void Start()
         {
-            //
+            this.mView.DisableAddUserButton();
             if (accountData != null && !string.IsNullOrEmpty(accountData?.AccountNum))
             {
                 CustomerBillingAccount customerBillingAccount = new CustomerBillingAccount();

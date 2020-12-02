@@ -142,6 +142,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
             this.mView.ShowUpdateNickname();
         }
 
+       
         public void Start()
         {
             //

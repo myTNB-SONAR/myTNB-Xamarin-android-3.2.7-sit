@@ -29,6 +29,16 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             void HideRemoveProgress();
 
             /// <summary>
+            /// Enable add user button
+            /// </summary>
+            void EnableAddUserButton();
+
+            /// <summary>
+            /// Disable add user button
+            /// </summary>
+            void DisableAddUserButton();
+
+            /// <summary>
             /// Shows a cancelled exception with an option to retry
             /// </summary>
             /// <param name="operationCanceledException">the returned exception</param>
@@ -58,6 +68,8 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             /// </summary>
             /// <param name="accountData">AccountData</param>
             void OnRemoveAccount(AccountData accountData);
+
+            void CheckRequiredFields(string email);
 
             /// <summary>
             /// The returned result from another activity

@@ -33,9 +33,6 @@ namespace myTNB_Android.Src.ManageUser.MVP
             /// </summary>
             void ShowUpdateNickname();
 
-
-           
-
             /// <summary>
             /// Show removed account success
             /// </summary>
@@ -85,6 +82,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
             /// <param name="resultCode">enum</param>
             /// <param name="data">intent</param>
             void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data);
+
         }
     }
 }
