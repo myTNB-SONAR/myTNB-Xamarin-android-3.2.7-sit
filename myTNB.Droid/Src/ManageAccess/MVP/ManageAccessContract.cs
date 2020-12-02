@@ -15,6 +15,11 @@ namespace myTNB_Android.Src.ManageAccess.MVP
     {
         public interface IView : IBaseView<IUserActionsListener>
         {
+
+            void ShowAddNewUserEmailExistSuccess();
+
+            void ShowAddNewUserEmailNotExistSuccess();
+
             void ShowDeleteMessageResponse(bool click);
 
             void ShowErrorMessageResponse(string error);

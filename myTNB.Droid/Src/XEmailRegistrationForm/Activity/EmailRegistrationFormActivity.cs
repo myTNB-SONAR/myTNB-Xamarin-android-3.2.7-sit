@@ -134,7 +134,7 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
                 txtEmailReg.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
                 txtPasswordReg.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
 
-                ClearFields();
+                //ClearFields();
 
                 this.userActionsListener.Start();
             }

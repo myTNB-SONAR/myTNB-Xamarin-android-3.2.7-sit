@@ -146,8 +146,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                 if (!this.GetIsClicked())
                 {
                     this.SetIsClicked(true);
-                    Intent addAccountIntent = new Intent(this, typeof(ManageAccessActivity));
-                    StartActivity(addAccountIntent);
+                    ShowSuccessAddNewUser();
 
                 }
                 this.SetIsClicked(false);
@@ -168,6 +167,12 @@ namespace myTNB_Android.Src.AddNewUser.Activity
         public override int ResourceId()
         {
             return Resource.Layout.AddNewUserView;
+        }
+
+        public void ShowSuccessAddNewUser()
+        {
+            SetResult(Result.Ok);
+            Finish();
         }
 
 
