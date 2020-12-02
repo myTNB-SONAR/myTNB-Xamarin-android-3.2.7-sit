@@ -143,12 +143,12 @@ namespace myTNB_Android.Src.Utils
         internal struct SERVER_URL
         {
 #if DEBUG || STUB
-         //    internal static readonly string END_POINT = "http://10.215.128.191:99";  //dev
-         //    internal static readonly string FPX_PAYMENT = "http://10.215.128.191:99/v5/PayRedirect.aspx?Param1=3&Param2=";  //dev
-         //    internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappdev.page.link";  //dev
-         internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";  //sit
-         internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";  //sit
-         internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link"; //sit
+             internal static readonly string END_POINT = "http://10.215.128.191:99";  //dev
+             internal static readonly string FPX_PAYMENT = "http://10.215.128.191:99/v5/PayRedirect.aspx?Param1=3&Param2=";  //dev
+             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappdev.page.link";  //dev
+         //internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";  //sit
+         //internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";  //sit
+         //internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link"; //sit
 
 #elif DEVELOP || SIT
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
@@ -228,6 +228,9 @@ namespace myTNB_Android.Src.Utils
 
         //FAQ ID
         internal static readonly string FAQ_ID_PARAM = ".faqID";
+
+        //Add User Access 
+        internal static readonly int ADD_USER = 1;
 
         //Summary dashboard
         internal static readonly int SUMMARY_DASHBOARD_PAGE_COUNT = 5;
