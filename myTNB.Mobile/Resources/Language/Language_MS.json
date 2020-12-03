@@ -1116,7 +1116,7 @@
     "emptyApplications": "Nampaknya anda tidak mempunyai apa-apa permohonan pada waktu ini.",
     "allApplications": "Bagaimana boleh saya melihat semua permohonan?",
     "allApplicationsTitle": "Lihat semua permohonan anda di myTNB Portal untuk pengalaman yang menyeluruh.",
-    "allApplicationsMessage": "Log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> dengan mengunakan butiran log masuk yang sama. Anda boleh melihat senarai permohonan dan butiran borang penuh, teruskan permohonan anda atau mohon yang baharu.<br><br>Peringatan: Permohonan yag telah dihantar oleh sumber lain sebelum <tarikh> tidak dipaparkan secara automatik di sini, tetapi anda boleh mencari secara manual dan masukkan ke dalam senarai anda.",
+    "allApplicationsMessage": "Log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> dengan mengunakan butiran log masuk yang sama. Anda boleh melihat senarai permohonan dan butiran borang penuh, teruskan permohonan anda atau mohon yang baharu.<br><br>Peringatan: Permohonan yag telah dihantar oleh sumber lain sebelum Julai 2020 tidak dipaparkan secara automatik di sini, tetapi anda boleh mencari secara manual dan masukkan ke dalam senarai anda.",
     "viewMore": "Selebihnya",
     "viewLess": "Kurangkan Paparan",
     "displayPerQuery": "5",

@@ -1116,7 +1116,7 @@
     "emptyApplications": "Looks like you have no applications at the moment.",
     "allApplications": "How do I see all my applications?",
     "allApplicationsTitle": "View all your applications on myTNB Portal to enjoy the full experience!",
-    "allApplicationsMessage": "Log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> using the same log in details. You can view the list of all your applications and full form details, and continue your applications or create new ones.<br><br>Note: Applications submitted via other sources before <insert Mmm YYYY eg. Mar 2021> will not be displayed automatically here, but you can manually search and add it to your list.",
+    "allApplicationsMessage": "Log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> using the same login details. You can view the list of all your applications and full form details, continue your applications or create new ones.<br><br>Note: Applications submitted via other sources before July 2020 will not be displayed automatically here, but you can manually search and add it to your list.",
     "viewMore": "View More",
     "viewLess": "View Less",
     "displayPerQuery": "5",
@@ -1906,7 +1906,7 @@
             "code": "7001",
             "title": "",
             "message": "Looks like your request can't loaded at the moment. Please try again later.",
-            "primaryCTATitle": "Ok",
+            "primaryCTATitle": "Got It!",
             "secondaryCTATitle": "",
             "isSuccess": false,
             "type": "popup"
