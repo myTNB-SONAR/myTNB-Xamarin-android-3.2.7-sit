@@ -115,7 +115,6 @@
     "manageAutopay" : "Manage Autopay",
     "updateIdTitle" : "Confirm your identification Number:",
     "updateIdMessage" : "Please make sure your identification number is correct as you can only update this once.",
-    "confirm" : "Confirm",
     "re_enter" : "Re-enter",
     "titleNonOwnerAddAcc" : "Continue adding the account and give it a name for your easy reference.",
     "email_address" : "Email Address",
