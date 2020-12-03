@@ -99,6 +99,7 @@
     "open": "Open",
     "paymentPendingMsg": "My payment is being processed",
     "processing": "Processing",
+    "dontShowThisAgain": "Don't show this again",
     //addby wan
     "idNumberhint": "Identification Number",
     "idtypeTitle": "Identification Type",
@@ -108,7 +109,6 @@
     "appSetting": "App Settings",
     "learnMore": "Learn More About TNB",
     "titleProfile": "MYTNB Profile",
-    "dontShowThisAgain": "Don't show this again",
     "verify": "Verify",
     "continue" : "Continue",
     "manageUserAccess" : "Manage User Access",
@@ -186,8 +186,8 @@
     "paymentCCErrorMsg": "Sorry, we're unable to retrieve your card information right now. You may still pay by adding another card or by using online banking via FPX.",
     "profileCCErrorMsg": "If you're here to manage your cards, we're unable to perform this action right now. Please try again later.",
     "noMeterAccessErrorTitle": "Sorry this service may not be available to you.",
+	"noMeterAccessErrorMessage": "The meter will need to be accessible so that you can read your meter. You may try again when you have access to the meter.",
     //addby wan
-    "noMeterAccessErrorMessage": "The meter will need to be accessible so that you can read your meter. You may try again when you have access to the meter.",
     "passwordHint": "Your password must have at least 8 alphanumeric characters.",
     "EmailHint": "Your will use this email address to log in in the future.",
     "mykadhint": "Please enter a valid 12 digits IC / Mykad number.",
