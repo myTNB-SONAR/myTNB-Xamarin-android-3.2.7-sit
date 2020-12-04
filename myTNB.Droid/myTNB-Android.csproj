@@ -6005,10 +6005,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ApplicationStatus_FeedbackSuccessView.axml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ApplicationStatus_RateUsQuestionItemView.axml">
       <SubType></SubType>
       <Generator></Generator>
@@ -6024,7 +6020,6 @@
     <Compile Include="Src\ApplicationStatus\Rating\Activity\RatingActivity.cs" />
     <Compile Include="Src\ApplicationStatus\Rating\Adapter\RateUsQuestionsAdapter.cs" />
     <Compile Include="Src\ApplicationStatus\Rating\Fargment\SubmitRatingFragment.cs" />
-    <Compile Include="Src\ApplicationStatus\Rating\Fargment\ThankYouFragment.cs" />
     <Compile Include="Src\ApplicationStatus\Rating\Model\QuestionCategoryID.cs" />
     <Compile Include="Src\ApplicationStatus\Rating\Model\RateUsQuestion.cs" />
     <Compile Include="Src\ApplicationStatus\Rating\MVP\SubmitRatingContract.cs" />
@@ -6033,6 +6028,30 @@
     <Compile Include="Src\ApplicationStatus\Rating\Request\SubmitRateUsRequest.cs" />
     <Compile Include="Src\ApplicationStatus\Rating\Response\GetRateUsQuestionsResponse.cs" />
     <Compile Include="Src\ApplicationStatus\Rating\Response\SubmitRateUsResponse.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationStauts_rating_view.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ratingApplication.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ratingApplication.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ratingApplication.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ratingApplication.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ratingApplication.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
