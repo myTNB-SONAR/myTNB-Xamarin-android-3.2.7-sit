@@ -362,44 +362,18 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         MaterialDialog addressInfoDialog;
         //AlertDialog addressInfo;
         [OnClick(Resource.Id.infoAddress)]
+
         void OnClickAddressInfo(object sender, EventArgs eventArgs)
         {
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                       .SetTitle((string.Format(GetLabelByLanguage("dialogAddrress"))))
+                       .SetMessage(string.Format(GetLabelByLanguage("dialogAddrressMessage")))
+                       .SetContentGravity(GravityFlags.Center)
+                       .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                       .Build().Show();
 
-            try
-            {
-                if (addressInfoDialog != null && addressInfoDialog.IsShowing)
-                {
-                    addressInfoDialog.Dismiss();
-                }
-
-                addressInfoDialog = new MaterialDialog.Builder(this)
-                    .CustomView(Resource.Layout.WhyCantSeeFullAddressView, false)
-                    .Cancelable(true)
-                    .PositiveText(GetLabelCommonByLanguage("gotIt"))
-                    .PositiveColor(Resource.Color.blue)
-                    .Build();
-
-                View view = addressInfoDialog.View;
-                if (view != null)
-                {
-                    TextView titleText = view.FindViewById<TextView>(Resource.Id.textDialogTitle);
-                    TextView infoText = view.FindViewById<TextView>(Resource.Id.textDialogInfo);
-                    if (titleText != null && infoText != null)
-                    {
-                        TextViewUtils.SetMuseoSans500Typeface(titleText);
-                        TextViewUtils.SetMuseoSans300Typeface(infoText);
-
-                        titleText.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogAddrress");
-                        infoText.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogAddrressMessage");
-                    }
-                }
-                addressInfoDialog.Show();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
+       
 
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)

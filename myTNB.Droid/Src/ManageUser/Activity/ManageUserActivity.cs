@@ -81,7 +81,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-           
+            isSelectionChange = false;
             base.OnCreate(savedInstanceState);
 
             try
@@ -119,7 +119,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
 
                 //txtEmail.Text = accountData.AddStreet;
                 //txtNickName.Text = accountData.AccountNickName;
-
+                SetToolBarTitle(GetLabelByLanguage("titleManageUser"));
                 txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("email_user_address").ToUpper();
                 btnSave.Text = GetLabelCommonByLanguage("saveChanges");
 
@@ -165,7 +165,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 case Resource.Id.icon_log_activity_unread:
                     //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled).SetVisible(true).SetEnabled(false);
                     //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_disabled).SetVisible(true).SetEnabled(false);
-                    SetToolBarTitle(GetLabelByLanguage("titleManageUser"));
                     break;                
             }
 
@@ -240,6 +239,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
 
         private void ClickCheck()
         {
+            isSelectionChange = true;
             if (!this.GetIsClicked())
             {
                 EnableSaveButton();
@@ -249,7 +249,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
 
        
         [OnClick(Resource.Id.infoManageUser)]
-        void OnClickAddressInfo(object sender, EventArgs eventArgs)
+        void OnClickManagerUserInfo(object sender, EventArgs eventArgs)
         {
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                        .SetTitle((string.Format(GetLabelByLanguage("dialogManageUser"))))
@@ -291,7 +291,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
         {
             if (isSelectionChange)
             {
-                ShowSaveDialog(this, () =>
+                ShowBackDialog(this, () =>
                 {
                     
                     ShowProgress();
@@ -337,32 +337,50 @@ namespace myTNB_Android.Src.ManageUser.Activity
         void ShowBackDialog(Android.App.Activity context, Action confirmAction, Action cancelAction = null)
         {
             string nickname = txtNickName.Text.ToString().Trim();
-            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                        //.SetTitle(Utility.GetLocalizedLabel("ManageAccount", "manageUserTitle"))
-                        .SetTitle((string.Format(GetLabelByLanguage("manageUserBackTitle"), nickname)))
-                        //.SetSubTitle(nickname)
-                        .SetMessage(string.Format(GetLabelByLanguage("manageUserBackMessage"), nickname))
-                        .SetContentGravity(Android.Views.GravityFlags.Center)
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle((string.Format(GetLabelByLanguage("dialogManageUser"), nickname)))
+                       .SetMessage(string.Format(GetLabelByLanguage("dialogManageUserMessage"), nickname))
+                        .SetContentGravity(GravityFlags.Center)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
                         .SetSecondaryCTAaction(() =>
                         {
-                            confirmAction();
-                        })
-                        .Build();
+                            ShowProgress();
+                           
+                        }).Build();
             tooltipBuilder.SetCTAaction(() =>
             {
-                if (cancelAction != null)
-                {
-                    cancelAction();
-                    tooltipBuilder.DismissDialog();
-                }
-                else
-                {
-                    tooltipBuilder.DismissDialog();
-                }
+                tooltipBuilder.DismissDialog();
+                OnBackProceed();
             }).Show();
-            this.SetIsClicked(false);
+
+            /* string nickname = txtNickName.Text.ToString().Trim();
+             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                         //.SetTitle(Utility.GetLocalizedLabel("ManageAccount", "manageUserTitle"))
+                         .SetTitle((string.Format(GetLabelByLanguage("manageUserBackTitle"), nickname)))
+                         //.SetSubTitle(nickname)
+                         .SetMessage(string.Format(GetLabelByLanguage("manageUserBackMessage"), nickname))
+                         .SetContentGravity(Android.Views.GravityFlags.Center)
+                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
+                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
+                         .SetSecondaryCTAaction(() =>
+                         {
+                             confirmAction();
+                         })
+                         .Build();
+             tooltipBuilder.SetCTAaction(() =>
+             {
+                 if (cancelAction != null)
+                 {
+                     cancelAction();
+                     tooltipBuilder.DismissDialog();
+                 }
+                 else
+                 {
+                     tooltipBuilder.DismissDialog();
+                 }
+             }).Show();
+             this.SetIsClicked(false);*/
         }
 
         public void OnBackProceed()
@@ -411,12 +429,14 @@ namespace myTNB_Android.Src.ManageUser.Activity
         {
             btnSave.Enabled = true;
             btnSave.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+            isSelectionChange = true;
         }
 
         public void DisableSaveButton()
         {
             btnSave.Enabled = false;
             btnSave.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            isSelectionChange = false;
         }
 
         private void ShowSaveSuccess()
