@@ -72,7 +72,8 @@ namespace myTNB_Android.Src.RegisterValidation.Activity
 
                 txtAccCreated.Text = GetLabelByLanguage("acccreated");
                 txtVerifyEmail.Text = GetLabelByLanguage("emailverify");
-                txtVerifyNotification.Text = GetLabelByLanguage("emailNotiFirstHalf") + email + GetLabelByLanguage("emailNotiSecondHalf");
+                //txtVerifyNotification.Text = GetLabelByLanguage("emailNotiFirstHalf") + email + GetLabelByLanguage("emailNotiSecondHalf");
+                txtVerifyNotification.Text = string.Format(Utility.GetLocalizedLabel("Register", "emailVerifiedLinkSent"), email);
                 btnContinue.Text = GetLabelCommonByLanguage("continue");
 
                 btnContinue.Click += OnClickAddAccount;

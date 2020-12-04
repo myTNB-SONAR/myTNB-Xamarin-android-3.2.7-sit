@@ -27,7 +27,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
     public class AddAccountFormFragmentBusiness : AndroidX.Fragment.App.Fragment , AddAccountContract.IView, View.IOnTouchListener
     {
         private static string TAG = "AddAccountForm";
-        private bool isOwner = false;
+        private bool isOwner = true;
         private bool hasRights = false;
         private AccountType selectedAccountType;
         private readonly int SELECT_ACCOUNT_TYPE_REQ_CODE = 2011;
@@ -77,6 +77,18 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         [BindView(Resource.Id.selector_account_type)]
         TextView accountType;
 
+        [BindView(Resource.Id.txtTitle)]
+        TextView txtTitle;
+
+        [BindView(Resource.Id.txtTitleROC)]
+        TextView txtTitleROC;
+
+        [BindView(Resource.Id.txtTitlePremise)]
+        TextView txtTitlePremise;
+
+        [BindView(Resource.Id.txtSkipAcc)]
+        TextView txtSkipAcc;
+
         private bool isClicked = false;
 
         private InputFilterFormField mFormField;
@@ -111,7 +123,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            isOwner = Arguments.GetBoolean("isOwner");
+            //isOwner = Arguments.GetBoolean("isOwner");
             hasRights = Arguments.GetBoolean("hasRights");
             mPresenter = new AddAccountPresenter(this);
 
@@ -140,6 +152,10 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 textInputLayoutMotherMaidenName = mainView.FindViewById<TextInputLayout>(Resource.Id.owner_mother_maiden_name_layout);
                 textInputLayoutRocNo = mainView.FindViewById<TextInputLayout>(Resource.Id.roc_label_layout);
                 txtAccountType = mainView.FindViewById<TextView>(Resource.Id.txtAccountType);
+                txtSkipAcc = mainView.FindViewById<TextView>(Resource.Id.txtSkipAcc);
+                txtTitle = mainView.FindViewById<TextView>(Resource.Id.txtTitle);
+                txtTitlePremise = mainView.FindViewById<TextView>(Resource.Id.txtTitlePremise);
+                txtTitleROC = mainView.FindViewById<TextView>(Resource.Id.txtTitleROC);
 
                 accountType = mainView.FindViewById<TextView>(Resource.Id.selector_account_type);
 
@@ -158,7 +174,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     , textInputLayoutMotherMaidenName
                     , textInputLayoutRocNo);
 
-                TextViewUtils.SetMuseoSans300Typeface(txtAccountType, accountType);
+                TextViewUtils.SetMuseoSans300Typeface(txtAccountType, accountType, txtTitle, accountType, txtTitlePremise);
+                TextViewUtils.SetMuseoSans500Typeface(txtTitleROC, txtSkipAcc);
 
                 if (fromRegisterPage)
                 {
@@ -394,7 +411,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 string tnbBillAccountNum = edtAccountNo.Text;
                 string tnbAccountHolderICNum = edtRocNo.Text;
                 string tnbAccountContractNum = edtRocNo.Text;
-                string type = "1";
+                string type = "2";
                 string des = edtAccountLabel.Text; //This has to be changed after added in label
                 bool owner = isOwner;
                 string suppliedMotherName = edtOwnerMotherName.Text;
@@ -414,7 +431,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 string accountNum = edtAccountNo.Text;
                 string icNumber = edtRocNo.Text;
                 string type = selectedAccountType.Id;
-                bool owner = isOwner;
+                bool owner = true;
                 string suppliedMotherName = edtOwnerMotherName.Text;
                 string accountLabel = edtAccountLabel.Text;
                 if (!IsAccountAlreadyRegistered(accountNum) && !AddAccountUtils.IsFoundAccountList(accountNum))

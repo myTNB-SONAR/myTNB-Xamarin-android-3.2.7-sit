@@ -23,16 +23,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.9"
-                android:padding="18dp">
+                android:padding="16dp">
                  <TextView
-                        android:paddingTop="10dp"
                         android:id="@+id/txtNonOwnerTitle"
                         android:text="@string/dashboard_chartview_no_account_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="#49494a"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
                         android:textSize="14sp"/>
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/account_no_layout"
@@ -40,8 +37,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
                     app:errorEnabled="true">
                     <EditText
                         android:layout_width="match_parent"
@@ -64,8 +59,6 @@
                     android:textSize="12dp"
                     android:textColor="#1c79ca"
                     android:drawablePadding="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
@@ -77,9 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-                    app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp">
+                    app:errorTextAppearance="@style/TextInputLayoutFeedbackCount">
                     <EditText
                         android:layout_width="match_parent"
                         android:hint="@string/add_account_form_account_nickname"
@@ -95,6 +86,7 @@
                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                         android:layout_marginTop="24dp"
                         android:layout_marginStart="8dp"
+                        android:visibility="gone"
                         android:layout_marginEnd="8dp">
                         <EditText
                             android:layout_width="match_parent"

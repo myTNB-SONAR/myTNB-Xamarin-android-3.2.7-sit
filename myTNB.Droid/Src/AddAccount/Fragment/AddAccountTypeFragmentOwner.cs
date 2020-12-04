@@ -20,6 +20,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         TextView txttitleContinue;
         TextView txtbodyContinue;
 
+        bool isOwner = false;
+
         public AddAccountTypeFragmentOwner()
         {
 
@@ -28,6 +30,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            isOwner = Arguments.GetBoolean("isOwner");
+
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -43,6 +47,15 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             txtbodyContinue = rootView.FindViewById<TextView>(Resource.Id.txtbodyContinue);
             txtbodyUpdateId = rootView.FindViewById<TextView>(Resource.Id.txtbodyUpdateId);
 
+            TextViewUtils.SetMuseoSans500Typeface(txttitleUpdateId, txttitleContinue, txtTitle);
+            TextViewUtils.SetMuseoSans300Typeface(txtbodyOwner, txtbodyContinue, txtbodyUpdateId);
+
+            txtTitle.Text = Utility.GetLocalizedLabel("AddAccount", "titleownerNoAccDec");
+            txtbodyOwner.Text = Utility.GetLocalizedLabel("AddAccount", "bodyownerNoAccDec");
+            txtbodyContinue.Text = Utility.GetLocalizedLabel("AddAccount", "bodyContinue");
+            txtbodyUpdateId.Text = Utility.GetLocalizedLabel("AddAccount", "bodyUpdateId");
+            txttitleUpdateId.Text = Utility.GetLocalizedLabel("AddAccount", "titleUpdateId");
+            txttitleContinue.Text = Utility.GetLocalizedLabel("AddAccount", "titleContinue");
 
             btn_updateId.Click += delegate
             {
@@ -55,18 +68,10 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             {
                 Bundle bundle = new Bundle();
                 bundle.PutBoolean("isUpdateId", true);
+                bundle.PutBoolean("isOwner", false);
                 ((AddAccountActivity)Activity).nextFragment(this, bundle);
             };
 
-            TextViewUtils.SetMuseoSans500Typeface(txttitleUpdateId, txttitleContinue, txtTitle);
-            TextViewUtils.SetMuseoSans300Typeface(txtbodyOwner, txtbodyContinue, txtbodyUpdateId);
-
-            txtTitle.Text = Utility.GetLocalizedLabel("AddAccount", "titleownerNoAccDec");
-            txtbodyOwner.Text = Utility.GetLocalizedLabel("AddAccount", "bodyownerNoAccDec");
-            txtbodyContinue.Text = Utility.GetLocalizedLabel("AddAccount", "bodyContinue");
-            txtbodyUpdateId.Text = Utility.GetLocalizedLabel("AddAccount", "bodyUpdateId");
-            txttitleUpdateId.Text = Utility.GetLocalizedLabel("AddAccount", "titleUpdateId");
-            txttitleContinue.Text = Utility.GetLocalizedLabel("AddAccount", "titleContinue");
             return rootView;
         }
 

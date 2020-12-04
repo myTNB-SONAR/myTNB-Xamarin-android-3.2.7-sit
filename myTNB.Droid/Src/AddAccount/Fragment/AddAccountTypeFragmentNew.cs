@@ -29,7 +29,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         LinearLayout radio_owner;
         LinearLayout skip_add_acc;
 
-
+        TextView txtTitlePremise;
         TextView txtTitle;
         TextView txtYes;
         TextView txtNo;
@@ -69,7 +69,18 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             txtNonOwnerRights = rootView.FindViewById<TextView>(Resource.Id.txtNonOwnerConstrain);
             txtYes = rootView.FindViewById<TextView>(Resource.Id.txtYes);
             txtNo = rootView.FindViewById<TextView>(Resource.Id.txtNo);
+            txtTitlePremise = rootView.FindViewById<TextView>(Resource.Id.txtTitlePremise);
 
+
+            TextViewUtils.SetMuseoSans500Typeface(txtYes, txtNo, txtTitle);
+            TextViewUtils.SetMuseoSans300Typeface(txtOwnerRights, txtNonOwnerRights, txtTitlePremise, accountType);
+
+            txtTitlePremise.Text = Utility.GetLocalizedLabel("AddAccount", "addByIDMessage");
+            txtTitle.Text = Utility.GetLocalizedLabel("AddAccount", "addByIDMessage");
+            txtOwnerRights.Text = Utility.GetLocalizedLabel("AddAccount", "addAsOwnerMessage");
+            txtNonOwnerRights.Text = Utility.GetLocalizedLabel("AddAccount", "addAsTenantMessage");
+            txtYes.Text = Utility.GetLocalizedLabel("Common", "yes") + ".";
+            txtNo.Text = Utility.GetLocalizedLabel("Common", "no") + ".";
             txtAccountType.Text = Utility.GetLocalizedLabel("Common", "accountType").ToUpper();
 
             AccountType Individual = new AccountType();
@@ -120,14 +131,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 ((AddAccountActivity)Activity).nextFragment(this, bundle);
             };
 
-            TextViewUtils.SetMuseoSans500Typeface(txtYes, txtNo, txtTitle);
-            TextViewUtils.SetMuseoSans300Typeface(txtOwnerRights, txtNonOwnerRights);
 
-            txtTitle.Text = Utility.GetLocalizedLabel("AddAccount", "addByIDMessage");
-            txtOwnerRights.Text = Utility.GetLocalizedLabel("AddAccount", "addAsOwnerMessage");
-            txtNonOwnerRights.Text = Utility.GetLocalizedLabel("AddAccount", "addAsTenantMessage");
-            txtYes.Text = Utility.GetLocalizedLabel("Common", "yes") + ".";
-            txtNo.Text = Utility.GetLocalizedLabel("Common", "no") + ".";
             return rootView;
         }
 

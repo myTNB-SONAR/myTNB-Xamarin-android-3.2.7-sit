@@ -35,15 +35,17 @@
                     android:layout_width="match_parent"
                     android:text="@string/suppy_account_question_one"
                     android:textSize="16dp"
+                    android:lineSpacingExtra="8sp"
                     android:textColor="@color/blue" />
                 <TextView
-                        android:id="@+id/txtbodyOwner"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:text="@string/non_owner_constrain"
-                        android:textSize="14dp"
-                        android:layout_marginTop="8dp"
-                        android:textColor="@color/tunaGrey" />
+                    android:id="@+id/txtbodyOwner"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:text="@string/non_owner_constrain"
+                    android:textSize="14dp"
+                    android:layout_marginTop="6dp"
+                    android:lineSpacingExtra="6sp"
+                    android:textColor="@color/tunaGrey" />
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/btnUpdate"
@@ -51,14 +53,11 @@
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_gravity="bottom"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"
+                    android:layout_marginTop="16dp"
+                    android:padding="16dp"
                     android:elevation="1dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="14dp"
-                    android:layout_marginRight="14dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
                     android:background="@drawable/white_selector_pressable">
                     <TextView
                         android:id="@+id/txttitleUpdateId"
@@ -66,8 +65,7 @@
                         android:layout_width="match_parent"
                         android:text="@string/yes"
                         android:textSize="14dp"
-                        android:layout_marginTop="10dp"
-                        android:textStyle="bold"
+                        android:lineSpacingExtra="6sp"
                         android:textColor="@color/tunaGrey" />
                     <TextView
                         android:id="@+id/txtbodyUpdateId"
@@ -75,8 +73,8 @@
                         android:layout_width="match_parent"
                         android:text="@string/owner_constrain"
                         android:textSize="14dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="4dp"
+                        android:lineSpacingExtra="4sp"
                         android:textColor="@color/tunaGrey" />
                 </LinearLayout>
                 <LinearLayout
@@ -85,11 +83,10 @@
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_gravity="bottom"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"
-                    android:layout_margin="14dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:padding="16dp"
+                    android:layout_marginTop="8dp"
                     android:elevation="1dp"
                     android:background="@drawable/white_selector_pressable">
                     <TextView
@@ -97,9 +94,8 @@
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
                         android:text="@string/no"
-                        android:textStyle="bold"
-                        android:layout_marginTop="10dp"
                         android:textSize="14dp"
+                        android:lineSpacingExtra="6sp"
                         android:textColor="@color/tunaGrey" />
                     <TextView
                         android:id="@+id/txtbodyContinue"
@@ -107,8 +103,8 @@
                         android:layout_width="match_parent"
                         android:text="@string/non_owner_constrain"
                         android:textSize="14dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="4dp"
+                        android:lineSpacingExtra="4sp"
                         android:textColor="@color/tunaGrey" />                   
                 </LinearLayout>
             </LinearLayout>

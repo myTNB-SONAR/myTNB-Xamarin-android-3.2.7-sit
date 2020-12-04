@@ -74,6 +74,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         private bool isClicked = false;
 
+        UserEntity entity = UserEntity.GetActive();
+
         private InputFilterFormField mFormField;
 
         public void ClearText()
@@ -146,16 +148,6 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 TextViewUtils.SetMuseoSans300Typeface(txtNonOwnerTitle);
 
-                if (isOwner || hasRights)
-                {
-                    isOwner = true;
-                    textInputLayoutOwnerIC.Visibility = ViewStates.Visible;
-                }
-                else
-                {
-                    textInputLayoutOwnerIC.Visibility = ViewStates.Gone;
-                }
-
                 addAccount = rootView.FindViewById<Button>(Resource.Id.btnAddAccount);
                 TextViewUtils.SetMuseoSans500Typeface(addAccount);
                 addAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
@@ -201,12 +193,10 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 edtAccountNo.TextChanged += TextChange;
                 edtAccountLabel.TextChanged += TextChange;
-                edtOwnersIC.TextChanged += TextChange;
 
                 edtAccountNo.AddTextChangedListener(new InputFilterFormField(edtAccountNo, textInputLayoutAccountNo));
                 edtAccountLabel.AddTextChangedListener(new InputFilterFormField(edtAccountLabel, textInputLayoutAccountLabel));
                 mFormField = new InputFilterFormField(edtOwnersIC, textInputLayoutOwnerIC);
-                edtOwnersIC.AddTextChangedListener(mFormField);
 
                 edtAccountLabel.FocusChange += (sender, e) =>
                 {
@@ -257,9 +247,6 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 
                 textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 textInputLayoutAccountLabel.Error = "";
-                
-                textInputLayoutOwnerIC.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                textInputLayoutOwnerIC.Error = "";
 
             }
             catch (Exception e)
@@ -290,7 +277,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         private void TextChange(object sender, TextChangedEventArgs e)
         {
             string accountNo = edtAccountNo.Text.ToString();
-            string ic_no = edtOwnersIC.Text;
+            string ic_no = entity.IdentificationNo;
             string accountName = edtAccountLabel.Text.ToString();
             this.userActionsListener.CheckRequiredFields(accountNo, accountName, isOwner, ic_no);
         }
@@ -321,37 +308,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                             //accountType.Text = selectedAccountType.Type;
                             if (selectedAccountType.Id.Equals("1"))
                             {
-                                edtOwnerMotherName.Visibility = ViewStates.Visible;
-                                edtOwnersIC.RemoveTextChangedListener(mFormField);
-                                textInputLayoutOwnerIC.Hint = Utility.GetLocalizedLabel("AddAccount", "ownerICNumber");
-                                mFormField = new InputFilterFormField(edtOwnersIC, textInputLayoutOwnerIC);
-                                edtOwnersIC.AddTextChangedListener(mFormField);
-                                if (edtOwnersIC.HasFocus)
-                                {
-                                    edtOwnersIC.RequestFocus();
-                                }
-                                else
-                                {
-                                    edtOwnersIC.RequestFocus();
-                                    edtOwnersIC.ClearFocus();
-                                }
+       
                             }
                             else
                             {
-                                edtOwnerMotherName.Visibility = ViewStates.Gone;
-                                edtOwnersIC.RemoveTextChangedListener(mFormField);
-                                textInputLayoutOwnerIC.Hint = Utility.GetLocalizedLabel("AddAccount", "rocNumberOptional");
-                                mFormField = new InputFilterFormField(edtOwnersIC, textInputLayoutOwnerIC);
-                                edtOwnersIC.AddTextChangedListener(mFormField);
-                                if (edtOwnersIC.HasFocus)
-                                {
-                                    edtOwnersIC.RequestFocus();
-                                }
-                                else
-                                {
-                                    edtOwnersIC.RequestFocus();
-                                    edtOwnersIC.ClearFocus();
-                                }
+                              
                             }
                         }
                     }
@@ -391,7 +352,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             {
                 string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
                 string accountNum = edtAccountNo.Text;
-                string icNumber = edtOwnersIC.Text;
+                string icNumber = entity.IdentificationNo;
                 string type = selectedAccountType.Id;
                 bool owner = isOwner;
                 string suppliedMotherName = edtOwnerMotherName.Text;

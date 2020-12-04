@@ -72,13 +72,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     fragmentTransaction.Add(Resource.Id.fragment_container, addAccountForm);
                     fragmentTransaction.AddToBackStack(null);
                     fragmentTransaction.Commit();
-
-                    /*var addAccountForm = new AddAccountFormFragment();
-                    addAccountForm.Arguments = bundle;
-                    var fragmentTransaction = SupportFragmentManager.BeginTransaction();
-                    fragmentTransaction.Add(Resource.Id.fragment_container, addAccountForm);
-                    fragmentTransaction.AddToBackStack(null);
-                    fragmentTransaction.Commit();*/
                 }
                 else if (fromRegister)
                 {
@@ -96,23 +89,13 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 }                
                 else
                 {
-                    var addAccountForm = new AddAccountByRightsFragment();
+                    var addAccountForm = new AddAccountTypeFragmentOwner();
                     addAccountForm.Arguments = bundle;
                     var fragmentTransaction = SupportFragmentManager.BeginTransaction();
                     fragmentTransaction.Add(Resource.Id.fragment_container, addAccountForm);
                     fragmentTransaction.AddToBackStack(null);
                     fragmentTransaction.Commit();
                 }
-            }
-            else if (fragment is AddAccountByRightsFragment)
-            {
-                //var addAccountForm = new AddAccountFormFragment();
-                var addAccountForm = new AddAccountFormFragmentNonOwner();
-                addAccountForm.Arguments = bundle;
-                var fragmentTransaction = SupportFragmentManager.BeginTransaction();
-                fragmentTransaction.Add(Resource.Id.fragment_container, addAccountForm);
-                fragmentTransaction.AddToBackStack(null);
-                fragmentTransaction.Commit();
             }
             else if (fragment is AddAccountFormFragmentBusiness)
             {

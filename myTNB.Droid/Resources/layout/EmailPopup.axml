@@ -57,7 +57,8 @@
                         android:layout_height="wrap_content"
                         android:textColor="#49494a"
                         android:textSize="12sp"
-                        android:gravity="center" />
+                        android:lineSpacingExtra="4sp"
+                        android:gravity="center_horizontal" />
                 </LinearLayout>
             </LinearLayout>
         <LinearLayout

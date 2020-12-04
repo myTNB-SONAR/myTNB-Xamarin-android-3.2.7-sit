@@ -276,7 +276,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 if (!TextUtils.IsEmpty(accountno) && !TextUtils.IsEmpty(accountNickName))
                 {
 
-                    if (isOwner && TextUtils.IsEmpty(ownerIC) || !Utility.AddAccountNumberValidation(accountno.Length))
+                    if (isOwner && !Utility.AddAccountNumberValidation(accountno.Length))
                     {
                         if (!Utility.AddAccountNumberValidation(accountno.Length))
                         {

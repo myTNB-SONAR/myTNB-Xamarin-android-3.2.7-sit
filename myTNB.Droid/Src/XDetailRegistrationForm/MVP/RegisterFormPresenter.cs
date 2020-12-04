@@ -125,11 +125,11 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
                 
                 if (userResponse.GetDataAll().IsRegistered)
                 {
-                    MyTNBAccountManagement.GetInstance().SetIsEmailUpdated(false);
+                    MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
                 }
                 else
                 {
-                    MyTNBAccountManagement.GetInstance().SetIsEmailUpdated(true);
+                    MyTNBAccountManagement.GetInstance().SetIsIDUpdated(true);
                      //this.mView.ShowInvalidAcquiringTokenThruSMS(userResponse.Response.DisplayMessage);
                 }
                 });

@@ -30,8 +30,8 @@
                     android:layout_width="match_parent"
                     android:text="Let's add your account by selecting your account type."
                     android:textSize="14dp"
-                    android:textColor="@color/tunaGrey"
-                    android:layout_margin="10dp" />
+                    android:lineSpacingExtra="4sp"
+                    android:textColor="@color/tunaGrey" />
                 <TextView
                     android:text="THIS PREMISE I'M ADDING IS"
                     android:layout_width="wrap_content"
@@ -39,10 +39,8 @@
                     android:id="@+id/txtAccountType"
                     android:textSize="10dp"
                     android:textColor="@color/silverChalice"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginEnd="5dp" />
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="2dp" />
                 <TextView
                     android:id="@+id/selector_account_type"
                     android:layout_width="fill_parent"
@@ -52,10 +50,9 @@
                     android:paddingRight="6dp"
                     android:paddingTop="4dp"
                     android:paddingBottom="6dp"
+                    android:layout_marginLeft ="-2dp"
                     android:layout_marginBottom="2dp"
                     android:text="Selected Type"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginEnd="5dp"
                     android:drawablePadding="4dp"
                     android:background="?attr/editTextBackground"
                     android:drawableRight="@drawable/ic_action_dropdown1" />
@@ -64,7 +61,6 @@
                 android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="15dp"
                 android:background="@drawable/white_selector_pressable">
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/account_no_layout"
@@ -72,8 +68,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
                     android:visibility="visible"
                     app:errorEnabled="true">
                     <EditText
@@ -92,13 +86,11 @@
                 <TextView
                     android:id="@+id/btnWhereIsMyAccountNo"
                     android:layout_width="match_parent"
-                    android:layout_height="24dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center|left"
                     android:textSize="12dp"
                     android:textColor="#1c79ca"
                     android:drawablePadding="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
                     android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
@@ -109,9 +101,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-                    app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp">
+                    app:errorTextAppearance="@style/TextInputLayoutFeedbackCount">
                     <EditText
                         android:layout_width="match_parent"
                         android:hint="@string/add_account_form_account_nickname"
@@ -133,36 +123,31 @@
                     android:layout_width="match_parent"
                     android:text="Do more on myTNB with your company's ROC number."
                     android:textSize="16dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
+                    android:lineSpacingExtra="8sp"
                     android:textColor="@color/blue"
-                    android:layout_margin="10dp" />
+                    android:layout_margin="16dp" />
                 <LinearLayout
-                    android:id="@+id/btnOwner"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_gravity="bottom"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingBottom="8dp"
+                    android:padding="16dp"
                     android:background="@drawable/white_selector_pressable">
                     <TextView
-                    android:id="@+id/txtTitlePremise"
+                    android:id="@+id/txtTitleROC"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:text="Enjoy additional account information and access to applications!"
                     android:textSize="14dp"
+                    android:lineSpacingExtra="4sp"
                     android:textColor="@color/tunaGrey"
-                    android:layout_margin="10dp" />
+                    android:layout_marginBottom="16dp" />
                  <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/roc_label_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-                    app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp">
+                    app:errorTextAppearance="@style/TextInputLayoutFeedbackCount">
                     <EditText
                         android:layout_width="match_parent"
                         android:hint=""
@@ -196,7 +181,7 @@
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
                         android:orientation="vertical"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="16dp"
                         android:gravity="center|bottom"
                         android:visibility="visible">
                         <TextView
@@ -204,7 +189,7 @@
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
                             android:text="Skip add account for now."
-                            android:textSize="14dp"
+                            android:textSize="12dp"
                             android:textColor="@color/blue"
                             android:padding="5dp"
                             android:gravity="center|bottom" />

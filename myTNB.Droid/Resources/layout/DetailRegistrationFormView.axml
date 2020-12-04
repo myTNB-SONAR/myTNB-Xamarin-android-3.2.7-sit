@@ -173,19 +173,20 @@
                     android:layout_width="wrap_content"
                     android:checked="false"
                     android:textSize="12dp"
-                    android:button="@drawable/checkbox_selector"
-                    android:paddingRight="3dp" />
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:gravity="center_vertical"
+                    android:button="@drawable/checkbox_selector" />
                 <TextView
                     android:text=" By confirming, I have read and agreed to the Terms and Conditions."
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:textSize="12dp"
-                    android:layout_marginTop="-8dp"
-                    android:paddingBottom="10dp"
+                    android:paddingLeft="3dp"
                     android:id="@+id/txtTermsConditions"
                     android:textColorLink="@color/powerBlue"
-                    android:gravity="top"/>
+                    android:gravity="center_vertical"/>
             </LinearLayout>
             <Button
                 android:layout_width="fill_parent"

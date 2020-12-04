@@ -674,9 +674,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                     ic_no = ic_no.Replace("-", string.Empty);
                     this.userActionsListener.OnCheckID(ic_no, Idtype);
 
-                    bool hasExistedEmail = MyTNBAccountManagement.GetInstance().IsEmailUpdated();
+                    bool hasExistedID = MyTNBAccountManagement.GetInstance().IsIDUpdated();
                     
-                    if (hasExistedEmail)
+                    if (hasExistedID)
                     {
                         this.userActionsListener.OnAcquireToken(fName, ic_no, mobile_no, eml_str, password, idtype);
                     }

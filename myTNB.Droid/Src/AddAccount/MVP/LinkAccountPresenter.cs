@@ -11,6 +11,7 @@ using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -163,7 +164,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 {
                     mView.ShowAddingAccountProgressDialog();
                 }
-
+                var tempReq = JsonConvert.SerializeObject(accounts);
                 AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts(new AddAccountsRequest(accounts));
 
                 if (result.IsSuccessResponse())
