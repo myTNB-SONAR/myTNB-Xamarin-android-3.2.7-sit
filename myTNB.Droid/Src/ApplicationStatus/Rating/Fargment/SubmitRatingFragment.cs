@@ -16,6 +16,11 @@ using myTNB_Android.Src.ApplicationStatusRating.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
+using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
+using myTNB.Mobile.API.Managers.Rating;
+using static myTNB_Android.Src.ApplicationStatusRating.Model.RateUsQuestion;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatusRating.Fargment
 {
@@ -36,19 +41,50 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Fargment
         private RateUsQuestionsAdapter adapter;
 
         private List<RateUsQuestion> activeQuestionList = new List<RateUsQuestion>();
-
+        private List<AnswerDetail> answerDetails = new List<AnswerDetail>();
         private RatingActivity ratingActivity;
-        private string merchantTransId;
-        private string deviceID;
-        private int selectedRating;
-        private string questionCatId;
+        private GetCustomerRatingMasterResponse response;
+     
 
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
         }
+        public async void GetCustomerRatingMaster(View mainView)
+        {
+          response = await RatingManager.Instance.GetCustomerRatingMaster();
+            //var json = JsonConvert.SerializeObject(response.Content);
+            recyclerView = mainView.FindViewById<RecyclerView>(Resource.Id.question_recycler_view);
+            rootView = mainView.FindViewById<FrameLayout>(Resource.Id.baseView);
+            btnSubmit = mainView.FindViewById<Button>(Resource.Id.btnSubmit);
 
+            btnSubmit.Text = Utility.GetLocalizedCommonLabel("submit");
+
+            layoutManager = new GridLayoutManager(Activity.ApplicationContext, 1);
+            Dictionary<string, string> answerDetailDictionary = new Dictionary<string, string>();
+            foreach (var questionAnswerSet in response.Content.QuestionAnswerSets)
+            {
+                if (questionAnswerSet.RateType == RateType.Star)
+                {
+                    answerDetailDictionary = questionAnswerSet.AnswerDetail.AnswerSetValue;
+                }
+            }
+            var items = answerDetailDictionary.ToList();
+            foreach (var item in items)
+            {
+                AnswerDetail answerDetail = new AnswerDetail();
+                answerDetail.Key = item.Key;
+                answerDetail.answerValue = item.Value;
+                answerDetails.Add(answerDetail);
+            }
+
+            adapter = new RateUsQuestionsAdapter(Activity.ApplicationContext, response.Content.QuestionAnswerSets[0], 3);
+            recyclerView.SetLayoutManager(layoutManager);
+            recyclerView.SetAdapter(adapter);
+            adapter.RatingUpdate += OnRatingUpdate;
+            //ShowGetQuestionSuccess();
+        }
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View mainView = inflater.Inflate(Resource.Layout.ApplicationStatus_SubmitRatingView, container, false);
@@ -57,44 +93,22 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Fargment
                 mPresenter = new SubmitRatingPresenter(this);
                 ratingActivity = ((RatingActivity)Activity);
 
-                if (Arguments.ContainsKey(Constants.QUESTION_ID_CATEGORY))
-                {
-                    questionCatId = Arguments.GetString(Constants.QUESTION_ID_CATEGORY);
-                }
-                if (Arguments.ContainsKey(Constants.DEVICE_ID_PARAM))
-                {
-                    deviceID = Arguments.GetString(Constants.DEVICE_ID_PARAM);
-                }
-                if (Arguments.ContainsKey(Constants.MERCHANT_TRANS_ID))
-                {
-                    merchantTransId = Arguments.GetString(Constants.MERCHANT_TRANS_ID);
-                }
-                if (Arguments.ContainsKey(Constants.SELECTED_RATING))
-                {
-                    selectedRating = Arguments.GetInt(Constants.SELECTED_RATING);
-                }
-
-                recyclerView = mainView.FindViewById<RecyclerView>(Resource.Id.question_recycler_view);
-                rootView = mainView.FindViewById<FrameLayout>(Resource.Id.baseView);
-                btnSubmit = mainView.FindViewById<Button>(Resource.Id.btnSubmit);
-
-                btnSubmit.Text = Utility.GetLocalizedCommonLabel("submit");
-
-                layoutManager = new GridLayoutManager(Activity.ApplicationContext, 1);
-                adapter = new RateUsQuestionsAdapter(Activity.ApplicationContext, activeQuestionList, selectedRating);
-                recyclerView.SetLayoutManager(layoutManager);
-                recyclerView.SetAdapter(adapter);
-                adapter.RatingUpdate += OnRatingUpdate;
+               
 
 
 
-                this.userActionsListener.GetQuestions(questionCatId);
+                GetCustomerRatingMaster(mainView);
+                
+
+
+
+                
 
                 btnSubmit.Click += delegate
                 {
                     if (adapter.GetInputAnswers().Count > 0)
                     {
-                        this.userActionsListener.PrepareSubmitRateUsRequest(merchantTransId, deviceID, adapter.GetInputAnswers());
+                        //this.userActionsListener.PrepareSubmitRateUsRequest(merchantTransId, deviceID, adapter.GetInputAnswers());
                     }
                 };
             }

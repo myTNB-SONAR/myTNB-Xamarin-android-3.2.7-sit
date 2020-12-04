@@ -48,5 +48,26 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Model
             [AliasAs("InputOptionValues")]
             public string InputOptionValues { get; set; }
         }
+        public class QuestionDescription
+        {
+            [JsonProperty(PropertyName = "key")]
+            [AliasAs("Key")]
+            public string Key { get; set; }
+
+            [JsonProperty(PropertyName = "Question")]
+            [AliasAs("Question")]
+            public string Question { get; set; }
+        }
+        public class AnswerDetail
+        {
+            [JsonProperty(PropertyName = "key")]
+            [AliasAs("Key")]
+            public string Key { get; set; }
+
+            [JsonProperty(PropertyName = "Question")]
+            [AliasAs("Question")]
+            public string answerValue { get; set; }
+        }
+        
     }
 }

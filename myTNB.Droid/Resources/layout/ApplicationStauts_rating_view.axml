@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:id="@+id/coordinatorLayout"
+    android:orientation="vertical">
+    
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+ 
+  <FrameLayout
+      android:id="@+id/baseView"
+      android:layout_height="match_parent"
+      android:layout_width="match_parent"
+  android:layout_below="@+id/toolbar"
+            android:layout_above="@+id/bottomLayout"
+      android:background="@color/white"
+      >
+    <LinearLayout
+        android:weightSum="10"
+        android:orientation="vertical"
+            android:background="@color/greyBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+      <LinearLayout
+          android:id="@+id/main_layout"
+          android:orientation="vertical"
+          android:paddingTop="72dp"
+                android:layout_marginBottom="16dp"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:background="@color/white"
+          android:layout_weight="8.5">
+        <ImageView
+		    android:layout_width="wrap_content"
+		    android:layout_height="120dp"
+		    android:layout_gravity="center"
+		    android:id="@+id/refreshBillingDetailImg"
+            android:contentDescription=""
+		    android:src="@drawable/ratingApplication"/>
+                 <TextView
+        android:id="@+id/txtContentInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:text="@string/payment_success_experience_rating_txt_content_1"
+        android:textColor="@color/tunaGrey"
+        android:textSize="16dp" />
+           <RatingBar
+        android:id="@+id/applicationRatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:numStars="5"
+                  
+        android:progressDrawable="@drawable/rating_selector"
+        android:rating="0"
+        android:stepSize="1.0" />
+     
+   
+      </LinearLayout>
+      <LinearLayout
+          android:layout_height="25dp"
+          android:id="@+id/bottomLayout"
+          android:layout_width="match_parent"
+          android:orientation="vertical"
+          android:layout_weight="1.5"
+                android:background="@color/white"
+                 android:gravity="bottom"
+            android:layout_gravity="bottom"
+                 android:padding="16dp">
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_height="48dp"
+            android:layout_width="match_parent"
+            android:textAllCaps="false"
+            style="@style/DarkButton"
+            android:text="Submit" />
+      </LinearLayout>
+    </LinearLayout>
+  </FrameLayout>
+  
+</LinearLayout>

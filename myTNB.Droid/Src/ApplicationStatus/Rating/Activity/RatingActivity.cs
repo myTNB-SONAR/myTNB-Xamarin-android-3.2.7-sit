@@ -14,6 +14,7 @@ using System.Runtime;
 using myTNB.Mobile;
 using Newtonsoft.Json;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
+using AndroidX.Core.Content;
 
 namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 {
@@ -25,7 +26,10 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 
         private AndroidX.AppCompat.Widget.Toolbar toolbar;
         private AppBarLayout appBarLayout;
+        private TextView txtContentInfo;
+        public RatingBar ratingBar;
         private FrameLayout frameContainer;
+        private Button btnSubmit;
         private AndroidX.CoordinatorLayout.Widget.CoordinatorLayout coordinatorLayout;
 
         AndroidX.Fragment.App.Fragment  currentFragment;
@@ -38,7 +42,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 
         public override int ResourceId()
         {
-            return Resource.Layout.ApplicationStauts_rating_activity_view;
+            return Resource.Layout.ApplicationStauts_rating_view;
         }
 
         public override bool ShowCustomToolbarTitle()
@@ -98,30 +102,44 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             {
                 appBarLayout = FindViewById<AppBarLayout>(Resource.Id.appBar);
                 toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
-                frameContainer = FindViewById<FrameLayout>(Resource.Id.fragment_container);
+                txtContentInfo = FindViewById<TextView>(Resource.Id.txtContentInfo);
                 coordinatorLayout = FindViewById<AndroidX.CoordinatorLayout.Widget.CoordinatorLayout>(Resource.Id.coordinatorLayout);
-
+                ratingBar = FindViewById<RatingBar>(Resource.Id.applicationRatingBar);
+                btnSubmit = FindViewById<Button>(Resource.Id.btnSubmit);
+                btnSubmit.Visibility = ViewStates.Invisible;
                 deviceID = DeviceIdUtils.DeviceId(this);
                 GetCustomerRatingMasterResponse customerRatingMasterResponse;
+
+               // OnLoadMainFragment();
                 Bundle extras = Intent.Extras;
                 if (extras != null)
                 {
-                    if (extras.ContainsKey("CustomerRatingMasterResponse"))
-                    {
-                        customerRatingMasterResponse = new GetCustomerRatingMasterResponse();
-                        customerRatingMasterResponse = JsonConvert.DeserializeObject<GetCustomerRatingMasterResponse>(extras.GetString("CustomerRatingMasterResponse"));
 
-                    }
                 }
-
-                OnLoadMainFragment(customerRatingMasterResponse);
+                ratingBar.RatingBarChange += (o, e) =>
+                {
+                    ratingBar.Rating = e.Rating;
+                    int Rating = ((int)e.Rating);
+                    if (Rating != 0)
+                    {
+                      
+                        btnSubmit.Enabled = true;
+                        btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+                    }
+                    else
+                    {
+                        btnSubmit.Enabled = false;
+                        btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+                       
+                    }
+                };
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
-
+       
         protected override void OnResume()
         {
             base.OnResume();
@@ -135,16 +153,16 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             }
         }
 
-        public void OnLoadMainFragment(GetCustomerRatingMasterResponse customerRatingMasterResponse)
+        public void OnLoadMainFragment()
         {
             AndroidX.Fragment.App.Fragment  submitRatingFragment = new SubmitRatingFragment();
             Bundle bundle = new Bundle();
-            bundle.PutString(Constants.QUESTION_ID_CATEGORY, quesIdCategory);
-            bundle.PutInt(Constants.SELECTED_RATING, selectedRating);
-            bundle.PutString(Constants.MERCHANT_TRANS_ID, merchantTransID);
-            bundle.PutString(Constants.DEVICE_ID_PARAM, deviceID);
-            bundle.PutString(Constants.DEVICE_ID_PARAM, customerRatingMasterResponse); 
-            submitRatingFragment.Arguments = bundle;
+            //bundle.PutString(Constants.QUESTION_ID_CATEGORY, quesIdCategory);
+            //bundle.PutInt(Constants.SELECTED_RATING, selectedRating);
+            //bundle.PutString(Constants.MERCHANT_TRANS_ID, merchantTransID);
+            //bundle.PutString(Constants.DEVICE_ID_PARAM, deviceID);
+            //bundle.PutSerializable("CustomerRatingMasterResponse", customerRatingMasterResponse); 
+            //submitRatingFragment.Arguments = bundle;
             var fragmentTransaction = SupportFragmentManager.BeginTransaction();
             fragmentTransaction.Add(Resource.Id.fragment_container, submitRatingFragment);
             fragmentTransaction.Commit();
@@ -155,13 +173,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         {
             if (fragment is SubmitRatingFragment)
             {
-                var thankYouFragment = new ThankYouFragment();
-                thankYouFragment.Arguments = bundle;
-                var fragmentTransaction = SupportFragmentManager.BeginTransaction();
-                fragmentTransaction.Add(Resource.Id.fragment_container, thankYouFragment);
-                fragmentTransaction.AddToBackStack(null);
-                fragmentTransaction.Commit();
-                currentFragment = thankYouFragment;
+               
             }
         }
 
@@ -169,7 +181,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         {
             try
             {
-                int count = this.SupportFragmentManager.BackStackEntryCount;
+               /* int count = this.SupportFragmentManager.BackStackEntryCount;
                 Log.Debug("OnBackPressed", "fragment stack count :" + count);
                 if (currentFragment is ThankYouFragment || currentFragment is SubmitRatingFragment)
                 {
@@ -179,6 +191,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 {
                     this.SupportFragmentManager.PopBackStack();
                 }
+               */
 
             }
             catch (Exception e)

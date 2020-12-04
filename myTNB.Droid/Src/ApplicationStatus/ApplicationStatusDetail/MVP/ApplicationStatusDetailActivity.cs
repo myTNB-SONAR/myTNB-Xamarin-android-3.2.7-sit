@@ -176,7 +176,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         private Snackbar mNoInternetSnackbar;
 
         [OnClick(Resource.Id.btnPrimaryCTA)]
-        internal async void OnPrimaryCTAClick(object sender, EventArgs e)
+        internal void OnPrimaryCTAClick(object sender, EventArgs e)
         {
             if (applicationDetailDisplay != null)
             {
@@ -187,15 +187,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 else if (applicationDetailDisplay.CTAType == DetailCTAType.Rate)
                 {
         
-                    GetCustomerRatingMasterResponse response = await RatingManager.Instance.GetCustomerRatingMaster();
-                        
-                    HideProgressDialog();
-                    if (response.StatusDetail.IsSuccess)
-                    {
+                   
                         Intent rating_activity = new Intent(this, typeof(RatingActivity));
-                        rating_activity.PutExtra("CustomerRatingMasterResponse", JsonConvert.SerializeObject(response.Content));
+                        //rating_activity.PutExtra("CustomerRatingMasterResponse", JsonConvert.SerializeObject(response.Content));
                         StartActivity(rating_activity);
-                    }
+                   
                 }
             }
         }
