@@ -6018,8 +6018,6 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\ApplicationStatus\Rating\Activity\RatingActivity.cs" />
-    <Compile Include="Src\ApplicationStatus\Rating\Adapter\RateUsQuestionsAdapter.cs" />
-    <Compile Include="Src\ApplicationStatus\Rating\Fargment\SubmitRatingFragment.cs" />
     <Compile Include="Src\ApplicationStatus\Rating\Model\QuestionCategoryID.cs" />
     <Compile Include="Src\ApplicationStatus\Rating\Model\RateUsQuestion.cs" />
     <Compile Include="Src\ApplicationStatus\Rating\MVP\SubmitRatingContract.cs" />
@@ -6052,6 +6050,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\Rating\Activity\RateUsActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -6386,6 +6385,7 @@
     <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\Adapter\" />
     <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\Adapter\" />
     <Folder Include="Src\ApplicationStatus\Rating\" />
+    <Folder Include="Src\ApplicationStatus\Rating\Fargment\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

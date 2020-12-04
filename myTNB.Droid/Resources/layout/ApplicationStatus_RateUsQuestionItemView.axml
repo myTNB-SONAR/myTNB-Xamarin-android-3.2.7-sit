@@ -1,30 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_10sdp">
-    <TextView
-        android:id="@+id/txtTitleInfo"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
+    android:theme="@style/Theme.Dashboard"
+    android:id="@+id/rootView">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+        <LinearLayout
+            android:id="@+id/bottomLayout"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/lightGrey"
+            android:paddingTop="8dp">
+            <Button
+                android:id="@+id/btnSaveChanges"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="Submit"
+                android:textSize="16dp"
+                android:textAllCaps="false"
+                style="@style/DarkButton1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/appLanguageContainer"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:layout_above="@+id/bottomLayout"
+            android:orientation="vertical"
+            android:background="@color/lightGrey">
+            <LinearLayout
+            android:id="@+id/appLanguageMessageContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+             <TextView
+        android:id="@+id/txtPageTitleInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10.2dp"
-        android:text=""
-        android:textColor="@color/powerBlue"
+        android:gravity="center_horizontal"
+        android:text="Perfect"
+        android:textColor="@color/tunaGrey"
         android:textSize="16dp" />
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:paddingTop="8dp"
+                    android:paddingBottom="16dp"
         android:gravity="center"
         android:numStars="5"
         android:progressDrawable="@drawable/rating_selector"
         android:rating="0"
         android:stepSize="1.0" />
-     <LinearLayout
+
+            </LinearLayout>
+             <LinearLayout
+                android:id="@+id/questionContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/lightGrey"
+                android:orientation="vertical">
+                <TextView
+        android:id="@+id/txtTitleQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10.2dp"
+         android:layout_marginLeft="16dp"
+        android:text="What did you like best?"
+        android:textColor="@color/powerBlue"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+        android:textSize="16dp" />
+                </LinearLayout>
+             <LinearLayout
+                android:id="@+id/tellUsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/lightGrey"
+                android:orientation="vertical">
+                <TextView
+        android:id="@+id/txtTellUsTitleInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10.2dp"
+        android:layout_marginLeft="16dp"
+        android:text="Tell us more:"
+        android:textColor="@color/powerBlue"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+        android:textSize="16dp" />
+                </LinearLayout>
+            <LinearLayout
                 android:id="@+id/appLanguageListContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,44 +117,9 @@
                     android:minHeight="25px"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/contentInfo_list_view"
+                    android:id="@+id/language_list_view"
                     android:background="@color/white"/>
-     </LinearLayout>
-    <TextView
-        android:id="@+id/txtContentInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"
-        android:gravity="center_horizontal"
-        android:text="@string/payment_success_experience_rating_txt_content_1"
-        android:textColor="@color/tunaGrey"
-        android:textSize="12dp" />
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/txtInputLayoutComments"
-        android:layout_width="256dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        app:errorEnabled="true"
-        app:counterEnabled="false"
-        app:counterMaxLength="250"
-        app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
-        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
-        <EditText
-            android:id="@+id/txtComments"
-            android:layout_width="256dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawableLeft="@drawable/ic_field_text"
-            android:drawablePadding="6dp"
-            android:hint="@string/rating_txt_comments_hint"
-            android:inputType="textMultiLine"
-            android:maxLength="250"
-            android:maxLines="5"
-            android:overScrollMode="always"
-            android:scrollbarStyle="insideInset"
-            android:scrollbars="vertical"
-            android:textColor="@color/tunaGrey" />
-    </com.google.android.material.textfield.TextInputLayout>
-</LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

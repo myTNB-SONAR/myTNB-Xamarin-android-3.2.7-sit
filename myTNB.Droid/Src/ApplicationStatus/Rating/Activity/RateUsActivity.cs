@@ -22,7 +22,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
     [Activity(Label = "Rate"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.PaymentSuccessExperienceRating")]
-    public class RatingActivity : BaseActivityCustom
+    public class RateUsActivity : BaseActivityCustom
     {
 
         private AndroidX.AppCompat.Widget.Toolbar toolbar;
@@ -30,18 +30,38 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         private TextView txtContentInfo;
         public RatingBar ratingBar;
         private FrameLayout frameContainer;
-        private string selectedRating;
         private Button btnSubmit;
         private AndroidX.CoordinatorLayout.Widget.CoordinatorLayout coordinatorLayout;
-        
-       
+        [OnClick(Resource.Id.btnSubmit)]
+        void OnPayBill(object sender, EventArgs eventArgs)
+        {
+            System.Diagnostics.Debug.WriteLine("[DEBUG] OnPayBill");
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+              /*  Intent payment_activity = new Intent(this, typeof(PaymentActivity));
+                payment_activity.PutExtra("ISAPPLICATIONPAYMENT", true);
+                payment_activity.PutExtra("APPLICATIONPAYMENTDETAIL", JsonConvert.SerializeObject(applicationDetailDisplay.applicationPaymentDetail));
+                payment_activity.PutExtra("TOTAL", applicationDetailDisplay.PaymentDisplay.TotalPayableAmountDisplay);
+                StartActivityForResult(payment_activity, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
+              */
+                try
+                {
+                    FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
+            }
+        }
 
         AndroidX.Fragment.App.Fragment  currentFragment;
 
         private string quesIdCategory = "1";
         private string merchantTransID;
         private string deviceID;
-       
+        private int selectedRating;
         private string PAGE_ID = "Rating";
 
         public override int ResourceId()
@@ -52,27 +72,6 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         public override bool ShowCustomToolbarTitle()
         {
             return true;
-        }
-        void OnSubmit(object sender, EventArgs eventArgs)
-        {
-            System.Diagnostics.Debug.WriteLine("[DEBUG] OnPayBill");
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                Intent rateUs_Activity = new Intent(this, typeof(RateUsActivity));
-                rateUs_Activity.PutExtra("selectedRating", selectedRating);
-
-                StartActivity(rateUs_Activity);
-
-                try
-                {
-                    FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
-                }
-                catch (System.Exception ne)
-                {
-                    Utility.LoggingNonFatalError(ne);
-                }
-            }
         }
 
         public void ShowToolBar()
@@ -134,18 +133,18 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 btnSubmit.Visibility = ViewStates.Invisible;
                 deviceID = DeviceIdUtils.DeviceId(this);
                 GetCustomerRatingMasterResponse customerRatingMasterResponse;
-                btnSubmit.Click += OnSubmit;
-                // OnLoadMainFragment();
-                Bundle extras = Intent.Extras;
-                if (extras != null)
-                {
 
+               // OnLoadMainFragment();
+                Bundle extras = Intent.Extras;
+                if (extras != null && Intent.Extras.ContainsKey("selectedRating"))
+                {
+                    ratingBar.Rating = Convert.ToUInt32(Intent.Extras.GetString("selectedRating"));
                 }
                 ratingBar.RatingBarChange += (o, e) =>
                 {
                     ratingBar.Rating = e.Rating;
-                    selectedRating = ((int)e.Rating).ToString();
-                    if (selectedRating != "0")
+                    int Rating = ((int)e.Rating);
+                    if (Rating != 0)
                     {
                       
                         btnSubmit.Enabled = true;
@@ -179,7 +178,8 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         }
 
        
-      
+
+       
 
         public override void OnBackPressed()
         {
