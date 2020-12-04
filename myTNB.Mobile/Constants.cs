@@ -28,7 +28,7 @@
         private const string PROD = "https://mytnbapp.tnb.com.my";
         private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
 
-        internal static string ApiDomain = DEV2;
+        internal static string ApiDomain = SIT;
         internal const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         //Mark: IP: http://10.215.70.246/   URL: http://tnbcsdevapp.tnb.my/
         internal const string SitecoreURL = "http://10.215.70.246/";
