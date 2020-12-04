@@ -108,7 +108,7 @@
     "myElecttricityAcc": "My Electricity Accounts",
     "appSetting": "App Settings",
     "learnMore": "Learn More About TNB",
-    "titleProfile": "MYTNB Profile",
+    "titleProfile": "myTNB Profile",
     "verify": "Verify",
     "continue" : "Continue",
     "manageUserAccess" : "Manage User Access",
@@ -648,7 +648,22 @@
     "titleContinue": "Continue to add account first",
     "bodyContinue": "You can still add the account manually with its account number, but your access to the account will be limited as an unverified owner. ",
     "tnc": "By confirming, I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>.",
-    "tnc_checked": "I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>."
+    "tnc_checked": "I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>.",
+    "AccHeaderText":"Let's add your account by selecting your account type.",
+    "PremisesHint":"The Premises I’m Adding is",
+    "AccHeaderBlueText":"Is this electricity account registered under your name?",
+    "owner":"Yes, I am the owner",
+    "ownerDetails":"I’m the registered owner who started the electricity account.",
+    "nonOwner":"No, I am not the owner",
+    "nonOwnerDetails":"I'm renting the place and/or paying the electricity bill.",
+    "skip":"Skip add account for now.",
+    "accNumber":"Account Number",
+    "accNickname":"Account Nickname",
+    "ROCHeaderText":"Do more on myTNB with your company's ROC number.",
+    "ROCDetailsText":"Enjoy additional account information and access to applications!",
+    "WhereAccNo":"Where is my account number?",
+    "OwnerDetectTitle" : "We found {0} electricity account that matches your myTNB account."
+bawah addaccount
   },
   "Profile": {
     "title": "Profile",
@@ -681,6 +696,17 @@
     "modeDescription": "Select how you wish to receive your notifications",
     //addby wan
     "changeLanguageSuccess": "Your language preference has been changed successfully."
+  },
+   //new added
+  "NotificationAddAccount" :{
+  "title":"Notification",
+  "notificationTitle":"Your electricity account is added by someone else.",
+  "notificationDetailMessage":"Hello {nickname} has been added by fullname to their myTNB account. ",
+  "notificationDetail":"Check out your account vieweing access settings! You can manage the user if you do not recognise them or wish to change their account access.",
+  "btnManageAccess":"Manage Access",
+  "ownernNotificationnTitle":"You are now an owner to My House",
+  "ownernNotificationDetailMessage":"We want to let you  know that your access to {account nickname} has been changed to Owner access and you can now enjoy full account access like initiating applications! ",
+  "ownernNotificationDetail":"Plus, stay in control of your account information and permissions by definig what you let others access as an owner of an electricity account, view your account now!"
   },
   "FAQ": {
     "title": "FAQ"
@@ -885,8 +911,7 @@
     "gotIt" : "Got It",
     "acccreated" : "Account Created!",
     "emailverify" : "Please verify your email",
-    "emailNotiFirstHalf" : "We have sent a verification link to ",
-    "emailNotiSecondHalf" : ". You may verify it by clicking the link in your email afterwards to unlock all the things that myTNB has to offer!"
+    "emailVerifiedLinkSent" : "We have sent a verification link to <b>{0}</b>. You may verify it by clicking the link in your email afterwards to unlock all the things that myTNB has to offer!"
   },
   "AddCard": {
     "title": "Add Card",

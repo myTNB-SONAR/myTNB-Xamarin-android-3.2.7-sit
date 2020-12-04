@@ -108,7 +108,7 @@
     "myElecttricityAcc": "Akaun Elektrik Saya",
     "appSetting": "Tetapan Aplikasi",
     "learnMore": "Ketahui Lebih Lanjut mengenai TNB",
-    "titleProfile": "Profil MyTNB",
+    "titleProfile": "Profil myTNB",
     "verify": "Sahkan",
     "continue" : "Teruskan",
     "manageUserAccess" : "Manage User Access",
@@ -648,7 +648,22 @@
     "titleContinue": "Teruskan menambah masuk akaun",
     "bodyContinue": "Anda masih boleh menambah masuk akaun secara manual dengan menggunakan nombor akaun, tetapi anda akan memiliki akses terhad ke atas akaun ini sebagai pemilik yang tidak sah.",
     "tnc": "By confirming, I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>.",
-    "tnc_checked": "I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>."
+    "tnc_checked": "I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>.",
+    //new added 
+    "AccHeaderText":"Let's add your account by selecting your account type.",
+    "PremisesHint":"The Premises I’m Adding is",
+    "AccHeaderBlueText":"Adakah akaun elektrik ini didaftarkan atas nama anda?",
+    "owner":"Ya, saya pemilik",
+    "ownerDetails":"Saya adalah pemilik berdaftar yang memulakan akaun elektrik ini.",
+    "nonOwner":"Tidak, saya bukan pemilik",
+    "nonOwnerDetails":"Saya penyewa dan/atau membayar bil elektrik premis ini.",
+    "skip":"Langkau tambah akaun buat masa ini.",
+    "accNumber":"Nombor Akaun",
+    "accNickname":"Nama Panggilan Akaun",
+    "ROCHeaderText":"Do more on myTNB with your company's ROC number.",
+    "ROCDetailsText":"Enjoy additional account information and access to applications!",
+    "WhereAccNo":"Di manakah boleh saya dapatkan nombor akaun?",
+    "OwnerDetectTitle" : "Kami jumpa {0} akaun elektrik yang sepadan dengan akaun myTNB anda."
   },
   "Profile": {
     "title": "Profil",
@@ -681,6 +696,18 @@
     "modeDescription": "Pilih cara anda mahu menerima pemberitahuan",
     //addby wan
     "changeLanguageSuccess": "Your language preference has been changed successfully."
+  },
+
+  //new added
+  "NotificationAddAccount" :{
+  "title":"Notifikasi",
+  "notificationTitle":"Akaun elektrik anda ditambah oleh orang lain.",
+  "notificationDetailMessage":"Hello, <nama panggilan akaun> telah ditambahkan oleh <Nama Penuh & / alamat e-mel> ke dalam akaun myTNB mereka.",
+  "notificationDetail":"Check out your account vieweing access settings! You can manage the user if you do not recognise them or wish to change their account access.",
+  "btnManageAccess":"Urus Akses",
+  "ownernNotificationnTitle":"You are now an owner to My House",
+  "ownernNotificationDetailMessage":"We want to let you  know that your access to {account nickname} has been changed to Owner access and you can now enjoy full account access like initiating applications!",
+  "ownernNotificationDetail":"Plus, stay in control of your account information and permissions by definig what you let others access as an owner of an electricity account, view your account now!"
   },
   "FAQ": {
     "title": "Soalan Lazim"
@@ -885,8 +912,7 @@
     "gotIt" : "OK",
     "acccreated" : "Akaun Dibuat!",
     "emailverify" : "Sila sahkan alamat e-mel anda",
-    "emailNotiFirstHalf" : "Kami telah menghantar pautan pengesahan ke ", //nak ubah
-    "emailNotiSecondHalf" : ".  Anda boleh mengesahkannya dengan mengklik pautan dalam e-mel anda untuk menikmati segalanya yang myTNB tawarkan!" //nak ubah
+    "emailVerifiedLinkSent" : "Kami telah menghantar pautan pengesahan ke <b>{0}</b>. Anda boleh mengesahkannya dengan mengklik pautan dalam e-mel anda untuk menikmati segalanya yang myTNB tawarkan!  "
   },
   "AddCard": {
     "title": "Tambah kad",
