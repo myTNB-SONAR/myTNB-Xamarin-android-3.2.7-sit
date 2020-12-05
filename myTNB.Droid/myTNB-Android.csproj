@@ -37,7 +37,6 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
     <AndroidSupportedAbis />
     <MandroidI18n />
@@ -6017,15 +6016,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\ApplicationStatus\Rating\Activity\RatingActivity.cs" />
-    <Compile Include="Src\ApplicationStatus\Rating\Model\QuestionCategoryID.cs" />
-    <Compile Include="Src\ApplicationStatus\Rating\Model\RateUsQuestion.cs" />
-    <Compile Include="Src\ApplicationStatus\Rating\MVP\SubmitRatingContract.cs" />
-    <Compile Include="Src\ApplicationStatus\Rating\MVP\SubmitRatingPresenter.cs" />
-    <Compile Include="Src\ApplicationStatus\Rating\Request\GetRateUsQuestionsRequest.cs" />
-    <Compile Include="Src\ApplicationStatus\Rating\Request\SubmitRateUsRequest.cs" />
-    <Compile Include="Src\ApplicationStatus\Rating\Response\GetRateUsQuestionsResponse.cs" />
-    <Compile Include="Src\ApplicationStatus\Rating\Response\SubmitRateUsResponse.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusRating\Activity\ApplicationRatingActivity.cs" />
     <AndroidResource Include="Resources\layout\ApplicationStauts_rating_view.axml">
       <SubType></SubType>
       <Generator></Generator>
@@ -6050,7 +6041,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\ApplicationStatus\Rating\Activity\RateUsActivity.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusRating\Activity\RateUsActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -6384,8 +6375,7 @@
     <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\MVP\" />
     <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\Adapter\" />
     <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\Adapter\" />
-    <Folder Include="Src\ApplicationStatus\Rating\" />
-    <Folder Include="Src\ApplicationStatus\Rating\Fargment\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusRating\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

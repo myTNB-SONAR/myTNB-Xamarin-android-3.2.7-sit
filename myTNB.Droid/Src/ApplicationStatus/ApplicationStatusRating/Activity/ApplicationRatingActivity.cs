@@ -22,7 +22,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
     [Activity(Label = "Rate"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.PaymentSuccessExperienceRating")]
-    public class RatingActivity : BaseActivityCustom
+    public class ApplicationRatingActivity : BaseActivityCustom
     {
 
         private AndroidX.AppCompat.Widget.Toolbar toolbar;

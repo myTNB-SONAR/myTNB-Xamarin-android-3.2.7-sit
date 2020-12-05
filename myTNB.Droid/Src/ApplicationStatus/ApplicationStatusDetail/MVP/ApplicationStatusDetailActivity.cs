@@ -188,7 +188,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
         
                    
-                        Intent rating_activity = new Intent(this, typeof(RatingActivity));
+                        Intent rating_activity = new Intent(this, typeof(ApplicationRatingActivity));
                         //rating_activity.PutExtra("CustomerRatingMasterResponse", JsonConvert.SerializeObject(response.Content));
                         StartActivity(rating_activity);
                    
