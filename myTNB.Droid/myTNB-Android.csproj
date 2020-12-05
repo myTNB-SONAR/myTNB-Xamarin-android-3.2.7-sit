@@ -815,6 +815,7 @@
     <Compile Include="Src\Database\Model\AccountDataModel.cs" />
     <Compile Include="Src\Database\Model\BillHistoryEntity.cs" />
     <Compile Include="Src\Database\Model\BillHistoryModel.cs" />
+    <Compile Include="Src\Database\Model\UserManageAccessAccount.cs" />
     <Compile Include="Src\Database\Model\DownTimeEntity.cs" />
     <Compile Include="Src\Database\Model\FAQsEntity.cs" />
     <Compile Include="Src\Database\Model\FAQsParentEntity.cs" />
@@ -8418,6 +8419,18 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\NotificationAddAccLayout.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\AdditionalAccountListItemViewOwnerTenant.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\rectangle_rounded_corner_blue_outline.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>

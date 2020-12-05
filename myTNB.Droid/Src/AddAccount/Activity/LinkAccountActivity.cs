@@ -164,13 +164,26 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       }
                       if (accountList.Count() > 0)
                       {
-                          textNoOfAcoount.Text = accountList.Count() + " " + GetLabelByLanguage("supplyAccountCount");
+                          //textNoOfAcoount.Text = accountList.Count() + " " + GetLabelByLanguage("supplyAccountCount");
+                          textNoOfAcoount.Text = string.Format(Utility.GetLocalizedLabel("AddAccount", "OwnerDetectTitle"), accountList.Count());
+
                       }
                       else
                       {
                           textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
                       }
-                      mDeleteDialog.Dismiss();
+
+                      if (accountList.Count() == 0 && additionalAccountList.Count() > 0)
+                      {
+                          NoAccountLayout.Visibility = ViewStates.Gone;
+                      }
+
+                      if (accountList.Count() == 0 && additionalAccountList.Count() == 0)
+                      {
+                          DisableConfirmButton();
+                      }
+
+                          mDeleteDialog.Dismiss();
                   })
                  .SetNegativeButton(GetLabelCommonByLanguage("cancel"), (senderAlert, args) =>
                  {
@@ -224,6 +237,10 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       if (accountList != null && totalAccountAdded < Constants.ADD_ACCOUNT_LIMIT)
                       {
                           btnAddAnotherAccount.Visibility = ViewStates.Visible;
+                      }
+                      if (accountList.Count() == 0 && additionalAccountList.Count() == 0)
+                      {
+                          DisableConfirmButton();
                       }
                       mDeleteDialog.Dismiss();
                   })
