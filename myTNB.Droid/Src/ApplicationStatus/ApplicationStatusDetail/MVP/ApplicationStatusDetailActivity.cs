@@ -27,6 +27,7 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB_Android.Src.ApplicationStatusRating.Activity;
 using myTNB.Mobile.API.Managers.Rating;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
+using myTNB;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -662,7 +663,21 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle, txtApplicationStatusDetailNote, txtBCRMDownMessage);
                         }
                     }
-
+                    if (extras.ContainsKey("submitRatingResponseStatus"))
+                    {
+                        StatusDetail statusDetails = new StatusDetail();
+                        statusDetails = DeSerialze<StatusDetail>(extras.GetString("submitRatingResponseStatus"));
+                        if (statusDetails != null)
+                        {
+                            Snackbar mSaveSnackbar = Snackbar.Make(rootview,
+                            statusDetails.Message,
+                            Snackbar.LengthLong);
+                            View v = mSaveSnackbar.View;
+                            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                            tv.SetMaxLines(5);
+                            mSaveSnackbar.Show();
+                        }
+                    }
                     if (IsSaveFlow)
                     {
                         SaveApplication();

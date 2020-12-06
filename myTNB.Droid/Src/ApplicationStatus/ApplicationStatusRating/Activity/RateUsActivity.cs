@@ -72,7 +72,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         {
             try
             {
-                if(sequence1 != null)
+                if (sequence1 != null)
                 {
                     RatingAnswers ratingAnswer = new RatingAnswers();
                     ratingAnswer.QuestionId = sequence1.QuestionDetail.QuestionId;
@@ -110,26 +110,26 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     ratingAnswer.AnswerValue = txtTellUsMore.Text;
                     ratingAnswers.Add(ratingAnswer);
                 }
-               
+
 
                 UserEntity loggedUser = UserEntity.GetActive();
-                
-                    if (ConnectionUtils.HasInternetConnection(this))
-                    {
-                        ShowProgressDialog();
+
+                if (ConnectionUtils.HasInternetConnection(this))
+                {
+                    ShowProgressDialog();
                     postSubmitRatingResponse = await RatingManager.Instance.SubmitRating(
                              loggedUser.UserName
                             , loggedUser.MobileNo
                             , srNumber
-                            ,applicationID
-                            ,backendAppID
-                            ,applicationType
+                            , applicationID
+                            , backendAppID
+                            , applicationType
                             , questionCategoryValue
                             , ratingAnswers);
-                        HideProgressDialog();
-                        if (postSubmitRatingResponse.StatusDetail.IsSuccess)
-                        {
-                            Toast.MakeText(this, postSubmitRatingResponse.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
+                    HideProgressDialog();
+                    if (postSubmitRatingResponse.StatusDetail.IsSuccess)
+                    {
+                        Toast.MakeText(this, postSubmitRatingResponse.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
 
                         if (ConnectionUtils.HasInternetConnection(this))
                         {
@@ -143,7 +143,8 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                             {
                                 Intent intent = new Intent(this, typeof(ApplicationStatusDetailActivity));
                                 intent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(response.Content));
-                               
+                                intent.PutExtra("submitRatingResponseStatus", JsonConvert.SerializeObject(postSubmitRatingResponse.StatusDetail));
+
                                 StartActivity(intent);
                             }
                             else
@@ -163,17 +164,17 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 
                         SetResult(Result.Ok, new Intent());
                         Finish();
-                        }
-                        else
-                        {
-                        ShowApplicaitonPopupMessage(this, postSubmitRatingResponse.StatusDetail);
-                    }
                     }
                     else
                     {
-                        //ShowNoInternetSnackbar();
+                        ShowApplicaitonPopupMessage(this, postSubmitRatingResponse.StatusDetail);
                     }
-                
+                }
+                else
+                {
+                    //ShowNoInternetSnackbar();
+                }
+
             }
             catch (Exception e)
             {
