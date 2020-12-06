@@ -1,30 +1,28 @@
-﻿using Android.App;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Util;
-using Android.Views;
+using Android.Runtime;
 using Android.Widget;
-using Google.Android.Material.AppBar;
-using myTNB_Android.Src.Base.Activity;
-
-using myTNB_Android.Src.Utils;
-using System;
-using System.Runtime;
-using myTNB.Mobile;
-using Newtonsoft.Json;
-using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
+using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
+using Google.Android.Material.Snackbar;
+using Google.Android.Material.TextField;
 using myTNB;
+using myTNB.Mobile;
 using myTNB.Mobile.API.Managers.Rating;
-using System.Linq;
-using myTNB_Android.Src.Common;
-using System.Collections.Generic;
-using Android.Runtime;
+using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
 using myTNB.Mobile.API.Models.Rating.PostSubmitRating;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Common;
 using myTNB_Android.Src.Database.Model;
-
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 {
     [Activity(Label = "Rate"
@@ -32,26 +30,36 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         , Theme = "@style/Theme.PaymentSuccessExperienceRating")]
     public class RateUsActivity : BaseActivityCustom
     {
+        private CoordinatorLayout rootView;
+        private TextInputLayout txtInputLayoutTellUsMore;
         private TextView txtPageTitleInfo;
-        public RatingBar ratingBar;
+        private RatingBar ratingBar;
         private TextView txtTitleQuestion;
         private TextView txtTellUsTitleInfo;
         private Button btnSubmit;
         private ListView rating_list_view;
         private SelectItemAdapter selectItemAdapter;
         private EditText txtTellUsMore;
-        int selectedRating;
-        public GetCustomerRatingMasterResponse getCustomerRatingMasterResponse;
+        private int selectedRating;
+        private string selectedAnswerDescriptions = string.Empty;
+        private string selectedAnswerValues = string.Empty;
+        private GetCustomerRatingMasterResponse getCustomerRatingMasterResponse;
+        private PostSubmitRatingResponse postSubmitRatingResponse;
         private QuestionAnswerSetsModel sequence1;
         private QuestionAnswerSetsModel sequence2;
         private QuestionAnswerSetsModel sequence3;
-        List<Item> ratingItemList = new List<Item>();
-        GetApplicationStatusDisplay applicationDetailDisplay;
+        private List<Item> ratingItemList = new List<Item>();
+        private List<Item> selectedRatingItemList = new List<Item>();
+        private GetApplicationStatusDisplay applicationDetailDisplay;
         string srNumber = string.Empty;
         string applicationID = string.Empty;
         string backendAppID = string.Empty;
         string applicationType = string.Empty;
         string questionCategoryValue = string.Empty;
+        string txtPageTitleInfoValue = string.Empty;
+        int txtTitleQuestionValue;
+
+        private List<RatingAnswers> ratingAnswers = new List<RatingAnswers>();
         private AndroidX.CoordinatorLayout.Widget.CoordinatorLayout coordinatorLayout;
 
         [OnClick(Resource.Id.btnSubmit)]
@@ -64,12 +72,52 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         {
             try
             {
+                if(sequence1 != null)
+                {
+                    RatingAnswers ratingAnswer = new RatingAnswers();
+                    ratingAnswer.QuestionId = sequence1.QuestionDetail.QuestionId;
+                    ratingAnswer.QuestionDescription = sequence1.QuestionDetail.QuestionDescription["0"];
+                    ratingAnswer.AnswerTypeId = sequence1.AnswerDetail.AnswerTypeId;
+                    ratingAnswer.AnswerDescription = txtPageTitleInfo.Text;
+                    ratingAnswer.AnswerValue = txtPageTitleInfoValue;
+                    ratingAnswers.Add(ratingAnswer);
+                }
+                if (sequence2 != null)
+                {
+                    selectedRatingItemList.ForEach(item =>
+                    {
+                        selectedAnswerDescriptions += item.title + ";";
+                        selectedAnswerValues += item.type + ";";
+                    });
+
+                    selectedAnswerDescriptions = selectedAnswerDescriptions.Remove(selectedAnswerDescriptions.Length - 1, 1);
+                    selectedAnswerValues = selectedAnswerValues.Remove(selectedAnswerValues.Length - 1, 1);
+                    RatingAnswers ratingAnswer = new RatingAnswers();
+                    ratingAnswer.QuestionId = sequence2.QuestionDetail.QuestionId;
+                    ratingAnswer.QuestionDescription = txtTitleQuestion.Text;
+                    ratingAnswer.AnswerTypeId = txtTitleQuestionValue;
+                    ratingAnswer.AnswerDescription = selectedAnswerDescriptions;
+                    ratingAnswer.AnswerValue = selectedAnswerValues;
+                    ratingAnswers.Add(ratingAnswer);
+                }
+                if (sequence3 != null)
+                {
+                    RatingAnswers ratingAnswer = new RatingAnswers();
+                    ratingAnswer.QuestionId = sequence3.QuestionDetail.QuestionId;
+                    ratingAnswer.QuestionDescription = sequence3.QuestionDetail.QuestionDescription["0"];
+                    ratingAnswer.AnswerTypeId = sequence3.AnswerDetail.AnswerTypeId;
+                    ratingAnswer.AnswerDescription = txtTellUsMore.Text;
+                    ratingAnswer.AnswerValue = txtTellUsMore.Text;
+                    ratingAnswers.Add(ratingAnswer);
+                }
+               
+
                 UserEntity loggedUser = UserEntity.GetActive();
                 
                     if (ConnectionUtils.HasInternetConnection(this))
                     {
                         ShowProgressDialog();
-                    PostSubmitRatingResponse postSubmitRatingResponse = await RatingManager.Instance.SubmitRating(
+                    postSubmitRatingResponse = await RatingManager.Instance.SubmitRating(
                              loggedUser.UserName
                             , loggedUser.MobileNo
                             , srNumber
@@ -77,35 +125,53 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                             ,backendAppID
                             ,applicationType
                             , questionCategoryValue
-                            ,List <RatingAnswers> ratingInput);
+                            , ratingAnswers);
                         HideProgressDialog();
                         if (postSubmitRatingResponse.StatusDetail.IsSuccess)
                         {
                             Toast.MakeText(this, postSubmitRatingResponse.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
-                            if (IsSaveFlow)
+
+                        if (ConnectionUtils.HasInternetConnection(this))
+                        {
+                            ShowProgressDialog();
+                            ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(string.Empty
+                                , applicationDetailDisplay.ApplicationDetail.ApplicationId
+                                , applicationDetailDisplay.ApplicationTypeCode
+                                , applicationDetailDisplay.System);
+                            HideProgressDialog();
+                            if (response.StatusDetail.IsSuccess)
                             {
-                                Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
-                                StartActivity(applicationLandingIntent);
-                                IsSaveFlow = false;
+                                Intent intent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+                                intent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(response.Content));
+                               
+                                StartActivity(intent);
                             }
-                            SetResult(Result.Ok, new Intent());
-                            Finish();
+                            else
+                            {
+                                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                    .SetTitle(response.StatusDetail.Title)
+                                    .SetMessage(response.StatusDetail.Message)
+                                    .SetCTALabel(response.StatusDetail.PrimaryCTATitle)
+                                    .Build();
+                                errorPopup.Show();
+                            }
                         }
                         else
                         {
-                            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                                .SetTitle(postSubmitRatingResponse.StatusDetail.Title)
-                                .SetMessage(postSubmitRatingResponse.StatusDetail.Message)
-                                .SetCTALabel(postSubmitRatingResponse.StatusDetail.PrimaryCTATitle)
-                                .SetSecondaryCTALabel(postSubmitRatingResponse.StatusDetail.SecondaryCTATitle)
-                                .SetSecondaryCTAaction(() => ShowStatusLanding())
-                                .Build();
-                            whereisMyacc.Show();
+                            //ShowNoInternetSnackbar();
                         }
+
+                        SetResult(Result.Ok, new Intent());
+                        Finish();
+                        }
+                        else
+                        {
+                        ShowApplicaitonPopupMessage(this, postSubmitRatingResponse.StatusDetail);
+                    }
                     }
                     else
                     {
-                        ShowNoInternetSnackbar();
+                        //ShowNoInternetSnackbar();
                     }
                 
             }
@@ -114,6 +180,37 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+        public async void ShowApplicaitonPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
+        {
+            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(statusDetail.Title)
+                .SetMessage(statusDetail.Message)
+                .SetCTALabel(statusDetail.PrimaryCTATitle)
+                .Build();
+            whereisMyacc.Show();
+
+        }
+        private Snackbar mNoInternetSnackbar;
+       /* public void ShowNoInternetSnackbar()
+        {
+            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+            {
+                mNoInternetSnackbar.Dismiss();
+            }
+
+            mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+
+                mNoInternetSnackbar.Dismiss();
+            }
+            );
+            View v = mNoInternetSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mNoInternetSnackbar.Show();
+            this.SetIsClicked(false);
+        }*/
         public async void GetCustomerRatingAsync()
         {
             ShowProgressDialog();
@@ -192,7 +289,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             base.OnCreate(savedInstanceState);
             try
             {
-
+                CoordinatorLayout rootView;
                 txtPageTitleInfo = FindViewById<TextView>(Resource.Id.txtPageTitleInfo);
                 ratingBar = FindViewById<RatingBar>(Resource.Id.ratingBar);
                 txtTitleQuestion = FindViewById<TextView>(Resource.Id.txtTitleQuestion);
@@ -200,15 +297,19 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 btnSubmit = FindViewById<Button>(Resource.Id.btnSubmit);
                 rating_list_view = FindViewById<ListView>(Resource.Id.rating_list_view);
                 txtTellUsMore = FindViewById<EditText>(Resource.Id.txtTellUsMore);
+                txtInputLayoutTellUsMore = FindViewById<TextInputLayout>(Resource.Id.txtInputLayoutTellUsMore);
+                //rootview = FindViewById<CoordinatorLayout>(Resource.Id.rootview);
                 txtTellUsMore.Hint = Utility.GetLocalizedLabel("ApplicationStatusRating", "freeTextPlaceHolder");
+                txtInputLayoutTellUsMore.Hint = Utility.GetLocalizedLabel("ApplicationStatusRating", "freeTextTitle");
+              
                 btnSubmit.Text = Utility.GetLocalizedLabel("ApplicationStatusRating", "submit");
 
-                rating_list_view.multi(AbsListView.IMultiChoiceModeListener);
+               
                 btnSubmit.Enabled = false;
                 btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
 
                 
-                btnSubmit.Click += OnSubmit;
+               
                 rating_list_view.ItemClick += OnItemClick;
                 GetCustomerRatingAsync();
                 // OnLoadMainFragment();
@@ -216,19 +317,31 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             
 
 
-                if (extras != null && Intent.Extras.ContainsKey("selectedRating") && extras.ContainsKey("customerRatingMasterResponse") && extras.GetString("applicationDetailDisplay"))
+                if (extras != null && Intent.Extras.ContainsKey("selectedRating") && extras.ContainsKey("customerRatingMasterResponse") && extras.ContainsKey("applicationDetailDisplay"))
                 {
                     selectedRating = Convert.ToInt32(extras.GetString("selectedRating"));
+                    if (selectedRating != 0)
+                    {
+
+                        btnSubmit.Enabled = true;
+                        btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+                    }
+                    else
+                    {
+                        btnSubmit.Enabled = false;
+                        btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+
+                    }
                     applicationDetailDisplay = JsonConvert.DeserializeObject<GetApplicationStatusDisplay>(extras.GetString("applicationDetailDisplay"));
 
-                    srNumber = ApplicationDetails.SRNumber.IsValid()
-                              ? ApplicationDetails.SRNumber
-                              : ApplicationDetails.ApplicationRatingDetail != null
-                                  ? ApplicationDetails.ApplicationRatingDetail.SRNo ?? string.Empty
+                    srNumber = applicationDetailDisplay.SRNumber != null
+                              ? applicationDetailDisplay.SRNumber
+                              : applicationDetailDisplay.ApplicationRatingDetail != null
+                                  ? applicationDetailDisplay.ApplicationRatingDetail.SRNo ?? string.Empty
                                   : string.Empty;
-                    applicationID = ApplicationDetails.ApplicationDetail.ApplicationId ?? string.Empty;
-                    backendAppID = ApplicationDetails.ApplicationDetail.BackendReferenceNo ?? string.Empty;
-                    applicationType = ApplicationDetails.ApplicationTypeCode ?? string.Empty;
+                    applicationID = applicationDetailDisplay.ApplicationDetail.ApplicationId ?? string.Empty;
+                    backendAppID = applicationDetailDisplay.ApplicationDetail.BackendReferenceNo ?? string.Empty;
+                    applicationType = applicationDetailDisplay.ApplicationTypeCode ?? string.Empty;
 
                     ratingBar.Rating = selectedRating;
 
@@ -255,8 +368,8 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                         ratingItemList.Add(item);
                     }
 
-                  
 
+                   
                     selectItemAdapter = new SelectItemAdapter(this, ratingItemList);
                     rating_list_view.Adapter = selectItemAdapter;
 
@@ -292,27 +405,37 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 if (selectedRating == 1)
                 {
                     txtPageTitleInfo.Text = sequence1.AnswerDetail.AnswerSetValue["1"];
+                    txtPageTitleInfoValue = "1";
                     txtTitleQuestion.Text = sequence2.QuestionDetail.QuestionDescription["1"];
+                    txtTitleQuestionValue = 1;
                 }
                 else if (selectedRating == 2)
                 {
                     txtPageTitleInfo.Text = sequence1.AnswerDetail.AnswerSetValue["2"];
+                    txtPageTitleInfoValue = "2";
                     txtTitleQuestion.Text = sequence2.QuestionDetail.QuestionDescription["2"];
+                    txtTitleQuestionValue = 2;
                 }
                 else if (selectedRating == 3)
                 {
                     txtPageTitleInfo.Text = sequence1.AnswerDetail.AnswerSetValue["3"];
+                    txtPageTitleInfoValue = "3";
                     txtTitleQuestion.Text = sequence2.QuestionDetail.QuestionDescription["3"];
+                    txtTitleQuestionValue = 3;
                 }
                 else if (selectedRating == 4)
                 {
                     txtPageTitleInfo.Text = sequence1.AnswerDetail.AnswerSetValue["4"];
+                    txtPageTitleInfoValue = "4";
                     txtTitleQuestion.Text = sequence2.QuestionDetail.QuestionDescription["4"];
+                    txtTitleQuestionValue = 4;
                 }
                 else if (selectedRating == 5)
                 {
                     txtPageTitleInfo.Text = sequence1.AnswerDetail.AnswerSetValue["5"];
+                    txtPageTitleInfoValue = "5";
                     txtTitleQuestion.Text = sequence2.QuestionDetail.QuestionDescription["5"];
+                    txtTitleQuestionValue = 5;
                 }
             }
         }
@@ -320,11 +443,18 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             Item selectedItem = selectItemAdapter.GetItemObject(e.Position);
-
-            ratingItemList.ForEach(item =>
+           
+            if(selectedRatingItemList.Contains(selectedItem))
             {
-                item.selected = (selectedItem.title == item.title) ? true : false;
-            });
+                selectedItem.selected = false;
+                selectedRatingItemList.Remove(selectedItem);
+            }
+            else
+            {
+                selectedItem.selected = true;
+                selectedRatingItemList.Add(selectedItem);
+            }
+          
             selectItemAdapter.NotifyDataSetChanged();
 
         }

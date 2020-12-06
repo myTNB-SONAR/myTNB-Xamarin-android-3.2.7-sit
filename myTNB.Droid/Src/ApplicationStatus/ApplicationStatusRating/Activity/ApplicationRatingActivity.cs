@@ -19,7 +19,7 @@ using CheeseBind;
 using myTNB;
 using myTNB.Mobile.API.Managers.Rating;
 using System.Linq;
-
+using Android.App;
 namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 {
     [Activity(Label = "Rate"
@@ -45,6 +45,9 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             rateUslIntent.PutExtra("customerRatingMasterResponse", JsonConvert.SerializeObject(getCustomerRatingMasterResponse));
             rateUslIntent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
             StartActivity(rateUslIntent);
+
+            SetResult(Result.Ok, new Intent());
+            Finish();
         }
         public async void GetCustomerRatingAsync()
         {
@@ -54,7 +57,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 getCustomerRatingMasterResponse = await RatingManager.Instance.GetCustomerRatingMaster();
                 if (!getCustomerRatingMasterResponse.StatusDetail.IsSuccess)
                 {
-                    //ShowApplicaitonPopupMessage(this, response.StatusDetail);
+                    ShowApplicaitonPopupMessage(this, getCustomerRatingMasterResponse.StatusDetail);
                 }
                 else
                 {
@@ -71,7 +74,16 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         }
 
 
+        public async void ShowApplicaitonPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
+        {
+            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(statusDetail.Title)
+                .SetMessage(statusDetail.Message)
+                .SetCTALabel(statusDetail.PrimaryCTATitle)
+                .Build();
+            whereisMyacc.Show();
 
+        }
 
         AndroidX.Fragment.App.Fragment currentFragment;
 
@@ -135,7 +147,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
 
                 GetCustomerRatingMasterResponse customerRatingMasterResponse;
-                btnSubmit.Click += OnSubmit;
+              
                 GetCustomerRatingAsync();
              
                 // OnLoadMainFragment();
