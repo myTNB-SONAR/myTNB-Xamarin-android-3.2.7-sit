@@ -1130,9 +1130,9 @@
     "searchBy": "Search by",
     "searchResultTitle": "We found this application(s) under the electricity account number:",
     "whereToGetThisNumber": "Where do I get this number?",
-    "whereToGetThisNumberTitleCA": "Where do I get this number?",
+    "whereToGetThisNumberTitleCA": "Where do I get these numbers?",
     "whereToGetThisNumberMessageCA": "Your 12-digit electricity account number can be found at the top left corner of your monthly paper bill.",
-    "whereToGetThisNumberTitle": "Where do I get this number?",
+    "whereToGetThisNumberTitle": "Where do I get these numbers?",
     "whereToGetThisNumberMessage": "You can find the <b>{0}</b> in your submitted application details at ‘Application Status’ page and is available upon request by contacting TNB CareLine."
   },
   "ApplicationStatusFilter": {
@@ -1169,7 +1169,7 @@
     "viewReceipt": "View Receipt",
     "taxInvoice": "Tax Invoice",
     "taxInvoiceView": "View Tax Invoice",
-    "removeTitle": "Remove this saved application?",
+    "removeTitle": "Remove this application?",
     "removeMessage": "You are about to remove this application from your list.<br><br>Note: This does not delete or cancel the application.",
     "confirm": "Confirm",
     "on": "on ",

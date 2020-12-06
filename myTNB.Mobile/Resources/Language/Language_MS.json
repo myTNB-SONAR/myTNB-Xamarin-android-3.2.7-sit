@@ -1141,7 +1141,7 @@
     "status": "Status",
     "creationDate": "Tarikh Permintaan",
     "clear": "Padam",
-    "apply": "Gunakan Pilihan"
+    "apply": "Guna Pilihan"
   },
   "ApplicationStatusDetails": {
     "title": "Butiran Permohonan",
@@ -1732,7 +1732,7 @@
   "SearchByNumber": {
     "title": "Cari Dengan",
     "whereToGetTheseNumber": "Di manakah boleh saya perolehi nombor ini?",
-    "whereToGetTheseNumberTitle": "Di manakah boleh saya perolehi nombor ini? ",
+    "whereToGetTheseNumberTitle": "Di manakah boleh saya perolehi nombor ini?",
     "whereToGetTheseNumberMessage": "Anda boleh memperolehi <b>Nombor Permohonan</b>, <b>Nombor Permintaan Perkhidmatan</b> and <b>Nombor Permintaan Perkhidmatan</b> perkhidmatan di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’. Butiran ini juga boleh diperolehi dengan menghubungi TNB CareLine."
   },
   "SelectApplicationType": {
