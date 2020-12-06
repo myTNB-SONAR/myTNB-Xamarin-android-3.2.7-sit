@@ -16,6 +16,9 @@ using Newtonsoft.Json;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
 using AndroidX.Core.Content;
 using CheeseBind;
+using myTNB;
+using myTNB.Mobile.API.Managers.Rating;
+using System.Linq;
 
 namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 {
@@ -24,25 +27,55 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         , Theme = "@style/Theme.PaymentSuccessExperienceRating")]
     public class ApplicationRatingActivity : BaseActivityCustom
     {
-
-        private AndroidX.AppCompat.Widget.Toolbar toolbar;
-        private AppBarLayout appBarLayout;
         private TextView txtContentInfo;
         public RatingBar ratingBar;
         private FrameLayout frameContainer;
-        private string selectedRating;
+        private int selectedRating;
         private Button btnSubmit;
+        public GetCustomerRatingMasterResponse getCustomerRatingMasterResponse;
         private AndroidX.CoordinatorLayout.Widget.CoordinatorLayout coordinatorLayout;
-        
-       
+        GetApplicationStatusDisplay applicationDetailDisplay;
+        [OnClick(Resource.Id.btnSubmit)]
+        void OnSubmit(object sender, EventArgs eventArgs)
+        {
+            System.Diagnostics.Debug.WriteLine("[DEBUG] Rating");
 
-        AndroidX.Fragment.App.Fragment  currentFragment;
+            Intent rateUslIntent = new Intent(this, typeof(RateUsActivity));
+            rateUslIntent.PutExtra("selectedRating", selectedRating.ToString());
+            rateUslIntent.PutExtra("customerRatingMasterResponse", JsonConvert.SerializeObject(getCustomerRatingMasterResponse));
+            rateUslIntent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
+            StartActivity(rateUslIntent);
+        }
+        public async void GetCustomerRatingAsync()
+        {
+            try
+            {
+                ShowProgressDialog();
+                getCustomerRatingMasterResponse = await RatingManager.Instance.GetCustomerRatingMaster();
+                if (!getCustomerRatingMasterResponse.StatusDetail.IsSuccess)
+                {
+                    //ShowApplicaitonPopupMessage(this, response.StatusDetail);
+                }
+                else
+                {
+                    var sequence = getCustomerRatingMasterResponse.Content.QuestionAnswerSets.Where(x => x.Sequence == 1).FirstOrDefault();
+                    txtContentInfo.Text = sequence.QuestionDetail.QuestionDescription["0"];
+                }
+                FirebaseAnalyticsUtils.LogClickEvent(this, "Rate Buttom Clicked");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+            HideProgressDialog();
+        }
 
-        private string quesIdCategory = "1";
-        private string merchantTransID;
-        private string deviceID;
-       
-        private string PAGE_ID = "Rating";
+
+
+
+        AndroidX.Fragment.App.Fragment currentFragment;
+
+        private string PAGE_ID = "Rate";
 
         public override int ResourceId()
         {
@@ -53,47 +86,32 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         {
             return true;
         }
-        void OnSubmit(object sender, EventArgs eventArgs)
-        {
-            System.Diagnostics.Debug.WriteLine("[DEBUG] OnPayBill");
-            if (!this.GetIsClicked())
-            {
-                this.SetIsClicked(true);
-                Intent rateUs_Activity = new Intent(this, typeof(RateUsActivity));
-                rateUs_Activity.PutExtra("selectedRating", selectedRating);
-
-                StartActivity(rateUs_Activity);
-
-                try
-                {
-                    FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
-                }
-                catch (System.Exception ne)
-                {
-                    Utility.LoggingNonFatalError(ne);
-                }
-            }
-        }
-
-        public void ShowToolBar()
+        public void ShowProgressDialog()
         {
             try
             {
-                if (appBarLayout != null)
-                {
-                    TypedValue tv = new TypedValue();
-                    int actionBarHeight = 0;
-                    if (Theme.ResolveAttribute(Android.Resource.Attribute.ActionBarSize, tv, true))
-                    {
-                        actionBarHeight = TypedValue.ComplexToDimensionPixelSize(tv.Data, Resources.DisplayMetrics);
-                    }
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+       /* public async void ShowApplicaitonPopupMessage(Activity context, StatusDetail statusDetail)
+        {
+            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(statusDetail.Title)
+                .SetMessage(statusDetail.Message)
+                .SetCTALabel(statusDetail.PrimaryCTATitle)
+                .Build();
+            whereisMyacc.Show();
 
-                    appBarLayout.Visibility = ViewStates.Visible;
-                    AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams lp = new AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams(AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams.MatchParent, AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams.MatchParent);
-                    lp.SetMargins(0, actionBarHeight, 0, 0);
-
-                    frameContainer.LayoutParameters = lp;
-                }
+        }*/
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {
@@ -101,53 +119,38 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             }
         }
 
-        public void HideToolBar()
-        {
-            try
-            {
-                if (appBarLayout != null)
-                {
-                    appBarLayout.Visibility = ViewStates.Gone;
-                    AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams lp = new AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams(AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams.MatchParent, AndroidX.CoordinatorLayout.Widget.CoordinatorLayout.LayoutParams.MatchParent);
-                    lp.SetMargins(0, 0, 0, 0);
 
-                    frameContainer.LayoutParameters = lp;
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             try
             {
-                appBarLayout = FindViewById<AppBarLayout>(Resource.Id.appBar);
-                toolbar = FindViewById<AndroidX.AppCompat.Widget.Toolbar>(Resource.Id.toolbar);
-                txtContentInfo = FindViewById<TextView>(Resource.Id.txtContentInfo);
-                coordinatorLayout = FindViewById<AndroidX.CoordinatorLayout.Widget.CoordinatorLayout>(Resource.Id.coordinatorLayout);
+
                 ratingBar = FindViewById<RatingBar>(Resource.Id.applicationRatingBar);
+                txtContentInfo = FindViewById<TextView>(Resource.Id.txtContentInfo);
                 btnSubmit = FindViewById<Button>(Resource.Id.btnSubmit);
-                btnSubmit.Visibility = ViewStates.Invisible;
-                deviceID = DeviceIdUtils.DeviceId(this);
+                btnSubmit.Enabled = false;
+                btnSubmit.Text = Utility.GetLocalizedLabel("ApplicationStatusRating", "submit");
+                btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+
                 GetCustomerRatingMasterResponse customerRatingMasterResponse;
                 btnSubmit.Click += OnSubmit;
+                GetCustomerRatingAsync();
+             
                 // OnLoadMainFragment();
                 Bundle extras = Intent.Extras;
                 if (extras != null)
                 {
-
+                    applicationDetailDisplay = JsonConvert.DeserializeObject<GetApplicationStatusDisplay>(extras.GetString("applicationDetailDisplay"));
                 }
                 ratingBar.RatingBarChange += (o, e) =>
                 {
                     ratingBar.Rating = e.Rating;
-                    selectedRating = ((int)e.Rating).ToString();
-                    if (selectedRating != "0")
+                    selectedRating = ((int)e.Rating);
+                    if (selectedRating != 0)
                     {
-                      
+
                         btnSubmit.Enabled = true;
                         btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
                     }
@@ -155,7 +158,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     {
                         btnSubmit.Enabled = false;
                         btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
-                       
+
                     }
                 };
             }
@@ -164,39 +167,13 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-       
+
         protected override void OnResume()
         {
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Post-Payment Rating");
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-       
-      
-
-        public override void OnBackPressed()
-        {
-            try
-            {
-               /* int count = this.SupportFragmentManager.BackStackEntryCount;
-                Log.Debug("OnBackPressed", "fragment stack count :" + count);
-                if (currentFragment is ThankYouFragment || currentFragment is SubmitRatingFragment)
-                {
-                    Finish();
-                }
-                else
-                {
-                    this.SupportFragmentManager.PopBackStack();
-                }
-               */
-
+                FirebaseAnalyticsUtils.SetScreenName(this, "Application Rate");
             }
             catch (Exception e)
             {
@@ -205,22 +182,9 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         }
 
 
-        public override void OnTrimMemory(TrimMemory level)
-        {
-            base.OnTrimMemory(level);
 
-            switch (level)
-            {
-                case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-                default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-                    GC.Collect();
-                    break;
-            }
-        }
+
+
 
         public override string GetPageId()
         {

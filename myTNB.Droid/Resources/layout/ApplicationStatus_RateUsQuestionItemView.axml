@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -25,7 +26,7 @@
             android:background="@color/lightGrey"
             android:paddingTop="8dp">
             <Button
-                android:id="@+id/btnSaveChanges"
+                android:id="@+id/btnSubmit"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:text="Submit"
@@ -33,6 +34,13 @@
                 android:textAllCaps="false"
                 style="@style/DarkButton1"/>
         </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:fillViewport="true"/>
         <LinearLayout
             android:id="@+id/appLanguageContainer"
             android:layout_height="wrap_content"
@@ -44,25 +52,27 @@
             <LinearLayout
             android:id="@+id/appLanguageMessageContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="96dp"
             android:background="@color/white"
             android:orientation="vertical">
              <TextView
         android:id="@+id/txtPageTitleInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginTop="10.2dp"
         android:gravity="center_horizontal"
         android:text="Perfect"
         android:textColor="@color/tunaGrey"
         android:textSize="16dp" />
+
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:paddingTop="8dp"
-                    android:paddingBottom="16dp"
+        
+      
         android:gravity="center"
         android:numStars="5"
         android:progressDrawable="@drawable/rating_selector"
@@ -89,6 +99,20 @@
         android:textSize="16dp" />
                 </LinearLayout>
              <LinearLayout
+                android:id="@+id/appLanguageListContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+                <ListView
+                    android:minWidth="25px"
+                    android:minHeight="25px"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rating_list_view"
+                    android:background="@color/white"/>
+            </LinearLayout>
+             <LinearLayout
                 android:id="@+id/tellUsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,20 +130,27 @@
                     android:paddingBottom="8dp"
         android:textSize="16dp" />
                 </LinearLayout>
-            <LinearLayout
-                android:id="@+id/appLanguageListContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical">
-                <ListView
-                    android:minWidth="25px"
-                    android:minHeight="25px"
+            <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/language_list_view"
-                    android:background="@color/white"/>
-            </LinearLayout>
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+                    android:id="@+id/txtInputLayoutTellUsMore"
+                    android:background="@color/white"
+                   
+                    android:layout_marginTop="10dp">
+                    <EditText
+                       android:hint="Write your message here."
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:id="@+id/txtTellUsMore"
+                        android:textSize="16dp"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:paddingTop="5dp"
+                        android:drawablePadding="6dp" />
+                </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
     </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

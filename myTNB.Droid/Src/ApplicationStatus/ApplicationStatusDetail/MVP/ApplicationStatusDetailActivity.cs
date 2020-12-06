@@ -186,12 +186,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 }
                 else if (applicationDetailDisplay.CTAType == DetailCTAType.Rate)
                 {
-        
-                   
-                        Intent rating_activity = new Intent(this, typeof(ApplicationRatingActivity));
-                        //rating_activity.PutExtra("CustomerRatingMasterResponse", JsonConvert.SerializeObject(response.Content));
-                        StartActivity(rating_activity);
-                   
+                    Intent rating_activity = new Intent(this, typeof(ApplicationRatingActivity));
+                    rating_activity.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
+                    StartActivity(rating_activity);
                 }
             }
         }
