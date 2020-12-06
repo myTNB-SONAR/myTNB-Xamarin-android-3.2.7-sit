@@ -1122,11 +1122,9 @@
     "emptyApplications": "Nampaknya anda tidak mempunyai apa-apa permohonan pada waktu ini.",
     "allApplications": "Bagaimana boleh saya melihat semua permohonan?",
     "allApplicationsTitle": "Lihat semua permohonan anda di myTNB Portal untuk pengalaman yang menyeluruh.",
-    "allApplicationsMessage": "Log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> dengan mengunakan butiran log masuk yang sama. Anda boleh melihat senarai permohonan dan butiran borang penuh, teruskan permohonan anda atau mohon yang baharu.<br><br>Peringatan: Permohonan yag telah dihantar oleh sumber lain sebelum <tarikh> tidak dipaparkan secara automatik di sini, tetapi anda boleh mencari secara manual dan masukkan ke dalam senarai anda.",
+    "allApplicationsMessage": "Log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> dengan mengunakan butiran log masuk yang sama. Anda boleh melihat senarai permohonan dan butiran borang penuh, teruskan permohonan anda atau mohon yang baharu.<br><br>Peringatan: Permohonan yag telah dihantar oleh sumber lain sebelum Julai 2020 tidak dipaparkan secara automatik di sini, tetapi anda boleh mencari secara manual dan masukkan ke dalam senarai anda.",
     "viewMore": "Selebihnya",
     "viewLess": "Kurangkan Paparan",
-    "sn": "SN: {0}",
-    "sr": "SR: {0}",
     "displayPerQuery": "5",
     "saveMessage": "Berjaya! Anda akan melihat kemas kini perkembangan status permohonan tersebut."
   },
@@ -1149,7 +1147,7 @@
     "status": "Status",
     "creationDate": "Tarikh Permintaan",
     "clear": "Padam",
-    "apply": "Gunakan Pilihan"
+    "apply": "Guna Pilihan"
   },
   "ApplicationStatusDetails": {
     "title": "Butiran Permohonan",
@@ -1740,7 +1738,7 @@
   "SearchByNumber": {
     "title": "Cari Dengan",
     "whereToGetTheseNumber": "Di manakah boleh saya perolehi nombor ini?",
-    "whereToGetTheseNumberTitle": "Di manakah boleh saya perolehi nombor ini? ",
+    "whereToGetTheseNumberTitle": "Di manakah boleh saya perolehi nombor ini?",
     "whereToGetTheseNumberMessage": "Anda boleh memperolehi <b>Nombor Permohonan</b>, <b>Nombor Permintaan Perkhidmatan</b> and <b>Nombor Permintaan Perkhidmatan</b> perkhidmatan di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’. Butiran ini juga boleh diperolehi dengan menghubungi TNB CareLine."
   },
   "SelectApplicationType": {
@@ -1778,6 +1776,10 @@
       {
         "key": "Action Required",
         "value": "Tindakan Diperlukan"
+      },
+      {
+        "key": "Awaiting Contractor",
+        "value": "Menunggu Kontraktor"
       },
       {
         "key": "Contractor Required",
@@ -1882,9 +1884,8 @@
   "ApplicationStatusRating": {
     "title": "Nilaikan",
     "submit": "Hantar",
-    "noMaximoRateMessage": "MS-How did your meter installation go?",
-    "rateMessage": "Bagaimana janji temu anda?",
-    "charactersLeft": "Tinggal {0} perkataan"
+    "freeTextPlaceHolder": "Write your message here.",
+    "freeTextTitle": "YOUR MESSAGE (OPTIONAL)"
   },
   "ServiceDetails": {
     "TimeOut": [
@@ -2062,6 +2063,46 @@
             "primaryCTATitle": "",
             "secondaryCTATitle": "",
             "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "CustomerRating": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "empty",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "none"
+          }
+        ],
+        "SubmitRating": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "Thank you for your feedback!",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "toast"
+          },
+          {
+            "code": "empty",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
             "type": "none"
           }
         ]

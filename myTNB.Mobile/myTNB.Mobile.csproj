@@ -81,7 +81,6 @@
     <Folder Include="Helpers\Application Status\" />
     <Folder Include="API\Models\Application Status\Post Remove Application\" />
     <Folder Include="API\Models\Application Status\Get Applications By CA\" />
-    <Folder Include="API\Models\Application Status\Get Applications Paid Details\" />
     <Folder Include="API\Models\Payment\Post Applications Paid Details\" />
     <Folder Include="API\Models\Payment\Get Tax Invoice\" />
     <Folder Include="API\Models\Notification\" />
@@ -90,6 +89,7 @@
     <Folder Include="API\Services\Rating\" />
     <Folder Include="API\Models\Rating\" />
     <Folder Include="API\Models\Rating\Get Customer Rating Master\" />
+    <Folder Include="API\Models\Rating\Post Submit Rating\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />

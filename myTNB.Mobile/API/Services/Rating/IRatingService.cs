@@ -1,6 +1,8 @@
-﻿using System.Threading;
+﻿using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
+using myTNB.Mobile.API.Models.Rating.PostSubmitRating;
 using Refit;
 
 namespace myTNB.Mobile.API.Services.Rating
@@ -23,5 +25,12 @@ namespace myTNB.Mobile.API.Services.Rating
             , string language
             , string urlPrefix = Constants.ApiUrlPath
             , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+
+        [Post("/{urlPrefix}/SubmitRating")]
+        Task<HttpResponseMessage> SubmitRating([Body] PostSubmitRatingRequest request
+           , [Header(Constants.Header_UserInfo)] string userInfo
+           , CancellationToken cancelToken
+           , string urlPrefix = Constants.ApiUrlPath
+           , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
     }
 }

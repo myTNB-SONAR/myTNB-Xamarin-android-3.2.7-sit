@@ -74,7 +74,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
         public TextView ApplicationStatusItemSubTitle { get; private set; }
         public LinearLayout AppicationStatusListMainLayout { get; private set; }
         public TextView ApplicationStatusItemStatus { get; private set; }
-        public TextView ApplicationStatusItemDate { get; private set; }
         public ImageView ApplicationStatusItemNewIndicator { get; private set; }
         public ImageView ApplicationStatusItemRightArrow { get; private set; }
         private Context context;
@@ -88,15 +87,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
             ApplicationStatusItemTitle = itemView.FindViewById<TextView>(Resource.Id.applicationStatusItemTitle);
             ApplicationStatusItemSubTitle = itemView.FindViewById<TextView>(Resource.Id.applicationStatusItemSubTitle);
             ApplicationStatusItemStatus = itemView.FindViewById<TextView>(Resource.Id.applicationStatusItemStatus);
-            ApplicationStatusItemDate = itemView.FindViewById<TextView>(Resource.Id.applicationStatusItemDate);
             ApplicationStatusItemNewIndicator = itemView.FindViewById<ImageView>(Resource.Id.applicationStatusItemNewIndicator);
             ApplicationStatusItemRightArrow = itemView.FindViewById<ImageView>(Resource.Id.applicationStatusItemRightArrow);
             ApplicationStatusItemTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.tunaGrey)));
             ApplicationStatusItemSubTitle.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.receipt_note_text)));
             ApplicationStatusItemStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.silverChalice)));
-            ApplicationStatusItemDate.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.receipt_note_text)));
             TextViewUtils.SetMuseoSans300Typeface(ApplicationStatusItemSubTitle);
-            TextViewUtils.SetMuseoSans500Typeface(ApplicationStatusItemTitle, ApplicationStatusItemStatus, ApplicationStatusItemDate);
+            TextViewUtils.SetMuseoSans500Typeface(ApplicationStatusItemTitle, ApplicationStatusItemStatus);
             AppicationStatusListMainLayout.Click += (sender, e) => listener(base.LayoutPosition);
         }
 
@@ -105,17 +102,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
             this.item = item;
             try
             {
-                if (this.item.IsUpdated)
-                {
-                    ApplicationStatusItemNewIndicator.Visibility = ViewStates.Visible;
-                    ApplicationStatusItemDate.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.tunaGrey)));
-                }
-                else
-                {
-                    ApplicationStatusItemNewIndicator.Visibility = ViewStates.Gone;
-                    ApplicationStatusItemDate.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.context, Resource.Color.receipt_note_text)));
-                }
-
+                ApplicationStatusItemNewIndicator.Visibility = this.item.IsUpdated ? ViewStates.Visible : ViewStates.Gone;
                 ApplicationStatusItemTitle.Text = this.item.ApplicationModuleDescription;
                 ApplicationStatusItemStatus.Text = this.item.StatusDescription;
                 ApplicationStatusItemSubTitle.Text = this.item.ReferenceNumberDisplay;
@@ -123,10 +110,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
                 ApplicationStatusItemTitle.TextSize = TextViewUtils.GetFontSize(12);
                 ApplicationStatusItemStatus.TextSize = TextViewUtils.GetFontSize(12);
                 ApplicationStatusItemSubTitle.TextSize = TextViewUtils.GetFontSize(12);
-                //ApplicationStatusItemDate.TextSize = TextViewUtils.GetFontSize(12);
 
-                ApplicationStatusItemDate.Visibility = ViewStates.Gone;
-                //ApplicationStatusItemDate.Text = this.item.CreatedDate.ToString();
                 ApplicationStatusItemStatus.SetTextColor(Android.Graphics.Color.Rgb(this.item.StatusColor[0], this.item.StatusColor[1], this.item.StatusColor[2]));
             }
             catch (Exception e)

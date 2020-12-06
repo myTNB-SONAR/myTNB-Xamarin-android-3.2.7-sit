@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using myTNB.Mobile.API;
+using myTNB.Mobile.API.Managers;
 using myTNB.Mobile.API.Managers.ApplicationStatus;
 using myTNB.Mobile.API.Managers.ApplicationStatus.Utilities;
 using myTNB.Mobile.API.Managers.Payment;
@@ -155,7 +156,10 @@ namespace myTNB.Mobile
                     }
                     else
                     {
-                        response.StatusDetail = new StatusDetail();
+                        response = new GetApplicationStatusResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
                         response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(Constants.DEFAULT);
                     }
                     displaymodel = response.Parse(applicationType
@@ -245,7 +249,10 @@ namespace myTNB.Mobile
                     }
                     else
                     {
-                        response.StatusDetail = new StatusDetail();
+                        response = new PostSaveApplicationResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
                         response.StatusDetail = Constants.Service_SaveApplication.GetStatusDetails(Constants.DEFAULT);
                     }
                     return response;
@@ -295,12 +302,6 @@ namespace myTNB.Mobile
             , string createdDateTo
             , bool isFilter)
         {
-            Debug.WriteLine("[DEBUG] [page] : " + page);
-            Debug.WriteLine("[DEBUG] [applicationType] : " + applicationType);
-            Debug.WriteLine("[DEBUG] [statusDescription] : " + statusDescription);
-            Debug.WriteLine("[DEBUG] [createdDateFrom] : " + createdDateFrom);
-            Debug.WriteLine("[DEBUG] [createdDateTo] : " + createdDateTo);
-
             GetAllApplicationsResponse response;
             try
             {
@@ -350,7 +351,10 @@ namespace myTNB.Mobile
                     }
                     else
                     {
-                        response.StatusDetail = new StatusDetail();
+                        response = new GetAllApplicationsResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
                         response.StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(Constants.DEFAULT);
                     }
                     if (response.StatusDetail.IsSuccess)
@@ -472,7 +476,10 @@ namespace myTNB.Mobile
                     }
                     else
                     {
-                        response.StatusDetail = new StatusDetail();
+                        response = new GetApplicationDetailsResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
                         response.StatusDetail = Constants.Service_GetApplicationDetail.GetStatusDetails(Constants.DEFAULT);
                     }
                     displaymodel = response.Parse(applicationType
@@ -494,7 +501,6 @@ namespace myTNB.Mobile
                         Debug.WriteLine("[DEBUG][GetApplicationDetail ASMX Payment Details]General Exception: " + ex.Message);
 #endif
                     }
-
                     return displaymodel;
                 }
                 catch (ApiException apiEx)
@@ -559,7 +565,10 @@ namespace myTNB.Mobile
                     }
                     else
                     {
-                        response.StatusDetail = new StatusDetail();
+                        response = new PostRemoveApplicationResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
                         response.StatusDetail = Constants.Service_RemoveApplication.GetStatusDetails(Constants.DEFAULT);
                     }
                     return response;
@@ -639,19 +648,12 @@ namespace myTNB.Mobile
                     }
                     else
                     {
-                        response.StatusDetail = new StatusDetail();
+                        response = new GetApplicationsByCAResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
                         response.StatusDetail = Constants.Service_SearchApplicationByCA.GetStatusDetails(Constants.DEFAULT);
                     }
-
-                    //Mark: Stub
-                    /*if (response.StatusDetail.IsSuccess)
-                    {
-                        response.Content[0].ApplicationModuleId = "101013";
-                        response.Content[0].ApplicationType = "NC";
-                        response.Content[0].BackendReferenceNo = "4000005515";
-                        response.Content[0].StatusDescription = "Payment Required";
-                        response.Content[0].StatusDescriptionColor = "action";
-                    }*/
                     return response;
                 }
                 catch (ApiException apiEx)

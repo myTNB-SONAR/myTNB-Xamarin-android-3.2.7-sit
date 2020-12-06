@@ -5,7 +5,6 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -85,7 +84,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
 
         const string PAGE_ID = "ApplicationStatus";
 
-       
         private string filterDate = "";
         private string targetApplicationTypeId = "";
         private string targetApplicationStatusCode = "";
@@ -131,7 +129,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             filterDateItemTitle.TextSize = TextViewUtils.GetFontSize(16f);
             btnApplyFilter.TextSize = TextViewUtils.GetFontSize(16f);
             filterDateSubTitle.TextSize = TextViewUtils.GetFontSize(12f);
-            
+
+            SetText();
+
             SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusFilter", "title"));
             Bundle extras = Intent.Extras;
             if (extras != null)
@@ -228,7 +228,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             else
             {
                 applicationStatusSubTitle.Text = "";
-            }            
+            }
 
             //if (!string.IsNullOrEmpty(filterDate) && filterDate.Contains(","))
             //{
@@ -272,6 +272,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             DisableButtons();
         }
 
+        private void SetText()
+        {
+            applicationStatusItemTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusFilter", "applicationType");
+            statusItemTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusFilter", "status");
+            filterDateItemTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusFilter", "creationDate");
+            btnClearFilter.Text = Utility.GetLocalizedLabel("ApplicationStatusFilter", "clear");
+            btnApplyFilter.Text = Utility.GetLocalizedLabel("ApplicationStatusFilter", "apply");
+        }
+
         public void DisableButtons()
         {
             if (string.IsNullOrEmpty(targetApplicationTypeId) && string.IsNullOrEmpty(targetApplicationStatusCode) && string.IsNullOrEmpty(filterDate))
@@ -286,7 +295,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
 
         public void EnableButtons()
         {
-            if (!string.IsNullOrEmpty(targetApplicationTypeId)  || !string.IsNullOrEmpty(targetApplicationStatusCode) || !string.IsNullOrEmpty(filterDate))
+            if (!string.IsNullOrEmpty(targetApplicationTypeId) || !string.IsNullOrEmpty(targetApplicationStatusCode) || !string.IsNullOrEmpty(filterDate))
             {
                 btnClearFilter.Enabled = true;
                 btnClearFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
@@ -311,7 +320,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 {
                     if (resultCode == Result.Ok)
                     {
-                        
+
                         Bundle extra = data.Extras;
                         List<ApplicationStatusTypeModel> resultTypeList = new List<ApplicationStatusTypeModel>();
 
@@ -491,13 +500,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 Intent filterIntent = new Intent(this, typeof(ApplicationStatusFilterSelectionActivity));
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_REQUEST_KEY, Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE);
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_STATUS_KEY, targetApplicationStatusCode);
-               
+
                 //filterIntent.PutExtra(Constants.APPLICATION_STATUS_STATUS_LIST_KEY, JsonConvert.SerializeObject(statusCodeList));
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_TYPE_LIST_KEY, JsonConvert.SerializeObject(typeList));
                 StartActivityForResult(filterIntent, Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE);
             }
-
-  
         }
 
         [OnClick(Resource.Id.statusMainLayout)]
@@ -524,7 +531,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             {
                 this.SetIsClicked(true);
                 Intent filterIntent = new Intent(this, typeof(ApplicationStatusFilterDateSelectionActivity));
-               
+
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_DATE_KEY, filterDate);
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_FROM_DATE_KEY, fromDate);
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_TO_DATE_KEY, toDate);
@@ -589,7 +596,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 }
                 else
                 {
-                    ShowNoInternetSnackbar(); 
+                    ShowNoInternetSnackbar();
                 }
             }
             catch (Exception e)
@@ -634,7 +641,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             AllApplicationsCache.Instance.CreatedDateFrom = string.Empty;
             AllApplicationsCache.Instance.CreatedDateTo = string.Empty;
             AllApplicationsCache.Instance.Clear();
-           
+
             AllApplicationsCache.Instance.Reset();
             DisableButtons();
         }
@@ -645,16 +652,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 case Android.Resource.Id.Home:
                     SetFilterData();
                     return true;
-                        
-                  
-                  
             }
             return base.OnOptionsItemSelected(item);
         }
         private void SetFilterData()
         {
             Intent finishIntent = new Intent();
-            if (!isApplications && isApplyFilter) 
+            if (!isApplications && isApplyFilter)
             {
 
                 isApplyFilter = false;
@@ -670,14 +674,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             else
             {
                 isApplications = false;
-               SetResult(Result.Ok, finishIntent);
+                SetResult(Result.Ok, finishIntent);
                 Finish();
             }
         }
         public override void OnBackPressed()
         {
             SetFilterData();
-            
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace myTNB.Mobile.API.Managers.ApplicationStatus
+namespace myTNB.Mobile.API.Managers
 {
     internal static class PostUtility
     {
@@ -34,11 +34,15 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus
             }
             catch (JsonException jex)
             {
+#if DEBUG
                 Debug.WriteLine("Parse JsonException Exception: {0}", jex.Message);
+#endif
             }
             catch (Exception e)
             {
+#if DEBUG
                 Debug.WriteLine("Parse General Exception: {0}", e.Message);
+#endif
             }
             return customClass;
         }

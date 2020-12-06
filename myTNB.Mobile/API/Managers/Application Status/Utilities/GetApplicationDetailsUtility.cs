@@ -8,15 +8,16 @@ using myTNB.Mobile.Extensions;
 using System.Diagnostics;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
 using myTNB.Mobile.SessionCache;
+//using myTNB.Mobile.API.Models.Rating.GetCustomerRating;
 
 namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
 {
     internal static class GetApplicationDetailsUtility
     {
         private static List<SelectorModel> _mappingList;
-        private static string _addFormat = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusActivityLog", "add");
-        private static string _updateFormat = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusActivityLog", "update");
-        private static string _removeFormat = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusActivityLog", "remove");
+        private static readonly string _addFormat = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusActivityLog", "add");
+        private static readonly string _updateFormat = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusActivityLog", "update");
+        private static readonly string _removeFormat = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusActivityLog", "remove");
         private const string KEDAI = "KEDAI";
         private const string SAVED = "SAVED";
 
@@ -210,7 +211,10 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                             displayModel.Content.ApplicationActivityLogDetail.Add(displayItem);
                         }
                     }
-
+                    if (response.Content.ApplicationRatingDetail != null)
+                    {
+                        displayModel.Content.ApplicationRatingDetail = response.Content.ApplicationRatingDetail;
+                    }
                     SetPaymentDisplay(ref displayModel);
                 }
 
@@ -494,6 +498,11 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
             }
         }
 
+        /// <summary>
+        /// This determines if the Status of the BCRM is Online or Offline
+        /// 7001 Status code for Offline
+        /// </summary>
+        /// <param name="displayModel"></param>
         private static void EvaluateStatus(this ApplicationDetailDisplay displayModel)
         {
             try
