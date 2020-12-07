@@ -8428,10 +8428,10 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\AddAccDisclaimerView.axml">
-    <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
-  </ItemGroup> 
+  </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\AdditionalAccountListItemViewOwnerTenant.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
@@ -8458,6 +8458,9 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\OwnerTenantBaseTheme.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
