@@ -1,12 +1,16 @@
 ﻿using Android.Content;
+using Android.Preferences;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.TextField;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Common.Activity;
+using myTNB_Android.Src.Common.Model;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -75,8 +79,8 @@ namespace myTNB_Android.Src.AddAccount
             if (AdditionalItemClick != null)
                 AdditionalItemClick(this, position);
         }
-    }
 
+    }
 
     public class AdditionalAccountViewHolder : RecyclerView.ViewHolder
     {
@@ -95,6 +99,8 @@ namespace myTNB_Android.Src.AddAccount
 
         private MobileNumberInputComponent mobileNumberInputComponent;
 
+        private string phone_no;
+        private bool flag = false;
 
         private Context context;
         private readonly string EG_ACCOUNT_LABEL = "";
@@ -118,8 +124,20 @@ namespace myTNB_Android.Src.AddAccount
             MobileLinearLayout = itemView.FindViewById<LinearLayout>(Resource.Id.mobileNumberFieldContainer);
             OwnerNoContactLinearLayout = itemView.FindViewById<LinearLayout>(Resource.Id.layout_owner_no_contact);
             textInputLayoutEmailEditText = itemView.FindViewById<TextInputLayout>(Resource.Id.textInputLayoutEmailReg);
+            
+            EmailFieldDetail.Click += (sender, e) => 
+            {
+                MobileLinearLayout.Visibility = ViewStates.Gone;
+                textInputLayoutEmailEditText.Visibility = ViewStates.Visible;
+                EmailEditText.Visibility = ViewStates.Visible;
+            };
 
-            DeleteView.Click += (sender, e) => listener(base.LayoutPosition);
+            NoMobileFieldDetail.Click += (sender, e) =>
+            {
+                MobileLinearLayout.Visibility = ViewStates.Visible;
+                textInputLayoutEmailEditText.Visibility = ViewStates.Gone;
+                EmailEditText.Visibility = ViewStates.Gone;
+            };
 
 
             TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress, AccountLabel);
@@ -162,8 +180,34 @@ namespace myTNB_Android.Src.AddAccount
             mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
             mobileNumberInputComponent.SetMobileNumberLabel(Utility.GetLocalizedCommonLabel("mobileNo"));
             mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
-            //mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
+            mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
             MobileLinearLayout.AddView(mobileNumberInputComponent);
+
+            string selectedcountry = UserSessions.GetSelectedCountry(PreferenceManager.GetDefaultSharedPreferences(context));
+            if (selectedcountry != null)
+            {
+                Country selectedCountry = JsonConvert.DeserializeObject<Country>(selectedcountry);
+                mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
+            }
+
+        }
+
+        public void OnTapCountryCode()
+        {
+            context.StartActivity(new Intent(context, typeof(SelectCountryActivity)));
+        }
+
+        private void OnValidateMobileNumber(bool isValidated)
+        {
+            //string mobile = this.item.mobileNoOwner;
+            //int value = Java.Lang.Integer.ParseInt(mobile);
+            //mobileNumberInputComponent.SetMobileNumber(value);
+            string noISDMobileNo = mobileNumberInputComponent.GetMobileNumberValue();
+            phone_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
+            if( !noISDMobileNo.Equals(""))
+            {
+                this.item.mobileNoOwner = phone_no;
+            }
         }
 
         public void PopulateData(NewAccount item)
@@ -195,18 +239,25 @@ namespace myTNB_Android.Src.AddAccount
                         textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
                     }
                 };
+
+                //EmailEditText.Text = this.item.emailOwner;
+                EmailEditText.AfterTextChanged += (sender, args) =>
+                {
+                    item.emailOwner = EmailEditText.Text.Trim();
+                    /*if (!string.IsNullOrEmpty(item.accountLabel))
+                    {
+                        textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
+                    }
+                    else
+                    {
+                        textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
+                    }*/
+                };
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-        /*private void OnTapCountryCode()
-        {
-            Intent intent = new Intent(this, typeof(SelectCountryActivity));
-            StartActivityForResult(intent, COUNTRY_CODE_SELECT_REQUEST);
-        }*/
-
     }
 }

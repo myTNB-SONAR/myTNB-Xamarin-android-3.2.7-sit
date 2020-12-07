@@ -373,6 +373,13 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        internal static void SaveSelectedCountry(ISharedPreferences mSharedPref, string largeJsonString)     //pref for selected country
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.PutString("selectedcountry", largeJsonString);
+            editor.Apply();
+        } 
+
         internal static void SaveAdapterType(ISharedPreferences mSharedPref, string largeJsonString)
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();
@@ -389,6 +396,11 @@ namespace myTNB_Android.Src.Utils
         internal static string GetSelectedFeedback(ISharedPreferences mSharePref)
         {
             return mSharePref.GetString(Constants.SELECTED_FEEDBACK, null);
+        }
+
+        internal static string GetSelectedCountry(ISharedPreferences mSharePref)    //get pref for selected country
+        {
+            return mSharePref.GetString("selectedcountry", null);
         }
 
         internal static void UpdateDeviceId(ISharedPreferences mSharedPref)

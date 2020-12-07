@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Text;
 using Android.Text.Style;
@@ -103,6 +104,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
         private bool fromDashboard = false;
         private bool fromRegisterPage = false;
         const string PAGE_ID = "AddAccount";
+
+        private ISharedPreferences mSharedPref;
 
         public bool IsActive()
         {
@@ -276,8 +279,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
             Intent nextIntent = new Intent(this, typeof(AddAccountActivity));
             nextIntent.PutExtra("fromRegisterPage", fromRegisterPage);
             RunOnUiThread(() => StartActivityForResult(nextIntent, ADD_ACCOUNT_REQUEST_CODE));
-            //AddAccountUtils.SetAccountList(accountList, additionalAccountList);
-            //RunOnUiThread(() => StartActivityForResult(typeof(AddAccountActivity), ADD_ACCOUNT_REQUEST_CODE));
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -301,6 +302,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 {
                     fromRegisterPage = Intent.Extras.GetBoolean("fromRegisterPage", false);
                 }
+
+                mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
                 TextViewUtils.SetMuseoSans500Typeface(textNoOfAcoount, btnAddAnotherAccount, btnConfirm);
                 TextViewUtils.SetMuseoSans300Typeface(labelAccountLabel);
@@ -403,6 +406,17 @@ namespace myTNB_Android.Src.AddAccount.Activity
             base.OnResume();
             try
             {
+                if(additionalAccountList.Count > 0)
+                {
+                    additionalAdapter.Clear();
+                    additionalAdapter = new AdditionalAccountListAdapter(this, additionalAccountList);
+                    additionalAccountListRecyclerView.SetAdapter(additionalAdapter);
+                    additionalAdapter.AdditionalItemClick += OnAdditionalItemClick;
+                    additionalAdapter.NotifyDataSetChanged();
+                    textAdditionalAcoount.Visibility = ViewStates.Visible;
+                    textlabelAdditionalAcoount.Visibility = ViewStates.Visible;
+                }
+
                 FirebaseAnalyticsUtils.SetScreenName(this, "Link Accounts Staging");
             }
             catch (Exception e)
@@ -413,7 +427,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         protected override void OnPause()
         {
-           base.OnPause();
+            this.mSharedPref.Edit().Remove("selectedcountry").Apply();
+            base.OnPause();
         }
 
         public void ShowNoAccountAddedError(string message)
@@ -583,8 +598,10 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             try
             {
+
                 List<NewAccount> newList = adapter.GetAccountList();
                 List<NewAccount> additionalList = additionalAdapter.GetAccountList();
+
                 if (ValidateAccountNames(newList, additionalList) && ValidateAddtionalAccountNames(additionalList, newList))
                 {
                     string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
@@ -613,6 +630,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         account.isOwned = item.isOwner;
                         account.accountTypeId = item.type;
                         account.accountCategoryId = item.accountCategoryId;
+                        account.emailOwner = item.emailOwner;
+                        account.mobileNoOwner = item.mobileNoOwner;
                         accounts.Add(account);
                     }
                     TOTAL_NO_OF_ACCOUNTS_TO_ADD = accounts.Count;
@@ -960,6 +979,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         }
                     }
                 }
+
             }
             catch (Exception e)
             {
@@ -1012,7 +1032,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 }
 
                 SummaryDashBoardAccountEntity.RemoveAll();
-
+                HideAddingAccountProgressDialog();
                 Intent sucessIntent = new Intent(this, typeof(AddAccountSuccessActivity));
                 sucessIntent.PutExtra("Accounts", JsonConvert.SerializeObject(finalAccountList));
                 StartActivity(sucessIntent);

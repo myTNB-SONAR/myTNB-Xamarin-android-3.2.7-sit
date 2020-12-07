@@ -73,6 +73,9 @@
             </LinearLayout>
             <LinearLayout
             android:id="@+id/layout_owner_no_contact"
+            focusableInTouchMode="true"
+            android:focusable="true"
+            android:clickable="true"
             android:orientation="vertical"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
@@ -128,6 +131,7 @@
                         android:drawablePadding="8dp"
                         android:layout_marginTop="15dp"
                         android:layout_marginBottom="15dp"
+                        android:layout_marginLeft="8dp"
                         android:background="@drawable/rectangle_rounded_corner_dark_blue_bg"
                         android:text="Mobile Number"/>
             </LinearLayout>

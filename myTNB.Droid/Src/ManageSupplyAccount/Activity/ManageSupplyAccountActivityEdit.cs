@@ -278,6 +278,19 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
         private void ShowManageUser()
         {
+            try
+            {
+                //this.userActionsListener.ManageAccessUser(accountData);
+                ManageUserActivity();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ManageUserActivity()
+        {
             Intent updateNickName = new Intent(this, typeof(ManageAccessActivity));
             StartActivityForResult(updateNickName, Constants.UPDATE_NICKNAME_REQUEST);
         }

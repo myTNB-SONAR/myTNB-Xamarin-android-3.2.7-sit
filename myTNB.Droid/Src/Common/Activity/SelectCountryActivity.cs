@@ -8,6 +8,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -32,6 +33,8 @@ namespace myTNB_Android.Src.Common.Activity
         [BindView(Resource.Id.countryListView)]
         ListView countryListView;
 
+        private ISharedPreferences mSharedPref;
+
         public override string GetPageId()
         {
             return PAGE_ID;
@@ -52,6 +55,8 @@ namespace myTNB_Android.Src.Common.Activity
             base.OnCreate(savedInstanceState);
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+
+            mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
             countryList = CountryUtil.Instance.GetCountryList();
             SelectCountryISDCodeAdapter adapter = new SelectCountryISDCodeAdapter(this, countryList);
@@ -74,6 +79,7 @@ namespace myTNB_Android.Src.Common.Activity
             Country selectedCountry = countryList[position];
             Intent intent = new Intent();
             intent.PutExtra(Constants.SELECT_COUNTRY_CODE, JsonConvert.SerializeObject(selectedCountry));
+            UserSessions.SaveSelectedCountry(mSharedPref, JsonConvert.SerializeObject(selectedCountry));     
             //Resets the country drop-down selection click
             MobileNumberInputComponent.isSelectionTapped = false;
             SetResult(Result.Ok,intent);

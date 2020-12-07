@@ -33,5 +33,10 @@
         public bool IsTaggedSMR { get; set; }
 
         public bool isOwned { get; set; }
+
+        public string emailOwner { get; set; }
+
+        public string mobileNoOwner { get; set; }
+
     }
 }
