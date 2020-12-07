@@ -54,8 +54,10 @@ namespace myTNB.Mobile
                     SearchApplicationTypeResponse response = isLoggedIn
                         ? await service.SearchApplicationType(AppInfoManager.Instance.GetUserInfo()
                             , NetworkService.GetCancellationToken()
+                            , AppInfoManager.Instance.Language.ToString()
                             , AppInfoManager.Instance.Language.ToString())
                         : await service.SearchApplicationType(NetworkService.GetCancellationToken()
+                            , AppInfoManager.Instance.Language.ToString()
                             , AppInfoManager.Instance.Language.ToString());
                     if (response.Content != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
@@ -127,11 +129,13 @@ namespace myTNB.Mobile
                             , searchTerm
                             , AppInfoManager.Instance.GetUserInfo()
                             , NetworkService.GetCancellationToken()
+                            , AppInfoManager.Instance.Language.ToString()
                             , AppInfoManager.Instance.Language.ToString())
                         : await service.GetApplicationStatus(applicationType
                             , searchType
                             , searchTerm
                             , NetworkService.GetCancellationToken()
+                            , AppInfoManager.Instance.Language.ToString()
                             , AppInfoManager.Instance.Language.ToString());
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
@@ -156,7 +160,10 @@ namespace myTNB.Mobile
                     }
                     else
                     {
-                        response.StatusDetail = new StatusDetail();
+                        response = new GetApplicationStatusResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
                         response.StatusDetail = Constants.Service_GetApplicationStatus.GetStatusDetails(Constants.DEFAULT);
                     }
                     displaymodel = response.Parse(applicationType
@@ -238,7 +245,8 @@ namespace myTNB.Mobile
                         lang = AppInfoManager.Instance.Language.ToString()
                     }
                         , AppInfoManager.Instance.GetUserInfo()
-                        , NetworkService.GetCancellationToken());
+                        , NetworkService.GetCancellationToken()
+                        , AppInfoManager.Instance.Language.ToString());
                     PostSaveApplicationResponse response = await rawResponse.ParseAsync<PostSaveApplicationResponse>();
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
@@ -318,6 +326,7 @@ namespace myTNB.Mobile
                         , createdDateTo
                         , AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken()
+                        , AppInfoManager.Instance.Language.ToString()
                         , AppInfoManager.Instance.Language.ToString());
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
@@ -348,7 +357,10 @@ namespace myTNB.Mobile
                     }
                     else
                     {
-                        response.StatusDetail = new StatusDetail();
+                        response = new GetAllApplicationsResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
                         response.StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(Constants.DEFAULT);
                     }
                     if (response.StatusDetail.IsSuccess)
@@ -446,6 +458,7 @@ namespace myTNB.Mobile
                          , system
                          , AppInfoManager.Instance.GetUserInfo()
                          , NetworkService.GetCancellationToken()
+                         , AppInfoManager.Instance.Language.ToString()
                          , AppInfoManager.Instance.Language.ToString());
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
@@ -470,7 +483,10 @@ namespace myTNB.Mobile
                     }
                     else
                     {
-                        response.StatusDetail = new StatusDetail();
+                        response = new GetApplicationDetailsResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
                         response.StatusDetail = Constants.Service_GetApplicationDetail.GetStatusDetails(Constants.DEFAULT);
                     }
                     displaymodel = response.Parse(applicationType
@@ -548,7 +564,8 @@ namespace myTNB.Mobile
 
                     HttpResponseMessage rawResponse = await service.RemoveApplication(request
                         , AppInfoManager.Instance.GetUserInfo()
-                        , NetworkService.GetCancellationToken());
+                        , NetworkService.GetCancellationToken()
+                        , AppInfoManager.Instance.Language.ToString());
                     PostRemoveApplicationResponse response = await rawResponse.ParseAsync<PostRemoveApplicationResponse>();
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
@@ -609,6 +626,7 @@ namespace myTNB.Mobile
                     HttpResponseMessage rawResponse = await service.GetApplicationsByCA(accountNumber
                         , AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken()
+                        , AppInfoManager.Instance.Language.ToString()
                         , AppInfoManager.Instance.Language.ToString());
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
@@ -639,19 +657,12 @@ namespace myTNB.Mobile
                     }
                     else
                     {
-                        response.StatusDetail = new StatusDetail();
+                        response = new GetApplicationsByCAResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
                         response.StatusDetail = Constants.Service_SearchApplicationByCA.GetStatusDetails(Constants.DEFAULT);
                     }
-
-                    //Mark: Stub
-                    /*if (response.StatusDetail.IsSuccess)
-                    {
-                        response.Content[0].ApplicationModuleId = "101013";
-                        response.Content[0].ApplicationType = "NC";
-                        response.Content[0].BackendReferenceNo = "4000005515";
-                        response.Content[0].StatusDescription = "Payment Required";
-                        response.Content[0].StatusDescriptionColor = "action";
-                    }*/
                     return response;
                 }
                 catch (ApiException apiEx)

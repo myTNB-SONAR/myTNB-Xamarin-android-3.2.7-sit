@@ -8,7 +8,6 @@ using myTNB.Mobile.Extensions;
 using System.Diagnostics;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
 using myTNB.Mobile.SessionCache;
-//using myTNB.Mobile.API.Models.Rating.GetCustomerRating;
 
 namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
 {
@@ -270,6 +269,29 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                             && shouldShowLinkedWithValue)
                         {
                             shouldShowLinkedWith = shouldShowLinkedWithValue;
+                        }
+                        else if (infoValue == null && item.Key == "referenceNo")
+                        {
+                            if (GetObjectValue(props, "backendApplicationType") is string backendApplicationtype && backendApplicationtype.IsValid()
+                                && GetObjectValue(props, "backendReferenceNo") is string backendReferenceNo && backendReferenceNo.IsValid())
+                            {
+                                if (backendApplicationtype.ToUpper() == "SR")
+                                {
+                                    displayModel.Content.AdditionalInfoList.Add(new TitleValueModel
+                                    {
+                                        Title = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "sr").ToUpper(),
+                                        Value = backendReferenceNo
+                                    });
+                                }
+                                else if (backendApplicationtype.ToUpper() == "SN")
+                                {
+                                    displayModel.Content.AdditionalInfoList.Add(new TitleValueModel
+                                    {
+                                        Title = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "sn").ToUpper(),
+                                        Value = backendReferenceNo
+                                    });
+                                }
+                            }
                         }
                     }
 

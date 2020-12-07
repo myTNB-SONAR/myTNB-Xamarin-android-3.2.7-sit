@@ -26,6 +26,10 @@ namespace myTNB.Mobile.API.Managers.Rating
         public RatingManager() { }
 
         #region GetCustomerRatingMaster
+        /// <summary>
+        /// Get All Rating fields
+        /// </summary>
+        /// <returns></returns>
         public async Task<GetCustomerRatingMasterResponse> GetCustomerRatingMaster()
         {
             try
@@ -37,6 +41,7 @@ namespace myTNB.Mobile.API.Managers.Rating
                     GetCustomerRatingMasterResponse response = await service.GetCustomerRatingMaster(AppInfoManager.Instance.GetUserInfo()
                         , categoryID
                         , NetworkService.GetCancellationToken()
+                        , AppInfoManager.Instance.Language.ToString()
                         , AppInfoManager.Instance.Language.ToString());
                     if (response.Content != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
@@ -44,7 +49,10 @@ namespace myTNB.Mobile.API.Managers.Rating
                     }
                     else
                     {
-                        response.StatusDetail = new StatusDetail();
+                        response = new GetCustomerRatingMasterResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
                         response.StatusDetail = Constants.Service_GetCustomerRatingMaster.GetStatusDetails(Constants.DEFAULT);
                     }
                     return response;
@@ -121,7 +129,8 @@ namespace myTNB.Mobile.API.Managers.Rating
 
                     HttpResponseMessage rawResponse = await service.SubmitRating(request
                         , AppInfoManager.Instance.GetUserInfo()
-                        , NetworkService.GetCancellationToken());
+                        , NetworkService.GetCancellationToken()
+                        , AppInfoManager.Instance.Language.ToString());
 
                     PostSubmitRatingResponse response = await rawResponse.ParseAsync<PostSubmitRatingResponse>();
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())

@@ -1116,7 +1116,7 @@
     "emptyApplications": "Looks like you have no applications at the moment.",
     "allApplications": "How do I see all my applications?",
     "allApplicationsTitle": "View all your applications on myTNB Portal to enjoy the full experience!",
-    "allApplicationsMessage": "Log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> using the same log in details. You can view the list of all your applications and full form details, and continue your applications or create new ones.<br><br>Note: Applications submitted via other sources before <insert Mmm YYYY eg. Mar 2021> will not be displayed automatically here, but you can manually search and add it to your list.",
+    "allApplicationsMessage": "Log in to the <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> using the same login details. You can view the list of all your applications and full form details, continue your applications or create new ones.<br><br>Note: Applications submitted via other sources before July 2020 will not be displayed automatically here, but you can manually search and add it to your list.",
     "viewMore": "View More",
     "viewLess": "View Less",
     "displayPerQuery": "5",
@@ -1130,9 +1130,9 @@
     "searchBy": "Search by",
     "searchResultTitle": "We found this application(s) under the electricity account number:",
     "whereToGetThisNumber": "Where do I get this number?",
-    "whereToGetThisNumberTitleCA": "Where do I get this number?",
+    "whereToGetThisNumberTitleCA": "Where do I get these numbers?",
     "whereToGetThisNumberMessageCA": "Your 12-digit electricity account number can be found at the top left corner of your monthly paper bill.",
-    "whereToGetThisNumberTitle": "Where do I get this number?",
+    "whereToGetThisNumberTitle": "Where do I get these numbers?",
     "whereToGetThisNumberMessage": "You can find the <b>{0}</b> in your submitted application details at ‘Application Status’ page and is available upon request by contacting TNB CareLine."
   },
   "ApplicationStatusFilter": {
@@ -1169,7 +1169,7 @@
     "viewReceipt": "View Receipt",
     "taxInvoice": "Tax Invoice",
     "taxInvoiceView": "View Tax Invoice",
-    "removeTitle": "Remove this saved application?",
+    "removeTitle": "Remove this application?",
     "removeMessage": "You are about to remove this application from your list.<br><br>Note: This does not delete or cancel the application.",
     "confirm": "Confirm",
     "on": "on ",
@@ -1178,7 +1178,9 @@
     "bcrmDownMessage": "Looks like your statuses can’t be loaded at the moment. However, you may proceed to make any changes to the application as it will be recorded. Check back again later to view its update.",
     "rateCTA": "Rate Our Service",
     "rateSuccessMessage": "Thank you for your feedback!",
-    "youRated": "You rated: "
+    "youRated": "You rated: ",
+    "sr": "Service Request Number",
+    "sn": "Service Notification Number"
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Payment Details",
@@ -1906,7 +1908,7 @@
             "code": "7001",
             "title": "",
             "message": "Looks like your request can't loaded at the moment. Please try again later.",
-            "primaryCTATitle": "Ok",
+            "primaryCTATitle": "Got It!",
             "secondaryCTATitle": "",
             "isSuccess": false,
             "type": "popup"
@@ -2024,7 +2026,7 @@
             "code": "7001",
             "title": "",
             "message": "Oops! There is an error occured in processing your request. Please try again later.",
-            "primaryCTATitle": "Ok",
+            "primaryCTATitle": "Got It!",
             "secondaryCTATitle": "",
             "isSuccess": false,
             "type": "popup"

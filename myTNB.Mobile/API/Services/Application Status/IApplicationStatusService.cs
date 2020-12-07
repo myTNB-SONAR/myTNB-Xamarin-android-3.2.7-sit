@@ -21,12 +21,14 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
         Task<SearchApplicationTypeResponse> SearchApplicationType([Header(Constants.Header_UserInfo)] string userInfo
             , CancellationToken cancelToken
             , string language
+            , [Header(Constants.Header_Lang)] string lang
             , string urlPrefix = Constants.ApiUrlPath
             , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
         [Get("/{urlPrefix}/SearchApplicationType?lang={language}")]
         Task<SearchApplicationTypeResponse> SearchApplicationType(CancellationToken cancelToken
             , string language
+            , [Header(Constants.Header_Lang)] string lang
             , string urlPrefix = Constants.ApiUrlPath
             , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
@@ -37,6 +39,7 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
             , [Header(Constants.Header_UserInfo)] string userInfo
             , CancellationToken cancelToken
             , string language
+            , [Header(Constants.Header_Lang)] string lang
             , string urlPrefix = Constants.ApiUrlPath
             , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
@@ -46,6 +49,7 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
            , string searchTerm
            , CancellationToken cancelToken
            , string language
+           , [Header(Constants.Header_Lang)] string lang
            , string urlPrefix = Constants.ApiUrlPath
            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
@@ -53,6 +57,7 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
         Task<HttpResponseMessage> SaveApplication([Body] PostSaveApplicationRequest request
            , [Header(Constants.Header_UserInfo)] string userInfo
            , CancellationToken cancelToken
+           , [Header(Constants.Header_Lang)] string lang
            , string urlPrefix = Constants.ApiUrlPath
            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
@@ -71,6 +76,7 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
            , [Header(Constants.Header_UserInfo)] string userInfo
            , CancellationToken cancelToken
            , string language
+           , [Header(Constants.Header_Lang)] string lang
            , string urlPrefix = Constants.ApiUrlPath
            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
@@ -81,6 +87,7 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
             , [Header(Constants.Header_UserInfo)] string userInfo
             , CancellationToken cancelToken
             , string language
+            , [Header(Constants.Header_Lang)] string lang
             , string urlPrefix = Constants.ApiUrlPath
             , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
@@ -88,6 +95,7 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
         Task<HttpResponseMessage> RemoveApplication([Body] PostRemoveApplicationRequest request
            , [Header(Constants.Header_UserInfo)] string userInfo
            , CancellationToken cancelToken
+           , [Header(Constants.Header_Lang)] string lang
            , string urlPrefix = Constants.ApiUrlPath
            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
@@ -96,6 +104,7 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
            , [Header(Constants.Header_UserInfo)] string userInfo
            , CancellationToken cancelToken
            , string language
+           , [Header(Constants.Header_Lang)] string lang
            , string urlPrefix = Constants.ApiUrlPath
            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
     }

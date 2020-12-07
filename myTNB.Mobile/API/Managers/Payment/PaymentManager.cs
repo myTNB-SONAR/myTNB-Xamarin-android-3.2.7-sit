@@ -61,7 +61,8 @@ namespace myTNB.Mobile.API.Managers.Payment
                     };
 
                     HttpResponseMessage rawResponse = await service.ApplicationPayment(request
-                        , NetworkService.GetCancellationToken());
+                        , NetworkService.GetCancellationToken()
+                        , AppInfoManager.Instance.Language.ToString());
 
                     string response = await rawResponse.Content.ReadAsStringAsync();
                     if (response.IsValid())
@@ -109,7 +110,8 @@ namespace myTNB.Mobile.API.Managers.Payment
                     };
 
                     HttpResponseMessage rawResponse = await service.GetApplicationsPaidDetails(request
-                        , NetworkService.GetCancellationToken());
+                        , NetworkService.GetCancellationToken()
+                        , AppInfoManager.Instance.Language.ToString());
                     string responseString = await rawResponse.Content.ReadAsStringAsync();
                     PostApplicationsPaidDetailsResponse response = new PostApplicationsPaidDetailsResponse();
                     if (responseString.IsValid())
@@ -158,6 +160,7 @@ namespace myTNB.Mobile.API.Managers.Payment
                     HttpResponseMessage rawResponse = await service.GetTaxInvoice(srNumber
                         , AppInfoManager.Instance.GetUserInfo()
                         , NetworkService.GetCancellationToken()
+                        , AppInfoManager.Instance.Language.ToString()
                         , AppInfoManager.Instance.Language.ToString());
 
                     string responseString = await rawResponse.Content.ReadAsStringAsync();

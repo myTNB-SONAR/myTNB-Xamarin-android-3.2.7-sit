@@ -8,6 +8,7 @@
         internal const string Header_UserName = "UserName";
         internal const string Header_SecureKey = "SecureKey";
         internal const string Header_UserInfo = "UserInfo";
+        internal const string Header_Lang = "Lang";
 
         //String Constants
         internal const string EMPTY = "empty";
