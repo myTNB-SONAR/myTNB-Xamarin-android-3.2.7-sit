@@ -49,7 +49,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
-        android:text="@string/payment_success_experience_rating_txt_content_1"
+        android:text=""
         android:textColor="@color/tunaGrey"
         android:textSize="16dp" />
            <RatingBar
