@@ -6,6 +6,8 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Android.Text;
+using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
@@ -28,7 +30,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
     [Activity(Label = "Rate"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.PaymentSuccessExperienceRating")]
-    public class RateUsActivity : BaseActivityCustom
+    public class RateUsActivity : BaseActivityCustom, View.IOnTouchListener
     {
         private CoordinatorLayout rootView;
         private TextInputLayout txtInputLayoutTellUsMore;
@@ -129,7 +131,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     HideProgressDialog();
                     if (postSubmitRatingResponse.StatusDetail.IsSuccess)
                     {
-                        Toast.MakeText(this, postSubmitRatingResponse.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
+                        
 
                         if (ConnectionUtils.HasInternetConnection(this))
                         {
@@ -299,24 +301,30 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 rating_list_view = FindViewById<ListView>(Resource.Id.rating_list_view);
                 txtTellUsMore = FindViewById<EditText>(Resource.Id.txtTellUsMore);
                 txtInputLayoutTellUsMore = FindViewById<TextInputLayout>(Resource.Id.txtInputLayoutTellUsMore);
+                txtTellUsMore.SetOnTouchListener(this);
                 //rootview = FindViewById<CoordinatorLayout>(Resource.Id.rootview);
                 txtTellUsMore.Hint = Utility.GetLocalizedLabel("ApplicationStatusRating", "freeTextPlaceHolder");
-                txtInputLayoutTellUsMore.Hint = Utility.GetLocalizedLabel("ApplicationStatusRating", "freeTextTitle");
+               
               
                 btnSubmit.Text = Utility.GetLocalizedLabel("ApplicationStatusRating", "submit");
-
+                txtTellUsMore.TextChanged += TextChanged;
+                txtTellUsMore.SetOnTouchListener(this);
+                txtInputLayoutTellUsMore.Error = GetString(Resource.String.feedback_total_character_left);
                
+                txtInputLayoutTellUsMore.Hint = Utility.GetLocalizedLabel("ApplicationStatusRating", "freeTextTitle");
+
                 btnSubmit.Enabled = false;
                 btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
 
-                
-               
+                TextViewUtils.SetMuseoSans300Typeface(txtTellUsMore);
+                TextViewUtils.SetMuseoSans500Typeface(txtPageTitleInfo, txtTitleQuestion, txtTellUsTitleInfo);
+
                 rating_list_view.ItemClick += OnItemClick;
                 GetCustomerRatingAsync();
                 // OnLoadMainFragment();
                 Bundle extras = Intent.Extras;
-            
 
+                SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusRating", "title"));
 
                 if (extras != null && Intent.Extras.ContainsKey("selectedRating") && extras.ContainsKey("customerRatingMasterResponse") && extras.ContainsKey("applicationDetailDisplay"))
                 {
@@ -399,6 +407,47 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+        [Preserve]
+        private void TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                FeedBackCharacCount();
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+
+        }
+        private void FeedBackCharacCount()
+        {
+            try
+            {
+                string feedback = txtTellUsMore.Text;
+                int char_count = 0;
+
+                if (!string.IsNullOrEmpty(feedback))
+                {
+                    char_count = feedback.Length;
+                }
+
+                if (char_count > 0)
+                {
+                    int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
+                    txtInputLayoutTellUsMore.Error = char_left + " " + GetString(Resource.String.feedback_character_left);
+                }
+                else
+                {
+                    txtInputLayoutTellUsMore.Error = GetString(Resource.String.feedback_total_character_left);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         internal void RatingQuestions()
         {
             if (getCustomerRatingMasterResponse != null && getCustomerRatingMasterResponse.Content != null)
@@ -477,10 +526,21 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             return PAGE_ID;
         }
 
+        public bool OnTouch(View v, MotionEvent e)
+        {
+            if (v is EditText)
+            {
+                EditText eTxtView = v as EditText;
+                if (e.Action == MotionEventActions.Up)
+                {
+                    if (eTxtView.Id == Resource.Id.txtTellUsMore)
+                    {
+                        
+                    }
+                }
+            }
+            return false;
 
-
-
-
-      
+        }
     }
 }

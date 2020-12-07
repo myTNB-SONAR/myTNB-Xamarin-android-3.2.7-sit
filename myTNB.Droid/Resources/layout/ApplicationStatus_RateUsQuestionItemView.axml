@@ -23,7 +23,7 @@
             android:paddingRight="16dp"
             android:paddingBottom="8dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/lightGrey"
+            android:background="@color/white"
             android:paddingTop="8dp">
             <Button
                 android:id="@+id/btnSubmit"
@@ -33,14 +33,9 @@
                 android:textSize="16dp"
                 android:textAllCaps="false"
                 style="@style/DarkButton1"/>
+
         </LinearLayout>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:overScrollMode="never"
-            android:scrollbars="none"
-            android:fillViewport="true"/>
+       
         <LinearLayout
             android:id="@+id/appLanguageContainer"
             android:layout_height="wrap_content"
@@ -49,6 +44,18 @@
             android:layout_above="@+id/bottomLayout"
             android:orientation="vertical"
             android:background="@color/lightGrey">
+             <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:background="@color/white"
+            android:fillViewport="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
             <LinearLayout
             android:id="@+id/appLanguageMessageContainer"
             android:layout_width="match_parent"
@@ -133,8 +140,12 @@
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     android:id="@+id/txtInputLayoutTellUsMore"
+                        app:errorTextAppearance="@color/silverchalice"
+                       
                     android:background="@color/white"
                    
                     android:layout_marginTop="10dp">
@@ -142,8 +153,8 @@
                        android:hint="Write your message here."
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
+                        
+                        
                         android:id="@+id/txtTellUsMore"
                         android:textSize="16dp"
                         android:maxLines="1"
@@ -151,6 +162,14 @@
                         android:paddingTop="5dp"
                         android:drawablePadding="6dp" />
                 </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </ScrollView>
+            <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="16dp"
+            android:orientation="vertical"
+            android:background="@color/lightGrey"/>
         </LinearLayout>
+       
     </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

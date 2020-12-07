@@ -172,6 +172,19 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [BindView(Resource.Id.txtBCRMDownMessage)]
         TextView txtBCRMDownMessage;
 
+        [BindView(Resource.Id.txtApplicationRateTitle)]
+        TextView txtApplicationRateTitle;
+
+        [BindView(Resource.Id.txtApplicationRateStar)]
+        TextView txtApplicationRateStar;
+
+        [BindView(Resource.Id.imgStar)]
+        ImageView imgStar;
+
+        [BindView(Resource.Id.layoutstar)]
+        LinearLayout layoutstar;
+       
+
         private bool IsSaveFlow = false;
         private bool IsFromLinkedWith = false;
         private Snackbar mNoInternetSnackbar;
@@ -661,6 +674,22 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
                             TextViewUtils.SetMuseoSans500Typeface(txtApplicationStatusMainTitle, txtApplicationStatusTitle, txtApplicationStatusBottomPayableTitle);
                             TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle, txtApplicationStatusDetailNote, txtBCRMDownMessage);
+
+                            if(applicationDetailDisplay.RatingDisplay !=  null && applicationDetailDisplay.RatingDisplay != string.Empty)
+                            {
+                                txtApplicationRateTitle.Visibility = ViewStates.Visible;
+                                txtApplicationRateStar.Visibility = ViewStates.Visible;
+                                imgStar.Visibility = ViewStates.Visible;
+                                layoutstar.Visibility = ViewStates.Visible;
+                                txtApplicationRateStar.Text = applicationDetailDisplay.RatingDisplay;
+                            }
+                            else
+                            {
+                                txtApplicationRateTitle.Visibility = ViewStates.Gone;
+                                txtApplicationRateStar.Visibility = ViewStates.Gone;
+                                imgStar.Visibility = ViewStates.Gone;
+                                layoutstar.Visibility = ViewStates.Gone;
+                            }
                         }
                     }
                     if (extras.ContainsKey("submitRatingResponseStatus"))

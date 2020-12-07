@@ -147,9 +147,9 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
 
                 GetCustomerRatingMasterResponse customerRatingMasterResponse;
-              
+                SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusRating", "title"));
                 GetCustomerRatingAsync();
-             
+                TextViewUtils.SetMuseoSans500Typeface(txtContentInfo);
                 // OnLoadMainFragment();
                 Bundle extras = Intent.Extras;
                 if (extras != null)
