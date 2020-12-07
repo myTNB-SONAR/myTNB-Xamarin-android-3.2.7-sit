@@ -221,6 +221,8 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     account.accountLabel = accountLable;
                     account.icNum = userIdentificationNum;
                     account.accountCategoryId = result.GetData().accountCategoryId;
+                    account.emailOwner = result.GetData().emailOwner;
+                    account.mobileNoOwner = result.GetData().mobileNoOwner;
                     mView.ShowValidateAccountSucess(account);
                 }
 

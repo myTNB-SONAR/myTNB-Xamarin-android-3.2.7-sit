@@ -35,6 +35,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         TextView txtNo;
         TextView txtOwnerRights;
         TextView txtNonOwnerRights;
+        TextView txtSkipAcc;
 
         private bool isClicked = false;
         private bool fromRegisterPage = false;
@@ -70,18 +71,19 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             txtYes = rootView.FindViewById<TextView>(Resource.Id.txtYes);
             txtNo = rootView.FindViewById<TextView>(Resource.Id.txtNo);
             txtTitlePremise = rootView.FindViewById<TextView>(Resource.Id.txtTitlePremise);
-
+            txtSkipAcc = rootView.FindViewById<TextView>(Resource.Id.txtSkipAcc);
 
             TextViewUtils.SetMuseoSans500Typeface(txtYes, txtNo, txtTitle);
             TextViewUtils.SetMuseoSans300Typeface(txtOwnerRights, txtNonOwnerRights, txtTitlePremise, accountType);
 
-            txtTitlePremise.Text = Utility.GetLocalizedLabel("AddAccount", "addByIDMessage");
-            txtTitle.Text = Utility.GetLocalizedLabel("AddAccount", "addByIDMessage");
-            txtOwnerRights.Text = Utility.GetLocalizedLabel("AddAccount", "addAsOwnerMessage");
-            txtNonOwnerRights.Text = Utility.GetLocalizedLabel("AddAccount", "addAsTenantMessage");
-            txtYes.Text = Utility.GetLocalizedLabel("Common", "yes") + ".";
-            txtNo.Text = Utility.GetLocalizedLabel("Common", "no") + ".";
-            txtAccountType.Text = Utility.GetLocalizedLabel("Common", "accountType").ToUpper();
+            txtTitlePremise.Text = Utility.GetLocalizedLabel("AddAccount", "AccHeaderText");
+            txtTitle.Text = Utility.GetLocalizedLabel("AddAccount", "AccHeaderBlueText");
+            txtOwnerRights.Text = Utility.GetLocalizedLabel("AddAccount", "ownerDetails");
+            txtNonOwnerRights.Text = Utility.GetLocalizedLabel("AddAccount", "nonOwnerDetails");
+            txtYes.Text = Utility.GetLocalizedLabel("AddAccount", "owner");
+            txtNo.Text = Utility.GetLocalizedLabel("AddAccount", "nonOwner");
+            txtSkipAcc.Text = Utility.GetLocalizedLabel("AddAccount", "skip");
+            txtAccountType.Text = Utility.GetLocalizedLabel("AddAccount", "PremisesHint").ToUpper();
 
             AccountType Individual = new AccountType();
             Individual.Id = "1";

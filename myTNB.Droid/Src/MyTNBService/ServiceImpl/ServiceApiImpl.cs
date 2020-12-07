@@ -193,6 +193,26 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
+        /// Call GetAccountAccessRightList with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<ManageAccessAccountListResponse> GetAccountAccessRightList([Body] Request.BaseRequest request)
+        {
+            return api.GetAccountAccessRightList<ManageAccessAccountListResponse>(request, CancellationTokenSourceWrapper.GetToken());     //2enapps wan   //api get manage access list
+        }
+
+        /// <summary>
+        /// Call GetAccountAccessRight with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<ManageAccessAccountListResponse> GetAccountAccessRight([Body] Request.BaseRequest request)
+        {
+            return api.GetAccountAccessRight<ManageAccessAccountListResponse>(request, CancellationTokenSourceWrapper.GetToken());     //2enapps wan   //api get manage access  
+        }
+
+        /// <summary>
         /// Call CreateNewUserWithToken with default timeout.
         /// </summary>
         /// <param name="request"></param>

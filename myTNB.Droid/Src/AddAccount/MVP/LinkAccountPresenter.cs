@@ -164,15 +164,15 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 {
                     mView.ShowAddingAccountProgressDialog();
                 }
-                var tempReq = JsonConvert.SerializeObject(accounts);
+                //var tempReq = JsonConvert.SerializeObject(accounts);
                 AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts(new AddAccountsRequest(accounts));
 
                 if (result.IsSuccessResponse())
                 {
-                    if (mView.IsActive())
+                    /*if (mView.IsActive())
                     {
                         mView.HideAddingAccountProgressDialog();
-                    }
+                    }*/
                     mView.ShowAddAccountSuccess(result.GetData());
                     MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                     HomeMenuUtils.ResetAll();

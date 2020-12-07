@@ -59,7 +59,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         private readonly int SELECT_IDENTIFICATION_TYPE_REQ_CODE = 2011;
         private IdentificationType selectedIdentificationType;
         private IdentificationTypeAdapter identificationType;
-        private Regex hasHyphens = new Regex(@"/(?([0-9]{3}))?([ .-]?)([0-9]{3})\2([0-9]{4})/");
 
 
         Snackbar mRegistrationSnackBar;

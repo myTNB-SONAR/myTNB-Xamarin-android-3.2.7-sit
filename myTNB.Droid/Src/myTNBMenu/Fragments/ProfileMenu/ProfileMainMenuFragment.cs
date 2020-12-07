@@ -396,48 +396,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
                     maskedNo =  GetString(Resource.String.my_account_ic_no_mask) + " " + lastDigit;
                 }
-
-                //referenceNumber.SetValue(maskedNo);
-
-                //email.SetValue(user.Email);
-                /*mobileNumber.SetValue(user.MobileNo);
-                password.SetValue(GetString(Resource.String.my_account_dummy_password));*/
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        private void UpdateMobileNumber()
-        {
-            if (!this.GetIsClicked())
-            {
-                try
-                {
-                    Intent updateMobileNo = new Intent(this.Activity, typeof(UpdateMobileActivity));
-                    StartActivityForResult(updateMobileNo, Constants.UPDATE_MOBILE_NO_REQUEST);
-                }
-                catch (System.Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            }
-        }
-
-        private void UpdatePassword()
-        {
-            if (!this.GetIsClicked())
-            {
-                try
-                {
-                    Intent updateMobileNo = new Intent(this.Activity, typeof(UpdatePasswordActivity));
-                    StartActivityForResult(updateMobileNo, Constants.UPDATE_PASSWORD_REQUEST);
-                }
-                catch (System.Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
             }
         }
 
@@ -753,30 +715,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             }
         }
 
-        /*public void EnableManageCards()
-        {
-            try
-            {
-                cards.EnableActionCall(true);
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void DisableManageCards()
-        {
-            try
-            {
-                cards.EnableActionCall(false);
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }*/
-
         private void ShowMobileUpdateSuccess(string newPhone)
         {
             try
@@ -793,62 +731,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(4);
                 updatePhoneSnackBar.Show();
-                this.SetIsClicked(false);
-            }
-            catch (System.Exception e)
-            {
-                this.SetIsClicked(false);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        private void ShowPasswordUpdateSuccess()
-        {
-            try
-            {
-                Snackbar updatePassWordBar = Snackbar.Make(rootView, GetLabelByLanguage("passwordUpdateSuccess"), Snackbar.LengthIndefinite)
-                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
-                             (view) =>
-                             {
-                                 // EMPTY WILL CLOSE SNACKBAR
-                             }
-                            );
-                View v = updatePassWordBar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(4);
-                updatePassWordBar.Show();
-                this.SetIsClicked(false);
-            }
-            catch (System.Exception e)
-            {
-                this.SetIsClicked(false);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        private Snackbar mLanguageSnackbar;
-        private void ShowLanguageUpdateSuccess()
-        {
-            try
-            {
-                if (mLanguageSnackbar != null && mLanguageSnackbar.IsShown)
-                {
-                    mLanguageSnackbar.Dismiss();
-                }
-
-                mLanguageSnackbar = Snackbar.Make(rootView,
-                    GetLabelByLanguage("changeLanguageSuccess"),
-                    Snackbar.LengthIndefinite)
-                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
-                             (view) =>
-                             {
-                                 // EMPTY WILL CLOSE SNACKBAR
-                             }
-                            );
-                View v = mLanguageSnackbar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(5);
-                mLanguageSnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)
@@ -894,7 +776,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                     mCCErrorSnakebar.Dismiss();
                 }
 
-                mCCErrorSnakebar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("profileCCErrorMsg"), Snackbar.LengthIndefinite)
+                mCCErrorSnakebar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
                 .SetAction(GetLabelCommonByLanguage("ok"), delegate
                 {
 

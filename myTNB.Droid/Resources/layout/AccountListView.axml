@@ -40,14 +40,16 @@
                 android:layout_width="match_parent"
                 android:textSize="18dp"
                 android:textColor="@color/blue"
-                android:padding="6dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
                 android:text="@string/no_account_found" />
             <TextView
                 android:id="@+id/label_your_account"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:textSize="16dp"
-                android:padding="6dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
                 android:textColor="@color/tunaGrey"
                 android:text="@string/account_nickname_info" />
         </LinearLayout>
@@ -89,7 +91,7 @@
                             android:paddingLeft="16dp"
                             android:paddingRight="16dp"
                             android:textColor="@color/blue"
-                            android:background="@color/lightGrey"
+                            android:background="@color/white"
                             android:visibility="gone"
                             android:text="Additional account" />
                         <TextView
@@ -102,7 +104,7 @@
                             android:paddingLeft="16dp"
                             android:paddingRight="16dp"
                             android:textColor="@color/tunaGrey"
-                            android:background="@color/lightGrey"
+                            android:background="@color/white"
                             android:visibility="gone"
                             android:text="Label" />
                         <androidx.recyclerview.widget.RecyclerView
@@ -118,18 +120,18 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:orientation="vertical"
-                    android:padding="16dp"
                     android:layout_alignParentBottom="true"
                     android:gravity="center|bottom"
-                    android:background="@color/white">
+                    android:background="@color/lightGrey"
+                    android:layout_below="@id/layout1">
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
+                        android:layout_gravity="left|center"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
                         android:paddingTop="5dp"
-                        android:layout_marginBottom="15dp"
                         android:background="@color/white">
                         <CheckBox
                             android:id="@+id/checkboxCondition"
@@ -137,6 +139,7 @@
                             android:layout_width="wrap_content"
                             android:checked="false"
                             android:textSize="12dp"
+                            android:layout_marginTop="10dp"
                             android:paddingTop="6dp"
                             android:paddingBottom="6dp"
                             android:gravity="center_vertical"
@@ -149,9 +152,19 @@
                             android:textSize="12dp"
                             android:id="@+id/txtTermsConditions"
                             android:textColorLink="@color/powerBlue"
+                            android:layout_marginTop="10dp"
                             android:paddingLeft="3dp"
                             android:gravity="center_vertical"/>
                     </LinearLayout>
+                    <LinearLayout
+                        android:paddingTop="16dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingBottom="15dp"
+                        android:background="@color/white">
                     <Button
                         android:id="@+id/btnAddAnotherAccount"
                         android:layout_height="wrap_content"
@@ -165,7 +178,8 @@
                         android:layout_width="match_parent"
                         android:text="Confirm"
                         android:textAllCaps="false"
-                        style="@style/DarkButton" />
+                        style="@style/DarkButton1" />
+                    </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
         </ScrollView>

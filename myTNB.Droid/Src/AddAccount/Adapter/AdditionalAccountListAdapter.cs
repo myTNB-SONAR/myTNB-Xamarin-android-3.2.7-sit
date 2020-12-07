@@ -1,11 +1,16 @@
 ﻿using Android.Content;
+using Android.Preferences;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.TextField;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Common.Activity;
+using myTNB_Android.Src.Common.Model;
+using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -64,7 +69,7 @@ namespace myTNB_Android.Src.AddAccount
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
-            var id = Resource.Layout.AdditionalAccountListItemView;
+            var id = Resource.Layout.AdditionalAccountListItemViewOwnerTenant;
             var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
             return new AdditionalAccountViewHolder(itemView, OnClick);
         }
@@ -74,8 +79,8 @@ namespace myTNB_Android.Src.AddAccount
             if (AdditionalItemClick != null)
                 AdditionalItemClick(this, position);
         }
-    }
 
+    }
 
     public class AdditionalAccountViewHolder : RecyclerView.ViewHolder
     {
@@ -84,6 +89,18 @@ namespace myTNB_Android.Src.AddAccount
         public TextView AccountAddress { get; private set; }
         public ImageView DeleteView { get; private set; }
         public TextInputLayout textInputLayoutAccountLabel { get; private set; }
+        public TextView OwnerDetailTitle { get; private set; }                          //module owner tenant add
+        public TextView EmailFieldDetail { get; private set; }
+        public TextView NoMobileFieldDetail { get; private set; }
+        public LinearLayout MobileLinearLayout { get; private set; }
+        public LinearLayout OwnerNoContactLinearLayout { get; private set; }
+        public EditText EmailEditText { get; private set; }
+        public TextInputLayout textInputLayoutEmailEditText { get; private set; }
+
+        private MobileNumberInputComponent mobileNumberInputComponent;
+
+        private string phone_no;
+        private bool flag = false;
 
         private Context context;
         private readonly string EG_ACCOUNT_LABEL = "";
@@ -98,8 +115,34 @@ namespace myTNB_Android.Src.AddAccount
             AccountAddress = itemView.FindViewById<TextView>(Resource.Id.text_account_address);
             DeleteView = itemView.FindViewById<ImageView>(Resource.Id.delete);
             DeleteView.Click += (sender, e) => listener(base.LayoutPosition);
+
+            //adding owner no contact part
+            EmailEditText = itemView.FindViewById<EditText>(Resource.Id.txtEmailReg);
+            OwnerDetailTitle = itemView.FindViewById<TextView>(Resource.Id.textOwnerDetail);
+            EmailFieldDetail = itemView.FindViewById<TextView>(Resource.Id.btnEmailAdress);
+            NoMobileFieldDetail = itemView.FindViewById<TextView>(Resource.Id.btnMobileNumber);
+            MobileLinearLayout = itemView.FindViewById<LinearLayout>(Resource.Id.mobileNumberFieldContainer);
+            OwnerNoContactLinearLayout = itemView.FindViewById<LinearLayout>(Resource.Id.layout_owner_no_contact);
+            textInputLayoutEmailEditText = itemView.FindViewById<TextInputLayout>(Resource.Id.textInputLayoutEmailReg);
+            
+            EmailFieldDetail.Click += (sender, e) => 
+            {
+                MobileLinearLayout.Visibility = ViewStates.Gone;
+                textInputLayoutEmailEditText.Visibility = ViewStates.Visible;
+                EmailEditText.Visibility = ViewStates.Visible;
+            };
+
+            NoMobileFieldDetail.Click += (sender, e) =>
+            {
+                MobileLinearLayout.Visibility = ViewStates.Visible;
+                textInputLayoutEmailEditText.Visibility = ViewStates.Gone;
+                EmailEditText.Visibility = ViewStates.Gone;
+            };
+
+
             TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress, AccountLabel);
             TextViewUtils.SetMuseoSans300Typeface(textInputLayoutAccountLabel);
+
             textInputLayoutAccountLabel.Hint = Utility.GetLocalizedCommonLabel("acctNickname");
             context = itemView.Context;
             AccountLabel.AddTextChangedListener(new InputFilterFormField(AccountLabel, textInputLayoutAccountLabel));
@@ -131,9 +174,41 @@ namespace myTNB_Android.Src.AddAccount
 
                 }
             };
+
+            MobileLinearLayout.RemoveAllViews();
+            mobileNumberInputComponent = new MobileNumberInputComponent(context);
+            mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
+            mobileNumberInputComponent.SetMobileNumberLabel(Utility.GetLocalizedCommonLabel("mobileNo"));
+            mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
+            mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
+            MobileLinearLayout.AddView(mobileNumberInputComponent);
+
+            string selectedcountry = UserSessions.GetSelectedCountry(PreferenceManager.GetDefaultSharedPreferences(context));
+            if (selectedcountry != null)
+            {
+                Country selectedCountry = JsonConvert.DeserializeObject<Country>(selectedcountry);
+                mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
+            }
+
         }
 
+        public void OnTapCountryCode()
+        {
+            context.StartActivity(new Intent(context, typeof(SelectCountryActivity)));
+        }
 
+        private void OnValidateMobileNumber(bool isValidated)
+        {
+            //string mobile = this.item.mobileNoOwner;
+            //int value = Java.Lang.Integer.ParseInt(mobile);
+            //mobileNumberInputComponent.SetMobileNumber(value);
+            string noISDMobileNo = mobileNumberInputComponent.GetMobileNumberValue();
+            phone_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
+            if( !noISDMobileNo.Equals(""))
+            {
+                this.item.mobileNoOwner = phone_no;
+            }
+        }
 
         public void PopulateData(NewAccount item)
         {
@@ -164,12 +239,25 @@ namespace myTNB_Android.Src.AddAccount
                         textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
                     }
                 };
+
+                //EmailEditText.Text = this.item.emailOwner;
+                EmailEditText.AfterTextChanged += (sender, args) =>
+                {
+                    item.emailOwner = EmailEditText.Text.Trim();
+                    /*if (!string.IsNullOrEmpty(item.accountLabel))
+                    {
+                        textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
+                    }
+                    else
+                    {
+                        textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
+                    }*/
+                };
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
-
     }
 }

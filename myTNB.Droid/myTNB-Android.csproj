@@ -816,6 +816,7 @@
     <Compile Include="Src\Database\Model\AccountDataModel.cs" />
     <Compile Include="Src\Database\Model\BillHistoryEntity.cs" />
     <Compile Include="Src\Database\Model\BillHistoryModel.cs" />
+    <Compile Include="Src\Database\Model\UserManageAccessAccount.cs" />
     <Compile Include="Src\Database\Model\DownTimeEntity.cs" />
     <Compile Include="Src\Database\Model\FAQsEntity.cs" />
     <Compile Include="Src\Database\Model\FAQsParentEntity.cs" />
@@ -1057,10 +1058,12 @@
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationTypeRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetSearchForAccountRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetRegisteredUser.cs" />
+    <Compile Include="Src\MyTNBService\Request\GetAccountAccessRight.cs" />
     <Compile Include="Src\MyTNBService\Request\SubmitEnquiryRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetVerifyRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\UpdateUserInfo.cs" />
     <Compile Include="Src\MyTNBService\Request\UpdateIdentificationNo.cs" />
+    <Compile Include="Src\MyTNBService\Response\ManageAccessAccountListResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\GetSearchForAccountResponse.cs" />
     <Compile Include="Src\NotificationAddAccount\Activity\NotificationAddAccountActivity.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetails.cs" />
@@ -8425,6 +8428,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\AddAccDisclaimerView.axml">
+    <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup> 
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\AdditionalAccountListItemViewOwnerTenant.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -8443,6 +8452,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\expand_down_arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\rectangle_rounded_corner_blue_outline.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

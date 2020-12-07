@@ -156,13 +156,17 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 txtTitle = mainView.FindViewById<TextView>(Resource.Id.txtTitle);
                 txtTitlePremise = mainView.FindViewById<TextView>(Resource.Id.txtTitlePremise);
                 txtTitleROC = mainView.FindViewById<TextView>(Resource.Id.txtTitleROC);
-
                 accountType = mainView.FindViewById<TextView>(Resource.Id.selector_account_type);
+                btnWhereIsMyAccountNo = mainView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
 
-                txtAccountType.Text = Utility.GetLocalizedLabel("Common", "accountType").ToUpper();
-                textInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("Common","accountNo");
+                txtAccountType.Text = Utility.GetLocalizedLabel("AddAccount", "accountType").ToUpper();
+                textInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("AddAccount", "PremisesHint");
                 textInputLayoutAccountLabel.Hint = Utility.GetLocalizedLabel("Common","acctNickname");
-                textInputLayoutRocNo.Hint = Utility.GetLocalizedLabel("AddAccount", "rocNumberOptional");
+                textInputLayoutRocNo.Hint = Utility.GetLocalizedLabel("AddAccount", "rocNumberOptional").ToUpper();
+                txtTitlePremise.Hint = Utility.GetLocalizedLabel("AddAccount", "AccHeaderText");
+                txtTitle.Hint = Utility.GetLocalizedLabel("AddAccount", "ROCHeaderText");
+                txtTitleROC.Hint = Utility.GetLocalizedLabel("AddAccount", "ROCDetailsText");
+                btnWhereIsMyAccountNo.Hint = Utility.GetLocalizedLabel("AddAccount", "WhereAccNo");
 
                 TextViewUtils.SetMuseoSans300Typeface(edtAccountLabel
                     , edtAccountNo
@@ -174,7 +178,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     , textInputLayoutMotherMaidenName
                     , textInputLayoutRocNo);
 
-                TextViewUtils.SetMuseoSans300Typeface(txtAccountType, accountType, txtTitle, accountType, txtTitlePremise);
+                TextViewUtils.SetMuseoSans300Typeface(txtAccountType, accountType, txtTitle, accountType, txtTitlePremise, btnWhereIsMyAccountNo);
                 TextViewUtils.SetMuseoSans500Typeface(txtTitleROC, txtSkipAcc);
 
                 if (fromRegisterPage)
