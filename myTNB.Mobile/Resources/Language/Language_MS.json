@@ -153,7 +153,7 @@
     "invalid_fullname": "Nama penuh tidak sah",
     "invalid_idnumber": "Nombor KP, ROC atau Pasport tidak sah",
     "invalid_mismatchedEmail": "Kedua-dua e-mel tidak padan",
-    "error_duplicateAccountMessage": "Nombor akaun ini telah ditambah ke senarai.",
+    "error_duplicateAccountMessage": "Nombor akaun elektrik ini telah ditambah ke senarai.",
     "error_duplicateAccountTitle": "Akaun Yang Sama",
     "invalid_icNumber": "Nombor KP, Pasport atau ROC tidak sah",
     "invalid_rocNumber": "Nombor ROC tidak sah",
@@ -193,7 +193,8 @@
     "mykadhint": "Please enter a valid 12 digits IC / Mykad number.",
     "armyidhint": "The Army ID must be between 5-50 characters.",
     "identificationhint": "We'll use this identification to help you set up your account.",
-    "passporthint": "The Passport must be between 5-50 characters."
+    "passporthint": "The Passport must be between 5-50 characters.",
+     "error_NotExistsAccountMessage": "Nombor akaun yang anda masukkan ini tidak dapat ditemui."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -663,7 +664,13 @@
     "ROCHeaderText":"Do more on myTNB with your company's ROC number.",
     "ROCDetailsText":"Enjoy additional account information and access to applications!",
     "WhereAccNo":"Di manakah boleh saya dapatkan nombor akaun?",
-    "OwnerDetectTitle" : "Kami jumpa {0} akaun elektrik yang sepadan dengan akaun myTNB anda."
+    "OwnerDetectTitle" : "Kami jumpa {0} akaun elektrik yang sepadan dengan akaun myTNB anda.",
+    "tncAddAccTitle": "Terma & Syarat",
+    "DiclaimerHeaderTNBTerm": "<b>Syarat Penggunaan TNB, Perjanjian Pengguna dan dasar Privasi</b>",
+    "DiclaimerHeaderPersonalData": "<b>Dasar Perlindungan Data Peribadi</b>",
+    "DiclaimerHeaderAddElectricity": "<b>Add Electricity Account Disclaimer</b>",
+    "DisclaimerDetails1": "I confirm that I <b>({0})</b> the owner / authorised person, have the consent and permission to view the account information for the account(s) listed. As a non-owner I agree to share my name and email address with the owner upon submission of this request.",
+    "DisclaimerDetails2": "Please be informed that this application is for the privilege use between TNB and its account holder and any other person with the consent of the account holder. TNB shall not be held liable for any improper use and incorrect use of the information described and contained herein and under no obligation to check the authenticity of such consent and permission given. Upon confirming, you are deemed to have read, understood and agreed to the disclaimer as displayed."
   },
   "Profile": {
     "title": "Profil",
@@ -842,6 +849,7 @@
     "noAccounts": "No Electricity Account",
     "addAccountMessage": "Add your existing TNB Electricity Supply Account to view usage and transaction details.",
     "titleManageUser": "Manage User",
+    "titleAddUser": "Tambah Pengguna Baru",
     "dialogAddrress":"Why can't I see my full address?",
     "dialogAddrressMessage":"We mask sensitive information to safeguard owner's privacy. You are seeing masked information as you are not the owner of this electricity account.",
     "dialogManageUser":"What does this mean?",

@@ -150,7 +150,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 addAccount = rootView.FindViewById<Button>(Resource.Id.btnAddAccount);
                 TextViewUtils.SetMuseoSans500Typeface(addAccount);
-                addAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
+                addAccount.Text = Utility.GetLocalizedLabel("Common", "next");
                 addAccount.Click += delegate
                 {
                     CallValidateAccountService();
@@ -268,6 +268,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             isClicked = true;
         }
 
+
+
         private bool onLongClick(object sender, View.LongClickEventArgs e)
         {
             // Code to execute on item click.
@@ -363,12 +365,14 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 }
                 else
                 {
-                    MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                    textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                    textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("error_duplicateAccountMessage");
+                    /*MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                         .SetTitle(Utility.GetLocalizedErrorLabel("error_duplicateAccountTitle"))
                         .SetMessage(Utility.GetLocalizedErrorLabel("error_duplicateAccountMessage"))
                         .SetContentGravity(GravityFlags.Center)
                         .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
-                        .Build().Show();
+                        .Build().Show();*/
                 }
             }
             catch (Exception e)
@@ -384,20 +388,23 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public void ShowAddAccountFail(string errorMessage)
         {
-            if (mSnackBar != null && mSnackBar.IsShown)
-            {
-                mSnackBar.Dismiss();
 
-            }
+            textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+            textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("error_NotExistsAccountMessage");
+            /* if (mSnackBar != null && mSnackBar.IsShown)
+             {
+                 mSnackBar.Dismiss();
 
-            mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
-            );
-            View v = mSnackBar.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
+             }
 
-            mSnackBar.Show();
+             mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
+             .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
+             );
+             View v = mSnackBar.View;
+             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+             tv.SetMaxLines(5);
+
+             mSnackBar.Show();*/
         }
 
         public void ShowAddAccountResponse(ServiceResponse response)

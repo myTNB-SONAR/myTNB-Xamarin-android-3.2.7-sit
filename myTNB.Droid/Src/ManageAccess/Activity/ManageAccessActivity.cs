@@ -33,7 +33,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         //, Icon = "@drawable/Logo"
         //, MainLauncher = true
         , ScreenOrientation = ScreenOrientation.Portrait
-        , Theme = "@style/Theme.MyAccount")]
+        , Theme = "@style/Theme.DashboardHome")]
     public class ManageAccessActivity : BaseActivityCustom, ManageAccessContract.IView, customButtonListener
     {
         [BindView(Resource.Id.rootView)]
@@ -115,7 +115,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                     Console.WriteLine("ListView: OnTouch");
                     e.Handled = true;
                 };
-
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 mPresenter = new ManageAccessPresenter(this);
                 this.userActionsListener.Start();
             }

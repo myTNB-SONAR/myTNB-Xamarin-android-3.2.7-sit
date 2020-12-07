@@ -31,7 +31,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
         //, Icon = "@drawable/Logo"
         //, MainLauncher = true
         , ScreenOrientation = ScreenOrientation.Portrait
-        , Theme = "@style/Theme.MyAccount")]
+        , Theme = "@style/Theme.DashboardHome")]
     public class MyAccountActivity : BaseActivityCustom, MyAccountContract.IView, customButtonListener
     {
         [BindView(Resource.Id.rootView)]
@@ -101,6 +101,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 txtMyAccountNoAccountTitle.Text = GetLabelByLanguage("noAccounts");
                 txtMyAccountNoAccountContent.Text = GetLabelByLanguage("addAccountMessage");
                 btnAddAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
                 adapter = new MyAccountAdapter(this, false);
                 listView.Adapter = adapter;

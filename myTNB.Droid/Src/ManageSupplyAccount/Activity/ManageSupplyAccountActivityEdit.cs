@@ -31,7 +31,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 {
     [Activity(Label = "@string/manage_supply_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
-    , Theme = "@style/Theme.ManageSupplyAccount")]
+    , Theme = "@style/Theme.DashboardHome")]
     public class ManageSupplyAccountActivityEdit : BaseActivityCustom, ManageSupplyAccountContract.IView
     {
         [BindView(Resource.Id.rootView)]
@@ -121,7 +121,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 btnRemoveAccount.Text = GetLabelByLanguage("removeAccount");
 
                 txtNickName.AddTextChangedListener(new InputFilterFormField(txtNickName, txtInputLayoutNickName));
-
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                // this.SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                //SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
 
                 mPresenter = new ManageSupplyAccountPresenter(this, accountData);
                 this.userActionsListener.Start();

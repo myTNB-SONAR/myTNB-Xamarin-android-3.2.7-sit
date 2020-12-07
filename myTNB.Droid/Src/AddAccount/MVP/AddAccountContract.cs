@@ -113,7 +113,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
             void RemoveNameErrorMessage();
             void RemoveNumberErrorMessage();
-
+            
         }
 
         public interface IUserActionsListener : IBasePresenter

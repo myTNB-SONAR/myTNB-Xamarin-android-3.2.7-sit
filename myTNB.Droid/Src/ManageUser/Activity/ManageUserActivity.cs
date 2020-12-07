@@ -34,7 +34,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
 {
     [Activity(Label = "@string/manage_supply_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
-    , Theme = "@style/Theme.ManageSupplyAccount")]
+    , Theme = "@style/Theme.DashboardHome")]
     public class ManageUserActivity : BaseActivityCustom, ManageUserContract.IView
     {
         [BindView(Resource.Id.rootView)]
@@ -43,8 +43,8 @@ namespace myTNB_Android.Src.ManageUser.Activity
        /* [BindView(Resource.Id.txtManageUserTitle)]
         TextView txtManageUserTitle;*/
 
-        [BindView(Resource.Id.txtInputLayoutNickName)]
-        TextInputLayout txtInputLayoutNickName;
+        /*[BindView(Resource.Id.txtInputLayoutNickName)]
+        TextInputLayout txtInputLayoutNickName;*/
 
         [BindView(Resource.Id.txtNickName)]
         EditText txtNickName;
@@ -129,6 +129,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 ManageUserItem.SetHeaderTitle(GetLabelCommonByLanguage("ManageUserTitle"));
                 profileMenuItemsContent.AddView(ManageUserItem);
 
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 mPresenter = new ManageUserPresenter(this, accountData);
                 this.userActionsListener.Start();
             }

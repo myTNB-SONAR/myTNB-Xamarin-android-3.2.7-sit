@@ -31,7 +31,7 @@ using System.Runtime;
 namespace myTNB_Android.Src.AddAccount.Activity
 {
     [Activity(Label = "Add Electricity Account"
-        , ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.LinkAccount")]
+        , ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.DashboardHome")]
     public class LinkAccountActivity : BaseActivityCustom, LinkAccountContract.IView
     {
 
@@ -103,6 +103,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
         private bool fromDashboard = false;
         private bool fromRegisterPage = false;
         const string PAGE_ID = "AddAccount";
+
 
         public bool IsActive()
         {
@@ -306,7 +307,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
                 additionalAccountListRecyclerView.SetLayoutManager(layoutManager2);
                 additionalAccountListRecyclerView.SetAdapter(additionalAdapter);
-
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 var boxcondition = new CheckBox(this)
                 {
                     ScaleX = 0.8f,

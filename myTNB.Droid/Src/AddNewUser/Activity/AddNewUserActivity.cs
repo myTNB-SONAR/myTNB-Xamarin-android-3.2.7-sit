@@ -34,7 +34,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
 {
     [Activity(Label = "@string/manage_supply_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
-    , Theme = "@style/Theme.ManageSupplyAccount")]
+    , Theme = "@style/Theme.DashboardHome")]
     public class AddNewUserActivity : BaseActivityCustom, AddNewUserContract.IView
     {
         [BindView(Resource.Id.rootView)]
@@ -128,6 +128,8 @@ namespace myTNB_Android.Src.AddNewUser.Activity
 
                 txtUserEmail.AddTextChangedListener(new InputFilterFormField(txtUserEmail, textInputLayoutUserEmail));
                 txtUserEmail.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                SetToolBarTitle(GetLabelByLanguage("titleAddUser"));
 
                 mPresenter = new AddNewUserPresenter(this, accountData);
                 this.userActionsListener.Start();

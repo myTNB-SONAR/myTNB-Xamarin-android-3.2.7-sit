@@ -153,7 +153,7 @@
     "invalid_fullname": "Invalid full name",
     "invalid_idnumber": "Invalid IC, ROC or Passport Number",
     "invalid_mismatchedEmail": "Your email and confirmation email do not match.",
-    "error_duplicateAccountMessage": "This account number has already been added to the list.",
+    "error_duplicateAccountMessage": "This electricity account number has already been added to the list.",
     "error_duplicateAccountTitle": "Duplicate Account",
     "invalid_icNumber": "Invalid IC number.",
     "invalid_rocNumber": "Invalid ROC number.",
@@ -194,6 +194,7 @@
     "armyidhint": "The Army ID must be between 5-50 characters.",
     "identificationhint": "We'll use this identification to help you set up your account.",
     "passporthint": "The Passport must be between 5-50 characters.",
+    "error_NotExistsAccountMessage": "This  account number you entered cannnot be found."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -649,6 +650,7 @@
     "bodyContinue": "You can still add the account manually with its account number, but your access to the account will be limited as an unverified owner. ",
     "tnc": "By confirming, I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>.",
     "tnc_checked": "I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>.",
+    //new added 
     "AccHeaderText":"Let's add your account by selecting your account type.",
     "PremisesHint":"The Premises I’m Adding is",
     "AccHeaderBlueText":"Is this electricity account registered under your name?",
@@ -662,7 +664,14 @@
     "ROCHeaderText":"Do more on myTNB with your company's ROC number.",
     "ROCDetailsText":"Enjoy additional account information and access to applications!",
     "WhereAccNo":"Where is my account number?",
-    "OwnerDetectTitle" : "We found {0} electricity account that matches your myTNB account."
+    "OwnerDetectTitle" : "We found {0} electricity account that matches your myTNB account.",
+    "tncAddAccTitle": "Terms & Conditions",
+    "DiclaimerHeaderTNBTerm": "<b>TNB Terms of Use, User Agreement and Privacy policy</b>",
+    "DiclaimerHeaderPersonalData": "<b>Personal Data Protection Policy</b>",
+    "DiclaimerHeaderAddElectricity": "<b>Add Electricity Account Disclaimer</b>",
+    "DisclaimerDetails1": "I confirm that I <b>({0})</b> the owner / authorised person, have the consent and permission to view the account information for the account(s) listed. As a non-owner I agree to share my name and email address with the owner upon submission of this request.",
+    "DisclaimerDetails2": "Please be informed that this application is for the privilege use between TNB and its account holder and any other person with the consent of the account holder. TNB shall not be held liable for any improper use and incorrect use of the information described and contained herein and under no obligation to check the authenticity of such consent and permission given. Upon confirming, you are deemed to have read, understood and agreed to the disclaimer as displayed."
+
   },
   "Profile": {
     "title": "Profile",
@@ -840,6 +849,7 @@
     "noAccounts": "No Electricity Account",
     "addAccountMessage": "Add your existing TNB Electricity Supply Account to view usage and transaction details.",
     "titleManageUser": "Manage User",
+    "titleAddUser": "Add New User",
     "dialogAddrress":"Why can't I see my full address?",
     "dialogAddrressMessage":"We mask sensitive information to safeguard owner's privacy. You are seeing masked information as you are not the owner of this electricity account.",
     "dialogManageUser":"What does this mean?",
@@ -910,7 +920,7 @@
     "gotIt" : "Got It",
     "acccreated" : "Account Created!",
     "emailverify" : "Please verify your email",
-    "emailVerifiedLinkSent" : "We have sent a verification link to <b>{0}</b>. You may verify it by clicking the link in your email afterwards to unlock all the things that myTNB has to offer!"
+    "emailVerifiedLinkSent" : "We have sent a verification link to <strong>{0}</strong>. You may verify it by clicking the link in your email afterwards to unlock all the things that myTNB has to offer!"
   },
   "AddCard": {
     "title": "Add Card",

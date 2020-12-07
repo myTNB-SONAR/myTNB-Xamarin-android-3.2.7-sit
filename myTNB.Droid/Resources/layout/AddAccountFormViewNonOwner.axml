@@ -16,12 +16,14 @@
             android:weightSum="1"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/lightGrey">
             <LinearLayout
                 android:id="@+id/main_layout"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:layout_weight="0.9"
                 android:padding="16dp">
                  <TextView
@@ -133,7 +135,7 @@
                     android:layout_width="match_parent"
                     style="@style/DarkButton"
                     android:textAllCaps="false"
-                    android:text="Add Account" />
+                    android:text="Next" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

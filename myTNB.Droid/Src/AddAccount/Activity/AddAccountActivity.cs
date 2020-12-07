@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
     [Activity(Label = "Add Electricity Account"
         , ScreenOrientation = ScreenOrientation.Portrait
         , WindowSoftInputMode = SoftInput.StateHidden
-        , Theme = "@style/Theme.AddAccount")]
+        , Theme = "@style/Theme.DashboardHome")]
     public class AddAccountActivity : BaseToolbarAppCompatActivity
     {
 
@@ -55,10 +55,12 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
             //Initialize scanner
             MobileBarcodeScanner.Initialize(Application);
+            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
         }
 
         public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
         {
+            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
             if (fragment is AddAccountTypeFragmentNew)
             {
                 bool isOwner = bundle.GetBoolean("isOwner");
@@ -177,6 +179,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             return Utility.GetLocalizedLabel("AddAccount","title");
         }
+
+        /*public void SetInnerDashboardToolbarBackground()
+        {
+            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+        }*/
 
         public override void OnTrimMemory(TrimMemory level)
         {

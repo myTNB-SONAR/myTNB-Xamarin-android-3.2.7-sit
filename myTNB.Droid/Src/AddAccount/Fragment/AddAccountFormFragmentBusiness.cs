@@ -196,7 +196,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 addAccount = rootView.FindViewById<Button>(Resource.Id.btnAddAnotherAccount);
                 TextViewUtils.SetMuseoSans500Typeface(addAccount);
-                addAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
+                addAccount.Text = Utility.GetLocalizedLabel("Common", "next");
                 addAccount.Click += delegate
                 {
                     CallValidateAccountService();
