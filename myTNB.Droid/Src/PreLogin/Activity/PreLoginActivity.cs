@@ -247,6 +247,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+            SearchApplicationTypeCache.Instance.Clear();
         }
 
         protected override void OnPause()
