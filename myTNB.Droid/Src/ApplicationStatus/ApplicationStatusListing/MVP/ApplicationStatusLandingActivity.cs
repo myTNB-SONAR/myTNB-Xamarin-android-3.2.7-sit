@@ -529,6 +529,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                     }
                 }
             }
+
+            if (ApplicationStatusSearchDetailCache.Instance.ShouldSave)
+            {
+                btnSearchApplicationStatus.Enabled = false;
+                btnSearchApplicationStatus.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_outline);
+                btnSearchApplicationStatus.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.silverChalice));
+            }
         }
 
         public override View OnCreateView(string name, Context context, IAttributeSet attrs)
@@ -983,6 +990,37 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                 if (IsRefresh)
                                 {
                                     ShowProgressDialog();
+                                }
+
+                                if (ApplicationStatusSearchDetailCache.Instance.ShouldSave)
+                                {
+                                    GetApplicationStatusDisplay appDetails = ApplicationStatusSearchDetailCache.Instance.GetData();
+                                    PostSaveApplicationResponse postSaveApplicationResponse = await ApplicationStatusManager.Instance.SaveApplication(
+                                        appDetails.ApplicationDetail.ReferenceNo
+                                        , appDetails.ApplicationDetail.ApplicationModuleId
+                                        , appDetails.ApplicationTypeID
+                                        , appDetails.ApplicationDetail.BackendReferenceNo
+                                        , appDetails.ApplicationDetail.BackendApplicationType
+                                        , appDetails.ApplicationDetail.BackendModule
+                                        , appDetails.ApplicationDetail.StatusCode
+                                        , appDetails.ApplicationDetail.CreatedDate.Value);
+                                    if (postSaveApplicationResponse.StatusDetail.IsSuccess)
+                                    {
+                                        Toast.MakeText(this, postSaveApplicationResponse.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
+                                    }
+                                    else
+                                    {
+                                        MyTNBAppToolTipBuilder saveFailPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                           .SetTitle(postSaveApplicationResponse.StatusDetail.Title)
+                                           .SetMessage(postSaveApplicationResponse.StatusDetail.Message)
+                                           .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                                           .Build();
+                                        saveFailPopup.Show();
+                                    }
+                                    ApplicationStatusSearchDetailCache.Instance.Clear();
+                                    btnSearchApplicationStatus.Enabled = true;
+                                    btnSearchApplicationStatus.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
+                                    btnSearchApplicationStatus.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
                                 }
 
                                 if (!isFilter)

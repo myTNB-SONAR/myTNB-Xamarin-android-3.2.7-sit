@@ -168,7 +168,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [BindView(Resource.Id.txtBCRMDownMessage)]
         TextView txtBCRMDownMessage;
 
-        //private bool IsSaveFlow = false;
         private bool IsFromLinkedWith = false;
         private Snackbar mNoInternetSnackbar;
 
@@ -350,12 +349,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         if (postSaveApplicationResponse.StatusDetail.IsSuccess)
                         {
                             Toast.MakeText(this, postSaveApplicationResponse.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
-                            /*if (IsSaveFlow)
-                            {
-                                Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
-                                StartActivity(applicationLandingIntent);
-                                IsSaveFlow = false;
-                            }*/
                             SetResult(Result.Ok, new Intent());
                             Finish();
                         }
@@ -412,12 +405,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         public void ShowStatusLanding()
         {
             ApplicationStatusSearchDetailCache.Instance.Clear();
-            /*if (IsSaveFlow)
-            {
-                Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
-                StartActivity(applicationLandingIntent);
-                IsSaveFlow = false;
-            }*/
             SetResult(Result.Ok, new Intent());
             Finish();
         }
@@ -474,10 +461,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
                     IsFromLinkedWith = extras.GetBoolean("IsFromLinkedWith");
                 }
-                /*if (extras.ContainsKey("IsSaveFlow"))
-                {
-                    IsSaveFlow = extras.GetBoolean("IsSaveFlow");
-                }*/
                 if (extras != null)
                 {
                     if (extras.ContainsKey("applicationStatusResponse"))
@@ -657,11 +640,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle, txtApplicationStatusDetailNote, txtBCRMDownMessage);
                         }
                     }
-
-                    /*if (IsSaveFlow)
-                    {
-                        SaveApplication();
-                    }*/
                 }
             }
         }
