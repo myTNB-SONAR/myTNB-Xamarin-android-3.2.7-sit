@@ -10,6 +10,7 @@ using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
+using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.ForgetPassword.Activity;
 using myTNB_Android.Src.Login.MVP;
@@ -147,6 +148,7 @@ namespace myTNB_Android.Src.Login.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+            SearchApplicationTypeCache.Instance.Clear();
         }
 
         public void ClearFields()

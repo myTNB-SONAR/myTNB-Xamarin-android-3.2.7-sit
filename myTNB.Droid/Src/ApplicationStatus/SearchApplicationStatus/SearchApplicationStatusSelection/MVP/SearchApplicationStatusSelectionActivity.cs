@@ -8,11 +8,9 @@ using Android.Util;
 using System;
 using CheeseBind;
 using Android.Widget;
-
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
 using System.Collections.Generic;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter;
-
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.Adapter;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models;
 using Newtonsoft.Json;

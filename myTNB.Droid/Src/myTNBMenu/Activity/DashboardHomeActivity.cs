@@ -304,11 +304,48 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             if (ApplicationStatusSearchDetailCache.Instance.ShouldSave)
             {
-                Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+                /*Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
                 applicationStatusDetailIntent.PutExtra("applicationStatusResponse"
                     , JsonConvert.SerializeObject(ApplicationStatusSearchDetailCache.Instance.GetData()));
                 applicationStatusDetailIntent.PutExtra("IsSaveFlow", true);
-                StartActivity(applicationStatusDetailIntent);
+                StartActivity(applicationStatusDetailIntent);*/
+
+                RouteToApplicationLanding();
+            }
+        }
+
+        private async void RouteToApplicationLanding()
+        {
+            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
+            if (searchApplicationTypeResponse == null)
+            {
+                ShowProgressDialog();
+                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+                if (searchApplicationTypeResponse != null
+                    && searchApplicationTypeResponse.StatusDetail != null
+                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                {
+                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+                }
+                HideProgressDialog();
+            }
+            if (searchApplicationTypeResponse != null
+                && searchApplicationTypeResponse.StatusDetail != null
+                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+            {
+                AllApplicationsCache.Instance.Clear();
+                AllApplicationsCache.Instance.Reset();
+                Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
+                StartActivity(applicationLandingIntent);
+            }
+            else
+            {
+                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                     .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
+                     .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
+                     .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
+                     .Build();
+                errorPopup.Show();
             }
         }
 

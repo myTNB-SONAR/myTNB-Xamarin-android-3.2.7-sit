@@ -82,6 +82,5 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             return newList;
 
         }
-
     }
 }
