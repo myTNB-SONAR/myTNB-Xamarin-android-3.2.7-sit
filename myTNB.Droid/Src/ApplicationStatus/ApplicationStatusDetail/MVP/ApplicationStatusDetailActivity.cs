@@ -168,7 +168,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [BindView(Resource.Id.txtBCRMDownMessage)]
         TextView txtBCRMDownMessage;
 
-        private bool IsSaveFlow = false;
+        //private bool IsSaveFlow = false;
         private bool IsFromLinkedWith = false;
         private Snackbar mNoInternetSnackbar;
 
@@ -328,7 +328,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginMessage"))
                         .SetCTALabel(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginPrimaryCTA"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginSecondaryCTA"))
-                        .SetSecondaryCTAaction(() => ShowPreLogin())
+                        .SetSecondaryCTAaction(() => ShowLogin())
                         .Build();
                     whereisMyacc.Show();
                 }
@@ -350,12 +350,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         if (postSaveApplicationResponse.StatusDetail.IsSuccess)
                         {
                             Toast.MakeText(this, postSaveApplicationResponse.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
-                            if (IsSaveFlow)
+                            /*if (IsSaveFlow)
                             {
                                 Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
                                 StartActivity(applicationLandingIntent);
                                 IsSaveFlow = false;
-                            }
+                            }*/
                             SetResult(Result.Ok, new Intent());
                             Finish();
                         }
@@ -403,7 +403,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             this.SetIsClicked(false);
         }
 
-        public void ShowPreLogin()
+        public void ShowLogin()
         {
             ApplicationStatusSearchDetailCache.Instance.SetData(applicationDetailDisplay);
             StartActivity(typeof(LoginActivity));
@@ -412,12 +412,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         public void ShowStatusLanding()
         {
             ApplicationStatusSearchDetailCache.Instance.Clear();
-            if (IsSaveFlow)
+            /*if (IsSaveFlow)
             {
                 Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
                 StartActivity(applicationLandingIntent);
                 IsSaveFlow = false;
-            }
+            }*/
             SetResult(Result.Ok, new Intent());
             Finish();
         }
@@ -474,10 +474,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
                     IsFromLinkedWith = extras.GetBoolean("IsFromLinkedWith");
                 }
-                if (extras.ContainsKey("IsSaveFlow"))
+                /*if (extras.ContainsKey("IsSaveFlow"))
                 {
                     IsSaveFlow = extras.GetBoolean("IsSaveFlow");
-                }
+                }*/
                 if (extras != null)
                 {
                     if (extras.ContainsKey("applicationStatusResponse"))
@@ -658,10 +658,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         }
                     }
 
-                    if (IsSaveFlow)
+                    /*if (IsSaveFlow)
                     {
                         SaveApplication();
-                    }
+                    }*/
                 }
             }
         }
