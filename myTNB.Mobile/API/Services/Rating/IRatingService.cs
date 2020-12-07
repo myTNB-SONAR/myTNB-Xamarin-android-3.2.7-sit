@@ -23,6 +23,7 @@ namespace myTNB.Mobile.API.Services.Rating
             , string categoryID
             , CancellationToken cancelToken
             , string language
+            , [Header(Constants.Header_Lang)] string lang
             , string urlPrefix = Constants.ApiUrlPath
             , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
 
@@ -30,6 +31,7 @@ namespace myTNB.Mobile.API.Services.Rating
         Task<HttpResponseMessage> SubmitRating([Body] PostSubmitRatingRequest request
            , [Header(Constants.Header_UserInfo)] string userInfo
            , CancellationToken cancelToken
+           , [Header(Constants.Header_Lang)] string lang
            , string urlPrefix = Constants.ApiUrlPath
            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
     }
