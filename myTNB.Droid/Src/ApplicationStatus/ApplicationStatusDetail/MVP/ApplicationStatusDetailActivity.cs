@@ -183,9 +183,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         [BindView(Resource.Id.layoutstar)]
         LinearLayout layoutstar;
-       
 
-        private bool IsSaveFlow = false;
         private bool IsFromLinkedWith = false;
         private Snackbar mNoInternetSnackbar;
 
@@ -347,7 +345,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginMessage"))
                         .SetCTALabel(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginPrimaryCTA"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("ApplicationStatusDetails", "loginSecondaryCTA"))
-                        .SetSecondaryCTAaction(() => ShowPreLogin())
+                        .SetSecondaryCTAaction(() => ShowLogin())
                         .Build();
                     whereisMyacc.Show();
                 }
@@ -369,12 +367,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         if (postSaveApplicationResponse.StatusDetail.IsSuccess)
                         {
                             Toast.MakeText(this, postSaveApplicationResponse.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
-                            if (IsSaveFlow)
-                            {
-                                Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
-                                StartActivity(applicationLandingIntent);
-                                IsSaveFlow = false;
-                            }
                             SetResult(Result.Ok, new Intent());
                             Finish();
                         }
@@ -422,7 +414,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             this.SetIsClicked(false);
         }
 
-        public void ShowPreLogin()
+        public void ShowLogin()
         {
             ApplicationStatusSearchDetailCache.Instance.SetData(applicationDetailDisplay);
             StartActivity(typeof(LoginActivity));
@@ -431,12 +423,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         public void ShowStatusLanding()
         {
             ApplicationStatusSearchDetailCache.Instance.Clear();
-            if (IsSaveFlow)
-            {
-                Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
-                StartActivity(applicationLandingIntent);
-                IsSaveFlow = false;
-            }
             SetResult(Result.Ok, new Intent());
             Finish();
         }
@@ -492,10 +478,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 if (extras.ContainsKey("IsFromLinkedWith"))
                 {
                     IsFromLinkedWith = extras.GetBoolean("IsFromLinkedWith");
-                }
-                if (extras.ContainsKey("IsSaveFlow"))
-                {
-                    IsSaveFlow = extras.GetBoolean("IsSaveFlow");
                 }
                 if (extras != null)
                 {
@@ -675,7 +657,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             TextViewUtils.SetMuseoSans500Typeface(txtApplicationStatusMainTitle, txtApplicationStatusTitle, txtApplicationStatusBottomPayableTitle);
                             TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle, txtApplicationStatusDetailNote, txtBCRMDownMessage);
 
-                            if(applicationDetailDisplay.RatingDisplay !=  null && applicationDetailDisplay.RatingDisplay != string.Empty)
+                            if (applicationDetailDisplay.RatingDisplay != null && applicationDetailDisplay.RatingDisplay != string.Empty)
                             {
                                 txtApplicationRateTitle.Visibility = ViewStates.Visible;
                                 txtApplicationRateStar.Visibility = ViewStates.Visible;
@@ -706,10 +688,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             tv.SetMaxLines(5);
                             mSaveSnackbar.Show();
                         }
-                    }
-                    if (IsSaveFlow)
-                    {
-                        SaveApplication();
                     }
                 }
             }
