@@ -25,7 +25,7 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
 {
     [Activity(Label = "@string/update_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
-    , Theme = "@style/Theme.UpdateMobile")]
+    , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class UpdateNicknameActivity : BaseActivityCustom, UpdateNicknameContract.IView
     {
         [BindView(Resource.Id.rootView)]

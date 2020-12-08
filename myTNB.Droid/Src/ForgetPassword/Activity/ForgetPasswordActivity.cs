@@ -26,7 +26,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
     [Activity(Label = "@string/forget_password_activity_title"
               , Icon = "@drawable/ic_launcher"
    , ScreenOrientation = ScreenOrientation.Portrait
-   , Theme = "@style/Theme.ForgetPassword")]
+   , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class ForgetPasswordActivity : BaseActivityCustom, ForgetPasswordContract.IView
     {
 

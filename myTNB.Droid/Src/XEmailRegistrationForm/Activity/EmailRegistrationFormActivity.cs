@@ -40,7 +40,7 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
       , NoHistory = false
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
-      , Theme = "@style/Theme.DashboardHome")]
+      , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class EmailRegistrationFormActivity : BaseActivityCustom, EmailRegisterFormContract.IView, ITextWatcher
     {
         private EmailRegisterFormPresenter mPresenter;
@@ -601,6 +601,36 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
             mUknownExceptionSnackBar.Show();
             this.SetIsClicked(false);
 
+        }
+
+        private Snackbar mCCErrorSnakebar;
+        public void ShowCCErrorSnakebar()
+        {
+            try
+            {
+                if (mCCErrorSnakebar != null && mCCErrorSnakebar.IsShown)
+                {
+                    mCCErrorSnakebar.Dismiss();
+                }
+
+                mCCErrorSnakebar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+                .SetAction(GetLabelCommonByLanguage("ok"), delegate
+                {
+
+                    mCCErrorSnakebar.Dismiss();
+                }
+                );
+                View v = mCCErrorSnakebar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(6);
+                mCCErrorSnakebar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override bool ShowCustomToolbarTitle()

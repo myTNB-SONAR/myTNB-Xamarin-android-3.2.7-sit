@@ -45,7 +45,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
       , NoHistory = false
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
-      , Theme = "@style/Theme.DashboardHome")]
+      , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class DetailRegistrationFormActivity : BaseActivityCustom, RegisterFormContract.IView
     {
         private RegisterFormPresenter mPresenter;

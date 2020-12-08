@@ -32,7 +32,7 @@ using System.Runtime;
 namespace myTNB_Android.Src.AddAccount.Activity
 {
     [Activity(Label = "Add Electricity Account"
-        , ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.DashboardHome")]
+        , ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class LinkAccountActivity : BaseActivityCustom, LinkAccountContract.IView
     {
 

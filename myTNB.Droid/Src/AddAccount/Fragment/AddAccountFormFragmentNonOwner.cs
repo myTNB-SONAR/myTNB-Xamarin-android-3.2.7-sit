@@ -161,6 +161,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 TextViewUtils.SetMuseoSans500Typeface(btnWhereIsMyAccountNo);
                 btnWhereIsMyAccountNo.Click += async delegate
                 {
+
+
                     dialogWhereMyAccountNo = new MaterialDialog.Builder(Activity)
                     .CustomView(Resource.Layout.WhereIsMyAccountView, false)
                     .Cancelable(true)
@@ -200,12 +202,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 edtAccountLabel.FocusChange += (sender, e) =>
                 {
-                    textInputLayoutAccountLabel.Error = "";
+                    textInputLayoutAccountLabel.HelperText = "";
                     string accountLabel = edtAccountLabel.Text.Trim();
                     if (e.HasFocus)
                     {
                         textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
-                        textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
+                        textInputLayoutAccountLabel.HelperText = Utility.GetLocalizedHintLabel("nickname");
                     }
                     try
                     {

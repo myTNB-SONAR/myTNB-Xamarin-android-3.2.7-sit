@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 {
     [Activity(Label = "@string/manage_supply_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
-    , Theme = "@style/Theme.DashboardHome")]
+    , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class ManageSupplyAccountActivity : BaseActivityCustom, ManageSupplyAccountContract.IView
     {
         [BindView(Resource.Id.rootView)]

@@ -31,7 +31,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
     [Activity(Label = "@string/notification_settings_activity_title"
       //, MainLauncher = true
       , ScreenOrientation = ScreenOrientation.Portrait
-      , Theme = "@style/Theme.Notification")]
+      , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class NotificationSettingsActivity : BaseActivityCustom, NotificationSettingsContract.IView
     {
 

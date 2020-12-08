@@ -29,7 +29,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
     [Activity(Label = "@string/reset_password_activity_title"
               , Icon = "@drawable/ic_launcher"
        , ScreenOrientation = ScreenOrientation.Portrait
-       , Theme = "@style/Theme.ResetPassword")]
+       , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class ResetPasswordActivity : BaseActivityCustom, ResetPasswordContract.IView
     {
         [BindView(Resource.Id.txtResetPasswordTitle)]

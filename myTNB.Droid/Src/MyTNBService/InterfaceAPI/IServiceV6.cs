@@ -86,7 +86,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> UserAuthenticateLoginNew<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);      //2enapps wan //api login baru
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/GetVerifyEmailStatus")]
+        [Post("/v6/mytnbappws.asmx/GetRegisteredUser")]
         Task<T> UserAuthenticateEmail<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan
 
         [Headers("Content-Type:application/json; charset=utf-8")]
