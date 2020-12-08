@@ -15574,7 +15574,7 @@ namespace myTNB_Android
 			public const int ApplicationStatus_SubmitRatingView = 2131492911;
 			
 			// aapt resource value: 0x7F0C003A
-			public const int ApplicationStauts_rating_activity_view = 2131492922;
+			public const int applicationstauts_rating_activity_view = 2131492922;
 			
 			// aapt resource value: 0x7F0C003B
 			public const int ApplicationStauts_rating_view = 2131492923;

@@ -6012,10 +6012,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\ApplicationStauts_rating_activity_view.axml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <Compile Include="Src\ApplicationStatus\ApplicationStatusRating\Activity\ApplicationRatingActivity.cs" />
     <AndroidResource Include="Resources\layout\ApplicationStauts_rating_view.axml">
       <SubType></SubType>
