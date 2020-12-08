@@ -42,10 +42,10 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "isTaggedSMR")]
             public string isTaggedSMR { get; set; }
 
-            [JsonProperty(PropertyName = "isEmail")]
+            [JsonProperty(PropertyName = "OwnerEmail")]
             public string emailOwner { get; set; }
 
-            [JsonProperty(PropertyName = "isMobileNum")]
+            [JsonProperty(PropertyName = "OwnerMobileNum")]
             public string mobileNoOwner { get; set; }
         }
     }

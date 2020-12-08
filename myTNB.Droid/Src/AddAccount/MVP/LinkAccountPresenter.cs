@@ -165,7 +165,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     mView.ShowAddingAccountProgressDialog();
                 }
                 //var tempReq = JsonConvert.SerializeObject(accounts);
-                AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts(new AddAccountsRequest(accounts));
+                AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts_OT(new AddAccountsRequest(accounts));
 
                 if (result.IsSuccessResponse())
                 {

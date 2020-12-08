@@ -45,12 +45,12 @@ namespace myTNB_Android.Src.AddAccount.Models
         [AliasAs("isTaggedSMR")]
         public string IsTaggedSMR { get; set; }
 
-        [JsonProperty(PropertyName = "emailOwner")]
-        [AliasAs("emailOwner")]
+        [JsonProperty(PropertyName = "OwnerEmail")]
+        [AliasAs("OwnerEmail")]
         public string emailOwner { get; set; }
 
-        [JsonProperty(PropertyName = "mobileNoOwner")]
-        [AliasAs("mobileNoOwner")]
+        [JsonProperty(PropertyName = "OwnerMobileNum")]
+        [AliasAs("OwnerMobileNum")]
         public string mobileNoOwner { get; set; }
     }
 }

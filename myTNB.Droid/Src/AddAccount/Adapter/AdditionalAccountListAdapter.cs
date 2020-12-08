@@ -240,7 +240,6 @@ namespace myTNB_Android.Src.AddAccount
                     }
                 };
 
-                //EmailEditText.Text = this.item.emailOwner;
                 EmailEditText.AfterTextChanged += (sender, args) =>
                 {
                     item.emailOwner = EmailEditText.Text.Trim();
@@ -253,6 +252,18 @@ namespace myTNB_Android.Src.AddAccount
                         textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
                     }*/
                 };
+
+                string email = this.item.emailOwner;
+                string mobileno = this.item.mobileNoOwner;
+
+                if (email.Equals("") && mobileno.Equals(""))
+                {
+                    OwnerNoContactLinearLayout.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    OwnerNoContactLinearLayout.Visibility = ViewStates.Gone;
+                }
             }
             catch (Exception e)
             {
