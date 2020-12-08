@@ -57,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:numStars="5"
                   

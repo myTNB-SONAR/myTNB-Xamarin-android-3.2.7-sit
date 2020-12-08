@@ -110,7 +110,7 @@
 							android:textSize="16dp"
 							android:lineSpacingExtra="4dp"
 							android:layout_marginBottom="2dp"
-							android:text="UI_You rated: "/>
+							android:text=""/>
 						<TextView
 							android:id="@+id/txtApplicationRateStar"
 							android:layout_width="wrap_content"
@@ -119,10 +119,11 @@
 							android:textSize="16dp"
 							android:lineSpacingExtra="4dp"
 							android:layout_marginBottom="2dp"
-							android:text="4"/>
+							android:text=""/>
 						<ImageView
 							android:layout_width="16dp"
 							android:layout_height="16dp"
+							android:layout_marginTop="3dp"
 							android:id="@+id/imgStar"
 							android:src="@drawable/application_rating_star"/>
 					</LinearLayout>
