@@ -66,6 +66,14 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> UserAuthenticate<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/AddAccounts_OT")]
+        Task<T> AddMultipleAccounts_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //2enapps wan //api add account
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/ValidateManualAccountLinking_OT")]
+        Task<T> ValidateManualAccount_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);            //2enapps wan //api validate manual linking acc
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetAccountAccessRightList")]
         Task<T> GetAccountAccessRightList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan //api get account access right list account
 

@@ -87,7 +87,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<ValidateManualAccountResponse> ValidateManualAccount([Body] Request.BaseRequest request)
 		{
-			return api.ValidateManualAccount<ValidateManualAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
+			return api.ValidateManualAccount_OT<ValidateManualAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
 		}
 
         /// <summary>
@@ -190,6 +190,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<UserAuthenticateResponse> UserAuthenticate([Body] Request.BaseRequest request)
         {
             return api.UserAuthenticate<UserAuthenticateResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call AddAccounts with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<AddAccountsResponse> AddMultipleAccounts_OT([Body] Request.BaseRequest request)
+        {
+            return api.AddMultipleAccounts_OT<AddAccountsResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
         /// <summary>
