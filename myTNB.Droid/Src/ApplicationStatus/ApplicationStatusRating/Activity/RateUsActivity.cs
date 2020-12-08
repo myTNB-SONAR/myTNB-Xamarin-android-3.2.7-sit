@@ -99,7 +99,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     {
                         selectedAnswerValues = selectedAnswerValues.Remove(selectedAnswerValues.Length - 1, 1);
                     }
-                  
+
                     RatingAnswers ratingAnswer = new RatingAnswers();
                     ratingAnswer.QuestionId = sequence2.QuestionDetail.QuestionId;
                     ratingAnswer.QuestionDescription = txtTitleQuestion.Text;
@@ -137,7 +137,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     HideProgressDialog();
                     if (postSubmitRatingResponse.StatusDetail.IsSuccess)
                     {
-                        
+
 
                         if (ConnectionUtils.HasInternetConnection(this))
                         {
@@ -200,26 +200,26 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 
         }
         private Snackbar mNoInternetSnackbar;
-       /* public void ShowNoInternetSnackbar()
-        {
-            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
-            {
-                mNoInternetSnackbar.Dismiss();
-            }
+        /* public void ShowNoInternetSnackbar()
+         {
+             if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+             {
+                 mNoInternetSnackbar.Dismiss();
+             }
 
-            mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
-            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
-            {
+             mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+             .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+             {
 
-                mNoInternetSnackbar.Dismiss();
-            }
-            );
-            View v = mNoInternetSnackbar.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
-            mNoInternetSnackbar.Show();
-            this.SetIsClicked(false);
-        }*/
+                 mNoInternetSnackbar.Dismiss();
+             }
+             );
+             View v = mNoInternetSnackbar.View;
+             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+             tv.SetMaxLines(5);
+             mNoInternetSnackbar.Show();
+             this.SetIsClicked(false);
+         }*/
         public async void GetCustomerRatingAsync()
         {
             ShowProgressDialog();
@@ -310,13 +310,13 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 txtTellUsMore.SetOnTouchListener(this);
                 //rootview = FindViewById<CoordinatorLayout>(Resource.Id.rootview);
                 txtTellUsMore.Hint = Utility.GetLocalizedLabel("ApplicationStatusRating", "freeTextPlaceHolder");
-               
-              
+
+
                 btnSubmit.Text = Utility.GetLocalizedLabel("ApplicationStatusRating", "submit");
                 txtTellUsMore.TextChanged += TextChanged;
                 txtTellUsMore.SetOnTouchListener(this);
                 txtInputLayoutTellUsMore.Error = GetString(Resource.String.feedback_total_character_left);
-               
+
                 txtInputLayoutTellUsMore.Hint = Utility.GetLocalizedLabel("ApplicationStatusRating", "freeTextTitle");
 
                 btnSubmit.Enabled = false;
@@ -352,7 +352,8 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     srNumber = applicationDetailDisplay.SRNumber != null
                               ? applicationDetailDisplay.SRNumber
                               : applicationDetailDisplay.ApplicationRatingDetail != null
-                                  ? applicationDetailDisplay.ApplicationRatingDetail.SRNo ?? string.Empty
+                                && applicationDetailDisplay.ApplicationRatingDetail.CustomerRating != null
+                                  ? applicationDetailDisplay.ApplicationRatingDetail.CustomerRating.SRNo ?? string.Empty
                                   : string.Empty;
                     applicationID = applicationDetailDisplay.ApplicationDetail.ApplicationId ?? string.Empty;
                     backendAppID = applicationDetailDisplay.ApplicationDetail.BackendReferenceNo ?? string.Empty;
@@ -363,8 +364,8 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 
 
                     getCustomerRatingMasterResponse = JsonConvert.DeserializeObject<GetCustomerRatingMasterResponse>(extras.GetString("customerRatingMasterResponse"));
-                    
-                   
+
+
 
                     if (getCustomerRatingMasterResponse != null && getCustomerRatingMasterResponse.Content != null)
                     {
@@ -384,7 +385,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     }
 
 
-                   
+
                     selectItemAdapter = new SelectItemAdapter(this, ratingItemList);
                     rating_list_view.Adapter = selectItemAdapter;
 
@@ -499,8 +500,8 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             Item selectedItem = selectItemAdapter.GetItemObject(e.Position);
-           
-            if(selectedRatingItemList.Contains(selectedItem))
+
+            if (selectedRatingItemList.Contains(selectedItem))
             {
                 selectedItem.selected = false;
                 selectedRatingItemList.Remove(selectedItem);
@@ -510,7 +511,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 selectedItem.selected = true;
                 selectedRatingItemList.Add(selectedItem);
             }
-          
+
             selectItemAdapter.NotifyDataSetChanged();
 
         }
@@ -541,7 +542,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 {
                     if (eTxtView.Id == Resource.Id.txtTellUsMore)
                     {
-                        
+
                     }
                 }
             }
