@@ -699,7 +699,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 txtApplicationRateStar.Visibility = ViewStates.Visible;
                                 imgStar.Visibility = ViewStates.Visible;
                                 layoutstar.Visibility = ViewStates.Visible;
-                                txtApplicationRateStar.Text = applicationDetailDisplay.RatingDisplay;
+                                txtApplicationRateStar.Text = applicationDetailDisplay.RatingDisplay +" ";
                             }
                             else
                             {
@@ -725,6 +725,16 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             mSaveSnackbar.Show();
                         }
                     }
+                    if (extras.ContainsKey("applicationRated") && extras.GetString("applicationRated") != null && extras.GetString("applicationRated") != "0")
+                    {
+                            txtApplicationRateTitle.Visibility = ViewStates.Visible;
+                            txtApplicationRateStar.Visibility = ViewStates.Visible;
+                            imgStar.Visibility = ViewStates.Visible;
+                            layoutstar.Visibility = ViewStates.Visible;
+                            txtApplicationRateStar.Text = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "youRated") + extras.GetString("applicationRated") + " ";
+                    }
+                   
+
                 }
             }
         }

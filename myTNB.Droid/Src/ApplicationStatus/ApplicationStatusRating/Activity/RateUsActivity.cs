@@ -141,29 +141,12 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 
                         if (ConnectionUtils.HasInternetConnection(this))
                         {
-                            ShowProgressDialog();
-                            ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(string.Empty
-                                , applicationDetailDisplay.ApplicationDetail.ApplicationId
-                                , applicationDetailDisplay.ApplicationTypeCode
-                                , applicationDetailDisplay.System);
-                            HideProgressDialog();
-                            if (response.StatusDetail.IsSuccess)
-                            {
-                                Intent intent = new Intent(this, typeof(ApplicationStatusDetailActivity));
-                                intent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(response.Content));
+                            Intent intent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+                                intent.PutExtra("applicationRated", selectedRating.ToString());
+                                intent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(applicationDetailDisplay));
                                 intent.PutExtra("submitRatingResponseStatus", JsonConvert.SerializeObject(postSubmitRatingResponse.StatusDetail));
 
                                 StartActivity(intent);
-                            }
-                            else
-                            {
-                                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                                    .SetTitle(response.StatusDetail.Title)
-                                    .SetMessage(response.StatusDetail.Message)
-                                    .SetCTALabel(response.StatusDetail.PrimaryCTATitle)
-                                    .Build();
-                                errorPopup.Show();
-                            }
                         }
                         else
                         {
@@ -200,47 +183,8 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 
         }
         private Snackbar mNoInternetSnackbar;
-        /* public void ShowNoInternetSnackbar()
-         {
-             if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
-             {
-                 mNoInternetSnackbar.Dismiss();
-             }
-
-             mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
-             .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
-             {
-
-                 mNoInternetSnackbar.Dismiss();
-             }
-             );
-             View v = mNoInternetSnackbar.View;
-             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-             tv.SetMaxLines(5);
-             mNoInternetSnackbar.Show();
-             this.SetIsClicked(false);
-         }*/
-        public async void GetCustomerRatingAsync()
-        {
-            ShowProgressDialog();
-            getCustomerRatingMasterResponse = await RatingManager.Instance.GetCustomerRatingMaster();
-            if (!getCustomerRatingMasterResponse.StatusDetail.IsSuccess)
-            {
-                //ShowApplicaitonPopupMessage(this, response.StatusDetail);
-            }
-
-
-
-            try
-            {
-                FirebaseAnalyticsUtils.LogClickEvent(this, "Rating Buttom Clicked");
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
-            }
-            HideProgressDialog();
-        }
+        
+       
 
 
 
@@ -269,16 +213,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-        /* public async void ShowApplicaitonPopupMessage(Activity context, StatusDetail statusDetail)
-         {
-             MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                 .SetTitle(statusDetail.Title)
-                 .SetMessage(statusDetail.Message)
-                 .SetCTALabel(statusDetail.PrimaryCTATitle)
-                 .Build();
-             whereisMyacc.Show();
-
-         }*/
+        
         public void HideProgressDialog()
         {
             try
@@ -326,8 +261,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtPageTitleInfo, txtTitleQuestion, txtTellUsTitleInfo);
 
                 rating_list_view.ItemClick += OnItemClick;
-                GetCustomerRatingAsync();
-                // OnLoadMainFragment();
+              
                 Bundle extras = Intent.Extras;
 
                 SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusRating", "title"));
