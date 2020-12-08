@@ -13,6 +13,7 @@
         //String Constants
         internal const string EMPTY = "empty";
         internal const string DEFAULT = "default";
+        internal const string EMPTY_FILTER = "emptyFilter";
 
         //Todo: Set to 60000
         internal const int APITimeOut = 60000;
