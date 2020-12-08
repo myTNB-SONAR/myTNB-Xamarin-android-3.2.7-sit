@@ -595,7 +595,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             DisableButton();
                             if (txtServiceRequestNum.Text.Count() != preffix.Count())
                             {
-                                txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[0].SearchTypeDescDisplay);
+                                txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[1].SearchTypeDescDisplay);
 
                                 if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
                                     txtInputLayoutServiceRequestNum.ErrorEnabled = true;
