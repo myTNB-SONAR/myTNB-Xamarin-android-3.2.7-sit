@@ -499,7 +499,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             applicationStatusAdditionalListRecyclerView.SetLayoutManager(layoutManager);
             applicationStatusAdditionalListRecyclerView.SetAdapter(subAdapter);
 
-            TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusUpdated, txtApplicationStatusDetail);
+            TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusUpdated, txtApplicationStatusDetail, txtApplicationRateTitle, txtApplicationRateStar);
 
             txtApplicationStatusUpdated.SetTypeface(txtApplicationStatusUpdated.Typeface, Android.Graphics.TypefaceStyle.Italic);
             // Create your application here

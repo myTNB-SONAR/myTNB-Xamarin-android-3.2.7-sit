@@ -150,7 +150,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                         }
                         else
                         {
-                            //ShowNoInternetSnackbar();
+                            ShowNoInternetSnackbar();
                         }
 
                         SetResult(Result.Ok, new Intent());
@@ -163,7 +163,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 }
                 else
                 {
-                    //ShowNoInternetSnackbar();
+                    ShowNoInternetSnackbar();
                 }
 
             }
@@ -171,6 +171,25 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+        public void ShowNoInternetSnackbar()
+        {
+            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+            {
+                mNoInternetSnackbar.Dismiss();
+            }
+           
+            mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+                mNoInternetSnackbar.Dismiss();
+            }
+            );
+            View v = mNoInternetSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mNoInternetSnackbar.Show();
+            this.SetIsClicked(false);
         }
         public async void ShowApplicaitonPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
         {
@@ -233,7 +252,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             base.OnCreate(savedInstanceState);
             try
             {
-                CoordinatorLayout rootView;
+                
                 txtPageTitleInfo = FindViewById<TextView>(Resource.Id.txtPageTitleInfo);
                 ratingBar = FindViewById<RatingBar>(Resource.Id.ratingBar);
                 txtTitleQuestion = FindViewById<TextView>(Resource.Id.txtTitleQuestion);
@@ -243,16 +262,16 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 txtTellUsMore = FindViewById<EditText>(Resource.Id.txtTellUsMore);
                 txtInputLayoutTellUsMore = FindViewById<TextInputLayout>(Resource.Id.txtInputLayoutTellUsMore);
                 txtTellUsMore.SetOnTouchListener(this);
-                //rootview = FindViewById<CoordinatorLayout>(Resource.Id.rootview);
+                rootView = FindViewById<CoordinatorLayout>(Resource.Id.rootview);
                 txtTellUsMore.Hint = Utility.GetLocalizedLabel("ApplicationStatusRating", "freeTextPlaceHolder");
 
 
                 btnSubmit.Text = Utility.GetLocalizedLabel("ApplicationStatusRating", "submit");
                 txtTellUsMore.TextChanged += TextChanged;
                 txtTellUsMore.SetOnTouchListener(this);
-                txtInputLayoutTellUsMore.Error = GetString(Resource.String.feedback_total_character_left);
+                //txtInputLayoutTellUsMore.Error = GetString(Resource.String.feedback_total_character_left);
 
-                txtInputLayoutTellUsMore.Hint = Utility.GetLocalizedLabel("ApplicationStatusRating", "freeTextTitle");
+               
 
                 btnSubmit.Enabled = false;
                 btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
@@ -353,6 +372,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         {
             try
             {
+                
                 FeedBackCharacCount();
             }
             catch (Exception ex)
@@ -476,7 +496,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 {
                     if (eTxtView.Id == Resource.Id.txtTellUsMore)
                     {
-
+                        txtInputLayoutTellUsMore.Hint = Utility.GetLocalizedLabel("ApplicationStatusRating", "freeTextTitle");
                     }
                 }
             }
