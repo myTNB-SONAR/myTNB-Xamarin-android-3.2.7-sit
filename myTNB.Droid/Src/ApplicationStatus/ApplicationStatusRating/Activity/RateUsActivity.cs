@@ -91,9 +91,15 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                         selectedAnswerDescriptions += item.title + ";";
                         selectedAnswerValues += item.type + ";";
                     });
-
-                    selectedAnswerDescriptions = selectedAnswerDescriptions.Remove(selectedAnswerDescriptions.Length - 1, 1);
-                    selectedAnswerValues = selectedAnswerValues.Remove(selectedAnswerValues.Length - 1, 1);
+                    if (selectedAnswerDescriptions != string.Empty && selectedAnswerDescriptions.Length != 0)
+                    {
+                        selectedAnswerDescriptions = selectedAnswerDescriptions.Remove(selectedAnswerDescriptions.Length - 1, 1);
+                    }
+                    if (selectedAnswerValues != string.Empty && selectedAnswerValues.Length != 0)
+                    {
+                        selectedAnswerValues = selectedAnswerValues.Remove(selectedAnswerValues.Length - 1, 1);
+                    }
+                  
                     RatingAnswers ratingAnswer = new RatingAnswers();
                     ratingAnswer.QuestionId = sequence2.QuestionDetail.QuestionId;
                     ratingAnswer.QuestionDescription = txtTitleQuestion.Text;

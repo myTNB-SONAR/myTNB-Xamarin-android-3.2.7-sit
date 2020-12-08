@@ -32,7 +32,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         private FrameLayout frameContainer;
         private int selectedRating;
         private Button btnSubmit;
-        public GetCustomerRatingMasterResponse getCustomerRatingMasterResponse;
+        public GetCustomerRatingMasterResponse customerRatingMasterResponse;
         private AndroidX.CoordinatorLayout.Widget.CoordinatorLayout coordinatorLayout;
         GetApplicationStatusDisplay applicationDetailDisplay;
         [OnClick(Resource.Id.btnSubmit)]
@@ -42,36 +42,14 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 
             Intent rateUslIntent = new Intent(this, typeof(RateUsActivity));
             rateUslIntent.PutExtra("selectedRating", selectedRating.ToString());
-            rateUslIntent.PutExtra("customerRatingMasterResponse", JsonConvert.SerializeObject(getCustomerRatingMasterResponse));
+            rateUslIntent.PutExtra("customerRatingMasterResponse", JsonConvert.SerializeObject(customerRatingMasterResponse));
             rateUslIntent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
             StartActivity(rateUslIntent);
 
             SetResult(Result.Ok, new Intent());
             Finish();
         }
-        public async void GetCustomerRatingAsync()
-        {
-            try
-            {
-                ShowProgressDialog();
-                getCustomerRatingMasterResponse = await RatingManager.Instance.GetCustomerRatingMaster();
-                if (!getCustomerRatingMasterResponse.StatusDetail.IsSuccess)
-                {
-                    ShowApplicaitonPopupMessage(this, getCustomerRatingMasterResponse.StatusDetail);
-                }
-                else
-                {
-                    var sequence = getCustomerRatingMasterResponse.Content.QuestionAnswerSets.Where(x => x.Sequence == 1).FirstOrDefault();
-                    txtContentInfo.Text = sequence.QuestionDetail.QuestionDescription["0"];
-                }
-                FirebaseAnalyticsUtils.LogClickEvent(this, "Rate Buttom Clicked");
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
-            }
-            HideProgressDialog();
-        }
+        
 
 
         public async void ShowApplicaitonPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
@@ -146,15 +124,18 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 btnSubmit.Text = Utility.GetLocalizedLabel("ApplicationStatusRating", "submit");
                 btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
 
-                GetCustomerRatingMasterResponse customerRatingMasterResponse;
+               
                 SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusRating", "title"));
-                GetCustomerRatingAsync();
+              
                 TextViewUtils.SetMuseoSans500Typeface(txtContentInfo);
                 // OnLoadMainFragment();
                 Bundle extras = Intent.Extras;
                 if (extras != null)
                 {
                     applicationDetailDisplay = JsonConvert.DeserializeObject<GetApplicationStatusDisplay>(extras.GetString("applicationDetailDisplay"));
+                    customerRatingMasterResponse = JsonConvert.DeserializeObject<GetCustomerRatingMasterResponse>(extras.GetString("customerRatingMasterResponse"));
+                    var sequence = customerRatingMasterResponse.Content.QuestionAnswerSets.Where(x => x.Sequence == 1).FirstOrDefault();
+                    txtContentInfo.Text = sequence != null ? sequence.QuestionDetail.QuestionDescription["0"] : string.Empty;
                 }
                 ratingBar.RatingBarChange += (o, e) =>
                 {

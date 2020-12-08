@@ -42,6 +42,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         ApplicationStatusDetailSubDetailAdapter subAdapter;
         RecyclerView.LayoutManager layoutManager;
         GetApplicationStatusDisplay applicationDetailDisplay;
+        GetCustomerRatingMasterResponse customerRatingMasterResponse;
 
         IMenuItem applicationFilterMenuItem;
         ApplicationStatusDetailPresenter presenter;
@@ -190,19 +191,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [OnClick(Resource.Id.btnPrimaryCTA)]
         internal void OnPrimaryCTAClick(object sender, EventArgs e)
         {
-            if (applicationDetailDisplay != null)
-            {
-                if (applicationDetailDisplay.CTAType == DetailCTAType.Save)
-                {
-                    SaveApplication();
-                }
-                else if (applicationDetailDisplay.CTAType == DetailCTAType.Rate)
-                {
-                    Intent rating_activity = new Intent(this, typeof(ApplicationRatingActivity));
-                    rating_activity.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
-                    StartActivity(rating_activity);
-                }
-            }
+            GetCustomerRatingAsync();
+            
         }
 
         [OnClick(Resource.Id.btnViewActivityLog)]
@@ -282,7 +272,53 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+        public async void ShowApplicaitonPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
+        {
+            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(statusDetail.Title)
+                .SetMessage(statusDetail.Message)
+                .SetCTALabel(statusDetail.PrimaryCTATitle)
+                .Build();
+            whereisMyacc.Show();
 
+        }
+        public async void GetCustomerRatingAsync()
+        {
+            try
+            {
+                ShowProgressDialog();
+                
+                if (applicationDetailDisplay != null)
+                {
+                    if (applicationDetailDisplay.CTAType == DetailCTAType.Save)
+                    {
+                        SaveApplication();
+                    }
+                    else if (applicationDetailDisplay.CTAType == DetailCTAType.Rate)
+                    {
+                        customerRatingMasterResponse = await RatingManager.Instance.GetCustomerRatingMaster();
+                        if (!customerRatingMasterResponse.StatusDetail.IsSuccess)
+                        {
+                            ShowApplicaitonPopupMessage(this, customerRatingMasterResponse.StatusDetail);
+                        }
+                        else
+                        {
+                            Intent rating_activity = new Intent(this, typeof(ApplicationRatingActivity));
+                            rating_activity.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
+                            rating_activity.PutExtra("customerRatingMasterResponse", JsonConvert.SerializeObject(customerRatingMasterResponse));
+                            StartActivity(rating_activity);
+                        }
+                    }
+                }
+                FirebaseAnalyticsUtils.LogClickEvent(this, "Rate Buttom Clicked");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+                HideProgressDialog();
+            }
+            HideProgressDialog();
+        }
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.DashboardToolbarMenu, menu);
