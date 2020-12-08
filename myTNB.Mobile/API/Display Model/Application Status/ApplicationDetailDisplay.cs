@@ -278,7 +278,9 @@ namespace myTNB.Mobile
                         }
                     }
                 }
-                else if (ApplicationRatingDetail != null && !ApplicationRatingDetail.TransactionId.IsValid())
+                else if (ApplicationRatingDetail != null
+                    && ApplicationRatingDetail.CustomerRating != null
+                    && !ApplicationRatingDetail.CustomerRating.TransactionId.IsValid())
                 {
                     type = DetailCTAType.Rate;
                 }
@@ -341,11 +343,13 @@ namespace myTNB.Mobile
             get
             {
                 string rating = string.Empty;
-                if (ApplicationRatingDetail != null && ApplicationRatingDetail.TransactionId.IsValid() && ApplicationRatingDetail.Rating > 0)
+                if (ApplicationRatingDetail != null
+                    && ApplicationRatingDetail.CustomerRating != null
+                    && ApplicationRatingDetail.CustomerRating.Rating > 0)
                 {
                     rating = string.Format("{0}{1}"
                         , LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "youRated")
-                        , ApplicationRatingDetail.Rating.ToString());
+                        , ApplicationRatingDetail.CustomerRating.Rating.ToString());
                 }
                 return rating;
             }
@@ -359,6 +363,34 @@ namespace myTNB.Mobile
             get
             {
                 return RatingDisplay.IsValid();
+            }
+        }
+
+        /// <summary>
+        /// Determine if Ccontractor Rating Enabled
+        /// </summary>
+        public bool IsContractorRating
+        {
+            get
+            {
+                return ApplicationRatingDetail != null
+                    && ApplicationRatingDetail.ContractorRating != null
+                    && ApplicationRatingDetail.ContractorRating.ContractorRatingUrl.IsValid();
+            }
+        }
+
+        /// <summary>
+        /// URL used for contractor rating
+        /// </summary>
+        public string ContractorRatingURL
+        {
+            get
+            {
+                return ApplicationRatingDetail != null
+                    && ApplicationRatingDetail.ContractorRating != null
+                    && ApplicationRatingDetail.ContractorRating.ContractorRatingUrl.IsValid()
+                        ? ApplicationRatingDetail.ContractorRating.ContractorRatingUrl
+                        : string.Empty;
             }
         }
 

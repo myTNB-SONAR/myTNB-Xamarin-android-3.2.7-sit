@@ -235,11 +235,27 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
 
     public class ApplicationRatingDetail
     {
+        [JsonProperty("customerRating")]
+        public CustomerRating CustomerRating { set; get; }
+        [JsonProperty("contractorRating")]
+        public ContractorRating ContractorRating { set; get; }
+    }
+
+    public class CustomerRating
+    {
         [JsonProperty("srNo")]
         public string SRNo { set; get; }
         [JsonProperty("transactionId")]
         public string TransactionId { set; get; }
         [JsonProperty("rating")]
         public int Rating { set; get; }
+    }
+
+    public class ContractorRating
+    {
+        [JsonProperty("contractorRatingUrl")]
+        public string ContractorRatingUrl { set; get; }
+        [JsonProperty("transactionId")]
+        public string TransactionId { set; get; }
     }
 }
