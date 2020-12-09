@@ -356,6 +356,12 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     }
                 }
             }
+
+            txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(Resource.Color.new_grey);
+            txtInputLayoutServiceRequestNum.SetHintTextAppearance(Resource.Color.silverChalice);
+            txtInputLayoutSearchBy.SetHintTextAppearance(Resource.Color.silverChalice);
+            txtInputLayoutApplicationType.SetHintTextAppearance(Resource.Color.silverChalice);
+
         }
 
         private void OnWhereAreTheseNoClick(object sender, EventArgs e)
