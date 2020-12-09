@@ -22,17 +22,16 @@
                 android:id="@+id/main_layout"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:layout_height="match_parent"
                 android:layout_weight="0.9"
                 android:padding="16dp">
-                 <TextView
-                        android:id="@+id/txtNonOwnerTitle"
-                        android:text="@string/dashboard_chartview_no_account_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="#49494a"
-                        android:textSize="14sp"/>
+                <TextView
+                    android:id="@+id/txtNonOwnerTitle"
+                    android:text="@string/dashboard_chartview_no_account_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#49494a"
+                    android:textSize="14sp"/>
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/account_no_layout"
                     android:layout_width="match_parent"
@@ -53,7 +52,7 @@
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "
                         android:id="@+id/account_no_edittext" />
                 </com.google.android.material.textfield.TextInputLayout>
-                 <TextView
+                <TextView
                     android:id="@+id/btnWhereIsMyAccountNo"
                     android:layout_width="match_parent"
                     android:layout_height="24dp"
@@ -73,8 +72,8 @@
                     android:layout_marginTop="8dp"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     app:errorTextAppearance="@style/TextInputLayoutFeedbackCount">
-                     <EditText
-                        android:id="@+id/account_label_edittext" 
+                    <EditText
+                        android:id="@+id/account_label_edittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/placeholder_name"
@@ -82,56 +81,50 @@
                         android:hint="@string/update_account_hint_account_nickname"
                         android:inputType="text"
                         android:maxLines="1"/>
-                        
+
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/owner_ic_no_layout"
+                    android:id="@+id/owner_ic_no_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginStart="8dp"
+                    android:visibility="gone"
+                    android:layout_marginEnd="8dp">
+                    <EditText
                         android:layout_width="match_parent"
+                        android:hint="@string/add_account_form_owners_ic_no"
                         android:layout_height="wrap_content"
-                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginStart="8dp"
-                        android:visibility="gone"
-                        android:layout_marginEnd="8dp">
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:hint="@string/add_account_form_owners_ic_no"
-                            android:layout_height="wrap_content"
-                            android:drawablePadding="6dp"
-                            android:drawableLeft="@drawable/placeholder_ic"
-                            android:id="@+id/owner_ic_no_edittext" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/owner_mother_maiden_name_layout"
+                        android:drawablePadding="6dp"
+                        android:drawableLeft="@drawable/placeholder_ic"
+                        android:id="@+id/owner_ic_no_edittext" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/owner_mother_maiden_name_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp">
+                    <EditText
                         android:layout_width="match_parent"
+                        android:hint="@string/add_account_form_owners_maiden_name"
                         android:layout_height="wrap_content"
+                        android:drawablePadding="6dp"
                         android:visibility="gone"
-                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp">
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:hint="@string/add_account_form_owners_maiden_name"
-                            android:layout_height="wrap_content"
-                            android:drawablePadding="6dp"
-                            android:visibility="gone"
-                            android:drawableLeft="@drawable/placeholder_name"
-                            android:id="@+id/owner_mother_maiden_name_edittext" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                        android:drawableLeft="@drawable/placeholder_name"
+                        android:id="@+id/owner_mother_maiden_name_edittext" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
             <LinearLayout
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:gravity="bottom"
-                android:layout_weight="0.1"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp">
+                android:padding="16dp"
+                android:background="@color/white">
                 <Button
                     android:id="@+id/btnAddAccount"
                     android:layout_height="wrap_content"

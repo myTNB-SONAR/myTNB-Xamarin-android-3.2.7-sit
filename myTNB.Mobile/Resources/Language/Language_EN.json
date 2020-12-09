@@ -852,7 +852,7 @@
     "titleAddUser": "Add New User",
     "dialogAddrress":"Why can't I see my full address?",
     "dialogAddrressMessage":"We mask sensitive information to safeguard owner's privacy. You are seeing masked information as you are not the owner of this electricity account.",
-    "dialogManageUser":"What does this mean?",
+    "dialogManageUser":"Giving your users more access.",
     "dialogManageUserMessage":"To protect your information. we're not showing non-owner your personal information and some application features. However, you can grant them access listed here if you see fit and they will be noticed about it.",
     "manageUserTitle":"You're about to make changes to {0}'s access.",
     "manageUserMessage":"Once confirmed, {0} will have their access updated and be notified about the accesses you selected for them to your electricity account.",
