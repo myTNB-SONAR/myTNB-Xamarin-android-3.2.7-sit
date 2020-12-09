@@ -23,7 +23,6 @@ using Android.Preferences;
 using Android.Graphics;
 using myTNB_Android.Src.Login.Activity;
 using myTNB.Mobile.SessionCache;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -970,7 +969,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     }
                     else
                     {
-                        Toast.MakeText(this, response.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
+                        MyTNBAppToolTipBuilder removeFailPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(response.StatusDetail.Title)
+                            .SetMessage(response.StatusDetail.Message)
+                            .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                            .Build();
+                        removeFailPopup.Show();
                     }
                     HideProgressDialog();
                 }

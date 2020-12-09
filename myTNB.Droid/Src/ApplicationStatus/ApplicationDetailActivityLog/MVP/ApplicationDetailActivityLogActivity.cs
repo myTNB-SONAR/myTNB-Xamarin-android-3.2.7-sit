@@ -1,33 +1,21 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Text;
-using Android.Views;
-using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using myTNB.Mobile;
-using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapter;
 using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.FindUs.MVP;
-using myTNB_Android.Src.FindUs.Response;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP
 {
-    [Activity(Label = "ApplicationDetailActivityLogActivity",Theme = "@style/Theme.RegisterForm")]
+    [Activity(Label = "ApplicationDetailActivityLogActivity", Theme = "@style/Theme.RegisterForm")]
     public class ApplicationDetailActivityLogActivity : BaseToolbarAppCompatActivity
     {
-
         [BindView(Resource.Id.layout_activitylog)]
         RecyclerView layout_activitylog;
 
@@ -48,7 +36,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP
 
         public override bool ShowCustomToolbarTitle()
         {
-            return true; 
+            return true;
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -70,13 +58,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP
             {
                 if (extras.ContainsKey("applicationActivityLogDetail"))
                 {
-
                     applicationActivityLogDetail = new List<ApplicationActivityLogDetailDisplay>();
                     applicationActivityLogDetail = JsonConvert.DeserializeObject<List<ApplicationActivityLogDetailDisplay>>(extras.GetString("applicationActivityLogDetail"));
 
                     if (applicationActivityLogDetail != null && applicationActivityLogDetail.Count > 0)
                     {
-                        
+
                         applicationDetailActivityAdapter = new ApplicationDetailActivityAdapter(this, applicationActivityLogDetail);
 
                         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);

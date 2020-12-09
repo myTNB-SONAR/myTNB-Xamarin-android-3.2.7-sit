@@ -10,6 +10,10 @@ namespace myTNB_Android.Src.Utils
         {
             try
             {
+                if (string.IsNullOrEmpty(message) || string.IsNullOrWhiteSpace(message))
+                {
+                    return;
+                }
                 LayoutInflater inflater = LayoutInflater.From(mActivity);
                 View layout = inflater.Inflate(Resource.Layout.ToastLayout, null, false);
                 TextView messageTextView = layout.FindViewById<TextView>(Resource.Id.toastMessage);
