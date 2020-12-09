@@ -1,4 +1,5 @@
 ﻿using System;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 
@@ -18,6 +19,7 @@ namespace myTNB_Android.Src.Utils
                 View layout = inflater.Inflate(Resource.Layout.ToastLayout, null, false);
                 TextView messageTextView = layout.FindViewById<TextView>(Resource.Id.toastMessage);
                 messageTextView.Text = message ?? string.Empty;
+                TextViewUtils.SetMuseoSans300Typeface(messageTextView);
                 //Todo: Set Font size for large fonts
 
                 Toast toast = new Toast(mActivity)

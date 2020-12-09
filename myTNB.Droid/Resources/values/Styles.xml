@@ -271,6 +271,20 @@
 
   </style>
 
+
+  <style name="TextInputLayout.TextInputLayoutSearchCA.Small" parent="TextAppearance.AppCompat">
+    <!-- Hint color and label color in FALSE state -->
+    <item name="android:textColorHint">@color/silverChalice</item>
+    <item name="android:textSize">10dp</item>
+
+    <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+    <item name="colorAccent">@color/tunaGrey</item>
+    <item name="colorControlNormal">@color/silverChalice</item>
+    <item name="colorControlActivated">@color/tunaGrey</item>
+    <item name="colorError">@color/errorColor</item>
+</style>
+
+
   <style name="TextInputLayout.TextAppearance.LightBackground" parent="TextAppearance.AppCompat">
     <!-- Hint color and label color in FALSE state -->
     <item name="android:textColorHint">@color/silverChalice</item>

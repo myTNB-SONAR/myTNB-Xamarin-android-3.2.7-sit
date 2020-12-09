@@ -1,7 +1,5 @@
 ﻿using Android.Content;
 using Android.Graphics;
-
-
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
@@ -67,7 +65,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
             if (mRequestCode == Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE)
             {
                 mTypeList = new List<ApplicationStatusTypeModel>();
-                if(this.mMultiSelectCapable)
+                if (this.mMultiSelectCapable)
                 {
                     //  TODO: ApplicationStatus Multilingual
                     mTypeList.Add(new ApplicationStatusTypeModel()
@@ -169,7 +167,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
                     }
                     else
                     {
-                        foreach(var item in mTypeList)
+                        foreach (var item in mTypeList)
                         {
                             item.isChecked = false;
                         }

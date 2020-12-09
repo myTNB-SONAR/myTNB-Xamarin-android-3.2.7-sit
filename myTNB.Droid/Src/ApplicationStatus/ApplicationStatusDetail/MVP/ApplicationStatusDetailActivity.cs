@@ -353,13 +353,21 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         }
                         else
                         {
-                            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                            bool isTowButtons = !string.IsNullOrEmpty(postSaveApplicationResponse.StatusDetail.SecondaryCTATitle)
+                                && !string.IsNullOrWhiteSpace(postSaveApplicationResponse.StatusDetail.SecondaryCTATitle);
+                            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, isTowButtons
+                                    ? MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON
+                                    : MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                                 .SetTitle(postSaveApplicationResponse.StatusDetail.Title)
                                 .SetMessage(postSaveApplicationResponse.StatusDetail.Message)
-                                .SetCTALabel(postSaveApplicationResponse.StatusDetail.PrimaryCTATitle)
-                                .SetSecondaryCTALabel(postSaveApplicationResponse.StatusDetail.SecondaryCTATitle)
-                                .SetSecondaryCTAaction(() => ShowStatusLanding())
-                                .Build();
+                                .SetCTALabel(postSaveApplicationResponse.StatusDetail.PrimaryCTATitle);
+
+                            if (isTowButtons)
+                            {
+                                whereisMyacc.SetSecondaryCTALabel(postSaveApplicationResponse.StatusDetail.SecondaryCTATitle)
+                                    .SetSecondaryCTAaction(() => ShowStatusLanding());
+                            }
+                            whereisMyacc.Build();
                             whereisMyacc.Show();
                         }
                     }
