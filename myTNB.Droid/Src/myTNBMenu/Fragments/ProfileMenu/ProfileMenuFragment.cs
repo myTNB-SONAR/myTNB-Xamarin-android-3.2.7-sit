@@ -6,8 +6,6 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-
-
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -77,7 +75,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
         public override void OnAttach(Context context)
         {
-
             try
             {
                 if (context is DashboardHomeActivity)
@@ -175,7 +172,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                     ShowLargeFontUpdateSuccess();
                     MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
                 }
-                
+
             }
             catch (System.Exception e)
             {
@@ -372,13 +369,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
             if (MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
             {
-               
+
                 Item selectedItem = new Item();
                 selectedItem.type = "R";
                 selectedItem.title = "Normal";
                 selectedItem.selected = true;
 
-               
+
                 TextViewUtils.SaveFontSize(selectedItem);
             }
             else
@@ -985,24 +982,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         {
             try
             {
-                if (mLanguageSnackbar != null && mLanguageSnackbar.IsShown)
-                {
-                    mLanguageSnackbar.Dismiss();
-                }
-              
-                mLanguageSnackbar = Snackbar.Make(rootView,
-                   string.Format(GetLabelByLanguage("fontChangeSuccess"), TextViewUtils.FontSelected),
-                    Snackbar.LengthIndefinite)
-                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
-                             (view) =>
-                             {
-                                 // EMPTY WILL CLOSE SNACKBAR
-                             }
-                            );
-                View v = mLanguageSnackbar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(5);
-                mLanguageSnackbar.Show();
+                ToastUtils.OnDisplayToast(Activity
+                    , string.Format(GetLabelByLanguage("fontChangeSuccess"), TextViewUtils.FontSelected));
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)
@@ -1015,24 +996,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         {
             try
             {
-                if (mLanguageSnackbar != null && mLanguageSnackbar.IsShown)
-                {
-                    mLanguageSnackbar.Dismiss();
-                }
-
-                mLanguageSnackbar = Snackbar.Make(rootView,
-                    GetLabelByLanguage("changeLanguageSuccess"),
-                    Snackbar.LengthIndefinite)
-                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
-                             (view) =>
-                             {
-                                 // EMPTY WILL CLOSE SNACKBAR
-                             }
-                            );
-                View v = mLanguageSnackbar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(5);
-                mLanguageSnackbar.Show();
+                ToastUtils.OnDisplayToast(Activity, GetLabelByLanguage("changeLanguageSuccess"));
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)

@@ -1013,7 +1013,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                         , appDetails.ApplicationDetail.CreatedDate.Value);
                                     if (postSaveApplicationResponse.StatusDetail.IsSuccess)
                                     {
-                                        Toast.MakeText(this, postSaveApplicationResponse.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
+                                        ToastUtils.OnDisplayToast(this, postSaveApplicationResponse.StatusDetail.Message ?? string.Empty);
                                     }
                                     else
                                     {

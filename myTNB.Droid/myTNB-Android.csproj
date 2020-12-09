@@ -57,16 +57,19 @@
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
-    <DebugType></DebugType>
-    <Optimize>true</Optimize>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>
+    </DebugType>
+    <Optimize>True</Optimize>
     <OutputPath>bin\SIT\</OutputPath>
     <DefineConstants>TRACE;SIT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+    <AndroidSupportedAbis>arm64-v8a;armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
     <MandroidI18n>West</MandroidI18n>
-<AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -6091,6 +6094,15 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_field_address.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ToastLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Utils\ToastUtils.cs" />
+    <AndroidResource Include="Resources\drawable\rectangle_rounded_corner_bg_with_shadow.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>

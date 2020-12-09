@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:gravity="top">
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:layout_marginTop="16dp"
+		android:layout_marginLeft="16dp"
+		android:layout_marginRight="16dp"
+		android:layout_marginBottom="16dp"
+		android:background="@drawable/rectangle_rounded_corner_bg_with_shadow"
+		android:id="@+id/toastLinearLayout">
+		<ImageView
+			android:layout_width="20dp"
+			android:layout_height="20dp"
+			android:layout_marginLeft="12dp"
+			android:layout_gravity="center_vertical"
+			android:src="@drawable/ic_display_successful_new"
+			android:id="@+id/toastImage"/>
+		<TextView
+			android:id="@+id/toastMessage"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="12dp"
+			android:layout_marginBottom="12dp"
+			android:textSize="12dp"
+			android:textColor="#49494a"
+			android:layout_marginLeft="8dp"
+			android:layout_marginRight="12dp"
+			android:layout_gravity="center_vertical"
+			android:gravity="center_vertical"
+			android:text="UI - Success! You'll see up-to-date progress of the application status."/>
+	</LinearLayout>
+</LinearLayout>
