@@ -23,7 +23,6 @@ using Android.Preferences;
 using Android.Graphics;
 using myTNB_Android.Src.Login.Activity;
 using myTNB.Mobile.SessionCache;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB_Android.Src.ApplicationStatusRating.Activity;
 using myTNB.Mobile.API.Managers.Rating;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
@@ -173,9 +172,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [BindView(Resource.Id.txtBCRMDownMessage)]
         TextView txtBCRMDownMessage;
 
-        [BindView(Resource.Id.txtApplicationRateTitle)]
-        TextView txtApplicationRateTitle;
-
         [BindView(Resource.Id.txtApplicationRateStar)]
         TextView txtApplicationRateStar;
 
@@ -192,7 +188,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         internal void OnPrimaryCTAClick(object sender, EventArgs e)
         {
             GetCustomerRatingAsync();
-            
         }
 
         [OnClick(Resource.Id.btnViewActivityLog)]
@@ -287,7 +282,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             try
             {
                 ShowProgressDialog();
-                
+
                 if (applicationDetailDisplay != null)
                 {
                     if (applicationDetailDisplay.CTAType == DetailCTAType.Save)
@@ -499,7 +494,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             applicationStatusAdditionalListRecyclerView.SetLayoutManager(layoutManager);
             applicationStatusAdditionalListRecyclerView.SetAdapter(subAdapter);
 
-            TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusUpdated, txtApplicationStatusDetail, txtApplicationRateTitle, txtApplicationRateStar);
+            TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusUpdated, txtApplicationStatusDetail, txtApplicationRateStar);
 
             txtApplicationStatusUpdated.SetTypeface(txtApplicationStatusUpdated.Typeface, Android.Graphics.TypefaceStyle.Italic);
             // Create your application here
@@ -695,15 +690,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
                             if (applicationDetailDisplay.RatingDisplay != null && applicationDetailDisplay.RatingDisplay != string.Empty)
                             {
-                                txtApplicationRateTitle.Visibility = ViewStates.Visible;
                                 txtApplicationRateStar.Visibility = ViewStates.Visible;
                                 imgStar.Visibility = ViewStates.Visible;
                                 layoutstar.Visibility = ViewStates.Visible;
-                                txtApplicationRateStar.Text = applicationDetailDisplay.RatingDisplay +" ";
+                                txtApplicationRateStar.Text = applicationDetailDisplay.RatingDisplay + " ";
                             }
                             else
                             {
-                                txtApplicationRateTitle.Visibility = ViewStates.Gone;
                                 txtApplicationRateStar.Visibility = ViewStates.Gone;
                                 imgStar.Visibility = ViewStates.Gone;
                                 layoutstar.Visibility = ViewStates.Gone;
@@ -727,14 +720,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     }
                     if (extras.ContainsKey("applicationRated") && extras.GetString("applicationRated") != null && extras.GetString("applicationRated") != "0")
                     {
-                            txtApplicationRateTitle.Visibility = ViewStates.Visible;
-                            txtApplicationRateStar.Visibility = ViewStates.Visible;
-                            imgStar.Visibility = ViewStates.Visible;
-                            layoutstar.Visibility = ViewStates.Visible;
-                            txtApplicationRateStar.Text = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "youRated") + extras.GetString("applicationRated") + " ";
+                        txtApplicationRateStar.Visibility = ViewStates.Visible;
+                        imgStar.Visibility = ViewStates.Visible;
+                        layoutstar.Visibility = ViewStates.Visible;
+                        txtApplicationRateStar.Text = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "youRated") + extras.GetString("applicationRated") + " ";
                     }
-                   
-
                 }
             }
         }

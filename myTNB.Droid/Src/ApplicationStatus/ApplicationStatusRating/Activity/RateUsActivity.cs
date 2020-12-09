@@ -119,7 +119,6 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     ratingAnswers.Add(ratingAnswer);
                 }
 
-
                 UserEntity loggedUser = UserEntity.GetActive();
 
                 if (ConnectionUtils.HasInternetConnection(this))
@@ -137,22 +136,11 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     HideProgressDialog();
                     if (postSubmitRatingResponse.StatusDetail.IsSuccess)
                     {
-
-
-                        if (ConnectionUtils.HasInternetConnection(this))
-                        {
-                            Intent intent = new Intent(this, typeof(ApplicationStatusDetailActivity));
-                                intent.PutExtra("applicationRated", selectedRating.ToString());
-                                intent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(applicationDetailDisplay));
-                                intent.PutExtra("submitRatingResponseStatus", JsonConvert.SerializeObject(postSubmitRatingResponse.StatusDetail));
-
-                                StartActivity(intent);
-                        }
-                        else
-                        {
-                            ShowNoInternetSnackbar();
-                        }
-
+                        Intent intent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+                        intent.PutExtra("applicationRated", selectedRating.ToString());
+                        intent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(applicationDetailDisplay));
+                        intent.PutExtra("submitRatingResponseStatus", JsonConvert.SerializeObject(postSubmitRatingResponse.StatusDetail));
+                        StartActivity(intent);
                         SetResult(Result.Ok, new Intent());
                         Finish();
                     }
@@ -178,7 +166,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             {
                 mNoInternetSnackbar.Dismiss();
             }
-           
+
             mNoInternetSnackbar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
             {
@@ -202,13 +190,6 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 
         }
         private Snackbar mNoInternetSnackbar;
-        
-       
-
-
-
-
-        AndroidX.Fragment.App.Fragment currentFragment;
 
         private string PAGE_ID = "Rate";
 
@@ -232,7 +213,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-        
+
         public void HideProgressDialog()
         {
             try
@@ -245,14 +226,11 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             }
         }
 
-
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             try
             {
-                
                 txtPageTitleInfo = FindViewById<TextView>(Resource.Id.txtPageTitleInfo);
                 ratingBar = FindViewById<RatingBar>(Resource.Id.ratingBar);
                 txtTitleQuestion = FindViewById<TextView>(Resource.Id.txtTitleQuestion);
@@ -265,13 +243,9 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 rootView = FindViewById<CoordinatorLayout>(Resource.Id.rootview);
                 txtTellUsMore.Hint = Utility.GetLocalizedLabel("ApplicationStatusRating", "freeTextPlaceHolder");
 
-
                 btnSubmit.Text = Utility.GetLocalizedLabel("ApplicationStatusRating", "submit");
                 txtTellUsMore.TextChanged += TextChanged;
                 txtTellUsMore.SetOnTouchListener(this);
-                //txtInputLayoutTellUsMore.Error = GetString(Resource.String.feedback_total_character_left);
-
-               
 
                 btnSubmit.Enabled = false;
                 btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
@@ -280,7 +254,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtPageTitleInfo, txtTitleQuestion, txtTellUsTitleInfo);
 
                 rating_list_view.ItemClick += OnItemClick;
-              
+
                 Bundle extras = Intent.Extras;
 
                 SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusRating", "title"));
@@ -314,11 +288,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 
                     ratingBar.Rating = selectedRating;
 
-
-
                     getCustomerRatingMasterResponse = JsonConvert.DeserializeObject<GetCustomerRatingMasterResponse>(extras.GetString("customerRatingMasterResponse"));
-
-
 
                     if (getCustomerRatingMasterResponse != null && getCustomerRatingMasterResponse.Content != null)
                     {
@@ -336,8 +306,6 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                         item.selected = false;
                         ratingItemList.Add(item);
                     }
-
-
 
                     selectItemAdapter = new SelectItemAdapter(this, ratingItemList);
                     rating_list_view.Adapter = selectItemAdapter;
@@ -372,7 +340,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         {
             try
             {
-                
+
                 FeedBackCharacCount();
             }
             catch (Exception ex)
@@ -501,7 +469,6 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 }
             }
             return false;
-
         }
     }
 }

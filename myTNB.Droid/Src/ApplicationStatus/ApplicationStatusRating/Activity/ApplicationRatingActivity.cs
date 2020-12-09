@@ -2,24 +2,17 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Util;
-using Android.Views;
 using Android.Widget;
-using Google.Android.Material.AppBar;
 using myTNB_Android.Src.Base.Activity;
-
 using myTNB_Android.Src.Utils;
 using System;
-using System.Runtime;
 using myTNB.Mobile;
 using Newtonsoft.Json;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
 using AndroidX.Core.Content;
 using CheeseBind;
 using myTNB;
-using myTNB.Mobile.API.Managers.Rating;
 using System.Linq;
-using Android.App;
 namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 {
     [Activity(Label = "Rate"
@@ -49,8 +42,6 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             SetResult(Result.Ok, new Intent());
             Finish();
         }
-        
-
 
         public async void ShowApplicaitonPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
         {
@@ -60,7 +51,6 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 .SetCTALabel(statusDetail.PrimaryCTATitle)
                 .Build();
             whereisMyacc.Show();
-
         }
 
         AndroidX.Fragment.App.Fragment currentFragment;
@@ -87,16 +77,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-       /* public async void ShowApplicaitonPopupMessage(Activity context, StatusDetail statusDetail)
-        {
-            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                .SetTitle(statusDetail.Title)
-                .SetMessage(statusDetail.Message)
-                .SetCTALabel(statusDetail.PrimaryCTATitle)
-                .Build();
-            whereisMyacc.Show();
 
-        }*/
         public void HideProgressDialog()
         {
             try
@@ -109,26 +90,19 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             }
         }
 
-
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             try
             {
-
                 ratingBar = FindViewById<RatingBar>(Resource.Id.applicationRatingBar);
                 txtContentInfo = FindViewById<TextView>(Resource.Id.txtContentInfo);
                 btnSubmit = FindViewById<Button>(Resource.Id.btnSubmit);
                 btnSubmit.Enabled = false;
                 btnSubmit.Text = Utility.GetLocalizedLabel("ApplicationStatusRating", "submit");
                 btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
-
-               
                 SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusRating", "title"));
-              
                 TextViewUtils.SetMuseoSans500Typeface(txtContentInfo);
-                // OnLoadMainFragment();
                 Bundle extras = Intent.Extras;
                 if (extras != null)
                 {
@@ -151,7 +125,6 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     {
                         btnSubmit.Enabled = false;
                         btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
-
                     }
                 };
             }
@@ -173,11 +146,6 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-
-
-
-
 
         public override string GetPageId()
         {
