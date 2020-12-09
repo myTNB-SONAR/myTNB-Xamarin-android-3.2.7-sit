@@ -41,7 +41,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                     {
 
                         this.mView.ClearAccountsAdapter();
-                        List<CustomerBillingAccount> customerAccountList = CustomerBillingAccount.List();
+                        List<UserManageAccessAccount> customerAccountList = UserManageAccessAccount.List();
                         if (customerAccountList != null && customerAccountList.Count > 0)
                         {
                             this.mView.ShowAccountList(customerAccountList);
@@ -205,7 +205,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                     HomeMenuUtils.ResetAll();
 
                     this.mView.ClearAccountsAdapter();
-                    List<CustomerBillingAccount> customerAccountList = CustomerBillingAccount.List();
+                    List<UserManageAccessAccount> customerAccountList = new List<UserManageAccessAccount>();
                     if (customerAccountList != null && customerAccountList.Count > 0)
                     {
                         this.mView.ShowAccountList(customerAccountList);
@@ -264,9 +264,9 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             try
             {
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-                if (CustomerBillingAccount.HasItems())
+                if (UserManageAccessAccount.HasItems())
                 {
-                    List<CustomerBillingAccount> customerAccountList = CustomerBillingAccount.List();
+                    List<UserManageAccessAccount> customerAccountList = UserManageAccessAccount.List();
                     if (customerAccountList != null && customerAccountList.Count > 0)
                     {
                         this.mView.ShowAccountList(customerAccountList);

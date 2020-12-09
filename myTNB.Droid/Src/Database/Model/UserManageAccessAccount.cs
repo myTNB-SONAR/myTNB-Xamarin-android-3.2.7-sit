@@ -13,10 +13,7 @@ namespace myTNB_Android.Src.Database.Model
     [Table("UserManageAccountEntity")]
     public class UserManageAccessAccount
     {
-        [Column("__type")]
-        public string Type { get; set; }
-
-        [PrimaryKey, Column("accNum")]
+        [Column("accNum")]
         public string AccNum { get; set; }
 
         [Column("accDesc")]
@@ -25,35 +22,26 @@ namespace myTNB_Android.Src.Database.Model
         [Column("userAccountID")]
         public string UserAccountId { get; set; }
 
-        [Column("icNum")]
-        public string ICNum { get; set; }
+        [Column("IsApplyEBilling")]
+        public bool IsApplyEBilling { get; set; }
 
-        [Column("amCurrentChg")]
-        public string AmtCurrentChg { get; set; }
+        [Column("IsHaveAccess")]
+        public bool IsHaveAccess { get; set; }
 
-        [Column("isRegistered")]
-        public bool IsRegistered { get; set; }
+        [Column("IsOwnedAccount")]
+        public bool IsOwnedAccount { get; set; }
 
-        [Column("isPaid")]
-        public bool IsPaid { get; set; }
+        [Column("IsPreRegister")]
+        public bool IsPreRegister { get; set; }
 
-        [Column("isOwned")]
-        public bool isOwned { get; set; }
+        [Column("email")]
+        public string email { get; set; }
 
-        [Column("accountTypeId")]
-        public string AccountTypeId { get; set; }
+        [Column("name")]
+        public string name { get; set; }
 
-        [Column("accountStAddress")]
-        public string AccountStAddress { get; set; }
-
-        [Column("ownerName")]
-        public string OwnerName { get; set; }
-
-        [Column("isSelected")]
-        public bool IsSelected { get; set; }
-
-        [Column("accountCategoryId")]
-        public string AccountCategoryId { get; set; }
+        [PrimaryKey, Column("userId")]
+        public string userId { get; set; }
         
         public static int CreateTable()
         {
@@ -66,25 +54,21 @@ namespace myTNB_Android.Src.Database.Model
             db.CreateTableAsync<UserManageAccessAccount>();
         }
 
-        public static int InsertOrReplace(NewAccount accountResponse, bool isSelected)
+        public static int InsertOrReplace(UserManageAccessAccount accountResponse, bool isSelected)
         {
             var db = DBHelper.GetSQLiteConnection();
             var newRecord = new UserManageAccessAccount()
             {
-                Type = accountResponse.type,
-                AccNum = accountResponse.accountNumber,
-                AccDesc = string.IsNullOrEmpty(accountResponse.accountLabel) == true ? "--" : accountResponse.accountLabel,
-                UserAccountId = accountResponse.userAccountId,
-                ICNum = accountResponse.icNum,
-                AmtCurrentChg = accountResponse.amCurrentChg,
-                IsRegistered = accountResponse.isRegistered,
-                IsPaid = accountResponse.isPaid,
-                isOwned = accountResponse.isOwner,
-                AccountTypeId = accountResponse.accountTypeId,
-                AccountStAddress = accountResponse.accountAddress,
-                OwnerName = accountResponse.ownerName,
-                AccountCategoryId = accountResponse.accountCategoryId,
-                IsSelected = isSelected,
+                AccNum = accountResponse.AccNum,
+                AccDesc = string.IsNullOrEmpty(accountResponse.AccDesc) == true ? "--" : accountResponse.AccDesc,
+                UserAccountId = accountResponse.UserAccountId,
+                IsApplyEBilling = accountResponse.IsApplyEBilling,
+                IsHaveAccess = accountResponse.IsHaveAccess,
+                IsOwnedAccount = accountResponse.IsOwnedAccount,
+                IsPreRegister = accountResponse.IsPreRegister,
+                email = accountResponse.email,
+                name = accountResponse.name,
+                userId = accountResponse.userId,
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -99,7 +83,7 @@ namespace myTNB_Android.Src.Database.Model
 
             var newRecord = new UserManageAccessAccount()
             {
-                Type = accountResponse.Type,
+                /*Type = accountResponse.Type,
                 AccNum = accountResponse.AccountNumber,
                 AccDesc = string.IsNullOrEmpty(accountResponse.AccDesc) == true ? "--" : accountResponse.AccDesc,
                 UserAccountId = accountResponse.UserAccountID,
@@ -112,7 +96,7 @@ namespace myTNB_Android.Src.Database.Model
                 AccountStAddress = accountResponse.AccountStAddress,
                 OwnerName = accountResponse.OwnerName,
                 AccountCategoryId = accountResponse.AccountCategoryId,
-                isOwned = accountResponse.IsOwned,
+                isOwned = accountResponse.IsOwned,*/
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -120,26 +104,22 @@ namespace myTNB_Android.Src.Database.Model
             return newRecordRow;
         }
 
-        public static int InsertOrReplace(CustomerAccountListResponse.CustomerAccountData accountResponse, bool isSelected)
+        public static int InsertOrReplace(ManageAccessAccountListResponse.CustomerAccountData accountResponse)
         {
             var db = DBHelper.GetSQLiteConnection();
 
             var newRecord = new UserManageAccessAccount()
             {
-                Type = accountResponse.Type,
                 AccNum = accountResponse.AccountNumber,
-                AccDesc = string.IsNullOrEmpty(accountResponse.AccDesc) == true ? "--" : accountResponse.AccDesc,
-                UserAccountId = accountResponse.UserAccountID,
-                ICNum = accountResponse.IcNum,
-                AmtCurrentChg = accountResponse.AmCurrentChg,
-                IsRegistered = accountResponse.IsRegistered,
-                IsPaid = accountResponse.IsPaid,
-                IsSelected = isSelected,
-                AccountTypeId = accountResponse.AccountTypeId,
-                AccountStAddress = accountResponse.AccountStAddress,
-                OwnerName = accountResponse.OwnerName,
-                AccountCategoryId = accountResponse.AccountCategoryId,
-                isOwned = accountResponse.IsOwned,
+                AccDesc = accountResponse.AccountDescription,
+                UserAccountId = accountResponse.AccountId,
+                IsApplyEBilling = accountResponse.IsApplyEBilling,
+                IsHaveAccess = accountResponse.IsHaveAccess,
+                IsOwnedAccount = accountResponse.IsOwnedAccount,
+                IsPreRegister = accountResponse.IsPreRegister,
+                email = accountResponse.Email,
+                name = accountResponse.Name,
+                userId = accountResponse.UserId,
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -197,15 +177,12 @@ namespace myTNB_Android.Src.Database.Model
                 UserEntity activeUser = UserEntity.GetActive();
                 if (activeUser != null)
                 {
-                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
+                    List<UserManageAccessAccount> updatedList = new List<UserManageAccessAccount>();
+                    if (updatedList != null && updatedList.Count > 0)
                     {
-                        /*List<UserManageAccessAccount> updatedList = new List<UserManageAccessAccount>();
-                        updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
-                        if (updatedList != null && updatedList.Count > 0)
-                        {
-                            return updatedList.Count > 0;
-                        }*/
+                      return updatedList.Count > 0;
                     }
+                    
                 }
             }
             catch (Exception e)
@@ -342,11 +319,11 @@ namespace myTNB_Android.Src.Database.Model
                 {
                     if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                     {
-                        CustomerBillingAccount updatedAccount = FindByAccNum(accNum);
-                        if (updatedAccount != null)
+                        UserManageAccessAccount updatedAccount = FindByAccNum(accNum);
+                        /*if (updatedAccount != null)
                         {
                             AccountSortingEntity.ReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, updatedAccount);
-                        }
+                        }*/
                     }
                 }
             }
@@ -368,11 +345,11 @@ namespace myTNB_Android.Src.Database.Model
                 {
                     if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
                     {
-                        CustomerBillingAccount updatedAccount = FindByAccNum(accNum);
-                        if (updatedAccount != null)
+                        UserManageAccessAccount updatedAccount = FindByAccNum(accNum);
+                        /*if (updatedAccount != null)
                         {
                             AccountSortingEntity.ReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, updatedAccount);
-                        }
+                        }*/
                     }
                 }
             }
@@ -382,10 +359,10 @@ namespace myTNB_Android.Src.Database.Model
             }
         }
 
-        public static CustomerBillingAccount FindByAccNum(string accNum)
+        public static UserManageAccessAccount FindByAccNum(string accNum)
         {
             var db = DBHelper.GetSQLiteConnection();
-            var record = db.Query<CustomerBillingAccount>("SELECT * FROM UserManageAccountEntity WHERE accNum =?", accNum);
+            var record = db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE accNum =?", accNum);
 
             if (record != null && record.Count > 0)
             {
@@ -404,6 +381,48 @@ namespace myTNB_Android.Src.Database.Model
                 isUpdated = customerBillingAccounts[0].billingDetails != null;
             }
             return isUpdated;
+        }
+
+        public static List<UserManageAccessAccount> List()
+        {
+            List<UserManageAccessAccount> sortedList = new List<UserManageAccessAccount>();
+            //List<UserManageAccessAccount> excludeNonREList = NonREAccountListExclude(sortedList);
+            sortedList.AddRange(NonREAccountList());
+
+            return sortedList;
+        }
+
+        public static List<UserManageAccessAccount> NonREAccountListExclude(List<UserManageAccessAccount> accList)
+        {
+            List<UserManageAccessAccount> reAccountList = new List<UserManageAccessAccount>();
+            if (accList != null && accList.Count > 0)
+            {
+                string excludeList = "";
+                int i = 0;
+                foreach (UserManageAccessAccount acc in accList)
+                {
+                    if (i == accList.Count - 1)
+                    {
+                        excludeList += "'" + acc.AccNum + "'";
+                    }
+                    else
+                    {
+                        excludeList += "'" + acc.AccNum + "',";
+                    }
+                    i++;
+                }
+                var db = DBHelper.GetSQLiteConnection();
+                reAccountList = db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE userAccountID != null ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            }
+            return reAccountList;
+        }
+
+        public static List<UserManageAccessAccount> NonREAccountList()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            List<UserManageAccessAccount> nonREAccountList = new List<UserManageAccessAccount>();
+            nonREAccountList = db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE userId != 0 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            return nonREAccountList;
         }
     }
 }

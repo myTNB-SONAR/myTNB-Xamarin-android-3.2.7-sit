@@ -193,6 +193,7 @@ namespace myTNB_Android.Src.Login.MVP
                         UserEntity.RemoveActive();
                         UserNotificationEntity.RemoveAll();
                         CustomerBillingAccount.RemoveActive();
+                        UserManageAccessAccount.RemoveActive();
                         SMUsageHistoryEntity.RemoveAll();
                         UsageHistoryEntity.RemoveAll();
                         BillHistoryEntity.RemoveAll();
@@ -409,6 +410,7 @@ namespace myTNB_Android.Src.Login.MVP
                 UserEntity.RemoveActive();
                 UserRegister.RemoveActive();
                 CustomerBillingAccount.RemoveActive();
+                UserManageAccessAccount.RemoveActive();
                 NotificationFilterEntity.RemoveAll();
                 UserNotificationEntity.RemoveAll();
                 SubmittedFeedbackEntity.Remove();

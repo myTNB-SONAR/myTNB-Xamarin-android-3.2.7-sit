@@ -282,8 +282,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         {
             try
             {
-                //this.userActionsListener.ManageAccessUser(accountData);
-                ManageUserActivity();
+                this.userActionsListener.ManageAccessUser(accountData);
+                //ManageUserActivity();
             }
             catch (Exception e)
             {
@@ -291,7 +291,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             }
         }
 
-        private void ManageUserActivity()
+        public void ManageUserActivity()
         {
             Intent updateNickName = new Intent(this, typeof(ManageAccessActivity));
             StartActivityForResult(updateNickName, Constants.UPDATE_NICKNAME_REQUEST);
