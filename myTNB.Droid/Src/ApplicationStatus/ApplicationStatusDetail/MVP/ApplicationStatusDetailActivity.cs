@@ -504,10 +504,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             btnViewActivityLog.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "viewActivityLog");
                             howDoISeeApplicaton.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "seeFullDetails");
 
-                            applicationStatusDetailSingleButtonLayout.Visibility = applicationDetailDisplay.IsSavedApplication
-                                ? ViewStates.Visible
-                                : ViewStates.Gone;
-
                             if (applicationDetailDisplay.IsLinkedWithDisplayed)
                             {
                                 txtLinkedWithHeader.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "linkedWith");
