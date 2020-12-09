@@ -263,12 +263,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 edtAccountLabel.FocusChange += (sender, e) =>
                 {
-                    textInputLayoutAccountLabel.Error = "";
+                    textInputLayoutAccountLabel.HelperText = "";
                     string accountLabel = edtAccountLabel.Text.Trim();
                     if (e.HasFocus)
                     {
                         textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
-                        textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
+                        textInputLayoutAccountLabel.HelperText = Utility.GetLocalizedHintLabel("nickname");
                     }
                     try
                     {
@@ -309,7 +309,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 textInputLayoutAccountNo.Error = "";
                
                 textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                textInputLayoutAccountLabel.Error = "";
+                textInputLayoutAccountLabel.HelperText = "";
 
                 textInputLayoutRocNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 textInputLayoutRocNo.Error = "";
@@ -520,7 +520,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public void ShowEmptyAccountNickNameError()
         {
             textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountLabel.Error = "Invalid Account NickName";          
+            textInputLayoutAccountLabel.HelperText = "Invalid Account NickName";          
         }
 
         public void ShowEmptyAccountNumberError()
@@ -686,12 +686,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public void ShowEnterValidAccountName()
         {
             textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountLabel.Error = this.Activity.GetString(Resource.String.invalid_charac);
+            textInputLayoutAccountLabel.HelperText = this.Activity.GetString(Resource.String.invalid_charac);
         }
 
         public void RemoveNameErrorMessage()
         {
-            textInputLayoutAccountLabel.Error = "";
+            textInputLayoutAccountLabel.HelperText = "";
             
         }
 
@@ -723,9 +723,9 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         {
             textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
 
-            if (textInputLayoutAccountLabel.Error != Utility.GetLocalizedErrorLabel("duplicateNickname"))
+            if (textInputLayoutAccountLabel.HelperText != Utility.GetLocalizedErrorLabel("duplicateNickname"))
             {
-                textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");  // fix bouncing issue
+                textInputLayoutAccountLabel.HelperText = Utility.GetLocalizedErrorLabel("duplicateNickname");  // fix bouncing issue
             }
         }
 

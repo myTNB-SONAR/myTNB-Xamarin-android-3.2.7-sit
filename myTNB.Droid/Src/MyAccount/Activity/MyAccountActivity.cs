@@ -31,7 +31,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
         //, Icon = "@drawable/Logo"
         //, MainLauncher = true
         , ScreenOrientation = ScreenOrientation.Portrait
-        , Theme = "@style/Theme.DashboardHome")]
+        , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class MyAccountActivity : BaseActivityCustom, MyAccountContract.IView, customButtonListener
     {
         [BindView(Resource.Id.rootView)]

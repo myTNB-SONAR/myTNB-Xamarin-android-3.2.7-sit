@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
     [Activity(Label = "Add Electricity Account"
         , ScreenOrientation = ScreenOrientation.Portrait
         , WindowSoftInputMode = SoftInput.StateHidden
-        , Theme = "@style/Theme.DashboardHome")]
+        , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class AddAccountActivity : BaseToolbarAppCompatActivity
     {
 
@@ -55,12 +55,12 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
             //Initialize scanner
             MobileBarcodeScanner.Initialize(Application);
-            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+            //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
         }
 
         public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
         {
-            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+            //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
             if (fragment is AddAccountTypeFragmentNew)
             {
                 bool isOwner = bundle.GetBoolean("isOwner");

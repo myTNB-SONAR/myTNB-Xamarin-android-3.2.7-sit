@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
-    android:theme="@style/Theme.RegisterForm"
+    android:theme="@style/Theme.OwnerTenantBaseTheme"
     android:id="@+id/rootView">
     <LinearLayout
         android:layout_width="match_parent"

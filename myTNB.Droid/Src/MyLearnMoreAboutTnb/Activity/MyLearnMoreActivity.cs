@@ -33,7 +33,7 @@ namespace myTNB_Android.Src.MyLearnMoreAboutTnb.Activity
       //, NoHistory = false
       //, Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
-      , Theme = "@style/Theme.RegisterForm")]
+      , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class MyLearnMoreActivity : BaseActivityCustom, MyLearnMoreContract.IView
     {
         [BindView(Resource.Id.rootView)]

@@ -48,7 +48,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
     [Activity(Label = "@string/dashboard_activity_title"
               , Icon = "@drawable/ic_launcher"
         , ScreenOrientation = ScreenOrientation.Portrait
-        , Theme = "@style/Theme.DashboardHome"
+        , Theme = "@style/Theme.OwnerTenantBaseTheme"
         , WindowSoftInputMode = SoftInput.AdjustNothing)]
     public class ProfileMainMenuFragment : BaseFragmentCustom, ProfileMenuContract.IView
 	{

@@ -28,7 +28,7 @@ namespace myTNB_Android.Src.ManageCards.Activity
 {
     [Activity(Label = "@string/manage_cards_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
-    , Theme = "@style/Theme.ManageCards")]
+    , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class ManageCardsActivity : BaseActivityCustom, ManageCardsContract.IView
     {
 

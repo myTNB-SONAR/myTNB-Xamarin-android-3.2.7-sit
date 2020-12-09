@@ -26,6 +26,16 @@ namespace myTNB_Android.Src.Utils
         private static bool IsPayDisableNotFromAppLaunch = false;
         private static string AppUpdateId = "";
 
+
+        public enum Masking
+        {
+            Address,
+            Email,
+            MobileNumber,
+            Passport,
+            IC
+        }
+
         public Utility()
         {
         }
@@ -465,6 +475,34 @@ namespace myTNB_Android.Src.Utils
                 LoggingNonFatalError(e);
             }
         }
+
+        public static string StringMasking(Masking masking , string premasking){
+
+            if (masking.Equals(Masking.Address)){
+
+                int commaIndex = premasking.IndexOf(',');
+                if (commaIndex != -1)
+                {
+
+                    string postMasking=premasking.Substring(commaIndex);
+                    string masked = "XXXX ";
+                    return masked+postMasking;
+                }
+                else
+                {
+                    //premasking not contain any ,
+                    return premasking;
+                }
+            }
+            else
+            {
+                return premasking;
+            }
+
+        }
+
+        
+
 
         public static string GetAppUpdateId()
         {

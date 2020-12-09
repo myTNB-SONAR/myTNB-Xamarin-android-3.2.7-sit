@@ -33,7 +33,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         //, Icon = "@drawable/Logo"
         //, MainLauncher = true
         , ScreenOrientation = ScreenOrientation.Portrait
-        , Theme = "@style/Theme.DashboardHome")]
+        , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class ManageAccessActivity : BaseActivityCustom, ManageAccessContract.IView, customButtonListener
     {
         [BindView(Resource.Id.rootView)]

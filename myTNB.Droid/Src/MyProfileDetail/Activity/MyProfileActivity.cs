@@ -37,7 +37,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
       //, NoHistory = false
       //, Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
-      , Theme = "@style/Theme.RegisterForm")]
+      , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class MyProfileActivity : BaseActivityCustom, ProfileDetailContract.IView
     {
         [BindView(Resource.Id.profileMenuRootContent)]

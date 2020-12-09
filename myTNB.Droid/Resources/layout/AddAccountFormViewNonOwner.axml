@@ -73,13 +73,16 @@
                     android:layout_marginTop="8dp"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     app:errorTextAppearance="@style/TextInputLayoutFeedbackCount">
-                    <EditText
+                     <EditText
+                        android:id="@+id/account_label_edittext" 
                         android:layout_width="match_parent"
-                        android:hint="@string/add_account_form_account_nickname"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/placeholder_name"
+                        android:drawablePadding="6dp"
+                        android:hint="@string/update_account_hint_account_nickname"
                         android:inputType="text"
-                        android:id="@+id/account_label_edittext" />
+                        android:maxLines="1"/>
+                        
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/owner_ic_no_layout"

@@ -150,6 +150,7 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
             /// <param name="exception">the returned exception</param>
             void ShowRetryOptionsUnknownException(Exception exception);
 
+
             /// <summary>
             /// Enable register button
             /// </summary>
@@ -175,6 +176,8 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
             void ShowProgressDialog();
 
             void HideProgressDialog();
+
+            void ShowCCErrorSnakebar();
 
         }
 

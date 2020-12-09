@@ -141,37 +141,38 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
                     FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
                 }
 
-                GetVerifyRequest getEmailVerify = new GetVerifyRequest();
+                string idType = "", idNo="";
+                GetVerifyRequest getEmailVerify = new GetVerifyRequest(idType,idNo);
                 getEmailVerify.SetUserName(email);
                 var userResponse = await ServiceApiImpl.Instance.UserAuthenticateEmailOnly(getEmailVerify);
                 
-                if (userResponse.IsSuccessResponse())
-                {
-                    if (this.mView.IsActive())
-                    {                           
-                        this.mView.HideProgressDialog();
-                    }
-                }
-                else
-                {
                     try
                     {
-                        if (userResponse.GetDataAll().StatusCode.Equals("4"))
+
+                        if (userResponse.IsSuccessResponse())
                         {
-                            this.mView.ShowInvalidEmailPasswordError();
+                            if (userResponse.Response.Data.IsRegistered)
+                            {
+                                this.mView.ShowInvalidEmailPasswordError();
+                            }
+                            else
+                            {
+                                var userCredentials = new UserCredentialsEntity()
+                                {
+                                    Email = email,
+                                    Password = password,
+
+                                };
+                                this.mView.ShowRegister(userCredentials);
+                                this.mView.HideProgressDialog();
+                            }
                         }
                         else
                         {
-                            var userCredentials = new UserCredentialsEntity()
-                            {
-                                Email = email,
-                                Password = password,
-
-                            };
-                            this.mView.ShowRegister(userCredentials);
                             this.mView.HideProgressDialog();
+                            this.mView.ShowCCErrorSnakebar();
+
                         }
-                       
                     }
                     catch (ApiException apiException)
                     {
@@ -190,7 +191,7 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
                     {
                         this.mView.HideProgressDialog();
                     }
-                }
+                
             
             }
             catch (System.OperationCanceledException e)

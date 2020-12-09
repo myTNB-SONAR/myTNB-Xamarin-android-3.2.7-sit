@@ -34,7 +34,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
 {
     [Activity(Label = "@string/manage_supply_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
-    , Theme = "@style/Theme.DashboardHome")]
+    , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class ManageUserActivity : BaseActivityCustom, ManageUserContract.IView
     {
         [BindView(Resource.Id.rootView)]
