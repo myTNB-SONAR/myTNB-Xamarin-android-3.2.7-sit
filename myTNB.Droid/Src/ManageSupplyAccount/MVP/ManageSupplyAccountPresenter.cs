@@ -149,7 +149,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
             {
                 //var GetAccessAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(new RemoveAccountRequest(accountData.AccountNum));
                 //GetAccountAccessRight getAccountAccessRight = new GetAccountAccessRight(accountData.AccountNum, "string");
-                ManageAccessAccountListResponse manageAccessAccountListResponse = await ServiceApiImpl.Instance.GetAccountAccessRightList( new GetAccountAccessRight(accountData.AccountNum, accountData.AccountNum));
+                ManageAccessAccountListResponse manageAccessAccountListResponse = await ServiceApiImpl.Instance.GetAccountAccessRightList( new GetAccountAccessRight(accountData.AccountNum));
 
                 if (mView.IsActive())
                 {
@@ -165,7 +165,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                     else
                     {
                         AccountSortingEntity.RemoveSpecificAccountSorting(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
-                    }           
+                    }
+                    this.mView.ManageUserActivity();
+
                 }
                 else
                 {
@@ -210,117 +212,63 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
             try
             {
                 int ctr = 0;
-                if (AccountSortingEntity.HasItems(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV))
+                if (list.Count > 0)
                 {
-                    List<CustomerBillingAccount> existingSortedList = AccountSortingEntity.List(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
+                    //List<UserManageAccessAccount> existingSortedList = AccountSortingEntity.List(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
 
-                    List<CustomerBillingAccount> fetchList = new List<CustomerBillingAccount>();
+                    List<UserManageAccessAccount> fetchList = new List<UserManageAccessAccount>();
 
-                    List<CustomerBillingAccount> newExistingList = new List<CustomerBillingAccount>();
+                    List<UserManageAccessAccount> newExistingList = new List<UserManageAccessAccount>();
                     List<int> newExisitingListArray = new List<int>();
-                    List<CustomerBillingAccount> newAccountList = new List<CustomerBillingAccount>();
+                    List<UserManageAccessAccount> newAccountList = new List<UserManageAccessAccount>();
 
                     foreach (ManageAccessAccountListResponse.CustomerAccountData acc in list)
                     {
-                        int index = existingSortedList.FindIndex(x => x.AccNum == acc.AccountNumber);
+                        //int index = existingSortedList.FindIndex(x => x.AccNum == acc.AccountNumber);
 
-                        var newRecord = new CustomerBillingAccount()
+                        var newRecord = new UserManageAccessAccount()
                         {
-                            /*Type = acc.Type,
                             AccNum = acc.AccountNumber,
-                            AccDesc = string.IsNullOrEmpty(acc.AccDesc) == true ? "--" : acc.AccDesc,
-                            UserAccountId = acc.UserAccountID,
-                            ICNum = acc.IcNum,
-                            AmtCurrentChg = acc.AmCurrentChg,
-                            IsRegistered = acc.IsRegistered,
-                            IsPaid = acc.IsPaid,
-                            isOwned = acc.IsOwned,
-                            AccountTypeId = acc.AccountTypeId,
-                            AccountStAddress = acc.AccountStAddress,
-                            OwnerName = acc.OwnerName,
-                            AccountCategoryId = acc.AccountCategoryId,
-                            SmartMeterCode = acc.SmartMeterCode == null ? "0" : acc.SmartMeterCode,
-                            IsSelected = false*/
+                            //AccDesc = string.IsNullOrEmpty(acc.AccDesc) == true ? "--" : acc.AccDesc,
+                            AccDesc = acc.AccountDescription,
+                            UserAccountId = acc.AccountId,
+                            IsApplyEBilling = acc.IsApplyEBilling,
+                            IsHaveAccess = acc.IsHaveAccess,
+                            IsOwnedAccount = acc.IsOwnedAccount,
+                            IsPreRegister = acc.IsPreRegister,
+                            email = acc.Email,
+                            name = acc.Name,
+                            userId = acc.UserId,
                         };
-
-                        if (index != -1)
-                        {
-                            newExisitingListArray.Add(index);
-                        }
-                        else
-                        {
-                            newAccountList.Add(newRecord);
-                        }
-                    }
-
-                    if (newExisitingListArray.Count > 0)
-                    {
-                        newExisitingListArray.Sort();
-
-                        foreach (int index in newExisitingListArray)
-                        {
-                            CustomerBillingAccount oldAcc = existingSortedList[index];
-
-                            ManageAccessAccountListResponse.CustomerAccountData newAcc = list.Find(x => x.AccountNumber == oldAcc.AccNum);
-
-                            var newRecord = new CustomerBillingAccount()
-                            {
-                                /*Type = newAcc.Type,
-                                AccNum = newAcc.AccountNumber,
-                                AccDesc = string.IsNullOrEmpty(newAcc.AccDesc) == true ? "--" : newAcc.AccDesc,
-                                UserAccountId = newAcc.UserAccountID,
-                                ICNum = newAcc.IcNum,
-                                AmtCurrentChg = newAcc.AmCurrentChg,
-                                IsRegistered = newAcc.IsRegistered,
-                                IsPaid = newAcc.IsPaid,
-                                isOwned = newAcc.IsOwned,
-                                AccountTypeId = newAcc.AccountTypeId,
-                                AccountStAddress = newAcc.AccountStAddress,
-                                OwnerName = newAcc.OwnerName,
-                                AccountCategoryId = newAcc.AccountCategoryId,
-                                SmartMeterCode = newAcc.SmartMeterCode == null ? "0" : newAcc.SmartMeterCode,
-                                IsSelected = false*/
-                            };
-
-                            newExistingList.Add(newRecord);
-                        }
-                    }
-
-                    if (newExistingList.Count > 0)
-                    {
-                        newExistingList[0].IsSelected = true;
-                        foreach (CustomerBillingAccount acc in newExistingList)
-                        {
-                            int rowChange = CustomerBillingAccount.InsertOrReplace(acc);
-                            ctr++;
-                        }
-
-                        string accountList = JsonConvert.SerializeObject(newExistingList);
-
-                        AccountSortingEntity.InsertOrReplace(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV, accountList);
-                    }
-                    else
-                    {
-                        AccountSortingEntity.RemoveSpecificAccountSorting(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
+                        newAccountList.Add(newRecord);
                     }
 
                     if (newAccountList.Count > 0)
                     {
-                        newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
-                        foreach (CustomerBillingAccount acc in newAccountList)
+                        /*newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
+                        foreach (UserManageAccessAccount acc in newAccountList)
                         {
-                            int rowChange = CustomerBillingAccount.InsertOrReplace(acc);
+                            int rowChange = UserManageAccessAccount.InsertOrReplace(acc);
+                            int rowChange = UserManageAccessAccount.InsertOrReplace(acc);
                             ctr++;
+                        }*/
+                        //UserManageAccessAccount.MakeFirstAsSelected();
+
+                        //newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
+                        foreach (ManageAccessAccountListResponse.CustomerAccountData acc in list)
+                        {
+                            int rowChange = UserManageAccessAccount.InsertOrReplace(acc);
+                            ctr++;
+
                         }
                     }
                 }
                 else
                 {
-                    /*foreach (ManageAccessAccountListResponse.CustomerAccountData acc in list)
+                    foreach (ManageAccessAccountListResponse.CustomerAccountData acc in list)
                     {
-                        int rowChange = CustomerBillingAccount.InsertOrReplace(acc, false);
+                        int rowChange = UserManageAccessAccount.InsertOrReplace(acc);
                     }
-                    CustomerBillingAccount.MakeFirstAsSelected();*/
                 }
             }
             catch (Exception e)

@@ -1,4 +1,4 @@
-﻿using AFollestad.MaterialDialogs;
+﻿/*using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -383,3 +383,4 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         }
     }
 }
+*/

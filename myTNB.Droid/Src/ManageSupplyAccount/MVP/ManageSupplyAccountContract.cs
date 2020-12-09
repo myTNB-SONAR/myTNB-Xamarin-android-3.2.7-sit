@@ -12,6 +12,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
     {
         public interface IView : IBaseView<IUserActionsListener>
         {
+
+            void ManageUserActivity();
+
             /// <summary>
             /// Show remove progress dialog
             /// </summary>

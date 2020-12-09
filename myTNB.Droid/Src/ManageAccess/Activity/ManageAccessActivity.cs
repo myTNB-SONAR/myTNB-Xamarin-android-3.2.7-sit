@@ -76,6 +76,8 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         ManageAccessContract.IUserActionsListener userActionsListener;
         ManageAccessPresenter mPresenter;
 
+        UserManageAccessAccount userManageAccessAccount;
+
         MaterialDialog accountRetrieverDialog;
 
         const string PAGE_ID = "UserAccess";
@@ -132,8 +134,8 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                CustomerBillingAccount customerBillingAccount = adapter.GetItemObject(e.Position);
-                ShowManageSupplyAccount(AccountData.Copy(customerBillingAccount, false), e.Position);
+                UserManageAccessAccount userManageAccessAccount = adapter.GetItemObject(e.Position);
+                ShowManageSupplyAccount(userManageAccessAccount, e.Position);
             }
         }
 
@@ -142,14 +144,14 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         {
             ShowDeleteAccDialog(this, position, () =>
             {
-                /*CustomerBillingAccount account = adapter.GetItemObject(position);
-                CustomerBillingAccount.Remove(account.AccNum);
+                UserManageAccessAccount account = adapter.GetItemObject(position);
+                UserManageAccessAccount.Remove(account.AccNum);
                 this.mPresenter.OnRemoveAccount(account.AccNum);
                 adapter.Clear();
                 listView.Adapter = null;
                 listView.Adapter = adapter;
                 adapter.setCustomButtonListner(this);
-                this.userActionsListener.Start();*/
+                this.userActionsListener.Start();
             });           
         }
 
@@ -311,7 +313,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             }
         }
 
-        public void ShowManageSupplyAccount(AccountData accountData, int position)
+        public void ShowManageSupplyAccount(UserManageAccessAccount accountData, int position)
         {
             try
             {
@@ -341,7 +343,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
 
         void ShowDeleteAccDialog(Android.App.Activity context, int position, Action confirmAction, Action cancelAction = null)
         {
-            CustomerBillingAccount account = adapter.GetItemObject(position);
+            UserManageAccessAccount account = adapter.GetItemObject(position);
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                         .SetTitle(Utility.GetLocalizedLabel("ManageAccount", "popupremoveAccountTitle"))
                         //.SetMessage(Utility.GetLocalizedLabel("Common", "updateIdMessage"))
@@ -469,7 +471,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             return Window.DecorView.RootView.IsShown;
         }
 
-        public void ShowAccountList(List<CustomerBillingAccount> accountList)
+        public void ShowAccountList(List<UserManageAccessAccount> accountList)
         {
             try
             {

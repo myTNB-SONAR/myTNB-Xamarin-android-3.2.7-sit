@@ -28,7 +28,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             /// Show Account Data per list item row click 
             /// </summary>
             /// <param name="accountData"></param>
-            void ShowManageSupplyAccount(AccountData accountData, int position);
+            void ShowManageSupplyAccount(UserManageAccessAccount accountData, int position);
 
             /// <summary>
             /// Shows removed account success
@@ -88,8 +88,8 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             /// <summary>
             /// Shows account list
             /// </summary>
-            /// <param name="accountList">List<paramref name="CustomerBillingAccount"/></param>
-            void ShowAccountList(List<CustomerBillingAccount> accountList);
+            /// <param name="accountList">List<paramref name="UserManageAccessAccount"/></param>
+            void ShowAccountList(List<UserManageAccessAccount> accountList);
 
             /// <summary>
             /// Shows an empty account view

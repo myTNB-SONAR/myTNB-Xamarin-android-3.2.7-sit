@@ -21,7 +21,7 @@ using System.Collections.Generic;
 
 namespace myTNB_Android.Src.ManageAccess.Adapter
 {
-    internal class ManageAccessAdapter : BaseCustomAdapter<CustomerBillingAccount>, ManageAccessContract.IUserActionsListener
+    internal class ManageAccessAdapter : BaseCustomAdapter<UserManageAccessAccount>, ManageAccessContract.IUserActionsListener
     {
         private ManageAccessContract.IView mView;
         private AccountData accountData;
@@ -35,11 +35,11 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
         {
         }
 
-        public ManageAccessAdapter(Context context, List<CustomerBillingAccount> itemList) : base(context, itemList)
+        public ManageAccessAdapter(Context context, List<UserManageAccessAccount> itemList) : base(context, itemList)
         {
         }
 
-        public ManageAccessAdapter(Context context, List<CustomerBillingAccount> itemList, bool notify) : base(context, itemList, notify)
+        public ManageAccessAdapter(Context context, List<UserManageAccessAccount> itemList, bool notify) : base(context, itemList, notify)
         {
         }
 
@@ -57,7 +57,7 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
         {
             MyAccountViewHolder viewHolder = null;
 
-            CustomerBillingAccount account = GetItemObject(position);
+            UserManageAccessAccount account = GetItemObject(position);
             if (convertView == null)
             {
                 convertView = LayoutInflater.From(context).Inflate(Resource.Layout.MyAccountRowNew, parent, false);

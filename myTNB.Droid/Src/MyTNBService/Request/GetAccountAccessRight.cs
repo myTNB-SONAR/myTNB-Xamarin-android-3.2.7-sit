@@ -3,13 +3,11 @@ namespace myTNB_Android.Src.MyTNBService.Request
 {
     public class GetAccountAccessRight : BaseRequest
     {
-        public string accountNo, usrInf;
-        //public DeviceInfoRequest deviceInf;
+        public string accountNo;
 
-        public GetAccountAccessRight(string accNum, string usr)
+        public GetAccountAccessRight(string accNum)
         {
             this.accountNo = accNum;
-            this.usrInf = usr;
         }
     }
 }

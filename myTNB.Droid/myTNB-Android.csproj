@@ -736,6 +736,7 @@
     <Compile Include="Src\AddAccount\Models\BCRMAccountResponse.cs" />
     <Compile Include="Src\AddAccount\Models\GetBCRMAccountRequest.cs" />
     <Compile Include="Src\AddAccount\Models\ItemizedBillingDetails.cs" />
+    <Compile Include="Src\AddAccount\Models\NewAccountManageAccess.cs" />
     <Compile Include="Src\AddAccount\Models\NewAccount.cs" />
     <Compile Include="Src\AddAccount\Models\ValidateManualAccountRequest.cs" />
     <Compile Include="Src\AddAccount\Models\ValidateManualAccountResponse.cs" />
