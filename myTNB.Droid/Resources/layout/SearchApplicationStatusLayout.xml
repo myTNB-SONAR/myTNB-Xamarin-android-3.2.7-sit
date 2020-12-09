@@ -102,7 +102,7 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_marginBottom="16dp"
-						app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+						app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"						
 						android:id="@+id/txtInputLayoutServiceRequestNum"
 						app:errorEnabled="true"
 						app:helperText=""

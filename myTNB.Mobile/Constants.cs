@@ -13,6 +13,7 @@
         //String Constants
         internal const string EMPTY = "empty";
         internal const string DEFAULT = "default";
+        internal const string EMPTY_FILTER = "emptyFilter";
 
         //Todo: Set to 60000
         internal const int APITimeOut = 60000;
@@ -29,7 +30,7 @@
         private const string PROD = "https://mytnbapp.tnb.com.my";
         private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
 
-        internal static string ApiDomain = SIT;
+        internal static string ApiDomain = DEV2;
         internal const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         //Mark: IP: http://10.215.70.246/   URL: http://tnbcsdevapp.tnb.my/
         internal const string SitecoreURL = "http://10.215.70.246/";

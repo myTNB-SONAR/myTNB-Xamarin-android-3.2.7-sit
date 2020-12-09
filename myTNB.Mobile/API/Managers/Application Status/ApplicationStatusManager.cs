@@ -348,7 +348,7 @@ namespace myTNB.Mobile
                         //Mark: Check for 0 Applications
                         if (response.Content != null && response.Content.Applications != null && response.Content.Applications.Count == 0)
                         {
-                            response.StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(isFilter ? "Constants. EMPTYFilter" : Constants.EMPTY);
+                            response.StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(isFilter ? Constants.EMPTY_FILTER : Constants.EMPTY);
                         }
                         else
                         {
