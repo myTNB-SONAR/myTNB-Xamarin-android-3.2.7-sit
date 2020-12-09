@@ -171,7 +171,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         internal void OnConfirmClickAsync(object sender, EventArgs e)
         {
             searchApplicatioStatuListResult.Visibility = ViewStates.Gone;
-         
+
             if (isSearchByCA)
             {
                 GetSearchByCA();
@@ -358,10 +358,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 }
             }
 
-            txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(Resource.Color.new_grey);
+            /*txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(Resource.Color.new_grey);
             txtInputLayoutServiceRequestNum.SetHintTextAppearance(Resource.Color.silverChalice);
             txtInputLayoutSearchBy.SetHintTextAppearance(Resource.Color.silverChalice);
             txtInputLayoutApplicationType.SetHintTextAppearance(Resource.Color.silverChalice);
+            */
 
         }
 
@@ -868,17 +869,17 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     isTextChange = true;
                     if (searchByModel != null && selectedType != null && selectedType.SearchTypes != null)
                     {
-                        txtInputLayoutServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay.ToUpper();
-                        
+                        //txtInputLayoutServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay.ToUpper();
+
                         var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].Type : searchByModel.Type;
-                        txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].SearchTypeDescDisplay.ToUpper() : searchByModel.SearchTypeDescDisplay.ToUpper();
+                        //txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].SearchTypeDescDisplay.ToUpper() : searchByModel.SearchTypeDescDisplay.ToUpper();
                         if (searchType == ApplicationStatusSearchType.ApplicationNo)
                         {
                             txtInputLayoutServiceRequestNum.HelperText = selectedType.ApplicationNoHint;
                             string format = selectedType.SearchApplicationNoInputMask;
                             string inputString = txtServiceRequestNum.Text.ToString();
                             int firstIndex = format.IndexOf("#");
-                            
+
                             string preffix = firstIndex > -1 ? format.Substring(0, firstIndex) : string.Empty;
                             if (preffix.Length >= inputString.Length)
                             {
