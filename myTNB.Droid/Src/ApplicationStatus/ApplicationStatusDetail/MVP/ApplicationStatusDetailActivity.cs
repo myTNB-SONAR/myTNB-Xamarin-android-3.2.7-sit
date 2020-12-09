@@ -348,7 +348,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         HideProgressDialog();
                         if (postSaveApplicationResponse.StatusDetail.IsSuccess)
                         {
-                            Toast.MakeText(this, postSaveApplicationResponse.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
+                            ToastUtils.OnDisplayToast(this, postSaveApplicationResponse.StatusDetail.Message ?? string.Empty);
                             SetResult(Result.Ok, new Intent());
                             Finish();
                         }
@@ -963,7 +963,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     {
                         if (response.StatusDetail.IsSuccess && UserEntity.GetActive() != null)
                         {
-                            Toast.MakeText(this, response.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
+                            ToastUtils.OnDisplayToast(this, response.StatusDetail.Message ?? string.Empty);
                             SetResult(Result.Ok, new Intent());
                             Finish();
                         }
@@ -971,7 +971,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     else
                     {
                         Toast.MakeText(this, response.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
-
                     }
                     HideProgressDialog();
                 }
