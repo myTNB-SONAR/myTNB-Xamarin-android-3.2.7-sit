@@ -982,8 +982,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         {
             try
             {
-                ToastUtils.OnDisplayToast(Activity
-                    , string.Format(GetLabelByLanguage("fontChangeSuccess"), TextViewUtils.FontSelected));
+                //ToastUtils.OnDisplayToast(Activity, string.Format(GetLabelByLanguage("fontChangeSuccess"), TextViewUtils.FontSelected));
+                if (mLanguageSnackbar != null && mLanguageSnackbar.IsShown)
+                {
+                    mLanguageSnackbar.Dismiss();
+                }
+
+                mLanguageSnackbar = Snackbar.Make(rootView,
+                    GetLabelByLanguage("changeLanguageSuccess"),
+                    Snackbar.LengthIndefinite)
+                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = mLanguageSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mLanguageSnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)
@@ -996,7 +1013,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         {
             try
             {
-                ToastUtils.OnDisplayToast(Activity, GetLabelByLanguage("changeLanguageSuccess"));
+                //ToastUtils.OnDisplayToast(Activity, GetLabelByLanguage("changeLanguageSuccess"));
+                if (mLanguageSnackbar != null && mLanguageSnackbar.IsShown)
+                {
+                    mLanguageSnackbar.Dismiss();
+                }
+
+                mLanguageSnackbar = Snackbar.Make(rootView,
+                    GetLabelByLanguage("changeLanguageSuccess"),
+                    Snackbar.LengthIndefinite)
+                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = mLanguageSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mLanguageSnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)
