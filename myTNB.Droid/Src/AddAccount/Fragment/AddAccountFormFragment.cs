@@ -921,5 +921,10 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             }
             return false;
         }
+
+        public void GovermentDialog()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

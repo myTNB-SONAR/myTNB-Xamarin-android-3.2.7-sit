@@ -187,6 +187,9 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     dialogWhereMyAccountNo.Show();
                 };
 
+
+
+
                 AccountType Individual = new AccountType();
                 Individual.Id = "1";
                 Individual.Type = Utility.GetLocalizedLabel("AddAccount", "residential");
@@ -285,6 +288,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             string accountName = edtAccountLabel.Text.ToString();
             this.userActionsListener.CheckRequiredFields(accountNo, accountName, isOwner, ic_no);
         }
+
+        
 
         public override void OnActivityResult(int requestCode, int resultCode, Intent data)
         {
@@ -407,6 +412,18 @@ namespace myTNB_Android.Src.AddAccount.Fragment
              tv.SetMaxLines(5);
 
              mSnackBar.Show();*/
+        }
+
+        public void GovermentDialog()
+        {
+           string data = Utility.GetLocalizedLabel("AddAccount", "GovDialogDetails");
+            string temp = string.Format(data);
+            MyTNBAppToolTipBuilder.Create(Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                       .SetTitle((string.Format(Utility.GetLocalizedLabel("AddAccount", "GovDialogTitle"))))
+                       .SetMessage(temp)
+                       .SetContentGravity(GravityFlags.Center)
+                       .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                       .Build().Show();
         }
 
         public void ShowAddAccountResponse(ServiceResponse response)

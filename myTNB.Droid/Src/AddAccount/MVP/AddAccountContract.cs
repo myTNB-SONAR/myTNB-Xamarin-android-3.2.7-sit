@@ -61,6 +61,11 @@ namespace myTNB_Android.Src.AddAccount.MVP
             void ShowAddAccountFail(string errorMessage);
 
             /// <summary>
+            /// Show gov dialog message
+            /// </summary>
+            void GovermentDialog();
+
+            /// <summary>
             /// Show progress dialog for adding account
             /// </summary>
             void ShowAddingAccountProgressDialog();

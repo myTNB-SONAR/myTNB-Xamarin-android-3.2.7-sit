@@ -141,7 +141,9 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
 
                 itemActionFullBill.CheckedChange += CheckedChange;
-                itemActionBilling.CheckedChange += CheckedChange;
+                itemActionBilling.CheckedChange += CheckedChanged;
+
+                PopulateDataCheckBox();
 
                 /*ManageSupplyItemComponent ManageUserItem = GetManageSupply();
                 ManageUserItem.SetHeaderTitle(GetLabelCommonByLanguage("ManageUserTitle"));
@@ -256,36 +258,97 @@ namespace myTNB_Android.Src.ManageUser.Activity
              return manageItem;
          }*/
 
+        public void PopulateDataCheckBox()
+        {
+            try
+            {
+                if (account.IsApplyEBilling)
+                {
+                    itemActionBilling.Checked = true;
+                }
+                else
+                {
+                    itemActionBilling.Checked = false;
+                }
+
+                if (account.IsHaveAccess)
+                {
+                    itemActionFullBill.Checked = true;
+
+                }
+                else
+                {
+                    itemActionFullBill.Checked = false;
+                }
+                DisableSaveButton();
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         private void CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
-
-            /*if (account.IsApplyEBilling=true)
+            if(e.IsChecked)
             {
-                itemActionFullBill.Checked;
-                //DisableSaveButton();
-            }
-            else
-                EnableSaveButton();
-*/
-            /*
-            if (!txtboxcondition.Checked)
-            {
-                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc"));
-                StripUnderlinesFromLinks(txtTermsConditions);
+                bool checkboxfullbill = true;
+                if(account.IsHaveAccess == checkboxfullbill)
+                {
+                    DisableSaveButton();
+                }
+                else
+                {
+                    EnableSaveButton();
+                }
             }
             else
             {
-                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc_checked"));
-                StripUnderlinesFromLinks(txtTermsConditions);
-            }
-            int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
-            string totalAcc = totalAccountAdded.ToString();
-            this.userActionsListener.CheckRequiredFields(totalAcc, txtboxcondition.Checked);*/
+                bool checkboxfullbill = false;
+                if (account.IsHaveAccess == checkboxfullbill)
+                {
+                    DisableSaveButton();
+                }
+                else
+                {
+                    EnableSaveButton();
+                }
+            }          
         }
-       
 
-       
+        private void CheckedChanged(object sender, CompoundButton.CheckedChangeEventArgs e)
+        {
+            if (e.IsChecked)
+            {
+                bool checkboxbilling = true;
+                if (account.IsApplyEBilling == checkboxbilling)
+                {
+                    DisableSaveButton();
+                }
+                else
+                {
+                    EnableSaveButton();
+                }
+            }
+            else
+            {
+                bool checkboxbilling = false;
+                if (account.IsApplyEBilling == checkboxbilling)
+                {
+                    DisableSaveButton();
+                }
+                else
+                {
+                    EnableSaveButton();
+                }
+            }
+
+
+        }
+
+
+
         [OnClick(Resource.Id.infoManageUser)]
         void OnClickManagerUserInfo(object sender, EventArgs eventArgs)
         {
