@@ -112,7 +112,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
 
                 txtAccountNumber.Text = accountData.AccountNum;
-                txtAccountAddress.Text = accountData.AddStreet;
+                txtAccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, accountData.AddStreet);
 
                 txtNickName.Text = accountData.AccountNickName;
 
@@ -293,8 +293,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
         public void ManageUserActivity()
         {
-            Intent updateNickName = new Intent(this, typeof(ManageAccessActivity));
-            StartActivityForResult(updateNickName, Constants.UPDATE_NICKNAME_REQUEST);
+            Intent ManageUser = new Intent(this, typeof(ManageAccessActivity));
+            ManageUser.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            StartActivityForResult(ManageUser, Constants.UPDATE_NICKNAME_REQUEST);
         }
 
         private void ShowManageAutopay()

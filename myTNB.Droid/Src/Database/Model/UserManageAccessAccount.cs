@@ -19,7 +19,7 @@ namespace myTNB_Android.Src.Database.Model
         [Column("accDesc")]
         public string AccDesc { get; set; }
 
-        [Column("userAccountID")]
+        [PrimaryKey, Column("userAccountID")]
         public string UserAccountId { get; set; }
 
         [Column("IsApplyEBilling")]
@@ -40,7 +40,10 @@ namespace myTNB_Android.Src.Database.Model
         [Column("name")]
         public string name { get; set; }
 
-        [PrimaryKey, Column("userId")]
+        [Column("isSelected")]
+        public bool ? isSelected { get; set; }
+
+        [Column("userId")]
         public string userId { get; set; }
         
         public static int CreateTable()
@@ -69,6 +72,7 @@ namespace myTNB_Android.Src.Database.Model
                 email = accountResponse.email,
                 name = accountResponse.name,
                 userId = accountResponse.userId,
+                isSelected = false
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -285,20 +289,16 @@ namespace myTNB_Android.Src.Database.Model
             }
         }
 
-        public static void Remove(string AccountNum)
+        public static void Remove(string AccountNum, string userId)
         {
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("Delete from UserManageAccountEntity WHERE accNum = ?", AccountNum);
-
+            
             try
             {
                 UserEntity activeUser = UserEntity.GetActive();
                 if (activeUser != null)
                 {
-                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
-                    {
-                        AccountSortingEntity.RemoveSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, AccountNum);
-                    }
+                    var db = DBHelper.GetSQLiteConnection();
+                    db.Execute("Delete from UserManageAccountEntity WHERE accNum = ? AND userId = ?", AccountNum, userId);
                 }
             }
             catch (Exception e)
@@ -307,10 +307,10 @@ namespace myTNB_Android.Src.Database.Model
             }
         }
 
-        public static void UpdateAccountName(string newAccountName, string accNum)
+        public static void UpdateManageAccess(string newAccountName, string accNum)
         {
             var db = DBHelper.GetSQLiteConnection();
-            db.Execute("Update UserManageAccountEntity SET accDesc = ? WHERE accNum = ?", newAccountName, accNum);
+            db.Execute("Update UserManageAccountEntity SET accDesc = ? WHERE accNum = ? AND userId = ?", newAccountName, accNum);
 
             try
             {
@@ -392,6 +392,15 @@ namespace myTNB_Android.Src.Database.Model
             return sortedList;
         }
 
+        public static List<UserManageAccessAccount> List(string accNUm)
+        {
+            List<UserManageAccessAccount> sortedList = new List<UserManageAccessAccount>();
+            //List<UserManageAccessAccount> excludeNonREList = NonREAccountListExclude(sortedList);
+            sortedList.AddRange(NonREAccountList(accNUm));
+
+            return sortedList;
+        }
+
         public static List<UserManageAccessAccount> NonREAccountListExclude(List<UserManageAccessAccount> accList)
         {
             List<UserManageAccessAccount> reAccountList = new List<UserManageAccessAccount>();
@@ -423,6 +432,30 @@ namespace myTNB_Android.Src.Database.Model
             List<UserManageAccessAccount> nonREAccountList = new List<UserManageAccessAccount>();
             nonREAccountList = db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE userId != 0 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
             return nonREAccountList;
+        }
+
+        public static List<UserManageAccessAccount> NonREAccountList(string accNUm)
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            List<UserManageAccessAccount> nonREAccountList = new List<UserManageAccessAccount>();
+            nonREAccountList = db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE accNum = ? ORDER BY accDesc ASC", accNUm).ToList().OrderBy(x => x.AccDesc).ToList();
+            return nonREAccountList;
+        }
+
+        public static void UnSelectAll()
+        {
+            using (var db = new SQLiteConnection(Constants.DB_PATH))
+            {
+                db.Execute("UPDATE UserManageAccountEntity SET IsSelected = ?", false);
+            }
+        }
+
+        public static int SelectItem(string id)
+        {
+            using (var db = new SQLiteConnection(Constants.DB_PATH))
+            {
+                return db.Execute("UPDATE UserManageAccountEntity SET IsSelected = ? WHERE userId = ?", true, id);
+            }
         }
     }
 }

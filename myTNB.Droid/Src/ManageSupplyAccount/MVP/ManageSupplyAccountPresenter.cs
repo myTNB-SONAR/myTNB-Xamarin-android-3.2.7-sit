@@ -254,7 +254,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                         }*/
                         //UserManageAccessAccount.MakeFirstAsSelected();
 
-                        //newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
+                        newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
                         foreach (ManageAccessAccountListResponse.CustomerAccountData acc in list)
                         {
                             int rowChange = UserManageAccessAccount.InsertOrReplace(acc);

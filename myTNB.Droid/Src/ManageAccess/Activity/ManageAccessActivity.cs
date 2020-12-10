@@ -99,6 +99,17 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             try
             {
                 // Create your application here
+                Bundle extras = Intent.Extras;
+
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    {
+                        //accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                        accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+
+                    }
+                }
 
                 txtEmptyManageAccess.Text = GetLabelByLanguage("LabelEmptyTitle");
                 txtManageAccessTitle.Text = GetLabelByLanguage("LabelTitle");
@@ -118,7 +129,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                     e.Handled = true;
                 };
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-                mPresenter = new ManageAccessPresenter(this);
+                mPresenter = new ManageAccessPresenter(this, accountData);
                 this.userActionsListener.Start();
             }
             catch (Exception e)
@@ -145,8 +156,8 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             ShowDeleteAccDialog(this, position, () =>
             {
                 UserManageAccessAccount account = adapter.GetItemObject(position);
-                UserManageAccessAccount.Remove(account.AccNum);
-                this.mPresenter.OnRemoveAccount(account.AccNum);
+                UserManageAccessAccount.Remove(account.AccNum , account.userId);
+                this.mPresenter.OnRemoveAccount(account.userId);
                 adapter.Clear();
                 listView.Adapter = null;
                 listView.Adapter = adapter;
