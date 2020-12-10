@@ -29,11 +29,7 @@ namespace myTNB_Android.Src.Utils
 
         public enum Masking
         {
-            Address,
-            Email,
-            MobileNumber,
-            Passport,
-            IC
+            Address
         }
 
         public Utility()
@@ -477,32 +473,39 @@ namespace myTNB_Android.Src.Utils
         }
 
         public static string StringMasking(Masking masking , string premasking){
-
-            if (masking.Equals(Masking.Address)){
-
-                int commaIndex = premasking.IndexOf(',');
-                if (commaIndex != -1)
+            //proceed when is not null or empty
+            if (!String.IsNullOrEmpty(premasking))
+            {
+                if (masking.Equals(Masking.Address))
                 {
 
-                    string postMasking=premasking.Substring(commaIndex);
-                    string masked = "XXXX ";
-                    return masked+postMasking;
+                    int commaIndex = premasking.IndexOf(',');
+                    if (commaIndex != -1)
+                    {
+
+                        string postMasking = premasking.Substring(commaIndex);
+                        string frontMasking=premasking.Substring(0, commaIndex);
+                        Regex replaceString = new Regex("\\S");
+                        frontMasking = replaceString.Replace(frontMasking, "X");
+                        return frontMasking + postMasking;
+                    }
+                    else
+                    {
+                        //premasking not contain any ,
+                        return premasking;
+                    }
                 }
                 else
                 {
-                    //premasking not contain any ,
                     return premasking;
                 }
             }
-            else
-            {
-                return premasking;
+            else { 
+                return premasking; 
             }
-
         }
 
-        
-
+   
 
         public static string GetAppUpdateId()
         {
