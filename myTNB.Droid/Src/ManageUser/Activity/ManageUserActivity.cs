@@ -55,8 +55,23 @@ namespace myTNB_Android.Src.ManageUser.Activity
         [BindView(Resource.Id.txtEmail)]
         EditText txtEmail;
 
-        [BindView(Resource.Id.profileMenuItemsContent)]
-        LinearLayout profileMenuItemsContent;
+        /*[BindView(Resource.Id.profileMenuItemsContent)]
+        LinearLayout profileMenuItemsContent;*/
+
+        [BindView(Resource.Id.itemTitle)]
+        TextView itemTitle;
+
+        [BindView(Resource.Id.itemTitleFullBill)]
+        TextView itemTitleFullBill;
+
+        [BindView(Resource.Id.itemTitleBilling)]
+        TextView itemTitleBilling;
+
+        [BindView(Resource.Id.itemActionBilling)]
+        CheckBox itemActionBilling;
+
+        [BindView(Resource.Id.itemActionFullBill)]
+        CheckBox itemActionFullBill;
 
         [BindView(Resource.Id.btnSave)]
         Button btnSave;
@@ -65,9 +80,10 @@ namespace myTNB_Android.Src.ManageUser.Activity
         TextView infoManageUser;
 
         private IMenu ManageSupplyAccountMenu;
+
         AccountData accountData;
-       // private CustomerBillingAccount account;
-        //UserEntity user;
+        UserManageAccessAccount account;
+      
         int position;
 
         private ManageSupplyItemContentComponent manageUser;
@@ -94,7 +110,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
                     {
                         //accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
-                        accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                        account = DeSerialze<UserManageAccessAccount>(extras.GetString(Constants.SELECTED_ACCOUNT));
 
                     }
                     position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
@@ -112,22 +128,24 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail);
                 TextViewUtils.SetMuseoSans300Typeface( txtNickName );
                 TextViewUtils.SetMuseoSans300Typeface(txtEmail);
-                TextViewUtils.SetMuseoSans500Typeface(btnSave);
+                TextViewUtils.SetMuseoSans300Typeface(itemTitleFullBill, itemTitleBilling);
+                TextViewUtils.SetMuseoSans500Typeface(btnSave, itemTitle);
 
-                txtNickName.Text = accountData.AccountNickName;
-                txtEmail.Text = accountData.AddStreet;
-
-                //txtEmail.Text = accountData.AddStreet;
-                //txtNickName.Text = accountData.AccountNickName;
+                txtNickName.Text = account.AccDesc;
+                txtEmail.Text = account.email;
+               
                 SetToolBarTitle(GetLabelByLanguage("titleManageUser"));
                 txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("email_user_address").ToUpper();
                 btnSave.Text = GetLabelCommonByLanguage("saveChanges");
 
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
 
-                ManageSupplyItemComponent ManageUserItem = GetManageSupply();
+                itemActionFullBill.CheckedChange += CheckedChange;
+                itemActionBilling.CheckedChange += CheckedChange;
+
+                /*ManageSupplyItemComponent ManageUserItem = GetManageSupply();
                 ManageUserItem.SetHeaderTitle(GetLabelCommonByLanguage("ManageUserTitle"));
-                profileMenuItemsContent.AddView(ManageUserItem);
+                profileMenuItemsContent.AddView(ManageUserItem);*/
 
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 mPresenter = new ManageUserPresenter(this, accountData);
@@ -212,41 +230,60 @@ namespace myTNB_Android.Src.ManageUser.Activity
             base.OnPause();
         }
 
-        private ManageSupplyItemComponent GetManageSupply()
+        /* private ManageSupplyItemComponent GetManageSupply()
+         {
+             //Context context = Activity.ApplicationContext;
+
+             ManageSupplyItemComponent manageItem = new ManageSupplyItemComponent(this);
+
+             List<View> manageItems = new List<View>();
+
+             ManageUserMenuItemSingleContentComponent viewBill = new ManageUserMenuItemSingleContentComponent(this);
+             viewBill.SetTitle(GetLabelCommonByLanguage("viewFullBill"));
+             viewBill.SetItemActionVisibility(true);
+             viewBill.SetItemActionCall(ClickCheck);
+             manageItems.Add(viewBill);
+
+
+
+             ManageUserMenuItemSingleContentComponent applyBill = new ManageUserMenuItemSingleContentComponent(this);
+             applyBill.SetTitle(GetLabelCommonByLanguage("ApplyforBilling"));
+             applyBill.SetItemActionVisibility(true);
+             applyBill.SetItemActionCall(ClickCheck);
+             manageItems.Add(applyBill);
+
+             manageItem.AddComponentView(manageItems);
+             return manageItem;
+         }*/
+
+
+        private void CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
-            //Context context = Activity.ApplicationContext;
 
-            ManageSupplyItemComponent manageItem = new ManageSupplyItemComponent(this);
-            
-            List<View> manageItems = new List<View>();
-
-            ManageUserMenuItemSingleContentComponent viewBill = new ManageUserMenuItemSingleContentComponent(this);
-            viewBill.SetTitle(GetLabelCommonByLanguage("viewFullBill"));
-            viewBill.SetItemActionVisibility(true);
-            viewBill.SetItemActionCall(ClickCheck);
-            manageItems.Add(viewBill);
-
-         
-
-            ManageUserMenuItemSingleContentComponent applyBill = new ManageUserMenuItemSingleContentComponent(this);
-            applyBill.SetTitle(GetLabelCommonByLanguage("ApplyforBilling"));
-            applyBill.SetItemActionVisibility(true);
-            applyBill.SetItemActionCall(ClickCheck);
-            manageItems.Add(applyBill);
-
-            manageItem.AddComponentView(manageItems);
-            return manageItem;
-        }
-
-        private void ClickCheck()
-        {
-            isSelectionChange = true;
-            if (!this.GetIsClicked())
+            /*if (account.IsApplyEBilling=true)
             {
-                EnableSaveButton();
+                itemActionFullBill.Checked;
+                //DisableSaveButton();
             }
-            DisableSaveButton();
+            else
+                EnableSaveButton();
+*/
+            /*
+            if (!txtboxcondition.Checked)
+            {
+                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc"));
+                StripUnderlinesFromLinks(txtTermsConditions);
+            }
+            else
+            {
+                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc_checked"));
+                StripUnderlinesFromLinks(txtTermsConditions);
+            }
+            int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
+            string totalAcc = totalAccountAdded.ToString();
+            this.userActionsListener.CheckRequiredFields(totalAcc, txtboxcondition.Checked);*/
         }
+       
 
        
         [OnClick(Resource.Id.infoManageUser)]
