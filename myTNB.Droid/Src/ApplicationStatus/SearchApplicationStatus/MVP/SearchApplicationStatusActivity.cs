@@ -869,10 +869,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     isTextChange = true;
                     if (searchByModel != null && selectedType != null && selectedType.SearchTypes != null)
                     {
-                        //txtInputLayoutServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay.ToUpper();
-
                         var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].Type : searchByModel.Type;
-                        //txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].SearchTypeDescDisplay.ToUpper() : searchByModel.SearchTypeDescDisplay.ToUpper();
+                        txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].SearchTypeDescDisplay.ToUpper() : searchByModel.SearchTypeDescDisplay.ToUpper();
                         if (searchType == ApplicationStatusSearchType.ApplicationNo)
                         {
                             txtInputLayoutServiceRequestNum.HelperText = selectedType.ApplicationNoHint;
