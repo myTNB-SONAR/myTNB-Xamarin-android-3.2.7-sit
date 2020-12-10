@@ -670,7 +670,9 @@
     "DiclaimerHeaderPersonalData": "<b>Personal Data Protection Policy</b>",
     "DiclaimerHeaderAddElectricity": "<b>Add Electricity Account Disclaimer</b>",
     "DisclaimerDetails1": "I confirm that I <b>({0})</b> the owner / authorised person, have the consent and permission to view the account information for the account(s) listed. As a non-owner I agree to share my name and email address with the owner upon submission of this request.",
-    "DisclaimerDetails2": "Please be informed that this application is for the privilege use between TNB and its account holder and any other person with the consent of the account holder. TNB shall not be held liable for any improper use and incorrect use of the information described and contained herein and under no obligation to check the authenticity of such consent and permission given. Upon confirming, you are deemed to have read, understood and agreed to the disclaimer as displayed."
+    "DisclaimerDetails2": "Please be informed that this application is for the privilege use between TNB and its account holder and any other person with the consent of the account holder. TNB shall not be held liable for any improper use and incorrect use of the information described and contained herein and under no obligation to check the authenticity of such consent and permission given. Upon confirming, you are deemed to have read, understood and agreed to the disclaimer as displayed.",
+    "GovDialogTitle": "Sorry we can't add Government electricity accounts on myTNB App right now.",
+    "GovDialogDetails": "You still can add and view your Government account through the myTNB Portal"
 
   },
   "Profile": {
@@ -852,7 +854,7 @@
     "titleAddUser": "Add New User",
     "dialogAddrress":"Why can't I see my full address?",
     "dialogAddrressMessage":"We mask sensitive information to safeguard owner's privacy. You are seeing masked information as you are not the owner of this electricity account.",
-    "dialogManageUser":"What does this mean?",
+    "dialogManageUser":"Giving your users more access.",
     "dialogManageUserMessage":"To protect your information. we're not showing non-owner your personal information and some application features. However, you can grant them access listed here if you see fit and they will be noticed about it.",
     "manageUserTitle":"You're about to make changes to {0}'s access.",
     "manageUserMessage":"Once confirmed, {0} will have their access updated and be notified about the accesses you selected for them to your electricity account.",
