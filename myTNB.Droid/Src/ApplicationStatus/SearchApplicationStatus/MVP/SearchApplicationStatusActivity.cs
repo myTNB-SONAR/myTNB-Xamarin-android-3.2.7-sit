@@ -358,11 +358,9 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 }
             }
 
-            /*txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(Resource.Color.new_grey);
-            txtInputLayoutServiceRequestNum.SetHintTextAppearance(Resource.Color.silverChalice);
-            txtInputLayoutSearchBy.SetHintTextAppearance(Resource.Color.silverChalice);
-            txtInputLayoutApplicationType.SetHintTextAppearance(Resource.Color.silverChalice);
-            */
+            txtInputLayoutServiceRequestNum.DefaultHintTextColor = ContextCompat.GetColorStateList(this, Resource.Color.silverchalice);
+            txtInputLayoutServiceRequestNum.SetHelperTextColor(ContextCompat.GetColorStateList(this, Resource.Color.new_grey));
+
 
         }
 
@@ -871,6 +869,10 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     {
                         var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].Type : searchByModel.Type;
                         txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].SearchTypeDescDisplay.ToUpper() : searchByModel.SearchTypeDescDisplay.ToUpper();
+                        txtInputLayoutServiceRequestNum.DefaultHintTextColor = ContextCompat.GetColorStateList(this, Resource.Color.silverchalice);
+                        txtInputLayoutServiceRequestNum.SetHelperTextColor(ContextCompat.GetColorStateList(this, Resource.Color.new_grey));
+
+
                         if (searchType == ApplicationStatusSearchType.ApplicationNo)
                         {
                             txtInputLayoutServiceRequestNum.HelperText = selectedType.ApplicationNoHint;

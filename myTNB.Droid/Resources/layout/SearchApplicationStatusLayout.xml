@@ -105,7 +105,7 @@
 						app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"						
 						android:id="@+id/txtInputLayoutServiceRequestNum"
 						app:errorEnabled="true"
-						app:helperText=""
+						
 						android:layout_marginRight="17dp">
 						<EditText
 							android:hint=""
