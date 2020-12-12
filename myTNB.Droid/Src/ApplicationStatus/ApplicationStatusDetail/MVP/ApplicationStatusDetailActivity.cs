@@ -397,19 +397,27 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         HideProgressDialog();
                         if (postSaveApplicationResponse.StatusDetail.IsSuccess)
                         {
-                            Toast.MakeText(this, postSaveApplicationResponse.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
+                            ToastUtils.OnDisplayToast(this, postSaveApplicationResponse.StatusDetail.Message ?? string.Empty);
                             SetResult(Result.Ok, new Intent());
                             Finish();
                         }
                         else
                         {
-                            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                            bool isTowButtons = !string.IsNullOrEmpty(postSaveApplicationResponse.StatusDetail.SecondaryCTATitle)
+                                && !string.IsNullOrWhiteSpace(postSaveApplicationResponse.StatusDetail.SecondaryCTATitle);
+                            MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, isTowButtons
+                                    ? MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON
+                                    : MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                                 .SetTitle(postSaveApplicationResponse.StatusDetail.Title)
                                 .SetMessage(postSaveApplicationResponse.StatusDetail.Message)
-                                .SetCTALabel(postSaveApplicationResponse.StatusDetail.PrimaryCTATitle)
-                                .SetSecondaryCTALabel(postSaveApplicationResponse.StatusDetail.SecondaryCTATitle)
-                                .SetSecondaryCTAaction(() => ShowStatusLanding())
-                                .Build();
+                                .SetCTALabel(postSaveApplicationResponse.StatusDetail.PrimaryCTATitle);
+
+                            if (isTowButtons)
+                            {
+                                whereisMyacc.SetSecondaryCTALabel(postSaveApplicationResponse.StatusDetail.SecondaryCTATitle)
+                                    .SetSecondaryCTAaction(() => ShowStatusLanding());
+                            }
+                            whereisMyacc.Build();
                             whereisMyacc.Show();
                         }
                     }
@@ -552,10 +560,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             txtApplicationStatusTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "status") + " ";
                             btnViewActivityLog.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "viewActivityLog");
                             howDoISeeApplicaton.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "seeFullDetails");
-
-                            applicationStatusDetailSingleButtonLayout.Visibility = applicationDetailDisplay.IsSavedApplication
-                                ? ViewStates.Visible
-                                : ViewStates.Gone;
 
                             if (applicationDetailDisplay.IsLinkedWithDisplayed)
                             {
@@ -1052,15 +1056,19 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     {
                         if (response.StatusDetail.IsSuccess && UserEntity.GetActive() != null)
                         {
-                            Toast.MakeText(this, response.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
+                            ToastUtils.OnDisplayToast(this, response.StatusDetail.Message ?? string.Empty);
                             SetResult(Result.Ok, new Intent());
                             Finish();
                         }
                     }
                     else
                     {
-                        Toast.MakeText(this, response.StatusDetail.Message ?? string.Empty, ToastLength.Long).Show();
-
+                        MyTNBAppToolTipBuilder removeFailPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                            .SetTitle(response.StatusDetail.Title)
+                            .SetMessage(response.StatusDetail.Message)
+                            .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                            .Build();
+                        removeFailPopup.Show();
                     }
                     HideProgressDialog();
                 }

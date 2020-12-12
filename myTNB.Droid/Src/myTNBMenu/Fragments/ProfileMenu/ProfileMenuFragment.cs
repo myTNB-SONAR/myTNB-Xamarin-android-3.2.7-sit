@@ -6,8 +6,6 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-
-
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -41,7 +39,7 @@ using Refit;
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 {
     public class ProfileMenuFragment : BaseFragmentCustom, ProfileMenuContract.IView
-	{
+    {
         [BindView(Resource.Id.profileMenuRootContent)]
         CoordinatorLayout rootView;
 
@@ -76,7 +74,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
         public override void OnAttach(Context context)
         {
-
             try
             {
                 if (context is DashboardHomeActivity)
@@ -235,7 +232,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
                 if (requestCode == Constants.UPDATE_MOBILE_NO_REQUEST)
                 {
-                    if (resultCode == (int) Result.Ok)
+                    if (resultCode == (int)Result.Ok)
                     {
                         UserEntity userEntity = UserEntity.GetActive();
                         ShowMobileUpdateSuccess(userEntity.MobileNo);
@@ -244,14 +241,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 }
                 else if (requestCode == Constants.UPDATE_PASSWORD_REQUEST)
                 {
-                    if (resultCode == (int) Result.Ok)
+                    if (resultCode == (int)Result.Ok)
                     {
                         MyTNBAccountManagement.GetInstance().SetIsPasswordUpdated(true);
                     }
                 }
                 else if (requestCode == Constants.MANAGE_CARDS_REQUEST)
                 {
-                    if (resultCode == (int) Result.Ok)
+                    if (resultCode == (int)Result.Ok)
                     {
                         CreditCardData creditCard = JsonConvert.DeserializeObject<CreditCardData>(data.Extras.GetString(Constants.REMOVED_CREDIT_CARD));
                         mPresenter.UpdateCardList(creditCard);
@@ -472,7 +469,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 {
                     string lastDigit = maskedNo.Substring(maskedNo.Length - 4);
 
-                    maskedNo =  GetString(Resource.String.my_account_ic_no_mask) + " " + lastDigit;
+                    maskedNo = GetString(Resource.String.my_account_ic_no_mask) + " " + lastDigit;
                 }
 
                 referenceNumber.SetValue(maskedNo);
@@ -834,10 +831,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                                  // EMPTY WILL CLOSE SNACKBAR
                              }
                             );
-                            View v = logoutErrorSnackbar.View;
-                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                        tv.SetMaxLines(5);
-                        logoutErrorSnackbar.Show();
+                View v = logoutErrorSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                logoutErrorSnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)
@@ -946,24 +943,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         {
             try
             {
-                if (mLanguageSnackbar != null && mLanguageSnackbar.IsShown)
-                {
-                    mLanguageSnackbar.Dismiss();
-                }
-
-                mLanguageSnackbar = Snackbar.Make(rootView,
-                    GetLabelByLanguage("changeLanguageSuccess"),
-                    Snackbar.LengthIndefinite)
-                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
-                             (view) =>
-                             {
-                                 // EMPTY WILL CLOSE SNACKBAR
-                             }
-                            );
-                View v = mLanguageSnackbar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(5);
-                mLanguageSnackbar.Show();
+                ToastUtils.OnDisplayToast(Activity, GetLabelByLanguage("changeLanguageSuccess"));
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)
@@ -986,10 +966,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                                 // EMPTY WILL CLOSE SNACKBAR
                             }
                            );
-                           View v = removeCardSnackbar.View;
-                       TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                       tv.SetMaxLines(5);
-                       removeCardSnackbar.Show();
+                View v = removeCardSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                removeCardSnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)

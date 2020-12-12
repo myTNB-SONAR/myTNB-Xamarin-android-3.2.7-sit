@@ -85,6 +85,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         SearchByModel searchByModel = new SearchByModel();
         SearchApplicationStatusPresenter mPresenter;
         private bool isTextChange = false;
+        int selectedTypeIndex = 0;
         RecyclerView.LayoutManager layoutManager;
         SearchApplicationAdapter searchApplicationAdapter;
         GetApplicationsByCAResponse applicationsByCAResponse;
@@ -170,7 +171,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         internal void OnConfirmClickAsync(object sender, EventArgs e)
         {
             searchApplicatioStatuListResult.Visibility = ViewStates.Gone;
-         
+
             if (isSearchByCA)
             {
                 GetSearchByCA();
@@ -356,6 +357,11 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     }
                 }
             }
+
+            txtInputLayoutServiceRequestNum.DefaultHintTextColor = ContextCompat.GetColorStateList(this, Resource.Color.silverchalice);
+            txtInputLayoutServiceRequestNum.SetHelperTextColor(ContextCompat.GetColorStateList(this, Resource.Color.new_grey));
+
+
         }
 
         private void OnWhereAreTheseNoClick(object sender, EventArgs e)
@@ -421,7 +427,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         }
                         else if (txtServiceRequestNum.Text.Count() != 10 && txtServiceRequestNum.Text != string.Empty)
                         {
-                            txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[0].SearchTypeDescDisplay);
+                            txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
                             if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
                             {
                                 txtInputLayoutServiceRequestNum.ErrorEnabled = true;
@@ -447,7 +453,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         }
                         else if (txtServiceRequestNum.Text.Count() != 12)
                         {
-                            txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[0].SearchTypeDescDisplay);
+                            txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
                             if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
                             {
                                 txtInputLayoutServiceRequestNum.ErrorEnabled = true;
@@ -596,7 +602,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             DisableButton();
                             if (txtServiceRequestNum.Text.Count() != preffix.Count())
                             {
-                                txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[0].SearchTypeDescDisplay);
+                                txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
 
                                 if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
                                     txtInputLayoutServiceRequestNum.ErrorEnabled = true;
@@ -622,7 +628,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         }
                         else if (txtServiceRequestNum.Text.Count() != 10 && txtServiceRequestNum.Text != string.Empty)
                         {
-                            txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[0].SearchTypeDescDisplay);
+                            txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
                             if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
                             {
                                 txtInputLayoutServiceRequestNum.ErrorEnabled = true;
@@ -681,6 +687,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                 {
                                     txtInputLayoutServiceRequestNum.HelperText = selectedType.ApplicationNoHint;
                                     txtSearchBy.Text = selectedType.SearchTypes[0].SearchTypeDescDisplay;
+                                    selectedTypeIndex = 0;
                                     targetSearchBy = selectedType.SearchTypes[0].SearchTypeId;
                                 }
                                 if (selectedType.SearchTypes[0].Type == ApplicationStatusSearchType.CA)
@@ -715,6 +722,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             searchByModel = resultSearchByList.Find(x => x.isChecked);
                             targetSearchBy = searchByModel.SearchTypeId;
                             txtSearchBy.Text = searchByModel.SearchTypeDescDisplay;
+                            selectedTypeIndex = resultSearchByList.IndexOf(searchByModel);
                             txtInputLayoutServiceRequestNum.Visibility = ViewStates.Visible;
 
                             txtServiceRequestNum.Text = null;
@@ -859,17 +867,19 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     isTextChange = true;
                     if (searchByModel != null && selectedType != null && selectedType.SearchTypes != null)
                     {
-                        txtInputLayoutServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay.ToUpper();
-                        
                         var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].Type : searchByModel.Type;
                         txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].SearchTypeDescDisplay.ToUpper() : searchByModel.SearchTypeDescDisplay.ToUpper();
+                        txtInputLayoutServiceRequestNum.DefaultHintTextColor = ContextCompat.GetColorStateList(this, Resource.Color.silverchalice);
+                        txtInputLayoutServiceRequestNum.SetHelperTextColor(ContextCompat.GetColorStateList(this, Resource.Color.new_grey));
+
+
                         if (searchType == ApplicationStatusSearchType.ApplicationNo)
                         {
                             txtInputLayoutServiceRequestNum.HelperText = selectedType.ApplicationNoHint;
                             string format = selectedType.SearchApplicationNoInputMask;
                             string inputString = txtServiceRequestNum.Text.ToString();
                             int firstIndex = format.IndexOf("#");
-                            
+
                             string preffix = firstIndex > -1 ? format.Substring(0, firstIndex) : string.Empty;
                             if (preffix.Length >= inputString.Length)
                             {

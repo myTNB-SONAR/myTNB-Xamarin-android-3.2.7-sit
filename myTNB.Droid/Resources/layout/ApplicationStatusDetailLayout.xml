@@ -492,8 +492,11 @@ will be recorded. Check back again later to view its update."/>
 						android:visibility="visible">
 						<LinearLayout
 							android:layout_width="match_parent"
-							android:layout_height="24dp"
-							android:paddingLeft="2dp"
+							android:layout_height="wrap_content"
+							android:paddingLeft="4dp"
+							android:paddingRight="8dp"
+							android:paddingTop="4dp"
+							android:paddingBottom="4dp"
 							android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
 							android:gravity="center|left"
 							android:orientation="horizontal">
