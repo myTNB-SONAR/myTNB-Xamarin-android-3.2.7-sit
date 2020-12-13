@@ -60,7 +60,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>
     </DebugType>
-    <Optimize>True</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\SIT\</OutputPath>
     <DefineConstants>TRACE;SIT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>

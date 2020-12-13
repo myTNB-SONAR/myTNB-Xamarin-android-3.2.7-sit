@@ -66,7 +66,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
         [BindView(Resource.Id.secondLayout)]
         LinearLayout secondLayout;
-        
+
 
         [BindView(Resource.Id.img_find_us)]
         ImageView imgFindUs;
@@ -135,7 +135,6 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             string textFindUs = Utility.GetLocalizedLabel("Prelogin", "findUs");
             string textCallUs = Utility.GetLocalizedLabel("Prelogin", "callUs");
-            //  TODO: ApplicationStatus Update Multilingual
             string textCheckStatus = Utility.GetLocalizedLabel("Prelogin", "applicationStatus");
             string textSubmitFeedback = Utility.GetLocalizedLabel("DashboardHome", "submitEnquiry");
             // textFindUs = textFindUs.Replace(" ", "<br>");
@@ -769,14 +768,14 @@ namespace myTNB_Android.Src.PreLogin.Activity
             {
                 LinearLayout.LayoutParams currentCard = cardCheckStatus.LayoutParameters as LinearLayout.LayoutParams;
                 ViewGroup.LayoutParams currentImg = imgCheckStatus.LayoutParameters;
-              
+
                 int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / 4;
                 float heightRatio = 84f / 72f;
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
                 currentCard.Height = cardHeight;
                 currentCard.Width = TextViewUtils.SelectedFontSize() == "L" ? cardWidth + 80 : cardWidth;
-                
+
                 float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
                 checkStatusLayout.SetPadding(padding, padding, padding, padding);
