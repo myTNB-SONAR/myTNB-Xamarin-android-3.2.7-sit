@@ -119,7 +119,7 @@ namespace myTNB.Mobile.API.Managers.Rating
                             CustomerName = customerName,
                             PhoneNumber = mobileNumber,
                             SrNo = srNumber,
-                            ApplicationId = applicationID,
+                            ApplicationId = applicationID + "00",
                             BackendAppId = backendAppID,
                             ModuleName = applicationType,
                             QuestionCategoryValue = questionCategoryValue,

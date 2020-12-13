@@ -46,7 +46,6 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         private string selectedAnswerDescriptions = string.Empty;
         private string selectedAnswerValues = string.Empty;
         private GetCustomerRatingMasterResponse getCustomerRatingMasterResponse;
-        private PostSubmitRatingResponse postSubmitRatingResponse;
         private QuestionAnswerSetsModel sequence1;
         private QuestionAnswerSetsModel sequence2;
         private QuestionAnswerSetsModel sequence3;
@@ -63,6 +62,8 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 
         private List<RatingAnswers> ratingAnswers = new List<RatingAnswers>();
         private AndroidX.CoordinatorLayout.Widget.CoordinatorLayout coordinatorLayout;
+        private Snackbar mNoInternetSnackbar;
+        private string PAGE_ID = "Rate";
 
         [OnClick(Resource.Id.btnSubmit)]
         void OnSubmit(object sender, EventArgs eventArgs)
@@ -70,6 +71,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             System.Diagnostics.Debug.WriteLine("[DEBUG] Rating");
             SubmitRating();
         }
+
         private async void SubmitRating()
         {
             try
@@ -124,24 +126,34 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 if (ConnectionUtils.HasInternetConnection(this))
                 {
                     ShowProgressDialog();
-                    postSubmitRatingResponse = await RatingManager.Instance.SubmitRating(
-                             loggedUser.UserName
-                            , loggedUser.MobileNo
-                            , srNumber
-                            , applicationID
-                            , backendAppID
-                            , applicationType
-                            , questionCategoryValue
-                            , ratingAnswers);
+
+                    PostSubmitRatingResponse postSubmitRatingResponse = await RatingManager.Instance.SubmitRating(loggedUser.UserName
+                        , loggedUser.MobileNo
+                        , srNumber
+                        , applicationID
+                        , backendAppID
+                        , applicationType
+                        , questionCategoryValue
+                        , ratingAnswers);
                     HideProgressDialog();
                     if (postSubmitRatingResponse.StatusDetail.IsSuccess)
                     {
-                        Intent intent = new Intent(this, typeof(ApplicationStatusDetailActivity));
-                        intent.PutExtra("applicationRated", selectedRating.ToString());
-                        intent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(applicationDetailDisplay));
-                        intent.PutExtra("submitRatingResponseStatus", JsonConvert.SerializeObject(postSubmitRatingResponse.StatusDetail));
-                        StartActivity(intent);
-                        SetResult(Result.Ok, new Intent());
+                        if (applicationDetailDisplay.IsContractorRating)
+                        {
+                            Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                            webIntent.PutExtra(Constants.IN_APP_LINK, applicationDetailDisplay.ContractorRatingURL);
+                            webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("ApplicationStatusDetails", "rateContractor"));
+                            StartActivity(webIntent);
+                        }
+                        else
+                        {
+                            Intent intent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+                            intent.PutExtra("applicationRated", selectedRating.ToString());
+                            intent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(applicationDetailDisplay));
+                            intent.PutExtra("submitRatingResponseStatus", JsonConvert.SerializeObject(postSubmitRatingResponse.StatusDetail));
+                            StartActivity(intent);
+                            SetResult(Result.Ok, new Intent());
+                        }
                         Finish();
                     }
                     else
@@ -160,6 +172,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
         public void ShowNoInternetSnackbar()
         {
             if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
@@ -187,11 +200,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 .SetCTALabel(statusDetail.PrimaryCTATitle)
                 .Build();
             whereisMyacc.Show();
-
         }
-        private Snackbar mNoInternetSnackbar;
-
-        private string PAGE_ID = "Rate";
 
         public override int ResourceId()
         {
@@ -317,7 +326,6 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     selectedRating = ((int)e.Rating);
                     if (selectedRating != 0)
                     {
-
                         btnSubmit.Enabled = true;
                         btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
                     }
@@ -325,7 +333,6 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     {
                         btnSubmit.Enabled = false;
                         btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
-
                     }
                     RatingQuestions();
                 };
@@ -340,8 +347,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         {
             try
             {
-
-                FeedBackCharacCount();
+                FeedBackCharCount();
             }
             catch (Exception ex)
             {
@@ -349,7 +355,8 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             }
 
         }
-        private void FeedBackCharacCount()
+
+        private void FeedBackCharCount()
         {
             try
             {

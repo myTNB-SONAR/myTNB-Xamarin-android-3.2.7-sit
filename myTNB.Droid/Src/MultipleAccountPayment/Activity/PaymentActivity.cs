@@ -113,7 +113,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
                     {
                         selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-
                     }
 
                     if (extras.ContainsKey("PAYMENT_ITEMS"))

@@ -19,8 +19,6 @@ namespace myTNB_Android.Src.Base.Activity
         , Theme = "@style/Theme.AddAccount")]
     public class BaseWebviewActivity : BaseToolbarAppCompatActivity
     {
-
-
         [BindView(Resource.Id.webView)]
         private static WebView webView;
 
@@ -153,6 +151,12 @@ namespace myTNB_Android.Src.Base.Activity
             {
                 if (ConnectionUtils.HasInternetConnection(mActivity))
                 {
+                    if (url.Contains("mytnbapp://action=contractorRatingCompleted")
+                        || url.Contains("contractorRatingCompleted")
+                        || url.Contains("ContractorManagement"))//Todo  : remove
+                    {
+                        mActivity.Finish();
+                    }
                     if (url.Contains(baseUrl))
                     {
                         view.LoadUrl(url);

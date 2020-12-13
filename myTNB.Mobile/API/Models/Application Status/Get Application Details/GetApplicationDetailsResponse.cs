@@ -248,7 +248,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         [JsonProperty("transactionId")]
         public string TransactionId { set; get; }
         [JsonProperty("rating")]
-        public int Rating { set; get; }
+        public int? Rating { set; get; }
     }
 
     public class ContractorRating

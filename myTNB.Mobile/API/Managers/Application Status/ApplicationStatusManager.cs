@@ -319,9 +319,9 @@ namespace myTNB.Mobile
                         , string.Empty
                         , string.Empty
                         , string.Empty
-                        , applicationType
+                        , "NC"//applicationType
                         , string.Empty
-                        , statusDescription
+                        , "Completed"//statusDescription
                         , createdDateFrom
                         , createdDateTo
                         , AppInfoManager.Instance.GetUserInfo()

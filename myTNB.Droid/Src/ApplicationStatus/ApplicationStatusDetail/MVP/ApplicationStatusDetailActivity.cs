@@ -187,7 +187,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [OnClick(Resource.Id.btnPrimaryCTA)]
         internal void OnPrimaryCTAClick(object sender, EventArgs e)
         {
-            GetCustomerRatingAsync();
+            OnPrimaryButtonAsync();
         }
 
         [OnClick(Resource.Id.btnViewActivityLog)]
@@ -277,19 +277,19 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             whereisMyacc.Show();
 
         }
-        public async void GetCustomerRatingAsync()
+        public async void OnPrimaryButtonAsync()
         {
             try
             {
                 ShowProgressDialog();
-
                 if (applicationDetailDisplay != null)
                 {
                     if (applicationDetailDisplay.CTAType == DetailCTAType.Save)
                     {
                         SaveApplication();
+                        FirebaseAnalyticsUtils.LogClickEvent(this, "Save Button Clicked");
                     }
-                    else if (applicationDetailDisplay.CTAType == DetailCTAType.Rate)
+                    else if (applicationDetailDisplay.CTAType == DetailCTAType.CustomerRating)
                     {
                         customerRatingMasterResponse = await RatingManager.Instance.GetCustomerRatingMaster();
                         if (!customerRatingMasterResponse.StatusDetail.IsSuccess)
@@ -304,8 +304,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             StartActivity(rating_activity);
                         }
                     }
+                    else if (applicationDetailDisplay.CTAType == DetailCTAType.ContractorRating)
+                    {
+                        Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                        webIntent.PutExtra(Constants.IN_APP_LINK, applicationDetailDisplay.ContractorRatingURL);
+                        webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("ApplicationStatusDetails", "rateContractor"));
+                        StartActivity(webIntent);
+                    }
+                    FirebaseAnalyticsUtils.LogClickEvent(this, "Rate Button Clicked");
                 }
-                FirebaseAnalyticsUtils.LogClickEvent(this, "Rate Buttom Clicked");
             }
             catch (System.Exception ne)
             {
@@ -674,7 +681,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
                                 applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
                             }
-                            else if (applicationDetailDisplay.CTAType == DetailCTAType.Rate)
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.CustomerRating
+                                || applicationDetailDisplay.CTAType == DetailCTAType.ContractorRating)
                             {
                                 btnPrimaryCTA.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "rateCTA");
                                 applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;

@@ -61,26 +61,6 @@
 					android:rating="0"
 					android:stepSize="1.0" />
 			</LinearLayout>
-			<LinearLayout
-				android:id="@+id/bottomLayout"
-				android:layout_height="wrap_content"
-				android:layout_width="match_parent"
-				android:orientation="vertical"
-				android:paddingLeft="16dp"
-				android:paddingRight="16dp"
-				android:paddingBottom="8dp"
-				android:layout_alignParentBottom="true"
-				android:background="@color/white"
-				android:paddingTop="8dp">
-				<Button
-					android:id="@+id/btnSubmit"
-					android:layout_height="wrap_content"
-					android:layout_width="match_parent"
-					android:text="Submit"
-					android:textSize="16dp"
-					android:textAllCaps="false"
-					style="@style/DarkButton1"/>
-			</LinearLayout>
 		</LinearLayout>
 	</FrameLayout>
 </LinearLayout>

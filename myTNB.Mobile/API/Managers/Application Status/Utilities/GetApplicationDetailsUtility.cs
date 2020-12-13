@@ -359,7 +359,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                 {
                     key = "NC_PREMISECREATION";
                 }
-                else if (applicationModuleId == "101001" && isPremiseServiceReady)
+                else if (applicationModuleId == "101001")// && isPremiseServiceReady)
                 {
                     if (createdByRoleID == "16")
                     {
