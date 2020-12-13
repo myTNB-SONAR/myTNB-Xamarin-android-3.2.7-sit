@@ -252,6 +252,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             try
             {
                 txtFilterName.Text = item.ApplicationTypeDisplay;
+                txtFilterName.TextSize = TextViewUtils.GetFontSize(16f);
                 imgApplicationFilter.Visibility = ViewStates.Gone;
                 chkApplicationFilter.Visibility = ViewStates.Gone;
                 txtFilterName.Clickable = true;
