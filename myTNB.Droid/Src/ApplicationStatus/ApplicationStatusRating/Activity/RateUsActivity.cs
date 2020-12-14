@@ -19,6 +19,7 @@ using myTNB.Mobile;
 using myTNB.Mobile.API.Managers.Rating;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
 using myTNB.Mobile.API.Models.Rating.PostSubmitRating;
+using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Common;
@@ -127,7 +128,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 {
                     ShowProgressDialog();
 
-                    PostSubmitRatingResponse postSubmitRatingResponse = await RatingManager.Instance.SubmitRating(loggedUser.UserName
+                    PostSubmitRatingResponse response = await RatingManager.Instance.SubmitRating(loggedUser.UserName
                         , loggedUser.MobileNo
                         , srNumber
                         , applicationID
@@ -136,8 +137,11 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                         , questionCategoryValue
                         , ratingAnswers);
                     HideProgressDialog();
-                    if (postSubmitRatingResponse.StatusDetail.IsSuccess)
+                    if (response.StatusDetail.IsSuccess)
                     {
+                        RatingCache.Instance.Clear();
+                        RatingCache.Instance.SetRating(response.Content.Rating);
+                        RatingCache.Instance.SetRatingToast(response.StatusDetail.Message ?? string.Empty);
                         if (applicationDetailDisplay.IsContractorRating)
                         {
                             Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
@@ -150,7 +154,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                             Intent intent = new Intent(this, typeof(ApplicationStatusDetailActivity));
                             intent.PutExtra("applicationRated", selectedRating.ToString());
                             intent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(applicationDetailDisplay));
-                            intent.PutExtra("submitRatingResponseStatus", JsonConvert.SerializeObject(postSubmitRatingResponse.StatusDetail));
+                            intent.PutExtra("submitRatingResponseStatus", JsonConvert.SerializeObject(response.StatusDetail));
                             StartActivity(intent);
                             SetResult(Result.Ok, new Intent());
                         }
@@ -158,7 +162,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     }
                     else
                     {
-                        ShowApplicaitonPopupMessage(this, postSubmitRatingResponse.StatusDetail);
+                        ShowApplicaitonPopupMessage(this, response.StatusDetail);
                     }
                 }
                 else

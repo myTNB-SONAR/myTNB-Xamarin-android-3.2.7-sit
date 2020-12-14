@@ -27,6 +27,7 @@ using myTNB_Android.Src.ApplicationStatusRating.Activity;
 using myTNB.Mobile.API.Managers.Rating;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
 using myTNB;
+using Android.Runtime;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -879,7 +880,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             return i;
         }
 
-
         public int GetCtaButtonHeight()
         {
             int i = 0;
@@ -1093,6 +1093,21 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         public void UpdateUI()
         {
+        }
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            ShowProgressDialog();
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (data != null && data.Extras != null)
+            {
+                Bundle extras = data.Extras;
+                if (extras != null)
+                {
+                }
+            }
+            HideProgressDialog();
         }
     }
 }

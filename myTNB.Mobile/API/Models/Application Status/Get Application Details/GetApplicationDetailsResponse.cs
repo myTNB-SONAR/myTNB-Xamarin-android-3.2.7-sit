@@ -238,7 +238,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         [JsonProperty("customerRating")]
         public CustomerRating CustomerRating { set; get; }
         [JsonProperty("contractorRating")]
-        public ContractorRating ContractorRating { set; get; }
+        public ContractorRating ContractorRating { set { } get { return null; } }
     }
 
     public class CustomerRating
