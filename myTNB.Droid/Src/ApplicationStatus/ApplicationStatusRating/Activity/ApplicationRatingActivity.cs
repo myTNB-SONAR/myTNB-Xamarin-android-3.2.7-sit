@@ -83,6 +83,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 }
                 ratingBar.RatingBarChange += (o, e) =>
                 {
+                    ShowProgressDialog();
                     ratingBar.Rating = e.Rating;
                     selectedRating = ((int)e.Rating);
                     if (selectedRating != 0)
@@ -96,6 +97,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                         SetResult(Result.Ok, new Intent());
                         Finish();
                     }
+                    HideProgressDialog();
                 };
             }
             catch (Exception e)

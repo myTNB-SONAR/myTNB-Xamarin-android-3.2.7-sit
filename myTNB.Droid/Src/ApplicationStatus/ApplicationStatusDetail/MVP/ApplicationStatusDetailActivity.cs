@@ -722,13 +722,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         statusDetails = DeSerialze<StatusDetail>(extras.GetString("submitRatingResponseStatus"));
                         if (statusDetails != null)
                         {
-                            Snackbar mSaveSnackbar = Snackbar.Make(rootview,
-                            statusDetails.Message,
-                            Snackbar.LengthLong);
-                            View v = mSaveSnackbar.View;
-                            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                            tv.SetMaxLines(5);
-                            mSaveSnackbar.Show();
+                            ToastUtils.OnDisplayToast(this
+                                , statusDetails?.Message ?? Utility.GetLocalizedLabel("ApplicationStatusDetails", "rateSuccessMessage"));
                         }
                     }
                     if (extras.ContainsKey("applicationRated") && extras.GetString("applicationRated") != null && extras.GetString("applicationRated") != "0")
@@ -736,7 +731,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         txtApplicationRateStar.Visibility = ViewStates.Visible;
                         imgStar.Visibility = ViewStates.Visible;
                         layoutstar.Visibility = ViewStates.Visible;
-                        txtApplicationRateStar.Text = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "youRated") + extras.GetString("applicationRated") + " ";
+                        txtApplicationRateStar.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "youRated") + extras.GetString("applicationRated") + " ";
+                        ctaParentLayout.Visibility = ViewStates.Gone;
                     }
                 }
             }
@@ -1093,21 +1089,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         public void UpdateUI()
         {
-        }
-
-        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
-        {
-            ShowProgressDialog();
-            base.OnActivityResult(requestCode, resultCode, data);
-
-            if (data != null && data.Extras != null)
-            {
-                Bundle extras = data.Extras;
-                if (extras != null)
-                {
-                }
-            }
-            HideProgressDialog();
         }
     }
 }

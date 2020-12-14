@@ -136,7 +136,6 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                         , applicationType
                         , questionCategoryValue
                         , ratingAnswers);
-                    HideProgressDialog();
                     if (response.StatusDetail.IsSuccess)
                     {
                         RatingCache.Instance.Clear();
@@ -164,6 +163,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     {
                         ShowApplicaitonPopupMessage(this, response.StatusDetail);
                     }
+                    HideProgressDialog();
                 }
                 else
                 {
