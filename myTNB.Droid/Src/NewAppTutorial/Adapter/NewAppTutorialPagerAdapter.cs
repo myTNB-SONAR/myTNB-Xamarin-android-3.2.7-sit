@@ -2204,7 +2204,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             {
                 if (model.DisplayMode == "Extra")
                 {
-                    int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetTopHeight() + (int)DPUtils.ConvertDPToPx(195f);
+                   
+                    int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetTopHeight() + (int)DPUtils.ConvertDPToPx(155f);
                     int middleHeight = (int)DPUtils.ConvertDPToPx(180f);
 
                     int leftWidth = 0;
@@ -2241,7 +2242,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     if (position == 0)
                     {
 
-                        int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetTopHeight() + (int)DPUtils.ConvertDPToPx(95f);
+                       
+                       
+                        int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetTopCtaHeight() + (int)DPUtils.ConvertDPToPx(45f);
+
                         int middleHeight = ((ApplicationStatusDetailActivity)this.mContext).GetHighlightedHeight();
 
                         int leftWidth = 0;
@@ -2281,6 +2285,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     }
                     else
                     {
+                       
                         int middleHeight = ((ApplicationStatusDetailActivity)this.mContext).GetCtaButtonHeight() + (int)DPUtils.ConvertDPToPx(45f);
                         int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetTopCtaHeight() + (int)DPUtils.ConvertDPToPx(45f);
 
