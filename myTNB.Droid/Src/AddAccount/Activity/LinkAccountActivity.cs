@@ -16,6 +16,7 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.MVP;
+using myTNB_Android.Src.AddAccountDisclaimer.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
@@ -521,7 +522,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public void ShowTermsAndConditions()
         {
-            StartActivity(typeof(TermsAndConditionActivity));
+            StartActivity(typeof(AddAccountDisclaimerActivity));
         }
 
         public void ShowDashboard()

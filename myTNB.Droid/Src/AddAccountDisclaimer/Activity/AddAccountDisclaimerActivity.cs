@@ -13,6 +13,7 @@ using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
@@ -77,9 +78,9 @@ namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
             SetToolBarTitle(GetLabelByLanguage("tncAddAccTitle"));
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
-            headerText.TextFormatted = GetFormattedText(GetLabelByLanguage("DiclaimerHeaderTNBTerm"));
-            headerText2.TextFormatted = GetFormattedText(GetLabelByLanguage("DiclaimerHeaderPersonalData"));
-            headerText3.TextFormatted = GetFormattedText(GetLabelByLanguage("DiclaimerHeaderAddElectricity"));
+            headerText.TextFormatted = GetFormattedText(GetLabelByLanguage("DiclaimerHeaderAddElectricity"));
+            headerText2.TextFormatted = GetFormattedText(GetLabelByLanguage("DiclaimerHeaderTNBTerm"));
+            headerText3.TextFormatted = GetFormattedText(GetLabelByLanguage("DiclaimerHeaderPersonalData"));
            
             string temp = string.Format(data,email);
             detailsText.TextFormatted = GetFormattedText(temp);
@@ -89,7 +90,7 @@ namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
         }
        
         [OnClick(Resource.Id.layoutHeader)]
-        void OnClickAddressInfo(object sender, EventArgs eventArgs)
+        void OnClickDetails(object sender, EventArgs eventArgs)
         {
             itemAction = FindViewById<ImageView>(Resource.Id.itemAction);
             
@@ -116,6 +117,22 @@ namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
                 Utility.LoggingNonFatalError(e);
                 this.SetIsClicked(false);
             }
+        }
+
+        [OnClick(Resource.Id.headerText2)]
+        void OnClickHeader1(object sender, EventArgs eventArgs)
+        {
+
+
+            StartActivity(typeof(TermsAndConditionActivity));
+        }
+
+        [OnClick(Resource.Id.headerText3)]
+        void OnClickHeader2(object sender, EventArgs eventArgs)
+        {
+
+
+            StartActivity(typeof(TermsAndConditionActivity));
         }
 
         protected override void OnPause()

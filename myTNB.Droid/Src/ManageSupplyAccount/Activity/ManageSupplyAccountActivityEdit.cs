@@ -102,7 +102,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                     .Build();
 
                 ManageSupplyItemComponent manageSupplyItem = GetManageSupply();
-                manageSupplyItem.SetHeaderTitle(GetLabelByLanguage("myTNBAccount"));
                 profileMenuItemsContent.AddView(manageSupplyItem);
 
                
@@ -260,12 +259,16 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
             List<View> manageItems = new List<View>();
 
-            SupplyAccMenuItemSingleContentComponent manageUser = new SupplyAccMenuItemSingleContentComponent(this);
-            manageUser.SetTitle(GetLabelCommonByLanguage("manageUserAccess"));
-            manageUser.SetIcon(1);
-            manageUser.SetItemActionVisibility(true);
-            manageUser.SetItemActionCall(ShowManageUser);
-            manageItems.Add(manageUser);
+
+            if (accountData.IsOwner)
+            {
+                SupplyAccMenuItemSingleContentComponent manageUser = new SupplyAccMenuItemSingleContentComponent(this);
+                manageUser.SetTitle(GetLabelCommonByLanguage("manageUserAccess"));
+                manageUser.SetIcon(1);
+                manageUser.SetItemActionVisibility(true);
+                manageUser.SetItemActionCall(ShowManageUser);
+                manageItems.Add(manageUser);
+            }
 
             SupplyAccMenuItemSingleContentComponent autoPay = new SupplyAccMenuItemSingleContentComponent(this);
             autoPay.SetTitle(GetLabelCommonByLanguage("manageAutopay"));
@@ -383,7 +386,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                        .SetTitle((string.Format(GetLabelByLanguage("dialogAddrress"))))
                        .SetMessage(string.Format(GetLabelByLanguage("dialogAddrressMessage")))
-                       .SetContentGravity(GravityFlags.Center)
+                       .SetContentGravity(GravityFlags.Left)
                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                        .Build().Show();
 
