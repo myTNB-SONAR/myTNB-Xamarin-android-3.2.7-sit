@@ -92,15 +92,31 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 txtDoubleTapDismiss.TextSize = TextViewUtils.GetFontSize(12f);
                 txtTopDoubleTapDismiss.TextSize = TextViewUtils.GetFontSize(12f);
 
-                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                if (NewAppTutorialList.Count > 1)
                 {
-                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "swipeText"), FromHtmlOptions.ModeLegacy);
-                    txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "swipeText"), FromHtmlOptions.ModeLegacy);
+                    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "swipeText"), FromHtmlOptions.ModeLegacy);
+                        txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "swipeText"), FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "swipeText"));
+                        txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "swipeText"));
+                    }
                 }
                 else
                 {
-                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "swipeText"));
-                    txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "swipeText"));
+                    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "skip"), FromHtmlOptions.ModeLegacy);
+                        txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "skip"), FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "skip"));
+                        txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "skip"));
+                    }
                 }
 
                 TextViewUtils.SetMuseoSans300Typeface(txtDoubleTapDismiss, txtTopDoubleTapDismiss);
@@ -260,8 +276,10 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     }
                     else
                     {
-                        swipeDoubleTapLayout.Visibility = ViewStates.Gone;
-                        swipeTopDoubleTapLayout.Visibility = ViewStates.Gone;
+                        txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                        txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
+                        indicatorTopContainer.Visibility = ViewStates.Visible;
+                        indicator.Visibility = ViewStates.Gone;
                     }
 
                     if (this.mFragment != null && this.mFragment is ItemisedBillingMenuFragment)
