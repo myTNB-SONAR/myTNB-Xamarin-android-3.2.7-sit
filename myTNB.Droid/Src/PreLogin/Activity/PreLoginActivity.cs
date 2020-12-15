@@ -125,12 +125,14 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             string textFindUs = Utility.GetLocalizedLabel("Prelogin", "findUs");
             string textCallUs = Utility.GetLocalizedLabel("Prelogin", "callUs");
-            string textCheckStatus = Utility.GetLocalizedLabel("Prelogin", "applicationStatus");
+            //  TODO: ApplicationStatus Update Multilingual
+            string textCheckStatus = "Application Status";
             string textSubmitFeedback = Utility.GetLocalizedLabel("DashboardHome", "submitEnquiry");
             // textFindUs = textFindUs.Replace(" ", "<br>");
             // textCallUs = textCallUs.Replace(" ", "<br>");
             textCheckStatus = textCheckStatus.Replace(" ", "<br>");
             textSubmitFeedback = textSubmitFeedback.Replace(" ", "<br>");
+
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
