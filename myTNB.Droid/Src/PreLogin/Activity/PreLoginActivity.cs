@@ -133,6 +133,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
             textCheckStatus = textCheckStatus.Replace(" ", "<br>");
             textSubmitFeedback = textSubmitFeedback.Replace(" ", "<br>");
 
+
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
                 txtFindUs.TextFormatted = Html.FromHtml(textFindUs, FromHtmlOptions.ModeLegacy);
