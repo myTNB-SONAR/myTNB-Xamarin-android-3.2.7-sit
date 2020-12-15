@@ -53,33 +53,33 @@
                 android:id="@+id/manage_user_layout"
                 android:visibility="visible">
                 <LinearLayout
-                android:id="@+id/layout_empty_manage_access"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:padding="16dp">
-                <ImageView
-                    android:layout_width="96dp"
-                    android:layout_height="96dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginTop="80dp"
-                    android:layout_marginBottom="8dp"
-                    android:id="@+id/imgEmptyCard"
-                    android:src="@drawable/ic_empty_creditcards" />
-                <TextView
-                    android:id="@+id/txtEmptyManageAccess"
+                    android:id="@+id/layout_empty_manage_access"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textColor="#8b8b8b"
-                    android:textSize="14dp"
-                    android:lineSpacingExtra="3dp"
-                    android:text="@string/manage_cards_no_cards" />
-            </LinearLayout>
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <ImageView
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginTop="80dp"
+                        android:layout_marginBottom="8dp"
+                        android:id="@+id/imgEmptyCard"
+                        android:src="@drawable/ic_empty_creditcards" />
+                    <TextView
+                        android:id="@+id/txtEmptyManageAccess"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="#8b8b8b"
+                        android:textSize="14dp"
+                        android:lineSpacingExtra="3dp"
+                        android:text="@string/manage_cards_no_cards" />
+                </LinearLayout>
             </FrameLayout>
         </LinearLayout>
     </ScrollView>

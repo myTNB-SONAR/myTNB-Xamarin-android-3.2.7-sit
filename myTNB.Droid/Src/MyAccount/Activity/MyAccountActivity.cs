@@ -46,8 +46,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
         [BindView(Resource.Id.btnAddAnotherAccount)]
         Button btnAddAnotherAccount;
 
-        [BindView(Resource.Id.btnLogout)]
-        Button btnLogout;
+        
 
         [BindView(Resource.Id.btnAddAccount)]
         Button btnAddAccount;
@@ -92,12 +91,10 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 TextViewUtils.SetMuseoSans300Typeface(
                     txtMyAccountNoAccountContent);
                 TextViewUtils.SetMuseoSans500Typeface(btnAddAnotherAccount,
-                    btnLogout,
                     btnAddAccount);
 
                 txtTnBSupplyAccountTitle.Text = GetLabelByLanguage("accountSectionTitle");
                 btnAddAnotherAccount.Text = GetLabelCommonByLanguage("addAnotherAcct");
-                btnLogout.Text = GetLabelByLanguage("logout");
                 txtMyAccountNoAccountTitle.Text = GetLabelByLanguage("noAccounts");
                 txtMyAccountNoAccountContent.Text = GetLabelByLanguage("addAccountMessage");
                 btnAddAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");

@@ -12,7 +12,7 @@ namespace myTNB_Android.Src.CompoundView
 {
     public class ManageSupplyItemComponent : LinearLayout
     {
-        private TextView itemHeaderTitle;
+        
         private LinearLayout profileItemContent;
         public ManageSupplyItemComponent(Context context) : base(context)
         {
@@ -36,17 +36,16 @@ namespace myTNB_Android.Src.CompoundView
 
         public void InitializeViews(Context context)
         {
-            Inflate(context, Resource.Layout.ProfileMenuItemLayout, this);
-            itemHeaderTitle = FindViewById<TextView>(Resource.Id.profileItemHeader);
+            Inflate(context, Resource.Layout.ManageSupplyMenuItemLayout, this);
             profileItemContent = FindViewById<LinearLayout>(Resource.Id.profileItemContent);
 
-            TextViewUtils.SetMuseoSans500Typeface(itemHeaderTitle);
+            
         }
 
-        public void SetHeaderTitle(string title)
+       /* public void SetHeaderTitle(string title)
         {
             itemHeaderTitle.Text = title;
-        }
+        }*/
 
         public void AddComponentView(View view)
         {
@@ -66,8 +65,8 @@ namespace myTNB_Android.Src.CompoundView
         public void AddSeparator()
         {
             View separatorView = new View(Context);
-            separatorView.LayoutParameters = new LinearLayout.LayoutParams(LayoutParams.MatchParent, 3);
-            separatorView.SetBackgroundColor(Color.ParseColor("#e4e4e4"));
+            separatorView.LayoutParameters = new LinearLayout.LayoutParams(LayoutParams.MatchParent, 16);
+            separatorView.SetBackgroundColor(Color.ParseColor("#F9F9F9"));
             profileItemContent.AddView(separatorView);
         }
     }

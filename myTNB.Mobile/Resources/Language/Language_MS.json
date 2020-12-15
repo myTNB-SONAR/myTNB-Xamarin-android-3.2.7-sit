@@ -119,7 +119,7 @@
     "titleNonOwnerAddAcc" : "Continue adding the account and give it a name for your easy reference.",
     "email_address" : "Alamat e-mel",
     "email_user_address" : "Alamat e-mel pengguna",
-    "etitleRegister" : "Mari kita mulakam!",
+    "etitleRegister" : "Mari kita mulakan!",
     "ebodyRegister" : "Daftar masuk akaun anda dengan maklumat di bawah:",
     "dtitleRegister" : "Langkah Terakhir",
     "dbodyRegister" : "Sila isikan maklumat peribadi anda supaya kami lebih mengenali anda.",
@@ -189,11 +189,11 @@
     "noMeterAccessErrorMessage": "Anda perlu mempunyai meter yang boleh diakses supaya bacaan meter boleh dilakukan. Sila cuba lagi apabila anda mempunyai akses kepada meter anda.",
     //addby wan
     "passwordHint": "Kata laluan anda perlu mengandungi sekurang-kurangnya 8 angka abjad.",
-    "EmailHint": "Your will use this email address to log in in the future.",
-    "mykadhint": "Please enter a valid 12 digits IC / Mykad number.",
-    "armyidhint": "The Army ID must be between 5-50 characters.",
-    "identificationhint": "We'll use this identification to help you set up your account.",
-    "passporthint": "The Passport must be between 5-50 characters.",
+    "EmailHint": "Anda akan mengunakan alamat e-mel ini untuk log masuk di masa hadapan.",
+    "mykadhint": "Sila masukkan 12 digit nombor IC / Mykad yang sah.",
+    "armyidhint": "ID Tentera mesti antara 5-50 aksara.",
+    "identificationhint": "Kami akan menggunakan pengenalan ini untuk membantu anda menyiapkan akaun anda.",
+    "passporthint": "Pasport mestilah antara 5-50 aksara.",
      "error_NotExistsAccountMessage": "Nombor akaun yang anda masukkan ini tidak dapat ditemui."
   },
   "DashboardHome": {
@@ -648,8 +648,8 @@
     "bodyUpdateId": "Submit the correct identification number now and we'll help find and add your account(s) after the update.",
     "titleContinue": "Teruskan menambah masuk akaun",
     "bodyContinue": "Anda masih boleh menambah masuk akaun secara manual dengan menggunakan nombor akaun, tetapi anda akan memiliki akses terhad ke atas akaun ini sebagai pemilik yang tidak sah.",
-    "tnc": "By confirming, I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>.",
-    "tnc_checked": "I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>.",
+    "tnc": "Dengan mengesahkan, saya telah membaca dan bersetuju dengan <a href=\"\\\"><strong>Terma dan Syarat</strong></a>.",
+    "tnc_checked": "Saya telah membaca dan bersetuju untuk <a href=\"\\\"><strong>Terma dan Syarat/strong></a>.",
     //new added 
     "AccHeaderText":"Let's add your account by selecting your account type.",
     "PremisesHint":"The Premises I’m Adding is",
