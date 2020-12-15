@@ -1186,7 +1186,8 @@
     "rateSuccessMessage": "Thank you for your feedback!",
     "youRated": "You rated: ",
     "sr": "Service Request Number",
-    "sn": "Service Notification Number"
+    "sn": "Service Notification Number",
+    "rateContractor": "Rate Contractor"
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Payment Details",
@@ -1887,7 +1888,8 @@
     "title": "Rate",
     "submit": "Submit",
     "freeTextPlaceHolder": "Write your message here.",
-    "freeTextTitle": "YOUR MESSAGE (OPTIONAL)"
+    "freeTextTitle": "YOUR MESSAGE (OPTIONAL)",
+    "rateContractor": "Rate Contractor"
   },
   "ServiceDetails": {
     "TimeOut": [

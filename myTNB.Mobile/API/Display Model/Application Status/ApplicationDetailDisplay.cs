@@ -278,11 +278,18 @@ namespace myTNB.Mobile
                         }
                     }
                 }
-                else if (ApplicationRatingDetail != null
-                    && ApplicationRatingDetail.CustomerRating != null
-                    && !ApplicationRatingDetail.CustomerRating.TransactionId.IsValid())
+                else if (ApplicationRatingDetail != null)
                 {
-                    type = DetailCTAType.Rate;
+                    if (ApplicationRatingDetail.CustomerRating != null
+                        && !ApplicationRatingDetail.CustomerRating.TransactionId.IsValid())
+                    {
+                        type = DetailCTAType.CustomerRating;
+                    }
+                    else if (ApplicationRatingDetail.ContractorRating != null
+                        && ApplicationRatingDetail.ContractorRating.ContractorRatingUrl.IsValid())
+                    {
+                        type = DetailCTAType.ContractorRating;
+                    }
                 }
                 return type;
             }
@@ -345,11 +352,12 @@ namespace myTNB.Mobile
                 string rating = string.Empty;
                 if (ApplicationRatingDetail != null
                     && ApplicationRatingDetail.CustomerRating != null
-                    && ApplicationRatingDetail.CustomerRating.Rating > 0)
+                    && ApplicationRatingDetail.CustomerRating.Rating != null
+                    && ApplicationRatingDetail.CustomerRating.Rating.Value > 0)
                 {
                     rating = string.Format("{0}{1}"
                         , LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "youRated")
-                        , ApplicationRatingDetail.CustomerRating.Rating.ToString());
+                        , ApplicationRatingDetail.CustomerRating.Rating.Value.ToString());
                 }
                 return rating;
             }
@@ -818,7 +826,8 @@ namespace myTNB.Mobile
         SetAppointment,
         Reschedule,
         Call,
-        Rate,
+        CustomerRating,
+        ContractorRating,
         Save,
         Remove,
         Pay,

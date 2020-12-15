@@ -32,7 +32,6 @@ namespace myTNB_Android.Src.Base.Activity
             // Add else to manually find the view of toolbar which is using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
             if (toolbar != null)
             {
-
                 SetSupportActionBar(toolbar);
                 SupportActionBar.SetDisplayHomeAsUpEnabled(ShowBackArrowIndicator());
                 SupportActionBar.SetDisplayShowHomeEnabled(true);
@@ -43,8 +42,6 @@ namespace myTNB_Android.Src.Base.Activity
                     title.Text = ToolbarTitle();
                     SupportActionBar.SetDisplayShowTitleEnabled(false);
                 }
-
-
             }
             else
             {
@@ -54,7 +51,6 @@ namespace myTNB_Android.Src.Base.Activity
                 SupportActionBar.SetDisplayShowHomeEnabled(true);
                 if (ShowCustomToolbarTitle())
                 {
-
                     TextView title = toolbar?.FindViewById<TextView>(Resource.Id.toolbar_title);
                     TextViewUtils.SetMuseoSans500Typeface(title);
                     title.Text = ToolbarTitle();

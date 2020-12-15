@@ -1186,7 +1186,8 @@
     "rateSuccessMessage": "Terima kasih atas maklum balas anda.",
     "youRated": "Anda nilaikan:",
     "sr": "Nombor permintaan perkhidmatan",
-    "sn": "Nombor notifikasi perkhidmatan"
+    "sn": "Nombor notifikasi perkhidmatan",
+    "rateContractor": "MS-Rate Contractor"
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Maklumat pembayaran",
@@ -1887,7 +1888,8 @@
     "title": "Nilaikan",
     "submit": "Hantar",
     "freeTextPlaceHolder": "Write your message here.",
-    "freeTextTitle": "YOUR MESSAGE (OPTIONAL)"
+    "freeTextTitle": "YOUR MESSAGE (OPTIONAL)",
+    "rateContractor": "MS-Rate Contractor"
   },
   "ServiceDetails": {
     "TimeOut": [

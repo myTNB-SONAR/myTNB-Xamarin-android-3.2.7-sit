@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using myTNB.Mobile.Extensions;
 
 namespace myTNB.Mobile.SessionCache

@@ -134,7 +134,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
             }
             System.Diagnostics.Debug.WriteLine("[DEBUG] FCM TOKEN: " + fcmToken);
-            Console.WriteLine("[DEBUG] FCM TOKEN: " + fcmToken);
+            Console.WriteLine("[CONSOLE] FCM TOKEN: " + fcmToken);
             //Testing End
             this.mView.SetAppLaunchSuccessfulFlag(false, AppLaunchNavigation.Nothing);
             cts = new CancellationTokenSource();

@@ -126,21 +126,13 @@ namespace myTNB_Android.Src.Utils
         internal struct SERVER_URL
         {
 #if DEBUG || STUB
-            //internal static readonly string END_POINT = "http://10.215.128.191:89";  
-            //internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";  //dev
-            //internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappdev.page.link";  //dev
-            internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";  //sit
-            internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";  //sit
+            internal static readonly string END_POINT = "http://10.215.128.191:89";  //dev
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link"; //sit
 #elif DEVELOP || SIT
-            internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
-            internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
-            //internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
-            //internal static readonly string FPX_PAYMENT = "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
+            internal static readonly string END_POINT = "http://10.215.128.191:89";//"https://mobiletestingws.tnb.com.my";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link";
 #else
             internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
-            internal static readonly string FPX_PAYMENT = "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbapp.page.link";
 #endif
         }
@@ -388,6 +380,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int APPLICATION_STATUS_FILTER_DATE_REQUEST_CODE = 29803;
         internal static readonly int APPLICATION_STATUS_FILTER_SEARCH_BY_REQUEST_CODE = 29804;
         internal static readonly int APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE = 29805;
+        internal static readonly int APPLICATION_STATUS_RATING_REQUEST_CODE = 29806;
 
         internal static readonly string WEBVIEW_PAYMENT = "WebViewPayment";
         internal static readonly string WEBVIEW_PAYMENT_FPX = "WebViewPaymentFPX";
