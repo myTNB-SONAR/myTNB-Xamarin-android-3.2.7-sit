@@ -30,7 +30,7 @@
 				android:id="@+id/btnSubmit"
 				android:layout_height="wrap_content"
 				android:layout_width="match_parent"
-				android:text="Submit"
+				android:text="UI-Submit"
 				android:textSize="16dp"
 				android:textAllCaps="false"
 				style="@style/DarkButton1"/>
@@ -49,14 +49,13 @@
 				android:layout_weight="1"
 				android:overScrollMode="never"
 				android:scrollbars="none"
-				android:background="@color/white"
 				android:fillViewport="true">
 				<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="vertical">
 					<LinearLayout
-						android:id="@+id/appLanguageMessageContainer"
+						android:id="@+id/ratingBarContainer"
 						android:layout_width="match_parent"
 						android:layout_height="96dp"
 						android:background="@color/white"
@@ -66,9 +65,9 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:layout_marginBottom="8dp"
-							android:layout_marginTop="10.2dp"
+							android:layout_marginTop="16dp"
 							android:gravity="center_horizontal"
-							android:text="Perfect"
+							android:text="UI-Perfect"
 							android:textColor="@color/tunaGrey"
 							android:textSize="16dp" />
 						<RatingBar
@@ -76,6 +75,7 @@
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
 							android:layout_gravity="center"
+							android:layout_marginBottom="16dp"
 							android:gravity="center"
 							android:numStars="5"
 							android:progressDrawable="@drawable/rating_selector"
@@ -92,16 +92,16 @@
 							android:id="@+id/txtTitleQuestion"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:layout_marginTop="10.2dp"
+							android:layout_marginTop="16dp"
+							android:layout_marginBottom="8dp"
 							android:layout_marginLeft="16dp"
-							android:text="What did you like best?"
+							android:layout_marginRight="16dp"
+							android:text="UI-What did you like best?"
 							android:textColor="@color/powerBlue"
-							android:paddingTop="16dp"
-							android:paddingBottom="8dp"
 							android:textSize="16dp" />
 					</LinearLayout>
 					<LinearLayout
-						android:id="@+id/appLanguageListContainer"
+						android:id="@+id/reasonListContainer"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:background="@color/white"
@@ -124,35 +124,43 @@
 							android:id="@+id/txtTellUsTitleInfo"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:layout_marginTop="10.2dp"
+							android:layout_marginTop="16dp"
+							android:layout_marginBottom="8dp"
 							android:layout_marginLeft="16dp"
-							android:text="Tell us more:"
+							android:layout_marginRight="16dp"
+							android:text="UI-Tell us more:"
 							android:textColor="@color/powerBlue"
-							android:paddingTop="16dp"
-							android:paddingBottom="8dp"
 							android:textSize="16dp" />
 					</LinearLayout>
-					<com.google.android.material.textfield.TextInputLayout
+					<LinearLayout
+						android:id="@+id/rateUsFeedbackContainer"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:layout_marginLeft="16dp"
-						android:layout_marginRight="16dp"
-						app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-						android:id="@+id/txtInputLayoutTellUsMore"
-						app:errorTextAppearance="@color/silverchalice"
 						android:background="@color/white"
-						android:layout_marginTop="10dp">
-						<EditText
-							android:hint=""
+						android:orientation="vertical">
+						<com.google.android.material.textfield.TextInputLayout
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:id="@+id/txtTellUsMore"
-							android:textSize="16dp"
-							android:maxLines="1"
-							android:singleLine="true"
-							android:paddingTop="5dp"
-							android:drawablePadding="6dp" />
-					</com.google.android.material.textfield.TextInputLayout>
+							android:layout_marginLeft="16dp"
+							android:layout_marginRight="16dp"
+							android:layout_marginTop="16dp"
+							android:layout_marginBottom="32dp"
+							app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
+							android:id="@+id/txtInputLayoutTellUsMore"
+							app:errorTextAppearance="@color/silverchalice"
+							android:background="@color/white">
+							<EditText
+								android:hint=""
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:id="@+id/txtTellUsMore"
+								android:textSize="16dp"
+								android:maxLines="1"
+								android:singleLine="true"
+								android:paddingTop="5dp"
+								android:drawablePadding="6dp" />
+						</com.google.android.material.textfield.TextInputLayout>
+					</LinearLayout>
 				</LinearLayout>
 			</ScrollView>
 			<LinearLayout
@@ -161,6 +169,5 @@
 				android:orientation="vertical"
 				android:background="@color/lightGrey"/>
 		</LinearLayout>
-
 	</RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

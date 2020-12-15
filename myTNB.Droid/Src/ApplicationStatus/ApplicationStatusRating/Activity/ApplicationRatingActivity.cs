@@ -10,6 +10,7 @@ using myTNB.Mobile;
 using Newtonsoft.Json;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
 using System.Linq;
+using Android.Runtime;
 
 namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 {
@@ -93,9 +94,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                         rateUslIntent.PutExtra("selectedRating", selectedRating.ToString());
                         rateUslIntent.PutExtra("customerRatingMasterResponse", JsonConvert.SerializeObject(customerRatingMasterResponse));
                         rateUslIntent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
-                        StartActivity(rateUslIntent);
-                        SetResult(Result.Ok, new Intent());
-                        Finish();
+                        StartActivityForResult(rateUslIntent, Constants.APPLICATION_STATUS_RATING_REQUEST_CODE);
                     }
                     HideProgressDialog();
                 };
@@ -122,6 +121,22 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (resultCode == Result.Ok && requestCode == Constants.APPLICATION_STATUS_RATING_REQUEST_CODE)
+            {
+                SetResult(Result.Ok, data);
+                Finish();
+            }
+            else if (resultCode == Result.Canceled)
+            {
+                SetResult(Result.Canceled);
+                Finish();
+            }
         }
     }
 }

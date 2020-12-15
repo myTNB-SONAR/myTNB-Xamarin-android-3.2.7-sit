@@ -86,5 +86,9 @@ namespace myTNB_Android.Src.Utils
             SetTypeface(MuseoSans500, buttons);
         }
 
+        public static float GetFontSize(float font)
+        {
+            return font;
+        }
     }
 }

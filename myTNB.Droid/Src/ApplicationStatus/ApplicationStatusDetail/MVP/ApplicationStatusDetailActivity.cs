@@ -302,7 +302,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             Intent rating_activity = new Intent(this, typeof(ApplicationRatingActivity));
                             rating_activity.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
                             rating_activity.PutExtra("customerRatingMasterResponse", JsonConvert.SerializeObject(customerRatingMasterResponse));
-                            StartActivity(rating_activity);
+                            StartActivityForResult(rating_activity, Constants.APPLICATION_STATUS_RATING_REQUEST_CODE);
                         }
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.ContractorRating)
@@ -310,7 +310,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
                         webIntent.PutExtra(Constants.IN_APP_LINK, applicationDetailDisplay.ContractorRatingURL);
                         webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("ApplicationStatusDetails", "rateContractor"));
-                        StartActivity(webIntent);
+                        webIntent.PutExtra("action", "contractorRating");
+                        StartActivityForResult(webIntent, Constants.APPLICATION_STATUS_RATING_REQUEST_CODE);
                     }
                     FirebaseAnalyticsUtils.LogClickEvent(this, "Rate Button Clicked");
                 }
@@ -726,7 +727,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 , statusDetails?.Message ?? Utility.GetLocalizedLabel("ApplicationStatusDetails", "rateSuccessMessage"));
                         }
                     }
-                    if (extras.ContainsKey("applicationRated") && extras.GetString("applicationRated") != null && extras.GetString("applicationRated") != "0")
+                    if (extras.ContainsKey("applicationRated")
+                        && extras.GetString("applicationRated") != null
+                        && extras.GetString("applicationRated") != "0")
                     {
                         txtApplicationRateStar.Visibility = ViewStates.Visible;
                         imgStar.Visibility = ViewStates.Visible;
@@ -1089,6 +1092,91 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         public void UpdateUI()
         {
+        }
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (resultCode == Result.Ok && requestCode == Constants.APPLICATION_STATUS_RATING_REQUEST_CODE)
+            {
+                if (data != null && data.Extras is Bundle extras && extras != null)
+                {
+                    if (extras.ContainsKey("applicationRated")
+                        && extras.GetString("applicationRated") != null
+                        && extras.GetString("applicationRated") != "0")
+                    {
+                        txtApplicationRateStar.Visibility = ViewStates.Visible;
+                        imgStar.Visibility = ViewStates.Visible;
+                        layoutstar.Visibility = ViewStates.Visible;
+                        txtApplicationRateStar.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "youRated") + extras.GetString("applicationRated") + " ";
+                        ctaParentLayout.Visibility = ViewStates.Gone;
+                    }
+                }
+                else
+                {
+                    OnReloadDetails(UpdateType.ContractorRating);
+                }
+            }
+        }
+
+        private async void OnReloadDetails(UpdateType updateType)
+        {
+            ShowProgressDialog();
+            ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(applicationDetailDisplay.SavedApplicationID
+                , applicationDetailDisplay.ApplicationDetail.ApplicationId
+                , applicationDetailDisplay.ApplicationTypeCode
+                , applicationDetailDisplay.System);
+            if (response.StatusDetail.IsSuccess && response.Content != null)
+            {
+                applicationDetailDisplay.ApplicationRatingDetail = response.Content.ApplicationRatingDetail;
+                if (updateType == UpdateType.ContractorRating)
+                {
+                    if (response.Content.RatingDisplay != null
+                        && response.Content.RatingDisplay != string.Empty)
+                    {
+                        txtApplicationRateStar.Visibility = ViewStates.Visible;
+                        imgStar.Visibility = ViewStates.Visible;
+                        layoutstar.Visibility = ViewStates.Visible;
+                        txtApplicationRateStar.Text = response.Content.RatingDisplay + " ";
+                    }
+                    else
+                    {
+                        txtApplicationRateStar.Visibility = ViewStates.Gone;
+                        imgStar.Visibility = ViewStates.Gone;
+                        layoutstar.Visibility = ViewStates.Gone;
+                    }
+                    if (response.Content.IsContractorRating)
+                    {
+                        btnPrimaryCTA.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "rateCTA");
+                        applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
+                        applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
+                        ctaParentLayout.Visibility = ViewStates.Visible;
+                    }
+                    else
+                    {
+                        applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
+                        applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
+                        applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Gone;
+                        ctaParentLayout.Visibility = ViewStates.Gone;
+                    }
+                }
+            }
+            else
+            {
+                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                    .SetTitle(response.StatusDetail.Title)
+                    .SetMessage(response.StatusDetail.Message)
+                    .SetCTALabel(response.StatusDetail.PrimaryCTATitle)
+                    .Build();
+                errorPopup.Show();
+            }
+            HideProgressDialog();
+        }
+
+        private enum UpdateType
+        {
+            ContractorRating
         }
     }
 }

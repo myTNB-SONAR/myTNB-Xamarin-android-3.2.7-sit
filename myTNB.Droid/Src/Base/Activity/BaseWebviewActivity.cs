@@ -52,6 +52,10 @@ namespace myTNB_Android.Src.Base.Activity
 
                 if (extra != null)
                 {
+                    if (extra.ContainsKey("action") && extra.GetString("action") == "contractorRating")
+                    {
+                        //Todo: Update Back Arrow to X
+                    }
                     if (extra.ContainsKey(Constants.IN_APP_LINK))
                     {
                         webLink = extra.GetString(Constants.IN_APP_LINK);
@@ -152,9 +156,9 @@ namespace myTNB_Android.Src.Base.Activity
                 if (ConnectionUtils.HasInternetConnection(mActivity))
                 {
                     if (url.Contains("mytnbapp://action=contractorRatingCompleted")
-                        || url.Contains("contractorRatingCompleted")
-                        || url.Contains("ContractorManagement"))//Todo  : remove
+                        || url.Contains("contractorRatingCompleted"))
                     {
+                        mActivity.SetResult(Result.Ok);
                         mActivity.Finish();
                     }
                     if (url.Contains(baseUrl))
@@ -260,6 +264,7 @@ namespace myTNB_Android.Src.Base.Activity
 
         public override void OnBackPressed()
         {
+            SetResult(Result.Ok);
             Finish();
         }
 

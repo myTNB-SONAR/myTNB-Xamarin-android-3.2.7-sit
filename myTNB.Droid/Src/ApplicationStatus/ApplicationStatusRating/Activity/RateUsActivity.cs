@@ -53,6 +53,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
         private List<Item> ratingItemList = new List<Item>();
         private List<Item> selectedRatingItemList = new List<Item>();
         private GetApplicationStatusDisplay applicationDetailDisplay;
+        private LinearLayout tellUsContainer, rateUsFeedbackContainer;
         string srNumber = string.Empty;
         string applicationID = string.Empty;
         string backendAppID = string.Empty;
@@ -146,7 +147,8 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                             Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
                             webIntent.PutExtra(Constants.IN_APP_LINK, applicationDetailDisplay.ContractorRatingURL);
                             webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("ApplicationStatusDetails", "rateContractor"));
-                            StartActivity(webIntent);
+                            webIntent.PutExtra("action", "contractorRating");
+                            StartActivityForResult(webIntent, Constants.APPLICATION_STATUS_RATING_REQUEST_CODE);
                         }
                         else
                         {
@@ -154,10 +156,9 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                             intent.PutExtra("applicationRated", selectedRating.ToString());
                             intent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(applicationDetailDisplay));
                             intent.PutExtra("submitRatingResponseStatus", JsonConvert.SerializeObject(response.StatusDetail));
-                            StartActivity(intent);
-                            SetResult(Result.Ok, new Intent());
+                            SetResult(Result.Ok, intent);
+                            Finish();
                         }
-                        Finish();
                     }
                     else
                     {
@@ -239,6 +240,23 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
             }
         }
 
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (resultCode == Result.Ok && requestCode == Constants.APPLICATION_STATUS_RATING_REQUEST_CODE)
+            {
+                SetResult(Result.Ok);
+                Finish();
+            }
+        }
+
+        public override void OnBackPressed()
+        {
+            SetResult(Result.Canceled);
+            Finish();
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -255,16 +273,22 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 txtTellUsMore.SetOnTouchListener(this);
                 rootView = FindViewById<CoordinatorLayout>(Resource.Id.rootview);
                 txtTellUsMore.Hint = Utility.GetLocalizedLabel("ApplicationStatusRating", "freeTextPlaceHolder");
-
+                tellUsContainer = FindViewById<LinearLayout>(Resource.Id.tellUsContainer);
+                rateUsFeedbackContainer = FindViewById<LinearLayout>(Resource.Id.rateUsFeedbackContainer);
                 btnSubmit.Text = Utility.GetLocalizedLabel("ApplicationStatusRating", "submit");
                 txtTellUsMore.TextChanged += TextChanged;
                 txtTellUsMore.SetOnTouchListener(this);
+
+                txtPageTitleInfo.TextSize = TextViewUtils.GetFontSize(16);
+                txtTitleQuestion.TextSize = TextViewUtils.GetFontSize(16);
+                txtTellUsTitleInfo.TextSize = TextViewUtils.GetFontSize(16);
+                txtTellUsMore.TextSize = TextViewUtils.GetFontSize(16);
 
                 btnSubmit.Enabled = false;
                 btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
 
                 TextViewUtils.SetMuseoSans300Typeface(txtTellUsMore);
-                TextViewUtils.SetMuseoSans500Typeface(txtPageTitleInfo, txtTitleQuestion, txtTellUsTitleInfo);
+                TextViewUtils.SetMuseoSans500Typeface(txtPageTitleInfo, txtTitleQuestion, txtTellUsTitleInfo, btnSubmit);
 
                 rating_list_view.ItemClick += OnItemClick;
 
@@ -272,12 +296,14 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 
                 SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusRating", "title"));
 
-                if (extras != null && Intent.Extras.ContainsKey("selectedRating") && extras.ContainsKey("customerRatingMasterResponse") && extras.ContainsKey("applicationDetailDisplay"))
+                if (extras != null
+                    && Intent.Extras.ContainsKey("selectedRating")
+                    && extras.ContainsKey("customerRatingMasterResponse")
+                    && extras.ContainsKey("applicationDetailDisplay"))
                 {
                     selectedRating = Convert.ToInt32(extras.GetString("selectedRating"));
                     if (selectedRating != 0)
                     {
-
                         btnSubmit.Enabled = true;
                         btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
                     }
@@ -285,7 +311,6 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     {
                         btnSubmit.Enabled = false;
                         btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
-
                     }
                     applicationDetailDisplay = JsonConvert.DeserializeObject<GetApplicationStatusDisplay>(extras.GetString("applicationDetailDisplay"));
 
@@ -303,12 +328,21 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 
                     getCustomerRatingMasterResponse = JsonConvert.DeserializeObject<GetCustomerRatingMasterResponse>(extras.GetString("customerRatingMasterResponse"));
 
-                    if (getCustomerRatingMasterResponse != null && getCustomerRatingMasterResponse.Content != null)
+                    if (getCustomerRatingMasterResponse != null
+                        && getCustomerRatingMasterResponse.Content != null)
                     {
                         sequence1 = getCustomerRatingMasterResponse.Content.QuestionAnswerSets.Where(x => x.Sequence == 1).FirstOrDefault();
                         sequence2 = getCustomerRatingMasterResponse.Content.QuestionAnswerSets.Where(x => x.Sequence == 2).FirstOrDefault();
                         sequence3 = getCustomerRatingMasterResponse.Content.QuestionAnswerSets.Where(x => x.Sequence == 3).FirstOrDefault();
                         questionCategoryValue = getCustomerRatingMasterResponse.Content.QuestionCategoryDescription;
+                        txtTellUsTitleInfo.Text = sequence3 != null
+                            && sequence3.QuestionDetail != null
+                            && sequence3.QuestionDetail.QuestionDescription != null
+                            && sequence3.QuestionDetail.QuestionDescription.Count > 0
+                            && !string.IsNullOrEmpty(sequence3.QuestionDetail.QuestionDescription["0"])
+                            && !string.IsNullOrWhiteSpace(sequence3.QuestionDetail.QuestionDescription["0"])
+                                ? sequence3.QuestionDetail.QuestionDescription["0"]
+                                : string.Empty;
                         RatingQuestions();
                     }
                     foreach (var answer in sequence2.AnswerDetail.AnswerSetValue)
@@ -340,6 +374,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                     }
                     RatingQuestions();
                 };
+                OnChangeTellUsMoreVisibility();
             }
             catch (Exception e)
             {
@@ -390,43 +425,23 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
 
         internal void RatingQuestions()
         {
-            if (getCustomerRatingMasterResponse != null && getCustomerRatingMasterResponse.Content != null)
+            try
             {
-                if (selectedRating == 1)
+                if (getCustomerRatingMasterResponse != null && getCustomerRatingMasterResponse.Content != null
+                    && sequence1 != null && sequence1.AnswerDetail != null && sequence1.AnswerDetail.AnswerSetValue != null
+                    && sequence2 != null && sequence2.QuestionDetail != null && sequence2.QuestionDetail.QuestionDescription != null
+                    && sequence1.AnswerDetail.AnswerSetValue.ContainsKey(selectedRating.ToString())
+                    && sequence2.QuestionDetail.QuestionDescription.ContainsKey(selectedRating.ToString()))
                 {
-                    txtPageTitleInfo.Text = sequence1.AnswerDetail.AnswerSetValue["1"];
-                    txtPageTitleInfoValue = "1";
-                    txtTitleQuestion.Text = sequence2.QuestionDetail.QuestionDescription["1"];
-                    txtTitleQuestionValue = 1;
+                    txtPageTitleInfoValue = selectedRating.ToString();
+                    txtTitleQuestionValue = selectedRating;
+                    txtPageTitleInfo.Text = sequence1.AnswerDetail.AnswerSetValue[selectedRating.ToString()];
+                    txtTitleQuestion.Text = sequence2.QuestionDetail.QuestionDescription[selectedRating.ToString()];
                 }
-                else if (selectedRating == 2)
-                {
-                    txtPageTitleInfo.Text = sequence1.AnswerDetail.AnswerSetValue["2"];
-                    txtPageTitleInfoValue = "2";
-                    txtTitleQuestion.Text = sequence2.QuestionDetail.QuestionDescription["2"];
-                    txtTitleQuestionValue = 2;
-                }
-                else if (selectedRating == 3)
-                {
-                    txtPageTitleInfo.Text = sequence1.AnswerDetail.AnswerSetValue["3"];
-                    txtPageTitleInfoValue = "3";
-                    txtTitleQuestion.Text = sequence2.QuestionDetail.QuestionDescription["3"];
-                    txtTitleQuestionValue = 3;
-                }
-                else if (selectedRating == 4)
-                {
-                    txtPageTitleInfo.Text = sequence1.AnswerDetail.AnswerSetValue["4"];
-                    txtPageTitleInfoValue = "4";
-                    txtTitleQuestion.Text = sequence2.QuestionDetail.QuestionDescription["4"];
-                    txtTitleQuestionValue = 4;
-                }
-                else if (selectedRating == 5)
-                {
-                    txtPageTitleInfo.Text = sequence1.AnswerDetail.AnswerSetValue["5"];
-                    txtPageTitleInfoValue = "5";
-                    txtTitleQuestion.Text = sequence2.QuestionDetail.QuestionDescription["5"];
-                    txtTitleQuestionValue = 5;
-                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] RatingQuestions Error: " + e.Message);
             }
         }
         [Preserve]
@@ -444,9 +459,8 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 selectedItem.selected = true;
                 selectedRatingItemList.Add(selectedItem);
             }
-
             selectItemAdapter.NotifyDataSetChanged();
-
+            OnChangeTellUsMoreVisibility();
         }
 
         protected override void OnResume()
@@ -480,6 +494,22 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 }
             }
             return false;
+        }
+
+        private void OnChangeTellUsMoreVisibility()
+        {
+            try
+            {
+                ViewStates state = selectedRatingItemList != null
+                    && selectedRatingItemList.Count > 0
+                        ? ViewStates.Visible : ViewStates.Gone;
+                tellUsContainer.Visibility = state;
+                rateUsFeedbackContainer.Visibility = state;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] OnChangeTellUsMoreVisibility Error: " + e.Message);
+            }
         }
     }
 }

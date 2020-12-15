@@ -380,6 +380,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int APPLICATION_STATUS_FILTER_DATE_REQUEST_CODE = 29803;
         internal static readonly int APPLICATION_STATUS_FILTER_SEARCH_BY_REQUEST_CODE = 29804;
         internal static readonly int APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE = 29805;
+        internal static readonly int APPLICATION_STATUS_RATING_REQUEST_CODE = 29806;
 
         internal static readonly string WEBVIEW_PAYMENT = "WebViewPayment";
         internal static readonly string WEBVIEW_PAYMENT_FPX = "WebViewPaymentFPX";
