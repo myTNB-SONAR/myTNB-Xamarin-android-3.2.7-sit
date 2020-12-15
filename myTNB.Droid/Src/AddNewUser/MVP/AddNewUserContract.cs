@@ -15,7 +15,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             /// <summary>
             /// Show remove progress dialog
             /// </summary>
-            void ShowRemoveProgress();
+            void ShowProgress();
 
             /// <summary>
             /// Show error message from api response
@@ -26,7 +26,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             /// <summary>
             /// Hide remove progress dialog
             /// </summary>
-            void HideRemoveProgress();
+            void HideProgress();
 
             /// <summary>
             /// Enable add user button
@@ -55,6 +55,8 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             /// </summary>
             /// <param name="exception">the returned exception</param>
             void ShowRetryOptionsUnknownException(Exception exception);
+            
+            void ShowSuccessAddNewUser();
         }
         public interface IUserActionsListener : IBasePresenter
         {
@@ -67,7 +69,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             /// Action to remove account
             /// </summary>
             /// <param name="accountData">AccountData</param>
-            void OnRemoveAccount(AccountData accountData);
+            void OnAddAccount(string userEmail, bool isHaveAccess, bool isHaveEBilling);
 
             void CheckRequiredFields(string email);
 

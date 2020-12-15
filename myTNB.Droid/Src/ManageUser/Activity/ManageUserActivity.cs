@@ -29,6 +29,7 @@ using myTNB_Android.Src.ManageUser.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ManageUser.MVP;
 using AndroidX.Core.Content;
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.ManageUser.Activity
 {
@@ -40,12 +41,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
 
-       /* [BindView(Resource.Id.txtManageUserTitle)]
-        TextView txtManageUserTitle;*/
-
-        /*[BindView(Resource.Id.txtInputLayoutNickName)]
-        TextInputLayout txtInputLayoutNickName;*/
-
         [BindView(Resource.Id.txtNickName)]
         EditText txtNickName;
 
@@ -54,9 +49,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
 
         [BindView(Resource.Id.txtEmail)]
         EditText txtEmail;
-
-        /*[BindView(Resource.Id.profileMenuItemsContent)]
-        LinearLayout profileMenuItemsContent;*/
 
         [BindView(Resource.Id.itemTitle)]
         TextView itemTitle;
@@ -83,7 +75,13 @@ namespace myTNB_Android.Src.ManageUser.Activity
 
         AccountData accountData;
         UserManageAccessAccount account;
-      
+
+        private bool checkboxbilling;
+        private bool checkboxfullbill;
+        private bool buttonEnableview = false;
+        private bool buttonEnableEBilling = false;
+
+
         int position;
 
         private ManageSupplyItemContentComponent manageUser;
@@ -115,15 +113,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     }
                     position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
                 }
-
-
-                progress = new MaterialDialog.Builder(this)
-                    .Title(Resource.String.manage_supply_account_remove_progress_title)
-                    .Content(Resource.String.manage_supply_account_remove_progress_content)
-                    .Progress(true, 0)
-                    .Cancelable(false)
-                    .Build();
-
            
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail);
                 TextViewUtils.SetMuseoSans300Typeface( txtNickName );
@@ -133,7 +122,9 @@ namespace myTNB_Android.Src.ManageUser.Activity
 
                 txtNickName.Text = account.AccDesc;
                 txtEmail.Text = account.email;
-               
+
+                itemTitleFullBill.Text = Utility.GetLocalizedLabel("UserAccess", "fullElectricity");
+                itemTitleBilling.Text = Utility.GetLocalizedLabel("UserAccess", "e_billing");
                 SetToolBarTitle(GetLabelByLanguage("titleManageUser"));
                 txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("email_user_address").ToUpper();
                 btnSave.Text = GetLabelCommonByLanguage("saveChanges");
@@ -144,53 +135,15 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 itemActionBilling.CheckedChange += CheckedChanged;
 
                 PopulateDataCheckBox();
-
-                /*ManageSupplyItemComponent ManageUserItem = GetManageSupply();
-                ManageUserItem.SetHeaderTitle(GetLabelCommonByLanguage("ManageUserTitle"));
-                profileMenuItemsContent.AddView(ManageUserItem);*/
-
+                MyTNBAccountManagement.GetInstance().AddNewUserAdded(true);
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-                mPresenter = new ManageUserPresenter(this, accountData);
+                mPresenter = new ManageUserPresenter(this, account);
                 this.userActionsListener.Start();
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-        }
-
-        
-       
-
-        public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
-            ManageSupplyAccountMenu = menu;
-            ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.icon_activity_log)).SetVisible(true);
-
-/*            ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
-            ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
-
-
-            ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(false);
-
-            ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true);*/
-
-            return base.OnCreateOptionsMenu(menu);
-        }
-
-        public override bool OnOptionsItemSelected(IMenuItem item)
-        {
-            switch (item.ItemId)
-            {
-                case Resource.Id.icon_log_activity_unread:
-                    //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled).SetVisible(true).SetEnabled(false);
-                    //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_disabled).SetVisible(true).SetEnabled(false);
-                    break;                
-            }
-
-
-            return base.OnOptionsItemSelected(item);
         }
 
         public bool IsActive()
@@ -232,32 +185,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
             base.OnPause();
         }
 
-        /* private ManageSupplyItemComponent GetManageSupply()
-         {
-             //Context context = Activity.ApplicationContext;
-
-             ManageSupplyItemComponent manageItem = new ManageSupplyItemComponent(this);
-
-             List<View> manageItems = new List<View>();
-
-             ManageUserMenuItemSingleContentComponent viewBill = new ManageUserMenuItemSingleContentComponent(this);
-             viewBill.SetTitle(GetLabelCommonByLanguage("viewFullBill"));
-             viewBill.SetItemActionVisibility(true);
-             viewBill.SetItemActionCall(ClickCheck);
-             manageItems.Add(viewBill);
-
-
-
-             ManageUserMenuItemSingleContentComponent applyBill = new ManageUserMenuItemSingleContentComponent(this);
-             applyBill.SetTitle(GetLabelCommonByLanguage("ApplyforBilling"));
-             applyBill.SetItemActionVisibility(true);
-             applyBill.SetItemActionCall(ClickCheck);
-             manageItems.Add(applyBill);
-
-             manageItem.AddComponentView(manageItems);
-             return manageItem;
-         }*/
-
         public void PopulateDataCheckBox()
         {
             try
@@ -293,61 +220,75 @@ namespace myTNB_Android.Src.ManageUser.Activity
         {
             if(e.IsChecked)
             {
-                bool checkboxfullbill = true;
+                checkboxfullbill = true;
                 if(account.IsHaveAccess == checkboxfullbill)
                 {
                     DisableSaveButton();
+                    buttonEnableview = false;
                 }
                 else
                 {
                     EnableSaveButton();
+                    buttonEnableview = true;
                 }
             }
             else
             {
-                bool checkboxfullbill = false;
+                checkboxfullbill = false;
                 if (account.IsHaveAccess == checkboxfullbill)
                 {
                     DisableSaveButton();
+                    buttonEnableview = false;
                 }
                 else
                 {
                     EnableSaveButton();
+                    buttonEnableview = true;
                 }
-            }          
+            }
+            
+            if(buttonEnableview || buttonEnableEBilling)
+            {
+                EnableSaveButton();
+            }
         }
 
         private void CheckedChanged(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
             if (e.IsChecked)
             {
-                bool checkboxbilling = true;
+                checkboxbilling = true;
                 if (account.IsApplyEBilling == checkboxbilling)
                 {
                     DisableSaveButton();
+                    buttonEnableEBilling = false;
                 }
                 else
                 {
                     EnableSaveButton();
+                    buttonEnableEBilling = true;
                 }
             }
             else
             {
-                bool checkboxbilling = false;
+                checkboxbilling = false;
                 if (account.IsApplyEBilling == checkboxbilling)
                 {
                     DisableSaveButton();
+                    buttonEnableEBilling = false;
                 }
                 else
                 {
                     EnableSaveButton();
+                    buttonEnableEBilling = true;
                 }
             }
 
-
+            if (buttonEnableview || buttonEnableEBilling)
+            {
+                EnableSaveButton();
+            }
         }
-
-
 
         [OnClick(Resource.Id.infoManageUser)]
         void OnClickManagerUserInfo(object sender, EventArgs eventArgs)
@@ -355,7 +296,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                        .SetTitle((string.Format(GetLabelByLanguage("dialogManageUser"))))
                        .SetMessage(string.Format(GetLabelByLanguage("dialogManageUserMessage")))
-                       .SetContentGravity(GravityFlags.Center)
+                       .SetContentGravity(GravityFlags.Left)
                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                        .Build().Show();
          
@@ -369,17 +310,13 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 if (!this.GetIsClicked())
                 {
                     this.SetIsClicked(true);
-                   /* string idtype = selectedIdentificationType.Id;
-                    string ic_no = txtICNumber.Text.ToString().Trim();*/
                     ShowSaveDialog(this, () =>
                     {
-                        // _ = RunUpdateID(idtype,ic_no);
-                        //ShowProgress();
-                        ShowSaveSuccess();
-
-
+                        this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, checkboxfullbill, checkboxbilling);
+                        //ShowSaveSuccess();
                     });
                 }
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
@@ -390,13 +327,11 @@ namespace myTNB_Android.Src.ManageUser.Activity
 
         public override void OnBackPressed()
         {
-            if (isSelectionChange)
+            if ((buttonEnableview || buttonEnableEBilling) && MyTNBAccountManagement.GetInstance().IsNewUserAdd())
             {
                 ShowBackDialog(this, () =>
-                {
-                    
-                    ShowProgress();
-                    
+                {                    
+                    this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, checkboxfullbill, checkboxbilling);
                 });
             }
             else
@@ -412,7 +347,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                         
                         .SetTitle((string.Format(GetLabelByLanguage("manageUserTitle"), nickname)))
                         .SetMessage(string.Format(GetLabelByLanguage("manageUserMessage"),nickname))
-                        .SetContentGravity(Android.Views.GravityFlags.Center)
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
                         .SetSecondaryCTAaction(() =>
@@ -439,49 +374,21 @@ namespace myTNB_Android.Src.ManageUser.Activity
         {
             string nickname = txtNickName.Text.ToString().Trim();
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                        .SetTitle((string.Format(GetLabelByLanguage("dialogManageUser"), nickname)))
-                       .SetMessage(string.Format(GetLabelByLanguage("dialogManageUserMessage"), nickname))
-                        .SetContentGravity(GravityFlags.Center)
+                        .SetTitle((string.Format(GetLabelByLanguage("manageUserBackTitle"), nickname)))
+                       .SetMessage(string.Format(GetLabelByLanguage("manageUserBackMessage"), nickname))
+                        .SetContentGravity(GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
                         .SetSecondaryCTAaction(() =>
                         {
-                            ShowProgress();
-                           
+                            confirmAction();
+
                         }).Build();
             tooltipBuilder.SetCTAaction(() =>
             {
                 tooltipBuilder.DismissDialog();
                 OnBackProceed();
             }).Show();
-
-            /* string nickname = txtNickName.Text.ToString().Trim();
-             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                         //.SetTitle(Utility.GetLocalizedLabel("ManageAccount", "manageUserTitle"))
-                         .SetTitle((string.Format(GetLabelByLanguage("manageUserBackTitle"), nickname)))
-                         //.SetSubTitle(nickname)
-                         .SetMessage(string.Format(GetLabelByLanguage("manageUserBackMessage"), nickname))
-                         .SetContentGravity(Android.Views.GravityFlags.Center)
-                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
-                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
-                         .SetSecondaryCTAaction(() =>
-                         {
-                             confirmAction();
-                         })
-                         .Build();
-             tooltipBuilder.SetCTAaction(() =>
-             {
-                 if (cancelAction != null)
-                 {
-                     cancelAction();
-                     tooltipBuilder.DismissDialog();
-                 }
-                 else
-                 {
-                     tooltipBuilder.DismissDialog();
-                 }
-             }).Show();
-             this.SetIsClicked(false);*/
         }
 
         public void OnBackProceed()
@@ -540,7 +447,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
             isSelectionChange = false;
         }
 
-        private void ShowSaveSuccess()
+        public void ShowSaveSuccess()
         {
             try
             {
@@ -566,7 +473,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
         }
 
        
-
         public void ShowRemoveProgress()
         {
             try

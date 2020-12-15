@@ -51,6 +51,15 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         [BindView(Resource.Id.layout_btnAddUser)]
         LinearLayout layout_btnAddUser;
 
+        [BindView(Resource.Id.bottomLayoutDeleteMultiple)]
+        LinearLayout bottomLayoutDeleteMultiple;
+
+        [BindView(Resource.Id.btnCancelRemoveAccess)]
+        Button btnCancelRemoveAccess;
+
+        [BindView(Resource.Id.btnRemoveSelectedAccessUser)]
+        Button btnRemoveSelectedAccessUser;
+
         [BindView(Resource.Id.btnAddUser)]
         Button btnAddUser;
 
@@ -70,6 +79,9 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         TextView txtEmptyManageAccess;
 
         ManageAccessAdapter adapter;
+
+        ManageAccessDeleteAdapter adapterDelete;
+
 
         AccountData accountData;
 
@@ -99,15 +111,31 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             try
             {
                 // Create your application here
+                Bundle extras = Intent.Extras;
+
+                if (extras != null)
+                {
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    {
+                        //accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                        accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+
+                    }
+                }
 
                 txtEmptyManageAccess.Text = GetLabelByLanguage("LabelEmptyTitle");
                 txtManageAccessTitle.Text = GetLabelByLanguage("LabelTitle");
                 btnAddUser.Text = GetLabelByLanguage("addUserBtn");
                 btnRemoveAccess.Text = GetLabelByLanguage("RemoveTitle");
                 btnAddAccessUser.Text = GetLabelByLanguage("AddTitle");
+                btnCancelRemoveAccess.Text = Utility.GetLocalizedCommonLabel("cancel");
+                btnRemoveSelectedAccessUser.Text = Utility.GetLocalizedLabel("UserAccess", "RemoveTitle");
 
                 adapter = new ManageAccessAdapter(this, false);
+                adapterDelete = new ManageAccessDeleteAdapter(this, false);
+                listViewRemoveAcc.Adapter = adapterDelete;
                 listView.Adapter = adapter;
+                adapter.setCustomButtonListner(this);
                 listView.SetNoScroll();
                 listView.ItemClick += ListView_ItemClick;
 
@@ -118,7 +146,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                     e.Handled = true;
                 };
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-                mPresenter = new ManageAccessPresenter(this);
+                mPresenter = new ManageAccessPresenter(this, accountData);
                 this.userActionsListener.Start();
             }
             catch (Exception e)
@@ -145,8 +173,8 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             ShowDeleteAccDialog(this, position, () =>
             {
                 UserManageAccessAccount account = adapter.GetItemObject(position);
-                UserManageAccessAccount.Remove(account.AccNum);
-                this.mPresenter.OnRemoveAccount(account.AccNum);
+                UserManageAccessAccount.Remove(account.AccNum , account.userId);
+                this.mPresenter.OnRemoveAccount(account.userId);
                 adapter.Clear();
                 listView.Adapter = null;
                 listView.Adapter = adapter;
@@ -186,11 +214,11 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                     this.SetIsClicked(true);
                     txtManageAccessTitle.Text = GetLabelByLanguage("HeaderRemoveTitle");
                     listViewRemoveAcc.Visibility = ViewStates.Visible;
-                    bottomLayout.Visibility = ViewStates.Visible;
+                    bottomLayoutDeleteMultiple.Visibility = ViewStates.Visible;
+                    bottomLayout.Visibility = ViewStates.Gone;
                     listView.Visibility = ViewStates.Gone;
                     layout_btnAddUser.Visibility = ViewStates.Gone;
                     manage_user_layout.Visibility = ViewStates.Gone;
-
                 }
                 this.SetIsClicked(false);
             }
@@ -211,6 +239,52 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                     this.SetIsClicked(true);
                     Intent addAccountIntent = new Intent(this, typeof(AddNewUserActivity));
                     StartActivityForResult(addAccountIntent, Constants.ADD_USER);
+
+                }
+                this.SetIsClicked(false);
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        [OnClick(Resource.Id.btnCancelRemoveAccess)]
+        void CancelDeleteUser(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    txtManageAccessTitle.Text = GetLabelByLanguage("LabelTitle");
+                    listViewRemoveAcc.Visibility = ViewStates.Gone;
+                    listView.Visibility = ViewStates.Visible;
+                    bottomLayout.Visibility = ViewStates.Visible;
+                    bottomLayoutDeleteMultiple.Visibility = ViewStates.Gone;
+                    layout_btnAddUser.Visibility = ViewStates.Gone;
+                    manage_user_layout.Visibility = ViewStates.Gone;
+                }
+                this.SetIsClicked(false);
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        [OnClick(Resource.Id.btnRemoveSelectedAccessUser)]
+        void RemoveSelectedUser(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+/*                    this.SetIsClicked(true);
+                    Intent addAccountIntent = new Intent(this, typeof(AddNewUserActivity));
+                    StartActivityForResult(addAccountIntent, Constants.ADD_USER);*/
 
                 }
                 this.SetIsClicked(false);
@@ -482,6 +556,20 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 //txtManageAccessTitle.Visibility = ViewStates.Gone;
                 layout_btnAddUser.Visibility = ViewStates.Gone;
                 manage_user_layout.Visibility = ViewStates.Gone;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowAccountDeleteList(List<UserManageAccessAccount> accountList)
+        {
+            try
+            {
+                adapterDelete.AddAll(accountList);
+                adapterDelete.NotifyDataSetChanged();
+                listView.SetNoScroll();
             }
             catch (Exception e)
             {

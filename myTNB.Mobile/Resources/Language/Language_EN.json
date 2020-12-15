@@ -859,8 +859,8 @@
     "manageUserDialogTitle":"You're about to make changes to {0}'s access.",
     "manageUserDialogMessage":"Once confirmed, {0} will have their access updated and be notified about the accesses you selected for them to your electricity account.",
     "saveSuccess":"Changes to user access has been saved and user has been notified of their access update",
-    "manageUserBackTitle":"Are yu sure want to leave without saving changes you made to {0}'s access?",
-    "manageUserBackMessage":"The changes to {0)'saccess will not be saved if you choose to leave this page and their accesses will remain as before.'"
+    "manageUserBackTitle":"Are you sure want to leave without saving changes you made to {0}'s access?",
+    "manageUserBackMessage":"The changes to {0}'success will not be saved if you choose to leave this page and their accesses will remain as before."
   },
   "Onboarding": {
     "letsStart": "Let's get started!",

@@ -55,8 +55,17 @@ namespace myTNB_Android.Src.AddNewUser.Activity
         [BindView(Resource.Id.txtNewUserOptionalTitle)]
         TextView txtNewUserOptionalTitle;
 
-        [BindView(Resource.Id.profileMenuItemsContent)]
-        LinearLayout profileMenuItemsContent;
+        [BindView(Resource.Id.itemTitleFullBill)]
+        TextView itemTitleFullBill;
+
+        [BindView(Resource.Id.itemTitleBilling)]
+        TextView itemTitleBilling;
+
+        [BindView(Resource.Id.itemActionBilling)]
+        CheckBox itemActionBilling;
+
+        [BindView(Resource.Id.itemActionFullBill)]
+        CheckBox itemActionFullBill;
 
         [BindView(Resource.Id.btnAddUser)]
         Button btnAddUser;
@@ -64,15 +73,15 @@ namespace myTNB_Android.Src.AddNewUser.Activity
         [BindView(Resource.Id.infoAddress)]
         TextView infoAddress;
 
-        private IMenu ManageSupplyAccountMenu;
         AccountData accountData;
         int position;
+
+        private bool checkboxbilling;
+        private bool checkboxfullbill;
 
         private ManageSupplyItemContentComponent manageUser;
         AddNewUserContract.IUserActionsListener userActionsListener;
         AddNewUserPresenter mPresenter;
-
-        MaterialDialog progress;
 
         const string PAGE_ID = "ManageAccount";
 
@@ -96,16 +105,8 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                     position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
                 }
 
-
-                progress = new MaterialDialog.Builder(this)
-                    .Title(Resource.String.manage_supply_account_remove_progress_title)
-                    .Content(Resource.String.manage_supply_account_remove_progress_content)
-                    .Progress(true, 0)
-                    .Cancelable(false)
-                    .Build();
-
-                ManageAccessItemComponent manageAccessUserItem = GetManageUserAccess();
-                profileMenuItemsContent.AddView(manageAccessUserItem);
+                /*ManageAccessItemComponent manageAccessUserItem = GetManageUserAccess();
+                profileMenuItemsContent.AddView(manageAccessUserItem);*/
 
                 var boxcondition = new CheckBox(this)
                 {
@@ -115,21 +116,24 @@ namespace myTNB_Android.Src.AddNewUser.Activity
 
                 TextViewUtils.SetMuseoSans300Typeface(textInputLayoutUserEmail);
                 TextViewUtils.SetMuseoSans300Typeface(txtUserEmail);
-                TextViewUtils.SetMuseoSans300Typeface(txtValue);
+                TextViewUtils.SetMuseoSans300Typeface(txtValue, itemTitleFullBill, itemTitleBilling);
                 TextViewUtils.SetMuseoSans500Typeface(txtAddNewUserTitle, txtNewUserOptionalTitle);
                 TextViewUtils.SetMuseoSans500Typeface(btnAddUser);
 
-
+                itemTitleFullBill.Text = Utility.GetLocalizedLabel("UserAccess", "fullElectricity");
+                itemTitleBilling.Text = Utility.GetLocalizedLabel("UserAccess", "e_billing");
                 txtAddNewUserTitle.Text = Utility.GetLocalizedLabel("UserAccess", "titleAddNewUser");
                 txtNewUserOptionalTitle.Text = Utility.GetLocalizedLabel("UserAccess", "bodyAddNewUser");
                 textInputLayoutUserEmail.Hint = Utility.GetLocalizedLabel("UserAccess", "usremail");
                 btnAddUser.Text = Utility.GetLocalizedLabel("UserAccess", "addUserBtn");
 
-
                 txtUserEmail.AddTextChangedListener(new InputFilterFormField(txtUserEmail, textInputLayoutUserEmail));
                 txtUserEmail.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 SetToolBarTitle(GetLabelByLanguage("titleAddUser"));
+
+                itemActionFullBill.CheckedChange += CheckedChange;
+                itemActionBilling.CheckedChange += CheckedChanged;
 
                 mPresenter = new AddNewUserPresenter(this, accountData);
                 this.userActionsListener.Start();
@@ -147,9 +151,9 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             {
                 if (!this.GetIsClicked())
                 {
+                    string email = txtUserEmail.Text.ToString().Trim();
                     this.SetIsClicked(true);
-                    ShowSuccessAddNewUser();
-
+                    this.userActionsListener.OnAddAccount(email, checkboxfullbill, checkboxbilling);
                 }
                 this.SetIsClicked(false);
             }
@@ -160,6 +164,29 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             }
         }
 
+        private void CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
+        {
+            if (e.IsChecked)
+            {
+                checkboxfullbill = true;
+            }
+            else
+            {
+                checkboxfullbill = false;
+            }
+        }
+
+        private void CheckedChanged(object sender, CompoundButton.CheckedChangeEventArgs e)
+        {
+            if (e.IsChecked)
+            {
+                checkboxbilling = true;
+            }
+            else
+            {
+                checkboxbilling = false;
+            }
+        }
 
         public bool IsActive()
         {
@@ -176,7 +203,6 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             SetResult(Result.Ok);
             Finish();
         }
-
 
         public void SetPresenter(AddNewUserContract.IUserActionsListener userActionListener)
         {
@@ -206,7 +232,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             base.OnPause();
         }
 
-        private ManageAccessItemComponent GetManageUserAccess()
+        /*private ManageAccessItemComponent GetManageUserAccess()
         {
             //Context context = Activity.ApplicationContext;
 
@@ -228,28 +254,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
 
             manageItem.AddComponentView(manageItems);
             return manageItem;
-        }
-
-        private void ClickCheck()
-        {
-        }
-
-        public void ShowUpdateNickname()
-        {
-            Intent updateNickName = new Intent(this, typeof(UpdateNicknameActivity));
-            updateNickName.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            StartActivityForResult(updateNickName, Constants.UPDATE_NICKNAME_REQUEST);
-        }
-
-        public void ShowSuccessRemovedAccount()
-        {
-            Intent result = new Intent();
-            result.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            result.PutExtra(Constants.SELECTED_ACCOUNT_POSITION, position);
-            result.PutExtra(Constants.ACCOUNT_REMOVED_FLAG, true);
-            SetResult(Result.Ok, result);
-            Finish();
-        }
+        }*/
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
@@ -270,7 +275,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             }
         }
 
-        public void ShowRemoveProgress()
+        public void ShowProgress()
         {
             try
             {
@@ -282,7 +287,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             }
         }
 
-        public void HideRemoveProgress()
+        public void HideProgress()
         {
             try
             {
@@ -294,8 +299,6 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             }
         }
 
-       // MaterialDialog addressInfoDialog;
-        //AlertDialog addressInfo;
         [OnClick(Resource.Id.infoAddress)]
         void OnClickAddressInfo(object sender, EventArgs eventArgs)
         {
@@ -303,7 +306,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                        .SetTitle((string.Format(GetLabelByLanguage("dialogManageUser"))))
                        .SetMessage(string.Format(GetLabelByLanguage("dialogManageUserMessage")))
-                       .SetContentGravity(GravityFlags.Center)
+                       .SetContentGravity(GravityFlags.Left)
                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                        .Build().Show();
         }

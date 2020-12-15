@@ -306,8 +306,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
                 mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
-                TextViewUtils.SetMuseoSans500Typeface(textNoOfAcoount, btnAddAnotherAccount, btnConfirm);
-                TextViewUtils.SetMuseoSans300Typeface(labelAccountLabel);
+                TextViewUtils.SetMuseoSans500Typeface(textNoOfAcoount, btnAddAnotherAccount, btnConfirm, textAdditionalAcoount);
+                TextViewUtils.SetMuseoSans300Typeface(labelAccountLabel, textlabelAdditionalAcoount);
 
                 textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
                 labelAccountLabel.Text = GetLabelByLanguage("noAcctFoundMsg");

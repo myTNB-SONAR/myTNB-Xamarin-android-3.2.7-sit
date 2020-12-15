@@ -123,11 +123,52 @@
                 </LinearLayout>
         </LinearLayout>
         <LinearLayout
+                android:id="@+id/bottomLayoutDeleteMultiple"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/white"
+                android:gravity="center"
+                android:visibility="gone">
+                    <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+                    <Button
+                        android:id="@+id/btnCancelRemoveAccess"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:text="Cancel"
+                        android:textSize="16dp"
+                        android:textAllCaps="false"
+                        style="@style/LightButton"/>
+                    </LinearLayout>
+                    <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+                    <Button
+                        android:id="@+id/btnRemoveSelectedAccessUser"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:text="Remove"
+                        android:textSize="16dp"
+                        android:textAllCaps="false"
+                        style="@style/LightButtonRed"/>
+                    </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/layout_btnAddUser"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
-                android:padding="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
                 android:visibility="visible"
                 android:layout_alignParentBottom="true"
                 android:gravity="center|bottom">
