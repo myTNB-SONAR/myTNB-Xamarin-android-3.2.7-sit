@@ -60,7 +60,7 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
             UserManageAccessAccount account = GetItemObject(position);
             if (convertView == null)
             {
-                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.MyAccountRowNew, parent, false);
+                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.MyAccountRowUserAccessNew, parent, false);
                 Button btn_delete = (Button)convertView.FindViewById(Resource.Id.delete);
                 SwipeLayout swipeLayout = (SwipeLayout)convertView.FindViewById(Resource.Id.swipe);
                 viewHolder = new MyAccountViewHolder(convertView);

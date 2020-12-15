@@ -1,5 +1,6 @@
 ﻿using System;
 using Android.Content;
+using Android.Graphics;
 using Android.Util;
 using Android.Widget;
 using AndroidX.Core.Content;
@@ -58,11 +59,13 @@ namespace myTNB_Android.Src.CompoundView
                 itemVerifyLabel.Visibility = Android.Views.ViewStates.Visible;
                 itemActionContainer.Visibility = Android.Views.ViewStates.Visible;
                 itemVerifyLabel.SetBackgroundResource(Resource.Drawable.icons_verify_email);
+                itemValue.SetTextColor(Color.ParseColor("#a6a6a6"));
             }
             else
             {
                 itemVerifyLabel.Visibility = Android.Views.ViewStates.Gone;
                 itemActionContainer.Visibility = Android.Views.ViewStates.Gone;
+                itemValue.SetTextColor(Color.ParseColor("#a6a6a6"));
             }
         }
 

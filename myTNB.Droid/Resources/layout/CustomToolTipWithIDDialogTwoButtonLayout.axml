@@ -3,16 +3,20 @@
     android:orientation="vertical"
     android:layout_gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content">            
   <LinearLayout
       android:orientation="vertical"
-      android:layout_width="match_parent"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
       android:layout_marginLeft="24dp"
       android:layout_marginRight="24dp"
       android:id="@+id/rootView"
       android:background="@drawable/custom_round_white_dialog_shadow">
+     <TextView
+            
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_idnotcompleted"/>
     <TextView
         android:id="@+id/txtToolTipTitle"
         android:layout_height="wrap_content"
@@ -20,19 +24,6 @@
         android:layout_gravity="center"
         android:textStyle="bold"
         android:text="Uploading from your album?"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/tunaGrey"
-        android:textSize="14dp"
-        android:lineSpacingExtra="3dp"/>
-    <TextView
-        android:id="@+id/txtToolTipSubTitle"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:gravity="left"
-        android:textStyle="bold"
-        android:text="912343-04-5632"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
@@ -100,7 +91,7 @@
             android:layout_marginBottom="16dp"
             android:text="@string/itemized_bill_bring_me_there"
             android:textSize="16dp" />
-    </RelativeLayout>
+        </RelativeLayout>
     </LinearLayout>
   </LinearLayout>
 </LinearLayout>
