@@ -118,7 +118,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
                         android:layout_marginRight="8dp"
-                        android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
+                        android:background="@drawable/rectangle_rounded_corner_blue_outline"
                         android:text="Email address"/>
                    <TextView
                         android:id="@+id/btnMobileNumber"
@@ -139,7 +139,8 @@
                         android:id="@+id/mobileNumberFieldContainer"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
-                        android:layout_margin="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
                         android:orientation="vertical"/>
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"

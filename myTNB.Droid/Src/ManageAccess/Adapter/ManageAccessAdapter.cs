@@ -81,30 +81,22 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
                         customListner.onButtonClickListner(position);
                         return;
                     }
-
-                    //CustomerBillingAccount account = GetItemObject(position);
-                    //CustomerBillingAccount.Remove(account.AccNum);
-                    //OnRemoveAccount(account.AccNum);
-                    //NotifyDataSetChanged();
-                    //((MyAccountActivity)mContext).ShowAddAccount();
                 };
 
 
 
                 btn_delete.SetBackgroundResource(Resource.Drawable.delete_icon_acc);
-                viewHolder.txtAccountName.Text = account.AccDesc;
-                viewHolder.txtAccountNum.Text = account.AccNum;
+                viewHolder.txtAccountName.Text = account.name;
 
-                //viewHolder.txtAccountManage.Text = Utility.GetLocalizedLabel("Common", "manage");
-
-                /*if (account.AccountCategoryId.Equals("2"))
+                if (account.IsPreRegister)
                 {
-                    viewHolder.imageLeaf.Visibility = ViewStates.Visible;
+                    viewHolder.txtAccountNum.Visibility = ViewStates.Visible;
+                    viewHolder.txtAccountNum.Text = account.email;
                 }
                 else
                 {
-                    viewHolder.imageLeaf.Visibility = ViewStates.Invisible;
-                }*/
+                    viewHolder.txtAccountNum.Visibility = ViewStates.Gone;
+                }
 
             }
             else

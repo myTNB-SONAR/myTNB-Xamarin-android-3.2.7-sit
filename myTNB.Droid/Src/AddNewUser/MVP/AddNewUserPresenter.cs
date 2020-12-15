@@ -34,13 +34,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
         {
             try
             {
-                if (requestCode == Constants.UPDATE_NICKNAME_REQUEST)
-                {
-                    if (resultCode == Result.Ok)
-                    {
-                        AccountData accountData = JsonConvert.DeserializeObject<AccountData>(data.Extras.GetString(Constants.SELECTED_ACCOUNT));
-                    }
-                }
+               
             }
             catch (Exception e)
             {
@@ -68,24 +62,25 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             }
         }
 
-        public async void OnRemoveAccount(AccountData accountData)
+        public async void OnAddAccount(string emailNewUser, bool ishaveAccess, bool ishaveEBilling)
         {
             if (mView.IsActive())
             {
-                this.mView.ShowRemoveProgress();
+                this.mView.ShowProgress();
             }
 
             UserEntity user = UserEntity.GetActive();
             try
             {
-                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(new RemoveAccountRequest(accountData.AccountNum));
+                //var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(new RemoveAccountRequest(accountData.AccountNum));
 
                 if (mView.IsActive())
                 {
-                    this.mView.HideRemoveProgress();
+                    this.mView.HideProgress();
+                    this.mView.ShowSuccessAddNewUser();
                 }
 
-                if (removeAccountResponse.IsSuccessResponse())
+                /*if (removeAccountResponse.IsSuccessResponse())
                 {
                     bool isSelectedAcc = false;
                     if (CustomerBillingAccount.HasSelected())
@@ -96,39 +91,17 @@ namespace myTNB_Android.Src.AddNewUser.MVP
                             isSelectedAcc = true;
                         }
                     }
-
-                    CustomerBillingAccount.Remove(accountData.AccountNum);
-                    if (isSelectedAcc && CustomerBillingAccount.HasItems())
-                    {
-                        /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
-                        //CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetFirst();
-                        //if (customerBillingAccount != null) {
-                        //    CustomerBillingAccount.Update(customerBillingAccount.AccNum, true);
-                        //}
-                        /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
-
-                        CustomerBillingAccount.MakeFirstAsSelected();
-                    }
-                    SMUsageHistoryEntity.RemoveAccountData(accountData.AccountNum);
-                    UsageHistoryEntity.RemoveAccountData(accountData.AccountNum);
-                    BillHistoryEntity.RemoveAccountData(accountData.AccountNum);
-                    PaymentHistoryEntity.RemoveAccountData(accountData.AccountNum);
-                    REPaymentHistoryEntity.RemoveAccountData(accountData.AccountNum);
-                    AccountDataEntity.RemoveAccountData(accountData.AccountNum);
-                    SummaryDashBoardAccountEntity.RemoveAll();
-                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                    HomeMenuUtils.ResetAll();
                 }
                 else
                 {
                     this.mView.ShowErrorMessageResponse(removeAccountResponse.Response.DisplayMessage);
-                }
+                }*/
             }
             catch (System.OperationCanceledException e)
             {
                 if (mView.IsActive())
                 {
-                    this.mView.HideRemoveProgress();
+                    this.mView.HideProgress();
                 }
                 // ADD OPERATION CANCELLED HERE
                 this.mView.ShowRetryOptionsCancelledException(e);
@@ -138,7 +111,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             {
                 if (mView.IsActive())
                 {
-                    this.mView.HideRemoveProgress();
+                    this.mView.HideProgress();
                 }
                 // ADD HTTP CONNECTION EXCEPTION HERE
                 this.mView.ShowRetryOptionsApiException(apiException);
@@ -148,7 +121,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             {
                 if (mView.IsActive())
                 {
-                    this.mView.HideRemoveProgress();
+                    this.mView.HideProgress();
                 }
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
@@ -165,15 +138,6 @@ namespace myTNB_Android.Src.AddNewUser.MVP
         public void Start()
         {
             this.mView.DisableAddUserButton();
-            if (accountData != null && !string.IsNullOrEmpty(accountData?.AccountNum))
-            {
-                CustomerBillingAccount customerBillingAccount = new CustomerBillingAccount();
-                customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountData?.AccountNum);
-                if (customerBillingAccount != null)
-                {
-                }
-            }
-
         }
     }
 }

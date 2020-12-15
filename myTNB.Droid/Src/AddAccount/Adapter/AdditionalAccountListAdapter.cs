@@ -1,5 +1,7 @@
 ﻿using Android.Content;
+using Android.Graphics;
 using Android.Preferences;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
@@ -130,6 +132,10 @@ namespace myTNB_Android.Src.AddAccount
                 MobileLinearLayout.Visibility = ViewStates.Gone;
                 textInputLayoutEmailEditText.Visibility = ViewStates.Visible;
                 EmailEditText.Visibility = ViewStates.Visible;
+                NoMobileFieldDetail.SetBackgroundResource(Resource.Drawable.rectangle_rounded_corner_blue_outline);
+                NoMobileFieldDetail.SetTextColor(Color.ParseColor("#1c79ca"));
+                EmailFieldDetail.SetBackgroundResource(Resource.Drawable.rectangle_rounded_corner_dark_blue_bg);
+                EmailFieldDetail.SetTextColor(Color.ParseColor("#ffffff"));
             };
 
             NoMobileFieldDetail.Click += (sender, e) =>
@@ -137,10 +143,15 @@ namespace myTNB_Android.Src.AddAccount
                 MobileLinearLayout.Visibility = ViewStates.Visible;
                 textInputLayoutEmailEditText.Visibility = ViewStates.Gone;
                 EmailEditText.Visibility = ViewStates.Gone;
+                NoMobileFieldDetail.SetBackgroundResource(Resource.Drawable.rectangle_rounded_corner_dark_blue_bg);
+                NoMobileFieldDetail.SetTextColor(Color.ParseColor("#ffffff"));
+                EmailFieldDetail.SetBackgroundResource(Resource.Drawable.rectangle_rounded_corner_blue_outline);
+                EmailFieldDetail.SetTextColor(Color.ParseColor("#1c79ca"));
             };
 
 
-            TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress, AccountLabel);
+            TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress, AccountLabel, OwnerDetailTitle);
+            TextViewUtils.SetMuseoSans500Typeface(EmailFieldDetail, NoMobileFieldDetail);
             TextViewUtils.SetMuseoSans300Typeface(textInputLayoutAccountLabel);
 
             textInputLayoutAccountLabel.Hint = Utility.GetLocalizedCommonLabel("acctNickname");
@@ -216,7 +227,7 @@ namespace myTNB_Android.Src.AddAccount
             try
             {
                 AccountNumber.Text = this.item.accountNumber;
-                AccountAddress.Text = this.item.accountAddress;
+                AccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, this.item.accountAddress);
                 if (this.item.accountLabel.Equals(EG_ACCOUNT_LABEL))
                 {
                     AccountLabel.Hint = this.item.accountLabel;
@@ -243,14 +254,14 @@ namespace myTNB_Android.Src.AddAccount
                 EmailEditText.AfterTextChanged += (sender, args) =>
                 {
                     item.emailOwner = EmailEditText.Text.Trim();
-                    /*if (!string.IsNullOrEmpty(item.accountLabel))
+                    if (!Patterns.EmailAddress.Matcher(item.emailOwner).Matches())
                     {
-                        textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
+                        textInputLayoutEmailEditText.Error = Utility.GetLocalizedErrorLabel("invalid_email");
                     }
                     else
                     {
-                        textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
-                    }*/
+                        textInputLayoutEmailEditText.Error = null;
+                    }
                 };
 
                 string email = this.item.emailOwner;

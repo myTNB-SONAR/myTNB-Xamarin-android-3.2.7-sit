@@ -83,14 +83,84 @@
                             android:textColor="@color/blue"
                             android:text="Do you want to give this user more access (optional)?"
                             android:background="@color/lightGrey" />
-
                         <LinearLayout
-                            android:id="@+id/profileMenuItemsContent"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:minHeight="25px"
-                            android:minWidth="25px"
-                            android:orientation="vertical"/>
+                                android:padding="16dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:background="@color/white">
+                                <LinearLayout
+                                    android:id="@+id/itemContainerFullBill"
+                                    android:orientation="horizontal"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_weight="1.0"
+                                    android:layout_height="wrap_content">
+                                    <TextView
+                                        android:id="@+id/itemTitleFullBill"
+                                        android:gravity="left|center"
+                                        android:text="View Full Electricity Bill"
+                                        android:textSize="14dp"
+                                        android:textColor="#49494a"
+                                        android:layout_weight="0.95"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"/>
+                                </LinearLayout>
+                                     <CheckBox
+                                          android:id="@+id/itemActionFullBill"
+                                          android:layout_height="wrap_content"
+                                          android:layout_width="wrap_content"
+                                          android:checked="false"
+                                          android:textSize="12dp"
+                                          android:gravity="right|center"
+                                          android:button="@drawable/checkbox_selector" />
+                            </LinearLayout>
+                             <View
+                                android:id="@+id/paymentMethodGroupContentSeparator"
+                                android:visibility="visible"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/platinumGrey"
+                                android:divider="?android:listDivider"/>
+                            <LinearLayout
+                                android:padding="16dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:background="@color/white">
+                                <LinearLayout
+                                    android:id="@+id/itemContainerBilling"
+                                    android:orientation="horizontal"
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1.0"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content">
+                                    <TextView
+                                        android:id="@+id/itemTitleBilling"
+                                        android:gravity="left|center"
+                                        android:layout_weight="0.8"
+                                        android:text="Apply for e-Billing"
+                                        android:textSize="14dp"
+                                        android:textColor="#49494a"
+                                        android:layout_width="0dp"
+                                        android:layout_height="match_parent"/>
+                                </LinearLayout>
+                                    <CheckBox
+                                        android:id="@+id/itemActionBilling"
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="wrap_content"
+                                        android:checked="false"
+                                        android:textSize="12dp"
+                                        android:button="@drawable/checkbox_selector"/>
+                            </LinearLayout>
+                            <View
+                                android:id="@+id/manageUserGroupContentSeparator"
+                                android:visibility="visible"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/platinumGrey"
+                                android:divider="?android:listDivider"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

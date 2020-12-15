@@ -956,6 +956,7 @@
     <Compile Include="Src\Maintenance\Activity\MaintenanceActivity.cs" />
     <Compile Include="Src\Maintenance\MVP\MaintenanceContract.cs" />
     <Compile Include="Src\Maintenance\MVP\MaintenancePresenter.cs" />
+    <Compile Include="Src\ManageAccess\Adapter\ManageAccessDeleteAdapter.cs" />
     <Compile Include="Src\ManageAccess\Adapter\ManageAccessAdapter.cs" />
     <Compile Include="Src\ManageCards\Activity\ManageCardsActivity.cs" />
     <Compile Include="Src\ManageCards\Adapter\ManageCardsAdapter.cs" />
@@ -1060,10 +1061,12 @@
     <Compile Include="Src\MyTNBService\Request\GetSearchForAccountRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetRegisteredUser.cs" />
     <Compile Include="Src\MyTNBService\Request\GetAccountAccessRight.cs" />
+    <Compile Include="Src\MyTNBService\Request\UpdateUserAccessRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\SubmitEnquiryRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetVerifyRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\UpdateUserInfo.cs" />
     <Compile Include="Src\MyTNBService\Request\UpdateIdentificationNo.cs" />
+    <Compile Include="Src\MyTNBService\Response\ManageAccessAccountListNullResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\ManageAccessAccountListResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\GetSearchForAccountResponse.cs" />
     <Compile Include="Src\NotificationAddAccount\Activity\NotificationAddAccountActivity.cs" />
@@ -1121,6 +1124,8 @@
     <Compile Include="Src\UpdateNameFull\Activity\UpdateNameFullActivity.cs" />
     <Compile Include="Src\UpdateNameFull\MVP\UpdateNicknameContract.cs" />
     <Compile Include="Src\UpdateNameFull\MVP\UpdateNicknamePresenter.cs" />
+    <Compile Include="Src\IdDialogPopup\IDDialogFragment.cs" />
+    <Compile Include="Src\IdDialogPopup\IDDialogPagerAdapter.cs" />
     <Compile Include="Src\XDetailRegistrationForm\Activity\DetailRegistrationFormActivity.cs" />
     <Compile Include="Src\XDetailRegistrationForm\Activity\SelectIdentificationTypeActivity.cs" />
     <Compile Include="Src\XDetailRegistrationForm\Adapter\IdentificationTypeAdapter.cs" />
@@ -8510,6 +8515,27 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\checkbox_active_grey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\ManageAccessDeleteRow.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_idnotcompleted.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_idnotcompleted.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_idnotcompleted.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_idnotcompleted.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_idnotcompleted.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

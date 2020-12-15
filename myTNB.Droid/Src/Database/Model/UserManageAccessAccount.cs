@@ -307,24 +307,32 @@ namespace myTNB_Android.Src.Database.Model
             }
         }
 
-        public static void UpdateManageAccess(string newAccountName, string accNum)
-        {
-            var db = DBHelper.GetSQLiteConnection();
-            db.Execute("Update UserManageAccountEntity SET accDesc = ? WHERE accNum = ? AND userId = ?", newAccountName, accNum);
-
+        public static void UpdateManageAccess(string AccountNum, string userAccountId, bool haveAccess, bool haveEBiling)
+        {          
             try
             {
                 UserEntity activeUser = UserEntity.GetActive();
                 if (activeUser != null)
                 {
-                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
-                    {
-                        UserManageAccessAccount updatedAccount = FindByAccNum(accNum);
-                        /*if (updatedAccount != null)
-                        {
-                            AccountSortingEntity.ReplaceSpecificAccount(activeUser.Email, Constants.APP_CONFIG.ENV, updatedAccount);
-                        }*/
-                    }
+                    var db = DBHelper.GetSQLiteConnection();
+                    db.Execute("Update UserManageAccountEntity SET IsHaveAccess = ?, IsApplyEBilling = ? WHERE userAccountID = ? AND accNum = ?", haveAccess, haveEBiling, userAccountId, AccountNum);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public static void UpdateViewAndEbilling(string accNum, string userId, bool Ebilling, bool viewBill)
+        {          
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    var db = DBHelper.GetSQLiteConnection();
+                    db.Execute("Update UserManageAccountEntity WHERE accNum = ? AND userId = ? AND IsApplyEBilling = ? AND IsHaveAccess = ?", accNum, userId, Ebilling, viewBill);
                 }
             }
             catch (Exception e)

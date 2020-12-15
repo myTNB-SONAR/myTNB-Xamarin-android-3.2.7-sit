@@ -92,6 +92,12 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             void ShowAccountList(List<UserManageAccessAccount> accountList);
 
             /// <summary>
+            /// Shows account list
+            /// </summary>
+            /// <param name="accountList">List<paramref name="UserManageAccessAccount"/></param>
+            void ShowAccountDeleteList(List<UserManageAccessAccount> accountList);
+
+            /// <summary>
             /// Shows an empty account view
             /// </summary>
             void ShowEmptyAccount();

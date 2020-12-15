@@ -260,7 +260,7 @@ namespace myTNB_Android.Src.Utils
                         .SetHeaderImage(Resource.Drawable.welcome_illustration)
                         .SetTitle(Utility.GetLocalizedLabel("DashboardHome", "titleIcUpdate"))
                         .SetMessage(Utility.GetLocalizedLabel("DashboardHome", "bodyIcUpdate"))
-                        .SetContentGravity(Android.Views.GravityFlags.Center)
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "later"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "update"))
                         .SetSecondaryCTAaction(() =>
@@ -486,7 +486,7 @@ namespace myTNB_Android.Src.Utils
                         string postMasking = premasking.Substring(commaIndex);
                         string frontMasking=premasking.Substring(0, commaIndex);
                         Regex replaceString = new Regex("\\S");
-                        frontMasking = replaceString.Replace(frontMasking, "X");
+                        frontMasking = replaceString.Replace(frontMasking, "*");
                         return frontMasking + postMasking;
                     }
                     else

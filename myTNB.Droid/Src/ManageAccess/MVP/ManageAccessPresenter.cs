@@ -260,11 +260,13 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                 if (UserManageAccessAccount.HasItems())
                 {
                     List<UserManageAccessAccount> customerAccountList = UserManageAccessAccount.List(accountData?.AccountNum);
+                    List<UserManageAccessAccount> customerAccountDeleteList = UserManageAccessAccount.List(accountData?.AccountNum);
                     //UserManageAccessAccount customerBillingAccount = new UserManageAccessAccount();
                     //customerBillingAccount = UserManageAccessAccount.FindByAccNum(accountData.AccountNum);
                     if (customerAccountList != null && customerAccountList.Count > 0)
                     {
                         this.mView.ShowAccountList(customerAccountList);
+                        this.mView.ShowAccountDeleteList(customerAccountDeleteList);
                     }
                     else
                     {

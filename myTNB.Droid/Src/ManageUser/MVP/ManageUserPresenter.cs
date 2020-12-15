@@ -20,8 +20,8 @@ namespace myTNB_Android.Src.ManageUser.MVP
     {
         private ManageUserContract.IView mView;
         CancellationTokenSource cts;
-        AccountData accountData;
-        public ManageUserPresenter(ManageUserContract.IView mView, AccountData accountData)
+        UserManageAccessAccount accountData;
+        public ManageUserPresenter(ManageUserContract.IView mView, UserManageAccessAccount accountData)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
@@ -47,7 +47,8 @@ namespace myTNB_Android.Src.ManageUser.MVP
             }
         }
 
-        public async void OnRemoveAccount(AccountData accountData)
+       
+        public async void UpdateAccountAccessRight(string userId, bool haveAccess, bool haveEBiling)
         {
             if (mView.IsActive())
             {
@@ -57,51 +58,24 @@ namespace myTNB_Android.Src.ManageUser.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(new RemoveAccountRequest(accountData.AccountNum));
+                var updateUserAccessReponse = await ServiceApiImpl.Instance.UpdateAccountAccessRight(new UpdateUserAccessRequest(userId, haveAccess, haveEBiling));
 
                 if (mView.IsActive())
                 {
                     this.mView.HideRemoveProgress();
                 }
 
-                if (removeAccountResponse.IsSuccessResponse())
+                if (updateUserAccessReponse.IsSuccessResponse())
                 {
-                    bool isSelectedAcc = false;
-                    if (CustomerBillingAccount.HasSelected())
-                    {
-                        if (CustomerBillingAccount.GetSelected() != null &&
-                            CustomerBillingAccount.GetSelected().AccNum.Equals(accountData.AccountNum))
-                        {
-                            isSelectedAcc = true;
-                        }
-                    }
-
-                    CustomerBillingAccount.Remove(accountData.AccountNum);
-                    if (isSelectedAcc && CustomerBillingAccount.HasItems())
-                    {
-                        /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
-                        //CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetFirst();
-                        //if (customerBillingAccount != null) {
-                        //    CustomerBillingAccount.Update(customerBillingAccount.AccNum, true);
-                        //}
-                        /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
-
-                        CustomerBillingAccount.MakeFirstAsSelected();
-                    }
-                    SMUsageHistoryEntity.RemoveAccountData(accountData.AccountNum);
-                    UsageHistoryEntity.RemoveAccountData(accountData.AccountNum);
-                    BillHistoryEntity.RemoveAccountData(accountData.AccountNum);
-                    PaymentHistoryEntity.RemoveAccountData(accountData.AccountNum);
-                    REPaymentHistoryEntity.RemoveAccountData(accountData.AccountNum);
-                    AccountDataEntity.RemoveAccountData(accountData.AccountNum);
-                    SummaryDashBoardAccountEntity.RemoveAll();
-                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                    HomeMenuUtils.ResetAll();
-                    this.mView.ShowSuccessRemovedAccount();
+                    this.mView.ShowSaveSuccess();
+                    UserManageAccessAccount.UpdateManageAccess(accountData.AccNum, userId, haveAccess, haveEBiling);
+                    this.mView.DisableSaveButton();
+                    MyTNBAccountManagement.GetInstance().AddNewUserAdded(false);
                 }
                 else
                 {
-                    this.mView.ShowErrorMessageResponse(removeAccountResponse.Response.DisplayMessage);
+                    MyTNBAccountManagement.GetInstance().AddNewUserAdded(true);
+                    this.mView.ShowErrorMessageResponse(updateUserAccessReponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)
@@ -146,16 +120,6 @@ namespace myTNB_Android.Src.ManageUser.MVP
         public void Start()
         {
             //
-            if (accountData != null && !string.IsNullOrEmpty(accountData?.AccountNum))
-            {
-                CustomerBillingAccount customerBillingAccount = new CustomerBillingAccount();
-                customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountData?.AccountNum);
-                if (customerBillingAccount != null)
-                {
-                    this.mView.ShowNickname(customerBillingAccount?.AccDesc);
-                }
-            }
-
         }
     }
 }

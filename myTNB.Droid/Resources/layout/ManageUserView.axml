@@ -105,6 +105,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
+                android:layout_weight="1.0"
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/itemTitleFullBill"
@@ -112,26 +113,18 @@
                     android:text="View Full Electricity Bill"
                     android:textSize="14dp"
                     android:textColor="#49494a"
-                    android:layout_width="match_parent"
+                    android:layout_weight="0.95"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"/>
             </LinearLayout>
-            <LinearLayout
-                android:id="@+id/itemActionContainerFullBill"
-                android:visibility="visible"
-                android:orientation="vertical"
-                android:layout_alignParentRight="true"
-                android:gravity="right"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <CheckBox
+                 <CheckBox
                       android:id="@+id/itemActionFullBill"
-                       android:layout_height="wrap_content"
-                       android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_width="wrap_content"
                       android:checked="false"
                       android:textSize="12dp"
-                      android:button="@drawable/checkbox_selector"
-                      android:paddingRight="3dp" />
-            </LinearLayout>
+                      android:gravity="right|center"
+                      android:button="@drawable/checkbox_selector" />
         </LinearLayout>
          <View
             android:id="@+id/paymentMethodGroupContentSeparator"
@@ -149,36 +142,27 @@
             <LinearLayout
                 android:id="@+id/itemContainerBilling"
                 android:orientation="horizontal"
-                android:layout_alignParentLeft="true"
                 android:layout_gravity="center"
-                android:layout_width="wrap_content"
+                android:layout_weight="1.0"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/itemTitleBilling"
                     android:gravity="left|center"
+                    android:layout_weight="0.8"
                     android:text="Apply for e-Billing"
                     android:textSize="14dp"
                     android:textColor="#49494a"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"/>
             </LinearLayout>
-            <LinearLayout
-                android:id="@+id/itemActionContainerBilling"
-                android:visibility="visible"
-                android:orientation="vertical"
-                android:layout_alignParentRight="true"
-                android:gravity="right"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
                 <CheckBox
-                      android:id="@+id/itemActionBilling"
-                       android:layout_height="wrap_content"
-                       android:layout_width="wrap_content"
-                      android:checked="false"
-                      android:textSize="12dp"
-                      android:button="@drawable/checkbox_selector"
-                      android:paddingRight="3dp" />
-            </LinearLayout>
+                    android:id="@+id/itemActionBilling"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:checked="false"
+                    android:textSize="12dp"
+                    android:button="@drawable/checkbox_selector"/>
         </LinearLayout>
         <View
             android:id="@+id/manageUserGroupContentSeparator"

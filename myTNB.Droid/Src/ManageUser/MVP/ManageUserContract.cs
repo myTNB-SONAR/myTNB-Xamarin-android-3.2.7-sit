@@ -34,11 +34,6 @@ namespace myTNB_Android.Src.ManageUser.MVP
             void ShowUpdateNickname();
 
             /// <summary>
-            /// Show removed account success
-            /// </summary>
-            void ShowSuccessRemovedAccount();
-
-            /// <summary>
             /// Show initial nickname
             /// </summary>
             /// <param name="nickname">string</param>
@@ -61,6 +56,9 @@ namespace myTNB_Android.Src.ManageUser.MVP
             /// </summary>
             /// <param name="exception">the returned exception</param>
             void ShowRetryOptionsUnknownException(Exception exception);
+
+            void ShowSaveSuccess();
+            void DisableSaveButton();
         }
         public interface IUserActionsListener : IBasePresenter
         {
@@ -70,12 +68,6 @@ namespace myTNB_Android.Src.ManageUser.MVP
             void OnUpdateNickname();
 
             /// <summary>
-            /// Action to remove account
-            /// </summary>
-            /// <param name="accountData">AccountData</param>
-            void OnRemoveAccount(AccountData accountData);
-
-            /// <summary>
             /// The returned result from another activity
             /// </summary>
             /// <param name="requestCode">integer</param>
@@ -83,6 +75,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
             /// <param name="data">intent</param>
             void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data);
 
+            void UpdateAccountAccessRight(string userAccountId, bool isHaveAccess, bool isApplyEBilling);
         }
     }
 }
