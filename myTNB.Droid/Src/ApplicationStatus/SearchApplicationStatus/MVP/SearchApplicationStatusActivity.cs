@@ -700,7 +700,9 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                 if (selectedType.SearchTypes[0].Type == ApplicationStatusSearchType.CA)
                                 {
                                     isSearchByCA = true;
+                                    txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "electricityAccountNumber");
                                 }
+                                
                             }
                             else
                             {

@@ -111,7 +111,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     {
                         string notifType = Intent.Extras.GetString("Type");
                         UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
-                        if (notifType == ApplicationStatusNotificationModel.TYPE_APPLICATIONDETAILS
+                        if (notifType.ToUpper() == ApplicationStatusNotificationModel.TYPE_APPLICATIONDETAILS
                             && Intent.Extras.ContainsKey("SaveApplicationID")
                             && Intent.Extras.ContainsKey("ApplicationID")
                             && Intent.Extras.ContainsKey("ApplicationType"))
@@ -131,7 +131,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     {
                         string email = Intent.Extras.GetString("Email");
                         UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
-                        if (!"APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(PreferenceManager.GetDefaultSharedPreferences(this))))
+                        if (!"APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(PreferenceManager.GetDefaultSharedPreferences(this)).ToUpper()))
                         {
                             UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                         }
