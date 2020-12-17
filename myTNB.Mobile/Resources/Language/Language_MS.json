@@ -108,10 +108,10 @@
     "nickname": "Cth. Rumah Saya, Rumah Ibu & Ayah",
     "businessNickname": "Cth. Bangsar Shopping Centre Branch",
     "password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka.",
-    "serviceNotificationNo": "Masukkan nombor 12-digit pemberitahuan perkhidmatan. Contoh: 000456879313",
-    "serviceRequestNumber": "Masukkan nombor 10-digit permintaan perkhidmatan. Contoh: 1000046986",
-    "electricityAccountNumber": "Masukkan nombor 12-digit akaun elektrik. Contoh: 212313467423",
-    "eg": "Masukkan nombor 10-digit permintaan permohonan. Contoh: "
+    "serviceNotificationNo": "Masukkan Nombor Notifikasi Perkhidmatan 12-digit. Contoh: 000456879313",
+    "serviceRequestNumber": "Masukkan Nombor Permintaan Perkhidmatan 10-digit. Contoh: 1000046986",
+    "electricityAccountNumber": "Masukkan Nombor Akaun Elektrik 12-digit. Contoh: 212313467423",
+    "eg": "Masukkan Nombor Permohonan 10-digit. Contoh: "
   },
   "Error": {
     "invalid_email": "Format e-mel tidak sah.",
