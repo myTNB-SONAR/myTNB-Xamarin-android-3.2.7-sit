@@ -282,7 +282,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         {
             try
             {
-                ShowProgressDialog();
+                
                 if (applicationDetailDisplay != null)
                 {
                     if (applicationDetailDisplay.CTAType == DetailCTAType.Save)
@@ -292,6 +292,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.CustomerRating)
                     {
+                        ShowProgressDialog();
                         customerRatingMasterResponse = await RatingManager.Instance.GetCustomerRatingMaster();
                         if (!customerRatingMasterResponse.StatusDetail.IsSuccess)
                         {

@@ -394,7 +394,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                     
                 }
             }
-            if (requestCode == Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE)
+            if (requestCode == Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE || requestCode == Constants.APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE)
             {
                 UpdateUI();
             }
@@ -743,7 +743,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                     {
                         Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
                         applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(response.Content));
-                        StartActivity(applicationStatusDetailIntent);
+                        StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE);
                     }
                 }
                 else
@@ -1029,6 +1029,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                 }
                                 if (!isFilter)
                                 {
+                                    AllApplicationsCache.Instance.Clear();
                                     AllApplicationResponse = await ApplicationStatusManager.Instance.GetAllApplications(AllApplicationsCache.Instance.QueryPage
                                        , AllApplicationsCache.Instance.ApplicationType
                                        , AllApplicationsCache.Instance.StatusDescription
@@ -1044,6 +1045,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                     applicationStatusRefreshContainer.Visibility = ViewStates.Gone;
                                     mappicatinPopup.Visibility = ViewStates.Gone;
                                     ApplicationStatusTooltip.Visibility = ViewStates.Gone;
+
                                     GetAllApplications = AllApplicationsCache.Instance.GetAllApplications();
                                     StopShimmer();
                                     if (GetAllApplications != null && GetAllApplications.Count > 0)
