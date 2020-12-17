@@ -113,7 +113,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                     SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
                     Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
                     applicationLandingIntent.PutExtra("searchApplicationType", JsonConvert.SerializeObject(searchApplicationTypeResponse.Content));
-                    StartActivity(applicationLandingIntent);
+                    StartActivityForResult(applicationLandingIntent,Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE);
                 }
                 else
                 {
@@ -391,7 +391,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                             Utility.LoggingNonFatalError(e);
                         }
                     }
+                    
                 }
+            }
+            if (requestCode == Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE)
+            {
+                UpdateUI();
             }
             HideProgressDialog();
         }
@@ -1022,7 +1027,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                     btnSearchApplicationStatus.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
                                     btnSearchApplicationStatus.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
                                 }
-
                                 if (!isFilter)
                                 {
                                     AllApplicationResponse = await ApplicationStatusManager.Instance.GetAllApplications(AllApplicationsCache.Instance.QueryPage
