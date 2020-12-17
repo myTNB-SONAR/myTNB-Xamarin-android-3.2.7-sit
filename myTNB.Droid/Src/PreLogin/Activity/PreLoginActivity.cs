@@ -770,12 +770,12 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 LinearLayout.LayoutParams currentCard = cardCheckStatus.LayoutParameters as LinearLayout.LayoutParams;
                 ViewGroup.LayoutParams currentImg = imgCheckStatus.LayoutParameters;
 
-                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / 4;
+                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(30f)) / 4;
                 float heightRatio = 84f / 72f;
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
                 currentCard.Height = cardHeight;
-                currentCard.Width = TextViewUtils.SelectedFontSize() == "L" ? cardWidth + 80 : cardWidth;
+                currentCard.Width = (TextViewUtils.SelectedFontSize() == "L" ? cardWidth + 80 : cardWidth) + 5;
 
                 float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));

@@ -16,7 +16,7 @@
 			android:layout_height="wrap_content"
 			android:layout_weight="0.5"
 			android:orientation="vertical"
-			android:layout_gravity="left|start">
+			android:layout_gravity="left">
 			<TextView
 				android:id="@+id/applicationStatusItemTitle"
 				android:layout_width="wrap_content"
@@ -34,14 +34,13 @@
 				android:singleLine="true"
 				android:maxLines="1"
 				android:ellipsize="end"
-				android:text="SR: 10045678"/>
+				android:text="UI-ASR-000-000-03600"/>
 		</LinearLayout>
 		<LinearLayout
-			android:layout_width="100dp"
+			android:layout_width="0dp"
 			android:layout_height="match_parent"
 			android:layout_weight="0.5"
-			android:gravity="right"
-			
+			android:gravity="center_vertical|right"
 			android:visibility="visible"
 			android:orientation="horizontal">
 			<LinearLayout
@@ -66,7 +65,6 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:textSize="12dp"
-					android:lineSpacingExtra="2dp"
 					android:textColor="@color/freshGreen"
 					android:gravity="right"
 					android:text="Payment Required"/>
