@@ -108,10 +108,10 @@
     "nickname": "e.g. My House, Parent's House",
     "businessNickname": "e.g. Bangsar Shopping Centre Branch",
     "password": "Password must have at least 8 alphanumeric characters.",
-    "serviceNotificationNo": "Enter a 12-digit service notification number. eg. 000456879313",
-    "serviceRequestNumber": "Enter a 10-digit service request number. eg. 1000046986",
-    "electricityAccountNumber": "Enter a 12-digit electricity account number. eg. 212313467423",
-    "eg": "Enter a 10-digit application number. eg. "
+    "serviceNotificationNo": "Enter a 12-digit Service Notification Number. eg. 000456879313",
+    "serviceRequestNumber": "Enter a 10-digit Service Request Number. eg. 1000046986",
+    "electricityAccountNumber": "Enter a 12-digit Electricity Account Number. eg. 212313467423",
+    "eg": "Enter a 10-digit Application Number. eg. "
   },
   "Error": {
     "invalid_email": "Invalid email address",
