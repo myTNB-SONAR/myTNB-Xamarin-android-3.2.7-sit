@@ -186,9 +186,37 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         private Snackbar mNoInternetSnackbar;
 
         [OnClick(Resource.Id.btnPrimaryCTA)]
-        internal void OnPrimaryCTAClick(object sender, EventArgs e)
+        internal void OnPrimaryCTAClick(object sender, EventArgs args)
         {
-            OnPrimaryButtonAsync();
+            try
+            {
+                if (applicationDetailDisplay != null)
+                {
+                    if (applicationDetailDisplay.CTAType == DetailCTAType.Save)
+                    {
+                        SaveApplication();
+                        FirebaseAnalyticsUtils.LogClickEvent(this, "Save Button Clicked");
+                    }
+                    else if (applicationDetailDisplay.CTAType == DetailCTAType.CustomerRating)
+                    {
+                        OnCustomerRating();
+                        FirebaseAnalyticsUtils.LogClickEvent(this, "Customer Rating Button Clicked");
+                    }
+                    else if (applicationDetailDisplay.CTAType == DetailCTAType.ContractorRating)
+                    {
+                        Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+                        webIntent.PutExtra(Constants.IN_APP_LINK, applicationDetailDisplay.ContractorRatingURL);
+                        webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("ApplicationStatusDetails", "rateContractor"));
+                        webIntent.PutExtra("action", "contractorRating");
+                        StartActivityForResult(webIntent, Constants.APPLICATION_STATUS_RATING_REQUEST_CODE);
+                        FirebaseAnalyticsUtils.LogClickEvent(this, "Contractor Rating Button Clicked");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         [OnClick(Resource.Id.btnViewActivityLog)]
@@ -268,7 +296,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        public async void ShowApplicaitonPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
+        public async void ShowApplicationPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
         {
             MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                 .SetTitle(statusDetail.Title)
@@ -278,49 +306,27 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             whereisMyacc.Show();
 
         }
-        public async void OnPrimaryButtonAsync()
+        public async void OnCustomerRating()
         {
+            ShowProgressDialog();
             try
             {
-                
-                if (applicationDetailDisplay != null)
+                customerRatingMasterResponse = await RatingManager.Instance.GetCustomerRatingMaster();
+                if (!customerRatingMasterResponse.StatusDetail.IsSuccess)
                 {
-                    if (applicationDetailDisplay.CTAType == DetailCTAType.Save)
-                    {
-                        SaveApplication();
-                        FirebaseAnalyticsUtils.LogClickEvent(this, "Save Button Clicked");
-                    }
-                    else if (applicationDetailDisplay.CTAType == DetailCTAType.CustomerRating)
-                    {
-                        ShowProgressDialog();
-                        customerRatingMasterResponse = await RatingManager.Instance.GetCustomerRatingMaster();
-                        if (!customerRatingMasterResponse.StatusDetail.IsSuccess)
-                        {
-                            ShowApplicaitonPopupMessage(this, customerRatingMasterResponse.StatusDetail);
-                        }
-                        else
-                        {
-                            Intent rating_activity = new Intent(this, typeof(ApplicationRatingActivity));
-                            rating_activity.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
-                            rating_activity.PutExtra("customerRatingMasterResponse", JsonConvert.SerializeObject(customerRatingMasterResponse));
-                            StartActivityForResult(rating_activity, Constants.APPLICATION_STATUS_RATING_REQUEST_CODE);
-                        }
-                    }
-                    else if (applicationDetailDisplay.CTAType == DetailCTAType.ContractorRating)
-                    {
-                        Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
-                        webIntent.PutExtra(Constants.IN_APP_LINK, applicationDetailDisplay.ContractorRatingURL);
-                        webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("ApplicationStatusDetails", "rateContractor"));
-                        webIntent.PutExtra("action", "contractorRating");
-                        StartActivityForResult(webIntent, Constants.APPLICATION_STATUS_RATING_REQUEST_CODE);
-                    }
-                    FirebaseAnalyticsUtils.LogClickEvent(this, "Rate Button Clicked");
+                    ShowApplicationPopupMessage(this, customerRatingMasterResponse.StatusDetail);
+                }
+                else
+                {
+                    Intent rating_activity = new Intent(this, typeof(ApplicationRatingActivity));
+                    rating_activity.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
+                    rating_activity.PutExtra("customerRatingMasterResponse", JsonConvert.SerializeObject(customerRatingMasterResponse));
+                    StartActivityForResult(rating_activity, Constants.APPLICATION_STATUS_RATING_REQUEST_CODE);
                 }
             }
             catch (System.Exception ne)
             {
                 Utility.LoggingNonFatalError(ne);
-                HideProgressDialog();
             }
             HideProgressDialog();
         }

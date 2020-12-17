@@ -79,7 +79,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
         LinearLayout applicationStatusRefreshContainer;
 
         [BindView(Resource.Id.mappicatinPopup)]
-        LinearLayout mappicatinPopup;
+        LinearLayout mappicationPopup;
 
         [BindView(Resource.Id.ApplicationStatusTooltip)]
         LinearLayout ApplicationStatusTooltip;
@@ -355,7 +355,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                 {
                     applicationStatusLandingRecyclerView.Visibility = ViewStates.Gone;
                     viewMoreContainer.Visibility = ViewStates.Gone;
-                    mappicatinPopup.Visibility = ViewStates.Gone;
+                    mappicationPopup.Visibility = ViewStates.Gone;
                     applicationStatusLandingShimmerLayout.Visibility = ViewStates.Visible;
                     applicationStatusLandingListContentShimmer.StartShimmer();
 
@@ -465,7 +465,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             // applicationStatusLandingEmptyLayout.Visibility = ViewStates.Visible;
             viewMoreContainer.Visibility = ViewStates.Gone;
             ApplicationStatusTooltip.Visibility = ViewStates.Gone;
-            mappicatinPopup.Visibility = ViewStates.Gone;
+            mappicationPopup.Visibility = ViewStates.Gone;
             applicationStatusLandingShimmerLayout.Visibility = ViewStates.Visible;
             applicationStatusLandingListContentShimmer.StartShimmer();
 
@@ -952,7 +952,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                     SetupEmptyLandingText(AllApplicationResponse.StatusDetail.Message);
                                     applicationStatusLandingEmptyLayout.Visibility = ViewStates.Visible;
                                     applicationStatusLandingBottomLayout.Visibility = ViewStates.Visible;
-                                    mappicatinPopup.Visibility = ViewStates.Gone;
+                                    mappicationPopup.Visibility = ViewStates.Gone;
                                     applicationFilterMenuItem.SetVisible(false);
                                     OnShowApplicationStatusTutorial(0);
                                 }
@@ -1029,6 +1029,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                 }
                                 if (!isFilter)
                                 {
+                                    applicationStatusLandingRecyclerView.Visibility = ViewStates.Gone;
+                                    mappicationPopup.Visibility = ViewStates.Gone;
+                                    applicationStatusLandingShimmerLayout.Visibility = ViewStates.Visible;
+                                    applicationStatusLandingListContentShimmer.StartShimmer();
                                     AllApplicationsCache.Instance.Clear();
                                     AllApplicationResponse = await ApplicationStatusManager.Instance.GetAllApplications(AllApplicationsCache.Instance.QueryPage
                                        , AllApplicationsCache.Instance.ApplicationType
@@ -1043,7 +1047,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                     && AllApplicationResponse.StatusDetail.IsSuccess)
                                 {
                                     applicationStatusRefreshContainer.Visibility = ViewStates.Gone;
-                                    mappicatinPopup.Visibility = ViewStates.Gone;
+                                    mappicationPopup.Visibility = ViewStates.Gone;
                                     ApplicationStatusTooltip.Visibility = ViewStates.Gone;
 
                                     GetAllApplications = AllApplicationsCache.Instance.GetAllApplications();
@@ -1057,7 +1061,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
                                         applicationStatusLandingEmptyLayout.Visibility = ViewStates.Gone;
                                         applicationStatusLandingBottomLayout.Visibility = ViewStates.Visible;
-                                        mappicatinPopup.Visibility = ViewStates.Visible;
+                                        mappicationPopup.Visibility = ViewStates.Visible;
                                         List<ApplicationModel> innerList = new List<ApplicationModel>();
                                         if (GetAllApplications != null && AllApplicationResponse != null && AllApplicationResponse.Content.Total > AllApplicationResponse.Content.Limit)
                                         {
@@ -1104,7 +1108,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                         applicationStatusLandingRecyclerView.Visibility = ViewStates.Gone;
                                         applicationStatusLandingEmptyLayout.Visibility = ViewStates.Visible;
                                         applicationStatusLandingBottomLayout.Visibility = ViewStates.Visible;
-                                        mappicatinPopup.Visibility = ViewStates.Gone;
+                                        mappicationPopup.Visibility = ViewStates.Gone;
                                         applicationFilterMenuItem.SetVisible(false);
                                         OnShowApplicationStatusTutorial(0);
                                     }
@@ -1121,7 +1125,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                         SetupEmptyLandingText(AllApplicationResponse.StatusDetail.Message);
                                         applicationStatusLandingEmptyLayout.Visibility = ViewStates.Visible;
                                         applicationStatusLandingBottomLayout.Visibility = ViewStates.Visible;
-                                        mappicatinPopup.Visibility = ViewStates.Gone;
+                                        mappicationPopup.Visibility = ViewStates.Gone;
                                         applicationFilterMenuItem.SetVisible(false);
                                         OnShowApplicationStatusTutorial(0);
                                     }
