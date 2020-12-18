@@ -515,12 +515,6 @@
     <Reference Include="Xamarin.AndroidX.WebKit">
       <HintPath>..\packages\Xamarin.AndroidX.WebKit.1.2.0.1\lib\monoandroid90\Xamarin.AndroidX.WebKit.dll</HintPath>
     </Reference>
-    <Reference Include="HockeySDK.AndroidBindings">
-      <HintPath>..\packages\HockeySDK.Xamarin.5.2.0\lib\MonoAndroid403\HockeySDK.AndroidBindings.dll</HintPath>
-    </Reference>
-    <Reference Include="HockeySDK">
-      <HintPath>..\packages\HockeySDK.Xamarin.5.2.0\lib\MonoAndroid403\HockeySDK.dll</HintPath>
-    </Reference>
     <Reference Include="Plugin.CurrentActivity, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Plugin.CurrentActivity.1.0.1\lib\MonoAndroid10\Plugin.CurrentActivity.dll</HintPath>
     </Reference>

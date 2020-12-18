@@ -7,7 +7,6 @@ using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.Core.Content;
 using CheeseBind;
-using HockeyApp.Android;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
