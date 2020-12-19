@@ -121,7 +121,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
         private async void LoadAppMasterData()
         {
-
             //For Testing Start
             string fcmToken = string.Empty;
             if (FirebaseTokenEntity.HasLatest())
@@ -155,9 +154,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     {
                         new MasterApiDBOperation(masterDataResponse, mSharedPref).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
 
-
-                       
-                      
                         bool proceed = true;
 
                         bool appUpdateAvailable = false;
@@ -280,7 +276,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                         AppInfoManager.Instance.SetPlatformUserInfo(new BaseRequest().usrInf);
 
-                                        if ("APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(mSharedPref).ToUpper())
+                                        if (UserSessions.GetNotificationType(mSharedPref) != null
+                                            && "APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(mSharedPref).ToUpper())
                                             && UserSessions.ApplicationStatusNotification != null)
                                         {
                                             this.mView.ShowApplicationStatusDetails();
