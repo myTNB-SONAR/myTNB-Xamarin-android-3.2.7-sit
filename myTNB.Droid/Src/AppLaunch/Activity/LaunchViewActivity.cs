@@ -85,7 +85,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         private Snackbar mUnknownExceptionSnackBar;
 
         private AppLaunchNavigation currentNavigation = AppLaunchNavigation.Nothing;
-       
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -131,7 +131,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     {
                         string email = Intent.Extras.GetString("Email");
                         UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
-                        if (!"APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(PreferenceManager.GetDefaultSharedPreferences(this)).ToUpper()))
+                        if (PreferenceManager.GetDefaultSharedPreferences(this) != null
+                            && !"APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(PreferenceManager.GetDefaultSharedPreferences(this)).ToUpper()))
                         {
                             UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                         }
@@ -711,7 +712,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-       
+
         public void ShowSMSPermissionRationale()
         {
             try
