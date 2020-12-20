@@ -1749,55 +1749,55 @@
   "SelectApplicationStatus_selector": {
     "status": [
       {
-        "key": "Submitted",
+        "key": "Telah Dihantar",
         "value": "Telah Dihantar"
       },
       {
-        "key": "Payment Required",
+        "key": "Bayaran Diperlukan",
         "value": "Bayaran Diperlukan"
       },
       {
-        "key": "Setting Up Power Supply",
+        "key": "Menyediakan Bekalan Kuasa",
         "value": "Menyediakan Bekalan Kuasa"
       },
       {
-        "key": "Awaiting Meter Installation",
+        "key": "Menunggu Pemasangan Meter",
         "value": "Menunggu Pemasangan Meter"
       },
       {
-        "key": "Connecting Electricity",
+        "key": "Memutuskan Bekalan Elektrik",
         "value": "Memutuskan Bekalan Elektrik"
       },
       {
-        "key": "Calculating Connection Charges",
+        "key": "Mengira Caj Sambungan",
         "value": "Mengira Caj Sambungan"
       },
       {
-        "key": "Action Required",
+        "key": "Tindakan Diperlukan",
         "value": "Tindakan Diperlukan"
       },
       {
-        "key": "Awaiting Contractor",
+        "key": "Menunggu Kontraktor",
         "value": "Menunggu Kontraktor"
       },
       {
-        "key": "Contractor Required",
+        "key": "Kontraktor Diperlukan",
         "value": "Kontraktor Diperlukan"
       },
       {
-        "key": "Address Confirmed",
+        "key": "Alamat Disahkan",
         "value": "Alamat Disahkan"
       },
       {
-        "key": "Draft",
+        "key": "Draf",
         "value": "Draf"
       },
       {
-        "key": "Completed",
+        "key": "Selesai",
         "value": "Selesai"
       },
       {
-        "key": "Cancelled",
+        "key": "Dibatalkan",
         "value": "Dibatalkan"
       }
     ]
