@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails;
@@ -280,15 +281,32 @@ namespace myTNB.Mobile
                 }
                 else if (ApplicationRatingDetail != null)
                 {
-                    if (ApplicationRatingDetail.CustomerRating != null
-                        && !ApplicationRatingDetail.CustomerRating.TransactionId.IsValid())
+                    try
                     {
-                        type = DetailCTAType.CustomerRating;
+                        if (ApplicationStatusDetail != null
+                            && ApplicationStatusDetail.StatusTracker is List<StatusTrackerDisplay> tracker
+                            && tracker != null
+                            && tracker.Count > 0)
+                        {
+                            int index = tracker.FindIndex(x => x.StatusMode.IsValid() && x.StatusMode.ToUpper() == "COMPLETED");
+                            if (index > -1)
+                            {
+                                if (ApplicationRatingDetail.CustomerRating != null
+                               && !ApplicationRatingDetail.CustomerRating.TransactionId.IsValid())
+                                {
+                                    type = DetailCTAType.CustomerRating;
+                                }
+                                else if (ApplicationRatingDetail.ContractorRating != null
+                                    && ApplicationRatingDetail.ContractorRating.ContractorRatingUrl.IsValid())
+                                {
+                                    type = DetailCTAType.ContractorRating;
+                                }
+                            }
+                        }
                     }
-                    else if (ApplicationRatingDetail.ContractorRating != null
-                        && ApplicationRatingDetail.ContractorRating.ContractorRatingUrl.IsValid())
+                    catch (Exception e)
                     {
-                        type = DetailCTAType.ContractorRating;
+                        Debug.WriteLine("[DEBUG] ApplicationRatingDetail CTA Error: " + e.Message);
                     }
                 }
                 return type;
@@ -317,6 +335,11 @@ namespace myTNB.Mobile
                         default:
                             {
                                 type = DetailTutorialType.NoAction;
+                                if (CTAType == DetailCTAType.CustomerRating
+                                    || CTAType == DetailCTAType.ContractorRating)
+                                {
+                                    type = DetailTutorialType.Action;
+                                }
                                 break;
                             }
                         case "ACTION":

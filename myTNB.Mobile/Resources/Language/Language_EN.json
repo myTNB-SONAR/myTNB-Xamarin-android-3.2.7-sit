@@ -108,10 +108,10 @@
     "nickname": "e.g. My House, Parent's House",
     "businessNickname": "e.g. Bangsar Shopping Centre Branch",
     "password": "Password must have at least 8 alphanumeric characters.",
-    "serviceNotificationNo": "Enter a 12-digit service notification number. eg. 000456879313",
-    "serviceRequestNumber": "Enter a 10-digit service request number. eg. 1000046986",
-    "electricityAccountNumber": "Enter a 12-digit electricity account number. eg. 212313467423",
-    "eg": "Enter a 10-digit application number. eg. "
+    "serviceNotificationNo": "Enter a 12-digit Service Notification Number. eg. 000456879313",
+    "serviceRequestNumber": "Enter a 10-digit Service Request Number. eg. 1000046986",
+    "electricityAccountNumber": "Enter a 12-digit Electricity Account Number. eg. 212313467423",
+    "eg": "Enter a 10-digit Application Number. eg. "
   },
   "Error": {
     "invalid_email": "Invalid email address",
@@ -1181,7 +1181,9 @@
     "youRated": "You rated: ",
     "sr": "Service Request Number",
     "sn": "Service Notification Number",
-    "rateContractor": "Rate Contractor"
+    "rateContractor": "Rate Contractor",
+    "setAppointmentNowCTA": "Set Appointment Now",
+    "rescheduleCTA": "Reschedule"
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Payment Details",
@@ -1866,6 +1868,26 @@
     "freeTextTitle": "YOUR MESSAGE (OPTIONAL)",
     "rateContractor": "Rate Contractor"
   },
+  "ApplicationStatusScheduler": {
+    "title": "Set an Appointment",
+    "dateSectionTitle": "I want my appointment to be on:",
+    "timeSectionTitle": "I prefer the appointment to be within:",
+    "hourlySectionTitle": "I prefer the appointment to be:",
+    "note": "Note: You may opt not to be present if your meter installation area is accessible without entering the premises.",
+    "sameDateTimeError": "Please select a different date and time slot from your original appointment.",
+    "confirm": "Confirm"
+  },
+  "ApplicationStatusAppointmentSuccess": {
+    "title": "Appointment Set!",
+    "appointmentDetails": "Your appointment is confirmed with details below. You may reschedule at your Application Details page anytime before {0}.",
+    "rescheduleDetails": "Your new appointment slot is confirmed with details below. You may reschedule at your Application Details page anytime before {0}.",
+    "srTitle": "Service Request Number",
+    "dateTitle": "Appointment Date",
+    "timeTitle": "Time Slot",
+    "addressTitle": "Premises Address",
+    "addToCalendar": "Add to Calendar",
+    "viewDetails": "View Details"
+  },
   "ServiceDetails": {
     "TimeOut": [
       {
@@ -2082,6 +2104,37 @@
             "primaryCTATitle": "",
             "secondaryCTATitle": "",
             "isSuccess": false,
+            "type": "none"
+          }
+        ],
+        "AvailableAppointment": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "empty",
+            "title": "Oh no, something went wrong!",
+            "message": "Sorry, this is not working right now. Please try again later.",
+            "primaryCTATitle": "Got It!",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          }
+        ],
+        "SetAppointment": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
             "type": "none"
           }
         ]

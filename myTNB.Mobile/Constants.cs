@@ -30,7 +30,7 @@
         private const string PROD = "https://mytnbapp.tnb.com.my";
         private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
 
-        internal static string ApiDomain = DEV2;
+        internal static string ApiDomain = SIT;
         internal const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         //Mark: IP: http://10.215.70.246/   URL: http://tnbcsdevapp.tnb.my/
         internal const string SitecoreURL = "http://10.215.70.246/";
@@ -57,6 +57,8 @@
         internal const string Service_TaxInvoice = "GetTaxInvoiceApplicationPayment";
         internal const string Service_GetCustomerRatingMaster = "CustomerRatingMaster";
         internal const string Service_PostSubmitRating = "SubmitRating";
+        internal const string Service_GetAvailableAppointment = "AvailableAppointment";
+        internal const string Service_PostSetAppointment = "SetAppointment";
 
         //Language File Constants
         internal const string LanguageFile_ServiceDetails = "ServiceDetails";

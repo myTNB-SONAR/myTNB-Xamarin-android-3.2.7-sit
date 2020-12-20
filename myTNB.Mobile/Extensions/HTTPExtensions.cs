@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace myTNB.Mobile.API.Managers
+namespace myTNB.Mobile.Extensions
 {
-    internal static class PostUtility
+    public static class HTTPExtensions
     {
         /// <summary>
         /// 

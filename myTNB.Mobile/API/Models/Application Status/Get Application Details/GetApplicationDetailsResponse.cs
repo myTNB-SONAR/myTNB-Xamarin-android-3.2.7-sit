@@ -5,10 +5,7 @@ using Newtonsoft.Json;
 
 namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
 {
-    public class GetApplicationDetailsResponse : BaseResponse<GetApplicationDetailsModel>
-    {
-
-    }
+    public class GetApplicationDetailsResponse : BaseResponse<GetApplicationDetailsModel> { }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
     public class GetApplicationDetailsModel : GetApplicationStatusModel
@@ -30,6 +27,9 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
 
         [JsonProperty("applicationRatingDetail")]
         public ApplicationRatingDetail ApplicationRatingDetail { set; get; }
+
+        [JsonProperty("applicationAppointmentDetail")]
+        public ApplicationAppointmentDetail ApplicationAppointmentDetail { set; get; }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
@@ -57,6 +57,9 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
                 return date;
             }
         }
+        public string email { set; get; }
+        public string mobileNo { set; get; }
+        public string businessArea { set; get; }
     }
 
     [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
@@ -257,5 +260,19 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public string ContractorRatingUrl { set; get; }
         [JsonProperty("transactionId")]
         public string TransactionId { set; get; }
+    }
+
+    public class ApplicationAppointmentDetail
+    {
+        [JsonProperty("mode")]
+        public string Mode { set; get; }
+        [JsonProperty("businessArea")]
+        public string BusinessArea { set; get; }
+        [JsonProperty("appointmentDate")]
+        public DateTime? AppointmentDate { set; get; }
+        [JsonProperty("appointmentStartTime")]
+        public DateTime? AppointmentStartTime { set; get; }
+        [JsonProperty("appointmentEndTime")]
+        public DateTime? AppointmentEndTime { set; get; }
     }
 }
