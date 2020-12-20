@@ -90,6 +90,13 @@
     <Folder Include="API\Models\Rating\" />
     <Folder Include="API\Models\Rating\Get Customer Rating Master\" />
     <Folder Include="API\Models\Rating\Post Submit Rating\" />
+    <Folder Include="API\Models\Scheduler\" />
+    <Folder Include="API\Models\Scheduler\Get Available Appointment\" />
+    <Folder Include="API\Services\Scheduler\" />
+    <Folder Include="API\Managers\Scheduler\" />
+    <Folder Include="API\Models\Scheduler\Post Set Appointment\" />
+    <Folder Include="API\Display Model\Scheduler\" />
+    <Folder Include="API\Managers\Scheduler\Utilities\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />

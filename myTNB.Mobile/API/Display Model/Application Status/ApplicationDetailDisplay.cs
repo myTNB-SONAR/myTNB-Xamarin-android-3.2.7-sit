@@ -284,18 +284,23 @@ namespace myTNB.Mobile
                     try
                     {
                         if (ApplicationStatusDetail != null
-                            && ApplicationStatusDetail.StatusDescriptionColor is string descriptionColor
-                            && descriptionColor.IsValid()
-                            && descriptionColor.ToUpper() == "COMPLETED") {
-                            if (ApplicationRatingDetail.CustomerRating != null
-                                && !ApplicationRatingDetail.CustomerRating.TransactionId.IsValid())
+                            && ApplicationStatusDetail.StatusTracker is List<StatusTrackerDisplay> tracker
+                            && tracker != null
+                            && tracker.Count > 0)
+                        {
+                            int index = tracker.FindIndex(x => x.StatusMode.IsValid() && x.StatusMode.ToUpper() == "COMPLETED");
+                            if (index > -1)
                             {
-                                type = DetailCTAType.CustomerRating;
-                            }
-                            else if (ApplicationRatingDetail.ContractorRating != null
-                                && ApplicationRatingDetail.ContractorRating.ContractorRatingUrl.IsValid())
-                            {
-                                type = DetailCTAType.ContractorRating;
+                                if (ApplicationRatingDetail.CustomerRating != null
+                               && !ApplicationRatingDetail.CustomerRating.TransactionId.IsValid())
+                                {
+                                    type = DetailCTAType.CustomerRating;
+                                }
+                                else if (ApplicationRatingDetail.ContractorRating != null
+                                    && ApplicationRatingDetail.ContractorRating.ContractorRatingUrl.IsValid())
+                                {
+                                    type = DetailCTAType.ContractorRating;
+                                }
                             }
                         }
                     }
@@ -330,7 +335,8 @@ namespace myTNB.Mobile
                         default:
                             {
                                 type = DetailTutorialType.NoAction;
-                                if (CTAType == DetailCTAType.CustomerRating || CTAType == DetailCTAType.ContractorRating)
+                                if (CTAType == DetailCTAType.CustomerRating
+                                    || CTAType == DetailCTAType.ContractorRating)
                                 {
                                     type = DetailTutorialType.Action;
                                 }

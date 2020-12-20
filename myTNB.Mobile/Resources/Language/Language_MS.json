@@ -1187,7 +1187,9 @@
     "youRated": "Anda nilaikan:",
     "sr": "Nombor permintaan perkhidmatan",
     "sn": "Nombor notifikasi perkhidmatan",
-    "rateContractor": "MS-Rate Contractor"
+    "rateContractor": "MS-Rate Contractor",
+    "setAppointmentNowCTA": "Tetapkan janji temu",
+    "rescheduleCTA": "Tetapkan Semula"
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Maklumat pembayaran",
@@ -1891,6 +1893,26 @@
     "freeTextTitle": "YOUR MESSAGE (OPTIONAL)",
     "rateContractor": "MS-Rate Contractor"
   },
+  "ApplicationStatusScheduler": {
+    "title": "Tetapkan Janji Temu",
+    "dateSectionTitle": "Saya mahu tetapkan janji temu pada:",
+    "timeSectionTitle": "Saya mahu janji temu ini di antara:",
+    "hourlySectionTitle": "Saya mahu janji temu ini di:",
+    "note": "Nota: Anda tidak perlu hadir sekiranya kawasan pemasangan meter anda boleh diakses tanpa memasuki premis.",
+    "sameDateTimeError": "Sila pilih tarikh dan slot masa yang berbeza dari janji temu asal.",
+    "confirm": "Sahkan"
+  },
+  "ApplicationStatusAppointmentSuccess": {
+    "title": "Janji Temu Ditetapkan!",
+    "appointmentDetails": "Janji temu anda telah ditetapkan dengan butiran di bawah. Anda boleh mengubah janji temu anda pada bila-bila masa di halaman butiran permohonan sebelum {0}.",
+    "rescheduleDetails": "Slot janji temu anda telah ditetapkan dengan butiran di bawah. Anda boleh mengubah janji temu anda pada bila-bila masa di halaman butiran permohonan sebelum {0}.",
+    "srTitle": "Nombor Permintaan Perkhidmatan",
+    "dateTitle": "Tarikh Janji Temu",
+    "timeTitle": "Slot Masa",
+    "addressTitle": "Alamat Premis",
+    "addToCalendar": "Tambah Ke Kalendar",
+    "viewDetails": "Lihat Butiran"
+  },
   "ServiceDetails": {
     "TimeOut": [
       {
@@ -2107,6 +2129,37 @@
             "primaryCTATitle": "",
             "secondaryCTATitle": "",
             "isSuccess": false,
+            "type": "none"
+          }
+        ],
+        "AvailableAppointment": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "empty",
+            "title": "Ada sesuatu yang tidak kena.",
+            "message": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.",
+            "primaryCTATitle": "Ok",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          }
+        ],
+        "SetAppointment": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
             "type": "none"
           }
         ]
