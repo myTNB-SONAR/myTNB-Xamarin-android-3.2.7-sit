@@ -43,9 +43,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private List<AccountChargeModel> accountChargeList;
         private AndroidX.CoordinatorLayout.Widget.CoordinatorLayout coordinatorLayout;
 
-     // Mark: Application Payment
+        // Mark: Application Payment
         private bool IsApplicationPayment;
         private ApplicationPaymentDetail ApplicationPaymentDetail;
+        private string ApplicationType = string.Empty;
+        private string SearchTerm = string.Empty;
+        private string ApplicationSystem = string.Empty;
 
         public bool paymentReceiptGenerated = false;
 
@@ -124,16 +127,28 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     {
                         accountChargeList = DeSerialze<List<AccountChargeModel>>(extras.GetString("ACCOUNT_CHARGES_LIST"));
                     }
-                    
-                    if (extras.ContainsKey("ISAPPLICATIONPAYMENT"))
+
+                    if (extras.ContainsKey("ISAPPLICATIONPAYMENT") && Intent.Extras.GetBoolean("ISAPPLICATIONPAYMENT"))
                     {
-                        IsApplicationPayment = Intent.Extras.GetBoolean("ISAPPLICATIONPAYMENT");
+                        IsApplicationPayment = true;
+                        if (extras.ContainsKey("APPLICATIONPAYMENTDETAIL"))
+                        {
+                            ApplicationPaymentDetail = DeSerialze<ApplicationPaymentDetail>(extras.GetString("APPLICATIONPAYMENTDETAIL"));
+                        }
+                        if (extras.ContainsKey("ApplicationType"))
+                        {
+                            ApplicationType = extras.GetString("ApplicationType");
+                        }
+                        if (extras.ContainsKey("SearchTerm"))
+                        {
+                            SearchTerm = extras.GetString("SearchTerm");
+                        }
+                        if (extras.ContainsKey("ApplicationSystem"))
+                        {
+                            ApplicationSystem = extras.GetString("ApplicationSystem");
+                        }
                     }
 
-                    if (extras.ContainsKey("APPLICATIONPAYMENTDETAIL"))
-                    {
-                        ApplicationPaymentDetail = DeSerialze<ApplicationPaymentDetail>(extras.GetString("APPLICATIONPAYMENTDETAIL"));
-                    }
                     if (extras.ContainsKey("TOTAL"))
                     {
                         total = Intent.Extras.GetString("TOTAL");
@@ -147,7 +162,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             }
         }
 
-        public void nextFragment(AndroidX.Fragment.App.Fragment fragment, Bundle bundle)
+        public void NextFragment(AndroidX.Fragment.App.Fragment fragment, Bundle bundle)
         {
             if (fragment is MPSelectPaymentMethodFragment)
             {
@@ -168,9 +183,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 AndroidX.Fragment.App.Fragment selectPaymentFragment = new MPSelectPaymentMethodFragment();
                 Bundle bundle = new Bundle();
                 if (IsApplicationPayment)
-                 {
+                {
                     bundle.PutBoolean("ISAPPLICATIONPAYMENT", IsApplicationPayment);
                     bundle.PutString("APPLICATIONPAYMENTDETAILS", JsonConvert.SerializeObject(ApplicationPaymentDetail));
+                    bundle.PutString("ApplicationType", ApplicationType);
+                    bundle.PutString("SearchTerm", SearchTerm);
+                    bundle.PutString("ApplicationSystem", ApplicationSystem);
                 }
                 else
                 {

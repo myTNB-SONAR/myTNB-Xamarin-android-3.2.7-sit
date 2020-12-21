@@ -23,6 +23,15 @@ namespace myTNB.Mobile.API.Models.Payment.PostApplicationPayment
         [JsonProperty("totalAmount")]
         public string TotalAmount { set; get; }
 
+        [JsonProperty("applicationType")]
+        public string ApplicationType { set; get; }
+
+        [JsonProperty("searchTerm")]
+        public string SearchTerm { set; get; }
+
+        [JsonProperty("system")]
+        public string System { set; get; }
+
         [JsonProperty("applicationPaymentDetail")]
         public ApplicationPaymentDetail ApplicationPaymentDetail { set; get; }
     }
