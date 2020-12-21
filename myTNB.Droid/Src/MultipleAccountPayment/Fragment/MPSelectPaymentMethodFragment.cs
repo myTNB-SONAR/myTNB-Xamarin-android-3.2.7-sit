@@ -91,6 +91,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         //Mark: Application Payment
         private bool IsApplicationPayment;
         private ApplicationPaymentDetail ApplicationPaymentDetail;
+        private string ApplicationType = string.Empty;
+        private string SearchTerm = string.Empty;
+        private string ApplicationSystem = string.Empty;
 
         public bool IsActive()
         {
@@ -134,15 +137,28 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     .Build();
 
                 ((PaymentActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod", "title"));
-                if (Arguments.ContainsKey("ISAPPLICATIONPAYMENT"))
+                if (Arguments.ContainsKey("ISAPPLICATIONPAYMENT") && Arguments.GetBoolean("ISAPPLICATIONPAYMENT"))
                 {
-                    IsApplicationPayment = Arguments.GetBoolean("ISAPPLICATIONPAYMENT");
+                    IsApplicationPayment = true;
+
+                    if (Arguments.ContainsKey("APPLICATIONPAYMENTDETAILS"))
+                    {
+                        ApplicationPaymentDetail = JsonConvert.DeserializeObject<ApplicationPaymentDetail>(Arguments.GetString("APPLICATIONPAYMENTDETAILS"));
+                    }
+                    if (Arguments.ContainsKey("ApplicationType"))
+                    {
+                        ApplicationType = Arguments.GetString("ApplicationType");
+                    }
+                    if (Arguments.ContainsKey("SearchTerm"))
+                    {
+                        SearchTerm = Arguments.GetString("SearchTerm");
+                    }
+                    if (Arguments.ContainsKey("ApplicationSystem"))
+                    {
+                        ApplicationSystem = Arguments.GetString("ApplicationSystem");
+                    }
                 }
 
-                if (Arguments.ContainsKey("APPLICATIONPAYMENTDETAILS"))
-                {
-                    ApplicationPaymentDetail = JsonConvert.DeserializeObject<ApplicationPaymentDetail>(Arguments.GetString("APPLICATIONPAYMENTDETAILS"));
-                }
                 if (Arguments.ContainsKey(Constants.SELECTED_ACCOUNT))
                 {
                     selectedAccount = JsonConvert.DeserializeObject<AccountData>(Arguments.GetString(Constants.SELECTED_ACCOUNT));
@@ -275,7 +291,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         }
                     }
 
-                  
+
                 };
 
                 btnFPXPayment = rootView.FindViewById<Button>(Resource.Id.btnFPXPayment);
@@ -561,6 +577,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                             , registeredCardId
                             , paymentMode
                             , total
+                            , ApplicationType
+                            , SearchTerm
+                            , ApplicationSystem
                             , ApplicationPaymentDetail);
                     }
                     else
@@ -688,7 +707,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 }
 
 
-            ((PaymentActivity)Activity).nextFragment(this, bundle);
+            ((PaymentActivity)Activity).NextFragment(this, bundle);
             }
             catch (Exception e)
             {
@@ -774,7 +793,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         {
             Bundle bundle = new Bundle();
             bundle.PutString("html", response);
-            ((PaymentActivity)Activity).nextFragment(this, bundle);
+            ((PaymentActivity)Activity).NextFragment(this, bundle);
         }
 
         public void InitiateFPXPayment(PaymentTransactionIdResponse response)
@@ -792,7 +811,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 Bundle bundle = new Bundle();
                 bundle.PutString("html_fpx", uri.ToString());
                 bundle.PutString("SummaryDashBoardRequest", JsonConvert.SerializeObject(summaryDashBoardRequest));
-                ((PaymentActivity)Activity).nextFragment(this, bundle);
+                ((PaymentActivity)Activity).NextFragment(this, bundle);
             }
             catch (Exception e)
             {

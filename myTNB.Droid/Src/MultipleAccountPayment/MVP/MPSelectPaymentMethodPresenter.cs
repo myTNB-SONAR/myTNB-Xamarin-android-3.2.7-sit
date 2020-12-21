@@ -36,7 +36,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
         {
             GetPaymentTransactionId(custName, custPhone, platform, registeredCardId, paymentMode, totalAmount, paymentItems);
         }
-        
+
         public void InitializeApplicationPaymentTransaction(object userInfo
             , string customerName
             , string phoneNo
@@ -44,6 +44,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             , string registeredCardId
             , string paymentMode
             , string totalAmount
+            , string applicationType
+            , string searchTerm
+            , string system
             , ApplicationPaymentDetail applicationPaymentDetail)
         {
             GetApplicationPayment(userInfo
@@ -53,6 +56,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 , registeredCardId
                 , paymentMode
                 , totalAmount
+                , applicationType
+                , searchTerm
+                , system
                 , applicationPaymentDetail);
         }
 
@@ -63,6 +69,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             , string registeredCardId
             , string paymentMode
             , string totalAmount
+            , string applicationType
+            , string searchTerm
+            , string system
             , ApplicationPaymentDetail applicationPaymentDetail)
         {
             try
@@ -75,6 +84,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                     , registeredCardId
                     , paymentMode
                     , totalAmount
+                    , applicationType
+                    , searchTerm
+                    , system
                     , applicationPaymentDetail);
                 this.mView.SetInitiatePaymentResponse(response);
                 this.mView.HidePaymentRequestDialog();

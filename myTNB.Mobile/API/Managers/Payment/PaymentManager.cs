@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
-using myTNB.Mobile.API.Models;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.API.Models.Payment.GetTaxInvoice;
 using myTNB.Mobile.API.Models.Payment.PostApplicationPayment;
@@ -29,6 +28,22 @@ namespace myTNB.Mobile.API.Managers.Payment
         public PaymentManager() { }
 
         #region ApplicationPayment
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="userInfo"></param>
+        /// <param name="customerName"></param>
+        /// <param name="phoneNo"></param>
+        /// <param name="osType"></param>
+        /// <param name="registeredCardId"></param>
+        /// <param name="paymentMode"></param>
+        /// <param name="totalAmount"></param>
+        /// <param name="applicationType"></param>
+        /// <param name="searchTerm"></param>
+        /// <param name="system"></param>
+        /// <param name="applicationPaymentDetail"></param>
+        /// <returns></returns>
         public async Task<T> ApplicationPayment<T>(object userInfo
             , string customerName
             , string phoneNo
@@ -36,6 +51,9 @@ namespace myTNB.Mobile.API.Managers.Payment
             , string registeredCardId
             , string paymentMode
             , string totalAmount
+            , string applicationType
+            , string searchTerm
+            , string system
             , ApplicationPaymentDetail applicationPaymentDetail) where T : new()
         {
             T customClass = new T();
@@ -57,6 +75,9 @@ namespace myTNB.Mobile.API.Managers.Payment
                         RegisteredCardId = registeredCardId,
                         PaymentMode = paymentMode,
                         TotalAmount = totalAmount,
+                        ApplicationType = applicationType ?? string.Empty,
+                        SearchTerm = searchTerm ?? string.Empty,
+                        System = system ?? "myTNB",
                         ApplicationPaymentDetail = applicationPaymentDetail
                     };
 

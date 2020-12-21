@@ -109,15 +109,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             /// </summary>
             void InitializePaymentTransaction(string custName, string custPhone, string platform, string registeredCardId, string paymentMode, string totalAmount, List<PaymentItem> paymentItems);
 
-             void InitializeApplicationPaymentTransaction(object userInfo
+            void InitializeApplicationPaymentTransaction(object userInfo
                 , string customerName
                 , string phoneNo
                 , string osType
                 , string registeredCardId
                 , string paymentMode
                 , string totalAmount
+                , string applicationType
+                , string searchTerm
+                , string system
                 , ApplicationPaymentDetail applicationPaymentDetail);
         }
     }
 }
-

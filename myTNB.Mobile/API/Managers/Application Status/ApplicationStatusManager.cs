@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
 using myTNB.Mobile.API;
-using myTNB.Mobile.API.Managers;
 using myTNB.Mobile.API.Managers.ApplicationStatus;
 using myTNB.Mobile.API.Managers.ApplicationStatus.Utilities;
 using myTNB.Mobile.API.Managers.Payment;

@@ -77,6 +77,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
                 payment_activity.PutExtra("ISAPPLICATIONPAYMENT", true);
                 payment_activity.PutExtra("APPLICATIONPAYMENTDETAIL", JsonConvert.SerializeObject(applicationDetailDisplay.applicationPaymentDetail));
                 payment_activity.PutExtra("TOTAL", applicationDetailDisplay.PaymentDisplay.TotalPayableAmountDisplay);
+                payment_activity.PutExtra("ApplicationType", applicationDetailDisplay.ApplicationTypeCode);
+                payment_activity.PutExtra("SearchTerm", string.IsNullOrEmpty(applicationDetailDisplay.SavedApplicationID)
+                    || string.IsNullOrWhiteSpace(applicationDetailDisplay.SavedApplicationID)
+                        ? applicationDetailDisplay.ApplicationDetail?.ApplicationId ?? string.Empty
+                        : applicationDetailDisplay.SavedApplicationID);
+                payment_activity.PutExtra("ApplicationSystem", applicationDetailDisplay.System);
                 StartActivityForResult(payment_activity, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
 
                 try
