@@ -133,7 +133,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
 
                 itemActionFullBill.CheckedChange += CheckedChange;
                 itemActionBilling.CheckedChange += CheckedChanged;
-
+               
                 PopulateDataCheckBox();
                 MyTNBAccountManagement.GetInstance().AddNewUserAdded(true);
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
@@ -307,6 +307,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
         {
             try
             {
+                
                 if (!this.GetIsClicked())
                 {
                     this.SetIsClicked(true);
@@ -345,8 +346,8 @@ namespace myTNB_Android.Src.ManageUser.Activity
             string nickname = txtNickName.Text.ToString().Trim();
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                         
-                        .SetTitle((string.Format(GetLabelByLanguage("manageUserTitle"), nickname)))
-                        .SetMessage(string.Format(GetLabelByLanguage("manageUserMessage"),nickname))
+                        .SetTitle((string.Format(GetLabelByLanguage("manageUserDialogTitle"), nickname)))
+                        .SetMessage(string.Format(GetLabelByLanguage("manageUserDialogMessage"),nickname))
                         .SetContentGravity(Android.Views.GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))

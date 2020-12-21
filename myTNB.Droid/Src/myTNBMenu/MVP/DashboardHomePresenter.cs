@@ -23,6 +23,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SummaryDashBoard;
@@ -1670,6 +1671,25 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             }
             wtManager.UpdateReadItem(itemID, flag, formattedDate);
+        }
+
+        public List<NewAppModel> OnGeneraNewAppTutorialList()
+        {
+            List<NewAppModel> newList = new List<NewAppModel>();
+            bool isNeedHelpHide = true;
+
+           
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.BottomRight,
+                ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageTitle"),
+                ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageDesc"),
+                ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                NeedHelpHide = isNeedHelpHide,
+                IsButtonShow = true
+            });
+
+            return newList;
         }
 
     }

@@ -247,7 +247,9 @@
     "later": "Later",
     "update": "Update",
     "titleIcUpdate": "Complete your myTNB profile now for a better myTNB experience!",
-    "bodyIcUpdate": "Your identification number is not captured in your myTNB profile, update it now to have better access and controls over your electricity accounts!"
+    "bodyIcUpdate": "Your identification number is not captured in your myTNB profile, update it now to have better access and controls over your electricity accounts!",
+    "tutorialUsageTitle": "View your accounts details here.",
+    "tutorialUsageDesc": "Easily view your account details and manage who has access to your account from here."
   },
   "Tabbar": {
     "home": "Home",
