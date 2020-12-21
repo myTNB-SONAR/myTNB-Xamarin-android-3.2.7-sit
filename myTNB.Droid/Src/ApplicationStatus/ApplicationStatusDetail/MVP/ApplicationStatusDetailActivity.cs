@@ -52,6 +52,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         [BindView(Resource.Id.applicationStatusMainStatusLayout)]
         LinearLayout applicationStatusMainStatusLayout;
 
+        [BindView(Resource.Id.applicationStatusDetailNonLoginLayout)]
+        LinearLayout applicationStatusDetailNonLoginLayout;
 
         [BindView(Resource.Id.txtApplicationStatusSubTitle)]
         TextView txtApplicationStatusSubTitle;
@@ -900,6 +902,36 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             {
 
                 i = ctaParentLayout.Height;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
+        }
+        public int GetapplicationStatusDetailNonLoginLayout()
+        {
+            int i = 0;
+            try
+            {
+                i = applicationStatusDetailNonLoginLayout.Height;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
+        }
+        public int GetRecyclerViewHeight()
+        {
+            
+                 int i = 0;
+            try
+            {
+                i = applicationStatusStatusListRecyclerView.Height;
+              
             }
             catch (Exception e)
             {
