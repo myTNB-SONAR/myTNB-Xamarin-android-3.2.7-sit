@@ -654,6 +654,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             base.OnActivityResult(requestCode, resultCode, data);
             try
             {
+                txtInputLayoutServiceRequestNum.SetHelperTextColor(ContextCompat.GetColorStateList(this, Resource.Color.new_grey));
+
                 if (requestCode == Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE)
                 {
                     if (resultCode == Result.Ok)
@@ -770,12 +772,14 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+            txtInputLayoutServiceRequestNum.SetHelperTextColor(ContextCompat.GetColorStateList(this, Resource.Color.new_grey));
         }
 
         public bool OnTouch(View v, MotionEvent e)
         {
             if (v is EditText)
             {
+                txtInputLayoutServiceRequestNum.SetHelperTextColor(ContextCompat.GetColorStateList(this, Resource.Color.new_grey));
                 EditText eTxtView = v as EditText;
                 if (eTxtView.Id == Resource.Id.txtApplicationType)
                 {
@@ -894,6 +898,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 }
             }
             CheckError();
+            txtInputLayoutServiceRequestNum.SetHelperTextColor(ContextCompat.GetColorStateList(this, Resource.Color.new_grey));
             return false;
         }
     }
