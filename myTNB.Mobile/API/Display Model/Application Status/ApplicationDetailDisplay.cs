@@ -31,6 +31,8 @@ namespace myTNB.Mobile
 
         public ApplicationRatingDetail ApplicationRatingDetail { set; get; }
 
+        public ApplicationAppointmentDetail ApplicationAppointmentDetail { set; get; }
+
         /// <summary>
         /// List of Title and Value used for payment details
         /// </summary>
@@ -309,6 +311,32 @@ namespace myTNB.Mobile
                         Debug.WriteLine("[DEBUG] ApplicationRatingDetail CTA Error: " + e.Message);
                     }
                 }
+                else if (ApplicationAppointmentDetail != null && ApplicationAppointmentDetail.Mode.IsValid())
+                {
+                    switch (ApplicationAppointmentDetail.Mode.ToUpper())
+                    {
+                        case "NEWSCHEDULE":
+                            {
+                                type = DetailCTAType.NewSchedule;
+                                break;
+                            }
+                        case "RESCHEDULE":
+                            {
+                                type = DetailCTAType.Reschedule;
+                                break;
+                            }
+                        case "DISABLED":
+                            {
+                                type = DetailCTAType.ScheduleDisabled;
+                                break;
+                            }
+                        default:
+                            {
+                                break;
+                            }
+                    }
+                }
+                //type = DetailCTAType.NewSchedule;
                 return type;
             }
         }
@@ -846,17 +874,17 @@ namespace myTNB.Mobile
 
     public enum DetailCTAType
     {
-        SetAppointment,
-        Reschedule,
         Call,
-        CustomerRating,
         ContractorRating,
-        Save,
-        Remove,
+        CustomerRating,
+        NewSchedule,
+        None,
         Pay,
         PayInProgress,
         PayOffline,
-        None
+        Reschedule,
+        Save,
+        ScheduleDisabled
     }
 
     public enum DetailTutorialType

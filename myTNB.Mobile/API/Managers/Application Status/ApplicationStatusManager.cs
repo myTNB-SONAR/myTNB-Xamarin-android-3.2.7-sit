@@ -496,10 +496,16 @@ namespace myTNB.Mobile
                     try
                     {
                         //Mark: Call ASMX Payment Details
-                        PostApplicationsPaidDetailsResponse paymentResponse = await PaymentManager.Instance.GetApplicationsPaidDetails(
-                            AppInfoManager.Instance.GetPlatformUserInfo()
-                            , displaymodel.Content.SRNumber);
-                        displaymodel.ParseDisplayModel(paymentResponse);
+                        string srNumber = displaymodel.Content.SRNumber.IsValid()
+                            ? displaymodel.Content.SRNumber
+                            : displaymodel.Content.applicationPaymentDetail?.srNo ?? string.Empty;
+                        if (srNumber.IsValid())
+                        {
+                            PostApplicationsPaidDetailsResponse paymentResponse = await PaymentManager.Instance.GetApplicationsPaidDetails(
+                                AppInfoManager.Instance.GetPlatformUserInfo()
+                                , srNumber);
+                            displaymodel.ParseDisplayModel(paymentResponse);
+                        }
                     }
                     catch (Exception ex)
                     {

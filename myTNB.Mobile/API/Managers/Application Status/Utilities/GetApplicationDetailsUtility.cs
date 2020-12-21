@@ -67,7 +67,8 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                             totalPayableAmount = response.Content.applicationPaymentDetail.totalPayableAmount,
                             caNo = response.Content.applicationPaymentDetail.caNo,
                             sdDocumentNo = response.Content.applicationPaymentDetail.sdDocumentNo,
-                            srNo = response.Content.applicationPaymentDetail.srNo
+                            srNo = response.Content.applicationPaymentDetail.srNo,
+                            hasInvoiceAttachment = response.Content.applicationPaymentDetail.hasInvoiceAttachment
                         };
                     }
                     if (response.Content.ApplicationStatusDetail != null)
@@ -213,6 +214,10 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     if (response.Content.ApplicationRatingDetail != null)
                     {
                         displayModel.Content.ApplicationRatingDetail = response.Content.ApplicationRatingDetail;
+                    }
+                    if (response.Content.ApplicationAppointmentDetail != null)
+                    {
+                        displayModel.Content.ApplicationAppointmentDetail = response.Content.ApplicationAppointmentDetail;
                     }
                     SetPaymentDisplay(ref displayModel);
                 }
