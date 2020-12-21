@@ -407,6 +407,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 btnRefresh.TextSize = TextViewUtils.GetFontSize(16f);
                 accountHeaderTitle.TextSize = TextViewUtils.GetFontSize(14f);
 
+                SearchView searchView = new SearchView(this.Context);
+                LinearLayout linearLayout1 = (LinearLayout)searchView.GetChildAt(0);
+                LinearLayout linearLayout2 = (LinearLayout)linearLayout1.GetChildAt(2);
+                LinearLayout linearLayout3 = (LinearLayout)linearLayout2.GetChildAt(1);
+                AutoCompleteTextView autoComplete = (AutoCompleteTextView)linearLayout3.GetChildAt(0);
+                autoComplete.SetTextSize(ComplexUnitType.Dip, TextViewUtils.GetFontSize(12f));
+
                 addActionLabel.Text = GetLabelByLanguage("add");
                 searchActionLabel.Text = GetLabelByLanguage("search");
                 txtAdd.Text = GetLabelByLanguage("addElectricityAcct");
