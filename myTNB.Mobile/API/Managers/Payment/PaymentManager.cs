@@ -248,8 +248,6 @@ namespace myTNB.Mobile.API.Managers.Payment
         #region Tax Invoice URL
         public string GetTaxInvoiceURL(string srNumber)
         {
-            //Todo: Remove Stub
-            srNumber = "4000009613";
             try
             {
                 if (srNumber.IsValid())
