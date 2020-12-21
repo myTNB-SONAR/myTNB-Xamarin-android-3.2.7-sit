@@ -59,17 +59,6 @@ namespace myTNB_Android.Src.UpdateID.MVP
             /// </summary>
             void ClearAllErrorFields();
 
-
-            /// <summary>
-            /// Show registration progress dialog
-            /// </summary>
-            void ShowRegistrationProgressDialog();
-
-            /// <summary>
-            /// Hide registration progress dialog
-            /// </summary>
-            void HideRegistrationProgressDialog();
-
             /// <summary>
             /// Enable register button
             /// </summary>
@@ -79,7 +68,6 @@ namespace myTNB_Android.Src.UpdateID.MVP
             /// Disable register button
             /// </summary>
             void DisableRegisterButton();
-
 
             /// <summary>
             /// Shows a cancelled exception with an option to retry

@@ -151,17 +151,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 txtAccountType = FindViewById<TextView>(Resource.Id.txtAccountType);
                 identityType = FindViewById<TextView>(Resource.Id.selector_account_type);
-                mVerificationProgressDialog = new AlertDialog.Builder(this)
-                    .SetTitle(GetString(Resource.String.verification_alert_dialog_title))
-                    .SetMessage(GetString(Resource.String.verification_alert_dialog_message))
-                    .SetCancelable(false)
-                    .Create();
-
-                mRegistrationProgressDialog = new AlertDialog.Builder(this)
-                     .SetTitle(GetString(Resource.String.registration_alert_dialog_title))
-                     .SetMessage(GetString(Resource.String.registration_alert_dialog_message))
-                     .SetCancelable(false)
-                     .Create();
 
                TextViewUtils.SetMuseoSans500Typeface(txtTitleRegister);
 

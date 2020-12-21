@@ -36,6 +36,7 @@ using myTNB_Android.Src.MyAccount.Activity;
 using myTNB_Android.Src.XDetailRegistrationForm.Models;
 using myTNB_Android.Src.XDetailRegistrationForm.Adapter;
 using myTNB_Android.Src.XDetailRegistrationForm.Activity;
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.UpdateID.Activity
 {
@@ -160,6 +161,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 txtICNumber.AddTextChangedListener(new PhoneTextWatcher(txtICNumber, identityType));
                 txtICNumber.SetOnKeyListener(new KeyListener());
 
+                MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
                 ClearFields();
                 this.userActionsListener.Start();
             }
@@ -202,6 +204,12 @@ namespace myTNB_Android.Src.UpdateID.Activity
                     {
                         eText.Text = eText.Text + "-";
                         eText.SetSelection(eText.Text.Length);
+
+                    }
+                    if (len > 14)
+                    {
+                        eText.Text = eText.Text.ToString().Substring(0, 14);
+                        eText.SetSelection(eText.Text.Length);
                     }
                 }
             }
@@ -224,103 +232,10 @@ namespace myTNB_Android.Src.UpdateID.Activity
         {
             try
             {
-
-                string Idtype = selectedIdentificationType.Id;
                 string ic_no = txtICNumber.Text.ToString().Trim();
-                ClearICHint();
                 ClearICMinimumCharactersError();
-                this.userActionsListener.CheckRequiredFields(ic_no, Idtype);
-
-                if (ic_no.Length == 1 || ic_no.Length == 2)
-                {
-                    new Handler().PostDelayed(delegate
-                    {
-                        // Your code here
-                        if (!string.IsNullOrEmpty(ic_no))
-                        {
-                            if (Idtype.Equals("1"))
-                            {
-
-                                if (!this.mPresenter.CheckIdentificationIsValid(ic_no))
-                                {
-                                    ShowFullICError();
-                                }
-                                else
-                                {
-                                    //ShowIdentificationHint();
-                                }
-                                TextViewUtils.SetMuseoSans300Typeface(textInputLayoutICNo);
-                            }
-                            else if (Idtype.Equals("2"))
-                            {
-                                if (!this.mPresenter.CheckArmyIdIsValid(ic_no))
-                                {
-                                    ShowFullArmyIdError();
-                                }
-                                else
-                                {
-                                    //ShowIdentificationHint();
-                                }
-                                TextViewUtils.SetMuseoSans300Typeface(textInputLayoutICNo);
-                            }
-                            else
-                            {
-                                if (!this.mPresenter.CheckPassportIsValid(ic_no))
-                                {
-                                    ShowFullPassportError();
-                                    ClearICHint();
-                                }
-                                else
-                                {
-                                    ClearICMinimumCharactersError();
-                                    //ShowIdentificationHint();
-                                }
-                                TextViewUtils.SetMuseoSans300Typeface(textInputLayoutICNo);
-                            }
-                        }
-                    }, 600);
-                }
-                else if (ic_no.Length >= 3)
-                {
-                    if (Idtype.Equals("1"))
-                    {
-                        if (!this.mPresenter.CheckIdentificationIsValid(ic_no))
-                        {
-                            ShowFullICError();
-                        }
-                        else
-                        {
-                            //ShowIdentificationHint();
-                        }
-                    }
-                    else if (Idtype.Equals("2"))
-                    {
-                        if (!this.mPresenter.CheckArmyIdIsValid(ic_no))
-                        {
-                            ShowFullArmyIdError();
-                        }
-                        else
-                        {
-                            //ShowIdentificationHint();
-                        }
-                    }
-                    else
-                    {
-                        if (!this.mPresenter.CheckPassportIsValid(ic_no))
-                        {
-                            ShowFullPassportError();
-                        }
-                        else
-                        {
-                            //ShowIdentificationHint();
-                        }
-                    }
-                }
-                else
-                {
-                    ClearICMinimumCharactersError();
-                    ClearICHint();
-                }
+                ClearICHint();
+                EnableRegisterButton();
             }
             catch (Exception ex)
             {
@@ -328,7 +243,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
             }
         }
 
-
+        
         public void OnPause()
         {
             base.OnPause();
@@ -390,7 +305,6 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 textInputLayoutICNo.ErrorEnabled = true;
         }
 
-
         public void ShowIdentificationHint()
         {
             if (textInputLayoutICNo.HelperText != Utility.GetLocalizedErrorLabel("identificationhint"))
@@ -431,15 +345,38 @@ namespace myTNB_Android.Src.UpdateID.Activity
             {
                 if (!this.GetIsClicked())
                 {
-                    this.SetIsClicked(true);
-                    string idtype = selectedIdentificationType.Id;
+                    string Idtype = selectedIdentificationType.Id;
                     string ic_no = txtICNumber.Text.ToString().Trim();
-                    ShowUpdateIdDialog(this, () =>
+                    this.userActionsListener.CheckRequiredFields(ic_no, Idtype);
+
+                    bool hasExistedID = MyTNBAccountManagement.GetInstance().IsIDUpdated();
+
+                    if (hasExistedID)
                     {
-                        // _ = RunUpdateID(idtype,ic_no);
-                        ShowProgress();
-                        this.userActionsListener.OnUpdateIC(idtype, ic_no);
-                    });
+                        this.SetIsClicked(true);
+                        ShowUpdateIdDialog(this, () =>
+                        {
+                            // _ = RunUpdateID(idtype,ic_no);
+                            ShowProgress();
+                            this.userActionsListener.OnUpdateIC(Idtype, ic_no);
+                        });
+                    }
+                    else
+                    {
+                        DisableRegisterButton();
+                        if (Idtype.Equals("1"))
+                        {
+                            ShowFullICError();
+                        }
+                        else if (Idtype.Equals("2"))
+                        {
+                            ShowFullArmyIdError();
+                        }
+                        else
+                        {
+                            ShowFullPassportError();
+                        }
+                    }
                 }
             }
             catch (Exception e)
@@ -479,7 +416,6 @@ namespace myTNB_Android.Src.UpdateID.Activity
             this.SetIsClicked(false);
         }
 
-
         protected override void OnResume()
         {
             base.OnResume();
@@ -488,72 +424,6 @@ namespace myTNB_Android.Src.UpdateID.Activity
             try
             {
                 FirebaseAnalyticsUtils.SetScreenName(this, "");
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        /*private Task RunUpdateID(String ic_no, string idtype)
-        {
-            return Task.Run(() =>
-            {
-            });
-        }*/
-        public void ShowVerificationCodeProgressDialog()
-        {
-            try
-            {
-                if (this.mVerificationProgressDialog != null && !this.mVerificationProgressDialog.IsShowing)
-                {
-                    this.mVerificationProgressDialog.Show();
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void HideVerificationCodeProgressDialog()
-        {
-            try
-            {
-                if (this.mVerificationProgressDialog != null && this.mVerificationProgressDialog.IsShowing)
-                {
-                    this.mVerificationProgressDialog.Dismiss();
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void ShowRegistrationProgressDialog()
-        {
-            try
-            {
-                if (this.mRegistrationProgressDialog != null && !this.mRegistrationProgressDialog.IsShowing)
-                {
-                    this.mRegistrationProgressDialog.Show();
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void HideRegistrationProgressDialog()
-        {
-            try
-            {
-                if (this.mRegistrationProgressDialog != null && this.mRegistrationProgressDialog.IsShowing)
-                {
-                    this.mRegistrationProgressDialog.Dismiss();
-                }
             }
             catch (Exception e)
             {
@@ -669,11 +539,6 @@ namespace myTNB_Android.Src.UpdateID.Activity
             base.SetToolBarTitle(title);
         }
 
-        public override bool TelephonyPermissionRequired()
-        {
-            return false;
-        }
-
         public override void Ready()
         {
             base.Ready();
@@ -698,7 +563,6 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 textInputLayoutICNo.HelperText = null;
             }
         }
-
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
@@ -747,15 +611,6 @@ namespace myTNB_Android.Src.UpdateID.Activity
             this.SetIsClicked(false);
         }
 
-        public bool IsGrantedSMSReceivePermission()
-        {
-            return ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReceiveSms) == (int)Permission.Granted;
-        }
-
-        public bool ShouldShowSMSReceiveRationale()
-        {
-            return ShouldShowRequestPermissionRationale(Manifest.Permission.ReceiveSms);
-        }
         public void ClearICHint()
         {
             textInputLayoutICNo.HelperTextEnabled = false;
@@ -805,8 +660,6 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 textInputLayoutICNo.ErrorEnabled = true;
         }
 
-
-
         public void ShowInvalidIdentificationError()
         {
 
@@ -835,7 +688,6 @@ namespace myTNB_Android.Src.UpdateID.Activity
             }
         }
 
-
         public override string GetPageId()
         {
             return PAGE_ID;
@@ -862,34 +714,6 @@ namespace myTNB_Android.Src.UpdateID.Activity
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void StripUnderlinesFromLinks(TextView textView)
-        {
-            var spannable = new SpannableStringBuilder(textView.TextFormatted);
-            var spans = spannable.GetSpans(0, spannable.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
-            foreach (URLSpan span in spans)
-            {
-                var start = spannable.GetSpanStart(span);
-                var end = spannable.GetSpanEnd(span);
-                spannable.RemoveSpan(span);
-                var newSpan = new URLSpanNoUnderline(span.URL);
-                spannable.SetSpan(newSpan, start, end, 0);
-            }
-            textView.TextFormatted = spannable;
-        }
-
-        class URLSpanNoUnderline : URLSpan
-        {
-            public URLSpanNoUnderline(string url) : base(url)
-            {
-            }
-
-            public override void UpdateDrawState(TextPaint ds)
-            {
-                base.UpdateDrawState(ds);
-                ds.UnderlineText = false;
             }
         }
 

@@ -15,7 +15,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Firebase.Iid;
-
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.UpdateID.MVP
 {
@@ -129,40 +129,34 @@ namespace myTNB_Android.Src.UpdateID.MVP
 
         public void CheckRequiredFields(string icno, string idtype)
         {
-
             try
             {
                 if (!TextUtils.IsEmpty(icno) && !TextUtils.IsEmpty(idtype))
                 {
-
-
                     if (!CheckIdentificationIsValid(icno) && idtype.Equals("1"))
                     {
-                        this.mView.ShowFullICError();
-                        this.mView.DisableRegisterButton();
+                        MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
                         return;
                     }
                     else if (!CheckArmyIdIsValid(icno) && idtype.Equals("2"))
                     {
-                        this.mView.ShowFullArmyIdError();
-                        this.mView.DisableRegisterButton();
+                        MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
                         return;
                     }
                     else if (!CheckPassportIsValid(icno) && idtype.Equals("3"))
                     {
-                        this.mView.ShowFullPassportError();
-                        this.mView.DisableRegisterButton();
+                        MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
                         return;
                     }
                     else
                     {
                         //this.mView.ShowIdentificationHint();
                     }
-                    this.mView.EnableRegisterButton();
+                    MyTNBAccountManagement.GetInstance().SetIsIDUpdated(true);
                 }
                 else
                 {
-                    this.mView.DisableRegisterButton();
+                    MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
                 }
             }
             catch (System.Exception e)
