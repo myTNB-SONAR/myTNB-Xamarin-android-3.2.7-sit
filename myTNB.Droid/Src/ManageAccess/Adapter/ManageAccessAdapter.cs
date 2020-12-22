@@ -127,6 +127,11 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
             throw new NotImplementedException();
         }
 
+        public void OnAddLogUserAccess(AccountData accountData)
+        {
+            throw new NotImplementedException();
+        }
+
         class MyAccountViewHolder : BaseAdapterViewHolder
         {
             [BindView(Resource.Id.txtAccountName)]

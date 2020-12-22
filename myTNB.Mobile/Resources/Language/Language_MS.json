@@ -125,7 +125,15 @@
     "dbodyRegister" : "Sila isikan maklumat peribadi anda supaya kami lebih mengenali anda.",
     "viewFullBill" : "View Full Electricity Bill",
     "ApplyforBilling" : "Buat Permohonan e-Billing",
-    "ManageUserTitle" : "Give this user access to:"
+    "ManageUserTitle" : "Give this user access to:",
+    "changeLanguageTitleNew_MS": "Change language to English?",
+    "changeLanguageMessageNew_MS": "Are you sure you want to change the app language to English?",
+    "changeLanguageYesNew_MS": "Yes",
+    "changeLanguageNoNew_MS": "No",
+    "changeLanguageTitleNew_EN": "Tukar kepada English?",
+    "changeLanguageMessageNew_EN": "Anda pasti ingin menukar bahasa aplikasi myTNB kepada English?",
+    "changeLanguageYesNew_EN": "Ya",
+    "changeLanguageNoNew_EN": "Tidak"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",

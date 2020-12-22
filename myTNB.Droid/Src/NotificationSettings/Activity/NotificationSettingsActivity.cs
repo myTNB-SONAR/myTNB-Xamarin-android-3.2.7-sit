@@ -199,14 +199,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 notificationTypeRecyclerView.SetAdapter(typeAdapter);
                 notificationTypeRecyclerView.NestedScrollingEnabled = (false);
 
-                //notificationTypeListView.SetNoScroll();
-
-                /*channelAdapter = new NotificationChannelAdapter(true);
-                channelAdapter.ClickEvent += ChannelAdapter_ClickEvent;
-                notificationChannelRecyclerView.SetAdapter(channelAdapter);
-                notificationTypeRecyclerView.NestedScrollingEnabled = (false);*/
-                //notificationChannelListView.SetNoScroll();
-
                 UpdateLabels();
                 SetSelectedLanguage(null);
                 mPresenter = new NotificationSettingsPresenter(this);
@@ -384,7 +376,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                                     HomeMenuUtils.ResetAll();
                                     SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
                                     SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
-                                    MyTNBAccountManagement.GetInstance().UpdateAppMasterData();
                                     UpdateLanguage();
                                     MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(true);
                                     UpdateTypesList();                                    

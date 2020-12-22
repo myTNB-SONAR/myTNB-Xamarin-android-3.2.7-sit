@@ -158,6 +158,11 @@ namespace myTNB_Android.Src.CompoundView
             return selectedCountry.isd + editTextMobileNumber.Text.Trim();
         }
 
+        public string GetMobileNumberReset()
+        {
+            return editTextMobileNumber.Text = "";
+        }
+
         public string GetMobileNumberValue()
         {
             return editTextMobileNumber.Text.Trim();

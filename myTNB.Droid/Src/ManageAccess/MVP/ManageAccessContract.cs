@@ -112,6 +112,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
         {
 
             void OnRemoveAccount(string numacc);
+            void OnAddLogUserAccess(AccountData accountData);
 
             /// <summary>
             /// Action to add accounts

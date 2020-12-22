@@ -1,97 +1,128 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"          
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">            
-  <LinearLayout
-      android:orientation="vertical"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginLeft="24dp"
-      android:layout_marginRight="24dp"
-      android:id="@+id/rootView"
-      android:background="@drawable/custom_round_white_dialog_shadow">
-     <TextView
-            
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_idnotcompleted"/>
-    <TextView
-        android:id="@+id/txtToolTipTitle"
+    android:layout_marginLeft="18dp"
+    android:layout_marginRight="18dp"
+    android:layout_height="wrap_content">
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
         android:layout_gravity="center"
-        android:textStyle="bold"
-        android:text="Uploading from your album?"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:textColor="@color/tunaGrey"
-        android:textSize="14dp"
-        android:lineSpacingExtra="3dp"/>
-    <TextView
-        android:id="@+id/txtToolTipMessage"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:textColor="@color/tunaGrey"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="9dp"
-        android:maxLines="12"
-        android:scrollbars="vertical"
-        android:text="Be sure to upload a clear, straight-facing photo of the entire meter box with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable."
-        android:textSize="14dp"
-        android:lineSpacingExtra="3dp"/>
-    <LinearLayout
+        app:cardCornerRadius="6dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="0dp">
+        <LinearLayout
           android:orientation="vertical"
-          android:layout_width="match_parent"
+          android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:clickable="true"
-          android:id="@+id/btnFirst">
+          android:layout_gravity="center"
+          android:id="@+id/rootView">
+        <ImageView
+            android:id="@+id/imgToolTipHeader"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:src="@drawable/ic_idnotcompleted"/>
+        <TextView
+            android:id="@+id/txtToolTipTitle"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:text="Complete your myTNB profile now for a better myTNB experience!"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/tunaGrey"
+            android:textSize="14dp"
+            android:lineSpacingExtra="3dp"/>
+        <TextView
+            android:id="@+id/txtToolTipMessage"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:textColor="@color/tunaGrey"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="9dp"
+            android:maxLines="12"
+            android:scrollbars="vertical"
+            android:text="Your identification number is not captured in your myTNB profile, update it now to have better access and controls over your electricity accounts!"
+            android:textSize="14dp"
+            android:lineSpacingExtra="3dp"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <CheckBox
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txtToolTipTitleCheckBox"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:textStyle="normal"
+                android:text="Don't show this again"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="16dp"
+                android:textColor="@color/tunaGrey"
+                android:textSize="12dp"
+                android:lineSpacingExtra="3dp"/>
+        </LinearLayout>
         <View
+            android:layout_marginTop="8dp"
             android:layout_height="1dp"
             android:layout_width="match_parent"
             android:alpha="0.2"
             android:background="@color/tunaGrey" />
         <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/txtBtnPrimary"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/divider"
-            android:gravity="center"
-            android:textColor="@color/powerBlue"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/itemized_bill_got_it"
-            android:textSize="16dp" />
-        <View
-            android:id="@id/divider"
-            android:layout_width="1dp"
-            android:alpha="0.2"
-            android:layout_height="53dp"
-            android:layout_centerHorizontal="true"
-            android:background="@color/tunaGrey" />
-        <TextView
-            android:id="@+id/txtBtnSecondary"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_toRightOf="@+id/divider"
-            android:gravity="center"
-            android:textColor="@color/powerBlue"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/itemized_bill_bring_me_there"
-            android:textSize="16dp" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/txtBtnPrimary"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/divider"
+                android:gravity="center"
+                android:textColor="@color/powerBlue"
+                android:padding="16dp"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Later"
+                android:textSize="16dp" />
+            <View
+                android:id="@id/divider"
+                android:layout_width="1dp"
+                android:alpha="0.2"
+                android:layout_height="53dp"
+                android:layout_centerHorizontal="true"
+                android:background="@color/tunaGrey" />
+            <TextView
+                android:id="@+id/txtBtnSecondary"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/divider"
+                android:gravity="center"
+                android:textColor="@color/powerBlue"
+                android:padding="16dp"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="Update"
+                android:textSize="16dp" />
         </RelativeLayout>
-    </LinearLayout>
-  </LinearLayout>
+       </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

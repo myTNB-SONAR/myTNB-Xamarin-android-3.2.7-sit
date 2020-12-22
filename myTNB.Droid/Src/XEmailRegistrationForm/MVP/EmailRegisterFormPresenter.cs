@@ -219,6 +219,7 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
                 UserEntity.RemoveActive();
                 UserRegister.RemoveActive();
                 CustomerBillingAccount.RemoveActive();
+                UserManageAccessAccount.RemoveActive();
                 NotificationFilterEntity.RemoveAll();
                 UserNotificationEntity.RemoveAll();
                 SubmittedFeedbackEntity.Remove();

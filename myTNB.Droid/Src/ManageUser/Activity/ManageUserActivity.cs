@@ -12,7 +12,6 @@ using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.ManageSupplyAccount.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.UpdateNickname.Activity;
 using myTNB_Android.Src.Utils;
@@ -20,16 +19,11 @@ using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Runtime;
-using System.Collections.Generic;
-using myTNB_Android.Src.UpdatePassword.Activity;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using Org.BouncyCastle.Crypto.Signers;
-using myTNB_Android.Src.FAQ.Activity;
-using myTNB_Android.Src.ManageUser.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ManageUser.MVP;
 using AndroidX.Core.Content;
 using myTNB_Android.Src.Base;
+using AndroidX.CoordinatorLayout.Widget;
 
 namespace myTNB_Android.Src.ManageUser.Activity
 {
@@ -39,7 +33,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
     public class ManageUserActivity : BaseActivityCustom, ManageUserContract.IView
     {
         [BindView(Resource.Id.rootView)]
-        LinearLayout rootView;
+        CoordinatorLayout rootView;
 
         [BindView(Resource.Id.txtNickName)]
         EditText txtNickName;
@@ -70,6 +64,24 @@ namespace myTNB_Android.Src.ManageUser.Activity
 
         [BindView(Resource.Id.infoManageUser)]
         TextView infoManageUser;
+
+        [BindView(Resource.Id.txtNameLayout)]
+        FrameLayout txtNameLayout;
+
+        [BindView(Resource.Id.bottomLayout_Cancel_Resend)]
+        LinearLayout bottomLayout_Cancel_Resend;
+
+        [BindView(Resource.Id.bottomLayoutSave)]
+        LinearLayout bottomLayoutSave;
+
+        [BindView(Resource.Id.view2)]
+        View view2;
+
+        [BindView(Resource.Id.btnCancelAddAccess)]
+        Button btnCancelAddAccess;
+
+        [BindView(Resource.Id.btnResendInviteAccessUser)]
+        Button btnResendInviteAccessUser;
 
         private IMenu ManageSupplyAccountMenu;
 
@@ -120,7 +132,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 TextViewUtils.SetMuseoSans300Typeface(itemTitleFullBill, itemTitleBilling);
                 TextViewUtils.SetMuseoSans500Typeface(btnSave, itemTitle);
 
-                txtNickName.Text = account.AccDesc;
+                txtNickName.Text = account.name;
                 txtEmail.Text = account.email;
 
                 itemTitleFullBill.Text = Utility.GetLocalizedLabel("UserAccess", "fullElectricity");
@@ -134,7 +146,21 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 itemActionFullBill.CheckedChange += CheckedChange;
                 itemActionBilling.CheckedChange += CheckedChanged;
 
-                PopulateDataCheckBox();
+                if (account.IsPreRegister)
+                {
+                    PopulateCheckBoxPreRegister();
+                    bottomLayout_Cancel_Resend.Visibility = ViewStates.Visible;
+                    bottomLayoutSave.Visibility = ViewStates.Gone;
+                    view2.Visibility = ViewStates.Gone;
+                    txtNameLayout.Visibility = ViewStates.Gone;
+                    itemActionFullBill.Clickable = false;
+                    itemActionBilling.Clickable = false;
+                }
+                else
+                {
+                    PopulateDataCheckBox();
+                }
+
                 MyTNBAccountManagement.GetInstance().AddNewUserAdded(true);
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 mPresenter = new ManageUserPresenter(this, account);
@@ -183,6 +209,40 @@ namespace myTNB_Android.Src.ManageUser.Activity
         protected override void OnPause()
         {
             base.OnPause();
+        }
+
+        public void PopulateCheckBoxPreRegister()
+        {
+            try
+            {
+                if (account.IsApplyEBilling)
+                {
+                    itemActionBilling.Checked = true;
+                    itemActionBilling.SetButtonDrawable(Resource.Drawable.checkbox_disabled);
+                }
+                else
+                {
+                    itemActionBilling.Checked = false;
+                    itemActionBilling.SetButtonDrawable(Resource.Drawable.checkbox_active_grey);
+                }
+
+                if (account.IsHaveAccess)
+                {
+                    itemActionFullBill.Checked = true;
+                    itemActionFullBill.SetButtonDrawable(Resource.Drawable.checkbox_disabled);
+                }
+                else
+                {
+                    itemActionFullBill.Checked = false;
+                    itemActionFullBill.SetButtonDrawable(Resource.Drawable.checkbox_active_grey);
+                }
+                DisableSaveButton();
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void PopulateDataCheckBox()
@@ -325,6 +385,51 @@ namespace myTNB_Android.Src.ManageUser.Activity
             }
         }
 
+        [OnClick(Resource.Id.btnCancelAddAccess)]
+        void OnRemoveUser(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    /*ShowSaveDialog(this, () =>
+                    {
+                        this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, checkboxfullbill, checkboxbilling);
+                        //ShowSaveSuccess();
+                    });*/
+                }
+                this.SetIsClicked(false);
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        [OnClick(Resource.Id.btnResendInviteAccessUser)]
+        void OnResendVerifyUser(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    /*ShowSaveDialog(this, () =>
+                    {
+                        this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, checkboxfullbill, checkboxbilling);
+                        //ShowSaveSuccess();
+                    });*/
+                }
+                this.SetIsClicked(false);
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
         public override void OnBackPressed()
         {
             if ((buttonEnableview || buttonEnableEBilling) && MyTNBAccountManagement.GetInstance().IsNewUserAdd())
@@ -345,8 +450,8 @@ namespace myTNB_Android.Src.ManageUser.Activity
             string nickname = txtNickName.Text.ToString().Trim();
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                         
-                        .SetTitle((string.Format(GetLabelByLanguage("manageUserTitle"), nickname)))
-                        .SetMessage(string.Format(GetLabelByLanguage("manageUserMessage"),nickname))
+                        .SetTitle((string.Format(GetLabelByLanguage("manageUserDialogTitle"), nickname)))
+                        .SetMessage(string.Format(GetLabelByLanguage("manageUserDialogMessage"),nickname))
                         .SetContentGravity(Android.Views.GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
@@ -585,8 +690,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
         {
             txtNickName.Text = nickname;
         }
-
-
 
         public override void OnTrimMemory(TrimMemory level)
         {

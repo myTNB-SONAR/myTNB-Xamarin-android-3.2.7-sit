@@ -21,12 +21,6 @@ using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Runtime;
-using System.Collections.Generic;
-using myTNB_Android.Src.UpdatePassword.Activity;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using Org.BouncyCastle.Crypto.Signers;
-using myTNB_Android.Src.FAQ.Activity;
-using myTNB_Android.Src.ManageAccess.Activity;
 using Android.Support.V4.Content;
 using Android.Text;
 

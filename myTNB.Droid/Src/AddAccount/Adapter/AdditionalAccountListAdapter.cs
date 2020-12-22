@@ -215,7 +215,7 @@ namespace myTNB_Android.Src.AddAccount
             //mobileNumberInputComponent.SetMobileNumber(value);
             string noISDMobileNo = mobileNumberInputComponent.GetMobileNumberValue();
             phone_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
-            if( !noISDMobileNo.Equals(""))
+            if(!noISDMobileNo.Equals(""))
             {
                 this.item.mobileNoOwner = phone_no;
             }
@@ -264,17 +264,6 @@ namespace myTNB_Android.Src.AddAccount
                     }
                 };
 
-                string email = this.item.emailOwner;
-                string mobileno = this.item.mobileNoOwner;
-
-                if (email.Equals("") && mobileno.Equals(""))
-                {
-                    OwnerNoContactLinearLayout.Visibility = ViewStates.Visible;
-                }
-                else
-                {
-                    OwnerNoContactLinearLayout.Visibility = ViewStates.Gone;
-                }
             }
             catch (Exception e)
             {

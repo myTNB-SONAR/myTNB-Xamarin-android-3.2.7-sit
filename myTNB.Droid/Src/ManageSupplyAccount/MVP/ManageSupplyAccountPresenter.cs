@@ -229,7 +229,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                         var newRecord = new UserManageAccessAccount()
                         {
                             AccNum = acc.AccountNumber,
-                            //AccDesc = string.IsNullOrEmpty(acc.AccDesc) == true ? "--" : acc.AccDesc,
                             AccDesc = acc.AccountDescription,
                             UserAccountId = acc.AccountId,
                             IsApplyEBilling = acc.IsApplyEBilling,
@@ -245,15 +244,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
 
                     if (newAccountList.Count > 0)
                     {
-                        /*newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
-                        foreach (UserManageAccessAccount acc in newAccountList)
-                        {
-                            int rowChange = UserManageAccessAccount.InsertOrReplace(acc);
-                            int rowChange = UserManageAccessAccount.InsertOrReplace(acc);
-                            ctr++;
-                        }*/
-                        //UserManageAccessAccount.MakeFirstAsSelected();
-
                         newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
                         foreach (ManageAccessAccountListResponse.CustomerAccountData acc in list)
                         {

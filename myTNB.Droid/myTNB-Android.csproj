@@ -817,6 +817,7 @@
     <Compile Include="Src\Database\Model\AccountDataModel.cs" />
     <Compile Include="Src\Database\Model\BillHistoryEntity.cs" />
     <Compile Include="Src\Database\Model\BillHistoryModel.cs" />
+    <Compile Include="Src\Database\Model\LogUserAccessEntity.cs" />
     <Compile Include="Src\Database\Model\UserManageAccessAccount.cs" />
     <Compile Include="Src\Database\Model\DownTimeEntity.cs" />
     <Compile Include="Src\Database\Model\FAQsEntity.cs" />
@@ -1061,12 +1062,14 @@
     <Compile Include="Src\MyTNBService\Request\GetSearchForAccountRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetRegisteredUser.cs" />
     <Compile Include="Src\MyTNBService\Request\GetAccountAccessRight.cs" />
+    <Compile Include="Src\MyTNBService\Request\LogUserAccessRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\UpdateUserAccessRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\SubmitEnquiryRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetVerifyRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\UpdateUserInfo.cs" />
     <Compile Include="Src\MyTNBService\Request\UpdateIdentificationNo.cs" />
     <Compile Include="Src\MyTNBService\Response\ManageAccessAccountListNullResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\LogUserAccessResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\ManageAccessAccountListResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\GetSearchForAccountResponse.cs" />
     <Compile Include="Src\NotificationAddAccount\Activity\NotificationAddAccountActivity.cs" />
@@ -1078,6 +1081,11 @@
     <Compile Include="Src\NotificationDetails\Requests\NotificationDetailsDeleteRequestV2.cs" />
     <Compile Include="Src\NotificationDetails\Requests\NotificationDetailsRequest.cs" />
     <Compile Include="Src\NotificationDetails\Requests\NotificationDetailsRequestV2.cs" />
+    <Compile Include="Src\LogUserAccess\Activity\LogUserAccessActivity.cs" />
+    <Compile Include="Src\LogUserAccess\Adapter\LogUserAccessAdapter.cs" />
+    <Compile Include="Src\LogUserAccess\Models\LogUserAccessData.cs" />
+    <Compile Include="Src\LogUserAccess\MVP\LogUserAccessContract.cs" />
+    <Compile Include="Src\LogUserAccess\MVP\LogUserAccessPresenter.cs" />
     <Compile Include="Src\NotificationFilter\Activity\NotificationFilterActivity.cs" />
     <Compile Include="Src\NotificationFilter\Adapter\NotificationFilterAdapter.cs" />
     <Compile Include="Src\NotificationFilter\Models\NotificationFilterData.cs" />
@@ -8518,6 +8526,7 @@
     <AndroidResource Include="Resources\layout\ManageSupplyMenuItemLayout.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\ManageAccessDeleteRow.axml">

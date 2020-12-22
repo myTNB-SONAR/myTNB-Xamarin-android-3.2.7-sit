@@ -9,7 +9,6 @@
     <include
         layout="@layout/toolbar"
         android:id="@+id/toolbar" />
-
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
@@ -19,14 +18,12 @@
         android:fillViewport="true"
         android:minHeight="25px"
         android:minWidth="25px">
-
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:weightSum="1">
-
             <LinearLayout
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
@@ -34,28 +31,22 @@
                 android:minHeight="25px"
                 android:minWidth="25px"
                 android:orientation="vertical">
-
                 <TextView
                     android:id="@+id/txtNotificationTypeTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="18dp"
-                    android:layout_marginRight="18dp"
                     android:background="@color/lightGrey"
-                    android:padding="10dp"
                     android:text="@string/notification_settings_type_title"
                     android:textColor="@color/powerBlue"
+                    android:padding="16dp"
                     android:textSize="16dp" />
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/notificationTypeRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:minHeight="25px"
                     android:minWidth="25px" />
             </LinearLayout>
-
             <LinearLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
@@ -63,27 +54,21 @@
                 android:minHeight="25px"
                 android:minWidth="25px"
                 android:orientation="vertical">
-
                 <TextView
                     android:id="@+id/txtNotificationChannelTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="18dp"
-                    android:layout_marginRight="18dp"
                     android:background="@color/lightGrey"
                     android:text=""
                     android:textColor="@color/powerBlue"
                     android:textSize="16dp" />
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/notificationChannelRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:minHeight="25px"
                     android:minWidth="25px" />
             </LinearLayout>
-
             <LinearLayout
             android:id="@+id/appLanguageContainer"
             android:layout_height="match_parent"
@@ -101,11 +86,7 @@
                 android:id="@+id/appLanguageMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="18dp"
-                android:layout_marginRight="18dp"
-                android:paddingTop="16dp"
-                android:paddingLeft="12dp"
-                android:paddingBottom="8dp"
+                android:padding="16dp"
                 android:text="Select Your Preferred Language"
                 android:textColor="@color/blue"
                 android:textSize="16dp"/>
@@ -117,8 +98,6 @@
                 android:background="@color/white"
                 android:orientation="vertical">
                 <ListView
-                    android:layout_marginLeft="18dp"
-                    android:layout_marginRight="18dp"
                     android:minWidth="25px"
                     android:minHeight="25px"
                     android:layout_width="match_parent"
@@ -127,7 +106,6 @@
                     android:background="@color/white"/>
             </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

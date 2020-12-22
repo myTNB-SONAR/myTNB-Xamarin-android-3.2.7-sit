@@ -105,6 +105,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			UserEntity.RemoveActive();
 			UserRegister.RemoveActive();
 			CustomerBillingAccount.RemoveActive();
+            UserManageAccessAccount.RemoveActive();
 			UserSessions.RemovePersistPassword(mSharedPref);
 			NotificationFilterEntity.RemoveAll();
 			SMUsageHistoryEntity.RemoveAll();

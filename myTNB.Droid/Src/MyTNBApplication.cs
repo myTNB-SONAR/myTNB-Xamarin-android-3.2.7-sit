@@ -44,6 +44,7 @@ namespace myTNB_Android.Src
             UserRegister.CreateTable();
             CustomerBillingAccount.CreateTable();
             UserManageAccessAccount.CreateTable();
+            LogUserAccessEntity.CreateTable();
             UserNotificationEntity.CreateTable();
             NotificationTypesEntity.CreateTable();
             NotificationChannelEntity.CreateTable();

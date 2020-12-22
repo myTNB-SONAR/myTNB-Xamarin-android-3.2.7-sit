@@ -174,10 +174,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-            //int titleId = Resources.GetIdentifier("alertTitle", "id", "android");
-            //TextView txtTitle = removeDialog.FindViewById<TextView>(titleId);
-            //txtTitle.SetTextSize(ComplexUnitType.Sp ,17);
-
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -186,13 +182,10 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             ManageSupplyAccountMenu = menu;
             ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.icon_activity_log)).SetVisible(true);
 
-/*            ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
-            ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
-
-
-            ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(false);
-
-            ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true);*/
+            //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
+            //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
+            //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(false);
+            //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true);
 
             return base.OnCreateOptionsMenu(menu);
         }
@@ -260,6 +253,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             List<View> manageItems = new List<View>();
 
 
+            //if (true)
             if (accountData.IsOwner)
             {
                 SupplyAccMenuItemSingleContentComponent manageUser = new SupplyAccMenuItemSingleContentComponent(this);

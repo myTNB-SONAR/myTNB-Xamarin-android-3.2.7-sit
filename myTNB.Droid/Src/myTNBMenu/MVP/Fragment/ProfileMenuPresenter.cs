@@ -221,6 +221,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         UserEntity.RemoveActive();
                         UserRegister.RemoveActive();
                         CustomerBillingAccount.RemoveActive();
+                        UserManageAccessAccount.RemoveActive();
+                        LogUserAccessEntity.RemoveAll();
                         NotificationFilterEntity.RemoveAll();
                         UserNotificationEntity.RemoveAll();
                         SubmittedFeedbackEntity.Remove();

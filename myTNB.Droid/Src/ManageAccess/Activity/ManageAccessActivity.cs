@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using static myTNB_Android.Src.ManageAccess.Adapter.ManageAccessAdapter;
 using myTNB_Android.Src.ManageUser.Activity;
 using myTNB_Android.Src.AddNewUser.Activity;
+using AndroidX.CoordinatorLayout.Widget;
 
 namespace myTNB_Android.Src.ManageAccess.Activity
 {
@@ -36,8 +37,11 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class ManageAccessActivity : BaseActivityCustom, ManageAccessContract.IView, customButtonListener
     {
+/*        [BindView(Resource.Id.rootView)]
+        LinearLayout rootView;*/
+
         [BindView(Resource.Id.rootView)]
-        LinearLayout rootView;
+        CoordinatorLayout rootView;
 
         [BindView(Resource.Id.listView)]
         ListView listView;
@@ -90,7 +94,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
 
         UserManageAccessAccount userManageAccessAccount;
 
-        MaterialDialog accountRetrieverDialog;
+        private IMenu ManageAccessMenu;
 
         const string PAGE_ID = "UserAccess";
 
@@ -102,6 +106,27 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         public override bool ShowCustomToolbarTitle()
         {
             return true;
+        }
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
+            ManageAccessMenu = menu;
+            ManageAccessMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.icon_activity_log)).SetVisible(true);
+
+            return base.OnCreateOptionsMenu(menu);
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.icon_log_activity_unread:
+                    SetToolBarTitle(GetLabelByLanguage("title"));
+                    this.userActionsListener.OnAddLogUserAccess(accountData);
+                    break;
+            }
+            return base.OnOptionsItemSelected(item);
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -145,7 +170,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                     Console.WriteLine("ListView: OnTouch");
                     e.Handled = true;
                 };
-                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 mPresenter = new ManageAccessPresenter(this, accountData);
                 this.userActionsListener.Start();
             }
@@ -583,6 +608,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             {
                 listView.EmptyView = manage_user_layout;
                 txtManageAccessTitle.Visibility = ViewStates.Gone;
+                bottomLayout.Visibility = ViewStates.Gone;
                 layout_btnAddUser.Visibility = ViewStates.Visible;
             }
             catch (Exception e)

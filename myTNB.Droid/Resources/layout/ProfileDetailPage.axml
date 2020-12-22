@@ -14,7 +14,7 @@
             id="@+id/toolbar"/>
         <LinearLayout
             android:id="@+id/rootView"
-            android:background="@color/white"
+            android:background="@color/lightGrey"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -23,8 +23,9 @@
                 android:minHeight="25px"
                 android:layout_width="match_parent"
                 android:overScrollMode="never"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/profileContentScrollView"
+                android:background="@color/white"
                 android:fillViewport="true">
                 <LinearLayout
                     android:id="@+id/profileMenuItemsContainer"
@@ -37,6 +38,7 @@
                         android:id="@+id/profileMenuItemsContent"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:background="@color/white"
                         android:minHeight="25px"
                         android:minWidth="25px"
                         android:orientation="vertical"/>

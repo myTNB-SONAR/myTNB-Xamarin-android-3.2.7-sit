@@ -70,10 +70,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         MyTNBAppToolTipBuilder logoutDialog;
 
         const string PAGE_ID = "Profile";
-
         private bool fromIDFlag = false;
-
         private int APP_LANGUAGE_REQUEST = 32766;
+
+        internal static readonly int UPDATE_LANGUAGE = 001;
 
         public static AndroidX.Fragment.App.Fragment currentFragment;
 
@@ -490,7 +490,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(false);
                 Intent nextIntent = new Intent(this.Activity, typeof(NotificationSettingsActivity));
                 //nextIntent.PutExtra(Constants.FORCE_UPDATE_PHONE_NO, mobileNoUpdated);
-                StartActivity(nextIntent);
+                StartActivityForResult(nextIntent, UPDATE_LANGUAGE);
                 //StartActivity(new Intent(this.Activity, typeof(NotificationSettingsActivity)));
             }
             catch (System.Exception e)

@@ -37,16 +37,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
 
-        [BindView(Resource.Id.txtTnBSupplyAccountTitle)]
-        TextView txtTnBSupplyAccountTitle;
-
         [BindView(Resource.Id.listView)]
         ListView listView;
 
         [BindView(Resource.Id.btnAddAnotherAccount)]
         Button btnAddAnotherAccount;
-
-        
 
         [BindView(Resource.Id.btnAddAccount)]
         Button btnAddAccount;
@@ -93,7 +88,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 TextViewUtils.SetMuseoSans500Typeface(btnAddAnotherAccount,
                     btnAddAccount);
 
-                txtTnBSupplyAccountTitle.Text = GetLabelByLanguage("accountSectionTitle");
                 btnAddAnotherAccount.Text = GetLabelCommonByLanguage("addAnotherAcct");
                 txtMyAccountNoAccountTitle.Text = GetLabelByLanguage("noAccounts");
                 txtMyAccountNoAccountContent.Text = GetLabelByLanguage("addAccountMessage");
@@ -428,6 +422,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
         {
             try
             {
+                NoAccountLayout.Visibility = ViewStates.Gone;
                 adapter.AddAll(accountList);
                 adapter.NotifyDataSetChanged();
                 listView.SetNoScroll();
