@@ -14,6 +14,7 @@ using Android.Widget;
 using AndroidX.ViewPager.Widget;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
@@ -1906,6 +1907,60 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                 innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                 innerTopLayout.RequestLayout();
+
+            }
+            else if (this.mContext is DashboardHomeActivity)
+            {
+                int middleHeight = ((DashboardHomeActivity)this.mContext).GetViewBillButtonHeight() + (int)DPUtils.ConvertDPToPx(10f);
+                int topHeight = ((DashboardHomeActivity)this.mContext).GetTopHeight();
+
+
+                int rightWidth = (int)DPUtils.ConvertDPToPx(5f);
+                int middleWidth = (int)DPUtils.ConvertDPToPx(40f);
+                int leftWidth = this.mContext.Resources.DisplayMetrics.WidthPixels - rightWidth - middleWidth;
+
+                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                topLayoutParam.Height = topHeight;
+                topLayout.RequestLayout();
+                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                middleLayoutParam.Height = middleHeight;
+                middleLayout.RequestLayout();
+                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                highlightedLeftLayoutParam.Width = leftWidth;
+                highlightedLeftLayout.RequestLayout();
+                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                highlightedLayoutParam.Width = middleWidth;
+                highlightedLayout.RequestLayout();
+                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                highlightedRightLayoutParam.Width = rightWidth;
+                highlightedRightLayout.RequestLayout();
+                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                bottomLayout.RequestLayout();
+
+                LinearLayout.LayoutParams rightInnerUpperBottomLineLayoutParam = rightInnerUpperBottomLineLayout.LayoutParameters as LinearLayout.LayoutParams;
+                rightInnerUpperBottomLineLayoutParam.Height = (int)DPUtils.ConvertDPToPx(70f); ;
+                rightInnerUpperBottomLineLayout.RequestLayout();
+
+                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(160f);
+                innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                innerTopLayout.RequestLayout();
+                
+
+                LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(70f);
+                innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(50f);
+                innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(20f);
+                innerUpperBottomLayout.RequestLayout();
+
+               /* LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                innerTxtBtnBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(70f);
+                innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(50f);
+                innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(60f);
+                innerTxtBtnBottomLayout.RequestLayout();*/
+
 
             }
             else if (this.mContext is SSMRMeterHistoryActivity)

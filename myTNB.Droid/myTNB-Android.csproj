@@ -8524,7 +8524,7 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\ManageSupplyMenuItemLayout.axml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+     <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

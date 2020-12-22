@@ -12,6 +12,7 @@ using AndroidX.Fragment.App;
 using AndroidX.ViewPager.Widget;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
@@ -189,6 +190,42 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         ((WhatsNewMenuFragment)this.mFragment).StopScrolling();
                     }
                 }
+               /* else if (this.mContext is DashboardHomeActivity)
+                {
+                        if (((DashboardHomeActivity)mContext).CheckIsScrollable())
+                        {
+                            string DisplayMode = NewAppTutorialList[0].DisplayMode;
+                            int ItemCount = NewAppTutorialList[0].ItemCount;
+                            int topHeight = (int)DPUtils.ConvertDPToPx(255f);
+                            int middleHeight = ((DashboardHomeActivity)this.mContext).GetSMRTopViewHeight();
+                            int checkPoint = (int)DPUtils.ConvertDPToPx(60f);
+                            if (DisplayMode == "NONSMR")
+                            {
+                                checkPoint = (int)DPUtils.ConvertDPToPx(40f);
+                            }
+
+                            if (ItemCount == 1)
+                            {
+                                checkPoint = 0;
+                            }
+
+                            if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
+                            {
+                                ((SSMRMeterHistoryActivity)mContext).MeterHistoryCustomScrolling((int)DPUtils.ConvertDPToPx(30f));
+                            }
+                            else
+                            {
+                                ((SSMRMeterHistoryActivity)mContext).MeterHistoryCustomScrolling(0);
+                            }
+
+                        }
+                        else
+                        {
+                            ((SSMRMeterHistoryActivity)mContext).MeterHistoryCustomScrolling(0);
+                        }
+                }*/
+                   
+                
                 else
                 {
                     if (this.mContext is SSMRMeterHistoryActivity)

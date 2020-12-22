@@ -375,8 +375,60 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
                 ManageSupplyAccountMenu = menu;
                 ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.manage_account)).SetVisible(true);
+                OnShowItemizedBillingTutorialDialog();
             }
             return base.OnCreateOptionsMenu(menu);
+           
+        }
+
+        ISharedPreferences mPref;
+        public void OnShowItemizedBillingTutorialDialog()
+        {
+            Handler h = new Handler();
+            Action myAction = () =>
+            {
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.mPresenter.OnGeneraNewAppTutorialList());
+            };
+            h.PostDelayed(myAction, 100);
+        }
+
+        public int GetViewBillButtonHeight()
+        {
+            
+            int height = ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).Icon.IntrinsicHeight;
+            return height;
+        }
+
+        public int GetViewBillButtonWidth()
+        {
+           
+           
+            int width = ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).Icon.IntrinsicWidth;
+            return width;
+        }
+
+        public int GetTopHeight()
+        {
+            int i = 0;
+
+            try
+            {
+                Rect offsetViewBounds = new Rect();
+                //returns the visible bounds
+                toolbar.GetDrawingRect(offsetViewBounds);
+                // calculates the relative coordinates to the parent
+
+                rootView.OffsetDescendantRectToMyCoords(toolbar, offsetViewBounds);
+
+                i = offsetViewBounds.Top + (int) DPUtils.ConvertDPToPx(14f);
+
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)

@@ -367,6 +367,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
         {
             try
             {
+                
                 if (!this.GetIsClicked())
                 {
                     this.SetIsClicked(true);
