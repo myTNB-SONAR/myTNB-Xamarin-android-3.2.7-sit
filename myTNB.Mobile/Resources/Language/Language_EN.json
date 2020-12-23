@@ -1189,7 +1189,13 @@
     "sn": "Service Notification Number",
     "rateContractor": "Rate Contractor",
     "setAppointmentNowCTA": "Set Appointment Now",
-    "rescheduleCTA": "Reschedule"
+    "rescheduleCTA": "Reschedule",
+    "setAppointmentCTAMessage": "Set your meter installation appointment before <b>{0}</b>, <b>{1}</b> or we’ll book one for you after.",
+    "rescheduleCTAMessage": "You have an appointment set for <b>{0}, between {1}</b>. You may reschedule your appointment anytime <b>before {2}</b>.",
+    "rescheduleDisabledCTAMessage": "You have an appointment set for <b>{0}, between {1}</b>",
+    "cannotReschedule": "Why can’t I reschedule anymore?",
+    "cannotRescheduleTitle": "Appointments can’t be rescheduled on the same day.",
+    "cannotRescheduleMessage": "You can’t reschedule your appointment anymore as it is coming up later today. Please note that you don’t have to be present if your meter installation area is accessible without entering the premises.<br><br>You may contact <a href=\"tel: 1300885454\">TNB Careline</a> if you have to reschedule or cancel."
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Payment Details",
@@ -1327,6 +1333,14 @@
       {
         "key": "srNo",
         "description": "Service Request Number"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "I'm Applying As"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
       }
     ],
     "NC_GROUPMOVEIN": [
@@ -1341,6 +1355,14 @@
       {
         "key": "srNo",
         "description": "Service Request Number"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "I'm Applying As"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
       }
     ],
     "NC_PREMISECREATION": [
@@ -1355,6 +1377,10 @@
       {
         "key": "srNo",
         "description": "Service Request Number"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
       }
     ],
     "NC_CONTRACTOR": [
@@ -1375,12 +1401,20 @@
         "description": "Electricity Account Number"
       },
       {
+        "key": "premiseCategoryDescription",
+        "description": "Premises Type"
+      },
+      {
         "key": "premiseAddress",
         "description": "Premises Address"
       },
       {
         "key": "loadRequirement",
         "description": "Load Category"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
       }
     ],
     "NC_PREMISEINDIVUDUAL": [
@@ -1904,14 +1938,18 @@
   },
   "ApplicationStatusAppointmentSuccess": {
     "title": "Appointment Set!",
-    "appointmentDetails": "Your appointment is confirmed with details below. You may reschedule at your Application Details page anytime before {0}.",
-    "rescheduleDetails": "Your new appointment slot is confirmed with details below. You may reschedule at your Application Details page anytime before {0}.",
+    "appointmentDetails": "Your appointment is confirmed with details below. You may reschedule at your Application Details page anytime <b>before {0}</b>.",
+    "rescheduleDetails": "Your new appointment slot is confirmed with details below. You may reschedule at your Application Details page anytime <b>before {0}</b>.",
     "srTitle": "Service Request Number",
     "dateTitle": "Appointment Date",
     "timeTitle": "Time Slot",
     "addressTitle": "Premises Address",
     "addToCalendar": "Add to Calendar",
-    "viewDetails": "View Details"
+    "viewDetails": "View Details",
+    "calendarTitle": "TNB Appointment: SR {0}",
+    "calendarNote": "Your {0} appointment is confirmed. You may reschedule at your Application Details page through myTNB anytime before {1}.",
+    "addToCalendarSuccessTitle": "Added to calendar",
+    "addToCalendarSuccessMessage": "Your appointment has successfully been added to your phone calendar."
   },
   "ServiceDetails": {
     "TimeOut": [

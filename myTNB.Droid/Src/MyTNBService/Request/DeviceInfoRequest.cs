@@ -1,20 +1,21 @@
-﻿using System;
-using myTNB_Android.Src.Utils;
+﻿using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.MyTNBService.Request
 {
     public class DeviceInfoRequest
     {
-		public string DeviceId, AppVersion, OsVersion, OsType, DeviceDesc, VersionCode;
-		public DeviceInfoRequest()
-		{
-			DeviceId = UserSessions.GetDeviceId();
-			AppVersion = DeviceIdUtils.GetAppVersionName();
-			OsType = Constants.DEVICE_PLATFORM;
-			OsVersion = DeviceIdUtils.GetAndroidVersion();
-			DeviceDesc = LanguageUtil.GetAppLanguage().ToUpper();
-            VersionCode = "";
-
+        public string DeviceId, AppVersion, OsVersion, OsType, DeviceDesc, VersionCode;
+        public DeviceInfoRequest()
+        {
+            DeviceId = UserSessions.GetDeviceId();
+            AppVersion = DeviceIdUtils.GetAppVersionName();
+#if SIT
+            AppVersion += string.Format("({0})", DeviceIdUtils.GetAppVersionCode());
+#endif
+            OsType = Constants.DEVICE_PLATFORM;
+            OsVersion = DeviceIdUtils.GetAndroidVersion();
+            DeviceDesc = LanguageUtil.GetAppLanguage().ToUpper();
+            VersionCode = string.Empty;
         }
-	}
+    }
 }

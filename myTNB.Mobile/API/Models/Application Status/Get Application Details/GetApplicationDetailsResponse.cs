@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 
 namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
@@ -264,6 +266,10 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
 
     public class ApplicationAppointmentDetail
     {
+        [JsonProperty("srNo")]
+        public string SRNo { set; get; }
+        [JsonProperty("srType")]
+        public string SRType { set; get; }
         [JsonProperty("mode")]
         public string Mode { set; get; }
         [JsonProperty("businessArea")]
@@ -274,5 +280,62 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public DateTime? AppointmentStartTime { set; get; }
         [JsonProperty("appointmentEndTime")]
         public DateTime? AppointmentEndTime { set; get; }
+
+        /// <summary>
+        /// Use to display in CTA Message
+        /// </summary>
+        [JsonIgnore]
+        public string AppointmentDateDisplay
+        {
+            get
+            {
+                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                return AppointmentDate != null && AppointmentDate.Value != null
+                    ? AppointmentDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
+                    : string.Empty;
+            }
+        }
+
+        [JsonIgnore]
+        public string TimeSlotDisplay
+        {
+            get
+            {
+                try
+                {
+                    CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                    string start = string.Empty;
+                    string end = string.Empty;
+                    string display = string.Empty;
+                    if (AppointmentStartTime != null && AppointmentStartTime.Value != null)
+                    {
+                        start = AppointmentStartTime.Value.ToString("hh:mm tt", dateCultureInfo);
+                    }
+                    if (AppointmentEndTime != null && AppointmentEndTime.Value != null)
+                    {
+                        end = AppointmentEndTime.Value.ToString("hh:mm tt", dateCultureInfo);
+                    }
+
+                    if (start.IsValid() && end.IsValid())
+                    {
+                        display = string.Format("{0} - {1}", start, end);
+                    }
+                    else if (start.IsValid())
+                    {
+                        display = start;
+                    }
+                    else if (end.IsValid())
+                    {
+                        display = end;
+                    }
+                    return display;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("[DEBUG] TimeSlotDisplay Error: " + e.Message);
+                }
+                return string.Empty;
+            }
+        }
     }
 }

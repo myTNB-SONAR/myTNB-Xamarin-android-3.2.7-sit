@@ -5,7 +5,7 @@ namespace myTNB.Mobile.API.Models.Scheduler.PostSetAppointment
 {
     public class PostSetAppointmentRequest
     {
-        [JsonProperty("setAppointMent")]
+        [JsonProperty("setAppointment")]
         public SetAppointment SetAppointment { set; get; }
     }
 

@@ -44,7 +44,7 @@ namespace myTNB.Mobile.API.Managers.Scheduler
                         , businessArea
                         , NetworkService.GetCancellationToken()
                         , AppInfoManager.Instance.Language.ToString());
-                    if (response.Content != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    if (response != null && response.Content != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         response.StatusDetail = Constants.Service_GetAvailableAppointment.GetStatusDetails(response.StatusDetail.Code);
                     }
@@ -64,6 +64,10 @@ namespace myTNB.Mobile.API.Managers.Scheduler
                         {
                             display.StatusDetail = Constants.Service_GetAvailableAppointment.GetStatusDetails(Constants.EMPTY);
                         }
+                    }
+                    else
+                    {
+                        display.StatusDetail = response.StatusDetail;
                     }
                     return display;
                 }

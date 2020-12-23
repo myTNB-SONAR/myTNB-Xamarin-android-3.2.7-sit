@@ -324,6 +324,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 {
                     Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
                     applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(detailResponse.Content));
+                    applicationStatusDetailIntent.PutExtra("isPush", true);
                     StartActivity(applicationStatusDetailIntent);
                 }
                 else

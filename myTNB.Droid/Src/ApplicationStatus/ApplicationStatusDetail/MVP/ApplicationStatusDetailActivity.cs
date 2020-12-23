@@ -28,6 +28,7 @@ using myTNB.Mobile.API.Managers.Rating;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
 using myTNB;
 using Android.Runtime;
+using myTNB_Android.Src.myTNBMenu.Activity;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -186,6 +187,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         private bool IsFromLinkedWith = false;
         private Snackbar mNoInternetSnackbar;
+        private bool IsPush = false;
 
         [OnClick(Resource.Id.btnPrimaryCTA)]
         internal void OnPrimaryCTAClick(object sender, EventArgs args)
@@ -304,6 +306,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+
         public async void ShowApplicationPopupMessage(Android.App.Activity context, StatusDetail statusDetail)
         {
             MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
@@ -314,6 +317,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             whereisMyacc.Show();
 
         }
+
         public async void OnCustomerRating()
         {
             ShowProgressDialog();
@@ -338,6 +342,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
             HideProgressDialog();
         }
+
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.DashboardToolbarMenu, menu);
@@ -505,6 +510,20 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             return true;
         }
 
+        public override void OnBackPressed()
+        {
+            if (IsPush)
+            {
+                Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+                DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                StartActivity(DashboardIntent);
+            }
+            else
+            {
+                base.OnBackPressed();
+            }
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -541,6 +560,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 if (extras.ContainsKey("IsFromLinkedWith"))
                 {
                     IsFromLinkedWith = extras.GetBoolean("IsFromLinkedWith");
+                }
+                if (extras.ContainsKey("isPush"))
+                {
+                    IsPush = extras.GetBoolean("isPush");
                 }
                 if (extras != null)
                 {
@@ -951,12 +974,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         }
         public int GetRecyclerViewHeight()
         {
-            
-                 int i = 0;
+
+            int i = 0;
             try
             {
                 i = applicationStatusStatusListRecyclerView.Height;
-              
+
             }
             catch (Exception e)
             {

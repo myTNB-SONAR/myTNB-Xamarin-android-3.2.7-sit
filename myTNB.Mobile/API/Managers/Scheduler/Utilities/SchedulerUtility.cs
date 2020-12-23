@@ -88,7 +88,7 @@ namespace myTNB.Mobile.API.Managers.Scheduler.Utilities
                     for (int j = 1; j <= numberOfDays; j++)
                     {
                         SchedulerDisplayModel schedule = new SchedulerDisplayModel();
-                        int index = scheduleList.FindIndex(x=>x.Day == j.ToString());
+                        int index = scheduleList.FindIndex(x => x.Day == j.ToString());
                         if (index > -1)
                         {
                             schedule = scheduleList[index];

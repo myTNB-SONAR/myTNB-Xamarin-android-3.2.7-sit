@@ -14,6 +14,17 @@ namespace myTNB.Mobile.API.DisplayModel.Scheduler
         /// Key = Month Order
         /// </summary>
         public Dictionary<string, List<SchedulerDisplayModel>> ScheduleList { set; get; }
+
+        /// <summary>
+        /// Used to display time slot header
+        /// </summary>
+        public string TimeSlotTitle
+        {
+            get
+            {
+                return LanguageManager.Instance.GetPageValueByKey("ApplicationStatusScheduler", "timeSectionTitle");
+            }
+        }
     }
 
     public class SchedulerDisplayModel
@@ -22,32 +33,59 @@ namespace myTNB.Mobile.API.DisplayModel.Scheduler
         {
             get
             {
-                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                return AppointmentDate != null && AppointmentDate.Value != null
-                    ? AppointmentDate.Value.ToString("MMM", dateCultureInfo) ?? string.Empty
-                    : string.Empty;
+                try
+                {
+                    CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                    return AppointmentDate != null && AppointmentDate.Value != null
+                        ? AppointmentDate.Value.ToString("MMM", dateCultureInfo) ?? string.Empty
+                        : string.Empty;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("[DEBUG] MonthDisplay Error: " + e.Message);
+                    return string.Empty;
+                }
             }
         }
         internal string YearDisplay
         {
             get
             {
-                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                return AppointmentDate != null && AppointmentDate.Value != null
-                    ? AppointmentDate.Value.ToString("yyyy", dateCultureInfo) ?? string.Empty
-                    : string.Empty;
+                try
+                {
+                    CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                    return AppointmentDate != null && AppointmentDate.Value != null
+                        ? AppointmentDate.Value.ToString("yyyy", dateCultureInfo) ?? string.Empty
+                        : string.Empty;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("[DEBUG] YearDisplay Error: " + e.Message);
+                    return string.Empty;
+                }
             }
         }
         internal string MonthOrder
         {
             get
             {
-                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                return AppointmentDate != null && AppointmentDate.Value != null
-                    ? AppointmentDate.Value.ToString("MM", dateCultureInfo) ?? string.Empty
-                    : string.Empty;
+                try
+                {
+                    CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                    return AppointmentDate != null && AppointmentDate.Value != null
+                        ? AppointmentDate.Value.ToString("MM", dateCultureInfo) ?? string.Empty
+                        : string.Empty;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("[DEBUG] MonthOrder Error: " + e.Message);
+                    return string.Empty;
+                }
             }
         }
+
+        public DateTime? AppointmentDate { set; get; }
+
         /// <summary>
         /// Used to display MMM yyyy in Calendar Header
         /// </summary>
@@ -60,16 +98,23 @@ namespace myTNB.Mobile.API.DisplayModel.Scheduler
                     , YearDisplay);
             }
         }
-        public DateTime? AppointmentDate { set; get; }
 
         public string DayOfWeek
         {
             get
             {
-                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(LanguageManager.Language.EN.ToString());
-                return AppointmentDate != null && AppointmentDate.Value != null
-                    ? AppointmentDate.Value.ToString("ddd", dateCultureInfo) ?? string.Empty
-                    : string.Empty;
+                try
+                {
+                    CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(LanguageManager.Language.EN.ToString());
+                    return AppointmentDate != null && AppointmentDate.Value != null
+                        ? AppointmentDate.Value.ToString("ddd", dateCultureInfo).ToUpper() ?? string.Empty
+                        : string.Empty;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("[DEBUG] DayOfWeek Error: " + e.Message);
+                    return string.Empty;
+                }
             }
         }
 
@@ -83,6 +128,25 @@ namespace myTNB.Mobile.API.DisplayModel.Scheduler
                 return AppointmentDate != null && AppointmentDate.Value != null
                     ? AppointmentDate.Value.Day.ToString()
                     : string.Empty;
+            }
+        }
+
+        public string AppointmentDateDisplay
+        {
+            get
+            {
+                try
+                {
+                    CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                    return AppointmentDate != null && AppointmentDate.Value != null
+                        ? AppointmentDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
+                        : string.Empty;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("[DEBUG] AppointmentDateDisplay Error: " + e.Message);
+                    return string.Empty;
+                }
             }
         }
 

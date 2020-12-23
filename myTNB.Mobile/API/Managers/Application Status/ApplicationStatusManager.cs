@@ -58,13 +58,16 @@ namespace myTNB.Mobile
                         : await service.SearchApplicationType(NetworkService.GetCancellationToken()
                             , AppInfoManager.Instance.Language.ToString()
                             , AppInfoManager.Instance.Language.ToString());
-                    if (response.Content != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    if (response != null && response.Content != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
-                        response.StatusDetail = new StatusDetail();
+                        response = new SearchApplicationTypeResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
                         response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(Constants.DEFAULT);
                     }
                     response.SearchApplicationTypeParser(roleID);
@@ -149,7 +152,7 @@ namespace myTNB.Mobile
                     }
 
                     GetApplicationStatusResponse response = JsonConvert.DeserializeObject<GetApplicationStatusResponse>(responseString);
-                    if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         if (response.Content == null)
                         {
@@ -472,7 +475,7 @@ namespace myTNB.Mobile
                     }
 
                     GetApplicationDetailsResponse response = JsonConvert.DeserializeObject<GetApplicationDetailsResponse>(responseString);
-                    if (response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         if (response.Content == null)
                         {
