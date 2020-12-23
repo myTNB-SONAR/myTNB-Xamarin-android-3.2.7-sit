@@ -207,6 +207,42 @@ namespace myTNB.Mobile
             }
         }
 
+        /// <summary>
+        /// Message above CTA
+        /// </summary>
+        public string CTAMessage
+        {
+            get
+            {
+                string message = string.Empty;
+                if (ApplicationAppointmentDetail != null)
+                {
+                    string format = string.Empty;
+                    if (CTAType == DetailCTAType.NewAppointment)
+                    {
+                        format = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "setAppointmentCTAMessage");
+                        message = string.Format(format, "TBD", "TBD");
+                    }
+                    else if (CTAType == DetailCTAType.Reschedule)
+                    {
+                        format = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "rescheduleCTAMessage");
+                        message = string.Format(format
+                            , ApplicationAppointmentDetail.AppointmentDateDisplay
+                            , ApplicationAppointmentDetail.TimeSlotDisplay
+                            , "TBD");
+                    }
+                    else if (CTAType == DetailCTAType.RescheduleDisabled)
+                    {
+                        format = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "rescheduleDisabledCTAMessage");
+                        message = string.Format(format
+                            , ApplicationAppointmentDetail.AppointmentDateDisplay
+                            , ApplicationAppointmentDetail.TimeSlotDisplay);
+                    }
+                }
+                return message;
+            }
+        }
+
         public string ApplicationTypeID { set; get; }
 
         /// <summary>
@@ -311,13 +347,13 @@ namespace myTNB.Mobile
                         Debug.WriteLine("[DEBUG] ApplicationRatingDetail CTA Error: " + e.Message);
                     }
                 }
-                else if (ApplicationAppointmentDetail != null && ApplicationAppointmentDetail.Mode.IsValid())
+                /*else if (ApplicationAppointmentDetail != null && ApplicationAppointmentDetail.Mode.IsValid())
                 {
                     switch (ApplicationAppointmentDetail.Mode.ToUpper())
                     {
                         case "NEWSCHEDULE":
                             {
-                                type = DetailCTAType.NewSchedule;
+                                type = DetailCTAType.NewAppointment;
                                 break;
                             }
                         case "RESCHEDULE":
@@ -327,7 +363,7 @@ namespace myTNB.Mobile
                             }
                         case "DISABLED":
                             {
-                                type = DetailCTAType.ScheduleDisabled;
+                                type = DetailCTAType.RescheduleDisabled;
                                 break;
                             }
                         default:
@@ -335,8 +371,7 @@ namespace myTNB.Mobile
                                 break;
                             }
                     }
-                }
-                //type = DetailCTAType.NewSchedule;
+                }*/
                 return type;
             }
         }
@@ -389,9 +424,16 @@ namespace myTNB.Mobile
         }
 
         /// <summary>
-        /// Used for getting ASMX Payment Details
+        /// Used for ASMX Payment Details
+        /// Used for Raitng
+        /// Used for Appointment
         /// </summary>
         public string SRNumber { set; get; }
+
+        /// <summary>
+        /// Used for Appointment
+        /// </summary>
+        public string SRType { set; get; }
 
         /// <summary>
         /// Display Rating
@@ -452,6 +494,16 @@ namespace myTNB.Mobile
                         : string.Empty;
             }
         }
+
+        /// <summary>
+        /// Use to pass to Get Appointment
+        /// </summary>
+        public string BusinessArea { internal set; get; }
+
+        /// <summary>
+        /// Use to Display in Appointment Success
+        /// </summary>
+        public string PremisesAddress { internal set; get; }
 
         private Color StatusColorDisplay
         {
@@ -877,14 +929,14 @@ namespace myTNB.Mobile
         Call,
         ContractorRating,
         CustomerRating,
-        NewSchedule,
+        NewAppointment,
         None,
         Pay,
         PayInProgress,
         PayOffline,
         Reschedule,
         Save,
-        ScheduleDisabled
+        RescheduleDisabled
     }
 
     public enum DetailTutorialType

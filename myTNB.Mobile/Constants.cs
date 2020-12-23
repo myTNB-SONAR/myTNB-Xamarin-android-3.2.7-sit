@@ -1,6 +1,6 @@
 ﻿namespace myTNB.Mobile
 {
-    internal static class Constants
+    public static class Constants
     {
         //Headers
         internal const string Header_RoleID = "RoleId";
@@ -19,8 +19,8 @@
         internal const int APITimeOut = 60000;
         internal const int SitecoreTimeOut = 5000;
         internal const string SitecoreDomain = "sitecore";
-        internal const string SitecoreUsername = "api_user";
-        internal const string SitecorePassword = "mytnbapiuser!3$@2";
+        public const string SitecoreUsername = "api_user";
+        public const string SitecorePassword = "mytnbapiuser!3$@2";
         internal const string ApiUrlPath = "v6/mytnbappws.asmx";
 
 #if DEBUG
@@ -30,19 +30,19 @@
         private const string PROD = "https://mytnbapp.tnb.com.my";
         private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
 
-        internal static string ApiDomain = SIT;
-        internal const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
+        public static string ApiDomain = SIT;
+        public const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         //Mark: IP: http://10.215.70.246/   URL: http://tnbcsdevapp.tnb.my/
-        internal const string SitecoreURL = "http://10.215.70.246/";
+        public const string SitecoreURL = "http://10.215.70.246/";
 #elif MASTER || SIT
-        internal static string ApiDomain = "https://mobiletestingws.tnb.com.my";
-        internal const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
+        public static string ApiDomain = "https://mobiletestingws.tnb.com.my";
+        public const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         //Mark: IP: http://10.215.70.248/   URL: http://tnbcsstgapp.tnb.my/
-        internal const string SitecoreURL = "http://10.215.70.248/";
+        public const string SitecoreURL = "http://10.215.70.248/";
 #else
-        internal static string ApiDomain = "https://mytnbapp.tnb.com.my";
-        internal const string ApiKeyId = "E6148656-205B-494C-BC95-CC241423E72F";
-        internal const string SitecoreURL = "https://sitecore.tnb.com.my/";
+        public static string ApiDomain = "https://mytnbapp.tnb.com.my";
+        public const string ApiKeyId = "E6148656-205B-494C-BC95-CC241423E72F";
+        public const string SitecoreURL = "https://sitecore.tnb.com.my/";
 #endif
 
         //Service Name

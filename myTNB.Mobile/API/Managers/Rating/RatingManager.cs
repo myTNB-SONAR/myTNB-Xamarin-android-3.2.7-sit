@@ -43,7 +43,7 @@ namespace myTNB.Mobile.API.Managers.Rating
                         , NetworkService.GetCancellationToken()
                         , AppInfoManager.Instance.Language.ToString()
                         , AppInfoManager.Instance.Language.ToString());
-                    if (response.Content != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    if (response != null && response.Content != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         response.StatusDetail = Constants.Service_GetCustomerRatingMaster.GetStatusDetails(response.StatusDetail.Code);
                     }

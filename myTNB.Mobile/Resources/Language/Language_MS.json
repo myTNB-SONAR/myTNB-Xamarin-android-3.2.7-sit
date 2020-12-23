@@ -1183,7 +1183,13 @@
     "sn": "Nombor notifikasi perkhidmatan",
     "rateContractor": "MS-Rate Contractor",
     "setAppointmentNowCTA": "Tetapkan janji temu",
-    "rescheduleCTA": "Tetapkan Semula"
+    "rescheduleCTA": "Tetapkan Semula",
+    "setAppointmentCTAMessage": "Tetapkan janji temu pemasangan meter anda sebelum <b>{0}</b>, <b>{1}</b>. Jika tidak, kami akan tetapkan janji temu bagi pihak anda.",
+    "rescheduleCTAMessage": "Anda telah menetapkan janji temu pada <b>{0}, di antara {1}</b>. Anda boleh mengubah janji temu anda pada bila-bila masa di halaman butiran permohonan <b>sebelum {2}</b>.",
+    "rescheduleDisabledCTAMessage": "Anda mempunyai janji temu pada <b>{0}, di antara {1}</b>.",
+    "cannotReschedule": "Mengapakah saya tidak boleh mengubah butiran janji temu?",
+    "cannotRescheduleTitle": "Janji temu tidak boleh diubah pada hari janji temu.",
+    "cannotRescheduleMessage": "Anda tidak boleh mengubah janji temu pada hari janji temu tersebut. Sila ambil maklum bahawa anda tidak perlu hadir sekiranya kawasan pemasangan meter anda boleh diakses tanpa memasuki premis.<br><br>Hubungi <a href=\"tel: 1300885454\">TNB Careline</a> sekiranya anda perlu mengubah  atau membatalkan janji temu."
   },
   "ApplicationStatusPaymentDetails": {
     "title": "Maklumat pembayaran",
@@ -1321,6 +1327,14 @@
       {
         "key": "srNo",
         "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "Saya Memohon Sebagai"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
       }
     ],
     "NC_GROUPMOVEIN": [
@@ -1335,6 +1349,14 @@
       {
         "key": "srNo",
         "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "Saya Memohon Sebagai"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
       }
     ],
     "NC_PREMISECREATION": [
@@ -1349,6 +1371,10 @@
       {
         "key": "srNo",
         "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
       }
     ],
     "NC_CONTRACTOR": [
@@ -1369,12 +1395,20 @@
         "description": "Nombor Akaun Elektrik"
       },
       {
+        "key": "premiseCategoryDescription",
+        "description": "Jenis Premis"
+      },
+      {
         "key": "premiseAddress",
         "description": "Alamat Premis"
       },
       {
         "key": "loadRequirement",
         "description": "Kategori Kuasa"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
       }
     ],
     "NC_PREMISEINDIVUDUAL": [
@@ -1864,8 +1898,8 @@
   "ApplicationStatusRating": {
     "title": "Nilaikan",
     "submit": "Hantar",
-    "freeTextPlaceHolder": "Write your message here.",
-    "freeTextTitle": "YOUR MESSAGE (OPTIONAL)",
+    "freeTextPlaceHolder": "Tulis mesej anda di sini",
+    "freeTextTitle": "MESEJ ANDA (TIDAK WAJIB)",
     "rateContractor": "MS-Rate Contractor"
   },
   "ApplicationStatusScheduler": {
@@ -1879,14 +1913,18 @@
   },
   "ApplicationStatusAppointmentSuccess": {
     "title": "Janji Temu Ditetapkan!",
-    "appointmentDetails": "Janji temu anda telah ditetapkan dengan butiran di bawah. Anda boleh mengubah janji temu anda pada bila-bila masa di halaman butiran permohonan sebelum {0}.",
-    "rescheduleDetails": "Slot janji temu anda telah ditetapkan dengan butiran di bawah. Anda boleh mengubah janji temu anda pada bila-bila masa di halaman butiran permohonan sebelum {0}.",
+    "appointmentDetails": "Janji temu anda telah ditetapkan dengan butiran di bawah. Anda boleh mengubah janji temu anda pada bila-bila masa di halaman butiran permohonan <b>sebelum {0}</b>.",
+    "rescheduleDetails": "Slot janji temu anda telah ditetapkan dengan butiran di bawah. Anda boleh mengubah janji temu anda pada bila-bila masa di halaman butiran permohonan <b>sebelum {0}</b>.",
     "srTitle": "Nombor Permintaan Perkhidmatan",
     "dateTitle": "Tarikh Janji Temu",
     "timeTitle": "Slot Masa",
     "addressTitle": "Alamat Premis",
     "addToCalendar": "Tambah Ke Kalendar",
-    "viewDetails": "Lihat Butiran"
+    "viewDetails": "Lihat Butiran",
+    "calendarTitle": "Janji temu TNB: SR {0}",
+    "calendarNote": "Janji temu {0} anda telah ditetapkan. Anda boleh tetapkan janji temu semula di halaman butiran permohonan melalui myTNB sebelum {1}.",
+    "addToCalendarSuccessTitle": "Ditambah ke kalendar",
+    "addToCalendarSuccessMessage": "Janji temu ini telah berjaya ditambah ke dalam kalendar telefon anda"
   },
   "ServiceDetails": {
     "TimeOut": [

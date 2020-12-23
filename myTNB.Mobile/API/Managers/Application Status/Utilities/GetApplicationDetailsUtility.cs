@@ -118,6 +118,10 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                                     {
                                         displayModel.Content.SRNumber = srNo;
                                     }
+                                    if (GetObjectValue(props, "srType") is string srType && srType.IsValid())
+                                    {
+                                        displayModel.Content.SRType = srType;
+                                    }
                                 }
                             }
                         }
@@ -253,6 +257,14 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     if (GetObjectValue(props, "createdDate") is object createdDate && createdDate != null)
                     {
                         displayModel.Content.ApplicationDetail.CreatedDate = Convert.ToDateTime(createdDate);
+                    }
+                    if (GetObjectValue(props, "businessArea") is string businessArea && businessArea.IsValid())
+                    {
+                        displayModel.Content.BusinessArea = businessArea;
+                    }
+                    if (GetObjectValue(props, "premiseAddress") is string premiseAddress && premiseAddress.IsValid())
+                    {
+                        displayModel.Content.PremisesAddress = premiseAddress;
                     }
                     bool shouldShowLinkedWith = false;
 
