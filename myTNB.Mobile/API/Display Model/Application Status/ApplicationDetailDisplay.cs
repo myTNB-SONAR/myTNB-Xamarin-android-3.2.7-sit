@@ -330,7 +330,7 @@ namespace myTNB.Mobile
                             if (index > -1)
                             {
                                 if (ApplicationRatingDetail.CustomerRating != null
-                               && !ApplicationRatingDetail.CustomerRating.TransactionId.IsValid())
+                                    && !ApplicationRatingDetail.CustomerRating.TransactionId.IsValid())
                                 {
                                     type = DetailCTAType.CustomerRating;
                                 }
@@ -372,6 +372,7 @@ namespace myTNB.Mobile
                             }
                     }
                 }
+                //type = DetailCTAType.Reschedule;
                 return type;
             }
         }

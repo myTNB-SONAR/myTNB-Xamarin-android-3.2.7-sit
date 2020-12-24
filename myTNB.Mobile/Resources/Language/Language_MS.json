@@ -1183,7 +1183,7 @@
     "paymentInProgress": "Pembayaran sedang diproses",
     "bcrmDownMessage": "Nampaknya status anda tidak dapat dimuat turun pada masa ini. Walaubagaimanapun, anda masih boleh melakukan sebarang perubahan pada permohonan anda kerana ianya akan direkod. Sila lihat sebentar lagi untuk kemas kini status anda.",
     "rateCTA": "Nilaikan Perkhidmatan Kami",
-    "rateSuccessMessage": "Terima kasih atas maklum balas anda.",
+    "rateSuccessMessage": "Terima kasih atas maklum balas anda!",
     "youRated": "Anda nilaikan:",
     "sr": "Nombor permintaan perkhidmatan",
     "sn": "Nombor notifikasi perkhidmatan",
@@ -2154,7 +2154,7 @@
           {
             "code": "7200",
             "title": "",
-            "message": "Thank you for your feedback!",
+            "message": "Terima kasih atas maklum balas anda!",
             "primaryCTATitle": "",
             "secondaryCTATitle": "",
             "isSuccess": true,
