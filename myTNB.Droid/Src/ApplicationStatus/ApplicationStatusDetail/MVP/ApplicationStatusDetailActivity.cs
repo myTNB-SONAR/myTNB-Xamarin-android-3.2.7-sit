@@ -29,6 +29,9 @@ using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
 using myTNB;
 using Android.Runtime;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB.Mobile.API.DisplayModel.Scheduler;
+using myTNB.Mobile.API.Managers.Scheduler;
+using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -196,7 +199,17 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             {
                 if (applicationDetailDisplay != null)
                 {
-                    if (applicationDetailDisplay.CTAType == DetailCTAType.Save)
+                    if (applicationDetailDisplay.CTAType == DetailCTAType.NewAppointment)
+                    {
+                        OnNewAppointment();
+                        FirebaseAnalyticsUtils.LogClickEvent(this, "Set Appointment Button Clicked");
+                    }
+                    else if (applicationDetailDisplay.CTAType == DetailCTAType.Reschedule)
+                    {
+
+                        FirebaseAnalyticsUtils.LogClickEvent(this, "Save Button Clicked");
+                    }
+                    else if (applicationDetailDisplay.CTAType == DetailCTAType.Save)
                     {
                         SaveApplication();
                         FirebaseAnalyticsUtils.LogClickEvent(this, "Save Button Clicked");
@@ -358,6 +371,31 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
             }
             return base.OnCreateOptionsMenu(menu);
+        }
+        public async void OnNewAppointment()
+        {
+            ShowProgressDialog();
+            try
+            {
+                SchedulerDisplay response = await ScheduleManager.Instance.GetAvailableAppointment("1234");
+                if (!response.StatusDetail.IsSuccess)
+                {
+                    ShowApplicationPopupMessage(this, response.StatusDetail);
+                }
+                else
+                {
+                    //string businessArea = applicationDetailDisplay.BusinessArea ?? string.Empty;
+                    Intent appointment_activity = new Intent(this, typeof(AppointmentSelectActivity));
+                    appointment_activity.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
+                    appointment_activity.PutExtra("newAppointmentResponse", JsonConvert.SerializeObject(response));
+                    StartActivityForResult(appointment_activity, Constants.APPLICATION_STATUS_DETAILS_NEWAPPOINTMENT_REQUEST_CODE);
+                }
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+            HideProgressDialog();
         }
 
         private async void ViewActivityLog()
@@ -681,7 +719,21 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             btnApplicationStatusViewBill.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "viewDetails");
                             btnApplicationStatusPay.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "payNow");
 
-                            if (applicationDetailDisplay.CTAType == DetailCTAType.PayOffline)
+                            if (applicationDetailDisplay.CTAType == DetailCTAType.NewAppointment)
+                            {
+                                btnPrimaryCTA.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "setAppointmentNowCTA");
+                                applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
+                                applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
+                                applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
+                            }
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.Reschedule)
+                            {
+                                btnPrimaryCTA.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "rescheduleCTA");
+                                applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
+                                applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
+                                applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
+                            }
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.PayOffline)
                             {
                                 txtApplicationStatusBottomPayable.Text = "--";
                                 txtApplicationStatusBottomPayableTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "needToPay");
