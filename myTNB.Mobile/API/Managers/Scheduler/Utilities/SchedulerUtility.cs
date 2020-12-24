@@ -22,7 +22,7 @@ namespace myTNB.Mobile.API.Managers.Scheduler.Utilities
             try
             {
                 Dictionary<string, List<SchedulerDisplayModel>> scheduleDictionary = new Dictionary<string, List<SchedulerDisplayModel>>();
-
+                List<MonthYearDisplayModel> monthYearDisplay = new List<MonthYearDisplayModel>();
                 for (int i = 0; i < response.Content.Count; i++)
                 {
                     SchedulerDisplayModel schedule = new SchedulerDisplayModel();
@@ -46,10 +46,17 @@ namespace myTNB.Mobile.API.Managers.Scheduler.Utilities
                     else
                     {
                         scheduleDictionary.Add(schedule.DateTitleDisplay, new List<SchedulerDisplayModel> { schedule });
+                        monthYearDisplay.Add(new MonthYearDisplayModel
+                        {
+                            Month = int.Parse(schedule.MonthOrder),
+                            Year = int.Parse(schedule.YearDisplay),
+                            MonthYearDisplay = schedule.DateTitleDisplay
+                        });
                     }
                 }
                 UpdateWithMissingDays(ref scheduleDictionary);
                 display.ScheduleList = scheduleDictionary;
+                display.MonthYearList = monthYearDisplay;
             }
             catch (Exception e)
             {

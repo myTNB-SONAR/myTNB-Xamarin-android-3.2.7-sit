@@ -347,7 +347,7 @@ namespace myTNB.Mobile
                         Debug.WriteLine("[DEBUG] ApplicationRatingDetail CTA Error: " + e.Message);
                     }
                 }
-                /*else if (ApplicationAppointmentDetail != null && ApplicationAppointmentDetail.Mode.IsValid())
+                else if (ApplicationAppointmentDetail != null && ApplicationAppointmentDetail.Mode.IsValid())
                 {
                     switch (ApplicationAppointmentDetail.Mode.ToUpper())
                     {
@@ -371,7 +371,7 @@ namespace myTNB.Mobile
                                 break;
                             }
                     }
-                }*/
+                }
                 return type;
             }
         }

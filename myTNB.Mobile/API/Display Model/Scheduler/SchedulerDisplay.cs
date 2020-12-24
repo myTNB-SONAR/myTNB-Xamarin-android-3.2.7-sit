@@ -25,6 +25,8 @@ namespace myTNB.Mobile.API.DisplayModel.Scheduler
                 return LanguageManager.Instance.GetPageValueByKey("ApplicationStatusScheduler", "timeSectionTitle");
             }
         }
+
+        public List<MonthYearDisplayModel> MonthYearList { set; get; }
     }
 
     public class SchedulerDisplayModel
