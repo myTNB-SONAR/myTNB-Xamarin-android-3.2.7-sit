@@ -34,7 +34,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
     public class RateUsActivity : BaseActivityCustom, View.IOnTouchListener
     {
         private CoordinatorLayout rootView;
-        private TextInputLayout txtInputLayoutTellUsMore;
+        private Google.Android.Material.TextField.TextInputLayout txtInputLayoutTellUsMore;
         private TextView txtPageTitleInfo;
         private RatingBar ratingBar;
         private TextView txtTitleQuestion;
@@ -269,7 +269,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 btnSubmit = FindViewById<Button>(Resource.Id.btnSubmit);
                 rating_list_view = FindViewById<ListView>(Resource.Id.rating_list_view);
                 txtTellUsMore = FindViewById<EditText>(Resource.Id.txtTellUsMore);
-                txtInputLayoutTellUsMore = FindViewById<TextInputLayout>(Resource.Id.txtInputLayoutTellUsMore);
+                txtInputLayoutTellUsMore = FindViewById<Google.Android.Material.TextField.TextInputLayout>(Resource.Id.txtInputLayoutTellUsMore);
                 txtTellUsMore.SetOnTouchListener(this);
                 rootView = FindViewById<CoordinatorLayout>(Resource.Id.rootview);
                 txtTellUsMore.Hint = Utility.GetLocalizedLabel("ApplicationStatusRating", "freeTextPlaceHolder");
@@ -288,6 +288,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
 
                 TextViewUtils.SetMuseoSans300Typeface(txtTellUsMore);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutTellUsMore);
                 TextViewUtils.SetMuseoSans500Typeface(txtPageTitleInfo, txtTitleQuestion, txtTellUsTitleInfo, btnSubmit);
 
                 rating_list_view.ItemClick += OnItemClick;

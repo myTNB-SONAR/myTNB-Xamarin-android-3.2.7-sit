@@ -7,7 +7,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:fitsSystemWindows="false"
-	android:theme="@style/Theme.Dashboard"
+	android:theme="@style/Theme.FaultyStreetLamps"
 	android:id="@+id/rootView">
 	<RelativeLayout
 		android:layout_width="match_parent"
@@ -132,35 +132,47 @@
 							android:textColor="@color/powerBlue"
 							android:textSize="16dp" />
 					</LinearLayout>
+					
 					<LinearLayout
 						android:id="@+id/rateUsFeedbackContainer"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:background="@color/white"
-						android:orientation="vertical">
-						<com.google.android.material.textfield.TextInputLayout
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:layout_marginLeft="16dp"
-							android:layout_marginRight="16dp"
-							android:layout_marginTop="16dp"
-							android:layout_marginBottom="32dp"
-							app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
-							android:id="@+id/txtInputLayoutTellUsMore"
-							app:errorTextAppearance="@color/silverchalice"
-							android:background="@color/white">
-							<EditText
-								android:hint=""
-								android:layout_width="match_parent"
-								android:layout_height="wrap_content"
-								android:id="@+id/txtTellUsMore"
-								android:textSize="16dp"
-								android:maxLines="1"
-								android:singleLine="true"
-								android:paddingTop="5dp"
-								android:drawablePadding="6dp" />
-						</com.google.android.material.textfield.TextInputLayout>
-					</LinearLayout>
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+
+                     <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/txtInputLayoutTellUsMore"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="4dp"
+                            app:counterEnabled="false"
+                            app:counterMaxLength="250"
+                            app:errorEnabled="true"
+                            app:errorTextAppearance="@style/TextInputLayoutFeedbackCountSubmitEnquiry"
+                            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
+
+                            <EditText
+                                android:id="@+id/txtTellUsMore"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:importantForAutofill="noExcludeDescendants"
+                                android:inputType="text|textMultiLine"
+                               
+                                android:hint=""
+                                android:maxLength="250"
+                                android:maxLines="5"
+                                android:overScrollMode="always"
+                                android:paddingTop="5dp"
+                                android:scrollbarStyle="insideInset"
+                                android:scrollbars="vertical"
+                                android:textSize="16dp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                    </LinearLayout>
 				</LinearLayout>
 			</ScrollView>
 			<LinearLayout
