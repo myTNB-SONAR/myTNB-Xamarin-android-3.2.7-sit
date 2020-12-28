@@ -959,6 +959,7 @@
     <Compile Include="Src\Maintenance\MVP\MaintenancePresenter.cs" />
     <Compile Include="Src\ManageAccess\Adapter\ManageAccessDeleteAdapter.cs" />
     <Compile Include="Src\ManageAccess\Adapter\ManageAccessAdapter.cs" />
+    <Compile Include="Src\ManageAccess\Models\AccountUserAccessData.cs" />
     <Compile Include="Src\ManageCards\Activity\ManageCardsActivity.cs" />
     <Compile Include="Src\ManageCards\Adapter\ManageCardsAdapter.cs" />
     <Compile Include="Src\ManageCards\Models\CreditCardData.cs" />
@@ -5956,7 +5957,6 @@
     <Folder Include="Src\ForgetPassword\Api\" />
     <Folder Include="Src\Login\Api\" />
     <Folder Include="Src\LogoutRate\Api\" />
-    <Folder Include="Src\ManageAccess\Models\" />
     <Folder Include="Src\ManageCards\Api\" />
     <Folder Include="Src\ManageSupplyAccount\Api\" />
     <Folder Include="Src\ManageUser\Api\" />
@@ -8524,7 +8524,7 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\ManageSupplyMenuItemLayout.axml">
-     <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -8560,6 +8560,21 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\delete_swipe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-mdpi\delete_swipe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xhdpi\delete_swipe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\delete_swipe.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\delete_swipe.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

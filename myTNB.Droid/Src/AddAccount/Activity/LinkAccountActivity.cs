@@ -934,6 +934,12 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         if (account != null)
                         {
                             bool alreadyAdded = false;
+
+                            if (account.mobileNoOwner.Equals("") && account.emailOwner.Equals(""))
+                            {
+                                account.isNoDetailOwner = true;
+                            }
+
                             foreach (NewAccount item in accountList)
                             {
                                 if (item.accountNumber.Equals(account.accountNumber))
@@ -946,6 +952,14 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 if (item.accountNumber.Equals(account.accountNumber))
                                 {
                                     alreadyAdded = true;
+                                }
+                                if (item.mobileNoOwner.Equals("") && item.emailOwner.Equals(""))
+                                {
+                                    item.isNoDetailOwner = true;
+                                }
+                                else
+                                {
+                                    item.isNoDetailOwner = false;
                                 }
                             }
 
@@ -980,6 +994,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         }
                     }
                 }
+
 
             }
             catch (Exception e)

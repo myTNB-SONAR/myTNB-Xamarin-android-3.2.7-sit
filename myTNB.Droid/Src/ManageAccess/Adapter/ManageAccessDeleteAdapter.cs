@@ -21,10 +21,11 @@ using System.Collections.Generic;
 
 namespace myTNB_Android.Src.ManageAccess.Adapter
 {
-    internal class ManageAccessDeleteAdapter : BaseCustomAdapter<UserManageAccessAccount>
+    internal class ManageAccessDeleteAdapter : BaseCustomAdapter<UserManageAccessAccount>, ManageAccessContract.IUserActionsListener
     {
         private ManageAccessContract.IView mView;
         private AccountData accountData;
+        customCheckboxListener customListner;
 
         public ManageAccessDeleteAdapter(Context context) : base(context)
         {
@@ -40,6 +41,22 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
 
         public ManageAccessDeleteAdapter(Context context, List<UserManageAccessAccount> itemList, bool notify) : base(context, itemList, notify)
         {
+        }
+
+        public List<UserManageAccessAccount> GetAllNotifications()
+        {
+            List<UserManageAccessAccount> customerAccountList = UserManageAccessAccount.List(accountData?.AccountNum);
+            return customerAccountList;
+        }
+
+        public interface customCheckboxListener
+        {
+            public void onCheckboxListener(int position);
+        }
+
+        public void setCustomCheckboxListner(customCheckboxListener listener)
+        {
+            this.customListner = listener;
         }
 
         public void DisableAll()
@@ -58,8 +75,25 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
             if (convertView == null)
             {
                 convertView = LayoutInflater.From(context).Inflate(Resource.Layout.ManageAccessDeleteRow, parent, false);
+                CheckBox btn_delete = (CheckBox)convertView.FindViewById(Resource.Id.CheckActionIcon);
                 viewHolder = new ManageAccessFilterViewHolder(convertView);
                 convertView.Tag = viewHolder;
+
+                btn_delete.CheckedChange += (sender, e) =>
+                {
+                    if (e.IsChecked)
+                    {
+                        UserManageAccessAccount.SetSelected(data.AccNum, true, data.userId);
+                        customListner.onCheckboxListener(position);
+                        return;
+                    }
+                    else
+                    {
+                        UserManageAccessAccount.SetSelected(data.AccNum, false, data.userId);
+                        customListner.onCheckboxListener(position);
+                        return;
+                    }
+                };
             }
             else
             {
@@ -71,7 +105,7 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
                 if (data.IsPreRegister)
                 {
                     viewHolder.txtUserAccessBody.Visibility = ViewStates.Visible;
-                    viewHolder.txtUserAccessBody.Text = data.email;
+                    viewHolder.txtUserAccessBody.Text = Utility.GetLocalizedLabel("UserAccess", "pendingRegistration");
                 }
                 else
                 {
@@ -100,6 +134,31 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtUserAccessTitle, txtUserAccessBody);
             }
+        }
+
+        public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnAddAccount()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnAddLogUserAccess(AccountData accountData)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnRemoveAccount(string numacc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Start()
+        {
+            throw new NotImplementedException();
         }
     }
 }

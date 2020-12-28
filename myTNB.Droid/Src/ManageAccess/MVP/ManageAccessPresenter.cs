@@ -4,11 +4,13 @@ using Android.Runtime;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.ManageAccess.Models;
 using myTNB_Android.Src.ManageCards.Models;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
@@ -25,6 +27,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
     {
 
         private ManageAccessContract.IView mView;
+        List<AccountUserAccessData> selectedUserAccessList;
         AccountData accountData;
         int position;
         public ManageAccessPresenter(ManageAccessContract.IView mView, AccountData accountData)
@@ -98,13 +101,6 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                     CustomerBillingAccount.Remove(AccountNum);
                     if (isSelectedAcc && CustomerBillingAccount.HasItems())
                     {
-                        /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
-                        //CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetFirst();
-                        //if (customerBillingAccount != null) {
-                        //    CustomerBillingAccount.Update(customerBillingAccount.AccNum, true);
-                        //}
-                        /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
-
                         CustomerBillingAccount.MakeFirstAsSelected();
                     }
                     //this.mView.ShowSuccessRemovedAccount();
@@ -164,51 +160,27 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                     this.mView.HideShowProgressDialog();
                 }
 
+                /*if (notificationDeleteResponse.IsSuccessResponse())
+                {
+                    foreach (UserNotificationData userNotificationData in selectedNotificationList)
+                    {
+                        UserNotificationEntity.RemoveById(userNotificationData.Id);
+                    }
+                    this.mView.UpdateDeleteNotifications();
+                }
+                else
+                {
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideProgress();
+                    }
+                    this.mView.ShowFailedErrorMessage(notificationDeleteResponse.Response.ErrorMessage);
+                    this.mView.OnFailedNotificationAction();
+                }*/
+
                 if (removeAccountResponse.IsSuccessResponse())
                 {
-                    bool isSelectedAcc = false;
-                    if (CustomerBillingAccount.HasSelected())
-                    {
-                        if (CustomerBillingAccount.GetSelected() != null &&
-                            CustomerBillingAccount.GetSelected().AccNum.Equals(accountData.AccountNum))
-                        {
-                            isSelectedAcc = true;
-                        }
-                    }
-
-                    CustomerBillingAccount.Remove(accountData.AccountNum);
-                    if (isSelectedAcc && CustomerBillingAccount.HasItems())
-                    {
-                        /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
-                        //CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetFirst();
-                        //if (customerBillingAccount != null) {
-                        //    CustomerBillingAccount.Update(customerBillingAccount.AccNum, true);
-                        //}
-                        /**Since Summary dashBoard logic is changed these codes where commented on 01-11-2018**/
-
-                        CustomerBillingAccount.MakeFirstAsSelected();
-                    }
-                    SMUsageHistoryEntity.RemoveAccountData(accountData.AccountNum);
-                    UsageHistoryEntity.RemoveAccountData(accountData.AccountNum);
-                    BillHistoryEntity.RemoveAccountData(accountData.AccountNum);
-                    PaymentHistoryEntity.RemoveAccountData(accountData.AccountNum);
-                    REPaymentHistoryEntity.RemoveAccountData(accountData.AccountNum);
-                    AccountDataEntity.RemoveAccountData(accountData.AccountNum);
-                    SummaryDashBoardAccountEntity.RemoveAll();
-                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                    HomeMenuUtils.ResetAll();
-
-                    this.mView.ClearAccountsAdapter();
-                    List<UserManageAccessAccount> customerAccountList = new List<UserManageAccessAccount>();
-                    if (customerAccountList != null && customerAccountList.Count > 0)
-                    {
-                        this.mView.ShowAccountList(customerAccountList);
-                        this.mView.ShowAccountRemovedSuccess();
-                    }
-                    else
-                    {
-                        this.mView.ShowEmptyAccount();
-                    }
+                    
                 }
                 else
                 {
@@ -310,6 +282,33 @@ namespace myTNB_Android.Src.ManageAccess.MVP
         public void OnAddAccount()
         {
             this.mView.ShowAddAccount();
+        }
+
+        public List<NewAppModel> OnGeneraNewAppTutorialList()
+        {
+            List<NewAppModel> newList = new List<NewAppModel>();
+
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.BottomRight,
+                ContentTitle = Utility.GetLocalizedLabel("UserAccess", "walkthroughStep1Title"),
+                ContentMessage = Utility.GetLocalizedLabel("UserAccess", "walkthroughStep1"),
+                ItemCount = 0,
+                NeedHelpHide = true,
+                IsButtonShow = false
+            });
+
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.BottomLeft,
+                ContentTitle = Utility.GetLocalizedLabel("UserAccess", "walkthroughStep2Title"),
+                ContentMessage = Utility.GetLocalizedLabel("UserAccess", "walkthroughStep2"),
+                ItemCount = UserManageAccessAccount.List(accountData.AccountNum).Count,
+                NeedHelpHide = true,
+                IsButtonShow = false
+            });
+
+            return newList;
         }
 
         public void Start()

@@ -38,5 +38,6 @@
 
         public string mobileNoOwner { get; set; }
 
+        public bool isNoDetailOwner { get; set; }
     }
 }

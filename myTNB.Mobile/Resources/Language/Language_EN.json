@@ -257,7 +257,8 @@
     "titleIcUpdate": "Complete your myTNB profile now for a better myTNB experience!",
     "bodyIcUpdate": "Your identification number is not captured in your myTNB profile, update it now to have better access and controls over your electricity accounts!",
     "tutorialUsageTitle": "View your accounts details here.",
-    "tutorialUsageDesc": "Easily view your account details and manage who has access to your account from here."
+    "tutorialUsageDesc": "Easily view your account details and manage who has access to your account from here.",
+    "tutorialUsageDescNonOwner": "Easily view your account details from here."
   },
   "Tabbar": {
     "home": "Home",
@@ -1276,6 +1277,15 @@
     "e_billing" : "Apply for e-Billing",
     "usremail" : "USER EMAIL ADDRESS",
     "titleAddNewUser" : "Provide user’s email address they use for their myTNB account.",
-    "bodyAddNewUser" : "Do you want to give this user more access (optional)?"
+    "bodyAddNewUser" : "Do you want to give this user more access (optional)?",
+    "deleteSuccessMessage" : "User(s) has been removed successfully.",
+    "deleteUserTitle" : "Are you sure you want to remove the current user(s)?",
+    "deleteUserBody" : "Once removed, the selected user(s) will be revoked of all access and unable to view any information related to this account.",
+    "walkthroughStep1Title" : "View your activity log here",
+    "walkthroughStep2Title" : "Your account viewers at a glance.",
+    "walkthroughStep1" : "Track all your access and permissions controls so you don’t miss out on anything!",
+    "walkthroughStep2" : "View and manage people who are viewing your account or provide access to someone new here.",
+    "tapToSkip" : "Tap to skip",
+    "pendingRegistration" : "Pending Registration"
   }
 }

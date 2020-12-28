@@ -1674,22 +1674,35 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             wtManager.UpdateReadItem(itemID, flag, formattedDate);
         }
 
-        public List<NewAppModel> OnGeneraNewAppTutorialList()
+        public List<NewAppModel> OnGeneraNewAppTutorialList(bool isOwner)
         {
             List<NewAppModel> newList = new List<NewAppModel>();
             bool isNeedHelpHide = true;
 
-           
-            newList.Add(new NewAppModel()
+            if (isOwner)
             {
-                ContentShowPosition = ContentType.BottomRight,
-                ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageTitle"),
-                ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageDesc"),
-                ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                NeedHelpHide = isNeedHelpHide,
-                IsButtonShow = true
-            });
-
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.BottomRight,
+                    ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageTitle"),
+                    ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageDesc"),
+                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    NeedHelpHide = isNeedHelpHide,
+                    IsButtonShow = false
+                });
+            }
+            else
+            {
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.BottomRight,
+                    ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageTitle"),
+                    ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageDescNonOwner"),
+                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    NeedHelpHide = isNeedHelpHide,
+                    IsButtonShow = false
+                });
+            }            
             return newList;
         }
 

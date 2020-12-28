@@ -156,18 +156,13 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                     this.mView.HideRemoveProgress();
                 }
 
-                if (manageAccessAccountListResponse != null && manageAccessAccountListResponse.GetData() != null && manageAccessAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                if (manageAccessAccountListResponse != null && manageAccessAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
                     if (manageAccessAccountListResponse.GetData().Count > 0)
                     {
                         ProcessManageAccessAccount(manageAccessAccountListResponse.GetData());
                     }
-                    else
-                    {
-                        AccountSortingEntity.RemoveSpecificAccountSorting(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
-                    }
                     this.mView.ManageUserActivity();
-
                 }
                 else
                 {

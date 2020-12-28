@@ -280,6 +280,30 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static System.Boolean HasManageAccessIconTutorialShown(ISharedPreferences prefs)            //new manage access tutorial icon
+        {
+            return prefs.GetBoolean("hasManageAccessIconTutorialShown", false);
+        }
+
+        public static void DoManageAccessIconTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasManageAccessIconTutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasManageAccessPageTutorialShown(ISharedPreferences prefs)            //new manage access tutorial page
+        {
+            return prefs.GetBoolean("hasManageAccessPageTutorialShown", false);
+        }
+
+        public static void DoManageAccessPageTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasManageAccessPageTutorialShown", true);
+            editor.Apply();
+        }
+
         public static System.Boolean HasItemizedBillingDetailTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasItemizedBillingDetailTutorialShown", false);

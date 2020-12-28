@@ -193,7 +193,7 @@ namespace myTNB_Android.Src.AddAccount
             mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
             mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
             MobileLinearLayout.AddView(mobileNumberInputComponent);
-
+           
             string selectedcountry = UserSessions.GetSelectedCountry(PreferenceManager.GetDefaultSharedPreferences(context));
             if (selectedcountry != null)
             {
@@ -263,6 +263,15 @@ namespace myTNB_Android.Src.AddAccount
                         textInputLayoutEmailEditText.Error = null;
                     }
                 };
+
+                if (item.isNoDetailOwner)
+                {
+                    OwnerNoContactLinearLayout.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    OwnerNoContactLinearLayout.Visibility = ViewStates.Gone;
+                }
 
             }
             catch (Exception e)

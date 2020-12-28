@@ -12,6 +12,7 @@ using AndroidX.Fragment.App;
 using AndroidX.ViewPager.Widget;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
+using myTNB_Android.Src.ManageAccess.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
@@ -190,42 +191,43 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         ((WhatsNewMenuFragment)this.mFragment).StopScrolling();
                     }
                 }
-               /* else if (this.mContext is DashboardHomeActivity)
+                else if (this.mContext is ManageAccessActivity)
                 {
-                        if (((DashboardHomeActivity)mContext).CheckIsScrollable())
+                    if (NewAppTutorialList.Count > 0)
+                    {
+                        int ItemCount = NewAppTutorialList[1].ItemCount;
+                        if (ItemCount > 0)
                         {
-                            string DisplayMode = NewAppTutorialList[0].DisplayMode;
-                            int ItemCount = NewAppTutorialList[0].ItemCount;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(255f);
-                            int middleHeight = ((DashboardHomeActivity)this.mContext).GetSMRTopViewHeight();
-                            int checkPoint = (int)DPUtils.ConvertDPToPx(60f);
-                            if (DisplayMode == "NONSMR")
+                            int topHeight = (int)DPUtils.ConvertDPToPx(65f);
+                            if (((ManageAccessActivity)this.mContext).CheckIsScrollable())
                             {
-                                checkPoint = (int)DPUtils.ConvertDPToPx(40f);
-                            }
+                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((ManageAccessActivity)this.mContext).OnGetEndOfScrollView());
+                                int halfScroll = topHeight / 2;
 
-                            if (ItemCount == 1)
-                            {
-                                checkPoint = 0;
-                            }
-
-                            if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
-                            {
-                                ((SSMRMeterHistoryActivity)mContext).MeterHistoryCustomScrolling((int)DPUtils.ConvertDPToPx(30f));
+                                if (diffHeight < halfScroll)
+                                {
+                                    ((ManageAccessActivity)this.mContext).HomeMenuCustomScrolling(topHeight / 2);
+                                }
+                                else
+                                {
+                                    ((ManageAccessActivity)this.mContext).HomeMenuCustomScrolling(0);
+                                }
                             }
                             else
                             {
-                                ((SSMRMeterHistoryActivity)mContext).MeterHistoryCustomScrolling(0);
+                                ((ManageAccessActivity)this.mContext).HomeMenuCustomScrolling(0);
                             }
-
                         }
                         else
                         {
-                            ((SSMRMeterHistoryActivity)mContext).MeterHistoryCustomScrolling(0);
+                            ((ManageAccessActivity)this.mContext).HomeMenuCustomScrolling(0);
                         }
-                }*/
-                   
-                
+                    }
+                    else
+                    {
+                        ((ManageAccessActivity)this.mContext).HomeMenuCustomScrolling(0);
+                    }
+                }                                  
                 else
                 {
                     if (this.mContext is SSMRMeterHistoryActivity)
@@ -287,6 +289,16 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         }
                         txtDoubleTapDismiss.Visibility = ViewStates.Visible;
                         txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
+                        indicator.Visibility = ViewStates.Visible;
+                        indicatorTopContainer.Visibility = ViewStates.Visible;
+                    }
+                    else if(this.mContext is DashboardHomeActivity)
+                    {
+                        swipeTopDoubleTapLayout.Visibility = ViewStates.Gone;
+                        swipeDoubleTapLayout.Visibility = ViewStates.Visible;
+
+                        txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                        txtDoubleTapDismiss.Text = Utility.GetLocalizedLabel("UserAccess", "tapToSkip");
                         indicator.Visibility = ViewStates.Visible;
                         indicatorTopContainer.Visibility = ViewStates.Visible;
                     }
@@ -881,6 +893,14 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     else if (this.mActivity is RewardDetailActivity)
                     {
                         UserSessions.DoRewardsDetailShown(this.mPref);
+                    }
+                    else if (this.mActivity is DashboardHomeActivity)
+                    {
+                        UserSessions.DoManageAccessIconTutorialShown(this.mPref);
+                    }
+                    else if (this.mActivity is ManageAccessActivity)
+                    {
+                        UserSessions.DoManageAccessPageTutorialShown(this.mPref);
                     }
                 }
                 return true;

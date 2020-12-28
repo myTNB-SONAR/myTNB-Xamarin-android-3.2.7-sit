@@ -122,6 +122,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private IMenu ManageSupplyAccountMenu;
 
+        ISharedPreferences mPref;
 
         public bool IsActive()
         {
@@ -202,6 +203,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             base.SetToolBarTitle(GetString(Resource.String.dashboard_activity_title));
             mPresenter = new DashboardHomePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
             TextViewUtils.SetMuseoSans500Typeface(txtAccountName);
+            mPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
             bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
             if (IsRewardsDisabled)
@@ -371,23 +373,33 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             if (DashboardHomeActivity.GO_TO_INNER_DASHBOARD)
             {
+                CustomerBillingAccount selected = new CustomerBillingAccount();
+                selected = CustomerBillingAccount.GetSelected();
                 DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
                 MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
                 ManageSupplyAccountMenu = menu;
                 ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.manage_account)).SetVisible(true);
-                OnShowItemizedBillingTutorialDialog();
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (!UserSessions.HasManageAccessIconTutorialShown(this.mPref))
+                    {
+                        OnManageAccessIconTutorialDialog(selected.isOwned);
+                    }
+                };
+                h.PostDelayed(myAction, 50);
             }
             return base.OnCreateOptionsMenu(menu);
            
         }
 
-        ISharedPreferences mPref;
-        public void OnShowItemizedBillingTutorialDialog()
+        public void OnManageAccessIconTutorialDialog(bool flag)
         {
             Handler h = new Handler();
             Action myAction = () =>
             {
-                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.mPresenter.OnGeneraNewAppTutorialList());
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.mPresenter.OnGeneraNewAppTutorialList(flag));
             };
             h.PostDelayed(myAction, 100);
         }

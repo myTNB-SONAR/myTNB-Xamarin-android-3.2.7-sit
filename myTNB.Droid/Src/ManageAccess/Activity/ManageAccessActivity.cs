@@ -27,6 +27,10 @@ using static myTNB_Android.Src.ManageAccess.Adapter.ManageAccessAdapter;
 using myTNB_Android.Src.ManageUser.Activity;
 using myTNB_Android.Src.AddNewUser.Activity;
 using AndroidX.CoordinatorLayout.Widget;
+using Android.Graphics;
+using Android.Preferences;
+using static myTNB_Android.Src.ManageAccess.Adapter.ManageAccessDeleteAdapter;
+using AndroidX.Core.Content;
 
 namespace myTNB_Android.Src.ManageAccess.Activity
 {
@@ -35,13 +39,16 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         //, MainLauncher = true
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.OwnerTenantBaseTheme")]
-    public class ManageAccessActivity : BaseActivityCustom, ManageAccessContract.IView, customButtonListener
+    public class ManageAccessActivity : BaseActivityCustom, ManageAccessContract.IView, customButtonListener, customCheckboxListener
     {
 /*        [BindView(Resource.Id.rootView)]
         LinearLayout rootView;*/
 
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
+
+        [BindView(Resource.Id.ScrollviewLayout)]
+        ScrollView scrollview;
 
         [BindView(Resource.Id.listView)]
         ListView listView;
@@ -86,6 +93,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
 
         ManageAccessDeleteAdapter adapterDelete;
 
+        ISharedPreferences mPref;
 
         AccountData accountData;
 
@@ -144,10 +152,10 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                     {
                         //accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
                         accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-
                     }
                 }
 
+                mPref = PreferenceManager.GetDefaultSharedPreferences(this);
                 txtEmptyManageAccess.Text = GetLabelByLanguage("LabelEmptyTitle");
                 txtManageAccessTitle.Text = GetLabelByLanguage("LabelTitle");
                 btnAddUser.Text = GetLabelByLanguage("addUserBtn");
@@ -155,12 +163,14 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 btnAddAccessUser.Text = GetLabelByLanguage("AddTitle");
                 btnCancelRemoveAccess.Text = Utility.GetLocalizedCommonLabel("cancel");
                 btnRemoveSelectedAccessUser.Text = Utility.GetLocalizedLabel("UserAccess", "RemoveTitle");
+                btnRemoveSelectedAccessUser.Enabled = false;
 
                 adapter = new ManageAccessAdapter(this, false);
                 adapterDelete = new ManageAccessDeleteAdapter(this, false);
                 listViewRemoveAcc.Adapter = adapterDelete;
                 listView.Adapter = adapter;
                 adapter.setCustomButtonListner(this);
+                adapterDelete.setCustomCheckboxListner(this);
                 listView.SetNoScroll();
                 listView.ItemClick += ListView_ItemClick;
 
@@ -195,17 +205,55 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         AlertDialog removeDialog;
         public void onButtonClickListner(int position)
         {
-            ShowDeleteAccDialog(this, position, () =>
+            ShowDeleteAccDialog(this, () =>
             {
                 UserManageAccessAccount account = adapter.GetItemObject(position);
                 UserManageAccessAccount.Remove(account.AccNum , account.userId);
                 this.mPresenter.OnRemoveAccount(account.userId);
-                adapter.Clear();
-                listView.Adapter = null;
-                listView.Adapter = adapter;
-                adapter.setCustomButtonListner(this);
+                AdapterClean();
+                AdapterDeleteClean();
                 this.userActionsListener.Start();
+                ShowRemoveMessageResponse();
             });           
+        }
+
+        public void AdapterClean()
+        {
+            adapter.Clear();
+            listView.Adapter = null;
+            listView.Adapter = adapter;
+            adapter.setCustomButtonListner(this);
+        }
+
+        public void AdapterDeleteClean()
+        {
+            adapterDelete.Clear();
+            listViewRemoveAcc.Adapter = null;
+            listViewRemoveAcc.Adapter = adapterDelete;
+            adapterDelete.setCustomCheckboxListner(this);
+            DisableRemoveButton();
+        }
+
+        public void onCheckboxListener(int position)
+        {
+            int i = 0;
+            List<UserManageAccessAccount> customerAccountList = UserManageAccessAccount.List(accountData?.AccountNum);
+            foreach (UserManageAccessAccount userManageAccessAccount in customerAccountList)
+            {
+                if (userManageAccessAccount.isSelected)
+                {
+                    i++;
+                }
+
+                if (i > 0)
+                {
+                    EnableRemoveButton();
+                }
+                else
+                {
+                    DisableRemoveButton();
+                }
+            }
         }
 
         [OnClick(Resource.Id.btnAddUser)]
@@ -307,10 +355,17 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             {
                 if (!this.GetIsClicked())
                 {
-/*                    this.SetIsClicked(true);
-                    Intent addAccountIntent = new Intent(this, typeof(AddNewUserActivity));
-                    StartActivityForResult(addAccountIntent, Constants.ADD_USER);*/
-
+                    this.SetIsClicked(true);
+                    ShowDeleteAccDialog(this, () =>
+                    {
+                        List<UserManageAccessAccount> DeletedSelectedUser = UserManageAccessAccount.ListIsSelected(accountData?.AccountNum);
+                        UserManageAccessAccount.DeleteSelected(accountData.AccountNum);
+                        AdapterDeleteClean();
+                        AdapterClean();
+                        this.userActionsListener.Start();
+                        bottomLayout.Visibility = ViewStates.Gone;
+                        ShowRemoveMessageResponse();
+                    });
                 }
                 this.SetIsClicked(false);
             }
@@ -440,13 +495,11 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             }
         }
 
-        void ShowDeleteAccDialog(Android.App.Activity context, int position, Action confirmAction, Action cancelAction = null)
+        void ShowDeleteAccDialog(Android.App.Activity context, Action confirmAction, Action cancelAction = null)
         {
-            UserManageAccessAccount account = adapter.GetItemObject(position);
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                        .SetTitle(Utility.GetLocalizedLabel("ManageAccount", "popupremoveAccountTitle"))
-                        //.SetMessage(Utility.GetLocalizedLabel("Common", "updateIdMessage"))
-                        .SetMessage(string.Format(Utility.GetLocalizedLabel("ManageAccount", "popupremoveAccountMessage"), account.AccDesc, account.AccNum))
+                        .SetTitle(Utility.GetLocalizedLabel("UserAccess", "deleteUserTitle"))
+                        .SetMessage(Utility.GetLocalizedLabel("UserAccess", "deleteUserBody"))
                         .SetContentGravity(Android.Views.GravityFlags.Center)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "ok"))
@@ -467,6 +520,22 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                     tooltipBuilder.DismissDialog();
                 }
             }).Show();
+        }
+
+        public void ShowRemoveMessageResponse()
+        {
+            Snackbar errorMessageSnackbar =
+            Snackbar.Make(rootView, Utility.GetLocalizedLabel("UserAccess", "deleteSuccessMessage"), Snackbar.LengthIndefinite)
+                        .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                         (view) =>
+                         {
+                             // EMPTY WILL CLOSE SNACKBAR
+                         }
+                        );//.Show();
+            View snackbarView = errorMessageSnackbar.View;
+            TextView textView = (TextView)snackbarView.FindViewById<TextView>(Resource.Id.snackbar_text);
+            textView.SetMaxLines(4);
+            errorMessageSnackbar.Show();
         }
 
         public void ShowDeleteMessageResponse(bool click)
@@ -581,6 +650,16 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 //txtManageAccessTitle.Visibility = ViewStates.Gone;
                 layout_btnAddUser.Visibility = ViewStates.Gone;
                 manage_user_layout.Visibility = ViewStates.Gone;
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (!UserSessions.HasManageAccessPageTutorialShown(this.mPref))
+                    {
+                        OnManageAccessPageTutorialDialog();
+                    }
+                };
+                h.PostDelayed(myAction, 50);
             }
             catch (Exception e)
             {
@@ -609,6 +688,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 listView.EmptyView = manage_user_layout;
                 txtManageAccessTitle.Visibility = ViewStates.Gone;
                 bottomLayout.Visibility = ViewStates.Gone;
+                bottomLayoutDeleteMultiple.Visibility = ViewStates.Gone;
                 layout_btnAddUser.Visibility = ViewStates.Visible;
             }
             catch (Exception e)
@@ -628,6 +708,93 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public bool CheckIsScrollable()
+        {
+            View child = (View)listView.GetChildAt(0);
+
+            return true;
+        }
+
+        public void HomeMenuCustomScrolling(int yPosition)
+        {
+            try
+            {
+                this.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        listView.ScrollTo(0, yPosition);
+                        listView.RequestLayout();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public int OnGetEndOfScrollView()
+        {
+            View child = (View)listView.GetChildAt(0);
+            View childtext = (View)txtManageAccessTitle;
+
+            return child.Height + listView.PaddingTop + listView.PaddingBottom + childtext.Height;
+        }
+
+        public int OnGetEndOfScrollView2()
+        {
+            View child = (View)listView.GetChildAt(1);
+            View childtext = (View)txtManageAccessTitle;
+
+            return child.Height + child.Height + listView.PaddingTop + listView.PaddingBottom + childtext.Height;
+        }
+
+        public void OnManageAccessPageTutorialDialog()
+        {
+            Handler h = new Handler();
+            Action myAction = () =>
+            {
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.mPresenter.OnGeneraNewAppTutorialList());
+            };
+            h.PostDelayed(myAction, 100);
+        }
+
+        public int GetViewBillButtonHeight()
+        {
+            int height = ManageAccessMenu.FindItem(Resource.Id.icon_log_activity_unread).Icon.IntrinsicHeight;
+            return height;
+        }
+
+        public int GetViewBillButtonWidth()
+        {
+            int width = ManageAccessMenu.FindItem(Resource.Id.icon_log_activity_unread).Icon.IntrinsicWidth;
+            return width;
+        }
+
+        public int GetTopHeight()
+        {
+            int i = 0;
+            try
+            {
+                Rect offsetViewBounds = new Rect();
+                //returns the visible bounds
+                toolbar.GetDrawingRect(offsetViewBounds);
+                // calculates the relative coordinates to the parent
+                rootView.OffsetDescendantRectToMyCoords(toolbar, offsetViewBounds);
+                i = offsetViewBounds.Top + (int)DPUtils.ConvertDPToPx(14f);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return i;
         }
 
         public void ShowAddNewUserEmailExistSuccess()
@@ -747,6 +914,20 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void EnableRemoveButton()
+        {
+            btnRemoveSelectedAccessUser.Enabled = true;
+            btnRemoveSelectedAccessUser.SetTextColor(Color.ParseColor("#e44b21"));
+            btnRemoveSelectedAccessUser.Background = ContextCompat.GetDrawable(this, Resource.Drawable.red_light_button_background);
+        }
+
+        public void DisableRemoveButton()
+        {
+            btnRemoveSelectedAccessUser.Enabled = false;
+            btnRemoveSelectedAccessUser.SetTextColor(Color.ParseColor("#a6a6a6"));
+            btnRemoveSelectedAccessUser.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_outline);
         }
 
         public override string GetPageId()
