@@ -54,10 +54,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         const string PAGE_ID = "ApplicationAppointment";
 
         private static string[] timeNames = { "9:00 AM - 1:00 PM", "2:00 PM - 6:00 PM" };
-        private static int[] visibleNumbers = {  };
+        private static List<int> visibleNumbers = new List<int>();
         private GetApplicationStatusDisplay applicationDetailDisplay;
         private SchedulerDisplay schedulerDisplayResponse;
-
+       
         internal List<string> ScheduleKeys;
         internal int SelectedKeyIndex = 0;
 
@@ -97,7 +97,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             currentMonth = FindViewById<TextView>(Resource.Id.current_month);
             btnSubmitAppointment = (Button)FindViewById<Button>(Resource.Id.btnSubmitAppointment);
             calenderBack.Click += OnClickCalenderBack;
-
+            
             calenderNext.Click += OnClickCalenderNext;
             Bundle extras = Intent.Extras;
             if (extras != null)
@@ -113,7 +113,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
                 SetKeys();
 
-                SelectedKeyIndex++;
+                //SelectedKeyIndex++;
             
             currentMonth.Text = ScheduleKeys[SelectedKeyIndex];
             GetVisibleNumbers(ScheduleKeys[SelectedKeyIndex], SelectedKeyIndex);
@@ -163,6 +163,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         }
         public void GetVisibleNumbers(string selectedKey, int SelectedKeyIndex)
         {
+            visibleNumbers = new List<int>();
             if (schedulerDisplayResponse != null && schedulerDisplayResponse.MonthYearList != null && schedulerDisplayResponse.ScheduleList != null)
             {
                 var selectedMonth = schedulerDisplayResponse.ScheduleList.Where(x => x.Key == selectedKey).FirstOrDefault();
@@ -170,14 +171,16 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 {
                     if (selectedMonth.Value[i].IsAvailable)
                     {
-                        visibleNumbers[i] = Convert.ToInt32(selectedMonth.Value[i].Day);
+                        visibleNumbers.Add(Convert.ToInt32(selectedMonth.Value[i].Day));
                     }
                 }
 
-                RelativeLayout ll = (RelativeLayout)FindViewById<RelativeLayout>(Resource.Id.CalendarLayout);
+                RelativeLayout ll = null;
                 CustomCalendar customCalendar = new CustomCalendar(this, schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Month, "", schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Year, visibleNumbers, timeNames);
-
+                ll = (RelativeLayout)FindViewById<RelativeLayout>(Resource.Id.CalendarLayout);
                 ll.AddView(customCalendar);
+                ll.Visibility = ViewStates.Gone;
+                ll.Visibility = ViewStates.Visible;
                 customCalendar.DatetimeValidate += Calendar_DatetimeValidate;
             }
         }

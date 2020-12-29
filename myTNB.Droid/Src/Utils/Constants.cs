@@ -382,6 +382,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE = 29805;
         internal static readonly int APPLICATION_STATUS_RATING_REQUEST_CODE = 29806;
         internal static readonly int APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE = 29807;
+        internal static readonly int APPLICATION_STATUS_DETAILS_NEWAPPOINTMENT_REQUEST_CODE = 29808;
 
         internal static readonly string WEBVIEW_PAYMENT = "WebViewPayment";
         internal static readonly string WEBVIEW_PAYMENT_FPX = "WebViewPaymentFPX";

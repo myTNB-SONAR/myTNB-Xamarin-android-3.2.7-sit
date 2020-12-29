@@ -42,7 +42,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         LinearLayout rootview;
 
         const string PAGE_ID = "ApplicationStatus";
-        ApplicationStatusDetailProgressAdapter adapter;
+        public ApplicationStatusDetailProgressAdapter adapter;
         ApplicationStatusDetailSubDetailAdapter subAdapter;
         RecyclerView.LayoutManager layoutManager;
         GetApplicationStatusDisplay applicationDetailDisplay;
@@ -191,7 +191,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         private bool IsFromLinkedWith = false;
         private Snackbar mNoInternetSnackbar;
         private bool IsPush = false;
-
+       
         [OnClick(Resource.Id.btnPrimaryCTA)]
         internal void OnPrimaryCTAClick(object sender, EventArgs args)
         {
@@ -934,6 +934,21 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     h.PostDelayed(myAction, 100);
                 }
             }
+        }
+        public int GetProgressDateCount()
+        {
+            int i = 0;
+
+            try
+            {
+                i = adapter.statusDateCount;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
         }
         public int GetTopHeight()
         {

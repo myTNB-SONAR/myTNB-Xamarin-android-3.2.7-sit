@@ -67,16 +67,16 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         LayoutParams defaultButtonParams;
         private LayoutParams userButtonParams;
 
-        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName, int calendarYear, int[] visibleNumbers, string[] timeNames) : base(context)
+        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, string[] timeNames) : base(context)
         {
             Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, timeNames);
         }
-        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName, int calendarYear, int[] visibleNumbers, string[] timeNames, IAttributeSet attrs) : base(context, attrs)
+        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, string[] timeNames, IAttributeSet attrs) : base(context, attrs)
         {
             Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, timeNames);
         }
 
-        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName, int calendarYear, int[] visibleNumbers, string[] timeNames, IAttributeSet attrs, int defStyleAttr)
+        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, string[] timeNames, IAttributeSet attrs, int defStyleAttr)
             : base(context, attrs, defStyleAttr)
         {
             Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, timeNames);
@@ -84,13 +84,13 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
         
 
-        private void Initialize(Context context, int calenderMonth, string calenderMonthName, int calendarYear, int[] visibleNumbers, string[] timeNames)
+        private void Initialize(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, string[] timeNames)
         {
             DisplayMetrics metrics = Resources.DisplayMetrics;
-            
+            setUserCurrentMonthYear(calenderMonth, calendarYear);
             var inflater = LayoutInflater.FromContext(context);
             View view = inflater.Inflate(Resource.Layout.AppointmentCalendarLayout, this, true);
-
+            calendar = null;
             calendar = Calendar.GetInstance(Java.Util.Locale.English);
             calendar.Set(CalendarField.DayOfMonth, 1);
             calendar.Set(CalendarField.Month, calenderMonth);
@@ -207,10 +207,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         }
 
 
-        private void InitCalendarWithDate(Context context, int year, int month, int day, string calenderMonthName, string yearhNames, int[] visibleNumbers, string[] timeNames)
+        private void InitCalendarWithDate(Context context, int year, int month, int day, string calenderMonthName, string yearhNames, List<int> visibleNumbers, string[] timeNames)
         {
-            if (calendar == null)
-                calendar = Calendar.GetInstance(Java.Util.Locale.English);
+            //calendar = null;
+               // calendar = Calendar.GetInstance(Java.Util.Locale.English);
 
             calendar.Set(year, month, day);
 
@@ -223,7 +223,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             chosenDateDay = day;
 
             calendar.Set(year, month, 1);
-            int firstDayOfCurrentMonth = calendar.Get(CalendarField.DayOfWeek) - 2;
+            int firstDayOfCurrentMonth = 7- calendar.Get(CalendarField.DayOfWeek);
 
             calendar.Set(year, month, daysInCurrentMonth); 
 
