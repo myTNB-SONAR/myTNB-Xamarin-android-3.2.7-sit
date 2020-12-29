@@ -854,6 +854,21 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 }
             }
         }
+        public int GetProgressDateCount()
+        {
+            int i = 0;
+
+            try
+            {
+                i = adapter.statusDateCount;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
+        }
         public int GetTopHeight()
         {
             int i = 0;
