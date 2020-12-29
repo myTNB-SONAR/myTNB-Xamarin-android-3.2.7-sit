@@ -18,7 +18,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
         private List<StatusTrackerDisplay> mProgressList = new List<StatusTrackerDisplay>();
         public event EventHandler<int> ItemClick;
         public bool IsPayment;
-
+        public int statusDateCount;
         public void Clear()
         {
             this.mProgressList.Clear();
@@ -52,7 +52,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
             ApplicationDetailProgressViewHolder vh = holder as ApplicationDetailProgressViewHolder;
 
             StatusTrackerDisplay item = mProgressList[position];
-            vh.PopulateData(item, mProgressList, position, this.IsPayment);
+            statusDateCount += vh.PopulateData(item, mProgressList, position, this.IsPayment);
+
         }
 
         public class ApplicationDetailProgressViewHolder : RecyclerView.ViewHolder
@@ -70,6 +71,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
             public TextView TxtApplicationStatusDetailCTA { get; private set; }
 
             private Context context;
+            public int statusDateCount;
 
             private StatusTrackerDisplay item = null;
 
@@ -91,7 +93,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
             }
 
 
-            public void PopulateData(StatusTrackerDisplay item, List<StatusTrackerDisplay> mProgressList, int position, bool IsPayment)
+            public int PopulateData(StatusTrackerDisplay item, List<StatusTrackerDisplay> mProgressList, int position, bool IsPayment)
             {
                 this.item = item;
                 try
@@ -114,6 +116,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
                     {
                         TxtApplicationStatusDetailCTA.Text = item.CompletedDateDisplay;
                         TxtApplicationStatusDetailCTA.Visibility = ViewStates.Visible;
+                        statusDateCount++;
                     }
 
                     TxtApplicationStatusDetailWord.Text = item.StatusDescription;
@@ -155,11 +158,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
                             ApplicationStatusLineInactive.Visibility = ViewStates.Visible;
                         }
                     }
+                    return statusDateCount;
                 }
                 catch (Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
                 }
+                return statusDateCount;
             }
 
         }
