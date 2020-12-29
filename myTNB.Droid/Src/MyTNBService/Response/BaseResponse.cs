@@ -48,6 +48,12 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "IsLargeFontDisabled")]
             public bool IsLargeFontDisabled { get; set; }
 
+            [JsonProperty(PropertyName = "IsApplicationSyncAPIEnable")]
+            public bool IsApplicationSyncAPIEnable { get; set; }
+
+            [JsonProperty(PropertyName = "ApplicationSyncAPIInterval")]
+            public double ApplicationSyncAPIInterval { get; set; }
+
             [JsonProperty(PropertyName = "status")]
             public string Status { get; set; }
 

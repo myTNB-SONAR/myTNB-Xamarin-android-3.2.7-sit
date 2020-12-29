@@ -6152,6 +6152,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Async\SyncSRApplicationAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

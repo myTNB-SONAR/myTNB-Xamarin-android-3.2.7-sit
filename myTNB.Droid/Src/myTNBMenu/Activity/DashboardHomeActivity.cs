@@ -49,6 +49,8 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.Mobile;
+using Android.Util;
+using myTNB_Android.Src.myTNBMenu.Async;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -311,6 +313,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 StartActivity(applicationStatusDetailIntent);*/
 
                 RouteToApplicationLanding();
+            }
+
+            try
+            {
+                new SyncSRApplicationAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, string.Empty);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] Sync SR Error: " + e.Message);
             }
         }
 

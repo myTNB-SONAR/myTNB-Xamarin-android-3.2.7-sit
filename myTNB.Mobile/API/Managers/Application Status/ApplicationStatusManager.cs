@@ -313,6 +313,7 @@ namespace myTNB.Mobile
             GetAllApplicationsResponse response;
             try
             {
+                applicationType = applicationType.IsValid() && applicationType == "ALL" ? string.Empty : applicationType;
                 IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
                 try
                 {

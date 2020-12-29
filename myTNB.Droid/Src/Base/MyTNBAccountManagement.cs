@@ -38,7 +38,7 @@ namespace myTNB_Android.Src.Base
         private bool IsNotificationListFromLaunch = false;
         private bool IsUpdateAppLanguage = false;
         private bool IsUpdateAppLargeFont = false;
-        
+
         private MyTNBAccountManagement()
         {
             appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_TIMEOUT;
@@ -117,7 +117,7 @@ namespace myTNB_Android.Src.Base
                 FAQsParentEntityManager.CreateTable();
 
                 //deleting epp tooltip data using SitecoreCmsEntity
-                SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP);    
+                SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.EPP_TOOLTIP);
                 SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.WHERE_IS_MY_ACC);
                 SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.WHO_IS_REGISTERED_OWNER);
                 SitecoreCmsEntity.DeleteSitecoreRecord(SitecoreCmsEntity.SITE_CORE_ID.DO_I_NEED_OWNER_CONSENT);
@@ -328,8 +328,23 @@ namespace myTNB_Android.Src.Base
 
         public bool IsLargeFontDisabled()
         {
-           return appMasterDataResponse.Response.IsLargeFontDisabled;
-           
+            return appMasterDataResponse.Response.IsLargeFontDisabled;
+        }
+
+        public bool IsApplicationSyncAPIEnable
+        {
+            get
+            {
+                return appMasterDataResponse.Response.IsApplicationSyncAPIEnable;
+            }
+        }
+
+        public double ApplicationSyncAPIInterval
+        {
+            get
+            {
+                return appMasterDataResponse.Response.ApplicationSyncAPIInterval;
+            }
         }
 
         public bool IsMaintenanceDialogShown()
@@ -363,14 +378,14 @@ namespace myTNB_Android.Src.Base
         }
 
         public bool IsNotificationServiceCompleted()
-		{
-			return IsNotificationComplete;
-		}
+        {
+            return IsNotificationComplete;
+        }
 
-		public void SetIsNotificationServiceCompleted(bool isCompleted)
-		{
-			IsNotificationComplete = isCompleted;
-		}
+        public void SetIsNotificationServiceCompleted(bool isCompleted)
+        {
+            IsNotificationComplete = isCompleted;
+        }
 
         public void UpdateAppMasterData()
         {
