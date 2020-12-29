@@ -36,7 +36,7 @@
 				android:ellipsize="end"
 				android:text="UI-ASR-000-000-03600"/>
 		</LinearLayout>
-		<LinearLayout
+		<RelativeLayout
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
 			android:layout_weight="0.5"
@@ -49,12 +49,12 @@
 				android:id="@+id/applicationStatusItemRightLayout"
 				android:visibility="visible"
 				android:gravity="right"
-				android:layout_marginRight="10dp"
+				
 				android:orientation="horizontal">
 				<ImageView
 					android:layout_width="16dp"
 					android:layout_height="16dp"
-					android:layout_marginRight="3dp"
+					android:layout_toLeftOf="@+id/applicationStatusItemStatus"
 					android:scaleType="fitXY"
 					android:layout_marginTop="1dp"
 					android:visibility="visible"
@@ -65,16 +65,25 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:textSize="12dp"
+					android:layout_alignParentLeft="true"
+					android:layout_toRightOf="@+id/applicationStatusItemNewIndicator"
 					android:textColor="@color/freshGreen"
 					android:gravity="right"
+				    android:weightSum="0"
+					android:layout_gravity="center_vertical"
+					android:layout_marginLeft="3dp"
+					android:maxLines="2"
 					android:text="Payment Required"/>
-			</LinearLayout>
-			<ImageView
+				<ImageView
 				android:id="@+id/applicationStatusItemRightArrow"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:layout_width="16dp"
+				android:layout_height="16dp"
+				android:layout_gravity="center_vertical"
 				android:src="@drawable/expand_right_arrow"/>
-		</LinearLayout>
+			</LinearLayout>
+			
+		</RelativeLayout>
 	</LinearLayout>
 	<View
 		android:id="@+id/applicationStatusItemGroupContentSeparator"
