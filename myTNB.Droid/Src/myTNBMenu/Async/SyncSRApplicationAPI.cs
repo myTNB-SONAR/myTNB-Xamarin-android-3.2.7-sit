@@ -40,7 +40,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
         {
             try
             {
-                interval = 5;
                 DateTime now = DateTime.Now;
 #pragma warning disable CS0618 // Type or member is obsolete
                 ISharedPreferences preferences = PreferenceManager.GetDefaultSharedPreferences(_activity);
