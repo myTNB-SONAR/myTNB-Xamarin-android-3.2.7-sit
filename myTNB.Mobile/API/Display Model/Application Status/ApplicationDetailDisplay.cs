@@ -372,7 +372,6 @@ namespace myTNB.Mobile
                             }
                     }
                 }
-                //type = DetailCTAType.Reschedule;
                 return type;
             }
         }

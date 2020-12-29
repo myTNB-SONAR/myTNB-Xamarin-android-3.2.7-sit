@@ -625,7 +625,9 @@
     "electricityAccount": "Electricity Accounts",
     "mobileNumberVerified": "You've successfully updated your phone number!",
     "passwordUpdateSuccess": "Your password has been changed successfully.",
-    "changeLanguageSuccess": "Your language preference has been changed successfully."
+    "changeLanguageSuccess": "Your language preference has been changed successfully.",
+    "fontChangeSuccess": "You've successfully updated your display text size to {0}!",
+    "displaySize": "Set Display Text Size"
   },
   "NotificationSettings": {
     "title": "Notification Settings",
@@ -759,6 +761,7 @@
   "Onboarding": {
     "letsStart": "Let's get started!",
     "skip": "Skip",
+    "setSize": "Set Display Text Size",
     "title1": "Welcome to myTNB!",
     "title2": "Stay current with your usage.",
     "title3": "Bills at your fingertips.",
@@ -767,6 +770,7 @@
     "title6": "What’s new with myTNB?",
     "title7": "Use myTNB with Any Mobile Number.",
     "title8": "Stay Updated with Your Applications!",
+    "title9": "Personalise Your Text Size.",
     "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.",
     "description2": "Track, monitor and stay on top of your electricity usage!",
     "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
@@ -774,7 +778,9 @@
     "description5": "That's right, we're bringing you exclusive perks and freebies - all of this just for myTNB users! Check out the new Rewards section to claim something now!",
     "description6": "We’re now bilingual! You can set your preferred language below.<br><br>Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.",
     "description7": "You can now register a myTNB account or update your existing one with an international phone number.",
-    "description8": "You can now track all your application status with zero hassle, anytime and anywhere. Need TNB to install a new meter? You can now set an appointment!"
+    "description8": "You can now track all your application status with zero hassle, anytime and anywhere. Need TNB to install a new meter? You can now set an appointment!",
+    "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
+    "fontChangeSuccess": "You've successfully updated your display text size to {0}!",
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
@@ -1895,6 +1901,25 @@
       }
     ]
   },
+  "SelectFontSize": {
+    "title": "Set Display Text Size",
+    "sectionTitle": "Select Your Preferred Text Size",
+    "ctaTitle": "Save Changes",
+    "popupTitleFormat": "Change your display text size?",
+    "popupMessage": "You're about to change your myTNB App display text size to {0}."
+  },
+  "SelectFontSize_selector": {
+    "fonts": [
+      {
+        "key": "R",
+        "value": "Normal"
+      },
+      {
+        "key": "L",
+        "value": "Large"
+      }
+    ]
+  },
   "ApplicationStatusRating": {
     "title": "Rate",
     "submit": "Submit",
@@ -2166,6 +2191,17 @@
           }
         ],
         "SetAppointment": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "SyncSRApplication": [
           {
             "code": "7200",
             "title": "",

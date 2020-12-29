@@ -97,6 +97,7 @@
     <Folder Include="API\Models\Scheduler\Post Set Appointment\" />
     <Folder Include="API\Display Model\Scheduler\" />
     <Folder Include="API\Managers\Scheduler\Utilities\" />
+    <Folder Include="API\Models\Application Status\Post Sync SR Application\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />

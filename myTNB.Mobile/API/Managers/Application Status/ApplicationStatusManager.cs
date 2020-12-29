@@ -11,6 +11,7 @@ using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails;
 using myTNB.Mobile.API.Models.ApplicationStatus.GetApplicationsByCA;
 using myTNB.Mobile.API.Models.ApplicationStatus.PostRemoveApplication;
+using myTNB.Mobile.API.Models.ApplicationStatus.PostSyncSRApplication;
 using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
 using myTNB.Mobile.API.Services.ApplicationStatus;
@@ -698,6 +699,60 @@ namespace myTNB.Mobile
             };
             response.StatusDetail = Constants.Service_SearchApplicationByCA.GetStatusDetails(Constants.DEFAULT);
             return response;
+        }
+        #endregion
+
+        #region SyncSRApplication
+        public async Task<PostSyncSRApplicationResponse> SyncSRApplication()
+        {
+            try
+            {
+                IApplicationStatusService service = RestService.For<IApplicationStatusService>(Constants.ApiDomain);
+                try
+                {
+                    HttpResponseMessage rawResponse = await service.SyncSRApplication(AppInfoManager.Instance.GetUserInfo()
+                        , NetworkService.GetCancellationToken()
+                        , AppInfoManager.Instance.Language.ToString());
+                    PostSyncSRApplicationResponse response = await rawResponse.ParseAsync<PostSyncSRApplicationResponse>();
+                    if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    {
+                        response.StatusDetail = Constants.Service_SyncSRApplication.GetStatusDetails(response.StatusDetail.Code);
+                    }
+                    else
+                    {
+                        response = new PostSyncSRApplicationResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
+                        response.StatusDetail = Constants.Service_SyncSRApplication.GetStatusDetails(Constants.DEFAULT);
+                    }
+                    return response;
+                }
+                catch (ApiException apiEx)
+                {
+#if DEBUG
+                    Debug.WriteLine("[DEBUG][SyncSRApplication]Refit Exception: " + apiEx.Message);
+#endif
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    Debug.WriteLine("[DEBUG][SyncSRApplication]General Exception: " + ex.Message);
+#endif
+                }
+            }
+            catch (Exception e)
+            {
+#if DEBUG
+                Debug.WriteLine(e.Message);
+#endif
+            }
+            PostSyncSRApplicationResponse res = new PostSyncSRApplicationResponse
+            {
+                StatusDetail = new StatusDetail()
+            };
+            res.StatusDetail = Constants.Service_SyncSRApplication.GetStatusDetails(Constants.DEFAULT);
+            return res;
         }
         #endregion
     }

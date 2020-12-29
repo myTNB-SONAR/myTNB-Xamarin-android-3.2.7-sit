@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using myTNB.Mobile.API.Models.ApplicationStatus.PostRemoveApplication;
+using myTNB.Mobile.API.Models.ApplicationStatus.PostSyncSRApplication;
 using myTNB.Mobile.API.Models.ApplicationStatus.SaveApplication;
 using Refit;
 
@@ -104,6 +105,13 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
            , [Header(Constants.Header_UserInfo)] string userInfo
            , CancellationToken cancelToken
            , string language
+           , [Header(Constants.Header_Lang)] string lang
+           , string urlPrefix = Constants.ApiUrlPath
+           , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+
+        [Get("/{urlPrefix}/SyncSrApplication")]
+        Task<HttpResponseMessage> SyncSRApplication([Header(Constants.Header_UserInfo)] string userInfo
+           , CancellationToken cancelToken
            , [Header(Constants.Header_Lang)] string lang
            , string urlPrefix = Constants.ApiUrlPath
            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
