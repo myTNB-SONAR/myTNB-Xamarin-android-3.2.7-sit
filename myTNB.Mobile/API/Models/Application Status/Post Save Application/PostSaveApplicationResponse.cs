@@ -1,6 +1,6 @@
 ﻿namespace myTNB.Mobile
 {
-    public class PostSaveApplicationResponse : BaseResponse<PostSavevModel> { }
+    public class PostSaveApplicationResponse : BaseResponse<PostSaveModel> { }
 
-    public class PostSavevModel { }
+    public class PostSaveModel { }
 }

@@ -59,6 +59,7 @@
         internal const string Service_PostSubmitRating = "SubmitRating";
         internal const string Service_GetAvailableAppointment = "AvailableAppointment";
         internal const string Service_PostSetAppointment = "SetAppointment";
+        internal const string Service_SyncSRApplication = "SyncSRApplication";
 
         //Language File Constants
         internal const string LanguageFile_ServiceDetails = "ServiceDetails";

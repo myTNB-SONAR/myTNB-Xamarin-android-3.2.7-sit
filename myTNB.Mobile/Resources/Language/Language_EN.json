@@ -2200,6 +2200,17 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "SyncSRApplication": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]

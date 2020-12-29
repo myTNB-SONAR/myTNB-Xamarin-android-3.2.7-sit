@@ -1187,7 +1187,7 @@
     "youRated": "Anda nilaikan:",
     "sr": "Nombor permintaan perkhidmatan",
     "sn": "Nombor notifikasi perkhidmatan",
-    "rateContractor": "MS-Rate Contractor",
+    "rateContractor": "Nilaikan Kontraktor",
     "setAppointmentNowCTA": "Tetapkan janji temu",
     "rescheduleCTA": "Tetapkan Semula",
     "setAppointmentCTAMessage": "Tetapkan janji temu pemasangan meter anda sebelum <b>{0}</b>, <b>{1}</b>. Jika tidak, kami akan tetapkan janji temu bagi pihak anda.",
@@ -1925,7 +1925,7 @@
     "submit": "Hantar",
     "freeTextPlaceHolder": "Tulis mesej anda di sini",
     "freeTextTitle": "MESEJ ANDA (TIDAK WAJIB)",
-    "rateContractor": "MS-Rate Contractor"
+    "rateContractor": "Nilaikan Kontraktor"
   },
   "ApplicationStatusScheduler": {
     "title": "Tetapkan Janji Temu",
@@ -2191,6 +2191,17 @@
           }
         ],
         "SetAppointment": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "SyncSRApplication": [
           {
             "code": "7200",
             "title": "",
