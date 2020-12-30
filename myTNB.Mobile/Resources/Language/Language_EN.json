@@ -1190,7 +1190,7 @@
     "rateContractor": "Rate Contractor",
     "setAppointmentNowCTA": "Set Appointment Now",
     "rescheduleCTA": "Reschedule",
-    "setAppointmentCTAMessage": "Set your meter installation appointment before <b>{0}</b>, <b>{1}</b> or we’ll book one for you after.",
+    "setAppointmentCTAMessage": "Set your meter installation appointment before <b>{0}</b> or we’ll book one for you after.",
     "rescheduleCTAMessage": "You have an appointment set for <b>{0}, between {1}</b>. You may reschedule your appointment anytime <b>before {2}</b>.",
     "rescheduleDisabledCTAMessage": "You have an appointment set for <b>{0}, between {1}</b>",
     "cannotReschedule": "Why can’t I reschedule anymore?",
@@ -1847,7 +1847,8 @@
     "apply": "Apply",
     "from": "From",
     "to": "To",
-    "minimumYear": "2016"
+    "minimumYear": "2016",
+    "clear": "Clear"
   },
   "SelectCreationDate_selector": {
     "months": [

@@ -1190,7 +1190,7 @@
     "rateContractor": "Nilaikan Kontraktor",
     "setAppointmentNowCTA": "Tetapkan janji temu",
     "rescheduleCTA": "Tetapkan Semula",
-    "setAppointmentCTAMessage": "Tetapkan janji temu pemasangan meter anda sebelum <b>{0}</b>, <b>{1}</b>. Jika tidak, kami akan tetapkan janji temu bagi pihak anda.",
+    "setAppointmentCTAMessage": "Tetapkan janji temu pemasangan meter anda sebelum <b>{0}</b>. Jika tidak, kami akan tetapkan janji temu bagi pihak anda.",
     "rescheduleCTAMessage": "Anda telah menetapkan janji temu pada <b>{0}, di antara {1}</b>. Anda boleh mengubah janji temu anda pada bila-bila masa di halaman butiran permohonan <b>sebelum {2}</b>.",
     "rescheduleDisabledCTAMessage": "Anda mempunyai janji temu pada <b>{0}, di antara {1}</b>.",
     "cannotReschedule": "Mengapakah saya tidak boleh mengubah butiran janji temu?",
@@ -1847,7 +1847,8 @@
     "apply": "Gunakan Pilihan",
     "from": "Dari",
     "to": "Hingga",
-    "minimumYear": "2016"
+    "minimumYear": "2016",
+    "clear": "Padam"
   },
   "SelectCreationDate_selector": {
     "months": [
