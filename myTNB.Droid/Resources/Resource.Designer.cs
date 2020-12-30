@@ -10358,58 +10358,58 @@ namespace myTNB_Android
 			public const int btnChargeRefresh = 2131296584;
 			
 			// aapt resource value: 0x7F090149
-			public const int btnClearFilter = 2131296585;
+			public const int btnClear = 2131296585;
 			
 			// aapt resource value: 0x7F09014A
-			public const int btnClose = 2131296586;
+			public const int btnClearFilter = 2131296586;
 			
 			// aapt resource value: 0x7F09014B
-			public const int btnConfirm = 2131296587;
+			public const int btnClose = 2131296587;
 			
 			// aapt resource value: 0x7F09014C
-			public const int btnDeletePhoto = 2131296588;
+			public const int btnConfirm = 2131296588;
 			
 			// aapt resource value: 0x7F09014D
-			public const int btnDisableSubmitMeter = 2131296589;
+			public const int btnDeletePhoto = 2131296589;
 			
 			// aapt resource value: 0x7F09014E
-			public const int btnDisconnectionSubmit = 2131296590;
+			public const int btnDisableSubmitMeter = 2131296590;
 			
 			// aapt resource value: 0x7F09014F
-			public const int btnEnableSubmitMeter = 2131296591;
+			public const int btnDisconnectionSubmit = 2131296591;
 			
 			// aapt resource value: 0x7F090150
-			public const int btnExpand = 2131296592;
-			
-			// aapt resource value: 0x7F090152
-			public const int btnFirst = 2131296594;
+			public const int btnEnableSubmitMeter = 2131296592;
 			
 			// aapt resource value: 0x7F090151
-			public const int btnFPXPayment = 2131296593;
+			public const int btnExpand = 2131296593;
 			
 			// aapt resource value: 0x7F090153
-			public const int btnFri = 2131296595;
+			public const int btnFirst = 2131296595;
+			
+			// aapt resource value: 0x7F090152
+			public const int btnFPXPayment = 2131296594;
 			
 			// aapt resource value: 0x7F090154
-			public const int btnGetStarted = 2131296596;
+			public const int btnFri = 2131296596;
 			
 			// aapt resource value: 0x7F090155
-			public const int btnLogin = 2131296597;
+			public const int btnGetStarted = 2131296597;
 			
 			// aapt resource value: 0x7F090156
-			public const int btnLogout = 2131296598;
+			public const int btnLogin = 2131296598;
 			
 			// aapt resource value: 0x7F090157
-			public const int btnMDMSDownRefresh = 2131296599;
+			public const int btnLogout = 2131296599;
 			
 			// aapt resource value: 0x7F090158
-			public const int btnMenu = 2131296600;
+			public const int btnMDMSDownRefresh = 2131296600;
 			
 			// aapt resource value: 0x7F090159
-			public const int btnMon = 2131296601;
+			public const int btnMenu = 2131296601;
 			
 			// aapt resource value: 0x7F09015A
-			public const int btnMultiFilterApply = 2131296602;
+			public const int btnMon = 2131296602;
 			
 			// aapt resource value: 0x7F09015B
 			public const int btnMyServiceRefresh = 2131296603;

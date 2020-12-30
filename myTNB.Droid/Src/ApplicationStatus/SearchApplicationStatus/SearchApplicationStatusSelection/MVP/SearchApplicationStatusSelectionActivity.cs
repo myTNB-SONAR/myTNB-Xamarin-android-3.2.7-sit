@@ -8,9 +8,7 @@ using Android.Util;
 using System;
 using CheeseBind;
 using Android.Widget;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
 using System.Collections.Generic;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.Adapter;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models;
 using Newtonsoft.Json;
@@ -28,7 +26,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         [BindView(Resource.Id.multiSelectBottomLayout)]
         LinearLayout multiSelectBottomLayout;
 
-        [BindView(Resource.Id.btnMultiFilterApply)]
+        [BindView(Resource.Id.btnClear)]
         Button btnMultiFilterApply;
 
         const string PAGE_ID = "ApplicationStatus";
@@ -110,14 +108,14 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             btnMultiFilterApply.Enabled = false;
             btnMultiFilterApply.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
         }
-        
+
         public void EnableButton()
         {
             btnMultiFilterApply.Enabled = true;
             btnMultiFilterApply.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
         }
 
-        [OnClick(Resource.Id.btnMultiFilterApply)]
+        [OnClick(Resource.Id.btnClear)]
         internal void OnConfirmClick(object sender, EventArgs e)
         {
             OnConfirmFilter();
@@ -186,7 +184,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                         }
                     }
                 }
-
             }
 
             multiSelectBottomLayout.Visibility = ViewStates.Gone;

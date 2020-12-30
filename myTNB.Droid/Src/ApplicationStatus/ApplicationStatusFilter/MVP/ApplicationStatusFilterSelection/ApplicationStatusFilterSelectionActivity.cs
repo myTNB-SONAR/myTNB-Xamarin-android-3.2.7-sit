@@ -8,7 +8,6 @@ using Android.Util;
 using System;
 using CheeseBind;
 using Android.Widget;
-
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
 using System.Collections.Generic;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter;
@@ -27,22 +26,23 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
         [BindView(Resource.Id.multiSelectBottomLayout)]
         LinearLayout multiSelectBottomLayout;
 
-        [BindView(Resource.Id.btnMultiFilterApply)]
-        Button btnMultiFilterApply;
+        [BindView(Resource.Id.btnClear)]
+        Button btnClear;
 
-        const string PAGE_ID = "ApplicationStatus";
+        private const string PAGE_ID = "ApplicationStatus";
 
-        int mRequestKey = -1;
-        bool mMultipleSelectCapable = false;
+        private int mRequestKey = -1;
+        private bool isClearEnabled = false;
+        private bool isApplicationType;
+        private bool isApplicationStatus;
 
         RecyclerView.LayoutManager layoutManager;
 
         ApplicationStatusFilterAdapter mAdapter;
 
-        private string filterMonth = "";
-        List<ApplicationStatusStringSelectionModel> displayMonth = new List<ApplicationStatusStringSelectionModel>();
-        List<ApplicationStatusCodeModel> statusCodeList = new List<ApplicationStatusCodeModel>();
-        List<ApplicationStatusTypeModel> typeList = new List<ApplicationStatusTypeModel>();
+        private List<ApplicationStatusStringSelectionModel> displayMonth = new List<ApplicationStatusStringSelectionModel>();
+        private List<ApplicationStatusCodeModel> statusCodeList = new List<ApplicationStatusCodeModel>();
+        private List<ApplicationStatusTypeModel> typeList = new List<ApplicationStatusTypeModel>();
 
         public override int ResourceId()
         {
@@ -106,33 +106,35 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             }
         }
 
-        public void DisableButton()
+        [OnClick(Resource.Id.btnClear)]
+        internal void OnClearClick(object sender, EventArgs e)
         {
-            btnMultiFilterApply.Enabled = false;
-            btnMultiFilterApply.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            OnConfirm(true);
         }
 
-        public void EnableButton()
-        {
-            btnMultiFilterApply.Enabled = true;
-            btnMultiFilterApply.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
-        }
-
-        [OnClick(Resource.Id.btnMultiFilterApply)]
-        internal void OnConfirmClick(object sender, EventArgs e)
-        {
-            OnConfirmFilter();
-        }
-
-        private void OnConfirmFilter()
+        private void OnConfirm(bool isClear = false)
         {
             Intent finishIntent = new Intent();
             if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE)
             {
+                if (isClear)
+                {
+                    for (int i = 0; i < typeList.Count; i++)
+                    {
+                        typeList[i].isChecked = false;
+                    }
+                }
                 finishIntent.PutExtra(Constants.APPLICATION_STATUS_TYPE_LIST_KEY, JsonConvert.SerializeObject(typeList));
             }
             else if (mRequestKey == Constants.APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE)
             {
+                if (isClear)
+                {
+                    for (int i = 0; i < statusCodeList.Count; i++)
+                    {
+                        statusCodeList[i].isChecked = false;
+                    }
+                }
                 finishIntent.PutExtra(Constants.APPLICATION_STATUS_STATUS_LIST_KEY, JsonConvert.SerializeObject(statusCodeList));
             }
             SetResult(Result.Ok, finishIntent);
@@ -143,14 +145,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
         {
             try
             {
-                if (!mMultipleSelectCapable)
-                {
-                    OnConfirmFilter();
-                }
-                else
-                {
-                    EnableButton();
-                }                
+                OnConfirm();
             }
             catch (Exception e)
             {
@@ -162,9 +157,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
         {
             base.OnCreate(savedInstanceState);
 
-            TextViewUtils.SetMuseoSans500Typeface(btnMultiFilterApply);
-            btnMultiFilterApply.TextSize = TextViewUtils.GetFontSize(16f);
-
+            TextViewUtils.SetMuseoSans500Typeface(btnClear);
+            btnClear.TextSize = TextViewUtils.GetFontSize(16f);
+            btnClear.Text = Utility.GetLocalizedLabel("ApplicationStatusFilter", "clear");
             Bundle extras = Intent.Extras;
 
             if (extras != null)
@@ -182,13 +177,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
                     {
                         SetToolBarTitle(Utility.GetLocalizedLabel("SelectApplicationStatus", "title"));
                     }
-
-                   
                 }
 
-                if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_MULTI_SELECT_KEY))
+                if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_INDIVIDUAL_CLEAR_KEY))
                 {
-                    mMultipleSelectCapable = extras.GetBoolean(Constants.APPLICATION_STATUS_FILTER_MULTI_SELECT_KEY);
+                    isClearEnabled = extras.GetBoolean(Constants.APPLICATION_STATUS_FILTER_INDIVIDUAL_CLEAR_KEY);
                 }
                 if (extras.ContainsKey(Constants.APPLICATION_STATUS_STATUS_LIST_KEY))
                 {
@@ -196,6 +189,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
                     {
                         string statusListKey = extras.GetString(Constants.APPLICATION_STATUS_STATUS_LIST_KEY);
                         statusCodeList = JsonConvert.DeserializeObject<List<ApplicationStatusCodeModel>>(statusListKey);
+                        isApplicationStatus = true;
                     }
                     catch (Exception e)
                     {
@@ -209,6 +203,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
                     {
                         string typeListKey = extras.GetString(Constants.APPLICATION_STATUS_TYPE_LIST_KEY);
                         typeList = JsonConvert.DeserializeObject<List<ApplicationStatusTypeModel>>(typeListKey);
+                        isApplicationType = true;
                     }
                     catch (Exception e)
                     {
@@ -217,23 +212,44 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
                 }
             }
 
-            if (mMultipleSelectCapable)
+            if (isClearEnabled)
             {
-                DisableButton();
                 multiSelectBottomLayout.Visibility = ViewStates.Visible;
+                int index = -1;
+                bool isCTAEnabled = false;
+                if (isApplicationType)
+                {
+                    index = typeList.FindIndex(x => x.isChecked);
+                }
+                else if (isApplicationStatus)
+                {
+                    index = statusCodeList.FindIndex(x => x.isChecked);
+                }
+                isCTAEnabled = index > -1;
+                SetCTAEnabled(isCTAEnabled);
             }
             else
             {
                 multiSelectBottomLayout.Visibility = ViewStates.Gone;
             }
 
-
-            mAdapter = new ApplicationStatusFilterAdapter(this, mRequestKey, mMultipleSelectCapable, statusCodeList, typeList, displayMonth);
+            mAdapter = new ApplicationStatusFilterAdapter(this, mRequestKey, isClearEnabled, statusCodeList, typeList, displayMonth);
 
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             filterListView.SetLayoutManager(layoutManager);
             filterListView.SetAdapter(mAdapter);
             mAdapter.ItemClick += OnItemClick;
+        }
+
+        private void SetCTAEnabled(bool isEnabled)
+        {
+            btnClear.Enabled = isEnabled;
+            btnClear.Background = ContextCompat.GetDrawable(this, isEnabled
+                ? Resource.Drawable.light_green_outline_button_background
+                : Resource.Drawable.silver_chalice_button_outline);
+            btnClear.SetTextColor(ContextCompat.GetColorStateList(this, isEnabled
+                ? Resource.Color.freshGreen
+                : Resource.Color.silverChalice));
         }
     }
 }

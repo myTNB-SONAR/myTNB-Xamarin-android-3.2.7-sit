@@ -1,5 +1,4 @@
 ﻿using Android.Content;
-using Android.Graphics;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
@@ -56,7 +55,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
             return mDisplayStringList.FindAll(x => x.isChecked);
         }
 
-        public ApplicationStatusFilterAdapter(BaseActivityCustom activity, int requestCode, bool multiSelectCapable, List<ApplicationStatusCodeModel> codeData = null, List<ApplicationStatusTypeModel> typeData = null, List<ApplicationStatusStringSelectionModel> stringData = null)
+        public ApplicationStatusFilterAdapter(BaseActivityCustom activity
+            , int requestCode
+            , bool multiSelectCapable
+            , List<ApplicationStatusCodeModel> codeData = null
+            , List<ApplicationStatusTypeModel> typeData = null
+            , List<ApplicationStatusStringSelectionModel> stringData = null)
         {
             this.mActicity = activity;
             this.mRequestCode = requestCode;
@@ -65,48 +69,18 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
             if (mRequestCode == Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE)
             {
                 mTypeList = new List<ApplicationStatusTypeModel>();
-                if (this.mMultiSelectCapable)
-                {
-                    //  TODO: ApplicationStatus Multilingual
-                    mTypeList.Add(new ApplicationStatusTypeModel()
-                    {
-                        Type = "Select All",
-                        TypeCode = "ANDROID-ALL",
-                        isChecked = (typeData != null && typeData.FindAll(x => x.isChecked) != null && typeData.FindAll(x => x.isChecked).Count == typeData.Count)
-                    });
-                }
                 mTypeList.AddRange(typeData);
                 countNumber = mTypeList.Count;
             }
             else if (mRequestCode == Constants.APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE)
             {
                 mStatusCodeList = new List<ApplicationStatusCodeModel>();
-                if (this.mMultiSelectCapable)
-                {
-                    //  TODO: ApplicationStatus Multilingual
-                    mStatusCodeList.Add(new ApplicationStatusCodeModel()
-                    {
-                        Status = "Select All",
-                        StateCode = "ANDROID-ALL",
-                        isChecked = (codeData != null && codeData.FindAll(x => x.isChecked) != null && codeData.FindAll(x => x.isChecked).Count == codeData.Count)
-                    });
-                }
                 mStatusCodeList.AddRange(codeData);
                 countNumber = mStatusCodeList.Count;
             }
             else
             {
                 mDisplayStringList = new List<ApplicationStatusStringSelectionModel>();
-                if (this.mMultiSelectCapable)
-                {
-                    //  TODO: ApplicationStatus Multilingual
-                    mDisplayStringList.Add(new ApplicationStatusStringSelectionModel()
-                    {
-                        Value = "Select All",
-                        Key = "ANDROID-ALL",
-                        isChecked = (stringData != null && stringData.FindAll(x => x.isChecked) != null && stringData.FindAll(x => x.isChecked).Count == stringData.Count)
-                    });
-                }
                 mDisplayStringList.AddRange(stringData);
                 countNumber = mDisplayStringList.Count;
             }
@@ -151,100 +125,52 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
                     var selectedTypeList = mTypeList[position];
                     bool previousSelectedFlag = selectedTypeList.isChecked;
                     previousSelectedFlag = !previousSelectedFlag;
-                    if (this.mMultiSelectCapable)
+                    foreach (var item in mTypeList)
                     {
-                        if (selectedTypeList.TypeCode == "ANDROID-ALL")
-                        {
-                            foreach (var item in mTypeList)
-                            {
-                                item.isChecked = previousSelectedFlag;
-                            }
-                        }
-                        else
-                        {
-                            mTypeList[position].isChecked = previousSelectedFlag;
-                        }
+                        item.isChecked = false;
                     }
-                    else
-                    {
-                        foreach (var item in mTypeList)
-                        {
-                            item.isChecked = false;
-                        }
-                        mTypeList[position].isChecked = previousSelectedFlag;
-                    }
+                    mTypeList[position].isChecked = previousSelectedFlag;
                 }
                 else if (mRequestCode == Constants.APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE)
                 {
                     var selectedCodeList = mStatusCodeList[position];
                     bool previousSelectedFlag = selectedCodeList.isChecked;
                     previousSelectedFlag = !previousSelectedFlag;
-                    if (this.mMultiSelectCapable)
+
+                    foreach (var item in mStatusCodeList)
                     {
-                        if (selectedCodeList.StateCode == "ANDROID-ALL")
-                        {
-                            foreach (var item in mStatusCodeList)
-                            {
-                                item.isChecked = previousSelectedFlag;
-                            }
-                        }
-                        else
-                        {
-                            mStatusCodeList[position].isChecked = previousSelectedFlag;
-                        }
+                        item.isChecked = false;
                     }
-                    else
-                    {
-                        foreach (var item in mStatusCodeList)
-                        {
-                            item.isChecked = false;
-                        }
-                        mStatusCodeList[position].isChecked = previousSelectedFlag;
-                    }
+                    mStatusCodeList[position].isChecked = previousSelectedFlag;
                 }
                 else
                 {
                     var selectedStringList = mDisplayStringList[position];
                     bool previousSelectedFlag = selectedStringList.isChecked;
                     previousSelectedFlag = !previousSelectedFlag;
-                    if (this.mMultiSelectCapable)
+
+                    foreach (var item in mDisplayStringList)
                     {
-                        if (selectedStringList.Key == "ANDROID-ALL")
-                        {
-                            foreach (var item in mDisplayStringList)
-                            {
-                                item.isChecked = previousSelectedFlag;
-                            }
-                        }
-                        else
-                        {
-                            mDisplayStringList[position].isChecked = previousSelectedFlag;
-                        }
+                        item.isChecked = false;
                     }
-                    else
-                    {
-                        foreach (var item in mDisplayStringList)
-                        {
-                            item.isChecked = false;
-                        }
-                        mDisplayStringList[position].isChecked = previousSelectedFlag;
-                    }
+                    mDisplayStringList[position].isChecked = previousSelectedFlag;
                 }
 
                 this.NotifyDataSetChanged();
 
                 if (ItemClick != null)
+                {
                     ItemClick(this, position);
+                }
             }
         }
     }
-
 
     public class ApplicationStatusFilterViewHolder : RecyclerView.ViewHolder
     {
         public TextView txtFilterName { get; private set; }
         public TextView whyAccountsNotHere { get; private set; }
-        
+
         public ImageView imgApplicationFilter { get; private set; }
         public CheckBox chkApplicationFilter { get; private set; }
         private Context context;
@@ -265,30 +191,18 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
             whyAccountsNotHere.TextSize = TextViewUtils.GetFontSize(12);
         }
 
-
         public void PopulateStatusData(ApplicationStatusCodeModel item, bool isMultipleSelectCapable)
         {
             try
             {
                 txtFilterName.Text = item.Status;
-                if (isMultipleSelectCapable)
+                imgApplicationFilter.Visibility = ViewStates.Gone;
+                chkApplicationFilter.Visibility = ViewStates.Gone;
+                txtFilterName.Clickable = true;
+                chkApplicationFilter.Clickable = false;
+                if (item.isChecked)
                 {
-                    imgApplicationFilter.Visibility = ViewStates.Gone;
-                    chkApplicationFilter.Visibility = ViewStates.Visible;
-                    txtFilterName.Clickable = false;
-                    chkApplicationFilter.Clickable = true;
-                    chkApplicationFilter.Checked = item.isChecked;
-                }
-                else
-                {
-                    imgApplicationFilter.Visibility = ViewStates.Gone;
-                    chkApplicationFilter.Visibility = ViewStates.Gone;
-                    txtFilterName.Clickable = true;
-                    chkApplicationFilter.Clickable = false;
-                    if (item.isChecked)
-                    {
-                        imgApplicationFilter.Visibility = ViewStates.Visible;
-                    }
+                    imgApplicationFilter.Visibility = ViewStates.Visible;
                 }
 
                 txtFilterName.RequestLayout();
@@ -306,24 +220,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
             try
             {
                 txtFilterName.Text = item.Type;
-                if (isMultipleSelectCapable)
+
+                imgApplicationFilter.Visibility = ViewStates.Gone;
+                chkApplicationFilter.Visibility = ViewStates.Gone;
+                txtFilterName.Clickable = true;
+                chkApplicationFilter.Clickable = false;
+                if (item.isChecked)
                 {
-                    imgApplicationFilter.Visibility = ViewStates.Gone;
-                    chkApplicationFilter.Visibility = ViewStates.Visible;
-                    txtFilterName.Clickable = false;
-                    chkApplicationFilter.Clickable = true;
-                    chkApplicationFilter.Checked = item.isChecked;
-                }
-                else
-                {
-                    imgApplicationFilter.Visibility = ViewStates.Gone;
-                    chkApplicationFilter.Visibility = ViewStates.Gone;
-                    txtFilterName.Clickable = true;
-                    chkApplicationFilter.Clickable = false;
-                    if (item.isChecked)
-                    {
-                        imgApplicationFilter.Visibility = ViewStates.Visible;
-                    }
+                    imgApplicationFilter.Visibility = ViewStates.Visible;
                 }
 
                 txtFilterName.RequestLayout();
@@ -341,24 +245,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
             try
             {
                 txtFilterName.Text = item.Value;
-                if (isMultipleSelectCapable)
+                imgApplicationFilter.Visibility = ViewStates.Gone;
+                chkApplicationFilter.Visibility = ViewStates.Gone;
+                txtFilterName.Clickable = true;
+                chkApplicationFilter.Clickable = false;
+                if (item.isChecked)
                 {
-                    imgApplicationFilter.Visibility = ViewStates.Gone;
-                    chkApplicationFilter.Visibility = ViewStates.Visible;
-                    txtFilterName.Clickable = false;
-                    chkApplicationFilter.Clickable = true;
-                    chkApplicationFilter.Checked = item.isChecked;
-                }
-                else
-                {
-                    imgApplicationFilter.Visibility = ViewStates.Gone;
-                    chkApplicationFilter.Visibility = ViewStates.Gone;
-                    txtFilterName.Clickable = true;
-                    chkApplicationFilter.Clickable = false;
-                    if (item.isChecked)
-                    {
-                        imgApplicationFilter.Visibility = ViewStates.Visible;
-                    }
+                    imgApplicationFilter.Visibility = ViewStates.Visible;
                 }
 
                 txtFilterName.RequestLayout();

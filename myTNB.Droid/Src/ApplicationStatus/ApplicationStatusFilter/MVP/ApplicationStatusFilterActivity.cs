@@ -27,23 +27,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
         [BindView(Resource.Id.rootview)]
         LinearLayout rootview;
 
-        [BindView(Resource.Id.applicationTypeMainLayout)]
-        LinearLayout applicationTypeMainLayout;
-
         [BindView(Resource.Id.applicationStatusItemTitle)]
         TextView applicationStatusItemTitle;
 
         [BindView(Resource.Id.applicationStatusSubTitle)]
         TextView applicationStatusSubTitle;
-
-        [BindView(Resource.Id.applicationStatusItemRightArrow)]
-        ImageView applicationStatusItemRightArrow;
-
-        [BindView(Resource.Id.applicationStatusItemGroupContentSeparator)]
-        View applicationStatusItemGroupContentSeparator;
-
-        [BindView(Resource.Id.statusMainLayout)]
-        LinearLayout statusMainLayout;
 
         [BindView(Resource.Id.statusItemTitle)]
         TextView statusItemTitle;
@@ -51,26 +39,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
         [BindView(Resource.Id.statusSubTitle)]
         TextView statusSubTitle;
 
-        [BindView(Resource.Id.statusItemRightArrow)]
-        ImageView statusItemRightArrow;
-
-        [BindView(Resource.Id.statusItemGroupContentSeparator)]
-        View statusItemGroupContentSeparator;
-
-        [BindView(Resource.Id.filterDateMainLayout)]
-        LinearLayout filterDateMainLayout;
-
         [BindView(Resource.Id.filterDateItemTitle)]
         TextView filterDateItemTitle;
 
         [BindView(Resource.Id.filterDateSubTitle)]
         TextView filterDateSubTitle;
-
-        [BindView(Resource.Id.filterDateItemRightArrow)]
-        ImageView filterDateItemRightArrow;
-
-        [BindView(Resource.Id.filterDateItemGroupContentSeparator)]
-        View filterDateItemGroupContentSeparator;
 
         [BindView(Resource.Id.btnClearFilter)]
         Button btnClearFilter;
@@ -78,23 +51,24 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
         [BindView(Resource.Id.btnApplyFilter)]
         Button btnApplyFilter;
 
-        bool isApplications = false;
-        bool isApplyFilter = false;
-        ApplicationStatusFilterPresenter mPresenter;
+        private bool isApplications = false;
+        private bool isApplyFilter = false;
+        private bool isClearedDate = false;
+        private ApplicationStatusFilterPresenter mPresenter;
 
-        const string PAGE_ID = "ApplicationStatus";
+        private const string PAGE_ID = "ApplicationStatus";
 
-        private string filterDate = "";
-        private string targetApplicationTypeId = "";
-        private string targetApplicationStatusCode = "";
+        private string filterDate = string.Empty;
+        private string targetApplicationTypeId = string.Empty;
+        private string targetApplicationStatusCode = string.Empty;
         internal GetAllApplicationsResponse AllApplicationResponse;
-        List<ApplicationStatusCodeModel> statusCodeList = new List<ApplicationStatusCodeModel>();
-        List<ApplicationStatusTypeModel> typeList = new List<ApplicationStatusTypeModel>();
-        ApplicationStatusTypeModel selectedType = new ApplicationStatusTypeModel();
-        ApplicationStatusCodeModel selectedStatus = new ApplicationStatusCodeModel();
-        private string displayDate = "";
-        private string fromDate = "";
-        private string toDate = "";
+        private List<ApplicationStatusCodeModel> statusCodeList = new List<ApplicationStatusCodeModel>();
+        private List<ApplicationStatusTypeModel> typeList = new List<ApplicationStatusTypeModel>();
+        private ApplicationStatusTypeModel selectedType = new ApplicationStatusTypeModel();
+        private ApplicationStatusCodeModel selectedStatus = new ApplicationStatusCodeModel();
+        private string displayDate = string.Empty;
+        private string fromDate = string.Empty;
+        private string toDate = string.Empty;
 
         public override int ResourceId()
         {
@@ -205,12 +179,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 }
                 else
                 {
-                    statusSubTitle.Text = "";
+                    statusSubTitle.Text = string.Empty;
                 }
             }
             else
             {
-                statusSubTitle.Text = "";
+                statusSubTitle.Text = string.Empty;
             }
 
             if (!string.IsNullOrEmpty(targetApplicationTypeId) && typeList != null && typeList.Count > 0)
@@ -222,52 +196,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 }
                 else
                 {
-                    applicationStatusSubTitle.Text = "";
+                    applicationStatusSubTitle.Text = string.Empty;
                 }
             }
             else
             {
-                applicationStatusSubTitle.Text = "";
+                applicationStatusSubTitle.Text = string.Empty;
             }
-
-            //if (!string.IsNullOrEmpty(filterDate) && filterDate.Contains(","))
-            //{
-            //    string[] filterDateArray = filterDate.Split(",");
-            //    string displayDate = "";
-            //    for (int i = 0; i < filterDateArray.Length; i++)
-            //    {
-            //        string tempDateTime = "";
-            //        DateTime dateTimeParse = DateTime.ParseExact(filterDateArray[i], "yyyyMMddTHHmmss",
-            //                    CultureInfo.InvariantCulture, DateTimeStyles.None);
-            //        TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
-            //        DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
-            //        if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
-            //        {
-            //            CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
-            //            tempDateTime = dateTimeMalaysia.ToString("MMM yyyy", currCult);
-            //        }
-            //        else
-            //        {
-            //            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-            //            tempDateTime = dateTimeMalaysia.ToString("MMM yyyy", currCult);
-            //        }
-
-            //        if (i == 0)
-            //        {
-            //            displayDate += tempDateTime;
-            //        }
-            //        else
-            //        {
-            //            displayDate += " - " + tempDateTime;
-            //        }
-            //    }
-
-            //    filterDateSubTitle.Text = displayDate;
-            //}
-            //else
-            //{
-            //    filterDateSubTitle.Text = "";
-            //}
 
             DisableButtons();
         }
@@ -302,7 +237,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 btnClearFilter.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
                 btnApplyFilter.Enabled = true;
                 btnApplyFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
-
             }
         }
 
@@ -327,10 +261,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                         if (extra.ContainsKey(Constants.APPLICATION_STATUS_TYPE_LIST_KEY))
                         {
                             resultTypeList = JsonConvert.DeserializeObject<List<ApplicationStatusTypeModel>>(extra.GetString(Constants.APPLICATION_STATUS_TYPE_LIST_KEY));
+                            typeList = resultTypeList;
                             selectedType = resultTypeList.Find(x => x.isChecked);
-                            targetApplicationTypeId = selectedType.TypeCode;
+                            targetApplicationTypeId = selectedType?.TypeCode ?? string.Empty;
                             AllApplicationsCache.Instance.ApplicationTypeID = targetApplicationTypeId;
-                            applicationStatusSubTitle.Text = selectedType.Type;
+                            applicationStatusSubTitle.Text = selectedType?.Type ?? string.Empty;
                         }
                     }
                 }
@@ -345,10 +280,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                         if (extra.ContainsKey(Constants.APPLICATION_STATUS_STATUS_LIST_KEY))
                         {
                             resultTypeList = JsonConvert.DeserializeObject<List<ApplicationStatusCodeModel>>(extra.GetString(Constants.APPLICATION_STATUS_STATUS_LIST_KEY));
+                            statusCodeList = resultTypeList;
                             selectedStatus = resultTypeList.Find(x => x.isChecked);
-                            targetApplicationStatusCode = selectedStatus.StateCode;
+                            targetApplicationStatusCode = selectedStatus?.StateCode ?? string.Empty;
                             AllApplicationsCache.Instance.StatusDescription = targetApplicationStatusCode;
-                            statusSubTitle.Text = selectedStatus.Status;
+                            statusSubTitle.Text = selectedStatus?.Status ?? string.Empty;
                         }
                     }
                 }
@@ -357,7 +293,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                     if (resultCode == Result.Ok)
                     {
                         Bundle extra = data.Extras;
-                        string resultDate = "";
+                        string resultDate = string.Empty;
 
                         if (extra.ContainsKey(Constants.APPLICATION_STATUS_FILTER_DATE_KEY))
                         {
@@ -370,7 +306,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                             string[] filterDateArray = filterDate.Split(",");
                             for (int i = 0; i < filterDateArray.Length; i++)
                             {
-                                string tempDateTime = "";
+                                string tempDateTime = string.Empty;
                                 DateTime dateTimeParse = DateTime.ParseExact(filterDateArray[i], "yyyyMMddTHHmmss",
                                 CultureInfo.InvariantCulture, DateTimeStyles.None);
                                 TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
@@ -399,11 +335,17 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                                     AllApplicationsCache.Instance.CreatedDateTo = toDate;
                                 }
                             }
+                            isClearedDate = false;
                         }
                         else
                         {
-                            filterDate = "";
-                            displayDate = "";
+                            fromDate = string.Empty;
+                            toDate = string.Empty;
+                            AllApplicationsCache.Instance.CreatedDateFrom = fromDate;
+                            AllApplicationsCache.Instance.CreatedDateTo = toDate;
+                            filterDate = string.Empty;
+                            displayDate = string.Empty;
+                            isClearedDate = true;
                         }
 
                         filterDateSubTitle.Text = displayDate;
@@ -500,8 +442,18 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 Intent filterIntent = new Intent(this, typeof(ApplicationStatusFilterSelectionActivity));
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_REQUEST_KEY, Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE);
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_STATUS_KEY, targetApplicationStatusCode);
-
-                //filterIntent.PutExtra(Constants.APPLICATION_STATUS_STATUS_LIST_KEY, JsonConvert.SerializeObject(statusCodeList));
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_INDIVIDUAL_CLEAR_KEY, true);
+                if (!string.IsNullOrEmpty(targetApplicationTypeId) && !string.IsNullOrWhiteSpace(targetApplicationTypeId) && typeList != null)
+                {
+                    for (int i = 0; i < typeList.Count; i++)
+                    {
+                        if (typeList[i].TypeCode == targetApplicationTypeId)
+                        {
+                            typeList[i].isChecked = true;
+                            break;
+                        }
+                    }
+                }
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_TYPE_LIST_KEY, JsonConvert.SerializeObject(typeList));
                 StartActivityForResult(filterIntent, Constants.APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE);
             }
@@ -516,10 +468,19 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 Intent filterIntent = new Intent(this, typeof(ApplicationStatusFilterSelectionActivity));
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_REQUEST_KEY, Constants.APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE);
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_STATUS_KEY, targetApplicationStatusCode);
-                //filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_YEAR_KEY, filterYear);
-                //filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_MONTH_KEY, filterMonth);
+                filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_INDIVIDUAL_CLEAR_KEY, true);
+                if (!string.IsNullOrEmpty(targetApplicationStatusCode) && !string.IsNullOrWhiteSpace(targetApplicationStatusCode) && statusCodeList != null)
+                {
+                    for (int i = 0; i < statusCodeList.Count; i++)
+                    {
+                        if (statusCodeList[i].StateCode == targetApplicationStatusCode)
+                        {
+                            statusCodeList[i].isChecked = true;
+                            break;
+                        }
+                    }
+                }
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_STATUS_LIST_KEY, JsonConvert.SerializeObject(statusCodeList));
-                //filterIntent.PutExtra(Constants.APPLICATION_STATUS_TYPE_LIST_KEY, JsonConvert.SerializeObject(typeList));
                 StartActivityForResult(filterIntent, Constants.APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE);
             }
         }
@@ -531,7 +492,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             {
                 this.SetIsClicked(true);
                 Intent filterIntent = new Intent(this, typeof(ApplicationStatusFilterDateSelectionActivity));
-
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_DATE_KEY, filterDate);
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_FROM_DATE_KEY, fromDate);
                 filterIntent.PutExtra(Constants.APPLICATION_STATUS_FILTER_TO_DATE_KEY, toDate);
@@ -544,6 +504,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
         {
             OnConfirmFilterAsync();
         }
+
         private async System.Threading.Tasks.Task OnConfirmFilterAsync()
         {
             try
@@ -551,16 +512,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 if (ConnectionUtils.HasInternetConnection(this))
                 {
                     isApplyFilter = true;
-                    //AllApplicationsCache.Instance.Clear();
-                    //AllApplicationsCache.Instance.Reset();
-
                     ShowProgressDialog();
                     AllApplicationResponse = await ApplicationStatusManager.Instance.GetAllApplications(1
-                                           , targetApplicationTypeId
-                                           , targetApplicationStatusCode
-                                           , fromDate
-                                           , toDate
-                                           , true);
+                        , targetApplicationTypeId
+                        , targetApplicationStatusCode
+                        , fromDate
+                        , toDate
+                        , true);
                     if (AllApplicationResponse != null)
                     {
                         if (AllApplicationResponse.StatusDetail.IsSuccess && AllApplicationResponse.Content.Applications.Count > 0)
@@ -580,7 +538,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                             SetResult(Result.Ok, finishIntent);
                             Finish();
                         }
-
                         else
                         {
                             isApplications = true;
@@ -604,7 +561,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+
         private Snackbar mNoInternetSnackbar;
+
         public void ShowNoInternetSnackbar()
         {
             if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
@@ -625,6 +584,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             mNoInternetSnackbar.Show();
             this.SetIsClicked(false);
         }
+
         [OnClick(Resource.Id.btnClearFilter)]
         internal void OnClearFilterClick(object sender, EventArgs e)
         {
@@ -636,25 +596,41 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             applicationStatusSubTitle.Text = string.Empty;
             statusSubTitle.Text = string.Empty;
             filterDateSubTitle.Text = string.Empty;
+
+            fromDate = string.Empty;
+            toDate = string.Empty;
+            AllApplicationsCache.Instance.CreatedDateFrom = fromDate;
+            AllApplicationsCache.Instance.CreatedDateTo = toDate;
+
             AllApplicationsCache.Instance.ApplicationTypeID = string.Empty;
             AllApplicationsCache.Instance.StatusDescription = string.Empty;
             AllApplicationsCache.Instance.CreatedDateFrom = string.Empty;
             AllApplicationsCache.Instance.CreatedDateTo = string.Empty;
             AllApplicationsCache.Instance.Clear();
-
             AllApplicationsCache.Instance.Reset();
             DisableButtons();
         }
+
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             switch (item.ItemId)
             {
                 case Android.Resource.Id.Home:
-                    SetFilterData();
-                    return true;
+                    {
+                        if (selectedType == null || selectedStatus == null || isClearedDate)
+                        {
+                            OnConfirmFilterAsync();
+                        }
+                        else
+                        {
+                            SetFilterData();
+                        }
+                        return true;
+                    }
             }
             return base.OnOptionsItemSelected(item);
         }
+
         private void SetFilterData()
         {
             Intent finishIntent = new Intent();
@@ -678,9 +654,17 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
                 Finish();
             }
         }
+
         public override void OnBackPressed()
         {
-            SetFilterData();
+            if (selectedType == null || selectedStatus == null || isClearedDate)
+            {
+                OnConfirmFilterAsync();
+            }
+            else
+            {
+                SetFilterData();
+            }
         }
     }
 }

@@ -30,13 +30,13 @@
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Apply"
-                android:id="@+id/btnMultiFilterApply"
+                android:text="UI-Clear"
+                android:id="@+id/btnClear"
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                style="@style/Theme.PayButton" />
+                style="@style/Theme.ApplicationStatusLandingButton" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

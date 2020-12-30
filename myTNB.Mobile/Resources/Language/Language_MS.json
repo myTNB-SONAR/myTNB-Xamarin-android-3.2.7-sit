@@ -1847,7 +1847,8 @@
     "apply": "Gunakan Pilihan",
     "from": "Dari",
     "to": "Hingga",
-    "minimumYear": "2016"
+    "minimumYear": "2016",
+    "clear": "Padam"
   },
   "SelectCreationDate_selector": {
     "months": [

@@ -8,8 +8,6 @@ using Android.Util;
 using System;
 using CheeseBind;
 using Android.Widget;
-
-
 using System.Globalization;
 using myTNB_Android.Src.Base.Fragments;
 using Google.Android.Material.TextField;
@@ -33,20 +31,24 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
         EditText txtToDate;
 
         [BindView(Resource.Id.btnApplyFilter)]
-        Button btnApplyFilter;
+        Button btnApply;
+
+        [BindView(Resource.Id.btnClearFilter)]
+        Button btnClear;
 
         const string PAGE_ID = "ApplicationStatus";
 
-        private string filterDate = "";
+        private string filterDate = string.Empty;
 
-        private string startDisplayDate = "";
-        private string endDisplayDate = "";
+        private string startDisplayDate = string.Empty;
+        private string endDisplayDate = string.Empty;
 
         private DateTime startDateTime;
         private DateTime endDateTime;
 
         private bool isStartPickerPopup = false;
         private bool isEndPickerPopup = false;
+        private bool isClearTapped = false;
 
         MonthYearPickerDialog pd;
 
@@ -112,28 +114,28 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             }
         }
 
-        public void DisableButton()
-        {
-            btnApplyFilter.Enabled = false;
-            btnApplyFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
-        }
-
-        public void EnableButton()
-        {
-            btnApplyFilter.Enabled = true;
-            btnApplyFilter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
-        }
-
         [OnClick(Resource.Id.btnApplyFilter)]
-        internal void OnConfirmClick(object sender, EventArgs e)
+        internal void OnApplyClick(object sender, EventArgs e)
         {
             OnConfirmFilter();
+        }
+
+        [OnClick(Resource.Id.btnClearFilter)]
+        internal void OnClearClick(object sender, EventArgs e)
+        {
+            startDisplayDate = string.Empty;
+            endDisplayDate = string.Empty;
+            txtFromDate.Text = string.Empty;
+            txtToDate.Text = string.Empty;
+            txtToDate.Enabled = false;
+            isClearTapped = true;
+            SetCTAEnable();
         }
 
         private void OnConfirmFilter()
         {
             Intent finishIntent = new Intent();
-            string result = "";
+            string result = string.Empty;
             if (!string.IsNullOrEmpty(startDisplayDate) && !string.IsNullOrEmpty(endDisplayDate))
             {
                 result += startDateTime.ToString("yyyyMMddTHHmmss");
@@ -144,33 +146,48 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             Finish();
         }
 
+        public override void OnBackPressed()
+        {
+            if (isClearTapped
+                && string.IsNullOrEmpty(txtFromDate.Text)
+                && string.IsNullOrWhiteSpace(txtFromDate.Text)
+                && string.IsNullOrEmpty(txtToDate.Text)
+                && string.IsNullOrWhiteSpace(txtToDate.Text))
+            {
+                OnConfirmFilter();
+            }
+            else
+            {
+                base.OnBackPressed();
+            }
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFromDate, txtInputLayoutToDate);
             TextViewUtils.SetMuseoSans300Typeface(txtFromDate, txtToDate);
-            TextViewUtils.SetMuseoSans500Typeface(btnApplyFilter);
+            TextViewUtils.SetMuseoSans500Typeface(btnApply);
 
-            txtInputLayoutFromDate.SetHintTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayout_TextAppearance_ColorFixLarge : Resource.Style.TextInputLayout_TextAppearance_ColorFix);
-            txtInputLayoutToDate.SetHintTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayout_TextAppearance_ColorFixLarge : Resource.Style.TextInputLayout_TextAppearance_ColorFix);
+            txtInputLayoutFromDate.SetHintTextAppearance(TextViewUtils.SelectedFontSize() == "L"
+                ? Resource.Style.TextInputLayout_TextAppearance_ColorFixLarge
+                : Resource.Style.TextInputLayout_TextAppearance_ColorFix);
+            txtInputLayoutToDate.SetHintTextAppearance(TextViewUtils.SelectedFontSize() == "L"
+                ? Resource.Style.TextInputLayout_TextAppearance_ColorFixLarge
+                : Resource.Style.TextInputLayout_TextAppearance_ColorFix);
             txtFromDate.TextSize = TextViewUtils.GetFontSize(16f);
             txtToDate.TextSize = TextViewUtils.GetFontSize(16f);
-            btnApplyFilter.TextSize = TextViewUtils.GetFontSize(16f);
-
+            btnApply.TextSize = TextViewUtils.GetFontSize(16f);
+            btnApply.Text = Utility.GetLocalizedLabel("SelectCreationDate", "apply");
+            btnClear.Text = Utility.GetLocalizedLabel("SelectCreationDate", "clear");
 
             SetToolBarTitle(Utility.GetLocalizedLabel("SelectCreationDate", "title"));
-          
-          
-            // txtInputLayoutFromDate.Hint = GetLabelCommonByLanguage("email");
-            // txtInputLayoutToDate.Hint = GetLabelCommonByLanguage("password");
 
             txtFromDate.AddTextChangedListener(new InputFilterFormField(txtFromDate, txtInputLayoutFromDate));
             txtToDate.AddTextChangedListener(new InputFilterFormField(txtToDate, txtInputLayoutToDate));
 
             Bundle extras = Intent.Extras;
-
-            DisableButton();
 
             if (extras != null)
             {
@@ -190,9 +207,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
 
             if (startDisplayDate != string.Empty)
             {
-
-                DateTime dateTimeParse = DateTime.ParseExact(startDisplayDate, "yyyy/MM/dd",
-                            CultureInfo.InvariantCulture, DateTimeStyles.None);
+                DateTime dateTimeParse = DateTime.ParseExact(startDisplayDate
+                    , "yyyy/MM/dd"
+                    , CultureInfo.InvariantCulture
+                    , DateTimeStyles.None);
                 TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
                 DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
                 startDateTime = dateTimeMalaysia;
@@ -200,18 +218,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
                 {
                     CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
                     txtFromDate.Text = dateTimeMalaysia.ToString("MMMM yyyy", currCult);
-                   
                 }
                 else
                 {
                     CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
                     txtFromDate.Text = dateTimeMalaysia.ToString("MMMM yyyy", currCult);
-                  
                 }
             }
             if (endDisplayDate != string.Empty)
             {
-
                 DateTime dateTimeParse = DateTime.ParseExact(endDisplayDate, "yyyy/MM/dd",
                             CultureInfo.InvariantCulture, DateTimeStyles.None);
                 TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
@@ -229,59 +244,16 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
                 }
             }
 
-            //if (!string.IsNullOrEmpty(filterDate) && filterDate.Contains("-"))
-            //{
-            //    string[] filterDateArray = filterDate.Split("-");
-            //    for (int i = 0; i < filterDateArray.Length; i++)
-            //    {
-            //        if(i==0)
-            //        {
-            //            txtFromDate.Text = filterDateArray[i].Trim();
-            //        }
-            //        else
-            //        {
-            //            txtToDate.Text = filterDateArray[i].Trim();
-            //        }
-            //        //    string tempDateTime = "";
-            //        //    DateTime dateTimeParse = DateTime.ParseExact(filterDateArray[i], "yyyyMMddTHHmmss",
-            //        //                CultureInfo.InvariantCulture, DateTimeStyles.None);
-            //        //    TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById("Asia/Kuala_Lumpur");
-            //        //    DateTime dateTimeMalaysia = TimeZoneInfo.ConvertTimeFromUtc(dateTimeParse, tzi);
-            //        //    if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
-            //        //    {
-            //        //        CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
-            //        //        tempDateTime = dateTimeMalaysia.ToString("MMMM yyyy", currCult);
-            //        //    }
-            //        //    else
-            //        //    {
-            //        //        CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
-            //        //        tempDateTime = dateTimeMalaysia.ToString("MMMM yyyy", currCult);
-            //        //    }
-
-            //        //    if (i == 0)
-            //        //    {
-            //        //        startDisplayDate = tempDateTime;
-            //        //        startDateTime = DateTime.ParseExact(filterDateArray[i], "yyyyMMddTHHmmss",
-            //        //                CultureInfo.InvariantCulture, DateTimeStyles.None);
-            //        //    }
-            //        //    else
-            //        //    {
-            //        //        endDisplayDate = tempDateTime;
-            //        //        endDateTime = DateTime.ParseExact(filterDateArray[i], "yyyyMMddTHHmmss",
-            //        //            CultureInfo.InvariantCulture, DateTimeStyles.None);
-            //        //    }
-            //    }
-
-            //    //txtFromDate.Text = startDisplayDate;
-            //    //txtToDate.Text = endDisplayDate;
-            //}
-
             txtFromDate.Enabled = true;
-            txtToDate.Enabled = true;
+            txtToDate.Enabled = !string.IsNullOrEmpty(txtToDate.Text) && !string.IsNullOrWhiteSpace(txtToDate.Text);
+
             txtFromDate.Focusable = false;
             txtToDate.Focusable = false;
+
             txtFromDate.Click += TxtFromDate_Click;
             txtToDate.Click += TxtToDate_Click;
+
+            SetCTAEnable();
         }
 
         private void TxtToDate_Click(object sender, EventArgs e)
@@ -306,21 +278,34 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
         {
             if (isStartPickerPopup && !string.IsNullOrEmpty(startDisplayDate))
             {
-               pd = new MonthYearPickerDialog(this,Convert.ToInt32( Utility.GetLocalizedLabel("SelectCreationDate", "minimumYear")), DateTime.Now.Year, 1, 12, startDateTime);
+                pd = new MonthYearPickerDialog(this
+                    , Convert.ToInt32(Utility.GetLocalizedLabel("SelectCreationDate", "minimumYear"))
+                    , DateTime.Now.Year
+                    , 1
+                    , 12
+                    , startDateTime);
             }
             else if (isEndPickerPopup && !string.IsNullOrEmpty(endDisplayDate))
             {
-                pd = new MonthYearPickerDialog(this, Convert.ToInt32(Utility.GetLocalizedLabel("SelectCreationDate", "minimumYear")), DateTime.Now.Year, 1, 12, endDateTime);
+                pd = new MonthYearPickerDialog(this
+                    , Convert.ToInt32(Utility.GetLocalizedLabel("SelectCreationDate", "minimumYear"))
+                    , DateTime.Now.Year
+                    , 1
+                    , 12
+                    , endDateTime);
             }
             else
             {
-                pd = new MonthYearPickerDialog(this, Convert.ToInt32(Utility.GetLocalizedLabel("SelectCreationDate", "minimumYear")), DateTime.Now.Year, 1, 12, DateTime.Now);
+                pd = new MonthYearPickerDialog(this
+                    , Convert.ToInt32(Utility.GetLocalizedLabel("SelectCreationDate", "minimumYear"))
+                    , DateTime.Now.Year
+                    , 1
+                    , 12
+                    , DateTime.Now);
             }
 
             pd.SetListener(this);
-
             pd.mCancelHandler += Pd_mCancelHandler;
-
             pd.Show(this.FragmentManager, "MonthYearPickerDialog");
         }
 
@@ -336,7 +321,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             if (isStartPickerPopup)
             {
                 var checkDateTime = new DateTime(year, month, dayOfMonth + 1);
-
                 if (!string.IsNullOrEmpty(endDisplayDate) && checkDateTime.Date > endDateTime.Date)
                 {
                     isStartPickerPopup = false;
@@ -359,17 +343,16 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
                 txtFromDate.Text = startDisplayDate;
 
                 isStartPickerPopup = false;
+                txtToDate.Enabled = true;
             }
             else
             {
                 var checkDateTime = new DateTime(year, month, dayOfMonth + 1);
-
                 if (!string.IsNullOrEmpty(startDisplayDate) && checkDateTime.Date < startDateTime.Date)
                 {
                     isEndPickerPopup = false;
                     return;
                 }
-
                 endDateTime = new DateTime(year, month, dayOfMonth + 1);
 
                 if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
@@ -388,14 +371,26 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
                 isEndPickerPopup = false;
             }
 
-            if (!string.IsNullOrEmpty(startDisplayDate) && !string.IsNullOrEmpty(endDisplayDate))
-            {
-                EnableButton();
-            }
-            else
-            {
-                DisableButton();
-            }
+            SetCTAEnable();
+        }
+
+        private void SetCTAEnable()
+        {
+            bool isClearEnabled = !string.IsNullOrEmpty(startDisplayDate) || !string.IsNullOrEmpty(endDisplayDate);
+            bool isApplyEnabled = !string.IsNullOrEmpty(startDisplayDate) && !string.IsNullOrEmpty(endDisplayDate);
+
+            btnClear.Enabled = isClearEnabled;
+            btnClear.Background = ContextCompat.GetDrawable(this, isClearEnabled
+                ? Resource.Drawable.light_green_outline_button_background
+                : Resource.Drawable.silver_chalice_button_outline);
+            btnClear.SetTextColor(ContextCompat.GetColorStateList(this, isClearEnabled
+                ? Resource.Color.freshGreen
+                : Resource.Color.silverChalice));
+
+            btnApply.Enabled = isApplyEnabled;
+            btnApply.Background = ContextCompat.GetDrawable(this, isApplyEnabled
+                ? Resource.Drawable.green_button_background
+                : Resource.Drawable.silver_chalice_button_background);
         }
     }
 }

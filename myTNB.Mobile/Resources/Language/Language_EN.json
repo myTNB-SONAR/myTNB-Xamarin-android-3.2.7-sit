@@ -1847,7 +1847,8 @@
     "apply": "Apply",
     "from": "From",
     "to": "To",
-    "minimumYear": "2016"
+    "minimumYear": "2016",
+    "clear": "Clear"
   },
   "SelectCreationDate_selector": {
     "months": [
