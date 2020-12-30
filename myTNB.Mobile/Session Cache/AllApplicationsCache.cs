@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using myTNB.Mobile.Extensions;
+using myTNB.Mobile.Helpers;
 
 namespace myTNB.Mobile.SessionCache
 {
@@ -80,6 +81,9 @@ namespace myTNB.Mobile.SessionCache
         }
         public int Total { private set; get; }
         public double Pages { private set; get; }
+
+        public DateFilterModel From { set; get; }
+        public DateFilterModel To { set; get; }
 
         /// <summary>
         /// Response Cache if needed
@@ -166,6 +170,8 @@ namespace myTNB.Mobile.SessionCache
             DisplayStatus = string.Empty;
             DisplayDate = string.Empty;
             AllApplicationResponse = null;
+            From = null;
+            To = null;
         }
         /// <summary>
         /// Reset bool properties

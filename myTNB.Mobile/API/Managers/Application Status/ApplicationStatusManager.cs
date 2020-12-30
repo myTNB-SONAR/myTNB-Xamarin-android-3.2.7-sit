@@ -678,13 +678,13 @@ namespace myTNB.Mobile
                 catch (ApiException apiEx)
                 {
 #if DEBUG
-                    Debug.WriteLine("[DEBUG][GetAllApplications]Refit Exception: " + apiEx.Message);
+                    Debug.WriteLine("[DEBUG][GetApplicationByCA]Refit Exception: " + apiEx.Message);
 #endif
                 }
                 catch (Exception ex)
                 {
 #if DEBUG
-                    Debug.WriteLine("[DEBUG][GetAllApplications]General Exception: " + ex.Message);
+                    Debug.WriteLine("[DEBUG][GetApplicationByCA]General Exception: " + ex.Message);
 #endif
                 }
             }

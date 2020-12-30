@@ -85,4 +85,11 @@ namespace myTNB.Mobile.Helpers
             return date;
         }
     }
+
+    public class DateFilterModel
+    {
+        public int Month { set; get; } = -1;
+        public int YearIndex { set; get; } = -1;
+        public int Year { set; get; }
+    }
 }

@@ -221,7 +221,7 @@ namespace myTNB.Mobile
                     if (CTAType == DetailCTAType.NewAppointment)
                     {
                         format = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "setAppointmentCTAMessage");
-                        message = string.Format(format, "TBD", "TBD");
+                        message = string.Format(format, ApplicationAppointmentDetail.AppointmentDeadlineDisplay ?? string.Empty);
                     }
                     else if (CTAType == DetailCTAType.Reschedule)
                     {
@@ -229,7 +229,7 @@ namespace myTNB.Mobile
                         message = string.Format(format
                             , ApplicationAppointmentDetail.AppointmentDateDisplay
                             , ApplicationAppointmentDetail.TimeSlotDisplay
-                            , "TBD");
+                            , ApplicationAppointmentDetail.AppointmentDeadlineDisplay ?? string.Empty);
                     }
                     else if (CTAType == DetailCTAType.RescheduleDisabled)
                     {
@@ -317,6 +317,31 @@ namespace myTNB.Mobile
                         }
                     }
                 }
+                else if (ApplicationAppointmentDetail != null && ApplicationAppointmentDetail.Mode.IsValid())
+                {
+                    switch (ApplicationAppointmentDetail.Mode.ToUpper())
+                    {
+                        case "NEWSCHEDULE":
+                            {
+                                type = DetailCTAType.NewAppointment;
+                                break;
+                            }
+                        case "RESCHEDULE":
+                            {
+                                type = DetailCTAType.Reschedule;
+                                break;
+                            }
+                        case "DISABLED":
+                            {
+                                type = DetailCTAType.RescheduleDisabled;
+                                break;
+                            }
+                        default:
+                            {
+                                break;
+                            }
+                    }
+                }
                 else if (ApplicationRatingDetail != null)
                 {
                     try
@@ -345,31 +370,6 @@ namespace myTNB.Mobile
                     catch (Exception e)
                     {
                         Debug.WriteLine("[DEBUG] ApplicationRatingDetail CTA Error: " + e.Message);
-                    }
-                }
-                else if (ApplicationAppointmentDetail != null && ApplicationAppointmentDetail.Mode.IsValid())
-                {
-                    switch (ApplicationAppointmentDetail.Mode.ToUpper())
-                    {
-                        case "NEWSCHEDULE":
-                            {
-                                type = DetailCTAType.NewAppointment;
-                                break;
-                            }
-                        case "RESCHEDULE":
-                            {
-                                type = DetailCTAType.Reschedule;
-                                break;
-                            }
-                        case "DISABLED":
-                            {
-                                type = DetailCTAType.RescheduleDisabled;
-                                break;
-                            }
-                        default:
-                            {
-                                break;
-                            }
                     }
                 }
                 return type;

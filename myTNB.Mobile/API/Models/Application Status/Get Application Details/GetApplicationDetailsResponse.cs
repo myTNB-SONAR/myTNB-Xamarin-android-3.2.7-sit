@@ -280,7 +280,9 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public DateTime? AppointmentStartTime { set; get; }
         [JsonProperty("appointmentEndTime")]
         public DateTime? AppointmentEndTime { set; get; }
-
+        [JsonProperty("appointmentDeadline")]
+        public DateTime? AppointmentDeadline { set; get; }
+        
         /// <summary>
         /// Use to display in CTA Message
         /// </summary>
@@ -292,6 +294,21 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
                 return AppointmentDate != null && AppointmentDate.Value != null
                     ? AppointmentDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
+                    : string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Use to display in CTA Message
+        /// </summary>
+        [JsonIgnore]
+        public string AppointmentDeadlineDisplay
+        {
+            get
+            {
+                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                return AppointmentDeadline != null && AppointmentDeadline.Value != null
+                    ? AppointmentDeadline.Value.ToString("dd MMM yyyy, h tt", dateCultureInfo) ?? string.Empty
                     : string.Empty;
             }
         }
