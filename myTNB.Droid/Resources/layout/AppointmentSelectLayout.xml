@@ -137,19 +137,40 @@
                     </RelativeLayout>
             
                 </LinearLayout>
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                android:background="#F9F9F9">
+                     <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="12dp"
+                    android:id="@+id/timeSlotNote"
+                    android:textColor="@color/tunaGrey"
+                    android:layout_marginBottom="16dp"
+                    android:text=""
+                    android:textSize="12dp"/>
+               
+                </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                 android:background="#F9F9F9">
+                    
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="12dp"
+                    android:id="@+id/timeSlotError"
                     android:textColor="#e44b21"
                     android:layout_marginBottom="16dp"
-                    android:text="Please select a different date and time slot from your original appointment."
+                    android:text=""
                     android:textSize="12dp"/>
                 </LinearLayout>
         </LinearLayout>

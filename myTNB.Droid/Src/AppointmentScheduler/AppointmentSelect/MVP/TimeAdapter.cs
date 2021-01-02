@@ -1,19 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.Graphics;
 
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
+using myTNB.Mobile.API.DisplayModel.Scheduler;
 
 namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 {
     public class TimeAdapter : RecyclerView.Adapter
     {
         private string[] timeNames;
+        private List<string> timeSolts = new List<string>();
         private int pickedDateDay;
         private bool isDateSelected = false;
         private bool isTimeSelected = false;
         private TextView selectedTimeTextView;
+        public string selectedDate = string.Empty;
+        public string selectedTime = string.Empty;
         private TextView previousSelectedTime;
         private static string color_calendar_number = "#424A56";
         private static string colorLight_grey = "#e4e4e4";
@@ -21,10 +26,14 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
         public event EventHandler<bool> TimeClickEvent;
 
-        public TimeAdapter(string[] timeNames,int pickedDateDay, bool isDateSelected) 
+        public TimeAdapter(List<AppointmentTimeSlotDisplay> timeSlotDisplay, int pickedDateDay, bool isDateSelected) 
         {
+            foreach(var item in timeSlotDisplay)
+            {
+                timeSolts.Add(item.TimeSlotDisplay);
+            }
            
-            this.timeNames = timeNames;
+            this.timeNames = timeSolts.ToArray();
             this.pickedDateDay = pickedDateDay;
             this.isDateSelected = isDateSelected;
         }
@@ -57,6 +66,18 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         }
         public void onTimeClick(View view)
         {
+            if (selectedTimeTextView != null)
+            {
+
+                selectedTimeTextView.SetBackgroundColor(Color.Transparent);
+                if (selectedTimeTextView.CurrentTextColor != Color.Red)
+                {
+
+                    selectedTimeTextView.SetTextColor(Color.ParseColor(color_blue));
+                }
+
+            }
+
             selectedTimeTextView = (TextView)view;
 
             isTimeSelected = true;
@@ -72,6 +93,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             selectedTimeTextView.SetBackgroundResource(Resource.Drawable.AppointmentTimeSelector);
             selectedTimeTextView.SetTextColor(Color.White);
 
+            selectedDate = selectedDate;
+            selectedTime = selectedTimeTextView.Text;
             TimeClickEvent(this,true);
             //CustomCalendar.isValidDateTime = true;
 
