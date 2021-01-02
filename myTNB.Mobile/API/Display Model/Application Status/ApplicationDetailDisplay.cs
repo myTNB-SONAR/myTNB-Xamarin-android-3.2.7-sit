@@ -221,7 +221,7 @@ namespace myTNB.Mobile
                     if (CTAType == DetailCTAType.NewAppointment)
                     {
                         format = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "setAppointmentCTAMessage");
-                        message = string.Format(format, "TBD", "TBD");
+                        message = string.Format(format, ApplicationAppointmentDetail.AppointmentDeadlineDisplay ?? string.Empty);
                     }
                     else if (CTAType == DetailCTAType.Reschedule)
                     {
@@ -229,7 +229,7 @@ namespace myTNB.Mobile
                         message = string.Format(format
                             , ApplicationAppointmentDetail.AppointmentDateDisplay
                             , ApplicationAppointmentDetail.TimeSlotDisplay
-                            , "TBD");
+                            , ApplicationAppointmentDetail.AppointmentDeadlineDisplay ?? string.Empty);
                     }
                     else if (CTAType == DetailCTAType.RescheduleDisabled)
                     {
@@ -317,36 +317,6 @@ namespace myTNB.Mobile
                         }
                     }
                 }
-                else if (ApplicationRatingDetail != null)
-                {
-                    try
-                    {
-                        if (ApplicationStatusDetail != null
-                            && ApplicationStatusDetail.StatusTracker is List<StatusTrackerDisplay> tracker
-                            && tracker != null
-                            && tracker.Count > 0)
-                        {
-                            int index = tracker.FindIndex(x => x.StatusMode.IsValid() && x.StatusMode.ToUpper() == "COMPLETED");
-                            if (index > -1)
-                            {
-                                if (ApplicationRatingDetail.CustomerRating != null
-                               && !ApplicationRatingDetail.CustomerRating.TransactionId.IsValid())
-                                {
-                                    type = DetailCTAType.CustomerRating;
-                                }
-                                else if (ApplicationRatingDetail.ContractorRating != null
-                                    && ApplicationRatingDetail.ContractorRating.ContractorRatingUrl.IsValid())
-                                {
-                                    type = DetailCTAType.ContractorRating;
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine("[DEBUG] ApplicationRatingDetail CTA Error: " + e.Message);
-                    }
-                }
                 else if (ApplicationAppointmentDetail != null && ApplicationAppointmentDetail.Mode.IsValid())
                 {
                     switch (ApplicationAppointmentDetail.Mode.ToUpper())
@@ -370,6 +340,36 @@ namespace myTNB.Mobile
                             {
                                 break;
                             }
+                    }
+                }
+                else if (ApplicationRatingDetail != null)
+                {
+                    try
+                    {
+                        if (ApplicationStatusDetail != null
+                            && ApplicationStatusDetail.StatusTracker is List<StatusTrackerDisplay> tracker
+                            && tracker != null
+                            && tracker.Count > 0)
+                        {
+                            int index = tracker.FindIndex(x => x.StatusMode.IsValid() && x.StatusMode.ToUpper() == "COMPLETED");
+                            if (index > -1)
+                            {
+                                if (ApplicationRatingDetail.CustomerRating != null
+                                    && !ApplicationRatingDetail.CustomerRating.TransactionId.IsValid())
+                                {
+                                    type = DetailCTAType.CustomerRating;
+                                }
+                                else if (ApplicationRatingDetail.ContractorRating != null
+                                    && ApplicationRatingDetail.ContractorRating.ContractorRatingUrl.IsValid())
+                                {
+                                    type = DetailCTAType.ContractorRating;
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("[DEBUG] ApplicationRatingDetail CTA Error: " + e.Message);
                     }
                 }
                 return type;

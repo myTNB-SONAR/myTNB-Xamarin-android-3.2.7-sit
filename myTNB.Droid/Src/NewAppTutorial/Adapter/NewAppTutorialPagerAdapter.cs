@@ -2207,7 +2207,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     int progressDateCount = ((ApplicationStatusDetailActivity)this.mContext).GetProgressDateCount();
                     int pressView = ((ApplicationStatusDetailActivity)this.mContext).GetRecyclerViewHeight();
 
-                    pressView = pressView < 500 ? pressView - 65 : pressView - (progressDateCount == 1 ? 40: (progressDateCount == 2? 80 : (progressDateCount == 3 ? 120:(progressDateCount == 4 ? 160:(progressDateCount == 5 ? 200:0)))));
+                    pressView = pressView < 500 ? pressView - 65 : pressView - (progressDateCount == 1 ? 65 : (progressDateCount == 2 ? 80 : (progressDateCount == 3 ? 120 : (progressDateCount == 4 ? 160 : (progressDateCount == 5 ? 200 : 0)))));
                     float h1 = 0;
                     float h2 = 180f;
                     int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetTopHeight() + pressView + (int)DPUtils.ConvertDPToPx(h1);
@@ -2247,10 +2247,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     if (position == 0)
                     {
 
-                       
-                       
+
+
                         int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetTopCtaHeight() + (int)DPUtils.ConvertDPToPx(45f);
-                      
+
                         int middleHeight = (int)DPUtils.ConvertDPToPx(180f);
 
                         int leftWidth = 0;
@@ -2290,7 +2290,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     }
                     else
                     {
-                       
+
                         int middleHeight = ((ApplicationStatusDetailActivity)this.mContext).GetCtaButtonHeight() + (int)DPUtils.ConvertDPToPx(45f);
                         int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetTopCtaHeight() + (int)DPUtils.ConvertDPToPx(45f);
 
