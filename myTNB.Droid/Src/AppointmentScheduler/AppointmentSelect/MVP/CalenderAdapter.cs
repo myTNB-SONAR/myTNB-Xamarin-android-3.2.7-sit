@@ -16,6 +16,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
+using myTNB.Mobile.API.DisplayModel.Scheduler;
 
 namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 {
@@ -67,24 +68,24 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         LayoutParams defaultButtonParams;
         private LayoutParams userButtonParams;
 
-        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, string[] timeNames) : base(context)
+        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse) : base(context)
         {
-            Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, timeNames);
+            Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse);
         }
-        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, string[] timeNames, IAttributeSet attrs) : base(context, attrs)
+        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs) : base(context, attrs)
         {
-            Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, timeNames);
+            Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse);
         }
 
-        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, string[] timeNames, IAttributeSet attrs, int defStyleAttr)
+        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs, int defStyleAttr)
             : base(context, attrs, defStyleAttr)
         {
-            Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, timeNames);
+            Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse);
         }
 
         
 
-        private void Initialize(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, string[] timeNames)
+        private void Initialize(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse)
         {
             DisplayMetrics metrics = Resources.DisplayMetrics;
             setUserCurrentMonthYear(calenderMonth, calendarYear);
@@ -139,7 +140,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             }
             addDaysinCalendar(defaultButtonParams, context, metrics);
 
-            InitCalendarWithDate(context, chosenDateYear, chosenDateMonth, chosenDateDay, calenderMonthName, calendarYear.ToString(), visibleNumbers, timeNames);
+            InitCalendarWithDate(context, chosenDateYear, chosenDateMonth, chosenDateDay, calenderMonthName, calendarYear.ToString(), visibleNumbers, schedulerDisplayResponse);
 
 
             // TIme
@@ -147,8 +148,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
             timeLayout.SetLayoutManager(gridLayoutManager);
 
-            TimeAdapter timeAdapter = new TimeAdapter(timeNames, pickedDateDay, isDateSelected);
-            timeLayout.SetAdapter(timeAdapter); 
+            //TimeAdapter timeAdapter = new TimeAdapter(timeNames, pickedDateDay, isDateSelected);
+            //timeLayout.SetAdapter(timeAdapter); 
 
             if(isValidDateTime && isDateSelected)
             {
@@ -207,7 +208,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         }
 
 
-        private void InitCalendarWithDate(Context context, int year, int month, int day, string calenderMonthName, string yearhNames, List<int> visibleNumbers, string[] timeNames)
+        private void InitCalendarWithDate(Context context, int year, int month, int day, string calenderMonthName, string yearhNames, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse)
         {
             //calendar = null;
                // calendar = Calendar.GetInstance(Java.Util.Locale.English);
@@ -231,8 +232,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             int daysLeftInFirstWeek = 0;
             int indexOfDayAfterLastDayOfMonth = 0;
 
-            if (firstDayOfCurrentMonth != 1)
-            {
+           // if (firstDayOfCurrentMonth != 1)
+           // {
                 daysLeftInFirstWeek = firstDayOfCurrentMonth;
                 indexOfDayAfterLastDayOfMonth = daysLeftInFirstWeek + daysInCurrentMonth;
                 for (int i = firstDayOfCurrentMonth; i < firstDayOfCurrentMonth + daysInCurrentMonth; ++i)
@@ -252,7 +253,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                             days[i].Click += (sender, e) =>
                             {
                                
-                                onDayClick(sender as View,context, timeNames);
+                                onDayClick(sender as View,context, schedulerDisplayResponse);
                             };
                         }
                         else
@@ -273,56 +274,56 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
 
                     ++dayNumber;
-                }
-            }
-            else
-            {
-                daysLeftInFirstWeek = 8;
-                indexOfDayAfterLastDayOfMonth = daysLeftInFirstWeek + daysInCurrentMonth;
-                for (int i = 8; i < 8 + daysInCurrentMonth; ++i)
-                {
-                    if (currentDateMonth == chosenDateMonth
-                            && currentDateYear == chosenDateYear)
-                    {
-                       
-                        if (dayNumber < currentDateDay)
-                        {
-                           
-                        }
-                        else
-                        {
-                           
+                //  }
+                // }
+                /* else
+                 {
+                     daysLeftInFirstWeek = 8;
+                     indexOfDayAfterLastDayOfMonth = daysLeftInFirstWeek + daysInCurrentMonth;
+                     for (int i = 8; i < 8 + daysInCurrentMonth; ++i)
+                     {
+                         if (currentDateMonth == chosenDateMonth
+                                 && currentDateYear == chosenDateYear)
+                         {
 
-                            if (dayNumber == 15 || dayNumber == 16 || dayNumber == 22 || dayNumber == 23)
-                            {
-                               
-                            }
+                             if (dayNumber < currentDateDay)
+                             {
 
-                            if (dayNumber == 14 || dayNumber == 31 || dayNumber == 30)
-                            {
-                               
-                            }
-                        }
-
-                    }
-                    
+                             }
+                             else
+                             {
 
 
+                                 if (dayNumber == 15 || dayNumber == 16 || dayNumber == 22 || dayNumber == 23)
+                                 {
 
-                    int[] dateArr = new int[3];
-                    dateArr[0] = dayNumber;
-                    dateArr[1] = chosenDateMonth;
-                    dateArr[2] = chosenDateYear;
-                    days[i].Tag = dateArr;
-                    days[i].Text = dayNumber.ToString();
-                    days[i].Click += (sender, e) =>
-                    {
-                      
-                        onDayClick(sender as View, context, timeNames);
-                    };
+                                 }
 
-                    ++dayNumber;
-                }
+                                 if (dayNumber == 14 || dayNumber == 31 || dayNumber == 30)
+                                 {
+
+                                 }
+                             }
+
+                         }
+
+
+
+
+                         int[] dateArr = new int[3];
+                         dateArr[0] = dayNumber;
+                         dateArr[1] = chosenDateMonth;
+                         dateArr[2] = chosenDateYear;
+                         days[i].Tag = dateArr;
+                         days[i].Text = dayNumber.ToString();
+                         days[i].Click += (sender, e) =>
+                         {
+
+                             onDayClick(sender as View, context, schedulerDisplayResponse);
+                         };
+
+                         ++dayNumber;
+                     }*/
             }
 
             if (month > 0)
@@ -335,7 +336,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             calendar.Set(chosenDateYear, chosenDateMonth, chosenDateDay);
         }
 
-        public void onDayClick(View view,Context context, string[] timeNames)
+        public void onDayClick(View view,Context context, SchedulerDisplay schedulerDisplayResponse)
         {
             isDateSelected = true;
 
@@ -383,11 +384,17 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             }
             if (pickedDateDay != 0)
             {
+               
+                var monthYear = schedulerDisplayResponse.MonthYearList.Where(x => x.Month == pickedDateMonth && x.Year == pickedDateYear).FirstOrDefault();
+                var monthindex = schedulerDisplayResponse.ScheduleList[monthYear.MonthYearDisplay].Where(x => x.Day == pickedDateDay.ToString()).FirstOrDefault();
+               
+                //string[] timeNames = schedulerDisplayResponse.ScheduleList.Values;
+               
                 timeLayout = (RecyclerView)FindViewById<RecyclerView>(Resource.Id.TimeRecyclerView);
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
                 timeLayout.SetLayoutManager(gridLayoutManager);
 
-                TimeAdapter timeAdapter = new TimeAdapter(timeNames, pickedDateDay, isDateSelected);
+                TimeAdapter timeAdapter = new TimeAdapter(monthindex.TimeSlotDisplay, pickedDateDay, isDateSelected);
                 timeLayout.SetAdapter(timeAdapter);
 
                 // adapter listener
@@ -407,6 +414,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
         private void Adapter_TimeClickEvent(object sender, bool e)
         {
+            TimeAdapter timeAdapter = (TimeAdapter)sender;
+              selectedTime = timeAdapter.selectedTime;
+            selectedDate = timeAdapter.selectedDate;
             DatetimeValidate(this, true);
         }
 
