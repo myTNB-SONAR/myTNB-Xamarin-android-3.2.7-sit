@@ -225,6 +225,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                     appointmentSetLandingIntent.PutExtra("selecteddate", customCalendar.selectedDate.ToString("dd MMM yyyy"));
                     appointmentSetLandingIntent.PutExtra("timeslot", customCalendar.selectedTime);
                     appointmentSetLandingIntent.PutExtra("appointment", appointment);
+                    appointmentSetLandingIntent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
+                    appointmentSetLandingIntent.PutExtra("selectedStartTime", customCalendar.selectedStartTime.ToString());
+                    appointmentSetLandingIntent.PutExtra("selectedEndTime", customCalendar.selectedEndTime.ToString());
+
                     StartActivity(appointmentSetLandingIntent);
                     SetResult(Result.Ok, new Intent());
                     Finish();

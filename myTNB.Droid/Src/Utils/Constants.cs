@@ -120,6 +120,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int RUNTIME_PERMISSION_GALLERY_REQUEST_CODE = 0x07;
         internal static readonly int RUNTIME_PERMISSION_LOCATION_REQUEST_CODE = 0x08;
         internal static readonly int RUNTIME_PERMISSION_GALLERY_PDF_REQUEST_CODE = 0x10;
+        internal static readonly int RUNTIME_PERMISSION_CALENDAR_REQUEST_CODE = 0x11;
 
         internal static readonly int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
