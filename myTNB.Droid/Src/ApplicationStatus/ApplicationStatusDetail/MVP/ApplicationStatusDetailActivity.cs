@@ -32,6 +32,7 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB.Mobile.API.DisplayModel.Scheduler;
 using myTNB.Mobile.API.Managers.Scheduler;
 using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
+using Android.Text;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -187,6 +188,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         [BindView(Resource.Id.layoutstar)]
         LinearLayout layoutstar;
+
+        [BindView(Resource.Id.txtAppointmentSet)]
+        TextView txtAppointmentSet;
+        
 
         private bool IsFromLinkedWith = false;
         private Snackbar mNoInternetSnackbar;
@@ -577,14 +582,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             applicationStatusStatusListRecyclerView.SetLayoutManager(layoutManager);
             applicationStatusStatusListRecyclerView.SetAdapter(adapter);
-            
 
+            txtAppointmentSet.Visibility = ViewStates.Gone;
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
 
             applicationStatusAdditionalListRecyclerView.SetLayoutManager(layoutManager);
             applicationStatusAdditionalListRecyclerView.SetAdapter(subAdapter);
 
-            TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusUpdated, txtApplicationStatusDetail, txtApplicationRateStar);
+            TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusUpdated, txtApplicationStatusDetail, txtApplicationRateStar, txtAppointmentSet);
 
             txtApplicationStatusUpdated.SetTypeface(txtApplicationStatusUpdated.Typeface, Android.Graphics.TypefaceStyle.Italic);
             // Create your application here
@@ -729,7 +734,17 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.Reschedule)
                             {
-                                btnPrimaryCTA.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "rescheduleCTA");
+                                txtAppointmentSet.Visibility = ViewStates.Visible;
+                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                {
+                                    btnPrimaryCTA.Text = Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusDetails", "rescheduleCTA"), FromHtmlOptions.ModeLegacy).ToString();
+                                }
+                                else
+                                {
+                                    btnPrimaryCTA.Text = Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusDetails", "rescheduleCTA")).ToString();
+                                }
+                               
+                                txtAppointmentSet.Text = applicationDetailDisplay.CTAMessage;
                                 applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
                                 applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
                                 applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
@@ -791,7 +806,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             }
 
                             TextViewUtils.SetMuseoSans500Typeface(txtApplicationStatusMainTitle, txtApplicationStatusTitle, txtApplicationStatusBottomPayableTitle);
-                            TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle, txtApplicationStatusDetailNote, txtBCRMDownMessage);
+                            TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle, txtApplicationStatusDetailNote, txtBCRMDownMessage, txtAppointmentSet);
 
                             if (applicationDetailDisplay.RatingDisplay != null && applicationDetailDisplay.RatingDisplay != string.Empty)
                             {

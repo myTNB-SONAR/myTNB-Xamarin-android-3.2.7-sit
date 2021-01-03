@@ -17,6 +17,7 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using myTNB.Mobile.API.DisplayModel.Scheduler;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 {
@@ -36,6 +37,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         public string selectedTime = string.Empty;
         public bool isDateSelected = false;
         public event EventHandler<bool> DatetimeValidate;
+        public event EventHandler<bool> DatetimeScrollValidate;
+        public event EventHandler<bool> DateChanged;
 
 
         public static bool isValidDateTime = false;
@@ -56,7 +59,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         LinearLayout weekFiveLayout;
         LinearLayout weekSixLayout;
         private LinearLayout[] weeks;
-
+        private TextView appointmentLabel2;
         private int currentDateDay, chosenDateDay, currentDateMonth,
                 chosenDateMonth, currentDateYear, chosenDateYear,
                 pickedDateDay, pickedDateMonth, pickedDateYear;
@@ -105,9 +108,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             weekFourLayout = FindViewById<LinearLayout>(Resource.Id.calendar_week_4);
             weekFiveLayout = FindViewById<LinearLayout>(Resource.Id.calendar_week_5);
             weekSixLayout = FindViewById<LinearLayout>(Resource.Id.calendar_week_6);
-            
-           
 
+            appointmentLabel2 = FindViewById<TextView>(Resource.Id.appointmentLabel2);
+            appointmentLabel2.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "timeSectionTitle");
             var dayof = calendar.FirstDayOfWeek;
             //currentDateDay = chosenDateDay = calendar.Get(CalendarField.DayOfMonth);
             currentDateDay = chosenDateDay = calendar.Get(CalendarField.DayOfMonth);
@@ -341,7 +344,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         public void onDayClick(View view,Context context, SchedulerDisplay schedulerDisplayResponse)
         {
             isDateSelected = true;
-
+            DateChanged(this, true);
             if (selectedDayButton != null)
             {
                 if (chosenDateYear == currentDateYear
@@ -431,6 +434,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             selectedStartTime = timeAdapter.selectedStartTime;
             selectedEndTime = timeAdapter.selectedEndTime;
             DatetimeValidate(this, true);
+            DatetimeScrollValidate(this, true);
         }
 
        

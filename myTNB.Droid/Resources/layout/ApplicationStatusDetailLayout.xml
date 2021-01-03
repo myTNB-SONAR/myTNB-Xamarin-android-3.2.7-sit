@@ -598,11 +598,21 @@ will be recorded. Check back again later to view its update."/>
 				<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:orientation="horizontal"
+					android:orientation="vertical"
 					android:weightSum="1"
 					android:visibility="gone"
 					android:id="@+id/applicationStatusDetailSingleButtonLayout"
 					android:background="@color/white">
+					<TextView
+							android:id="@+id/txtAppointmentSet"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:layout_marginBottom="16dp"
+							android:layout_marginTop="16dp"
+							android:visibility="gone"
+						    android:text="You have an appointment set for 19 Sep 2020, between 9:00 AM - 1:00 PM. "
+							android:textColor="@color/charcoalGrey"
+							android:textSize="14dp" />
 					<Button
 						android:id="@+id/btnPrimaryCTA"
 						android:text="UI - Add to List"
