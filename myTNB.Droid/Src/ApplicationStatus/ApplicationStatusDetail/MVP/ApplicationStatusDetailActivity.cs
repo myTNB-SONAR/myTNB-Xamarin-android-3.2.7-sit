@@ -201,13 +201,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
                     if (applicationDetailDisplay.CTAType == DetailCTAType.NewAppointment)
                     {
-                        OnNewAppointment();
+                        OnAppointment("NewAppointment");
                         FirebaseAnalyticsUtils.LogClickEvent(this, "Set Appointment Button Clicked");
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.Reschedule)
                     {
-
-                        FirebaseAnalyticsUtils.LogClickEvent(this, "Save Button Clicked");
+                        OnAppointment("Reschedule");
+                        FirebaseAnalyticsUtils.LogClickEvent(this, "Set Reschedule Appointment Button Clicked");
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.Save)
                     {
@@ -372,7 +372,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
             return base.OnCreateOptionsMenu(menu);
         }
-        public async void OnNewAppointment()
+        public async void OnAppointment(string appointment)
         {
             ShowProgressDialog();
             try
@@ -388,6 +388,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     Intent appointment_activity = new Intent(this, typeof(AppointmentSelectActivity));
                     appointment_activity.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
                     appointment_activity.PutExtra("newAppointmentResponse", JsonConvert.SerializeObject(response));
+                    appointment_activity.PutExtra("appointment", appointment);
                     StartActivityForResult(appointment_activity, Constants.APPLICATION_STATUS_DETAILS_NEWAPPOINTMENT_REQUEST_CODE);
                 }
             }
@@ -576,7 +577,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
             applicationStatusStatusListRecyclerView.SetLayoutManager(layoutManager);
             applicationStatusStatusListRecyclerView.SetAdapter(adapter);
-            TextViewUtils.SetMuseoSans500Typeface(btnViewActivityLog);
+            
 
             layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
 

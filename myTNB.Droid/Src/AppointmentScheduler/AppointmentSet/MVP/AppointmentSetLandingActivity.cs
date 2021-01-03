@@ -31,6 +31,36 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
     public class AppointmentSetLandingActivity : BaseAppCompatActivity, AppointmentSetLandingContract.IView
     {
         AppointmentSetLandingPresenter mPresenter;
+        [BindView(Resource.Id.txtTitleInfo)]
+        TextView txtTitleInfo;
+        [BindView(Resource.Id.txtMessageInfo)]
+        TextView txtMessageInfo;
+        [BindView(Resource.Id.appointmentLabel)]
+        TextView appointmentLabel;
+        [BindView(Resource.Id.appointmentTimeLabel)]
+        TextView appointmentTimeLabel;
+        [BindView(Resource.Id.appointmentValue)]
+        TextView appointmentValue;
+        [BindView(Resource.Id.appointmentTimeValue)]
+        TextView appointmentTimeValue;
+        [BindView(Resource.Id.premiseLabel)]
+        TextView premiseLabel;
+        [BindView(Resource.Id.premiseaddresstext)]
+        TextView premiseaddresstext;
+        [BindView(Resource.Id.servicerequest)]
+        TextView servicerequest;
+        [BindView(Resource.Id.servicerequestLabel)]
+        TextView servicerequestLabel;
+        [BindView(Resource.Id.btnTrackApplication)]
+        Button btnTrackApplication;
+        [BindView(Resource.Id.btnAddtoCalendar)]
+        Button btnAddtoCalendar;
+
+        
+        string srnumber;
+        string selecteddate;
+        string timeslot;
+        string appointment;
         public override int ResourceId()
         {
             return Resource.Layout.AppointmentSetLandingLayout;
@@ -39,6 +69,39 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
         {
             base.OnCreate(savedInstanceState);
             mPresenter = new AppointmentSetLandingPresenter(this);
+            txtTitleInfo.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "title");
+
+            appointmentTimeLabel.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "timeTitle").ToUpper();
+            appointmentLabel.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "dateTitle").ToUpper();
+            premiseLabel.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "addressTitle").ToUpper();
+            servicerequestLabel.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "srTitle");
+            btnTrackApplication.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "viewDetails").ToUpper();
+            btnAddtoCalendar.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "addToCalendar");
+
+            TextViewUtils.SetMuseoSans300Typeface(txtMessageInfo, txtTitleInfo, servicerequestLabel, servicerequest, appointmentLabel, appointmentTimeLabel, appointmentValue, appointmentTimeValue, premiseLabel, premiseaddresstext);
+            TextViewUtils.SetMuseoSans500Typeface(btnTrackApplication, btnAddtoCalendar);
+
+            Bundle extras = Intent.Extras;
+            if (extras != null)
+            {
+                srnumber = extras.GetString("srnumber");
+                selecteddate = extras.GetString("selecteddate");
+                timeslot = extras.GetString("timeslot");
+                appointment = extras.GetString("appointment");
+                appointmentValue.Text = selecteddate;
+                appointmentTimeValue.Text = timeslot;
+                servicerequest.Text = srnumber;
+                if (appointment == "Reschedule")
+                {
+                    txtMessageInfo.Text = string.Format(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "rescheduleDetails"),selecteddate);
+                   
+                }
+                else
+                {
+                    txtMessageInfo.Text = string.Format(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "appointmentDetails"),selecteddate);
+                }
+
+            }
         }
 
         public void UpdateUI()

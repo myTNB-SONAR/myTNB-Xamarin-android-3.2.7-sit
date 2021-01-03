@@ -6153,6 +6153,7 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\myTNBMenu\Async\SyncSRApplicationAPI.cs" />
+    <AndroidResource Include="Resources\drawable\light_Blue_outline_button_background.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Android.Graphics;
 
 using Android.Views;
@@ -17,13 +18,15 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         private bool isDateSelected = false;
         private bool isTimeSelected = false;
         private TextView selectedTimeTextView;
-        public string selectedDate = string.Empty;
+        public DateTime selectedDate;
+        public DateTime selectedStartTime;
+        public DateTime selectedEndTime;
         public string selectedTime = string.Empty;
         private TextView previousSelectedTime;
         private static string color_calendar_number = "#424A56";
         private static string colorLight_grey = "#e4e4e4";
         private static string color_blue = "#1c79ca";
-
+        private List<AppointmentTimeSlotDisplay> timeSlotDisplay = new List<AppointmentTimeSlotDisplay>();
         public event EventHandler<bool> TimeClickEvent;
 
         public TimeAdapter(List<AppointmentTimeSlotDisplay> timeSlotDisplay, int pickedDateDay, bool isDateSelected) 
@@ -32,7 +35,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             {
                 timeSolts.Add(item.TimeSlotDisplay);
             }
-           
+            this.timeSlotDisplay = timeSlotDisplay;
             this.timeNames = timeSolts.ToArray();
             this.pickedDateDay = pickedDateDay;
             this.isDateSelected = isDateSelected;
@@ -95,6 +98,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
             selectedDate = selectedDate;
             selectedTime = selectedTimeTextView.Text;
+            var timeSlotDates = this.timeSlotDisplay.Where(x => x.TimeSlotDisplay == selectedTime).FirstOrDefault();
+            selectedStartTime = Convert.ToDateTime(timeSlotDates.SlotStartTime);
+            selectedEndTime = Convert.ToDateTime(timeSlotDates.SlotEndTime);
             TimeClickEvent(this,true);
             //CustomCalendar.isValidDateTime = true;
 

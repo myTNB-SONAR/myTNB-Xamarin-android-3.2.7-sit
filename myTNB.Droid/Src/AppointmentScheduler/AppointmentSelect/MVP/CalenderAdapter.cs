@@ -30,7 +30,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
   
         private static string color_grey = "#727171";
         private static string colorLight_grey = "#e4e4e4";
-        public string selectedDate = string.Empty;
+        public DateTime selectedDate;
+        public DateTime selectedStartTime;
+        public DateTime selectedEndTime;
         public string selectedTime = string.Empty;
         public bool isDateSelected = false;
         public event EventHandler<bool> DatetimeValidate;
@@ -367,6 +369,15 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 pickedDateDay = dateArray[0];
                 pickedDateMonth = dateArray[1];
                 pickedDateYear = dateArray[2];
+
+                string iDate = (pickedDateDay.ToString().Length < 2 ? "0" + pickedDateDay.ToString() : pickedDateDay.ToString()) +"/"+ (pickedDateMonth.ToString().Length < 2 ? "0" + pickedDateMonth.ToString() : pickedDateMonth.ToString()) + "/" + pickedDateYear;
+              
+            
+
+               System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
+                DateTime date = DateTime.ParseExact(iDate, "dd/mm/yyyy", currCult);
+
+                selectedDate = date;
             }
 
             if (pickedDateYear == currentDateYear
@@ -415,8 +426,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         private void Adapter_TimeClickEvent(object sender, bool e)
         {
             TimeAdapter timeAdapter = (TimeAdapter)sender;
-              selectedTime = timeAdapter.selectedTime;
-            selectedDate = timeAdapter.selectedDate;
+            selectedTime = timeAdapter.selectedTime;
+           
+            selectedStartTime = timeAdapter.selectedStartTime;
+            selectedEndTime = timeAdapter.selectedEndTime;
             DatetimeValidate(this, true);
         }
 
