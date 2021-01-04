@@ -94,7 +94,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
             appointmentLabel.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "dateTitle").ToUpper();
             premiseLabel.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "addressTitle").ToUpper();
             servicerequestLabel.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "srTitle").ToUpper();
-            btnTrackApplication.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "viewDetails").ToUpper();
+            btnTrackApplication.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "viewDetails");
             btnAddtoCalendar.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "addToCalendar");
 
             TextViewUtils.SetMuseoSans300Typeface(txtMessageInfo, txtTitleInfo, servicerequestLabel
@@ -116,17 +116,33 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
                 startTime = DateTime.Parse(extras.GetString("selectedStartTime"));
                 endTime = DateTime.Parse(extras.GetString("selectedEndTime"));
 
-
+                premiseaddresstext.Text = applicationDetailDisplay.PremisesAddress;
                 appointmentValue.Text = selecteddate;
                 appointmentTimeValue.Text = timeslot;
                 servicerequest.Text = srnumber;
                 if (appointment == "Reschedule")
                 {
-                    txtMessageInfo.Text = string.Format(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "rescheduleDetails"), selecteddate);
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                    {
+                        txtMessageInfo.Text = Html.FromHtml(string.Format(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "rescheduleDetails"), selecteddate), FromHtmlOptions.ModeLegacy).ToString();
+                    }
+                    else
+                    {
+                        txtMessageInfo.Text = Html.FromHtml(string.Format(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "rescheduleDetails"), selecteddate)).ToString();
+                    }
+                
                 }
                 else
                 {
-                    txtMessageInfo.Text = string.Format(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "appointmentDetails"), selecteddate);
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                    {
+                        txtMessageInfo.Text = Html.FromHtml(string.Format(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "appointmentDetails"), selecteddate), FromHtmlOptions.ModeLegacy).ToString();
+                    }
+                    else
+                    {
+                        txtMessageInfo.Text = Html.FromHtml(string.Format(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "appointmentDetails"), selecteddate)).ToString();
+                    }
+                  
                 }
             }
         }
@@ -159,8 +175,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
                     {
                         Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
                         applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(response.Content));
-                        StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE);
-                        SetResult(Result.Ok, applicationStatusDetailIntent);
+                        StartActivity(applicationStatusDetailIntent);
+                        SetResult(Result.Ok, new Intent());
                         Finish();
                     }
                 }

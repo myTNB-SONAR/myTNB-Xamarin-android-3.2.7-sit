@@ -394,7 +394,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                     appointment_activity.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
                     appointment_activity.PutExtra("newAppointmentResponse", JsonConvert.SerializeObject(response));
                     appointment_activity.PutExtra("appointment", appointment);
-                    StartActivityForResult(appointment_activity, Constants.APPLICATION_STATUS_DETAILS_NEWAPPOINTMENT_REQUEST_CODE);
+                    StartActivity(appointment_activity);
+                    SetResult(Result.Ok, new Intent());
+                    Finish();
                 }
             }
             catch (System.Exception ne)
@@ -738,13 +740,16 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                                 {
                                     btnPrimaryCTA.Text = Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusDetails", "rescheduleCTA"), FromHtmlOptions.ModeLegacy).ToString();
+                                    txtAppointmentSet.Text = Html.FromHtml(applicationDetailDisplay.CTAMessage, FromHtmlOptions.ModeLegacy).ToString();
                                 }
                                 else
                                 {
                                     btnPrimaryCTA.Text = Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusDetails", "rescheduleCTA")).ToString();
+                                    txtAppointmentSet.Text = Html.FromHtml(applicationDetailDisplay.CTAMessage).ToString();
                                 }
+
                                
-                                txtAppointmentSet.Text = applicationDetailDisplay.CTAMessage;
+                               
                                 applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
                                 applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
                                 applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;

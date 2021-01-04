@@ -7,7 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
-using Android.Icu.Util;
+using Java.Util;
 using Android.OS;
 using Android.Runtime;
 
@@ -97,7 +97,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             var inflater = LayoutInflater.FromContext(context);
             View view = inflater.Inflate(Resource.Layout.AppointmentCalendarLayout, this, true);
             calendar = null;
-            calendar = Calendar.GetInstance(Java.Util.Locale.English);
+            calendar = Calendar.GetInstance(Java.Util.TimeZone.Default);
             calendar.Set(CalendarField.DayOfMonth, 1);
             calendar.Set(CalendarField.Month, calenderMonth);
             calendar.Set(CalendarField.Year, calendarYear);
@@ -111,6 +111,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
             appointmentLabel2 = FindViewById<TextView>(Resource.Id.appointmentLabel2);
             appointmentLabel2.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "timeSectionTitle");
+            appointmentLabel2.TextSize = TextViewUtils.GetFontSize(16f);
             var dayof = calendar.FirstDayOfWeek;
             //currentDateDay = chosenDateDay = calendar.Get(CalendarField.DayOfMonth);
             currentDateDay = chosenDateDay = calendar.Get(CalendarField.DayOfMonth);
@@ -216,9 +217,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         private void InitCalendarWithDate(Context context, int year, int month, int day, string calenderMonthName, string yearhNames, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse)
         {
             //calendar = null;
-               // calendar = Calendar.GetInstance(Java.Util.Locale.English);
-
-            calendar.Set(year, month, day);
+            // calendar = Calendar.GetInstance(Java.Util.Locale.English);
+          
+            calendar.Set(year, month, 1);
 
             int daysInCurrentMonth = calendar.GetActualMaximum(CalendarField.DayOfMonth);
 
@@ -228,8 +229,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             chosenDateMonth = month;
             chosenDateDay = day;
 
-            calendar.Set(year, month, 1);
-            int firstDayOfCurrentMonth = 7- calendar.Get(CalendarField.DayOfWeek);
+            
+            int firstDayOfCurrentMonth =  calendar.Get(CalendarField.DayOfWeek)-2;
 
             calendar.Set(year, month, daysInCurrentMonth); 
 
@@ -275,10 +276,11 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                     dateArr[2] = chosenDateYear;
                     days[i].Tag = dateArr;
                     days[i].Text = dayNumber.ToString();
+                    days[i].TextSize = TextViewUtils.GetFontSize(14f);
+                    TextViewUtils.SetMuseoSans500Typeface(days[i]);
 
 
-
-                    ++dayNumber;
+                ++dayNumber;
                 //  }
                 // }
                 /* else
@@ -370,7 +372,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 int[] dateArray = (int[])selectedDayButton.Tag;
 
                 pickedDateDay = dateArray[0];
-                pickedDateMonth = dateArray[1];
+                pickedDateMonth = dateArray[1]+1;
                 pickedDateYear = dateArray[2];
 
                 string iDate = (pickedDateDay.ToString().Length < 2 ? "0" + pickedDateDay.ToString() : pickedDateDay.ToString()) +"/"+ (pickedDateMonth.ToString().Length < 2 ? "0" + pickedDateMonth.ToString() : pickedDateMonth.ToString()) + "/" + pickedDateYear;

@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using myTNB.Mobile.API.DisplayModel.Scheduler;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 {
@@ -133,8 +134,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             public TimeView(View itemView) : base(itemView)
             {
                 textViewTime = (TextView)ItemView.FindViewById<TextView>(Resource.Id.timeList);
-                
-          
+                textViewTime.TextSize = TextViewUtils.GetFontSize(16f);
+
+
+
 
 
 

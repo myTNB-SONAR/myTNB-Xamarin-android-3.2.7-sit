@@ -109,13 +109,18 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             appointmentLabel = FindViewById<TextView>(Resource.Id.appointmentLabel);
             scrollcontainer = FindViewById<ScrollView>(Resource.Id.scrollcontainer);
             btnSubmitAppointment.TextSize = TextViewUtils.GetFontSize(16f);
-
+            btnSubmitAppointment.TextSize = TextViewUtils.GetFontSize(16f);
+            currentMonth.TextSize = TextViewUtils.GetFontSize(16f);
+            btnSubmitAppointment.Enabled = false;
+            btnSubmitAppointment.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
             btnSubmitAppointment.Click += OnClickSubmitAppointment;
             calenderBack.Click += OnClickCalenderBack;
             
             calenderNext.Click += OnClickCalenderNext;
 
             timeSlotNote.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "note");
+            timeSlotNote.TextSize = TextViewUtils.GetFontSize(12f);
+            timeSlotError.TextSize = TextViewUtils.GetFontSize(12f);
             Bundle extras = Intent.Extras;
             if (extras != null)
             {
@@ -123,6 +128,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 schedulerDisplayResponse = JsonConvert.DeserializeObject<SchedulerDisplay>(extras.GetString("newAppointmentResponse"));
                 appointment = extras.GetString("appointment");
                 appointmentLabel.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "dateSectionTitle");
+                appointmentLabel.TextSize = TextViewUtils.GetFontSize(16f);
             }
 
             if (schedulerDisplayResponse != null && schedulerDisplayResponse.ScheduleList != null)
@@ -299,7 +305,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 }
 
                 RelativeLayout ll = null;
-                customCalendar = new CustomCalendar(this, schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Month, "", schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Year, visibleNumbers, schedulerDisplayResponse);
+                customCalendar = new CustomCalendar(this, schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Month-1, "", schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Year, visibleNumbers, schedulerDisplayResponse);
                 ll = (RelativeLayout)FindViewById<RelativeLayout>(Resource.Id.CalendarLayout);
                 ll.AddView(customCalendar);
                 ll.Visibility = ViewStates.Gone;
