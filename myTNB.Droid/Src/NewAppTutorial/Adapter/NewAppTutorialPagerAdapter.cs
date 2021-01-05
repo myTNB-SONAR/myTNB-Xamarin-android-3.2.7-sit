@@ -2199,7 +2199,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
 
                         RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                        innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(110f);
+                        innerTopLayoutParam.Height = TextViewUtils.SelectedFontSize() == "L"? (int)DPUtils.ConvertDPToPx(150f) : (int)DPUtils.ConvertDPToPx(110f);
                         innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                         innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                         innerTopLayout.RequestLayout();

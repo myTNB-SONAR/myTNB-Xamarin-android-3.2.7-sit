@@ -195,7 +195,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             terminationReasonTitle.TextSize = TextViewUtils.GetFontSize(16f);
             txtTermsConditions.TextSize = TextViewUtils.GetFontSize(12f);
             btnDisconnectionSubmit.TextSize = TextViewUtils.GetFontSize(16f);
-
+            txtSelectReason.TextSize = TextViewUtils.GetFontSize(16f);
+            txtReason.TextSize = TextViewUtils.GetFontSize(16f);
+            txtTermsConditionsFAQ.TextSize = TextViewUtils.GetFontSize(12f);
             contactDetailTtile.Text = GetLabelByLanguage("contactDetails");
             txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("emailAddress");
             txtInputLayoutMobileNo.Hint = GetLabelCommonByLanguage("mobileNumber");
