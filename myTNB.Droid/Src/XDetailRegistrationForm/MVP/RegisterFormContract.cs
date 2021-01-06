@@ -45,47 +45,6 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             void ShowInvalidMobileNoError();
 
             /// <summary>
-            /// Show empty email error
-            /// Pre Validation
-            /// </summary>
-            void ShowEmptyEmailError();
-
-            /// <summary>
-            /// Show invalid email error using regex
-            /// Pre Validation
-            /// </summary>
-            void ShowInvalidEmailError();
-
-            
-
-            void ClearInvalidEmailError();
-
-            /// <summary>
-            /// Show empty confirm email error
-            /// Pre Validation
-            /// </summary>
-            void ShowEmptyConfirmEmailError();
-
-
-
-            /// <summary>
-            /// Show not equal to email confirm email error 
-            /// Pre Validation
-            /// </summary>
-            void ShowNotEqualConfirmEmailError();
-
-            /// <summary>
-            /// Clear error confirm email field
-            /// </summary>
-            void ClearNotEqualConfirmEmailError();
-
-            /// <summary>
-            /// Show empty password error
-            /// Pre Validation
-            /// </summary>
-            void ShowEmptyPasswordError();
-
-            /// <summary>
             /// Show min password error
             /// </summary>
             void ShowPasswordMinimumOf6CharactersError();
@@ -94,24 +53,6 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             /// Clear error password field
             /// </summary>
             void ClearICMinimumCharactersError();
-
-            /// <summary>
-            /// Show empty confirm password error
-            /// Pre Validation
-            /// </summary>
-            void ShowEmptyConfirmPasswordError();
-
-            /// <summary>
-            /// Show not equal to password confirm password error
-            /// Pre Validation
-            /// </summary>
-            void ShowNotEqualConfirmPasswordError();
-
-            /// <summary>
-            /// Clear error password error
-            /// </summary>
-            void ClearNotEqualConfirmPasswordError();
-
 
             /// <summary>
             /// Shows an invalid message that the registration is unsuccessful
@@ -242,6 +183,8 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             void OnAcquireToken(string fullname, string icno, string mobile_no, string email, string password, string idtype);
 
             void OnCheckID(string icno, string idtype);
+
+            bool validateField(string fullname, string icno, string mobile_no, string idtype, bool checkbox);
 
             void CheckRequiredFields(string fullname, string icno, string mobile_no, string idtype, bool checkbox);
 

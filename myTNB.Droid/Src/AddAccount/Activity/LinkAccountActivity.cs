@@ -636,7 +636,23 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         accounts.Add(account);
                     }
                     TOTAL_NO_OF_ACCOUNTS_TO_ADD = accounts.Count;
-                    this.userActionsListener.AddMultipleAccounts(apiKeyID, userID, email, accounts);
+                    int i = 0;
+                    foreach (Models.AddAccount account in accounts)
+                    {
+                        if (account.mobileNoOwner.Equals("") && account.emailOwner.Equals(""))
+                        {
+                            i++;
+                        }
+
+                        if ( i > 0 )
+                        {
+                            ShowErrorEnterEmailOrNoPhone(Utility.GetLocalizedErrorLabel("emptyNickname"));
+                        }
+                        else
+                        {
+                            this.userActionsListener.AddMultipleAccounts(apiKeyID, userID, email, accounts);
+                        }
+                    }
                 }
                 else
                 {
@@ -911,6 +927,25 @@ namespace myTNB_Android.Src.AddAccount.Activity
             }
 
             mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
+            );
+            View v = mErrorMessageSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            Button btn = (Button)v.FindViewById<Button>(Resource.Id.snackbar_action);
+            btn.SetTextColor(Android.Graphics.Color.Yellow);
+            mErrorMessageSnackBar.Show();
+            this.SetIsClicked(false);
+        }
+
+        public void ShowErrorEnterEmailOrNoPhone(string message)
+        {
+            if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+            {
+                mErrorMessageSnackBar.Dismiss();
+            }
+
+            mErrorMessageSnackBar = Snackbar.Make(rootView, "Please Enter No Phone Or Email Owner", Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
