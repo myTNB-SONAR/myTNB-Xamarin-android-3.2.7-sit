@@ -144,7 +144,7 @@ namespace myTNB_Android.Src.AddCard.Activity
                 txtTitle.TextSize = TextViewUtils.GetFontSize(16f);
                 saveCard.TextSize = TextViewUtils.GetFontSize(16f);
                 btnNext.TextSize = TextViewUtils.GetFontSize(16f);
-                SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_AddCardLarge : Resource.Style.Theme_AddCard);
+                SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_AddCardLarge : Resource.Style.Theme_AddCard);
             }
             catch (Exception e)
             {

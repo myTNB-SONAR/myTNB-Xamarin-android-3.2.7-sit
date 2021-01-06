@@ -191,12 +191,17 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
         [BindView(Resource.Id.txtAppointmentSet)]
         TextView txtAppointmentSet;
-        
+
+        [BindView(Resource.Id.cannotReschedulTooltip)]
+        LinearLayout cannotReschedulTooltip;
+
+        [BindView(Resource.Id.txtCannotRescheduleTooltip)]
+        TextView txtCannotRescheduleTooltip;
 
         private bool IsFromLinkedWith = false;
         private Snackbar mNoInternetSnackbar;
         private bool IsPush = false;
-       
+
         [OnClick(Resource.Id.btnPrimaryCTA)]
         internal void OnPrimaryCTAClick(object sender, EventArgs args)
         {
@@ -318,6 +323,27 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         .Build();
                     whatIsThisTooltip.Show();
                 }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        [OnClick(Resource.Id.cannotReschedulTooltip)]
+        void OnCannotRescheduleTooltipClick(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                string textTitle = Utility.GetLocalizedLabel("ApplicationStatusDetails", "cannotRescheduleTitle");
+                string textMessage = Utility.GetLocalizedLabel("ApplicationStatusDetails", "cannotRescheduleMessage");
+
+                MyTNBAppToolTipBuilder cannotRescheduleTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                    .SetTitle(textTitle)
+                    .SetMessage(textMessage)
+                    .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                    .Build();
+                cannotRescheduleTooltip.Show();
             }
             catch (System.Exception e)
             {
@@ -624,7 +650,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                         btnViewActivityLogLayout.Visibility = ViewStates.Gone;
                         txtApplicationStatusDetailNote.Visibility = ViewStates.Gone;
                         applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
-
+                        cannotReschedulTooltip.Visibility = ViewStates.Gone;
                         applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
                         applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
 
@@ -727,32 +753,49 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             btnApplicationStatusViewBill.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "viewDetails");
                             btnApplicationStatusPay.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "payNow");
 
-                            if (applicationDetailDisplay.CTAType == DetailCTAType.NewAppointment)
-                            {
-                                btnPrimaryCTA.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "setAppointmentNowCTA");
-                                applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
-                                applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
-                                applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
-                            }
-                            else if (applicationDetailDisplay.CTAType == DetailCTAType.Reschedule)
+                            if (applicationDetailDisplay.CTAType == DetailCTAType.NewAppointment
+                                || applicationDetailDisplay.CTAType == DetailCTAType.Reschedule)
                             {
                                 txtAppointmentSet.Visibility = ViewStates.Visible;
-                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
-                                {
-                                    btnPrimaryCTA.Text = Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusDetails", "rescheduleCTA"), FromHtmlOptions.ModeLegacy).ToString();
-                                    txtAppointmentSet.Text = Html.FromHtml(applicationDetailDisplay.CTAMessage, FromHtmlOptions.ModeLegacy).ToString();
-                                }
-                                else
-                                {
-                                    btnPrimaryCTA.Text = Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusDetails", "rescheduleCTA")).ToString();
-                                    txtAppointmentSet.Text = Html.FromHtml(applicationDetailDisplay.CTAMessage).ToString();
-                                }
+                                txtAppointmentSet.Text = Build.VERSION.SdkInt >= BuildVersionCodes.N
+                                    ? Html.FromHtml(applicationDetailDisplay.CTAMessage, FromHtmlOptions.ModeLegacy).ToString()
+                                    : Html.FromHtml(applicationDetailDisplay.CTAMessage).ToString();
+                                btnPrimaryCTA.Text = applicationDetailDisplay.CTAType == DetailCTAType.NewAppointment
+                                    ? Utility.GetLocalizedLabel("ApplicationStatusDetails", "setAppointmentNowCTA")
+                                    : Utility.GetLocalizedLabel("ApplicationStatusDetails", "rescheduleCTA");
 
-                               
-                               
                                 applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
                                 applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
                                 applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
+
+                                if (applicationDetailDisplay.CTAType == DetailCTAType.Reschedule)
+                                {
+                                    btnPrimaryCTA.Enabled = true;
+                                    btnPrimaryCTA.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.freshGreen));
+                                    btnPrimaryCTA.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_green_outline_button_background);
+                                }
+                            }
+                            else if (applicationDetailDisplay.CTAType == DetailCTAType.RescheduleDisabled)
+                            {
+                                txtCannotRescheduleTooltip.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "cannotReschedule");
+
+                                txtAppointmentSet.Text = Build.VERSION.SdkInt >= BuildVersionCodes.N
+                                    ? Html.FromHtml(applicationDetailDisplay.CTAMessage, FromHtmlOptions.ModeLegacy).ToString()
+                                    : Html.FromHtml(applicationDetailDisplay.CTAMessage).ToString();
+                                btnPrimaryCTA.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "rescheduleCTA");
+
+                                btnPrimaryCTA.Enabled = false;
+                                btnPrimaryCTA.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.silverChalice));
+                                btnPrimaryCTA.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_outline);
+
+                                txtAppointmentSet.Visibility = ViewStates.Visible;
+                                cannotReschedulTooltip.Visibility = ViewStates.Visible;
+                                applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
+                                applicationStatusBotomPayableLayout.Visibility = ViewStates.Gone;
+                                applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
+
+                                TextViewUtils.SetMuseoSans500Typeface(txtCannotRescheduleTooltip);
+                                txtCannotRescheduleTooltip.TextSize = TextViewUtils.GetFontSize(12);
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.PayOffline)
                             {
@@ -873,7 +916,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 btnPrimaryCTA.TextSize = TextViewUtils.GetFontSize(16f);
                 btnApplicationStatusViewBill.TextSize = TextViewUtils.GetFontSize(16f);
                 btnApplicationStatusPay.TextSize = TextViewUtils.GetFontSize(16f);
-
             }
         }
 
@@ -981,6 +1023,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 }
             }
         }
+
         public int GetProgressDateCount()
         {
             int i = 0;
@@ -996,6 +1039,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
             return i;
         }
+
         public int GetTopHeight()
         {
             int i = 0;
@@ -1013,6 +1057,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
             return i;
         }
+
         public int GetHighlightedHeight()
         {
             int i = 0;
@@ -1046,6 +1091,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
             return i;
         }
+
         public int GetapplicationStatusDetailNonLoginLayout()
         {
             int i = 0;
@@ -1060,6 +1106,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
             return i;
         }
+
         public int GetRecyclerViewHeight()
         {
 
@@ -1076,6 +1123,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
             return i;
         }
+
         public int GetTopCtaHeight()
         {
             int i = 0;
@@ -1094,6 +1142,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
             return i;
         }
+
         public void OnShowApplicationDetailTutorial(DetailTutorialType tutorialType)
         {
             if (UserSessions.HasApplicationDetailShown(PreferenceManager.GetDefaultSharedPreferences(this)))
@@ -1120,6 +1169,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 h.PostDelayed(myAction, 100);
             }
         }
+
         private void OnTaxInvoiceClick(string srNumber)
         {
             System.Diagnostics.Debug.WriteLine("[DEBUG] OnTaxInvoiceClick Start");

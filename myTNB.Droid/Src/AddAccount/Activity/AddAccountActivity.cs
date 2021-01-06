@@ -38,7 +38,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             fragmentTransaction.Commit();
 
            
-            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_AddAccountLarge : Resource.Style.Theme_AddAccount);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_AddAccountLarge : Resource.Style.Theme_AddAccount);
             //Initialize scanner
             MobileBarcodeScanner.Initialize(Application);
         }

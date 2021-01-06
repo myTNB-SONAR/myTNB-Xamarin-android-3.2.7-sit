@@ -507,12 +507,12 @@ namespace myTNB.Mobile
         /// <summary>
         /// Use to pass to Get Appointment
         /// </summary>
-        public string BusinessArea { internal set; get; }
+        public string BusinessArea { set; get; }
 
         /// <summary>
         /// Use to Display in Appointment Success
         /// </summary>
-        public string PremisesAddress { internal set; get; }
+        public string PremisesAddress { set; get; }
 
         private Color StatusColorDisplay
         {

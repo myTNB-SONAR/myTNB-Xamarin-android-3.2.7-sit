@@ -44,7 +44,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             mTerminationRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
 
             Bundle extras = Intent.Extras;

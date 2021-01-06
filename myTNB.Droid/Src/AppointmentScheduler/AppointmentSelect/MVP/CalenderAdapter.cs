@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Java.Util;
-using Android.OS;
-using Android.Runtime;
-
-
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -23,12 +16,11 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 {
     public interface IDayClickListener
     {
-        void onDayClick(View view);
+        void OnDayClick(View view);
     }
     public class CustomCalendar : LinearLayout
     {
         private static string color_calendar_number = "#424A56";
-  
         private static string color_grey = "#727171";
         private static string colorLight_grey = "#e4e4e4";
         public DateTime selectedDate;
@@ -40,16 +32,13 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         public event EventHandler<bool> DatetimeScrollValidate;
         public event EventHandler<bool> DateChanged;
 
-
         public static bool isValidDateTime = false;
 
         RecyclerView timeLayout;
 
         private TextView selectedTimeTextView;
-     
-
         private TextView currentDate;
-       
+
         private Button selectedDayButton;
         private Button[] days;
         LinearLayout weekOneLayout;
@@ -73,27 +62,29 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         LayoutParams defaultButtonParams;
         private LayoutParams userButtonParams;
 
-        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse) : base(context)
+        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName
+            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse) : base(context)
         {
             Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse);
         }
-        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs) : base(context, attrs)
+        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName
+            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs) : base(context, attrs)
         {
             Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse);
         }
 
-        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs, int defStyleAttr)
+        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName
+            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs, int defStyleAttr)
             : base(context, attrs, defStyleAttr)
         {
             Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse);
         }
 
-        
-
-        private void Initialize(Context context, int calenderMonth, string calenderMonthName, int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse)
+        private void Initialize(Context context, int calenderMonth, string calenderMonthName
+            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse)
         {
             DisplayMetrics metrics = Resources.DisplayMetrics;
-            setUserCurrentMonthYear(calenderMonth, calendarYear);
+            SetUserCurrentMonthYear(calenderMonth, calendarYear);
             var inflater = LayoutInflater.FromContext(context);
             View view = inflater.Inflate(Resource.Layout.AppointmentCalendarLayout, this, true);
             calendar = null;
@@ -113,9 +104,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             appointmentLabel2.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "timeSectionTitle");
             appointmentLabel2.TextSize = TextViewUtils.GetFontSize(16f);
             var dayof = calendar.FirstDayOfWeek;
-            //currentDateDay = chosenDateDay = calendar.Get(CalendarField.DayOfMonth);
             currentDateDay = chosenDateDay = calendar.Get(CalendarField.DayOfMonth);
-
 
             if (userMonth != 0 && userYear != 0)
             {
@@ -124,40 +113,29 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             }
             else
             {
-                
                 currentDateMonth = chosenDateMonth = calendar.Get(CalendarField.Month);
-               
-
                 currentDateYear = chosenDateYear = calendar.Get(CalendarField.Year);
-              
             }
 
-            
-            
-
-            initializeDaysWeeks();
+            InitializeDaysWeeks();
             if (userButtonParams != null)
             {
                 defaultButtonParams = userButtonParams;
             }
             else
             {
-                defaultButtonParams = getdaysLayoutParams();
+                defaultButtonParams = GetdaysLayoutParams();
             }
-            addDaysinCalendar(defaultButtonParams, context, metrics);
+            AddDaysinCalendar(defaultButtonParams, context, metrics);
 
-            InitCalendarWithDate(context, chosenDateYear, chosenDateMonth, chosenDateDay, calenderMonthName, calendarYear.ToString(), visibleNumbers, schedulerDisplayResponse);
-
+            InitCalendarWithDate(context, chosenDateYear, chosenDateMonth, chosenDateDay
+                , calenderMonthName, calendarYear.ToString(), visibleNumbers, schedulerDisplayResponse);
 
             // TIme
             timeLayout = (RecyclerView)FindViewById<RecyclerView>(Resource.Id.TimeRecyclerView);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
             timeLayout.SetLayoutManager(gridLayoutManager);
-
-            //TimeAdapter timeAdapter = new TimeAdapter(timeNames, pickedDateDay, isDateSelected);
-            //timeLayout.SetAdapter(timeAdapter); 
-
-            if(isValidDateTime && isDateSelected)
+            if (isValidDateTime && isDateSelected)
             {
                 isValidDateTime = true;
             }
@@ -165,42 +143,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             {
                 isValidDateTime = false;
             }
-
-            //for (int i = 0; i < timeNames.Length; i++)
-            //{
-            //    TextView dynamicTextView = new TextView(context);
-            //    dynamicTextView.Text = timeNames[i];
-            //    dynamicTextView.SetForegroundGravity(GravityFlags.Center);
-            //    dynamicTextView.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.blue)));
-            //    dynamicTextView.SetBackgroundColor(Color.Transparent);
-
-            //    dynamicTextView.SetTextSize(ComplexUnitType.Dip, 14f);
-            //    dynamicTextView.SetSingleLine();
-
-            //    dynamicTextView.Click += (sender, e) =>
-            //    {
-
-            //        onTimeClick(sender as View, context);
-            //    };
-
-            //    timeLayout.AddView(dynamicTextView);
-            //}
         }
-        //public void onTimeClick(View view, Context context)
-        //{
-        //    selectedTimeTextView = (TextView)view;
-        //    //selectedTimeTextView.SetBackgroundResource(Resource.Drawable.AppointmentTimeSelector);
-        //    //selectedTimeTextView.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.white)));
 
-
-        //    selectedTimeTextView.SetBackgroundColor(Color.Transparent);
-        //    selectedTimeTextView.SetTextColor(Color.ParseColor(color_calendar_number));
-        //    selectedTimeTextView.SetBackgroundResource(Resource.Drawable.AppointmentTimeSelector);
-        //    selectedTimeTextView.SetForegroundGravity(GravityFlags.Center);
-        //    selectedTimeTextView.SetTextColor(Color.White);
-        //}
-
-        private void initializeDaysWeeks()
+        private void InitializeDaysWeeks()
         {
             weeks = new LinearLayout[6];
             days = new Button[6 * 7];
@@ -213,154 +158,95 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             weeks[5] = weekSixLayout;
         }
 
-
-        private void InitCalendarWithDate(Context context, int year, int month, int day, string calenderMonthName, string yearhNames, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse)
+        private void InitCalendarWithDate(Context context, int year, int month, int day
+            , string calenderMonthName, string yearhNames, List<int> visibleNumbers
+            , SchedulerDisplay schedulerDisplayResponse)
         {
-            //calendar = null;
-            // calendar = Calendar.GetInstance(Java.Util.Locale.English);
-          
             calendar.Set(year, month, 1);
 
             int daysInCurrentMonth = calendar.GetActualMaximum(CalendarField.DayOfMonth);
-
-          
 
             chosenDateYear = year;
             chosenDateMonth = month;
             chosenDateDay = day;
 
-            
-            int firstDayOfCurrentMonth =  calendar.Get(CalendarField.DayOfWeek)-2;
+            int firstDayOfCurrentMonth = calendar.Get(CalendarField.DayOfWeek) - 2;
 
-            calendar.Set(year, month, daysInCurrentMonth); 
+            calendar.Set(year, month, daysInCurrentMonth);
 
             int dayNumber = 1;
             int daysLeftInFirstWeek = 0;
             int indexOfDayAfterLastDayOfMonth = 0;
 
-           // if (firstDayOfCurrentMonth != 1)
-           // {
-                daysLeftInFirstWeek = firstDayOfCurrentMonth;
-                indexOfDayAfterLastDayOfMonth = daysLeftInFirstWeek + daysInCurrentMonth;
-                for (int i = firstDayOfCurrentMonth; i < firstDayOfCurrentMonth + daysInCurrentMonth; ++i)
+            daysLeftInFirstWeek = firstDayOfCurrentMonth;
+            indexOfDayAfterLastDayOfMonth = daysLeftInFirstWeek + daysInCurrentMonth;
+            for (int i = firstDayOfCurrentMonth; i < firstDayOfCurrentMonth + daysInCurrentMonth; ++i)
+            {
+                if (currentDateMonth == chosenDateMonth
+                    && currentDateYear == chosenDateYear
+                    && dayNumber == currentDateDay)
                 {
-                    if (currentDateMonth == chosenDateMonth
-                            && currentDateYear == chosenDateYear
-                            && dayNumber == currentDateDay)
-                    {
-                       
 
+                }
+                else
+                {
+                    if (visibleNumbers.Where(x => x == dayNumber).FirstOrDefault() > 0)
+                    {
+                        days[i].SetTextColor(Color.Gray);
+                        days[i].Click += (sender, e) =>
+                        {
+
+                            OnDayClick(sender as View, context, schedulerDisplayResponse);
+                        };
                     }
                     else
                     {
-                        if (visibleNumbers.Where(x => x == dayNumber).FirstOrDefault() > 0)
-                        {
-                            days[i].SetTextColor(Color.Gray);
-                            days[i].Click += (sender, e) =>
-                            {
-                               
-                                onDayClick(sender as View,context, schedulerDisplayResponse);
-                            };
-                        }
-                        else
-                        {
-                            days[i].SetTextColor(Color.LightGray);
+                        days[i].SetTextColor(Color.LightGray);
 
-                        }
-                        days[i].SetBackgroundColor(Color.Transparent);
                     }
+                    days[i].SetBackgroundColor(Color.Transparent);
+                }
 
-                    int[] dateArr = new int[3];
-                    dateArr[0] = dayNumber;
-                    dateArr[1] = chosenDateMonth;
-                    dateArr[2] = chosenDateYear;
-                    days[i].Tag = dateArr;
-                    days[i].Text = dayNumber.ToString();
-                    days[i].TextSize = TextViewUtils.GetFontSize(14f);
-                    TextViewUtils.SetMuseoSans500Typeface(days[i]);
-
-
+                int[] dateArr = new int[3];
+                dateArr[0] = dayNumber;
+                dateArr[1] = chosenDateMonth;
+                dateArr[2] = chosenDateYear;
+                days[i].Tag = dateArr;
+                days[i].Text = dayNumber.ToString();
+                days[i].TextSize = TextViewUtils.GetFontSize(14f);
+                TextViewUtils.SetMuseoSans500Typeface(days[i]);
                 ++dayNumber;
-                //  }
-                // }
-                /* else
-                 {
-                     daysLeftInFirstWeek = 8;
-                     indexOfDayAfterLastDayOfMonth = daysLeftInFirstWeek + daysInCurrentMonth;
-                     for (int i = 8; i < 8 + daysInCurrentMonth; ++i)
-                     {
-                         if (currentDateMonth == chosenDateMonth
-                                 && currentDateYear == chosenDateYear)
-                         {
-
-                             if (dayNumber < currentDateDay)
-                             {
-
-                             }
-                             else
-                             {
-
-
-                                 if (dayNumber == 15 || dayNumber == 16 || dayNumber == 22 || dayNumber == 23)
-                                 {
-
-                                 }
-
-                                 if (dayNumber == 14 || dayNumber == 31 || dayNumber == 30)
-                                 {
-
-                                 }
-                             }
-
-                         }
-
-
-
-
-                         int[] dateArr = new int[3];
-                         dateArr[0] = dayNumber;
-                         dateArr[1] = chosenDateMonth;
-                         dateArr[2] = chosenDateYear;
-                         days[i].Tag = dateArr;
-                         days[i].Text = dayNumber.ToString();
-                         days[i].Click += (sender, e) =>
-                         {
-
-                             onDayClick(sender as View, context, schedulerDisplayResponse);
-                         };
-
-                         ++dayNumber;
-                     }*/
             }
 
             if (month > 0)
+            {
                 calendar.Set(year, month - 1, 1);
+            }
             else
+            {
                 calendar.Set(year - 1, 11, 1);
-
-       
+            }
 
             calendar.Set(chosenDateYear, chosenDateMonth, chosenDateDay);
         }
 
-        public void onDayClick(View view,Context context, SchedulerDisplay schedulerDisplayResponse)
+        public void OnDayClick(View view, Context context, SchedulerDisplay schedulerDisplayResponse)
         {
             isDateSelected = true;
             DateChanged(this, true);
             if (selectedDayButton != null)
             {
                 if (chosenDateYear == currentDateYear
-                        && chosenDateMonth == currentDateMonth
-                        && pickedDateDay == currentDateDay)
+                    && chosenDateMonth == currentDateMonth
+                    && pickedDateDay == currentDateDay)
                 {
-                    
+
                 }
                 else
                 {
                     selectedDayButton.SetBackgroundColor(Color.Transparent);
                     if (selectedDayButton.CurrentTextColor != Color.Red)
                     {
-                        
                         selectedDayButton.SetTextColor(Color.ParseColor(color_calendar_number));
                     }
                 }
@@ -372,48 +258,43 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 int[] dateArray = (int[])selectedDayButton.Tag;
 
                 pickedDateDay = dateArray[0];
-                pickedDateMonth = dateArray[1]+1;
+                pickedDateMonth = dateArray[1] + 1;
                 pickedDateYear = dateArray[2];
 
-                string iDate = (pickedDateDay.ToString().Length < 2 ? "0" + pickedDateDay.ToString() : pickedDateDay.ToString()) +"/"+ (pickedDateMonth.ToString().Length < 2 ? "0" + pickedDateMonth.ToString() : pickedDateMonth.ToString()) + "/" + pickedDateYear;
-              
-            
+                string iDate = (pickedDateDay.ToString().Length < 2
+                    ? "0" + pickedDateDay.ToString()
+                    : pickedDateDay.ToString()) + "/" + (pickedDateMonth.ToString().Length < 2
+                        ? "0" + pickedDateMonth.ToString()
+                        : pickedDateMonth.ToString()) + "/" + pickedDateYear;
 
-               System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
+                System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
                 DateTime date = DateTime.ParseExact(iDate, "dd/mm/yyyy", currCult);
 
                 selectedDate = date;
             }
 
             if (pickedDateYear == currentDateYear
-                    && pickedDateMonth == currentDateMonth
-                    && pickedDateDay == currentDateDay)
+                && pickedDateMonth == currentDateMonth
+                && pickedDateDay == currentDateDay)
             {
 
-               
             }
             else
             {
-                
                 selectedDayButton.SetBackgroundResource(Resource.Drawable.daySelector);
                 selectedDayButton.SetTextColor(Color.White);
             }
             if (pickedDateDay != 0)
             {
-               
                 var monthYear = schedulerDisplayResponse.MonthYearList.Where(x => x.Month == pickedDateMonth && x.Year == pickedDateYear).FirstOrDefault();
                 var monthindex = schedulerDisplayResponse.ScheduleList[monthYear.MonthYearDisplay].Where(x => x.Day == pickedDateDay.ToString()).FirstOrDefault();
-               
-                //string[] timeNames = schedulerDisplayResponse.ScheduleList.Values;
-               
+
                 timeLayout = (RecyclerView)FindViewById<RecyclerView>(Resource.Id.TimeRecyclerView);
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
                 timeLayout.SetLayoutManager(gridLayoutManager);
 
                 TimeAdapter timeAdapter = new TimeAdapter(monthindex.TimeSlotDisplay, pickedDateDay, isDateSelected);
                 timeLayout.SetAdapter(timeAdapter);
-
-                // adapter listener
 
                 timeAdapter.TimeClickEvent += Adapter_TimeClickEvent;
 
@@ -432,18 +313,14 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         {
             TimeAdapter timeAdapter = (TimeAdapter)sender;
             selectedTime = timeAdapter.selectedTime;
-           
+
             selectedStartTime = timeAdapter.selectedStartTime;
             selectedEndTime = timeAdapter.selectedEndTime;
             DatetimeValidate(this, true);
             DatetimeScrollValidate(this, true);
         }
 
-       
-
-
-            private void addDaysinCalendar(LayoutParams buttonParams, Context context,
-                                       DisplayMetrics metrics)
+        private void AddDaysinCalendar(LayoutParams buttonParams, Context context, DisplayMetrics metrics)
         {
             int engDaysArrayCounter = 0;
 
@@ -457,7 +334,6 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                     day.LayoutParameters = buttonParams;
                     day.SetTextSize(ComplexUnitType.Dip, (int)metrics.Density * 5);
                     day.SetSingleLine();
-
                     days[engDaysArrayCounter] = day;
                     weeks[weekNumber].AddView(day);
 
@@ -466,35 +342,36 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             }
         }
 
-
-        private LayoutParams getdaysLayoutParams()
+        private LayoutParams GetdaysLayoutParams()
         {
-            LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.MatchParent,
-                    ViewGroup.LayoutParams.MatchParent);
-            buttonParams.Weight = 1;
+            LayoutParams buttonParams = new LayoutParams(
+                ViewGroup.LayoutParams.MatchParent
+                , ViewGroup.LayoutParams.MatchParent)
+            {
+                Weight = 1
+            };
             return buttonParams;
         }
 
-        public void setUserDaysLayoutParams(LinearLayout.LayoutParams userButtonParams)
+        public void SetUserDaysLayoutParams(LayoutParams userButtonParams)
         {
             this.userButtonParams = userButtonParams;
         }
-        public void setUserCurrentMonthYear(int userMonth, int userYear)
+
+        public void SetUserCurrentMonthYear(int userMonth, int userYear)
         {
             this.userMonth = userMonth;
             this.userYear = userYear;
         }
-        public void setDayBackground(Drawable userDrawable)
+
+        public void SetDayBackground(Drawable userDrawable)
         {
             this.userDrawable = userDrawable;
         }
 
-        public void setCallBack(IDayClickListener mListener)
+        public void SetCallBack(IDayClickListener mListener)
         {
             this.mListener = mListener;
         }
     }
-
-   
 }

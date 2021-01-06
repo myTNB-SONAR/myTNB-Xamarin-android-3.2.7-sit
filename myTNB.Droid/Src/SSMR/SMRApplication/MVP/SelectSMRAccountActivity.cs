@@ -85,7 +85,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             noEligibleAccountMessage.TextSize = TextViewUtils.GetFontSize(14f);
             Bundle extras = Intent.Extras;
             if (extras != null && extras.ContainsKey("SMR_ELIGIBLE_ACCOUNT_LIST"))

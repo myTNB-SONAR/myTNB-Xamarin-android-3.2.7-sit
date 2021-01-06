@@ -1,33 +1,29 @@
-﻿
-<GridLayout
-        android:id="@+id/TimeData"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-      
-        android:columnCount="3"
-        android:orientation="horizontal"
-        android:layout_centerInParent="true"
-    
-        android:rowCount="1" xmlns:android="http://schemas.android.com/apk/res/android">
-
-        <RelativeLayout 
-            android:layout_width="165dp"
-        android:id="@+id/relativeLayoutTime"
-         android:layout_centerInParent="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-       
-            android:layout_height="24dp"
-        android:background="@drawable/AppointmentTimeSelectorBackground">
-        <TextView
-                android:id="@+id/timeList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/blue"
-                android:textSize="12sp"
-                android:layout_centerInParent="true"
-                android:background="@android:color/transparent"/>
-    </RelativeLayout>
+﻿<GridLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/TimeData"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_gravity="center"
+	android:columnCount="3"
+	android:orientation="horizontal"
+	android:layout_centerInParent="true"
+	android:rowCount="1">
+	<RelativeLayout
+		android:layout_width="165dp"
+		android:id="@+id/relativeLayoutTime"
+		android:layout_centerInParent="true"
+		android:layout_marginTop="16dp"
+		android:layout_marginBottom="16dp"
+		android:layout_height="24dp"
+		android:background="@drawable/AppointmentTimeSelectorBackground">
+		<TextView
+			android:id="@+id/timeList"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:gravity="center"
+			android:textColor="@color/blue"
+			android:textSize="12sp"
+			android:layout_centerInParent="true"
+			android:background="@android:color/transparent"/>
+	</RelativeLayout>
 </GridLayout>

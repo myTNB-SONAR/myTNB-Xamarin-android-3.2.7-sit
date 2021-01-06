@@ -5804,11 +5804,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\AppointmentTestLayout.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <Compile Include="Src\AppointmentScheduler\AppointmentSelect\Test\AppointmentTestActivity.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_6.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -6481,7 +6476,6 @@
     <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\MVP\" />
     <Folder Include="Src\Utils\ZoomImageView\" />
-    <Folder Include="Src\AppointmentScheduler\AppointmentSelect\Test\" />
     <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\" />
     <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\MVP\" />
     <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\Adapter\" />

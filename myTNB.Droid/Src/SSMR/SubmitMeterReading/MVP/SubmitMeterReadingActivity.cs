@@ -292,7 +292,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_SubmitMeterReadingInputLarge : Resource.Style.Theme_SubmitMeterReadingInput);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_SubmitMeterReadingInputLarge : Resource.Style.Theme_SubmitMeterReadingInput);
             mPresenter = new SubmitMeterReadingPresenter(this);
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             InitializePage();

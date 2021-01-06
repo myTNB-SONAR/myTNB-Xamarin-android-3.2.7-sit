@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Android.Graphics;
-
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
@@ -30,9 +29,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         private List<AppointmentTimeSlotDisplay> timeSlotDisplay = new List<AppointmentTimeSlotDisplay>();
         public event EventHandler<bool> TimeClickEvent;
 
-        public TimeAdapter(List<AppointmentTimeSlotDisplay> timeSlotDisplay, int pickedDateDay, bool isDateSelected) 
+        public TimeAdapter(List<AppointmentTimeSlotDisplay> timeSlotDisplay, int pickedDateDay, bool isDateSelected)
         {
-            foreach(var item in timeSlotDisplay)
+            foreach (var item in timeSlotDisplay)
             {
                 timeSolts.Add(item.TimeSlotDisplay);
             }
@@ -41,15 +40,12 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             this.pickedDateDay = pickedDateDay;
             this.isDateSelected = isDateSelected;
         }
-      
 
         public override int ItemCount => this.timeNames.Length;
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             TimeView vh = holder as TimeView;
-
-
             vh.textViewTime.Text = timeNames[position];
             if (!isTimeSelected)
             {
@@ -57,10 +53,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 {
                     vh.textViewTime.SetTextColor(Color.ParseColor(color_blue));
                     vh.textViewTime.Click += (sender, e) =>
-                        {
-
-                            onTimeClick(sender as View);
-                        };
+                    {
+                        OnTimeClick(sender as View);
+                    };
                 }
                 else
                 {
@@ -68,31 +63,22 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 }
             }
         }
-        public void onTimeClick(View view)
+
+        public void OnTimeClick(View view)
         {
             if (selectedTimeTextView != null)
             {
-
                 selectedTimeTextView.SetBackgroundColor(Color.Transparent);
                 if (selectedTimeTextView.CurrentTextColor != Color.Red)
                 {
-
                     selectedTimeTextView.SetTextColor(Color.ParseColor(color_blue));
                 }
-
             }
 
             selectedTimeTextView = (TextView)view;
 
             isTimeSelected = true;
 
-            //selectedTimeTextView.SetBackgroundResource(Resource.Drawable.AppointmentTimeSelector);
-            //selectedTimeTextView.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.white)));
-
-            //selectedTimeTextView.SetTextColor(Color.ParseColor(color_calendar_number));
-
-
-            //selectedTimeTextView.SetBackgroundColor(Color.Transparent);
             selectedTimeTextView.Gravity = GravityFlags.Center;
             selectedTimeTextView.SetBackgroundResource(Resource.Drawable.AppointmentTimeSelector);
             selectedTimeTextView.SetTextColor(Color.White);
@@ -102,47 +88,24 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             var timeSlotDates = this.timeSlotDisplay.Where(x => x.TimeSlotDisplay == selectedTime).FirstOrDefault();
             selectedStartTime = Convert.ToDateTime(timeSlotDates.SlotStartTime);
             selectedEndTime = Convert.ToDateTime(timeSlotDates.SlotEndTime);
-            TimeClickEvent(this,true);
-            //CustomCalendar.isValidDateTime = true;
-
-            //NotifyDataSetChanged();
-            //selectedTimeTextView.pare
-            //RelativeLayout.LayoutParams param = selectedTimeTextView.LayoutParameters as RelativeLayout.LayoutParams;
-            //param.AddRule(LayoutRules.CenterInParent);
-
-            //RelativeLayout.LayoutParams layoutparams = (new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent));
-
-            //layoutparams.AddRule(LayoutRules.CenterInParent);
-
-            //RelativeLayout.LayoutParams layoutparams = (new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WrapContent, RelativeLayout.LayoutParams.WrapContent));
-
-            //layoutparams.AddRule(LayoutRules.CenterInParent);
-
-
-
+            TimeClickEvent(this, true);
         }
+
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
-            View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.AppointmentTimeSelectionLayout,parent,false);
-            return new TimeView(view); 
+            View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.AppointmentTimeSelectionLayout, parent, false);
+            return new TimeView(view);
         }
 
         public class TimeView : RecyclerView.ViewHolder
         {
             public TextView textViewTime;
-           
+
             public TimeView(View itemView) : base(itemView)
             {
                 textViewTime = (TextView)ItemView.FindViewById<TextView>(Resource.Id.timeList);
                 textViewTime.TextSize = TextViewUtils.GetFontSize(16f);
-
-
-
-
-
-
             }
         }
-
     }
 }

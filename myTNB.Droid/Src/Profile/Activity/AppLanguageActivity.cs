@@ -101,7 +101,7 @@ namespace myTNB_Android.Src.Profile.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             TextViewUtils.SetMuseoSans500Typeface(appLanguageMessage, btnSaveChanges);
             btnSaveChanges.TextSize = TextViewUtils.GetFontSize(16f);
             appLanguageMessage.TextSize = TextViewUtils.GetFontSize(16f);

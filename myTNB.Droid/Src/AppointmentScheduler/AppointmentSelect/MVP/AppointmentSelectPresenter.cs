@@ -1,5 +1,4 @@
-﻿using System;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
+﻿using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
 
 namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 {
@@ -10,10 +9,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             mView = view;
             this.mApi = new RewardServiceImpl();
         }
-
         AppointmentSelectContract.IView mView;
         private AppointmentSelectActivity appointmentSelectActivity;
         private RewardServiceImpl mApi;
-       
     }
 }
