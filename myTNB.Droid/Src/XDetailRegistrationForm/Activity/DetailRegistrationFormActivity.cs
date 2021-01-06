@@ -187,7 +187,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 txtICNumber.FocusChange += txtICNumber_FocusChange;
                 txtboxcondition.CheckedChange += CheckedChange;
                 txtICNumber.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
-
+                txtFullName.TextChanged += TxtFullName_TextChanged;
                 txtFullName.AddTextChangedListener(new InputFilterFormField(txtFullName, textInputLayoutFullName));
                 txtICNumber.AddTextChangedListener(new InputFilterFormField(txtICNumber, textInputLayoutICNo));
 
@@ -239,6 +239,34 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             //#endif
         }
 
+        private void TxtFullName_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            bool checkbox = txtboxcondition.Checked;
+            string fullname = txtFullName.Text.ToString().Trim();
+            string ic_no = txtICNumber.Text.ToString().Trim();
+            string Idtype = selectedIdentificationType.Id;
+            string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
+            this.userActionsListener.validateField(fullname, ic_no, mobile_no, Idtype, checkbox);
+        }
+
+        private void AddTextChangedListener(object sender, AfterTextChangedEventArgs e)
+        {
+            try
+            {
+                bool checkbox = txtboxcondition.Checked;
+                string fullname = txtFullName.Text.ToString().Trim();
+                string ic_no = txtICNumber.Text.ToString().Trim();
+                string Idtype = selectedIdentificationType.Id;
+                string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
+                ClearICMinimumCharactersError();
+                ClearICHint();
+                this.userActionsListener.validateField(fullname, ic_no, mobile_no, Idtype, checkbox);
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
 
         public class PhoneTextWatcher : Java.Lang.Object, ITextWatcher
         {
@@ -314,7 +342,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 string fullname = txtFullName.Text.ToString().Trim();
                 string ic_no = txtICNumber.Text.ToString().Trim();
                 string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
-                ic_no = ic_no.Replace("-", string.Empty);
 
                 if (!e.HasFocus)
                 {
@@ -329,6 +356,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                     {
                         if (Idtype.Equals("1"))
                         {
+                            ic_no = ic_no.Replace("-", string.Empty);
                             if (!this.mPresenter.CheckIdentificationIsValid(ic_no))
                             {
                                 ShowFullICError();
@@ -374,26 +402,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             }
 
         }
-
-        private void AddTextChangedListener(object sender, AfterTextChangedEventArgs e)
-        {
-            try
-            {
-                string ic_no = txtICNumber.Text.ToString().Trim();
-                if (TextUtils.IsEmpty(ic_no))
-                {
-                     ClearICMinimumCharactersError();
-                     ClearICHint();
-                }
-                ClearICMinimumCharactersError();
-                ClearICHint();
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
-        }
-
 
         private void CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
@@ -472,41 +480,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             Finish();
         }
 
-        public void ShowEmptyConfirmEmailError()
-        {
-           // ClearNotEqualConfirmEmailError();
-            if (textInputLayoutConfirmEmail.Error != Utility.GetLocalizedErrorLabel("invalid_email"))
-            {
-                textInputLayoutConfirmEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
-            }
-           
-            if (!textInputLayoutConfirmEmail.ErrorEnabled)
-                textInputLayoutConfirmEmail.ErrorEnabled = true;
-        }
-
-        public void ShowEmptyConfirmPasswordError()
-        {
-            // ClearNotEqualConfirmPasswordError();
-            if (textInputLayoutConfirmPassword.Error != GetString(Resource.String.registration_form_errors_empty_confirm_password))
-            {
-                textInputLayoutConfirmPassword.Error = GetString(Resource.String.registration_form_errors_empty_confirm_password);
-            }
-
-            if (!textInputLayoutConfirmPassword.ErrorEnabled)
-                textInputLayoutConfirmPassword.ErrorEnabled = true;
-        }
-
-        public void ShowEmptyEmailError()
-        {
-            //ClearInvalidEmailError();
-            if(textInputLayoutEmail.Error != GetString(Resource.String.registration_form_errors_empty_email))
-            {
-                textInputLayoutEmail.Error = GetString(Resource.String.registration_form_errors_empty_email);
-            }
-        
-            if (!textInputLayoutEmail.ErrorEnabled)
-                textInputLayoutEmail.ErrorEnabled = true;
-        }
 
         public void ShowEmptyFullNameError()
         {
@@ -955,8 +928,11 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ClearICMinimumCharactersError()
         {
-            textInputLayoutICNo.Error = null;
-            textInputLayoutICNo.ErrorEnabled = false;
+            if (!string.IsNullOrEmpty(textInputLayoutICNo.Error))
+            {
+                textInputLayoutICNo.Error = null;
+                textInputLayoutICNo.ErrorEnabled = false;
+            }
         }
 
         public void ClearNotEqualConfirmPasswordError()
@@ -1201,14 +1177,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                             if (selectedIdentificationType != null)
                             {
                                 identityType.Text = selectedIdentificationType.Type;
-                                if(selectedIdentificationType.Id.Equals("1"))
-                                {
-
-                                }
-                                else
-                                {
-                                    txtICNumber.Text = "";
-                                }
+                                txtICNumber.Text = "";
                             }
                         }
                     }

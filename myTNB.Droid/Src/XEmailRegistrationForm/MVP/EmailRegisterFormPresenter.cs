@@ -35,56 +35,71 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
             this.mView.SetPresenter(this);
         }
 
-        public void CheckRequiredFields(string email, string password)
+        public bool validateEmailAndPassword(string email, string password)
         {
-
             try
             {
-                if (!TextUtils.IsEmpty(email) && !TextUtils.IsEmpty(password))
-                {
+                bool isCorrect = true;
 
+                this.mView.DisableRegisterButton();
+
+                if (!string.IsNullOrEmpty(email))
+                {
                     if (!Patterns.EmailAddress.Matcher(email).Matches())
                     {
                         this.mView.ShowInvalidEmailError();
-                        //this.mView.ClearInvalidEmailHint();
-                        //this.mView.ShowInvalidEmailPasswordError(string errorMessage);
-                        this.mView.DisableRegisterButton();
-                        return;
+                        isCorrect = false;
                     }
                     else
                     {
-                        //this.mView.ClearInvalidEmailError();
-                        this.mView.ShowEmailHint();
+                        this.mView.ClearInvalidEmailHint();
                     }
+                }
+                else
+                {   //disable button if no text
+                    this.mView.ClearInvalidEmailHint();
+                    isCorrect = false;
+                }
 
+                if (!string.IsNullOrEmpty(password))
+                {
                     if (!CheckPasswordIsValid(password))
                     {
+                        //if password not valid
                         this.mView.ShowPasswordMinimumOf6CharactersError();
-                        this.mView.DisableRegisterButton();
-                        return;
+                        isCorrect = false;
                     }
                     else
                     {
-                        this.mView.ClearPasswordMinimumOf6CharactersError();
+                        this.mView.ClearInvalidPasswordHint();
                     }
-
-                    this.mView.EnableRegisterButton();
                 }
                 else
                 {
-                    this.mView.ClearInvalidEmailError();
-                    this.mView.ClearPasswordMinimumOf6CharactersError();
-                    this.mView.ClearInvalidEmailHint();
+                    //disable button if no text
+                    this.mView.ClearInvalidPasswordHint();
+                    isCorrect = false;
+                }
+                //handle button to enable or disable
+                if (isCorrect == true)
+                {
+                    this.mView.EnableRegisterButton();
+                    return true;
+                }
+                else
+                {
                     this.mView.DisableRegisterButton();
-                    //this.mView.EnableRegisterButton();
+                    return false;
                 }
             }
-            catch (System.Exception e)
+            catch (Exception ex)
             {
-                Utility.LoggingNonFatalError(e);
+                Utility.LoggingNonFatalError(ex);
+                return false;
             }
         }
 
+        
         public void GoBack()
         {
             this.mView.ShowBackScreen();
@@ -154,8 +169,9 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
                             if (userResponse.Response.Data.IsRegistered)
                             {
                                 this.mView.ShowInvalidEmailPasswordError();
+                                this.mView.DisableRegisterButton();
                             }
-                            else
+                        else
                             {
                                 var userCredentials = new UserCredentialsEntity()
                                 {

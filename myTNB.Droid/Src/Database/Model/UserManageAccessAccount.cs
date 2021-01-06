@@ -383,7 +383,7 @@ namespace myTNB_Android.Src.Database.Model
         {
             var db = DBHelper.GetSQLiteConnection();
             List<UserManageAccessAccount> nonREAccountList = new List<UserManageAccessAccount>();
-            nonREAccountList = db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE accNum = ? ORDER BY accDesc ASC", accNUm).ToList().OrderBy(x => x.AccDesc).ToList();
+            nonREAccountList = db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE accNum = ? AND IsOwnedAccount = ? ORDER BY accDesc ASC", accNUm, false).ToList().OrderBy(x => x.AccDesc).ToList();
             return nonREAccountList;
         }
 

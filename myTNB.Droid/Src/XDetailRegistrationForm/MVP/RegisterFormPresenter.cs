@@ -27,7 +27,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
         private readonly string MIN_6_ALPHANUMERIC_PATTERN = "[a-zA-Z0-9#?!@$%^&*-]{6,}";
         private Regex hasNumber = new Regex(@"[0-9]+");
         private Regex hasUpperChar = new Regex(@"[a-zA-Z]+");
-        private Regex hasMinimum8Chars = new Regex(@".{8,}");
+        private Regex hasSpecialChar = new Regex(@"[_-]+");
         private Regex hasMinimum12Chars = new Regex(@".{12,12}$");
         private Regex hasMinimum5until50Chars = new Regex(@".{5,50}");
         private Regex hasHyphens = new Regex(@"/(?([0-9]{3}))?([ .-]?)([0-9]{3})\2([0-9]{4})/");
@@ -42,6 +42,54 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             this.mView = mView;
             this.mView.SetPresenter(this);
         }
+
+        public bool validateField(string fullname, string icno, string mobile_no, string idtype, bool checkbox)
+        {
+            try
+            {
+                bool isCorrect = true;
+
+                this.mView.DisableRegisterButton();
+
+                if (string.IsNullOrEmpty(fullname))
+                {
+                    isCorrect = false;
+                }
+
+                if (string.IsNullOrEmpty(icno))
+                {
+                    isCorrect = false;
+                }
+
+                if (string.IsNullOrEmpty(mobile_no))
+                {
+                    isCorrect = false;
+                }
+
+                if (!checkbox)
+                {
+                    isCorrect = false;
+                }
+
+                //handle button to enable or disable
+                if (isCorrect == true)
+                {
+                    this.mView.EnableRegisterButton();
+                    return true;
+                }
+                else
+                {
+                    this.mView.DisableRegisterButton();
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+                return false;
+            }
+        }
+
 
         public void CheckRequiredFields(string fullname, string icno, string mobile_no, string idtype, bool checkbox)
         {
@@ -178,40 +226,15 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
                 return;
             }
 
-            icno = icno.Replace("-", string.Empty);
             if (TextUtils.IsEmpty(icno))
             {
                 this.mView.ShowEmptyICNoError();
                 return;
             }
 
-            if (TextUtils.IsEmpty(email))
-            {
-                this.mView.ShowEmptyEmailError();
-                return;
-            }
-
-            if (!Patterns.EmailAddress.Matcher(email).Matches())
-            {
-                this.mView.ShowInvalidEmailError();
-                return;
-            }
-
-
-            if (TextUtils.IsEmpty(password))
-            {
-                this.mView.ShowEmptyPasswordError();
-                return;
-            }
-
-            if (!CheckPasswordIsValid(password))
-            {
-                this.mView.ShowPasswordMinimumOf6CharactersError();
-                return;
-            }
-
             if (idtype.Equals("1"))
             {
+                icno = icno.Replace("-", string.Empty);
                 if (!CheckIdentificationIsValid(icno))
                 {
                     this.mView.ShowFullICError();
@@ -352,19 +375,6 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             }
         }
 
-        public bool CheckPasswordIsValid(string password)
-        {
-            bool isValid = false;
-            try
-            {
-                isValid = hasNumber.IsMatch(password) && hasUpperChar.IsMatch(password) && hasMinimum8Chars.IsMatch(password);
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-            return isValid;
-        }
 
         public bool CheckIdentificationIsValid(string icno)
         {
@@ -385,7 +395,10 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             bool isValid = false;
             try
             {
-                isValid = hasNumber.IsMatch(icno) && hasMinimum5until50Chars.IsMatch(icno);
+                if (!hasSpecialChar.IsMatch(icno))
+                {
+                    isValid = hasNumber.IsMatch(icno) && hasMinimum5until50Chars.IsMatch(icno);
+                }
             }
             catch (System.Exception e)
             {
@@ -398,7 +411,10 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             bool isValid = false;
             try
             {
-                isValid = hasNumber.IsMatch(icno) && hasUpperChar.IsMatch(icno) && hasMinimum8Chars.IsMatch(icno);
+                if (!hasSpecialChar.IsMatch(icno))
+                {
+                    isValid = hasNumber.IsMatch(icno) && hasUpperChar.IsMatch(icno) && hasMinimum5until50Chars.IsMatch(icno);
+                }
             }
             catch (System.Exception e)
             {

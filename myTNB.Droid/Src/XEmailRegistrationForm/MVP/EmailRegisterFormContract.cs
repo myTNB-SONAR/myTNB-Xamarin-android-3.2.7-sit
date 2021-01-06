@@ -81,6 +81,7 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
             /// Clear error password field
             /// </summary>
             void ClearPasswordMinimumOf6CharactersError();
+            void ClearInvalidPasswordHint();
 
             /// <summary>
             /// Show empty confirm password error
@@ -183,22 +184,12 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
 
         public interface IUserActionsListener : IBasePresenter
         {
-            /// <summary>
-            /// User action to register
-            /// </summary>
-
-            /// <param name="email">string email</param>
-            /// <param name="password">string password</param>
-            /// 
-
-            //void NavigateToRegister();
+            bool validateEmailAndPassword(string email, string password);
 
             /// <summary>
             /// Action to navigate to find us
             /// </summary>
             void OnAcquireToken(string email, string password);
-
-            void CheckRequiredFields(string email, string password);
 
             /// <summary>
             /// User actions to go back to previous screen

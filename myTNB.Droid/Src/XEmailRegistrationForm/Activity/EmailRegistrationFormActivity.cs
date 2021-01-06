@@ -120,21 +120,12 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
                 textInputLayoutPasswordReg.Hint = GetLabelCommonByLanguage("password");
                 btnNext.Text = GetLabelCommonByLanguage("next");
 
-
-                //txtEmailReg.TextChanged += TextChange;
-                //txtPasswordReg.TextChanged += TextChange;
-                //txtEmailReg.AddTextChangedListener += AddTextChangedListener;
-                //txtPasswordReg.AfterTextChanged += AddTextChangedListener;
+                txtEmailReg.FocusChange += txtEmailReg_FocusChange;
                 txtPasswordReg.FocusChange += txtPasswordReg_FocusChange;
-
-
-                txtEmailReg.AddTextChangedListener(new InputFilterFormField(txtEmailReg, textInputLayoutEmailReg));
                 txtPasswordReg.AddTextChangedListener(new InputFilterFormField(txtPasswordReg, textInputLayoutPasswordReg));
-
-                txtEmailReg.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
-                txtPasswordReg.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
-
-                //ClearFields();
+                txtEmailReg.AddTextChangedListener(new InputFilterFormField(txtEmailReg, textInputLayoutEmailReg));
+                txtPasswordReg.TextChanged += TxtPasswordReg_TextChanged;
+                txtEmailReg.TextChanged += TxtEmailReg_TextChanged;
 
                 this.userActionsListener.Start();
             }
@@ -142,97 +133,42 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-
-            //#if DEBUG
-            //            txtFullName.Text = "David Montecillo";
-            //            txtICNumber.Text = "123131312";
-            //            txtMobileNumber.Text = "639299920799";
-            //            txtEmail.Text = "montecillodavid.acn1001@gmail.com";
-            //            txtConfirmEmail.Text = "montecillodavid.acn1001@gmail.com";
-            //            txtPassword.Text = "password123";
-            //            txtConfirmPassword.Text = "password123";
-            //#endif
         }
 
-        private void txtPasswordReg_FocusChange(object sender, View.FocusChangeEventArgs e)
-        {
-            if (!e.HasFocus)
-           {
-                //this.ValidateAllPassword();
-            }
-        }
-
-        private void AddTextChangedListener(object sender, AfterTextChangedEventArgs e)
+        private void TxtEmailReg_TextChanged(object sender, TextChangedEventArgs e)
         {
             try
             {
-                string email = txtEmailReg.Text.ToString().Trim();
-                string password = txtPasswordReg.Text.ToString().Trim();
-                //ClearInvalidEmailError();
-                //ClearInvalidEmailHint();
-                //ClearPasswordMinimumOf6CharactersError();
-                this.userActionsListener.CheckRequiredFields(email, password);
+                ShowEmailHint();
+                ButtonEnable();
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
 
-                if (password.Length == 0 || email.Length == 0)
+        private void TxtPasswordReg_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                ShowPasswordHint();
+                ButtonEnable();
+                string password = txtPasswordReg.Text.ToString().Trim();
+                string email = txtEmailReg.Text.ToString().Trim();
+
+                if (password.Length > 0)
                 {
-                    ClearInvalidEmailError();
-                    ClearPasswordMinimumOf6CharactersError();
-                    textInputLayoutPasswordReg.PasswordVisibilityToggleEnabled = false;
-                }
-                else if (password.Length == 1)
-                {
-                    new Handler().PostDelayed(delegate
-                    {
-                        // Your code here
-                        if (!string.IsNullOrEmpty(password))
-                        {
-                            if (!this.mPresenter.CheckPasswordIsValid(password))
-                            {
-                                ShowPasswordMinimumOf6CharactersError();
-                            }
-                            else
-                            {
-                                ClearPasswordMinimumOf6CharactersError();
-                            }
-                            textInputLayoutPasswordReg.PasswordVisibilityToggleEnabled = true;
-                            textInputLayoutPasswordReg.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
-                        }
-                        else
-                        {
-                            //ShowEmailHint();
-                            ClearPasswordMinimumOf6CharactersError();
-                            textInputLayoutPasswordReg.PasswordVisibilityToggleEnabled = false;
-                        }
-                    }, 1000);
-                }
-                else if (password.Length >= 2)
-                {                                       
+                    // Your code here
                     if (!string.IsNullOrEmpty(password))
                     {
-                        if (!this.mPresenter.CheckPasswordIsValid(password))
-                        {
-                            ShowPasswordMinimumOf6CharactersError();
-                        }
-                        else
-                       {
-                            ClearPasswordMinimumOf6CharactersError();
-                            ShowPasswordHint();
-                        }
                         textInputLayoutPasswordReg.PasswordVisibilityToggleEnabled = true;
                         textInputLayoutPasswordReg.SetPasswordVisibilityToggleDrawable(Resource.Drawable.selector_password_right_icon);
                     }
                     else
                     {
-                        //ShowEmailHint();
-                        ClearPasswordMinimumOf6CharactersError();
                         textInputLayoutPasswordReg.PasswordVisibilityToggleEnabled = false;
                     }
-                }
-                else
-                {
-                    ClearInvalidEmailError();
-                    ClearInvalidEmailHint();
-                    ClearPasswordMinimumOf6CharactersError();
                 }
             }
             catch (Exception ex)
@@ -241,7 +177,46 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
             }
         }
 
-        
+        private void txtPasswordReg_FocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            if (!e.HasFocus)
+            {
+                string email = txtEmailReg.Text.ToString().Trim();
+                string password = txtPasswordReg.Text.ToString().Trim();
+                this.userActionsListener.validateEmailAndPassword(email, password);
+
+            }
+            else
+            {
+                ShowPasswordHint();
+            }
+        }
+
+        private void txtEmailReg_FocusChange(object sender, View.FocusChangeEventArgs e)
+        {
+            if (!e.HasFocus)
+            {
+                string email = txtEmailReg.Text.ToString().Trim();
+                string password = txtPasswordReg.Text.ToString().Trim();
+                this.userActionsListener.validateEmailAndPassword(email, password);
+            }
+            else
+            {
+                ShowEmailHint();
+            }
+        }
+
+        public void ButtonEnable()
+        {
+            string password = txtPasswordReg.Text.ToString().Trim();
+            string email = txtEmailReg.Text.ToString().Trim();
+
+            if (!string.IsNullOrEmpty(password) && !string.IsNullOrEmpty(email))
+            {
+                EnableRegisterButton();
+            }
+        }
+
         public override int ResourceId()
         {
             return Resource.Layout.EmailRegistrationView;
@@ -269,14 +244,14 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
             {
                 if (!this.GetIsClicked())
                 {
-                    this.SetIsClicked(true);
-
-
-
                     string eml_str = txtEmailReg.Text.ToString().Trim();
                     string password = txtPasswordReg.Text;
-                    this.userActionsListener.OnAcquireToken(eml_str, password);
-                    //this.userActionsListener.NavigateToRegister();
+                    bool valid = this.userActionsListener.validateEmailAndPassword(eml_str, password);
+                    if (valid)
+                    {
+                        this.SetIsClicked(true);
+                        this.userActionsListener.OnAcquireToken(eml_str, password);
+                    }
                 }
                 this.SetIsClicked(false);
             }
@@ -669,10 +644,16 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
                 textInputLayoutEmailReg.Error = null;
                 textInputLayoutEmailReg.ErrorEnabled = false;
             }
+            else
+            {
+                textInputLayoutEmailReg.Error = null;
+                textInputLayoutEmailReg.ErrorEnabled = false;
+            }
         }
         public void ClearInvalidEmailHint()
         {
-                textInputLayoutEmailReg.HelperTextEnabled = false;
+            textInputLayoutEmailReg.HelperText = null;
+            textInputLayoutEmailReg.HelperTextEnabled = false;
         }
 
         public void ClearPasswordMinimumOf6CharactersError()
@@ -773,13 +754,6 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
         public void OnTextChanged(Java.Lang.ICharSequence s, int start, int before, int count)
         {
             throw new NotImplementedException();
-        }
-
-        public void EnableOnSubmitButton(bool IsEnable)
-        {
-            btnNext.Enabled = IsEnable;
-            btnNext.Background = IsEnable ? ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background) : ContextCompat.GetDrawable(this,
-                Resource.Drawable.silver_chalice_button_background);
         }
 
         class URLSpanNoUnderline : URLSpan
