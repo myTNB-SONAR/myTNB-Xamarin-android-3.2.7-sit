@@ -29,7 +29,7 @@ namespace myTNB_Android.Src.RegisterValidation.Activity
     [Activity(Label = "@string/app_name"
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
-      , Theme = "@style/Theme.PreLogin")]
+      , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class EmailRegisterPopupActivity : BaseActivityCustom, EmelPopupContract.IView
     {
 

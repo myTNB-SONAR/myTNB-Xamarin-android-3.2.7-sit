@@ -6,7 +6,7 @@
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
     android:padding="16dp"
-    android:background="#2a97fb"
+    android:theme="@style/Theme.OwnerTenantBaseTheme"
     android:orientation="vertical">
         <include
         android:id="@+id/toolbar"
@@ -22,8 +22,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginLeft="42dp"
-                    android:layout_marginRight="42dp"
                     android:gravity="center"
                     android:id="@+id/linearLayout2">
                     <ImageView
@@ -36,15 +34,15 @@
                     <TextView
                         android:id="@+id/txtAccCreated"
                         android:text="Account Created!"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="#1c79ca"
                         android:textSize="16sp"
-                        android:gravity="center_vertical" />
+                        android:gravity="center" />
                     <TextView
                         android:id="@+id/txtVerifyEmail"
                         android:text="Please verify your email."
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="#1c79ca"
                         android:textSize="16sp"
@@ -53,7 +51,7 @@
                         android:paddingTop="10dp"
                         android:id="@+id/txtVerifyNotification"
                         android:text="@string/dashboard_chartview_no_account_content"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="#49494a"
                         android:textSize="12sp"
@@ -73,7 +71,8 @@
                 android:layout_width="match_parent"
                 android:text="Continue"
                 android:textSize="16dp"
+                android:textColor="#1c79ca"
                 android:textAllCaps="false"
-                style="@style/DarkButton1"/>
+                android:background="@color/white"/>
         </LinearLayout>
 </RelativeLayout>
