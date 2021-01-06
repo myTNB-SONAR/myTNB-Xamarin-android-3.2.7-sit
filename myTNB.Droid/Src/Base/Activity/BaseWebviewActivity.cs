@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.Content.Res;
 using Android.Net.Http;
 using Android.OS;
+using Android.Util;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
@@ -102,7 +103,25 @@ namespace myTNB_Android.Src.Base.Activity
 
             SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_AddAccountLarge : Resource.Style.Theme_AddAccount);
         }
+        protected override void AttachBaseContext(Context baseContext)
+        {
 
+            Context newContext;
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                DisplayMetrics displayMetrics = baseContext.Resources.DisplayMetrics;
+                Configuration configuration = baseContext.Resources.Configuration;
+                configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
+                newContext = baseContext.CreateConfigurationContext(configuration);
+            }
+            else
+            {
+                // Old API. Screen zoom not supported
+                newContext = baseContext;
+            }
+            base.AttachBaseContext(newContext);
+        }
         protected override void OnStart()
         {
             base.OnStart();
