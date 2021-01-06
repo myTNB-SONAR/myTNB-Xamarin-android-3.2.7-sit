@@ -434,10 +434,15 @@ namespace myTNB.Mobile
 
         /// <summary>
         /// Used for ASMX Payment Details
-        /// Used for Raitng
+        /// Used for Rating
         /// Used for Appointment
         /// </summary>
         public string SRNumber { set; get; }
+
+        /// <summary>
+        /// Used for ASMX Payment Details
+        /// </summary>
+        public string SNNumber { set; get; }
 
         /// <summary>
         /// Used for Appointment

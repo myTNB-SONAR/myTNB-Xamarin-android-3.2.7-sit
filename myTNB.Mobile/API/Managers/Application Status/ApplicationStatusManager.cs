@@ -501,14 +501,18 @@ namespace myTNB.Mobile
                     try
                     {
                         //Mark: Call ASMX Payment Details
-                        string srNumber = displaymodel.Content.SRNumber.IsValid()
+                        string refNumber = displaymodel.Content.SRNumber.IsValid()
                             ? displaymodel.Content.SRNumber
                             : displaymodel.Content.applicationPaymentDetail?.srNo ?? string.Empty;
-                        if (srNumber.IsValid())
+                        if (applicationType == "RE_TS")
+                        {
+                            refNumber = displaymodel.Content.SNNumber.IsValid() ? displaymodel.Content.SNNumber : string.Empty;
+                        }
+                        if (refNumber.IsValid())
                         {
                             PostApplicationsPaidDetailsResponse paymentResponse = await PaymentManager.Instance.GetApplicationsPaidDetails(
                                 AppInfoManager.Instance.GetPlatformUserInfo()
-                                , srNumber);
+                                , refNumber);
                             displaymodel.ParseDisplayModel(paymentResponse);
                         }
                     }
