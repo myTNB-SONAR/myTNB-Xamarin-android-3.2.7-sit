@@ -190,6 +190,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 txtFullName.TextChanged += TxtFullName_TextChanged;
                 txtFullName.AddTextChangedListener(new InputFilterFormField(txtFullName, textInputLayoutFullName));
                 txtICNumber.AddTextChangedListener(new InputFilterFormField(txtICNumber, textInputLayoutICNo));
+                txtICNumber.InputType = InputTypes.ClassNumber;
 
                 IdentificationType Individual = new IdentificationType();
                 Individual.Id = "1";
@@ -1178,6 +1179,14 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                             {
                                 identityType.Text = selectedIdentificationType.Type;
                                 txtICNumber.Text = "";
+                                if (selectedIdentificationType.Id.Equals("1"))
+                                {
+                                    txtICNumber.InputType = InputTypes.ClassNumber;
+                                }
+                                else
+                                {
+                                    txtICNumber.InputType = InputTypes.ClassText;
+                                }
                             }
                         }
                     }
