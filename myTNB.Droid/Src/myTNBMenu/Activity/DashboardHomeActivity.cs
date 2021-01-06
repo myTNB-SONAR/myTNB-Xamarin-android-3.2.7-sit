@@ -164,7 +164,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             try
             {
-                RelativeSizeSpan relativeSizeSpan = TextViewUtils.SelectedFontSize() == "L" ? new RelativeSizeSpan(1.5f) : new RelativeSizeSpan(1f);
+                RelativeSizeSpan relativeSizeSpan = TextViewUtils.IsLargeFonts ? new RelativeSizeSpan(1.5f) : new RelativeSizeSpan(1f);
 
                 IMenu bottomMenu = bottomNavigationView.Menu;
                 IMenuItem item;
@@ -221,7 +221,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_DashboardHomeLarge : Resource.Style.Theme_DashboardHome);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardHomeLarge : Resource.Style.Theme_DashboardHome);
             dashboardHomeActivity = this;
             base.SetToolBarTitle(GetString(Resource.String.dashboard_activity_title));
             mPresenter = new DashboardHomePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));

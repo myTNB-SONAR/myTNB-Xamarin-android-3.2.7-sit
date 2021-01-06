@@ -577,7 +577,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             try
             {
                 //txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
-                txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                 txtInputLayoutLocation.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
                 txtInputLayoutPoleNo.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
 

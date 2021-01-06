@@ -347,7 +347,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
                     if (txtName.HasFocus)
                     {   
-                        txtInputLayoutName.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                        txtInputLayoutName.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                         TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error));
                         txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
 
@@ -636,7 +636,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
         public void ShowFullNameError()
         {
-            txtInputLayoutName.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            txtInputLayoutName.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
 
            
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error));
@@ -657,7 +657,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
             if (txtName.HasFocus)
             {
-                txtInputLayoutName.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutName.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error));
                 txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
                 var handleBounceError = txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error);
@@ -672,7 +672,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
         public void ShowInvalidEmailError()
         {
-            txtInputLayoutEmail.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            txtInputLayoutEmail.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
            
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail.FindViewById<TextView>(Resource.Id.textinput_error));
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail);

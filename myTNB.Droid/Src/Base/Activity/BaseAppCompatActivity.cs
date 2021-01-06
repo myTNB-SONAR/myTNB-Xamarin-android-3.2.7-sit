@@ -96,12 +96,10 @@ namespace myTNB_Android.Src.Base.Activity
                     if (ShouldShowRequestPermissionRationale(Manifest.Permission.ReadPhoneState))
                     {
                         ShowRationale(Resource.String.runtime_permission_dialog_phone_title, Resource.String.runtime_permission_phone_rationale, Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE);
-
                     }
                     else
                     {
                         RequestPermissions(new string[] { Manifest.Permission.ReadPhoneState }, Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE);
-
                     }
                     return;
                 }
@@ -112,12 +110,9 @@ namespace myTNB_Android.Src.Base.Activity
                 if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted &&
                     ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted)
                 {
-
-
                     if (ShouldShowRequestPermissionRationale(Manifest.Permission.WriteExternalStorage) || ShouldShowRequestPermissionRationale(Manifest.Permission.ReadExternalStorage))
                     {
                         ShowRationale(Resource.String.runtime_permission_dialog_storage_title, Resource.String.runtime_permission_storage_rationale, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-
                     }
                     else
                     {
@@ -146,13 +141,32 @@ namespace myTNB_Android.Src.Base.Activity
                     return;
                 }
             }
+
+            if (CalendarPemissionRequired())
+            {
+                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadCalendar) != (int)Permission.Granted
+                    && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteCalendar) != (int)Permission.Granted)
+                {
+                    if (ShouldShowRequestPermissionRationale(Manifest.Permission.ReadCalendar)
+                        || ShouldShowRequestPermissionRationale(Manifest.Permission.WriteCalendar))
+                    {
+                        ShowRationale(LocationTitleRationale(), LocationContentRationale()
+                            , Constants.RUNTIME_PERMISSION_CALENDAR_REQUEST_CODE);
+                    }
+                    else
+                    {
+                        RequestPermissions(new string[] { Manifest.Permission.ReadCalendar, Manifest.Permission.WriteCalendar }
+                            , Constants.RUNTIME_PERMISSION_CALENDAR_REQUEST_CODE);
+                    }
+                    return;
+                }
+            }
+
         }
 
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
-
-
             if (requestCode == Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE)
             {
                 if (Utility.IsPermissionHasCount(grantResults))
@@ -304,6 +318,11 @@ namespace myTNB_Android.Src.Base.Activity
             TextViewUtils.SetMuseoSans500Typeface(txtTitle, positiveButton);
             TextViewUtils.SetMuseoSans300Typeface(txtMessage);
 
+        }
+
+        public virtual bool CalendarPemissionRequired()
+        {
+            return false;
         }
 
         public virtual bool CameraPermissionRequired()

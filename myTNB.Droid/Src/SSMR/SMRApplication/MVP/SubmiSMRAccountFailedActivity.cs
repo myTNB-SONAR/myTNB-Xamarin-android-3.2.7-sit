@@ -46,7 +46,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             // Create your application here
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfoError);
             TextViewUtils.SetMuseoSans300Typeface(txtMessageInfoError);

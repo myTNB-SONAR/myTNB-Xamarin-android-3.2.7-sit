@@ -297,17 +297,17 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutRelationshipOther,  txtInputLayoutNewIC,   txtInputLayoutNewOwnerName, txtInputLayoutNewPremiseAddress); //inputLay
                 TextViewUtils.SetMuseoSans500Typeface(EditText_relationshipOther,  txtNewIC,  txtNewOwnerName); //edit text
                 TextViewUtils.SetMuseoSans500Typeface(infotxtIsThisAcc, TextView_whatIsYourRelationship, infotxtTitle_Which_information, infoLabeltxtWhoIsRegistered, TextViewDoINeedOwnerConsent, TextView_updateOnOwnerBehalf);  //txtView
-                txtInputLayoutRelationshipOther.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutRelationshipOther.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                 
-                txtInputLayoutNewIC.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutNewIC.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                 
-                txtInputLayoutNewOwnerName.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
-                txtInputLayoutCurrentEmailAddress.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
-                txtInputLayoutNewEmailAddress.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
-                txtInputLayoutCurrentMailingAddress.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
-                txtInputLayoutNewMailingAddress.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
-                txtInputLayoutCurrentPremiseAddress.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
-                txtInputLayoutNewPremiseAddress.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutNewOwnerName.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutCurrentEmailAddress.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutNewEmailAddress.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutCurrentMailingAddress.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutNewMailingAddress.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutCurrentPremiseAddress.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutNewPremiseAddress.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                 pageStep.TextSize = TextViewUtils.GetFontSize(12f);
                 infotxtIsThisAcc.TextSize = TextViewUtils.GetFontSize(16f);
                 btnNo.TextSize = TextViewUtils.GetFontSize(16f);
@@ -1401,7 +1401,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             if (lay.Equals(typeOfLayout.ic))
             {
                
-                txtInputLayoutNewIC.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                txtInputLayoutNewIC.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewIC.FindViewById<TextView>(Resource.Id.textinput_error));
                 if (txtInputLayoutNewIC.Error!= Utility.GetLocalizedLabel("SubmitEnquiry", "icReq"))
                 {
@@ -1412,7 +1412,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
             if (lay.Equals(typeOfLayout.emailAddress))
             {
-                txtInputLayoutNewEmailAddress.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                txtInputLayoutNewEmailAddress.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewEmailAddress.FindViewById<TextView>(Resource.Id.textinput_error));
                 if (txtInputLayoutNewEmailAddress.Error!= Utility.GetLocalizedLabel("SubmitEnquiry", "emailReq"))
@@ -1427,7 +1427,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
             if (lay.Equals(typeOfLayout.mailingAddress))
             {
-                txtInputLayoutNewMailingAddress.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                txtInputLayoutNewMailingAddress.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                 
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewMailingAddress.FindViewById<TextView>(Resource.Id.textinput_error));
                 if (txtInputLayoutNewMailingAddress.Error!= Utility.GetLocalizedLabel("SubmitEnquiry", "mailingReq"))
@@ -1444,7 +1444,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
             if (lay.Equals(typeOfLayout.ownerName))
             {
-                txtInputLayoutNewOwnerName.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                txtInputLayoutNewOwnerName.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewOwnerName.FindViewById<TextView>(Resource.Id.textinput_error));
                 if (txtInputLayoutNewOwnerName.Error!= Utility.GetLocalizedLabel("SubmitEnquiry", "ownerReq"))
@@ -1456,7 +1456,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
             if (lay.Equals(typeOfLayout.premiseAddress))
             {
-                txtInputLayoutNewPremiseAddress.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                txtInputLayoutNewPremiseAddress.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPremiseAddress.FindViewById<TextView>(Resource.Id.textinput_error));
                 if(txtInputLayoutNewPremiseAddress.Error!= Utility.GetLocalizedLabel("SubmitEnquiry", "permisesReq"))
@@ -1528,7 +1528,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
 
             if (lay.Equals(typeOfLayout.ic))
             {
-                txtInputLayoutNewIC.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                txtInputLayoutNewIC.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewIC.FindViewById<TextView>(Resource.Id.textinput_error));
                 if(txtInputLayoutNewIC.Error != Utility.GetLocalizedErrorLabel("invalid_icNumber"))
@@ -1540,7 +1540,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             }
             if (lay.Equals(typeOfLayout.emailAddress))
             {
-                txtInputLayoutNewEmailAddress.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                txtInputLayoutNewEmailAddress.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewEmailAddress.FindViewById<TextView>(Resource.Id.textinput_error));
                 if (txtInputLayoutNewEmailAddress.Error!= Utility.GetLocalizedErrorLabel("invalid_email"))
@@ -1561,7 +1561,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity
             }
             if (lay.Equals(typeOfLayout.ownerName))
             {
-                txtInputLayoutNewOwnerName.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                txtInputLayoutNewOwnerName.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                 
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewOwnerName.FindViewById<TextView>(Resource.Id.textinput_error));
                 if(txtInputLayoutNewOwnerName.Error!= Utility.GetLocalizedErrorLabel("invalid_fullname"))

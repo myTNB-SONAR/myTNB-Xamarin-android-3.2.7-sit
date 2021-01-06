@@ -50,7 +50,7 @@ namespace myTNB_Android.Src.Common.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_UpdateMobileLarge : Resource.Style.Theme_UpdateMobile);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_UpdateMobileLarge : Resource.Style.Theme_UpdateMobile);
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 

@@ -656,7 +656,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
                 currentCard.Height = cardHeight;
-                currentCard.Width = TextViewUtils.SelectedFontSize() == "L" ? cardWidth + 80 : cardWidth;
+                currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 80 : cardWidth;
 
                 float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
@@ -686,7 +686,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
                 currentCard.Height = cardHeight;
-                currentCard.Width = TextViewUtils.SelectedFontSize() == "L" ? cardWidth + 80 : cardWidth;
+                currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 80 : cardWidth;
 
                 float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
@@ -708,7 +708,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             try
             {
-                if (TextViewUtils.SelectedFontSize() == "L")
+                if (TextViewUtils.IsLargeFonts)
                 {
                     cardFeedbackFirstRow.Visibility = ViewStates.Gone;
                     secondLayout.Visibility = ViewStates.Visible;
@@ -775,7 +775,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
                 currentCard.Height = cardHeight;
-                currentCard.Width = (TextViewUtils.SelectedFontSize() == "L" ? cardWidth + 80 : cardWidth) + 5;
+                currentCard.Width = (TextViewUtils.IsLargeFonts ? cardWidth + 80 : cardWidth) + 5;
 
                 float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));

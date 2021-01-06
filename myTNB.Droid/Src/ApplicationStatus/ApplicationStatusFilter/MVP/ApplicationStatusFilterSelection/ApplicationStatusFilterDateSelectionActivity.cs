@@ -170,10 +170,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             TextViewUtils.SetMuseoSans300Typeface(txtFromDate, txtToDate);
             TextViewUtils.SetMuseoSans500Typeface(btnApply);
 
-            txtInputLayoutFromDate.SetHintTextAppearance(TextViewUtils.SelectedFontSize() == "L"
+            txtInputLayoutFromDate.SetHintTextAppearance(TextViewUtils.IsLargeFonts
                 ? Resource.Style.TextInputLayout_TextAppearance_ColorFixLarge
                 : Resource.Style.TextInputLayout_TextAppearance_ColorFix);
-            txtInputLayoutToDate.SetHintTextAppearance(TextViewUtils.SelectedFontSize() == "L"
+            txtInputLayoutToDate.SetHintTextAppearance(TextViewUtils.IsLargeFonts
                 ? Resource.Style.TextInputLayout_TextAppearance_ColorFixLarge
                 : Resource.Style.TextInputLayout_TextAppearance_ColorFix);
             txtFromDate.TextSize = TextViewUtils.GetFontSize(16f);

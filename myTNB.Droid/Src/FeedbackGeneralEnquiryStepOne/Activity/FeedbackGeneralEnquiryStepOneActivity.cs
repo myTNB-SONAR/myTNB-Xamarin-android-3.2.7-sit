@@ -412,7 +412,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 {
                     int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
 
-                    txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                    txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                     
                     //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1.FindViewById<TextView>(Resource.Id.textinput_error));
                     TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
@@ -424,7 +424,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 }
                 else
                 {
-                    txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                    txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                     // TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1.FindViewById<TextView>(Resource.Id.textinput_error));
                     TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
                     
@@ -471,7 +471,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         public void ShowEmptyFeedbackError()
         {
             TextView_CharLeft.Visibility = ViewStates.Gone;
-            txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
            
            
             //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1.FindViewById<TextView>(Resource.Id.textinput_error));
@@ -507,7 +507,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         {
             try
             {   //remove any error
-                txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
                 txtInputLayoutGeneralEnquiry1.Error = " ";
                 var handleBounceError = txtInputLayoutGeneralEnquiry1.FindViewById<TextView>(Resource.Id.textinput_error);

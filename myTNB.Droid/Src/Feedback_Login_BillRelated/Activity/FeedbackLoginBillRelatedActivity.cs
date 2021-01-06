@@ -387,7 +387,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         {
             try
             {
-                txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                 txtInputLayoutAccountNo.Error = null;
                 txtInputLayoutFeedback.Error = null;
 

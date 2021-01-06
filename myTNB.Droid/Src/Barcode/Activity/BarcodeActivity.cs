@@ -79,7 +79,7 @@ namespace myTNB_Android.Src.Barcode.Activity
                
 
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_BarCodeLarge : Resource.Style.Theme_BarCode);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_BarCodeLarge : Resource.Style.Theme_BarCode);
             mPresenter = new BarcodePresenter(this);
             barCodeView.Click += delegate
             {

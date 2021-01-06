@@ -42,7 +42,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             Bundle extras = Intent.Extras;
 
             itemList = new List<Item>();

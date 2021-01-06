@@ -71,7 +71,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_UpdateMobileLarge : Resource.Style.Theme_UpdateMobile);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_UpdateMobileLarge : Resource.Style.Theme_UpdateMobile);
             try
             {
                 Bundle intent = Intent.Extras;

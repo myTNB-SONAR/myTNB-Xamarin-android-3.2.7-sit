@@ -119,7 +119,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                     SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
                     Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
                     applicationLandingIntent.PutExtra("searchApplicationType", JsonConvert.SerializeObject(searchApplicationTypeResponse.Content));
-                    StartActivityForResult(applicationLandingIntent,Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE);
+                    StartActivityForResult(applicationLandingIntent, Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE);
                 }
                 else
                 {
@@ -391,7 +391,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                             Utility.LoggingNonFatalError(e);
                         }
                     }
-                    
+
                 }
             }
             if (requestCode == Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE || requestCode == Constants.APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE)
@@ -732,26 +732,24 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             {
                 if (ConnectionUtils.HasInternetConnection(this))
                 {
-
                     ShowProgressDialog();
-
-                    var application = GetAllApplications[position];
+                    ApplicationModel application = GetAllApplications[position];
                     ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(application.SavedApplicationId
-                            , application.ApplicationId
-                            , application.ApplicationType
-                            , application.System);
+                        , application.ApplicationId
+                        , application.ApplicationType
+                        , application.System);
 
-                    HideProgressDialog();
-                    if (!response.StatusDetail.IsSuccess)
-                    {
-                        ShowApplicaitonPopupMessage(this, response.StatusDetail);
-                    }
-                    else
+                    if (response.StatusDetail.IsSuccess)
                     {
                         Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
                         applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(response.Content));
                         StartActivityForResult(applicationStatusDetailIntent, Constants.APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE);
                     }
+                    else
+                    {
+                        ShowApplicaitonPopupMessage(this, response.StatusDetail);
+                    }
+                    HideProgressDialog();
                 }
                 else
                 {

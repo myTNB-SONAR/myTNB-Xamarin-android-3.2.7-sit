@@ -5804,11 +5804,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\AppointmentTestLayout.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <Compile Include="Src\AppointmentScheduler\AppointmentSelect\Test\AppointmentTestActivity.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_6.png">
       <SubType></SubType>
       <Generator></Generator>
@@ -6153,6 +6148,7 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\myTNBMenu\Async\SyncSRApplicationAPI.cs" />
+    <AndroidResource Include="Resources\drawable\light_Blue_outline_button_background.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -6408,8 +6404,6 @@
     <AndroidAsset Include="Assets\dashboard_zoom_lottie.json" />
     <AndroidAsset Include="Assets\tnb_general_loading.json" />
     <AndroidAsset Include="Assets\ocr_loading_animation.json" />
-    <None Include="Src\AppointmentScheduler\.DS_Store" />
-    <None Include="Src\AppointmentScheduler\AppointmentSet\.DS_Store" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -6482,7 +6476,6 @@
     <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\MVP\" />
     <Folder Include="Src\Utils\ZoomImageView\" />
-    <Folder Include="Src\AppointmentScheduler\AppointmentSelect\Test\" />
     <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\" />
     <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\MVP\" />
     <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\Adapter\" />
