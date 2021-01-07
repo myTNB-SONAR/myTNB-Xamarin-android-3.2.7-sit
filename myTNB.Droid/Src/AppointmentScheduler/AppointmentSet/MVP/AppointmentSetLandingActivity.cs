@@ -19,7 +19,6 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
-
 namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
 {
     [Activity(Label = "Application Set", Theme = "@style/Theme.AppointmentScheduler")]
@@ -50,16 +49,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
         Button btnTrackApplication;
         [BindView(Resource.Id.btnAddtoCalendar)]
         readonly Button btnAddtoCalendar;
-
-
         [BindView(Resource.Id.rootview)]
         RelativeLayout rootview;
 
-
         private Snackbar mNoInternetSnackbar;
-        
-
-    
 
         private string srnumber;
         private string selecteddate;
@@ -71,24 +64,15 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
 
         private const string PAGE_ID = "AppointmentSuccess";
 
-
         public override int ResourceId()
         {
             return Resource.Layout.AppointmentSetLandingLayout;
         }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             mPresenter = new AppointmentSetLandingPresenter(this);
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
-            {
-                txtTitleInfo.Text =  Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "title"), FromHtmlOptions.ModeLegacy).ToString();
-            }
-            else
-            {
-                txtTitleInfo.Text = Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "title")).ToString();
-            }
-          
 
             appointmentTimeLabel.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "timeTitle").ToUpper();
             appointmentLabel.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "dateTitle").ToUpper();
@@ -97,17 +81,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
             btnTrackApplication.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "viewDetails");
             btnAddtoCalendar.Text = Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "addToCalendar");
 
-            TextViewUtils.SetMuseoSans300Typeface(txtMessageInfo, txtTitleInfo, servicerequestLabel
-                , servicerequest, appointmentLabel, appointmentTimeLabel, appointmentValue
-                , appointmentTimeValue, premiseLabel, premiseaddresstext);
-            TextViewUtils.SetMuseoSans500Typeface(btnTrackApplication, btnAddtoCalendar);
-
-            btnTrackApplication.Click += GetApplication;
-
             Bundle extras = Intent.Extras;
             if (extras != null)
             {
-                srnumber = extras.GetString("srnumber"); 
+                srnumber = extras.GetString("srnumber");
                 selecteddate = extras.GetString("selecteddate");
                 timeslot = extras.GetString("timeslot");
                 appointment = extras.GetString("appointment");
@@ -120,58 +97,40 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
                 appointmentValue.Text = selecteddate;
                 appointmentTimeValue.Text = timeslot;
                 servicerequest.Text = srnumber;
-                if (appointment == "Reschedule")
+                string infoKey = appointment == "Reschedule" ? "rescheduleDetails" : "appointmentDetails";
+
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
-                    {
-                        txtMessageInfo.Text = Html.FromHtml(string.Format(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "rescheduleDetails"), selecteddate), FromHtmlOptions.ModeLegacy).ToString();
-                    }
-                    else
-                    {
-                        txtMessageInfo.Text = Html.FromHtml(string.Format(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "rescheduleDetails"), selecteddate)).ToString();
-                    }
-                
+                    txtTitleInfo.Text = Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "title"), FromHtmlOptions.ModeLegacy).ToString();
+                    txtMessageInfo.Text = Html.FromHtml(string.Format(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", infoKey)
+                        , selecteddate), FromHtmlOptions.ModeLegacy).ToString();
                 }
                 else
                 {
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
-                    {
-                        txtMessageInfo.Text = Html.FromHtml(string.Format(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "appointmentDetails"), selecteddate), FromHtmlOptions.ModeLegacy).ToString();
-                    }
-                    else
-                    {
-                        txtMessageInfo.Text = Html.FromHtml(string.Format(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "appointmentDetails"), selecteddate)).ToString();
-                    }
-                  
+#pragma warning disable CS0618 // Type or member is obsolete
+                    txtMessageInfo.Text = Html.FromHtml(string.Format(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", infoKey)
+                        , selecteddate)).ToString();
+                    txtTitleInfo.Text = Html.FromHtml(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "title")).ToString();
+#pragma warning restore CS0618 // Type or member is obsolete
                 }
             }
+
+            SetFonts();
         }
-       private void GetApplication(object sender, EventArgs args)
-        {
-            GetApplicationStatus();
-        }
+
         private async void GetApplicationStatus()
         {
             try
             {
                 if (ConnectionUtils.HasInternetConnection(this))
                 {
-
                     ShowProgressDialog();
-
-                   
                     ApplicationDetailDisplay response = await ApplicationStatusManager.Instance.GetApplicationDetail(string.Empty
-                            , applicationDetailDisplay.ApplicationDetail.ApplicationId
-                            , applicationDetailDisplay.ApplicationTypeCode
-                            , applicationDetailDisplay.System);
+                        , applicationDetailDisplay.ApplicationDetail.ApplicationId
+                        , applicationDetailDisplay.ApplicationTypeCode
+                        , applicationDetailDisplay.System);
 
-
-                    HideProgressDialog();
-                    if (!response.StatusDetail.IsSuccess)
-                    {
-                        ShowApplicaitonPopupMessage(this, response.StatusDetail);
-                    }
-                    else
+                    if (response.StatusDetail.IsSuccess)
                     {
                         Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
                         applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(response.Content));
@@ -179,6 +138,11 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
                         SetResult(Result.Ok, new Intent());
                         Finish();
                     }
+                    else
+                    {
+                        ShowApplicationPopupMessage(this, response.StatusDetail);
+                    }
+                    HideProgressDialog();
                 }
                 else
                 {
@@ -190,7 +154,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-        public async void ShowApplicaitonPopupMessage(Activity context, StatusDetail statusDetail)
+
+        public async void ShowApplicationPopupMessage(Activity context, StatusDetail statusDetail)
         {
             MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                 .SetTitle(statusDetail.Title)
@@ -208,11 +173,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
             }
 
             mNoInternetSnackbar = Snackbar.Make(rootview, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
-            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
-            {
-
-                mNoInternetSnackbar.Dismiss();
-            }
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+                {
+                    mNoInternetSnackbar.Dismiss();
+                }
             );
             View v = mNoInternetSnackbar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
@@ -249,10 +213,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
             return true;
         }
 
-
         public void UpdateUI()
         {
-            throw new NotImplementedException();
         }
 
         //Mark: Events
@@ -321,7 +283,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
         [OnClick(Resource.Id.btnTrackApplication)]
         internal void OnViewDetails(object sender, EventArgs args)
         {
-
+            GetApplicationStatus();
         }
 
         private long GetDateTimeMS(DateTime datetime)
@@ -339,6 +301,27 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
             caendar.Set(CalendarField.Month, month - 1);
             caendar.Set(CalendarField.Year, year);
             return caendar.TimeInMillis;
+        }
+
+        private void SetFonts()
+        {
+            txtMessageInfo.TextSize = TextViewUtils.GetFontSize(12);
+            txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16);
+            servicerequestLabel.TextSize = TextViewUtils.GetFontSize(10);
+            servicerequest.TextSize = TextViewUtils.GetFontSize(14);
+            appointmentLabel.TextSize = TextViewUtils.GetFontSize(10);
+            appointmentTimeLabel.TextSize = TextViewUtils.GetFontSize(10);
+            appointmentValue.TextSize = TextViewUtils.GetFontSize(14);
+            appointmentTimeValue.TextSize = TextViewUtils.GetFontSize(14);
+            premiseLabel.TextSize = TextViewUtils.GetFontSize(10);
+            premiseaddresstext.TextSize = TextViewUtils.GetFontSize(14);
+            btnTrackApplication.TextSize = TextViewUtils.GetFontSize(16);
+            btnAddtoCalendar.TextSize = TextViewUtils.GetFontSize(16);
+
+            TextViewUtils.SetMuseoSans300Typeface(txtMessageInfo, txtTitleInfo, servicerequestLabel
+                , servicerequest, appointmentLabel, appointmentTimeLabel, appointmentValue
+                , appointmentTimeValue, premiseLabel, premiseaddresstext);
+            TextViewUtils.SetMuseoSans500Typeface(btnTrackApplication, btnAddtoCalendar);
         }
     }
 }

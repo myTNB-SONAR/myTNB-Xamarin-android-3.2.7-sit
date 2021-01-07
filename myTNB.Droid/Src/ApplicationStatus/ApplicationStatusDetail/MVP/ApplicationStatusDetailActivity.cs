@@ -409,20 +409,17 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             try
             {
                 SchedulerDisplay response = await ScheduleManager.Instance.GetAvailableAppointment("1234");
-                if (!response.StatusDetail.IsSuccess)
+                if (response.StatusDetail.IsSuccess)
                 {
-                    ShowApplicationPopupMessage(this, response.StatusDetail);
+                    Intent intent = new Intent(this, typeof(AppointmentSelectActivity));
+                    intent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
+                    intent.PutExtra("newAppointmentResponse", JsonConvert.SerializeObject(response));
+                    intent.PutExtra("appointment", appointment);
+                    StartActivityForResult(intent, Constants.APPLICATION_STATUS_DETAILS_SCHEDULER_REQUEST_CODE);
                 }
                 else
                 {
-                    //string businessArea = applicationDetailDisplay.BusinessArea ?? string.Empty;
-                    Intent appointment_activity = new Intent(this, typeof(AppointmentSelectActivity));
-                    appointment_activity.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
-                    appointment_activity.PutExtra("newAppointmentResponse", JsonConvert.SerializeObject(response));
-                    appointment_activity.PutExtra("appointment", appointment);
-                    StartActivity(appointment_activity);
-                    SetResult(Result.Ok, new Intent());
-                    Finish();
+                    ShowApplicationPopupMessage(this, response.StatusDetail);
                 }
             }
             catch (System.Exception ne)
@@ -600,7 +597,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         {
             base.OnCreate(savedInstanceState);
 
-            //  TODO: ApplicationStatus Multilingual
             SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusDetails", "title"));
             presenter = new ApplicationStatusDetailPresenter(this);
             applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
@@ -799,6 +795,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.PayOffline)
                             {
+                                txtApplicationStatusBottomPayableCurrency.Text = "RM";
                                 txtApplicationStatusBottomPayable.Text = "--";
                                 txtApplicationStatusBottomPayableTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "needToPay");
                                 txtApplicationStatusBottomPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
@@ -1348,6 +1345,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
                     OnReloadDetails(UpdateType.ContractorRating);
                 }
+            }
+            else if (resultCode == Result.Ok && requestCode == Constants.APPLICATION_STATUS_DETAILS_SCHEDULER_REQUEST_CODE)
+            {
+                SetResult(Result.Ok);
+                Finish();
             }
         }
 

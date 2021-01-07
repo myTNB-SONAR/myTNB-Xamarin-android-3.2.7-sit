@@ -49,9 +49,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         LinearLayout weekSixLayout;
         private LinearLayout[] weeks;
         private TextView appointmentLabel2;
-        private int currentDateDay, chosenDateDay, currentDateMonth,
-                chosenDateMonth, currentDateYear, chosenDateYear,
-                pickedDateDay, pickedDateMonth, pickedDateYear;
+        private int currentDateDay, chosenDateDay, currentDateMonth, chosenDateMonth
+            , currentDateYear, chosenDateYear, pickedDateDay, pickedDateMonth, pickedDateYear;
         int userMonth, userYear;
         private IDayClickListener mListener;
         private Drawable userDrawable;
@@ -131,18 +130,11 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             InitCalendarWithDate(context, chosenDateYear, chosenDateMonth, chosenDateDay
                 , calenderMonthName, calendarYear.ToString(), visibleNumbers, schedulerDisplayResponse);
 
-            // TIme
+            // Time
             timeLayout = (RecyclerView)FindViewById<RecyclerView>(Resource.Id.TimeRecyclerView);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
             timeLayout.SetLayoutManager(gridLayoutManager);
-            if (isValidDateTime && isDateSelected)
-            {
-                isValidDateTime = true;
-            }
-            else
-            {
-                isValidDateTime = false;
-            }
+            isValidDateTime = isValidDateTime && isDateSelected;
         }
 
         private void InitializeDaysWeeks()
@@ -297,15 +289,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 timeLayout.SetAdapter(timeAdapter);
 
                 timeAdapter.TimeClickEvent += Adapter_TimeClickEvent;
-
-                if (isValidDateTime && isDateSelected)
-                {
-                    isValidDateTime = true;
-                }
-                else
-                {
-                    isValidDateTime = false;
-                }
+                isValidDateTime = isValidDateTime && isDateSelected;
             }
         }
 
