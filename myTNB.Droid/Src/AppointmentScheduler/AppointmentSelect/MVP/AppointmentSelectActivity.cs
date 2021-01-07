@@ -8,6 +8,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
+using AndroidX.Core.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using myTNB.Mobile;
@@ -33,28 +34,15 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         Button calenderNext;
         Button btnSubmitAppointment;
         public CustomCalendar customCalendar;
-        ScrollView scrollcontainer;
+        NestedScrollView scrollcontainer;
+
+        [BindView(Resource.Id.timeSlotNoteContainer)]
+        LinearLayout timeSlotNoteContainer;
+
+        [BindView(Resource.Id.timeSlotErrorContainer)]
+        LinearLayout timeSlotErrorContainer;
+
         private Snackbar mNoInternetSnackbar;
-        [BindView(Resource.Id.btnMon)]
-        Button btnMon;
-
-        [BindView(Resource.Id.btnTue)]
-        Button btnTue;
-
-        [BindView(Resource.Id.btnWed)]
-        Button btnWed;
-
-        [BindView(Resource.Id.btnThu)]
-        Button btnThu;
-
-        [BindView(Resource.Id.btnFri)]
-        Button btnFri;
-
-        [BindView(Resource.Id.btnSat)]
-        Button btnSat;
-
-        [BindView(Resource.Id.btnSun)]
-        Button btnSun;
 
         const string PAGE_ID = "ApplicationAppointment";
 
@@ -95,7 +83,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             timeSlotNote = FindViewById<TextView>(Resource.Id.timeSlotNote);
             btnSubmitAppointment = (Button)FindViewById<Button>(Resource.Id.btnSubmitAppointment);
             appointmentLabel = FindViewById<TextView>(Resource.Id.appointmentLabel);
-            scrollcontainer = FindViewById<ScrollView>(Resource.Id.scrollcontainer);
+
+            scrollcontainer = FindViewById<NestedScrollView>(Resource.Id.schedulerNestedScrollView);
             btnSubmitAppointment.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "confirm");
             btnSubmitAppointment.Enabled = false;
             btnSubmitAppointment.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
@@ -134,6 +123,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 }
             }
             SetFonts();
+
+            timeSlotNoteContainer.Visibility = ViewStates.Gone;
+            timeSlotErrorContainer.Visibility = ViewStates.Gone;
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -156,6 +148,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         {
             timeSlotError.Visibility = ViewStates.Gone;
             btnSubmitAppointment.Enabled = false;
+            timeSlotNoteContainer.Visibility = ViewStates.Visible;
+            timeSlotErrorContainer.Visibility = ViewStates.Visible;
         }
 
         private void Calendar_DatetimeScrollValidate(object sender, bool e)
@@ -169,8 +163,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             {
                 CustomCalendar timeAdapter = (CustomCalendar)sender;
 
-                if (/*applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate == timeAdapter.selectedDate
-                    &&*/ applicationDetailDisplay.ApplicationAppointmentDetail.TimeSlotDisplay == timeAdapter.selectedTime)
+                if (applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate == timeAdapter.selectedDate
+                    && applicationDetailDisplay.ApplicationAppointmentDetail.TimeSlotDisplay == timeAdapter.selectedTime)
                 {
                     btnSubmitAppointment.Enabled = false;
                     btnSubmitAppointment.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);

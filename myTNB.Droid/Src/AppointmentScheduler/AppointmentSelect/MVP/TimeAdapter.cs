@@ -22,10 +22,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         public DateTime selectedStartTime;
         public DateTime selectedEndTime;
         public string selectedTime = string.Empty;
-        private TextView previousSelectedTime;
-        private static string color_calendar_number = "#424A56";
-        private static string colorLight_grey = "#e4e4e4";
-        private static string color_blue = "#1c79ca";
+        private const string colorLight_grey = "#e4e4e4";
+        private const string color_blue = "#1c79ca";
         private List<AppointmentTimeSlotDisplay> timeSlotDisplay = new List<AppointmentTimeSlotDisplay>();
         public event EventHandler<bool> TimeClickEvent;
 
