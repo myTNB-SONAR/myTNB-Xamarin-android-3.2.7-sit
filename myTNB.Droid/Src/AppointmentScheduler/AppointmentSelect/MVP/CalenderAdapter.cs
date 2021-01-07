@@ -180,10 +180,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 {
                     if (visibleNumbers.Where(x => x == dayNumber).FirstOrDefault() > 0)
                     {
-                        days[i].SetTextColor(Color.Gray);
+                        days[i].SetTextColor(Color.ParseColor(color_grey));
                         days[i].Click += (sender, e) =>
                         {
-
                             OnDayClick(sender as View, context, schedulerDisplayResponse);
                         };
                     }

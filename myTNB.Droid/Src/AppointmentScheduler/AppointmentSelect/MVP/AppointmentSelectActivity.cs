@@ -149,7 +149,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             timeSlotError.Visibility = ViewStates.Gone;
             btnSubmitAppointment.Enabled = false;
             timeSlotNoteContainer.Visibility = ViewStates.Visible;
-            timeSlotErrorContainer.Visibility = ViewStates.Visible;
+            timeSlotErrorContainer.Visibility = ViewStates.Gone;
+            btnSubmitAppointment.Enabled = false;
+            btnSubmitAppointment.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
         }
 
         private void Calendar_DatetimeScrollValidate(object sender, bool e)
@@ -169,6 +171,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                     btnSubmitAppointment.Enabled = false;
                     btnSubmitAppointment.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
                     timeSlotError.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "sameDateTimeError");
+                    timeSlotErrorContainer.Visibility = ViewStates.Visible;
                     timeSlotError.Visibility = ViewStates.Visible;
                     scrollcontainer.ScrollTo(0, scrollcontainer.Bottom);
                 }
