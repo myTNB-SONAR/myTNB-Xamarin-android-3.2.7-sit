@@ -520,12 +520,21 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
             try
             {
-                if(user.IdentificationNo.Equals(""))
+                if(!user.IdentificationNo.Equals("") && !UserSessions.IsIdDialogUpdated(this.mPref))
                 {
                     Utility.ShowIdentificationUpdateProfileDialog(this, () =>
                     {
                         ShowIdentificationUpdate();
-                    });
+                    },
+                    () =>
+                    {
+                        UserSessions.UpdateIdDialog(this.mPref);
+                    },
+                    () =>
+                    {
+                        this.mPref.Edit().Remove("DialogIDUpdated").Apply();
+                    }
+                    );
                 }
             }
             catch (System.Exception e)
