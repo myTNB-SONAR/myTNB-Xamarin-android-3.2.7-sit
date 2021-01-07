@@ -66,14 +66,6 @@ namespace myTNB_Android.Src.MyAccount.Adapter
                 viewHolder = new MyAccountViewHolder(convertView);
                 convertView.Tag = viewHolder;
 
-                swipeLayout.Opened += (sender, e) =>
-                {
-                    YoYo.With(Techniques.Tada)
-                        .Duration(500)
-                        .Delay(100)
-                        .PlayOn(e.Layout.FindViewById(Resource.Id.trash));
-                };
-
                 btn_delete.Click += (sender, e) =>
                 {
                     if (customListner != null)
@@ -81,30 +73,20 @@ namespace myTNB_Android.Src.MyAccount.Adapter
                         customListner.onButtonClickListner(position);
                         return;
                     }
-
-                    //CustomerBillingAccount account = GetItemObject(position);
-                    //CustomerBillingAccount.Remove(account.AccNum);
-                    //OnRemoveAccount(account.AccNum);
-                    //NotifyDataSetChanged();
-                    //((MyAccountActivity)mContext).ShowAddAccount();
                 };
-
-
 
                 btn_delete.SetBackgroundResource(Resource.Drawable.delete_icon_acc);
                 viewHolder.txtAccountName.Text = account.AccDesc;
                 viewHolder.txtAccountNum.Text = account.AccNum;
 
-                //viewHolder.txtAccountManage.Text = Utility.GetLocalizedLabel("Common", "manage");
-
-                /*if (account.AccountCategoryId.Equals("2"))
+                if (account.AccountCategoryId.Equals("2"))
                 {
                     viewHolder.imageLeaf.Visibility = ViewStates.Visible;
                 }
                 else
                 {
                     viewHolder.imageLeaf.Visibility = ViewStates.Invisible;
-                }*/
+                }
 
             }
             else
@@ -143,6 +125,8 @@ namespace myTNB_Android.Src.MyAccount.Adapter
             [BindView(Resource.Id.txtAccountNum)]
             internal TextView txtAccountNum;
 
+            [BindView(Resource.Id.imageLeaf)]
+            public ImageView imageLeaf;
 
             public MyAccountViewHolder(View itemView) : base(itemView)
             {
