@@ -238,6 +238,7 @@ namespace myTNB_Android.Src.Rating.Adapter
                 txtComments.MovementMethod = new ScrollingMovementMethod();
                 txtComments.SetOnTouchListener(this);
                 txtInputLayoutComments.Hint = Utility.GetLocalizedCommonLabel("comments");
+                txtInputLayoutComments.SetHintTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
                 txtInputLayoutComments.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                 txtComments.Hint = "";
                 txtComments.AddTextChangedListener(new InputFilterFormField(txtComments, txtInputLayoutComments));
