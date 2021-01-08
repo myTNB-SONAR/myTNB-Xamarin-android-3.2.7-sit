@@ -513,7 +513,46 @@ namespace myTNB_Android.Src.Utils
             }
         }
 
-   
+
+
+        public static string StringSpaceMasking(Masking masking, string premasking){
+
+            //proceed when is not null or empty
+            if (!String.IsNullOrEmpty(premasking))
+            {
+                if (masking.Equals(Masking.Address))
+                {
+
+                    char characterToMatch = (char)ConsoleKey.Spacebar;
+                    int first = premasking.IndexOf(characterToMatch);
+                    //need to +1 if not the the value are the same with 1st index
+                    int second = premasking.IndexOf(characterToMatch, first + 1);
+                    if (second != -1)
+                    {
+                        string postMasking = premasking.Substring(second);
+                        string frontMasking = premasking.Substring(0, second);
+                        Regex replaceString = new Regex("\\S");
+                        frontMasking = replaceString.Replace(frontMasking, "*");
+                        return frontMasking + postMasking;
+                    }
+                    else
+                    {
+                        //premasking not contain any ,
+                        return premasking;
+                    }
+                }
+                else
+                {
+                    return premasking;
+                }
+            }
+            else
+            {
+                return premasking;
+            }
+        }
+
+
 
         public static string GetAppUpdateId()
         {

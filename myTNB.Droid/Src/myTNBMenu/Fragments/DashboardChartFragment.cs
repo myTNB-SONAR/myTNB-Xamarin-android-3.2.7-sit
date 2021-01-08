@@ -922,7 +922,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 if (selectedAccount != null)
                 {
-                    txtAddress.Text = selectedAccount.AddStreet;
+                    //txtAddress.Text = selectedAccount.AddStreet;
+
+                    //if not owner mask the address IRUL
+                    if (!selectedAccount.IsOwner == true)
+                    {
+                        txtAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, selectedAccount.AddStreet);
+                    }
+                    else
+                    {
+                        txtAddress.Text = selectedAccount.AddStreet;
+                    }
+
+
+
+
                     if (selectedAccount.AccountCategoryId.Equals("2"))
                     {
                         HideSSMRDashboardView();

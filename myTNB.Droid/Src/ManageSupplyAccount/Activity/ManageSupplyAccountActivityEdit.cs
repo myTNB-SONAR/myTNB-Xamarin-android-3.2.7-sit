@@ -111,7 +111,19 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
 
                 txtAccountNumber.Text = accountData.AccountNum;
-                txtAccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, accountData.AddStreet);
+                //txtAccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, accountData.AddStreet);
+
+                //if not owner mask the address IRUL
+                if (!accountData.IsOwner == true)
+                {
+                   txtAccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
+                }
+                else
+                {
+                    txtAccountAddress.Text = accountData.AddStreet;
+                }
+
+
 
                 txtNickName.Text = accountData.AccountNickName;
 
