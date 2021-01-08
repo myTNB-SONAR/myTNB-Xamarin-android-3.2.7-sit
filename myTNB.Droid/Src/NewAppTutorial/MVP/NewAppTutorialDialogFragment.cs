@@ -488,6 +488,11 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                 int topHeight = (int)DPUtils.ConvertDPToPx(65f);
                                                 if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                                 {
+                                                    if (NewAppTutorialList.Count == 4 && e.Position == 2)
+                                                    {
+                                                        var h1 = 65f;
+                                                        topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                                                    }
                                                     int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
                                                     int halfScroll = topHeight / 2;
 

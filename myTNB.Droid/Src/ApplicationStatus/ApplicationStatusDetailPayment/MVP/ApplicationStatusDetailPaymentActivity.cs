@@ -109,7 +109,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
              base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusPaymentDetails", "title"));
             btnPayBill.Text = Utility.GetLocalizedLabel("ApplicationStatusPaymentDetails", "payNow");
             TextViewUtils.SetMuseoSans300Typeface(accountPayAmountValue, refreshBillingDetailMessage);

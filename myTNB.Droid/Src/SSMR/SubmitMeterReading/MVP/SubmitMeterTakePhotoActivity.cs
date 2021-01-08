@@ -76,7 +76,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             mPresenter = new SubmitMeterTakePhotoPresenter(this);
             isGalleryFirstPress = true;
 

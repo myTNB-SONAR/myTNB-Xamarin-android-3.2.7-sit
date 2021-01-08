@@ -110,6 +110,14 @@ namespace myTNB_Android.Src.Utils
             }
             return largeFontModel.Key;
         }
+
+        public static bool IsLargeFonts
+        {
+            get
+            {
+                return SelectedFontSize() == "L";
+            }
+        }
        
         public static float GetFontSize(float font)
         {

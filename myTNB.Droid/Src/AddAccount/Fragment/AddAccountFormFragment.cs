@@ -136,11 +136,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 textInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("Common","accountNo");
                 textInputLayoutAccountLabel.Hint = Utility.GetLocalizedLabel("Common","acctNickname");
                 textInputLayoutOwnerIC.Hint = Utility.GetLocalizedLabel("AddAccount", "ownerICNumber");
-                textInputLayoutAccountNo.SetHintTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
-                textInputLayoutAccountLabel.SetHintTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
-                textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
-                textInputLayoutOwnerIC.SetHintTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
-                textInputLayoutMotherMaidenName.SetHintTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                textInputLayoutAccountNo.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                textInputLayoutAccountLabel.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                textInputLayoutOwnerIC.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                textInputLayoutMotherMaidenName.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
                 txtAccountType.TextSize = TextViewUtils.GetFontSize(10f);
                 accountType.TextSize = TextViewUtils.GetFontSize(16f);
 
@@ -239,7 +239,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     string accountLabel = edtAccountLabel.Text.Trim();
                     if (e.HasFocus)
                     {
-                        textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                        textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                         textInputLayoutAccountLabel.Error = Utility.GetLocalizedHintLabel("nickname");
                     }
                     try
@@ -276,7 +276,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 edtAccountNo.SetOnTouchListener(this);
 
                 this.userActionsListener.Start();
-                textInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                textInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                 
                 textInputLayoutAccountNo.Error = "";
                 try
@@ -301,7 +301,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 {
                     Utility.LoggingNonFatalError(e);
                 }
-                textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                
                     textInputLayoutAccountLabel.Error = "";
                 try
@@ -326,7 +326,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     Utility.LoggingNonFatalError(e);
                 }
 
-                textInputLayoutOwnerIC.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                textInputLayoutOwnerIC.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                
                     textInputLayoutOwnerIC.Error = "";
 
@@ -546,7 +546,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public void ShowEmptyAccountNickNameError()
         {
-            textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
             
                 textInputLayoutAccountLabel.Error = "Invalid Account NickName";
             try
@@ -580,7 +580,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 {
                     try
                     {
-                        textInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                        textInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                        
                         textInputLayoutAccountNo.Error = "Invalid Account Number";
                         textInputLayoutAccountNo.RequestLayout();
@@ -622,7 +622,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public void ShowEmptyMothersMaidenNameError()
         {
-            textInputLayoutOwnerIC.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            textInputLayoutOwnerIC.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
            
             textInputLayoutOwnerIC.Error = "Invalid Mother's Maiden Name";
         }
@@ -630,7 +630,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public void ShowEmptyOwnerIcNumberError()
         {
             textInputLayoutOwnerIC.Error = "Invalid Owner's IC Number";
-            textInputLayoutOwnerIC.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            textInputLayoutOwnerIC.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
            
           
         }
@@ -643,7 +643,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 {
                     try
                     {
-                        textInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                        textInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                        
                      
 
@@ -786,7 +786,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public void ShowEnterValidAccountName()
         {
-            textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
             
             textInputLayoutAccountLabel.Error = this.Activity.GetString(Resource.String.invalid_charac);
             try
@@ -846,7 +846,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 {
                     try
                     {
-                        textInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                        textInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                         
                         textInputLayoutAccountNo.Error = "";
                         textInputLayoutAccountNo.RequestLayout();
@@ -888,7 +888,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public void ShowSameAccountNameError()
         {
-            textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
             
 
             if (textInputLayoutAccountLabel.Error != Utility.GetLocalizedErrorLabel("duplicateNickname"))

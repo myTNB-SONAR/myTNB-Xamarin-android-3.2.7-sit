@@ -101,7 +101,7 @@ namespace myTNB_Android.Src.Base.Activity
             metrics.ScaledDensity = configuration.FontScale * metrics.Density;
             this.Resources.UpdateConfiguration(configuration, metrics);
 
-            SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_AddAccountLarge : Resource.Style.Theme_AddAccount);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_AddAccountLarge : Resource.Style.Theme_AddAccount);
         }
         protected override void AttachBaseContext(Context baseContext)
         {

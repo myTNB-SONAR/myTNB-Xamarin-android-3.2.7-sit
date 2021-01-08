@@ -84,6 +84,8 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
 
         public string srNo { set; get; }
 
+        public string snNo { set; get; }
+
         public bool? hasInvoiceAttachment { set; get; } = false;
     }
 

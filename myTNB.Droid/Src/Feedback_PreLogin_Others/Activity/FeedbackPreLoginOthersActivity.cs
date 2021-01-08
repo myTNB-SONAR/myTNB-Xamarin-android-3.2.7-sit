@@ -595,7 +595,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Others.Activity
 
         public void ClearErrors()
         {
-            txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+            txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
             txtInputLayoutFullName.Error = null;
             txtInputLayoutMobileNo.Error = null;
             txtInputLayoutEmail.Error = null;

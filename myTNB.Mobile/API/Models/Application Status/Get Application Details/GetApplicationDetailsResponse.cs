@@ -282,7 +282,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         public DateTime? AppointmentEndTime { set; get; }
         [JsonProperty("appointmentDeadline")]
         public DateTime? AppointmentDeadline { set; get; }
-        
+
         /// <summary>
         /// Use to display in CTA Message
         /// </summary>
@@ -302,13 +302,28 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
         /// Use to display in CTA Message
         /// </summary>
         [JsonIgnore]
-        public string AppointmentDeadlineDisplay
+        public string AppointmentDeadlineDateTimeDisplay
         {
             get
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
                 return AppointmentDeadline != null && AppointmentDeadline.Value != null
                     ? AppointmentDeadline.Value.ToString("dd MMM yyyy, h tt", dateCultureInfo) ?? string.Empty
+                    : string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Use to display in CTA Message
+        /// </summary>
+        [JsonIgnore]
+        public string AppointmentDeadlineDateDisplay
+        {
+            get
+            {
+                CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
+                return AppointmentDeadline != null && AppointmentDeadline.Value != null
+                    ? AppointmentDeadline.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
                     : string.Empty;
             }
         }
@@ -328,6 +343,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
                     {
                         start = AppointmentStartTime.Value.ToString("hh:mm tt", dateCultureInfo);
                     }
+
                     if (AppointmentEndTime != null && AppointmentEndTime.Value != null)
                     {
                         end = AppointmentEndTime.Value.ToString("hh:mm tt", dateCultureInfo);

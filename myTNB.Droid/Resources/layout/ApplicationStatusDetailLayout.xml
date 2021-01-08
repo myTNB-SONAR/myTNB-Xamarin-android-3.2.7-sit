@@ -598,11 +598,21 @@ will be recorded. Check back again later to view its update."/>
 				<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:orientation="horizontal"
+					android:orientation="vertical"
 					android:weightSum="1"
 					android:visibility="gone"
 					android:id="@+id/applicationStatusDetailSingleButtonLayout"
 					android:background="@color/white">
+					<TextView
+						android:id="@+id/txtAppointmentSet"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginBottom="16dp"
+						android:layout_marginTop="16dp"
+						android:visibility="gone"
+						android:text="You have an appointment set for 19 Sep 2020, between 9:00 AM - 1:00 PM. "
+						android:textColor="@color/charcoalGrey"
+						android:textSize="14dp" />
 					<Button
 						android:id="@+id/btnPrimaryCTA"
 						android:text="UI - Add to List"
@@ -611,6 +621,36 @@ will be recorded. Check back again later to view its update."/>
 						android:textAllCaps="false"
 						android:textSize="16dp"
 						style="@style/Theme.PayButton" />
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="16dp"
+						android:paddingLeft="4dp"
+						android:paddingRight="8dp"
+						android:paddingTop="4dp"
+						android:paddingBottom="4dp"
+						android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
+						android:gravity="center|left"
+						android:orientation="horizontal"
+						android:id="@+id/cannotReschedulTooltip">
+						<ImageView
+							android:layout_width="16dp"
+							android:layout_height="16dp"
+							android:layout_gravity="center"
+							android:src="@drawable/info_blue"
+							android:layout_marginRight="8dp"
+							android:id="@+id/ApplicationStatsTooltipImg"/>
+						<TextView
+							android:id="@+id/txtCannotRescheduleTooltip"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="12dp"
+							android:textColor="#1c79ca"
+							android:drawablePadding="8dp"
+							android:layout_gravity="center_vertical"
+							android:gravity="center_vertical"
+							android:text="UI - Why can’t I reschedule anymore?"/>
+					</LinearLayout>
 				</LinearLayout>
 				<LinearLayout
 					android:layout_width="match_parent"

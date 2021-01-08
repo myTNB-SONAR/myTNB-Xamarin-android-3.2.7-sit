@@ -221,7 +221,7 @@ namespace myTNB.Mobile
                     if (CTAType == DetailCTAType.NewAppointment)
                     {
                         format = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "setAppointmentCTAMessage");
-                        message = string.Format(format, ApplicationAppointmentDetail.AppointmentDeadlineDisplay ?? string.Empty);
+                        message = string.Format(format, ApplicationAppointmentDetail.AppointmentDeadlineDateTimeDisplay ?? string.Empty);
                     }
                     else if (CTAType == DetailCTAType.Reschedule)
                     {
@@ -229,7 +229,7 @@ namespace myTNB.Mobile
                         message = string.Format(format
                             , ApplicationAppointmentDetail.AppointmentDateDisplay
                             , ApplicationAppointmentDetail.TimeSlotDisplay
-                            , ApplicationAppointmentDetail.AppointmentDeadlineDisplay ?? string.Empty);
+                            , ApplicationAppointmentDetail.AppointmentDeadlineDateDisplay ?? string.Empty);
                     }
                     else if (CTAType == DetailCTAType.RescheduleDisabled)
                     {
@@ -399,7 +399,9 @@ namespace myTNB.Mobile
                             {
                                 type = DetailTutorialType.NoAction;
                                 if (CTAType == DetailCTAType.CustomerRating
-                                    || CTAType == DetailCTAType.ContractorRating)
+                                    || CTAType == DetailCTAType.ContractorRating
+                                    || CTAType == DetailCTAType.NewAppointment
+                                    || CTAType == DetailCTAType.Reschedule)
                                 {
                                     type = DetailTutorialType.Action;
                                 }
@@ -419,16 +421,28 @@ namespace myTNB.Mobile
                             }
                     }
                 }
+                else if (CTAType == DetailCTAType.CustomerRating
+                   || CTAType == DetailCTAType.ContractorRating
+                   || CTAType == DetailCTAType.NewAppointment
+                   || CTAType == DetailCTAType.Reschedule)
+                {
+                    type = DetailTutorialType.Action;
+                }
                 return type;
             }
         }
 
         /// <summary>
         /// Used for ASMX Payment Details
-        /// Used for Raitng
+        /// Used for Rating
         /// Used for Appointment
         /// </summary>
         public string SRNumber { set; get; }
+
+        /// <summary>
+        /// Used for ASMX Payment Details
+        /// </summary>
+        public string SNNumber { set; get; }
 
         /// <summary>
         /// Used for Appointment
@@ -498,12 +512,12 @@ namespace myTNB.Mobile
         /// <summary>
         /// Use to pass to Get Appointment
         /// </summary>
-        public string BusinessArea { internal set; get; }
+        public string BusinessArea { set; get; }
 
         /// <summary>
         /// Use to Display in Appointment Success
         /// </summary>
-        public string PremisesAddress { internal set; get; }
+        public string PremisesAddress { set; get; }
 
         private Color StatusColorDisplay
         {

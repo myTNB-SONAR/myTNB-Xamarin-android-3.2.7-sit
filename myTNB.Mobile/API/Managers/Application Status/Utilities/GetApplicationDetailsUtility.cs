@@ -122,6 +122,10 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                                     {
                                         displayModel.Content.SRType = srType;
                                     }
+                                    if (GetObjectValue(props, "snNo") is string snNo && snNo.IsValid())
+                                    {
+                                        displayModel.Content.SNNumber = snNo;
+                                    }
                                 }
                             }
                         }

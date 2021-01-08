@@ -159,7 +159,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             {
                 mPresenter = new UserNotificationDetailPresenter(this);
                 base.OnCreate(savedInstanceState);
-                SetTheme(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+                SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
                 Bundle extras = Intent.Extras;
                 if (extras != null)
                 {

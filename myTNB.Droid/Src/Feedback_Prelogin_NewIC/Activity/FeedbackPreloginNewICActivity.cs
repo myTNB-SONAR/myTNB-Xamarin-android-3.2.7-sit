@@ -459,7 +459,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
         public void ShowInvalidAccountNumberError()
         {
-            txtInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            txtInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
             
             if (txtInputLayoutAccountNo.Error != Utility.GetLocalizedLabel("SubmitEnquiry", "validElectricityAccountNoError"))
             {
@@ -470,7 +470,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
         public void ShowEnterOrSelectAccNumber()
         {
-            txtInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            txtInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
             
             if (txtInputLayoutAccountNo.Error != Utility.GetLocalizedLabel("SubmitEnquiry", "plsEnterAcc"))
             {
@@ -483,7 +483,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
         public void RemoveNumberErrorMessage()
         {
-            txtInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.SelectedFontSize() == "L" ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            txtInputLayoutAccountNo.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
             
            
             txtInputLayoutAccountNo.Error = "";
