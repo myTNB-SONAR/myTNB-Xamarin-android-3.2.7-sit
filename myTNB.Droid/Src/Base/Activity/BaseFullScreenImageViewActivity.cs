@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Content.Res;
 using Android.Graphics;
 using Android.OS;
 using Android.Util;
@@ -127,7 +128,25 @@ namespace myTNB_Android.Src.Base.Activity
 
             SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_AddAccountLarge : Resource.Style.Theme_AddAccount);
         }
+        protected override void AttachBaseContext(Context baseContext)
+        {
 
+            Context newContext;
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                DisplayMetrics displayMetrics = baseContext.Resources.DisplayMetrics;
+                Configuration configuration = baseContext.Resources.Configuration;
+                configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
+                newContext = baseContext.CreateConfigurationContext(configuration);
+            }
+            else
+            {
+                // Old API. Screen zoom not supported
+                newContext = baseContext;
+            }
+            base.AttachBaseContext(newContext);
+        }
         public async Task GetImage()
         {
             try

@@ -1,4 +1,6 @@
 ﻿using System;
+using Android.Content;
+using Android.Content.Res;
 using Android.OS;
 using Android.Util;
 using myTNB_Android.Src.Utils;
@@ -18,6 +20,25 @@ namespace myTNB_Android.Src.Base.Activity
             var metrics = this.ApplicationContext.Resources.DisplayMetrics;
             metrics.ScaledDensity = configuration.FontScale * metrics.Density;
             this.Resources.UpdateConfiguration(configuration, metrics);
+        }
+        protected override void AttachBaseContext(Context baseContext)
+        {
+
+            Context newContext;
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                DisplayMetrics displayMetrics = baseContext.Resources.DisplayMetrics;
+                Configuration configuration = baseContext.Resources.Configuration;
+                configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
+                newContext = baseContext.CreateConfigurationContext(configuration);
+            }
+            else
+            {
+                // Old API. Screen zoom not supported
+                newContext = baseContext;
+            }
+            base.AttachBaseContext(newContext);
         }
         /// <summary>
         /// Gets the Page Id. To be implemented by child activity.

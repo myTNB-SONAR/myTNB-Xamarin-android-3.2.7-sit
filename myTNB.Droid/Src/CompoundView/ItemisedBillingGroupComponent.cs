@@ -37,8 +37,13 @@ namespace myTNB_Android.Src.CompoundView
         {
             Inflate(context,Resource.Layout.ItemisedBillingHistoryGroupingLayout,this);
             TextView monthYearLabel = FindViewById<TextView>(Resource.Id.itemisedBillingGroupLabel);
+    
             TextViewUtils.SetMuseoSans500Typeface(monthYearLabel);
             monthYearLabel.TextSize = TextViewUtils.GetFontSize(12f);
+            RelativeLayout.LayoutParams layoutParams = monthYearLabel.LayoutParameters as RelativeLayout.LayoutParams;
+            layoutParams.Width = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(90f) : (int)DPUtils.ConvertDPToPx(70f);
+            layoutParams.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(27f) : (int)DPUtils.ConvertDPToPx(24f);
+            monthYearLabel.LayoutParameters = layoutParams;
         }
 
         public void AddContent(LinearLayout contentLayout)
@@ -55,7 +60,12 @@ namespace myTNB_Android.Src.CompoundView
         public void SetMonthYearLabel(string monthYear)
         {
             TextView monthYearLabel = FindViewById<TextView>(Resource.Id.itemisedBillingGroupLabel);
+
             monthYearLabel.Text = monthYear;
+            RelativeLayout.LayoutParams layoutParams = monthYearLabel.LayoutParameters as RelativeLayout.LayoutParams;
+            layoutParams.Width = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(90f) : (int)DPUtils.ConvertDPToPx(70f);
+            layoutParams.Height = TextViewUtils.IsLargeFonts? (int)DPUtils.ConvertDPToPx(27f) : (int)DPUtils.ConvertDPToPx(24f);
+            monthYearLabel.LayoutParameters = layoutParams;
         }
 
         public void ShowSeparator(bool isShown)

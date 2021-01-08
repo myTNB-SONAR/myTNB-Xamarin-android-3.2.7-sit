@@ -1,8 +1,10 @@
 ﻿using Android.Content;
+using Android.Content.Res;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Text;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -66,7 +68,25 @@ namespace myTNB_Android.Src.Base.Activity
             metrics.ScaledDensity = configuration.FontScale * metrics.Density;
             this.Resources.UpdateConfiguration(configuration, metrics);
         }
+        protected override void AttachBaseContext(Context baseContext)
+        {
 
+            Context newContext;
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                DisplayMetrics displayMetrics = baseContext.Resources.DisplayMetrics;
+                Configuration configuration = baseContext.Resources.Configuration;
+                configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
+                newContext = baseContext.CreateConfigurationContext(configuration);
+            }
+            else
+            {
+                // Old API. Screen zoom not supported
+                newContext = baseContext;
+            }
+            base.AttachBaseContext(newContext);
+        }
         /// <summary>
         /// Whether if we use a custom toolbar title or we use the default one
         /// If true then we will implement a custom title o

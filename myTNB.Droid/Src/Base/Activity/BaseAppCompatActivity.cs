@@ -1,8 +1,10 @@
 ﻿using Android;
 using Android.Content;
 using Android.Content.PM;
+using Android.Content.Res;
 using Android.OS;
 using Android.Runtime;
+using Android.Util;
 using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.Core.Content;
@@ -13,6 +15,7 @@ using System;
 using System.IO;
 using System.Runtime;
 using System.Text;
+using static Android.OS.Build;
 using AlertDialog = Android.App.AlertDialog;
 using Constants = myTNB_Android.Src.Utils.Constants;
 
@@ -43,8 +46,27 @@ namespace myTNB_Android.Src.Base.Activity
             var metrics = this.ApplicationContext.Resources.DisplayMetrics;
             metrics.ScaledDensity = configuration.FontScale * metrics.Density;
             this.Resources.UpdateConfiguration(configuration, metrics);
-        }
 
+        }
+        protected override void AttachBaseContext(Context baseContext)
+        {
+
+            Context newContext;
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                DisplayMetrics displayMetrics = baseContext.Resources.DisplayMetrics;
+                Configuration configuration = baseContext.Resources.Configuration;
+                configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
+                newContext = baseContext.CreateConfigurationContext(configuration);
+            }
+            else
+            {
+                // Old API. Screen zoom not supported
+                newContext = baseContext;
+            }
+            base.AttachBaseContext(newContext);
+        }
         protected override void OnResume()
         {
             base.OnResume();
