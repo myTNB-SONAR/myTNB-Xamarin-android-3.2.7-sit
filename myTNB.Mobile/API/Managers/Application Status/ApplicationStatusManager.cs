@@ -500,20 +500,27 @@ namespace myTNB.Mobile
                         , savedApplicationID.IsValid());
                     try
                     {
-                        //Mark: Call ASMX Payment Details
-                        string refNumber = displaymodel.Content.SRNumber.IsValid()
-                            ? displaymodel.Content.SRNumber
-                            : displaymodel.Content.applicationPaymentDetail?.srNo ?? string.Empty;
-                        if (applicationType == "RE_TS")
+                        if (displaymodel.StatusDetail.IsSuccess)
                         {
-                            refNumber = displaymodel.Content.SNNumber.IsValid() ? displaymodel.Content.SNNumber : string.Empty;
-                        }
-                        if (refNumber.IsValid())
-                        {
-                            PostApplicationsPaidDetailsResponse paymentResponse = await PaymentManager.Instance.GetApplicationsPaidDetails(
-                                AppInfoManager.Instance.GetPlatformUserInfo()
-                                , refNumber);
-                            displaymodel.ParseDisplayModel(paymentResponse);
+                            //Mark: Call ASMX Payment Details
+                            string refNumber = displaymodel.Content.SRNumber.IsValid()
+                                ? displaymodel.Content.SRNumber
+                                : displaymodel.Content.applicationPaymentDetail?.srNo ?? string.Empty;
+                            //Mark: Pass SNNumber for RE_TS
+                            if (applicationType == "RE_TS")
+                            {
+                                refNumber = displaymodel.Content.SNNumber.IsValid() ? displaymodel.Content.SNNumber : string.Empty;
+                            }
+                            if (refNumber.IsValid())
+                            {
+                                PostApplicationsPaidDetailsResponse paymentResponse = await PaymentManager.Instance.GetApplicationsPaidDetails(
+                                    AppInfoManager.Instance.GetPlatformUserInfo()
+                                    , refNumber
+                                    , displaymodel.Content.ApplicationStatusDetail?.StatusId.ToString() ?? string.Empty
+                                    , displaymodel.Content.ApplicationStatusDetail?.StatusCode ?? string.Empty
+                                    , applicationType);
+                                displaymodel.ParseDisplayModel(paymentResponse);
+                            }
                         }
                     }
                     catch (Exception ex)

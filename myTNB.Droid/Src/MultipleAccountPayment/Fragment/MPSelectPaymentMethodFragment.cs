@@ -94,6 +94,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         private string ApplicationType = string.Empty;
         private string SearchTerm = string.Empty;
         private string ApplicationSystem = string.Empty;
+        private string StatusId = string.Empty;
+        private string StatusCode = string.Empty;
 
         public bool IsActive()
         {
@@ -156,6 +158,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     if (Arguments.ContainsKey("ApplicationSystem"))
                     {
                         ApplicationSystem = Arguments.GetString("ApplicationSystem");
+                    }
+                    if (Arguments.ContainsKey("StatusId"))
+                    {
+                        StatusId = Arguments.GetString("StatusId");
+                    }
+                    if (Arguments.ContainsKey("StatusCode"))
+                    {
+                        StatusCode = Arguments.GetString("StatusCode");
                     }
                 }
 
@@ -591,6 +601,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                             , ApplicationType
                             , SearchTerm
                             , ApplicationSystem
+                            , StatusId
+                            , StatusCode
                             , ApplicationPaymentDetail);
                     }
                     else

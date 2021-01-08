@@ -119,6 +119,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 , string applicationType
                 , string searchTerm
                 , string system
+                , string statusId
+                , string statusCode
                 , ApplicationPaymentDetail applicationPaymentDetail);
         }
     }
