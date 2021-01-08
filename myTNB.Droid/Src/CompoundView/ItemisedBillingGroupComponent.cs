@@ -41,8 +41,8 @@ namespace myTNB_Android.Src.CompoundView
             TextViewUtils.SetMuseoSans500Typeface(monthYearLabel);
             monthYearLabel.TextSize = TextViewUtils.GetFontSize(12f);
             RelativeLayout.LayoutParams layoutParams = monthYearLabel.LayoutParameters as RelativeLayout.LayoutParams;
-            layoutParams.Width = TextViewUtils.SelectedFontSize() == "L" ? (int)DPUtils.ConvertDPToPx(90f) : (int)DPUtils.ConvertDPToPx(70f);
-            layoutParams.Height = TextViewUtils.SelectedFontSize() == "L" ? (int)DPUtils.ConvertDPToPx(27f) : (int)DPUtils.ConvertDPToPx(24f);
+            layoutParams.Width = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(90f) : (int)DPUtils.ConvertDPToPx(70f);
+            layoutParams.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(27f) : (int)DPUtils.ConvertDPToPx(24f);
             monthYearLabel.LayoutParameters = layoutParams;
         }
 
@@ -63,8 +63,8 @@ namespace myTNB_Android.Src.CompoundView
 
             monthYearLabel.Text = monthYear;
             RelativeLayout.LayoutParams layoutParams = monthYearLabel.LayoutParameters as RelativeLayout.LayoutParams;
-            layoutParams.Width = TextViewUtils.SelectedFontSize() == "L" ? (int)DPUtils.ConvertDPToPx(90f) : (int)DPUtils.ConvertDPToPx(70f);
-            layoutParams.Height = TextViewUtils.SelectedFontSize() == "L" ? (int)DPUtils.ConvertDPToPx(27f) : (int)DPUtils.ConvertDPToPx(24f);
+            layoutParams.Width = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(90f) : (int)DPUtils.ConvertDPToPx(70f);
+            layoutParams.Height = TextViewUtils.IsLargeFonts? (int)DPUtils.ConvertDPToPx(27f) : (int)DPUtils.ConvertDPToPx(24f);
             monthYearLabel.LayoutParameters = layoutParams;
         }
 
