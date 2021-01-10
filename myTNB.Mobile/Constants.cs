@@ -35,7 +35,7 @@
         //Mark: IP: http://10.215.70.246/   URL: http://tnbcsdevapp.tnb.my/
         internal const string SitecoreURL = "http://10.215.70.246/";
 #elif MASTER || SIT
-        internal static string ApiDomain = "http://10.215.128.191:89";//"https://mobiletestingws.tnb.com.my";
+        internal static string ApiDomain = "https://mobiletestingws.tnb.com.my";
         internal const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         //Mark: IP: http://10.215.70.248/   URL: http://tnbcsstgapp.tnb.my/
         internal const string SitecoreURL = "http://10.215.70.248/";
