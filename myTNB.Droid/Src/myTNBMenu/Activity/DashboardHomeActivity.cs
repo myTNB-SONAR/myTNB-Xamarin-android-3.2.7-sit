@@ -885,25 +885,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         .CommitAllowingStateLoss();
 
         }
-        protected override void AttachBaseContext(Context baseContext)
-        {
-
-            Context newContext;
-
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
-            {
-                DisplayMetrics displayMetrics = baseContext.Resources.DisplayMetrics;
-                Configuration configuration = baseContext.Resources.Configuration;
-                configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
-                newContext = baseContext.CreateConfigurationContext(configuration);
-            }
-            else
-            {
-                // Old API. Screen zoom not supported
-                newContext = baseContext;
-            }
-            base.AttachBaseContext(newContext);
-        }
+        
         public void ShowMoreMenu()
         {
             ProfileMenuFragment profileMenuFragment = new ProfileMenuFragment();
