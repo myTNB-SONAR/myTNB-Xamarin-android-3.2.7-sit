@@ -13,6 +13,7 @@ using myTNB_Android.Src.Utils;
 using System;
 using AlertDialog = Android.App.AlertDialog;
 using Constants = myTNB_Android.Src.Utils.Constants;
+using Android.Util;
 
 namespace myTNB_Android.Src.Base.Fragments
 {
@@ -35,6 +36,10 @@ namespace myTNB_Android.Src.Base.Fragments
                 configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
                 var metrics = this.Activity.ApplicationContext.Resources.DisplayMetrics;
                 metrics.ScaledDensity = configuration.FontScale * metrics.Density;
+
+
+                configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
+
                 this.Context.Resources.UpdateConfiguration(configuration, metrics);
             }
             catch (Exception e)
