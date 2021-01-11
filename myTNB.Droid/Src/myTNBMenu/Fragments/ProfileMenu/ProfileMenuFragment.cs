@@ -989,7 +989,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 }
 
                 mLanguageSnackbar = Snackbar.Make(rootView,
-                    GetLabelByLanguage("changeLanguageSuccess"),
+                    GetLabelByLanguage("fontChangeSuccess"),
                     Snackbar.LengthIndefinite)
                             .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>
