@@ -5678,6 +5678,7 @@
     <Compile Include="Src\Utils\PDFView\PDFDecodeFactory.cs" />
     <Compile Include="Src\Utils\ZoomImageView\ZoomImageView.cs" />
     <Compile Include="Src\Utils\LinkRedirectionUtils.cs" />
+    <AndroidResource Include="Resources\drawable\light_white_outline_button_background.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
