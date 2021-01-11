@@ -635,23 +635,26 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         account.mobileNoOwner = item.mobileNoOwner;
                         accounts.Add(account);
                     }
-                    TOTAL_NO_OF_ACCOUNTS_TO_ADD = accounts.Count;
                     int i = 0;
+                    TOTAL_NO_OF_ACCOUNTS_TO_ADD = accounts.Count;
                     foreach (Models.AddAccount account in accounts)
                     {
-                        if (account.mobileNoOwner.Equals("") && account.emailOwner.Equals(""))
+                        if (!account.isOwned)
                         {
-                            i++;
+                            if (account.mobileNoOwner.Equals("") && account.emailOwner.Equals(""))
+                            { 
+                                i++;
+                            }
                         }
+                    }
 
-                        if ( i > 0 )
-                        {
-                            ShowErrorEnterEmailOrNoPhone(Utility.GetLocalizedErrorLabel("emptyNickname"));
-                        }
-                        else
-                        {
-                            this.userActionsListener.AddMultipleAccounts(apiKeyID, userID, email, accounts);
-                        }
+                    if (i > 0)
+                    {
+                        ShowErrorEnterEmailOrNoPhone(Utility.GetLocalizedErrorLabel("emptyNickname"));
+                    }
+                    else
+                    {
+                        this.userActionsListener.AddMultipleAccounts(apiKeyID, userID, email, accounts);
                     }
                 }
                 else

@@ -27,7 +27,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
         private readonly string MIN_6_ALPHANUMERIC_PATTERN = "[a-zA-Z0-9#?!@$%^&*-]{6,}";
         private Regex hasNumber = new Regex(@"[0-9]+");
         private Regex hasUpperChar = new Regex(@"[a-zA-Z]+");
-        private Regex hasSpecialChar = new Regex(@"[_-]+");
+        private Regex hasSpecialChar = new Regex(@"[_#<>/\|[{}:;'+=?!@$%^&*-]+");
         private Regex hasMinimum12Chars = new Regex(@".{12,12}$");
         private Regex hasMinimum5until50Chars = new Regex(@".{5,50}");
         private Regex hasHyphens = new Regex(@"/(?([0-9]{3}))?([ .-]?)([0-9]{3})\2([0-9]{4})/");
@@ -395,10 +395,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             bool isValid = false;
             try
             {
-                if (!hasSpecialChar.IsMatch(icno))
-                {
-                    isValid = hasNumber.IsMatch(icno) && hasMinimum5until50Chars.IsMatch(icno);
-                }
+                isValid = hasNumber.IsMatch(icno) && hasMinimum5until50Chars.IsMatch(icno);
             }
             catch (System.Exception e)
             {
@@ -411,10 +408,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             bool isValid = false;
             try
             {
-                if (!hasSpecialChar.IsMatch(icno))
-                {
-                    isValid = hasNumber.IsMatch(icno) && hasUpperChar.IsMatch(icno) && hasMinimum5until50Chars.IsMatch(icno);
-                }
+                isValid = hasNumber.IsMatch(icno) && hasUpperChar.IsMatch(icno) && hasMinimum5until50Chars.IsMatch(icno);
             }
             catch (System.Exception e)
             {

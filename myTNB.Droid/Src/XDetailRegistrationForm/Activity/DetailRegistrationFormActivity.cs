@@ -170,7 +170,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 txtTitleRegister.Text = GetLabelCommonByLanguage("dtitleRegister");
                 txtBodyRegister.Text = GetLabelCommonByLanguage("dbodyRegister");
-                txtAccountType.Text = GetLabelCommonByLanguage("idtypeTitle");
+                txtAccountType.Text = GetLabelCommonByLanguage("idtypeTitle").ToUpper();
                 textInputLayoutFullName.Hint = GetLabelCommonByLanguage("fullname");
                 textInputLayoutICNo.Hint = GetLabelCommonByLanguage("idNumberhint");
 
@@ -190,6 +190,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 txtFullName.TextChanged += TxtFullName_TextChanged;
                 txtFullName.AddTextChangedListener(new InputFilterFormField(txtFullName, textInputLayoutFullName));
                 txtICNumber.AddTextChangedListener(new InputFilterFormField(txtICNumber, textInputLayoutICNo));
+                txtICNumber.InputType = InputTypes.ClassNumber;
 
                 IdentificationType Individual = new IdentificationType();
                 Individual.Id = "1";
@@ -288,6 +289,17 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             public void BeforeTextChanged(Java.Lang.ICharSequence s, int start, int count, int after)
             {
                 mAfter = after;
+                /*string Idtype = idText.Text;
+
+                if (Idtype.Equals("IC / Mykad"))
+                {
+                    int len = eText.Text.Length;
+                    if ((start == 6 || start == 9) && count == 0)
+                    {
+                        eText.Text = eText.Text + "-";
+                        eText.SetSelection(eText.Text.Length);
+                    }
+                }*/
             }
 
             public void OnTextChanged(Java.Lang.ICharSequence s, int start, int before, int count)
@@ -303,6 +315,23 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                         eText.SetSelection(eText.Text.Length);
 
                     }
+
+                    if(len == 7 && before == 0)
+                    {
+                        string first6digit = eText.Text.Substring(0,6);
+                        string last1digit = eText.Text.Substring(eText.Text.Length - 1);
+                        eText.Text = first6digit + "-" + last1digit;
+                        eText.SetSelection(eText.Text.Length);
+                    }
+
+                    if (len == 10 && before == 0)
+                    {
+                        string first9digit = eText.Text.Substring(0,9);
+                        string last1digit = eText.Text.Substring(eText.Text.Length - 1);
+                        eText.Text = first9digit + "-" + last1digit;
+                        eText.SetSelection(eText.Text.Length);
+                    }
+
                     if (len > 14)
                     {
                         eText.Text = eText.Text.ToString().Substring(0, 14);
@@ -420,7 +449,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             string ic_no = txtICNumber.Text.ToString().Trim(); 
             string Idtype = selectedIdentificationType.Id;
             string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
-            ic_no = ic_no.Replace("-", string.Empty);
             this.userActionsListener.CheckRequiredFields(fullname, ic_no, mobile_no, Idtype, txtboxcondition.Checked);
 
         }
@@ -431,7 +459,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             string ic_no = txtICNumber.Text.ToString().Trim();
             string Idtype = selectedIdentificationType.Id;
             string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
-            ic_no = ic_no.Replace("-", string.Empty);
             this.userActionsListener.CheckRequiredFields(fullname, ic_no, mobile_no, Idtype, txtboxcondition.Checked);
         }
 
@@ -632,7 +659,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                     string password = entity.Password.Trim();
                     string Idtype = selectedIdentificationType.Id;
 
-                    ic_no = ic_no.Replace("-", string.Empty);
                     this.userActionsListener.OnCheckID(ic_no, Idtype);
 
                     bool hasExistedID = MyTNBAccountManagement.GetInstance().IsIDUpdated();
@@ -1178,6 +1204,14 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                             {
                                 identityType.Text = selectedIdentificationType.Type;
                                 txtICNumber.Text = "";
+                                if (selectedIdentificationType.Id.Equals("1"))
+                                {
+                                    txtICNumber.InputType = InputTypes.ClassNumber;
+                                }
+                                else
+                                {
+                                    txtICNumber.InputType = InputTypes.ClassText;
+                                }
                             }
                         }
                     }

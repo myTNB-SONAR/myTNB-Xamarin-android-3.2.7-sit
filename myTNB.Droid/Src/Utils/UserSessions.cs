@@ -439,6 +439,18 @@ namespace myTNB_Android.Src.Utils
             return prefs.GetBoolean("deviceIDUpdated", false);
         }
 
+        internal static void UpdateIdDialog(ISharedPreferences mSharedPref)                 //for Update ID dialog
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.PutBoolean("DialogIDUpdated", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean IsIdDialogUpdated(ISharedPreferences prefs)            //for Update ID dialog
+        {
+            return prefs.GetBoolean("DialogIDUpdated", false);
+        }
+
         public static void SaveDeviceId(ISharedPreferences prefs, string deviceID)
         {
             ISharedPreferencesEditor editor = prefs.Edit();

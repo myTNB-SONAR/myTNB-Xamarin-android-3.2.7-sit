@@ -66,6 +66,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         const string PAGE_ID = "ManageAccount";
 
+        private static int HORIZONTAL_MIN = 30; 
+
         public override int ResourceId()
         {
             return Resource.Layout.MyAccountViewNew;
@@ -97,18 +99,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 adapter = new MyAccountAdapter(this, false);
                 listView.Adapter = adapter;
                 adapter.setCustomButtonListner(this);
-                //adapter1 = new MyAccountAdapterTest(this);
-                //listView.Adapter = adapter1;
                 listView.SetNoScroll();
-                //adapter1.Mode = Attributes.Mode.Single;
                 listView.ItemClick += ListView_ItemClick;
-
-                listView.Touch += (sender, e) =>
-                {
-                    ((SwipeLayout)(listView.GetChildAt(listView.FirstVisiblePosition))).Open(SwipeLayout.DragEdge.Right);
-                    Console.WriteLine("ListView: OnTouch");
-                    e.Handled = true;
-                };
 
                 mPresenter = new MyAccountPresenter(this);
                 this.userActionsListener.Start();
@@ -118,6 +110,49 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+/*        public bool OnTouch(View v, MotionEvent e)
+        {
+            float downX, downY, upX, upY;
+            if (v is ListView)
+            {
+                ListView eListView = v as ListView;
+                if (eListView.Id == Resource.Id.listView)
+                {
+                    switch (e.Action)
+                    {
+                        case MotionEventActions.Down:
+                            {
+                                 downX = e.GetX();
+                                 downY = e.GetY();
+                                 return false; // allow other events like Click to be processed
+                            }
+                        case MotionEventActions.Move:
+                            upX = e.GetX();
+                            upY = e.GetY();
+                            *//*float deltaX = downX - upX;
+                            float deltaY = downY - upY;*//*
+                            if (Math.Abs(upX) > HORIZONTAL_MIN)
+                            {
+                                // left or right
+                                if (upX < 0)
+                                {
+                                    ((SwipeLayout)(listView.GetChildAt(listView.FirstVisiblePosition))).Open(SwipeLayout.DragEdge.Right);
+                                    return true;
+                                }
+                                if (upX > 0)
+                                {
+                                    return true;
+                                }
+                            }
+                            break;
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }*/
+
         [Preserve]
 
         private void ListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)

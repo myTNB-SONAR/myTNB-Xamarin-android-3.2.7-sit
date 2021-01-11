@@ -174,12 +174,12 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 listView.SetNoScroll();
                 listView.ItemClick += ListView_ItemClick;
 
-                listView.Touch += (sender, e) =>
+                /*listView.Touch += (sender, e) =>
                 {
                     ((SwipeLayout)(listView.GetChildAt(listView.FirstVisiblePosition))).Open(SwipeLayout.DragEdge.Right);
                     Console.WriteLine("ListView: OnTouch");
                     e.Handled = true;
-                };
+                };*/
                 //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 mPresenter = new ManageAccessPresenter(this, accountData);
                 this.userActionsListener.Start();

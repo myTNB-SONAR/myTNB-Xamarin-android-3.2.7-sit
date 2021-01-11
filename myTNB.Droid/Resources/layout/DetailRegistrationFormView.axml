@@ -102,14 +102,14 @@
                     </com.google.android.material.textfield.TextInputLayout>
                     <TextView
                     android:text="@string/add_account_form_account_type"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/txtAccountType"
                     android:textSize="10dp"
                     android:textColor="@color/silverChalice"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="2dp"
-                    android:layout_marginStart="6dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp" />
                     <TextView
                     android:id="@+id/selector_account_type"
@@ -122,7 +122,6 @@
                     android:paddingBottom="6dp"
                     android:layout_marginBottom="2dp"
                     android:text="Selected Type"
-                    android:layout_marginEnd="5dp"
                     android:drawablePadding="4dp"
                     android:background="?attr/editTextBackground"
                     android:drawableRight="@drawable/ic_action_dropdown1"/>
@@ -147,7 +146,8 @@
                         android:id="@+id/mobileNumberFieldContainer"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
-                        android:layout_margin="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
                         android:orientation="vertical"/>
                </LinearLayout>
             </LinearLayout>
@@ -163,7 +163,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="5dp"
                 android:background="@color/white">

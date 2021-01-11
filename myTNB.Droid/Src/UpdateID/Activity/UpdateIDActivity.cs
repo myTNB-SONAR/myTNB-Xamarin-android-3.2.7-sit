@@ -140,6 +140,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
 
                 txtICNumber.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
                 txtICNumber.AddTextChangedListener(new InputFilterFormField(txtICNumber, textInputLayoutICNo));
+                txtICNumber.InputType = InputTypes.ClassNumber;
 
                 IdentificationType Individual = new IdentificationType();
                 Individual.Id = "1";
@@ -206,6 +207,23 @@ namespace myTNB_Android.Src.UpdateID.Activity
                         eText.SetSelection(eText.Text.Length);
 
                     }
+
+                    if (len == 7 && before == 0)
+                    {
+                        string first6digit = eText.Text.Substring(0, 6);
+                        string last1digit = eText.Text.Substring(eText.Text.Length - 1);
+                        eText.Text = first6digit + "-" + last1digit;
+                        eText.SetSelection(eText.Text.Length);
+                    }
+
+                    if (len == 10 && before == 0)
+                    {
+                        string first9digit = eText.Text.Substring(0, 9);
+                        string last1digit = eText.Text.Substring(eText.Text.Length - 1);
+                        eText.Text = first9digit + "-" + last1digit;
+                        eText.SetSelection(eText.Text.Length);
+                    }
+
                     if (len > 14)
                     {
                         eText.Text = eText.Text.ToString().Substring(0, 14);
@@ -739,6 +757,15 @@ namespace myTNB_Android.Src.UpdateID.Activity
                             if (selectedIdentificationType != null)
                             {
                                 identityType.Text = selectedIdentificationType.Type;
+                                txtICNumber.Text = "";
+                                if (selectedIdentificationType.Id.Equals("1"))
+                                {
+                                    txtICNumber.InputType = InputTypes.ClassNumber;
+                                }
+                                else
+                                {
+                                    txtICNumber.InputType = InputTypes.ClassText;
+                                }
                             }
                         }
                     }

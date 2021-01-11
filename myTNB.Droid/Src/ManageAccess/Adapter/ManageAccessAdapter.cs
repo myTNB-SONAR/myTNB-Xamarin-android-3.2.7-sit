@@ -66,13 +66,13 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
                 viewHolder = new MyAccountViewHolder(convertView);
                 convertView.Tag = viewHolder;
 
-                swipeLayout.Opened += (sender, e) =>
+                /*swipeLayout.Opened += (sender, e) =>
                 {
                     YoYo.With(Techniques.Tada)
                         .Duration(500)
                         .Delay(100)
                         .PlayOn(e.Layout.FindViewById(Resource.Id.trash));
-                };
+                };*/
 
                 btn_delete.Click += (sender, e) =>
                 {
