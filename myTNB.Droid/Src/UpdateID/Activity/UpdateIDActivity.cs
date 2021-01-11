@@ -44,7 +44,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
       , NoHistory = false
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
-      , Theme = "@style/Theme.DashboardHome")]
+      , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class UpdateIDActivity : BaseActivityCustom, UpdateIDContract.IView
     {
         private UpdateIDPresenter mPresenter;

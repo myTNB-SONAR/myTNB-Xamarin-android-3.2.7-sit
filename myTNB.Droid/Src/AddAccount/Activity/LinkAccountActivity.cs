@@ -641,7 +641,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     {
                         if (!account.isOwned)
                         {
-                            if (account.mobileNoOwner.Equals("") && account.emailOwner.Equals(""))
+                            if (account.mobileNoOwner.Equals("") && account.emailOwner.Equals("") && account.accountTypeId.Equals("1"))
                             { 
                                 i++;
                             }
@@ -948,7 +948,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 mErrorMessageSnackBar.Dismiss();
             }
 
-            mErrorMessageSnackBar = Snackbar.Make(rootView, "Please Enter No Phone Or Email Owner", Snackbar.LengthIndefinite)
+            mErrorMessageSnackBar = Snackbar.Make(rootView, "Please enter no phone or email owner", Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;
@@ -973,10 +973,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         {
                             bool alreadyAdded = false;
 
-                            if (account.mobileNoOwner.Equals("") && account.emailOwner.Equals(""))
+                            if (account.mobileNoOwner.Equals("") && account.emailOwner.Equals("") && account.type.Equals("1"))
                             {
                                 account.isNoDetailOwner = true;
                             }
+                            account.ISDmobileNo = "+06";
 
                             foreach (NewAccount item in accountList)
                             {
@@ -991,14 +992,14 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 {
                                     alreadyAdded = true;
                                 }
-                                if (item.mobileNoOwner.Equals("") && item.emailOwner.Equals(""))
+                                /*if (item.mobileNoOwner.Equals("") && item.emailOwner.Equals(""))
                                 {
                                     item.isNoDetailOwner = true;
                                 }
                                 else
                                 {
                                     item.isNoDetailOwner = false;
-                                }
+                                }*/
                             }
 
                             if (!alreadyAdded)

@@ -175,36 +175,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-        public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
-            ManageSupplyAccountMenu = menu;
-            ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.icon_activity_log)).SetVisible(true);
-
-            //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
-            //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
-            //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(false);
-            //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true);
-
-            return base.OnCreateOptionsMenu(menu);
-        }
-
-        public override bool OnOptionsItemSelected(IMenuItem item)
-        {
-            switch (item.ItemId)
-            {
-                case Resource.Id.icon_log_activity_unread:
-                    //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled).SetVisible(true).SetEnabled(false);
-                    //ManageSupplyAccountMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_disabled).SetVisible(true).SetEnabled(false);
-                    SetToolBarTitle(GetLabelByLanguage("title"));
-                    break;                
-            }
-
-
-            return base.OnOptionsItemSelected(item);
-        }
-
+      
         public bool IsActive()
         {
             return Window.DecorView.RootView.IsShown;

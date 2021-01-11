@@ -38,6 +38,8 @@
 
         public string mobileNoOwner { get; set; }
 
+        public string ISDmobileNo { get; set; }
+
         public bool isNoDetailOwner { get; set; }
     }
 }

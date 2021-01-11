@@ -91,7 +91,7 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
                 if (account.IsPreRegister)
                 {
                     viewHolder.txtAccountNum.Visibility = ViewStates.Visible;
-                    viewHolder.txtAccountNum.Text = account.email;
+                    viewHolder.txtAccountNum.Text = Utility.GetLocalizedLabel("UserAccess", "pendingRegistration"); ;
                 }
                 else
                 {

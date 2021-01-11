@@ -186,6 +186,7 @@ namespace myTNB_Android.Src.AddAccount
                 }
             };
 
+
             MobileLinearLayout.RemoveAllViews();
             mobileNumberInputComponent = new MobileNumberInputComponent(context);
             mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
@@ -210,15 +211,16 @@ namespace myTNB_Android.Src.AddAccount
 
         private void OnValidateMobileNumber(bool isValidated)
         {
-            //string mobile = this.item.mobileNoOwner;
-            //int value = Java.Lang.Integer.ParseInt(mobile);
-            //mobileNumberInputComponent.SetMobileNumber(value);
-            string noISDMobileNo = mobileNumberInputComponent.GetMobileNumberValue();
-            phone_no = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
-            if(!noISDMobileNo.Equals(""))
+            string noISD = mobileNumberInputComponent.GetMobileNumberValue();
+            this.item.ISDmobileNo = mobileNumberInputComponent.GetISDOnly();
+            if (noISD.Equals(""))
             {
-                this.item.mobileNoOwner = phone_no;
+                this.item.mobileNoOwner = "";
             }
+            else if (this.item.mobileNoOwner != this.item.ISDmobileNo)
+            {
+                this.item.mobileNoOwner = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
+            }            
         }
 
         public void PopulateData(NewAccount item)
@@ -251,20 +253,35 @@ namespace myTNB_Android.Src.AddAccount
                     }
                 };
 
+                EmailEditText.Text = this.item.emailOwner;
                 EmailEditText.AfterTextChanged += (sender, args) =>
                 {
                     item.emailOwner = EmailEditText.Text.Trim();
-                    if (!Patterns.EmailAddress.Matcher(item.emailOwner).Matches())
+                    /*if (EmailEditText.Text.Equals(""))
+                    {
+                        textInputLayoutEmailEditText.Error = null;
+                    }
+                    else if (!Patterns.EmailAddress.Matcher(item.emailOwner).Matches())
                     {
                         textInputLayoutEmailEditText.Error = Utility.GetLocalizedErrorLabel("invalid_email");
                     }
                     else
                     {
                         textInputLayoutEmailEditText.Error = null;
-                    }
+                    }*/
                 };
 
-                if (item.isNoDetailOwner)
+                int noISDONly = this.item.ISDmobileNo.Length;
+                if (!this.item.mobileNoOwner.Equals(""))
+                {
+                    string mobile = this.item.mobileNoOwner;
+                    string mobileNoOnly = mobile.Substring(noISDONly, mobile.Length - noISDONly);
+                    int value = Java.Lang.Integer.ParseInt(mobileNoOnly);
+                    mobileNumberInputComponent.SetMobileNumber(value);
+                }
+                
+
+                if (item.isNoDetailOwner && item.type.Equals("1"))
                 {
                     OwnerNoContactLinearLayout.Visibility = ViewStates.Visible;
                 }

@@ -12,24 +12,18 @@ namespace myTNB_Android.Src.LogUserAccess.MVP
             /// Show logUserAccessData list
             /// </summary>
             /// <param name="logUserAccess">List<paramref name="logUserAccessData"/></param>
-            void ShowNotificationList(List<LogUserAccessData> LogUserAccessData);
-
-            /// <summary>
-            /// Show logUserAccessData data
-            /// </summary>
-            /// <param name="logUserAccessData">logUserAccessData</param>
-            /// <param name="position">integer</param>
-            void ShowSelectedFilterItem(LogUserAccessData logUserAccessData, int position);
+            void ShowLogList(List<LogUserAccessNewData> LogUserAccessData);
+            void emptyThisWeekList();
+            void emptyLastWeekList();
+            void emptyLastMonthList();
+            void ShowLogListThisWeek(List<LogUserAccessNewData> thisWeek);
+            void ShowLogListLastWeek(List<LogUserAccessNewData> lastWeek);
         }
 
         public interface IUserActionsListener : IBasePresenter
         {
-            /// <summary>
-            /// Action to navigate to filter logUserAccessData
-            /// </summary>
-            /// <param name="logUserAccessData">logUserAccessData</param>
-            /// <param name="position">integer</param>
-            void OnSelectFilterItem(LogUserAccessData logUserAccessData, int position);
+
+            void SortLogListDataByDate(List<LogUserAccessNewData> loglist);
         }
     }
 }

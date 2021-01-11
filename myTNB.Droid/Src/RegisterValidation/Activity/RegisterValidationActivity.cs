@@ -33,7 +33,7 @@ namespace myTNB_Android.Src.RegisterValidation
     [Activity(Label = "@string/registration_validation_activity_title"
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
-      , Theme = "@style/Theme.RegisterValidation")]
+      , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class RegisterValidationActivity : BaseActivityCustom, RegistrationValidationContract.IView, ProgressGenerator.OnProgressListener
     {
 

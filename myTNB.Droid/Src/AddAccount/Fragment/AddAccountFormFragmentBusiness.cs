@@ -435,9 +435,19 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 string accountNum = edtAccountNo.Text;
                 string icNumber = edtRocNo.Text;
                 string type = selectedAccountType.Id;
-                bool owner = true;
+                bool owner;
                 string suppliedMotherName = edtOwnerMotherName.Text;
                 string accountLabel = edtAccountLabel.Text;
+
+                if(icNumber.Equals(""))
+                {
+                    owner = false;
+                }
+                else 
+                {
+                    owner = true;
+                }
+
                 if (!IsAccountAlreadyRegistered(accountNum) && !AddAccountUtils.IsFoundAccountList(accountNum))
                 {
                     this.userActionsListener.ValidateAccount(apiKeyID, accountNum, type, icNumber, suppliedMotherName, owner, accountLabel);

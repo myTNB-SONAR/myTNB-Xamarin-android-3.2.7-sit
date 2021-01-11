@@ -172,7 +172,12 @@ namespace myTNB_Android.Src.CompoundView
         {
             editTextMobileNumber.Text = mobileNo.ToString();
         }
-        
+
+        public string GetISDOnly()
+        {
+            return selectedCountry.isd;
+        }
+
         public void ClearMobileNumber()
         {
             

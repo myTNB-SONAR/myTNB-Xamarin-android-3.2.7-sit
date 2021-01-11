@@ -4,15 +4,18 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
+using Java.Text;
+using Java.Util;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.LogUserAccess.Models;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace myTNB_Android.Src.LogUserAccess.Adapter
 {
-    public class LogUserAccessAdapter : BaseCustomAdapter<LogUserAccessData>
+    public class LogUserAccessAdapter : BaseCustomAdapter<LogUserAccessNewData>
     {
         public LogUserAccessAdapter(Context context) : base(context)
         {
@@ -22,17 +25,17 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
         {
         }
 
-        public LogUserAccessAdapter(Context context, List<LogUserAccessData> itemList) : base(context, itemList)
+        public LogUserAccessAdapter(Context context, List<LogUserAccessNewData> itemList) : base(context, itemList)
         {
         }
 
-        public LogUserAccessAdapter(Context context, List<LogUserAccessData> itemList, bool notify) : base(context, itemList, notify)
+        public LogUserAccessAdapter(Context context, List<LogUserAccessNewData> itemList, bool notify) : base(context, itemList, notify)
         {
         }
 
         public void DisableAll()
         {
-            foreach (LogUserAccessData data in itemList)
+            foreach (LogUserAccessNewData data in itemList)
             {
                 //data.IsSelected = false;
             }
@@ -41,11 +44,11 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            LogUserAccessData data = GetItemObject(position);
+            LogUserAccessNewData data = GetItemObject(position);
             LogUserAccessDataViewHolder viewHolder = null;
             if (convertView == null)
             {
-                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.NotificationFilterRow, parent, false);
+                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.ActivityLogUserListview, parent, false);
                 viewHolder = new LogUserAccessDataViewHolder(convertView);
                 convertView.Tag = viewHolder;
             }
@@ -55,16 +58,43 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
             }
             try
             {
-                /*viewHolder.txtNotificationTitle.Text = data.Title;
-                if (data.IsSelected)
+                DateTime referenceDate;
+                DateTime referenceDate2 = new DateTime();
+                referenceDate = data.CreatedDate;
+                int day = referenceDate.Day;
+                int month = referenceDate.Month;
+                int year = referenceDate.Year;
+
+                string monthName = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(month);
+                string formateddate = day.ToString() + " " + monthName.Substring(0,3) + " " + year.ToString();
+
+                viewHolder.infoLabelDate.Text = formateddate;
+
+                if (data.Action.Equals("A"))
                 {
-                    viewHolder.notificationActionIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_action_tick));
+                    viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_action_tick));
+                    viewHolder.itemTitle.Text = "Raja Udang added this electricity account to their view.";
+
+                    /*if (data.IsApplyEBilling)
+                    {
+                        viewHolder.itemTitle.Text = "Raja Udang added this electricity account to their view.";
+                    }*/
+                }
+                else if (data.Action.Equals("U"))
+                {
+                    viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.re_meter_dashboard));
+                    viewHolder.itemTitle.Text = "You have granted Siti Aishah access to full bill view and apply for e-billing.";
+
+                    /*if (data.IsApplyEBilling)
+                    {
+                        viewHolder.itemTitle.Text = "You have granted Siti Aishah access to full bill view and apply for e-billing.";
+                    }*/
                 }
                 else
                 {
-                    viewHolder.notificationActionIcon.SetImageDrawable(null);
-
-                }*/
+                    viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.autopay_yellow));
+                    viewHolder.itemTitle.Text = "You removed Siti Aishah’s access to apply for e-billing.";
+                }
             }
             catch (Exception e)
             {
@@ -75,15 +105,20 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
 
         class LogUserAccessDataViewHolder : BaseAdapterViewHolder
         {
-            [BindView(Resource.Id.txtNotificationTitle)]
-            public TextView txtNotificationTitle;
+            [BindView(Resource.Id.itemTitle)]
+            public TextView itemTitle;
 
-            [BindView(Resource.Id.notificationActionIcon)]
-            public ImageView notificationActionIcon;
+            [BindView(Resource.Id.infoLabelDate)]
+            public TextView infoLabelDate;
+
+            [BindView(Resource.Id.itemIcon)]
+            public ImageView itemIcon;
 
             public LogUserAccessDataViewHolder(View itemView) : base(itemView)
             {
-                TextViewUtils.SetMuseoSans300Typeface(txtNotificationTitle);
+                TextViewUtils.SetMuseoSans300Typeface(infoLabelDate);
+
+                TextViewUtils.SetMuseoSans500Typeface(itemTitle);
             }
         }
     }

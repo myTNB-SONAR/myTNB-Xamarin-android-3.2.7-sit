@@ -4,6 +4,8 @@ using Android.Runtime;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.LogUserAccess.Models;
+using myTNB_Android.Src.LogUserAccess.Models;
 using myTNB_Android.Src.ManageAccess.Models;
 using myTNB_Android.Src.ManageCards.Models;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -29,6 +31,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
         private ManageAccessContract.IView mView;
         List<AccountUserAccessData> selectedUserAccessList;
         AccountData accountData;
+        LogUserAccessData logAccount;
         int position;
         public ManageAccessPresenter(ManageAccessContract.IView mView, AccountData accountData)
         {
@@ -235,15 +238,20 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                 if (mView.IsActive())
                 {
                     this.mView.HideShowProgressDialog();
+
                 }
 
                 if (logUserAccessResponse.IsSuccessResponse())
                 {
-
+                    if (logUserAccessResponse.GetData().Count > 0)
+                    {
+                        ProcessManageAccessAccountLog(logUserAccessResponse.GetData());
+                    }
                 }
                 else
                 {
-                    this.mView.ShowErrorMessageResponse(logUserAccessResponse.Response.DisplayMessage);
+                    List<LogUserAccessNewData> newAccountList = new List<LogUserAccessNewData>();
+                    this.mView.NavigateLogUserAccess(newAccountList);
                 }
             }
             catch (System.OperationCanceledException e)
@@ -276,7 +284,48 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                 this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
+        }
 
+        private void ProcessManageAccessAccountLog(List<LogUserAccessResponse.LogUserAccessResponseData> list)
+        {
+            try
+            {
+                int ctr = 0;
+                if (list.Count > 0)
+                {
+                    //List<UserManageAccessAccount> existingSortedList = AccountSortingEntity.List(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
+
+                    List<LogUserAccessNewData> fetchList = new List<LogUserAccessNewData>();
+                    List<LogUserAccessNewData> newAccountList = new List<LogUserAccessNewData>();
+
+                    List<int> newExisitingListArray = new List<int>();
+
+                    foreach (LogUserAccessResponse.LogUserAccessResponseData acc in list)
+                    {
+                        //int index = existingSortedList.FindIndex(x => x.AccNum == acc.AccountNumber);
+
+                        var newRecord = new LogUserAccessNewData()
+                        {
+                            AccountNo = acc.AccountNo,
+                            Action = acc.Action,
+                            ActivityLogID = acc.ActivityLogID,
+                            IsApplyEBilling = acc.IsApplyEBilling,
+                            IsHaveAccess = acc.IsHaveAccess,
+                            CreateBy = acc.CreateBy,
+                            CreatedDate = acc.CreatedDate,
+                            UserID = acc.UserID,
+                            UserName = acc.UserName,
+                        };
+                        newAccountList.Add(newRecord);
+                    }
+
+                    this.mView.NavigateLogUserAccess(newAccountList);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void OnAddAccount()

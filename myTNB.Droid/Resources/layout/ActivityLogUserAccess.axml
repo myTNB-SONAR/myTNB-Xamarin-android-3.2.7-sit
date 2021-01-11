@@ -23,8 +23,7 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:background="@color/white">
+        android:layout_marginTop="?attr/actionBarSize">
         <ScrollView
             android:layout_height="match_parent"
             android:layout_width="match_parent"
@@ -34,13 +33,13 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:background="@color/lightGrey">
-             <LinearLayout
-                android:id="@+id/no_account_layout"
+            <LinearLayout
+                android:id="@+id/log_activity_layout"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:orientation="vertical">
                 <LinearLayout
-                    android:id="@+id/layout1"
+                    android:id="@+id/layoutInsideActivityLog"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:orientation="vertical"
@@ -53,12 +52,14 @@
                         android:textColor="@color/blue"
                         android:padding="16dp"
                         android:text="This Week" />
-                    <androidx.recyclerview.widget.RecyclerView
+                    <ListView
                         android:id="@+id/this_week_list_recycler_view"
                         android:scrollbars="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/lightGrey"
+                        android:background="@color/white"
+                        android:listSelector="@android:color/transparent" 
+                        android:cacheColorHint="@android:color/transparent"
                         android:layout_marginBottom="8dp" />
                     <TextView
                         android:id="@+id/text_title_last_week"
@@ -68,12 +69,14 @@
                         android:textColor="@color/blue"
                         android:padding="16dp"
                         android:text="Last Week" />
-                    <androidx.recyclerview.widget.RecyclerView
+                    <ListView
                         android:id="@+id/last_week_list_recycler_view"
                         android:scrollbars="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/lightGrey"
+                        android:background="@color/white"
+                        android:listSelector="@android:color/transparent" 
+                        android:cacheColorHint="@android:color/transparent"
                         android:layout_marginBottom="8dp" />
                     <TextView
                         android:id="@+id/text_title_last_month"
@@ -83,15 +86,51 @@
                         android:textColor="@color/blue"
                         android:padding="16dp"
                         android:text="Last Month"/>
-                    <androidx.recyclerview.widget.RecyclerView
+                    <ListView
                         android:id="@+id/month_list_recycler_view"
                         android:scrollbars="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/lightGrey"
+                        android:background="@color/white"
+                        android:listSelector="@android:color/transparent" 
+                        android:cacheColorHint="@android:color/transparent"
                         android:layout_marginBottom="8dp" />
                 </LinearLayout>
-              </LinearLayout>
+            </LinearLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/ActivityLog_layout_empty"
+                android:visibility="gone">
+                <LinearLayout
+                    android:id="@+id/layout_empty_ActivityLog"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <ImageView
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginBottom="8dp"
+                        android:id="@+id/imgEmptyCard"
+                        android:src="@drawable/ic_empty_creditcards" />
+                    <TextView
+                        android:id="@+id/txtEmptyActivityLog"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="16dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="#8b8b8b"
+                        android:textSize="14dp"
+                        android:lineSpacingExtra="3dp"
+                        android:text="No Activity Log" />
+                </LinearLayout>
+            </FrameLayout>
             </RelativeLayout>
         </ScrollView>
     </LinearLayout>

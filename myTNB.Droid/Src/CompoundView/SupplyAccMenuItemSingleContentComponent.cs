@@ -13,7 +13,7 @@ namespace myTNB_Android.Src.CompoundView
     {
         private TextView itemTitle;
         private ImageView supplyIcon, itemAction;
-        private LinearLayout itemContainer, itemActionContainer;
+        private LinearLayout itemContainer, itemActionContainer, ContainerAction;
 
         public SupplyAccMenuItemSingleContentComponent(Context context) : base(context)
         {
@@ -43,6 +43,7 @@ namespace myTNB_Android.Src.CompoundView
             supplyIcon = FindViewById<ImageView>(Resource.Id.img_profile);
             itemAction = FindViewById<ImageView>(Resource.Id.itemAction);
             itemActionContainer = FindViewById<LinearLayout>(Resource.Id.itemActionContainer);
+            ContainerAction = FindViewById<LinearLayout>(Resource.Id.ContainerAction);
 
             TextViewUtils.SetMuseoSans500Typeface(itemTitle);
         }
@@ -76,7 +77,7 @@ namespace myTNB_Android.Src.CompoundView
 
         public void SetItemActionCall(Action action)
         {
-            itemActionContainer.Click += delegate
+            ContainerAction.Click += delegate
             {
                 action();
             };

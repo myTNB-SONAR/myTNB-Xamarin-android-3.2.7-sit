@@ -954,6 +954,7 @@
     <Compile Include="Src\LogoutRate\MVP\LogoutRatePresenter.cs" />
     <Compile Include="Src\LogoutRate\Request\LogoutRequest.cs" />
     <Compile Include="Src\LogoutRate\Request\LogoutRequestV2.cs" />
+    <Compile Include="Src\LogUserAccess\Models\LogUserAccessNewData.cs" />
     <Compile Include="Src\Maintenance\Activity\MaintenanceActivity.cs" />
     <Compile Include="Src\Maintenance\MVP\MaintenanceContract.cs" />
     <Compile Include="Src\Maintenance\MVP\MaintenancePresenter.cs" />
@@ -8578,6 +8579,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\ActivityLogUserAccess.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\ActivityLogUserListview.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>

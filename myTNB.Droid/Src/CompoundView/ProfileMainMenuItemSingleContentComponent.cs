@@ -11,7 +11,7 @@ namespace myTNB_Android.Src.CompoundView
     public class ProfileMainMenuItemSingleContentComponent : RelativeLayout
     {
         private TextView itemTitle;
-        private LinearLayout itemActionContainer, itemContainer;
+        private LinearLayout itemActionContainer, itemContainer, ContainerAction;
         private ImageView imgIcon, itemAction;
 
         public ProfileMainMenuItemSingleContentComponent(Context context) : base(context)
@@ -42,7 +42,7 @@ namespace myTNB_Android.Src.CompoundView
             itemAction = FindViewById<ImageView>(Resource.Id.itemAction);
             itemActionContainer = FindViewById<LinearLayout>(Resource.Id.itemActionContainer);
             itemContainer = FindViewById<LinearLayout>(Resource.Id.itemContainer);
-
+            ContainerAction = FindViewById<LinearLayout>(Resource.Id.ContainerAction);
 
             TextViewUtils.SetMuseoSans500Typeface(itemTitle);
         }
@@ -85,7 +85,7 @@ namespace myTNB_Android.Src.CompoundView
 
         public void SetItemActionCall(Action action)
         {
-            itemActionContainer.Click += delegate
+            ContainerAction.Click += delegate
             {
                 action();
             };

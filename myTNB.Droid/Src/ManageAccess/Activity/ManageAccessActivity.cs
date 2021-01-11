@@ -31,6 +31,8 @@ using Android.Graphics;
 using Android.Preferences;
 using static myTNB_Android.Src.ManageAccess.Adapter.ManageAccessDeleteAdapter;
 using AndroidX.Core.Content;
+using myTNB_Android.Src.LogUserAccess.Activity;
+using myTNB_Android.Src.LogUserAccess.Models;
 
 namespace myTNB_Android.Src.ManageAccess.Activity
 {
@@ -374,6 +376,13 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void NavigateLogUserAccess(List<LogUserAccessNewData> loglistdata)
+        {
+            Intent ManageUser = new Intent(this, typeof(LogUserAccessActivity));
+            ManageUser.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(loglistdata));
+            StartActivityForResult(ManageUser, Constants.UPDATE_NICKNAME_REQUEST);
         }
 
         private Snackbar mCancelledExceptionSnackBar;
