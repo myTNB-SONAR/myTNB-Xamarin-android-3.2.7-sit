@@ -27,8 +27,15 @@
         android:layout_alignParentBottom="true"
         android:paddingLeft="24dp"
         android:visibility="visible"
-        android:paddingRight="24dp"
-        android:paddingBottom="32dp">
+        android:paddingRight="24dp">
+            <LinearLayout
+            android:id="@+id/indicatorContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="32dp"/>
             <TextView
                 android:id="@+id/txtDoubleTapDismiss"
                 android:layout_width="match_parent"
@@ -38,14 +45,9 @@
                 android:textColor="@color/white"
                 android:layout_marginBottom="18dp"
                 android:lineSpacingExtra="2dp"
-                android:textSize="12dp"/>
-        <LinearLayout
-            android:id="@+id/indicatorContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:orientation="horizontal" />
+                android:textSize="12dp"
+                android:layout_marginTop="10dp"/>
+        
     </LinearLayout>
     <LinearLayout
         android:id="@+id/swipeTopDoubleTapLayout"
@@ -63,7 +65,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:orientation="horizontal" />
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"/>
             <TextView
                 android:id="@+id/txtTopDoubleTapDismiss"
                 android:layout_width="match_parent"

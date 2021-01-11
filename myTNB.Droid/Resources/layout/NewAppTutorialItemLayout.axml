@@ -234,6 +234,18 @@
                     android:layout_marginRight="20dp"
                     android:id="@+id/btnBottomGotIt"
                     style="@style/Theme.RefreshWhiteButton" />
+                    <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:text="Update Nickname"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:layout_marginTop="19dp"
+                    android:layout_marginBottom="19dp"
+                    android:id="@+id/btnTopUpdateNickname"
+                    style="@style/Theme.UpdateNickname" />
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>

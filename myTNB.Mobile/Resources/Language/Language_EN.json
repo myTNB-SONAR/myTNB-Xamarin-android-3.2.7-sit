@@ -258,7 +258,13 @@
     "bodyIcUpdate": "Your identification number is not captured in your myTNB profile, update it now to have better access and controls over your electricity accounts!",
     "tutorialUsageTitle": "View your accounts details here.",
     "tutorialUsageDesc": "Easily view your account details and manage who has access to your account from here.",
-    "tutorialUsageDescNonOwner": "Easily view your account details from here."
+    "tutorialUsageDescNonOwner": "Easily view your account details from here.",
+    "tutorialUpdateNicknameBtn": "Update Nickname",
+    "tutorialAccountTitleNew": "View your accounts all in one place.",
+    "tutorialAccountTitleNewSec": "View and add your accounts all in one place.",
+    "tutorialMoreAcctsDescNew": "An account under your name has been added into your myTNB! Give your account nickname for your easy reference.",
+    "tutorialNoAcctDescNew": "View and add your accounts all in one place. Add an electricity account to myTNB now and you’ll have access to your usage, bills and manage your account."
+
   },
   "Tabbar": {
     "home": "Home",

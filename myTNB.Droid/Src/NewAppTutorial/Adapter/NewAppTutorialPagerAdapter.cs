@@ -28,6 +28,9 @@ using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
+using myTNB_Android.Src.MyAccount.Activity;
+using Newtonsoft.Json;
+using myTNB_Android.Src.myTNBMenu.Models;
 
 namespace myTNB_Android.Src.NewAppTutorial.Adapter
 {
@@ -46,6 +49,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             this.mDialog = dialog;
             this.mFragment = fragment;
             this.mPref = pref;
+            
         }
 
         public NewAppTutorialPagerAdapter()
@@ -82,14 +86,22 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             Button btnBottomGotIt = rootView.FindViewById(Resource.Id.btnBottomGotIt) as Button;
             Button btnTopGotIt = rootView.FindViewById(Resource.Id.btnTopGotIt) as Button;
 
+            //add yana
+            Button btnTopUpdateNickname = rootView.FindViewById(Resource.Id.btnTopUpdateNickname) as Button;
+            btnTopUpdateNickname.Click += BtnUpdate_Click;
+
+
             btnBottomGotIt.Click += BtnGotIt_Click;
             btnTopGotIt.Click += BtnGotIt_Click;
 
             TextViewUtils.SetMuseoSans300Typeface(txtBottomContent, txtTopContent);
-            TextViewUtils.SetMuseoSans500Typeface(txtBottomTitle, txtTopTitle, btnBottomGotIt, btnTopGotIt);
+            TextViewUtils.SetMuseoSans500Typeface(txtBottomTitle, txtTopTitle, btnBottomGotIt, btnTopGotIt, btnTopUpdateNickname);
 
             btnTopGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
             btnBottomGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
+
+            //yana
+            btnTopUpdateNickname.Text = Utility.GetLocalizedLabel("DashboardHome", "tutorialUpdateNicknameBtn");
 
             NewAppModel model = list[position];
 
@@ -215,6 +227,9 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 LinearLayout.LayoutParams btnTopGotItParam = btnTopGotIt.LayoutParameters as LinearLayout.LayoutParams;
                 LinearLayout.LayoutParams innerMiddleTopLayoutParam = innerMiddleTopLayout.LayoutParameters as LinearLayout.LayoutParams;
 
+                //yana
+                LinearLayout.LayoutParams btnTopUpdateaNicknameParam = btnTopUpdateNickname.LayoutParameters as LinearLayout.LayoutParams;
+
                 if (model.ContentShowPosition == ContentType.TopLeft)
                 {
                     leftInnerTopLineLayout.Visibility = ViewStates.Visible;
@@ -222,6 +237,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     txtTopContentParam.Gravity = GravityFlags.Left;
                     txtTopTitleParam.Gravity = GravityFlags.Left;
                     btnTopGotItParam.Gravity = GravityFlags.Left;
+                    //yana
+                    btnTopUpdateaNicknameParam.Gravity = GravityFlags.Center;
                     innerMiddleTopLayoutParam.Gravity = GravityFlags.Left;
                     innerMiddleTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(12f);
                     innerMiddleTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
@@ -233,6 +250,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     txtTopContentParam.Gravity = GravityFlags.Right;
                     txtTopTitleParam.Gravity = GravityFlags.Right;
                     btnTopGotItParam.Gravity = GravityFlags.Right;
+                    //yana
+                    btnTopUpdateaNicknameParam.Gravity = GravityFlags.Center;
                     innerMiddleTopLayoutParam.Gravity = GravityFlags.Right;
                     innerMiddleTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(0);
                     innerMiddleTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(12f);
@@ -243,7 +262,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 txtTopContent.RequestLayout();
                 txtTopTitle.RequestLayout();
                 btnTopGotIt.RequestLayout();
+                //yana
+                btnTopUpdateNickname.RequestLayout();
                 innerMiddleTopLayout.RequestLayout();
+                btnTopUpdateNickname.RequestLayout();
 
                 if (model.ContentShowPosition == ContentType.TopLeft)
                 {
@@ -284,6 +306,18 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             {
                 btnTopGotIt.Visibility = ViewStates.Gone;
                 btnBottomGotIt.Visibility = ViewStates.Gone;
+            }
+
+            //yana
+            if (model.IsButtonUpdateShow)
+            {
+                btnTopUpdateNickname.Visibility = ViewStates.Visible;
+                //btnBottomGotIt.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                btnTopUpdateNickname.Visibility = ViewStates.Gone;
+                //btnBottomGotIt.Visibility = ViewStates.Gone;
             }
 
             if (this.mFragment != null)
@@ -2313,6 +2347,86 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 }
             }
         }
+
+        ////yana
+        private void BtnUpdate_Click(object sender, EventArgs e)
+        {
+            //try
+            //{
+            //    Intent nextIntent = new Intent(this.mContext, typeof(MyAccountActivity));
+            //    this.mContext.StartActivityForResult(nextIntent, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Utility.LoggingNonFatalError(ex);
+            //}
+
+            Intent nextIntent = new Intent(this.mContext, typeof(MyAccountActivity));
+            this.mContext.StartActivityForResult(nextIntent, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
+
+            if (this.mFragment != null)
+            {
+                if (this.mFragment is HomeMenuFragment)
+                {
+                    ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
+                    UserSessions.DoHomeTutorialShown(this.mPref);
+                    ((HomeMenuFragment)this.mFragment).RestartHomeMenu();
+                }
+                else if (this.mFragment is ItemisedBillingMenuFragment)
+                {
+                    ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                    if (list.Count == 2)
+                    {
+                        UserSessions.DoItemizedBillingRETutorialShown(this.mPref);
+                    }
+                    else
+                    {
+                        UserSessions.DoItemizedBillingNMSMTutorialShown(this.mPref);
+                    }
+                }
+                else if (this.mFragment is DashboardChartFragment)
+                {
+                    ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(0);
+                    ((DashboardChartFragment)this.mFragment).ShowBottomSheet();
+                    UserSessions.DoSMRDashboardTutorialShown(this.mPref);
+                }
+                else if (this.mFragment is RewardMenuFragment)
+                {
+                    ((RewardMenuFragment)this.mFragment).StopScrolling();
+                    UserSessions.DoRewardsShown(this.mPref);
+                }
+                else if (this.mFragment is WhatsNewMenuFragment)
+                {
+                    ((WhatsNewMenuFragment)this.mFragment).StopScrolling();
+                    UserSessions.DoWhatsNewShown(this.mPref);
+                }
+            }
+            else
+            {
+                if (this.mContext is BillingDetailsActivity)
+                {
+                    UserSessions.DoItemizedBillingDetailTutorialShown(this.mPref);
+                }
+                else if (this.mContext is SSMRMeterHistoryActivity)
+                {
+                    ((SSMRMeterHistoryActivity)this.mContext).MeterHistoryCustomScrolling(0);
+                    UserSessions.DoSMRMeterHistoryTutorialShown(this.mPref);
+                }
+                else if (this.mContext is SubmitMeterReadingActivity)
+                {
+                    ((SubmitMeterReadingActivity)mContext).SubmitMeterCustomScrolling(0);
+                    UserSessions.DoSMRSubmitMeterTutorialShown(this.mPref);
+                }
+                else if (this.mContext is RewardDetailActivity)
+                {
+                    UserSessions.DoRewardsDetailShown(this.mPref);
+                }
+            }
+
+            
+        }
+
+       
 
         public override int GetItemPosition(Java.Lang.Object @object)
         {
