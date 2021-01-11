@@ -1,6 +1,6 @@
 {
   "Common": {
-	"eppToolTipTitle": "Bagaimana dengan Pelan Bayaran Mudah (PBM)?",
+    "eppToolTipTitle": "Bagaimana dengan Pelan Bayaran Mudah (PBM)?",
     "account": "Akaun",
     "emailAddress": "Alamat E-mel",
     "mobileNumber": "Nombor Telefon",
@@ -110,22 +110,22 @@
     "learnMore": "Ketahui Lebih Lanjut mengenai TNB",
     "titleProfile": "Profil myTNB",
     "verify": "Sahkan",
-    "continue" : "Teruskan",
-    "manageUserAccess" : "Manage User Access",
-    "manageAutopay" : "Manage Autopay",
-    "updateIdTitle" : "Sahkan Nombor Pengenalan Anda:",
-    "updateIdMessage" : "Pastikan nomnor pengenalan anda betul kerana hanya boleh mengemaskini sekali sahaja.",
-    "re_enter" : "Masukkan semula",
-    "titleNonOwnerAddAcc" : "Continue adding the account and give it a name for your easy reference.",
-    "email_address" : "Alamat e-mel",
-    "email_user_address" : "Alamat e-mel pengguna",
-    "etitleRegister" : "Mari kita mulakan!",
-    "ebodyRegister" : "Daftar masuk akaun anda dengan maklumat di bawah:",
-    "dtitleRegister" : "Langkah Terakhir",
-    "dbodyRegister" : "Sila isikan maklumat peribadi anda supaya kami lebih mengenali anda.",
-    "viewFullBill" : "View Full Electricity Bill",
-    "ApplyforBilling" : "Buat Permohonan e-Billing",
-    "ManageUserTitle" : "Give this user access to:",
+    "continue": "Teruskan",
+    "manageUserAccess": "Manage User Access",
+    "manageAutopay": "Manage Autopay",
+    "updateIdTitle": "Sahkan Nombor Pengenalan Anda:",
+    "updateIdMessage": "Pastikan nomnor pengenalan anda betul kerana hanya boleh mengemaskini sekali sahaja.",
+    "re_enter": "Masukkan semula",
+    "titleNonOwnerAddAcc": "Continue adding the account and give it a name for your easy reference.",
+    "email_address": "Alamat e-mel",
+    "email_user_address": "Alamat e-mel pengguna",
+    "etitleRegister": "Mari kita mulakan!",
+    "ebodyRegister": "Daftar masuk akaun anda dengan maklumat di bawah:",
+    "dtitleRegister": "Langkah Terakhir",
+    "dbodyRegister": "Sila isikan maklumat peribadi anda supaya kami lebih mengenali anda.",
+    "viewFullBill": "View Full Electricity Bill",
+    "ApplyforBilling": "Buat Permohonan e-Billing",
+    "ManageUserTitle": "Give this user access to:",
     "changeLanguageTitleNew_MS": "Change language to English?",
     "changeLanguageMessageNew_MS": "Are you sure you want to change the app language to English?",
     "changeLanguageYesNew_MS": "Yes",
@@ -202,7 +202,7 @@
     "armyidhint": "ID Tentera mesti antara 5-50 aksara.",
     "identificationhint": "Kami akan menggunakan pengenalan ini untuk membantu anda menyiapkan akaun anda.",
     "passporthint": "Pasport mestilah antara 5-50 aksara.",
-     "error_NotExistsAccountMessage": "Nombor akaun yang anda masukkan ini tidak dapat ditemui."
+    "error_NotExistsAccountMessage": "Nombor akaun yang anda masukkan ini tidak dapat ditemui."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -287,9 +287,9 @@
     "selectReason": "Pilih Sebab",
     "stateReason": "Sila nyatakan sebab anda",
     "selectAnAccount": "Pilih Akaun",
-    "tncSubscribeFAQ":"Dengan menghantar, anda bersetuju pada <a href =\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Soalan Lazim Self Meter Reading</strong></a>, ",
-    "tncSubscribeTNC":"<a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>."
-    
+    "tncSubscribeFAQ": "Dengan menghantar, anda bersetuju pada <a href =\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Soalan Lazim Self Meter Reading</strong></a>, ",
+    "tncSubscribeTNC": "<a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>."
+
   },
   "Status": {
     "feedbackSuccessTitle": "Maklum Balas Berjaya",
@@ -337,7 +337,7 @@
     "whereIsMyMeter": "Di manakah boleh saya mencari meter saya?",
     "whereIsMyMeterTitle": "Di manakah boleh saya mencari meter saya?",
     "whereIsMyMeterMessage": "Untuk menghantar bacaan meter bulanan, nilai pada skin paparan meter anda haruslah boleh dibaca dengan jelas. Meter anda kebiasaannya terletak berhampiran pintu atau bangunan meter (bilik riser).",
-    "doYouHaveMeterAccess":"Adakah anda mempunyai akses ke meter?"
+    "doYouHaveMeterAccess": "Adakah anda mempunyai akses ke meter?"
   },
   "SSMRReadingHistory_selector": {
     "SMREligibiltyPopUpDetails": [
@@ -653,7 +653,7 @@
     "addAcctSuccessMsgBody": "Kini, anda boleh memantau penggunaan, membayar bil dan mengurus akaun anda!",
     "rocNumberOptional": "ROC Number (OPTIONAL)",
     "business": "Business (Commercial/Industrial)",
-    "titleownerNoAccDec" : "Kami telah mencari akaun elektrik anda, tetapi akaun anda masih tidak dapat dikenalpasti.",
+    "titleownerNoAccDec": "Kami telah mencari akaun elektrik anda, tetapi akaun anda masih tidak dapat dikenalpasti.",
     "bodyownerNoAccDec": "This could be due to us not having the correct identification number to match with.",
     "titleUpdateId": "Kemas kini nombor kad pengenalan anda",
     "bodyUpdateId": "Submit the correct identification number now and we'll help find and add your account(s) after the update.",
@@ -662,20 +662,20 @@
     "tnc": "Dengan mengesahkan, saya telah membaca dan bersetuju dengan <a href=\"\\\"><strong>Terma dan Syarat</strong></a>.",
     "tnc_checked": "Saya telah membaca dan bersetuju untuk <a href=\"\\\"><strong>Terma dan Syarat/strong></a>.",
     //new added 
-    "AccHeaderText":"Let's add your account by selecting your account type.",
-    "PremisesHint":"The Premises I’m Adding is",
-    "AccHeaderBlueText":"Adakah akaun elektrik ini didaftarkan atas nama anda?",
-    "owner":"Ya, saya pemilik",
-    "ownerDetails":"Saya adalah pemilik berdaftar yang memulakan akaun elektrik ini.",
-    "nonOwner":"Tidak, saya bukan pemilik",
-    "nonOwnerDetails":"Saya penyewa dan/atau membayar bil elektrik premis ini.",
-    "skip":"Langkau tambah akaun buat masa ini.",
-    "accNumber":"Nombor Akaun",
-    "accNickname":"Nama Panggilan Akaun",
-    "ROCHeaderText":"Do more on myTNB with your company's ROC number.",
-    "ROCDetailsText":"Enjoy additional account information and access to applications!",
-    "WhereAccNo":"Di manakah boleh saya dapatkan nombor akaun?",
-    "OwnerDetectTitle" : "Kami jumpa {0} akaun elektrik yang sepadan dengan akaun myTNB anda.",
+    "AccHeaderText": "Let's add your account by selecting your account type.",
+    "PremisesHint": "The Premises I’m Adding is",
+    "AccHeaderBlueText": "Adakah akaun elektrik ini didaftarkan atas nama anda?",
+    "owner": "Ya, saya pemilik",
+    "ownerDetails": "Saya adalah pemilik berdaftar yang memulakan akaun elektrik ini.",
+    "nonOwner": "Tidak, saya bukan pemilik",
+    "nonOwnerDetails": "Saya penyewa dan/atau membayar bil elektrik premis ini.",
+    "skip": "Langkau tambah akaun buat masa ini.",
+    "accNumber": "Nombor Akaun",
+    "accNickname": "Nama Panggilan Akaun",
+    "ROCHeaderText": "Do more on myTNB with your company's ROC number.",
+    "ROCDetailsText": "Enjoy additional account information and access to applications!",
+    "WhereAccNo": "Di manakah boleh saya dapatkan nombor akaun?",
+    "OwnerDetectTitle": "Kami jumpa {0} akaun elektrik yang sepadan dengan akaun myTNB anda.",
     "tncAddAccTitle": "Terma & Syarat",
     "DiclaimerHeaderTNBTerm": "<b>Syarat Penggunaan TNB, Perjanjian Pengguna dan dasar Privasi</b>",
     "DiclaimerHeaderPersonalData": "<b>Dasar Perlindungan Data Peribadi</b>",
@@ -717,15 +717,15 @@
   },
 
   //new added
-  "NotificationAddAccount" :{
-  "title":"Notifikasi",
-  "notificationTitle":"Akaun elektrik anda ditambah oleh orang lain.",
-  "notificationDetailMessage":"Hello, <nama panggilan akaun> telah ditambahkan oleh <Nama Penuh & / alamat e-mel> ke dalam akaun myTNB mereka.",
-  "notificationDetail":"Check out your account vieweing access settings! You can manage the user if you do not recognise them or wish to change their account access.",
-  "btnManageAccess":"Urus Akses",
-  "ownernNotificationnTitle":"You are now an owner to My House",
-  "ownernNotificationDetailMessage":"We want to let you  know that your access to {account nickname} has been changed to Owner access and you can now enjoy full account access like initiating applications!",
-  "ownernNotificationDetail":"Plus, stay in control of your account information and permissions by definig what you let others access as an owner of an electricity account, view your account now!"
+  "NotificationAddAccount": {
+    "title": "Notifikasi",
+    "notificationTitle": "Akaun elektrik anda ditambah oleh orang lain.",
+    "notificationDetailMessage": "Hello, <nama panggilan akaun> telah ditambahkan oleh <Nama Penuh & / alamat e-mel> ke dalam akaun myTNB mereka.",
+    "notificationDetail": "Check out your account vieweing access settings! You can manage the user if you do not recognise them or wish to change their account access.",
+    "btnManageAccess": "Urus Akses",
+    "ownernNotificationnTitle": "You are now an owner to My House",
+    "ownernNotificationDetailMessage": "We want to let you  know that your access to {account nickname} has been changed to Owner access and you can now enjoy full account access like initiating applications!",
+    "ownernNotificationDetail": "Plus, stay in control of your account information and permissions by definig what you let others access as an owner of an electricity account, view your account now!"
   },
   "FAQ": {
     "title": "Soalan Lazim"
@@ -861,15 +861,15 @@
     "addAccountMessage": "Add your existing TNB Electricity Supply Account to view usage and transaction details.",
     "titleManageUser": "Manage User",
     "titleAddUser": "Tambah Pengguna Baru",
-    "dialogAddrress":"Why can't I see my full address?",
-    "dialogAddrressMessage":"We mask sensitive information to safeguard owner's privacy. You are seeing masked information as you are not the owner of this electricity account.",
-    "dialogManageUser":"Memberi lebih banyak akses kepada pengguna anda.",
-    "dialogManageUserMessage":"To protect your information. we're not showing non-owner your personal information and some application features. However, you can grant them access listed here if you see fit and they will be noticed about it.",
-    "manageUserTitle":"You're about to make changes to {0}'s access.",
-    "manageUserMessage":"Once confirmed, {0} will have their access updated and be notified about the accesses you selected for them to your electricity account.",
-    "saveSuccess":"Changes to user access has been saved and user has been notified of their access update",
-    "manageUserBackTitle":"Are yu sure want to leave without saving changes you made to {0}'s access?",
-    "manageUserBackMessage":"The changes to {0)'saccess will not be saved if you choose to leave this page and their accesses will remain as before.'"
+    "dialogAddrress": "Why can't I see my full address?",
+    "dialogAddrressMessage": "We mask sensitive information to safeguard owner's privacy. You are seeing masked information as you are not the owner of this electricity account.",
+    "dialogManageUser": "Memberi lebih banyak akses kepada pengguna anda.",
+    "dialogManageUserMessage": "To protect your information. we're not showing non-owner your personal information and some application features. However, you can grant them access listed here if you see fit and they will be noticed about it.",
+    "manageUserTitle": "You're about to make changes to {0}'s access.",
+    "manageUserMessage": "Once confirmed, {0} will have their access updated and be notified about the accesses you selected for them to your electricity account.",
+    "saveSuccess": "Changes to user access has been saved and user has been notified of their access update",
+    "manageUserBackTitle": "Are yu sure want to leave without saving changes you made to {0}'s access?",
+    "manageUserBackMessage": "The changes to {0)'saccess will not be saved if you choose to leave this page and their accesses will remain as before.'"
   },
   "Onboarding": {
     "letsStart": "Jom mulakan!",
@@ -917,21 +917,21 @@
     "ctaTitleNew": "Daftar Akaun Saya",
     "tncNew": "By registering, I have read and agreed to the <a href=\"\\\"><strong>TNB Terms and Conditions</strong></a>, <a href=\"\\\"><strong>User Agreement</strong></a> and <a href=\"\\\"><strong>Privacy policy</strong></a>.",
     "tnc_checked": "I have read and agreed to the <a href=\"\\\"><strong>TNB Terms and Conditions</strong></a>",
-    "SelectedIdentificationType" : "Select Identification Type",
+    "SelectedIdentificationType": "Select Identification Type",
     "mykad": "IC / Mykad",
     "armyid": "Army ID",
     "passport": "Pasport",
-    "EmailHeaderVerification" : "Pengesahan E-mel Belum Selesai",
-    "EmailBodyVerification" : "Sila sahkan alamat e-mel anda dengan pautan yang telah kami kirimkan. Anda juga boleh meminta kiriman semula jika anda tidak menerima pautan tersebut.",
-    "EmailHeaderError" : "The email address have been registered",
-    "EmailBodyError" : "Sila cuba lagi dengan alamat e-mel yang lain. Sebagai alternatif, anda boleh menukar semula kata laluan anda untuk menggunakan alamat e-mel yang sama.",
-    "Reset" : "Tukar",
-    "IdHeaderError" : "This identification number has been used for an existing account.",
-    "IdBodyError" : "Please ensure that you’ve entered the correct identification number, or contact TNB CareLine to enquire further about this matter.",
-    "gotIt" : "OK",
-    "acccreated" : "Akaun Dibuat!",
-    "emailverify" : "Sila sahkan alamat e-mel anda",
-    "emailVerifiedLinkSent" : "Kami telah menghantar pautan pengesahan ke <b>{0}</b>. Anda boleh mengesahkannya dengan mengklik pautan dalam e-mel anda untuk menikmati segalanya yang myTNB tawarkan!  "
+    "EmailHeaderVerification": "Pengesahan E-mel Belum Selesai",
+    "EmailBodyVerification": "Sila sahkan alamat e-mel anda dengan pautan yang telah kami kirimkan. Anda juga boleh meminta kiriman semula jika anda tidak menerima pautan tersebut.",
+    "EmailHeaderError": "The email address have been registered",
+    "EmailBodyError": "Sila cuba lagi dengan alamat e-mel yang lain. Sebagai alternatif, anda boleh menukar semula kata laluan anda untuk menggunakan alamat e-mel yang sama.",
+    "Reset": "Tukar",
+    "IdHeaderError": "This identification number has been used for an existing account.",
+    "IdBodyError": "Please ensure that you’ve entered the correct identification number, or contact TNB CareLine to enquire further about this matter.",
+    "gotIt": "OK",
+    "acccreated": "Akaun Dibuat!",
+    "emailverify": "Sila sahkan alamat e-mel anda",
+    "emailVerifiedLinkSent": "Kami telah menghantar pautan pengesahan ke <b>{0}</b>. Anda boleh mengesahkannya dengan mengklik pautan dalam e-mel anda untuk menikmati segalanya yang myTNB tawarkan!  "
   },
   "AddCard": {
     "title": "Tambah kad",
@@ -1231,61 +1231,99 @@
     "viewNo": "Tidak",
     "documentPdf": "Dokumen"
   },
-  
-  "Tnb_Profile" : {
-     "title": "MyTNB Profile",
-     "passwordUpdateSuccess": "Your password has been changed successfully.",
-     "mobileNumberVerified": "You've successfully updated your phone number!",
-     "NameUpdateSuccess": "You’ve successfully updated your name!",
-     "EmailUpdateSuccess": "An email verification link has been sent to ",
-     "IDUpdateSuccess": "Thank you for updating! Your update has been recorded below."
+
+  "Tnb_Profile": {
+    "title": "MyTNB Profile",
+    "passwordUpdateSuccess": "Your password has been changed successfully.",
+    "mobileNumberVerified": "You've successfully updated your phone number!",
+    "NameUpdateSuccess": "You’ve successfully updated your name!",
+    "EmailUpdateSuccess": "An email verification link has been sent to ",
+    "IDUpdateSuccess": "Thank you for updating! Your update has been recorded below."
   },
 
-  "NameUpdate" : {
-     "title": "Update Name",
-     "passwordUpdateSuccess": "Your password has been changed successfully.",
-     "mobileNumberVerified": "You've successfully updated your phone number!",
-     "NameUpdateSuccess": "You’ve successfully updated your name!",
-     "EmailUpdateSuccess": "An email verification link has been sent to "
+  "NameUpdate": {
+    "title": "Update Name",
+    "passwordUpdateSuccess": "Your password has been changed successfully.",
+    "mobileNumberVerified": "You've successfully updated your phone number!",
+    "NameUpdateSuccess": "You’ve successfully updated your name!",
+    "EmailUpdateSuccess": "An email verification link has been sent to "
   },
 
-  "LearnMoreAboutTnb" : {
+  "LearnMoreAboutTnb": {
     "title": "Learn More About TNB",
     "tnc": "Terms & Conditions",
     "findUs": "Find Us",
     "faq": "FAQ"
-  },  
-  
-  
-  "UpdateID": {
-    "title" : "Update Identification Number",
-    "updateIdLabelTitle" : "Provide your identification number for better experience!",
-    "updateIdLabelDetails" : "Get better access and controls over your electricity accounts on myTNB by helping us validate your identification",
-    "confrimButton" : "Confirm"
   },
-  "UserAccess" : {
-    "title" : "User Access",
-    "LabelTitle" : "User that have access to this account:",
-    "LabelEmptyTitle" : "Looks like your electricity account is not viewed or accessed by anyone else. You can help them by adding this account to their view below.",
-    "addUserBtn" : "Add User",
-    "AddTitle" : "Add",
-    "RemoveTitle" : "Remove",
-    "HeaderRemoveTitle" : "Select users you want to remove:",
-    "bodyDialogWhatIsThis" : "To protect your information, we’re not showing non-owners your personal infromation and some application features. However, you can grant them access listed here if you see fit and they will be notified about it.",
-    "titleDialogWhatIsThis"  : "Giving your users more access.",
-    "fullElectricity" : "View Full Electricity Bill",
-    "e_billing" : "Apply for e-Billing",
-    "usremail" : "USER EMAIL ADDRESS",
-    "titleAddNewUser" : "Provide user’s email address they use for their myTNB account.",
-    "bodyAddNewUser" : "Do you want to give this user more access (optional)?",
-    "deleteSuccessMessage" : "User(s) has been removed successfully.",
-    "deleteUserTitle" : "Are you sure you want to remove the current user(s)?",
-    "deleteUserBody" : "Once removed, the selected user(s) will be revoked of all access and unable to view any information related to this account.",
-    "walkthroughStep1Title" : "View your activity log here",
-    "walkthroughStep2Title" : "Your account viewers at a glance.",
-    "walkthroughStep1" : "Track all your access and permissions controls so you don’t miss out on anything!",
-    "walkthroughStep2" : "View and manage people who are viewing your account or provide access to someone new here.",
-    "tapToSkip" : "Tap to skip",
-    "pendingRegistration" : "Pending Registration"
+
+
+  "UpdateID": {
+    "title": "Update Identification Number",
+    "updateIdLabelTitle": "Provide your identification number for better experience!",
+    "updateIdLabelDetails": "Get better access and controls over your electricity accounts on myTNB by helping us validate your identification",
+    "confrimButton": "Confirm"
+  },
+  "UserAccess": {
+    "title": "User Access",
+    "LabelTitle": "User that have access to this account:",
+    "LabelEmptyTitle": "Looks like your electricity account is not viewed or accessed by anyone else. You can help them by adding this account to their view below.",
+    "addUserBtn": "Add User",
+    "AddTitle": "Add",
+    "RemoveTitle": "Remove",
+    "HeaderRemoveTitle": "Select users you want to remove:",
+    "bodyDialogWhatIsThis": "To protect your information, we’re not showing non-owners your personal infromation and some application features. However, you can grant them access listed here if you see fit and they will be notified about it.",
+    "titleDialogWhatIsThis": "Giving your users more access.",
+    "fullElectricity": "View Full Electricity Bill",
+    "e_billing": "Apply for e-Billing",
+    "usremail": "USER EMAIL ADDRESS",
+    "titleAddNewUser": "Provide user’s email address they use for their myTNB account.",
+    "bodyAddNewUser": "Do you want to give this user more access (optional)?",
+    "deleteSuccessMessage": "User(s) has been removed successfully.",
+    "deleteUserTitle": "Are you sure you want to remove the current user(s)?",
+    "deleteUserBody": "Once removed, the selected user(s) will be revoked of all access and unable to view any information related to this account.",
+    "walkthroughStep1Title": "View your activity log here",
+    "walkthroughStep2Title": "Your account viewers at a glance.",
+    "walkthroughStep1": "Track all your access and permissions controls so you don’t miss out on anything!",
+    "walkthroughStep2": "View and manage people who are viewing your account or provide access to someone new here.",
+    "tapToSkip": "Tap to skip",
+    "pendingRegistration": "Pending Registration"
+  },
+  //new Add folow IOS
+  "RegisterNew": {
+    "title": "Daftar",
+    "etitleRegister": "Mari kita mulakan!",
+    "ebodyRegister": "Daftar masuk akaun anda dengan maklumat di bawah:",
+    "acccreated": null,
+    "EmailHint": "Anda akan mengunakan alamat e-mel ini untuk log masuk di masa hadapan.",
+    "passwordHint": "Kata laluan anda perlu mengandungi sekurang-kurangnya 8 angka abjad.",
+    "EmailHeaderError": "BM_The email address have been registered",
+    "EmailBodyError": "Sila cuba lagi dengan alamat e-mel yang lain. Sebagai alternatif, anda boleh menukar semula kata laluan anda untuk menggunakan alamat e-mel yang sama.",
+    "Reset": "Tukar",
+    "emailRequired": "Sila masukkan alamat email.",
+    "passwordRequired": "Sila masukkan kata laluan."
+  },
+  "OneLastThing": {
+    "title": "Daftar",
+    "dtitleRegister": "Langkah Terakhir",
+    "dbodyRegister": "Sila isikan maklumat peribadi anda supaya kami lebih mengenali anda.",
+    "idtypeTitle": "Jenis Pengenalan",
+    "idNumberhint": "Nombor Pengenalan",
+    "identificationhint": "Kami akan menggunakan pengenalan ini untuk membantu anda menyiapkan akaun anda.",
+    "mykad": "IC / Mykad",
+    "armyid": "BM_Army ID",
+    "passport": "Pasport",
+    "mykadhint": "Sila masukkan 12 digit nombor IC / Mykad yang sah.",
+    "armyidhint": "ID Tentera mesti antara 5-50 aksara.",
+    "passporthint": "Pasport mestilah antara 5-50 aksara.",
+    "IdHeaderError": "BM_This identification number has been used for an existing account.",
+    "IdBodyError": "BM_Please ensure that you’ve entered the correct identification number, or contact TNB CareLine to enquire further about this matter.",
+    "ctaTitleNew": "Daftar Akaun Saya",
+    "tnc_checked": "Saya telah membaca dan bersetuju untuk <a href=\"\\\"><strong>Terma dan Syarat/strong></a>."
+  },
+  "RegisterSuccess": {
+    "acccreated": "Akaun Dibuat!",
+    "emailverify": "Sila sahkan alamat e-mel anda",
+    "emailVerifiedLinkSent": "Kami telah menghantar pautan pengesahan ke <b>{0}</b>. Anda boleh mengesahkannya dengan mengklik pautan dalam e-mel anda untuk menikmati segalanya yang myTNB tawarkan!",
+    "continue": "Teruskan"
   }
 }

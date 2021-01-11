@@ -65,19 +65,22 @@ namespace myTNB_Android.Src.RegisterValidation.Activity
                 UserEntity userEntity = UserEntity.GetActive();
                 var email = userEntity.Email;
                 string data;
-                data = Utility.GetLocalizedLabel("Register", "emailVerifiedLinkSent");
+                data = Utility.GetLocalizedLabel("RegisterSuccess", "emailVerifiedLinkSent");
                 TextViewUtils.SetMuseoSans300Typeface(
                     txtVerifyNotification);
                 TextViewUtils.SetMuseoSans500Typeface(txtAccCreated,
                     txtVerifyEmail);
 
-                txtAccCreated.Text = GetLabelByLanguage("acccreated");
-                txtVerifyEmail.Text = GetLabelByLanguage("emailverify");
+                txtAccCreated.Text = Utility.GetLocalizedLabel("RegisterSuccess", "acccreated");
+                txtVerifyEmail.Text = Utility.GetLocalizedLabel("RegisterSuccess", "emailverify");
+                //txtAccCreated.Text = GetLabelByLanguage("acccreated");
+                //txtVerifyEmail.Text = GetLabelByLanguage("emailverify");
                 //txtVerifyNotification.Text = GetLabelByLanguage("emailNotiFirstHalf") + email + GetLabelByLanguage("emailNotiSecondHalf");
                 //txtVerifyNotification.Text = string.Format(Utility.GetLocalizedLabel("Register", "emailVerifiedLinkSent"), email);
                 string temp = string.Format(data, email);
                 txtVerifyNotification.TextFormatted = GetFormattedText(temp);
-                btnContinue.Text = GetLabelCommonByLanguage("continue");
+                btnContinue.Text = Utility.GetLocalizedLabel("RegisterSuccess", "continue");
+                //btnContinue.Text = GetLabelCommonByLanguage("continue");
 
                 btnContinue.Click += OnClickAddAccount;
 

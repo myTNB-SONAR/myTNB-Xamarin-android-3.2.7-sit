@@ -114,11 +114,18 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(btnNext);
 
-                txtTitleRegister.Text = GetLabelCommonByLanguage("etitleRegister");
-                txtBodyRegister.Text = GetLabelCommonByLanguage("ebodyRegister");
-                textInputLayoutEmailReg.Hint = GetLabelCommonByLanguage("email_address");
-                textInputLayoutPasswordReg.Hint = GetLabelCommonByLanguage("password");
-                btnNext.Text = GetLabelCommonByLanguage("next");
+                txtTitleRegister.Text = Utility.GetLocalizedLabel("RegisterNew", "etitleRegister");
+                txtBodyRegister.Text = Utility.GetLocalizedLabel("RegisterNew", "ebodyRegister");
+                textInputLayoutEmailReg.Hint = Utility.GetLocalizedLabel("Common", "email_address");
+                textInputLayoutPasswordReg.Hint = Utility.GetLocalizedLabel("Common", "password");
+                btnNext.Text = Utility.GetLocalizedLabel("Common", "next");
+
+
+                //txtTitleRegister.Text = GetLabelCommonByLanguage("etitleRegister");
+                //txtBodyRegister.Text = GetLabelCommonByLanguage("ebodyRegister");
+                //textInputLayoutEmailReg.Hint = GetLabelCommonByLanguage("email_address");
+                //textInputLayoutPasswordReg.Hint = GetLabelCommonByLanguage("password");
+                //btnNext.Text = GetLabelCommonByLanguage("next");
 
                 txtEmailReg.FocusChange += txtEmailReg_FocusChange;
                 txtPasswordReg.FocusChange += txtPasswordReg_FocusChange;

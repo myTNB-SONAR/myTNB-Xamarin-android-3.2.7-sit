@@ -168,15 +168,24 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(btnRegister);
 
-                txtTitleRegister.Text = GetLabelCommonByLanguage("dtitleRegister");
-                txtBodyRegister.Text = GetLabelCommonByLanguage("dbodyRegister");
-                txtAccountType.Text = GetLabelCommonByLanguage("idtypeTitle").ToUpper();
-                textInputLayoutFullName.Hint = GetLabelCommonByLanguage("fullname");
-                textInputLayoutICNo.Hint = GetLabelCommonByLanguage("idNumberhint");
-
-                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tncNew"));
+                txtTitleRegister.Text = Utility.GetLocalizedLabel("OneLastThing", "dtitleRegister");
+                txtBodyRegister.Text = Utility.GetLocalizedLabel("OneLastThing", "dbodyRegister");
+                txtAccountType.Text = Utility.GetLocalizedLabel("OneLastThing", "idtypeTitle").ToUpper();
+                textInputLayoutFullName.Hint = Utility.GetLocalizedLabel("Common", "fullname");
+                textInputLayoutICNo.Hint = Utility.GetLocalizedLabel("OneLastThing", "idNumberhint");
+                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tncNew"));
                 StripUnderlinesFromLinks(txtTermsConditions);
-                btnRegister.Text = GetLabelByLanguage("ctaTitleNew");
+                btnRegister.Text = Utility.GetLocalizedLabel("Register", "ctaTitleNew");
+
+
+                //txtTitleRegister.Text = GetLabelCommonByLanguage("dtitleRegister");
+                //txtBodyRegister.Text = GetLabelCommonByLanguage("dbodyRegister");
+                //txtAccountType.Text = GetLabelCommonByLanguage("idtypeTitle").ToUpper();
+                //textInputLayoutFullName.Hint = GetLabelCommonByLanguage("fullname");
+                //textInputLayoutICNo.Hint = GetLabelCommonByLanguage("idNumberhint");
+                //txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tncNew"));
+                //StripUnderlinesFromLinks(txtTermsConditions);
+                //btnRegister.Text = GetLabelByLanguage("ctaTitleNew");
 
                 var boxcondition = new CheckBox(this)
                 {
@@ -436,13 +445,15 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         {
             if (!txtboxcondition.Checked)
             {
-                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tncNew"));
+                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tncNew"));
+                //txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tncNew"));
                 StripUnderlinesFromLinks(txtTermsConditions);
 
             }
             else
             {
-                txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc_checked"));
+                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tnc_checked"));
+                //txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc_checked"));
                 StripUnderlinesFromLinks(txtTermsConditions);
             }
             string fullname = txtFullName.Text.ToString().Trim();
