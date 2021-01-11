@@ -229,9 +229,20 @@ namespace myTNB_Android.Src.AddAccount
             try
             {
                 AccountNumber.Text = this.item.accountNumber;
-                AccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, this.item.accountAddress);
-                if (this.item.accountLabel.Equals(EG_ACCOUNT_LABEL))
+
+                //if not owner mask the address IRUL
+                if (!this.item.isOwner == true) {
+                    AccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, this.item.accountAddress);
+                    //AccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, this.item.accountAddress);
+                }
+                else
                 {
+                    AccountAddress.Text = this.item.accountAddress;
+                }
+
+
+                if (this.item.accountLabel.Equals(EG_ACCOUNT_LABEL))
+                {   
                     AccountLabel.Hint = this.item.accountLabel;
                 }
                 else
