@@ -99,6 +99,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             appointmentLabel2.TextSize = TextViewUtils.GetFontSize(16f);
             appointmentLabel2.Visibility = ViewStates.Gone;
 
+            TextViewUtils.SetMuseoSans500Typeface(appointmentLabel2);
+
             currentDateDay = chosenDateDay = calendar.Get(CalendarField.DayOfMonth);
 
             if (userMonth != 0 && userYear != 0)

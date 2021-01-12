@@ -99,7 +99,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             rootview = FindViewById<RelativeLayout>(Resource.Id.rootView);
             currentMonth.TextSize = TextViewUtils.GetFontSize(16f);
             scrollcontainer = FindViewById<NestedScrollView>(Resource.Id.schedulerNestedScrollView);
-
+            appointmentLabel = FindViewById<TextView>(Resource.Id.appointmentLabel);
             btnSubmitAppointment.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "confirm");
             btnSubmitAppointment.Enabled = false;
             btnSubmitAppointment.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
@@ -171,7 +171,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
         private void Calendar_DatetimeScrollValidate(object sender, bool e)
         {
-            scrollcontainer.ScrollTo(0, scrollcontainer.Bottom);
+           // scrollcontainer.FullScroll(scrollcontainer.Bottom);
         }
 
         private void Calendar_DatetimeValidate(object sender, bool e)
@@ -188,7 +188,11 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                     timeSlotError.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "sameDateTimeError");
                     timeSlotErrorContainer.Visibility = ViewStates.Visible;
                     timeSlotError.Visibility = ViewStates.Visible;
-                    scrollcontainer.ScrollTo(0, scrollcontainer.Bottom);
+                   
+                    scrollcontainer.Post(() =>
+                    {
+                        scrollcontainer.FullScroll(Convert.ToInt32(FocusSearchDirection.Down));
+                    });
                 }
                 else
                 {

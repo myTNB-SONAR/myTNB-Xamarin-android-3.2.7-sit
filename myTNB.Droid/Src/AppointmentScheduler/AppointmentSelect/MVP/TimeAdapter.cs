@@ -26,6 +26,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         private const string color_blue = "#1c79ca";
         private List<AppointmentTimeSlotDisplay> timeSlotDisplay = new List<AppointmentTimeSlotDisplay>();
         public event EventHandler<bool> TimeClickEvent;
+        public RelativeLayout.LayoutParams buttonTimeParams;
 
         public TimeAdapter(List<AppointmentTimeSlotDisplay> timeSlotDisplay, int pickedDateDay, bool isDateSelected)
         {
@@ -45,6 +46,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         {
             TimeView vh = holder as TimeView;
             vh.textViewTime.Text = timeNames[position];
+            
             if (!isTimeSelected)
             {
                 if (isDateSelected)
@@ -74,13 +76,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             }
 
             selectedTimeTextView = (TextView)view;
-
             isTimeSelected = true;
-
             selectedTimeTextView.Gravity = GravityFlags.Center;
             selectedTimeTextView.SetBackgroundResource(Resource.Drawable.AppointmentTimeSelector);
             selectedTimeTextView.SetTextColor(Color.White);
-
             selectedDate = selectedDate;
             selectedTime = selectedTimeTextView.Text;
             var timeSlotDates = this.timeSlotDisplay.Where(x => x.TimeSlotDisplay == selectedTime).FirstOrDefault();
@@ -92,16 +91,23 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
             View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.AppointmentTimeSelectionLayout, parent, false);
+            buttonTimeParams = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WrapContent
+                , ViewGroup.LayoutParams.WrapContent);
+            
             return new TimeView(view);
         }
 
         public class TimeView : RecyclerView.ViewHolder
         {
             public TextView textViewTime;
+            public RelativeLayout relativeLayoutTime;
 
             public TimeView(View itemView) : base(itemView)
             {
                 textViewTime = (TextView)ItemView.FindViewById<TextView>(Resource.Id.timeList);
+                relativeLayoutTime = (RelativeLayout)ItemView.FindViewById<RelativeLayout>(Resource.Id.relativeLayoutTime);
+                TextViewUtils.SetMuseoSans500Typeface(textViewTime);
                 textViewTime.TextSize = TextViewUtils.GetFontSize(16f);
             }
         }
