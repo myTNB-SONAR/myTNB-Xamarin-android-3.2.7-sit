@@ -245,10 +245,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 else
                 {
                     selectedDayButton.SetBackgroundColor(Color.Transparent);
-                    if (selectedDayButton.CurrentTextColor != Color.Red)
-                    {
-                        selectedDayButton.SetTextColor(Color.ParseColor(color_calendar_number));
-                    }
+                    selectedDayButton.SetTextColor(Color.ParseColor(color_calendar_number));
                 }
             }
 
@@ -332,6 +329,11 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                     day.SetTextColor(Color.ParseColor(colorLight_grey));
                     day.SetBackgroundColor(Color.Transparent);
                     day.LayoutParameters = buttonParams;
+
+
+                    buttonParams.SetMargins(11, 8, 11, 8);
+                    day.LayoutParameters = buttonParams;
+
                     day.SetTextSize(ComplexUnitType.Dip, (int)metrics.Density * 5);
                     day.SetSingleLine();
                     days[engDaysArrayCounter] = day;

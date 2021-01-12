@@ -34,6 +34,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         public CustomCalendar customCalendar;
         ScrollView scrollcontainer;
         private Snackbar mNoInternetSnackbar;
+
+        
+        RelativeLayout rootview;
+
         [BindView(Resource.Id.btnMon)]
         Button btnMon;
 
@@ -96,6 +100,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             btnSubmitAppointment = (Button)FindViewById<Button>(Resource.Id.btnSubmitAppointment);
             appointmentLabel = FindViewById<TextView>(Resource.Id.appointmentLabel);
             scrollcontainer = FindViewById<ScrollView>(Resource.Id.scrollcontainer);
+            rootview = FindViewById<RelativeLayout>(Resource.Id.rootView);
             currentMonth.TextSize = TextViewUtils.GetFontSize(16f);
             btnSubmitAppointment.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "confirm");
             btnSubmitAppointment.TextSize = TextViewUtils.GetFontSize(16f);
@@ -241,7 +246,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                     //Todo: @Raja to Fix
                     bool isTowButtons = !string.IsNullOrEmpty(postSetAppointmentResponse.StatusDetail.SecondaryCTATitle)
                         && !string.IsNullOrWhiteSpace(postSetAppointmentResponse.StatusDetail.SecondaryCTATitle);
-                    MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, isTowButtons
+                    MyTNBAppToolTipBuilder setAppointment = MyTNBAppToolTipBuilder.Create(this, isTowButtons
                             ? MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON
                             : MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                         .SetTitle(postSetAppointmentResponse.StatusDetail.Title)
@@ -251,11 +256,28 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             }
             else
             {
-                //Todo: @Raja to Fix
-                //ShowNoInternetSnackbar();
+                ShowNoInternetSnackbar();
             }
         }
+        public void ShowNoInternetSnackbar()
+        {
+            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+            {
+                mNoInternetSnackbar.Dismiss();
+            }
 
+            mNoInternetSnackbar = Snackbar.Make(rootview, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+                mNoInternetSnackbar.Dismiss();
+            }
+            );
+            View v = mNoInternetSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mNoInternetSnackbar.Show();
+            this.SetIsClicked(false);
+        }
         //Todo: @Raja to do logic of hide unhide button
         public void OnClickCalenderBack(object sender, System.EventArgs e)
         {
