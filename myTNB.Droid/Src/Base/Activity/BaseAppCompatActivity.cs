@@ -1,8 +1,10 @@
 ﻿using Android;
 using Android.Content;
 using Android.Content.PM;
+using Android.Content.Res;
 using Android.OS;
 using Android.Runtime;
+using Android.Util;
 using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.Core.Content;
@@ -13,6 +15,7 @@ using System;
 using System.IO;
 using System.Runtime;
 using System.Text;
+using static Android.OS.Build;
 using AlertDialog = Android.App.AlertDialog;
 using Constants = myTNB_Android.Src.Utils.Constants;
 
@@ -42,9 +45,11 @@ namespace myTNB_Android.Src.Base.Activity
             configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
             var metrics = this.ApplicationContext.Resources.DisplayMetrics;
             metrics.ScaledDensity = configuration.FontScale * metrics.Density;
+            configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
             this.Resources.UpdateConfiguration(configuration, metrics);
-        }
 
+        }
+       
         protected override void OnResume()
         {
             base.OnResume();

@@ -20,9 +20,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
     }
     public class CustomCalendar : LinearLayout
     {
-        private static string color_calendar_number = "#424A56";
-        private static string color_grey = "#727171";
-        private static string colorLight_grey = "#e4e4e4";
+        private const string color_grey = "#727171";
+        private const string colorLight_grey = "#e4e4e4";
         public DateTime selectedDate;
         public DateTime selectedStartTime;
         public DateTime selectedEndTime;
@@ -36,9 +35,6 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
         RecyclerView timeLayout;
 
-        private TextView selectedTimeTextView;
-        private TextView currentDate;
-
         private Button selectedDayButton;
         private Button[] days;
         LinearLayout weekOneLayout;
@@ -49,15 +45,13 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         LinearLayout weekSixLayout;
         private LinearLayout[] weeks;
         private TextView appointmentLabel2;
-        private int currentDateDay, chosenDateDay, currentDateMonth,
-                chosenDateMonth, currentDateYear, chosenDateYear,
-                pickedDateDay, pickedDateMonth, pickedDateYear;
+        private int currentDateDay, chosenDateDay, currentDateMonth, chosenDateMonth
+            , currentDateYear, chosenDateYear, pickedDateDay, pickedDateMonth, pickedDateYear;
         int userMonth, userYear;
         private IDayClickListener mListener;
         private Drawable userDrawable;
 
         private Calendar calendar;
-        private DateTime dateTime;
 
         LayoutParams defaultButtonParams;
         private LayoutParams userButtonParams;
@@ -103,7 +97,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             appointmentLabel2 = FindViewById<TextView>(Resource.Id.appointmentLabel2);
             appointmentLabel2.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "timeSectionTitle");
             appointmentLabel2.TextSize = TextViewUtils.GetFontSize(16f);
-            var dayof = calendar.FirstDayOfWeek;
+            appointmentLabel2.Visibility = ViewStates.Gone;
+
             currentDateDay = chosenDateDay = calendar.Get(CalendarField.DayOfMonth);
 
             if (userMonth != 0 && userYear != 0)
@@ -131,18 +126,11 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             InitCalendarWithDate(context, chosenDateYear, chosenDateMonth, chosenDateDay
                 , calenderMonthName, calendarYear.ToString(), visibleNumbers, schedulerDisplayResponse);
 
-            // TIme
+            // Time
             timeLayout = (RecyclerView)FindViewById<RecyclerView>(Resource.Id.TimeRecyclerView);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
             timeLayout.SetLayoutManager(gridLayoutManager);
-            if (isValidDateTime && isDateSelected)
-            {
-                isValidDateTime = true;
-            }
-            else
-            {
-                isValidDateTime = false;
-            }
+            isValidDateTime = isValidDateTime && isDateSelected;
         }
 
         private void InitializeDaysWeeks()
@@ -192,10 +180,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 {
                     if (visibleNumbers.Where(x => x == dayNumber).FirstOrDefault() > 0)
                     {
-                        days[i].SetTextColor(Color.Gray);
+                        days[i].SetTextColor(Color.ParseColor(color_grey));
                         days[i].Click += (sender, e) =>
                         {
-
                             OnDayClick(sender as View, context, schedulerDisplayResponse);
                         };
                     }
@@ -245,7 +232,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 else
                 {
                     selectedDayButton.SetBackgroundColor(Color.Transparent);
-                    selectedDayButton.SetTextColor(Color.ParseColor(color_calendar_number));
+                    selectedDayButton.SetTextColor(Color.ParseColor(color_grey));
                 }
             }
 
@@ -294,16 +281,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 timeLayout.SetAdapter(timeAdapter);
 
                 timeAdapter.TimeClickEvent += Adapter_TimeClickEvent;
-
-                if (isValidDateTime && isDateSelected)
-                {
-                    isValidDateTime = true;
-                }
-                else
-                {
-                    isValidDateTime = false;
-                }
+                isValidDateTime = isValidDateTime && isDateSelected;
             }
+            appointmentLabel2.Visibility = ViewStates.Visible;
         }
 
         private void Adapter_TimeClickEvent(object sender, bool e)

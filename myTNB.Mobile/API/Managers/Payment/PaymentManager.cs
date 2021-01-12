@@ -54,6 +54,8 @@ namespace myTNB.Mobile.API.Managers.Payment
             , string applicationType
             , string searchTerm
             , string system
+            , string statusId
+            , string statusCode
             , ApplicationPaymentDetail applicationPaymentDetail) where T : new()
         {
             T customClass = new T();
@@ -78,7 +80,9 @@ namespace myTNB.Mobile.API.Managers.Payment
                         ApplicationType = applicationType ?? string.Empty,
                         SearchTerm = searchTerm ?? string.Empty,
                         System = system ?? "myTNB",
-                        ApplicationPaymentDetail = applicationPaymentDetail
+                        ApplicationPaymentDetail = applicationPaymentDetail,
+                        StatusId = statusId,
+                        StatusCode = statusCode
                     };
 
                     HttpResponseMessage rawResponse = await service.ApplicationPayment(request
@@ -117,7 +121,10 @@ namespace myTNB.Mobile.API.Managers.Payment
 
         #region GetApplicationsPaidDetails
         public async Task<PostApplicationsPaidDetailsResponse> GetApplicationsPaidDetails(object userInfo
-            , string srNumber)
+            , string refNumber
+            , string statusId
+            , string statusCode
+            , string applicationType)
         {
             try
             {
@@ -127,9 +134,14 @@ namespace myTNB.Mobile.API.Managers.Payment
                     PostApplicationsPaidDetailsRequest request = new PostApplicationsPaidDetailsRequest
                     {
                         UserInfo = userInfo,
-                        SRNumber = srNumber
+                        ApplicationPayment = new ApplicationPayment
+                        {
+                            SRNumber = refNumber,
+                            StatusId = statusId,
+                            StatusCode = statusCode,
+                            ApplicationType = applicationType
+                        }
                     };
-
                     HttpResponseMessage rawResponse = await service.GetApplicationsPaidDetails(request
                         , NetworkService.GetCancellationToken()
                         , AppInfoManager.Instance.Language.ToString());

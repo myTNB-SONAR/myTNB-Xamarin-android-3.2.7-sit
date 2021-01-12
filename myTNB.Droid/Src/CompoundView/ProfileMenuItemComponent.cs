@@ -42,6 +42,16 @@ namespace myTNB_Android.Src.CompoundView
 
             TextViewUtils.SetMuseoSans500Typeface(itemHeaderTitle);
             itemHeaderTitle.TextSize = TextViewUtils.GetFontSize(16f);
+
+            Android.Content.Res.Configuration configuration = Resources.Configuration;
+            configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
+            var metrics = Resources.DisplayMetrics;
+            metrics.ScaledDensity = configuration.FontScale * metrics.Density;
+
+
+            configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
+
+            context.Resources.UpdateConfiguration(configuration, metrics);
         }
 
         public void SetHeaderTitle(string title)

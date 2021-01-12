@@ -268,17 +268,19 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                Intent payment_activity = new Intent(this, typeof(PaymentActivity));
-                payment_activity.PutExtra("ISAPPLICATIONPAYMENT", true);
-                payment_activity.PutExtra("APPLICATIONPAYMENTDETAIL", JsonConvert.SerializeObject(applicationDetailDisplay.applicationPaymentDetail));
-                payment_activity.PutExtra("TOTAL", applicationDetailDisplay.PaymentDisplay.TotalPayableAmountDisplay);
-                payment_activity.PutExtra("ApplicationType", applicationDetailDisplay.ApplicationTypeCode);
-                payment_activity.PutExtra("SearchTerm", string.IsNullOrEmpty(applicationDetailDisplay.SavedApplicationID)
+                Intent intent = new Intent(this, typeof(PaymentActivity));
+                intent.PutExtra("ISAPPLICATIONPAYMENT", true);
+                intent.PutExtra("APPLICATIONPAYMENTDETAIL", JsonConvert.SerializeObject(applicationDetailDisplay.applicationPaymentDetail));
+                intent.PutExtra("TOTAL", applicationDetailDisplay.PaymentDisplay.TotalPayableAmountDisplay);
+                intent.PutExtra("ApplicationType", applicationDetailDisplay.ApplicationTypeCode);
+                intent.PutExtra("SearchTerm", string.IsNullOrEmpty(applicationDetailDisplay.SavedApplicationID)
                     || string.IsNullOrWhiteSpace(applicationDetailDisplay.SavedApplicationID)
                         ? applicationDetailDisplay.ApplicationDetail?.ApplicationId ?? string.Empty
                         : applicationDetailDisplay.SavedApplicationID);
-                payment_activity.PutExtra("ApplicationSystem", applicationDetailDisplay.System);
-                StartActivityForResult(payment_activity, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
+                intent.PutExtra("ApplicationSystem", applicationDetailDisplay.System);
+                intent.PutExtra("StatusId", applicationDetailDisplay?.ApplicationStatusDetail?.StatusId.ToString() ?? string.Empty);
+                intent.PutExtra("StatusCode", applicationDetailDisplay?.ApplicationStatusDetail?.StatusCode ?? string.Empty);
+                StartActivityForResult(intent, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
 
                 try
                 {
@@ -409,20 +411,17 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             try
             {
                 SchedulerDisplay response = await ScheduleManager.Instance.GetAvailableAppointment("1234");
-                if (!response.StatusDetail.IsSuccess)
+                if (response.StatusDetail.IsSuccess)
                 {
-                    ShowApplicationPopupMessage(this, response.StatusDetail);
+                    Intent intent = new Intent(this, typeof(AppointmentSelectActivity));
+                    intent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
+                    intent.PutExtra("newAppointmentResponse", JsonConvert.SerializeObject(response));
+                    intent.PutExtra("appointment", appointment);
+                    StartActivityForResult(intent, Constants.APPLICATION_STATUS_DETAILS_SCHEDULER_REQUEST_CODE);
                 }
                 else
                 {
-                    //string businessArea = applicationDetailDisplay.BusinessArea ?? string.Empty;
-                    Intent appointment_activity = new Intent(this, typeof(AppointmentSelectActivity));
-                    appointment_activity.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
-                    appointment_activity.PutExtra("newAppointmentResponse", JsonConvert.SerializeObject(response));
-                    appointment_activity.PutExtra("appointment", appointment);
-                    StartActivity(appointment_activity);
-                    SetResult(Result.Ok, new Intent());
-                    Finish();
+                    ShowApplicationPopupMessage(this, response.StatusDetail);
                 }
             }
             catch (System.Exception ne)
@@ -600,7 +599,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
         {
             base.OnCreate(savedInstanceState);
 
-            //  TODO: ApplicationStatus Multilingual
             SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusDetails", "title"));
             presenter = new ApplicationStatusDetailPresenter(this);
             applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Gone;
@@ -799,6 +797,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.PayOffline)
                             {
+                                txtApplicationStatusBottomPayableCurrency.Text = "RM";
                                 txtApplicationStatusBottomPayable.Text = "--";
                                 txtApplicationStatusBottomPayableTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusDetails", "needToPay");
                                 txtApplicationStatusBottomPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
@@ -1348,6 +1347,11 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
                     OnReloadDetails(UpdateType.ContractorRating);
                 }
+            }
+            else if (resultCode == Result.Ok && requestCode == Constants.APPLICATION_STATUS_DETAILS_SCHEDULER_REQUEST_CODE)
+            {
+                SetResult(Result.Ok);
+                Finish();
             }
         }
 

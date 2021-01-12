@@ -51,6 +51,7 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.Mobile;
 using Android.Util;
 using myTNB_Android.Src.myTNBMenu.Async;
+using Android.Content.Res;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -884,7 +885,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         .CommitAllowingStateLoss();
 
         }
-
+        
         public void ShowMoreMenu()
         {
             ProfileMenuFragment profileMenuFragment = new ProfileMenuFragment();

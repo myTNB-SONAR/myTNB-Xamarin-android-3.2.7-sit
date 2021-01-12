@@ -1,8 +1,10 @@
 ﻿using Android.Content;
+using Android.Content.Res;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Text;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -64,9 +66,10 @@ namespace myTNB_Android.Src.Base.Activity
             configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
             var metrics = this.ApplicationContext.Resources.DisplayMetrics;
             metrics.ScaledDensity = configuration.FontScale * metrics.Density;
+            configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
             this.Resources.UpdateConfiguration(configuration, metrics);
         }
-
+        
         /// <summary>
         /// Whether if we use a custom toolbar title or we use the default one
         /// If true then we will implement a custom title o

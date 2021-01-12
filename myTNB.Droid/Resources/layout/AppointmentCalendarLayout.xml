@@ -117,7 +117,8 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="56dp"
-		android:background="#F9F9F9">
+		android:background="#F9F9F9"
+		android:id="@+id/appointmentLabel2Container">
 		<TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -134,7 +135,8 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="@color/white">
+		android:background="@color/white"
+		android:id="@+id/timeRecyclerViewContainer">
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

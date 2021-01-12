@@ -49,6 +49,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private string ApplicationType = string.Empty;
         private string SearchTerm = string.Empty;
         private string ApplicationSystem = string.Empty;
+        private string StatusId = string.Empty;
+        private string StatusCode = string.Empty;
 
         public bool paymentReceiptGenerated = false;
 
@@ -147,6 +149,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         {
                             ApplicationSystem = extras.GetString("ApplicationSystem");
                         }
+                        if (extras.ContainsKey("StatusId"))
+                        {
+                            StatusId = extras.GetString("StatusId");
+                        }
+                        if (extras.ContainsKey("StatusCode"))
+                        {
+                            StatusCode = extras.GetString("StatusCode");
+                        }
                     }
 
                     if (extras.ContainsKey("TOTAL"))
@@ -189,6 +199,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     bundle.PutString("ApplicationType", ApplicationType);
                     bundle.PutString("SearchTerm", SearchTerm);
                     bundle.PutString("ApplicationSystem", ApplicationSystem);
+                    bundle.PutString("StatusId", StatusId);
+                    bundle.PutString("StatusCode", StatusCode);
                 }
                 else
                 {

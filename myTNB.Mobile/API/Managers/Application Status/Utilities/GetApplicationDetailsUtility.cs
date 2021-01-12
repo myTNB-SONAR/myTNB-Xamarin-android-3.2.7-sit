@@ -122,6 +122,10 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                                     {
                                         displayModel.Content.SRType = srType;
                                     }
+                                    if (GetObjectValue(props, "snNo") is string snNo && snNo.IsValid())
+                                    {
+                                        displayModel.Content.SNNumber = snNo;
+                                    }
                                 }
                             }
                         }
@@ -476,19 +480,22 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
         {
             try
             {
-                if (paymentResponse != null && paymentResponse.D != null && paymentResponse.D.IsError == "false"
-                    && paymentResponse.D.Data != null && paymentResponse.D.Data.Count > 0)
+                if (paymentResponse != null && paymentResponse.D != null && paymentResponse.D.IsError == "false")
                 {
-                    detail.Content.ReceiptDisplay = paymentResponse.D.Data.Select(x => new ReceiptDisplay
+                    if (paymentResponse.D.Data != null && paymentResponse.D.Data.Count > 0)
                     {
-                        SRNumber = x.SRNumber,
-                        MerchantTransID = x.MerchantTransID,
-                        PaymentDoneDate = x.PaymentDoneDate,
-                        Amount = x.Amount,
-                        AccNumber = x.AccNumber,
-                        IsPaymentPending = x.IsPaymentPending,
-                        AccountPayments = x.AccountPayments
-                    }).ToList();
+                        detail.Content.ReceiptDisplay = paymentResponse.D.Data.Select(x => new ReceiptDisplay
+                        {
+                            SRNumber = x.SRNumber,
+                            MerchantTransID = x.MerchantTransID,
+                            PaymentDoneDate = x.PaymentDoneDate,
+                            Amount = x.Amount,
+                            AccNumber = x.AccNumber,
+                            IsPaymentSuccess = x.IsPaymentSuccess,
+                            AccountPayments = x.AccountPayments
+                        }).ToList();
+                    }
+                    detail.Content.IsPaymentAllowed = paymentResponse.D.AllowApplicationPayment;
                 }
             }
             catch (Exception ex)

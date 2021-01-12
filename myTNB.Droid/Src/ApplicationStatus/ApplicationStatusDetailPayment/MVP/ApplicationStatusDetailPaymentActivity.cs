@@ -73,17 +73,19 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                Intent payment_activity = new Intent(this, typeof(PaymentActivity));
-                payment_activity.PutExtra("ISAPPLICATIONPAYMENT", true);
-                payment_activity.PutExtra("APPLICATIONPAYMENTDETAIL", JsonConvert.SerializeObject(applicationDetailDisplay.applicationPaymentDetail));
-                payment_activity.PutExtra("TOTAL", applicationDetailDisplay.PaymentDisplay.TotalPayableAmountDisplay);
-                payment_activity.PutExtra("ApplicationType", applicationDetailDisplay.ApplicationTypeCode);
-                payment_activity.PutExtra("SearchTerm", string.IsNullOrEmpty(applicationDetailDisplay.SavedApplicationID)
+                Intent intent = new Intent(this, typeof(PaymentActivity));
+                intent.PutExtra("ISAPPLICATIONPAYMENT", true);
+                intent.PutExtra("APPLICATIONPAYMENTDETAIL", JsonConvert.SerializeObject(applicationDetailDisplay.applicationPaymentDetail));
+                intent.PutExtra("TOTAL", applicationDetailDisplay.PaymentDisplay.TotalPayableAmountDisplay);
+                intent.PutExtra("ApplicationType", applicationDetailDisplay.ApplicationTypeCode);
+                intent.PutExtra("SearchTerm", string.IsNullOrEmpty(applicationDetailDisplay.SavedApplicationID)
                     || string.IsNullOrWhiteSpace(applicationDetailDisplay.SavedApplicationID)
                         ? applicationDetailDisplay.ApplicationDetail?.ApplicationId ?? string.Empty
                         : applicationDetailDisplay.SavedApplicationID);
-                payment_activity.PutExtra("ApplicationSystem", applicationDetailDisplay.System);
-                StartActivityForResult(payment_activity, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
+                intent.PutExtra("ApplicationSystem", applicationDetailDisplay.System);
+                intent.PutExtra("StatusId", applicationDetailDisplay?.ApplicationStatusDetail?.StatusId.ToString() ?? string.Empty);
+                intent.PutExtra("StatusCode", applicationDetailDisplay?.ApplicationStatusDetail?.StatusCode ?? string.Empty);
+                StartActivityForResult(intent, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
 
                 try
                 {

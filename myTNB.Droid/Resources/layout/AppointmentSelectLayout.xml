@@ -7,47 +7,28 @@
 	android:layout_height="match_parent"
 	android:layout_alignParentBottom="true"
 	android:layout_centerHorizontal="true"
+	android:descendantFocusability="beforeDescendants"
 	android:theme="@style/Theme.AppointmentScheduler"
 	android:focusableInTouchMode="true"
 	android:orientation="vertical">
-	<RelativeLayout
+	<include
+		layout="@layout/toolbar"
+		id="@+id/toolbar" />
+	<LinearLayout
+		android:id="@+id/rootview"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:theme="@style/Theme.AppointmentScheduler"
-		android:id="@+id/rootView">
-		<include
-			layout="@layout/toolbar"
-			id="@+id/toolbar" />
-		<LinearLayout
-			android:id="@+id/bottomLayout"
+		android:layout_marginTop="?actionBarSize"
+		android:orientation="vertical"
+		android:background="@color/greyBackground">
+		<androidx.core.widget.NestedScrollView
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:orientation="vertical"
-			android:layout_gravity="bottom"
-			android:paddingLeft="16dp"
-			android:paddingRight="16dp"
-			android:paddingBottom="16dp"
-			android:paddingTop="16dp"
-			android:layout_alignParentBottom="true"
-			android:background="@android:color/white">
-			<Button
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:text="UI - Confirm"
-				android:enabled="false"
-				android:id="@+id/btnSubmitAppointment"
-				android:textSize="16dp"
-				style="@style/Theme.LoginButton" />
-		</LinearLayout>
-		<ScrollView
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:id="@+id/scrollcontainer"
-			android:fillViewport="true"
+			android:layout_height="0dp"
+			android:layout_weight="1"
 			android:overScrollMode="never"
 			android:scrollbars="none"
-			android:layout_below="@+id/toolbar"
-			android:layout_above="@+id/bottomLayout">
+			android:id="@+id/schedulerNestedScrollView"
+			android:fillViewport="false">
 			<LinearLayout
 				android:id="@+id/container"
 				android:layout_width="match_parent"
@@ -135,7 +116,8 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="horizontal"
-					android:background="@color/white">
+					android:background="@color/white"
+					android:id="@+id/timeSlotNoteContainer">
 					<TextView
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -152,7 +134,8 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="horizontal"
-					android:background="#F9F9F9">
+					android:background="#F9F9F9"
+					android:id="@+id/timeSlotErrorContainer">
 					<TextView
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -166,6 +149,27 @@
 						android:textSize="12dp"/>
 				</LinearLayout>
 			</LinearLayout>
-		</ScrollView>
-	</RelativeLayout>
+		</androidx.core.widget.NestedScrollView>
+		<LinearLayout
+			android:id="@+id/bottomLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_gravity="bottom"
+			android:paddingLeft="16dp"
+			android:paddingRight="16dp"
+			android:paddingBottom="16dp"
+			android:paddingTop="16dp"
+			android:layout_alignParentBottom="true"
+			android:background="@android:color/white">
+			<Button
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="UI - Confirm"
+				android:enabled="false"
+				android:id="@+id/btnSubmitAppointment"
+				android:textSize="16dp"
+				style="@style/Theme.LoginButton" />
+		</LinearLayout>
+	</LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

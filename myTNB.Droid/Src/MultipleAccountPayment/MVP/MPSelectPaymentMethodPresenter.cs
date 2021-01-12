@@ -47,6 +47,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             , string applicationType
             , string searchTerm
             , string system
+            , string statusId
+            , string statusCode
             , ApplicationPaymentDetail applicationPaymentDetail)
         {
             GetApplicationPayment(userInfo
@@ -59,6 +61,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 , applicationType
                 , searchTerm
                 , system
+                , statusId
+                , statusCode
                 , applicationPaymentDetail);
         }
 
@@ -72,6 +76,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             , string applicationType
             , string searchTerm
             , string system
+            , string statusId
+            , string statusCode
             , ApplicationPaymentDetail applicationPaymentDetail)
         {
             try
@@ -87,6 +93,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                     , applicationType
                     , searchTerm
                     , system
+                    , statusId
+                    , statusCode
                     , applicationPaymentDetail);
                 this.mView.SetInitiatePaymentResponse(response);
                 this.mView.HidePaymentRequestDialog();

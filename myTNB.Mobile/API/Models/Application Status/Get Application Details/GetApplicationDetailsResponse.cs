@@ -343,6 +343,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
                     {
                         start = AppointmentStartTime.Value.ToString("hh:mm tt", dateCultureInfo);
                     }
+
                     if (AppointmentEndTime != null && AppointmentEndTime.Value != null)
                     {
                         end = AppointmentEndTime.Value.ToString("hh:mm tt", dateCultureInfo);

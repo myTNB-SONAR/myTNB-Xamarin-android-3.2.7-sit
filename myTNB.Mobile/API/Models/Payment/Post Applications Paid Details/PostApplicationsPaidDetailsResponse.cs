@@ -14,6 +14,8 @@ namespace myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails
     {
         [JsonProperty("data")]
         public List<PostApplicationsPaidDetailsDataModel> Data { set; get; }
+        [JsonProperty("allowApplicationPayment")]
+        public bool AllowApplicationPayment { set; get; }
         [JsonProperty("status")]
         public string Status { set; get; } = string.Empty;
         [JsonProperty("isError")]
@@ -52,8 +54,8 @@ namespace myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails
         public double Amount { set; get; }
         [JsonProperty("AccNumber")]
         public string AccNumber { set; get; } = string.Empty;
-        [JsonProperty("IsPaymentPending")]
-        public bool IsPaymentPending { set; get; }
+        [JsonProperty("IsPaymentSuccess")]
+        public bool IsPaymentSuccess { set; get; }
         [JsonProperty("AccountPayments")]
         public List<AccountPaymentsModel> AccountPayments { set; get; }
     }

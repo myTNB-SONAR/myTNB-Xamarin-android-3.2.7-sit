@@ -32,6 +32,12 @@ namespace myTNB.Mobile.API.Models.Payment.PostApplicationPayment
         [JsonProperty("system")]
         public string System { set; get; }
 
+        [JsonProperty("statusId")]
+        public string StatusId { set; get; }
+
+        [JsonProperty("statusCode")]
+        public string StatusCode { set; get; }
+
         [JsonProperty("applicationPaymentDetail")]
         public ApplicationPaymentDetail ApplicationPaymentDetail { set; get; }
     }

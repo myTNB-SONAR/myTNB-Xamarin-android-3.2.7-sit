@@ -307,15 +307,7 @@ namespace myTNB.Mobile
                 }
                 else if (IsPayment && applicationPaymentDetail != null)
                 {
-                    type = DetailCTAType.Pay;
-                    if (ReceiptDisplay != null && ReceiptDisplay.Count > 0)
-                    {
-                        int isPendingIndex = ReceiptDisplay.FindIndex(x => x.IsPaymentPending);
-                        if (isPendingIndex > -1)
-                        {
-                            type = DetailCTAType.PayInProgress;
-                        }
-                    }
+                    type = IsPaymentAllowed ? DetailCTAType.Pay : DetailCTAType.PayInProgress;
                 }
                 else if (ApplicationAppointmentDetail != null && ApplicationAppointmentDetail.Mode.IsValid())
                 {
@@ -434,10 +426,15 @@ namespace myTNB.Mobile
 
         /// <summary>
         /// Used for ASMX Payment Details
-        /// Used for Raitng
+        /// Used for Rating
         /// Used for Appointment
         /// </summary>
         public string SRNumber { set; get; }
+
+        /// <summary>
+        /// Used for ASMX Payment Details
+        /// </summary>
+        public string SNNumber { set; get; }
 
         /// <summary>
         /// Used for Appointment
@@ -513,6 +510,11 @@ namespace myTNB.Mobile
         /// Use to Display in Appointment Success
         /// </summary>
         public string PremisesAddress { set; get; }
+
+        /// <summary>
+        /// Use for payment pending
+        /// </summary>
+        public bool IsPaymentAllowed { set; get; }
 
         private Color StatusColorDisplay
         {
@@ -615,7 +617,6 @@ namespace myTNB.Mobile
             }
         }
 
-        //Todo: Map with correct property after BE deployed
         /// <summary>
         /// Determines if last updated date should be displayed or not
         /// </summary>
