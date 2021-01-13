@@ -15,8 +15,7 @@ namespace myTNB_Android.Src.Utils
                 {
                     return;
                 }
-                Toast.MakeText(mActivity, message, ToastLength.Long).Show();
-                /*
+                //Toast.MakeText(mActivity, message, ToastLength.Long).Show();
                 LayoutInflater inflater = LayoutInflater.From(mActivity);
                 View layout = inflater.Inflate(Resource.Layout.ToastLayout, null, false);
                 TextView messageTextView = layout.FindViewById<TextView>(Resource.Id.toastMessage);
@@ -32,7 +31,6 @@ namespace myTNB_Android.Src.Utils
 
                 toast.SetGravity(GravityFlags.Top | GravityFlags.FillHorizontal, 0, 0);
                 toast.Show();
-                */
             }
             catch (Exception e)
             {

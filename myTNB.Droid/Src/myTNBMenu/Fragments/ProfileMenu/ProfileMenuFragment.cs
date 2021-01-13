@@ -982,8 +982,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         {
             try
             {
-                //ToastUtils.OnDisplayToast(Activity, string.Format(GetLabelByLanguage("fontChangeSuccess"), TextViewUtils.FontSelected));
-                if (mLanguageSnackbar != null && mLanguageSnackbar.IsShown)
+                ToastUtils.OnDisplayToast(Activity, string.Format(GetLabelByLanguage("fontChangeSuccess"), TextViewUtils.FontSelected));
+                /*if (mLanguageSnackbar != null && mLanguageSnackbar.IsShown)
                 {
                     mLanguageSnackbar.Dismiss();
                 }
@@ -1001,7 +1001,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(5);
                 mLanguageSnackbar.Show();
-                this.SetIsClicked(false);
+                this.SetIsClicked(false);*/
             }
             catch (System.Exception e)
             {
