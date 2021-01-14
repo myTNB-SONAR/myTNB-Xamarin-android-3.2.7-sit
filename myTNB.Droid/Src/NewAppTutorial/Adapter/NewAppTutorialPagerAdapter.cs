@@ -2211,14 +2211,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             {
                 if (model.DisplayMode == "Extra")
                 {
-                    int progressDateCount = ((ApplicationStatusDetailActivity)this.mContext).GetProgressDateCount();
-                    int pressView = ((ApplicationStatusDetailActivity)this.mContext).GetRecyclerViewHeight();
-
-                    pressView = pressView < 500 ? pressView - 65 : pressView - (progressDateCount == 1 ? 65 : (progressDateCount == 2 ? 80 : (progressDateCount == 3 ? 120 : (progressDateCount == 4 ? 160 : (progressDateCount == 5 ? 200 : 0)))));
-                    float h1 = 0;
-                    float h2 = 180f;
-                    int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetTopHeight() + pressView + (int)DPUtils.ConvertDPToPx(h1);
-                    int middleHeight = (int)DPUtils.ConvertDPToPx(h2);
+                    int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetHighlightedHeight() - (int)DPUtils.ConvertDPToPx(60);
+                    int middleHeight = (int)DPUtils.ConvertDPToPx(185);
 
                     int leftWidth = 0;
                     int rightWidth = 0;
