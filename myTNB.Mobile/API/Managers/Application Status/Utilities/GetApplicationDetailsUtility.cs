@@ -152,6 +152,10 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                                     StatusDate = x.StatusDate
                                 }).ToList();
                         }
+                        if (displayModel.Content.ApplicationStatusDetail != null)
+                        {
+                            displayModel.Content.ApplicationStatusDetail.IsPayment = displayModel.Content.IsPayment;
+                        }
                     }
                     if (response.Content.ApplicationActivityLogDetail != null)
                     {

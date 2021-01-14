@@ -82,11 +82,15 @@ namespace myTNB.Mobile
             }
         }
 
-        private bool IsPayment
+        public bool IsPayment
         {
             get
             {
-                return ApplicationStatusDetail.IsPayment;
+                bool isPayment = PaymentDisplay != null
+                    && PaymentDisplay.totalPayableAmount > 0
+                    && ApplicationStatusDetail != null
+                    && !ApplicationStatusDetail.IsPostPayment;
+                return isPayment;
             }
         }
 
@@ -521,11 +525,14 @@ namespace myTNB.Mobile
             get
             {
                 Color color = Color.Grey;
+                if (ApplicationStatusDetail.IsPayment)
+                {
+                    return Color.Orange;
+                }
                 if (ApplicationStatusDetail != null
                     && ApplicationStatusDetail.StatusDescriptionColor is string descriptionColor
                     && descriptionColor.IsValid())
                 {
-
                     switch (descriptionColor.ToUpper())
                     {
                         case "COMPLETED":
@@ -655,20 +662,11 @@ namespace myTNB.Mobile
         public string UserAction { set; get; }
         public bool IsPostPayment { set; get; }
         public List<StatusTrackerDisplay> StatusTracker { set; get; }
+
         /// <summary>
         /// Determines if the application requires payment or not
         /// </summary>
-        public bool IsPayment
-        {
-            get
-            {
-                if (UserAction != null || UserAction.IsValid())
-                {
-                    return UserAction.ToUpper() == "PAYMENT";
-                }
-                return false;
-            }
-        }
+        public bool IsPayment { set; get; }
     }
 
     public class StatusTrackerDisplay

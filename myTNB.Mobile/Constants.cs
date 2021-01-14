@@ -23,26 +23,31 @@
         internal const string SitecorePassword = "mytnbapiuser!3$@2";
         internal const string ApiUrlPath = "v6/mytnbappws.asmx";
 
-#if DEBUG
         private const string DEV1 = "http://10.215.128.191:88";
         private const string DEV2 = "http://10.215.128.191:89";
         private const string SIT = "https://mobiletestingws.tnb.com.my";
         private const string PROD = "https://mytnbapp.tnb.com.my";
         private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
+        //Mark: http://tnbcsdevapp.tnb.my/
+        private const string SitecoreDEV = "http://10.215.70.246/";
+        //Mark: http://tnbcsstgapp.tnb.my/
+        private const string SitecoreSIT = "http://10.215.70.248/";
+        private const string SitecorePROD = "https://sitecore.tnb.com.my/";
+        private const string ApiKeyIdDEV = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
+        private const string ApiKeyIdPROD = "E6148656-205B-494C-BC95-CC241423E72F";
 
+#if DEBUG
         internal static string ApiDomain = SIT;
-        internal const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
-        //Mark: IP: http://10.215.70.246/   URL: http://tnbcsdevapp.tnb.my/
-        internal const string SitecoreURL = "http://10.215.70.246/";
+        internal const string ApiKeyId = ApiKeyIdDEV;
+        internal const string SitecoreURL = SitecorePROD;
 #elif MASTER || SIT
-        internal static string ApiDomain = "https://mobiletestingws.tnb.com.my";
-        internal const string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
-        //Mark: IP: http://10.215.70.248/   URL: http://tnbcsstgapp.tnb.my/
-        internal const string SitecoreURL = "http://10.215.70.248/";
+        internal static string ApiDomain = SIT;
+        internal const string ApiKeyId = ApiKeyIdDEV;
+        internal const string SitecoreURL = SitecoreSIT;
 #else
-        internal static string ApiDomain = "https://mytnbapp.tnb.com.my";
-        internal const string ApiKeyId = "E6148656-205B-494C-BC95-CC241423E72F";
-        internal const string SitecoreURL = "https://sitecore.tnb.com.my/";
+        internal static string ApiDomain = PROD;
+        internal const string ApiKeyId = ApiKeyIdPROD;
+        internal const string SitecoreURL = SitecorePROD;
 #endif
 
         //Service Name
