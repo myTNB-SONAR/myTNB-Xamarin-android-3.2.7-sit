@@ -1,0 +1,728 @@
+{
+  "StatusDetail": {
+    "code": "7200",
+    "title": "",
+    "message": "",
+    "primaryCTATitle": "",
+    "secondaryCTATitle": "",
+    "isSuccess": true,
+    "type": "none"
+  },
+  "ScheduleList": {
+
+    "Jan 2021": [
+      {
+        "AppointmentDate": "2021-01-01T00:00:00+08:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "FRI",
+        "Day": "1",
+        "AppointmentDateDisplay": "01 Jan 2021",
+        "TimeSlotDisplay": [
+          {
+            "TimeSlotDisplay": "09:00 AM - 01:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-01T09:00:00+08:00",
+            "slotEndTime": "2021-01-01T13:00:00+08:00",
+            "availableSlotCount": 10
+          },
+          {
+            "TimeSlotDisplay": "02:00 PM - 06:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-01T14:00:00+08:00",
+            "slotEndTime": "2021-01-01T18:00:00+08:00",
+            "availableSlotCount": 10
+          }
+        ],
+        "IsAvailable": true
+      },
+      {
+        "AppointmentDate": "2021-01-02T00:00:00+08:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "SAT",
+        "Day": "2",
+        "AppointmentDateDisplay": "02 Jan 2021",
+        "TimeSlotDisplay": [
+          {
+            "TimeSlotDisplay": "09:00 AM - 01:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-02T09:00:00+08:00",
+            "slotEndTime": "2021-01-02T13:00:00+08:00",
+            "availableSlotCount": 10
+          },
+          {
+            "TimeSlotDisplay": "02:00 PM - 06:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-02T14:00:00+08:00",
+            "slotEndTime": "2021-01-02T18:00:00+08:00",
+            "availableSlotCount": 10
+          }
+        ],
+        "IsAvailable": true
+      },
+      {
+        "AppointmentDate": "2021-01-03T00:00:00+08:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "SUN",
+        "Day": "3",
+        "AppointmentDateDisplay": "03 Jan 2021",
+        "TimeSlotDisplay": [
+          {
+            "TimeSlotDisplay": "09:00 AM - 01:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-03T09:00:00+08:00",
+            "slotEndTime": "2021-01-03T13:00:00+08:00",
+            "availableSlotCount": 10
+          },
+          {
+            "TimeSlotDisplay": "02:00 PM - 06:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-03T14:00:00+08:00",
+            "slotEndTime": "2021-01-03T18:00:00+08:00",
+            "availableSlotCount": 10
+          }
+        ],
+        "IsAvailable": true
+      },
+      {
+        "AppointmentDate": "2021-01-04T00:00:00+08:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "MON",
+        "Day": "4",
+        "AppointmentDateDisplay": "04 Jan 2021",
+        "TimeSlotDisplay": [
+          {
+            "TimeSlotDisplay": "09:00 AM - 01:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-04T09:00:00+08:00",
+            "slotEndTime": "2021-01-04T13:00:00+08:00",
+            "availableSlotCount": 10
+          },
+          {
+            "TimeSlotDisplay": "02:00 PM - 06:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-04T14:00:00+08:00",
+            "slotEndTime": "2021-01-04T18:00:00+08:00",
+            "availableSlotCount": 10
+          }
+        ],
+        "IsAvailable": true
+      },
+      {
+        "AppointmentDate": "2021-01-05T00:00:00+08:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "TUE",
+        "Day": "5",
+        "AppointmentDateDisplay": "05 Jan 2021",
+        "TimeSlotDisplay": [
+          {
+            "TimeSlotDisplay": "09:00 AM - 01:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-05T09:00:00+08:00",
+            "slotEndTime": "2021-01-05T13:00:00+08:00",
+            "availableSlotCount": 10
+          },
+          {
+            "TimeSlotDisplay": "02:00 PM - 06:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-05T14:00:00+08:00",
+            "slotEndTime": "2021-01-05T18:00:00+08:00",
+            "availableSlotCount": 10
+          }
+        ],
+        "IsAvailable": true
+      },
+      {
+        "AppointmentDate": "2021-01-06T00:00:00+08:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "WED",
+        "Day": "6",
+        "AppointmentDateDisplay": "06 Jan 2021",
+        "TimeSlotDisplay": [
+          {
+            "TimeSlotDisplay": "09:00 AM - 01:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-06T09:00:00+08:00",
+            "slotEndTime": "2021-01-06T13:00:00+08:00",
+            "availableSlotCount": 10
+          },
+          {
+            "TimeSlotDisplay": "02:00 PM - 06:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-06T14:00:00+08:00",
+            "slotEndTime": "2021-01-06T18:00:00+08:00",
+            "availableSlotCount": 10
+          }
+        ],
+        "IsAvailable": true
+      },
+      {
+        "AppointmentDate": "2021-01-07T00:00:00+08:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "THU",
+        "Day": "7",
+        "AppointmentDateDisplay": "07 Jan 2021",
+        "TimeSlotDisplay": [
+          {
+            "TimeSlotDisplay": "09:00 AM - 01:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-07T09:00:00+08:00",
+            "slotEndTime": "2021-01-07T13:00:00+08:00",
+            "availableSlotCount": 10
+          },
+          {
+            "TimeSlotDisplay": "02:00 PM - 06:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-07T14:00:00+08:00",
+            "slotEndTime": "2021-01-07T18:00:00+08:00",
+            "availableSlotCount": 10
+          }
+        ],
+        "IsAvailable": true
+      },
+      {
+        "AppointmentDate": "2021-01-08T00:00:00+08:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "FRI",
+        "Day": "8",
+        "AppointmentDateDisplay": "08 Jan 2021",
+        "TimeSlotDisplay": [
+          {
+            "TimeSlotDisplay": "09:00 AM - 01:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-08T09:00:00+08:00",
+            "slotEndTime": "2021-01-08T13:00:00+08:00",
+            "availableSlotCount": 10
+          },
+          {
+            "TimeSlotDisplay": "02:00 PM - 06:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-08T14:00:00+08:00",
+            "slotEndTime": "2021-01-08T18:00:00+08:00",
+            "availableSlotCount": 10
+          }
+        ],
+        "IsAvailable": true
+      },
+      {
+        "AppointmentDate": "2021-01-09T00:00:00+08:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "SAT",
+        "Day": "9",
+        "AppointmentDateDisplay": "09 Jan 2021",
+        "TimeSlotDisplay": [
+          {
+            "TimeSlotDisplay": "09:00 AM - 01:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-09T09:00:00+08:00",
+            "slotEndTime": "2021-01-09T13:00:00+08:00",
+            "availableSlotCount": 10
+          },
+          {
+            "TimeSlotDisplay": "02:00 PM - 06:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-01-09T14:00:00+08:00",
+            "slotEndTime": "2021-01-09T18:00:00+08:00",
+            "availableSlotCount": 10
+          }
+        ],
+        "IsAvailable": true
+      },
+      {
+        "AppointmentDate": "2021-01-10T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "SUN",
+        "Day": "10",
+        "AppointmentDateDisplay": "10 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-11T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "MON",
+        "Day": "11",
+        "AppointmentDateDisplay": "11 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-12T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "TUE",
+        "Day": "12",
+        "AppointmentDateDisplay": "12 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-13T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "WED",
+        "Day": "13",
+        "AppointmentDateDisplay": "13 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-14T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "THU",
+        "Day": "14",
+        "AppointmentDateDisplay": "14 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-15T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "FRI",
+        "Day": "15",
+        "AppointmentDateDisplay": "15 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-16T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "SAT",
+        "Day": "16",
+        "AppointmentDateDisplay": "16 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-17T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "SUN",
+        "Day": "17",
+        "AppointmentDateDisplay": "17 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-18T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "MON",
+        "Day": "18",
+        "AppointmentDateDisplay": "18 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-19T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "TUE",
+        "Day": "19",
+        "AppointmentDateDisplay": "19 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-20T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "WED",
+        "Day": "20",
+        "AppointmentDateDisplay": "20 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-21T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "THU",
+        "Day": "21",
+        "AppointmentDateDisplay": "21 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-22T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "FRI",
+        "Day": "22",
+        "AppointmentDateDisplay": "22 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-23T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "SAT",
+        "Day": "23",
+        "AppointmentDateDisplay": "23 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-24T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "SUN",
+        "Day": "24",
+        "AppointmentDateDisplay": "24 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-25T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "MON",
+        "Day": "25",
+        "AppointmentDateDisplay": "25 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-26T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "TUE",
+        "Day": "26",
+        "AppointmentDateDisplay": "26 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-27T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "WED",
+        "Day": "27",
+        "AppointmentDateDisplay": "27 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-28T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "THU",
+        "Day": "28",
+        "AppointmentDateDisplay": "28 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-29T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "FRI",
+        "Day": "29",
+        "AppointmentDateDisplay": "29 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-30T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "SAT",
+        "Day": "30",
+        "AppointmentDateDisplay": "30 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-01-31T00:00:00",
+        "DateTitleDisplay": "Jan 2021",
+        "DayOfWeek": "SUN",
+        "Day": "31",
+        "AppointmentDateDisplay": "31 Jan 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      }
+    ],
+    "Feb 2021": [
+      {
+        "AppointmentDate": "2021-02-01T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "TUE",
+        "Day": "1",
+        "AppointmentDateDisplay": "01 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-02T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "WED",
+        "Day": "2",
+        "AppointmentDateDisplay": "02 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-03T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "THU",
+        "Day": "3",
+        "AppointmentDateDisplay": "03 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-04T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "FRI",
+        "Day": "4",
+        "AppointmentDateDisplay": "04 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-05T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "SAT",
+        "Day": "5",
+        "AppointmentDateDisplay": "05 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-06T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "SUN",
+        "Day": "6",
+        "AppointmentDateDisplay": "06 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-07T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "MON",
+        "Day": "7",
+        "AppointmentDateDisplay": "07 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-08T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "TUE",
+        "Day": "8",
+        "AppointmentDateDisplay": "08 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-09T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "WED",
+        "Day": "9",
+        "AppointmentDateDisplay": "09 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-10T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "THU",
+        "Day": "10",
+        "AppointmentDateDisplay": "10 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-11T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "FRI",
+        "Day": "11",
+        "AppointmentDateDisplay": "11 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-12T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "SAT",
+        "Day": "12",
+        "AppointmentDateDisplay": "12 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-13T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "SUN",
+        "Day": "13",
+        "AppointmentDateDisplay": "13 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-14T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "MON",
+        "Day": "14",
+        "AppointmentDateDisplay": "14 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-15T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "TUE",
+        "Day": "15",
+        "AppointmentDateDisplay": "15 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-16T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "WED",
+        "Day": "16",
+        "AppointmentDateDisplay": "16 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-17T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "THU",
+        "Day": "17",
+        "AppointmentDateDisplay": "17 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-18T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "FRI",
+        "Day": "18",
+        "AppointmentDateDisplay": "18 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-19T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "SAT",
+        "Day": "19",
+        "AppointmentDateDisplay": "19 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-20T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "SUN",
+        "Day": "20",
+        "AppointmentDateDisplay": "20 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-21T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "MON",
+        "Day": "21",
+        "AppointmentDateDisplay": "21 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-22T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "TUE",
+        "Day": "22",
+        "AppointmentDateDisplay": "22 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-23T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "WED",
+        "Day": "23",
+        "AppointmentDateDisplay": "23 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-24T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "THU",
+        "Day": "24",
+        "AppointmentDateDisplay": "24 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-25T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "FRI",
+        "Day": "25",
+        "AppointmentDateDisplay": "25 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-26T00:00:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "SAT",
+        "Day": "26",
+        "AppointmentDateDisplay": "26 Feb 2021",
+        "TimeSlotDisplay": null,
+        "IsAvailable": false
+      },
+      {
+        "AppointmentDate": "2021-02-27T00:00:00+08:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "SUN",
+        "Day": "27",
+        "AppointmentDateDisplay": "27 Feb 2021",
+        "TimeSlotDisplay": [
+          {
+            "TimeSlotDisplay": "09:00 AM - 01:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-02-27T09:00:00+08:00",
+            "slotEndTime": "2021-02-27T13:00:00+08:00",
+            "availableSlotCount": 10
+          },
+          {
+            "TimeSlotDisplay": "02:00 PM - 06:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-02-27T14:00:00+08:00",
+            "slotEndTime": "2021-02-27T18:00:00+08:00",
+            "availableSlotCount": 10
+          }
+        ],
+        "IsAvailable": true
+      },
+      {
+        "AppointmentDate": "2021-02-28T00:00:00+08:00",
+        "DateTitleDisplay": "Feb 2021",
+        "DayOfWeek": "MON",
+        "Day": "28",
+        "AppointmentDateDisplay": "28 Feb 2021",
+        "TimeSlotDisplay": [
+          {
+            "TimeSlotDisplay": "09:00 AM - 01:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-02-28T09:00:00+08:00",
+            "slotEndTime": "2021-02-28T13:00:00+08:00",
+            "availableSlotCount": 10
+          },
+          {
+            "TimeSlotDisplay": "02:00 PM - 06:00 PM",
+            "IsAvailable": true,
+            "slotStartTime": "2021-02-28T14:00:00+08:00",
+            "slotEndTime": "2021-02-28T18:00:00+08:00",
+            "availableSlotCount": 10
+          }
+        ],
+        "IsAvailable": true
+      }
+
+    ]
+  },
+  "TimeSlotTitle": "I prefer the appointment to be within:",
+  "MonthYearList": [
+    {
+      "Month": 1,
+      "Year": 2021,
+      "MonthYearDisplay": "Jan 2021"
+    },
+    {
+      "Month": 2,
+      "Year": 2021,
+      "MonthYearDisplay": "Feb 2021"
+    }
+  ]
+}

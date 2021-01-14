@@ -36,6 +36,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         RecyclerView timeLayout;
 
         private Button selectedDayButton;
+        LinearLayout calendarContent;
         private Button[] days;
         LinearLayout weekOneLayout;
         LinearLayout weekTwoLayout;
@@ -57,25 +58,25 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         private LayoutParams userButtonParams;
 
         public CustomCalendar(Context context, int calenderMonth, string calenderMonthName
-            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse) : base(context)
+            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse,DateTime selectedDate,string selectedTime) : base(context)
         {
-            Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse);
+            Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse, selectedDate, selectedTime);
         }
         public CustomCalendar(Context context, int calenderMonth, string calenderMonthName
-            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs) : base(context, attrs)
+            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs, DateTime selectedDate, string selectedTime) : base(context, attrs)
         {
-            Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse);
+            Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse, selectedDate, selectedTime);
         }
 
         public CustomCalendar(Context context, int calenderMonth, string calenderMonthName
-            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs, int defStyleAttr)
+            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs, int defStyleAttr, DateTime selectedDate, string selectedTime)
             : base(context, attrs, defStyleAttr)
         {
-            Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse);
+            Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse, selectedDate, selectedTime);
         }
 
         private void Initialize(Context context, int calenderMonth, string calenderMonthName
-            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse)
+            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, DateTime selectedDate,string selectedTime)
         {
             DisplayMetrics metrics = Resources.DisplayMetrics;
             SetUserCurrentMonthYear(calenderMonth, calendarYear);
@@ -83,10 +84,13 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             View view = inflater.Inflate(Resource.Layout.AppointmentCalendarLayout, this, true);
             calendar = null;
             calendar = Calendar.GetInstance(Java.Util.TimeZone.Default);
+
             calendar.Set(CalendarField.DayOfMonth, 1);
             calendar.Set(CalendarField.Month, calenderMonth);
             calendar.Set(CalendarField.Year, calendarYear);
 
+            calendarContent = FindViewById<LinearLayout>(Resource.Id.calendarContent);
+            weekTwoLayout = FindViewById<LinearLayout>(Resource.Id.calendar_week_2);
             weekOneLayout = FindViewById<LinearLayout>(Resource.Id.calendar_week_1);
             weekTwoLayout = FindViewById<LinearLayout>(Resource.Id.calendar_week_2);
             weekThreeLayout = FindViewById<LinearLayout>(Resource.Id.calendar_week_3);
@@ -133,8 +137,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
             timeLayout.SetLayoutManager(gridLayoutManager);
             isValidDateTime = isValidDateTime && isDateSelected;
+            //calendar.Set(CalendarField.DayOfMonth, selectedDate.Day);
         }
-
+       
         private void InitializeDaysWeeks()
         {
             weeks = new LinearLayout[6];

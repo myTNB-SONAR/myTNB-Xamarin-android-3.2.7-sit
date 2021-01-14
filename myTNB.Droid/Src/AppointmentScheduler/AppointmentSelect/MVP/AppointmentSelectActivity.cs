@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -30,10 +32,13 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         private TextView timeSlotError;
         private TextView timeSlotNote;
         private TextView appointmentLabel;
+        public DateTime selectedDate;
+        public string selectedTime;
 
         Button calenderNext;
         Button btnSubmitAppointment;
         public CustomCalendar customCalendar;
+        public RelativeLayout ll = null;
         private Snackbar mNoInternetSnackbar;
         RelativeLayout rootview;
 
@@ -114,9 +119,11 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             if (extras != null)
             {
                 applicationDetailDisplay = JsonConvert.DeserializeObject<GetApplicationStatusDisplay>(extras.GetString("applicationDetailDisplay"));
-                schedulerDisplayResponse = JsonConvert.DeserializeObject<SchedulerDisplay>(extras.GetString("newAppointmentResponse"));
+                //schedulerDisplayResponse = JsonConvert.DeserializeObject<SchedulerDisplay>(extras.GetString("newAppointmentResponse"));
                 appointment = extras.GetString("appointment");
                 appointmentLabel.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "dateSectionTitle");
+                //Todo: Remove this code before deployment and this is only for testing.
+                GetTestData();
             }
 
             if (schedulerDisplayResponse != null && schedulerDisplayResponse.ScheduleList != null)
@@ -142,7 +149,18 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             timeSlotNoteContainer.Visibility = ViewStates.Gone;
             timeSlotErrorContainer.Visibility = ViewStates.Gone;
         }
+        void GetTestData()
+        {
+           string appointmentResourepath = "Resource.Raw.AppointmentTestData.json";
+            string schedulerDisplayResponseStirng;
 
+            var inputStream = Resources.OpenRawResource(Resource.Raw.AppointmentTestData);
+            using (StreamReader sr = new StreamReader(inputStream))
+            {
+                schedulerDisplayResponseStirng = sr.ReadToEnd();
+            }
+            schedulerDisplayResponse = JsonConvert.DeserializeObject<SchedulerDisplay>(schedulerDisplayResponseStirng);
+        }
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
@@ -179,6 +197,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             if (e == true)
             {
                 CustomCalendar timeAdapter = (CustomCalendar)sender;
+                selectedDate = timeAdapter.selectedDate;
+                selectedTime = timeAdapter.selectedTime;
 
                 if (applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate == timeAdapter.selectedDate
                     && applicationDetailDisplay.ApplicationAppointmentDetail.TimeSlotDisplay == timeAdapter.selectedTime)
@@ -299,6 +319,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             if (SelectedKeyIndex > 0)
             {
                 SelectedKeyIndex--;
+               calenderNext.Visibility = SelectedKeyIndex  < ScheduleKeys.Count ? ViewStates.Visible : ViewStates.Gone;
+                calenderBack.Visibility = ViewStates.Gone;
             }
             currentMonth.Text = ScheduleKeys[SelectedKeyIndex];
             GetVisibleNumbers(ScheduleKeys[SelectedKeyIndex], SelectedKeyIndex);
@@ -307,12 +329,20 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         //Todo: @Raja to do logic of hide unhide button
         public void OnClickCalenderNext(object sender, System.EventArgs e)
         {
+          
             if (SelectedKeyIndex + 1 < ScheduleKeys.Count)
             {
                 SelectedKeyIndex++;
+                currentMonth.Text = ScheduleKeys[SelectedKeyIndex];
+                calenderNext.Visibility = SelectedKeyIndex+1 == ScheduleKeys.Count ? ViewStates.Gone : ViewStates.Visible;
+                calenderBack.Visibility = SelectedKeyIndex-1 < ScheduleKeys.Count ? ViewStates.Visible : ViewStates.Gone;
+                GetVisibleNumbers(ScheduleKeys[SelectedKeyIndex], SelectedKeyIndex);
             }
-            currentMonth.Text = ScheduleKeys[SelectedKeyIndex];
-            GetVisibleNumbers(ScheduleKeys[SelectedKeyIndex], SelectedKeyIndex);
+            else
+                {
+                    calenderNext.Visibility = ViewStates.Gone;
+                }
+    
         }
 
         public void GetVisibleNumbers(string selectedKey, int SelectedKeyIndex)
@@ -328,14 +358,17 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                         visibleNumbers.Add(Convert.ToInt32(selectedMonth.Value[i].Day));
                     }
                 }
-
-                RelativeLayout ll = null;
-                customCalendar = new CustomCalendar(this, schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Month - 1, "", schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Year, visibleNumbers, schedulerDisplayResponse);
+                if (ll != null && customCalendar != null)
+                {
+                    ll.RemoveView(customCalendar);
+                }
+                customCalendar = new CustomCalendar(this, schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Month - 1, "", schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Year, visibleNumbers, schedulerDisplayResponse,selectedDate,selectedTime);
                 ll = (RelativeLayout)FindViewById<RelativeLayout>(Resource.Id.CalendarLayout);
                 ll.AddView(customCalendar);
                 ll.Visibility = ViewStates.Gone;
                 ll.Visibility = ViewStates.Visible;
                 ll.RefreshDrawableState();
+              
                 customCalendar.DatetimeValidate += Calendar_DatetimeValidate;
                 customCalendar.DatetimeScrollValidate += Calendar_DatetimeScrollValidate;
                 customCalendar.DateChanged += CalendarDateChanged;
