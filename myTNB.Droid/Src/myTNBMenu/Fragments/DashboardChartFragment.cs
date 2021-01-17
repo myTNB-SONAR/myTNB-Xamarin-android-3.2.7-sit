@@ -1856,7 +1856,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
             }
 
-            txtAddress.Text = selectedAccount.AddStreet;
+            //txtAddress.Text = selectedAccount.AddStreet;
+
+            //if not owner mask the address IRUL
+            if (!selectedAccount.IsOwner == true)
+            {
+                txtAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, selectedAccount.AddStreet);
+            }
+            else
+            {
+                txtAddress.Text = selectedAccount.AddStreet;
+            }
+
 
             mdmsDayViewDownLayout.Visibility = ViewStates.Gone;
             mChart.Visibility = ViewStates.Visible;

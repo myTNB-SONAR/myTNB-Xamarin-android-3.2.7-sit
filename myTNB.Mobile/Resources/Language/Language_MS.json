@@ -256,9 +256,14 @@
     "update": "Kemas kini",
     "titleIcUpdate": "Lengkapkan profil myTNB anda sekarang untuk pengalaman myTNB yang lebih baik!",
     "bodyIcUpdate": "Nombor pengenalan anda tidak tercatat dalam profil myTNB anda. Kemas kini sekarang untuk akses dan kawalan yang lebih menyeluruh atas akaun elektrik anda!",
+    "tutorialUpdateNicknameBtn": "BM_Update Nickname",
     "tutorialUsageTitle": "View your accounts details here.",
     "tutorialUsageDesc": "Easily view your account details and manage who has access to your account from here.",
-    "tutorialUsageDescNonOwner": "Easily view your account details from here."
+    "tutorialUsageDescNonOwner": "Easily view your account details from here.",
+    "tutorialAccountTitleNew": "BM_tutorialAccountTitleNew (walkthrough)",
+    "tutorialMoreAcctsDescNew": "BM_tutorialMoreAcctsDescNew (walkthrough)",
+    "tutorialAccountTitleNewSec": "BM_tutorialAccountTitleNewSec (walkthrough)",
+    "tutorialNoAcctDescNew": "BM_tutorialNoAcctDescNew(walkthrough)"
   },
   "Tabbar": {
     "home": "Utama",
