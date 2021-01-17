@@ -420,7 +420,8 @@ namespace myTNB.Mobile
                 else if (CTAType == DetailCTAType.CustomerRating
                    || CTAType == DetailCTAType.ContractorRating
                    || CTAType == DetailCTAType.NewAppointment
-                   || CTAType == DetailCTAType.Reschedule)
+                   || CTAType == DetailCTAType.Reschedule
+                   || CTAType == DetailCTAType.Pay)
                 {
                     type = DetailTutorialType.Action;
                 }
