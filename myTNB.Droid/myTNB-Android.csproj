@@ -961,6 +961,7 @@
     <Compile Include="Src\ManageAccess\Adapter\ManageAccessDeleteAdapter.cs" />
     <Compile Include="Src\ManageAccess\Adapter\ManageAccessAdapter.cs" />
     <Compile Include="Src\ManageAccess\Models\AccountUserAccessData.cs" />
+    <Compile Include="Src\ManageAccess\Models\DeleteAccessAccount.cs" />
     <Compile Include="Src\ManageCards\Activity\ManageCardsActivity.cs" />
     <Compile Include="Src\ManageCards\Adapter\ManageCardsAdapter.cs" />
     <Compile Include="Src\ManageCards\Models\CreditCardData.cs" />
@@ -1065,6 +1066,7 @@
     <Compile Include="Src\MyTNBService\Request\GetRegisteredUser.cs" />
     <Compile Include="Src\MyTNBService\Request\GetAccountAccessRight.cs" />
     <Compile Include="Src\MyTNBService\Request\LogUserAccessRequest.cs" />
+    <Compile Include="Src\MyTNBService\Request\RemoveUserAccessRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\UpdateUserAccessRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\SubmitEnquiryRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetVerifyRequest.cs" />

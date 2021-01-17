@@ -229,7 +229,11 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
                 mobileNumberFieldContainer.AddView(mobileNumberInputComponent);
 
-                //ClearFields();
+                ClearFields();
+                ClearAllErrorFields();
+
+                txtFullName.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.placeholder_name, 0, 0, 0);
+                txtICNumber.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.placeholder_account_no, 0, 0, 0);
 
                 this.userActionsListener.Start();
             }
@@ -501,6 +505,22 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 textInputLayoutICNo.Error = null;
                 textInputLayoutICNo.ErrorEnabled = false;
             }
+            if (!string.IsNullOrEmpty(textInputLayoutICNo.HelperText))
+            {
+                textInputLayoutICNo.HelperText = null;
+                textInputLayoutICNo.HelperTextEnabled = false;
+            }
+            if (!string.IsNullOrEmpty(textInputLayoutFullName.Error))
+            {
+                textInputLayoutFullName.Error = null;
+                textInputLayoutFullName.ErrorEnabled = false;
+            }
+            if (!string.IsNullOrEmpty(textInputLayoutFullName.HelperText))
+            {
+                textInputLayoutFullName.HelperText = null;
+                textInputLayoutFullName.HelperTextEnabled = false;
+            }
+
         }
 
         public bool IsActive()

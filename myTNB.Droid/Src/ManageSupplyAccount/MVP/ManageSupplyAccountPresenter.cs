@@ -147,8 +147,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
             }
             try
             {
-                //var GetAccessAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(new RemoveAccountRequest(accountData.AccountNum));
-                //GetAccountAccessRight getAccountAccessRight = new GetAccountAccessRight(accountData.AccountNum, "string");
+
                 ManageAccessAccountListResponse manageAccessAccountListResponse = await ServiceApiImpl.Instance.GetAccountAccessRightList( new GetAccountAccessRight(accountData.AccountNum));
 
                 if (mView.IsActive())
@@ -166,7 +165,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                 }
                 else
                 {
-                    this.mView.ShowErrorMessageResponse(manageAccessAccountListResponse.Response.DisplayMessage);
+                    this.mView.ManageUserActivity();
+                    //this.mView.ShowErrorMessageResponse(manageAccessAccountListResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)

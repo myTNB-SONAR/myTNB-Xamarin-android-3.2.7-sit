@@ -134,7 +134,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
             email = new ProfileMenuItemContentComponent(this);
             email.SetTitle(GetLabelCommonByLanguage("email").ToUpper());
             email.SetValue("");
-            email.SetIconEmailNotVerify(1);
             email.SetItemActionVisibility(true);
             email.SetFlagEmailVerify(fromEmailVerify);
             email.SetItemActionTitle(GetLabelCommonByLanguage("verify"));

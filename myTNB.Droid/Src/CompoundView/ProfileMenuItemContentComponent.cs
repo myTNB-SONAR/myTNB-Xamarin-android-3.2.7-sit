@@ -56,9 +56,10 @@ namespace myTNB_Android.Src.CompoundView
         {
             if (FlagID)
             {
-                itemVerifyLabel.Visibility = Android.Views.ViewStates.Visible;
+                //itemVerifyLabel.Visibility = Android.Views.ViewStates.Visible;
                 itemActionContainer.Visibility = Android.Views.ViewStates.Visible;
-                itemVerifyLabel.SetBackgroundResource(Resource.Drawable.icons_verify_email);
+                //itemVerifyLabel.SetBackgroundResource(Resource.Drawable.icons_verify_email);
+                itemAction.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.icons_verify_email, 0, 0, 0);
                 itemValue.SetTextColor(Color.ParseColor("#a6a6a6"));
             }
             else
@@ -73,13 +74,15 @@ namespace myTNB_Android.Src.CompoundView
         {
             if (FlagID)
             {
-                infoVerifyIcon.Visibility = Android.Views.ViewStates.Visible;
+                //infoVerifyIcon.Visibility = Android.Views.ViewStates.Visible;
                 itemVerifyLabel.Visibility = Android.Views.ViewStates.Gone;
                 itemActionContainer.Visibility = Android.Views.ViewStates.Gone;
+                itemValue.SetCompoundDrawablesWithIntrinsicBounds(0, 0, Resource.Drawable.icons_email_verified, 0);
             }
             else
             {
-                infoVerifyIcon.Visibility = Android.Views.ViewStates.Gone;
+                itemAction.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.icons_verify_email, 0, 0, 0);
+                //infoVerifyIcon.Visibility = Android.Views.ViewStates.Gone;
             }
         }
 
@@ -104,31 +107,6 @@ namespace myTNB_Android.Src.CompoundView
             {
                 action();
             };
-        }
-
-        public void SetIconEmailNotVerifyVisibility(bool isVisible)
-        {
-            itemVerifyLabel.Visibility = isVisible ? Android.Views.ViewStates.Visible : Android.Views.ViewStates.Gone;
-            //itemVerifyLabel.SetBackgroundResource(Resource.Drawable.smr_why_accounts_info);
-        }
-
-        public void SetIconEmailNotVerify(int value)
-        {
-            if(value == 1)
-            {
-                itemVerifyLabel.Visibility = Android.Views.ViewStates.Visible;
-                itemVerifyLabel.SetBackgroundResource(Resource.Drawable.icons_verify_email);
-            }
-            else
-            {
-                itemVerifyLabel.Visibility = Android.Views.ViewStates.Gone;
-            }
-        }
-
-
-        public void SetEmailVerify()
-        {
-            itemVerifyLabel.SetBackgroundResource(Resource.Drawable.smr_why_accounts_info);
         }
 
         public void EnableActionCall(bool isEnable)

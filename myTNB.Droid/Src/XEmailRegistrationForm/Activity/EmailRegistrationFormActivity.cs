@@ -33,6 +33,7 @@ using myTNB_Android.Src.RegistrationForm.Activity;
 using System.Threading.Tasks;
 using Android.Util;
 using System.Timers;
+using static Android.Resource;
 
 namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 {
@@ -135,11 +136,23 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
                 txtEmailReg.TextChanged += TxtEmailReg_TextChanged;
 
                 this.userActionsListener.Start();
+
+                ClearFields();
+                ClearAllErrorFields();
+
+                txtEmailReg.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.placeholder_email_new, 0, 0, 0);
+                txtPasswordReg.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.placeholder_password_new, 0, 0, 0);
+
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public bool IsActive()
+        {
+            return Window.DecorView.RootView.IsShown && !IsFinishing;
         }
 
         private void TxtEmailReg_TextChanged(object sender, TextChangedEventArgs e)
@@ -294,22 +307,27 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
                 textInputLayoutPasswordReg.Error = null;
                 textInputLayoutPasswordReg.ErrorEnabled = false;
             }
-          
+
+            if (!string.IsNullOrEmpty(textInputLayoutEmailReg.HelperText))
+            {
+                textInputLayoutEmailReg.HelperText = null;
+                textInputLayoutEmailReg.HelperTextEnabled = false;
+            }
+
+
+            if (!string.IsNullOrEmpty(textInputLayoutPasswordReg.HelperText))
+            {
+                textInputLayoutPasswordReg.HelperText = null;
+                textInputLayoutPasswordReg.HelperTextEnabled = false;
+            }
+
         }
-
-        public bool IsActive()
-        {
-            return Window.DecorView.RootView.IsShown;
-        }
-
-
       
         public void ShowBackScreen()
         {
             Finish();
         }
-
-       
+    
         public void ShowEmptyEmailError()
         {
             //ClearInvalidEmailError();

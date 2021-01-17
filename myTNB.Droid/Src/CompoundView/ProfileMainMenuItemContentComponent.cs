@@ -54,7 +54,8 @@ namespace myTNB_Android.Src.CompoundView
             if (FlagID)
             {
                 itemVerifyLabel.Visibility = Android.Views.ViewStates.Visible;
-                itemVerifyLabel.SetBackgroundResource(Resource.Drawable.icons_verify_email);
+                //itemVerifyLabel.SetBackgroundResource(Resource.Drawable.icons_verify_email);
+                itemVerifyLabel.SetCompoundDrawablesWithIntrinsicBounds(0, 0, Resource.Drawable.icons_verify_email, 0);
             }
             else
             {

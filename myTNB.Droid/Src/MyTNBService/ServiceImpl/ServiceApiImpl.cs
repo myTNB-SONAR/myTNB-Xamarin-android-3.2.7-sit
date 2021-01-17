@@ -197,6 +197,26 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
+        public Task<LogUserAccessResponse> AddUserAcess_OT([Body] Request.BaseRequest request)
+        {
+            return api.AddUserAcess_OT<LogUserAccessResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //wan   //api add user access
+        }
+
+        /// <summary>
+        /// Call GetAccountActivityLogList with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<LogUserAccessResponse> RemoveUserAcess_OT([Body] Request.BaseRequest request)
+        {
+            return api.RemoveUserAcess_OT<LogUserAccessResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //wan   //api remove user access
+        }
+
+        /// <summary>
+        /// Call GetAccountActivityLogList with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public Task<LogUserAccessResponse> GetAccountActivityLogList([Body] Request.BaseRequest request)
         {
             return api.GetAccountActivityLogList<LogUserAccessResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //2enapps wan   //api log activity user access
