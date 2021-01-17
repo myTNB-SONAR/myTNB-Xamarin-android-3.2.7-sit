@@ -719,7 +719,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                     float heightRatio = 84f / 72f;
                     int cardHeight = (int)(cardWidth * (heightRatio));
 
-                    currentCard.Height = cardHeight;
+                    currentCard.Height = cardHeight + 20;
                     currentCard.Width = cardWidth + 80;
 
                     float paddingRatio = 10f / 72f;

@@ -266,6 +266,8 @@ namespace myTNB_Android.Src.Profile.Activity
                 UpdateFont();
                 MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(true);
                 OnBackProceed();
+                selectItemAdapter = new SelectItemAdapter(this, FontItemList);
+                FontListView.Adapter = selectItemAdapter;
                 HideShowProgressDialog();
                 
             });

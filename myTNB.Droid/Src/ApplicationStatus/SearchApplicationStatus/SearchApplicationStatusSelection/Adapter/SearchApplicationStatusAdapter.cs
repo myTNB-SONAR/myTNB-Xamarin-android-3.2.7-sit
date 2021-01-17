@@ -227,6 +227,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                     ctaSelection.Visibility = ViewStates.Gone;
                     filterSelection.Visibility = ViewStates.Visible;
                     txtFilterName.Text = item.SearchTypeDisplay;
+                    txtFilterName.TextSize = TextViewUtils.GetFontSize(16f);
                     imgApplicationFilter.Visibility = ViewStates.Gone;
                     chkApplicationFilter.Visibility = ViewStates.Gone;
                     txtFilterName.Clickable = true;
