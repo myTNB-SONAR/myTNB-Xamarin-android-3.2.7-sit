@@ -1353,6 +1353,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 SetResult(Result.Ok);
                 Finish();
             }
+            else if (resultCode == Result.Ok && requestCode == Constants.SELECT_PAYMENT_ACTIVITY_CODE)
+            {
+
+            }
         }
 
         private async void OnReloadDetails(UpdateType updateType)

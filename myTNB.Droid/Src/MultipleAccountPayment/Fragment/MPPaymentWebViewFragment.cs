@@ -342,6 +342,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         //((PaymentActivity)this.mActivity).SetResult(Result.Ok);
                         //((PaymentActivity)this.mActivity).Finish();
                     }
+                    else if (url.Contains("mytnbapp://action=setAppointment"))
+                    {
+                        mActivity.SetResult(Result.Ok);
+                        mActivity.Finish();
+                    }
                     else
                     {
                         view.LoadUrl(url);
@@ -429,6 +434,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         Intent DashboardIntent = new Intent(mActivity, typeof(DashboardHomeActivity));
                         DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                         mActivity.StartActivity(DashboardIntent);
+                    }
+                    else if (url.Contains("mytnbapp://action=setAppointment"))
+                    {
+                        mActivity.SetResult(Result.Ok);
+                        mActivity.Finish();
                     }
                     else
                     {
