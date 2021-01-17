@@ -999,7 +999,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
                                 if (IsRefresh)
                                 {
-                                    ShowProgressDialog();
+                                    //ShowProgressDialog();
                                 }
 
                                 if (ApplicationStatusSearchDetailCache.Instance.ShouldSave)
@@ -1034,6 +1034,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                 }
                                 if (!isFilter)
                                 {
+                                    applicationStatusRefreshContainer.Visibility = ViewStates.Gone;
                                     applicationStatusLandingRecyclerView.Visibility = ViewStates.Gone;
                                     mappicationPopup.Visibility = ViewStates.Gone;
                                     applicationStatusLandingShimmerLayout.Visibility = ViewStates.Visible;

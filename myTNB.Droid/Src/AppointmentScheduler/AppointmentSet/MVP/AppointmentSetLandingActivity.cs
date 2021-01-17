@@ -263,16 +263,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
                 // https://github.com/xamarin/monodroid-samples/issues/9
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.EventTimezone, "UTC");
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.EventEndTimezone, "UTC");
-
                 Android.Net.Uri uri = ContentResolver.Insert(CalendarContract.Events.ContentUri, eventValues);
-                MyTNBAppToolTipBuilder addToCalendarSuccess = MyTNBAppToolTipBuilder.Create(this
-                    , MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                    .SetTitle(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "addToCalendarSuccessTitle"))
-                    .SetMessage(Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "addToCalendarSuccessMessage"))
-                    .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"));
-                addToCalendarSuccess.Build();
-                addToCalendarSuccess.Show();
 
+                ToastUtils.OnDisplayToast(this, Utility.GetLocalizedLabel("ApplicationStatusAppointmentSuccess", "addToCalendarSuccessMessage"));
             }
             catch (Exception e)
             {
