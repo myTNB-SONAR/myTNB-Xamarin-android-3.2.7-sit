@@ -262,13 +262,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         public class MyTNBWebViewClient : WebViewClient
         {
 
-            public Android.App.Activity mActivity;
+            public PaymentActivity mActivity;
             public ProgressBar progressBar;
             private bool isRedirected = false;
             private SummaryDashBordRequest summaryDashBoardRequest = null;
 
 
-            public MyTNBWebViewClient(Android.App.Activity mActivity, ProgressBar progress, SummaryDashBordRequest summaryDashBoardRequest)
+            public MyTNBWebViewClient(PaymentActivity mActivity, ProgressBar progress, SummaryDashBordRequest summaryDashBoardRequest)
             {
                 this.mActivity = mActivity;
                 this.progressBar = progress;
@@ -344,8 +344,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                     else if (url.Contains("mytnbapp://action=setAppointment"))
                     {
-                        mActivity.SetResult(Result.Ok);
-                        mActivity.Finish();
+                        isRedirected = true;
+                        mActivity.OnSetAppointment();
                     }
                     else
                     {
@@ -435,10 +435,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                         mActivity.StartActivity(DashboardIntent);
                     }
-                    else if (url.Contains("mytnbapp://action=setAppointment"))
+                    else if (url.Contains("mytnbapp://action=setAppointment") && !isRedirected)
                     {
-                        mActivity.SetResult(Result.Ok);
-                        mActivity.Finish();
+                        mActivity.OnSetAppointment();
                     }
                     else
                     {

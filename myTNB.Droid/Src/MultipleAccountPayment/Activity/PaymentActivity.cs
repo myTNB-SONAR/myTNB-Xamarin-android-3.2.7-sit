@@ -8,7 +8,11 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Google.Android.Material.AppBar;
+using myTNB.Mobile;
+using myTNB.Mobile.API.DisplayModel.Scheduler;
+using myTNB.Mobile.API.Managers.Scheduler;
 using myTNB.Mobile.API.Models.ApplicationStatus;
+using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.MultipleAccountPayment.Fragment;
@@ -51,6 +55,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private string ApplicationSystem = string.Empty;
         private string StatusId = string.Empty;
         private string StatusCode = string.Empty;
+        internal GetApplicationStatusDisplay ApplicationDetailDisplay;
 
         public bool paymentReceiptGenerated = false;
 
@@ -136,6 +141,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         if (extras.ContainsKey("APPLICATIONPAYMENTDETAIL"))
                         {
                             ApplicationPaymentDetail = DeSerialze<ApplicationPaymentDetail>(extras.GetString("APPLICATIONPAYMENTDETAIL"));
+                        }
+                        if (extras.ContainsKey("ApplicationDetailDisplay"))
+                        {
+                            ApplicationDetailDisplay = DeSerialze<GetApplicationStatusDisplay>(extras.GetString("ApplicationDetailDisplay"));
                         }
                         if (extras.ContainsKey("ApplicationType"))
                         {
@@ -310,7 +319,30 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
 
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void SummaryDashBaordUpdate(SummaryDashBordRequest summaryDashBoardRequest)
@@ -343,7 +375,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             base.Finish();
         }
 
-
         public override void OnTrimMemory(TrimMemory level)
         {
             base.OnTrimMemory(level);
@@ -359,6 +390,42 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public async void OnSetAppointment()
+        {
+            ShowProgressDialog();
+
+            string appointment = "NewAppointment";
+            try
+            {
+                string businessArea = ApplicationDetailDisplay.BusinessArea ?? string.Empty;
+                SchedulerDisplay response = await ScheduleManager.Instance.GetAvailableAppointment(businessArea);
+                if (response.StatusDetail.IsSuccess)
+                {
+                    Intent intent = new Intent(this, typeof(AppointmentSelectActivity));
+                    intent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(ApplicationDetailDisplay));
+                    intent.PutExtra("newAppointmentResponse", JsonConvert.SerializeObject(response));
+                    intent.PutExtra("appointment", appointment);
+                    StartActivityForResult(intent, Constants.APPLICATION_STATUS_DETAILS_SCHEDULER_REQUEST_CODE);
+                    SetResult(Result.Ok);
+                    Finish();
+                }
+                else
+                {
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                       .SetTitle(response.StatusDetail.Title)
+                       .SetMessage(response.StatusDetail.Message)
+                       .SetCTALabel(response.StatusDetail.PrimaryCTATitle)
+                       .Build();
+                    errorPopup.Show();
+                }
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+            HideProgressDialog();
         }
 
         //  TODO: AndroidX Temporary Fix for Android 5,5.1 

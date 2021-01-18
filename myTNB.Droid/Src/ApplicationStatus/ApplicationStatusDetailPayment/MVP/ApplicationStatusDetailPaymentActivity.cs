@@ -85,8 +85,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
                 intent.PutExtra("ApplicationSystem", applicationDetailDisplay.System);
                 intent.PutExtra("StatusId", applicationDetailDisplay?.ApplicationStatusDetail?.StatusId.ToString() ?? string.Empty);
                 intent.PutExtra("StatusCode", applicationDetailDisplay?.ApplicationStatusDetail?.StatusCode ?? string.Empty);
+                intent.PutExtra("ApplicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay) ?? string.Empty);
                 StartActivityForResult(intent, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
-
                 try
                 {
                     FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
