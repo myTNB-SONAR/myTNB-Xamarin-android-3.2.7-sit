@@ -357,8 +357,8 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
         {
             ClearInvalidPasswordHint();
             textInputLayoutPasswordReg.Error = null;
-            if (textInputLayoutPasswordReg.Error != Utility.GetLocalizedErrorLabel("passwordHint")) {
-                textInputLayoutPasswordReg.Error = Utility.GetLocalizedErrorLabel("passwordHint");
+            if (textInputLayoutPasswordReg.Error != Utility.GetLocalizedErrorLabel("invalid_password")) {
+                textInputLayoutPasswordReg.Error = Utility.GetLocalizedErrorLabel("invalid_password");
             }
             if (!textInputLayoutPasswordReg.ErrorEnabled)
                 textInputLayoutPasswordReg.ErrorEnabled = true;
