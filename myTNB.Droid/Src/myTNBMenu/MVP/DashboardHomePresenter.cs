@@ -122,20 +122,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 		public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
 		{
-			try
-			{
-				if (requestCode == Constants.SELECT_ACCOUNT_REQUEST_CODE)
-				{
-					if (resultCode == Result.Ok)
-					{
-						Bundle extras = data.Extras;
+            try
+            {
+                if (requestCode == Constants.SELECT_ACCOUNT_REQUEST_CODE)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        Bundle extras = data.Extras;
 
                         CustomerBillingAccount selectedAccount = JsonConvert.DeserializeObject<CustomerBillingAccount>(extras.GetString(Constants.SELECTED_ACCOUNT));
 
-						if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
-						{
+                        if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
+                        {
                             if (selectedAccount != null && selectedAccount.SmartMeterCode != null && selectedAccount.SmartMeterCode.Equals("0"))
-							{
+                            {
                                 if (!string.IsNullOrEmpty(selectedAccount.AccNum) && !UsageHistoryEntity.IsSMDataUpdated(selectedAccount.AccNum))
                                 {
                                     UsageHistoryEntity storedEntity = new UsageHistoryEntity();
@@ -174,8 +174,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                     LoadUsageHistory(selectedAccount);
                                 }
                             }
-							else
-							{
+                            else
+                            {
                                 if (!SMUsageHistoryEntity.IsSMDataUpdated(selectedAccount.AccNum))
                                 {
                                     //Get stored data
@@ -226,8 +226,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                 }
                             }
                         }
-						else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
-						{
+                        else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
+                        {
                             this.mView.SetAccountName(selectedAccount.AccDesc);
                             AccountData accountData = new AccountData();
                             CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccNum);
@@ -239,13 +239,21 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
                             this.mView.ShowBillMenu(accountData);
                         }
-					}
-				}
-			}
-			catch (System.Exception e)
-			{
-				Utility.LoggingNonFatalError(e);
-			}
+                    }
+                }
+                else if (requestCode == Constants.UPDATE_ID_REQUEST)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        this.mView.SetMenuMoreCheck();
+                        OnMenuSelect(Resource.Id.menu_more);
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
 		}
 
 		public void OnMenuSelect(int resourceId)

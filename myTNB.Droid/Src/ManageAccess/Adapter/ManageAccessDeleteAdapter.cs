@@ -132,7 +132,8 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
 
             public ManageAccessFilterViewHolder(View itemView) : base(itemView)
             {
-                TextViewUtils.SetMuseoSans300Typeface(txtUserAccessTitle, txtUserAccessBody);
+                TextViewUtils.SetMuseoSans300Typeface(txtUserAccessBody);
+                TextViewUtils.SetMuseoSans500Typeface(txtUserAccessTitle);
             }
         }
 

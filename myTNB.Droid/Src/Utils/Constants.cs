@@ -117,6 +117,8 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly int MANAGE_SUPPLY_ACCOUNT_REQUEST = 0x08;
 
+        internal static readonly int UPDATE_ID_REQUEST = 0x013;
+
         internal static readonly int REQUEST_ATTACHED_CAMERA_IMAGE = 0x09;
         internal static readonly int REQUEST_ATTACHED_GALLERY_IMAGE = 0x0a;
 

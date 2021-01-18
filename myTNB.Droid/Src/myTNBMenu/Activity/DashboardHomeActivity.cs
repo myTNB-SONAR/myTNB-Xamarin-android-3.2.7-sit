@@ -546,7 +546,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowIdentificationUpdate()
         {
             // TODO : START ACTIVITY
-            StartActivity(typeof(UpdateIDActivity));
+            Intent updateID = new Intent(this, typeof(UpdateIDActivity));
+            StartActivityForResult(updateID, Constants.UPDATE_ID_REQUEST);
         }
 
         public void ShowBillMenu(AccountData selectedAccount)
@@ -1575,6 +1576,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void SetDashboardHomeCheck()
         {
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_dashboard).SetChecked(true);
+        }
+
+        public void SetMenuMoreCheck()
+        {
+            bottomNavigationView.Menu.FindItem(Resource.Id.menu_more).SetChecked(true);
         }
 
         public void ShowToBeAddedToast()
