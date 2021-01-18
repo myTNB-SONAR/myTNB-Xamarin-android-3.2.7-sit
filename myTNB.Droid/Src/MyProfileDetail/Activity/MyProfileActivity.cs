@@ -124,7 +124,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             myTNBAccountItems.Add(fullName);
 
             referenceNumber = new ProfileMenuItemContentComponent(this);
-            referenceNumber.SetTitle(GetLabelCommonByLanguage("idNumber").ToUpper());
+            referenceNumber.SetTitle(Utility.GetLocalizedLabel("Tnb_Profile", "lblID").ToUpper());
             referenceNumber.SetValue("");
             referenceNumber.SetFlagID(fromIDFlag);
             referenceNumber.SetItemActionTitle(GetLabelCommonByLanguage("update"));
@@ -283,8 +283,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
         {
             try
             {
-                mobileNumber.SetValue(newPhone);
-                Snackbar updatePhoneSnackBar = Snackbar.Make(rootView, GetLabelByLanguage("mobileNumberVerified"), Snackbar.LengthIndefinite)
+                mobileNumber.SetValue(newPhone); 
+                Snackbar updatePhoneSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "mobileNumberVerified"), Snackbar.LengthIndefinite)
                             .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
                              {
@@ -304,11 +304,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
         }
 
-        private void ShowPasswordUpdateSuccess()
+        private void ShowPasswordUpdateSuccess() 
         {
             try
             {
-                Snackbar updatePassWordBar = Snackbar.Make(rootView, GetLabelByLanguage("passwordUpdateSuccess"), Snackbar.LengthIndefinite)
+                Snackbar updatePassWordBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "passwordUpdateSuccess"), Snackbar.LengthIndefinite)
                             .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>
                              {
@@ -331,7 +331,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
         {
             try
             {
-                Snackbar updateNameBar = Snackbar.Make(rootView, GetLabelByLanguage("NameUpdateSuccess"), Snackbar.LengthIndefinite)
+                Snackbar updateNameBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "NameUpdateSuccess"), Snackbar.LengthIndefinite)
                             .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>
                              {
@@ -355,9 +355,9 @@ namespace myTNB_Android.Src.MyAccount.Activity
             try
             {
                 string Email = "";
-                UserEntity userEntity = UserEntity.GetActive();
+                UserEntity userEntity = UserEntity.GetActive(); 
                 Email = userEntity.Email;
-                Snackbar updateEmailBar = Snackbar.Make(rootView, GetLabelByLanguage("EmailUpdateSuccess") + Email, Snackbar.LengthIndefinite)
+                Snackbar updateEmailBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "toast_email_send") + Email, Snackbar.LengthIndefinite)
                             .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>
                              {
@@ -381,7 +381,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
         {
             try
             {
-                Snackbar updateEmailBar = Snackbar.Make(rootView, GetLabelByLanguage("IDUpdateSuccess"), Snackbar.LengthIndefinite)
+                Snackbar updateEmailBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "IDUpdateSuccess"), Snackbar.LengthIndefinite)
                             .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>
                              {

@@ -2694,7 +2694,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     NeedHelpHide = isNeedHelpHide,
                     IsButtonShow = false,
-                    IsButtonUpdateShow = true
+                    IsButtonUpdateShow = false
                 });
             }
 

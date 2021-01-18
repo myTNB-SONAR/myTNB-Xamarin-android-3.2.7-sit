@@ -327,7 +327,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
                 additionalAccountListRecyclerView.SetLayoutManager(layoutManager2);
                 additionalAccountListRecyclerView.SetAdapter(additionalAdapter);
-                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 var boxcondition = new CheckBox(this)
                 {
                     ScaleX = 0.8f,

@@ -40,7 +40,7 @@ namespace myTNB_Android.Src.FindUs.Activity
 {
     [Activity(Label = "Find Us"
         , ScreenOrientation = ScreenOrientation.Portrait
-        , Theme = "@style/Theme.FindUs")]
+        , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class MapActivity : BaseActivityCustom, IOnMapReadyCallback, GoogleMap.IOnMyLocationButtonClickListener, FindUsContract.IView, Android.Gms.Tasks.IOnSuccessListener, Android.Gms.Tasks.IOnFailureListener, Android.Locations.ILocationListener
     {
         private readonly string TAG = "FindUSActivity";

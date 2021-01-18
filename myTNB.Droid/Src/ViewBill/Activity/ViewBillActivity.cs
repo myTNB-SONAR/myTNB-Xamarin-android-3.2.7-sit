@@ -32,7 +32,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
 {
     [Activity(Label = "@string/viewbill_activity_title"
           , ScreenOrientation = ScreenOrientation.Portrait
-          , Theme = "@style/Theme.AddAccount")]
+          , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class ViewBillActivity : BaseToolbarAppCompatActivity, ViewBillContract.IView
     {
 

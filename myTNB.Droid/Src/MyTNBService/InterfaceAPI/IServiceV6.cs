@@ -176,6 +176,10 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> ChangeNewPassword<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SendResetPasswordCode_OT")]
+        Task<T> SendResetPasswordCode_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token); //yana
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/SendUpdatePhoneTokenSMSV2")]
         Task<T> SendUpdatePhoneTokenSMSV2<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
@@ -254,5 +258,6 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetPaymentTransactionId")]
         Task<T> GetPaymentTransactionId<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+        
     }
 }

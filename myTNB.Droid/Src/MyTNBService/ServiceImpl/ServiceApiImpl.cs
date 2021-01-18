@@ -427,6 +427,17 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             return api.ChangeNewPassword<ChangeNewPasswordResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
+
+        /// <summary>
+        /// Call ChangeNewPassword with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SendResetPasswordCodeResponse> ChangeNewPasswordNew([Body] Request.BaseRequest request)
+        {
+            return api.SendResetPasswordCode_OT<SendResetPasswordCodeResponse>(request, CancellationTokenSourceWrapper.GetToken()); //yana
+        }
+
         /// <summary>
         /// Call SendUpdatePhoneTokenSMS with default timeout.
         /// </summary>

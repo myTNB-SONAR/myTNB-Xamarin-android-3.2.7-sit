@@ -319,7 +319,7 @@ namespace myTNB_Android.Src.Utils
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                         .SetTitle(Utility.GetLocalizedLabel("Register", "EmailHeaderVerification"))
                         .SetMessage(Utility.GetLocalizedLabel("Register", "EmailBodyVerification"))
-                        .SetContentGravity(Android.Views.GravityFlags.Center)
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("Register", "gotIt"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "resend"))
                         .SetSecondaryCTAaction(() =>
