@@ -47,7 +47,6 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                     displayModel.Content.ApplicationTypeReference = applicationModuleDescription;
                     displayModel.Content.IsSaveMessageDisplayed = false;
                     displayModel.Content.IsFullApplicationTooltipDisplayed = true;
-                    displayModel.Content.IsDeleteEnable = isSavedApplication;
                     displayModel.Content.IsSavedApplication = isSavedApplication;
 
                     displayModel.Content.ApplicationDetail.ApplicationId = applicationID;
@@ -125,6 +124,10 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                                     if (GetObjectValue(props, "snNo") is string snNo && snNo.IsValid())
                                     {
                                         displayModel.Content.SNNumber = snNo;
+                                    }
+                                    if (GetObjectValue(props, "isOwnApplication") is bool isOwnApplication)
+                                    {
+                                        displayModel.Content.IsOwnApplication = isOwnApplication;
                                     }
                                 }
                             }
@@ -232,6 +235,7 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                         displayModel.Content.ApplicationAppointmentDetail = response.Content.ApplicationAppointmentDetail;
                     }
                     SetPaymentDisplay(ref displayModel);
+                    displayModel.Content.IsDeleteEnable = isSavedApplication && !displayModel.Content.IsOwnApplication;
                 }
 
                 return displayModel;

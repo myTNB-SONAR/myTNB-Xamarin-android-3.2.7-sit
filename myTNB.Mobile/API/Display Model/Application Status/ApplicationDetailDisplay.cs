@@ -160,6 +160,8 @@ namespace myTNB.Mobile
         /// </summary>
         public bool IsDeleteEnable { set; get; }
 
+        public bool IsOwnApplication { set; get; }
+
         /// <summary>
         /// Determines if BCRM is Offline and if need to show BCRM Downtime
         /// </summary>
