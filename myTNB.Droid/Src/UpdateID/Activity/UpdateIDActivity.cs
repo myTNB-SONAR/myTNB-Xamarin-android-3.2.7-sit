@@ -408,11 +408,11 @@ namespace myTNB_Android.Src.UpdateID.Activity
         {
             string ic_no = txtICNumber.Text.ToString().Trim();
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.THREE_PART_WITH_HEADER_TWO_BUTTON)
-                        .SetTitle(Utility.GetLocalizedLabel("Common", "updateIdTitle"))
+                        .SetTitle(Utility.GetLocalizedLabel("Profile", "updateIdTitle"))
                         .SetSubTitle(ic_no)
-                        .SetMessage(Utility.GetLocalizedLabel("Common", "updateIdMessage"))
-                        .SetContentGravity(Android.Views.GravityFlags.Center)
-                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "re_enter"))
+                        .SetMessage(Utility.GetLocalizedLabel("Profile", "updateIdMessage"))
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Profile", "re_enter"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
                         .SetSecondaryCTAaction(() =>
                         {
@@ -645,9 +645,9 @@ namespace myTNB_Android.Src.UpdateID.Activity
 
         public void ShowFullICError()
         {
-            if (textInputLayoutICNo.Error != Utility.GetLocalizedErrorLabel("mykadhint"))
+            if (textInputLayoutICNo.Error != Utility.GetLocalizedLabel("OneLastThing", "mykadhint"))
             {
-                textInputLayoutICNo.Error = Utility.GetLocalizedErrorLabel("mykadhint");
+                textInputLayoutICNo.Error = Utility.GetLocalizedLabel("OneLastThing", "mykadhint");
             }
 
             if (!textInputLayoutICNo.ErrorEnabled)
@@ -657,9 +657,9 @@ namespace myTNB_Android.Src.UpdateID.Activity
         public void ShowFullArmyIdError()
         {
             // ClearFullNameError();
-            if (textInputLayoutICNo.Error != Utility.GetLocalizedErrorLabel("armyidhint"))
+            if (textInputLayoutICNo.Error != Utility.GetLocalizedLabel("OneLastThing", "armyidhint"))
             {
-                textInputLayoutICNo.Error = Utility.GetLocalizedErrorLabel("armyidhint");
+                textInputLayoutICNo.Error = Utility.GetLocalizedLabel("OneLastThing", "armyidhint");
             }
 
             if (!textInputLayoutICNo.ErrorEnabled)
@@ -669,9 +669,9 @@ namespace myTNB_Android.Src.UpdateID.Activity
         public void ShowFullPassportError()
         {
             // ClearFullNameError();
-            if (textInputLayoutICNo.Error != Utility.GetLocalizedErrorLabel("passporthint"))
+            if (textInputLayoutICNo.Error != Utility.GetLocalizedLabel("OneLastThing", "passporthint"))
             {
-                textInputLayoutICNo.Error = Utility.GetLocalizedErrorLabel("passporthint");
+                textInputLayoutICNo.Error = Utility.GetLocalizedLabel("OneLastThing", "passporthint");
             }
 
             if (!textInputLayoutICNo.ErrorEnabled)

@@ -1074,9 +1074,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         public void ShowFullICError()
         {
             ClearICHint();
-            if (textInputLayoutICNo.Error != Utility.GetLocalizedErrorLabel("mykadhint"))
+            if (textInputLayoutICNo.Error != Utility.GetLocalizedLabel("OneLastThing", "mykadhint"))
             {
-                textInputLayoutICNo.Error = Utility.GetLocalizedErrorLabel("mykadhint");
+                textInputLayoutICNo.Error = Utility.GetLocalizedLabel("OneLastThing", "mykadhint");
             }
 
             if (!textInputLayoutICNo.ErrorEnabled)
@@ -1086,9 +1086,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         public void ShowFullArmyIdError()
         {
             ClearICHint();
-            if (textInputLayoutICNo.Error != Utility.GetLocalizedErrorLabel("armyidhint"))
+            if (textInputLayoutICNo.Error != Utility.GetLocalizedLabel("OneLastThing", "armyidhint")) 
             {
-                textInputLayoutICNo.Error = Utility.GetLocalizedErrorLabel("armyidhint");
+                textInputLayoutICNo.Error = Utility.GetLocalizedLabel("OneLastThing", "armyidhint");
             }
 
             if (!textInputLayoutICNo.ErrorEnabled)
@@ -1098,9 +1098,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         public void ShowFullPassportError()
         {
             ClearICHint();
-            if (textInputLayoutICNo.Error != Utility.GetLocalizedErrorLabel("passporthint"))
+            if (textInputLayoutICNo.Error != Utility.GetLocalizedLabel("OneLastThing", "passporthint"))
             {
-                textInputLayoutICNo.Error = Utility.GetLocalizedErrorLabel("passporthint");
+                textInputLayoutICNo.Error = Utility.GetLocalizedLabel("OneLastThing", "passporthint");
             }
 
             if (!textInputLayoutICNo.ErrorEnabled)

@@ -674,12 +674,16 @@
     "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
     "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah.",
-     //addby syahmi
-     "titleProfile": "Profil myTNB",
-     "paymentMethod": "BM_My Payment Methods",
-     "myElecttricityAcc": "Akaun Elektrik Saya",
-     "appSetting": "Tetapan Aplikasi",
-     "learnMore": "Ketahui Lebih Lanjut mengenai TNB"
+    //addby syahmi
+    "titleProfile": "Profil myTNB",
+    "paymentMethod": "BM_My Payment Methods",
+    "myElecttricityAcc": "Akaun Elektrik Saya",
+    "appSetting": "Tetapan Aplikasi",
+    "learnMore": "Ketahui Lebih Lanjut mengenai TNB",
+    //addby yana
+    "updateIdTitle": "Sahkan Nombor Pengenalan Anda:",
+    "updateIdMessage": "Pastikan nomnor pengenalan anda betul kerana hanya boleh mengemaskini sekali sahaja.",
+    "re_enter": "Masukkan semula"
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",
@@ -851,7 +855,9 @@
     "manageUserCancelAddAccessDialogTitle": "BM_manageUserCancelAddAccessDialogTitle",
     "manageUserCancelAddAccessDialogMessage": "BM_manageUserCancelAddAccessDialogMessage",
     "inviteSuccess": "BM_inviteSuccess",
-    "cancelAddSuccess": "BM_cancelAddSuccess"
+    "cancelAddSuccess": "BM_cancelAddSuccess",
+    "manageUserAccess": "BM_Manage User Access",
+    "manageAutopay": "BM_Manage Autopay"
   },
   "Onboarding": {
     "letsStart": "Jom mulakan!",
@@ -1299,19 +1305,17 @@
     "continue" : "Teruskan"
   },
 
-  "OT_Uncategorize":{ 
-  "manageUserAccess": "BM_Manage User Access",
-  "manageAutopay": "BM_Manage Autopay",
-  "updateIdTitle": "Sahkan Nombor Pengenalan Anda:",
-  "continue": "Teruskan",
-  "updateIdMessage": "Pastikan nomnor pengenalan anda betul kerana hanya boleh mengemaskini sekali sahaja.",
-  "re_enter": "Masukkan semula",
-  "titleNonOwnerAddAcc": "BM_Continue adding the account and give it a name for your easy reference.",
-  "email_address": "Alamat e-mel",
-  "email_user_address": "Alamat e-mel pengguna",
-  "ManageUserTitle": "BM_Give this user access to:",
-  "error_NotExistsAccountMessage": "Nombor akaun yang anda masukkan ini tidak dapat ditemui.",
-  "later": "Tangguhkan",
-  "ApplyforBilling": "Buat Permohonan e-Billing"
-   }
+  "OT_Uncategorize": {
+
+
+    "continue": "Teruskan",
+    
+    "titleNonOwnerAddAcc": "BM_Continue adding the account and give it a name for your easy reference.",
+    "email_address": "Alamat e-mel",
+    "email_user_address": "Alamat e-mel pengguna",
+    "ManageUserTitle": "BM_Give this user access to:",
+    "error_NotExistsAccountMessage": "Nombor akaun yang anda masukkan ini tidak dapat ditemui.",
+    "later": "Tangguhkan",
+    "ApplyforBilling": "Buat Permohonan e-Billing"
+  }
 }
