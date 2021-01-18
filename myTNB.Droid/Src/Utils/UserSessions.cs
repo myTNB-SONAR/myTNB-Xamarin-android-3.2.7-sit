@@ -77,7 +77,10 @@ namespace myTNB_Android.Src.Utils
             return prefs.GetString("notificationType", null);
         }
 
-        internal static void SetApplicationStatusNotification(string saveID, string applciationID, string applicationType)
+        internal static void SetApplicationStatusNotification(string saveID
+            , string applciationID
+            , string applicationType
+            , string system)
         {
             if (!string.IsNullOrEmpty(applicationType) && (!string.IsNullOrEmpty(saveID) || !string.IsNullOrEmpty(applciationID)))
             {
@@ -85,7 +88,8 @@ namespace myTNB_Android.Src.Utils
                 {
                     SaveApplicationID = saveID,
                     ApplicationID = applciationID,
-                    ApplicationType = applicationType
+                    ApplicationType = applicationType,
+                    System = system
                 };
             }
             else

@@ -2211,8 +2211,20 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             {
                 if (model.DisplayMode == "Extra")
                 {
-                    int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetHighlightedHeight() - (int)DPUtils.ConvertDPToPx(60);
-                    int middleHeight = (int)DPUtils.ConvertDPToPx(185);
+                    int topHeight;
+                    int middleHeight;
+                    if (((ApplicationStatusDetailActivity)this.mContext).GetRecyclerViewHeight() != 0)
+                    {
+                        topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetHighlightedHeight() - (int)DPUtils.ConvertDPToPx(60);
+                        middleHeight = (int)DPUtils.ConvertDPToPx(185);
+                    }
+                    else
+                    {
+                        topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetHighlightedHeight() - (int)DPUtils.ConvertDPToPx(-80);
+                        middleHeight = (int)DPUtils.ConvertDPToPx(170);
+                    }
+                  
+                   
 
                     int leftWidth = 0;
                     int rightWidth = 0;

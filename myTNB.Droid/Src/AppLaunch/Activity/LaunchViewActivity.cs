@@ -112,14 +112,17 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         string notifType = Intent.Extras.GetString("Type");
                         UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
                         if (notifType.ToUpper() == ApplicationStatusNotificationModel.TYPE_APPLICATIONSTATUS
-                            && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.TYPE_SAVEAPPLICATIONID)
-                            && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.TYPE_APPLICATIONID)
-                            && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.TYPE_APPLICATIONTYPE))
+                            && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID)
+                            && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONID)
+                            && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE))
                         {
-                            string saveID = Intent.Extras.GetString(ApplicationStatusNotificationModel.TYPE_SAVEAPPLICATIONID);
-                            string applicationID = Intent.Extras.GetString(ApplicationStatusNotificationModel.TYPE_APPLICATIONID);
-                            string applicationType = Intent.Extras.GetString(ApplicationStatusNotificationModel.TYPE_APPLICATIONTYPE);
-                            UserSessions.SetApplicationStatusNotification(saveID, applicationID, applicationType);
+                            string saveID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID);
+                            string applicationID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONID);
+                            string applicationType = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE);
+                            string system = Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_System)
+                                ? Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_System)
+                                : string.Empty;
+                            UserSessions.SetApplicationStatusNotification(saveID, applicationID, applicationType, system);
                         }
                         else
                         {
@@ -318,7 +321,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 ApplicationStatusNotificationModel notificationObj = UserSessions.ApplicationStatusNotification;
                 ApplicationDetailDisplay detailResponse = await ApplicationStatusManager.Instance.GetApplicationDetail(notificationObj.SaveApplicationID
                        , notificationObj.ApplicationID
-                       , notificationObj.ApplicationType);
+                       , notificationObj.ApplicationType
+                       , notificationObj.System);
 
                 if (detailResponse.StatusDetail.IsSuccess)
                 {
