@@ -173,9 +173,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 txtAccountType.Text = Utility.GetLocalizedLabel("OneLastThing", "idtypeTitle").ToUpper();
                 textInputLayoutFullName.Hint = Utility.GetLocalizedLabel("Common", "fullname");
                 textInputLayoutICNo.Hint = Utility.GetLocalizedLabel("OneLastThing", "idNumberhint");
-                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tncNew"));
+                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tnc"));
                 StripUnderlinesFromLinks(txtTermsConditions);
-                btnRegister.Text = Utility.GetLocalizedLabel("Register", "ctaTitleNew");
+                btnRegister.Text = Utility.GetLocalizedLabel("OneLastThing", "ctaTitleNew");
 
 
                 //txtTitleRegister.Text = GetLabelCommonByLanguage("dtitleRegister");
@@ -203,7 +203,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 IdentificationType Individual = new IdentificationType();
                 Individual.Id = "1";
-                Individual.Type = Utility.GetLocalizedLabel("Register", "mykad");
+                Individual.Type = Utility.GetLocalizedLabel("OneLastThing", "mykad");
                 Individual.IsSelected = true;
                 selectedIdentificationType = Individual;
                 identityType.Text = selectedIdentificationType.Type;
@@ -449,14 +449,14 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         {
             if (!txtboxcondition.Checked)
             {
-                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tncNew"));
+                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tnc"));
                 //txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tncNew"));
                 StripUnderlinesFromLinks(txtTermsConditions);
 
             }
             else
             {
-                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tnc_checked"));
+                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("OneLastThing", "tnc_checked"));
                 //txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc_checked"));
                 StripUnderlinesFromLinks(txtTermsConditions);
             }
