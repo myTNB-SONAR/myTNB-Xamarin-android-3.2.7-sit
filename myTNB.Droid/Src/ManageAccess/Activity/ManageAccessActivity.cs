@@ -33,6 +33,7 @@ using static myTNB_Android.Src.ManageAccess.Adapter.ManageAccessDeleteAdapter;
 using AndroidX.Core.Content;
 using myTNB_Android.Src.LogUserAccess.Activity;
 using myTNB_Android.Src.LogUserAccess.Models;
+using Java.Util;
 
 namespace myTNB_Android.Src.ManageAccess.Activity
 {
@@ -210,12 +211,9 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             ShowDeleteAccDialog(this, () =>
             {
                 UserManageAccessAccount account = adapter.GetItemObject(position);
-                UserManageAccessAccount.Remove(account.AccNum , account.userId);
-                this.mPresenter.OnRemoveAccount(account.userId);
-                AdapterClean();
-                AdapterDeleteClean();
-                this.userActionsListener.Start();
-                ShowRemoveMessageResponse();
+                UserManageAccessAccount.SetSelected(account.AccNum, true, account.userId);
+                List<UserManageAccessAccount> DeletedSelectedUser = UserManageAccessAccount.ListIsSelected(accountData?.AccountNum);
+                mPresenter.OnRemoveAccountMultiple(DeletedSelectedUser, false);
             });           
         }
 
@@ -353,6 +351,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         [OnClick(Resource.Id.btnRemoveSelectedAccessUser)]
         void RemoveSelectedUser(object sender, EventArgs eventArgs)
         {
+            ArrayList nameList2 = new ArrayList();
             try
             {
                 if (!this.GetIsClicked())
@@ -361,12 +360,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                     ShowDeleteAccDialog(this, () =>
                     {
                         List<UserManageAccessAccount> DeletedSelectedUser = UserManageAccessAccount.ListIsSelected(accountData?.AccountNum);
-                        UserManageAccessAccount.DeleteSelected(accountData.AccountNum);
-                        AdapterDeleteClean();
-                        AdapterClean();
-                        this.userActionsListener.Start();
-                        bottomLayout.Visibility = ViewStates.Gone;
-                        ShowRemoveMessageResponse();
+                        mPresenter.OnRemoveAccountMultiple(DeletedSelectedUser, true);                        
                     });
                 }
                 this.SetIsClicked(false);
@@ -376,6 +370,39 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public int checkListUserEmpty()
+        {
+            return UserManageAccessAccount.List(accountData?.AccountNum).Count;
+        }
+
+        public void UserAccessRemoveSuccess()
+        {
+            AdapterDeleteClean();
+            AdapterClean();
+            this.userActionsListener.Start();
+
+            if (checkListUserEmpty() > 0)
+            {
+                bottomLayoutDeleteMultiple.Visibility = ViewStates.Visible;
+                bottomLayout.Visibility = ViewStates.Gone;
+            }          
+            ShowRemoveMessageResponse();
+        }
+
+        public void UserAccessRemoveSuccessSwipe()
+        {
+            AdapterDeleteClean();
+            AdapterClean();
+            this.userActionsListener.Start();
+
+            if (checkListUserEmpty() > 0)
+            {
+                bottomLayoutDeleteMultiple.Visibility = ViewStates.Gone;
+                bottomLayout.Visibility = ViewStates.Visible;
+            }
+            ShowRemoveMessageResponse();
         }
 
         public void NavigateLogUserAccess(List<LogUserAccessNewData> loglistdata)
@@ -699,6 +726,16 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 bottomLayout.Visibility = ViewStates.Gone;
                 bottomLayoutDeleteMultiple.Visibility = ViewStates.Gone;
                 layout_btnAddUser.Visibility = ViewStates.Visible;
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (!UserSessions.HasManageAccessPageTutorialShown(this.mPref))
+                    {
+                        OnManageAccessPageTutorialDialog();
+                    }
+                };
+                h.PostDelayed(myAction, 50);
             }
             catch (Exception e)
             {

@@ -2,41 +2,42 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ContainerAction"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:weightSum="1.0"
     android:orientation="horizontal">
     <LinearLayout
         android:id="@+id/itemContainer"
         android:orientation="horizontal"
         android:layout_alignParentLeft="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_weight="0.85"
+        android:layout_width="0dp"
+        android:padding="16dp"
+        android:layout_height="match_parent">
         <ImageView
             android:id="@+id/img_profile"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_gravity="left"/>
         <TextView
             android:id="@+id/itemTitle"
-            android:gravity="left|center"
+            android:gravity="left | center"
             android:text="Item Value"
             android:textSize="14dp"
             android:textColor="#49494a"
-            android:layout_marginLeft="24dp"
+            android:layout_marginLeft="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/itemActionContainer"
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="vertical"
         android:layout_alignParentRight="true"
         android:gravity="center"
-        android:layout_width="match_parent"
+        android:layout_weight="0.15"
+        android:layout_width="0dp"
+        android:padding="16dp"
         android:layout_height="match_parent">
         <!--<TextView
             android:id="@+id/itemAction"

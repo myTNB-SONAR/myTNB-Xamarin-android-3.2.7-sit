@@ -108,12 +108,15 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             ///</summary>
             void ShowAccountRemovedSuccess();
             void NavigateLogUserAccess(List<LogUserAccessNewData> newAccountList);
+            void UserAccessRemoveSuccess();
+            void UserAccessRemoveSuccessSwipe();
         }
 
         public interface IUserActionsListener : IBasePresenter
         {
 
             void OnRemoveAccount(string numacc);
+
             void OnAddLogUserAccess(AccountData accountData);
 
             /// <summary>

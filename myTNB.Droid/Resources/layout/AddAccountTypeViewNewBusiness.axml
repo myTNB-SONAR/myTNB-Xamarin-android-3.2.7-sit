@@ -108,6 +108,8 @@
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/placeholder_name"
                         android:inputType="text"
+                        android:singleLine="true"
+                        android:drawablePadding="6dp"
                         android:id="@+id/account_label_edittext" />
                 </com.google.android.material.textfield.TextInputLayout>
              </LinearLayout>
@@ -133,7 +135,7 @@
                     android:layout_gravity="bottom"
                     android:padding="16dp"
                     android:background="@drawable/white_selector_pressable">
-                    <TextView
+                <TextView
                     android:id="@+id/txtTitleROC"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
@@ -150,7 +152,9 @@
                     app:errorTextAppearance="@style/TextInputLayoutFeedbackCount">
                     <EditText
                         android:layout_width="match_parent"
+                        android:drawablePadding="6dp"
                         android:hint=""
+                        android:singleLine="true"        
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/placeholder_account_no"
                         android:inputType="text"

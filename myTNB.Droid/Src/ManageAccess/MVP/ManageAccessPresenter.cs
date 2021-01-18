@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Runtime;
+using Java.Util;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
@@ -87,7 +88,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(new RemoveAccountRequest(AccountNum));
+                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveUserAcess_OT(new RemoveAccountRequest(AccountNum));
 
                 if (removeAccountResponse.IsSuccessResponse())
                 {
@@ -143,11 +144,25 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                 this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
-
         }
 
-        public async void OnRemoveAccount(AccountData accountData)
+        public async void OnRemoveAccountMultiple(List<UserManageAccessAccount> DeletedSelectedUser, bool MultipleDelete)
         {
+            //List<LogUserAccessNewData> newAccountList = new List<LogUserAccessNewData>();
+            ArrayList nameList2 = new ArrayList();
+            int i = 0;
+            String[] accountIdList = new String[DeletedSelectedUser.Count];
+
+            foreach (UserManageAccessAccount accUser in DeletedSelectedUser)
+            {
+                if (accUser.UserAccountId != null)
+                {                   
+                    nameList2.Add(accUser.UserAccountId);
+                    accountIdList[i] = accUser.UserAccountId;
+                    ++i;
+                }
+            }
+
             if (mView.IsActive())
             {
                 this.mView.ShowProgressDialog();
@@ -156,34 +171,24 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(new RemoveAccountRequest(accountData.AccountNum));
+                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveUserAcess_OT(new RemoveUserAccountRequest(accountIdList));
 
                 if (mView.IsActive())
                 {
                     this.mView.HideShowProgressDialog();
                 }
 
-                /*if (notificationDeleteResponse.IsSuccessResponse())
-                {
-                    foreach (UserNotificationData userNotificationData in selectedNotificationList)
-                    {
-                        UserNotificationEntity.RemoveById(userNotificationData.Id);
-                    }
-                    this.mView.UpdateDeleteNotifications();
-                }
-                else
-                {
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideProgress();
-                    }
-                    this.mView.ShowFailedErrorMessage(notificationDeleteResponse.Response.ErrorMessage);
-                    this.mView.OnFailedNotificationAction();
-                }*/
-
                 if (removeAccountResponse.IsSuccessResponse())
                 {
-                    
+                    UserManageAccessAccount.DeleteSelected(accountData.AccountNum);
+                    if (MultipleDelete)
+                    {
+                        this.mView.UserAccessRemoveSuccess();
+                    }
+                    else
+                    {
+                        this.mView.UserAccessRemoveSuccessSwipe();
+                    }
                 }
                 else
                 {

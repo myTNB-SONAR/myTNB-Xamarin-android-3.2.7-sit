@@ -1,5 +1,6 @@
 ﻿using Android.Content;
-
+using Android.OS;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
@@ -73,27 +74,93 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                 if (data.Action.Equals("A"))
                 {
                     viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_action_tick));
-                    viewHolder.itemTitle.Text = "Raja Udang added this electricity account to their view.";
+                    string txtdata = Utility.GetLocalizedLabel("UserAccess", "addAccountUserAccesssLog");
+                    string temp = string.Format(txtdata, data.UserName);
 
-                    /*if (data.IsApplyEBilling)
+                    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                     {
-                        viewHolder.itemTitle.Text = "Raja Udang added this electricity account to their view.";
-                    }*/
+                        viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
+                    }
                 }
                 else if (data.Action.Equals("U"))
                 {
                     viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.re_meter_dashboard));
-                    viewHolder.itemTitle.Text = "You have granted Siti Aishah access to full bill view and apply for e-billing.";
 
-                    /*if (data.IsApplyEBilling)
+                    if (data.IsApplyEBilling && data.IsHaveAccess)
                     {
-                        viewHolder.itemTitle.Text = "You have granted Siti Aishah access to full bill view and apply for e-billing.";
-                    }*/
+                        string txtdata = Utility.GetLocalizedLabel("UserAccess", "addAccesssLogBoth");
+                        string temp = string.Format(txtdata, data.UserName);
+
+                        if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
+                        }
+                        else
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
+                        }
+                    }
+                    else if (!data.IsApplyEBilling && data.IsHaveAccess)
+                    {
+                        string txtdata = Utility.GetLocalizedLabel("UserAccess", "removeAccesssLogeBilling");
+                        string temp = string.Format(txtdata, data.UserName);
+
+                        if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
+                        }
+                        else
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
+                        }
+                    }
+                    else if (data.IsApplyEBilling && !data.IsHaveAccess)
+                    {
+                        string txtdata = Utility.GetLocalizedLabel("UserAccess", "removeAccesssLogfullBill");
+                        string temp = string.Format(txtdata, data.UserName);
+
+                        if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
+                        }
+                        else
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
+                        }
+                    }
+                    else
+                    {
+                        string txtdata = Utility.GetLocalizedLabel("UserAccess", "addAccesssLogfullBill");
+                        string temp = string.Format(txtdata, data.UserName);
+
+                        if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
+                        }
+                        else
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
+                        }
+                    }
                 }
                 else
                 {
                     viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.autopay_yellow));
-                    viewHolder.itemTitle.Text = "You removed Siti Aishah’s access to apply for e-billing.";
+                    string txtdata = Utility.GetLocalizedLabel("UserAccess", "removeAccountUserAccesssLog");
+                    string temp = string.Format(txtdata, data.UserName);
+
+                    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    {
+                        viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
+                    }
                 }
             }
             catch (Exception e)

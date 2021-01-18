@@ -46,7 +46,7 @@ namespace myTNB_Android.Src.UpdateNameFull.Activity
         Snackbar mUpdateFullName;
 
         MaterialDialog progress;
-        const string PAGE_ID = "NameUpdate";
+        const string PAGE_ID = "UpdateName";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {

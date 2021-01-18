@@ -21,6 +21,7 @@ using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
+using static Android.Resource;
 
 namespace myTNB_Android.Src.AddAccount.Fragment
 {
@@ -82,8 +83,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         {
             edtAccountNo.Text = "";
             edtAccountLabel.Text = "";
-            edtOwnersIC.Text = "";
-            edtOwnerMotherName.Text = "";
+            edtAccountNo.ClearFocus();
+            edtAccountLabel.ClearFocus();
         }
 
         public void HideAddingAccountProgressDialog()
@@ -247,11 +248,14 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 this.userActionsListener.Start();
 
-                textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                textInputLayoutAccountNo.Error = "";
-                
+                ClearText();
+                ClearAllErrorFields();
+
+                textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);                
                 textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                textInputLayoutAccountLabel.Error = "";
+
+                edtAccountNo.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.placeholder_account_no, 0, Resource.Drawable.scan, 0);
+                edtAccountLabel.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.placeholder_name, 0, 0, 0);
 
             }
             catch (Exception e)
@@ -259,6 +263,20 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 Utility.LoggingNonFatalError(e);
             }
             return rootView;
+        }
+
+        public void ClearAllErrorFields()
+        {
+            if (!string.IsNullOrEmpty(textInputLayoutAccountNo.Error))
+            {
+                textInputLayoutAccountNo.Error = null;
+                textInputLayoutAccountNo.ErrorEnabled = false;
+            }
+            if (!string.IsNullOrEmpty(textInputLayoutAccountLabel.Error))
+            {
+                textInputLayoutAccountLabel.Error = null;
+                textInputLayoutAccountLabel.ErrorEnabled = false;
+            }
         }
 
         public override void OnResume()
@@ -692,7 +710,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 EditText eTxtView = v as EditText;
                 if (eTxtView.Id == Resource.Id.account_no_edittext)
                 {
-                    if (e.RawX >= (edtAccountNo.Right - edtAccountNo.GetCompoundDrawables()[DRAWABLE_RIGHT].Bounds.Width()))
+                    edtAccountNo.SetCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, Resource.Drawable.scan, 0);
+                    if (e.RawX >= (edtAccountNo.Right - edtAccountNo.GetCompoundDrawables()[2].Bounds.Width()))
                     {
                         if (!isClicked)
                         {

@@ -135,7 +135,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
         private void UpdateLabels()
         {
-            SetToolBarTitle(Utility.GetLocalizedLabel("NotificationSettings", "appSetting")); 
+            SetToolBarTitle(Utility.GetLocalizedLabel("Profile", "appSetting")); 
             txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("NotificationSettings", "typeDescription"); 
             appLanguageMessage.Text = Utility.GetLocalizedLabel("NotificationSettings", "selectApplang"); 
         }

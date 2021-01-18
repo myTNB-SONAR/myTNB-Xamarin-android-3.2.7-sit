@@ -134,7 +134,6 @@ namespace myTNB_Android.Src.MyAccount.Activity
             email = new ProfileMenuItemContentComponent(this);
             email.SetTitle(GetLabelCommonByLanguage("email").ToUpper());
             email.SetValue("");
-            email.SetIconEmailNotVerify(1);
             email.SetItemActionVisibility(true);
             email.SetFlagEmailVerify(fromEmailVerify);
             email.SetItemActionTitle(GetLabelCommonByLanguage("verify"));
@@ -169,7 +168,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             List<View> passItems = new List<View>();
 
             ProfileMenuItemSingleContentComponent password = new ProfileMenuItemSingleContentComponent(this);
-            password.SetTitle(GetLabelCommonByLanguage("passwordchange"));
+            password.SetTitle(Utility.GetLocalizedLabel("Tnb_Profile", "passwordchange")); 
             password.SetItemActionCall(UpdatePassword);
             passItems.Add(password);
 
