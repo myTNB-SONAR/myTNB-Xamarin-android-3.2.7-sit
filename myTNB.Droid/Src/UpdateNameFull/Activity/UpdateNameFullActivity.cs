@@ -25,7 +25,7 @@ namespace myTNB_Android.Src.UpdateNameFull.Activity
 {
     [Activity(Label = "@string/update_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
-    , Theme = "@style/Theme.UpdateMobile")]
+    , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class UpdateNameFullActivity : BaseActivityCustom, UpdateNicknameContract.IView
     {
         [BindView(Resource.Id.rootView)]
@@ -46,7 +46,7 @@ namespace myTNB_Android.Src.UpdateNameFull.Activity
         Snackbar mUpdateFullName;
 
         MaterialDialog progress;
-        const string PAGE_ID = "NameUpdate";
+        const string PAGE_ID = "UpdateName";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {

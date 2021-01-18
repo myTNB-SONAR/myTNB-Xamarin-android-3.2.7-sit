@@ -39,7 +39,9 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             {
                 SendResetPasswordCodeRequest resetPasswordCodeRequest = new SendResetPasswordCodeRequest();
                 resetPasswordCodeRequest.SetUserName(email);
-                var forgetPasswordResponse = await ServiceApiImpl.Instance.SendResetPasswordCode(resetPasswordCodeRequest);
+                var forgetPasswordResponse = await ServiceApiImpl.Instance.ChangeNewPasswordNew(resetPasswordCodeRequest);
+
+                
 
                 if (mView.IsActive())
                 {
@@ -53,9 +55,15 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 }
                 else
                 {
-
-                    string message = forgetPasswordResponse.Response.DisplayMessage;
-                    this.mView.ShowSuccess(message);
+                    if (!forgetPasswordResponse.Response.Data.IsVerified)
+                    {
+                        string message = forgetPasswordResponse.Response.DisplayMessage;
+                        this.mView.ShowSuccess(message);
+                    }
+                    else
+                    {
+                        this.mView.ShowEmailResendSuccess();
+                    }
                 }
             }
             catch (OperationCanceledException e)

@@ -300,7 +300,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             List<View> myTNBAccountItems = new List<View>();
 
             fullName = new ProfileMainMenuItemContentComponent(context);
-            fullName.SetTitle(GetLabelCommonByLanguage("titleProfile"));
+            fullName.SetTitle(Utility.GetLocalizedLabel("Profile", "titleProfile"));
             fullName.SetValue("");
             fullName.SetValue2("");
             fullName.SetFlagID(fromIDFlag);
@@ -321,28 +321,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             List<View> settingItems = new List<View>();
 
             ProfileMainMenuItemSingleContentComponent payment = new ProfileMainMenuItemSingleContentComponent(context);
-            payment.SetTitle(GetLabelCommonByLanguage("paymentMethod"));
+            payment.SetTitle(Utility.GetLocalizedLabel("Profile", "paymentMethod"));
             payment.SetIcon(1);
             payment.SetItemActionVisibility(true);
             payment.SetItemActionCall(ManageCards);
             settingItems.Add(payment);
 
             ProfileMainMenuItemSingleContentComponent electricityAcc = new ProfileMainMenuItemSingleContentComponent(context);
-            electricityAcc.SetTitle(GetLabelCommonByLanguage("myElecttricityAcc"));
+            electricityAcc.SetTitle(Utility.GetLocalizedLabel("Profile", "myElecttricityAcc"));
             electricityAcc.SetIcon(2);
             electricityAcc.SetItemActionVisibility(true);
             electricityAcc.SetItemActionCall(ShowManageAccount);
             settingItems.Add(electricityAcc);
 
             ProfileMainMenuItemSingleContentComponent AppSetting = new ProfileMainMenuItemSingleContentComponent(context);
-            AppSetting.SetTitle(GetLabelCommonByLanguage("appSetting"));
+            AppSetting.SetTitle(Utility.GetLocalizedLabel("Profile", "appSetting"));
             AppSetting.SetIcon(3);
             AppSetting.SetItemActionVisibility(true);
             AppSetting.SetItemActionCall(ShowNotificationSetting);
             settingItems.Add(AppSetting);
 
             ProfileMainMenuItemSingleContentComponent learnMoreTNB = new ProfileMainMenuItemSingleContentComponent(context);
-            learnMoreTNB.SetTitle(GetLabelCommonByLanguage("learnMore"));
+            learnMoreTNB.SetTitle(Utility.GetLocalizedLabel("Profile", "learnMore")); 
             learnMoreTNB.SetIcon(4);
             learnMoreTNB.SetItemActionVisibility(true);
             learnMoreTNB.SetItemActionCall(LearnMoreAboutTnb);
@@ -361,12 +361,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             List<View> shareItems = new List<View>();
 
             ProfileMenuItemSingleContentComponent share = new ProfileMenuItemSingleContentComponent(context);
-            share.SetTitle(GetLabelByLanguage("shareDescription"));
+            share.SetTitle(Utility.GetLocalizedLabel("Profile", "shareDescription")); 
             share.SetItemActionCall(ShowShareApp);
             shareItems.Add(share);
 
             ProfileMenuItemSingleContentComponent rate = new ProfileMenuItemSingleContentComponent(context);
-            rate.SetTitle(GetLabelByLanguage("rate"));
+            rate.SetTitle(Utility.GetLocalizedLabel("Profile", "rate"));
             rate.SetItemActionCall(ShowRateApp);
             shareItems.Add(rate);
 

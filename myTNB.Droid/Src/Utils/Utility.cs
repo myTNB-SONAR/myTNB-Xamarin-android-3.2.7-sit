@@ -230,11 +230,11 @@ namespace myTNB_Android.Src.Utils
         public static void ShowChangeLanguageDialog(Activity context, string selectedLanguage, Action confirmAction, Action cancelAction = null)
         {
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                        .SetTitle(Utility.GetLocalizedLabel("Common", "changeLanguageTitleNew_" + selectedLanguage))
-                        .SetMessage(Utility.GetLocalizedLabel("Common", "changeLanguageMessageNew_" + selectedLanguage))
+                        .SetTitle(Utility.GetLocalizedLabel("Common", "changeLanguageTitle_" + selectedLanguage))
+                        .SetMessage(Utility.GetLocalizedLabel("Common", "changeLanguageMessage_" + selectedLanguage))
                         .SetContentGravity(Android.Views.GravityFlags.Center)
-                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageNoNew_" + selectedLanguage))
-                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageYesNew_" + selectedLanguage))
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageNo_" + selectedLanguage))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageYes_" + selectedLanguage))
                         .SetSecondaryCTAaction(() =>
                         {
                             confirmAction();
@@ -317,11 +317,11 @@ namespace myTNB_Android.Src.Utils
         public static void ShowEmailVerificationDialog(Activity context, Action confirmAction, Action cancelAction = null)
         {
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                        .SetTitle(Utility.GetLocalizedLabel("Register", "EmailHeaderVerification"))
-                        .SetMessage(Utility.GetLocalizedLabel("Register", "EmailBodyVerification"))
-                        .SetContentGravity(Android.Views.GravityFlags.Center)
-                        .SetCTALabel(Utility.GetLocalizedLabel("Register", "gotIt"))
-                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "resend"))
+                        .SetTitle(Utility.GetLocalizedLabel("Tnb_Profile", "verifyEmailPopupTitle"))
+                        .SetMessage(Utility.GetLocalizedLabel("Tnb_Profile", "verifyEmailPopupBody"))
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Tnb_Profile", "gotIt"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Tnb_Profile", "resend"))
                         .SetSecondaryCTAaction(() =>
                         {
                             confirmAction();

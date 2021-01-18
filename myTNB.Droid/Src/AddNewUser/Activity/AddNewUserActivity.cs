@@ -23,6 +23,7 @@ using System;
 using System.Runtime;
 using Android.Support.V4.Content;
 using Android.Text;
+using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.AddNewUser.Activity
 {
@@ -68,6 +69,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
         TextView infoAddress;
 
         AccountData accountData;
+        UserManageAccessAccount account;
         int position;
 
         private bool checkboxbilling;
@@ -76,6 +78,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
         private ManageSupplyItemContentComponent manageUser;
         AddNewUserContract.IUserActionsListener userActionsListener;
         AddNewUserPresenter mPresenter;
+
 
         const string PAGE_ID = "ManageAccount";
 
@@ -114,6 +117,8 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtAddNewUserTitle, txtNewUserOptionalTitle);
                 TextViewUtils.SetMuseoSans500Typeface(btnAddUser);
 
+                txtUserEmail.Text = account.email;
+
                 itemTitleFullBill.Text = Utility.GetLocalizedLabel("UserAccess", "fullElectricity");
                 itemTitleBilling.Text = Utility.GetLocalizedLabel("UserAccess", "e_billing");
                 txtAddNewUserTitle.Text = Utility.GetLocalizedLabel("UserAccess", "titleAddNewUser");
@@ -148,10 +153,68 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                     string email = txtUserEmail.Text.ToString().Trim();
                     this.SetIsClicked(true);
                     this.userActionsListener.OnAddAccount(email, checkboxfullbill, checkboxbilling);
+
+
+                    //ShowAddTNBUserSuccess();
+                    //ShowAddNonTNBUserSuccess();
                 }
                 this.SetIsClicked(false);
             }
             catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        //patut modify untuk papar di page manageAccess
+        public void ShowAddTNBUserSuccess()
+        {
+            try
+            {
+                string email = txtUserEmail.Text.ToString().Trim();
+                string nickname = accountData.AccountNickName;
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(GetLabelByLanguage("AddTNBUserSuccess"), email,nickname)), Snackbar.LengthIndefinite)
+                            .SetAction(GetLabelCommonByLanguage("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = saveSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                saveSnackBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        //patut modify untuk papar di page manageAccess
+        public void ShowAddNonTNBUserSuccess()
+        {
+            try
+            {
+                string email = txtUserEmail.Text.ToString().Trim();
+                string nickname = accountData.AccountNickName;
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(GetLabelByLanguage("AddNonTNBUserSuccess"), email, nickname)), Snackbar.LengthIndefinite)
+                            .SetAction(GetLabelCommonByLanguage("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = saveSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                saveSnackBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
             {
                 this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);

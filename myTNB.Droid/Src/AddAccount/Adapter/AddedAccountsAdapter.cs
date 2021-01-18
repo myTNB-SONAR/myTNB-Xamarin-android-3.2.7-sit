@@ -59,8 +59,21 @@ namespace myTNB_Android.Src.AddAccount.Adapter
             NewAccount item = accountList[position];
             vh.AccountNumber.Text = item.accountNumber;
             TextViewUtils.SetMuseoSans300Typeface(vh.AccountNumber);
-            vh.AccountAddress.Text = item.accountAddress;
-            TextViewUtils.SetMuseoSans300Typeface(vh.AccountAddress);
+
+            //if not owner mask the address IRUL
+            if (!item.isOwner==true)
+            {
+                vh.AccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, item.accountAddress);
+                TextViewUtils.SetMuseoSans300Typeface(vh.AccountAddress);
+            }
+            else
+            {
+                vh.AccountAddress.Text = item.accountAddress;
+                TextViewUtils.SetMuseoSans300Typeface(vh.AccountAddress);
+            }
+
+            //vh.AccountAddress.Text = item.accountAddress;
+            //TextViewUtils.SetMuseoSans300Typeface(vh.AccountAddress);
             vh.AccountLabel.Text = item.accountLabel;
             TextViewUtils.SetMuseoSans500Typeface(vh.AccountLabel);
 

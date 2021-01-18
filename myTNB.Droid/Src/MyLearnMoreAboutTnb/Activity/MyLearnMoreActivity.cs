@@ -102,14 +102,14 @@ namespace myTNB_Android.Src.MyLearnMoreAboutTnb.Activity
                 {
                     billInquiry.SetTitle(entity.Title);
                 }
-                else
+                else 
                 {
-                    billInquiry.SetTitle(GetLabelByLanguage("callUsBilling"));
+                    billInquiry.SetTitle(Utility.GetLocalizedLabel("LearnMoreAboutTnb", "callUsBilling"));
                 }
             }
             else
             {
-                billInquiry.SetTitle(GetLabelByLanguage("callUsBilling"));
+                billInquiry.SetTitle(Utility.GetLocalizedLabel("LearnMoreAboutTnb", "callUsBilling"));
             }
             billInquiry.SetItemActionCall(ShowCallUsBilling);
             helpSupportItems.Add(billInquiry);
@@ -124,28 +124,28 @@ namespace myTNB_Android.Src.MyLearnMoreAboutTnb.Activity
                 }
                 else
                 {
-                    outage.SetTitle(GetLabelByLanguage("callUsOutagesAndBreakdown"));
+                    outage.SetTitle(Utility.GetLocalizedLabel("LearnMoreAboutTnb", "callUsOutage")); 
                 }
             }
             else
             {
-                outage.SetTitle(GetLabelByLanguage("callUsOutagesAndBreakdown"));
+                outage.SetTitle(Utility.GetLocalizedLabel("LearnMoreAboutTnb", "callUsOutage"));
             }
             outage.SetItemActionCall(ShowCallUsOutage);
             helpSupportItems.Add(outage);
 
             ProfileMenuItemSingleContentComponent findUs = new ProfileMenuItemSingleContentComponent(this);
-            findUs.SetTitle(GetLabelByLanguage("findUs"));
+            findUs.SetTitle(Utility.GetLocalizedLabel("LearnMoreAboutTnb", "findUs")); 
             findUs.SetItemActionCall(ShowFindUs);
             helpSupportItems.Add(findUs);
 
             ProfileMenuItemSingleContentComponent faq = new ProfileMenuItemSingleContentComponent(this);
-            faq.SetTitle(GetLabelByLanguage("faq"));
+            faq.SetTitle(Utility.GetLocalizedLabel("LearnMoreAboutTnb", "faq"));
             faq.SetItemActionCall(ShowFAQ);
             helpSupportItems.Add(faq);
 
             ProfileMenuItemSingleContentComponent TnC = new ProfileMenuItemSingleContentComponent(this);
-            TnC.SetTitle(GetLabelByLanguage("tnc"));
+            TnC.SetTitle(Utility.GetLocalizedLabel("LearnMoreAboutTnb", "tnc"));
             TnC.SetItemActionCall(ShowTnC);
             helpSupportItems.Add(TnC);
 

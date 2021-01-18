@@ -94,7 +94,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 txtMyAccountNoAccountTitle.Text = GetLabelByLanguage("noAccounts");
                 txtMyAccountNoAccountContent.Text = GetLabelByLanguage("addAccountMessage");
                 btnAddAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
-                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
                 adapter = new MyAccountAdapter(this, false);
                 listView.Adapter = adapter;

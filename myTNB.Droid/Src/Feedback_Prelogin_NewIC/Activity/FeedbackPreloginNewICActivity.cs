@@ -57,7 +57,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
     [Activity(Label = "Submit New Enquiry"
   , ScreenOrientation = ScreenOrientation.Portrait
           , WindowSoftInputMode = SoftInput.AdjustPan
-  , Theme = "@style/Theme.FaultyStreetLamps")]
+  , Theme = "@style/Theme.OwnerTenantBaseTheme")]
 
 
     public class FeedbackPreloginNewICActivity : BaseToolbarAppCompatActivity, FeedbackPreloginNewICContract.IView, View.IOnTouchListener

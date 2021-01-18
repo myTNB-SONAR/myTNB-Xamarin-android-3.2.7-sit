@@ -647,5 +647,11 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         {
             txtInputLayoutNumber_4.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
         }
+
+        public void ShowEmailResendSuccess()
+        {
+
+           
+        }
     }
 }

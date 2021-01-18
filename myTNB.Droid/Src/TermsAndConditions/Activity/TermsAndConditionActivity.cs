@@ -18,7 +18,7 @@ using System.Collections.Generic;
 namespace myTNB_Android.Src.TermsAndConditions.Activity
 {
     [Activity(Label = "@string/terms_conditions_activity_title",
-        ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.TnC")]
+        ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class TermsAndConditionActivity : BaseActivityCustom, TermsAndConditionContract.IView
     {
         private TermsAndConditionPresenter mPresenter;

@@ -374,7 +374,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     ShowSaveDialog(this, () =>
                     {
                         this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, checkboxfullbill, checkboxbilling);
-                        //ShowSaveSuccess();
+                        ShowSaveSuccess();
                     });
                 }
                 this.SetIsClicked(false);
@@ -394,11 +394,11 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 if (!this.GetIsClicked())
                 {
                     this.SetIsClicked(true);
-                    /*ShowSaveDialog(this, () =>
+                    ShowCancelAddAccessDialog(this, () =>
                     {
-                        this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, checkboxfullbill, checkboxbilling);
-                        //ShowSaveSuccess();
-                    });*/
+                        //this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, checkboxfullbill, checkboxbilling);
+                        ShowCancelAddSuccess();
+                    });
                 }
                 this.SetIsClicked(false);
             }
@@ -417,11 +417,11 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 if (!this.GetIsClicked())
                 {
                     this.SetIsClicked(true);
-                    /*ShowSaveDialog(this, () =>
+                    ShowResendInviteAccessDialog(this, () =>
                     {
-                        this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, checkboxfullbill, checkboxbilling);
-                        //ShowSaveSuccess();
-                    });*/
+                        //this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, checkboxfullbill, checkboxbilling);
+                        ShowInviteSuccess();
+                    });
                 }
                 this.SetIsClicked(false);
             }
@@ -495,6 +495,66 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 tooltipBuilder.DismissDialog();
                 OnBackProceed();
             }).Show();
+        }
+
+        void ShowResendInviteAccessDialog(Android.App.Activity context, Action confirmAction, Action cancelAction = null)
+        {
+            string email = txtEmail.Text.ToString().Trim();
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+
+                        .SetTitle((string.Format(GetLabelByLanguage("manageUserInviteAccessDialogTitle"), email)))
+                        .SetMessage(string.Format(GetLabelByLanguage("manageUserInviteAccessDialogMessage"), email))
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "no"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "resend"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+            this.SetIsClicked(false);
+        }
+
+        void ShowCancelAddAccessDialog(Android.App.Activity context, Action confirmAction, Action cancelAction = null)
+        {
+            string email = txtEmail.Text.ToString().Trim();
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+
+                        .SetTitle((string.Format(GetLabelByLanguage("manageUserCancelAddAccessDialogTitle"), email)))
+                        .SetMessage(string.Format(GetLabelByLanguage("manageUserCancelAddAccessDialogMessage"), email))
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "no"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "yes"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+            this.SetIsClicked(false);
         }
 
         public void OnBackProceed()
@@ -578,7 +638,57 @@ namespace myTNB_Android.Src.ManageUser.Activity
             }
         }
 
-       
+        public void ShowInviteSuccess()
+        {
+            try
+            {
+                string email = txtEmail.Text.ToString().Trim();
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(GetLabelByLanguage("inviteSuccess"), email)), Snackbar.LengthIndefinite)
+                            .SetAction(GetLabelCommonByLanguage("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = saveSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                saveSnackBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowCancelAddSuccess()
+        {
+            try
+            {
+                string email = txtEmail.Text.ToString().Trim();
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(GetLabelByLanguage("cancelAdddSuccess"), email)), Snackbar.LengthIndefinite)
+                            .SetAction(GetLabelCommonByLanguage("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = saveSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                saveSnackBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
         public void ShowRemoveProgress()
         {
             try

@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.FAQ.Activity
 {
     [Activity(Label = "@string/faq_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait
-        , Theme = "@style/Theme.FAQ")]
+        , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class FAQListActivity : BaseActivityCustom, FAQContract.IView
     {
 

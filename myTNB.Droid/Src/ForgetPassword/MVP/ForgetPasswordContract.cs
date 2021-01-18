@@ -155,6 +155,8 @@ namespace myTNB_Android.Src.ForgetPassword.MVP
 
             void ShowEmptyErrorPin();
 
+            void ShowEmailResendSuccess();
+
         }
 
         public interface IUserActionsListener : IBasePresenter

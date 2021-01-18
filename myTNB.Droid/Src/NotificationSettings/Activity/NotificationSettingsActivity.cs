@@ -135,9 +135,9 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
         private void UpdateLabels()
         {
-            SetToolBarTitle(GetLabelCommonByLanguage("appSetting"));
-            txtNotificationTypeTitle.Text = GetLabelByLanguage("typeDescription");
-            appLanguageMessage.Text = GetLabelCommonByLanguage("setAppLanguageDescription");
+            SetToolBarTitle(Utility.GetLocalizedLabel("Profile", "appSetting")); 
+            txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("NotificationSettings", "typeDescription"); 
+            appLanguageMessage.Text = Utility.GetLocalizedLabel("NotificationSettings", "selectApplang"); 
         }
 
         private void UpdateTypesList()
@@ -168,10 +168,10 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationTypeTitle, txtNotificationChannelTitle, appLanguageMessage);
 
-                txtNotificationTypeTitle.Text = GetLabelByLanguage("typeDescription");
-                //txtNotificationChannelTitle.Text = GetLabelByLanguage("modeDescription");
+                txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("NotificationSettings", "typeDescription"); 
+                 //txtNotificationChannelTitle.Text = GetLabelByLanguage("modeDescription");
 
-                notificationChannelLayoutManager = new LinearLayoutManager(this);
+                 notificationChannelLayoutManager = new LinearLayoutManager(this);
                 notificationTypeLayoutManager = new LinearLayoutManager(this);
                 notificationTypeRecyclerView.SetLayoutManager(notificationTypeLayoutManager);
                 notificationChannelRecyclerView.SetLayoutManager(notificationChannelLayoutManager);
@@ -438,7 +438,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 }
 
                 mLanguageSnackbar = Snackbar.Make(rootView,
-                    GetLabelByLanguage("changeLanguageSuccess"),
+                    Utility.GetLocalizedLabel("NotificationSettings", "changeLanguageSuccess"), 
                     Snackbar.LengthIndefinite)
                             .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>

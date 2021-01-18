@@ -439,7 +439,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             MyTNBAppToolTipBuilder.Create(Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                        .SetTitle((string.Format(Utility.GetLocalizedLabel("AddAccount", "GovDialogTitle"))))
                        .SetMessage(temp)
-                       .SetContentGravity(GravityFlags.Center)
+                       .SetContentGravity(GravityFlags.Left)
                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                        .Build().Show();
         }
