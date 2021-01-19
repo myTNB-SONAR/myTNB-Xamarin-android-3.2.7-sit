@@ -22,6 +22,8 @@ using myTNB_Android.Src.Feedback_PreLogin_Menu.Activity;
 using myTNB_Android.Src.FindUs.Activity;
 using myTNB_Android.Src.Login.Activity;
 using myTNB_Android.Src.Maintenance.Activity;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.PreLogin.MVP;
 using myTNB_Android.Src.RegistrationForm.Activity;
 using myTNB_Android.Src.Utils;
@@ -42,6 +44,8 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
         private PreLoginPresenter mPresenter;
         private PreLoginContract.IUserActionsListener userActionsListener;
+        private bool isApplicationStatusEnabled = false;
+        private int cardCount = 4;
 
         [BindView(Resource.Id.txtWelcome)]
         TextView txtWelcome;
@@ -197,13 +201,24 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 txtChangeLanguage.TextSize = TextViewUtils.GetFontSize(12f);
                 txtPromotion.TextSize = TextViewUtils.GetFontSize(14f);
                 btnRegister.TextSize = TextViewUtils.GetFontSize(16f);
-                UpdateLabels();
 
+                AppLaunchMasterDataResponse masterDataResponse = MyTNBAccountManagement.GetInstance().GetMasterDataResponse();
+                if (masterDataResponse != null
+                    && masterDataResponse.GetData().ServicesPreLogin is List<MyService> services
+                    && services != null
+                    && services.Count > 0)
+                {
+                    int index = services.FindIndex(x => x.ServiceCategoryId == "1006");
+                    isApplicationStatusEnabled = index > -1;
+                }
+                cardCount = isApplicationStatusEnabled || TextViewUtils.IsLargeFonts ? 4 : 3;
+
+                UpdateLabels();
                 GenerateTopLayoutLayout();
                 GenerateFindUsCardLayout();
                 GenerateCallUsCardLayout();
-                GenerateFeedbackCardLayout();
                 GenerateCheckStatusCardLayout();
+                GenerateFeedbackCardLayout();
             }
             catch (Exception ex)
             {
@@ -651,7 +666,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 LinearLayout.LayoutParams currentCard = cardFindUs.LayoutParameters as LinearLayout.LayoutParams;
                 ViewGroup.LayoutParams currentImg = imgFindUs.LayoutParameters;
 
-                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / 4;
+                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / cardCount;
                 float heightRatio = 84f / 72f;
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
@@ -681,7 +696,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 LinearLayout.LayoutParams currentCard = cardCallUs.LayoutParameters as LinearLayout.LayoutParams;
                 ViewGroup.LayoutParams currentImg = imgCallUs.LayoutParameters;
 
-                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / 4;
+                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / cardCount;
                 float heightRatio = 84f / 72f;
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
@@ -708,14 +723,14 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             try
             {
-                if (TextViewUtils.IsLargeFonts)
+                if (TextViewUtils.IsLargeFonts && isApplicationStatusEnabled)
                 {
                     cardFeedbackFirstRow.Visibility = ViewStates.Gone;
                     secondLayout.Visibility = ViewStates.Visible;
                     LinearLayout.LayoutParams currentCard = cardFeedbackSecondRow.LayoutParameters as LinearLayout.LayoutParams;
                     ViewGroup.LayoutParams currentImg = imgFeedback.LayoutParameters;
 
-                    int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / 4;
+                    int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / cardCount;
                     float heightRatio = 84f / 72f;
                     int cardHeight = (int)(cardWidth * (heightRatio));
 
@@ -736,15 +751,16 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 {
                     cardFeedbackSecondRow.Visibility = ViewStates.Gone;
                     secondLayout.Visibility = ViewStates.Gone;
+
                     LinearLayout.LayoutParams currentCard = cardFeedbackFirstRow.LayoutParameters as LinearLayout.LayoutParams;
                     ViewGroup.LayoutParams currentImg = imgFeedback.LayoutParameters;
 
-                    int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / 4;
+                    int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(30f)) / cardCount;
                     float heightRatio = 84f / 72f;
                     int cardHeight = (int)(cardWidth * (heightRatio));
 
                     currentCard.Height = cardHeight;
-                    currentCard.Width = cardWidth;
+                    currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 80 : cardWidth;
 
                     float paddingRatio = 10f / 72f;
                     int padding = (int)(cardWidth * (paddingRatio));
@@ -770,7 +786,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 LinearLayout.LayoutParams currentCard = cardCheckStatus.LayoutParameters as LinearLayout.LayoutParams;
                 ViewGroup.LayoutParams currentImg = imgCheckStatus.LayoutParameters;
 
-                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(30f)) / 4;
+                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(30f)) / cardCount;
                 float heightRatio = 84f / 72f;
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
@@ -786,6 +802,10 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
                 currentImg.Height = imgHeight;
                 currentImg.Width = imgHeight;
+
+                cardCheckStatus.Visibility = isApplicationStatusEnabled
+                    ? ViewStates.Visible
+                    : ViewStates.Gone;
             }
             catch (Exception ex)
             {
