@@ -273,7 +273,10 @@ namespace myTNB_Android.Src.MyAccount.Activity
             Utility.ShowEmailVerificationDialog(this, () =>
             {
                 //ShowProgressDialog();
-                ShowEmailUpdateSuccess();
+                UserEntity user = UserEntity.GetActive();
+                string email = user?.Email;
+                this.userActionsListener.ResendEmailVerify(Constants.APP_CONFIG.API_KEY_ID, email);
+                //ShowEmailUpdateSuccess();
             });
 
         }
@@ -305,6 +308,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         private void ShowPasswordUpdateSuccess() 
         {
+            
             try
             {
                 Snackbar updatePassWordBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "passwordUpdateSuccess"), Snackbar.LengthIndefinite)
@@ -349,7 +353,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-        private void ShowEmailUpdateSuccess()
+        public void ShowEmailUpdateSuccess(string message)
         {
             try
             {
@@ -398,6 +402,27 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private Snackbar mSnackBar;
+        public void ShowError(string errorMessage)
+        {
+            if (mSnackBar != null && mSnackBar.IsShown)
+            {
+                mSnackBar.Dismiss();
+                mSnackBar.Show();
+            }
+            else
+            {
+                mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
+                .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
+                );
+                View v = mSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mSnackBar.Show();
+            }
+            this.SetIsClicked(false);
         }
 
 
@@ -504,6 +529,109 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
         }
 
+        public void ShowGetCodeProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private Snackbar mCodeCancelledExceptionSnackBar;
+        public void ShowRetryOptionsCodeCancelledException(System.OperationCanceledException operationCanceledException)
+        {
+            UserEntity user = UserEntity.GetActive();
+
+            if (mCodeCancelledExceptionSnackBar != null && mCodeCancelledExceptionSnackBar.IsShown)
+            {
+                mCodeCancelledExceptionSnackBar.Dismiss();
+            }
+
+            mCodeCancelledExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
+            {
+
+                mCodeCancelledExceptionSnackBar.Dismiss();
+                string email = user?.Email;
+                this.userActionsListener.ResendEmailVerify(Constants.APP_CONFIG.API_KEY_ID, email);
+            }
+            );
+            View v = mCodeCancelledExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mCodeCancelledExceptionSnackBar.Show();
+            this.SetIsClicked(false);
+        }
+
+        private Snackbar mCodeApiExceptionSnackBar;
+        public void ShowRetryOptionsCodeApiException(ApiException apiException)
+        {
+
+            UserEntity user = UserEntity.GetActive();
+            
+            if (mCodeApiExceptionSnackBar != null && mCodeApiExceptionSnackBar.IsShown)
+            {
+                mCodeApiExceptionSnackBar.Dismiss();
+            }
+
+            mCodeApiExceptionSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
+            {
+
+                mCodeApiExceptionSnackBar.Dismiss();
+                string email = user?.Email;
+                this.userActionsListener.ResendEmailVerify(Constants.APP_CONFIG.API_KEY_ID, email);
+            }
+            );
+            View v = mCodeApiExceptionSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mCodeApiExceptionSnackBar.Show();
+            this.SetIsClicked(false);
+        }
+
+        private Snackbar mCodeUnknownException;
+        public void ShowRetryOptionsCodeUnknownException(Exception exception)
+        {
+            UserEntity user = UserEntity.GetActive();
+
+            if (mCodeUnknownException != null && mCodeUnknownException.IsShown)
+            {
+                mCodeUnknownException.Dismiss();
+            }
+
+            mCodeUnknownException = Snackbar.Make(rootView, Utility.GetLocalizedErrorLabel("defaultErrorMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
+            {
+
+                mCodeUnknownException.Dismiss();
+                string email = user?.Email;
+                this.userActionsListener.ResendEmailVerify(Constants.APP_CONFIG.API_KEY_ID, email);
+            }
+            );
+            View v = mCodeUnknownException.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mCodeUnknownException.Show();
+            this.SetIsClicked(false);
+        }
+
+        public void HideGetCodeProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         protected override void OnResume()
         {
             base.OnResume();
@@ -586,7 +714,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
                     {
                         MyTNBAccountManagement.GetInstance().SetIsEmailUpdated(true);
                         {
-                            ShowEmailUpdateSuccess();
+                            UserEntity userEntity = UserEntity.GetActive();
+                            ShowEmailUpdateSuccess(userEntity.Email);
                             MyTNBAccountManagement.GetInstance().SetIsEmailUpdated(false);
                         }
                     }

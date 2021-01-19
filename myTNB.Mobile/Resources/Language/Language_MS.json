@@ -1212,7 +1212,7 @@
     "resend": "Hantar semula",
     "verifyEmailPopupBody": "BM_Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
     "verifyEmailPopupTitle": "BM_Pending Email Verification",
-    "toast_email_send": "BM_An email verification link has been sent to {0}",
+    "toast_email_send": "BM_An email verification link has been sent to ",
     "toast_SuccessUpdateName": "BM_You’ve successfully updated your name!"
   },
 

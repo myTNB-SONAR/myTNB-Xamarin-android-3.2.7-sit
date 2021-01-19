@@ -188,6 +188,10 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> SendResetPasswordCode_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token); //yana
 
         [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SendEmailVerification")]
+        Task<T> SendEmailVerification<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token); //yana
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/SendUpdatePhoneTokenSMSV2")]
         Task<T> SendUpdatePhoneTokenSMSV2<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 

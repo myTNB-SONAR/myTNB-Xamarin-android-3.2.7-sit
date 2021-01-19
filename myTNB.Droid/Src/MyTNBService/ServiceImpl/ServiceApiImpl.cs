@@ -459,6 +459,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
+        /// Call Resend Email Verification with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SendEmailVerificationResponse> SendEmailVerify([Body] Request.BaseRequest request)
+        {
+            return api.SendEmailVerification<SendEmailVerificationResponse>(request, CancellationTokenSourceWrapper.GetToken()); //yana
+        }
+
+        /// <summary>
         /// Call SendUpdatePhoneTokenSMS with default timeout.
         /// </summary>
         /// <param name="request"></param>

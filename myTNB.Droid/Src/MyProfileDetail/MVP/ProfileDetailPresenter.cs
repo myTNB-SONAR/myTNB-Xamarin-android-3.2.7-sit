@@ -30,5 +30,66 @@ namespace myTNB_Android.Src.MyProfileDetail.MVP
             throw new NotImplementedException();
         }
 
+        public async void ResendEmailVerify(string apiKeyId, string email)
+        {
+            if (mView.IsActive())
+            {
+                this.mView.ShowGetCodeProgressDialog();
+            }
+
+            try
+            {
+                
+                var emailVerificationResponse = await ServiceApiImpl.Instance.SendEmailVerify(new SendEmailVerificationRequest(email));
+
+
+
+                if (mView.IsActive())
+                {
+                    this.mView.HideGetCodeProgressDialog();
+                }
+
+                if (emailVerificationResponse.IsSuccessResponse())
+                {
+                    string message = emailVerificationResponse.Response.Message;
+                    this.mView.ShowEmailUpdateSuccess(message);
+                }
+                else
+                {
+                    string errorMessage = emailVerificationResponse.Response.Message;
+                    this.mView.ShowError(errorMessage);
+                }
+            }
+            catch (OperationCanceledException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideGetCodeProgressDialog();
+                }
+                // CANCLLED
+                this.mView.ShowRetryOptionsCodeCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideGetCodeProgressDialog();
+                }
+                // API EXCEPTION
+                this.mView.ShowRetryOptionsCodeApiException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (Exception e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideGetCodeProgressDialog();
+                }
+                // UNKNOWN EXCEPTION
+                this.mView.ShowRetryOptionsCodeUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }
