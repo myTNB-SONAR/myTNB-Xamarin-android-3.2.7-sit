@@ -5,6 +5,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
+using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
@@ -110,20 +111,21 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-             base.OnCreate(savedInstanceState);
+            base.OnCreate(savedInstanceState);
             SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusPaymentDetails", "title"));
             btnPayBill.Text = Utility.GetLocalizedLabel("ApplicationStatusPaymentDetails", "payNow");
             TextViewUtils.SetMuseoSans300Typeface(accountPayAmountValue, refreshBillingDetailMessage);
-              TextViewUtils.SetMuseoSans500Typeface(accountPayAmountLabel, accountPayAmountCurrency
-                , btnPayBill, btnBillingDetailefresh);
-         
+            TextViewUtils.SetMuseoSans500Typeface(accountPayAmountLabel, accountPayAmountCurrency
+              , btnPayBill, btnBillingDetailefresh);
+
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             Bundle extras = Intent.Extras;
 
             if (extras != null)
+            {
                 applicationDetailDisplay = JsonConvert.DeserializeObject<GetApplicationStatusDisplay>(extras.GetString("applicationDetailDisplay"));
-
+            }
             PopulateCharges();
             SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
@@ -134,6 +136,13 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
             accountPayAmountValue.TextSize = TextViewUtils.GetFontSize(24f);
             refreshBillingDetailMessage.TextSize = TextViewUtils.GetFontSize(12f);
             btnBillingDetailefresh.TextSize = TextViewUtils.GetFontSize(16f);
+
+            if (!applicationDetailDisplay.IsPaymentEnabled)
+            {
+                btnPayBill.Enabled = false;
+                btnPayBill.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.white));
+                btnPayBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            }
         }
 
         protected override void OnResume()

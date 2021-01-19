@@ -361,7 +361,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 .SetCTALabel(statusDetail.PrimaryCTATitle)
                 .Build();
             whereisMyacc.Show();
-
         }
 
         public async void OnCustomerRating()
@@ -822,6 +821,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Visible;
                                 applicationStatusBotomPayableLayout.Visibility = ViewStates.Visible;
                                 btnApplicationStatusPay.Visibility = ViewStates.Visible;
+
+                                if (!applicationDetailDisplay.IsPaymentEnabled)
+                                {
+                                    btnApplicationStatusPay.Visibility = ViewStates.Visible;
+                                    btnApplicationStatusPay.Enabled = false;
+                                    btnApplicationStatusPay.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.white));
+                                    btnApplicationStatusPay.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+                                }
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.PayInProgress)
                             {
