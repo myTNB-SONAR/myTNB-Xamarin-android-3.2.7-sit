@@ -5682,6 +5682,8 @@
     <Compile Include="Src\Utils\ZoomImageView\ZoomImageView.cs" />
     <Compile Include="Src\Utils\LinkRedirectionUtils.cs" />
     <AndroidResource Include="Resources\drawable\light_white_outline_button_background.xml" />
+    <Compile Include="Src\MyTNBService\Response\SendEmailVerificationResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\SendEmailVerificationRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
