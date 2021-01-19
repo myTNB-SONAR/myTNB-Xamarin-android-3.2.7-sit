@@ -155,7 +155,7 @@ namespace myTNB_Android.Src.Base.Activity
                     if (ShouldShowRequestPermissionRationale(Manifest.Permission.ReadCalendar)
                         || ShouldShowRequestPermissionRationale(Manifest.Permission.WriteCalendar))
                     {
-                        ShowRationale(LocationTitleRationale(), LocationContentRationale()
+                        ShowRationale(CalendarTitleRationale(), CalendarContentRationale()
                             , Constants.RUNTIME_PERMISSION_CALENDAR_REQUEST_CODE);
                     }
                     else
@@ -378,6 +378,16 @@ namespace myTNB_Android.Src.Base.Activity
         public virtual int LocationContentRationale()
         {
             return Resource.String.runtime_permission_location_rationale;
+        }
+
+        public virtual int CalendarTitleRationale()
+        {
+            return Resource.String.runtime_permission_dialog_calendar_title;
+        }
+
+        public virtual int CalendarContentRationale()
+        {
+            return Resource.String.runtime_permission_calendar_rationale;
         }
 
         public bool IsLocationGranted()
