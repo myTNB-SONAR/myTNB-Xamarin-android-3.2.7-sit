@@ -16,6 +16,10 @@ namespace myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails
         public List<PostApplicationsPaidDetailsDataModel> Data { set; get; }
         [JsonProperty("allowApplicationPayment")]
         public bool AllowApplicationPayment { set; get; }
+        [JsonProperty("applicationPaymentUnavailable")]
+        public bool ApplicationPaymentUnavailable { set; get; }
+        [JsonProperty("applicationPaymentDisabled")]
+        public bool ApplicationPaymentDisabled { set; get; }
         [JsonProperty("status")]
         public string Status { set; get; } = string.Empty;
         [JsonProperty("isError")]

@@ -314,6 +314,10 @@ namespace myTNB.Mobile
                 else if (IsPayment && applicationPaymentDetail != null)
                 {
                     type = IsPaymentAllowed ? DetailCTAType.Pay : DetailCTAType.PayInProgress;
+                    if (!IsPaymentAvailable && type == DetailCTAType.Pay)
+                    {
+                        type = DetailCTAType.None;
+                    }
                 }
                 else if (ApplicationAppointmentDetail != null && ApplicationAppointmentDetail.Mode.IsValid())
                 {
@@ -522,6 +526,16 @@ namespace myTNB.Mobile
         /// Use for payment pending
         /// </summary>
         public bool IsPaymentAllowed { set; get; }
+
+        /// <summary>
+        /// Use to disable payment button
+        /// </summary>
+        public bool IsPaymentEnabled { set; get; }
+
+        /// <summary>
+        /// Use to hide payment section
+        /// </summary>
+        public bool IsPaymentAvailable { set; get; }
 
         private Color StatusColorDisplay
         {

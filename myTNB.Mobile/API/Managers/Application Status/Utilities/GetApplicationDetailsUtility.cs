@@ -503,7 +503,10 @@ namespace myTNB.Mobile.API.Managers.ApplicationStatus.Utilities
                             AccountPayments = x.AccountPayments
                         }).ToList();
                     }
+
                     detail.Content.IsPaymentAllowed = paymentResponse.D.AllowApplicationPayment;
+                    detail.Content.IsPaymentEnabled = !paymentResponse.D.ApplicationPaymentDisabled;
+                    detail.Content.IsPaymentAvailable = !paymentResponse.D.ApplicationPaymentUnavailable;
                 }
             }
             catch (Exception ex)
