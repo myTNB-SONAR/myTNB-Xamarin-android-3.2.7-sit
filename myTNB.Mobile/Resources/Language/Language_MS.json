@@ -858,6 +858,7 @@
     "cancelAddSuccess": "BM_cancelAddSuccess",
     "manageUserAccess": "BM_Manage User Access",
     "manageAutopay": "BM_Manage Autopay"
+    
   },
   "Onboarding": {
     "letsStart": "Jom mulakan!",
@@ -1263,9 +1264,10 @@
     "walkthroughStep2": "BM_View and manage people who are viewing your account or provide access to someone new here.",
     "tapToSkip": "BM_Tap to skip",
     "pendingRegistration": "BM_Pending Registration",
-    //add by yana
+    //add by wan
     "AddTNBUserSuccess": "BM_AddTNBUserSuccess",
     "AddNonTNBUserSuccess": "BM_AddNonTNBUserSuccess",
+    "hint_email": "Alamat e-mel pengguna",
     "removeAccountUserAccesssLog": "You removed <strong>{0}</strong> from this electricity account.",
     "addAccountUserAccesssLog": "<strong>{0}</strong> added this electricity account to their view.",
     "addAccesssLogfullBill": "You have granted <strong>{0}</strong>’s access to view full electricity bill.",

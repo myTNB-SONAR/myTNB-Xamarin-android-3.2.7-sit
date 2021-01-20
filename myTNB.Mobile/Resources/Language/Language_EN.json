@@ -858,6 +858,7 @@
     "cancelAddSuccess": "{0} is cancelled from being added as a viewer to this electricity account.",
     "manageUserAccess": "Manage User Access",
     "manageAutopay": "Manage Autopay"
+    
   },
   "Onboarding": {
     "letsStart": "Let's get started!",
@@ -1266,6 +1267,7 @@
     //add by wan
     "AddTNBUserSuccess": "{0} now has access to {1} on myTNB.",
     "AddNonTNBUserSuccess": "{0} is invited to join myTNB and will have access to {1}.",
+    "hint_email": "User Email Address",
     "removeAccountUserAccesssLog": "You removed <strong>{0}</strong> from this electricity account.",
     "addAccountUserAccesssLog": "<strong>{0}</strong> added this electricity account to their view.",
     "addAccesssLogfullBill": "You have granted <strong>{0}</strong>’s access to view full electricity bill.",

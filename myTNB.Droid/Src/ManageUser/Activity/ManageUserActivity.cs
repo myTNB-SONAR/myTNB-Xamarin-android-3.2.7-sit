@@ -137,7 +137,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 itemTitleFullBill.Text = Utility.GetLocalizedLabel("UserAccess", "fullElectricity");
                 itemTitleBilling.Text = Utility.GetLocalizedLabel("UserAccess", "e_billing");
                 SetToolBarTitle(GetLabelByLanguage("titleManageUser"));
-                txtInputLayoutEmail.Hint = Utility.GetLocalizedLabel("OT_Uncategorize", "email_user_address");
+                txtInputLayoutEmail.Hint = Utility.GetLocalizedLabel("UserAccess", "hint_email").ToUpper(); 
                 btnSave.Text = GetLabelCommonByLanguage("saveChanges");
 
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
