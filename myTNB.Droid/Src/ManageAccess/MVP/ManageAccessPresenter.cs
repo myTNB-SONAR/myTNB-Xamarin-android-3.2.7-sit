@@ -70,7 +70,20 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                 {
                     if (resultCode == Result.Ok)
                     {
-                        this.mView.ShowAddNewUserEmailExistSuccess();
+                        if (data.Extras.GetString("Invited") != null)
+                        {
+                            string email = data.Extras.GetString("Invited");
+                            this.mView.ShowAddNonTNBUserSuccess(email);
+                        }
+                        else
+                        {
+                            string email = data.Extras.GetString("Add");
+                            this.mView.ShowAddTNBUserSuccess(email);
+                        }
+
+                        this.mView.AdapterClean();
+                        this.mView.AdapterDeleteClean();
+                        Start();
                     }
                 }
             }

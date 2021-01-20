@@ -265,6 +265,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 {
                     this.SetIsClicked(true);
                     Intent addAccountIntent = new Intent(this, typeof(AddNewUserActivity));
+                    addAccountIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
                     StartActivityForResult(addAccountIntent, Constants.ADD_USER);
 
                 }
@@ -311,8 +312,8 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 {
                     this.SetIsClicked(true);
                     Intent addAccountIntent = new Intent(this, typeof(AddNewUserActivity));
+                    addAccountIntent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
                     StartActivityForResult(addAccountIntent, Constants.ADD_USER);
-
                 }
                 this.SetIsClicked(false);
             }
@@ -411,6 +412,58 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             ManageUser.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(loglistdata));
             StartActivityForResult(ManageUser, Constants.UPDATE_NICKNAME_REQUEST);
         }
+
+        public void ShowAddTNBUserSuccess(string email)
+        {
+            try
+            {
+                string nickname = accountData.AccountNickName;
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(GetLabelByLanguage("AddTNBUserSuccess"), email, nickname)), Snackbar.LengthIndefinite)
+                            .SetAction(GetLabelCommonByLanguage("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = saveSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                saveSnackBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        //patut modify untuk papar di page manageAccess
+        public void ShowAddNonTNBUserSuccess(string email)
+        {
+            try
+            {
+                string nickname = accountData.AccountNickName;
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(GetLabelByLanguage("AddNonTNBUserSuccess"), email, nickname)), Snackbar.LengthIndefinite)
+                            .SetAction(GetLabelCommonByLanguage("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = saveSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                saveSnackBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)

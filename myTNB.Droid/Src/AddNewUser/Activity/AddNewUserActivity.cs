@@ -69,7 +69,6 @@ namespace myTNB_Android.Src.AddNewUser.Activity
         TextView infoAddress;
 
         AccountData accountData;
-        UserManageAccessAccount account;
         int position;
 
         private bool checkboxbilling;
@@ -95,15 +94,10 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                 {
                     if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
                     {
-                        //accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
                         accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-
                     }
                     position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
                 }
-
-                /*ManageAccessItemComponent manageAccessUserItem = GetManageUserAccess();
-                profileMenuItemsContent.AddView(manageAccessUserItem);*/
 
                 var boxcondition = new CheckBox(this)
                 {
@@ -116,8 +110,6 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtValue, itemTitleFullBill, itemTitleBilling);
                 TextViewUtils.SetMuseoSans500Typeface(txtAddNewUserTitle, txtNewUserOptionalTitle);
                 TextViewUtils.SetMuseoSans500Typeface(btnAddUser);
-
-                txtUserEmail.Text = account.email;
 
                 itemTitleFullBill.Text = Utility.GetLocalizedLabel("UserAccess", "fullElectricity");
                 itemTitleBilling.Text = Utility.GetLocalizedLabel("UserAccess", "e_billing");
@@ -152,7 +144,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                 {
                     string email = txtUserEmail.Text.ToString().Trim();
                     this.SetIsClicked(true);
-                    this.userActionsListener.OnAddAccount(email, checkboxfullbill, checkboxbilling);
+                    this.userActionsListener.OnAddAccount(email, accountData.AccountNum, checkboxfullbill, checkboxbilling);
 
 
                     //ShowAddTNBUserSuccess();
@@ -166,61 +158,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-        //patut modify untuk papar di page manageAccess
-        public void ShowAddTNBUserSuccess()
-        {
-            try
-            {
-                string email = txtUserEmail.Text.ToString().Trim();
-                string nickname = accountData.AccountNickName;
-                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(GetLabelByLanguage("AddTNBUserSuccess"), email,nickname)), Snackbar.LengthIndefinite)
-                            .SetAction(GetLabelCommonByLanguage("close"),
-                             (view) =>
-                             {
-                                 // EMPTY WILL CLOSE SNACKBAR
-                             }
-                            );
-                View v = saveSnackBar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(4);
-                saveSnackBar.Show();
-                this.SetIsClicked(false);
-            }
-            catch (System.Exception e)
-            {
-                this.SetIsClicked(false);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        //patut modify untuk papar di page manageAccess
-        public void ShowAddNonTNBUserSuccess()
-        {
-            try
-            {
-                string email = txtUserEmail.Text.ToString().Trim();
-                string nickname = accountData.AccountNickName;
-                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(GetLabelByLanguage("AddNonTNBUserSuccess"), email, nickname)), Snackbar.LengthIndefinite)
-                            .SetAction(GetLabelCommonByLanguage("close"),
-                             (view) =>
-                             {
-                                 // EMPTY WILL CLOSE SNACKBAR
-                             }
-                            );
-                View v = saveSnackBar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(4);
-                saveSnackBar.Show();
-                this.SetIsClicked(false);
-            }
-            catch (System.Exception e)
-            {
-                this.SetIsClicked(false);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
+        
         private void CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
             if (e.IsChecked)
@@ -255,9 +193,19 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             return Resource.Layout.AddNewUserView;
         }
 
-        public void ShowSuccessAddNewUser()
+        public void ShowSuccessAddNewUser(string email)
         {
-            SetResult(Result.Ok);
+            Intent resultIntent = new Intent();
+            resultIntent.PutExtra("Invited", email);
+            SetResult(Result.Ok, resultIntent);
+            Finish();
+        }
+
+        public void ShowSuccessAddNewUserPreRegister(string email)
+        {
+            Intent resultIntent = new Intent();
+            resultIntent.PutExtra("Add", email);
+            SetResult(Result.Ok, resultIntent);
             Finish();
         }
 
@@ -288,30 +236,6 @@ namespace myTNB_Android.Src.AddNewUser.Activity
         {
             base.OnPause();
         }
-
-        /*private ManageAccessItemComponent GetManageUserAccess()
-        {
-            //Context context = Activity.ApplicationContext;
-
-            ManageAccessItemComponent manageItem = new ManageAccessItemComponent(this);
-
-            List<View> manageItems = new List<View>();
-
-            ManageUserMenuItemSingleContentComponent electricityBill = new ManageUserMenuItemSingleContentComponent(this);
-            electricityBill.SetTitle(GetLabelCommonByLanguage("viewFullBill"));
-            electricityBill.SetItemActionVisibility(true);
-            electricityBill.SetItemActionCall(ClickCheck);
-            manageItems.Add(electricityBill);
-
-            ManageUserMenuItemSingleContentComponent eBilling = new ManageUserMenuItemSingleContentComponent(this);
-            eBilling.SetTitle(GetLabelCommonByLanguage("ApplyforBilling"));
-            eBilling.SetItemActionVisibility(true);
-            eBilling.SetItemActionCall(ClickCheck);
-            manageItems.Add(eBilling);
-
-            manageItem.AddComponentView(manageItems);
-            return manageItem;
-        }*/
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {

@@ -627,7 +627,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         public void OnResumeUpdateProfileUnRead(bool key, bool isfromHome)
         {
             UserEntity user = UserEntity.GetActive();
-            if (string.IsNullOrEmpty(user.IdentificationNo) || !user.IsActivated)
+            var sharedpref_data = UserSessions.GetCheckEmailVerified(this.mSharedPref);
+            bool isUpdatePersonalDetail = bool.Parse(sharedpref_data);  //get from shared pref
+
+            if (string.IsNullOrEmpty(user.IdentificationNo) || !isUpdatePersonalDetail)
             {
                 this.mView.ShowUnverifiedProfile(key, isfromHome);
 

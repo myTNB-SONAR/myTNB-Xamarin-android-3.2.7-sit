@@ -767,6 +767,7 @@
     <Compile Include="Src\AppLaunch\Models\MasterDataResponse.cs" />
     <Compile Include="Src\AppLaunch\Models\NotificationChannels.cs" />
     <Compile Include="Src\AppLaunch\Models\NotificationChannelsResponse.cs" />
+    <Compile Include="Src\AppLaunch\Models\UserVerificationInfo.cs" />
     <Compile Include="Src\AppLaunch\Models\NotificationTypes.cs" />
     <Compile Include="Src\AppLaunch\Models\NotificationTypesResponse.cs" />
     <Compile Include="Src\AppLaunch\Models\PhoneVerifyStatus.cs" />
@@ -1066,6 +1067,7 @@
     <Compile Include="Src\MyTNBService\Request\GetRegisteredUser.cs" />
     <Compile Include="Src\MyTNBService\Request\GetAccountAccessRight.cs" />
     <Compile Include="Src\MyTNBService\Request\LogUserAccessRequest.cs" />
+    <Compile Include="Src\MyTNBService\Request\AddUserAccessAccountRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\RemoveUserAccessRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\UpdateUserAccessRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\SubmitEnquiryRequest.cs" />

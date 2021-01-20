@@ -1259,7 +1259,15 @@
     "pendingRegistration": "BM_Pending Registration",
     //add by yana
     "AddTNBUserSuccess": "BM_AddTNBUserSuccess",
-    "AddNonTNBUserSuccess": "BM_AddNonTNBUserSuccess"
+    "AddNonTNBUserSuccess": "BM_AddNonTNBUserSuccess",
+    "removeAccountUserAccesssLog": "You removed <strong>{0}</strong> from this electricity account.",
+    "addAccountUserAccesssLog": "<strong>{0}</strong> added this electricity account to their view.",
+    "addAccesssLogfullBill": "You have granted <strong>{0}</strong>’s access to view full electricity bill.",
+    "addAccesssLogeBilling": "You have granted <strong>{0}</strong>’s access to apply for e-billing.",
+    "addAccesssLogBoth": "You have granted <strong>{0}</strong> access to full bill view and apply for e-billing.",
+    "removeAccesssLogfullBill": "You removed <strong>{0}</strong>’s access to view full electricity bill.",
+    "removeAccesssLogeBilling": "You removed <strong>{0}</strong>’s access to apply for e-billing.",
+    "removeAccesssLogBoth": "You removed <strong>{0}</strong>’s access to apply for e-billing and view full electricity bill."
   },
   //new Add folow IOS
   "RegisterNew": {

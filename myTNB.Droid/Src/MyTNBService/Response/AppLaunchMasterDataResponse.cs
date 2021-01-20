@@ -64,6 +64,10 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [AliasAs("IsFeedbackUpdateDetailDisabled")]
             public bool IsFeedbackUpdateDetailDisabled { get; set; }
 
+            [JsonProperty(PropertyName = "UserVerificationInfo")]
+            [AliasAs("NotificatiUserVerificationInfoonType")]
+            public UserVerificationInfo UserVerificationInfo { get; set; }
+
         }
 
         public class ForceUpdateInfoData
@@ -87,6 +91,12 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "ModalBtnText")]
             [AliasAs("ModalBtnText")]
             public string ModalBtnText { get; set; }
+        }
+
+        public class UserVerificationInfo
+        {
+            [JsonProperty("Email")]
+            public bool Email { get; set; }
         }
     }
 }
