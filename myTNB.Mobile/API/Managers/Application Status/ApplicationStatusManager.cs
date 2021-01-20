@@ -451,6 +451,7 @@ namespace myTNB.Mobile
             , string system = "myTNB")
         {
             string searchTerm = savedApplicationID.IsValid() ? savedApplicationID : applicationID;
+            system = system.IsValid() ? system : "myTNB";
             ApplicationDetailDisplay displaymodel = new ApplicationDetailDisplay();
             try
             {
