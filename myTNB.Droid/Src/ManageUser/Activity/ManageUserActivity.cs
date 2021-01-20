@@ -134,7 +134,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 TextViewUtils.SetMuseoSans300Typeface(itemTitleFullBill, itemTitleBilling);
                 TextViewUtils.SetMuseoSans500Typeface(btnSave, itemTitle);
 
-                MyTNBAccountManagement.GetInstance().AddNewUserAdded(false);
                 itemTitleFullBill.Text = Utility.GetLocalizedLabel("UserAccess", "fullElectricity");
                 itemTitleBilling.Text = Utility.GetLocalizedLabel("UserAccess", "e_billing");
                 SetToolBarTitle(GetLabelByLanguage("titleManageUser"));
@@ -144,8 +143,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
                 txtNickName.Text = account.name;
                 txtEmail.Text = account.email;
-                itemActionFullBill.CheckedChange += CheckedChange;
-                itemActionBilling.CheckedChange += CheckedChanged;
                 DisableSaveButton();
                 if (account.IsPreRegister)
                 {
@@ -159,10 +156,12 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 }
                 else
                 {
+                    itemActionFullBill.CheckedChange += CheckedChange;
+                    itemActionBilling.CheckedChange += CheckedChanged;
                     PopulateDataCheckBox(account);
                 }
 
-                MyTNBAccountManagement.GetInstance().AddNewUserAdded(true);
+                MyTNBAccountManagement.GetInstance().AddNewUserAdded(false);
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 mPresenter = new ManageUserPresenter(this, account);
                 this.userActionsListener.Start();

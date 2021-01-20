@@ -280,7 +280,7 @@ namespace myTNB_Android.Src.Database.Model
             }
         }
 
-        public static void SetSelected(string accNum, bool flag, string userId)
+        public static void SetSelected(string accNum, bool flag, string accountId)
         {
             try
             {
@@ -288,7 +288,7 @@ namespace myTNB_Android.Src.Database.Model
                 if (activeUser != null)
                 {
                     var db = DBHelper.GetSQLiteConnection();
-                    db.Execute("Update UserManageAccountEntity SET isSelected = ? WHERE accNum = ? AND userId = ?", flag, accNum, userId);
+                    db.Execute("Update UserManageAccountEntity SET isSelected = ? WHERE accNum = ? AND userAccountID = ?", flag, accNum, accountId);
                 }
             }
             catch (Exception e)
