@@ -16363,61 +16363,58 @@ namespace myTNB_Android
 		{
 			
 			// aapt resource value: 0x7F0E0000
-			public const int AppointmentTestData = 2131623936;
+			public const int GetAccountBillingDetailsResponse = 2131623936;
 			
 			// aapt resource value: 0x7F0E0001
-			public const int GetAccountBillingDetailsResponse = 2131623937;
+			public const int GetAccountBillingDetailsResponse210040320600 = 2131623937;
 			
 			// aapt resource value: 0x7F0E0002
-			public const int GetAccountBillingDetailsResponse210040320600 = 2131623938;
+			public const int GetAccountBillingDetailsResponse220130881800 = 2131623938;
 			
 			// aapt resource value: 0x7F0E0003
-			public const int GetAccountBillingDetailsResponse220130881800 = 2131623939;
+			public const int GetAccountBillingDetailsResponse220136555409 = 2131623939;
 			
 			// aapt resource value: 0x7F0E0004
-			public const int GetAccountBillingDetailsResponse220136555409 = 2131623940;
+			public const int GetAccountBillingDetailsResponse220147054010 = 2131623940;
 			
 			// aapt resource value: 0x7F0E0005
-			public const int GetAccountBillingDetailsResponse220147054010 = 2131623941;
+			public const int GetAccountBillingDetailsResponse220163099904 = 2131623941;
 			
 			// aapt resource value: 0x7F0E0006
-			public const int GetAccountBillingDetailsResponse220163099904 = 2131623942;
+			public const int GetAccountBillingDetailsResponse220164535604 = 2131623942;
 			
 			// aapt resource value: 0x7F0E0007
-			public const int GetAccountBillingDetailsResponse220164535604 = 2131623943;
+			public const int GetAccountBillingDetailsResponse220223313703 = 2131623943;
 			
 			// aapt resource value: 0x7F0E0008
-			public const int GetAccountBillingDetailsResponse220223313703 = 2131623944;
+			public const int GetAccountBillingDetailsResponse220231662807 = 2131623944;
 			
 			// aapt resource value: 0x7F0E0009
-			public const int GetAccountBillingDetailsResponse220231662807 = 2131623945;
+			public const int GetAccountBillingDetailsResponse220272777303 = 2131623945;
 			
 			// aapt resource value: 0x7F0E000A
-			public const int GetAccountBillingDetailsResponse220272777303 = 2131623946;
+			public const int GetAccountBillingDetailsResponse220280837809 = 2131623946;
 			
 			// aapt resource value: 0x7F0E000B
-			public const int GetAccountBillingDetailsResponse220280837809 = 2131623947;
+			public const int GetAccountBillingDetailsResponse220595158104 = 2131623947;
 			
 			// aapt resource value: 0x7F0E000C
-			public const int GetAccountBillingDetailsResponse220595158104 = 2131623948;
+			public const int GetCustomerBillingAccountListResponse = 2131623948;
 			
 			// aapt resource value: 0x7F0E000D
-			public const int GetCustomerBillingAccountListResponse = 2131623949;
+			public const int GetCustomerBillingAccountListResponse1 = 2131623949;
 			
 			// aapt resource value: 0x7F0E000E
-			public const int GetCustomerBillingAccountListResponse1 = 2131623950;
+			public const int GetCustomerBillingAccountListResponseV5 = 2131623950;
 			
 			// aapt resource value: 0x7F0E000F
-			public const int GetCustomerBillingAccountListResponseV5 = 2131623951;
+			public const int GetUsageHistoryResponse = 2131623951;
 			
 			// aapt resource value: 0x7F0E0010
-			public const int GetUsageHistoryResponse = 2131623952;
+			public const int UserLoginResponseV4 = 2131623952;
 			
 			// aapt resource value: 0x7F0E0011
-			public const int UserLoginResponseV4 = 2131623953;
-			
-			// aapt resource value: 0x7F0E0012
-			public const int UserLoginResponseV5 = 2131623954;
+			public const int UserLoginResponseV5 = 2131623953;
 			
 			static Raw()
 			{
