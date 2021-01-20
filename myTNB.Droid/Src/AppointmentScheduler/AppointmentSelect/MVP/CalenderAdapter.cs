@@ -22,17 +22,23 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
     {
         private const string color_grey = "#727171";
         private const string colorLight_grey = "#e4e4e4";
-        public DateTime selectedDate;
+        private const string color_blue = "#1c79ca";
+        public DateTime selectedDateTime;
+        public string selectedDate;
+        public string keySelected;
+        public int selectedMonth;
+        public int selectedYear;
         public DateTime selectedStartTime;
         public DateTime selectedEndTime;
         public string selectedTime = string.Empty;
+        public bool isTimeSelected = false;
         public bool isDateSelected = false;
         public event EventHandler<bool> DatetimeValidate;
         public event EventHandler<bool> DatetimeScrollValidate;
         public event EventHandler<bool> DateChanged;
-
+        public TimeAdapter timeAdapter;
         public static bool isValidDateTime = false;
-
+        public DateTime dateInfo;
         RecyclerView timeLayout;
 
         private Button selectedDayButton;
@@ -57,27 +63,30 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         LayoutParams defaultButtonParams;
         private LayoutParams userButtonParams;
 
-        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName
-            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse,DateTime selectedDate,string selectedTime) : base(context)
+        public CustomCalendar(Context context, int calenderMonth, string selectedKey, string calenderMonthName
+            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, DateTime selectedDateTime, string dateSelected, int monthSelected, int yearSelected, string selectedTime, DateTime selectedStartTime, DateTime selectedEndTime) : base(context)
         {
-            Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse, selectedDate, selectedTime);
+            Initialize(context, calenderMonth, selectedKey, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse, selectedDateTime, dateSelected, monthSelected, yearSelected, selectedTime, selectedStartTime, selectedEndTime);
         }
-        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName
-            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs, DateTime selectedDate, string selectedTime) : base(context, attrs)
+        public CustomCalendar(Context context, int calenderMonth, string selectedKey, string calenderMonthName
+            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs, DateTime selectedDateTime, string dateSelected, int monthSelected, int yearSelected, string selectedTime, DateTime selectedStartTime, DateTime selectedEndTime) : base(context, attrs)
         {
-            Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse, selectedDate, selectedTime);
+            Initialize(context, calenderMonth, selectedKey, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse, selectedDateTime, dateSelected, monthSelected, yearSelected, selectedTime, selectedStartTime, selectedEndTime);
         }
 
-        public CustomCalendar(Context context, int calenderMonth, string calenderMonthName
-            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs, int defStyleAttr, DateTime selectedDate, string selectedTime)
+        public CustomCalendar(Context context, int calenderMonth, string selectedKey, string calenderMonthName
+            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs, int defStyleAttr, DateTime selectedDateTime, string dateSelected, int monthSelected, int yearSelected, string selectedTime,DateTime selectedStartTime, DateTime selectedEndTime)
             : base(context, attrs, defStyleAttr)
         {
-            Initialize(context, calenderMonth, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse, selectedDate, selectedTime);
+            Initialize(context, calenderMonth, selectedKey, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse, selectedDateTime, dateSelected, monthSelected, yearSelected, selectedTime, selectedStartTime, selectedEndTime);
         }
 
-        private void Initialize(Context context, int calenderMonth, string calenderMonthName
-            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, DateTime selectedDate,string selectedTime)
+        private void Initialize(Context context, int calenderMonth, string selectedKey, string calenderMonthName
+            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, DateTime selectedDateTime, string dateSelected, int monthSelected, int yearSelected, string selectedTime, DateTime selectedStartTime, DateTime selectedEndTime)
         {
+            this.selectedStartTime = selectedStartTime;
+            this.selectedEndTime = selectedEndTime;
+            this.selectedDateTime = selectedDateTime;
             DisplayMetrics metrics = Resources.DisplayMetrics;
             SetUserCurrentMonthYear(calenderMonth, calendarYear);
             var inflater = LayoutInflater.FromContext(context);
@@ -130,14 +139,17 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             AddDaysinCalendar(defaultButtonParams, context, metrics);
 
             InitCalendarWithDate(context, chosenDateYear, chosenDateMonth, chosenDateDay
-                , calenderMonthName, calendarYear.ToString(), visibleNumbers, schedulerDisplayResponse);
+                , calenderMonthName, calendarYear.ToString(), visibleNumbers, schedulerDisplayResponse, selectedDateTime, dateSelected, monthSelected, yearSelected, selectedTime);
 
             // Time
             timeLayout = (RecyclerView)FindViewById<RecyclerView>(Resource.Id.TimeRecyclerView);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
             timeLayout.SetLayoutManager(gridLayoutManager);
             isValidDateTime = isValidDateTime && isDateSelected;
-            //calendar.Set(CalendarField.DayOfMonth, selectedDate.Day);
+            selectedDate = dateSelected;
+            selectedMonth = monthSelected;
+            selectedYear = yearSelected;
+            keySelected = selectedKey;
         }
        
         private void InitializeDaysWeeks()
@@ -155,7 +167,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
         private void InitCalendarWithDate(Context context, int year, int month, int day
             , string calenderMonthName, string yearhNames, List<int> visibleNumbers
-            , SchedulerDisplay schedulerDisplayResponse)
+            , SchedulerDisplay schedulerDisplayResponse, DateTime selectedDateTime, string dateSelected, int monthSelected, int yearSelected, string selectedTime)
         {
             calendar.Set(year, month, 1);
 
@@ -177,14 +189,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             indexOfDayAfterLastDayOfMonth = daysLeftInFirstWeek + daysInCurrentMonth;
             for (int i = firstDayOfCurrentMonth; i < firstDayOfCurrentMonth + daysInCurrentMonth; ++i)
             {
-                if (currentDateMonth == chosenDateMonth
-                    && currentDateYear == chosenDateYear
-                    && dayNumber == currentDateDay)
-                {
-
-                }
-                else
-                {
+                
                     if (visibleNumbers.Where(x => x == dayNumber).FirstOrDefault() > 0)
                     {
                         days[i].SetTextColor(Color.ParseColor(color_grey));
@@ -199,7 +204,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
                     }
                     days[i].SetBackgroundColor(Color.Transparent);
-                }
+              
 
                 int[] dateArr = new int[3];
                 dateArr[0] = dayNumber;
@@ -207,6 +212,13 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 dateArr[2] = chosenDateYear;
                 days[i].Tag = dateArr;
                 days[i].Text = dayNumber.ToString();
+                if(days[i].Text == dateSelected && chosenDateMonth == monthSelected-1 && chosenDateYear == yearSelected)
+                {
+                    days[i].SetBackgroundResource(Resource.Drawable.daySelector);
+                    days[i].SetTextColor(Color.White);
+                    selectedDayButton = days[i];
+                }
+               
                 days[i].TextSize = TextViewUtils.GetFontSize(14f);
                 TextViewUtils.SetMuseoSans500Typeface(days[i]);
                 ++dayNumber;
@@ -220,6 +232,24 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             {
                 calendar.Set(year - 1, 11, 1);
             }
+            if (selectedTime != string.Empty && dateSelected != string.Empty && chosenDateMonth == monthSelected - 1 && chosenDateYear == yearSelected)
+            {
+                var monthYear = schedulerDisplayResponse.MonthYearList.Where(x => x.Month == chosenDateMonth + 1 && x.Year == chosenDateYear).FirstOrDefault();
+                var monthindex = schedulerDisplayResponse.ScheduleList[monthYear.MonthYearDisplay].Where(x => x.Day == dateSelected.ToString()).FirstOrDefault();
+
+                timeLayout = (RecyclerView)FindViewById<RecyclerView>(Resource.Id.TimeRecyclerView);
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
+                timeLayout.SetLayoutManager(gridLayoutManager);
+
+                timeAdapter = new TimeAdapter(monthindex.TimeSlotDisplay, pickedDateDay, isDateSelected, selectedTime, isTimeSelected);
+                timeLayout.SetAdapter(timeAdapter);
+                timeAdapter.TimeClickEvent += Adapter_TimeClickEvent;
+                isValidDateTime = isValidDateTime && isDateSelected;
+                selectedStartTime = timeAdapter.selectedStartTime;
+                selectedEndTime = timeAdapter.selectedEndTime;
+                appointmentLabel2.Visibility = ViewStates.Visible;
+            }
+            
 
             calendar.Set(chosenDateYear, chosenDateMonth, chosenDateDay);
         }
@@ -230,17 +260,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             DateChanged(this, true);
             if (selectedDayButton != null)
             {
-                if (chosenDateYear == currentDateYear
-                    && chosenDateMonth == currentDateMonth
-                    && pickedDateDay == currentDateDay)
-                {
-
-                }
-                else
-                {
-                    selectedDayButton.SetBackgroundColor(Color.Transparent);
-                    selectedDayButton.SetTextColor(Color.ParseColor(color_grey));
-                }
+                selectedDayButton.SetBackgroundColor(Color.Transparent);
+                selectedDayButton.SetTextColor(Color.ParseColor(color_grey));
             }
 
             selectedDayButton = (Button)view;
@@ -252,29 +273,19 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 pickedDateMonth = dateArray[1] + 1;
                 pickedDateYear = dateArray[2];
 
-                string iDate = (pickedDateDay.ToString().Length < 2
-                    ? "0" + pickedDateDay.ToString()
-                    : pickedDateDay.ToString()) + "/" + (pickedDateMonth.ToString().Length < 2
-                        ? "0" + pickedDateMonth.ToString()
-                        : pickedDateMonth.ToString()) + "/" + pickedDateYear;
+                var selectedKeyMonth = schedulerDisplayResponse.ScheduleList.Where(x => x.Key == keySelected).FirstOrDefault();
+                selectedDateTime = Convert.ToDateTime(selectedKeyMonth.Value.Where(x => x.Day == pickedDateDay.ToString()).FirstOrDefault().AppointmentDate);
 
-                System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
-                DateTime date = DateTime.ParseExact(iDate, "dd/mm/yyyy", currCult);
-
-                selectedDate = date;
-            }
-
-            if (pickedDateYear == currentDateYear
-                && pickedDateMonth == currentDateMonth
-                && pickedDateDay == currentDateDay)
-            {
+                selectedDate = selectedDateTime.Day.ToString();
+                selectedMonth = selectedDateTime.Month;
+                selectedYear = selectedDateTime.Year;
 
             }
-            else
-            {
+
+            
                 selectedDayButton.SetBackgroundResource(Resource.Drawable.daySelector);
                 selectedDayButton.SetTextColor(Color.White);
-            }
+          
             if (pickedDateDay != 0)
             {
                 var monthYear = schedulerDisplayResponse.MonthYearList.Where(x => x.Month == pickedDateMonth && x.Year == pickedDateYear).FirstOrDefault();
@@ -284,7 +295,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
                 timeLayout.SetLayoutManager(gridLayoutManager);
 
-                TimeAdapter timeAdapter = new TimeAdapter(monthindex.TimeSlotDisplay, pickedDateDay, isDateSelected);
+                timeAdapter = new TimeAdapter(monthindex.TimeSlotDisplay, pickedDateDay, isDateSelected, selectedTime, isTimeSelected);
                 timeLayout.SetAdapter(timeAdapter);
 
                 timeAdapter.TimeClickEvent += Adapter_TimeClickEvent;
@@ -295,8 +306,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
         private void Adapter_TimeClickEvent(object sender, bool e)
         {
-            TimeAdapter timeAdapter = (TimeAdapter)sender;
+            timeAdapter = (TimeAdapter)sender;
             selectedTime = timeAdapter.selectedTime;
+            isTimeSelected = timeAdapter.isTimeSelected;
+
 
             selectedStartTime = timeAdapter.selectedStartTime;
             selectedEndTime = timeAdapter.selectedEndTime;

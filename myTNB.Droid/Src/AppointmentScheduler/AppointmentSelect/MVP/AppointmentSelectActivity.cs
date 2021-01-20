@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -32,9 +33,13 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         private TextView timeSlotError;
         private TextView timeSlotNote;
         private TextView appointmentLabel;
-        public DateTime selectedDate;
+        public DateTime selectedDateTime;
         public string selectedTime;
-
+        public string dateSelected;
+        public int  monthSelected;
+        public int yearSelected;
+        public DateTime selectedStartTime;
+        public DateTime selectedEndTime;
         Button calenderNext;
         Button btnSubmitAppointment;
         public CustomCalendar customCalendar;
@@ -119,11 +124,11 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             if (extras != null)
             {
                 applicationDetailDisplay = JsonConvert.DeserializeObject<GetApplicationStatusDisplay>(extras.GetString("applicationDetailDisplay"));
-                //schedulerDisplayResponse = JsonConvert.DeserializeObject<SchedulerDisplay>(extras.GetString("newAppointmentResponse"));
+                schedulerDisplayResponse = JsonConvert.DeserializeObject<SchedulerDisplay>(extras.GetString("newAppointmentResponse"));
                 appointment = extras.GetString("appointment");
                 appointmentLabel.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "dateSectionTitle");
                 //Todo: Remove this code before deployment and this is only for testing.
-                GetTestData();
+                //GetTestData();
             }
 
             if (schedulerDisplayResponse != null && schedulerDisplayResponse.ScheduleList != null)
@@ -197,10 +202,17 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             if (e == true)
             {
                 CustomCalendar timeAdapter = (CustomCalendar)sender;
-                selectedDate = timeAdapter.selectedDate;
+                selectedDateTime = timeAdapter.selectedDateTime;
                 selectedTime = timeAdapter.selectedTime;
-
-                if (applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate == timeAdapter.selectedDate
+                dateSelected = timeAdapter.selectedDate;
+                monthSelected = timeAdapter.selectedMonth; 
+                yearSelected = timeAdapter.selectedYear;
+                selectedStartTime = timeAdapter.selectedStartTime;
+                selectedEndTime = timeAdapter.selectedEndTime;
+               
+                if (Convert.ToDateTime(applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate).Day == timeAdapter.selectedDateTime.Day
+                    && Convert.ToDateTime(applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate).Month == timeAdapter.selectedDateTime.Month
+                    && Convert.ToDateTime(applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate).Year == timeAdapter.selectedDateTime.Year
                     && applicationDetailDisplay.ApplicationAppointmentDetail.TimeSlotDisplay == timeAdapter.selectedTime)
                 {
                     btnSubmitAppointment.Enabled = false;
@@ -260,15 +272,15 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                     , applicationDetailDisplay.SRNumber
                     , applicationDetailDisplay.SRType
                     , applicationDetailDisplay.ApplicationAppointmentDetail.BusinessArea
-                    , customCalendar.selectedDate
-                    , customCalendar.selectedStartTime
-                    , customCalendar.selectedEndTime);
+                    , selectedDateTime
+                    , selectedStartTime
+                    , selectedEndTime);
                 HideProgressDialog();
                 if (postSetAppointmentResponse.StatusDetail.IsSuccess)
                 {
                     Intent intent = new Intent(this, typeof(AppointmentSetLandingActivity));
                     intent.PutExtra("srnumber", applicationDetailDisplay.SRNumber);
-                    intent.PutExtra("selecteddate", customCalendar.selectedDate.ToString("dd MMM yyyy"));
+                    intent.PutExtra("selecteddate", customCalendar.selectedDateTime.ToString("dd MMM yyyy"));
                     intent.PutExtra("timeslot", customCalendar.selectedTime);
                     intent.PutExtra("appointment", appointment);
                     intent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
@@ -362,7 +374,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 {
                     ll.RemoveView(customCalendar);
                 }
-                customCalendar = new CustomCalendar(this, schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Month - 1, "", schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Year, visibleNumbers, schedulerDisplayResponse,selectedDate,selectedTime);
+                  customCalendar = new CustomCalendar(this, schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Month - 1, selectedKey, "", schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Year, visibleNumbers, schedulerDisplayResponse,selectedDateTime, dateSelected, monthSelected, yearSelected, selectedTime, selectedStartTime, selectedEndTime);
                 ll = (RelativeLayout)FindViewById<RelativeLayout>(Resource.Id.CalendarLayout);
                 ll.AddView(customCalendar);
                 ll.Visibility = ViewStates.Gone;
