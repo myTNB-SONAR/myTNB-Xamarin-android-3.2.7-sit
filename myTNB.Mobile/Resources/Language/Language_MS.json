@@ -858,6 +858,7 @@
     "cancelAddSuccess": "BM_cancelAddSuccess",
     "manageUserAccess": "BM_Manage User Access",
     "manageAutopay": "BM_Manage Autopay"
+    
   },
   "Onboarding": {
     "letsStart": "Jom mulakan!",
@@ -1265,7 +1266,8 @@
     "pendingRegistration": "BM_Pending Registration",
     //add by yana
     "AddTNBUserSuccess": "BM_AddTNBUserSuccess",
-    "AddNonTNBUserSuccess": "BM_AddNonTNBUserSuccess"
+    "AddNonTNBUserSuccess": "BM_AddNonTNBUserSuccess",
+    "hint_email": "Alamat e-mel pengguna"
   },
   //new Add folow IOS
   "RegisterNew": {

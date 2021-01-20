@@ -126,9 +126,9 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
                 }
            
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail);
+                //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail);
                 TextViewUtils.SetMuseoSans300Typeface( txtNickName );
-                TextViewUtils.SetMuseoSans300Typeface(txtEmail);
+                //TextViewUtils.SetMuseoSans300Typeface(txtEmail);
                 TextViewUtils.SetMuseoSans300Typeface(itemTitleFullBill, itemTitleBilling);
                 TextViewUtils.SetMuseoSans500Typeface(btnSave, itemTitle);
 
@@ -138,7 +138,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 itemTitleFullBill.Text = Utility.GetLocalizedLabel("UserAccess", "fullElectricity");
                 itemTitleBilling.Text = Utility.GetLocalizedLabel("UserAccess", "e_billing");
                 SetToolBarTitle(GetLabelByLanguage("titleManageUser"));
-                txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("email_user_address").ToUpper();
+                txtInputLayoutEmail.Hint = Utility.GetLocalizedLabel("UserAccess", "hint_email").ToUpper(); 
                 btnSave.Text = GetLabelCommonByLanguage("saveChanges");
 
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));

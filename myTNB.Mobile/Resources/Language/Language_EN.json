@@ -858,6 +858,7 @@
     "cancelAddSuccess": "{0} is cancelled from being added as a viewer to this electricity account.",
     "manageUserAccess": "Manage User Access",
     "manageAutopay": "Manage Autopay"
+    
   },
   "Onboarding": {
     "letsStart": "Let's get started!",
@@ -1265,7 +1266,8 @@
     "pendingRegistration": "Pending Registration",
     //add by wan
     "AddTNBUserSuccess": "{0} now has access to {1} on myTNB.",
-    "AddNonTNBUserSuccess": "{0} is invited to join myTNB and will have access to {1}."
+    "AddNonTNBUserSuccess": "{0} is invited to join myTNB and will have access to {1}.",
+    "hint_email": "User Email Address"
   },
   //new add follow IOS
   "RegisterNew": {
