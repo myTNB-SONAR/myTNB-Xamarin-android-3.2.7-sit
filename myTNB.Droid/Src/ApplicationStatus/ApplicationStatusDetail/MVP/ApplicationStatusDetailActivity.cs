@@ -211,12 +211,12 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 {
                     if (applicationDetailDisplay.CTAType == DetailCTAType.NewAppointment)
                     {
-                        OnAppointment("NewAppointment");
+                        OnSetAppointment("NewAppointment");
                         FirebaseAnalyticsUtils.LogClickEvent(this, "Set Appointment Button Clicked");
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.Reschedule)
                     {
-                        OnAppointment("Reschedule");
+                        OnSetAppointment("Reschedule");
                         FirebaseAnalyticsUtils.LogClickEvent(this, "Set Reschedule Appointment Button Clicked");
                     }
                     else if (applicationDetailDisplay.CTAType == DetailCTAType.Save)
@@ -280,8 +280,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 intent.PutExtra("ApplicationSystem", applicationDetailDisplay.System);
                 intent.PutExtra("StatusId", applicationDetailDisplay?.ApplicationStatusDetail?.StatusId.ToString() ?? string.Empty);
                 intent.PutExtra("StatusCode", applicationDetailDisplay?.ApplicationStatusDetail?.StatusCode ?? string.Empty);
+                intent.PutExtra("ApplicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay) ?? string.Empty);
                 StartActivityForResult(intent, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
-
                 try
                 {
                     FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
@@ -361,7 +361,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                 .SetCTALabel(statusDetail.PrimaryCTATitle)
                 .Build();
             whereisMyacc.Show();
-
         }
 
         public async void OnCustomerRating()
@@ -405,12 +404,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             }
             return base.OnCreateOptionsMenu(menu);
         }
-        public async void OnAppointment(string appointment)
+
+        public async void OnSetAppointment(string appointment)
         {
             ShowProgressDialog();
             try
             {
-                SchedulerDisplay response = await ScheduleManager.Instance.GetAvailableAppointment("1234");
+                string businessArea = applicationDetailDisplay.BusinessArea ?? String.Empty;
+                SchedulerDisplay response = await ScheduleManager.Instance.GetAvailableAppointment(businessArea);
                 if (response.StatusDetail.IsSuccess)
                 {
                     Intent intent = new Intent(this, typeof(AppointmentSelectActivity));
@@ -820,6 +821,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 applicationStatusDetailDoubleButtonLayout.Visibility = ViewStates.Visible;
                                 applicationStatusBotomPayableLayout.Visibility = ViewStates.Visible;
                                 btnApplicationStatusPay.Visibility = ViewStates.Visible;
+
+                                if (!applicationDetailDisplay.IsPaymentEnabled)
+                                {
+                                    btnApplicationStatusPay.Visibility = ViewStates.Visible;
+                                    btnApplicationStatusPay.Enabled = false;
+                                    btnApplicationStatusPay.SetTextColor(ContextCompat.GetColorStateList(this, Resource.Color.white));
+                                    btnApplicationStatusPay.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+                                }
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.PayInProgress)
                             {
@@ -1352,6 +1361,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             {
                 SetResult(Result.Ok);
                 Finish();
+            }
+            else if (resultCode == Result.Ok && requestCode == PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE)
+            {
+
             }
         }
 

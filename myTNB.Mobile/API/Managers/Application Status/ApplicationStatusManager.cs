@@ -451,6 +451,7 @@ namespace myTNB.Mobile
             , string system = "myTNB")
         {
             string searchTerm = savedApplicationID.IsValid() ? savedApplicationID : applicationID;
+            system = system.IsValid() ? system : "myTNB";
             ApplicationDetailDisplay displaymodel = new ApplicationDetailDisplay();
             try
             {
@@ -509,7 +510,9 @@ namespace myTNB.Mobile
                             //Mark: Pass SNNumber for RE_TS
                             if (applicationType == "RE_TS")
                             {
-                                refNumber = displaymodel.Content.SNNumber.IsValid() ? displaymodel.Content.SNNumber : string.Empty;
+                                refNumber = displaymodel.Content.SNNumber.IsValid()
+                                    ? displaymodel.Content.SNNumber
+                                    : displaymodel.Content.applicationPaymentDetail?.snNo ?? string.Empty;
                             }
                             if (refNumber.IsValid())
                             {
