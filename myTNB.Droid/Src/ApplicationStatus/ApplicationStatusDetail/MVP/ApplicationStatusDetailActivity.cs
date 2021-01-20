@@ -410,7 +410,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             ShowProgressDialog();
             try
             {
-                string businessArea = applicationDetailDisplay.BusinessArea ?? String.Empty;
+                string businessArea = applicationDetailDisplay.BusinessArea ?? string.Empty;
                 SchedulerDisplay response = await ScheduleManager.Instance.GetAvailableAppointment(businessArea);
                 if (response.StatusDetail.IsSuccess)
                 {

@@ -63,26 +63,116 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         LayoutParams defaultButtonParams;
         private LayoutParams userButtonParams;
 
-        public CustomCalendar(Context context, int calenderMonth, string selectedKey, string calenderMonthName
-            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, DateTime selectedDateTime, string dateSelected, int monthSelected, int yearSelected, string selectedTime, DateTime selectedStartTime, DateTime selectedEndTime) : base(context)
+        public CustomCalendar(Context context
+            , int calenderMonth
+            , string selectedKey
+            , string calenderMonthName
+            , int calendarYear
+            , List<int> visibleNumbers
+            , SchedulerDisplay schedulerDisplayResponse
+            , DateTime selectedDateTime
+            , string dateSelected
+            , int monthSelected
+            , int yearSelected
+            , string selectedTime
+            , DateTime selectedStartTime
+            , DateTime selectedEndTime) : base(context)
         {
-            Initialize(context, calenderMonth, selectedKey, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse, selectedDateTime, dateSelected, monthSelected, yearSelected, selectedTime, selectedStartTime, selectedEndTime);
+            Initialize(context
+                , calenderMonth
+                , selectedKey
+                , calenderMonthName
+                , calendarYear
+                , visibleNumbers
+                , schedulerDisplayResponse
+                , selectedDateTime
+                , dateSelected
+                , monthSelected
+                , yearSelected
+                , selectedTime
+                , selectedStartTime
+                , selectedEndTime);
         }
-        public CustomCalendar(Context context, int calenderMonth, string selectedKey, string calenderMonthName
-            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs, DateTime selectedDateTime, string dateSelected, int monthSelected, int yearSelected, string selectedTime, DateTime selectedStartTime, DateTime selectedEndTime) : base(context, attrs)
+        public CustomCalendar(Context context
+            , int calenderMonth
+            , string selectedKey
+            , string calenderMonthName
+            , int calendarYear
+            , List<int> visibleNumbers
+            , SchedulerDisplay schedulerDisplayResponse
+            , IAttributeSet attrs
+            , DateTime selectedDateTime
+            , string dateSelected
+            , int monthSelected
+            , int yearSelected
+            , string selectedTime
+            , DateTime selectedStartTime
+            , DateTime selectedEndTime) : base(context, attrs)
         {
-            Initialize(context, calenderMonth, selectedKey, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse, selectedDateTime, dateSelected, monthSelected, yearSelected, selectedTime, selectedStartTime, selectedEndTime);
+            Initialize(context
+                , calenderMonth
+                , selectedKey
+                , calenderMonthName
+                , calendarYear
+                , visibleNumbers
+                , schedulerDisplayResponse
+                , selectedDateTime
+                , dateSelected
+                , monthSelected
+                , yearSelected
+                , selectedTime
+                , selectedStartTime
+                , selectedEndTime);
         }
 
-        public CustomCalendar(Context context, int calenderMonth, string selectedKey, string calenderMonthName
-            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, IAttributeSet attrs, int defStyleAttr, DateTime selectedDateTime, string dateSelected, int monthSelected, int yearSelected, string selectedTime,DateTime selectedStartTime, DateTime selectedEndTime)
+        public CustomCalendar(Context context
+            , int calenderMonth
+            , string selectedKey
+            , string calenderMonthName
+            , int calendarYear
+            , List<int> visibleNumbers
+            , SchedulerDisplay schedulerDisplayResponse
+            , IAttributeSet attrs
+            , int defStyleAttr
+            , DateTime selectedDateTime
+            , string dateSelected
+            , int monthSelected
+            , int yearSelected
+            , string selectedTime
+            , DateTime selectedStartTime
+            , DateTime selectedEndTime)
             : base(context, attrs, defStyleAttr)
         {
-            Initialize(context, calenderMonth, selectedKey, calenderMonthName, calendarYear, visibleNumbers, schedulerDisplayResponse, selectedDateTime, dateSelected, monthSelected, yearSelected, selectedTime, selectedStartTime, selectedEndTime);
+            Initialize(context
+                , calenderMonth
+                , selectedKey
+                , calenderMonthName
+                , calendarYear
+                , visibleNumbers
+                , schedulerDisplayResponse
+                , selectedDateTime
+                , dateSelected
+                , monthSelected
+                , yearSelected
+                , selectedTime
+                , selectedStartTime
+                , selectedEndTime);
         }
 
-        private void Initialize(Context context, int calenderMonth, string selectedKey, string calenderMonthName
-            , int calendarYear, List<int> visibleNumbers, SchedulerDisplay schedulerDisplayResponse, DateTime selectedDateTime, string dateSelected, int monthSelected, int yearSelected, string selectedTime, DateTime selectedStartTime, DateTime selectedEndTime)
+        private void Initialize(Context context
+            , int calenderMonth
+            , string selectedKey
+            , string calenderMonthName
+            , int calendarYear
+            , List<int> visibleNumbers
+            , SchedulerDisplay schedulerDisplayResponse
+            , DateTime selectedDateTime
+            , string dateSelected
+            , int monthSelected
+            , int yearSelected
+            , string selectedTime
+            , DateTime selectedStartTime
+            , DateTime selectedEndTime)
         {
             this.selectedStartTime = selectedStartTime;
             this.selectedEndTime = selectedEndTime;
@@ -138,8 +228,19 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             }
             AddDaysinCalendar(defaultButtonParams, context, metrics);
 
-            InitCalendarWithDate(context, chosenDateYear, chosenDateMonth, chosenDateDay
-                , calenderMonthName, calendarYear.ToString(), visibleNumbers, schedulerDisplayResponse, selectedDateTime, dateSelected, monthSelected, yearSelected, selectedTime);
+            InitCalendarWithDate(context
+                , chosenDateYear
+                , chosenDateMonth
+                , chosenDateDay
+                , calenderMonthName
+                , calendarYear.ToString()
+                , visibleNumbers
+                , schedulerDisplayResponse
+                , selectedDateTime
+                , dateSelected
+                , monthSelected
+                , yearSelected
+                , selectedTime);
 
             // Time
             timeLayout = (RecyclerView)FindViewById<RecyclerView>(Resource.Id.TimeRecyclerView);
@@ -151,7 +252,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             selectedYear = yearSelected;
             keySelected = selectedKey;
         }
-       
+
         private void InitializeDaysWeeks()
         {
             weeks = new LinearLayout[6];
@@ -165,9 +266,19 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             weeks[5] = weekSixLayout;
         }
 
-        private void InitCalendarWithDate(Context context, int year, int month, int day
-            , string calenderMonthName, string yearhNames, List<int> visibleNumbers
-            , SchedulerDisplay schedulerDisplayResponse, DateTime selectedDateTime, string dateSelected, int monthSelected, int yearSelected, string selectedTime)
+        private void InitCalendarWithDate(Context context
+            , int year
+            , int month
+            , int day
+            , string calenderMonthName
+            , string yearhNames
+            , List<int> visibleNumbers
+            , SchedulerDisplay schedulerDisplayResponse
+            , DateTime selectedDateTime
+            , string dateSelected
+            , int monthSelected
+            , int yearSelected
+            , string selectedTime)
         {
             calendar.Set(year, month, 1);
 
@@ -189,22 +300,22 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             indexOfDayAfterLastDayOfMonth = daysLeftInFirstWeek + daysInCurrentMonth;
             for (int i = firstDayOfCurrentMonth; i < firstDayOfCurrentMonth + daysInCurrentMonth; ++i)
             {
-                
-                    if (visibleNumbers.Where(x => x == dayNumber).FirstOrDefault() > 0)
-                    {
-                        days[i].SetTextColor(Color.ParseColor(color_grey));
-                        days[i].Click += (sender, e) =>
-                        {
-                            OnDayClick(sender as View, context, schedulerDisplayResponse);
-                        };
-                    }
-                    else
-                    {
-                        days[i].SetTextColor(Color.LightGray);
 
-                    }
-                    days[i].SetBackgroundColor(Color.Transparent);
-              
+                if (visibleNumbers.Where(x => x == dayNumber).FirstOrDefault() > 0)
+                {
+                    days[i].SetTextColor(Color.ParseColor(color_grey));
+                    days[i].Click += (sender, e) =>
+                    {
+                        OnDayClick(sender as View, context, schedulerDisplayResponse);
+                    };
+                }
+                else
+                {
+                    days[i].SetTextColor(Color.LightGray);
+
+                }
+                days[i].SetBackgroundColor(Color.Transparent);
+
 
                 int[] dateArr = new int[3];
                 dateArr[0] = dayNumber;
@@ -212,13 +323,13 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 dateArr[2] = chosenDateYear;
                 days[i].Tag = dateArr;
                 days[i].Text = dayNumber.ToString();
-                if(days[i].Text == dateSelected && chosenDateMonth == monthSelected-1 && chosenDateYear == yearSelected)
+                if (days[i].Text == dateSelected && chosenDateMonth == monthSelected - 1 && chosenDateYear == yearSelected)
                 {
                     days[i].SetBackgroundResource(Resource.Drawable.daySelector);
                     days[i].SetTextColor(Color.White);
                     selectedDayButton = days[i];
                 }
-               
+
                 days[i].TextSize = TextViewUtils.GetFontSize(14f);
                 TextViewUtils.SetMuseoSans500Typeface(days[i]);
                 ++dayNumber;
@@ -249,7 +360,6 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 selectedEndTime = timeAdapter.selectedEndTime;
                 appointmentLabel2.Visibility = ViewStates.Visible;
             }
-            
 
             calendar.Set(chosenDateYear, chosenDateMonth, chosenDateDay);
         }
@@ -279,13 +389,11 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 selectedDate = selectedDateTime.Day.ToString();
                 selectedMonth = selectedDateTime.Month;
                 selectedYear = selectedDateTime.Year;
-
             }
 
-            
-                selectedDayButton.SetBackgroundResource(Resource.Drawable.daySelector);
-                selectedDayButton.SetTextColor(Color.White);
-          
+            selectedDayButton.SetBackgroundResource(Resource.Drawable.daySelector);
+            selectedDayButton.SetTextColor(Color.White);
+
             if (pickedDateDay != 0)
             {
                 var monthYear = schedulerDisplayResponse.MonthYearList.Where(x => x.Month == pickedDateMonth && x.Year == pickedDateYear).FirstOrDefault();

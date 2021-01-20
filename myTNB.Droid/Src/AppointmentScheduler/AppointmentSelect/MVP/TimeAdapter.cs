@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Android.Content.Res;
 using Android.Graphics;
 using Android.Views;
 using Android.Widget;
@@ -26,11 +27,15 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         public string selectedTime = string.Empty;
         private const string colorLight_grey = "#e4e4e4";
         private const string color_blue = "#1c79ca";
-        private List<AppointmentTimeSlotDisplay> timeSlotDisplay = new List<AppointmentTimeSlotDisplay>();
+        public List<AppointmentTimeSlotDisplay> timeSlotDisplay = new List<AppointmentTimeSlotDisplay>();
         public event EventHandler<bool> TimeClickEvent;
         public RelativeLayout.LayoutParams buttonTimeParams;
 
-        public TimeAdapter(List<AppointmentTimeSlotDisplay> timeSlotDisplay, int pickedDateDay, bool isDateSelected, string selectedTime,bool isTimeSelected)
+        public TimeAdapter(List<AppointmentTimeSlotDisplay> timeSlotDisplay
+            , int pickedDateDay
+            , bool isDateSelected
+            , string selectedTime
+            , bool isTimeSelected)
         {
             if (timeSlotDisplay != null)
             {
@@ -45,7 +50,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 this.timeSelected = selectedTime;
                 this.isTimeSelected = isTimeSelected;
             }
-            this.timeNamesCount = this.timeNames != null ? this.timeNames.Length: 0;
+            this.timeNamesCount = this.timeNames != null ? this.timeNames.Length : 0;
         }
 
         public override int ItemCount => this.timeNamesCount;
@@ -59,7 +64,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 if (isDateSelected)
                 {
                     vh.textViewTime.SetTextColor(Color.ParseColor(color_blue));
-                    
+
                 }
                 else
                 {
@@ -70,7 +75,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             {
                 if (timeSelected != string.Empty && timeSelected == vh.textViewTime.Text)
                 {
-                    if(selectedTimeTextView !=null)
+                    if (selectedTimeTextView != null)
                     {
                         selectedTimeTextView.Text = timeSelected;
                     }
@@ -94,7 +99,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         }
 
         public void OnTimeClick(View view)
-        { 
+        {
             if (selectedTimeTextView != null)
             {
                 selectedTimeTextView.SetBackgroundColor(Color.Transparent);
@@ -120,7 +125,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             buttonTimeParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WrapContent
                 , ViewGroup.LayoutParams.WrapContent);
-            
+
             return new TimeView(view);
         }
 
@@ -134,7 +139,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 textViewTime = (TextView)ItemView.FindViewById<TextView>(Resource.Id.timeList);
                 relativeLayoutTime = (RelativeLayout)ItemView.FindViewById<RelativeLayout>(Resource.Id.relativeLayoutTime);
                 TextViewUtils.SetMuseoSans500Typeface(textViewTime);
-                textViewTime.TextSize = TextViewUtils.GetFontSize(16f);
+                textViewTime.TextSize = TextViewUtils.GetFontSize(12f);
             }
         }
     }
