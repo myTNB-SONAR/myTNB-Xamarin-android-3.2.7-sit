@@ -240,7 +240,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             if (accountData.IsOwner)
             {
                 SupplyAccMenuItemSingleContentComponent manageUser = new SupplyAccMenuItemSingleContentComponent(this);
-                manageUser.SetTitle(GetLabelCommonByLanguage("manageUserAccess"));
+                manageUser.SetTitle(Utility.GetLocalizedLabel("ManageAccount", "manageUserAccess")); 
                 manageUser.SetIcon(1);
                 manageUser.SetItemActionVisibility(true);
                 manageUser.SetItemActionCall(ShowManageUser);
@@ -248,7 +248,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             }
 
             SupplyAccMenuItemSingleContentComponent autoPay = new SupplyAccMenuItemSingleContentComponent(this);
-            autoPay.SetTitle(GetLabelCommonByLanguage("manageAutopay"));
+            autoPay.SetTitle(Utility.GetLocalizedLabel("ManageAccount", "manageAutopay"));
             autoPay.SetIcon(2);
             autoPay.SetItemActionVisibility(true);
             autoPay.SetItemActionCall(ShowManageAutopay);

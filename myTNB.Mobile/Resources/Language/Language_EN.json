@@ -675,11 +675,15 @@
     "passwordUpdateSuccess": "Your password has been changed successfully.",
     "changeLanguageSuccess": "Your language preference has been changed successfully.",
     //addby syahmi
-    "titleProfile":"myTNB Profile",
+    "titleProfile": "myTNB Profile",
     "paymentMethod": "My Payment Methods",
     "myElecttricityAcc": "My Electricity Accounts",
     "appSetting": "App Settings",
-    "learnMore": "Learn More About TNB"
+    "learnMore": "Learn More About TNB",
+    //addby yana
+    "updateIdTitle": "Confirm your identification Number:",
+    "updateIdMessage": "Please make sure your identification number is correct as you can only update this once.",
+    "re_enter": "Re-enter"
   },
   "NotificationSettings": {
     "title": "Notification Settings",
@@ -851,7 +855,9 @@
     "manageUserCancelAddAccessDialogTitle": "Are you sure you want to cancel adding {0} as a viewer?",
     "manageUserCancelAddAccessDialogMessage": "Once cancelled, the invitation will be invalid and they will not have access to your account. You can add them again if you wish.",
     "inviteSuccess": "We have resent an invitation to {0} to join myTNB.",
-    "cancelAddSuccess": "{0} is cancelled from being added as a viewer to this electricity account."
+    "cancelAddSuccess": "{0} is cancelled from being added as a viewer to this electricity account.",
+    "manageUserAccess": "Manage User Access",
+    "manageAutopay": "Manage Autopay"
   },
   "Onboarding": {
     "letsStart": "Let's get started!",
@@ -1206,7 +1212,7 @@
     "resend": "Resend",
     "verifyEmailPopupBody": "Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
     "verifyEmailPopupTitle": "Pending Email Verification ",
-    "toast_email_send": "An email verification link has been sent to {0}",
+    "toast_email_send": "An email verification link has been sent to ",
     "toast_SuccessUpdateName": "You’ve successfully updated your name!"
   },
 
@@ -1307,19 +1313,17 @@
     "continue" : "Continue"
   },
 
-  "OT_Uncategorize":{ 
-  "manageUserAccess": "Manage User Access",
-  "manageAutopay": "Manage Autopay",
-  "updateIdTitle": "Confirm your identification Number:",
-  "continue": "Continue",
-  "updateIdMessage": "Please make sure your identification number is correct as you can only update this once.",
-  "re_enter": "Re-enter",
-  "titleNonOwnerAddAcc": "Continue adding the account and give it a name for your easy reference.",
-  "email_address": "Email Address",
-  "email_user_address": "User Email Address",
-  "ManageUserTitle": "Give this user access to:",
-  "error_NotExistsAccountMessage": "This  account number you entered cannnot be found.",
-  "later": "Later",
-  "ApplyforBilling": "Apply for e-Billing"
-   }
+  "OT_Uncategorize": {
+
+
+    "continue": "Continue",
+    
+    "titleNonOwnerAddAcc": "Continue adding the account and give it a name for your easy reference.",
+    "email_address": "Email Address",
+    "email_user_address": "User Email Address",
+    "ManageUserTitle": "Give this user access to:",
+    "error_NotExistsAccountMessage": "This  account number you entered cannnot be found.",
+    "later": "Later",
+    "ApplyforBilling": "Apply for e-Billing"
+  }
 }

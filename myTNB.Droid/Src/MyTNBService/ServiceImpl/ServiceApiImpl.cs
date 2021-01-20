@@ -287,6 +287,19 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             return api.UserAuthenticate<UserAuthenticateResponseEmail>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
+
+        public Task<SendEmailRegisterCodeResponse> UserAuthenticateEmailOnlyNew([Body] Request.BaseRequest request)
+        {
+            return api.UserAuthenticateEmail<SendEmailRegisterCodeResponse>(request, CancellationTokenSourceWrapper.GetToken());      //irul
+        }
+
+
+        public Task<SendDetailRegisterCodeResponse> UserAuthenticateIDOnlyNew([Body] Request.BaseRequest request)
+        {
+            return api.UserAuthenticateID<SendDetailRegisterCodeResponse>(request, CancellationTokenSourceWrapper.GetToken());      //irul
+        }
+
+
         public Task<UserAuthenticateResponseEmail> UserAuthenticateEmailOnly([Body] Request.BaseRequest request)
         {
             return api.UserAuthenticateEmail<UserAuthenticateResponseEmail>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
@@ -456,6 +469,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<SendResetPasswordCodeResponse> ChangeNewPasswordNew([Body] Request.BaseRequest request)
         {
             return api.SendResetPasswordCode_OT<SendResetPasswordCodeResponse>(request, CancellationTokenSourceWrapper.GetToken()); //yana
+        }
+
+        /// <summary>
+        /// Call Resend Email Verification with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SendEmailVerificationResponse> SendEmailVerify([Body] Request.BaseRequest request)
+        {
+            return api.SendEmailVerification<SendEmailVerificationResponse>(request, CancellationTokenSourceWrapper.GetToken()); //yana
         }
 
         /// <summary>

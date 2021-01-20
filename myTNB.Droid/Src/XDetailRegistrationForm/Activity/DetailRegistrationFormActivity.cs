@@ -173,9 +173,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 txtAccountType.Text = Utility.GetLocalizedLabel("OneLastThing", "idtypeTitle").ToUpper();
                 textInputLayoutFullName.Hint = Utility.GetLocalizedLabel("Common", "fullname");
                 textInputLayoutICNo.Hint = Utility.GetLocalizedLabel("OneLastThing", "idNumberhint");
-                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tncNew"));
+                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tnc"));
                 StripUnderlinesFromLinks(txtTermsConditions);
-                btnRegister.Text = Utility.GetLocalizedLabel("Register", "ctaTitleNew");
+                btnRegister.Text = Utility.GetLocalizedLabel("OneLastThing", "ctaTitleNew");
 
 
                 //txtTitleRegister.Text = GetLabelCommonByLanguage("dtitleRegister");
@@ -203,7 +203,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 IdentificationType Individual = new IdentificationType();
                 Individual.Id = "1";
-                Individual.Type = Utility.GetLocalizedLabel("Register", "mykad");
+                Individual.Type = Utility.GetLocalizedLabel("OneLastThing", "mykad");
                 Individual.IsSelected = true;
                 selectedIdentificationType = Individual;
                 identityType.Text = selectedIdentificationType.Type;
@@ -449,14 +449,14 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         {
             if (!txtboxcondition.Checked)
             {
-                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tncNew"));
+                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tnc"));
                 //txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tncNew"));
                 StripUnderlinesFromLinks(txtTermsConditions);
 
             }
             else
             {
-                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tnc_checked"));
+                txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("OneLastThing", "tnc_checked"));
                 //txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc_checked"));
                 StripUnderlinesFromLinks(txtTermsConditions);
             }
@@ -1074,9 +1074,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         public void ShowFullICError()
         {
             ClearICHint();
-            if (textInputLayoutICNo.Error != Utility.GetLocalizedErrorLabel("mykadhint"))
+            if (textInputLayoutICNo.Error != Utility.GetLocalizedLabel("OneLastThing", "mykadhint"))
             {
-                textInputLayoutICNo.Error = Utility.GetLocalizedErrorLabel("mykadhint");
+                textInputLayoutICNo.Error = Utility.GetLocalizedLabel("OneLastThing", "mykadhint");
             }
 
             if (!textInputLayoutICNo.ErrorEnabled)
@@ -1086,9 +1086,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         public void ShowFullArmyIdError()
         {
             ClearICHint();
-            if (textInputLayoutICNo.Error != Utility.GetLocalizedErrorLabel("armyidhint"))
+            if (textInputLayoutICNo.Error != Utility.GetLocalizedLabel("OneLastThing", "armyidhint")) 
             {
-                textInputLayoutICNo.Error = Utility.GetLocalizedErrorLabel("armyidhint");
+                textInputLayoutICNo.Error = Utility.GetLocalizedLabel("OneLastThing", "armyidhint");
             }
 
             if (!textInputLayoutICNo.ErrorEnabled)
@@ -1098,9 +1098,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         public void ShowFullPassportError()
         {
             ClearICHint();
-            if (textInputLayoutICNo.Error != Utility.GetLocalizedErrorLabel("passporthint"))
+            if (textInputLayoutICNo.Error != Utility.GetLocalizedLabel("OneLastThing", "passporthint"))
             {
-                textInputLayoutICNo.Error = Utility.GetLocalizedErrorLabel("passporthint");
+                textInputLayoutICNo.Error = Utility.GetLocalizedLabel("OneLastThing", "passporthint");
             }
 
             if (!textInputLayoutICNo.ErrorEnabled)

@@ -293,10 +293,10 @@ namespace myTNB_Android.Src.Utils
         public static void ShowEmailErrorDialog(Activity context, string selectedAction, Action confirmAction, Action cancelAction = null)
         {
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                        .SetTitle(Utility.GetLocalizedLabel("Register", "EmailHeaderError"))
-                        .SetMessage(Utility.GetLocalizedLabel("Register", "EmailBodyError"))
+                        .SetTitle(Utility.GetLocalizedLabel("RegisterNew", "EmailHeaderError"))
+                        .SetMessage(Utility.GetLocalizedLabel("RegisterNew", "EmailBodyError"))
                         .SetContentGravity(Android.Views.GravityFlags.Center)
-                        .SetCTALabel(Utility.GetLocalizedLabel("Register", "Reset"))
+                        .SetCTALabel(Utility.GetLocalizedLabel("RegisterNew", "Reset"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "tryAgain"))
                         .Build();
             tooltipBuilder.SetCTAaction(() =>
@@ -344,10 +344,10 @@ namespace myTNB_Android.Src.Utils
         public static void ShowIdentificationErrorDialog(Activity context, Action confirmAction, Action cancelAction = null)
         {
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                        .SetTitle(Utility.GetLocalizedLabel("Register", "IdHeaderError"))
-                        .SetMessage(Utility.GetLocalizedLabel("Register", "IdBodyError"))
+                        .SetTitle(Utility.GetLocalizedLabel("OneLastThing", "IdHeaderError"))
+                        .SetMessage(Utility.GetLocalizedLabel("OneLastThing", "IdBodyError"))
                         .SetContentGravity(Android.Views.GravityFlags.Center)
-                        .SetCTALabel(Utility.GetLocalizedLabel("Register", "gotIt"))
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
                         .SetSecondaryCTAaction(() =>
                         {
                             confirmAction();

@@ -117,7 +117,7 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
                 txtTitleRegister.Text = Utility.GetLocalizedLabel("RegisterNew", "etitleRegister");
                 txtBodyRegister.Text = Utility.GetLocalizedLabel("RegisterNew", "ebodyRegister");
-                textInputLayoutEmailReg.Hint = Utility.GetLocalizedLabel("Common", "email_address");
+                textInputLayoutEmailReg.Hint = Utility.GetLocalizedLabel("OT_Uncategorize", "email_address");
                 textInputLayoutPasswordReg.Hint = Utility.GetLocalizedLabel("Common", "password");
                 btnNext.Text = Utility.GetLocalizedLabel("Common", "next");
 
@@ -357,8 +357,8 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
         {
             ClearInvalidPasswordHint();
             textInputLayoutPasswordReg.Error = null;
-            if (textInputLayoutPasswordReg.Error != Utility.GetLocalizedErrorLabel("passwordHint")) {
-                textInputLayoutPasswordReg.Error = Utility.GetLocalizedErrorLabel("passwordHint");
+            if (textInputLayoutPasswordReg.Error != Utility.GetLocalizedErrorLabel("invalid_password")) {
+                textInputLayoutPasswordReg.Error = Utility.GetLocalizedErrorLabel("invalid_password");
             }
             if (!textInputLayoutPasswordReg.ErrorEnabled)
                 textInputLayoutPasswordReg.ErrorEnabled = true;

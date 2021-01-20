@@ -44,19 +44,22 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.Activity
                     selectedIdentificationType = DeSerialze<IdentificationType>(extras.GetString("selectedIdentificationType"));
                 }
             }
-
-            SetToolBarTitle(GetLabelByLanguage("SelectedIdentificationType"));
+            SetToolBarTitle(Utility.GetLocalizedLabel("OneLastThing", "idtypeTitle"));
+            //SetToolBarTitle(GetLabelByLanguage("SelectedIdentificationType"));
             IdentificationType Mykad = new IdentificationType();
             Mykad.Id = "1";
-            Mykad.Type = GetLabelByLanguage("mykad");
+            Mykad.Type = Utility.GetLocalizedLabel("OneLastThing", "mykad");
+            //Mykad.Type = GetLabelByLanguage("mykad");
 
             IdentificationType Armyid = new IdentificationType();
             Armyid.Id = "2";
-            Armyid.Type = GetLabelByLanguage("armyid");
+            Armyid.Type = Utility.GetLocalizedLabel("OneLastThing", "armyid");
+            //Armyid.Type = GetLabelByLanguage("armyid");
 
             IdentificationType Passport = new IdentificationType();
             Passport.Id = "3";
-            Passport.Type = GetLabelByLanguage("passport");
+            Passport.Type = Utility.GetLocalizedLabel("OneLastThing", "passport");
+            //Passport.Type = GetLabelByLanguage("passport");
 
             if (selectedIdentificationType != null)
             {
