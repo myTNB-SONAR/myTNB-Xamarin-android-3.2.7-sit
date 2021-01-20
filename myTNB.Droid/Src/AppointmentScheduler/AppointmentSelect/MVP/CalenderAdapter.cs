@@ -417,8 +417,6 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             timeAdapter = (TimeAdapter)sender;
             selectedTime = timeAdapter.selectedTime;
             isTimeSelected = timeAdapter.isTimeSelected;
-
-
             selectedStartTime = timeAdapter.selectedStartTime;
             selectedEndTime = timeAdapter.selectedEndTime;
             DatetimeValidate(this, true);

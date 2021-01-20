@@ -9,13 +9,13 @@
 	android:layout_centerInParent="true"
 	android:rowCount="1">
 	<RelativeLayout
-		android:layout_width="185dp"
+		android:layout_width="match_parent"
 		android:id="@+id/relativeLayoutTime"
 		android:layout_centerInParent="true"
 		android:layout_marginTop="16dp"
 		android:layout_marginBottom="16dp"
-     
-        android:layout_height="30dp"
+		android:layout_marginRight="8dp"
+		android:layout_height="30dp"
 		android:background="@drawable/AppointmentTimeSelectorBackground">
 		<TextView
 			android:id="@+id/timeList"
