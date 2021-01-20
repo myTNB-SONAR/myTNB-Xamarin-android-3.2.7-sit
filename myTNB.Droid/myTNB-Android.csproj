@@ -1076,6 +1076,8 @@
     <Compile Include="Src\MyTNBService\Response\LogUserAccessResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\ManageAccessAccountListResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\GetSearchForAccountResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\SendDetailRegisterCodeResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\SendEmailRegisterCodeResponse.cs" />
     <Compile Include="Src\NotificationAddAccount\Activity\NotificationAddAccountActivity.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetails.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetailsDeleteResponse.cs" />

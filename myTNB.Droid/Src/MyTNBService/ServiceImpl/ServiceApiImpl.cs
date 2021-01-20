@@ -287,6 +287,19 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             return api.UserAuthenticate<UserAuthenticateResponseEmail>(request, CancellationTokenSourceWrapper.GetToken());
         }
 
+
+        public Task<SendEmailRegisterCodeResponse> UserAuthenticateEmailOnlyNew([Body] Request.BaseRequest request)
+        {
+            return api.UserAuthenticateEmail<SendEmailRegisterCodeResponse>(request, CancellationTokenSourceWrapper.GetToken());      //irul
+        }
+
+
+        public Task<SendDetailRegisterCodeResponse> UserAuthenticateIDOnlyNew([Body] Request.BaseRequest request)
+        {
+            return api.UserAuthenticateID<SendDetailRegisterCodeResponse>(request, CancellationTokenSourceWrapper.GetToken());      //irul
+        }
+
+
         public Task<UserAuthenticateResponseEmail> UserAuthenticateEmailOnly([Body] Request.BaseRequest request)
         {
             return api.UserAuthenticateEmail<UserAuthenticateResponseEmail>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan

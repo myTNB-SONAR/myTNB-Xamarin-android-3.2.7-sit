@@ -169,10 +169,11 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
                 icno = icno.Replace("-", string.Empty);
                 GetRegisteredUser getICVerify = new GetRegisteredUser(idtype, icno);
                 getICVerify.SetUserName(userEntity.Email);
-                var userResponse = await ServiceApiImpl.Instance.UserAuthenticateIDOnly(getICVerify);
-                
-                if (userResponse.GetDataAll().IsRegistered)
-                {
+                var userResponse = await ServiceApiImpl.Instance.UserAuthenticateIDOnlyNew(getICVerify);
+
+                    //if (userResponse.GetDataAll().isActive)
+                    if (userResponse.Response.Data.isActive)
+                    {
                     MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
                 }
                 else
