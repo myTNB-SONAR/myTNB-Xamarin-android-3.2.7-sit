@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -30,19 +33,40 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         private TextView timeSlotError;
         private TextView timeSlotNote;
         private TextView appointmentLabel;
-
+        public DateTime selectedDateTime;
+        public string selectedTime;
+        public string dateSelected;
+        public int  monthSelected;
+        public int yearSelected;
+        public DateTime selectedStartTime;
+        public DateTime selectedEndTime;
         Button calenderNext;
         Button btnSubmitAppointment;
         public CustomCalendar customCalendar;
+        public RelativeLayout ll = null;
+        private Snackbar mNoInternetSnackbar;
+        RelativeLayout rootview;
+
+        [BindView(Resource.Id.btnMon)]
+        Button btnMon;
+
+        [BindView(Resource.Id.btnTue)]
+        Button btnTue;
+
+        [BindView(Resource.Id.btnWed)]
+        Button btnWed;
+
+        [BindView(Resource.Id.btnThu)]
+        Button btnThu;
+
         NestedScrollView scrollcontainer;
+
 
         [BindView(Resource.Id.timeSlotNoteContainer)]
         LinearLayout timeSlotNoteContainer;
 
         [BindView(Resource.Id.timeSlotErrorContainer)]
         LinearLayout timeSlotErrorContainer;
-
-        private Snackbar mNoInternetSnackbar;
 
         const string PAGE_ID = "ApplicationAppointment";
 
@@ -82,9 +106,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             timeSlotError = FindViewById<TextView>(Resource.Id.timeSlotError);
             timeSlotNote = FindViewById<TextView>(Resource.Id.timeSlotNote);
             btnSubmitAppointment = (Button)FindViewById<Button>(Resource.Id.btnSubmitAppointment);
-            appointmentLabel = FindViewById<TextView>(Resource.Id.appointmentLabel);
-
+            rootview = FindViewById<RelativeLayout>(Resource.Id.rootView);
+            currentMonth.TextSize = TextViewUtils.GetFontSize(16f);
             scrollcontainer = FindViewById<NestedScrollView>(Resource.Id.schedulerNestedScrollView);
+            appointmentLabel = FindViewById<TextView>(Resource.Id.appointmentLabel);
             btnSubmitAppointment.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "confirm");
             btnSubmitAppointment.Enabled = false;
             btnSubmitAppointment.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
@@ -127,7 +152,6 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             timeSlotNoteContainer.Visibility = ViewStates.Gone;
             timeSlotErrorContainer.Visibility = ViewStates.Gone;
         }
-
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
@@ -156,7 +180,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
         private void Calendar_DatetimeScrollValidate(object sender, bool e)
         {
-            scrollcontainer.ScrollTo(0, scrollcontainer.Bottom);
+           // scrollcontainer.FullScroll(scrollcontainer.Bottom);
         }
 
         private void Calendar_DatetimeValidate(object sender, bool e)
@@ -164,8 +188,17 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             if (e == true)
             {
                 CustomCalendar timeAdapter = (CustomCalendar)sender;
-
-                if (applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate == timeAdapter.selectedDate
+                selectedDateTime = timeAdapter.selectedDateTime;
+                selectedTime = timeAdapter.selectedTime;
+                dateSelected = timeAdapter.selectedDate;
+                monthSelected = timeAdapter.selectedMonth; 
+                yearSelected = timeAdapter.selectedYear;
+                selectedStartTime = timeAdapter.selectedStartTime;
+                selectedEndTime = timeAdapter.selectedEndTime;
+               
+                if (Convert.ToDateTime(applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate).Day == timeAdapter.selectedDateTime.Day
+                    && Convert.ToDateTime(applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate).Month == timeAdapter.selectedDateTime.Month
+                    && Convert.ToDateTime(applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate).Year == timeAdapter.selectedDateTime.Year
                     && applicationDetailDisplay.ApplicationAppointmentDetail.TimeSlotDisplay == timeAdapter.selectedTime)
                 {
                     btnSubmitAppointment.Enabled = false;
@@ -173,7 +206,11 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                     timeSlotError.Text = Utility.GetLocalizedLabel("ApplicationStatusScheduler", "sameDateTimeError");
                     timeSlotErrorContainer.Visibility = ViewStates.Visible;
                     timeSlotError.Visibility = ViewStates.Visible;
-                    scrollcontainer.ScrollTo(0, scrollcontainer.Bottom);
+                   
+                    scrollcontainer.Post(() =>
+                    {
+                        scrollcontainer.FullScroll(Convert.ToInt32(FocusSearchDirection.Down));
+                    });
                 }
                 else
                 {
@@ -221,15 +258,15 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                     , applicationDetailDisplay.SRNumber
                     , applicationDetailDisplay.SRType
                     , applicationDetailDisplay.ApplicationAppointmentDetail.BusinessArea
-                    , customCalendar.selectedDate
-                    , customCalendar.selectedStartTime
-                    , customCalendar.selectedEndTime);
+                    , selectedDateTime
+                    , selectedStartTime
+                    , selectedEndTime);
                 HideProgressDialog();
                 if (postSetAppointmentResponse.StatusDetail.IsSuccess)
                 {
                     Intent intent = new Intent(this, typeof(AppointmentSetLandingActivity));
                     intent.PutExtra("srnumber", applicationDetailDisplay.SRNumber);
-                    intent.PutExtra("selecteddate", customCalendar.selectedDate.ToString("dd MMM yyyy"));
+                    intent.PutExtra("selecteddate", customCalendar.selectedDateTime.ToString("dd MMM yyyy"));
                     intent.PutExtra("timeslot", customCalendar.selectedTime);
                     intent.PutExtra("appointment", appointment);
                     intent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(applicationDetailDisplay));
@@ -242,7 +279,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                     //Todo: @Raja to Fix
                     bool isTowButtons = !string.IsNullOrEmpty(postSetAppointmentResponse.StatusDetail.SecondaryCTATitle)
                         && !string.IsNullOrWhiteSpace(postSetAppointmentResponse.StatusDetail.SecondaryCTATitle);
-                    MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, isTowButtons
+                    MyTNBAppToolTipBuilder setAppointment = MyTNBAppToolTipBuilder.Create(this, isTowButtons
                             ? MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON
                             : MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                         .SetTitle(postSetAppointmentResponse.StatusDetail.Title)
@@ -252,17 +289,36 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             }
             else
             {
-                //Todo: @Raja to Fix
-                //ShowNoInternetSnackbar();
+                ShowNoInternetSnackbar();
             }
         }
+        public void ShowNoInternetSnackbar()
+        {
+            if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
+            {
+                mNoInternetSnackbar.Dismiss();
+            }
 
+            mNoInternetSnackbar = Snackbar.Make(rootview, Utility.GetLocalizedErrorLabel("noDataConnectionMessage"), Snackbar.LengthIndefinite)
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate
+            {
+                mNoInternetSnackbar.Dismiss();
+            }
+            );
+            View v = mNoInternetSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mNoInternetSnackbar.Show();
+            this.SetIsClicked(false);
+        }
         //Todo: @Raja to do logic of hide unhide button
         public void OnClickCalenderBack(object sender, System.EventArgs e)
         {
             if (SelectedKeyIndex > 0)
             {
                 SelectedKeyIndex--;
+               calenderNext.Visibility = SelectedKeyIndex  < ScheduleKeys.Count ? ViewStates.Visible : ViewStates.Gone;
+                calenderBack.Visibility = ViewStates.Gone;
             }
             currentMonth.Text = ScheduleKeys[SelectedKeyIndex];
             GetVisibleNumbers(ScheduleKeys[SelectedKeyIndex], SelectedKeyIndex);
@@ -271,12 +327,20 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         //Todo: @Raja to do logic of hide unhide button
         public void OnClickCalenderNext(object sender, System.EventArgs e)
         {
+          
             if (SelectedKeyIndex + 1 < ScheduleKeys.Count)
             {
                 SelectedKeyIndex++;
+                currentMonth.Text = ScheduleKeys[SelectedKeyIndex];
+                calenderNext.Visibility = SelectedKeyIndex+1 == ScheduleKeys.Count ? ViewStates.Gone : ViewStates.Visible;
+                calenderBack.Visibility = SelectedKeyIndex-1 < ScheduleKeys.Count ? ViewStates.Visible : ViewStates.Gone;
+                GetVisibleNumbers(ScheduleKeys[SelectedKeyIndex], SelectedKeyIndex);
             }
-            currentMonth.Text = ScheduleKeys[SelectedKeyIndex];
-            GetVisibleNumbers(ScheduleKeys[SelectedKeyIndex], SelectedKeyIndex);
+            else
+                {
+                    calenderNext.Visibility = ViewStates.Gone;
+                }
+    
         }
 
         public void GetVisibleNumbers(string selectedKey, int SelectedKeyIndex)
@@ -292,14 +356,17 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                         visibleNumbers.Add(Convert.ToInt32(selectedMonth.Value[i].Day));
                     }
                 }
-
-                RelativeLayout ll = null;
-                customCalendar = new CustomCalendar(this, schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Month - 1, "", schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Year, visibleNumbers, schedulerDisplayResponse);
+                if (ll != null && customCalendar != null)
+                {
+                    ll.RemoveView(customCalendar);
+                }
+                  customCalendar = new CustomCalendar(this, schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Month - 1, selectedKey, "", schedulerDisplayResponse.MonthYearList[SelectedKeyIndex].Year, visibleNumbers, schedulerDisplayResponse,selectedDateTime, dateSelected, monthSelected, yearSelected, selectedTime, selectedStartTime, selectedEndTime);
                 ll = (RelativeLayout)FindViewById<RelativeLayout>(Resource.Id.CalendarLayout);
                 ll.AddView(customCalendar);
                 ll.Visibility = ViewStates.Gone;
                 ll.Visibility = ViewStates.Visible;
                 ll.RefreshDrawableState();
+              
                 customCalendar.DatetimeValidate += Calendar_DatetimeValidate;
                 customCalendar.DatetimeScrollValidate += Calendar_DatetimeScrollValidate;
                 customCalendar.DateChanged += CalendarDateChanged;
