@@ -6,6 +6,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 
 
@@ -132,7 +133,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 }
 
                 UserEntity user = UserEntity.GetActive();
-                if (string.IsNullOrEmpty(user.IdentificationNo) || !user.IsActivated)
+                var sharedpref_data = UserSessions.GetCheckEmailVerified(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                bool isUpdatePersonalDetail = bool.Parse(sharedpref_data);  //get from shared pref
+
+                if (string.IsNullOrEmpty(user.IdentificationNo) || !isUpdatePersonalDetail)
                 {
                     fromIDFlag = true;
                 }

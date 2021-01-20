@@ -88,6 +88,8 @@ namespace myTNB_Android.Src.ManageUser.Activity
         AccountData accountData;
         UserManageAccessAccount account;
 
+        UserManageAccessAccount accountnew;
+
         private bool checkboxbilling;
         private bool checkboxfullbill;
         private bool buttonEnableview = false;
@@ -126,15 +128,13 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     position = extras.GetInt(Constants.SELECTED_ACCOUNT_POSITION);
                 }
            
-                //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail);
                 TextViewUtils.SetMuseoSans300Typeface( txtNickName );
-                //TextViewUtils.SetMuseoSans300Typeface(txtEmail);
+                TextViewUtils.SetMuseoSans300Typeface(txtEmail);
                 TextViewUtils.SetMuseoSans300Typeface(itemTitleFullBill, itemTitleBilling);
                 TextViewUtils.SetMuseoSans500Typeface(btnSave, itemTitle);
 
-                txtNickName.Text = account.name;
-                txtEmail.Text = account.email;
-
+                MyTNBAccountManagement.GetInstance().AddNewUserAdded(false);
                 itemTitleFullBill.Text = Utility.GetLocalizedLabel("UserAccess", "fullElectricity");
                 itemTitleBilling.Text = Utility.GetLocalizedLabel("UserAccess", "e_billing");
                 SetToolBarTitle(GetLabelByLanguage("titleManageUser"));
@@ -142,10 +142,11 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 btnSave.Text = GetLabelCommonByLanguage("saveChanges");
 
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
-
+                txtNickName.Text = account.name;
+                txtEmail.Text = account.email;
                 itemActionFullBill.CheckedChange += CheckedChange;
                 itemActionBilling.CheckedChange += CheckedChanged;
-
+                DisableSaveButton();
                 if (account.IsPreRegister)
                 {
                     PopulateCheckBoxPreRegister();
@@ -158,7 +159,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 }
                 else
                 {
-                    PopulateDataCheckBox();
+                    PopulateDataCheckBox(account);
                 }
 
                 MyTNBAccountManagement.GetInstance().AddNewUserAdded(true);
@@ -218,23 +219,23 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 if (account.IsApplyEBilling)
                 {
                     itemActionBilling.Checked = true;
-                    itemActionBilling.SetButtonDrawable(Resource.Drawable.checkbox_disabled);
+                    itemActionBilling.SetButtonDrawable(Resource.Drawable.checkbox_active_grey);
                 }
                 else
                 {
                     itemActionBilling.Checked = false;
-                    itemActionBilling.SetButtonDrawable(Resource.Drawable.checkbox_active_grey);
+                    itemActionBilling.SetButtonDrawable(Resource.Drawable.checkbox_disabled);
                 }
 
                 if (account.IsHaveAccess)
                 {
                     itemActionFullBill.Checked = true;
-                    itemActionFullBill.SetButtonDrawable(Resource.Drawable.checkbox_disabled);
+                    itemActionFullBill.SetButtonDrawable(Resource.Drawable.checkbox_active_grey);
                 }
                 else
                 {
                     itemActionFullBill.Checked = false;
-                    itemActionFullBill.SetButtonDrawable(Resource.Drawable.checkbox_active_grey);
+                    itemActionFullBill.SetButtonDrawable(Resource.Drawable.checkbox_disabled);
                 }
                 DisableSaveButton();
             }
@@ -245,11 +246,12 @@ namespace myTNB_Android.Src.ManageUser.Activity
             }
         }
 
-        public void PopulateDataCheckBox()
+        public void PopulateDataCheckBox(UserManageAccessAccount accountCheckBox)
         {
             try
             {
-                if (account.IsApplyEBilling)
+                accountnew = accountCheckBox;
+                if (accountCheckBox.IsApplyEBilling)
                 {
                     itemActionBilling.Checked = true;
                 }
@@ -258,7 +260,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     itemActionBilling.Checked = false;
                 }
 
-                if (account.IsHaveAccess)
+                if (accountCheckBox.IsHaveAccess)
                 {
                     itemActionFullBill.Checked = true;
 
@@ -267,7 +269,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 {
                     itemActionFullBill.Checked = false;
                 }
-                DisableSaveButton();
             }
             catch (Exception e)
             {
@@ -281,7 +282,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
             if(e.IsChecked)
             {
                 checkboxfullbill = true;
-                if(account.IsHaveAccess == checkboxfullbill)
+                if (accountnew.IsHaveAccess && checkboxbilling.Equals(accountnew.IsApplyEBilling))
                 {
                     DisableSaveButton();
                     buttonEnableview = false;
@@ -295,7 +296,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
             else
             {
                 checkboxfullbill = false;
-                if (account.IsHaveAccess == checkboxfullbill)
+                if (!accountnew.IsHaveAccess && checkboxbilling.Equals(accountnew.IsApplyEBilling))
                 {
                     DisableSaveButton();
                     buttonEnableview = false;
@@ -306,11 +307,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     buttonEnableview = true;
                 }
             }
-            
-            if(buttonEnableview || buttonEnableEBilling)
-            {
-                EnableSaveButton();
-            }
+
         }
 
         private void CheckedChanged(object sender, CompoundButton.CheckedChangeEventArgs e)
@@ -318,7 +315,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
             if (e.IsChecked)
             {
                 checkboxbilling = true;
-                if (account.IsApplyEBilling == checkboxbilling)
+                if (accountnew.IsApplyEBilling && checkboxfullbill.Equals(accountnew.IsHaveAccess))
                 {
                     DisableSaveButton();
                     buttonEnableEBilling = false;
@@ -332,7 +329,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
             else
             {
                 checkboxbilling = false;
-                if (account.IsApplyEBilling == checkboxbilling)
+                if (!accountnew.IsApplyEBilling && checkboxfullbill.Equals(accountnew.IsHaveAccess))
                 {
                     DisableSaveButton();
                     buttonEnableEBilling = false;
@@ -344,10 +341,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 }
             }
 
-            if (buttonEnableview || buttonEnableEBilling)
-            {
-                EnableSaveButton();
-            }
         }
 
         [OnClick(Resource.Id.infoManageUser)]
@@ -374,7 +367,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     ShowSaveDialog(this, () =>
                     {
                         this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, checkboxfullbill, checkboxbilling);
-                        ShowSaveSuccess();
+                        //ShowSaveSuccess();
                     });
                 }
                 this.SetIsClicked(false);
@@ -602,6 +595,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
         public void EnableSaveButton()
         {
             btnSave.Enabled = true;
+            MyTNBAccountManagement.GetInstance().AddNewUserAdded(true);
             btnSave.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
             isSelectionChange = true;
         }
@@ -609,6 +603,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
         public void DisableSaveButton()
         {
             btnSave.Enabled = false;
+            MyTNBAccountManagement.GetInstance().AddNewUserAdded(false);
             btnSave.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
             isSelectionChange = false;
         }

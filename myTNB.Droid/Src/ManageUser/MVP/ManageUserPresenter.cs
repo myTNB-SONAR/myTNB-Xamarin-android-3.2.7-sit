@@ -58,7 +58,8 @@ namespace myTNB_Android.Src.ManageUser.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                var updateUserAccessReponse = await ServiceApiImpl.Instance.UpdateAccountAccessRight(new UpdateUserAccessRequest(userId, haveAccess, haveEBiling));
+                string action = "U";
+                var updateUserAccessReponse = await ServiceApiImpl.Instance.UpdateAccountAccessRight(new UpdateUserAccessRequest(userId, haveAccess, haveEBiling, action));
 
                 if (mView.IsActive())
                 {
@@ -67,10 +68,19 @@ namespace myTNB_Android.Src.ManageUser.MVP
 
                 if (updateUserAccessReponse.IsSuccessResponse())
                 {
-                    this.mView.ShowSaveSuccess();
+                    
                     UserManageAccessAccount.UpdateManageAccess(accountData.AccNum, userId, haveAccess, haveEBiling);
+
+                    var updateacc = new UserManageAccessAccount()
+                    {
+                        IsApplyEBilling = haveEBiling,
+                        IsHaveAccess = haveAccess,
+                    };
+
+                    this.mView.PopulateDataCheckBox(updateacc);
                     this.mView.DisableSaveButton();
                     MyTNBAccountManagement.GetInstance().AddNewUserAdded(false);
+                    this.mView.ShowSaveSuccess();
                 }
                 else
                 {

@@ -451,6 +451,18 @@ namespace myTNB_Android.Src.Utils
             return prefs.GetBoolean("DialogIDUpdated", false);
         }
 
+        public static void SaveCheckEmailVerified(ISharedPreferences prefs, string data)    //for Check Email Verified
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("IsFeedbackUpdateDetailDisabled", data);
+            editor.Apply();
+        }
+
+        public static string GetCheckEmailVerified(ISharedPreferences prefs)              //for Check Email Verified
+        {
+            return prefs.GetString("IsFeedbackUpdateDetailDisabled", null);
+        }
+
         public static void SaveDeviceId(ISharedPreferences prefs, string deviceID)
         {
             ISharedPreferencesEditor editor = prefs.Edit();

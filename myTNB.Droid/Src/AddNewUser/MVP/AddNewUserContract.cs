@@ -56,7 +56,8 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             /// <param name="exception">the returned exception</param>
             void ShowRetryOptionsUnknownException(Exception exception);
             
-            void ShowSuccessAddNewUser();
+            void ShowSuccessAddNewUser(string email);
+            void ShowSuccessAddNewUserPreRegister(string email);
         }
         public interface IUserActionsListener : IBasePresenter
         {
@@ -69,7 +70,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             /// Action to remove account
             /// </summary>
             /// <param name="accountData">AccountData</param>
-            void OnAddAccount(string userEmail, bool isHaveAccess, bool isHaveEBilling);
+            void OnAddAccount(string userEmail, string accNo, bool isHaveAccess, bool isHaveEBilling);
 
             void CheckRequiredFields(string email);
 

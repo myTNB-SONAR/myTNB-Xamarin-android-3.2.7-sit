@@ -120,6 +120,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private static bool isFromHomeMenu = false;
 
+        private static bool isFromLogin = false;
+
         private IMenu ManageSupplyAccountMenu;
 
         ISharedPreferences mPref;
@@ -259,6 +261,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
             }
             this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
+
+            if (extras != null && extras.ContainsKey("FromDashBoard"))
+            {
+                isFromLogin = true;
+            }
 
             try
             {
@@ -1539,7 +1546,19 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
 
             UserEntity user = UserEntity.GetActive();
-            if (string.IsNullOrEmpty(user.IdentificationNo) || !user.IsActivated)
+            var sharedpref_data = UserSessions.GetCheckEmailVerified(this.mPref);
+            bool isUpdatePersonalDetail = bool.Parse(sharedpref_data);  //get from shared pref
+            
+            if (isFromLogin)
+            {
+                UserSessions.SaveCheckEmailVerified(this.mPref, user.IsActivated.ToString());  //save sharedpref check email  //wan
+                if (string.IsNullOrEmpty(user.IdentificationNo) || !user.IsActivated)
+                {
+                    isFromHomeMenu = true;
+                    OnCheckProfileTab(true, isFromHomeMenu);
+                }
+            }
+            else if (string.IsNullOrEmpty(user.IdentificationNo) || !isUpdatePersonalDetail)
             {
                 isFromHomeMenu = true;
                 OnCheckProfileTab(true, isFromHomeMenu);

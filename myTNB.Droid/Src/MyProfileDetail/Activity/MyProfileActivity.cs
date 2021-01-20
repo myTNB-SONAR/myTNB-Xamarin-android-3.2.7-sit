@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 
 using Android.Views;
@@ -59,6 +60,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         private bool fromEmailVerify = false;
 
+        ISharedPreferences mPref;
 
         private int APP_LANGUAGE_REQUEST = 32766;
 
@@ -81,12 +83,17 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
             try
             {
+                mPref = PreferenceManager.GetDefaultSharedPreferences(this);
+                
                 UserEntity user = UserEntity.GetActive();
                 if(string.IsNullOrEmpty(user.IdentificationNo))
                 {
                     fromIDFlag = true;
                 }
-                if (user.IsActivated)
+
+                var sharedpref_data = UserSessions.GetCheckEmailVerified(this.mPref);
+                bool isUpdatePersonalDetail = bool.Parse(sharedpref_data);
+                if (isUpdatePersonalDetail)
                 {
                     fromEmailVerify = true;
                 }

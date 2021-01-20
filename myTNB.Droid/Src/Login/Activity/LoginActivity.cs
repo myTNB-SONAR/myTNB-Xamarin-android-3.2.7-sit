@@ -396,6 +396,7 @@ namespace myTNB_Android.Src.Login.Activity
         {
             // TODO : START ACTIVITY DASHBOARD
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            DashboardIntent.PutExtra("FromDashBoard", true);
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
         }

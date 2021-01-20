@@ -344,10 +344,10 @@ namespace myTNB_Android.Src.Utils
         public static void ShowIdentificationErrorDialog(Activity context, Action confirmAction, Action cancelAction = null)
         {
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                        .SetTitle(Utility.GetLocalizedLabel("Register", "IdHeaderError"))
-                        .SetMessage(Utility.GetLocalizedLabel("Register", "IdBodyError"))
+                        .SetTitle(Utility.GetLocalizedLabel("OneLastThing", "IdHeaderError"))
+                        .SetMessage(Utility.GetLocalizedLabel("OneLastThing", "IdBodyError"))
                         .SetContentGravity(Android.Views.GravityFlags.Center)
-                        .SetCTALabel(Utility.GetLocalizedLabel("Register", "gotIt"))
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
                         .SetSecondaryCTAaction(() =>
                         {
                             confirmAction();

@@ -80,6 +80,8 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             /// Hide get cards progress dialog
             /// </summary>
             void HideGetCardsProgressDialog();
+            void ShowAddTNBUserSuccess(string email);
+            void ShowAddNonTNBUserSuccess(string email);
 
             /// <summary>
             /// Clears the account adapter
@@ -91,6 +93,8 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             /// </summary>
             /// <param name="accountList">List<paramref name="UserManageAccessAccount"/></param>
             void ShowAccountList(List<UserManageAccessAccount> accountList);
+            void AdapterDeleteClean();
+            void AdapterClean();
 
             /// <summary>
             /// Shows account list

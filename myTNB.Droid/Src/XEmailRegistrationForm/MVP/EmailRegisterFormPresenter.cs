@@ -159,14 +159,14 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
                 string idType = "", idNo="";
                 GetVerifyRequest getEmailVerify = new GetVerifyRequest(idType,idNo);
                 getEmailVerify.SetUserName(email);
-                var userResponse = await ServiceApiImpl.Instance.UserAuthenticateEmailOnly(getEmailVerify);
+                var userResponse = await ServiceApiImpl.Instance.UserAuthenticateEmailOnlyNew(getEmailVerify);
                 
                     try
                     {
 
                         if (userResponse.IsSuccessResponse())
                         {
-                            if (userResponse.Response.Data.IsRegistered)
+                            if (userResponse.Response.Data.isActive)
                             {
                                 this.mView.ShowInvalidEmailPasswordError();
                                 this.mView.DisableRegisterButton();

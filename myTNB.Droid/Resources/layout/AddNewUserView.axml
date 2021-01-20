@@ -69,7 +69,7 @@
                                             android:id="@+id/txtUserEmail"
                                             android:maxLines="1"
                                             android:paddingTop="5dp"
-                                            android:inputType="textPersonName|textCapWords" />
+                                            android:inputType="textEmailAddress" />
                                     </com.google.android.material.textfield.TextInputLayout>
                             </LinearLayout>
                         </FrameLayout>
