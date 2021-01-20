@@ -124,7 +124,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 case "walkthrough_img_install_1":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_1);
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
-                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int) DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
 
@@ -212,9 +212,9 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     break;
                 case "walkthrough_img_install_7":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_7);
-                    
+
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSeventhBg);
-                    
+
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
@@ -261,7 +261,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     {
                         bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSecondBg);
                     }
-                    else 
+                    else
                     {
                         bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSixthBg);
                     }
@@ -297,7 +297,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 bgLayout.Measure(0, 0);
             }
 
-            float diff = ((float) (DPUtils.GetHeight() - bgLayout.MeasuredHeight) / (float) DPUtils.GetHeight());
+            float diff = ((float)(DPUtils.GetHeight() - bgLayout.MeasuredHeight) / (float)DPUtils.GetHeight());
 
             if (isLastItem)
             {
@@ -308,7 +308,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     {
                         titleView.Measure(0, 0);
                     }
-                    int leftHeight = totalHeight - titleView.MeasuredHeight - imgHeight - (int) DPUtils.ConvertDPToPx(48f);
+                    int leftHeight = totalHeight - titleView.MeasuredHeight - imgHeight - (int)DPUtils.ConvertDPToPx(48f);
 
                     LinearLayout.LayoutParams bottomParam = walkthroughBottomView.LayoutParameters as LinearLayout.LayoutParams;
                     bottomParam.Height = leftHeight;
@@ -318,7 +318,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             {
                 if (diff < 0.20f)
                 {
-                    int totalHeight = (int) (DPUtils.GetHeight() * 0.8f);
+                    int totalHeight = (int)(DPUtils.GetHeight() * 0.8f);
                     if (titleView.MeasuredHeight <= 0)
                     {
                         titleView.Measure(0, 0);
@@ -368,7 +368,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
 
         private Task CheckAppMasterDataDone()
         {
-            return Task.Delay(Constants.LANGUAGE_MASTER_DATA_CHECK_TIMEOUT).ContinueWith(_ => {
+            return Task.Delay(Constants.LANGUAGE_MASTER_DATA_CHECK_TIMEOUT).ContinueWith(_ =>
+            {
                 if (MyTNBAccountManagement.GetInstance().GetIsAppMasterComplete())
                 {
                     if (MyTNBAccountManagement.GetInstance().GetIsAppMasterFailed())

@@ -1,12 +1,10 @@
-﻿
-using System;
+﻿using System;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
-
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -149,7 +147,6 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Intent nextIntent = new Intent(this, typeof(AppLargeFontActivity));
                     nextIntent.PutExtra("APP_FONTCHANGE_REQUEST", AppLaunchNavigation.LargeFont.ToString());
                     StartActivity(nextIntent);
-
                 };
             }
             btnSkip.Click += delegate

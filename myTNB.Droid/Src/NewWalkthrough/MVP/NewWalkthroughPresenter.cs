@@ -23,7 +23,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             {
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = Utility.GetLocalizedLabel("Onboarding","title1"),
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title1"),
                     Description = Utility.GetLocalizedLabel("Onboarding", "description1"),
                     Image = "walkthrough_img_install_0"
                 });

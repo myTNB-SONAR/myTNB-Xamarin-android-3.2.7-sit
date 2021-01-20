@@ -16,6 +16,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         {
             newWalkthroughModelList = dataList;
         }
+
         public override int Count => this.newWalkthroughModelList.Count;
 
         public override Fragment GetItem(int position)

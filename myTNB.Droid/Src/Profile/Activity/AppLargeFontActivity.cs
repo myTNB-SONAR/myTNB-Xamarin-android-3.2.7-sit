@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Android.App;
 using Android.Content;
@@ -61,15 +60,14 @@ namespace myTNB_Android.Src.Profile.Activity
         {
             if (FontTitle == null) //If lang param is null, use saved Font as selected
             {
-                foreach(var item in FontItemList)
+                foreach (var item in FontItemList)
                 {
-                    if(item.type == savedFont)
+                    if (item.type == savedFont)
                     {
                         FontTitle = item.type;
-                        
                     }
                 }
-               
+
             }
             FontItemList.ForEach(item =>
             {
@@ -79,7 +77,6 @@ namespace myTNB_Android.Src.Profile.Activity
             EnableDisableButton();
         }
 
-       
         private void UpdateLabels()
         {
             SetToolBarTitle(GetLabelSelectFontSize("title"));
@@ -147,20 +144,13 @@ namespace myTNB_Android.Src.Profile.Activity
         {
             Item selectedItem = FontItemList.Find(item => { return item.selected; });
             //string currentFont = TextViewUtils.SelectedFontSize();
-
-           
-               
-                _ = RunUpdateFont(selectedItem);
-
-          
-           
+            _ = RunUpdateFont(selectedItem);
         }
 
         private void UpdateFont()
         {
             savedFont = TextViewUtils.SelectedFontSize();
-           
-           // UpdateLabels();
+            // UpdateLabels();
             EnableDisableButton();
         }
 
@@ -175,7 +165,6 @@ namespace myTNB_Android.Src.Profile.Activity
                     if (item.type == savedFont)
                     {
                         FontTitle = item.type;
-                     
                     }
                 }
 
@@ -213,18 +202,21 @@ namespace myTNB_Android.Src.Profile.Activity
         private void ShowTooltipConfirm()
         {
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                        .SetTitle(GetLabelSelectFontSize("popupTitleFormat"))
-                        .SetMessage(string.Format(GetLabelSelectFontSize("popupMessage"), FontName))
-                        .SetContentGravity(GravityFlags.Center)
-                        .SetCTALabel(GetLabelCommonByLanguage("no"))
-                        .SetSecondaryCTALabel(GetLabelCommonByLanguage("yes"))
-                        .SetSecondaryCTAaction(() =>
-                        {
-                            ShowProgressDialog();
-                            Item selectedItem = FontItemList.Find(item => { return item.selected; });
-                            _ = RunUpdateFont(selectedItem);
-                            HideShowProgressDialog();
-                        }).Build();
+                .SetTitle(GetLabelSelectFontSize("popupTitleFormat"))
+                .SetMessage(string.Format(GetLabelSelectFontSize("popupMessage"), FontName))
+                .SetContentGravity(GravityFlags.Center)
+                .SetCTALabel(GetLabelCommonByLanguage("no"))
+                .SetSecondaryCTALabel(GetLabelCommonByLanguage("yes"))
+                .SetSecondaryCTAaction(() =>
+                {
+                    ShowProgressDialog();
+                    Item selectedItem = FontItemList.Find(item =>
+                    {
+                        return item.selected;
+                    });
+                    _ = RunUpdateFont(selectedItem);
+                    HideShowProgressDialog();
+                }).Build();
             tooltipBuilder.SetCTAaction(() =>
             {
                 tooltipBuilder.DismissDialog();
@@ -236,7 +228,6 @@ namespace myTNB_Android.Src.Profile.Activity
         {
             if (LargeFontOnBoard)
             {
-
                 Intent WalkthroughIntent = new Intent(this, typeof(NewWalkthroughActivity));
                 WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, AppLaunchNavigation.Walkthrough.ToString());
                 if (MyTNBAccountManagement.GetInstance().IsUpdateLargeFont())
@@ -245,8 +236,6 @@ namespace myTNB_Android.Src.Profile.Activity
                     MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
                 }
                 StartActivity(WalkthroughIntent);
-
-             
             }
             else
             {
@@ -269,13 +258,8 @@ namespace myTNB_Android.Src.Profile.Activity
                 selectItemAdapter = new SelectItemAdapter(this, FontItemList);
                 FontListView.Adapter = selectItemAdapter;
                 HideShowProgressDialog();
-                
             });
         }
-
-     
-
-    
 
         public void ShowProgressDialog()
         {
