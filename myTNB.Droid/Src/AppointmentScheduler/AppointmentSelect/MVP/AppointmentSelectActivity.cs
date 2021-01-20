@@ -152,18 +152,6 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             timeSlotNoteContainer.Visibility = ViewStates.Gone;
             timeSlotErrorContainer.Visibility = ViewStates.Gone;
         }
-        void GetTestData()
-        {
-           string appointmentResourepath = "Resource.Raw.AppointmentTestData.json";
-            string schedulerDisplayResponseStirng;
-
-            var inputStream = Resources.OpenRawResource(Resource.Raw.AppointmentTestData);
-            using (StreamReader sr = new StreamReader(inputStream))
-            {
-                schedulerDisplayResponseStirng = sr.ReadToEnd();
-            }
-            schedulerDisplayResponse = JsonConvert.DeserializeObject<SchedulerDisplay>(schedulerDisplayResponseStirng);
-        }
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
