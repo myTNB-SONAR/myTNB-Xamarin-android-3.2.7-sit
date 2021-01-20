@@ -134,8 +134,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 TextViewUtils.SetMuseoSans300Typeface(itemTitleFullBill, itemTitleBilling);
                 TextViewUtils.SetMuseoSans500Typeface(btnSave, itemTitle);
 
-                
-
+                MyTNBAccountManagement.GetInstance().AddNewUserAdded(false);
                 itemTitleFullBill.Text = Utility.GetLocalizedLabel("UserAccess", "fullElectricity");
                 itemTitleBilling.Text = Utility.GetLocalizedLabel("UserAccess", "e_billing");
                 SetToolBarTitle(GetLabelByLanguage("titleManageUser"));
@@ -308,8 +307,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     buttonEnableview = true;
                 }
             }
-            
-            MyTNBAccountManagement.GetInstance().AddNewUserAdded(buttonEnableview);
 
         }
 
@@ -344,7 +341,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 }
             }
 
-            MyTNBAccountManagement.GetInstance().AddNewUserAdded(buttonEnableEBilling);
         }
 
         [OnClick(Resource.Id.infoManageUser)]
@@ -599,6 +595,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
         public void EnableSaveButton()
         {
             btnSave.Enabled = true;
+            MyTNBAccountManagement.GetInstance().AddNewUserAdded(true);
             btnSave.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
             isSelectionChange = true;
         }
@@ -606,6 +603,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
         public void DisableSaveButton()
         {
             btnSave.Enabled = false;
+            MyTNBAccountManagement.GetInstance().AddNewUserAdded(false);
             btnSave.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
             isSelectionChange = false;
         }
