@@ -107,6 +107,8 @@ namespace myTNB_Android.Src.ManageAccess.Activity
 
         private IMenu ManageAccessMenu;
 
+        List<UserManageAccessAccount> customerAccountList;
+
         const string PAGE_ID = "UserAccess";
 
         public override int ResourceId()
@@ -237,7 +239,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         public void onCheckboxListener(int position)
         {
             int i = 0;
-            List<UserManageAccessAccount> customerAccountList = UserManageAccessAccount.List(accountData?.AccountNum);
+            customerAccountList = UserManageAccessAccount.List(accountData?.AccountNum);
             foreach (UserManageAccessAccount userManageAccessAccount in customerAccountList)
             {
                 if (userManageAccessAccount.isSelected)
@@ -293,6 +295,13 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                     listView.Visibility = ViewStates.Gone;
                     layout_btnAddUser.Visibility = ViewStates.Gone;
                     manage_user_layout.Visibility = ViewStates.Gone;
+                    AdapterDeleteClean();
+
+                    List<UserManageAccessAccount> customerAccountLatest = UserManageAccessAccount.List(accountData?.AccountNum);
+                    if (customerAccountLatest.Count > 0)
+                    {
+                        ShowAccountDeleteList(customerAccountLatest);
+                    }
                 }
                 this.SetIsClicked(false);
             }
@@ -332,13 +341,14 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 if (!this.GetIsClicked())
                 {
                     this.SetIsClicked(true);
-                    txtManageAccessTitle.Text = GetLabelByLanguage("LabelTitle");
-                    listViewRemoveAcc.Visibility = ViewStates.Gone;
-                    listView.Visibility = ViewStates.Visible;
-                    bottomLayout.Visibility = ViewStates.Visible;
-                    bottomLayoutDeleteMultiple.Visibility = ViewStates.Gone;
-                    layout_btnAddUser.Visibility = ViewStates.Gone;
-                    manage_user_layout.Visibility = ViewStates.Gone;
+                    UserManageAccessAccount.UnSelectAll();
+                    List<UserManageAccessAccount> customerAccountLatest = UserManageAccessAccount.List(accountData?.AccountNum);
+                    
+                    if (customerAccountLatest.Count > 0)
+                    {
+                        AdapterClean();
+                        ShowAccountList(customerAccountLatest);
+                    }
                 }
                 this.SetIsClicked(false);
             }
@@ -381,29 +391,24 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         public void UserAccessRemoveSuccess()
         {
             AdapterDeleteClean();
-            AdapterClean();
-            this.userActionsListener.Start();
 
-            if (checkListUserEmpty() > 0)
+            List<UserManageAccessAccount> customerAccountLatest = UserManageAccessAccount.List(accountData?.AccountNum);
+            
+            if (customerAccountLatest.Count > 0)
             {
-                listViewRemoveAcc.Visibility = ViewStates.Visible;
-                bottomLayoutDeleteMultiple.Visibility = ViewStates.Visible;
-                bottomLayout.Visibility = ViewStates.Gone;
-            }          
+                ShowAccountDeleteList(customerAccountLatest);
+            }
+
+            listViewRemoveAcc.Visibility = ViewStates.Visible;
+            bottomLayoutDeleteMultiple.Visibility = ViewStates.Visible;
+            bottomLayout.Visibility = ViewStates.Gone;        
             ShowRemoveMessageResponse();
         }
 
         public void UserAccessRemoveSuccessSwipe()
         {
-            AdapterDeleteClean();
             AdapterClean();
             this.userActionsListener.Start();
-
-            if (checkListUserEmpty() > 0)
-            {
-                bottomLayoutDeleteMultiple.Visibility = ViewStates.Gone;
-                bottomLayout.Visibility = ViewStates.Visible;
-            }
             ShowRemoveMessageResponse();
         }
 
@@ -736,12 +741,14 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 adapter.AddAll(accountList);
                 adapter.NotifyDataSetChanged();
                 listView.SetNoScroll();
+                listView.Visibility = ViewStates.Visible;
                 bottomLayout.Visibility = ViewStates.Visible;
                 txtManageAccessTitle.Text = GetLabelByLanguage("LabelTitle");
                 txtManageAccessTitle.Visibility = ViewStates.Visible;
                 layout_btnAddUser.Visibility = ViewStates.Gone;
                 manage_user_layout.Visibility = ViewStates.Gone;
                 listViewRemoveAcc.Visibility = ViewStates.Gone;
+                bottomLayoutDeleteMultiple.Visibility = ViewStates.Gone;
                 Handler h = new Handler();
                 Action myAction = () =>
                 {
@@ -777,6 +784,8 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         {
             try
             {
+                AdapterClean();
+                AdapterDeleteClean();
                 listView.EmptyView = manage_user_layout;
                 txtManageAccessTitle.Visibility = ViewStates.Gone;
                 bottomLayout.Visibility = ViewStates.Gone;
