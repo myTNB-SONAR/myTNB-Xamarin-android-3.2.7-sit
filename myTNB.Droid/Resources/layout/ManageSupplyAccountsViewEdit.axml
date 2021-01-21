@@ -33,7 +33,7 @@
                     android:textColor="@color/powerBlue"
                     android:layout_alignParentRight="true"
                     android:textSize="14dp" />
-                <com.google.android.material.textfield.TextInputLayout
+                <TextView
                     android:id="@+id/txtInputLayoutNickName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_alignParentLeft="true"
                     android:layout_toLeftOf="@+id/btnTextUpdateNickName"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"/>
                     <EditText
                         android:id="@+id/txtNickName"
                         android:layout_width="match_parent"
@@ -51,14 +51,13 @@
                         android:enabled="false"
                         android:focusable="false"
                         android:hint="ACCOUNT NICKNAME"
-                        android:paddingTop="10dp"
+                        android:paddingTop="14dp"
                         android:inputType="text"
                         android:singleLine="true"
                         android:ellipsize="end"
                         android:textSize="14dp" 
                         android:maxLines="1"
                         android:maxWidth="200dp" />
-                </com.google.android.material.textfield.TextInputLayout>
             </RelativeLayout>
         </FrameLayout>
         
@@ -79,13 +78,13 @@
                 android:layout_height="wrap_content"
                 android:text="2222222222"
                 android:layout_marginBottom="8dp"
-                android:textSize="14dp" />
+                android:textSize="12dp" />
             <TextView
                 android:id="@+id/txtAccountAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="No. 3 Lot Meulrur 12 Taman Melir, 68000 Ampang, Selangor"
-                android:textSize="14dp" />
+                android:textSize="12dp" />
 
              <TextView
                     android:id="@+id/infoAddress"
@@ -121,10 +120,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:paddingBottom="16dp"
-                android:paddingTop="16dp"
+                android:padding="16dp"
                 android:background="@color/white"
                 android:layout_gravity="bottom | center">
                 <Button
@@ -135,6 +131,9 @@
                     android:layout_gravity="bottom"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textSize="16dp"
                     android:text="@string/manage_supply_account_btn_remove"
                     android:textAllCaps="false" />
             </LinearLayout>

@@ -31,7 +31,8 @@
                             android:id="@+id/txtAddNewUserTitle"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:textSize="18sp"
+                            android:textSize="16dp"
+                            android:lineHeight="24dp"
                             android:padding="16dp"
                             android:textColor="@color/blue"
                             android:text="Provide user’s email address they use for their myTNB account."
@@ -50,6 +51,7 @@
                                     android:gravity="left"
                                     android:text="We'll invite them to register for an account if they don't have any."
                                     android:textSize="14dp"
+                                    android:lineHeight="20dp"
                                     android:textColor="#49494a"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"/>
@@ -78,7 +80,8 @@
                             android:id="@+id/txtNewUserOptionalTitle"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:textSize="18sp"
+                            android:textSize="16dp"
+                            android:lineHeight="24dp"
                             android:padding="16dp"
                             android:textColor="@color/blue"
                             android:text="Do you want to give this user more access (optional)?"
@@ -196,6 +199,7 @@
                     android:layout_gravity="bottom"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp"
+                    android:textSize="16dp"
                     android:text="Add User"
                     android:textAllCaps="false" />
         </LinearLayout>

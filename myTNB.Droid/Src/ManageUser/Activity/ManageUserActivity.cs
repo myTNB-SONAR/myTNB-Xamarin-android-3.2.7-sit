@@ -39,7 +39,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
         EditText txtNickName;
 
         [BindView(Resource.Id.txtInputLayoutEmail)]
-        TextInputLayout txtInputLayoutEmail;
+        TextView txtInputLayoutEmail;
 
         [BindView(Resource.Id.txtEmail)]
         EditText txtEmail;
@@ -141,7 +141,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 txtInputLayoutEmail.Hint = Utility.GetLocalizedLabel("UserAccess", "hint_email").ToUpper(); 
                 btnSave.Text = GetLabelCommonByLanguage("saveChanges");
 
-                txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
+                //txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
                 txtNickName.Text = account.name;
                 txtEmail.Text = account.email;
                 itemActionFullBill.CheckedChange += CheckedChange;

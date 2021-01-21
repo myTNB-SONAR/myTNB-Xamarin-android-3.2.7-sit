@@ -32,7 +32,7 @@
                     android:id="@+id/txtManageAccessTitle"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:textSize="18sp"
+                    android:textSize="16dp"
                     android:padding="16dp"
                     android:textColor="@color/blue"
                     android:text="User that have acccess to this account:"

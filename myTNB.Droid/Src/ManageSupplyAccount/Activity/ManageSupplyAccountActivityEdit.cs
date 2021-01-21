@@ -44,7 +44,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         TextView txtAccountAddress;
 
         [BindView(Resource.Id.txtInputLayoutNickName)]
-        TextInputLayout txtInputLayoutNickName;
+        TextView txtInputLayoutNickName;
 
         [BindView(Resource.Id.txtNickName)]
         EditText txtNickName;
@@ -117,21 +117,23 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 if (!accountData.IsOwner == true)
                 {
                    txtAccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
+                   infoAddress.Visibility = ViewStates.Visible;
                 }
                 else
                 {
                     txtAccountAddress.Text = accountData.AddStreet;
+                    infoAddress.Visibility = ViewStates.Gone;
                 }
 
 
 
                 txtNickName.Text = accountData.AccountNickName;
 
-                txtInputLayoutNickName.Hint = GetLabelCommonByLanguage("acctNickname");
+                txtInputLayoutNickName.Hint = GetLabelCommonByLanguage("acctNickname").ToUpper();
                 btnTextUpdateNickName.Text = GetLabelCommonByLanguage("update");
                 btnRemoveAccount.Text = GetLabelByLanguage("removeAccount");
 
-                txtNickName.AddTextChangedListener(new InputFilterFormField(txtNickName, txtInputLayoutNickName));
+                //txtNickName.AddTextChangedListener(new InputFilterFormField(txtNickName, txtInputLayoutNickName));
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 // this.SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 //SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);

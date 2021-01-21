@@ -57,14 +57,14 @@
                     android:background="@color/white"
                     android:orientation="vertical"
                     android:padding="16dp">
-                     <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/txtInputLayoutEmail"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:errorEnabled="true"
-                            android:textSize="9dp" 
-                            android:layout_alignParentLeft="true"
-                            app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+                     <TextView
+                        android:id="@+id/txtInputLayoutEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true"
+                        android:textSize="9dp" 
+                        android:layout_alignParentLeft="true"
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"/>
                             <EditText
                                 android:id="@+id/txtEmail"
                                 android:layout_width="match_parent"
@@ -80,7 +80,6 @@
                                 android:textSize="14dp" 
                                 android:maxLines="1"
                                 android:maxWidth="200dp" />
-                        </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
                 <LinearLayout
                     android:padding="16dp"
@@ -92,7 +91,7 @@
                         android:id="@+id/itemTitle"
                         android:gravity="left|center"
                         android:text="Give this user access to:"
-                        android:textSize="18dp"
+                        android:textSize="16dp"
                         android:textColor="#1c79ca"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
