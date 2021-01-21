@@ -114,6 +114,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             void NavigateLogUserAccess(List<LogUserAccessNewData> newAccountList);
             void UserAccessRemoveSuccess();
             void UserAccessRemoveSuccessSwipe();
+            int checkListUserEmpty();
         }
 
         public interface IUserActionsListener : IBasePresenter

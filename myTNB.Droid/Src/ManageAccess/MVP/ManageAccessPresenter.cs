@@ -82,7 +82,6 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                         }
 
                         this.mView.AdapterClean();
-                        this.mView.AdapterDeleteClean();
                         Start();
                     }
                 }
@@ -194,7 +193,12 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                 if (removeAccountResponse.IsSuccessResponse())
                 {
                     UserManageAccessAccount.DeleteSelected(accountData.AccountNum);
-                    if (MultipleDelete)
+                    if (this.mView.checkListUserEmpty() == 0)
+                    {
+                        this.mView.ShowEmptyAccount();
+
+                    }
+                    else if (MultipleDelete && this.mView.checkListUserEmpty() > 0)
                     {
                         this.mView.UserAccessRemoveSuccess();
                     }
@@ -386,13 +390,10 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                 if (UserManageAccessAccount.HasItems())
                 {
                     List<UserManageAccessAccount> customerAccountList = UserManageAccessAccount.List(accountData?.AccountNum);
-                    List<UserManageAccessAccount> customerAccountDeleteList = UserManageAccessAccount.List(accountData?.AccountNum);
-                    //UserManageAccessAccount customerBillingAccount = new UserManageAccessAccount();
-                    //customerBillingAccount = UserManageAccessAccount.FindByAccNum(accountData.AccountNum);
+                    
                     if (customerAccountList != null && customerAccountList.Count > 0)
                     {
                         this.mView.ShowAccountList(customerAccountList);
-                        this.mView.ShowAccountDeleteList(customerAccountDeleteList);
                     }
                     else
                     {
