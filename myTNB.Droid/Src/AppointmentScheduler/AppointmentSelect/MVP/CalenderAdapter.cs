@@ -437,7 +437,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                     day.LayoutParameters = buttonParams;
 
 
-                    buttonParams.SetMargins(11, 8, 11, 8);
+                    //buttonParams.SetMargins(11, 8, 11, 8);
                     day.LayoutParameters = buttonParams;
 
                     day.SetTextSize(ComplexUnitType.Dip, (int)metrics.Density * 5);
@@ -453,8 +453,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         private LayoutParams GetdaysLayoutParams()
         {
             LayoutParams buttonParams = new LayoutParams(
-                ViewGroup.LayoutParams.MatchParent
-                , ViewGroup.LayoutParams.MatchParent)
+                ViewGroup.LayoutParams.WrapContent
+                , ViewGroup.LayoutParams.WrapContent)
             {
                 Weight = 1
             };
