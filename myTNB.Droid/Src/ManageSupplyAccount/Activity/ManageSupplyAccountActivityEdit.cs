@@ -47,7 +47,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         TextView txtInputLayoutNickName;
 
         [BindView(Resource.Id.txtNickName)]
-        EditText txtNickName;
+        TextView txtNickName;
 
         [BindView(Resource.Id.btnTextUpdateNickName)]
         TextView btnTextUpdateNickName;
@@ -109,6 +109,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountAddress, txtNickName);
                 TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName);
                 TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
+
 
                 txtAccountNumber.Text = accountData.AccountNum;
                 //txtAccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, accountData.AddStreet);
