@@ -73,12 +73,12 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                         if (data.Extras.GetString("Invited") != null)
                         {
                             string email = data.Extras.GetString("Invited");
-                            this.mView.ShowAddNonTNBUserSuccess(email);
+                            this.mView.ShowAddTNBUserSuccess(email);
                         }
                         else
                         {
                             string email = data.Extras.GetString("Add");
-                            this.mView.ShowAddTNBUserSuccess(email);
+                            this.mView.ShowAddNonTNBUserSuccess(email);
                         }
 
                         this.mView.AdapterClean();

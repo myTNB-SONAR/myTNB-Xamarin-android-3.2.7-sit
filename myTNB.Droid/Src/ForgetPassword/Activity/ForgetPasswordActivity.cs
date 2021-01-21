@@ -267,7 +267,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowEmailResendSuccess()
         {
-
+            this.SetIsClicked(false);
             Utility.ShowEmailVerificationDialog(this, () =>
             {
                 //ShowProgressDialog();

@@ -83,13 +83,13 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
                 {
                     if (e.IsChecked)
                     {
-                        UserManageAccessAccount.SetSelected(data.AccNum, true, data.userId);
+                        UserManageAccessAccount.SetSelected(data.AccNum, true, data.UserAccountId);
                         customListner.onCheckboxListener(position);
                         return;
                     }
                     else
                     {
-                        UserManageAccessAccount.SetSelected(data.AccNum, false, data.userId);
+                        UserManageAccessAccount.SetSelected(data.AccNum, false, data.UserAccountId);
                         customListner.onCheckboxListener(position);
                         return;
                     }

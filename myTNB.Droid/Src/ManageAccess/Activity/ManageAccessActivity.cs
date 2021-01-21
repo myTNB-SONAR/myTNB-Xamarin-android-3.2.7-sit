@@ -211,7 +211,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             ShowDeleteAccDialog(this, () =>
             {
                 UserManageAccessAccount account = adapter.GetItemObject(position);
-                UserManageAccessAccount.SetSelected(account.AccNum, true, account.userId);
+                UserManageAccessAccount.SetSelected(account.AccNum, true, account.UserAccountId);
                 List<UserManageAccessAccount> DeletedSelectedUser = UserManageAccessAccount.ListIsSelected(accountData?.AccountNum);
                 mPresenter.OnRemoveAccountMultiple(DeletedSelectedUser, false);
             });           
@@ -386,6 +386,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
 
             if (checkListUserEmpty() > 0)
             {
+                listViewRemoveAcc.Visibility = ViewStates.Visible;
                 bottomLayoutDeleteMultiple.Visibility = ViewStates.Visible;
                 bottomLayout.Visibility = ViewStates.Gone;
             }          
@@ -736,9 +737,11 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 adapter.NotifyDataSetChanged();
                 listView.SetNoScroll();
                 bottomLayout.Visibility = ViewStates.Visible;
-                //txtManageAccessTitle.Visibility = ViewStates.Gone;
+                txtManageAccessTitle.Text = GetLabelByLanguage("LabelTitle");
+                txtManageAccessTitle.Visibility = ViewStates.Visible;
                 layout_btnAddUser.Visibility = ViewStates.Gone;
                 manage_user_layout.Visibility = ViewStates.Gone;
+                listViewRemoveAcc.Visibility = ViewStates.Gone;
                 Handler h = new Handler();
                 Action myAction = () =>
                 {
