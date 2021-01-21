@@ -146,6 +146,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     this.SetIsClicked(true);
                     Intent nextIntent = new Intent(this, typeof(AppLargeFontActivity));
                     nextIntent.PutExtra("APP_FONTCHANGE_REQUEST", AppLaunchNavigation.LargeFont.ToString());
+                    nextIntent.PutExtra(Constants.APP_NAVIGATION_KEY, currentAppNavigation);
                     StartActivity(nextIntent);
                 };
             }

@@ -38,9 +38,11 @@ namespace myTNB_Android.Src.Profile.Activity
         private List<Item> FontItemList;
         private string savedFont;
         private string FontName;
+        private string currentAppNavigation = string.Empty;
         private bool isSelectionChange;
-        List<SelectorModel> _mappingList;
-        bool LargeFontOnBoard = false;
+        private bool LargeFontOnBoard = false;
+        private List<SelectorModel> _mappingList;
+
         public override string GetPageId()
         {
             return "";
@@ -99,6 +101,10 @@ namespace myTNB_Android.Src.Profile.Activity
                 if (extras.ContainsKey("APP_FONTCHANGE_REQUEST"))
                 {
                     LargeFontOnBoard = true;
+                }
+                if (extras.ContainsKey(Constants.APP_NAVIGATION_KEY))
+                {
+                    currentAppNavigation = extras.GetString(Constants.APP_NAVIGATION_KEY);
                 }
             }
 
@@ -229,13 +235,15 @@ namespace myTNB_Android.Src.Profile.Activity
             if (LargeFontOnBoard)
             {
                 Intent WalkthroughIntent = new Intent(this, typeof(NewWalkthroughActivity));
-                WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, AppLaunchNavigation.Walkthrough.ToString());
+                WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, currentAppNavigation);
                 if (MyTNBAccountManagement.GetInstance().IsUpdateLargeFont())
                 {
                     WalkthroughIntent.PutExtra("APP_FONTCHANGE_REQUEST", AppLaunchNavigation.LargeFont.ToString());
                     MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
                 }
                 StartActivity(WalkthroughIntent);
+                SetResult(Result.Ok);
+                Finish();
             }
             else
             {
