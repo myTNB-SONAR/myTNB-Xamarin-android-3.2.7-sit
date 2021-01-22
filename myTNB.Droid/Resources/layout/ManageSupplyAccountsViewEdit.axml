@@ -43,21 +43,17 @@
                     android:layout_alignParentLeft="true"
                     android:layout_toLeftOf="@+id/btnTextUpdateNickName"
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground"/>
-                    <EditText
+                    <TextView
                         android:id="@+id/txtNickName"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:enabled="false"
-                        android:focusable="false"
                         android:hint="ACCOUNT NICKNAME"
                         android:paddingTop="14dp"
-                        android:inputType="text"
-                        android:singleLine="true"
                         android:ellipsize="end"
-                        android:textSize="14dp" 
-                        android:maxLines="1"
-                        android:maxWidth="200dp" />
+                        android:textSize="14dp"
+                        android:textColor="#49494a"
+                        android:singleLine="true"
+                        android:maxWidth="200dp"/>
             </RelativeLayout>
         </FrameLayout>
         

@@ -113,7 +113,7 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
                     }
                 }
 
-                SetToolBarTitle(Utility.GetLocalizedLabel("PushNotificationList", "selectNotification"));
+                SetToolBarTitle(Utility.GetLocalizedLabel("UserAccess", "title_activityLog"));
 
                 this.mPresenter = new LogUserAccessPresenter(this);
 

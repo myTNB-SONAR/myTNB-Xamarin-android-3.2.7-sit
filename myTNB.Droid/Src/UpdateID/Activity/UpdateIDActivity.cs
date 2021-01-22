@@ -130,13 +130,22 @@ namespace myTNB_Android.Src.UpdateID.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(btnRegister);
 
-                txtAccountType.Text = GetLabelCommonByLanguage("idtypeTitle");
-                textInputLayoutICNo.Hint = GetLabelCommonByLanguage("idNumberhint");
-                SetToolBarTitle(GetLabelByLanguage("title"));
+                txtAccountType.Text = Utility.GetLocalizedLabel("OneLastThing", "idtypeTitle").ToUpper();
+                textInputLayoutICNo.Hint = Utility.GetLocalizedLabel("OneLastThing", "idNumberhint");
+                SetToolBarTitle(Utility.GetLocalizedLabel("UpdateID", "title"));
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-                btnRegister.Text = GetLabelByLanguage("confrimButton");
-                LabelTitle.Text = GetLabelByLanguage("updateIdLabelTitle");
-                LabelDetails.Text = GetLabelByLanguage("updateIdLabelDetails");
+                btnRegister.Text = Utility.GetLocalizedLabel("UpdateID", "confrimButton");
+                LabelTitle.Text = Utility.GetLocalizedLabel("UpdateID", "updateIdLabelTitle");
+                LabelDetails.Text = Utility.GetLocalizedLabel("UpdateID", "updateIdLabelDetails");
+
+
+                //txtAccountType.Text = GetLabelCommonByLanguage("idtypeTitle");
+                //textInputLayoutICNo.Hint = GetLabelCommonByLanguage("idNumberhint");
+                //SetToolBarTitle(GetLabelByLanguage("title"));
+                //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                //btnRegister.Text = GetLabelByLanguage("confrimButton");
+                //LabelTitle.Text = GetLabelByLanguage("updateIdLabelTitle");
+                //LabelDetails.Text = GetLabelByLanguage("updateIdLabelDetails");
 
                 txtICNumber.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
                 txtICNumber.AddTextChangedListener(new InputFilterFormField(txtICNumber, textInputLayoutICNo));
@@ -144,7 +153,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
 
                 IdentificationType Individual = new IdentificationType();
                 Individual.Id = "1";
-                Individual.Type = Utility.GetLocalizedLabel("Register", "mykad");
+                Individual.Type = Utility.GetLocalizedLabel("OneLastThing", "mykad");
                 Individual.IsSelected = true;
                 selectedIdentificationType = Individual;
                 identityType.Text = selectedIdentificationType.Type;

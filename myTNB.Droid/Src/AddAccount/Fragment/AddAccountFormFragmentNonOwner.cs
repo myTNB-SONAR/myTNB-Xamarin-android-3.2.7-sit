@@ -132,7 +132,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 //accountType = mainView.FindViewById<TextView>(Resource.Id.selector_account_type);
 
-                txtNonOwnerTitle.Text = Utility.GetLocalizedLabel("Common", "titleNonOwnerAddAcc");
+                txtNonOwnerTitle.Text = Utility.GetLocalizedLabel("OT_Uncategorize", "titleNonOwnerAddAcc");
                 textInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("Common","accountNo");
                 textInputLayoutAccountLabel.Hint = Utility.GetLocalizedLabel("Common","acctNickname");
                 textInputLayoutOwnerIC.Hint = Utility.GetLocalizedLabel("AddAccount", "ownerICNumber");
@@ -415,7 +415,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         {
 
             textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("error_NotExistsAccountMessage");
+            textInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("OT_Uncategorize", "error_NotExistsAccountMessage");
+            //textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("error_NotExistsAccountMessage");
             /* if (mSnackBar != null && mSnackBar.IsShown)
              {
                  mSnackBar.Dismiss();
