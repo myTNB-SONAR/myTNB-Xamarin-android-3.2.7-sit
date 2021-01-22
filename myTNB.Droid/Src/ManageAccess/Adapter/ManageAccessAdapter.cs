@@ -86,15 +86,16 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
 
 
                 btn_delete.SetBackgroundResource(Resource.Drawable.delete_icon_acc);
-                viewHolder.txtAccountName.Text = account.name;
 
                 if (account.IsPreRegister)
                 {
+                    viewHolder.txtAccountName.Text = account.email;
                     viewHolder.txtAccountNum.Visibility = ViewStates.Visible;
                     viewHolder.txtAccountNum.Text = Utility.GetLocalizedLabel("UserAccess", "pendingRegistration"); ;
                 }
                 else
                 {
+                    viewHolder.txtAccountName.Text = account.name;
                     viewHolder.txtAccountNum.Visibility = ViewStates.Gone;
                 }
 

@@ -101,14 +101,15 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
             }
             try
             {
-                viewHolder.txtUserAccessTitle.Text = data.name;
                 if (data.IsPreRegister)
                 {
+                    viewHolder.txtUserAccessTitle.Text = data.email;
                     viewHolder.txtUserAccessBody.Visibility = ViewStates.Visible;
                     viewHolder.txtUserAccessBody.Text = Utility.GetLocalizedLabel("UserAccess", "pendingRegistration");
                 }
                 else
                 {
+                    viewHolder.txtUserAccessTitle.Text = data.name;
                     viewHolder.txtUserAccessBody.Visibility = ViewStates.Gone;
                 }
             }
