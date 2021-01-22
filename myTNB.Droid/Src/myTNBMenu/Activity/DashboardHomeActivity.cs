@@ -276,7 +276,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     this.mPresenter.OnGetEPPTooltipContentDetail();
                     this.mPresenter.OnGetBillTooltipContent();
                     alreadyStarted = true;
-                    PopulateIdentificationDetails();
+                    //PopulateIdentificationDetails();
                 }
             }
             catch (System.Exception e)
@@ -521,7 +521,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         }
 
-        private void PopulateIdentificationDetails()
+        public void PopulateIdentificationDetails()
         {
             UserEntity user = UserEntity.GetActive();
 
@@ -2481,11 +2481,19 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                     dialogFragmnet.Arguments = extras;
                                     dialogFragmnet.Show(SupportFragmentManager, "WhatsNew Dialog");
                                 }
+                                else
+                                {
+                                    PopulateIdentificationDetails();
+                                }
                             }
                         }
                         else if (bcrmEntity != null && bcrmEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
                         {
                             OnShowBCRMPopup(bcrmEntity);
+                        }
+                        else
+                        {
+                            PopulateIdentificationDetails();
                         }
                     }
                     else
@@ -2535,6 +2543,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         }
 
         public void SetIsRootTutorialShown(bool flag)
+        {
+            IsRootTutorialShown = flag;
+        }
+
+        public bool GetIsRootTutorialDone()                 //testing //not using yet
+        {
+            return IsRootTutorialShown;
+        }
+
+        public void SetIsRootTutorialDone(bool flag)         //testing //not using yet
         {
             IsRootTutorialShown = flag;
         }

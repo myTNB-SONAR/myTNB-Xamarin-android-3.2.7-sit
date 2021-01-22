@@ -209,6 +209,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
             if (this.mActivity != null)
             {
                 this.mActivity.SetIsRootTutorialShown(false);
+                this.mActivity.PopulateIdentificationDetails();
             }
         }
 

@@ -136,13 +136,15 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
         private void UpdateLabels()
         {
             SetToolBarTitle(Utility.GetLocalizedLabel("Profile", "appSetting")); 
-            txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("NotificationSettings", "typeDescription"); 
+            txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("NotificationSettings", "typeDescription");
+            txtNotificationChannelTitle.Text = Utility.GetLocalizedLabel("NotificationSettings", "modeDescription");
             appLanguageMessage.Text = Utility.GetLocalizedLabel("NotificationSettings", "selectApplang"); 
         }
 
         private void UpdateTypesList()
         {
             typeAdapter.ClearAll();
+            channelAdapter.ClearAll();
             mPresenter.OnNotification(this.DeviceId());
         }
 
@@ -169,9 +171,9 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationTypeTitle, txtNotificationChannelTitle, appLanguageMessage);
 
                 txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("NotificationSettings", "typeDescription"); 
-                 //txtNotificationChannelTitle.Text = GetLabelByLanguage("modeDescription");
+                txtNotificationChannelTitle.Text = Utility.GetLocalizedLabel("NotificationSettings", "modeDescription");
 
-                 notificationChannelLayoutManager = new LinearLayoutManager(this);
+                notificationChannelLayoutManager = new LinearLayoutManager(this);
                 notificationTypeLayoutManager = new LinearLayoutManager(this);
                 notificationTypeRecyclerView.SetLayoutManager(notificationTypeLayoutManager);
                 notificationChannelRecyclerView.SetLayoutManager(notificationChannelLayoutManager);
@@ -197,6 +199,11 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 typeAdapter = new NotificationTypeAdapter(true);
                 typeAdapter.ClickEvent += TypeAdapter_ClickEvent;
                 notificationTypeRecyclerView.SetAdapter(typeAdapter);
+                notificationTypeRecyclerView.NestedScrollingEnabled = (false);
+
+                channelAdapter = new NotificationChannelAdapter(true);
+                channelAdapter.ClickEvent += ChannelAdapter_ClickEvent;
+                notificationChannelRecyclerView.SetAdapter(channelAdapter);
                 notificationTypeRecyclerView.NestedScrollingEnabled = (false);
 
                 UpdateLabels();

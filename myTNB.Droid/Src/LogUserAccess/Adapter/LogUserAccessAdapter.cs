@@ -73,7 +73,7 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
 
                 if (data.Action.Equals("A"))
                 {
-                    viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_action_tick));
+                    viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_joined));
                     string txtdata = Utility.GetLocalizedLabel("UserAccess", "addAccountUserAccesssLog");
                     string temp = string.Format(txtdata, data.UserName);
 
@@ -88,7 +88,7 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                 }
                 else if (data.Action.Equals("U"))
                 {
-                    viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.re_meter_dashboard));
+                    viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_confirmed));
 
                     if (data.IsApplyEBilling && data.IsHaveAccess)
                     {
@@ -106,6 +106,8 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                     }
                     else if (!data.IsApplyEBilling && data.IsHaveAccess)
                     {
+                        viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_denied));
+
                         string txtdata = Utility.GetLocalizedLabel("UserAccess", "removeAccesssLogeBilling");
                         string temp = string.Format(txtdata, data.UserName);
 
@@ -120,6 +122,8 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                     }
                     else if (data.IsApplyEBilling && !data.IsHaveAccess)
                     {
+                        viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_denied));
+
                         string txtdata = Utility.GetLocalizedLabel("UserAccess", "removeAccesssLogfullBill");
                         string temp = string.Format(txtdata, data.UserName);
 
@@ -149,7 +153,7 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                 }
                 else
                 {
-                    viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.autopay_yellow));
+                    viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_left));
                     string txtdata = Utility.GetLocalizedLabel("UserAccess", "removeAccountUserAccesssLog");
                     string temp = string.Format(txtdata, data.UserName);
 
