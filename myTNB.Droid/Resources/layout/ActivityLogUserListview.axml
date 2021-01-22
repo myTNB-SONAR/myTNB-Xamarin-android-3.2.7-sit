@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:weightSum="1.5"
+    android:gravity="center"
     android:orientation="horizontal">
     <LinearLayout
         android:orientation="vertical"
@@ -18,12 +19,13 @@
             android:src="@drawable/profile_selected"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:layout_gravity="left"/>
+            android:layout_gravity="left|center"
+            android:layout_marginRight="8dp"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/itemContainer"
         android:orientation="vertical"
-        android:gravity="left"
+        android:gravity="left|center"
         android:layout_alignParentRight="true"
         android:layout_weight="1.1"
         android:layout_width="0dp"
@@ -32,12 +34,13 @@
         <TextView
             android:id="@+id/itemTitle"
             android:text="Item Title"
-            android:gravity="left"
+            android:gravity="left|center"
             android:textSize="12dp"
             android:lineSpacingExtra="4sp"
             android:textColor="#49494a"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"/>
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
