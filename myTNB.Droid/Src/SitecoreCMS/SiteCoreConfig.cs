@@ -23,11 +23,11 @@ namespace myTNB_Android.Src.SiteCore
 
         //Production
 #if DEBUG || DEVELOP || STUB
-         //public static string SITECORE_URL = "http://tnbcsdevapp.tnb.my/";  //dev
+        //public static string SITECORE_URL = "http://tnbcsdevapp.tnb.my/";  //dev
         // public static string SITECORE_URL ="http://tnbcsstgapp.tnb.my/";   // "http:10.215.215.70.248"   // SIT 
         public static string SITECORE_URL = "https://sitecore.tnb.com.my/";  //prod
 #elif SIT
-        public static string SITECORE_URL = "https://sitecore.tnb.com.my/"; //"http://tnbcsdevapp.tnb.my/"; 
+        public static string SITECORE_URL ="http://tnbcsstgapp.tnb.my/"; //"http://tnbcsdevapp.tnb.my/"; 
 #else
         public static string SITECORE_URL = "https://sitecore.tnb.com.my/";
 #endif
