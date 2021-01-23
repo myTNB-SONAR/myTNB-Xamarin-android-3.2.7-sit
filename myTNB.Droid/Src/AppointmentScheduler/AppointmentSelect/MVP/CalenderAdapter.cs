@@ -251,6 +251,18 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             selectedMonth = monthSelected;
             selectedYear = yearSelected;
             keySelected = selectedKey;
+
+            if (selectedDate != null && selectedDate != string.Empty)
+            {
+                var monthYear = schedulerDisplayResponse.MonthYearList.Where(x => x.Month == selectedMonth && x.Year == selectedYear).FirstOrDefault();
+                var monthindex = schedulerDisplayResponse.ScheduleList[monthYear.MonthYearDisplay].Where(x => x.Day == selectedDate.ToString()).FirstOrDefault();
+
+                timeAdapter = new TimeAdapter(monthindex.TimeSlotDisplay, Convert.ToInt32(selectedDate), isDateSelected, selectedTime, isTimeSelected, chosenDateMonth, selectedMonth - 1, chosenDateYear, selectedYear);
+                timeLayout.SetAdapter(timeAdapter);
+
+                timeAdapter.TimeClickEvent += Adapter_TimeClickEvent;
+                isValidDateTime = isValidDateTime && isDateSelected;
+            }
         }
 
         private void InitializeDaysWeeks()
@@ -334,7 +346,13 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 TextViewUtils.SetMuseoSans500Typeface(days[i]);
                 ++dayNumber;
             }
-
+            for(int j =28; j < days.Count(); j++)
+            {
+                if(days[j].Text == string.Empty)
+                {
+                    days[j].Visibility = ViewStates.Gone;
+                }
+            }
             if (month > 0)
             {
                 calendar.Set(year, month - 1, 1);
@@ -352,12 +370,16 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
                 timeLayout.SetLayoutManager(gridLayoutManager);
 
-                timeAdapter = new TimeAdapter(monthindex.TimeSlotDisplay, pickedDateDay, isDateSelected, selectedTime, isTimeSelected);
+                timeAdapter = new TimeAdapter(monthindex.TimeSlotDisplay, pickedDateDay, isDateSelected, selectedTime, isTimeSelected, chosenDateMonth, selectedMonth - 1, chosenDateYear, selectedYear);
                 timeLayout.SetAdapter(timeAdapter);
                 timeAdapter.TimeClickEvent += Adapter_TimeClickEvent;
                 isValidDateTime = isValidDateTime && isDateSelected;
                 selectedStartTime = timeAdapter.selectedStartTime;
                 selectedEndTime = timeAdapter.selectedEndTime;
+                appointmentLabel2.Visibility = ViewStates.Visible;
+            }
+            if (dateSelected != null && dateSelected != string.Empty)
+            {
                 appointmentLabel2.Visibility = ViewStates.Visible;
             }
 
@@ -367,7 +389,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         public void OnDayClick(View view, Context context, SchedulerDisplay schedulerDisplayResponse)
         {
             isDateSelected = true;
-            DateChanged(this, true);
+           
             if (selectedDayButton != null)
             {
                 selectedDayButton.SetBackgroundColor(Color.Transparent);
@@ -389,6 +411,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 selectedDate = selectedDateTime.Day.ToString();
                 selectedMonth = selectedDateTime.Month;
                 selectedYear = selectedDateTime.Year;
+                DateChanged(this, true);
             }
 
             selectedDayButton.SetBackgroundResource(Resource.Drawable.daySelector);
@@ -402,10 +425,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 timeLayout = (RecyclerView)FindViewById<RecyclerView>(Resource.Id.TimeRecyclerView);
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
                 timeLayout.SetLayoutManager(gridLayoutManager);
-
-                timeAdapter = new TimeAdapter(monthindex.TimeSlotDisplay, pickedDateDay, isDateSelected, selectedTime, isTimeSelected);
+                selectedTime = string.Empty;
+                timeAdapter = new TimeAdapter(monthindex.TimeSlotDisplay, pickedDateDay, isDateSelected, selectedTime, isTimeSelected, chosenDateMonth, selectedMonth-1, chosenDateYear, selectedYear);
                 timeLayout.SetAdapter(timeAdapter);
-
+               
                 timeAdapter.TimeClickEvent += Adapter_TimeClickEvent;
                 isValidDateTime = isValidDateTime && isDateSelected;
             }
@@ -414,13 +437,16 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 
         private void Adapter_TimeClickEvent(object sender, bool e)
         {
-            timeAdapter = (TimeAdapter)sender;
-            selectedTime = timeAdapter.selectedTime;
-            isTimeSelected = timeAdapter.isTimeSelected;
-            selectedStartTime = timeAdapter.selectedStartTime;
-            selectedEndTime = timeAdapter.selectedEndTime;
-            DatetimeValidate(this, true);
-            DatetimeScrollValidate(this, true);
+            if (chosenDateMonth == selectedMonth - 1 && chosenDateYear == selectedYear)
+            {
+                timeAdapter = (TimeAdapter)sender;
+                selectedTime = timeAdapter.timeSelected;
+                isTimeSelected = timeAdapter.isTimeSelected;
+                selectedStartTime = timeAdapter.selectedStartTime;
+                selectedEndTime = timeAdapter.selectedEndTime;
+                DatetimeValidate(this, true);
+                DatetimeScrollValidate(this, true);
+            }
         }
 
         private void AddDaysinCalendar(LayoutParams buttonParams, Context context, DisplayMetrics metrics)
@@ -437,7 +463,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                     day.LayoutParameters = buttonParams;
 
 
-                    buttonParams.SetMargins(11, 8, 11, 8);
+                    //buttonParams.SetMargins(11, 8, 11, 8);
                     day.LayoutParameters = buttonParams;
 
                     day.SetTextSize(ComplexUnitType.Dip, (int)metrics.Density * 5);
@@ -453,8 +479,8 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         private LayoutParams GetdaysLayoutParams()
         {
             LayoutParams buttonParams = new LayoutParams(
-                ViewGroup.LayoutParams.MatchParent
-                , ViewGroup.LayoutParams.MatchParent)
+                ViewGroup.LayoutParams.WrapContent
+                , ViewGroup.LayoutParams.WrapContent)
             {
                 Weight = 1
             };
