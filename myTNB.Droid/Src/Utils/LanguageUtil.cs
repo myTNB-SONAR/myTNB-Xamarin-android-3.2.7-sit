@@ -95,7 +95,7 @@ namespace myTNB_Android.Src.Utils
                 siteCoreLanguageId = SitecoreCmsEntity.SITE_CORE_ID.LANGUAGE_MS;
             }
 
-#if DEBUG || SIT
+#if DEBUG 
             LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
             try
             {// dynatrace
