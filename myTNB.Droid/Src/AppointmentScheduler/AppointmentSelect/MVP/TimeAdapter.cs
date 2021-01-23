@@ -19,23 +19,25 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         private int pickedDateDay;
         private bool isDateSelected = false;
         public bool isTimeSelected = false;
-        public string timeSelected;
+        public string timeSelected = string.Empty;
         public TextView selectedTimeTextView;
         public DateTime selectedDate;
         public DateTime selectedStartTime;
         public DateTime selectedEndTime;
-        public string selectedTime = string.Empty;
+        //public string selectedTime = string.Empty;
         private const string colorLight_grey = "#e4e4e4";
         private const string color_blue = "#1c79ca";
         public List<AppointmentTimeSlotDisplay> timeSlotDisplay = new List<AppointmentTimeSlotDisplay>();
         public event EventHandler<bool> TimeClickEvent;
         public RelativeLayout.LayoutParams buttonTimeParams;
+        private int chosenDateMonth, selectedMonth, chosenDateYear, selectedYear;
 
         public TimeAdapter(List<AppointmentTimeSlotDisplay> timeSlotDisplay
             , int pickedDateDay
             , bool isDateSelected
             , string selectedTime
-            , bool isTimeSelected)
+            , bool isTimeSelected
+            , int chosenDateMonth, int selectedMonth, int chosenDateYear, int selectedYear)
         {
             if (timeSlotDisplay != null)
             {
@@ -49,6 +51,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 this.isDateSelected = isDateSelected;
                 this.timeSelected = selectedTime;
                 this.isTimeSelected = isTimeSelected;
+                this.chosenDateMonth = chosenDateMonth;
+                this.selectedMonth = selectedMonth;
+                this.chosenDateYear = chosenDateYear;
+                this.selectedYear = selectedYear;
             }
             this.timeNamesCount = this.timeNames != null ? this.timeNames.Length : 0;
         }
@@ -61,62 +67,61 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             vh.textViewTime.Text = timeNames[position];
             if (!isTimeSelected)
             {
-                if (isDateSelected)
-                {
-                    vh.textViewTime.SetTextColor(Color.ParseColor(color_blue));
-
-                }
-                else
-                {
-                    vh.textViewTime.SetTextColor(Color.ParseColor(colorLight_grey));
-                }
+                vh.textViewTime.SetTextColor(Color.ParseColor(color_blue));
             }
-            if (!isDateSelected)
-            {
-                if (timeSelected != string.Empty && timeSelected == vh.textViewTime.Text)
+           
+                if (!isDateSelected || (chosenDateMonth == selectedMonth && chosenDateYear == selectedYear))
                 {
-                    if (selectedTimeTextView != null)
+                    if (timeSelected != string.Empty && timeSelected == vh.textViewTime.Text)
                     {
-                        selectedTimeTextView.Text = timeSelected;
+                        if (selectedTimeTextView != null)
+                        {
+                            selectedTimeTextView.Text = timeSelected;
+                        }
+                        vh.textViewTime.SetBackgroundResource(Resource.Drawable.AppointmentTimeSelector);
+                        vh.textViewTime.SetTextColor(Color.White);
+                        var timeSlotDates = this.timeSlotDisplay.Where(x => x.TimeSlotDisplay == timeSelected).FirstOrDefault();
+                        selectedStartTime = Convert.ToDateTime(timeSlotDates.SlotStartTime);
+                        selectedEndTime = Convert.ToDateTime(timeSlotDates.SlotEndTime);
+                        selectedTimeTextView = vh.textViewTime;
                     }
-                    vh.textViewTime.SetBackgroundResource(Resource.Drawable.AppointmentTimeSelector);
-                    vh.textViewTime.SetTextColor(Color.White);
-                    var timeSlotDates = this.timeSlotDisplay.Where(x => x.TimeSlotDisplay == timeSelected).FirstOrDefault();
-                    selectedStartTime = Convert.ToDateTime(timeSlotDates.SlotStartTime);
-                    selectedEndTime = Convert.ToDateTime(timeSlotDates.SlotEndTime);
-                    selectedTimeTextView = vh.textViewTime;
-                }
-                else
-                {
-                    vh.textViewTime.SetTextColor(Color.ParseColor(color_blue));
-                }
+                    else
+                    {
+                        vh.textViewTime.SetTextColor(Color.ParseColor(color_blue));
+                    }
+              
+                
             }
+
+
             vh.textViewTime.Click += (sender, e) =>
             {
                 OnTimeClick(sender as View);
             };
-
         }
 
         public void OnTimeClick(View view)
         {
-            if (selectedTimeTextView != null)
+            if (chosenDateMonth == selectedMonth && chosenDateYear == selectedYear)
             {
-                selectedTimeTextView.SetBackgroundColor(Color.Transparent);
-                selectedTimeTextView.SetTextColor(Color.ParseColor(color_blue));
-            }
+                if (selectedTimeTextView != null)
+                {
+                    selectedTimeTextView.SetBackgroundColor(Color.Transparent);
+                    selectedTimeTextView.SetTextColor(Color.ParseColor(color_blue));
+                }
 
-            selectedTimeTextView = (TextView)view;
-            isTimeSelected = true;
-            selectedTimeTextView.Gravity = GravityFlags.Center;
-            selectedTimeTextView.SetBackgroundResource(Resource.Drawable.AppointmentTimeSelector);
-            selectedTimeTextView.SetTextColor(Color.White);
-            selectedDate = selectedDate;
-            selectedTime = selectedTimeTextView.Text;
-            var timeSlotDates = this.timeSlotDisplay.Where(x => x.TimeSlotDisplay == selectedTime).FirstOrDefault();
-            selectedStartTime = Convert.ToDateTime(timeSlotDates.SlotStartTime);
-            selectedEndTime = Convert.ToDateTime(timeSlotDates.SlotEndTime);
-            TimeClickEvent(this, true);
+                selectedTimeTextView = (TextView)view;
+                isTimeSelected = true;
+                selectedTimeTextView.Gravity = GravityFlags.Center;
+                selectedTimeTextView.SetBackgroundResource(Resource.Drawable.AppointmentTimeSelector);
+                selectedTimeTextView.SetTextColor(Color.White);
+                selectedDate = selectedDate;
+                timeSelected = selectedTimeTextView.Text;
+                var timeSlotDates = this.timeSlotDisplay.Where(x => x.TimeSlotDisplay == timeSelected).FirstOrDefault();
+                selectedStartTime = Convert.ToDateTime(timeSlotDates.SlotStartTime);
+                selectedEndTime = Convert.ToDateTime(timeSlotDates.SlotEndTime);
+                TimeClickEvent(this, true);
+            }
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

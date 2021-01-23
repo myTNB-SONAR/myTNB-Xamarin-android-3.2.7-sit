@@ -46,7 +46,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         public RelativeLayout ll = null;
         private Snackbar mNoInternetSnackbar;
         RelativeLayout rootview;
-
+        public CustomCalendar calendarAdapter;
         [BindView(Resource.Id.btnMon)]
         Button btnMon;
 
@@ -173,9 +173,14 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             timeSlotError.Visibility = ViewStates.Gone;
             btnSubmitAppointment.Enabled = false;
             timeSlotNoteContainer.Visibility = ViewStates.Visible;
-            timeSlotErrorContainer.Visibility = ViewStates.Gone;
+            timeSlotErrorContainer.Visibility = ViewStates.Visible;
             btnSubmitAppointment.Enabled = false;
             btnSubmitAppointment.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+            customCalendar.selectedTime = string.Empty;
+            selectedTime = string.Empty;
+            dateSelected = customCalendar.selectedDate;
+            monthSelected = customCalendar.selectedMonth;
+            yearSelected = customCalendar.selectedYear;
         }
 
         private void Calendar_DatetimeScrollValidate(object sender, bool e)
@@ -187,19 +192,19 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         {
             if (e == true)
             {
-                CustomCalendar timeAdapter = (CustomCalendar)sender;
-                selectedDateTime = timeAdapter.selectedDateTime;
-                selectedTime = timeAdapter.selectedTime;
-                dateSelected = timeAdapter.selectedDate;
-                monthSelected = timeAdapter.selectedMonth;
-                yearSelected = timeAdapter.selectedYear;
-                selectedStartTime = timeAdapter.selectedStartTime;
-                selectedEndTime = timeAdapter.selectedEndTime;
+                calendarAdapter = (CustomCalendar)sender;
+                selectedDateTime = calendarAdapter.selectedDateTime;
+                selectedTime = calendarAdapter.selectedTime;
+                dateSelected = customCalendar.selectedDate;
+                monthSelected = customCalendar.selectedMonth;
+                yearSelected = customCalendar.selectedYear;
+                selectedStartTime = calendarAdapter.selectedStartTime;
+                selectedEndTime = calendarAdapter.selectedEndTime;
 
-                if (Convert.ToDateTime(applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate).Day == timeAdapter.selectedDateTime.Day
-                    && Convert.ToDateTime(applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate).Month == timeAdapter.selectedDateTime.Month
-                    && Convert.ToDateTime(applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate).Year == timeAdapter.selectedDateTime.Year
-                    && applicationDetailDisplay.ApplicationAppointmentDetail.TimeSlotDisplay == timeAdapter.selectedTime)
+                if (Convert.ToDateTime(applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate).Day == calendarAdapter.selectedDateTime.Day
+                    && Convert.ToDateTime(applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate).Month == calendarAdapter.selectedDateTime.Month
+                    && Convert.ToDateTime(applicationDetailDisplay.ApplicationAppointmentDetail.AppointmentDate).Year == calendarAdapter.selectedDateTime.Year
+                    && applicationDetailDisplay.ApplicationAppointmentDetail.TimeSlotDisplay == calendarAdapter.selectedTime)
                 {
                     btnSubmitAppointment.Enabled = false;
                     btnSubmitAppointment.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
