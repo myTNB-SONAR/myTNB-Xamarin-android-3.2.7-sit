@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Text;
 using AndroidX.RecyclerView.Widget;
@@ -13,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP
 {
-    [Activity(Label = "ApplicationDetailActivityLogActivity", Theme = "@style/Theme.RegisterForm")]
+    [Activity(Label = "ApplicationDetailActivityLogActivity", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.RegisterForm")]
     public class ApplicationDetailActivityLogActivity : BaseToolbarAppCompatActivity
     {
         [BindView(Resource.Id.layout_activitylog)]

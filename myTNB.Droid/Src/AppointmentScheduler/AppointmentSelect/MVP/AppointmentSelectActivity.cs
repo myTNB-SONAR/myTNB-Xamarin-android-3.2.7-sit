@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -25,7 +23,7 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 {
-    [Activity(Label = "Set anAppointment", Theme = "@style/Theme.AppointmentScheduler")]
+    [Activity(Label = "Set anAppointment", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.AppointmentScheduler")]
     public class AppointmentSelectActivity : BaseActivityCustom, AppointmentSelectContract.IView
     {
         Button calenderBack;

@@ -69,30 +69,27 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
             {
                 vh.textViewTime.SetTextColor(Color.ParseColor(color_blue));
             }
-           
-                if (!isDateSelected || (chosenDateMonth == selectedMonth && chosenDateYear == selectedYear))
-                {
-                    if (timeSelected != string.Empty && timeSelected == vh.textViewTime.Text)
-                    {
-                        if (selectedTimeTextView != null)
-                        {
-                            selectedTimeTextView.Text = timeSelected;
-                        }
-                        vh.textViewTime.SetBackgroundResource(Resource.Drawable.AppointmentTimeSelector);
-                        vh.textViewTime.SetTextColor(Color.White);
-                        var timeSlotDates = this.timeSlotDisplay.Where(x => x.TimeSlotDisplay == timeSelected).FirstOrDefault();
-                        selectedStartTime = Convert.ToDateTime(timeSlotDates.SlotStartTime);
-                        selectedEndTime = Convert.ToDateTime(timeSlotDates.SlotEndTime);
-                        selectedTimeTextView = vh.textViewTime;
-                    }
-                    else
-                    {
-                        vh.textViewTime.SetTextColor(Color.ParseColor(color_blue));
-                    }
-              
-                
-            }
 
+            if (!isDateSelected || (chosenDateMonth == selectedMonth && chosenDateYear == selectedYear))
+            {
+                if (timeSelected != string.Empty && timeSelected == vh.textViewTime.Text)
+                {
+                    if (selectedTimeTextView != null)
+                    {
+                        selectedTimeTextView.Text = timeSelected;
+                    }
+                    vh.textViewTime.SetBackgroundResource(Resource.Drawable.AppointmentTimeSelector);
+                    vh.textViewTime.SetTextColor(Color.White);
+                    var timeSlotDates = this.timeSlotDisplay.Where(x => x.TimeSlotDisplay == timeSelected).FirstOrDefault();
+                    selectedStartTime = Convert.ToDateTime(timeSlotDates.SlotStartTime);
+                    selectedEndTime = Convert.ToDateTime(timeSlotDates.SlotEndTime);
+                    selectedTimeTextView = vh.textViewTime;
+                }
+                else
+                {
+                    vh.textViewTime.SetTextColor(Color.ParseColor(color_blue));
+                }
+            }
 
             vh.textViewTime.Click += (sender, e) =>
             {

@@ -27,10 +27,11 @@ using myTNB.Mobile.API.Models.ApplicationStatus.GetApplicationsByCA;
 using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Adapter;
 using myTNB.Mobile.SessionCache;
+using Android.Content.PM;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 {
-    [Activity(Label = "Search Application Status", Theme = "@style/Theme.RegisterForm")]
+    [Activity(Label = "Search Application Status", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.RegisterForm")]
     public class SearchApplicationStatusActivity : BaseActivityCustom, SearchApplicationStatusContract.IView, View.IOnTouchListener
     {
         [BindView(Resource.Id.txtSearchApplicationTitle)]
@@ -439,7 +440,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             {
                                 txtInputLayoutServiceRequestNum.ErrorEnabled = true;
                             }
-                                 DisableButton();
+                            DisableButton();
                         }
                     }
 
@@ -704,7 +705,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                     isSearchByCA = true;
                                     txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "electricityAccountNumber");
                                 }
-                                
+
                             }
                             else
                             {

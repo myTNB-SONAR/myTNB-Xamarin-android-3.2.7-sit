@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Preferences;
@@ -33,7 +34,7 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 {
-    [Activity(Label = "Application Status", Theme = "@style/Theme.AppointmentScheduler")]
+    [Activity(Label = "Application Status", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.AppointmentScheduler")]
     public class ApplicationStatusLandingActivity : BaseActivityCustom, ApplicationStatusLandingContract.IView
     {
         [BindView(Resource.Id.rootview)]

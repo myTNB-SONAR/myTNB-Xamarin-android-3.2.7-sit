@@ -254,8 +254,11 @@
 
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
                 public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
-
+#if !RELEASE
+                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json Test";
+#else
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
+#endif
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNewV2";
 
                 public const string EppToolTip = "/sitecore/content/myTNBapp/Contents/EppToolTip";

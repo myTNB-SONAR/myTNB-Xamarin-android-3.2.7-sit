@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
@@ -21,7 +22,7 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
 {
-    [Activity(Label = "Select Filter", Theme = "@style/Theme.RegisterForm")]
+    [Activity(Label = "Select Filter", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.RegisterForm")]
     public class ApplicationStatusFilterActivity : BaseActivityCustom, ApplicationStatusFilterContract.IView
     {
         [BindView(Resource.Id.rootview)]

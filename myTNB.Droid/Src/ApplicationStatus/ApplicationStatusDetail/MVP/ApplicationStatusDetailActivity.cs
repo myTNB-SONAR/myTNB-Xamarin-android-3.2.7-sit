@@ -33,10 +33,11 @@ using myTNB.Mobile.API.DisplayModel.Scheduler;
 using myTNB.Mobile.API.Managers.Scheduler;
 using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
 using Android.Text;
+using Android.Content.PM;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
-    [Activity(Label = "Application Details", Theme = "@style/Theme.AppointmentScheduler")]
+    [Activity(Label = "Application Details", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.AppointmentScheduler")]
     public class ApplicationStatusDetailActivity : BaseActivityCustom, ApplicationStatusDetailContract.IView
     {
         [BindView(Resource.Id.rootview)]

@@ -346,9 +346,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 TextViewUtils.SetMuseoSans500Typeface(days[i]);
                 ++dayNumber;
             }
-            for(int j =28; j < days.Count(); j++)
+            for (int j = 28; j < days.Count(); j++)
             {
-                if(days[j].Text == string.Empty)
+                if (days[j].Text == string.Empty)
                 {
                     days[j].Visibility = ViewStates.Gone;
                 }
@@ -389,7 +389,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
         public void OnDayClick(View view, Context context, SchedulerDisplay schedulerDisplayResponse)
         {
             isDateSelected = true;
-           
+
             if (selectedDayButton != null)
             {
                 selectedDayButton.SetBackgroundColor(Color.Transparent);
@@ -426,9 +426,9 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 2);
                 timeLayout.SetLayoutManager(gridLayoutManager);
                 selectedTime = string.Empty;
-                timeAdapter = new TimeAdapter(monthindex.TimeSlotDisplay, pickedDateDay, isDateSelected, selectedTime, isTimeSelected, chosenDateMonth, selectedMonth-1, chosenDateYear, selectedYear);
+                timeAdapter = new TimeAdapter(monthindex.TimeSlotDisplay, pickedDateDay, isDateSelected, selectedTime, isTimeSelected, chosenDateMonth, selectedMonth - 1, chosenDateYear, selectedYear);
                 timeLayout.SetAdapter(timeAdapter);
-               
+
                 timeAdapter.TimeClickEvent += Adapter_TimeClickEvent;
                 isValidDateTime = isValidDateTime && isDateSelected;
             }
@@ -458,14 +458,10 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 for (int dayInWeek = 0; dayInWeek < 7; ++dayInWeek)
                 {
                     Button day = new Button(context);
+                    day.LayoutParameters = buttonParams;
+
                     day.SetTextColor(Color.ParseColor(colorLight_grey));
                     day.SetBackgroundColor(Color.Transparent);
-                    day.LayoutParameters = buttonParams;
-
-
-                    //buttonParams.SetMargins(11, 8, 11, 8);
-                    day.LayoutParameters = buttonParams;
-
                     day.SetTextSize(ComplexUnitType.Dip, (int)metrics.Density * 5);
                     day.SetSingleLine();
                     days[engDaysArrayCounter] = day;

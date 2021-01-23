@@ -1,6 +1,7 @@
 ﻿using System;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Database;
 using Android.OS;
 using Android.Provider;
@@ -21,7 +22,7 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
 {
-    [Activity(Label = "Application Set", Theme = "@style/Theme.AppointmentScheduler")]
+    [Activity(Label = "Application Set", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.AppointmentScheduler")]
     public class AppointmentSetLandingActivity : BaseAppCompatActivity, AppointmentSetLandingContract.IView
     {
         AppointmentSetLandingPresenter mPresenter;
