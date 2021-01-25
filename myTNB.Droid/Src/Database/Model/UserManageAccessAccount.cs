@@ -80,34 +80,6 @@ namespace myTNB_Android.Src.Database.Model
             return newRecordRow;
         }
 
-
-        public static int InsertOrReplace(Account accountResponse, bool isSelected)
-        {
-            var db = DBHelper.GetSQLiteConnection();
-
-            var newRecord = new UserManageAccessAccount()
-            {
-                /*Type = accountResponse.Type,
-                AccNum = accountResponse.AccountNumber,
-                AccDesc = string.IsNullOrEmpty(accountResponse.AccDesc) == true ? "--" : accountResponse.AccDesc,
-                UserAccountId = accountResponse.UserAccountID,
-                ICNum = accountResponse.IcNum,
-                AmtCurrentChg = accountResponse.AmCurrentChg,
-                IsRegistered = accountResponse.IsRegistered,
-                IsPaid = accountResponse.IsPaid,
-                IsSelected = isSelected,
-                AccountTypeId = accountResponse.AccountTypeId,
-                AccountStAddress = accountResponse.AccountStAddress,
-                OwnerName = accountResponse.OwnerName,
-                AccountCategoryId = accountResponse.AccountCategoryId,
-                isOwned = accountResponse.IsOwned,*/
-            };
-
-            int newRecordRow = db.InsertOrReplace(newRecord);
-
-            return newRecordRow;
-        }
-
         public static int InsertOrReplace(ManageAccessAccountListResponse.CustomerAccountData accountResponse)
         {
             var db = DBHelper.GetSQLiteConnection();
@@ -140,38 +112,6 @@ namespace myTNB_Android.Src.Database.Model
 
             return newRecordRow;
 
-        }
-
-        public static bool HasSelected()
-        {
-            try
-            {
-                UserEntity activeUser = UserEntity.GetActive();
-                if (activeUser != null)
-                {
-                    if (AccountSortingEntity.HasItems(activeUser.Email, Constants.APP_CONFIG.ENV))
-                    {
-                        List<UserManageAccessAccount> updatedList = new List<UserManageAccessAccount>();
-                        /*updatedList = AccountSortingEntity.List(activeUser.Email, Constants.APP_CONFIG.ENV);
-                        if (updatedList != null && updatedList.Count > 0)
-                        {
-                            UserManageAccessAccount selected = updatedList.Find(x => x.IsSelected);
-
-                            if (selected != null)
-                            {
-                                return true;
-                            }
-                        }*/
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-
-            var db = DBHelper.GetSQLiteConnection();
-            return db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE isSelected = ?", true).Count > 0;
         }
 
         public static bool HasItems()
@@ -223,7 +163,7 @@ namespace myTNB_Android.Src.Database.Model
             {
                 var db = DBHelper.GetSQLiteConnection();
 
-                UserEntity activeUser = UserEntity.GetActive();
+                /*UserEntity activeUser = UserEntity.GetActive();
 
                 try
                 {
@@ -235,7 +175,7 @@ namespace myTNB_Android.Src.Database.Model
                 catch (Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
-                }
+                }*/
 
                 db.Execute("Delete from UserManageAccountEntity ");
             }
@@ -366,7 +306,7 @@ namespace myTNB_Android.Src.Database.Model
                     i++;
                 }
                 var db = DBHelper.GetSQLiteConnection();
-                reAccountList = db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE userAccountID != null ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+                reAccountList = db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE userAccountID != null ORDER BY accDesc ASC").ToList().OrderBy(x => x.name).ToList();
             }
             return reAccountList;
         }
@@ -375,7 +315,7 @@ namespace myTNB_Android.Src.Database.Model
         {
             var db = DBHelper.GetSQLiteConnection();
             List<UserManageAccessAccount> nonREAccountList = new List<UserManageAccessAccount>();
-            nonREAccountList = db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE userId != 0 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            nonREAccountList = db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE userId != 0 ORDER BY accDesc ASC").ToList().OrderBy(x => x.name).ToList();
             return nonREAccountList;
         }
 
@@ -383,7 +323,7 @@ namespace myTNB_Android.Src.Database.Model
         {
             var db = DBHelper.GetSQLiteConnection();
             List<UserManageAccessAccount> nonREAccountList = new List<UserManageAccessAccount>();
-            nonREAccountList = db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE accNum = ? AND IsOwnedAccount = ? ORDER BY accDesc ASC", accNUm, false).ToList().OrderBy(x => x.AccDesc).ToList();
+            nonREAccountList = db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE accNum = ? AND IsOwnedAccount = ? ORDER BY accDesc ASC", accNUm, false).ToList().OrderBy(x => x.name).ToList();
             return nonREAccountList;
         }
 
@@ -391,7 +331,7 @@ namespace myTNB_Android.Src.Database.Model
         {
             var db = DBHelper.GetSQLiteConnection();
             List<UserManageAccessAccount> selectedList = new List<UserManageAccessAccount>();
-            selectedList = db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE accNum = ? AND isSelected = ? ORDER BY accDesc ASC", accNUm, true).ToList().OrderBy(x => x.AccDesc).ToList();
+            selectedList = db.Query<UserManageAccessAccount>("SELECT * FROM UserManageAccountEntity WHERE accNum = ? AND isSelected = ? ORDER BY accDesc ASC", accNUm, true).ToList().OrderBy(x => x.name).ToList();
             return selectedList;
         }
 
@@ -404,6 +344,23 @@ namespace myTNB_Android.Src.Database.Model
                 {
                     var db = DBHelper.GetSQLiteConnection();
                     db.Execute("Delete from UserManageAccountEntity WHERE accNum = ? AND isSelected = ?", accNUm, true);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public static void DeleteInvited(string AccID)
+        {
+            try
+            {
+                UserEntity activeUser = UserEntity.GetActive();
+                if (activeUser != null)
+                {
+                    var db = DBHelper.GetSQLiteConnection();
+                    db.Execute("Delete from UserManageAccountEntity WHERE userAccountID = ?", AccID);
                 }
             }
             catch (Exception e)

@@ -155,7 +155,6 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 {
                     if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
                     {
-                        //accountData = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
                         accountData = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                     }
                 }
@@ -179,13 +178,6 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 listView.SetNoScroll();
                 listView.ItemClick += ListView_ItemClick;
 
-                /*listView.Touch += (sender, e) =>
-                {
-                    ((SwipeLayout)(listView.GetChildAt(listView.FirstVisiblePosition))).Open(SwipeLayout.DragEdge.Right);
-                    Console.WriteLine("ListView: OnTouch");
-                    e.Handled = true;
-                };*/
-                //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 mPresenter = new ManageAccessPresenter(this, accountData);
                 this.userActionsListener.Start();
             }
@@ -956,6 +948,29 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             }
         }
 
+        public void ShowCancelAddSuccess(string email)
+        {
+            try
+            {
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("UserAccess","cancelAdddSuccess"), email)), Snackbar.LengthIndefinite)
+                            .SetAction(GetLabelCommonByLanguage("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = saveSnackBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                saveSnackBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         public void ShowGetCardsProgressDialog()
         {

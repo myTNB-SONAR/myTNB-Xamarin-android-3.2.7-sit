@@ -95,6 +95,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             void ShowAccountList(List<UserManageAccessAccount> accountList);
             void AdapterDeleteClean();
             void AdapterClean();
+            void ShowCancelAddSuccess(string email);
 
             /// <summary>
             /// Shows account list

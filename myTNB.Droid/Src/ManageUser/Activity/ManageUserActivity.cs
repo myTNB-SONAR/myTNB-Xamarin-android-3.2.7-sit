@@ -388,8 +388,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     this.SetIsClicked(true);
                     ShowCancelAddAccessDialog(this, () =>
                     {
-                        //this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, checkboxfullbill, checkboxbilling);
-                        ShowCancelAddSuccess();
+                        this.userActionsListener.CancelInvitedUser(account.UserAccountId);
                     });
                 }
                 this.SetIsClicked(false);
@@ -412,7 +411,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     ShowResendInviteAccessDialog(this, () =>
                     {
                         //this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, checkboxfullbill, checkboxbilling);
-                        ShowInviteSuccess();
+                        ShowInviteSuccess(account.email);
                     });
                 }
                 this.SetIsClicked(false);
@@ -556,6 +555,14 @@ namespace myTNB_Android.Src.ManageUser.Activity
             base.OnBackPressed();
         }
 
+        public void ShowSuccessCancelInvite(string email)
+        {
+            Intent resultIntent = new Intent();
+            resultIntent.PutExtra("cancelInvited", email);
+            SetResult(Result.Ok, resultIntent);
+            Finish();
+        }
+
         public void ShowProgress()
         {
             try
@@ -566,23 +573,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-        }
-
-        public void ShowUpdateNickname()
-        {
-            Intent updateNickName = new Intent(this, typeof(UpdateNicknameActivity));
-            updateNickName.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            StartActivityForResult(updateNickName, Constants.UPDATE_NICKNAME_REQUEST);
-        }
-
-        public void ShowSuccessRemovedAccount()
-        {
-            Intent result = new Intent();
-            result.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            result.PutExtra(Constants.SELECTED_ACCOUNT_POSITION, position);
-            result.PutExtra(Constants.ACCOUNT_REMOVED_FLAG, true);
-            SetResult(Result.Ok, result);
-            Finish();
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -632,12 +622,11 @@ namespace myTNB_Android.Src.ManageUser.Activity
             }
         }
 
-        public void ShowInviteSuccess()
+        public void ShowInviteSuccess(string email)
         {
             try
             {
-                string email = txtEmail.Text.ToString().Trim();
-                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(GetLabelByLanguage("inviteSuccess"), email)), Snackbar.LengthIndefinite)
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("UserAccess","inviteSuccess"), email)), Snackbar.LengthIndefinite)
                             .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
                              {
@@ -656,32 +645,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-        public void ShowCancelAddSuccess()
-        {
-            try
-            {
-                string email = txtEmail.Text.ToString().Trim();
-                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(GetLabelByLanguage("cancelAdddSuccess"), email)), Snackbar.LengthIndefinite)
-                            .SetAction(GetLabelCommonByLanguage("close"),
-                             (view) =>
-                             {
-                                 // EMPTY WILL CLOSE SNACKBAR
-                             }
-                            );
-                View v = saveSnackBar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(4);
-                saveSnackBar.Show();
-                this.SetIsClicked(false);
-            }
-            catch (System.Exception e)
-            {
-                this.SetIsClicked(false);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
 
         public void ShowRemoveProgress()
         {
