@@ -109,6 +109,7 @@ namespace myTNB_Android.Src.Profile.Activity
             }
 
             savedFont = TextViewUtils.SelectedFontSize();
+            savedFont = (savedFont != null && savedFont != string.Empty) ? savedFont : "R";
             FontItemList = new List<Item>();
             isSelectionChange = false;
 
@@ -156,6 +157,7 @@ namespace myTNB_Android.Src.Profile.Activity
         private void UpdateFont()
         {
             savedFont = TextViewUtils.SelectedFontSize();
+            savedFont = (savedFont != null && savedFont != string.Empty) ? savedFont : "R";
             // UpdateLabels();
             EnableDisableButton();
         }
