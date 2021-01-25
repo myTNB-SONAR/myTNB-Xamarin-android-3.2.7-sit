@@ -59,7 +59,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
             try
             {
                 string action = "U";
-                var updateUserAccessReponse = await ServiceApiImpl.Instance.UpdateAccountAccessRight(new UpdateUserAccessRequest(userId, haveAccess, haveEBiling, action));
+                var updateUserAccessReponse = await ServiceApiImpl.Instance.UpdateAccountAccessRight(new UpdateUserAccessRequest(userId, haveAccess, haveEBiling, action, accountData.AccNum));
 
                 if (mView.IsActive())
                 {
@@ -121,11 +121,64 @@ namespace myTNB_Android.Src.ManageUser.MVP
 
         }
 
-        public void OnUpdateNickname()
+        public async void CancelInvitedUser(string userId)
         {
-            this.mView.ShowUpdateNickname();
-        }
+            if (mView.IsActive())
+            {
+                this.mView.ShowRemoveProgress();
+            }
 
+            try
+            {
+                var updateUserAccessReponse = await ServiceApiImpl.Instance.CancelInvitation_OT(new CancelInviteUserAccessRequest(userId));
+
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemoveProgress();
+                }
+
+                if (updateUserAccessReponse.IsSuccessResponse())
+                {
+                    UserManageAccessAccount.DeleteInvited(userId);
+                    this.mView.ShowSuccessCancelInvite(accountData.email);
+                }
+                else
+                {
+                    this.mView.ShowErrorMessageResponse(updateUserAccessReponse.Response.DisplayMessage);
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemoveProgress();
+                }
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemoveProgress();
+                }
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemoveProgress();
+                }
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
        
         public void Start()
         {

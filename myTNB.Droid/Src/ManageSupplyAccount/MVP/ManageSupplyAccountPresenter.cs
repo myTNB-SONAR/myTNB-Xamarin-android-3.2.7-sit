@@ -159,6 +159,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                 {
                     if (manageAccessAccountListResponse.GetData().Count > 0)
                     {
+                        UserManageAccessAccount.RemoveActive();
                         ProcessManageAccessAccount(manageAccessAccountListResponse.GetData());
                     }
                     this.mView.ManageUserActivity();

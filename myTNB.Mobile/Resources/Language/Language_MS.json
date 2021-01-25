@@ -101,7 +101,12 @@
     "processing": "sedang diproses",
     "dontShowThisAgain": "Jangan paparkan lagi",
     //OT Add
-    "verify": "Sahkan"
+    "verify": "Sahkan",
+
+    //irul add
+    "tutorialSwipeTextNew": "Leret untuk lihat lebih lagi, tekan dua kali untuk mengabaikannya.",
+    "tutorialSwipeTextlastNew": "Tekan dua kali untuk mengabaikannya."
+
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",

@@ -180,7 +180,11 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
 
                         ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
                         List<UserNotificationTypesEntity> typesList = UserNotificationTypesEntity.ListAllActive();
+                        List<UserNotificationChannelEntity> channelsList = UserNotificationChannelEntity.ListAllActive();
+
                         List<NotificationTypeUserPreference> typeUserPrefList = new List<NotificationTypeUserPreference>();
+                        List<NotificationChannelUserPreference> channelUserPrefList = new List<NotificationChannelUserPreference>();
+
                         foreach (UserNotificationTypesEntity type in typesList)
                         {
                             if (type.ShowInPreference)
@@ -188,7 +192,16 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
                                 typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
                             }
                         }
+
+                        foreach (UserNotificationChannelEntity channel in channelsList)
+                        {
+                            if (channel.ShowInPreference)
+                            {
+                                channelUserPrefList.Add(NotificationChannelUserPreference.Get(channel));
+                            }
+                        }
                         this.mView.ShowNotificationTypesList(typeUserPrefList);
+                        this.mView.ShowNotificationChannelList(channelUserPrefList);
                     }
                     else
                     {
@@ -263,7 +276,7 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
                 }
 
                 this.mView.ShowNotificationTypesList(typeUserPrefList);
-                //this.mView.ShowNotificationChannelList(channelUserPrefList);
+                this.mView.ShowNotificationChannelList(channelUserPrefList);
             }
             catch (Exception ex)
             {

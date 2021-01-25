@@ -91,13 +91,13 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                 if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
-                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeText"), FromHtmlOptions.ModeLegacy);
-                    txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeText"), FromHtmlOptions.ModeLegacy);
+                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"), FromHtmlOptions.ModeLegacy);
+                    txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"), FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeText"));
-                    txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeText"));
+                    txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"));
+                    txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"));
                 }
 
                 TextViewUtils.SetMuseoSans300Typeface(txtDoubleTapDismiss, txtTopDoubleTapDismiss);
@@ -432,13 +432,18 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                             if (e.Position == NewAppTutorialList.Count - 1)
                             {
-                                txtDoubleTapDismiss.Visibility = ViewStates.Gone;
-                                txtTopDoubleTapDismiss.Visibility = ViewStates.Gone;
+                                txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextlastNew"));
+                                txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextlastNew"));
+                                //txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                                //txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
                             }
                             else
                             {
-                                txtDoubleTapDismiss.Visibility = ViewStates.Visible;
-                                txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
+                                txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"));
+                                txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"));
+
+                                //txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                                //txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
                             }
 
                             if (this.mFragment != null)

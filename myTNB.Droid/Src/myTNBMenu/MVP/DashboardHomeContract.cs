@@ -187,6 +187,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 			void OnResetWhereIsMyAccNumber();
             void SetMenuMoreCheck();
+            void PopulateIdentificationDetails();
         }
 
         public interface IUserActionsListener : IBasePresenter

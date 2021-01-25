@@ -60,9 +60,11 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                         {
                             this.mView.ShowEmptyAccount();
                         }
-                        if (data != null && data.HasExtra(Constants.ACCOUNT_REMOVED_FLAG) && data.GetBooleanExtra(Constants.ACCOUNT_REMOVED_FLAG, false))
+
+                        if (data != null && data.Extras.GetString("cancelInvited") != null)
                         {
-                            this.mView.ShowAccountRemovedSuccess();
+                            string email = data.Extras.GetString("cancelInvited");
+                            this.mView.ShowCancelAddSuccess(email);
                         }
                     }
                 }
@@ -70,12 +72,12 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                 {
                     if (resultCode == Result.Ok)
                     {
-                        if (data.Extras.GetString("Invited") != null)
+                        if (data != null && data.Extras.GetString("Invited") != null)
                         {
                             string email = data.Extras.GetString("Invited");
                             this.mView.ShowAddTNBUserSuccess(email);
                         }
-                        else
+                        else if (data != null && data.Extras.GetString("Add") != null)
                         {
                             string email = data.Extras.GetString("Add");
                             this.mView.ShowAddNonTNBUserSuccess(email);
@@ -84,14 +86,12 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                         this.mView.AdapterClean();
                         Start();
                     }
-                }
+                }              
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-
-
         }
 
         public async void OnRemoveAccount(string AccountNum)
@@ -183,7 +183,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveUserAcess_OT(new RemoveUserAccountRequest(accountIdList));
+                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveUserAcess_OT(new RemoveUserAccountRequest(accountIdList, accountData.AccountNum));
 
                 if (mView.IsActive())
                 {

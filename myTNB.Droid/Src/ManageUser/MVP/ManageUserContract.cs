@@ -30,11 +30,6 @@ namespace myTNB_Android.Src.ManageUser.MVP
             void HideRemoveProgress();
 
             /// <summary>
-            /// Show update nickname
-            /// </summary>
-            void ShowUpdateNickname();
-
-            /// <summary>
             /// Show initial nickname
             /// </summary>
             /// <param name="nickname">string</param>
@@ -59,15 +54,15 @@ namespace myTNB_Android.Src.ManageUser.MVP
             void ShowRetryOptionsUnknownException(Exception exception);
 
             void ShowSaveSuccess();
+            
             void DisableSaveButton();
+            
             void PopulateDataCheckBox(UserManageAccessAccount updateacc);
+            
+            void ShowSuccessCancelInvite(string email);
         }
         public interface IUserActionsListener : IBasePresenter
         {
-            /// <summary>
-            /// Action on update nickname
-            /// </summary>
-            void OnUpdateNickname();
 
             /// <summary>
             /// The returned result from another activity
@@ -78,6 +73,8 @@ namespace myTNB_Android.Src.ManageUser.MVP
             void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data);
 
             void UpdateAccountAccessRight(string userAccountId, bool isHaveAccess, bool isApplyEBilling);
+
+            void CancelInvitedUser(string userId);
         }
     }
 }

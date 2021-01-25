@@ -193,6 +193,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
+        /// Call CancelInvitation_OT with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<ManageAccessAccountListNullResponse> CancelInvitation_OT([Body] Request.BaseRequest request)
+        {
+            return api.CancelInvitation_OT<ManageAccessAccountListNullResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //wan   //api cancel invited user
+        }
+
+        /// <summary>
         /// Call GetAccountActivityLogList with default timeout
         /// </summary>
         /// <param name="request"></param>
