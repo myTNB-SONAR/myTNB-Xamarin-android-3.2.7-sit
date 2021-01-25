@@ -101,7 +101,12 @@
     "processing": "Processing",
     "dontShowThisAgain": "Don't show this again",
     //OT Add
-    "verify": "Verify"
+    "verify": "Verify",
+
+    //Irul Add
+    "tutorialSwipeTextNew": "Swipe to see more, double tap to dismiss.",
+    "tutorialSwipeTextlastNew": "Double tap to dismiss."
+
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
