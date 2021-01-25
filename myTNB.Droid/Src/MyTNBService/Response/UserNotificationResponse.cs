@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base.Response;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.MyTNBService.Response

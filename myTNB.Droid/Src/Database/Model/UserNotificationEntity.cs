@@ -56,6 +56,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("ODNBatchSubcategory")]
         public string ODNBatchSubcategory { get; set; }
 
+        [Column("isForceDisplay")]
+        public bool IsForceDisplay { get; set; }
+
         public static int CreateTable()
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
@@ -94,7 +97,8 @@ namespace myTNB_Android.Src.Database.Model
                 CreatedDate = userNotification.CreatedDate,
                 NotificationType = userNotification.NotificationType,
                 Target = userNotification.Target,
-                ODNBatchSubcategory = userNotification.ODNBatchSubcategory
+                ODNBatchSubcategory = userNotification.ODNBatchSubcategory,
+                IsForceDisplay = userNotification.IsForceDisplay
             };
             int rows = db.InsertOrReplace(newRecord);
             //db.Close();
@@ -123,7 +127,8 @@ namespace myTNB_Android.Src.Database.Model
                 CreatedDate = userNotification.CreatedDate,
                 NotificationType = userNotification.NotificationType,
                 Target = userNotification.Target,
-                ODNBatchSubcategory = userNotification.ODNBatchSubcategory
+                ODNBatchSubcategory = userNotification.ODNBatchSubcategory,
+                IsForceDisplay = userNotification.IsForceDisplay
             };
 
             //db.InsertOrReplaceAsync(newRecord);
@@ -206,7 +211,7 @@ namespace myTNB_Android.Src.Database.Model
             //}
         }
 
-        public static List<UserNotificationEntity> ListFilteredNotificationsByBCRMType(string accNum , string bcrmNotificationTypeId)
+        public static List<UserNotificationEntity> ListFilteredNotificationsByBCRMType(string accNum, string bcrmNotificationTypeId)
         {
             List<UserNotificationEntity> list = new List<UserNotificationEntity>();
 
@@ -231,7 +236,7 @@ namespace myTNB_Android.Src.Database.Model
             //{
             var db = DBHelper.GetSQLiteConnection();
             int count = 0;
-            
+
             List<UserNotificationEntity> notificationList = db.Query<UserNotificationEntity>("SELECT * FROM UserNotificationEntity WHERE IsRead = ? AND IsDeleted = ?", false, false);
             //Added checking on notification count.
             notificationList.ForEach(item =>
@@ -244,8 +249,9 @@ namespace myTNB_Android.Src.Database.Model
                     }
                     else
                     {
-                        if (UserEntity.GetActive().Email.Equals(item.Email) &&
-                        MyTNBAccountManagement.GetInstance().IsAccountNumberExist(item.AccountNum))
+                        if (item.IsForceDisplay
+                            || (UserEntity.GetActive().Email.Equals(item.Email)
+                            && MyTNBAccountManagement.GetInstance().IsAccountNumberExist(item.AccountNum)))
                         {
                             count++;
                         }

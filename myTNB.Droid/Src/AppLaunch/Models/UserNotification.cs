@@ -45,5 +45,8 @@ namespace myTNB_Android.Src.AppLaunch.Models
 
         [JsonProperty("ODNBatchSubcategory")]
         public string ODNBatchSubcategory { get; set; }
+
+        [JsonProperty("isForceDisplay")]
+        public bool IsForceDisplay { get; set; }
     }
 }

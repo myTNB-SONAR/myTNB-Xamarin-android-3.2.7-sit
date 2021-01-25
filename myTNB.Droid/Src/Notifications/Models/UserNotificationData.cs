@@ -5,7 +5,7 @@ namespace myTNB_Android.Src.Notifications.Models
 {
     public class UserNotificationData
     {
-        //        "Id": "1000004",
+        //"Id": "1000004",
         //"Title": "Billing & Payment",
         //"Code": "BP",
         //"PreferenceMode": "M",
@@ -61,9 +61,13 @@ namespace myTNB_Android.Src.Notifications.Models
         [JsonProperty("ODNBatchSubcategory")]
         public string ODNBatchSubcategory { get; set; }
 
+        [JsonProperty("isForceDisplay")]
+        public bool IsForceDisplay { get; set; }
+
         public bool ShowSelectButton
         {
-            get{
+            get
+            {
                 return IsSelectOptionShown;
             }
             set
@@ -84,7 +88,7 @@ namespace myTNB_Android.Src.Notifications.Models
             }
         }
 
-        public static UserNotificationData Get(UserNotificationEntity userNotification , string Code)
+        public static UserNotificationData Get(UserNotificationEntity userNotification, string Code)
         {
             return new UserNotificationData()
             {
@@ -102,7 +106,8 @@ namespace myTNB_Android.Src.Notifications.Models
                 Code = Code,
                 NotificationType = userNotification.NotificationType,
                 Target = userNotification.Target,
-                ODNBatchSubcategory = userNotification.ODNBatchSubcategory
+                ODNBatchSubcategory = userNotification.ODNBatchSubcategory,
+                IsForceDisplay = userNotification.IsForceDisplay
             };
         }
     }

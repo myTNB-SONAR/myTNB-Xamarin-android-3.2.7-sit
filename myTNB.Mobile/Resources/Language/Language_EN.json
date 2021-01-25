@@ -778,9 +778,8 @@
     "description5": "That's right, we're bringing you exclusive perks and freebies - all of this just for myTNB users! Check out the new Rewards section to claim something now!",
     "description6": "We’re now bilingual! You can set your preferred language below.<br><br>Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.",
     "description7": "You can now register a myTNB account or update your existing one with an international phone number.",
-    "description8": "You can now track all your application status with zero hassle, anytime and anywhere. Need TNB to install a new meter? You can now set an appointment!",
-    "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
-    "fontChangeSuccess": "You've successfully updated your display text size to {0}!"
+    "description8": "You can now track all your application status with zero hassle, anytime and anywhere.",
+    "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile."
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
@@ -1815,6 +1814,10 @@
       {
         "key": "Action Required",
         "value": "Action Required"
+      },
+      {
+        "key": "Awaiting Approval",
+        "value": "Awaiting Approval"
       },
       {
         "key": "Awaiting Contractor",
