@@ -978,6 +978,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 account.isNoDetailOwner = true;
                             }
                             account.ISDmobileNo = "+06";
+                            account.CountryCheck = false;
+                            account.countryDetail = ""; 
 
                             foreach (NewAccount item in accountList)
                             {

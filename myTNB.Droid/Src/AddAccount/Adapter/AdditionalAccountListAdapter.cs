@@ -126,7 +126,9 @@ namespace myTNB_Android.Src.AddAccount
             MobileLinearLayout = itemView.FindViewById<LinearLayout>(Resource.Id.mobileNumberFieldContainer);
             OwnerNoContactLinearLayout = itemView.FindViewById<LinearLayout>(Resource.Id.layout_owner_no_contact);
             textInputLayoutEmailEditText = itemView.FindViewById<TextInputLayout>(Resource.Id.textInputLayoutEmailReg);
-            
+            NoMobileFieldDetail.Text = Utility.GetLocalizedCommonLabel("mobileNumber");
+            EmailFieldDetail.Text = Utility.GetLocalizedCommonLabel("emailAddress");
+
             EmailFieldDetail.Click += (sender, e) => 
             {
                 MobileLinearLayout.Visibility = ViewStates.Gone;
@@ -152,11 +154,12 @@ namespace myTNB_Android.Src.AddAccount
 
             TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress, AccountLabel, OwnerDetailTitle);
             TextViewUtils.SetMuseoSans500Typeface(EmailFieldDetail, NoMobileFieldDetail);
-            TextViewUtils.SetMuseoSans300Typeface(textInputLayoutAccountLabel);
+            TextViewUtils.SetMuseoSans300Typeface(textInputLayoutAccountLabel, textInputLayoutEmailEditText);
 
             textInputLayoutAccountLabel.Hint = Utility.GetLocalizedCommonLabel("acctNickname");
             context = itemView.Context;
             AccountLabel.AddTextChangedListener(new InputFilterFormField(AccountLabel, textInputLayoutAccountLabel));
+            EmailEditText.AddTextChangedListener(new InputFilterFormField(EmailEditText, textInputLayoutEmailEditText));
 
             AccountLabel.FocusChange += (sender, e) =>
             {
@@ -186,46 +189,39 @@ namespace myTNB_Android.Src.AddAccount
                 }
             };
 
-
             MobileLinearLayout.RemoveAllViews();
             mobileNumberInputComponent = new MobileNumberInputComponent(context);
             mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
             mobileNumberInputComponent.SetMobileNumberLabel(Utility.GetLocalizedCommonLabel("mobileNo"));
             mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
             mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
-            MobileLinearLayout.AddView(mobileNumberInputComponent);
-           
-            string selectedcountry = UserSessions.GetSelectedCountry(PreferenceManager.GetDefaultSharedPreferences(context));
-            if (selectedcountry != null)
-            {
-                Country selectedCountry = JsonConvert.DeserializeObject<Country>(selectedcountry);
-                mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
-            }
-
+            MobileLinearLayout.AddView(mobileNumberInputComponent);          
         }
 
         public void OnTapCountryCode()
         {
+            item.CountryCheck = true;
+            PreferenceManager.GetDefaultSharedPreferences(context).Edit().Remove("selectedcountry").Apply();
             context.StartActivity(new Intent(context, typeof(SelectCountryActivity)));
         }
 
         private void OnValidateMobileNumber(bool isValidated)
         {
-            string noISD = mobileNumberInputComponent.GetMobileNumberValue();
             this.item.ISDmobileNo = mobileNumberInputComponent.GetISDOnly();
-            if (noISD.Equals(""))
+            if (isValidated && mobileNumberInputComponent.GetISDOnly() == mobileNumberInputComponent.GetMobileNumberValueWithISDCode())
             {
                 this.item.mobileNoOwner = "";
             }
-            else if (this.item.mobileNoOwner != this.item.ISDmobileNo)
+            else if(isValidated && mobileNumberInputComponent.GetISDOnly() != mobileNumberInputComponent.GetMobileNumberValueWithISDCode())
             {
                 this.item.mobileNoOwner = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
-            }            
+            }
         }
 
         public void PopulateData(NewAccount item)
         {
             this.item = item;
+            int noISDONly;
             try
             {
                 AccountNumber.Text = this.item.accountNumber;
@@ -282,16 +278,7 @@ namespace myTNB_Android.Src.AddAccount
                     }*/
                 };
 
-                int noISDONly = this.item.ISDmobileNo.Length;
-                if (!this.item.mobileNoOwner.Equals(""))
-                {
-                    string mobile = this.item.mobileNoOwner;
-                    string mobileNoOnly = mobile.Substring(noISDONly, mobile.Length - noISDONly);
-                    int value = Java.Lang.Integer.ParseInt(mobileNoOnly);
-                    mobileNumberInputComponent.SetMobileNumber(value);
-                }
-                
-
+                //checking and display non-onwer layout
                 if (item.isNoDetailOwner && item.type.Equals("1"))
                 {
                     OwnerNoContactLinearLayout.Visibility = ViewStates.Visible;
@@ -301,6 +288,40 @@ namespace myTNB_Android.Src.AddAccount
                     OwnerNoContactLinearLayout.Visibility = ViewStates.Gone;
                 }
 
+                //checking and display country per data
+
+                string selectedcountry = UserSessions.GetSelectedCountry(PreferenceManager.GetDefaultSharedPreferences(context));
+                if (item.CountryCheck && selectedcountry != null)
+                {
+                    item.countryDetail = selectedcountry;
+                    item.CountryCheck = false;
+                    Country selectedCountry = JsonConvert.DeserializeObject<Country>(selectedcountry);
+                    this.item.ISDmobileNo = selectedCountry.isd;
+                    mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
+
+                }
+                else if(!item.countryDetail.Equals(""))
+                {
+                    Country selectedCountry = JsonConvert.DeserializeObject<Country>(item.countryDetail);
+                    this.item.ISDmobileNo = selectedCountry.isd;
+                    mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
+                }
+
+                noISDONly = this.item.ISDmobileNo.Length;
+                if (!item.mobileNoOwner.Equals(""))
+                {
+                    string mobile = this.item.mobileNoOwner;
+                    string mobileNoOnly = mobile.Substring(noISDONly, mobile.Length - noISDONly);
+                    if (mobileNoOnly.Length > 0)
+                    {
+                        int value = Java.Lang.Integer.ParseInt(mobileNoOnly);
+                        mobileNumberInputComponent.SetMobileNumber(value);
+                    }                
+                }
+
+                AccountLabel.ClearFocus();
+                mobileNumberInputComponent.ClearFocus();
+                EmailEditText.ClearFocus();
             }
             catch (Exception e)
             {

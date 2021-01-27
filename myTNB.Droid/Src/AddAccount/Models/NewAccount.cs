@@ -41,5 +41,9 @@
         public string ISDmobileNo { get; set; }
 
         public bool isNoDetailOwner { get; set; }
+
+        public bool CountryCheck { get; set; }
+
+        public string countryDetail { get; set; }
     }
 }
