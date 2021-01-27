@@ -298,7 +298,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         swipeDoubleTapLayout.Visibility = ViewStates.Visible;
 
                         txtDoubleTapDismiss.Visibility = ViewStates.Visible;
-                        txtDoubleTapDismiss.Text = Utility.GetLocalizedLabel("UserAccess", "tapToSkip");
+                        txtDoubleTapDismiss.Text = Utility.GetLocalizedLabel("Common", "tutorialSwipeTextlastNew");
                         indicator.Visibility = ViewStates.Visible;
                         indicatorTopContainer.Visibility = ViewStates.Visible;
                     }
