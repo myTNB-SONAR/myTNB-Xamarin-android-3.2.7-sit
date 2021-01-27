@@ -327,7 +327,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                         .SetTitle(Utility.GetLocalizedLabel("ManageAccount", "popupremoveAccountTitle"))
                         //.SetMessage(Utility.GetLocalizedLabel("Common", "updateIdMessage"))
                         .SetMessage(string.Format(Utility.GetLocalizedLabel("ManageAccount", "popupremoveAccountMessage"), account.AccDesc, account.AccNum))
-                        .SetContentGravity(Android.Views.GravityFlags.Center)
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "ok"))
                         .SetSecondaryCTAaction(() =>

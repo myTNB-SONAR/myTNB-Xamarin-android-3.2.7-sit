@@ -587,9 +587,9 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                         .SetTitle(Utility.GetLocalizedLabel("UserAccess", "deleteUserTitle"))
                         .SetMessage(Utility.GetLocalizedLabel("UserAccess", "deleteUserBody"))
-                        .SetContentGravity(Android.Views.GravityFlags.Center)
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
-                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "ok"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("UserAccess", "RemoveTitle"))
                         .SetSecondaryCTAaction(() =>
                         {
                             confirmAction();
@@ -952,7 +952,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         {
             try
             {
-                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("UserAccess","cancelAdddSuccess"), email)), Snackbar.LengthIndefinite)
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("UserAccess","cancelAddSuccess"), email)), Snackbar.LengthIndefinite)
                             .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
                              {

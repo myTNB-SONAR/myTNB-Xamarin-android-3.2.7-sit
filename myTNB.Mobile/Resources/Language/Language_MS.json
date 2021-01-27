@@ -167,7 +167,10 @@
     "paymentCCErrorMsg": "Maaf, kami tidak boleh mendapatkan maklumat kad anda sekarang. Anda masih boleh bayar menggunakan kad lain atau perbankan dalam talian melalui FPX.",
     "profileCCErrorMsg": "Jika anda di sini untuk menguruskan kad anda, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula kemudian.",
     "noMeterAccessErrorTitle": "Maaf, anda mungkin tidak boleh mengakses perkhidmatan ini.",
-    "noMeterAccessErrorMessage": "Anda perlu mempunyai meter yang boleh diakses supaya bacaan meter boleh dilakukan. Sila cuba lagi apabila anda mempunyai akses kepada meter anda."
+    "noMeterAccessErrorMessage": "Anda perlu mempunyai meter yang boleh diakses supaya bacaan meter boleh dilakukan. Sila cuba lagi apabila anda mempunyai akses kepada meter anda.",
+    //yana
+    "accountLengthNew": "Sila masukkan nombor akaun elektrik 12 digit yang sah.",
+    "error_duplicateAccountMessageNew": "Nombor akaun elektrik ini telah ditambah ke senarai."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -618,21 +621,21 @@
     "pastBills": "Bil lepas",
     //addby wan
     "AcctFoundMsg": "Namakan akaun anda sekarang untuk rujukan mudah.",
-    "additionalAddAccts": "BM_Review your account details.",
+    "additionalAddAccts": "Semak maklumat akaun anda",
     "labeladditionalAccts": "Pemilik akaun elektrik akan mendapat notifikasi yang anda telah memasuki akaun ini.  ",
     "addAcctSuccessMsgBody": "Kini, anda boleh memantau penggunaan, membayar bil dan mengurus akaun anda!",
     "rocNumberOptional": "BM_ROC Number (OPTIONAL)",
     "business": "BM_Business (Commercial/Industrial)",
     "titleownerNoAccDec": "Kami telah mencari akaun elektrik anda, tetapi akaun anda masih tidak dapat dikenalpasti.",
-    "bodyownerNoAccDec": "BM_This could be due to us not having the correct identification number to match with.",
+    "bodyownerNoAccDec": "Ini mungkin kerana kami tidak mempunyai nombor kad pengenalan anda yang tepat.",
     "titleUpdateId": "Kemas kini nombor kad pengenalan anda",
-    "bodyUpdateId": "BM_Submit the correct identification number now and we'll help find and add your account(s) after the update.",
+    "bodyUpdateId": "Masukkan nombor kad pengenalan anda yang tepat untuk mencari dan menambah masuk akaun selepas dikemaskini.",
     "titleContinue": "Teruskan menambah masuk akaun",
     "bodyContinue": "Anda masih boleh menambah masuk akaun secara manual dengan menggunakan nombor akaun, tetapi anda akan memiliki akses terhad ke atas akaun ini sebagai pemilik yang tidak sah.",
     "tnc": "Dengan mengesahkan, saya telah membaca dan bersetuju dengan <a href=\"\\\"><strong>Terma dan Syarat</strong></a>.",
-    "tnc_checked": "Saya telah membaca dan bersetuju untuk <a href=\"\\\"><strong>Terma dan Syarat/strong></a>.",
+    "tnc_checked": "Saya telah membaca dan bersetuju untuk <a href=\"\\\"><strong>Terma dan Syarat</strong></a>.",
     //new added 
-    "AccHeaderText": "BM_Let's add your account by selecting your account type.",
+    "AccHeaderText": "Mari memasuki akaun anda dengan memilih jenis akaun anda.",
     "PremisesHint": "BM_The Premises I’m Adding is",
     "AccHeaderBlueText": "Adakah akaun elektrik ini didaftarkan atas nama anda?",
     "owner": "Ya, saya pemilik",
@@ -650,10 +653,11 @@
     "DiclaimerHeaderTNBTerm": "<b>Syarat Penggunaan TNB, Perjanjian Pengguna dan dasar Privasi</b>",
     "DiclaimerHeaderPersonalData": "<b>Dasar Perlindungan Data Peribadi</b>",
     "DiclaimerHeaderAddElectricity": "<b>BM_Add Electricity Account Disclaimer</b>",
-    "DisclaimerDetails1": "BM_I confirm that I <b>({0})</b> the owner / authorised person, have the consent and permission to view the account information for the account(s) listed. As a non-owner I agree to share my name and email address with the owner upon submission of this request.",
-    "DisclaimerDetails2": "BM_Please be informed that this application is for the privilege use between TNB and its account holder and any other person with the consent of the account holder. TNB shall not be held liable for any improper use and incorrect use of the information described and contained herein and under no obligation to check the authenticity of such consent and permission given. Upon confirming, you are deemed to have read, understood and agreed to the disclaimer as displayed.",
-    "GovDialogTitle": "BM_Sorry we can't add Government electricity accounts on myTNB App right now.",
-    "GovDialogDetails": "BM_You still can add and view your Government account through the myTNB Portal"
+    "DisclaimerDetails1": "Saya mengesahkan bahawa saya <b>({0})</b> pemilik / orang yang diberi kuasa, mempunyai persetujuan dan kebenaran untuk melihat maklumat akaun yang disenaraikan. Sebagai bukan pemilik, saya bersetuju untuk berkongsi nama dan alamat e-mel dengan pemilik semasa penyerahan permintaan ini.",
+    "DisclaimerDetails2": "Dimaklumkan bahawa aplikasi ini adalah untuk keistimewaan penggunaan antara TNB dan pemegang akaunnya dan orang lain dengan persetujuan pemegang akaun. TNB tidak akan bertanggungjawab atas penggunaan yang salah dan penggunaan maklumat yang dijelaskan dan terkandung di dalam ini serta tidak berkewajipan untuk memeriksa kesahihan persetujuan dan kebenaran yang diberikan. Setelah mengesahkan perkara ini, anda dianggap telah membaca, memahami dan menyetujui penafian seperti yang ditunjukkan.",
+    "GovDialogTitle": "Maaf, kami tidak dapat menambah akaun elektrik Kerajaan ke dalam Aplikasi myTNB sekarang.",
+    "GovDialogDetails": "Anda masih boleh menambah dan melihat akaun Kerajaan anda melalui Portal myTNB.",
+    "titleNonOwnerAddAcc": "BM_Continue adding the account and give it a name for your easy reference."
   },
   "Profile": {
     "title": "Profil",
@@ -681,7 +685,7 @@
     "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah.",
     //addby syahmi
     "titleProfile": "Profil myTNB",
-    "paymentMethod": "BM_My Payment Methods",
+    "paymentMethod": "Kaedah Pembayaran Saya",
     "myElecttricityAcc": "Akaun Elektrik Saya",
     "appSetting": "Tetapan Aplikasi",
     "learnMore": "Ketahui Lebih Lanjut mengenai TNB",
@@ -697,7 +701,7 @@
     //addby wan
     "changeLanguageSuccess": "BM_Your language preference has been changed successfully.",
     //addby syahmi 
-    "selectApplang":"BM_Select your preferred app language:"
+    "selectApplang": "Pilih bahasa aplikasi pilihan anda:"
   },
 
   //new added
@@ -828,7 +832,7 @@
     "title": "Kemas kini Nama Ringkas"
   },
   "ManageAccount": {
-    "title": "Uruskan Akaun Elektrik",
+    "title": "Urus Akaun Elektrik",
     "nicknameUpdateSuccess": "Nama Akaun berjaya dikemas kini.",
     "removeAccount": "Alih Keluar Akaun Ini",
     "popupremoveAccountTitle": "Alih Keluar Akaun",
@@ -843,27 +847,29 @@
     "passwordUpdateSuccess": "BM_Your password has been changed successfully.",
     "noAccounts": "BM_No Electricity Account",
     "addAccountMessage": "BM_Add your existing TNB Electricity Supply Account to view usage and transaction details.",
-    "titleManageUser": "BM_Manage User",
-    "titleAddUser": "BM_Tambah Pengguna Baru",
+    "titleManageUser": "Urus Pengguna",
+    "titleAddUser": "Tambah Pengguna Baru",
     "dialogAddrress": "BM_Why can't I see my full address?",
     "dialogAddrressMessage": "BM_We mask sensitive information to safeguard owner's privacy. You are seeing masked information as you are not the owner of this electricity account.",
     "dialogManageUser": "Memberi lebih banyak akses kepada pengguna anda.",
     "dialogManageUserMessage": "BM_To protect your information. we're not showing non-owner your personal information and some application features. However, you can grant them access listed here if you see fit and they will be noticed about it.",
-    "manageUserTitle": "BM_You're about to make changes to {0}'s access.",
-    "manageUserMessage": "BM_Once confirmed, {0} will have their access updated and be notified about the accesses you selected for them to your electricity account.",
+    "manageUserDialogTitle": "BM_You're about to make changes to {0}'s access.",
+    "manageUserDialogMessage": "BM_Once confirmed, {0} will have their access updated and be notified about the accesses you selected for them to your electricity account.",
     "saveSuccess": "BM_Changes to user access has been saved and user has been notified of their access update",
-    "manageUserBackTitle": "BM_Are yu sure want to leave without saving changes you made to {0}'s access?",
-    "manageUserBackMessage": "BM_The changes to {0)'saccess will not be saved if you choose to leave this page and their accesses will remain as before.",
+    "manageUserBackTitle": "Are you sure want to leave without saving changes you made to {0}'s access?",
+    "manageUserBackMessage": "The changes to {0}'success will not be saved if you choose to leave this page and their accesses will remain as before.",
     //add by yana
     "manageUserInviteAccessDialogTitle": "BM_manageUserInviteAccessDialogTitle",
     "manageUserInviteAccessDialogMessage": "BM_manageUserInviteAccessDialogMessage",
-    "manageUserCancelAddAccessDialogTitle": "BM_manageUserCancelAddAccessDialogTitle",
-    "manageUserCancelAddAccessDialogMessage": "BM_manageUserCancelAddAccessDialogMessage",
+    "manageUserCancelAddAccessDialogTitle": "Adakah anda pasti mahu membatalkan penambahan {0} sebagai seorang penonton?",
+    "manageUserCancelAddAccessDialogMessage": "Setelah dibatalkan, jemputan tersebut tidak lagi sah dan pengguna tidak lagi mempunyai akses ke akaun anda. Anda boleh memasukan semula pengguna jika mahu.",
     "inviteSuccess": "BM_inviteSuccess",
     "cancelAddSuccess": "BM_cancelAddSuccess",
-    "manageUserAccess": "BM_Manage User Access",
+    "manageUserAccess": "Menguruskan Akses Pengguna",
     "manageAutopay": "BM_Manage Autopay"
-    
+
+
+
   },
   "Onboarding": {
     "letsStart": "Jom mulakan!",
@@ -1246,42 +1252,46 @@
     "confrimButton": "BM_Confirm"
   },
   "UserAccess": {
-    "title": "BM_User Access",
-    "LabelTitle": "BM_User that have access to this account:",
+    "title": "Akses Pengguna",
+    "LabelTitle": "Pengguna yang mempunyai akses ke akaun ini:",
     "LabelEmptyTitle": "BM_Looks like your electricity account is not viewed or accessed by anyone else. You can help them by adding this account to their view below.",
-    "addUserBtn": "BM_Add User",
-    "AddTitle": "BM_Add",
-    "RemoveTitle": "BM_Remove",
+    "addUserBtn": "Tambah Pengguna",
+    "AddTitle": "Tambah",
+    "RemoveTitle": "Alih Keluar",
     "HeaderRemoveTitle": "BM_Select users you want to remove:",
     "bodyDialogWhatIsThis": "BM_To protect your information, we’re not showing non-owners your personal infromation and some application features. However, you can grant them access listed here if you see fit and they will be notified about it.",
     "titleDialogWhatIsThis": "BM_Giving your users more access.",
     "fullElectricity": "BM_View Full Electricity Bill",
     "e_billing": "BM_Apply for e-Billing",
-    "usremail": "BM_USER EMAIL ADDRESS",
+    "usremail": "Alamat e-mel pengguna",
     "titleAddNewUser": "BM_Provide user’s email address they use for their myTNB account.",
     "bodyAddNewUser": "BM_Do you want to give this user more access (optional)?",
     "deleteSuccessMessage": "BM_User(s) has been removed successfully.",
-    "deleteUserTitle": "BM_Are you sure you want to remove the current user(s)?",
+    "deleteUserTitle": "Adakah anda pasti mahu mengalih keluar Adam Hussein??",
     "deleteUserBody": "BM_Once removed, the selected user(s) will be revoked of all access and unable to view any information related to this account.",
-    "walkthroughStep1Title": "BM_View your activity log here",
-    "walkthroughStep2Title": "BM_Your account viewers at a glance.",
-    "walkthroughStep1": "BM_Track all your access and permissions controls so you don’t miss out on anything!",
-    "walkthroughStep2": "BM_View and manage people who are viewing your account or provide access to someone new here.",
+    "walkthroughStep1Title": "Lihat log aktiviti anda disini",
+    "walkthroughStep2Title": "Lihat penguna akaun anda dengan sepintas lalu.",
+    "walkthroughStep1": "Jejaki semua akses dan kawalan kebenaran supaya anda tidak ketinggalan dengan aktiviti semasa.",
+    "walkthroughStep2": "Lihat dan urus penguna yang melihat akaun anda atau beri akses kepada pihak lain di sini.",
     "tapToSkip": "BM_Tap to skip",
     "pendingRegistration": "BM_Pending Registration",
     //add by wan
-    "AddTNBUserSuccess": "BM_AddTNBUserSuccess",
-    "AddNonTNBUserSuccess": "BM_AddNonTNBUserSuccess",
+    "AddTNBUserSuccess": "{0} kini mempunyai akses ke {1} di myTNB.",
+    "AddNonTNBUserSuccess": "{0} dijemput untuk menyertai myTNB dan akan mempunyai akses ke {1}.",
     "hint_email": "Alamat e-mel pengguna",
-    "removeAccountUserAccesssLog": "You removed <strong>{0}</strong> from this electricity account.",
-    "addAccountUserAccesssLog": "<strong>{0}</strong> added this electricity account to their view.",
+    "removeAccountUserAccesssLog": "Anda mengeluarkan <strong>{0}</strong> dari akaun elektrik ini.",
+    "addAccountUserAccesssLog": "<strong>{0}</strong> menambah akaun elektrik ini di dalam pemerhatian beliau.",
     "addAccesssLogfullBill": "You have granted <strong>{0}</strong>’s access to view full electricity bill.",
     "addAccesssLogeBilling": "You have granted <strong>{0}</strong>’s access to apply for e-billing.",
     "addAccesssLogBoth": "You have granted <strong>{0}</strong> access to full bill view and apply for e-billing.",
     "removeAccesssLogfullBill": "You removed <strong>{0}</strong>’s access to view full electricity bill.",
     "removeAccesssLogeBilling": "You removed <strong>{0}</strong>’s access to apply for e-billing.",
     "removeAccesssLogBoth": "You removed <strong>{0}</strong>’s access to apply for e-billing and view full electricity bill.",
-    "title_activityLog": "Log Aktiviti"
+    "title_activityLog": "Log Aktiviti",
+    "headerTextAddNewUser": "Kami akan menjemput untuk mendaftar jika mereka tidak mempunyai sebarang akaun.",
+    "thisWeekTitle": "Minggu Ini",
+    "lastWeekTitle": "Minggu lepas",
+    "lastMonthTitle": "Bulan lepas"
   },
   //new Add folow IOS
   "RegisterNew": {
@@ -1326,7 +1336,7 @@
 
     "continue": "Teruskan",
     
-    "titleNonOwnerAddAcc": "BM_Continue adding the account and give it a name for your easy reference.",
+    
     "email_address": "Alamat e-mel",
     "email_user_address": "Alamat e-mel pengguna",
     "ManageUserTitle": "BM_Give this user access to:",

@@ -29,7 +29,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 {
     [Activity(Label = "@string/update_mobile_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait
-        , Theme = "@style/Theme.UpdateMobile")]
+        , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class UpdateMobileActivity : BaseActivityCustom, UpdateMobileContract.IView
     {
         [BindView(Resource.Id.rootView)]

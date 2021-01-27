@@ -341,7 +341,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
         {
             try
             {
-                Snackbar updateNameBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "NameUpdateSuccess"), Snackbar.LengthIndefinite)
+                Snackbar updateNameBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "toast_SuccessUpdateName"), Snackbar.LengthIndefinite)
                             .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>
                              {
