@@ -161,7 +161,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
 
         [OnClick(Resource.Id.btnRemoveAccount)]
-        void OnRegister(object sender, EventArgs eventArgs)
+        void OnClickRemoveAccount(object sender, EventArgs eventArgs)
         {
             try
             {

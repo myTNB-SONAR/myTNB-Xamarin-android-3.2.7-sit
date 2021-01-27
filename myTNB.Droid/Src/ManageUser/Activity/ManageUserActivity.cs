@@ -563,26 +563,6 @@ namespace myTNB_Android.Src.ManageUser.Activity
         {
             Intent resultIntent = new Intent();
             resultIntent.PutExtra("cancelInvited", email);
-            //try
-            //{
-            //    Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("ManageAccount", "cancelAddSuccess"), email)), Snackbar.LengthIndefinite)
-            //                .SetAction(GetLabelCommonByLanguage("close"),
-            //                 (view) =>
-            //                 {
-            //                     // EMPTY WILL CLOSE SNACKBAR
-            //                 }
-            //                );
-            //    View v = saveSnackBar.View;
-            //    TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            //    tv.SetMaxLines(4);
-            //    saveSnackBar.Show();
-            //    this.SetIsClicked(false);
-            //}
-            //catch (System.Exception e)
-            //{
-            //    this.SetIsClicked(false);
-            //    Utility.LoggingNonFatalError(e);
-            //}
             SetResult(Result.Ok, resultIntent);
             Finish();
         }
