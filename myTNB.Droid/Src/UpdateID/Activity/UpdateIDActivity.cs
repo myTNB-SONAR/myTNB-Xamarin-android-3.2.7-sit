@@ -133,7 +133,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 txtAccountType.Text = Utility.GetLocalizedLabel("OneLastThing", "idtypeTitle").ToUpper();
                 textInputLayoutICNo.Hint = Utility.GetLocalizedLabel("OneLastThing", "idNumberhint");
                 SetToolBarTitle(Utility.GetLocalizedLabel("UpdateID", "title"));
-                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 btnRegister.Text = Utility.GetLocalizedLabel("UpdateID", "confrimButton");
                 LabelTitle.Text = Utility.GetLocalizedLabel("UpdateID", "updateIdLabelTitle");
                 LabelDetails.Text = Utility.GetLocalizedLabel("UpdateID", "updateIdLabelDetails");
