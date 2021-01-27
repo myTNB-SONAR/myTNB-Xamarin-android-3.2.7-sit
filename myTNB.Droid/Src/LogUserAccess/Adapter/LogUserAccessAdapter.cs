@@ -106,9 +106,9 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                     }
                     else if (!data.IsApplyEBilling && data.IsHaveAccess)
                     {
-                        viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_denied));
+                        viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_confirmed));
 
-                        string txtdata = Utility.GetLocalizedLabel("UserAccess", "removeAccesssLogeBilling");
+                        string txtdata = Utility.GetLocalizedLabel("UserAccess", "addAccesssLogfullBill");
                         string temp = string.Format(txtdata, data.UserName);
 
                         if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
@@ -122,9 +122,9 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                     }
                     else if (data.IsApplyEBilling && !data.IsHaveAccess)
                     {
-                        viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_denied));
+                        viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_confirmed));
 
-                        string txtdata = Utility.GetLocalizedLabel("UserAccess", "removeAccesssLogfullBill");
+                        string txtdata = Utility.GetLocalizedLabel("UserAccess", "addAccesssLogeBilling");
                         string temp = string.Format(txtdata, data.UserName);
 
                         if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
@@ -138,7 +138,8 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                     }
                     else
                     {
-                        string txtdata = Utility.GetLocalizedLabel("UserAccess", "addAccesssLogfullBill");
+                        viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_denied));
+                        string txtdata = Utility.GetLocalizedLabel("UserAccess", "removeAccesssLogBoth");
                         string temp = string.Format(txtdata, data.UserName);
 
                         if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)

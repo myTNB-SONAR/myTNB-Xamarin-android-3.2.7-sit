@@ -459,7 +459,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 {
                     MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                         .SetTitle(Utility.GetLocalizedErrorLabel("error_duplicateAccountTitle"))
-                        .SetMessage(Utility.GetLocalizedErrorLabel("error_duplicateAccountMessage"))
+                        .SetMessage(Utility.GetLocalizedErrorLabel("error_duplicateAccountMessageNew"))
                         .SetContentGravity(GravityFlags.Center)
                         .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
                         .Build().Show();
@@ -626,9 +626,9 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     {
                         textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
 
-                        if (textInputLayoutAccountNo.Error != Utility.GetLocalizedErrorLabel("accountLength"))
+                        if (textInputLayoutAccountNo.Error != Utility.GetLocalizedErrorLabel("accountLengthNew"))
                         {
-                            textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");  // fix bouncing issue
+                            textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLengthNew");  // fix bouncing issue
                         }
                         
                         textInputLayoutAccountNo.RequestLayout();

@@ -19,7 +19,7 @@ using myTNB_Android.Src.Utils;
 namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
 {
     [Activity(Label = "DisclaimerAddAccount", ScreenOrientation = ScreenOrientation.Portrait
-    , Theme = "@style/Theme.DashboardHome")]
+    , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class AddAccountDisclaimerActivity : BaseActivityCustom
     {
 
@@ -43,7 +43,10 @@ namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
 
         [BindView(Resource.Id.layoutDetails)]
         LinearLayout layoutDetails;
-        
+
+        [BindView(Resource.Id.view1)]
+        View view1;
+
 
         private string PAGE_ID = "AddAccount";
         UserEntity user = UserEntity.GetActive();
@@ -76,7 +79,7 @@ namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
             string data;
             data = Utility.GetLocalizedLabel("AddAccount", "DisclaimerDetails1");
             SetToolBarTitle(GetLabelByLanguage("tncAddAccTitle"));
-            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+            //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
             headerText.TextFormatted = GetFormattedText(GetLabelByLanguage("DiclaimerHeaderAddElectricity"));
             headerText2.TextFormatted = GetFormattedText(GetLabelByLanguage("DiclaimerHeaderTNBTerm"));
@@ -100,6 +103,7 @@ namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
                 {
                     this.SetIsClicked(true);
                     layoutDetails.Visibility = ViewStates.Gone;
+                    view1.Visibility = ViewStates.Gone;
                     //headerText.SetCompoundDrawablesWithIntrinsicBounds(null, null, null,(Android.Graphics.Drawables.Drawable)Resource.Drawable.expand_right_arrow);
                     itemAction.SetBackgroundResource(Resource.Drawable.expand_right_arrow);
                 }
@@ -107,6 +111,7 @@ namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
                 {
                     this.SetIsClicked(false);
                     layoutDetails.Visibility = ViewStates.Visible;
+                    view1.Visibility = ViewStates.Visible;
                     //headerText.SetCompoundDrawablesWithIntrinsicBounds(null, null, null,(Android.Graphics.Drawables.Drawable)Resource.Drawable.expand_down_arrow );
                     itemAction.SetBackgroundResource(Resource.Drawable.expand_down_arrow);
                 }

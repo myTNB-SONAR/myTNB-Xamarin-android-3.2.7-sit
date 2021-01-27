@@ -139,7 +139,7 @@
     "invalid_icNumber": "Invalid IC number.",
     "invalid_rocNumber": "Invalid ROC number.",
     "accountLength": "Please enter a valid 12-digit account number",
-    "invalid_accountType": "Invalid Account Type",
+    "enter a va": "Invalid Account Type",
     "noDataConnectionTitle": "No Internet Connection",
     "noDataConnectionMessage": "Please check your internet connection and try again.",
     "defaultErrorTitle": "Oh no, something went wrong!",
@@ -167,7 +167,10 @@
     "paymentCCErrorMsg": "Sorry, we're unable to retrieve your card information right now. You may still pay by adding another card or by using online banking via FPX.",
     "profileCCErrorMsg": "If you're here to manage your cards, we're unable to perform this action right now. Please try again later.",
     "noMeterAccessErrorTitle": "Sorry this service may not be available to you.",
-    "noMeterAccessErrorMessage": "The meter will need to be accessible so that you can read your meter. You may try again when you have access to the meter."
+    "noMeterAccessErrorMessage": "The meter will need to be accessible so that you can read your meter. You may try again when you have access to the meter.",
+    //yana
+    "accountLengthNew": "Please enter a valid 12-digit electricity account number",
+    "error_duplicateAccountMessageNew": "This electricity account number has already been added to the list."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -653,7 +656,8 @@
     "DisclaimerDetails1": "I confirm that I <b>({0})</b> the owner / authorised person, have the consent and permission to view the account information for the account(s) listed. As a non-owner I agree to share my name and email address with the owner upon submission of this request.",
     "DisclaimerDetails2": "Please be informed that this application is for the privilege use between TNB and its account holder and any other person with the consent of the account holder. TNB shall not be held liable for any improper use and incorrect use of the information described and contained herein and under no obligation to check the authenticity of such consent and permission given. Upon confirming, you are deemed to have read, understood and agreed to the disclaimer as displayed.",
     "GovDialogTitle": "Sorry we can't add Government electricity accounts on myTNB App right now.",
-    "GovDialogDetails": "You still can add and view your Government account through the myTNB Portal"
+    "GovDialogDetails": "You still can add and view your Government account through the myTNB Portal",
+    "titleNonOwnerAddAcc": "Continue adding the account and give it a name for your easy reference."
   },
   "Profile": {
     "title": "Profile",
@@ -864,6 +868,7 @@
     "manageUserAccess": "Manage User Access",
     "manageAutopay": "Manage Autopay"
     
+
   },
   "Onboarding": {
     "letsStart": "Let's get started!",
@@ -1281,7 +1286,12 @@
     "removeAccesssLogfullBill": "You removed <strong>{0}</strong>’s access to view full electricity bill.",
     "removeAccesssLogeBilling": "You removed <strong>{0}</strong>’s access to apply for e-billing.",
     "removeAccesssLogBoth": "You removed <strong>{0}</strong>’s access to apply for e-billing and view full electricity bill.",
-    "title_activityLog": "Activity Log"
+    "title_activityLog": "Activity Log",
+    "headerTextAddNewUser": "We'll invite them to register for an account if they don't have any.",
+    "thisWeekTitle": "This Week",
+    "lastWeekTitle": "Last Week",
+    "lastMonthTitle":  "Last Month"
+
   },
   //new add follow IOS
   "RegisterNew": {
@@ -1326,7 +1336,7 @@
 
     "continue": "Continue",
     
-    "titleNonOwnerAddAcc": "Continue adding the account and give it a name for your easy reference.",
+    
     "email_address": "Email Address",
     "email_user_address": "User Email Address",
     "ManageUserTitle": "Give this user access to:",

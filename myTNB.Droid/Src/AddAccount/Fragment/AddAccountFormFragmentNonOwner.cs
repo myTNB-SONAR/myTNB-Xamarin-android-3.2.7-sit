@@ -132,7 +132,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 //accountType = mainView.FindViewById<TextView>(Resource.Id.selector_account_type);
 
-                txtNonOwnerTitle.Text = Utility.GetLocalizedLabel("OT_Uncategorize", "titleNonOwnerAddAcc");
+                txtNonOwnerTitle.Text = Utility.GetLocalizedLabel("AddAccount", "titleNonOwnerAddAcc");
                 textInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("Common","accountNo");
                 textInputLayoutAccountLabel.Hint = Utility.GetLocalizedLabel("Common","acctNickname");
                 textInputLayoutOwnerIC.Hint = Utility.GetLocalizedLabel("AddAccount", "ownerICNumber");
@@ -391,7 +391,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 else
                 {
                     textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                    textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("error_duplicateAccountMessage");
+                    textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("error_duplicateAccountMessageNew");
                     /*MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                         .SetTitle(Utility.GetLocalizedErrorLabel("error_duplicateAccountTitle"))
                         .SetMessage(Utility.GetLocalizedErrorLabel("error_duplicateAccountMessage"))
@@ -535,9 +535,9 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     {
                         textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
 
-                        if (textInputLayoutAccountNo.Error != Utility.GetLocalizedErrorLabel("accountLength"))
+                        if (textInputLayoutAccountNo.Error != Utility.GetLocalizedErrorLabel("accountLengthNew"))
                         {
-                            textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");  // fix bouncing issue
+                            textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLengthNew");  // fix bouncing issue
                         }
                         
                         textInputLayoutAccountNo.RequestLayout();
