@@ -633,7 +633,7 @@
     "titleContinue": "Teruskan menambah masuk akaun",
     "bodyContinue": "Anda masih boleh menambah masuk akaun secara manual dengan menggunakan nombor akaun, tetapi anda akan memiliki akses terhad ke atas akaun ini sebagai pemilik yang tidak sah.",
     "tnc": "Dengan mengesahkan, saya telah membaca dan bersetuju dengan <a href=\"\\\"><strong>Terma dan Syarat</strong></a>.",
-    "tnc_checked": "Saya telah membaca dan bersetuju untuk <a href=\"\\\"><strong>Terma dan Syarat/strong></a>.",
+    "tnc_checked": "Saya telah membaca dan bersetuju untuk <a href=\"\\\"><strong>Terma dan Syarat</strong></a>.",
     //new added 
     "AccHeaderText": "Mari memasuki akaun anda dengan memilih jenis akaun anda.",
     "PremisesHint": "BM_The Premises I’m Adding is",
