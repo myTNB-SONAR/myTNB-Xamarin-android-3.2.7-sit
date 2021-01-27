@@ -1974,6 +1974,15 @@
             "secondaryCTATitle": "",
             "isSuccess": true,
             "type": "none"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Looks like your page can't be loaded at the moment. Come back in a while.",
+            "primaryCTATitle": "Got It!",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
           }
         ],
         "ApplicationStatus": [
@@ -1999,6 +2008,15 @@
             "code": "7001",
             "title": "",
             "message": "Looks like your request can't loaded at the moment. Please try again later.",
+            "primaryCTATitle": "Got It!",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Looks like your page can't be loaded at the moment. Come back in a while.",
             "primaryCTATitle": "Got It!",
             "secondaryCTATitle": "",
             "isSuccess": false,
@@ -2061,6 +2079,15 @@
             "secondaryCTATitle": "",
             "isSuccess": false,
             "type": "fullscreen"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Looks like your page can't be loaded at the moment. Come back in a while.",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "fullscreen"
           }
         ],
         "ApplicationDetail": [
@@ -2117,6 +2144,15 @@
             "code": "7001",
             "title": "",
             "message": "Oops! There is an error occured in processing your request. Please try again later.",
+            "primaryCTATitle": "Got It!",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Looks like your page can't be loaded at the moment. Come back in a while.",
             "primaryCTATitle": "Got It!",
             "secondaryCTATitle": "",
             "isSuccess": false,
