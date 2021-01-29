@@ -652,7 +652,7 @@
     "tncAddAccTitle": "Terma & Syarat",
     "DiclaimerHeaderTNBTerm": "<b>Syarat Penggunaan TNB, Perjanjian Pengguna dan dasar Privasi</b>",
     "DiclaimerHeaderPersonalData": "<b>Dasar Perlindungan Data Peribadi</b>",
-    "DiclaimerHeaderAddElectricity": "<b>BM_Add Electricity Account Disclaimer</b>",
+    "DiclaimerHeaderAddElectricity": "<b>Penyataan Penambahan Akaun Elektrik</b>",
     "DisclaimerDetails1": "Saya mengesahkan bahawa saya <b>({0})</b> pemilik / orang yang diberi kuasa, mempunyai persetujuan dan kebenaran untuk melihat maklumat akaun yang disenaraikan. Sebagai bukan pemilik, saya bersetuju untuk berkongsi nama dan alamat e-mel dengan pemilik semasa penyerahan permintaan ini.",
     "DisclaimerDetails2": "Dimaklumkan bahawa aplikasi ini adalah untuk keistimewaan penggunaan antara TNB dan pemegang akaunnya dan orang lain dengan persetujuan pemegang akaun. TNB tidak akan bertanggungjawab atas penggunaan yang salah dan penggunaan maklumat yang dijelaskan dan terkandung di dalam ini serta tidak berkewajipan untuk memeriksa kesahihan persetujuan dan kebenaran yang diberikan. Setelah mengesahkan perkara ini, anda dianggap telah membaca, memahami dan menyetujui penafian seperti yang ditunjukkan.",
     "GovDialogTitle": "Maaf, kami tidak dapat menambah akaun elektrik Kerajaan ke dalam Aplikasi myTNB sekarang.",
@@ -843,10 +843,10 @@
     "accountSectionTitle": "BM_TNB Electricity Supply Accounts",
     "logout": "Log keluar",
     "logoutMessage": "BM_Are you sure you want to log out from the myTNB app?",
-    "mobileNumberVerified": "BM_You've successfully updated your phone number!",
-    "accountDeleteSuccess": "BM_Your electricity supply account has been removed from myTNB account.",
-    "passwordUpdateSuccess": "BM_Your password has been changed successfully.",
-    "noAccounts": "BM_No Electricity Account",
+    "mobileNumberVerified": "Anda berjaya mengemas kini nombor telefon anda",
+    "accountDeleteSuccess": "Akaun elektrik anda telah dialih keluar daripada akaun myTNB.",
+    "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
+    "noAccounts": "Tiada Akaun Elektrik",
     "addAccountMessage": "BM_Add your existing TNB Electricity Supply Account to view usage and transaction details.",
     "titleManageUser": "Urus Pengguna",
     "titleAddUser": "Tambah Pengguna Baru",
@@ -1215,17 +1215,17 @@
 
   "Tnb_Profile": {
     "title": "Profil myTNB",
-    "passwordUpdateSuccess": "BM_Your password has been changed successfully.",
+    "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
     "mobileNumberVerified": "BM_You've successfully updated your phone number!",
-    "IDUpdateSuccess": "BM_Thank you for updating! Your update has been recorded below.",
+    "IDUpdateSuccess": "Terima kasih kerana mengemaskini! Aktiviti anda telah dirakam seperti di bawah.",
     //syahmi add
     "lblID": "IC / ID Askar / Nombor Pasport",
     "passwordchange": "Tukar Kata Laluan Saya",
     "gotIt": "Ok",
     "resend": "Hantar semula",
-    "verifyEmailPopupBody": "BM_Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
-    "verifyEmailPopupTitle": "BM_Pending Email Verification",
-    "toast_email_send": "BM_An email verification link has been sent to ",
+    "verifyEmailPopupBody": "Sila sahkan alamat e-mel anda dengan pautan yang telah kami kirimkan. Anda juga boleh meminta kiriman semula jika anda tidak menerima pautan tersebut.",
+    "verifyEmailPopupTitle": "Pengesahan E-mel Belum Selesai",
+    "toast_email_send": "Pengesahan e-mel telah dihantar ke ",
     "toast_SuccessUpdateName": "BM_You’ve successfully updated your name!"
   },
 
@@ -1247,10 +1247,10 @@
 
 
   "UpdateID": {
-    "title": "BM_Update Identification Number",
-    "updateIdLabelTitle": "BM_Provide your identification number for better experience!",
-    "updateIdLabelDetails": "BM_Get better access and controls over your electricity accounts on myTNB by helping us validate your identification",
-    "confrimButton": "BM_Confirm"
+    "title": "Kemas kini Nombor Pengenalan",
+    "updateIdLabelTitle": "Sediakan kami nombor pengenalan anda untuk pengalaman yang lebih baik!",
+    "updateIdLabelDetails": "Dapatkan akses dan kawalan yang lebih menyeluruh atas akaun elektrik anda di myTNB dengan membantu kami mengesahkan pengenalan diri anda",
+    "confrimButton": "Sahkan"
   },
   "UserAccess": {
     "title": "Akses Pengguna",
@@ -1268,7 +1268,7 @@
     "titleAddNewUser": "BM_Provide user’s email address they use for their myTNB account.",
     "bodyAddNewUser": "BM_Do you want to give this user more access (optional)?",
     "deleteSuccessMessage": "BM_User(s) has been removed successfully.",
-    "deleteUserTitle": "Adakah anda pasti mahu mengalih keluar Adam Hussein??",
+    "deleteUserTitle": "Adakah anda pasti mahu mengalih keluar ?",
     "deleteUserBody": "BM_Once removed, the selected user(s) will be revoked of all access and unable to view any information related to this account.",
     "walkthroughStep1Title": "Lihat log aktiviti anda disini",
     "walkthroughStep2Title": "Lihat penguna akaun anda dengan sepintas lalu.",
@@ -1292,18 +1292,19 @@
     "headerTextAddNewUser": "Kami akan menjemput untuk mendaftar jika mereka tidak mempunyai sebarang akaun.",
     "thisWeekTitle": "Minggu Ini",
     "lastWeekTitle": "Minggu lepas",
-    "lastMonthTitle": "Bulan lepas"
+    "lastMonthTitle": "Bulan lepas",
+    "ManageUserTitle": "BM_Give this user access to:"
   },
   //new Add folow IOS
   "RegisterNew": {
     "title": "Daftar",
-    "etitleRegister" : "Mari kita mulakan!",
-    "ebodyRegister" : "Daftar masuk akaun anda dengan maklumat di bawah:",
+    "etitleRegister": "Mari kita mulakan!",
+    "ebodyRegister": "Daftar masuk akaun anda dengan maklumat di bawah:",
     "EmailHint": "Anda akan mengunakan alamat e-mel ini untuk log masuk di masa hadapan.",
     "passwordHint": "Kata laluan anda perlu mengandungi sekurang-kurangnya 8 angka abjad.",
-    "EmailHeaderError": "BM_The email address have been registered",
-    "EmailBodyError" : "Sila cuba lagi dengan alamat e-mel yang lain. Sebagai alternatif, anda boleh menukar semula kata laluan anda untuk menggunakan alamat e-mel yang sama.",
-    "Reset" : "Tukar",
+    "EmailHeaderError": "Alamat e-mel ini telah didaftarkan",
+    "EmailBodyError": "Sila cuba lagi dengan alamat e-mel yang lain. Sebagai alternatif, anda boleh menukar semula kata laluan anda untuk menggunakan alamat e-mel yang sama.",
+    "Reset": "Tukar",
     "emailRequired": "Sila masukkan alamat email.",
     "passwordRequired": "Sila masukkan kata laluan."
   },
@@ -1340,7 +1341,6 @@
     
     "email_address": "Alamat e-mel",
     "email_user_address": "Alamat e-mel pengguna",
-    "ManageUserTitle": "BM_Give this user access to:",
     "error_NotExistsAccountMessage": "Nombor akaun yang anda masukkan ini tidak dapat ditemui.",
     "later": "Tangguhkan",
     "ApplyforBilling": "Buat Permohonan e-Billing"
