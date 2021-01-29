@@ -308,10 +308,14 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 btnSubmit.Text = Utility.GetLocalizedLabel("Common", "submit");
                 btnSubmit.TextSize = TextViewUtils.GetFontSize(16f);
 
+                txtInputLayoutName.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                txtInputLayoutEmail.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
 
                 //set translation of string 
                 txtTermsConditionsGeneralEnquiry.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryTnc"));
-                StripUnderlinesFromLinks(txtTermsConditionsGeneralEnquiry);
+
+                 StripUnderlinesFromLinks(txtTermsConditionsGeneralEnquiry);
+
 
 
                 WhoShouldWeContact.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "contactEnquiryTitle");
