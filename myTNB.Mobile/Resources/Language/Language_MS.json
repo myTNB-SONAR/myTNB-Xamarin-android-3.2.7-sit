@@ -56,7 +56,7 @@
     "english": "English",
     "bahasa": "Bahasa Malaysia",
     "saveChanges": "Simpan",
-    "gotIt": "OK",
+    "gotIt": "Ok",
     "login": "Log Masuk",
     "next": "Seterusnya",
     "resend": "Hantar semula",
@@ -211,7 +211,7 @@
     "tutorialQuickAccessDesc": "Tekan <b>“Tambah”</b> untuk menambah akaun ke myTNB. <b>“Cari”</b> akaun yang telah ditambah dengan menaip nama ringkas atau nombor akaun.",
     "tutorialQuickActionDesc": "Ciri baharu diketengahkan untuk anda mendapatkan semua perkhidmatan yang ditawarkan oleh myTNB!",
     "tutorialNeedHelpDesc": "Kami ketengahkan soalan lazim untuk anda ketahui.",
-    "gotIt": "OK!",
+    "gotIt": "Ok!",
     "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
     "receivedExtra": "terima lebih",
     "applicationStatus": "Status<br>Permohonan"
@@ -288,7 +288,7 @@
     "noHistoryData": "Nampaknya anda tiada rekod bacaan meter buat masa ini.",
     "tutorialHeaderTitle": "Status bacaan anda sepintas lalu.",
     "tutorialHeaderDesc": "Lihat akaun lain dan dapatkan gambaran keseluruhan status bacaan anda di sini.",
-    "tutorialGotIt": "OK!",
+    "tutorialGotIt": "Ok!",
     "whereIsMyMeter": "Di manakah boleh saya mencari meter saya?",
     "whereIsMyMeterTitle": "Di manakah boleh saya mencari meter saya?",
     "whereIsMyMeterMessage": "Untuk menghantar bacaan meter bulanan, nilai pada skin paparan meter anda haruslah boleh dibaca dengan jelas. Meter anda kebiasaannya terletak berhampiran pintu atau bangunan meter (bilik riser).",
@@ -299,7 +299,7 @@
       {
         "Title": "Mengapa akaun saya tiada di sini?",
         "Description": "Bagi memudahkan anda, kami hanya menyenaraikan akaun elektrik yang layak untuk perkhidmatan Self Meter Reading. <a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">Klik di sini</a> untuk mengetahui syarat kelayakan.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "Not_SMR_CA"
       }
     ]
@@ -326,7 +326,7 @@
     "ocrDownMessage": "Servis menghantar foto tidak tersedia pada masa ini. Sila <b>masukkan bacaan anda secara manual</b> di bawah.",
     "tutorialReadMeterTitle": "Masukkan bacaan meter anda di sini.",
     "tutorialReadMeterDesc": "Masukkan mengikut unit. Anda akan dapat melihat bacaan bulan sebelumnya sebagai rujukan.",
-    "tutorialReadMeterGotIt": "OK!"
+    "tutorialReadMeterGotIt": "Ok!"
   },
   "SSMRCaptureMeter": {
     "ocrReading": "Sila tunggu sebentar sementara kami membaca gambar anda...",
@@ -346,37 +346,37 @@
       {
         "Title": "Muat naik daripada album anda?",
         "Description": "Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin berserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "Single_UploadPhoto"
       },
       {
         "Title": "Bagaimana cara menangkap gambar bacaan?",
         "Description": "Anda perlu menghantar {0} nilai bacaan meter yang berbeza <strong>({1})</strong>.<br><br>Berdiri berhampiran meter anda. Anda hanya perlu menangkap gambar skrin paparan pada meter tersebut. Pastikan nombornya jelas, tidak silau, atau bergegar.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "Multi_TakePhoto"
       },
       {
         "Title": "Bagaimana cara menangkap gambar bacaan?",
         "Description": "Berdiri berhampiran meter anda. Anda hanya perlu menangkap gambar skrin paparan pada meter tersebut. Pastikan nombornya jelas, tidak silau, atau bergegar",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "Single_TakePhoto"
       },
       {
         "Title": "Muat naik daripada album anda?",
         "Description": "Anda perlu menghantar {0} nilai bacaan meter yang berbeza <strong>({1})</strong>.<br><br>Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin berserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "Multi_UploadPhoto"
       },
       {
         "Title": "Bagaimana cara menangkap gambar bacaan?",
         "Description": "Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the values with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "Multi_TakePhoto_One_Missing"
       },
       {
         "Title": "Muat naik daripada album anda?",
         "Description": "Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin berserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "Multi_UploadPhoto_One_Missing"
       }
     ]
@@ -388,7 +388,7 @@
   "Usage": {
     "title": "Usage",
     "accountsMissing": "Why are some of my accounts not here?",
-    "gotIt": "OK!",
+    "gotIt": "Ok!",
     "disconnectionMsg": "<strong>Apakah maksudnya?</strong><br><br>Bekalan elektrik anda telah dipotong. Pemotongan ini mungkin disebabkan oleh permintaan pemilik premis, atau tunggakan bayaran bil.<br><br>Sekiranya anda telah memohon untuk sambungan semula, atau telah membuat bayaran, bekalan anda akan disambung dalam masa terdekat.",
     "projectedCostMsg": "<strong>Bil saya setakat hari ini:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
     "projectedCostTitle": "Apakah ini?",
@@ -397,7 +397,7 @@
     "emptyDataMsg": "Selamat datang! Penggunaan anda akan dipaparkan setelah bil pertama dikeluarkan.",
     "SMOverlayTitle": "Bagaimana cara untuk melihat penggunaan harian saya?",
     "SMOverlayMsg": "Cubit untuk zum masuk atau keluar! Zum masuk untuk melihat penggunaan harian anda.",
-    "SMOverlayBtnTxt": "OK!",
+    "SMOverlayBtnTxt": "Ok!",
     "viewReadHistory": "Kembali ke Penggunaan",
     "showTariff": "Tunjuk Tarif",
     "hideTariff": "Sorok Tarif",
@@ -448,7 +448,7 @@
     "tutorialViewDetailsDesc": "“Lihat Butiran” untuk menyemak pecahan bil anda.",
     "tutorialHistoryNormalAcctDesc": "Lihat dan akses bil serta resit pembayaran anda enam bulan kebelakangan. Gunakan penapis untuk melihat hanya bil atau resit.",
     "tutorialHistoryREAcctDesc": "Lihat dan akses makluman serta resit pembayaran anda enam bulan kebelakangan. Gunakan penapis untuk melihat hanya bil atau resit.",
-    "gotIt": "OK!",
+    "gotIt": "Ok!",
     "emptyHistory": "Sejarah transaksi anda kosong pada masa ini. Setelah ada, bil dan sejarah pembayaran anda akan dipaparkan di sini.",
     "emptyPaymentHistory": "Anda belum lagi membuat pembayaran melalui myTNB. Setelah dibuat, ini akan dipaparkan di sini.",
     "emptyBillHistory": "Anda belum lagi ada bil. Setelah ada, sejarah bil anda akan dipaparkan di sini.",
@@ -461,13 +461,13 @@
       {
         "Title": "Kami mengesyorkan anda menyelesaikan caj sekali bayar anda terlebih dahulu.",
         "Description": "Caj sekali bayar anda seperti Wang Cagaran, Caj Pemprosesan, Duti Setem dan Caj Meter hendaklah dibersihkan terlebih dahulu untuk memastikan permulaan/penerusan perkhidmatan.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "MandatoryCharges"
       },
       {
         "Title": "Kami mengesyorkan anda menyelesaikan caj sekali bayar anda terlebih dahulu.",
         "Description": "Pelangsaian <b>{0}</b> dari caj sekali bayar bertujuan untuk memastikan bekalan dapat dimulakan/berterusan.<br><br>Sila lihat butiran bil anda untuk mengetahui dengan lebih lanjut.",
-        "CTA": "Lihat Butiran,OK!",
+        "CTA": "Lihat Butiran,Ok!",
         "Type": "MandatoryPayment"
       }
     ]
@@ -490,7 +490,7 @@
     "pay": "Bayar",
     "tutorialTitle": "Lihat Bil anda.",
     "tutorialDesc": "Tekan sini untuk mengakses bil versi PDF anda.",
-    "gotIt": "OK!"
+    "gotIt": "Ok!"
   },
   "BillFilter": {
     "title": "Tapis Paparan",
@@ -513,13 +513,13 @@
       {
         "Title": "Kami mengesyorkan anda menyelesaikan caj sekali bayar anda terlebih dahulu.",
         "Description": "Caj sekali bayar anda seperti Wang Cagaran, Caj Pemprosesan, Duti Setem dan Caj Meter hendaklah dibersihkan terlebih dahulu untuk memastikan permulaan/penerusan perkhidmatan.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "MandatoryCharges"
       },
       {
         "Title": "Kami mengesyorkan anda menyelesaikan caj sekali bayar anda terlebih dahulu.",
         "Description": "Pelangsaian <b>{0}</b> dari caj sekali bayar bertujuan untuk memastikan bekalan dapat dimulakan/berterusan.<br><br>Sila lihat butiran bil anda untuk mengetahui dengan lebih lanjut.",
-        "CTA": "Lihat Butiran,OK!",
+        "CTA": "Lihat Butiran,Ok!",
         "Type": "MandatoryPayment"
       }
     ]
@@ -796,7 +796,7 @@
   },
   "Register": {
     "title": "Daftar",
-    "tnc": "Dengan mendaftar, anda bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat TNB</strong></a>, <a href=\"\\\"><strong>Persetujuan Pengguna</strong></a> dan <a href=\"\\\"><strong>polisi Privasi</strong></a>.",
+    "tnc": "Dengan mendaftar, anda bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat TNB</strong></a>, <a href=\"\\\"><strong>Persetujuan Pengguna</strong></a> dan <a href=\"\\\"><strong>Polisi Privasi</strong></a>.",
     "ctaTitle": "Daftar",
     "confirmEmail": "Sahkan E-mel"
   },
@@ -1078,7 +1078,7 @@
     "copyOfPermiseProof": "Salinan Perjanjian Jual & Beli / Cukai pintu / Perjanjian Sewa Rumah",
     "nameHintBottom": "Masukkan nama penuh seperti di dalam kad pengenalan anda",
     "enquiryTncRead": "Saya telah membaca dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat</strong></a>",
-    "imagePermises": "-/media/myTNBapp/SubmitEnquiry/permises2x2.png",
+    "imagePermises": "-/media/myTNBapp/SubmitEnquiry/premises2x2.png",
     "permisesTooltipTitle": "Bagaimanakah contoh dokumen sokongan?",
     "permisesTitle": "Salinan Perjanjian Jual & Beli/ Cukai Pintu/ Perjanjian Penyewaan",
     "permisesContent": "Kami hanya memerlukan halaman dengan nama, nombor pengenalan dan alamat premis anda",
@@ -1974,6 +1974,15 @@
             "secondaryCTATitle": "",
             "isSuccess": true,
             "type": "none"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+            "primaryCTATitle": "Ok!",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
           }
         ],
         "ApplicationStatus": [
@@ -2000,6 +2009,15 @@
             "title": "",
             "message": "Nampaknya permintaan anda tidak dapat dimuat turun pada masa ini. Sila cuba sebentar lagi.",
             "primaryCTATitle": "Ok",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+            "primaryCTATitle": "Ok!",
             "secondaryCTATitle": "",
             "isSuccess": false,
             "type": "popup"
@@ -2061,6 +2079,15 @@
             "secondaryCTATitle": "",
             "isSuccess": false,
             "type": "fullscreen"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "fullscreen"
           }
         ],
         "ApplicationDetail": [
@@ -2118,6 +2145,15 @@
             "title": "",
             "message": "Oops! There is an error occured in processing your request. Please try again later.",
             "primaryCTATitle": "Ok",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+            "primaryCTATitle": "Ok!",
             "secondaryCTATitle": "",
             "isSuccess": false,
             "type": "popup"

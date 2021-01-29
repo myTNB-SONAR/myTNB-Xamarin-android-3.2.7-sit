@@ -13,7 +13,6 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Base;
 using System.Threading.Tasks;
-using myTNB_Android.Src.Maintenance.Activity;
 using AndroidX.Core.Content;
 using myTNB;
 using myTNB.Mobile.SessionCache;
@@ -109,9 +108,9 @@ namespace myTNB_Android.Src.Profile.Activity
             }
 
             savedFont = TextViewUtils.SelectedFontSize();
+            savedFont = (savedFont != null && savedFont != string.Empty) ? savedFont : "R";
             FontItemList = new List<Item>();
             isSelectionChange = false;
-
 
             Dictionary<string, List<SelectorModel>> selectors = LanguageManager.Instance.GetSelectorsByPage("SelectFontSize");
             _mappingList = new List<SelectorModel>();
@@ -156,6 +155,7 @@ namespace myTNB_Android.Src.Profile.Activity
         private void UpdateFont()
         {
             savedFont = TextViewUtils.SelectedFontSize();
+            savedFont = (savedFont != null && savedFont != string.Empty) ? savedFont : "R";
             // UpdateLabels();
             EnableDisableButton();
         }

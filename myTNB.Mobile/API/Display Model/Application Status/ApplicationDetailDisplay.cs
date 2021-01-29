@@ -319,7 +319,9 @@ namespace myTNB.Mobile
                         type = DetailCTAType.None;
                     }
                 }
-                else if (ApplicationAppointmentDetail != null && ApplicationAppointmentDetail.Mode.IsValid())
+                else if (IsSchedulerEnable
+                    && ApplicationAppointmentDetail != null
+                    && ApplicationAppointmentDetail.Mode.IsValid())
                 {
                     switch (ApplicationAppointmentDetail.Mode.ToUpper())
                     {
@@ -536,6 +538,11 @@ namespace myTNB.Mobile
         /// Use to hide payment section
         /// </summary>
         public bool IsPaymentAvailable { set; get; }
+
+        /// <summary>
+        /// Coming from app launch master data
+        /// </summary>
+        public bool IsSchedulerEnable { set; get; } = true;
 
         private Color StatusColorDisplay
         {

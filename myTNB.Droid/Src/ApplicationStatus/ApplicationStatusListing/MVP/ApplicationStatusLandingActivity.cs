@@ -358,6 +358,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                     viewMoreContainer.Visibility = ViewStates.Gone;
                     mappicationPopup.Visibility = ViewStates.Gone;
                     applicationStatusLandingShimmerLayout.Visibility = ViewStates.Visible;
+                    applicationStatusLandingEmptyLayout.Visibility = ViewStates.Gone;
                     applicationStatusLandingListContentShimmer.StartShimmer();
 
                     if (extras.ContainsKey(Constants.APPLICATION_STATUS_FILTER_TYPE_KEY))
@@ -468,6 +469,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
             ApplicationStatusTooltip.Visibility = ViewStates.Gone;
             mappicationPopup.Visibility = ViewStates.Gone;
             applicationStatusLandingShimmerLayout.Visibility = ViewStates.Visible;
+            applicationStatusLandingEmptyLayout.Visibility = ViewStates.Gone;
             applicationStatusLandingListContentShimmer.StartShimmer();
 
             TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusLandingEmpty, refreshMsg);
@@ -854,6 +856,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                         if (ConnectionUtils.HasInternetConnection(this))
                         {
                             applicationStatusLandingShimmerLayout.Visibility = ViewStates.Visible;
+                            applicationStatusLandingEmptyLayout.Visibility = ViewStates.Gone;
+
                             applicationStatusLandingListContentShimmer.StartShimmer();
 
                             if (!AllApplicationResponse.Content.IsLastResults)
@@ -1039,6 +1043,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                                     applicationStatusLandingRecyclerView.Visibility = ViewStates.Gone;
                                     mappicationPopup.Visibility = ViewStates.Gone;
                                     applicationStatusLandingShimmerLayout.Visibility = ViewStates.Visible;
+                                    applicationStatusLandingEmptyLayout.Visibility = ViewStates.Gone;
+
                                     applicationStatusLandingListContentShimmer.StartShimmer();
                                     AllApplicationsCache.Instance.Clear();
                                     AllApplicationResponse = await ApplicationStatusManager.Instance.GetAllApplications(AllApplicationsCache.Instance.QueryPage

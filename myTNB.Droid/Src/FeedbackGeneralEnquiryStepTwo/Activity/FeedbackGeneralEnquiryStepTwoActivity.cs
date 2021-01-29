@@ -51,7 +51,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         FeedbackGeneralEnquiryStepTwoContract.IUserActionsListener userActionsListener;
         FeedbackGeneralEnquiryStepTwoPresenter mPresenter;
 
-        
+
 
 
         [BindView(Resource.Id.rootView)]
@@ -97,9 +97,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         //[BindView(Resource.Id.txtInputLayoutPhoneNumber)]
         //TextInputLayout txtInputLayoutPhoneNumber;
 
-        public List<AttachedImage> attachedImages ;
+        public List<AttachedImage> attachedImages;
 
-        private  List<AttachedImage> attachList = new List<AttachedImage>();
+        private List<AttachedImage> attachList = new List<AttachedImage>();
 
         public List<FeedbackUpdateDetailsModel> feedbackUpdateDetailsModelList = new List<FeedbackUpdateDetailsModel>();
 
@@ -133,7 +133,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         {
             base.OnCreate(savedInstanceState);
             try
-            {   
+            {
                 //1 set presenter
                 mPresenter = new FeedbackGeneralEnquiryStepTwoPresenter(this);
 
@@ -141,7 +141,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
 
                 Android.OS.Bundle extras = Intent.Extras;
-                
+
 
                 if (extras != null)
                 {
@@ -158,10 +158,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                     }
 
 
-                        /// general enquiry
+                    /// general enquiry
                     if (extras.ContainsKey("FEEDBACK"))
                     {
-                        feedback=extras.GetString("FEEDBACK");
+                        feedback = extras.GetString("FEEDBACK");
                     }
                     if (extras.ContainsKey("IMAGE"))
                     {
@@ -206,9 +206,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                             {
                                 attachList.Add(DeSerialze<List<AttachedImage>>(extras.GetString(Constants.IMAGE_PERMISES))[0]);
                             }
-                           
-                                
-                                attachedImages = attachList;
+
+
+                            attachedImages = attachList;
 
 
                         }
@@ -224,7 +224,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                             FeedbackUpdInfoValue = icNumber,
                         };
                         feedbackUpdateDetailsModelList.Add(icUpdate);
-                        
+
                     }
                     if (extras.ContainsKey(Constants.ACCOUNT_OWNER_NAME))
                     {
@@ -290,29 +290,32 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
                     updateFeedbackList = feedbackUpdateDetailsModelList;
 
-               }
+                }
 
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName,txtInputLayoutEmail);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName, txtInputLayoutEmail);
 
                 txtName.AddTextChangedListener(new InputFilterFormField(txtName, txtInputLayoutName));
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtName, txtInputLayoutEmail));
 
 
-                TextViewUtils.SetMuseoSans500Typeface(btnSubmit , WhoShouldWeContact);
+                TextViewUtils.SetMuseoSans500Typeface(btnSubmit, WhoShouldWeContact);
 
 
-               //SET TRANSLATION
-                
-                txtInputLayoutName.Hint= Utility.GetLocalizedLabel("SubmitEnquiry", "nameHint");    
+                //SET TRANSLATION
+
+                txtInputLayoutName.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHint");
                 txtInputLayoutEmail.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "emailHint");
                 btnSubmit.Text = Utility.GetLocalizedLabel("Common", "submit");
+                btnSubmit.TextSize = TextViewUtils.GetFontSize(16f);
 
                 txtInputLayoutName.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
                 txtInputLayoutEmail.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
 
                 //set translation of string 
                 txtTermsConditionsGeneralEnquiry.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryTnc"));
+
                  StripUnderlinesFromLinks(txtTermsConditionsGeneralEnquiry);
+
 
 
                 WhoShouldWeContact.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "contactEnquiryTitle");
@@ -334,21 +337,21 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 // bind text change 
 
                 txtName.TextChanged += TextChange;
-                txtEmail.TextChanged += TextChange;   
+                txtEmail.TextChanged += TextChange;
 
 
                 //bind listener with id and layout
                 txtName.AddTextChangedListener(new InputFilterFormField(txtName, txtInputLayoutName));
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
-  
+
 
 
                 txtName.FocusChange += (sender, e) =>
                 {
-                 
+
 
                     if (txtName.HasFocus)
-                    {   
+                    {
                         txtInputLayoutName.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                         TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error));
                         txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
@@ -356,10 +359,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                     }
                     else
                     {
-                        
+
                         txtInputLayoutName.Error = null;
                     }
-                
+
                 };
 
 
@@ -372,7 +375,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
                 mobileNumberFieldContainer.AddView(mobileNumberInputComponent);
 
-                
+
 
 
                 //auto populate if login 
@@ -385,7 +388,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
 
                     if (!tempPhone.IsNullOrEmpty())
-                    {  
+                    {
                         if (tempPhone.Contains("+"))
                         {
                             var CountryFromPhoneNumber = CountryUtil.Instance.GetCountryFromPhoneNumber(tempPhone);
@@ -399,7 +402,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                         }
                         else
                         {
-                            
+
 
                             if (tempPhone.Trim().Substring(0, 1) == "6")
                             {
@@ -441,14 +444,14 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 base.OnActivityResult(requestCode, resultCode, data);
                 if (resultCode == Result.Ok)
                 {
-                 
-                   if (requestCode == COUNTRY_CODE_SELECT_REQUEST)
+
+                    if (requestCode == COUNTRY_CODE_SELECT_REQUEST)
                     {
                         string dataString = data.GetStringExtra(Constants.SELECT_COUNTRY_CODE);
                         Country selectedCountry = JsonConvert.DeserializeObject<Country>(dataString);
                         mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
                         isSelectCountry = true;
-    }
+                    }
                 }
             }
             catch (Exception e)
@@ -497,7 +500,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 {
                     mobileNumberInputComponent.RaiseError(Utility.GetLocalizedLabel("SubmitEnquiry", "mobileReq"));
                 }
-                
+
 
             }
 
@@ -510,7 +513,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         {
             try
             {
-          
+
                 passCheck();
 
             }
@@ -555,7 +558,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         {
             try
             {
-              //  txtInputLayoutPhoneNumber.Error = null;
+                //  txtInputLayoutPhoneNumber.Error = null;
             }
             catch (Exception e)
             {
@@ -582,7 +585,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         }
 
         public override int ResourceId()
-        {   
+        {
             return Resource.Layout.FeedbackGeneralEnquiryStepTwoView;
         }
 
@@ -612,27 +615,28 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                     this.SetIsClicked(true);
                     this.userActionsListener.NavigateToTermsAndConditions();
                 }
-                else if(txtEmail.Text.Trim().IsNullOrEmpty())
+                else if (txtEmail.Text.Trim().IsNullOrEmpty())
                 {
                     ShowInvalidEmailError();
-                }else if (txtName.Text.Trim().IsNullOrEmpty())
+                }
+                else if (txtName.Text.Trim().IsNullOrEmpty())
                 {
                     ShowFullNameError();
                 }
 
 
-              
+
             }
         }
 
         public void ShowNavigateToTermsAndConditions()
-        { 
+        {
 
             var tnc = new Intent(this, typeof(UpdatePersonalDetailTnCActivity));
             tnc.PutExtra(Constants.REQ_EMAIL, txtEmail.Text.Trim());
             tnc.PutExtra(Constants.SELECT_REGISTERED_OWNER, isOwner.ToString());
             tnc.PutExtra(Constants.ENTERED_NAME, txtName.Text.Trim());
-           
+
             StartActivity(tnc);
         }
 
@@ -640,7 +644,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
         {
             txtInputLayoutName.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
 
-           
+
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error));
             txtInputLayoutName.Error = Utility.GetLocalizedErrorLabel("invalid_fullname");
             var handleBounceError = txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error);
@@ -669,13 +673,13 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
             {
                 txtInputLayoutName.Error = null;
             }
-           
+
         }
 
         public void ShowInvalidEmailError()
         {
             txtInputLayoutEmail.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
-           
+
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail.FindViewById<TextView>(Resource.Id.textinput_error));
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail);
             txtInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
@@ -723,10 +727,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                     };
                     h.PostDelayed(myAction, 3000);
 
-                    int ownerRelationshipID =0;
-                    
+                    int ownerRelationshipID = 0;
+
                     // ensure not from feedback and owner must be false to pass this parameter
-                    if(feedback.IsNullOrEmpty() && isOwner == false)
+                    if (feedback.IsNullOrEmpty() && isOwner == false)
                     {
                         if (ownerRelationship == Utility.GetLocalizedLabel("SubmitEnquiry", "childTitle"))
                         {
@@ -762,12 +766,12 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                     }
 
 
-                   string txtPhoneNumber  = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
-                  
-                   this.userActionsListener.OnSubmit(acc, feedback, txtName.Text.ToString().Trim(), txtPhoneNumber.ToString().Trim(),txtEmail.Text.Trim(), attachedImages, updateFeedbackList, isOwner, ownerRelationshipID,  ownerRelationship);
+                    string txtPhoneNumber = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
+
+                    this.userActionsListener.OnSubmit(acc, feedback, txtName.Text.ToString().Trim(), txtPhoneNumber.ToString().Trim(), txtEmail.Text.Trim(), attachedImages, updateFeedbackList, isOwner, ownerRelationshipID, ownerRelationship);
 
 
-                  
+
 
                 }
             }
@@ -780,7 +784,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
 
         public void toggleTNC()
-        {  
+        {
             toggleTncData = !toggleTncData;  //boolean change
 
             if (toggleTncData)
@@ -806,7 +810,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
             bool tnc = toggleTncData;
             bool varNeedTNC = isNeedTNC;
 
-            this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, tnc , varNeedTNC);
+            this.userActionsListener.CheckRequiredFields(fullname, mobile_no, email, tnc, varNeedTNC);
 
         }
 
@@ -831,7 +835,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
             return GetString(Resource.String.feedback_image_name_convention, dateFormatter.Format(calendar.TimeInMillis), UserSessions.GetCurrentImageCount(PreferenceManager.GetDefaultSharedPreferences(this)) + itemCount);
         }
 
-        public   Task<AttachedImageRequest> SaveImage(AttachedImage attachedImage)
+        public Task<AttachedImageRequest> SaveImage(AttachedImage attachedImage)
         {
             return Task.Run<AttachedImageRequest>(() =>
             {
@@ -876,10 +880,11 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                     }
 
                 }
-                else {
+                else
+                {
                     Bitmap bitmap = BitmapFactory.DecodeFile(attachedImage.Path, bmOptions);
                     byte[] imageBytes = FileUtils.GetCompress(this, bitmap);
-                
+
                     int size = imageBytes.Length;
                     string hexString = HttpUtility.UrlEncode(FileUtils.ByteArrayToString(imageBytes), Encoding.UTF8);
                     if (bitmap != null && !bitmap.IsRecycled)
@@ -901,7 +906,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
 
 
-public void HideProgressDialog()
+        public void HideProgressDialog()
         {
             try
             {
@@ -944,7 +949,7 @@ public void HideProgressDialog()
             ISharedPreferences sharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
             int currentCount = UserSessions.GetCurrentImageCount(sharedPref);
             UserSessions.SetCurrentImageCount(sharedPref, currentCount + imageCount);
-            
+
 
             //public void showSuccess(string feedbackId)
             //{
@@ -953,12 +958,12 @@ public void HideProgressDialog()
             //    StartActivityForResult(successIntent, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
 
             //}
-         
+
             var successIntent = new Intent(this, typeof(SubmitEnquirySuccessActivity));
             successIntent.PutExtra(Constants.RESPONSE_FEEDBACK_DATE, date);
             successIntent.PutExtra(Constants.RESPONSE_FEEDBACK_ID, feedbackId);
             StartActivity(successIntent);
-            
+
             //StartActivityForResult(successIntent, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
         }
 
