@@ -522,7 +522,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public void ShowTermsAndConditions()
         {
-            StartActivity(typeof(AddAccountDisclaimerActivity));
+            Intent disclaimer = new Intent(this, typeof(AddAccountDisclaimerActivity));
+            StartActivityForResult(disclaimer, 1);
         }
 
         public void ShowDashboard()
@@ -979,6 +980,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             }
                             account.ISDmobileNo = "+06";
                             account.CountryCheck = false;
+                            account.CountryCheckNoPhone = false;
                             account.countryDetail = ""; 
 
                             foreach (NewAccount item in accountList)
@@ -994,14 +996,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 {
                                     alreadyAdded = true;
                                 }
-                                /*if (item.mobileNoOwner.Equals("") && item.emailOwner.Equals(""))
-                                {
-                                    item.isNoDetailOwner = true;
-                                }
-                                else
-                                {
-                                    item.isNoDetailOwner = false;
-                                }*/
                             }
 
                             if (!alreadyAdded)

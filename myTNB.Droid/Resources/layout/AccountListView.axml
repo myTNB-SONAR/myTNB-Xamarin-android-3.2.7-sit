@@ -131,7 +131,8 @@
                         android:layout_gravity="left|center"
                         android:paddingLeft="18dp"
                         android:paddingRight="18dp"
-                        android:paddingTop="5dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="16dp"
                         android:background="@color/white">
                         <CheckBox
                             android:id="@+id/checkboxCondition"
@@ -139,25 +140,21 @@
                             android:layout_width="wrap_content"
                             android:checked="false"
                             android:textSize="12dp"
-                            android:layout_marginTop="10dp"
-                            android:paddingTop="6dp"
-                            android:paddingBottom="6dp"
-                            android:gravity="center_vertical"
+                            android:paddingTop="-4dp"
+                            android:layout_gravity="center_vertical"
                             android:button="@drawable/checkbox_selector" />
                         <TextView
                             android:text="By confirming, I have read and agreed to the Terms and Conditions."
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:textSize="12dp"
                             android:id="@+id/txtTermsConditions"
                             android:textColorLink="@color/powerBlue"
-                            android:layout_marginTop="10dp"
                             android:paddingLeft="3dp"
-                            android:gravity="center_vertical"/>
+                            android:layout_gravity="center_vertical"/>
                     </LinearLayout>
                     <LinearLayout
-                        android:paddingTop="16dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"

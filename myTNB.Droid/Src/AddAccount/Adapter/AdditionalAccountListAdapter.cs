@@ -64,7 +64,6 @@ namespace myTNB_Android.Src.AddAccount
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             AdditionalAccountViewHolder vh = holder as AdditionalAccountViewHolder;
-
             NewAccount item = accountList[position];
             vh.PopulateData(item);
         }
@@ -126,8 +125,6 @@ namespace myTNB_Android.Src.AddAccount
             MobileLinearLayout = itemView.FindViewById<LinearLayout>(Resource.Id.mobileNumberFieldContainer);
             OwnerNoContactLinearLayout = itemView.FindViewById<LinearLayout>(Resource.Id.layout_owner_no_contact);
             textInputLayoutEmailEditText = itemView.FindViewById<TextInputLayout>(Resource.Id.textInputLayoutEmailReg);
-            NoMobileFieldDetail.Text = Utility.GetLocalizedCommonLabel("mobileNumber");
-            EmailFieldDetail.Text = Utility.GetLocalizedCommonLabel("emailAddress");
 
             EmailFieldDetail.Click += (sender, e) => 
             {
@@ -151,16 +148,19 @@ namespace myTNB_Android.Src.AddAccount
                 EmailFieldDetail.SetTextColor(Color.ParseColor("#1c79ca"));
             };
 
+            NoMobileFieldDetail.Text = Utility.GetLocalizedCommonLabel("mobileNumber");
+            EmailFieldDetail.Text = Utility.GetLocalizedCommonLabel("emailAddress");
+            textInputLayoutAccountLabel.Hint = Utility.GetLocalizedCommonLabel("acctNickname");
+            OwnerDetailTitle.Text = Utility.GetLocalizedLabel("AddAccount", "titleOwnerDetailRegion");
 
             TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress, AccountLabel, OwnerDetailTitle);
             TextViewUtils.SetMuseoSans500Typeface(EmailFieldDetail, NoMobileFieldDetail);
             TextViewUtils.SetMuseoSans300Typeface(textInputLayoutAccountLabel, textInputLayoutEmailEditText);
 
-            textInputLayoutAccountLabel.Hint = Utility.GetLocalizedCommonLabel("acctNickname");
             context = itemView.Context;
             AccountLabel.AddTextChangedListener(new InputFilterFormField(AccountLabel, textInputLayoutAccountLabel));
             EmailEditText.AddTextChangedListener(new InputFilterFormField(EmailEditText, textInputLayoutEmailEditText));
-
+           
             AccountLabel.FocusChange += (sender, e) =>
             {
                 textInputLayoutAccountLabel.Error = null;
@@ -185,7 +185,6 @@ namespace myTNB_Android.Src.AddAccount
                     {
                         item.accountLabel = AccountLabel.Text.Trim();
                     }
-
                 }
             };
 
@@ -201,19 +200,52 @@ namespace myTNB_Android.Src.AddAccount
         public void OnTapCountryCode()
         {
             item.CountryCheck = true;
+            item.CountryCheckNoPhone = true;
             PreferenceManager.GetDefaultSharedPreferences(context).Edit().Remove("selectedcountry").Apply();
             context.StartActivity(new Intent(context, typeof(SelectCountryActivity)));
         }
 
         private void OnValidateMobileNumber(bool isValidated)
         {
-            this.item.ISDmobileNo = mobileNumberInputComponent.GetISDOnly();
-            if (isValidated && mobileNumberInputComponent.GetISDOnly() == mobileNumberInputComponent.GetMobileNumberValueWithISDCode())
+            string ISD = mobileNumberInputComponent.GetISDOnly();
+            string validatedMobileNumber = "";
+            if (mobileNumberInputComponent.GetMobileNumberReset() && !isValidated)
             {
+                if (this.item.mobileNoOwner.Length == 2)
+                {
+                    validatedMobileNumber = this.item.mobileNoOwner.Substring(0, 2);
+                }
+                else if (this.item.mobileNoOwner.Length == 3)
+                {
+                    validatedMobileNumber = this.item.mobileNoOwner.Substring(0, 3);
+                }
+                else if (this.item.mobileNoOwner.Length > 3)
+                {
+                    validatedMobileNumber = this.item.mobileNoOwner.Substring(0, 3);
+                }
+
+                if (validatedMobileNumber != ISD && item.CountryCheckNoPhone)
+                {
+                    item.CountryCheckNoPhone = false;
+                    this.item.mobileNoOwner = "";
+                }
+                else if (!validatedMobileNumber.Equals("") && validatedMobileNumber.Substring(0,2) == ISD.Substring(0,2))
+                {
+                    string MobileNumber = this.item.mobileNoOwner.Substring(ISD.Length, this.item.mobileNoOwner.Length - ISD.Length);
+                    if (!MobileNumber.Equals("") && MobileNumber.Length == 1)
+                    {
+                        this.item.mobileNoOwner = "";
+                    }
+                }
+            }
+            else if(!mobileNumberInputComponent.GetMobileNumberReset() && !isValidated && item.CountryCheckNoPhone)
+            {
+                item.CountryCheckNoPhone = false;
                 this.item.mobileNoOwner = "";
             }
-            else if(isValidated && mobileNumberInputComponent.GetISDOnly() != mobileNumberInputComponent.GetMobileNumberValueWithISDCode())
+            else if (isValidated && this.item.mobileNoOwner != this.item.ISDmobileNo)
             {
+                this.item.ISDmobileNo = mobileNumberInputComponent.GetISDOnly();
                 this.item.mobileNoOwner = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
             }
         }
@@ -264,18 +296,6 @@ namespace myTNB_Android.Src.AddAccount
                 EmailEditText.AfterTextChanged += (sender, args) =>
                 {
                     item.emailOwner = EmailEditText.Text.Trim();
-                    /*if (EmailEditText.Text.Equals(""))
-                    {
-                        textInputLayoutEmailEditText.Error = null;
-                    }
-                    else if (!Patterns.EmailAddress.Matcher(item.emailOwner).Matches())
-                    {
-                        textInputLayoutEmailEditText.Error = Utility.GetLocalizedErrorLabel("invalid_email");
-                    }
-                    else
-                    {
-                        textInputLayoutEmailEditText.Error = null;
-                    }*/
                 };
 
                 //checking and display non-onwer layout
@@ -308,7 +328,7 @@ namespace myTNB_Android.Src.AddAccount
                 }
 
                 noISDONly = this.item.ISDmobileNo.Length;
-                if (!item.mobileNoOwner.Equals(""))
+                if (!item.mobileNoOwner.Equals("") && item.isNoDetailOwner && item.type.Equals("1"))
                 {
                     string mobile = this.item.mobileNoOwner;
                     string mobileNoOnly = mobile.Substring(noISDONly, mobile.Length - noISDONly);
@@ -317,11 +337,7 @@ namespace myTNB_Android.Src.AddAccount
                         int value = Java.Lang.Integer.ParseInt(mobileNoOnly);
                         mobileNumberInputComponent.SetMobileNumber(value);
                     }                
-                }
-
-                AccountLabel.ClearFocus();
-                mobileNumberInputComponent.ClearFocus();
-                EmailEditText.ClearFocus();
+                }      
             }
             catch (Exception e)
             {

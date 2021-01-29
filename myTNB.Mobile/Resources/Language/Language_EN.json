@@ -657,7 +657,8 @@
     "DisclaimerDetails2": "Please be informed that this application is for the privilege use between TNB and its account holder and any other person with the consent of the account holder. TNB shall not be held liable for any improper use and incorrect use of the information described and contained herein and under no obligation to check the authenticity of such consent and permission given. Upon confirming, you are deemed to have read, understood and agreed to the disclaimer as displayed.",
     "GovDialogTitle": "Sorry we can't add Government electricity accounts on myTNB App right now.",
     "GovDialogDetails": "You still can add and view your Government account through the myTNB Portal",
-    "titleNonOwnerAddAcc": "Continue adding the account and give it a name for your easy reference."
+    "titleNonOwnerAddAcc": "Continue adding the account and give it a name for your easy reference.",
+    "titleOwnerDetailRegion": "Please provide the owner’s email or mobile number for the account above so we can notify them."
   },
   "Profile": {
     "title": "Profile",

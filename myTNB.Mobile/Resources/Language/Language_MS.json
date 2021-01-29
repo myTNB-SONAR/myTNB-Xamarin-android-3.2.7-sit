@@ -657,7 +657,8 @@
     "DisclaimerDetails2": "Dimaklumkan bahawa aplikasi ini adalah untuk keistimewaan penggunaan antara TNB dan pemegang akaunnya dan orang lain dengan persetujuan pemegang akaun. TNB tidak akan bertanggungjawab atas penggunaan yang salah dan penggunaan maklumat yang dijelaskan dan terkandung di dalam ini serta tidak berkewajipan untuk memeriksa kesahihan persetujuan dan kebenaran yang diberikan. Setelah mengesahkan perkara ini, anda dianggap telah membaca, memahami dan menyetujui penafian seperti yang ditunjukkan.",
     "GovDialogTitle": "Maaf, kami tidak dapat menambah akaun elektrik Kerajaan ke dalam Aplikasi myTNB sekarang.",
     "GovDialogDetails": "Anda masih boleh menambah dan melihat akaun Kerajaan anda melalui Portal myTNB.",
-    "titleNonOwnerAddAcc": "BM_Continue adding the account and give it a name for your easy reference."
+    "titleNonOwnerAddAcc": "BM_Continue adding the account and give it a name for your easy reference.",
+    "titleOwnerDetailRegion": "BM_Please provide the owner’s email or mobile number for the account above so we can notify them."
   },
   "Profile": {
     "title": "Profil",
