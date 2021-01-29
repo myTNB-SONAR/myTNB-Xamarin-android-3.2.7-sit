@@ -148,6 +148,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 receiptTitile.Text = GetLabelByLanguage("title");
                 dearCustomer.Text = GetLabelByLanguage("salutation");
                 thanksText.Text = GetLabelByLanguage("messagePartOne");
+
                 referenceNumberText.Text = GetLabelByLanguage("referenceNumber").ToUpper();
                 txnDateText.Text = GetLabelByLanguage("trnDate").ToUpper();
                 txnIdText.Text = GetLabelByLanguage("trnID").ToUpper();
