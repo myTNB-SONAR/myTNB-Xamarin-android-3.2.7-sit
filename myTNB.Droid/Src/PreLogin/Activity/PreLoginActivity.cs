@@ -201,7 +201,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 txtChangeLanguage.TextSize = TextViewUtils.GetFontSize(12f);
                 txtPromotion.TextSize = TextViewUtils.GetFontSize(14f);
                 btnRegister.TextSize = TextViewUtils.GetFontSize(16f);
-
+                btnLogin.TextSize = TextViewUtils.GetFontSize(16f);
                 AppLaunchMasterDataResponse masterDataResponse = MyTNBAccountManagement.GetInstance().GetMasterDataResponse();
                 if (masterDataResponse != null
                     && masterDataResponse.GetData().ServicesPreLogin is List<MyService> services
@@ -734,7 +734,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                     float heightRatio = 84f / 72f;
                     int cardHeight = (int)(cardWidth * (heightRatio));
 
-                    currentCard.Height = cardHeight + 20;
+                    currentCard.Height = cardHeight + 27;
                     currentCard.Width = cardWidth + 80;
 
                     float paddingRatio = 10f / 72f;
