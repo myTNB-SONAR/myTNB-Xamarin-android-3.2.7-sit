@@ -2096,15 +2096,29 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
                         bottomLayout.RequestLayout();
 
-                        LinearLayout.LayoutParams leftInnerUpperBottomLineLayoutParam = leftInnerUpperBottomLineLayout.LayoutParameters as LinearLayout.LayoutParams;
-                        leftInnerUpperBottomLineLayoutParam.Height = (int)DPUtils.ConvertDPToPx(70f); ;
-                        leftInnerUpperBottomLineLayout.RequestLayout();
+                        //LinearLayout.LayoutParams leftInnerUpperBottomLineLayoutParam = leftInnerUpperBottomLineLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        //leftInnerUpperBottomLineLayoutParam.Height = (int)DPUtils.ConvertDPToPx(70f); ;
+                        //leftInnerUpperBottomLineLayout.RequestLayout();
+
+                        //LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        //innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(70f);
+                        //innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(50f);
+                        //innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(20f);
+                        //innerUpperBottomLayout.RequestLayout();
+
+
 
                         LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                        innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(70f);
-                        innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(50f);
-                        innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(20f);
+                        innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(40f);
+                        innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                        innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                        innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
                         innerUpperBottomLayout.RequestLayout();
+
+                        LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                        innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                        innerTxtBtnBottomLayout.RequestLayout();
 
 
                     }
