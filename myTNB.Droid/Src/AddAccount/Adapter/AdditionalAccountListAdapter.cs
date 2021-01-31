@@ -129,6 +129,8 @@ namespace myTNB_Android.Src.AddAccount
             NoMobileFieldDetail.Text = Utility.GetLocalizedCommonLabel("mobileNumber");
             EmailFieldDetail.Text = Utility.GetLocalizedCommonLabel("emailAddress");
 
+            OwnerDetailTitle.Text = Utility.GetLocalizedLabel("AddAccount", "textOwnerDetail");
+
             EmailFieldDetail.Click += (sender, e) => 
             {
                 MobileLinearLayout.Visibility = ViewStates.Gone;
