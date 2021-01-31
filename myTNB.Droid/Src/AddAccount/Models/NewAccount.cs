@@ -45,5 +45,7 @@
         public bool CountryCheck { get; set; }
 
         public string countryDetail { get; set; }
+
+        public bool CountryCheckNoPhone { get; set; }
     }
 }

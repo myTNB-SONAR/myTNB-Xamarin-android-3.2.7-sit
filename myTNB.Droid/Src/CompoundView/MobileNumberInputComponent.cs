@@ -25,7 +25,8 @@ namespace myTNB_Android.Src.CompoundView
         public static bool isSelectionTapped;
         private Action onSelectCountryISDCodeAction;
         private bool isFromCountryCode = false;
-        
+        private bool isEmptyNoAfterDelete = false;
+
         private const int MAX_NUMBER_INPUT = 15;
         private const string PLUS_CHARACTER = "+";
 
@@ -81,6 +82,7 @@ namespace myTNB_Android.Src.CompoundView
             if (editTextMobileNumber.IsFocused)
             {
                 ViewCompat.SetBackgroundTintList(editTextMobileNumber, ColorStateList.ValueOf(Android.Graphics.Color.ParseColor("#1c79ca")));  //blue color
+                isEmptyNoAfterDelete = true; //when user delete or add key detect
             }
             else
             {
@@ -99,7 +101,6 @@ namespace myTNB_Android.Src.CompoundView
             isFromCountryCode = false;  // any changes will set from country code false
 
             validateAction?.Invoke(!string.IsNullOrEmpty(editTextMobileNumber.Text));
-      
         }
 
         
@@ -158,9 +159,9 @@ namespace myTNB_Android.Src.CompoundView
             return selectedCountry.isd + editTextMobileNumber.Text.Trim();
         }
 
-        public string GetMobileNumberReset()
+        public bool GetMobileNumberReset()
         {
-            return editTextMobileNumber.Text = "";
+            return isEmptyNoAfterDelete;
         }
 
         public string GetMobileNumberValue()
