@@ -221,6 +221,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                     filterSelection.Visibility = ViewStates.Gone;
 
                     whyAccountsNotHere.Text = Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumber");
+                    whyAccountsNotHere.TextSize = TextViewUtils.GetFontSize(12f);
                 }
                 else
                 {

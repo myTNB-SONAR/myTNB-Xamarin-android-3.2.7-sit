@@ -288,10 +288,12 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
             txtSearchApplicationTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchForTitle");
             txtInputLayoutApplicationType.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "applicationType");
+            txtInputLayoutApplicationType.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
             txtInputLayoutSearchBy.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchBy");
+            txtInputLayoutSearchBy.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
             btnSearchApplication.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchStatus");
             txtSearchApplicationStatusListResult.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchResultTitle");
-
+            txtInputLayoutServiceRequestNum.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
             mPresenter = new SearchApplicationStatusPresenter(this);
 
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutApplicationType, txtInputLayoutSearchBy, txtInputLayoutServiceRequestNum);
@@ -436,6 +438,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         else if (txtServiceRequestNum.Text.Count() != 10 && txtServiceRequestNum.Text != string.Empty)
                         {
                             txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
+                            txtInputLayoutServiceRequestNum.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                             if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
                             {
                                 txtInputLayoutServiceRequestNum.ErrorEnabled = true;
@@ -462,6 +465,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         else if (txtServiceRequestNum.Text.Count() != 12)
                         {
                             txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
+                            txtInputLayoutServiceRequestNum.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                             if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
                             {
                                 txtInputLayoutServiceRequestNum.ErrorEnabled = true;
@@ -611,7 +615,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             if (txtServiceRequestNum.Text.Count() != preffix.Count())
                             {
                                 txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
-
+                                txtInputLayoutServiceRequestNum.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                                 if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
                                     txtInputLayoutServiceRequestNum.ErrorEnabled = true;
                             }
@@ -637,6 +641,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         else if (txtServiceRequestNum.Text.Count() != 10 && txtServiceRequestNum.Text != string.Empty)
                         {
                             txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
+                            txtInputLayoutServiceRequestNum.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                             if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
                             {
                                 txtInputLayoutServiceRequestNum.ErrorEnabled = true;
@@ -691,11 +696,13 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                 txtServiceRequestNum.Text = null;
                                 txtServiceRequestNum.ClearFocus();
                                 txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypes[0].SearchTypeDescDisplay;
+                                txtInputLayoutServiceRequestNum.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
                                 txtWhyAccountsNotHere.Visibility = ViewStates.Visible;
                                 whyAccountsNotHereLayOut.Visibility = ViewStates.Visible;
                                 if (selectedType.SearchTypes[0].Type == ApplicationStatusSearchType.ApplicationNo)
                                 {
                                     txtInputLayoutServiceRequestNum.HelperText = selectedType.ApplicationNoHint;
+                                    txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
                                     txtSearchBy.Text = selectedType.SearchTypes[0].SearchTypeDescDisplay;
                                     selectedTypeIndex = 0;
                                     targetSearchBy = selectedType.SearchTypes[0].SearchTypeId;
@@ -704,6 +711,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                 {
                                     isSearchByCA = true;
                                     txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "electricityAccountNumber");
+                                    txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
                                 }
 
                             }
@@ -742,7 +750,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             txtServiceRequestNum.SetText(string.Empty, TextView.BufferType.Editable);
 
                             txtInputLayoutServiceRequestNum.Hint = searchByModel.SearchTypeDescDisplay;
-
+                            txtInputLayoutServiceRequestNum.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
                             if (searchByModel.Type == ApplicationStatusSearchType.ApplicationNo)
                             {
                                 txtInputLayoutServiceRequestNum.HelperText = selectedType.ApplicationNoHint;
@@ -760,6 +768,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                 isSearchByCA = true;
                                 txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "electricityAccountNumber");
                             }
+                            txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
                         }
                     }
                 }
@@ -883,6 +892,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     {
                         var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].Type : searchByModel.Type;
                         txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].SearchTypeDescDisplay.ToUpper() : searchByModel.SearchTypeDescDisplay.ToUpper();
+                        txtInputLayoutServiceRequestNum.SetHintTextAppearance(TextViewUtils.IsLargeFonts? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
                         txtInputLayoutServiceRequestNum.DefaultHintTextColor = ContextCompat.GetColorStateList(this, Resource.Color.silverchalice);
                         txtInputLayoutServiceRequestNum.SetHelperTextColor(ContextCompat.GetColorStateList(this, Resource.Color.new_grey));
 
@@ -907,6 +917,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
             }
             CheckError();
             txtInputLayoutServiceRequestNum.SetHelperTextColor(ContextCompat.GetColorStateList(this, Resource.Color.new_grey));
+            txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
             return false;
         }
     }
