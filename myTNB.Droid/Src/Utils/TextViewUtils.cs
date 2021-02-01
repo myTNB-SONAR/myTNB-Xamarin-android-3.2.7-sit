@@ -33,7 +33,6 @@ namespace myTNB_Android.Src.Utils
             SetTypeface(MuseoSans500, editTexts);
         }
 
-
         public static void SetTypeface(string family, params TextView[] textViews)
         {
             foreach (var textView in textViews)
@@ -52,7 +51,6 @@ namespace myTNB_Android.Src.Utils
             SetTypeface(MuseoSans500, textViews);
         }
 
-
         public static void SetTypeface(string family, params TextInputLayout[] textInputLayouts)
         {
             foreach (var textView in textInputLayouts)
@@ -70,7 +68,6 @@ namespace myTNB_Android.Src.Utils
         {
             SetTypeface(MuseoSans500, textInputLayouts);
         }
-
 
         public static void SetTypeface(string family, params Button[] buttons)
         {
@@ -118,7 +115,7 @@ namespace myTNB_Android.Src.Utils
                 return SelectedFontSize() == "L";
             }
         }
-       
+
         public static float GetFontSize(float font)
         {
 
@@ -144,9 +141,54 @@ namespace myTNB_Android.Src.Utils
             largeFontEntity.CreateTable();
 
             largeFontEntity.InsertItem(largeFontEntity);
-
         }
 
+        private static void SetTextSize(float size, params TextView[] textViews)
+        {
+            foreach (var textView in textViews)
+            {
+                textView.TextSize = GetFontSize(size);
+            }
+        }
 
+        internal static void SetTextSize9(params TextView[] textViews)
+        {
+            SetTextSize(9, textViews);
+        }
+
+        internal static void SetTextSize10(params TextView[] textViews)
+        {
+            SetTextSize(10, textViews);
+        }
+
+        internal static void SetTextSize11(params TextView[] textViews)
+        {
+            SetTextSize(11, textViews);
+        }
+
+        internal static void SetTextSize12(params TextView[] textViews)
+        {
+            SetTextSize(12, textViews);
+        }
+
+        internal static void SetTextSize14(params TextView[] textViews)
+        {
+            SetTextSize(14, textViews);
+        }
+
+        internal static void SetTextSize16(params TextView[] textViews)
+        {
+            SetTextSize(16, textViews);
+        }
+
+        internal static void SetTextSize20(params TextView[] textViews)
+        {
+            SetTextSize(20, textViews);
+        }
+
+        internal static void SetTextSize24(params TextView[] textViews)
+        {
+            SetTextSize(24, textViews);
+        }
     }
 }

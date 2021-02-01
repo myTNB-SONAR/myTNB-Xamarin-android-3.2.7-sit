@@ -1842,6 +1842,14 @@
       {
         "key": "Cancelled",
         "value": "Cancelled"
+      },
+      {
+        "key": "Resolved",
+        "value": "Resolved"
+      },
+      {
+        "key": "Resolving",
+        "value": "Resolving"
       }
     ]
   },
