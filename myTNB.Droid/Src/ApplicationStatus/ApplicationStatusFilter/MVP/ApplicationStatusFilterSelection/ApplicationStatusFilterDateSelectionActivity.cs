@@ -181,6 +181,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             btnApply.TextSize = TextViewUtils.GetFontSize(16f);
             btnApply.Text = Utility.GetLocalizedLabel("SelectCreationDate", "apply");
             btnClear.Text = Utility.GetLocalizedLabel("SelectCreationDate", "clear");
+            btnClear.TextSize= TextViewUtils.GetFontSize(16f);
+            btnApply.TextSize = TextViewUtils.GetFontSize(16f);
 
             SetToolBarTitle(Utility.GetLocalizedLabel("SelectCreationDate", "title"));
 
