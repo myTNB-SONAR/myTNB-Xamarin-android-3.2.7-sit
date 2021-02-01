@@ -1,22 +1,15 @@
 ﻿using Android.Content;
 using Android.Graphics;
-using Android.OS;
-using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
-using Castle.Core.Internal;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models;
-using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
 using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.MVP;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.Adapter
 {
@@ -53,7 +46,10 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             return mSearchByList;
         }
 
-        public SearchApplicationStatusAdapter(SearchApplicationStatusSelectionActivity activity, int requestCode, List<TypeModel> typeData = null, List<SearchByModel> searchByData = null)
+        public SearchApplicationStatusAdapter(SearchApplicationStatusSelectionActivity activity
+            , int requestCode
+            , List<TypeModel> typeData = null
+            , List<SearchByModel> searchByData = null)
         {
             this.mActivity = activity;
             this.mRequestCode = requestCode;
@@ -75,7 +71,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                     mSearchByList.AddRange(searchByData);
                     mSearchByList.Add(new SearchByModel()
                     {
-                       SearchTypeId = "NUMBER-CTA-ANDROID"
+                        SearchTypeId = "NUMBER-CTA-ANDROID"
                     });
                 }
                 countNumber = mSearchByList.Count;
@@ -104,7 +100,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         {
             var id = Resource.Layout.ApplicationStatusFilterListItemLayout;
             var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
-            return new ApplicationStatusFilterViewHolder(this.mActivity,this.mSearchByList, itemView, OnClick);
+            return new ApplicationStatusFilterViewHolder(this.mActivity, this.mSearchByList, itemView, OnClick);
         }
 
         void OnClick(int position)
@@ -169,7 +165,10 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
         public TextView whyAccountsNotHere { get; private set; }
         private Context context;
 
-        public ApplicationStatusFilterViewHolder(SearchApplicationStatusSelectionActivity activity,List<SearchByModel> mSearchByList, View itemView, Action<int> listener) : base(itemView)
+        public ApplicationStatusFilterViewHolder(SearchApplicationStatusSelectionActivity activity
+            , List<SearchByModel> mSearchByList
+            , View itemView
+            , Action<int> listener) : base(itemView)
         {
             context = itemView.Context;
             txtFilterName = itemView.FindViewById<TextView>(Resource.Id.txtFilterName);
@@ -186,14 +185,14 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             whyAccountsNotHere.Click += (sender, e) => ShowWhereIsMyAcc(activity, mSearchByList);
         }
 
-        public async void ShowWhereIsMyAcc(Android.App.Activity context,List<SearchByModel> mSearchByList)
+        public async void ShowWhereIsMyAcc(Android.App.Activity context, List<SearchByModel> mSearchByList)
         {
             MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
                 .SetTitle(Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumberTitle"))
                 .SetMessage(Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumberMessage"))
                 .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                 .Build();
-                whereisMyacc.Show();
+            whereisMyacc.Show();
         }
         public static Bitmap Base64ToBitmap(string base64String)
         {

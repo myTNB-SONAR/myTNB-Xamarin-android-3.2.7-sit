@@ -370,8 +370,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
             txtInputLayoutServiceRequestNum.DefaultHintTextColor = ContextCompat.GetColorStateList(this, Resource.Color.silverchalice);
             txtInputLayoutServiceRequestNum.SetHelperTextColor(ContextCompat.GetColorStateList(this, Resource.Color.new_grey));
-
-
         }
 
         private void OnWhereAreTheseNoClick(object sender, EventArgs e)
@@ -522,10 +520,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
                         if (inputString.Length > format.Length)
                         {
-
                             inputString = inputString.Substring(0, stringlength + preffix.Length) + suffix;
                             location = stringlength + preffix.Length;
-
                         }
                         else if (suffix != string.Empty && inputString.Length < format.Length)
                         {
@@ -537,7 +533,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         }
                         if (inputString.Length >= preffix.Length)
                         {
-
                             inputString = inputString.Remove(0, preffix.Length);
                         }
                         var txtFirstIndex = inputString.IndexOf("-");
@@ -566,7 +561,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             sb.Append(preffix);
                             sb.Append(inputString);
                             txtServiceRequestNum.SetText(sb.ToString(), TextView.BufferType.Editable);
-
                         }
                         else
                         {
@@ -892,7 +886,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     {
                         var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].Type : searchByModel.Type;
                         txtInputLayoutServiceRequestNum.Hint = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].SearchTypeDescDisplay.ToUpper() : searchByModel.SearchTypeDescDisplay.ToUpper();
-                        txtInputLayoutServiceRequestNum.SetHintTextAppearance(TextViewUtils.IsLargeFonts? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                        txtInputLayoutServiceRequestNum.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
                         txtInputLayoutServiceRequestNum.DefaultHintTextColor = ContextCompat.GetColorStateList(this, Resource.Color.silverchalice);
                         txtInputLayoutServiceRequestNum.SetHelperTextColor(ContextCompat.GetColorStateList(this, Resource.Color.new_grey));
 
