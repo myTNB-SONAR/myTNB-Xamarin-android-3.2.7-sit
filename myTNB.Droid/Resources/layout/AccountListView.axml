@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
     android:orientation="vertical">
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"

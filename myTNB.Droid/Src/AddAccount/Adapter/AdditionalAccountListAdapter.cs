@@ -128,6 +128,7 @@ namespace myTNB_Android.Src.AddAccount
 
             EmailFieldDetail.Click += (sender, e) => 
             {
+                OwnerNoContactLinearLayout.RequestFocus();
                 MobileLinearLayout.Visibility = ViewStates.Gone;
                 textInputLayoutEmailEditText.Visibility = ViewStates.Visible;
                 EmailEditText.Visibility = ViewStates.Visible;
@@ -139,6 +140,7 @@ namespace myTNB_Android.Src.AddAccount
 
             NoMobileFieldDetail.Click += (sender, e) =>
             {
+                OwnerNoContactLinearLayout.RequestFocus();
                 MobileLinearLayout.Visibility = ViewStates.Visible;
                 textInputLayoutEmailEditText.Visibility = ViewStates.Gone;
                 EmailEditText.Visibility = ViewStates.Gone;

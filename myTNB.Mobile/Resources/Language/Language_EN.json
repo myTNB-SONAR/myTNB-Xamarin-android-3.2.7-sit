@@ -170,7 +170,8 @@
     "noMeterAccessErrorMessage": "The meter will need to be accessible so that you can read your meter. You may try again when you have access to the meter.",
     //yana
     "accountLengthNew": "Please enter a valid 12-digit electricity account number",
-    "error_duplicateAccountMessageNew": "This electricity account number has already been added to the list."
+    "error_duplicateAccountMessageNew": "This electricity account number has already been added to the list.",
+    "error_emptyIcAndEmailOwner": "Email or phone number owner cannot be empty."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",

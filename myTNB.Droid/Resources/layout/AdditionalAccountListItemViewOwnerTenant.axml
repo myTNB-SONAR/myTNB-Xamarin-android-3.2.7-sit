@@ -30,7 +30,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="16dp"
-                    android:focusableInTouchMode="true"
                     android:drawableLeft="@drawable/placeholder_name"
                     android:hint="@string/add_account_form_account_nickname" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -75,7 +74,6 @@
             </LinearLayout>
             <LinearLayout
             android:id="@+id/layout_owner_no_contact"
-            android:focusable="true"
             android:clickable="true"
             android:orientation="vertical"
             android:layout_marginLeft="16dp"

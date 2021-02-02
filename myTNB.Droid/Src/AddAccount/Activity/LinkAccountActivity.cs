@@ -651,7 +651,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
                     if (i > 0)
                     {
-                        ShowErrorEnterEmailOrNoPhone(Utility.GetLocalizedErrorLabel("emptyNickname"));
+                        ShowErrorEnterEmailOrNoPhone(Utility.GetLocalizedErrorLabel("error_emptyIcAndEmailOwner"));
                     }
                     else
                     {
@@ -949,7 +949,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 mErrorMessageSnackBar.Dismiss();
             }
 
-            mErrorMessageSnackBar = Snackbar.Make(rootView, "Please enter no phone or email owner", Snackbar.LengthIndefinite)
+            mErrorMessageSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
             );
             View v = mErrorMessageSnackBar.View;

@@ -170,7 +170,8 @@
     "noMeterAccessErrorMessage": "Anda perlu mempunyai meter yang boleh diakses supaya bacaan meter boleh dilakukan. Sila cuba lagi apabila anda mempunyai akses kepada meter anda.",
     //yana
     "accountLengthNew": "Sila masukkan nombor akaun elektrik 12 digit yang sah.",
-    "error_duplicateAccountMessageNew": "Nombor akaun elektrik ini telah ditambah ke senarai."
+    "error_duplicateAccountMessageNew": "Nombor akaun elektrik ini telah ditambah ke senarai.",
+    "error_emptyIcAndEmailOwner": "BM_Email or phone number owner cannot be empty."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
