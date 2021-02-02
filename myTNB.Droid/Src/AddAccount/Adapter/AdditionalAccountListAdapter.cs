@@ -125,6 +125,7 @@ namespace myTNB_Android.Src.AddAccount
             MobileLinearLayout = itemView.FindViewById<LinearLayout>(Resource.Id.mobileNumberFieldContainer);
             OwnerNoContactLinearLayout = itemView.FindViewById<LinearLayout>(Resource.Id.layout_owner_no_contact);
             textInputLayoutEmailEditText = itemView.FindViewById<TextInputLayout>(Resource.Id.textInputLayoutEmailReg);
+            
 
             EmailFieldDetail.Click += (sender, e) => 
             {
