@@ -411,11 +411,11 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 if (char_count > 0)
                 {
                     int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
-                    txtInputLayoutTellUsMore.Error = char_left + " " + GetString(Resource.String.feedback_character_left);
+                    txtInputLayoutTellUsMore.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), char_left);
                 }
                 else
                 {
-                    txtInputLayoutTellUsMore.Error = GetString(Resource.String.feedback_total_character_left);
+                    txtInputLayoutTellUsMore.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), "250");
                 }
             }
             catch (Exception e)
