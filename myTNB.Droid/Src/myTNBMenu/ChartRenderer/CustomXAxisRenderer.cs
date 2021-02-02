@@ -70,6 +70,12 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
             mTrans.PointValuesToPixel(positions);
 
+            if (TextViewUtils.IsLargeFonts)
+            {
+                float currentSize = MAxisLabelPaint.TextSize;
+                MAxisLabelPaint.TextSize = currentSize + 6;
+            }
+
             for (int i = 0; i < positions.Length; i += 2)
             {
                 float x = positions[i];
@@ -121,8 +127,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                             }
                         }
                     }
-
-
                     MikePhil.Charting.Util.Utils.DrawXAxisValue(p0, label, x, p1, MAxisLabelPaint, p2, labelRotationAngleDegrees);
                 }
             }
@@ -130,7 +134,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         protected override void DrawLabel(Canvas p0, string p1, float p2, float p3, MPPointF p4, float p5)
         {
-            
+
         }
     }
 }
