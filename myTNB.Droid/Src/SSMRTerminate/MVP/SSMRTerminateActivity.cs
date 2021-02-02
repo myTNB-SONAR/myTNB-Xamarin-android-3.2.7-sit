@@ -109,6 +109,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         [BindView(Resource.Id.reasonDetailContainer)]
         LinearLayout reasonDetailContainer;
 
+        [BindView(Resource.Id.ssmrApplicationScrollview)]
+        ScrollView ssmrApplicationScrollview;
+
         public override int ResourceId()
         {
             return Resource.Layout.SSMRDiscontinueApplicationLayout;
@@ -281,6 +284,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             }
             ShowUIDetails();
+            ssmrApplicationScrollview.Post(()=> {
+                ssmrApplicationScrollview.FullScroll(FocusSearchDirection.Down);
+            });
         }
 
         private void ShowUIDetails()
