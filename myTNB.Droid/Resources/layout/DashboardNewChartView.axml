@@ -1075,7 +1075,10 @@
 												android:layout_alignParentTop="true"
 												android:text="My bill amount so far"
 												android:textColor="@color/charcoalGrey"
-												android:textSize="13dp" />
+												android:textSize="13dp"
+												android:maxLines="1"
+												android:maxWidth="120dp"
+												android:ellipsize="end" />
 											<TextView
 												android:id="@+id/smStatisticBill"
 												android:layout_width="wrap_content"
@@ -1088,7 +1091,7 @@
 												android:visibility="visible"
 												android:text="0.00"
 												android:textColor="@color/charcoalGrey"
-												android:textSize="17dp" />
+												android:textSize="17dp"/>
 											<TextView
 												android:id="@+id/smStatisticBillCurrency"
 												android:layout_width="wrap_content"
@@ -1137,7 +1140,10 @@
 												android:textSize="13dp"
 												android:layout_marginTop="2dp"
 												android:textColor="@color/new_grey"
-												android:text="for - " />
+												android:text="for - "
+												android:maxLines="1"
+												android:maxWidth="120dp"
+												android:ellipsize="end"/>
 										</RelativeLayout>
 									</LinearLayout>
 									<View
@@ -1255,7 +1261,10 @@
 												android:layout_alignParentTop="true"
 												android:text="My bill may reach"
 												android:textColor="@color/charcoalGrey"
-												android:textSize="13dp" />
+												android:textSize="13dp"
+												android:maxLines="1"
+												android:maxWidth="120dp"
+												android:ellipsize="end" />
 											<TextView
 												android:id="@+id/smStatisticPredict"
 												android:layout_width="wrap_content"
@@ -1289,7 +1298,10 @@
 												android:textSize="13dp"
 												android:layout_marginTop="2dp"
 												android:textColor="@color/new_grey"
-												android:text="for - " />
+												android:text="for - "
+												android:maxLines="1"
+												android:maxWidth="120dp"
+												android:ellipsize="end"/>
 										</RelativeLayout>
 									</LinearLayout>
 									<LinearLayout
