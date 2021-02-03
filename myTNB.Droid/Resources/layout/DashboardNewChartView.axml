@@ -703,7 +703,10 @@
 												android:layout_alignParentTop="true"
 												android:text="My earnings"
 												android:textColor="@color/charcoalGrey"
-												android:textSize="13dp" />
+												android:textSize="13dp"
+												android:maxLines="1"
+												android:maxWidth="120dp"
+												android:ellipsize="end"/>
 											<TextView
 												android:id="@+id/reTotalPayable"
 												android:layout_width="wrap_content"
@@ -737,7 +740,10 @@
 												android:textSize="13dp"
 												android:layout_marginTop="2dp"
 												android:textColor="@color/new_grey"
-												android:text="I will get by 22 Aug" />
+												android:text="I will get by 22 Aug"
+												android:maxLines="1"
+												android:maxWidth="120dp"
+												android:ellipsize="end"/>
 										</RelativeLayout>
 										<LinearLayout
 											android:layout_width="match_parent"
@@ -757,7 +763,10 @@
 												android:text="@string/dashboard_need_pay"
 												android:textColor="@color/charcoalGrey"
 												android:textSize="13dp"
-												android:lineSpacingExtra="2dp"/>
+												android:lineSpacingExtra="2dp"
+												android:maxLines="1"
+												android:maxWidth="120dp"
+												android:ellipsize="end"/>
 											<RelativeLayout
 												android:layout_width="0dp"
 												android:layout_height="wrap_content"
