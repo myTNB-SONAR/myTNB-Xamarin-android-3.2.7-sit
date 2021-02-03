@@ -70,6 +70,10 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> CancelInvitation_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //wan //api cancel invited user
 
         [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SendReInviteEmail")]
+        Task<T> SendReInviteEmail<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //irul //api resend invited user
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/AddUserAccess_OT")]
         Task<T> AddUserAcess_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //wan //api add user access
 

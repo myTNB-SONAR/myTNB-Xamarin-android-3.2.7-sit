@@ -416,7 +416,9 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     ShowResendInviteAccessDialog(this, () =>
                     {
                         //this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, checkboxfullbill, checkboxbilling);
-                        ShowInviteSuccess(account.email);
+                        //ShowInviteSuccess(account.email);
+                        this.userActionsListener.ResendInvitedUser(account.email, account.AccNum, account.IsHaveAccess, account.IsApplyEBilling);
+
                     });
                 }
                 this.SetIsClicked(false);
@@ -601,6 +603,14 @@ namespace myTNB_Android.Src.ManageUser.Activity
             btnSave.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
             isSelectionChange = false;
         }
+
+
+        public void DisableResendButton()
+        {
+            btnResendInviteAccessUser.Enabled = false;
+            btnResendInviteAccessUser.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+        }
+
 
         public void ShowSaveSuccess()
         {

@@ -56,10 +56,14 @@ namespace myTNB_Android.Src.ManageUser.MVP
             void ShowSaveSuccess();
             
             void DisableSaveButton();
+
+            void DisableResendButton();
             
             void PopulateDataCheckBox(UserManageAccessAccount updateacc);
             
             void ShowSuccessCancelInvite(string cancelInvite);
+
+            void ShowInviteSuccess(string cancelInvite);
         }
         public interface IUserActionsListener : IBasePresenter
         {
@@ -75,6 +79,8 @@ namespace myTNB_Android.Src.ManageUser.MVP
             void UpdateAccountAccessRight(string userAccountId, bool isHaveAccess, bool isApplyEBilling);
 
             void CancelInvitedUser(string userId);
+
+            void ResendInvitedUser(string email, string AccNum, bool isHaveAccess,bool isApplyEBilling);
         }
     }
 }

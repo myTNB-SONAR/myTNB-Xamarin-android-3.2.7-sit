@@ -202,6 +202,17 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
             return api.CancelInvitation_OT<ManageAccessAccountListNullResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //wan   //api cancel invited user
         }
 
+
+        /// <summary>
+        /// Call SendReInviteEmail with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<ManageAccessAccountListNullResponse> SendReInviteEmail([Body] Request.BaseRequest request)
+        {
+            return api.SendReInviteEmail<ManageAccessAccountListNullResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //irul   //api resend invited user
+        }
+
         /// <summary>
         /// Call GetAccountActivityLogList with default timeout
         /// </summary>
