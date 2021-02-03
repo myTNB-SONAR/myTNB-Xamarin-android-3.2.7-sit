@@ -146,7 +146,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
                 }
                 else
                 {
-                    this.mView.ShowErrorMessageResponse(updateUserAccessReponse.Response.Message);
+                    this.mView.ShowErrorMessageResponse(updateUserAccessReponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)
