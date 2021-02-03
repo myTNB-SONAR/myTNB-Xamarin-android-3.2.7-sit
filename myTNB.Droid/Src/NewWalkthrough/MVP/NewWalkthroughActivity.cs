@@ -88,7 +88,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     }
                 }
 
-                if ((position == (newWalkthroughAdapter.Count - 1)))
+                if ((position == (newWalkthroughAdapter.Count - 2)))
                 {
                     ShowSubmitButton(true);
                 }

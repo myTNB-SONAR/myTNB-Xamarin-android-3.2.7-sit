@@ -81,6 +81,15 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                         Image = "walkthrough_img_install_7"
                     });
                 }
+                if (!MyTNBAccountManagement.GetInstance().IsAppointmentDisabled)
+                {
+                    newWalkthroughList.Add(new NewWalkthroughModel()
+                    {
+                        Title = Utility.GetLocalizedLabel("Onboarding", "title10"),
+                        Description = Utility.GetLocalizedLabel("Onboarding", "description10"),
+                        Image = "walkthrough_img_install_8"
+                    });
+                }
             }
             else
             {
@@ -114,6 +123,24 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Description = Utility.GetLocalizedLabel("Onboarding", "description8"),
                     Image = "walkthrough_img_update_3"
                 });
+                if (!MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
+                {
+                    newWalkthroughList.Add(new NewWalkthroughModel()
+                    {
+                        Title = Utility.GetLocalizedLabel("Onboarding", "title9"),
+                        Description = Utility.GetLocalizedLabel("Onboarding", "description9"),
+                        Image = "walkthrough_img_update_4"
+                    });
+                }
+                if (!MyTNBAccountManagement.GetInstance().IsAppointmentDisabled)
+                {
+                    newWalkthroughList.Add(new NewWalkthroughModel()
+                    {
+                        Title = Utility.GetLocalizedLabel("Onboarding", "title10"),
+                        Description = Utility.GetLocalizedLabel("Onboarding", "description10"),
+                        Image = "walkthrough_img_update_5"
+                    });
+                }
             }
 
             return newWalkthroughList;
