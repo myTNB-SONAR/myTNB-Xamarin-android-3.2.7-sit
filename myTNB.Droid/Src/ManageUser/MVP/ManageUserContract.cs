@@ -59,7 +59,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
             
             void PopulateDataCheckBox(UserManageAccessAccount updateacc);
             
-            void ShowSuccessCancelInvite(string email);
+            void ShowSuccessCancelInvite(string cancelInvite);
         }
         public interface IUserActionsListener : IBasePresenter
         {

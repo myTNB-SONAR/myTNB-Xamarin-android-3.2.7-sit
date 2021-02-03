@@ -560,10 +560,10 @@ namespace myTNB_Android.Src.ManageUser.Activity
             base.OnBackPressed();
         }
 
-        public void ShowSuccessCancelInvite(string email)
+        public void ShowSuccessCancelInvite(string cancelInvite)
         {
             Intent resultIntent = new Intent();
-            resultIntent.PutExtra("cancelInvited", email);
+            resultIntent.PutExtra("cancelInvited", cancelInvite);
             SetResult(Result.Ok, resultIntent);
             Finish();
         }
