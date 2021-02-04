@@ -14,6 +14,7 @@
         internal const string EMPTY = "empty";
         internal const string DEFAULT = "default";
         internal const string EMPTY_FILTER = "emptyFilter";
+        internal const string SUCCESS_CODE = "7200";
 
         //Todo: Set to 60000
         internal const int APITimeOut = 60000;
