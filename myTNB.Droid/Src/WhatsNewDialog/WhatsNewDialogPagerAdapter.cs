@@ -13,6 +13,7 @@ using Android.Widget;
 using AndroidX.CardView.Widget;
 using AndroidX.Core.Content;
 using AndroidX.ViewPager.Widget;
+using DynatraceAndroid;
 using Facebook.Shimmer;
 using Java.Util.Regex;
 using myTNB.SitecoreCMS.Model;
@@ -47,6 +48,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
         public event EventHandler<int> RefreshIndicator;
         private bool isTextOnly = false;
         private bool isPhotoOnly = true;
+        private IDTXAction DynAction;
 
         public WhatsNewDialogPagerAdapter(Android.App.Activity ctx, List<WhatsNewModel> items)
         {
@@ -62,6 +64,8 @@ namespace myTNB_Android.Src.WhatsNewDialog
         public override Java.Lang.Object InstantiateItem(ViewGroup container, int position)
         {
             WhatsNewModel model = whatsnew[position];
+
+            DynatraceTag(model.Title);
 
             ViewGroup rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerItemLayout, container, false);
 
@@ -349,6 +353,20 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 }
             }
             catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void DynatraceTag(string title) {
+
+            try
+            {
+               // dynatrace
+                IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(!string.IsNullOrEmpty(title)? title : Constants.DYNA_WHATS_NEW_DEFAULT);
+                dynaTrace.LeaveAction();
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
