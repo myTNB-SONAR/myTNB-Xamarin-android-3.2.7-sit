@@ -393,5 +393,6 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string WEBVIEW_PAYMENT_FINISH_DASHBOARD = "WebViewPaymentFINISH_DASHBOARD";
         internal static readonly string DYNA_SITECORE_REFFER_LOCAL = "sitecore_refer_local";
         internal static readonly string DYNA_SITECORE_REFFER_ONLINE = "sitecore_refer_online";
+        internal static readonly string DYNA_WHATS_NEW_DEFAULT = "WhatsNewClicked";
     }
 }

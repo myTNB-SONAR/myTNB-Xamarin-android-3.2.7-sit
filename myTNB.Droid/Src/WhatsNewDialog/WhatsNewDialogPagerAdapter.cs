@@ -1,36 +1,18 @@
-﻿using Android.Content;
-using Android.Graphics;
+﻿using Android.Graphics;
 using Android.OS;
-
-
-
 using Android.Text;
-using Android.Text.Method;
-using Android.Text.Style;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.CardView.Widget;
-using AndroidX.Core.Content;
 using AndroidX.ViewPager.Widget;
+using DynatraceAndroid;
 using Facebook.Shimmer;
-using Java.Util.Regex;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.FAQ.Activity;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
-using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.WhatsNewDetail.MVP;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -47,6 +29,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
         public event EventHandler<int> RefreshIndicator;
         private bool isTextOnly = false;
         private bool isPhotoOnly = true;
+        private IDTXAction DynAction;
 
         public WhatsNewDialogPagerAdapter(Android.App.Activity ctx, List<WhatsNewModel> items)
         {
@@ -62,6 +45,8 @@ namespace myTNB_Android.Src.WhatsNewDialog
         public override Java.Lang.Object InstantiateItem(ViewGroup container, int position)
         {
             WhatsNewModel model = whatsnew[position];
+
+            DynatraceTag(model.Title);
 
             ViewGroup rootView = (ViewGroup)LayoutInflater.From(mContext).Inflate(Resource.Layout.WhatsNewPagerItemLayout, container, false);
 
@@ -177,7 +162,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
 
                 CardView whatsNewCardView = (CardView)rootView.FindViewById(Resource.Id.whatsNewDialogCardView);
 
-                
+
                 LinearLayout whatsNewDialogMainView = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewDialogMainView);
                 LinearLayout whatsNewMainImgLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewMainShimmerImgLayout);
                 ShimmerFrameLayout shimmerWhatsNewImageLayout = (ShimmerFrameLayout)rootView.FindViewById(Resource.Id.shimmerWhatsNewImageLayout);
@@ -362,6 +347,20 @@ namespace myTNB_Android.Src.WhatsNewDialog
             }
         }
 
+        private void DynatraceTag(string title)
+        {
+            try
+            {
+                // dynatrace
+                IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(!string.IsNullOrEmpty(title) ? title : Constants.DYNA_WHATS_NEW_DEFAULT);
+                dynaTrace.LeaveAction();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         private void SetWhatsNewDialogTextImage(Bitmap imgSrc, ShimmerFrameLayout shimmerWhatsNewImageLayout, LinearLayout whatsNewMainImgLayout, ImageView imgWhatsNew)
         {
             try
@@ -401,7 +400,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
                     {
                         currentImgWidth = mContext.Resources.DisplayMetrics.WidthPixels - 8 * GetDeviceHorizontalScaleInPixel(0.006f);
                     }
-                    else if(mContext.Resources.DisplayMetrics.HeightPixels >= 2200)
+                    else if (mContext.Resources.DisplayMetrics.HeightPixels >= 2200)
                     {
                         currentImgWidth = mContext.Resources.DisplayMetrics.WidthPixels - 6 * GetDeviceHorizontalScaleInPixel(0.016f);
                     }
