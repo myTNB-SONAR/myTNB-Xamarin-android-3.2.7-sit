@@ -645,7 +645,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(325f);
+                            float h1 = TextViewUtils.IsLargeFonts ? 325f : 325f;
+                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
                             int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
                             float heightRatio = 84f / 96f;
                             int cardHeight = (int)(cardWidth * (heightRatio));
@@ -660,7 +661,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 cardHeight = cardWidth;
                             }
                             int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
-                            topHeight = topHeight + middleHeight + (int)DPUtils.ConvertDPToPx(12f);
+                            topHeight = topHeight + middleHeight + middleHeight + (int)DPUtils.ConvertDPToPx(12f);
                             if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
                             {
                                 topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
@@ -761,7 +762,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else if (position == 1)
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(268f);
+                            float h1 = TextViewUtils.IsLargeFonts ? 298f : 268f;
+                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
                             int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
                             float heightRatio = 84f / 96f;
                             int cardHeight = (int)(cardWidth * (heightRatio));
@@ -823,7 +825,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(268f);
+                            float h1 = TextViewUtils.IsLargeFonts ? 298f : 268f;
+                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
                             int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
                             float heightRatio = 84f / 96f;
                             int cardHeight = (int)(cardWidth * (heightRatio));
@@ -838,7 +841,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 cardHeight = cardWidth;
                             }
                             int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
-                            topHeight = topHeight + middleHeight + (int)DPUtils.ConvertDPToPx(12f);
+                            topHeight = topHeight + middleHeight + middleHeight + (int)DPUtils.ConvertDPToPx(12f);
                             if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
                             {
                                 topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
@@ -929,7 +932,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else if (position == 1)
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(228f);
+                            float h1 = TextViewUtils.IsLargeFonts ? 250f : 228f;
+                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
                             int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
                             float heightRatio = 84f / 96f;
                             int cardHeight = (int)(cardWidth * (heightRatio));
@@ -979,7 +983,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(228f);
+                            float h1 = TextViewUtils.IsLargeFonts ? 248f : 228f;
+                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
                             int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
                             float heightRatio = 84f / 96f;
                             int cardHeight = (int)(cardWidth * (heightRatio));
@@ -994,7 +999,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 cardHeight = cardWidth;
                             }
                             int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
-                            topHeight = topHeight + middleHeight + (int)DPUtils.ConvertDPToPx(12f);
+                            topHeight = topHeight + middleHeight + middleHeight + (int)DPUtils.ConvertDPToPx(12f);
                             if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
                             {
                                 topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
@@ -1085,7 +1090,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else if (position == 1)
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(218f);
+                            float h1 = TextViewUtils.IsLargeFonts ? 235f : 218f;
+                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
                             int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
                             float heightRatio = 84f / 96f;
                             int cardHeight = (int)(cardWidth * (heightRatio));
@@ -1135,7 +1141,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(218f);
+                            float h1 = TextViewUtils.IsLargeFonts ? 238f : 218f;
+                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
                             int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
                             float heightRatio = 84f / 96f;
                             int cardHeight = (int)(cardWidth * (heightRatio));
@@ -1150,7 +1157,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 cardHeight = cardWidth;
                             }
                             int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
-                            topHeight = topHeight + middleHeight + (int)DPUtils.ConvertDPToPx(12f);
+                            topHeight = topHeight + middleHeight + middleHeight + (int)DPUtils.ConvertDPToPx(12f);
                             if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
                             {
                                 topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
