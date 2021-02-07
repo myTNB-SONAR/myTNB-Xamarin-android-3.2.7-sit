@@ -705,7 +705,7 @@
 												android:textColor="@color/charcoalGrey"
 												android:textSize="13dp"
 												android:maxLines="1"
-												android:maxWidth="120dp"
+												android:maxWidth="150dp"
 												android:ellipsize="end"/>
 											<TextView
 												android:id="@+id/reTotalPayable"
@@ -742,7 +742,7 @@
 												android:textColor="@color/new_grey"
 												android:text="I will get by 22 Aug"
 												android:maxLines="1"
-												android:maxWidth="120dp"
+												android:maxWidth="150dp"
 												android:ellipsize="end"/>
 										</RelativeLayout>
 										<LinearLayout
@@ -765,7 +765,7 @@
 												android:textSize="13dp"
 												android:lineSpacingExtra="2dp"
 												android:maxLines="1"
-												android:maxWidth="120dp"
+												android:maxWidth="150dp"
 												android:ellipsize="end"/>
 											<RelativeLayout
 												android:layout_width="0dp"
@@ -1086,7 +1086,7 @@
 												android:textColor="@color/charcoalGrey"
 												android:textSize="13dp"
 												android:maxLines="1"
-												android:maxWidth="120dp"
+												android:maxWidth="150dp"
 												android:ellipsize="end" />
 											<TextView
 												android:id="@+id/smStatisticBill"
@@ -1151,7 +1151,7 @@
 												android:textColor="@color/new_grey"
 												android:text="for - "
 												android:maxLines="1"
-												android:maxWidth="120dp"
+												android:maxWidth="150dp"
 												android:ellipsize="end"/>
 										</RelativeLayout>
 									</LinearLayout>
@@ -1272,7 +1272,7 @@
 												android:textColor="@color/charcoalGrey"
 												android:textSize="13dp"
 												android:maxLines="1"
-												android:maxWidth="120dp"
+												android:maxWidth="150dp"
 												android:ellipsize="end" />
 											<TextView
 												android:id="@+id/smStatisticPredict"
@@ -1309,7 +1309,7 @@
 												android:textColor="@color/new_grey"
 												android:text="for - "
 												android:maxLines="1"
-												android:maxWidth="120dp"
+												android:maxWidth="150dp"
 												android:ellipsize="end"/>
 										</RelativeLayout>
 									</LinearLayout>
@@ -1709,7 +1709,7 @@
 					android:text="0.00"
 					android:textColor="@color/tunaGrey"
 					android:textSize="25dp"
-					android:maxWidth="130dp"
+					android:maxWidth="150dp"
 					android:ellipsize="end"
 					android:singleLine="false"
 					android:maxLines="1" />

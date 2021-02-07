@@ -88,7 +88,9 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     }
                 }
 
-                if (position == (MyTNBAccountManagement.GetInstance().IsAppointmentDisabled ? (newWalkthroughAdapter.Count - 1):(newWalkthroughAdapter.Count - 2)))
+                if (position == (MyTNBAccountManagement.GetInstance().IsAppointmentDisabled
+                    ? (newWalkthroughAdapter.Count - 1)
+                    : (newWalkthroughAdapter.Count - 2)))
                 {
                     ShowSubmitButton(true);
                 }
@@ -216,7 +218,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 {
                     btnStart.Visibility = ViewStates.Visible;
                 }
-              
+
                 RelativeLayout.LayoutParams param = btnStart.LayoutParameters as RelativeLayout.LayoutParams;
                 param.AddRule(LayoutRules.AlignParentBottom);
                 param.BottomMargin = (int)DPUtils.ConvertDPToPx(16f);
@@ -305,16 +307,16 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         public void UpdateContent()
         {
             btnSkip.Text = Utility.GetLocalizedLabel("Onboarding", "skip");
-           if(MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
+            if (MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
             {
                 btnStart.Visibility = ViewStates.Gone;
             }
-           else
+            else
             {
                 btnStart.Text = Utility.GetLocalizedLabel("Onboarding", "setSize");
-                btnStart.Visibility = ViewStates.Visible;
+                //btnStart.Visibility = ViewStates.Visible;
             }
-          
+
             newWalkthroughAdapter.SetData(this.presenter.GenerateNewWalkthroughList(currentAppNavigation));
             newWalkthroughAdapter.NotifyDataSetChanged();
             viewPager.Invalidate();
