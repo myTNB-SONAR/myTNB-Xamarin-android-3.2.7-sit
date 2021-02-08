@@ -948,11 +948,12 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             }
         }
 
-        public void ShowCancelAddSuccess(string email)
+        public void ShowCancelAddSuccess(string message)
         {
             try
             {
-                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("UserAccess","cancelAddSuccess"), email)), Snackbar.LengthIndefinite)
+                
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (message), Snackbar.LengthIndefinite)
                             .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
                              {

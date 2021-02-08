@@ -63,8 +63,8 @@ namespace myTNB_Android.Src.ManageAccess.MVP
 
                         if (data != null && data.Extras.GetString("cancelInvited") != null)
                         {
-                            string email = data.Extras.GetString("cancelInvited");
-                            this.mView.ShowCancelAddSuccess(email);
+                            string message = data.Extras.GetString("cancelInvited");
+                            this.mView.ShowCancelAddSuccess(message);
                         }
                     }
                 }
