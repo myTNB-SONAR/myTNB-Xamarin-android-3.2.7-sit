@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.LogUserAccess.Adapter;
@@ -22,7 +23,6 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
       , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class LogUserAccessActivity : BaseActivityCustom, LogUserAccessContract.IView
     {
-
         [BindView(Resource.Id.text_title_this_week)]
         TextView texttitleThisWeek;
 
@@ -47,11 +47,19 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
         [BindView(Resource.Id.ActivityLog_layout_empty)]
         FrameLayout empty_layout;
 
+        [BindView(Resource.Id.scrollviewLog)]
+        ScrollView scrollviewLog;
+
+        [BindView(Resource.Id.progressbarlayout)]
+        LinearLayout progressbarlayout;
+
         LogUserAccessAdapter adapter;
 
         LogUserAccessContract.IUserActionsListener userActionsListener;
         LogUserAccessPresenter mPresenter;
         List<LogUserAccessNewData> LogListData;
+
+        private int firstdata;
         const string PAGE_ID = "";
 
         public bool IsActive()
@@ -76,26 +84,29 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
 
         public void ShowLogList(List<LogUserAccessNewData> logUserData)
         {
-            //adapter.AddAll(logUserData);
             adapter = new LogUserAccessAdapter(this, logUserData);
+            adapter.NotifyDataSetChanged();
             LastMonthlistview.Adapter = adapter;
             LastMonthlistview.SetNoScroll();
+            LastMonthlistview.SetScrollContainer(false);
         }
 
         public void ShowLogListThisWeek(List<LogUserAccessNewData> logUserDataThisWeek)
         {
-            //adapter.AddAll(logUserData);
             adapter = new LogUserAccessAdapter(this, logUserDataThisWeek);
+            adapter.NotifyDataSetChanged();
             ThisWeeklistview.Adapter = adapter;
             ThisWeeklistview.SetNoScroll();
+            ThisWeeklistview.SetScrollContainer(false);
         }
 
         public void ShowLogListLastWeek(List<LogUserAccessNewData> logUserDataLastWeek)
         {
-            //adapter.AddAll(logUserData);
             adapter = new LogUserAccessAdapter(this, logUserDataLastWeek);
+            adapter.NotifyDataSetChanged();
             LastWeeklistview.Adapter = adapter;
             LastWeeklistview.SetNoScroll();
+            LastWeeklistview.SetScrollContainer(false);
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -123,7 +134,7 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
 
                 this.mPresenter = new LogUserAccessPresenter(this);
 
-                if (LogListData.Count == 0)
+                if (LogListData != null && LogListData.Count == 0)
                 {
                     log_activity_layout.Visibility = ViewStates.Gone;
                     empty_layout.Visibility = ViewStates.Visible;
@@ -131,9 +142,59 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
                 else
                 {
                     this.userActionsListener.SortLogListDataByDate(LogListData);
+                    //progressbarlayout.Visibility = ViewStates.Visible;
                 }
 
+                //scrollviewLog.ScrollChange += ScrollviewLog_ScrollChange;
                 this.userActionsListener.Start();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+       /* private void ScrollviewLog_ScrollChange(object sender, View.ScrollChangeEventArgs e)
+        {
+            if (!scrollviewLog.CanScrollVertically(1))
+            {
+                if (LogListData.Count > 15 && firstdata == 15)
+                {
+                    this.userActionsListener.SortLogListDataByDateAfterScroll(LogListData);
+                }
+                else if (firstdata == 50 || LogListData.Count < 15)
+                {
+                    progressbarlayout.Visibility = ViewStates.Gone;
+                }
+            }
+            if (!scrollviewLog.CanScrollVertically(-1))
+            {
+                // top of scroll view
+            }
+        }*/
+
+        public void FirstLoadData(int datatotal)
+        {
+            firstdata = datatotal;
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
             catch (Exception e)
             {

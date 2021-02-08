@@ -13,11 +13,22 @@ namespace myTNB_Android.Src.LogUserAccess.MVP
             /// </summary>
             /// <param name="logUserAccess">List<paramref name="logUserAccessData"/></param>
             void ShowLogList(List<LogUserAccessNewData> LogUserAccessData);
+         
             void emptyThisWeekList();
+           
             void emptyLastWeekList();
+          
             void emptyLastMonthList();
+         
             void ShowLogListThisWeek(List<LogUserAccessNewData> thisWeek);
+         
             void ShowLogListLastWeek(List<LogUserAccessNewData> lastWeek);
+         
+            void HideShowProgressDialog();
+         
+            void FirstLoadData(int v);
+         
+            void ShowProgressDialog();
         }
 
         public interface IUserActionsListener : IBasePresenter

@@ -10,6 +10,9 @@ namespace myTNB_Android.Src.LogUserAccess.MVP
     {
 
         private LogUserAccessContract.IView mView;
+        private static DateTime ThisweekStartDate;
+        private static DateTime ThisweekEndDate;
+
 
         public LogUserAccessPresenter(LogUserAccessContract.IView mView)
         {
@@ -17,583 +20,126 @@ namespace myTNB_Android.Src.LogUserAccess.MVP
             this.mView.SetPresenter(this);
         }
 
-        public bool GetPeriodsBool(DateTime periods, string checkSelection)
+        public static bool DateInsideOneWeek(DateTime date1)
         {
-
+            DayOfWeek firstDayOfWeek = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+            DateTime startDateOfWeek = date1.Date;
+            
+            DateTime NewstartDateOfWeek = DateTime.Now;
+            DateTime date2;
             DateTime referenceDate;
             DayOfWeek referenceDateDay;
             DateTime datadate = new DateTime();
-            DateTime startDate = new DateTime();
-            DateTime endDate = new DateTime();
-            DateTime startDateSat = new DateTime();
-            DateTime startDateFri = new DateTime();
-            DateTime startDateWed = new DateTime();
-            DateTime startDateTue = new DateTime();
-            DateTime startDateMon = new DateTime();
-            DateTime startDateSun = new DateTime();
-            DateTime startDateThu = new DateTime();
 
-            string dateString = string.Empty;
+            referenceDateDay = datadate.DayOfWeek;
+            referenceDate = DateTime.Now;
 
-
-            if (checkSelection.Equals("thisweek"))
-            {
-                datadate = periods;
-                referenceDateDay = datadate.DayOfWeek;
-                referenceDate = DateTime.Now;
-
-                if (referenceDate.DayOfWeek.ToString().Contains("Sunday"))
-                {
-                    startDate = referenceDate;
-                    startDateSun = referenceDate.AddDays(-1);
-                    if ((startDate.Day == periods.Day) && startDate.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateSun.Day == periods.Day) && startDateSun.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else if (referenceDate.DayOfWeek.ToString().Contains("Monday"))
-                {
-                    startDate = referenceDate;
-                    startDateSun = referenceDate.AddDays(-1);
-
-                    if ((startDateSun.Day == periods.Day) && startDateSun.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDate.Day == periods.Day) && startDate.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else if(referenceDate.DayOfWeek.ToString().Contains("Tuesday"))
-                {
-                    startDate = referenceDate;
-                    startDateMon = referenceDate.AddDays(-1);
-                    startDateSun = referenceDate.AddDays(-2);
-
-                    if ((startDateMon.Day == periods.Day) && startDateMon.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateSun.Day == periods.Day) && startDateSun.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDate.Day == periods.Day) && startDate.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else if(referenceDate.DayOfWeek.ToString().Contains("Wednesday"))
-                {
-                    startDate = referenceDate;
-                    startDateTue = referenceDate.AddDays(-1);
-                    startDateMon = referenceDate.AddDays(-2);
-                    startDateSun = referenceDate.AddDays(-3);
-
-                    if ((startDateTue.Day == periods.Day) && startDateTue.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateMon.Day == periods.Day) && startDateMon.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateSun.Day == periods.Day) && startDateSun.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDate.Day == periods.Day) && startDate.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else if(referenceDate.DayOfWeek.ToString().Contains("Thursday"))
-                {
-                    startDate = referenceDate;
-                    startDateWed = referenceDate.AddDays(-1);
-                    startDateTue = referenceDate.AddDays(-2);
-                    startDateMon = referenceDate.AddDays(-3);
-                    startDateSun = referenceDate.AddDays(-4);
-
-                    if ((startDateWed.Day == periods.Day) && startDateWed.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateTue.Day == periods.Day) && startDateTue.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateMon.Day == periods.Day) && startDateMon.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateSun.Day == periods.Day) && startDateSun.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDate.Day == periods.Day) && startDate.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else if(referenceDate.DayOfWeek.ToString().Contains("Friday"))
-                {
-                    startDate = referenceDate;
-                    startDateThu = referenceDate.AddDays(-1);
-                    startDateWed = referenceDate.AddDays(-2);
-                    startDateTue = referenceDate.AddDays(-3);
-                    startDateMon = referenceDate.AddDays(-4);
-                    startDateSun = referenceDate.AddDays(-5);
-
-                    if ((startDateThu.Day == periods.Day) && startDateThu.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateWed.Day == periods.Day) && startDateWed.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateTue.Day == periods.Day) && startDateTue.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateMon.Day == periods.Day) && startDateMon.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateSun.Day == periods.Day) && startDateSun.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDate.Day == periods.Day) && startDate.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    startDate = referenceDate;
-                    startDateFri = referenceDate.AddDays(-1);
-                    startDateThu = referenceDate.AddDays(-2);
-                    startDateWed = referenceDate.AddDays(-3);
-                    startDateTue = referenceDate.AddDays(-4);
-                    startDateMon = referenceDate.AddDays(-5);
-                    startDateSun = referenceDate.AddDays(-6);
-                    
-                    if ((startDateFri.Day == periods.Day) && startDateFri.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateThu.Day == periods.Day) && startDateThu.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateWed.Day == periods.Day) && startDateWed.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateTue.Day == periods.Day) && startDateTue.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateMon.Day == periods.Day) && startDateMon.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateSun.Day == periods.Day) && startDateSun.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDate.Day == periods.Day) && startDate.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
+            while (startDateOfWeek.DayOfWeek != firstDayOfWeek)
+            { 
+                startDateOfWeek = startDateOfWeek.AddDays(-1d); 
             }
-            else if (checkSelection.Equals("lastweek"))
+            DateTime endDateOfWeek = startDateOfWeek.AddDays(6d);
+
+            while (NewstartDateOfWeek.DayOfWeek != firstDayOfWeek)
             {
-                datadate = periods;
-                referenceDateDay = datadate.DayOfWeek;
-                referenceDate = DateTime.Now;
-
-                if (referenceDate.DayOfWeek.ToString().Contains("Sunday"))
-                {
-                    startDateSat = referenceDate.AddDays(-1);
-                    startDateFri = referenceDate.AddDays(-2);
-                    startDateThu = referenceDate.AddDays(-3);
-                    startDateWed = referenceDate.AddDays(-4);
-                    startDateTue = referenceDate.AddDays(-5);
-                    startDateMon = referenceDate.AddDays(-6);
-                    startDateSun = referenceDate.AddDays(-7);
-
-                    if ((startDateSat.Day == periods.Day) && startDateSat.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    if ((startDateFri.Day == periods.Day) && startDateFri.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateThu.Day == periods.Day) && startDateThu.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateWed.Day == periods.Day) && startDateWed.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateTue.Day == periods.Day) && startDateTue.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateMon.Day == periods.Day) && startDateMon.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateSun.Day == periods.Day) && startDateSun.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else if (referenceDate.DayOfWeek.ToString().Contains("Monday"))
-                {
-                    startDateSat = referenceDate.AddDays(-2);
-                    startDateFri = referenceDate.AddDays(-3);
-                    startDateThu = referenceDate.AddDays(-4);
-                    startDateWed = referenceDate.AddDays(-5);
-                    startDateTue = referenceDate.AddDays(-6);
-                    startDateMon = referenceDate.AddDays(-7);
-                    startDateSun = referenceDate.AddDays(-8);
-
-                    if ((startDateSat.Day == periods.Day) && startDateSat.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    if ((startDateFri.Day == periods.Day) && startDateFri.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateThu.Day == periods.Day) && startDateThu.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateWed.Day == periods.Day) && startDateWed.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateTue.Day == periods.Day) && startDateTue.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateMon.Day == periods.Day) && startDateMon.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateSun.Day == periods.Day) && startDateSun.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else if (referenceDate.DayOfWeek.ToString().Contains("Tuesday"))
-                {
-                    startDateSat = referenceDate.AddDays(-3);
-                    startDateFri = referenceDate.AddDays(-4);
-                    startDateThu = referenceDate.AddDays(-5);
-                    startDateWed = referenceDate.AddDays(-6);
-                    startDateTue = referenceDate.AddDays(-7);
-                    startDateMon = referenceDate.AddDays(-8);
-                    startDateSun = referenceDate.AddDays(-9);
-
-                    if ((startDateSat.Day == periods.Day) && startDateSat.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    if ((startDateFri.Day == periods.Day) && startDateFri.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateThu.Day == periods.Day) && startDateThu.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateWed.Day == periods.Day) && startDateWed.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateTue.Day == periods.Day) && startDateTue.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateMon.Day == periods.Day) && startDateMon.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateSun.Day == periods.Day) && startDateSun.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else if (referenceDate.DayOfWeek.ToString().Contains("Wednesday"))
-                {
-                    startDateSat = referenceDate.AddDays(-4);
-                    startDateFri = referenceDate.AddDays(-5);
-                    startDateThu = referenceDate.AddDays(-6);
-                    startDateWed = referenceDate.AddDays(-7);
-                    startDateTue = referenceDate.AddDays(-8);
-                    startDateMon = referenceDate.AddDays(-9);
-                    startDateSun = referenceDate.AddDays(-10);
-
-                    if ((startDateSat.Day == periods.Day) && startDateSat.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    if ((startDateFri.Day == periods.Day) && startDateFri.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateThu.Day == periods.Day) && startDateThu.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateWed.Day == periods.Day) && startDateWed.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateTue.Day == periods.Day) && startDateTue.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateMon.Day == periods.Day) && startDateMon.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateSun.Day == periods.Day) && startDateSun.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else if (referenceDate.DayOfWeek.ToString().Contains("Thursday"))
-                {
-                    startDateSat = referenceDate.AddDays(-5);
-                    startDateFri = referenceDate.AddDays(-6);
-                    startDateThu = referenceDate.AddDays(-7);
-                    startDateWed = referenceDate.AddDays(-8);
-                    startDateTue = referenceDate.AddDays(-9);
-                    startDateMon = referenceDate.AddDays(-10);
-                    startDateSun = referenceDate.AddDays(-11);
-
-                    if ((startDateSat.Day == periods.Day) && startDateSat.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    if ((startDateFri.Day == periods.Day) && startDateFri.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateThu.Day == periods.Day) && startDateThu.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateWed.Day == periods.Day) && startDateWed.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateTue.Day == periods.Day) && startDateTue.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateMon.Day == periods.Day) && startDateMon.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateSun.Day == periods.Day) && startDateSun.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-
-                }
-                else if (referenceDate.DayOfWeek.ToString().Contains("Friday"))
-                {
-                    startDateSat = referenceDate.AddDays(-6);
-                    startDateFri = referenceDate.AddDays(-7);
-                    startDateThu = referenceDate.AddDays(-8);
-                    startDateWed = referenceDate.AddDays(-9);
-                    startDateTue = referenceDate.AddDays(-10);
-                    startDateMon = referenceDate.AddDays(-11);
-                    startDateSun = referenceDate.AddDays(-12);
-
-                    if ((startDateSat.Day == periods.Day) && startDateSat.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    if ((startDateFri.Day == periods.Day) && startDateFri.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateThu.Day == periods.Day) && startDateThu.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateWed.Day == periods.Day) && startDateWed.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateTue.Day == periods.Day) && startDateTue.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateMon.Day == periods.Day) && startDateMon.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateSun.Day == periods.Day) && startDateSun.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    startDateSat = referenceDate.AddDays(-7);
-                    startDateFri = referenceDate.AddDays(-8);
-                    startDateThu = referenceDate.AddDays(-9);
-                    startDateWed = referenceDate.AddDays(-10);
-                    startDateTue = referenceDate.AddDays(-11);
-                    startDateMon = referenceDate.AddDays(-12);
-                    startDateSun = referenceDate.AddDays(-13);
-
-                    if ((startDateSat.Day == periods.Day) && startDateSat.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    if ((startDateFri.Day == periods.Day) && startDateFri.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateThu.Day == periods.Day) && startDateThu.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateWed.Day == periods.Day) && startDateWed.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateTue.Day == periods.Day) && startDateTue.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateMon.Day == periods.Day) && startDateMon.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else if ((startDateSun.Day == periods.Day) && startDateSun.Month == periods.Month)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
+                NewstartDateOfWeek = NewstartDateOfWeek.AddDays(-1d);
             }
-            else 
+            DateTime NewendDateOfWeek = NewstartDateOfWeek.AddDays(6d);
+
+            if (referenceDate >= startDateOfWeek && referenceDate <= endDateOfWeek)
             {
-                datadate = periods;
-                referenceDate = DateTime.Now;
+                ThisweekStartDate = startDateOfWeek;
+                ThisweekEndDate = endDateOfWeek;
+            }
+            else if ((referenceDate >= NewstartDateOfWeek && referenceDate <= NewendDateOfWeek))
+            {
+                ThisweekStartDate = NewstartDateOfWeek;
+                ThisweekEndDate = NewendDateOfWeek;
+            }
+            return referenceDate >= startDateOfWeek && referenceDate <= endDateOfWeek;
+        }
 
-                startDate = referenceDate.AddMonths(-1);
+        public static bool DateInsideLastWeek(DateTime date1)
+        {
+            DayOfWeek firstDayOfWeek = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek;
+            DateTime startDateOfWeek = date1.Date;
+            DateTime date2;
+            DateTime referenceDate;
+            DayOfWeek referenceDateDay;
+            DateTime datadate = new DateTime();
 
-                if (startDate.Month == periods.Month)
-                {
-                    return true;
-                }
-                /*else if (startDate.Month != periods.Month)
-                {
-                    return true;
-                }*/
-                else
-                {
-                    return false;
-                }
-            }            
+            referenceDateDay = datadate.DayOfWeek;
+            referenceDate = DateTime.Now;
+
+            while (startDateOfWeek.DayOfWeek != firstDayOfWeek)
+            {
+                startDateOfWeek = startDateOfWeek.AddDays(-1d);
+            }
+            DateTime endDateOfWeek = startDateOfWeek.AddDays(6d);
+
+            ThisweekStartDate = ThisweekStartDate.AddDays(-1d);
+
+            if (ThisweekStartDate.Day == endDateOfWeek.Day)
+            {
+                return date1 >= startDateOfWeek && date1 <= endDateOfWeek;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool DateInsideLastMonth(DateTime date1)
+        {
+            DateTime referenceDate;
+            DayOfWeek referenceDateDay;
+            DateTime datadate = new DateTime();
+            referenceDate = DateTime.Now;
+
+            datadate = referenceDate.AddMonths(-1);
+
+            if (datadate.Month == date1.Month)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void SortLogListDataByDate(List<LogUserAccessNewData> loglist)
         {
             try
             {
+                this.mView.ShowProgressDialog();
 
                 List<LogUserAccessNewData> thisWeek = new List<LogUserAccessNewData>();
                 List<LogUserAccessNewData> lastWeek = new List<LogUserAccessNewData>();
                 List<LogUserAccessNewData> lastMonth = new List<LogUserAccessNewData>();
+                List<LogUserAccessNewData> newloglist = new List<LogUserAccessNewData>();
+
+                /*if (loglist.Count > 15)
+                {
+                    newloglist = loglist.GetRange(0, 15);
+                    this.mView.FirstLoadData(15);
+                }
+                else
+                {
+                    newloglist = loglist;
+                }*/
 
                 foreach (LogUserAccessNewData entity in loglist)
                 {
-                    if (GetPeriodsBool(entity.CreatedDate.Date, "thisweek"))
+                    if (DateInsideOneWeek(entity.CreatedDate.Date))
                     {
                         thisWeek.Add(entity);
                     }
-                    else if (GetPeriodsBool(entity.CreatedDate.Date, "lastweek"))
+                    else if (DateInsideLastWeek(entity.CreatedDate.Date))
                     {
                         lastWeek.Add(entity);
                     }
-                    else if (GetPeriodsBool(entity.CreatedDate.Date, "lastmonth"))
+                    else if (DateInsideLastMonth(entity.CreatedDate.Date))
                     {
                         lastMonth.Add(entity);
                     }
@@ -625,6 +171,9 @@ namespace myTNB_Android.Src.LogUserAccess.MVP
                 {
                     this.mView.emptyLastMonthList();
                 }
+
+                this.mView.HideShowProgressDialog();
+
             }
             catch (Exception e)
             {
@@ -632,10 +181,9 @@ namespace myTNB_Android.Src.LogUserAccess.MVP
             }
         }
 
-
         public void Start()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
