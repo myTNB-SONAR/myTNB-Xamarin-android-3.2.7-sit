@@ -324,7 +324,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             {
                 if (this.mFragment is HomeMenuFragment)
                 {
-                    if ((list.Count == 4 && !model.NeedHelpHide) || (list.Count == 3 && model.NeedHelpHide))
+                    if ((list.Count == 6 && !model.NeedHelpHide) || (list.Count == 5 && model.NeedHelpHide))
                     {
                         if (position == 0)
                         {
