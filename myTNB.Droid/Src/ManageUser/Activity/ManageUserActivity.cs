@@ -143,6 +143,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 btnSave.Text = GetLabelCommonByLanguage("saveChanges");
                 btnCancelAddAccess.Text = GetLabelCommonByLanguage("cancel");
                 btnResendInviteAccessUser.Text = Utility.GetLocalizedLabel("Tnb_Profile", "resend");
+                infoManageUser.Text = Utility.GetLocalizedLabel("Usage", "missedReadTitle");
 
 
                 //txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
