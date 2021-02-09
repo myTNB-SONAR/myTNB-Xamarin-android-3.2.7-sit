@@ -700,8 +700,6 @@
     "title": "Notification Settings",
     "typeDescription": "Select the type of notifications you wish to receive from TNB",
     "modeDescription": "Select how you wish to receive your notifications",
-    //addby wan
-    "changeLanguageSuccess": "Your language preference has been changed successfully.",
     //addby syahmi 
     "selectApplang":"Select your preferred app language:"
   },

@@ -445,7 +445,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 }
 
                 mLanguageSnackbar = Snackbar.Make(rootView,
-                    Utility.GetLocalizedLabel("NotificationSettings", "changeLanguageSuccess"), 
+                    Utility.GetLocalizedLabel("Profile", "changeLanguageSuccess"), 
                     Snackbar.LengthIndefinite)
                             .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>

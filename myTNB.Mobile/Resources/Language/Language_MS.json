@@ -700,8 +700,7 @@
     "title": "Tetapan Pemberitahuan",
     "typeDescription": "Pilih jenis pemberitahuan yang ingin diterima daripada TNB",
     "modeDescription": "Pilih cara anda mahu menerima pemberitahuan",
-    //addby wan
-    "changeLanguageSuccess": "BM_Your language preference has been changed successfully.",
+
     //addby syahmi 
     "selectApplang": "Pilih bahasa aplikasi pilihan anda:"
   },
