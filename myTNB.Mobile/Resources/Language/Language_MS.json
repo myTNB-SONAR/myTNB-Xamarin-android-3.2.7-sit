@@ -171,7 +171,7 @@
     //yana
     "accountLengthNew": "Sila masukkan nombor akaun elektrik 12 digit yang sah.",
     "error_duplicateAccountMessageNew": "Nombor akaun elektrik ini telah ditambah ke senarai.",
-    "error_emptyIcAndEmailOwner": "BM_Email or phone number owner cannot be empty."
+    "error_emptyIcAndEmailOwner": "Pemilik e-mel atau nombor telefon tidak boleh kosong."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -637,7 +637,7 @@
     "tnc_checked": "Saya telah membaca dan bersetuju untuk <a href=\"\\\"><strong>Terma dan Syarat</strong></a>.",
     //new added 
     "AccHeaderText": "Mari masukkan akaun anda dengan memilih jenis akaun anda.",
-    "PremisesHint": "Premis yang saya ingin masukkan adalah",
+    "PremisesHint": "Premis yang saya ingin tambah adalah",
     "AccHeaderBlueText": "Adakah akaun elektrik ini didaftarkan atas nama anda?",
     "owner": "Ya, saya pemilik",
     "ownerDetails": "Saya adalah pemilik berdaftar yang memulakan akaun elektrik ini.",
@@ -853,7 +853,7 @@
     "dialogAddrress": "Mengapakah saya tidak boleh melihat alamat penuh?",
     "dialogAddrressMessage": "Kami menyembunyikan maklumat yang sensitif untuk menjaga privasi pemilik akaun. Anda sedang melihat maklumat yang disembunyikan kerana anda bukan pemilik akaun elektrik ini.",
     "dialogManageUser": "Memberi lebih banyak akses kepada pengguna anda.",
-    "dialogManageUserMessage": "BM_To protect your information. we're not showing non-owner your personal information and some application features. However, you can grant them access listed here if you see fit and they will be noticed about it.",
+    "dialogManageUserMessage": "Untuk melindungi maklumat anda, kami tidak memaparkan maklumat peribadi anda kepada bukan pemilik dan beberapa ciri aplikasi. Walaubagaimanapun, anda boleh memberikan mereka akses yang disenaraikan di sini jika sesuai dan mereka akan dimaklumkan mengenainya.",
     "manageUserDialogTitle": "Anda akan mengubah akses {0}.",
     "manageUserDialogMessage": "Setelah disahkan, akses {0} akan dikemas kini dan pengguna akan dimaklumkan mengenai akses yang telah anda pilih untuknya berkenaan akaun elektrik anda.",
     "saveSuccess": "Perubahan terhadap akses pengguna telah disimpan dan pengguna telah diberitahu tentang kemas kini akses mereka.",
