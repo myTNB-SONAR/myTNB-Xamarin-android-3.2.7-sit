@@ -36,21 +36,21 @@ namespace myTNB_Android.Src.CompoundView
 
         public void InitializeViews(Context context)
         {
-            Inflate(context, Resource.Layout.ProfileMenuItemLayout, this);
-            itemHeaderTitle = FindViewById<TextView>(Resource.Id.profileItemHeader);
+            Inflate(context, Resource.Layout.ProfileMenuItemLayoutNew, this);
+            //itemHeaderTitle = FindViewById<TextView>(Resource.Id.profileItemHeader);
             profileItemContent = FindViewById<LinearLayout>(Resource.Id.profileItemContent);
 
-            TextViewUtils.SetMuseoSans500Typeface(itemHeaderTitle);
+            //TextViewUtils.SetMuseoSans500Typeface(itemHeaderTitle);
         }
 
         public void SetHeaderTitle(string title)
         {
-            itemHeaderTitle.Text = title;
+            //itemHeaderTitle.Text = title;
         }
 
         public void HideHeaderTitle()
         {
-            itemHeaderTitle.Visibility = ViewStates.Gone;
+            //itemHeaderTitle.Visibility = ViewStates.Gone;
         }
 
         public void AddComponentView(View view)
