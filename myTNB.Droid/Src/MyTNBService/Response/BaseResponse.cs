@@ -54,6 +54,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "ApplicationSyncAPIInterval")]
             public double ApplicationSyncAPIInterval { get; set; }
 
+            [JsonProperty(PropertyName = "IsAppointmentDisabled")]
+            public bool IsAppointmentDisabled { get; set; }
+
             [JsonProperty(PropertyName = "status")]
             public string Status { get; set; }
 

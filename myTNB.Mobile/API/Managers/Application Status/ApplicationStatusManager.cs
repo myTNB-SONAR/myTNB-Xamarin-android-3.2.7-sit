@@ -65,11 +65,18 @@ namespace myTNB.Mobile
                     }
                     else
                     {
-                        response = new SearchApplicationTypeResponse
+                        if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                         {
-                            StatusDetail = new StatusDetail()
-                        };
-                        response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(Constants.DEFAULT);
+                            response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(response.StatusDetail.Code);
+                        }
+                        else
+                        {
+                            response = new SearchApplicationTypeResponse
+                            {
+                                StatusDetail = new StatusDetail()
+                            };
+                            response.StatusDetail = Constants.Service_SearchApplicationType.GetStatusDetails(Constants.DEFAULT);
+                        }
                     }
                     response.SearchApplicationTypeParser(roleID);
                     return response;
@@ -155,7 +162,7 @@ namespace myTNB.Mobile
                     GetApplicationStatusResponse response = JsonConvert.DeserializeObject<GetApplicationStatusResponse>(responseString);
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
-                        if (response.Content == null)
+                        if (response.Content == null && response.StatusDetail.Code == Constants.SUCCESS_CODE)
                         {
                             response.StatusDetail.Code = Constants.EMPTY;
                         }
@@ -350,7 +357,8 @@ namespace myTNB.Mobile
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         //Mark: Check for 0 Applications
-                        if (response.Content != null && response.Content.Applications != null && response.Content.Applications.Count == 0)
+                        if (response.Content != null && response.Content.Applications != null
+                            && response.Content.Applications.Count == 0 && response.StatusDetail.Code == Constants.SUCCESS_CODE)
                         {
                             response.StatusDetail = Constants.Service_GetAllApplications.GetStatusDetails(isFilter ? Constants.EMPTY_FILTER : Constants.EMPTY);
                         }
@@ -480,7 +488,7 @@ namespace myTNB.Mobile
                     GetApplicationDetailsResponse response = JsonConvert.DeserializeObject<GetApplicationDetailsResponse>(responseString);
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
-                        if (response.Content == null)
+                        if (response.Content == null && response.StatusDetail.Code == Constants.SUCCESS_CODE)
                         {
                             response.StatusDetail.Code = Constants.EMPTY;
                         }
@@ -670,7 +678,7 @@ namespace myTNB.Mobile
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
                         //Mark: Check for 0 Applications
-                        if (response.Content != null && response.Content.Count == 0)
+                        if (response.Content != null && response.Content.Count == 0 && response.StatusDetail.Code == Constants.SUCCESS_CODE)
                         {
                             response.StatusDetail = Constants.Service_SearchApplicationByCA.GetStatusDetails(Constants.EMPTY);
                         }

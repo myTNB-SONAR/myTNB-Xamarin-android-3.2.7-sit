@@ -46,6 +46,10 @@ namespace myTNB.Mobile.API.Managers.Scheduler
                         , AppInfoManager.Instance.Language.ToString());
                     if (response != null && response.Content != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
+                        if (response.Content.Count < 1)
+                        {
+                            response.StatusDetail.Code = Constants.EMPTY;
+                        }
                         response.StatusDetail = Constants.Service_GetAvailableAppointment.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else

@@ -34,6 +34,7 @@ using myTNB.Mobile.API.Managers.Scheduler;
 using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
 using Android.Text;
 using Android.Content.PM;
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
@@ -656,6 +657,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
                         applicationDetailDisplay = new GetApplicationStatusDisplay();
                         applicationDetailDisplay = JsonConvert.DeserializeObject<GetApplicationStatusDisplay>(extras.GetString("applicationStatusResponse"));
+                        applicationDetailDisplay.IsSchedulerEnable = !MyTNBAccountManagement.GetInstance().IsAppointmentDisabled;
 
                         if (applicationDetailDisplay != null)
                         {

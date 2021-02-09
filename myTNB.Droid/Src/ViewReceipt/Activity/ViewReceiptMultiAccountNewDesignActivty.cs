@@ -43,7 +43,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
         ScrollView baseView;
 
         [BindView(Resource.Id.receipt_titile)]
-        TextView receiptTitile;
+        TextView receiptTitle;
 
         [BindView(Resource.Id.dear_customer)]
         TextView dearCustomer;
@@ -137,7 +137,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 TextViewUtils.SetMuseoSans500Typeface(noteText, totalAmtValue, totalAmtText
                     , txnMethodValue, txnMethodText, txnIdValue, txnIdText, txnDateValue
                     , txnDateText, referenceNumberValue, referenceNumberText, pleasedText
-                    , thanksText, dearCustomer, receiptTitile, paymentTypeText, paymentTypeValue);
+                    , thanksText, dearCustomer, receiptTitle, paymentTypeText, paymentTypeValue);
 
                 mGetReceiptDialog = new AlertDialog.Builder(this)
                   .SetTitle("Get Receipt")
@@ -145,15 +145,21 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                   .SetCancelable(false)
                   .Create();
 
-                receiptTitile.Text = GetLabelByLanguage("title");
+                receiptTitle.Text = GetLabelByLanguage("title");
                 dearCustomer.Text = GetLabelByLanguage("salutation");
                 thanksText.Text = GetLabelByLanguage("messagePartOne");
+
                 referenceNumberText.Text = GetLabelByLanguage("referenceNumber").ToUpper();
                 txnDateText.Text = GetLabelByLanguage("trnDate").ToUpper();
                 txnIdText.Text = GetLabelByLanguage("trnID").ToUpper();
                 txnMethodText.Text = GetLabelByLanguage("trnMethod").ToUpper();
                 totalAmtText.Text = GetLabelCommonByLanguage("totalAmountRM").ToUpper();
                 noteText.Text = GetLabelByLanguage("note");
+
+                TextViewUtils.SetTextSize10(referenceNumberText, txnDateText
+                    , txnIdText, txnMethodText, noteText, paymentTypeText);
+                TextViewUtils.SetTextSize14(dearCustomer, thanksText, totalAmtText);
+                TextViewUtils.SetTextSize20(receiptTitle);
 
                 Android.OS.Bundle extras = Intent.Extras;
 
@@ -218,13 +224,12 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                     else
                     {
                         downloadClicked = true;
-                        createPDF(response);
+                        CreatePDF(response);
                     }
                     return true;
             }
             return base.OnOptionsItemSelected(item);
         }
-
 
         private void WriteGrayContent(PdfPTable tableLayout)
         {
@@ -250,7 +255,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             }
         }
 
-        public void createPDF(GetPaymentReceiptResponse response)
+        public void CreatePDF(GetPaymentReceiptResponse response)
         {
             if (downloadClicked)
             {
@@ -500,8 +505,11 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             }
 
             mErrorMessageSnackBar = Snackbar.Make(baseView, msg, Snackbar.LengthIndefinite)
-            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mErrorMessageSnackBar.Dismiss(); }
-            );
+                .SetAction(Utility.GetLocalizedCommonLabel("close")
+                    , delegate
+                    {
+                        mErrorMessageSnackBar.Dismiss();
+                    });
             View v = mErrorMessageSnackBar.View;
             TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
             tv.SetMaxLines(5);
@@ -511,7 +519,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         public void OnDownloadPDF()
         {
-            createPDF(response);
+            CreatePDF(response);
         }
 
         public void SetPresenter(ViewReceiptMultiAccountNewDesignContract.IUserActionsListener userActionListener)
@@ -529,7 +537,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             baseView.Visibility = ViewStates.Visible;
             try
             {
-
                 this.response = response;
                 Log.Debug(TAG, "Receipt :" + response.GetData());
                 MultiReceiptDetails receiptDetails = response.GetData();
@@ -553,6 +560,10 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 paymentTypeText.Visibility = isApplicationReceipt ? ViewStates.Visible : ViewStates.Gone;
                 paymentTypeValue.Visibility = isApplicationReceipt ? ViewStates.Visible : ViewStates.Gone;
 
+                TextViewUtils.SetTextSize14(pleasedText, referenceNumberValue, txnDateValue
+                    , txnIdValue, txnMethodValue, paymentTypeValue);
+                TextViewUtils.SetTextSize20(totalAmtValue);
+
                 if (accountLayout.ChildCount > 0)
                 {
                     accountLayout.RemoveAllViews();
@@ -570,8 +581,11 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                         TextView accAmtText = view.FindViewById<TextView>(Resource.Id.acc_amt_text);
                         TextView accAmtValue = view.FindViewById<TextView>(Resource.Id.acc_amt_value);
 
-                        TextViewUtils.SetMuseoSans500Typeface(accNumberText, accNumberValue, accNameText
-                            , accNameValue, accAmtText, accAmtValue);
+                        TextViewUtils.SetMuseoSans500Typeface(accNumberText, accNumberValue
+                            , accNameText, accNameValue, accAmtText, accAmtValue);
+                        TextViewUtils.SetTextSize10(accNumberText, accNameText, accAmtText);
+                        TextViewUtils.SetTextSize14(accNumberValue, accNameValue, accAmtValue);
+
                         accNumberText.Text = GetLabelCommonByLanguage("accountNo").ToUpper();
                         accNameText.Text = GetLabelByLanguage("accountHolder").ToUpper();
                         accAmtText.Text = GetLabelCommonByLanguage("amountRM").ToUpper();
@@ -602,9 +616,8 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                         RunOnUiThread(() =>
                         {
                             downloadClicked = true;
-                            createPDF(response);
+                            CreatePDF(response);
                         });
-
                     }
                 }
             }
@@ -653,7 +666,8 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 .SetContentGravity(GravityFlags.Center)
                 .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
                 .SetCTAaction(Finish)
-                .Build().Show();
+                .Build()
+                .Show();
         }
     }
 }

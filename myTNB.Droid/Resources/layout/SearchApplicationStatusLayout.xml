@@ -102,10 +102,9 @@
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_marginBottom="16dp"
-						app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"						
+						app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
 						android:id="@+id/txtInputLayoutServiceRequestNum"
 						app:errorEnabled="true"
-						
 						android:layout_marginRight="17dp">
 						<EditText
 							android:hint=""
@@ -120,9 +119,7 @@
 							android:drawablePadding="6dp"
 							android:inputType="number"
 							android:longClickable="false"/>
-
 					</com.google.android.material.textfield.TextInputLayout>
-
 					<LinearLayout
 						android:id="@+id/whyAccountsNotHereLayOut"
 						android:layout_width="match_parent"
@@ -152,7 +149,6 @@
 							android:text="UI - Why are some of my accounts not here?"/>
 					</LinearLayout>
 				</LinearLayout>
-
 				<LinearLayout
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -177,9 +173,7 @@
 						android:layout_height="wrap_content"
 						android:visibility="visible" />
 				</LinearLayout>
-
 			</LinearLayout>
-
 		</androidx.core.widget.NestedScrollView>
 		<LinearLayout
 			android:layout_width="match_parent"

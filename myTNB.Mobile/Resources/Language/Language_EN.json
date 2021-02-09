@@ -237,14 +237,14 @@
     "terminateFor": "I am stopping for:",
     "contactDetails": "My contact details:",
     "terminateTitle": "We’re sorry to see you go! Can you tell us why you want to stop this service?",
-    "tncUnsubscribe": "Note: Reapplication for Self Meter Reading service is currently unavailable.<br><br>By submitting, you are agreeing to the <a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>.",
-    "tncSubscribe": "By submitting, you are agreeing to the <a href=\"\\\"><strong>Self Meter Reading Terms and Conditions</strong></a>, <a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>.",
+    "tncUnsubscribe": "Note: Reapplication for Self Meter Reading service is currently unavailable.<br><br>By submitting, you are agreeing to the <a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy Policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>.",
+    "tncSubscribe": "By submitting, you are agreeing to the <a href=\"\\\"><strong>Self Meter Reading Terms and Conditions</strong></a>, <a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy Policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>.",
     "editContactInfo": "By editing, you will update your myTNB profile and electricity account contact details.",
     "selectReason": "Select Reason",
     "stateReason": "Please state your reason",
     "selectAnAccount": "Select an account",
     "tncSubscribeFAQ": "By submitting, you are agreeing to the <a href =\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Self Meter Reading FAQ</strong></a>, ",
-    "tncSubscribeTNC": "<a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>."
+    "tncSubscribeTNC": "<a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy Policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>."
   },
   "Status": {
     "feedbackSuccessTitle": "Feedback Successful",
@@ -771,6 +771,7 @@
     "title7": "Use myTNB with Any Mobile Number.",
     "title8": "Stay Updated with Your Applications!",
     "title9": "Personalise Your Text Size.",
+    "title10": "Set your appointment with us!",
     "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.",
     "description2": "Track, monitor and stay on top of your electricity usage!",
     "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
@@ -778,9 +779,9 @@
     "description5": "That's right, we're bringing you exclusive perks and freebies - all of this just for myTNB users! Check out the new Rewards section to claim something now!",
     "description6": "We’re now bilingual! You can set your preferred language below.<br><br>Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.",
     "description7": "You can now register a myTNB account or update your existing one with an international phone number.",
-    "description8": "You can now track all your application status with zero hassle, anytime and anywhere. Need TNB to install a new meter? You can now set an appointment!",
+    "description8": "You can now track all your application status with zero hassle, anytime and anywhere.",
     "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
-    "fontChangeSuccess": "You've successfully updated your display text size to {0}!"
+    "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot."
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
@@ -797,7 +798,7 @@
   },
   "Register": {
     "title": "Register",
-    "tnc": "By registering, you are agreeing to the <a href=\"\\\"><strong>TNB Terms and Conditions</strong></a>, <a href=\"\\\"><strong>User Agreement</strong></a> and <a href=\"\\\"><strong>Privacy policy</strong></a>.",
+    "tnc": "By registering, you are agreeing to the <a href=\"\\\"><strong>TNB Terms and Conditions</strong></a>, <a href=\"\\\"><strong>User Agreement</strong></a> and <a href=\"\\\"><strong>Privacy Policy</strong></a>.",
     "ctaTitle": "Register",
     "confirmEmail": "Confirm Email"
   },
@@ -1046,7 +1047,7 @@
     "mailingReq": "Mailing address is required",
     "mobileReq": "Mobile number is required",
     "ownerReq": "Account name is required",
-    "permisesReq": "Permises address is required",
+    "permisesReq": "Premises address is required",
     "poc": "Accepted proof of consents can be in the form of emails, SMS, conversation screenshots or letters stating the consent being given to you.",
     "copyIcDet": "You’ll need a scanned copy of myKad (front and back), Passport or Army/Police ID with ‘For TNB purposes only’ written across the image.",
     "copyICTitle": "Copy of identification",
@@ -1079,7 +1080,7 @@
     "copyOfPermiseProof": "Copy of Sales & Purchase Agreement/Cukai Pintu/Tenancy Agreement",
     "nameHintBottom": "Enter your full name as per your identification card.",
     "enquiryTncRead": "I have read and agreed to the <a href=\"\\\"><strong>Terms and Conditions</strong></a>",
-    "imagePermises": "-/media/myTNBapp/SubmitEnquiry/permises2x2.png",
+    "imagePermises": "-/media/myTNBapp/SubmitEnquiry/premises2x2.png",
     "permisesTooltipTitle": "How does supporting document look like?",
     "permisesTitle": "Copy of Sales & Purchase Agreement/Cukai Pintu/Tenancy Agreement",
     "permisesContent": "We only need the pages with your name, identification number and premises address",
@@ -1817,6 +1818,10 @@
         "value": "Action Required"
       },
       {
+        "key": "Awaiting Approval",
+        "value": "Awaiting Approval"
+      },
+      {
         "key": "Awaiting Contractor",
         "value": "Awaiting Contractor"
       },
@@ -1839,6 +1844,14 @@
       {
         "key": "Cancelled",
         "value": "Cancelled"
+      },
+      {
+        "key": "Resolved",
+        "value": "Resolved"
+      },
+      {
+        "key": "Resolving",
+        "value": "Resolving"
       }
     ]
   },
@@ -1971,6 +1984,15 @@
             "secondaryCTATitle": "",
             "isSuccess": true,
             "type": "none"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Looks like your page can't be loaded at the moment. Come back in a while.",
+            "primaryCTATitle": "Got It!",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
           }
         ],
         "ApplicationStatus": [
@@ -1996,6 +2018,15 @@
             "code": "7001",
             "title": "",
             "message": "Looks like your request can't loaded at the moment. Please try again later.",
+            "primaryCTATitle": "Got It!",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Looks like your page can't be loaded at the moment. Come back in a while.",
             "primaryCTATitle": "Got It!",
             "secondaryCTATitle": "",
             "isSuccess": false,
@@ -2058,6 +2089,15 @@
             "secondaryCTATitle": "",
             "isSuccess": false,
             "type": "fullscreen"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Looks like your page can't be loaded at the moment. Come back in a while.",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "fullscreen"
           }
         ],
         "ApplicationDetail": [
@@ -2114,6 +2154,15 @@
             "code": "7001",
             "title": "",
             "message": "Oops! There is an error occured in processing your request. Please try again later.",
+            "primaryCTATitle": "Got It!",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Looks like your page can't be loaded at the moment. Come back in a while.",
             "primaryCTATitle": "Got It!",
             "secondaryCTATitle": "",
             "isSuccess": false,

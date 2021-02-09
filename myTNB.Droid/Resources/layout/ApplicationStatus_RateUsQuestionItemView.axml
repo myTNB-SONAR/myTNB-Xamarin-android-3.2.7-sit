@@ -170,10 +170,16 @@
                                 android:scrollbars="vertical"
                                 android:textSize="16dp" />
                         </com.google.android.material.textfield.TextInputLayout>
-
-
-                    </LinearLayout>
+					</LinearLayout>
+					<LinearLayout
+						android:id="@+id/emptySpaceLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+					    </LinearLayout>
 				</LinearLayout>
+				
 			</ScrollView>
 			<LinearLayout
 				android:layout_width="match_parent"

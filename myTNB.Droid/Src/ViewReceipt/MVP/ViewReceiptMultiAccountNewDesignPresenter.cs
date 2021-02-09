@@ -26,7 +26,7 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
             GetPaymentReceipt(selectedAccountNumber, detailedInfoNumber, isOwnedAccount, showAllReceipt);
         }
 
-        public void NevigateToNextScreen()
+        public void NavigateToNextScreen()
         {
             throw new NotImplementedException();
         }

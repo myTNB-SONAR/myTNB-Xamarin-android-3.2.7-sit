@@ -44,7 +44,9 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             txtNo.TextSize = TextViewUtils.GetFontSize(18);
             txtTitle.TextSize = TextViewUtils.GetFontSize(18);
             txtOwnerRights.TextSize = TextViewUtils.GetFontSize(18);
-          
+            txtNonOwnerRights.TextSize = TextViewUtils.GetFontSize(18);
+
+
 
             radio_non_owner.Click += delegate
             {

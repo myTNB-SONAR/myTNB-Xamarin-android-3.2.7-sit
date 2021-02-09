@@ -347,6 +347,14 @@ namespace myTNB_Android.Src.Base
             }
         }
 
+        public bool IsAppointmentDisabled
+        {
+            get
+            {
+                return appMasterDataResponse.Response.IsAppointmentDisabled;
+            }
+        }
+
         public bool IsMaintenanceDialogShown()
         {
             return IsMaintenanceShown;

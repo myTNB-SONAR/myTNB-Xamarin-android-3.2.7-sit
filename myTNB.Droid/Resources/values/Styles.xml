@@ -282,7 +282,7 @@
    <style name="TextInputLayout.TextAppearance.ColorFixLarge" parent="TextAppearance.AppCompat">
       <!-- Hint color and label color in FALSE state -->
       <item name="android:textColorHint">@color/silverChalice</item>
-      <item name="android:textSize">10dp</item>
+      <item name="android:textSize">14dp</item>
       <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
       <item name="colorAccent">@color/tunaGrey</item>
       <item name="colorControlNormal">@color/platinumGrey</item>
@@ -416,6 +416,10 @@
    <style name="TextInputLayoutBottomErrorHint" parent="@android:style/TextAppearance.Medium">
       <item name="android:textColor">@color/errorColor</item>
       <item name="android:textSize">12sp</item>
+   </style>
+     <style name="TextInputLayoutBottomErrorHintLarge" parent="@android:style/TextAppearance.Medium">
+      <item name="android:textColor">@color/errorColor</item>
+      <item name="android:textSize">16sp</item>
    </style>
    <style name="TextInputLayoutBottomErrorHintAmount" parent="@android:style/TextAppearance.Medium">
       <item name="android:textColor">@color/tomato</item>

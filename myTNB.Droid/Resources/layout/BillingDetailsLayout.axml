@@ -162,15 +162,15 @@
                         android:weightSum="1"
                         android:orientation="horizontal">
                         <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="50dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_weight="0.5"
                             android:gravity="center|left"
                             android:orientation="vertical">
                             <TextView
                                 android:id="@+id/accountPayAmountLabel"
-                                android:layout_width="match_parent"
-                                android:layout_height="20dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:lineSpacingExtra="3dp"
                                 android:gravity="left|center"
@@ -179,8 +179,8 @@
                                 android:textSize="14dp"/>
                             <TextView
                                 android:id="@+id/accountPayAmountDate"
-                                android:layout_width="match_parent"
-                                android:layout_height="20dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="left|center"
                                 android:text="by 24 Sep 2019"
@@ -188,7 +188,7 @@
                                 android:textSize="14dp"/>
                         </LinearLayout>
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
                             android:layout_gravity="right|center"
@@ -214,7 +214,7 @@
                     <LinearLayout
                         android:id="@+id/accountMinChargeLabelContainer"
                         android:layout_width="match_parent"
-                        android:layout_height="24dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:paddingLeft="2dp"
                         android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
@@ -228,7 +228,8 @@
                             android:textColor="#1c79ca"
                             android:drawablePadding="8dp"
                             android:text="This account has a minimum charge."
-                            android:drawableLeft="@drawable/smr_why_accounts_info"/>
+                            android:drawableLeft="@drawable/smr_why_accounts_info"
+                            android:gravity="center_vertical"/>
                     </LinearLayout>
                     <LinearLayout
                         android:id="@+id/infoLabelContainerDetailEPP"

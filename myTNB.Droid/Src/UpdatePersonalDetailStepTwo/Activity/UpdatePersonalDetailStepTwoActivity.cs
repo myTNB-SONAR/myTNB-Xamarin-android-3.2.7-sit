@@ -34,9 +34,9 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 {
-    [Activity( ScreenOrientation = ScreenOrientation.Portrait
-      , WindowSoftInputMode = SoftInput.AdjustPan
-, Theme = "@style/Theme.FaultyStreetLamps")]
+    [Activity(ScreenOrientation = ScreenOrientation.Portrait
+        , WindowSoftInputMode = SoftInput.AdjustPan
+        , Theme = "@style/Theme.FaultyStreetLamps")]
     public class UpdatePersonalDetailStepTwoActivity : BaseToolbarAppCompatActivity, UpdatePersonalDetailStepTwoContract.IView
     {
         UpdatePersonalDetailStepTwoContract.IUserActionsListener userActionsListener;
@@ -91,9 +91,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
             PERMISES
         }
 
-
-
-
         [BindView(Resource.Id.recyclerView_ownerIC)]
         RecyclerView recyclerView_ownerIC;
         [BindView(Resource.Id.recyclerView_your_ic)]
@@ -112,24 +109,16 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
         [BindView(Resource.Id.TextView_proofOfConsent_image)]
         TextView TextView_proofOfConsent_image;
 
-
         [BindView(Resource.Id.TextView_proofOfConsent_image3)]
         TextView TextView_proofOfConsent_image3;
-
 
         [BindView(Resource.Id.TextView_agreement)]
         TextView TextView_agreement;
 
         [BindView(Resource.Id.FrameLayout_agreement)]
         FrameLayout FrameLayout_agreement;
-        
 
-
-
-
-
-
-        private bool isOwner =false ;
+        private bool isOwner = false;
         private string ownerRelationship;
         private string icNumber;
         private string accOwnerName;
@@ -224,18 +213,15 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
                 }
 
-               
-
-
                 // Intent intent = Intent;
                 SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle"));
-                
+
                 txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle2of3");
 
                 //2 set font type , 300 normal 500 button
                 TextViewUtils.SetMuseoSans300Typeface(TextViewtitle_ownerIC, TextViewtitle_yourIC, txtRelatedScreenshotTitle2, txtRelatedScreenshotTitle3);
                 TextViewUtils.SetMuseoSans300Typeface(txtstep1of2, TextView_proofOfConsent_image3, TextView_yourIC_image, TextView_ownerIC, TextView_proofOfConsent_image);
-                TextViewUtils.SetMuseoSans500Typeface(uploadSupportingDoc , TextView_exampleofIC, TextView_proofOfConsent, TextView_agreement);
+                TextViewUtils.SetMuseoSans500Typeface(uploadSupportingDoc, TextView_exampleofIC, TextView_proofOfConsent, TextView_agreement);
 
 
                 txtstep1of2.TextSize = TextViewUtils.GetFontSize(12f);
@@ -244,7 +230,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 TextView_ownerIC.TextSize = TextViewUtils.GetFontSize(9f);
                 TextViewtitle_yourIC.TextSize = TextViewUtils.GetFontSize(14f);
                 TextView_yourIC_image.TextSize = TextViewUtils.GetFontSize(9f);
-                TextView_exampleofIC.TextSize = TextViewUtils.GetFontSize(11f);
+                TextView_exampleofIC.TextSize = TextViewUtils.GetFontSize(12f);
                 txtRelatedScreenshotTitle2.TextSize = TextViewUtils.GetFontSize(14f);
                 TextView_proofOfConsent_image.TextSize = TextViewUtils.GetFontSize(9f);
                 TextView_proofOfConsent.TextSize = TextViewUtils.GetFontSize(12f);
@@ -261,11 +247,11 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                     ViewType = Constants.VIEW_TYPE_DUMMY_RECORD
                 });
                 layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
-                
+
                 recyclerView_ownerIC.SetLayoutManager(layoutManager);
                 recyclerView_ownerIC.SetAdapter(adapter);
 
-                adapter.AddClickEvent += delegate { Adapter_AddClickEvent(ADAPTER_TYPE.OWNER_IC);};
+                adapter.AddClickEvent += delegate { Adapter_AddClickEvent(ADAPTER_TYPE.OWNER_IC); };
                 adapter.RemoveClickEvent += Adapter_RemoveClickEvent;
 
                 //own ic adapter
@@ -315,10 +301,10 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
 
 
-                
 
 
-             
+
+
 
                 //set translation of string 
                 //txtTermsConditionsGeneralEnquiry.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc"));
@@ -329,7 +315,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
                 TextView_ownerIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
                 TextView_yourIC_image.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
-                TextView_proofOfConsent_image.Text= Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
+                TextView_proofOfConsent_image.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
                 TextView_proofOfConsent_image3.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
 
 
@@ -337,17 +323,17 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 TextViewtitle_ownerIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "ownerIcOwner");
                 TextViewtitle_yourIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "icTitleinfo");
                 TextView_exampleofIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "icInfo");
-                txtRelatedScreenshotTitle2.Text= Utility.GetLocalizedLabel("SubmitEnquiry", "consentTitle");
+                txtRelatedScreenshotTitle2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "consentTitle");
                 txtRelatedScreenshotTitle3.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "copyOfPermiseProof");
                 TextView_proofOfConsent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "consentInfo");
                 TextView_agreement.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "permisesTooltipTitle");
-                btnNext.Text= Utility.GetLocalizedLabel("Common", "next");
+                btnNext.Text = Utility.GetLocalizedLabel("Common", "next");
 
 
 
                 if (isOwner)
                 {
-                    
+
                     FrameLayout_proofofconsent.Visibility = ViewStates.Gone;
                     TextView_proofOfConsent_image.Visibility = ViewStates.Gone;
                     TextView_yourIC_image.Visibility = ViewStates.Gone;
@@ -362,7 +348,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
                 }
 
-                if (!premiseAddress.IsNullOrEmpty()) {
+                if (!premiseAddress.IsNullOrEmpty())
+                {
 
                     txtRelatedScreenshotTitle3.Visibility = ViewStates.Visible;
                     recyclerView3.Visibility = ViewStates.Visible;
@@ -381,9 +368,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 }
 
                 OnCheckingAttachment();  // disable button if there was no attachment
-
-
-
             }
             catch (Exception e)
             {
@@ -406,7 +390,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
         {
             if (isOwner)
             {  //if owner is choosed
-                if (adapter?.GetAllImages().Count ==0)
+                if (adapter?.GetAllImages().Count == 0)
                 {
                     DisableSubmitButton();
 
@@ -414,16 +398,14 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                     {
                         DisableSubmitButton();
                     }
-
                 }
                 else
                 {
-
-                    if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count >1) {
-
+                    if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count > 1)
+                    {
                         EnableSubmitButton();
                     }
-                    else if(!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count == 0 )
+                    else if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count == 0)
                     {
                         DisableSubmitButton();
                     }
@@ -431,14 +413,12 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                     {
                         EnableSubmitButton();
                     }
-
-                        
                 }
             }
             else
-            {  
+            {
                 //if tenant is choosed , mandatory 3 image
-                if(adapter?.GetAllImages().Count==0 || ic_adapter?.GetAllImages().Count ==0 || SupportingDocAdapter?.GetAllImages().Count == 0)
+                if (adapter?.GetAllImages().Count == 0 || ic_adapter?.GetAllImages().Count == 0 || SupportingDocAdapter?.GetAllImages().Count == 0)
                 {
                     DisableSubmitButton();
 
@@ -468,7 +448,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
         }
 
 
-        public void UpdateAdapter(string pFilePath, string pFileName, string tFullname="")
+        public void UpdateAdapter(string pFilePath, string pFileName, string tFullname = "")
 
         {
             ADAPTER_TYPE type;
@@ -552,12 +532,11 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
             OnCheckingAttachment();   // check attachment // this control the button 
         }
 
-
         public void EnableSubmitButton()
         {
             try
             {
-           
+
                 btnNext.Enabled = true;
                 btnNext.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
             }
@@ -566,8 +545,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-
 
         [Preserve]
         private void Adapter_RemoveClickEvent(object sender, int e)
@@ -677,8 +654,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
         }
 
 
-        
-      [Preserve]
+
+        [Preserve]
         private void PERMISES_Adapter_RemoveClickEvent(object sender, int e)
         {
             UserSessions.SaveAdapterType(mSharedPref, ADAPTER_TYPE.PERMISES.ToString());  // set shared pref adapter type 
@@ -719,25 +696,26 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
         [Preserve]
         private void Adapter_AddClickEvent(ADAPTER_TYPE type)
         {
-           
+
             try
             {
 
-                if (type.Equals(ADAPTER_TYPE.OWN_IC)){
+                if (type.Equals(ADAPTER_TYPE.OWN_IC))
+                {
                     UserSessions.SaveAdapterType(mSharedPref, ADAPTER_TYPE.OWN_IC.ToString());
-                   
+
                 }
 
                 if (type.Equals(ADAPTER_TYPE.OWNER_IC))
                 {
                     UserSessions.SaveAdapterType(mSharedPref, ADAPTER_TYPE.OWNER_IC.ToString());
-                    
+
                 }
 
                 if (type.Equals(ADAPTER_TYPE.SUPPORTING_DOC))
                 {
                     UserSessions.SaveAdapterType(mSharedPref, ADAPTER_TYPE.SUPPORTING_DOC.ToString());
-                    
+
                 }
                 if (type.Equals(ADAPTER_TYPE.PERMISES))
                 {
@@ -786,8 +764,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
             }
         }
 
-
-
         [OnClick(Resource.Id.btnNext)]
         void OnSubmit(object sender, EventArgs eventArgs)
         {
@@ -801,12 +777,13 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                     //TODO if non owner must have 3 attachment
                     var Intent = new Intent(this, typeof(FeedbackGeneralEnquiryStepTwoActivity));
 
-
-                    Intent.PutExtra(Constants.ACCOUNT_NUMBER,caNumber.Trim());
+                    Intent.PutExtra(Constants.ACCOUNT_NUMBER, caNumber.Trim());
 
                     if (isOwner)
-                    { Intent.PutExtra(Constants.IMAGE_OWNER, JsonConvert.SerializeObject(adapter?.GetAllImages())); 
-                    }else if (!isOwner)
+                    {
+                        Intent.PutExtra(Constants.IMAGE_OWNER, JsonConvert.SerializeObject(adapter?.GetAllImages()));
+                    }
+                    else if (!isOwner)
                     {
                         Intent.PutExtra(Constants.IMAGE_OWNER, JsonConvert.SerializeObject(adapter?.GetAllImages()));
                         Intent.PutExtra(Constants.IMAGE_OWN, JsonConvert.SerializeObject(ic_adapter?.GetAllImages()));
@@ -817,13 +794,13 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                     {
 
                         Intent.PutExtra(Constants.IMAGE_PERMISES, JsonConvert.SerializeObject(permiseAdapter?.GetAllImages()));
-                        
+
                     }
 
 
-                    if (isOwner ==true)
+                    if (isOwner == true)
                     {
-                        Intent.PutExtra(Constants.SELECT_REGISTERED_OWNER, true.ToString() );
+                        Intent.PutExtra(Constants.SELECT_REGISTERED_OWNER, true.ToString());
                     }
                     else
                     {
@@ -835,7 +812,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                         Intent.PutExtra(Constants.OWNER_RELATIONSHIP, ownerRelationship);
                     }
 
-                    if (icNumber!=null)
+                    if (icNumber != null)
                     {
                         Intent.PutExtra(Constants.ACCOUNT_IC_NUMBER, icNumber);
                     }
@@ -865,10 +842,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                     Intent.PutExtra(Constants.PAGE_STEP_TITLE, Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle3of3"));// need translation        
 
                     StartActivity(Intent);
-
-
-
-
                 }
             }
             catch (Exception e)
@@ -972,13 +945,10 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
             return true;
         }
 
-
         public override bool CameraPermissionRequired()
         {
             return true;
         }
-
-
 
         public bool IsActive()
         {
@@ -990,18 +960,15 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
             this.userActionsListener = userActionListener;
         }
 
-
         public override int ResourceId()
         {   //TODO change
             return Resource.Layout.UpdatePersonalDetailStepTwoView;
         }
 
-        
         public void HideIsOwner()
         {
-            
-        }
 
+        }
 
         [OnClick(Resource.Id.FrameLayout_proofofconsent)]
         public void OnFrameLayout_proofofconsent(object sender, EventArgs eventArgs)
@@ -1013,7 +980,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
             }
         }
 
-
         [OnClick(Resource.Id.FrameLayout_agreement)]
         public void OnFrameLayout_agreement(object sender, EventArgs eventArgs)
         {
@@ -1023,8 +989,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 this.userActionsListener.OninfoLabelPermise();
             }
         }
-
-
 
         [OnClick(Resource.Id.FrameLayout_copyOfIC)]
         public void OnFrameLayout_copyOfIC(object sender, EventArgs eventArgs)
@@ -1053,11 +1017,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
             }
         }
 
-
         public void ShowinfoLabelProofOfConsent()
         {
-
-
             //List<HowDoesProofOfConsentResponseBitmapModel> modelList = MyTNBAppToolTipData.GetHowDoesProofOfConsentToolTipData();
 
             //if (modelList != null && modelList.Count > 0)
@@ -1084,25 +1045,23 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
             //    infoLabelWhoIsRegistered.Show();
             //}
 
+            string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
 
+            if (!base64Image.IsNullOrEmpty())
+            {
+                var imageCache = Base64ToBitmap(base64Image);
+                MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                .SetHeaderImageBitmap(imageCache)
+                .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "consentTitle"))
+                .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "poc"))
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                .SetCTAaction(() => { this.SetIsClicked(false); })
+                .Build();
+                infoLabelWhoIsRegistered.Show();
 
-                string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
-
-                if (!base64Image.IsNullOrEmpty())
-                {
-                    var imageCache = Base64ToBitmap(base64Image);
-                    MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                    .SetHeaderImageBitmap(imageCache)
-                    .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "consentTitle"))
-                    .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "poc"))
-                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                    .SetCTAaction(() => { this.SetIsClicked(false); })
-                    .Build();
-                    infoLabelWhoIsRegistered.Show();
-
-                }
-                else
-                {   /// if sql lite is return null , pulling and deleting already done front
+            }
+            else
+            {   /// if sql lite is return null , pulling and deleting already done front
                 //     var url = Utility.GetLocalizedLabel("SubmitEnquiry", "imageConsent");
                 //     Bitmap imageCache = ImageUtils.GetImageBitmapFromUrl(SiteCoreConfig.SITECORE_URL + url);
 
@@ -1114,40 +1073,32 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 //    .SetCTAaction(() => { this.SetIsClicked(false); })
                 //    .Build();
                 //     infoLabelWhoIsRegistered.Show();
-                    this.SetIsClicked(false);
+                this.SetIsClicked(false);
 
-                }
-
-             
-
-
-
-
-
+            }
         }
 
         public void ShowinfoLabelCopyOfIdentification()
         {
 
-         
 
-                string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
 
-                if (!base64Image.IsNullOrEmpty())
-                {
-                    var imageCache = Base64ToBitmap(base64Image);
-                    MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                    .SetHeaderImageBitmap(imageCache)
-                    .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "copyICTitle"))
-                    .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "copyIcDet"))
-                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                    .SetCTAaction(() => { this.SetIsClicked(false); })
-                    .Build();
-                    infoLabelWhoIsRegistered.Show();
+            string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
 
-                }
-                else
-                {
+            if (!base64Image.IsNullOrEmpty())
+            {
+                var imageCache = Base64ToBitmap(base64Image);
+                MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                .SetHeaderImageBitmap(imageCache)
+                .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "copyICTitle"))
+                .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "copyIcDet"))
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                .SetCTAaction(() => { this.SetIsClicked(false); })
+                .Build();
+                infoLabelWhoIsRegistered.Show();
+            }
+            else
+            {
                 //     var url = Utility.GetLocalizedLabel("SubmitEnquiry", "imageCopyIC");
 
                 //     Bitmap imageCache = ImageUtils.GetImageBitmapFromUrl(SiteCoreConfig.SITECORE_URL + url);
@@ -1160,17 +1111,12 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 //    .SetCTAaction(() => { this.SetIsClicked(false); })
                 //    .Build();
                 //     infoLabelWhoIsRegistered.Show();
-                    this.SetIsClicked(false);
-                }
-            
-
+                this.SetIsClicked(false);
+            }
         }
 
         public void ShowinfoLabelPermise()
         {
-
-
-
             string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
 
             if (!base64Image.IsNullOrEmpty())
@@ -1184,35 +1130,30 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 .SetCTAaction(() => { this.SetIsClicked(false); })
                 .Build();
                 infoLabelWhoIsRegistered.Show();
-               
-
             }
             else
             {  // incase base 64 is corrupt or null
                // var url = Utility.GetLocalizedLabel("SubmitEnquiry", "imagePermises");
 
-               // Bitmap imageCache = ImageUtils.GetImageBitmapFromUrl(SiteCoreConfig.SITECORE_URL + url);
+                // Bitmap imageCache = ImageUtils.GetImageBitmapFromUrl(SiteCoreConfig.SITECORE_URL + url);
 
-               // MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-               //.SetHeaderImageBitmap(imageCache)
-               //.SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "permisesTitle"))
-               //.SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "permisesContent"))
-               //.SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-               //.SetCTAaction(() => { this.SetIsClicked(false); })
-               //.Build();
-               // infoLabelWhoIsRegistered.Show();
+                // MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                //.SetHeaderImageBitmap(imageCache)
+                //.SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "permisesTitle"))
+                //.SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "permisesContent"))
+                //.SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                //.SetCTAaction(() => { this.SetIsClicked(false); })
+                //.Build();
+                // infoLabelWhoIsRegistered.Show();
                 this.SetIsClicked(false);
             }
-
-
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-      
-                this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
-           
+
+            this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
         }
 
         public void DisableSubmitButton()
@@ -1228,8 +1169,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
             return GetString(Resource.String.feedback_image_name_convention, dateFormatter.Format(calendar.TimeInMillis), UserSessions.GetCurrentImageCount(PreferenceManager.GetDefaultSharedPreferences(this)) + itemCount);
         }
 
-
-
         public void ShowLoadingImage()
         {
             try
@@ -1238,7 +1177,8 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 type = (ADAPTER_TYPE)Enum.Parse(typeof(ADAPTER_TYPE), UserSessions.GetAdapterType(this.mSharedPref));
 
 
-                if (type.Equals(ADAPTER_TYPE.OWNER_IC)){
+                if (type.Equals(ADAPTER_TYPE.OWNER_IC))
+                {
 
                     int position = adapter.ItemCount - 1;
                     AttachedImage attachImage = adapter.GetItemObject(position);
@@ -1288,10 +1228,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                     }
 
                 }
-
-
-
-
             }
             catch (Exception e)
             {

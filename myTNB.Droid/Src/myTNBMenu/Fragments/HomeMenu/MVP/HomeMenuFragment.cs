@@ -1029,7 +1029,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle, accountGreeting, accountGreetingName);
             accountHeaderTitle.Text = GetLabelByLanguage("myAccounts");
             searchEditText.SetIconifiedByDefault(false);
-            searchEditText.SetQueryHint(GetLabelByLanguage("searchPlaceholder"));
+            var hintText = TextViewUtils.IsLargeFonts ? (Html.FromHtml("<big>" + GetLabelByLanguage("searchPlaceholder") + "</big>")) : Html.FromHtml(GetLabelByLanguage("searchPlaceholder"));
+            searchEditText.SetQueryHint(hintText);
             searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this, accountsAdapter));
             searchEditText.SetOnQueryTextFocusChangeListener(this);
 
@@ -1051,7 +1052,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 EditText searchText = searchEditText.FindViewById<EditText>(searchEditText.Context.Resources.GetIdentifier("android:id/search_src_text", null, null));
                 searchText.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
                 searchText.SetHintTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sixty_opacity_white)));
-                searchText.SetTextSize(ComplexUnitType.Dip, 12f);
+                searchText.SetTextSize(ComplexUnitType.Dip,TextViewUtils.GetFontSize(12f));
                 TextViewUtils.SetMuseoSans500Typeface(searchText);
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
