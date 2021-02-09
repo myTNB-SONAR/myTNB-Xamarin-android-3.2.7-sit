@@ -161,13 +161,14 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 accountType = mainView.FindViewById<TextView>(Resource.Id.selector_account_type);
                 btnWhereIsMyAccountNo = mainView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
 
-                txtAccountType.Text = Utility.GetLocalizedLabel("AddAccount", "accountType").ToUpper();
-                textInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("AddAccount", "PremisesHint");
+                txtAccountType.Text = Utility.GetLocalizedLabel("AddAccount", "PremisesHint").ToUpper();
+                textInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("AddAccount", "accNumber");
                 textInputLayoutAccountLabel.Hint = Utility.GetLocalizedLabel("Common","acctNickname");
                 textInputLayoutRocNo.Hint = Utility.GetLocalizedLabel("AddAccount", "rocNumberOptional").ToUpper();
-                txtTitlePremise.Hint = Utility.GetLocalizedLabel("AddAccount", "AccHeaderText");
-                txtTitle.Hint = Utility.GetLocalizedLabel("AddAccount", "ROCHeaderText");
-                txtTitleROC.Hint = Utility.GetLocalizedLabel("AddAccount", "ROCDetailsText");
+                //txtTitlePremise.Hint = Utility.GetLocalizedLabel("AddAccount", "AccHeaderText");
+                txtTitlePremise.Text = Utility.GetLocalizedLabel("AddAccount", "AccHeaderText");
+                txtTitle.Text = Utility.GetLocalizedLabel("AddAccount", "ROCHeaderText");
+                txtTitleROC.Text = Utility.GetLocalizedLabel("AddAccount", "ROCDetailsText");
                 btnWhereIsMyAccountNo.Hint = Utility.GetLocalizedLabel("AddAccount", "WhereAccNo");
 
                 TextViewUtils.SetMuseoSans300Typeface(edtAccountLabel

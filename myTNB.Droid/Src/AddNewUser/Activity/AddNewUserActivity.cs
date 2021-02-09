@@ -118,6 +118,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                 textInputLayoutUserEmail.Hint = Utility.GetLocalizedLabel("UserAccess", "usremail");
                 btnAddUser.Text = Utility.GetLocalizedLabel("UserAccess", "addUserBtn");
                 txtValue.Text = Utility.GetLocalizedLabel("UserAccess", "headerTextAddNewUser");
+                infoAddress.Text = Utility.GetLocalizedLabel("Usage", "missedReadTitle");
 
                 txtUserEmail.AddTextChangedListener(new InputFilterFormField(txtUserEmail, textInputLayoutUserEmail));
                 txtUserEmail.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);

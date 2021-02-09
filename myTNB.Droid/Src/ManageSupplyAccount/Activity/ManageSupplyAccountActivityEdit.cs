@@ -133,7 +133,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
                 txtInputLayoutNickName.Hint = GetLabelCommonByLanguage("acctNickname").ToUpper();
                 btnTextUpdateNickName.Text = GetLabelCommonByLanguage("update");
-                btnRemoveAccount.Text = GetLabelByLanguage("removeAccount");
+                btnRemoveAccount.Text = Utility.GetLocalizedLabel("ManageAccount", "removeAccount");
+                infoAddress.Text = Utility.GetLocalizedLabel("ManageAccount", "dialogAddrress");
 
                 //txtNickName.AddTextChangedListener(new InputFilterFormField(txtNickName, txtInputLayoutNickName));
                 //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
