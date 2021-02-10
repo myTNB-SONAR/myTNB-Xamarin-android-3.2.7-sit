@@ -324,12 +324,12 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             {
                 if (this.mFragment is HomeMenuFragment)
                 {
-                    if ((list.Count == 6 && !model.NeedHelpHide) || (list.Count == 5 && model.NeedHelpHide))
+                    if ((list.Count == 4 && !model.NeedHelpHide) || (list.Count == 3 && model.NeedHelpHide))
                     {
                         if (position == 0)
                         {
                             int topHeight = (int)DPUtils.ConvertDPToPx(65f);
-                            int middleHeight = (int)DPUtils.ConvertDPToPx(275f);
+                            int middleHeight = (int)DPUtils.ConvertDPToPx(178f);
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
                                 int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
