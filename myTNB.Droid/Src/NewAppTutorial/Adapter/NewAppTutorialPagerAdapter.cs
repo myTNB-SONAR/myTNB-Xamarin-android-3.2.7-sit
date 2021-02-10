@@ -329,7 +329,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         if (position == 0)
                         {
                             int topHeight = (int)DPUtils.ConvertDPToPx(65f);
-                            int middleHeight = (int)DPUtils.ConvertDPToPx(178f);
+                            int middleHeight = (int)DPUtils.ConvertDPToPx(176f);
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
                                 int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
