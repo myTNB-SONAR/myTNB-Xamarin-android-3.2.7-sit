@@ -123,8 +123,8 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                     SetToolBarTitle(GetLabelByLanguage("updateMobileNumberTitle"));
                 }
 
-                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
-                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                //SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+                //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
                 infoLabelContainer.Click += delegate
                 {

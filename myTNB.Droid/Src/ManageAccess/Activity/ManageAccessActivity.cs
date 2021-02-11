@@ -160,11 +160,11 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 }
 
                 mPref = PreferenceManager.GetDefaultSharedPreferences(this);
-                txtEmptyManageAccess.Text = GetLabelByLanguage("LabelEmptyTitle");
-                txtManageAccessTitle.Text = GetLabelByLanguage("LabelTitle");
-                btnAddUser.Text = GetLabelByLanguage("addUserBtn");
-                btnRemoveAccess.Text = GetLabelByLanguage("RemoveTitle");
-                btnAddAccessUser.Text = GetLabelByLanguage("AddTitle");
+                txtEmptyManageAccess.Text = Utility.GetLocalizedLabel("UserAccess", "LabelEmptyTitle");
+                txtManageAccessTitle.Text = Utility.GetLocalizedLabel("UserAccess", "LabelTitle");
+                btnAddUser.Text = Utility.GetLocalizedLabel("UserAccess", "addUserBtn");
+                btnRemoveAccess.Text = Utility.GetLocalizedLabel("UserAccess", "RemoveTitle");
+                btnAddAccessUser.Text = Utility.GetLocalizedLabel("UserAccess", "AddTitle");
                 btnCancelRemoveAccess.Text = Utility.GetLocalizedCommonLabel("cancel");
                 btnRemoveSelectedAccessUser.Text = Utility.GetLocalizedLabel("UserAccess", "RemoveTitle");
                 btnRemoveSelectedAccessUser.Enabled = false;
@@ -280,7 +280,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 if (!this.GetIsClicked())
                 {
                     this.SetIsClicked(true);
-                    txtManageAccessTitle.Text = GetLabelByLanguage("HeaderRemoveTitle");
+                    txtManageAccessTitle.Text = Utility.GetLocalizedLabel("UserAccess", "HeaderRemoveTitle");
                     listViewRemoveAcc.Visibility = ViewStates.Visible;
                     bottomLayoutDeleteMultiple.Visibility = ViewStates.Visible;
                     bottomLayout.Visibility = ViewStates.Gone;
@@ -416,7 +416,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             try
             {
                 string nickname = accountData.AccountNickName;
-                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(GetLabelByLanguage("AddTNBUserSuccess"), email, nickname)), Snackbar.LengthIndefinite)
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("UserAccess", "AddTNBUserSuccess"), email, nickname)), Snackbar.LengthIndefinite)
                             .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
                              {
@@ -442,7 +442,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             try
             {
                 string nickname = accountData.AccountNickName;
-                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(GetLabelByLanguage("AddNonTNBUserSuccess"), email, nickname)), Snackbar.LengthIndefinite)
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("UserAccess", "AddNonTNBUserSuccess"), email, nickname)), Snackbar.LengthIndefinite)
                             .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
                              {

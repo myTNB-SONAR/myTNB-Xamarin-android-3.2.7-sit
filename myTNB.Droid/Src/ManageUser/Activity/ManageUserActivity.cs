@@ -135,9 +135,9 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 TextViewUtils.SetMuseoSans500Typeface(btnSave, itemTitle, btnCancelAddAccess, btnResendInviteAccessUser);
                 //TextViewUtils.SetMuseoSans500Typeface(bottomLayout_Cancel_Resend, bottomLayoutSave);
 
-                itemTitleFullBill.Text = Utility.GetLocalizedLabel("UserAccess", "fullElectricity");
-                itemTitleBilling.Text = Utility.GetLocalizedLabel("UserAccess", "e_billing");
-                itemTitle.Text = Utility.GetLocalizedLabel("UserAccess", "ManageUserTitle");
+                itemTitleFullBill.Text = Utility.GetLocalizedLabel("manageUser", "fullElectricity");
+                itemTitleBilling.Text = Utility.GetLocalizedLabel("manageUser", "e_billing");
+                itemTitle.Text = Utility.GetLocalizedLabel("manageUser", "ManageUserTitle");
                 SetToolBarTitle(GetLabelByLanguage("titleManageUser"));
                 txtInputLayoutEmail.Hint = Utility.GetLocalizedLabel("UserAccess", "hint_email").ToUpper(); 
                 btnSave.Text = GetLabelCommonByLanguage("saveChanges");
@@ -450,8 +450,8 @@ namespace myTNB_Android.Src.ManageUser.Activity
             string nickname = txtNickName.Text.ToString().Trim();
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                         
-                        .SetTitle(string.Format(Utility.GetLocalizedLabel("ManageAccount", "manageUserDialogTitle"), nickname))
-                        .SetMessage(string.Format(Utility.GetLocalizedLabel("ManageAccount", "manageUserDialogMessage"),nickname))
+                        .SetTitle(string.Format(Utility.GetLocalizedLabel("manageUser", "manageUserDialogTitle"), nickname))
+                        .SetMessage(string.Format(Utility.GetLocalizedLabel("manageUser", "manageUserDialogMessage"),nickname))
                         .SetContentGravity(Android.Views.GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
@@ -501,8 +501,8 @@ namespace myTNB_Android.Src.ManageUser.Activity
             string email = txtEmail.Text.ToString().Trim();
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
 
-                        .SetTitle((string.Format(Utility.GetLocalizedLabel("ManageAccount", "manageUserInviteAccessDialogTitle"), email)))
-                        .SetMessage(string.Format(Utility.GetLocalizedLabel("ManageAccount", "manageUserInviteAccessDialogMessage"), email))
+                        .SetTitle((string.Format(Utility.GetLocalizedLabel("manageUser", "manageUserInviteAccessDialogTitle"), email)))
+                        .SetMessage(string.Format(Utility.GetLocalizedLabel("manageUser", "manageUserInviteAccessDialogMessage"), email))
                         .SetContentGravity(Android.Views.GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "no"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "resend"))
@@ -531,8 +531,8 @@ namespace myTNB_Android.Src.ManageUser.Activity
             string email = txtEmail.Text.ToString().Trim();
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
 
-                        .SetTitle((string.Format(Utility.GetLocalizedLabel("ManageAccount", "manageUserCancelAddAccessDialogTitle"), email)))
-                        .SetMessage(string.Format(Utility.GetLocalizedLabel("ManageAccount", "manageUserCancelAddAccessDialogMessage"), email))
+                        .SetTitle((string.Format(Utility.GetLocalizedLabel("manageUser", "manageUserCancelAddAccessDialogTitle"), email)))
+                        .SetMessage(string.Format(Utility.GetLocalizedLabel("manageUser", "manageUserCancelAddAccessDialogMessage"), email))
                         .SetContentGravity(Android.Views.GravityFlags.Left)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "no"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "yes"))
@@ -618,7 +618,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
             try
             {
                
-                Snackbar saveSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("ManageAccount", "saveSuccess"), Snackbar.LengthIndefinite)
+                Snackbar saveSnackBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("manageUser", "saveSuccess"), Snackbar.LengthIndefinite)
                             .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
                              {
@@ -642,7 +642,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
         {
             try
             {
-                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("ManageAccount", "inviteSuccess"), email)), Snackbar.LengthIndefinite)
+                Snackbar saveSnackBar = Snackbar.Make(rootView, (string.Format(Utility.GetLocalizedLabel("manageUser", "inviteSuccess"), email)), Snackbar.LengthIndefinite)
                             .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
                              {

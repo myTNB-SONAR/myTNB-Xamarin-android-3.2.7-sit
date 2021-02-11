@@ -111,19 +111,19 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtAddNewUserTitle, txtNewUserOptionalTitle);
                 TextViewUtils.SetMuseoSans500Typeface(btnAddUser);
 
-                itemTitleFullBill.Text = Utility.GetLocalizedLabel("UserAccess", "fullElectricity");
-                itemTitleBilling.Text = Utility.GetLocalizedLabel("UserAccess", "e_billing");
-                txtAddNewUserTitle.Text = Utility.GetLocalizedLabel("UserAccess", "titleAddNewUser");
-                txtNewUserOptionalTitle.Text = Utility.GetLocalizedLabel("UserAccess", "bodyAddNewUser");
-                textInputLayoutUserEmail.Hint = Utility.GetLocalizedLabel("UserAccess", "usremail");
-                btnAddUser.Text = Utility.GetLocalizedLabel("UserAccess", "addUserBtn");
-                txtValue.Text = Utility.GetLocalizedLabel("UserAccess", "headerTextAddNewUser");
-                infoAddress.Text = Utility.GetLocalizedLabel("Usage", "missedReadTitle");
+                itemTitleFullBill.Text = Utility.GetLocalizedLabel("AddUserAccess", "viewFullElec");
+                itemTitleBilling.Text = Utility.GetLocalizedLabel("AddUserAccess", "applyEBilling");
+                txtAddNewUserTitle.Text = Utility.GetLocalizedLabel("AddUserAccess", "titleAddNewUser");
+                txtNewUserOptionalTitle.Text = Utility.GetLocalizedLabel("AddUserAccess", "bodyAddNewUser");
+                textInputLayoutUserEmail.Hint = Utility.GetLocalizedLabel("manageUser", "usremail");
+                btnAddUser.Text = Utility.GetLocalizedLabel("AddUserAccess", "addUserButton");
+                txtValue.Text = Utility.GetLocalizedLabel("AddUserAccess", "titleAddEmail");
+                infoAddress.Text = Utility.GetLocalizedLabel("AddUserAccess", "whatIsThisMean");
 
                 txtUserEmail.AddTextChangedListener(new InputFilterFormField(txtUserEmail, textInputLayoutUserEmail));
                 txtUserEmail.AfterTextChanged += new EventHandler<AfterTextChangedEventArgs>(AddTextChangedListener);
-                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-                SetToolBarTitle(GetLabelByLanguage("titleAddUser"));
+                //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                SetToolBarTitle(Utility.GetLocalizedLabel("AddUserAccess", "title"));
 
                 itemActionFullBill.CheckedChange += CheckedChange;
                 itemActionBilling.CheckedChange += CheckedChanged;
@@ -287,8 +287,8 @@ namespace myTNB_Android.Src.AddNewUser.Activity
         {
 
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                       .SetTitle((string.Format(GetLabelByLanguage("dialogManageUser"))))
-                       .SetMessage(string.Format(GetLabelByLanguage("dialogManageUserMessage")))
+                       .SetTitle((string.Format(Utility.GetLocalizedLabel("AddUserAccess", "toottipTitle"))))
+                       .SetMessage(string.Format(Utility.GetLocalizedLabel("AddUserAccess", "tooltipBody")))
                        .SetContentGravity(GravityFlags.Left)
                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                        .Build().Show();

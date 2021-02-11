@@ -103,7 +103,7 @@
     //OT Add
     "verify": "Sahkan",
 
-    //irul add
+    //Irul add
     "tutorialSwipeTextNew": "Leret untuk lihat lebih lagi, tekan dua kali untuk mengabaikannya.",
     "tutorialSwipeTextlastNew": "Tekan dua kali untuk mengabaikannya."
 
@@ -223,6 +223,8 @@
     //addby wan
     "later": "Tangguhkan",
     "update": "Kemas kini",
+    "proceed":"Teruskan",
+    "chkBoxTitle":"Jangan tunjuk ini lagi",
     "titleIcUpdate": "Lengkapkan profil myTNB anda sekarang untuk pengalaman myTNB yang lebih baik!",
     "bodyIcUpdate": "Nombor pengenalan anda tidak tercatat dalam profil myTNB anda. Kemas kini sekarang untuk akses dan kawalan yang lebih menyeluruh atas akaun elektrik anda!",
     "tutorialUpdateNicknameBtn": "Kemas kini Nama Gelaran",
@@ -690,17 +692,13 @@
     "paymentMethod": "Kaedah Pembayaran Saya",
     "myElecttricityAcc": "Akaun Elektrik Saya",
     "appSetting": "Tetapan Aplikasi",
-    "learnMore": "Ketahui Lebih Lanjut mengenai TNB",
-    //addby yana
-    "updateIdTitle": "Sahkan Nombor Pengenalan Anda:",
-    "updateIdMessage": "Pastikan nomnor pengenalan anda betul kerana hanya boleh mengemaskini sekali sahaja.",
-    "re_enter": "Masukkan semula"
+    "learnMore": "Ketahui Lebih Lanjut mengenai TNB"
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",
     "typeDescription": "Pilih jenis pemberitahuan yang ingin diterima daripada TNB",
     "modeDescription": "Pilih cara anda mahu menerima pemberitahuan",
-
+    "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah.",
     //addby syahmi 
     "selectApplang": "Pilih bahasa aplikasi pilihan anda:"
   },
@@ -752,7 +750,10 @@
     "accountDeleteSuccess": "Akaun elektrik anda telah dialih keluar daripada akaun myTNB.",
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
     "noAccounts": "Tiada Akaun Elektrik",
-    "addAccountMessage": "Tambah Akaun Elektrik TNB sedia ada untuk melihat butiran penggunaan dan transaksi."
+    "addAccountMessage": "Tambah Akaun Elektrik TNB sedia ada untuk melihat butiran penggunaan dan transaksi.",
+    "popupremoveAccountTitleSwipe":"Alih Keluar Akaun",
+    "popupremoveAccountMessageSwipe": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda."
+
   },
   "Prelogin": {
     "welcomeTitle": "Selamat datang ke myTNB",
@@ -849,26 +850,14 @@
     "noAccounts": "Tiada Akaun Elektrik",
     "addAccountMessage": "BM_Add your existing TNB Electricity Supply Account to view usage and transaction details.",
     "titleManageUser": "Urus Pengguna",
-    "titleAddUser": "Tambah Pengguna Baru",
     "dialogAddrress": "Mengapakah saya tidak boleh melihat alamat penuh?",
     "dialogAddrressMessage": "Kami menyembunyikan maklumat yang sensitif untuk menjaga privasi pemilik akaun. Anda sedang melihat maklumat yang disembunyikan kerana anda bukan pemilik akaun elektrik ini.",
     "dialogManageUser": "Memberi lebih banyak akses kepada pengguna anda.",
     "dialogManageUserMessage": "Untuk melindungi maklumat anda, kami tidak memaparkan maklumat peribadi anda kepada bukan pemilik dan beberapa ciri aplikasi. Walaubagaimanapun, anda boleh memberikan mereka akses yang disenaraikan di sini jika sesuai dan mereka akan dimaklumkan mengenainya.",
-    "manageUserDialogTitle": "Anda akan mengubah akses {0}.",
-    "manageUserDialogMessage": "Setelah disahkan, akses {0} akan dikemas kini dan pengguna akan dimaklumkan mengenai akses yang telah anda pilih untuknya berkenaan akaun elektrik anda.",
-    "saveSuccess": "Perubahan terhadap akses pengguna telah disimpan dan pengguna telah diberitahu tentang kemas kini akses mereka.",
     "manageUserBackTitle": "Adakah anda pasti mahu meninggalkan halaman ini tanpa menyimpan perubahan yang telah anda lakukan terhadap akses {0}?",
     "manageUserBackMessage": "Perubahan terhadap akses {0} tidak akan disimpan jika anda memilih untuk meninggalkan halaman ini dan akses pengguna akan kekal seperti biasa.",
-    //add by yana
-    "manageUserInviteAccessDialogTitle": "Adakah anda mahu menghantar satu lagi jemputan untuk menyertai myTNB?",
-    "manageUserInviteAccessDialogMessage": "Kami telah menjemput {0} untuk menyertai myTNB dan melihat akaun elektrik anda. Anda boleh menghantar satu lagi jemputan jika mereka tidak menerimanya.",
-    "manageUserCancelAddAccessDialogTitle": "Adakah anda pasti mahu membatalkan penambahan {0} sebagai seorang penonton?",
-    "manageUserCancelAddAccessDialogMessage": "Setelah dibatalkan, jemputan tersebut tidak lagi sah dan pengguna tidak lagi mempunyai akses ke akaun anda. Anda boleh memasukan semula pengguna jika mahu.",
-    "inviteSuccess": "Kami telah menghantar satu lagi jemputan ke {0} untuk menyertai myTNB.",
-    "cancelAddSuccess": "{0} telah dikeluarkan dari senarai pengguna yang mempunyai akses kepada akaun elektrik ini.",
     "manageUserAccess": "Menguruskan Akses Pengguna",
     "manageAutopay": "BM_Manage Autopay"
-
 
 
   },
@@ -1219,20 +1208,19 @@
     "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
     "IDUpdateSuccess": "Terima kasih kerana mengemaskini! Aktiviti anda telah dirakam seperti di bawah.",
     //syahmi add
-    "lblID": "IC / ID Askar / Nombor Pasport",
+    "lblID":"IC / ID Askar / Nombor Pasport",
     "passwordchange": "Tukar Kata Laluan Saya",
-    "gotIt": "Ok",
-    "resend": "Hantar semula",
-    "verifyEmailPopupBody": "Sila sahkan alamat e-mel anda dengan pautan yang telah kami kirimkan. Anda juga boleh meminta kiriman semula jika anda tidak menerima pautan tersebut.",
-    "verifyEmailPopupTitle": "Pengesahan E-mel Belum Selesai",
-    "toast_email_send": "Pengesahan e-mel telah dihantar ke ",
-    "toast_SuccessUpdateName": "Anda telah berjaya mengemaskini nama anda!"
+    "gotIt":"Ok",
+    "resend":"Hantar semula",
+    "verifyEmailPopupBody":"Sila sahkan alamat e-mel anda dengan pautan yang telah kami kirimkan. Anda juga boleh meminta kiriman semula jika anda tidak menerima pautan tersebut.",
+    "verifyEmailPopupTitle":"Pengesahan E-mel Belum Selesai",
+    "toast_email_send":"Pengesahan e-mel telah dihantar ke ",
+    "toast_SuccessUpdateName":"Anda telah berjaya mengemaskini nama anda!"
   },
 
   "UpdateName": {
     //syahmi add
-    "title": "Kemaskini Nama",
-    
+    "title": "Kemaskini Nama"
   },
 
   "LearnMoreAboutTnb": {
@@ -1260,13 +1248,7 @@
     "AddTitle": "Tambah",
     "RemoveTitle": "Alih Keluar",
     "HeaderRemoveTitle": "Pilih pengguna untuk dialih keluar:",
-    "bodyDialogWhatIsThis": "Untuk melindungi maklumat anda, kami tidak memaparkan maklumat peribadi anda kepada bukan pemilik dan beberapa ciri aplikasi. Walaubagaimanapun, anda boleh memberikan mereka akses yang disenaraikan di sini jika sesuai dan mereka akan dimaklumkan mengenainya.",
-    "titleDialogWhatIsThis": "Memberi pengguna anda lebih banyak akses.",
-    "fullElectricity": "Lihat bil elektrik penuh",
-    "e_billing": "Buat permohonan e-Billing",
-    "usremail": "Alamat e-mel pengguna",
-    "titleAddNewUser": "Masukkan alamat e-mel pengguna yang telah didaftarkan dengan myTNB.",
-    "bodyAddNewUser": "Adakah anda mahu memberikan lebih akses kepada pengguna ini (tidak wajib)?",
+    "cancleBtn":"Batal",
     "deleteSuccessMessage": "Pengguna telah berjaya dialih keluar",
     "deleteUserTitle": "Adakah anda pasti mahu mengalih keluar pengguna ini?",
     "deleteUserBody": "Setelah dikeluarkan, akses pengguna ini akan dimansuhkan dan mereka tidak lagi boleh melihat maklumat berkaitan dengan akaun ini.",
@@ -1276,6 +1258,8 @@
     "walkthroughStep2": "Lihat dan urus penguna yang melihat akaun anda atau beri akses kepada pihak lain di sini.",
     "tapToSkip": "Tekan untuk melangkau",
     "pendingRegistration": "Pendaftaran Belum Selesai",
+    //syahmi add
+    "cancelAddSuccess": "{0} telah dikeluarkan dari senarai pengguna yang mempunyai akses kepada akaun elektrik ini.",
     //add by wan
     "AddTNBUserSuccess": "{0} kini mempunyai akses ke {1} di myTNB.",
     "AddNonTNBUserSuccess": "{0} dijemput untuk menyertai myTNB dan akan mempunyai akses ke {1}.",
@@ -1292,8 +1276,7 @@
     "headerTextAddNewUser": "Kami akan menjemput untuk mendaftar jika mereka tidak mempunyai sebarang akaun.",
     "thisWeekTitle": "Minggu Ini",
     "lastWeekTitle": "Minggu lepas",
-    "lastMonthTitle": "Bulan lepas",
-    "ManageUserTitle": "Berikan akses kepada pengguna untuk:"
+    "lastMonthTitle": "Bulan lepas"
   },
   //new Add folow IOS
   "RegisterNew": {
@@ -1326,6 +1309,7 @@
     "ctaTitleNew": "Daftar Akaun Saya",
     "tnc_checked": "Saya telah membaca dan bersetuju untuk <a href=\"\\\"><strong>Terma dan Syarat</strong></a>."
   },
+
   "RegisterSuccess": {
     "acccreated" : "Akaun Dibuat!",
     "emailverify" : "Sila sahkan alamat e-mel anda",
@@ -1333,16 +1317,57 @@
     "continue" : "Teruskan"
   },
 
-  "OT_Uncategorize": {
+   "CompleteYourProfile":{
+   "title":"BM_Complete Your Profile",
+   "lblTitle":"BM_Provide us your identification number for better experience!",
+   "lblSubTitle":"BM_Get better access and enjoy more TNB offerings on myTNB by helping us validate your identification.",
+   "txtFieldIDType":"Jenis Pengenalan",
+   "txtFieldID":"Nombor Pengenalan",
+   "mykad": "IC / Mykad",
+   "armyid": "ID Tentera",
+   "passport": "Pasport",
+   "icHint": "Kami akan menggunakan pengenalan ini untuk membantu anda menyiapkan akaun anda.",
+   "icError": "Sila masukkan 12 digit nombor IC / Mykad yang sah.",
+   "armyError": "ID Tentera mesti antara 5-50 aksara.",
+   "passportError": "Pasport mestilah antara 5-50 aksara.",
+   "updateIdTitle": "Sahkan Nombor Pengenalan Anda:",
+   "confrimButton": "Sahkan",
+   "re_enter": "Masukkan semula",
+   "updateIdMessage": "Pastikan nomnor pengenalan anda betul kerana hanya boleh mengemaskini sekali sahaja."
+  },
 
+  "manageUser": {
+    "title": "BM_Manage User",
+    "ManageUserTitle": "Berikan akses kepada pengguna untuk:",
+    "fullElectricity": "Lihat bil elektrik penuh",
+    "e_billing": "Buat permohonan e-Billing",
+    "whatIsThis": "Apakah maksud ini?",
+    "usremail": "Alamat e-mel pengguna",
+    "titleDialogWhatIsThis": "Memberi pengguna anda lebih banyak akses.",
+    "bodyDialogWhatIsThis": "Untuk melindungi maklumat anda, kami tidak memaparkan maklumat peribadi anda kepada bukan pemilik dan beberapa ciri aplikasi. Walaubagaimanapun, anda boleh memberikan mereka akses yang disenaraikan di sini jika sesuai dan mereka akan dimaklumkan mengenainya.",
+    "manageUserDialogTitle": "Anda akan mengubah akses {0}.",
+    "manageUserDialogMessage": "Setelah disahkan, akses {0} akan dikemas kini dan pengguna akan dimaklumkan mengenai akses yang telah anda pilih untuknya berkenaan akaun elektrik anda.",
+    "notSaveTitle": "BM_Are you sure you want to leave without saving changes you made to {0}’s access?",
+    "notSaveBody": "BM_The changes to {0}’s access will not be saved if you choose to leave this page and their accesses will remain as before.",
+    "saveSuccess": "Perubahan terhadap akses pengguna telah disimpan dan pengguna telah diberitahu tentang kemas kini akses mereka.",
+    "manageUserInviteAccessDialogTitle": "Adakah anda mahu menghantar satu lagi jemputan untuk menyertai myTNB?",
+    "manageUserInviteAccessDialogMessage": "Kami telah menjemput {0} untuk menyertai myTNB dan melihat akaun elektrik anda. Anda boleh menghantar satu lagi jemputan jika mereka tidak menerimanya.",
+    "manageUserCancelAddAccessDialogTitle": "Adakah anda pasti mahu membatalkan penambahan {0} sebagai seorang penonton?",
+    "manageUserCancelAddAccessDialogMessage": "Setelah dibatalkan, jemputan tersebut tidak lagi sah dan pengguna tidak lagi mempunyai akses ke akaun anda. Anda boleh memasukan semula pengguna jika mahu.",
+    "inviteSuccess": "Kami telah menghantar satu lagi jemputan ke {0} untuk menyertai myTNB."
+  },
 
-    "continue": "Teruskan",
-    
-    
-    "email_address": "Alamat e-mel",
-    "email_user_address": "Alamat e-mel pengguna",
-    "error_NotExistsAccountMessage": "Nombor akaun yang anda masukkan ini tidak dapat ditemui.",
-    "later": "Tangguhkan",
-    "ApplyforBilling": "Buat Permohonan e-Billing"
+  "AddUserAccess": {
+    "title": "Tambah Pengguna Baru",
+    "titleAddNewUser": "Masukkan alamat e-mel pengguna yang telah didaftarkan dengan myTNB.",
+    "titleAddEmail": "Kami akan menjemput untuk mendaftar jika mereka tidak mempunyai sebarang akaun.",
+    "lblEmailTitle": "Alamat e-mel pengguna",
+    "bodyAddNewUser": "Adakah anda mahu memberikan lebih akses kepada pengguna ini (tidak wajib)?",
+    "viewFullElec": "Lihat bil elektrik penuh",
+    "applyEBilling": "Buat permohonan e-Billing",
+    "whatIsThisMean": "Apakah maksud ini?",
+    "toottipTitle": "Memberi pengguna anda lebih banyak akses.",
+    "tooltipBody": "Untuk melindungi maklumat anda, kami tidak memaparkan maklumat peribadi anda kepada bukan pemilik dan beberapa ciri aplikasi. Walaubagaimanapun, anda boleh memberikan mereka akses yang disenaraikan di sini jika sesuai dan mereka akan dimaklumkan mengenainya.",
+    "addUserButton": "Tambah Penguna"
   }
 }
