@@ -1709,7 +1709,7 @@
 					android:text="0.00"
 					android:textColor="@color/tunaGrey"
 					android:textSize="25dp"
-					android:maxWidth="150dp"
+					android:maxWidth="130dp"
 					android:ellipsize="end"
 					android:singleLine="false"
 					android:maxLines="1" />

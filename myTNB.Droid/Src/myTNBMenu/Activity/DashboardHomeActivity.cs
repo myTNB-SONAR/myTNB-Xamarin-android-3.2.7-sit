@@ -885,7 +885,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         .CommitAllowingStateLoss();
 
         }
-        
+
         public void ShowMoreMenu()
         {
             ProfileMenuFragment profileMenuFragment = new ProfileMenuFragment();
@@ -1088,7 +1088,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                             RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                             RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
-                            newLabelParam.TopMargin = 0;
+                            newLabelParam.TopMargin = 10;
                             newLabelParam.Height = (int)DPUtils.ConvertDPToPx(16f);
                             bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                             txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
@@ -1170,9 +1170,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         newLabel.SetBackgroundResource(Resource.Drawable.new_label);
                         RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                         RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
-                        newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
+                        newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(TextViewUtils.IsLargeFonts
+                            && LanguageUtil.GetAppLanguage().ToUpper() != Constants.DEFAULT_LANG ? -40 : -25f);
                         newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
-                        newLabelParam.TopMargin = 0;
+                        newLabelParam.TopMargin = 10;
                         newLabelParam.Width = ViewGroup.LayoutParams.WrapContent;
                         newLabel.SetPadding((int)DPUtils.ConvertDPToPx(6f), 0, (int)DPUtils.ConvertDPToPx(6f), 0);
                         if (LanguageUtil.GetAppLanguage().ToUpper() == Constants.DEFAULT_LANG)
@@ -1248,9 +1249,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         newLabel.SetBackgroundResource(Resource.Drawable.new_label);
                         RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                         RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
-                        newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
+                        newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(TextViewUtils.IsLargeFonts
+                            && LanguageUtil.GetAppLanguage().ToUpper() != Constants.DEFAULT_LANG ? -40 : -25f);
                         newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
-                        newLabelParam.TopMargin = 0;
+                        newLabelParam.TopMargin = 10;
                         newLabelParam.Width = ViewGroup.LayoutParams.WrapContent;
                         newLabel.SetPadding((int)DPUtils.ConvertDPToPx(4f), 0, (int)DPUtils.ConvertDPToPx(4f), 0);
                         if (LanguageUtil.GetAppLanguage().ToUpper() == Constants.DEFAULT_LANG)
@@ -1329,7 +1331,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                             RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                             RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
-                            newLabelParam.TopMargin = 0;
+                            newLabelParam.TopMargin = 10;
                             newLabelParam.Height = (int)DPUtils.ConvertDPToPx(16f);
                             bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                             txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
