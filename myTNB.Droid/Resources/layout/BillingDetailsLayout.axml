@@ -235,7 +235,7 @@
                         android:id="@+id/infoLabelContainerDetailEPP"
                         android:layout_width="match_parent"
                         android:visibility="gone"
-                        android:layout_height="24dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:paddingLeft="2dp"
                         android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
