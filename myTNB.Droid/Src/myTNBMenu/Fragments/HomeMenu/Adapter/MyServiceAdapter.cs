@@ -405,7 +405,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                         cardHeight = cardWidth;
                     }
 
-                    currentCard.Height = cardHeight;
+                    //currentCard.Height = cardHeight;
                     currentCard.Width = cardWidth;
 
                     float imgHeightRatio = 28f / 96f;
