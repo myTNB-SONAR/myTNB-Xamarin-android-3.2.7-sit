@@ -117,7 +117,7 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
                 txtTitleRegister.Text = Utility.GetLocalizedLabel("RegisterNew", "etitleRegister");
                 txtBodyRegister.Text = Utility.GetLocalizedLabel("RegisterNew", "ebodyRegister");
-                textInputLayoutEmailReg.Hint = Utility.GetLocalizedLabel("OT_Uncategorize", "email_address");
+                textInputLayoutEmailReg.Hint = Utility.GetLocalizedLabel("Common", "emailAddress");
                 textInputLayoutPasswordReg.Hint = Utility.GetLocalizedLabel("Common", "password");
                 btnNext.Text = Utility.GetLocalizedLabel("Common", "next");
 
