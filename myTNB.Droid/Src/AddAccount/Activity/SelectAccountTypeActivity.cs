@@ -32,6 +32,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             Bundle extras = Intent.Extras;
 
             if (extras != null)

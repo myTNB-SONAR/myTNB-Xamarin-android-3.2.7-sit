@@ -23,19 +23,19 @@ namespace myTNB_Android.Src.Utils
         {
         }
 
-		public static string GetDeviceLanguage()
-		{
-			string deviceLanguage = Java.Util.Locale.Default.Language;
-			if (deviceLanguage.ToUpper() == Constants.SUPPORTED_LANGUAGES.MS.ToString())
-			{
-				deviceLanguage = Java.Util.Locale.Default.Language;
-			}
-			else
-			{
-				deviceLanguage = Constants.SUPPORTED_LANGUAGES.EN.ToString();
-			}
-			return deviceLanguage.ToUpper();
-		}
+        public static string GetDeviceLanguage()
+        {
+            string deviceLanguage = Java.Util.Locale.Default.Language;
+            if (deviceLanguage.ToUpper() == Constants.SUPPORTED_LANGUAGES.MS.ToString())
+            {
+                deviceLanguage = Java.Util.Locale.Default.Language;
+            }
+            else
+            {
+                deviceLanguage = Constants.SUPPORTED_LANGUAGES.EN.ToString();
+            }
+            return deviceLanguage.ToUpper();
+        }
 
         public static bool IsSupportedLanguage(string language)
         {
@@ -56,7 +56,7 @@ namespace myTNB_Android.Src.Utils
         }
 
         public static void SaveAppLanguage(string language)
-		{
+        {
             string savedLanguage = Constants.DEFAULT_LANG; // Default Language is EN
             if (!string.IsNullOrEmpty(language) && IsSupportedLanguage(language))
             {
@@ -81,8 +81,8 @@ namespace myTNB_Android.Src.Utils
             return language;
         }
 
-		public static void UpdateSavedLanguage(string selectedLanguage)
-		{
+        public static void UpdateSavedLanguage(string selectedLanguage)
+        {
 
             string density = DPUtils.GetDeviceDensity(Application.Context);
             GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, selectedLanguage.ToLower());
@@ -90,19 +90,17 @@ namespace myTNB_Android.Src.Utils
             LanguageManager.Language language = LanguageManager.Language.EN;
 
             if (selectedLanguage != Constants.DEFAULT_LANG)
-			{
-				language = LanguageManager.Language.MS;
+            {
+                language = LanguageManager.Language.MS;
                 siteCoreLanguageId = SitecoreCmsEntity.SITE_CORE_ID.LANGUAGE_MS;
             }
 
-#if DEBUG
+#if DEBUG 
             LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
             try
             {// dynatrace
-
                 IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_LOCAL);
                 dynaTrace.LeaveAction();
-
             }
             catch (System.Exception e)
             {
@@ -124,10 +122,8 @@ namespace myTNB_Android.Src.Utils
                         LanguageManager.Instance.SetLanguage(currentLanguageResource);
                         try
                         {// dynatrace
-
                             IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_ONLINE);
                             dynaTrace.LeaveAction();
-
                         }
                         catch (System.Exception e)
                         {
@@ -143,10 +139,8 @@ namespace myTNB_Android.Src.Utils
                             LanguageManager.Instance.SetLanguage(updatedLanguageResource);
                             try
                             {// dynatrace
-
                                 IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_ONLINE);
                                 dynaTrace.LeaveAction();
-
                             }
                             catch (System.Exception e)
                             {
@@ -158,10 +152,8 @@ namespace myTNB_Android.Src.Utils
                             LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
                             try
                             {// dynatrace
-
                                 IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_LOCAL);
                                 dynaTrace.LeaveAction();
-
                             }
                             catch (System.Exception e)
                             {
@@ -179,10 +171,8 @@ namespace myTNB_Android.Src.Utils
                         LanguageManager.Instance.SetLanguage(updatedLanguageResource);
                         try
                         {// dynatrace
-
                             IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_ONLINE);
                             dynaTrace.LeaveAction();
-
                         }
                         catch (System.Exception e)
                         {
@@ -194,10 +184,8 @@ namespace myTNB_Android.Src.Utils
                         LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
                         try
                         {// dynatrace
-
                             IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_LOCAL);
                             dynaTrace.LeaveAction();
-
                         }
                         catch (System.Exception e)
                         {
@@ -205,7 +193,7 @@ namespace myTNB_Android.Src.Utils
                         }
                     }
                 }
-			}
+            }
             else
             {
                 updatedLanguageResource = GetUpdatedLanguage(getItemsService);
@@ -216,10 +204,8 @@ namespace myTNB_Android.Src.Utils
                     LanguageManager.Instance.SetLanguage(updatedLanguageResource);
                     try
                     {// dynatrace
-
                         IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_ONLINE);
                         dynaTrace.LeaveAction();
-
                     }
                     catch (System.Exception e)
                     {
@@ -231,10 +217,8 @@ namespace myTNB_Android.Src.Utils
                     LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
                     try
                     {// dynatrace
-
                         IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(Constants.DYNA_SITECORE_REFFER_LOCAL);
                         dynaTrace.LeaveAction();
-
                     }
                     catch (System.Exception e)
                     {
@@ -349,7 +333,8 @@ namespace myTNB_Android.Src.Utils
                 if (!UserSessions.IsSavedLanguagePrefResultSuccess())
                 {
                     string appLanguage = GetAppLanguage();
-                    Task.Factory.StartNew(async () => {
+                    Task.Factory.StartNew(async () =>
+                    {
                         SaveLanguagePreferenceResponse saveLanguagePreferenceResponse = await ServiceApiImpl.Instance.SaveLanguagePreference(new MyTNBService.Request.SaveLanguagePreferenceRequest(appLanguage));
                         UserSessions.SavedLanguagePrefResult(saveLanguagePreferenceResponse.IsSuccessResponse()
                             && saveLanguagePreferenceResponse.GetData() != null && !string.IsNullOrEmpty(saveLanguagePreferenceResponse.GetData().lang));

@@ -164,6 +164,9 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
             {
                 TextViewUtils.SetMuseoSans500Typeface(txtFeedbackTitle , txtSRstatus, txtFeedbackDate);
                 TextViewUtils.SetMuseoSans300Typeface(txtSRNumber );
+                txtFeedbackTitle.TextSize = TextViewUtils.GetFontSize(14f);
+                //txtFeedbackContent.TextSize = TextViewUtils.GetFontSize(9f);
+                txtFeedbackDate.TextSize = TextViewUtils.GetFontSize(11f);
             }
         }
     }

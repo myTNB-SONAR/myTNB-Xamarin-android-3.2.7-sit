@@ -1,9 +1,6 @@
 ﻿using Android.Graphics;
 using Android.Preferences;
-
-
 using Android.Text;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
@@ -16,10 +13,10 @@ using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 {
-	public class MyServiceAdapter : RecyclerView.Adapter
-	{
+    public class MyServiceAdapter : RecyclerView.Adapter
+    {
 
-		List<MyService> myServiceList = new List<MyService>();
+        List<MyService> myServiceList = new List<MyService>();
 
         public event EventHandler<int> ClickChanged;
 
@@ -29,7 +26,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
 
         public MyServiceAdapter(List<MyService> data, Android.App.Activity Activity, bool currentRefresh)
-		{
+        {
             if (data == null)
             {
                 this.myServiceList.Clear();
@@ -45,8 +42,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
         public override int ItemCount => myServiceList.Count;
 
-		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
-		{
+        public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+        {
             try
             {
 
@@ -374,7 +371,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                                 vh.newLabel.Visibility = ViewStates.Gone;
                             }
                             break;
-
+                        case "1006":
+                            vh.serviceImg.SetImageResource(Resource.Drawable.check_status);
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "applicationStatus"), FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "applicationStatus"));
+                            }
+                            if (UserSessions.HasApplicationStatusShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
+                            {
+                                vh.newLabel.Visibility = ViewStates.Gone;
+                            }
+                            break;
                     }
 
                     ViewGroup.LayoutParams currentCard = vh.myServiceCardView.LayoutParameters;
@@ -394,7 +405,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                         cardHeight = cardWidth;
                     }
 
-                    currentCard.Height = cardHeight;
+                    //currentCard.Height = cardHeight;
                     currentCard.Width = cardWidth;
 
                     float imgHeightRatio = 28f / 96f;
@@ -413,6 +424,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
                     TextViewUtils.SetMuseoSans500Typeface(vh.serviceTitle, vh.txtNewLabel);
                     vh.txtNewLabel.Text = Utility.GetLocalizedCommonLabel("new");
+
+                    vh.txtNewLabel.TextSize = TextViewUtils.GetFontSize(8f);
+                    vh.serviceTitle.TextSize = TextViewUtils.GetFontSize(10f);
+
                 }
                 catch (Exception e)
                 {
@@ -423,14 +438,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             {
                 Utility.LoggingNonFatalError(ne);
             }
-		}
+        }
 
-		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
-		{
-			var id = Resource.Layout.MyServiceComponentView;
-			var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
-			return new MyServiceViewHolder(itemView, OnClick);
-		}
+        public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
+        {
+            var id = Resource.Layout.MyServiceComponentView;
+            var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
+            return new MyServiceViewHolder(itemView, OnClick);
+        }
 
         void OnClick(MyServiceViewHolder sender, int position)
         {
@@ -446,29 +461,35 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
 
         public class MyServiceViewHolder : RecyclerView.ViewHolder
-		{
+        {
 
-			public ImageView serviceImg { get; private set; }
+            public ImageView serviceImg { get; private set; }
 
-			public TextView serviceTitle { get; private set; }
+            public TextView serviceTitle { get; private set; }
 
-			public LinearLayout myServiceCardView { get; private set; }
+            public TextView serviceTitle_two { get; private set; }
+
+            public LinearLayout myServiceCardView { get; private set; }
 
             public LinearLayout newLabel { get; private set; }
 
             public TextView txtNewLabel { get; private set; }
 
             public MyServiceViewHolder(View itemView, Action<MyServiceViewHolder, int> listener) : base(itemView)
-			{
-				serviceImg = itemView.FindViewById<ImageView>(Resource.Id.service_img);
-				serviceTitle = itemView.FindViewById<TextView>(Resource.Id.service_title);
-				myServiceCardView = itemView.FindViewById<LinearLayout>(Resource.Id.rootView);
+            {
+                serviceImg = itemView.FindViewById<ImageView>(Resource.Id.service_img);
+                serviceTitle = itemView.FindViewById<TextView>(Resource.Id.service_title);
+                
+                myServiceCardView = itemView.FindViewById<LinearLayout>(Resource.Id.rootView);
                 newLabel = itemView.FindViewById<LinearLayout>(Resource.Id.newLabel);
                 txtNewLabel = itemView.FindViewById<TextView>(Resource.Id.txtNewLabel);
+
+                serviceTitle.TextSize = TextViewUtils.GetFontSize(12f);
                 
+           
                 myServiceCardView.Click += (s, e) => listener((this), base.LayoutPosition);
             }
-		}
+        }
 
         public class MyServiceItemDecoration : RecyclerView.ItemDecoration
         {

@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Content.Res;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
@@ -36,9 +37,12 @@ namespace myTNB_Android.Src.AddAccount.Activity
             fragmentTransaction.Add(Resource.Id.fragment_container, addAccountTypeFragment);
             fragmentTransaction.Commit();
 
+           
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_AddAccountLarge : Resource.Style.Theme_AddAccount);
             //Initialize scanner
             MobileBarcodeScanner.Initialize(Application);
         }
+      
 
         public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
         {

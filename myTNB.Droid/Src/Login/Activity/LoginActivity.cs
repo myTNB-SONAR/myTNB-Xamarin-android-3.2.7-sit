@@ -3,7 +3,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
-
 using Android.Text;
 using Android.Views;
 using Android.Widget;
@@ -11,6 +10,7 @@ using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
+using myTNB.Mobile.SessionCache;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.ForgetPassword.Activity;
 using myTNB_Android.Src.Login.MVP;
@@ -109,6 +109,16 @@ namespace myTNB_Android.Src.Login.Activity
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail, txtInputLayoutPassword);
 
+                btnLogin.TextSize = TextViewUtils.GetFontSize(16f);
+                txtAccountLogin.TextSize = TextViewUtils.GetFontSize(16f);
+                txtEmail.TextSize = TextViewUtils.GetFontSize(16f);
+                chkRemeberMe.TextSize = TextViewUtils.GetFontSize(12f);
+                txtPassword.TextSize = TextViewUtils.GetFontSize(16f);
+                txtForgotPassword.TextSize = TextViewUtils.GetFontSize(12f);
+                txtNoAccount.TextSize = TextViewUtils.GetFontSize(12f);
+                txtRegisterAccount.TextSize = TextViewUtils.GetFontSize(12f);
+
+
                 txtAccountLogin.Text = GetLabelByLanguage("loginTitle");
                 chkRemeberMe.Text = GetLabelByLanguage("rememberEmail");
                 txtForgotPassword.Text = GetLabelByLanguage("forgotPassword");
@@ -138,6 +148,7 @@ namespace myTNB_Android.Src.Login.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+            SearchApplicationTypeCache.Instance.Clear();
         }
 
         public void ClearFields()

@@ -14,17 +14,17 @@ using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 {
-	public class NewFAQAdapter : RecyclerView.Adapter
-	{
+    public class NewFAQAdapter : RecyclerView.Adapter
+    {
 
-		List<NewFAQ> faqList = new List<NewFAQ>();
+        List<NewFAQ> faqList = new List<NewFAQ>();
 
         public event EventHandler<int> ClickChanged;
 
         private Android.App.Activity mActivity;
 
         public NewFAQAdapter(List<NewFAQ> data, Android.App.Activity Activity)
-		{
+        {
             if (data == null)
             {
                 this.faqList.Clear();
@@ -34,12 +34,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 this.faqList = data;
             }
             this.mActivity = Activity;
-		}
+        }
 
-		public override int ItemCount => faqList.Count;
+        public override int ItemCount => faqList.Count;
 
-		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
-		{
+        public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+        {
             try
             {
                 NewFAQViewHolder vh = holder as NewFAQViewHolder;
@@ -135,12 +135,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             }
         }
 
-		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
-		{
-			var id = Resource.Layout.NewFAQComponentView;
-			var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
-			return new NewFAQViewHolder(itemView, OnClick);
-		}
+        public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
+        {
+            var id = Resource.Layout.NewFAQComponentView;
+            var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
+            return new NewFAQViewHolder(itemView, OnClick);
+        }
 
         void OnClick(NewFAQViewHolder sender, int position)
         {
@@ -156,23 +156,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
 
         public class NewFAQViewHolder : RecyclerView.ViewHolder
-		{
+        {
 
-			public LinearLayout backgroundImg { get; private set; }
+            public LinearLayout backgroundImg { get; private set; }
 
-			public TextView faqTitle { get; private set; }
+            public TextView faqTitle { get; private set; }
 
-			public CardView faqCardView { get; private set; }
+            public CardView faqCardView { get; private set; }
 
-			public NewFAQViewHolder(View itemView, Action<NewFAQViewHolder, int> listener) : base(itemView)
-			{
+            public NewFAQViewHolder(View itemView, Action<NewFAQViewHolder, int> listener) : base(itemView)
+            {
                 backgroundImg = itemView.FindViewById<LinearLayout>(Resource.Id.rootView);
                 faqTitle = itemView.FindViewById<TextView>(Resource.Id.faq_title);
                 faqCardView = itemView.FindViewById<CardView>(Resource.Id.card_view_click);
 
+                faqTitle.TextSize = TextViewUtils.GetFontSize(TextViewUtils.IsLargeFonts ? 10 : 12);
+
                 faqCardView.Click += (s, e) => listener((this), base.LayoutPosition);
             }
-		}
+        }
 
-	}
+    }
 }

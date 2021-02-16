@@ -207,6 +207,11 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail, textInputLayoutVerificationCode);
 
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
+                txtEmailTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                txtEmailLinkInfo.TextSize = TextViewUtils.GetFontSize(14f);
+                btnSubmit.TextSize = TextViewUtils.GetFontSize(16f);
+
+
 
                 txtEmailTitle.Text = GetLabelByLanguage("subTitle");
                 txtEmailLinkInfo.Text = GetLabelByLanguage("details");

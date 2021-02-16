@@ -31,11 +31,16 @@ namespace myTNB
         {
         }
 
-        private string JSONLang = string.Empty;
+        internal string JSONLang
+        {
+            private set;
+            get;
+        } = string.Empty;
         private const string SELECTOR = "_selector";
         private const string COMMON = "Common";
         private const string Hint = "Hint";
         private const string Error = "Error";
+        private const string Tutorial = "Tutorial";
         private const string LANGUAGE_RESOURCE_PATH = "myTNB.Mobile.Resources.Language.Language_{0}.json";
 
         /// <summary>
@@ -78,6 +83,14 @@ namespace myTNB
             }
         }
 
+        public string GetLanguageFile
+        {
+            get
+            {
+                return JSONLang ?? string.Empty;
+            }
+        }
+
         /// <summary>
         /// Gets the commonly used strings within the app like "OK", "Cancel".
         /// Advised to call this when app was launched.
@@ -86,6 +99,14 @@ namespace myTNB
         public Dictionary<string, string> GetCommonValuePairs()
         {
             return GetValuesByPage(COMMON);
+        }
+
+        public string GetCommonValue(string key)
+        {
+            Dictionary<string, string> commonDictionary = GetCommonValuePairs();
+            return commonDictionary != null
+               && commonDictionary.ContainsKey(key)
+               ? commonDictionary[key] : string.Empty;
         }
 
         public Dictionary<string, string> GetHintValuePairs()
@@ -97,15 +118,36 @@ namespace myTNB
         {
             return GetValuesByPage(Error);
         }
+
+        public string GetErrorValue(string key)
+        {
+            Dictionary<string, string> errorDictionary = GetErrorValuePairs();
+            return errorDictionary != null
+               && errorDictionary.ContainsKey(key)
+               ? errorDictionary[key] : string.Empty;
+        }
+
+        public Dictionary<string, string> GetTutorialValuePairs()
+        {
+            return GetValuesByPage(Tutorial);
+        }
         /// <summary>
         /// Gets the key-value pair of texts of a page.
-        /// Asvisable to call on intialisation of the page.
+        /// Advisable to call on intialisation of the page.
         /// </summary>
         /// <param name="pageName">Name of the page, iOS and Android should be the same.</param>
         /// <returns>Key-value pair of page's strings</returns>
         public Dictionary<string, string> GetValuesByPage(string pageName)
         {
             return GetValues<Dictionary<string, string>>(pageName);
+        }
+
+        public string GetPageValueByKey(string pageName, string key)
+        {
+            Dictionary<string, string> pageDictionary = GetValuesByPage(pageName);
+            return pageDictionary != null
+               && pageDictionary.ContainsKey(key)
+               ? pageDictionary[key] : string.Empty;
         }
         /// <summary>
         /// Gets the selector of a page.
@@ -138,10 +180,37 @@ namespace myTNB
             }
             try
             {
-                var jsonObj = JObject.Parse(JSONLang);
+                JObject jsonObj = JObject.Parse(JSONLang);
                 if (jsonObj != null)
                 {
                     string value = jsonObj[pageName]?.ToString() ?? string.Empty;
+                    if (!string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value))
+                    {
+                        valuesDictionary = JsonConvert.DeserializeObject<T>(value);
+                    }
+                }
+                return valuesDictionary;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("DEBUG Error: ", e.Message);
+            }
+            return valuesDictionary;
+        }
+
+        public T GetValues<T>(string parentName, string itemName) where T : new()
+        {
+            T valuesDictionary = new T();
+            if (string.IsNullOrEmpty(itemName) || string.IsNullOrWhiteSpace(itemName))
+            {
+                return valuesDictionary;
+            }
+            try
+            {
+                JObject jsonObj = JObject.Parse(LanguageManager.Instance.JSONLang);
+                if (jsonObj != null)
+                {
+                    string value = jsonObj[parentName][itemName]?.ToString() ?? string.Empty;
                     if (!string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value))
                     {
                         valuesDictionary = JsonConvert.DeserializeObject<T>(value);

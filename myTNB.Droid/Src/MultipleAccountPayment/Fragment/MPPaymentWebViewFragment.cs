@@ -3,7 +3,6 @@ using Android.Content;
 using Android.Net.Http;
 using Android.Net.Wifi;
 using Android.OS;
-
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
@@ -26,7 +25,7 @@ using System.Web;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 {
-    public class MPPaymentWebViewFragment : AndroidX.Fragment.App.Fragment 
+    public class MPPaymentWebViewFragment : AndroidX.Fragment.App.Fragment
     {
         private string PYMT_IND = "tokenization";
         private string PYMT_CRITERIA_REGISTRATION = "registration";
@@ -58,7 +57,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         private string cardType;
         private bool saveCard;
         private bool isRegisteredCard;
-
 
         string tokenizedHashCodeCC;
 
@@ -106,7 +104,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 mProgressBar = rootView.FindViewById<ProgressBar>(Resource.Id.progressBar);
                 mProgressBar.Visibility = ViewStates.Gone;
 
-
                 //mWebView.LayoutParameters.Height = heightInDp + 200;
                 mWebView.SetWebChromeClient(new WebChromeClient());
                 mWebView.Settings.SetPluginState(WebSettings.PluginState.On);
@@ -125,7 +122,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 }
                 else
                 {
-
                     action = Arguments.GetString("action");
                     merchantId = Arguments.GetString("merchantId");//"MYTNB_V2_UAT";
                     merchantTransId = Arguments.GetString("merchantTransId");
@@ -147,8 +143,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     transType = Arguments.GetString("transType");
                     tokenizedHashCodeCC = Arguments.GetString("tokenizedHashCodeCC");
 
-
-
                     isRegisteredCard = Arguments.GetBoolean("registeredCard", false);
                     cardCvv = Arguments.GetString("cardCvv"); // -- CVV Enabled --
                     if (!isRegisteredCard)
@@ -160,11 +154,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         cardType = Arguments.GetString("cardType");
                         saveCard = Arguments.GetBoolean("saveCard", false);
                     }
-
-
-                    //string url = "https://pguat.tnb.com.my/payment/PaymentInterface.jsp";
-
-                    //String url = "https://pguat.tnb.com.my/payment/PaymentWindowResponsive.jsp";
 
                     string data = "";
 
@@ -255,7 +244,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 Utility.LoggingNonFatalError(e);
             }
             return rootView;
-
         }
 
         public override void OnResume()
@@ -271,27 +259,21 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             base.OnResume();
         }
 
-
-
-
         public class MyTNBWebViewClient : WebViewClient
         {
 
-            public Android.App.Activity mActivity;
+            public PaymentActivity mActivity;
             public ProgressBar progressBar;
             private bool isRedirected = false;
             private SummaryDashBordRequest summaryDashBoardRequest = null;
-           
 
-            public MyTNBWebViewClient(Android.App.Activity mActivity, ProgressBar progress, SummaryDashBordRequest summaryDashBoardRequest)
+
+            public MyTNBWebViewClient(PaymentActivity mActivity, ProgressBar progress, SummaryDashBordRequest summaryDashBoardRequest)
             {
                 this.mActivity = mActivity;
                 this.progressBar = progress;
                 this.summaryDashBoardRequest = summaryDashBoardRequest;
             }
-
-
-
 
             public override bool ShouldOverrideUrlLoading(WebView view, string url)
             {
@@ -360,13 +342,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         //((PaymentActivity)this.mActivity).SetResult(Result.Ok);
                         //((PaymentActivity)this.mActivity).Finish();
                     }
+                    else if (url.Contains("mytnbapp://action=setAppointment"))
+                    {
+                        isRedirected = true;
+                        mActivity.OnSetAppointment();
+                    }
                     else
                     {
                         view.LoadUrl(url);
                     }
                     return true;
                 }
-
             }
 
             public override void OnPageStarted(WebView view, string url, Android.Graphics.Bitmap favicon)
@@ -391,7 +377,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 {
                     Utility.LoggingNonFatalError(e);
                 }
-
             }
 
             public override void OnPageFinished(WebView view, string url)
@@ -400,10 +385,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 {
                     if (url.ToLower().Contains("statusreceipt.aspx") && url.ToLower().Contains("approved") || url.ToLower().Contains("paystatusreceipt"))
                     {
-
                         try
                         {
-                           
                             IDTXAction WEBVIEW_PAYMENT_SUCCESS = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_SUCCESS);  // DYNA
                             WEBVIEW_PAYMENT_SUCCESS.LeaveAction();
                         }
@@ -419,10 +402,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                     else if (url.ToLower().Contains("statusreceipt.aspx") || url.ToLower().Contains("paystatusreceipt") && url.ToLower().Contains("failed"))
                     {
-
                         try
                         {
-  
                             IDTXAction WEBVIEW_PAYMENT_FAIL = DynatraceAndroid.Dynatrace.EnterAction(Constants.WEBVIEW_PAYMENT_FAIL);  // DYNA
                             WEBVIEW_PAYMENT_FAIL.LeaveAction();
                         }
@@ -434,7 +415,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         ((PaymentActivity)mActivity).SetPaymentReceiptFlag(false, null);
                         //((PaymentActivity)mActivity).SetToolBarTitle("Unsuccessful");
                         ((PaymentActivity)mActivity).HideToolBar();
-
                     }
                     else if (url.ToLower().Contains("mytnbapp://payment/") && !isRedirected)
                     {
@@ -447,8 +427,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         {
                             Utility.LoggingNonFatalError(e);
                         }
-
-
                         isRedirected = true;
                         progressBar.Visibility = ViewStates.Gone;
                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
@@ -456,6 +434,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         Intent DashboardIntent = new Intent(mActivity, typeof(DashboardHomeActivity));
                         DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                         mActivity.StartActivity(DashboardIntent);
+                    }
+                    else if (url.Contains("mytnbapp://action=setAppointment") && !isRedirected)
+                    {
+                        mActivity.OnSetAppointment();
                     }
                     else
                     {
@@ -466,7 +448,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 {
                     Utility.LoggingNonFatalError(e);
                 }
-
             }
 
             public override bool OnRenderProcessGone(WebView view, RenderProcessGoneDetail detail)
@@ -542,12 +523,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         public static string GetQueryString(string url, string key)
         {
-            string query_string = string.Empty;
-
             var uri = new Uri(url.Replace("&", "?"));
             var newQueryString = HttpUtility.ParseQueryString(uri.Query);
-            query_string = newQueryString[key].ToString();
-
+            string query_string = newQueryString[key].ToString();
             return query_string;
         }
 

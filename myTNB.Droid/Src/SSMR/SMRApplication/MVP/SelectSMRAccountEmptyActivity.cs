@@ -46,10 +46,14 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             try
             {
                 base.OnCreate(savedInstanceState);
+                SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
                 // Create your application here
                 SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 TextViewUtils.SetMuseoSans300Typeface(SMRMainTitle);
+
+                SMRMainTitle.TextSize = TextViewUtils.GetFontSize(14f);
+           
             }
             catch (Exception e)
             {

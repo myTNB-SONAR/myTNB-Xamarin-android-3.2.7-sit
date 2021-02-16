@@ -33,7 +33,9 @@ namespace myTNB_Android.Src.MyTNBService.Request
             eid = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().UserName : "";
             sspuid = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().UserID : "";
             did = UserSessions.GetDeviceId();
-            ft = FirebaseTokenEntity.HasLatest() && FirebaseTokenEntity.GetLatest().FBToken!= null ? FirebaseTokenEntity.GetLatest().FBToken : "";
+             ft = FirebaseTokenEntity.HasLatest() && FirebaseTokenEntity.GetLatest() != null
+                ? FirebaseTokenEntity.GetLatest().FBToken ?? string.Empty //Todo: Shouldn't return empty
+                : string.Empty;
             lang = LanguageUtil.GetAppLanguage().ToUpper();
             sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID;
             sec_auth_k2 = "";

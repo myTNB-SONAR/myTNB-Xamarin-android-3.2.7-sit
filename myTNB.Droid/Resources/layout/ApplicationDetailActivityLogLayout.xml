@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+   android:id="@+id/rootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:descendantFocusability="beforeDescendants"
+   
+    android:theme="@style/Theme.SMRApplication"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+    <include
+        layout="@layout/toolbar"
+        id="@+id/toolbar" />>
+    <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:background="#F9F9F9"
+                android:paddingBottom="16dp"
+                android:orientation="vertical">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/layout_activitylog"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"/>
+            </LinearLayout>
+ 
+</LinearLayout>

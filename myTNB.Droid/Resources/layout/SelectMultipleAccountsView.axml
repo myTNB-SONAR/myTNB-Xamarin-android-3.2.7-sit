@@ -36,7 +36,7 @@
                 android:layout_height="0dp"
                 android:background="@color/lightGrey"
                 android:weightSum="10"
-                android:layout_weight="0.8">
+                android:layout_weight="1">
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/account_list_recycler_view"
                     android:scrollbars="vertical"
@@ -45,24 +45,34 @@
                     android:layout_weight="10"/>
             </LinearLayout>
             <LinearLayout
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
-                android:layout_weight="0.2"
+                android:gravity="bottom"
+                android:layout_weight="0.1"
                 android:paddingLeft="16dp"
+                android:layout_marginBottom="16dp"
                 android:paddingRight="16dp">
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/totalPayableLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:paddingBottom="4dp"
                     android:minHeight="30px"
                     android:minWidth="30px"
                     android:paddingTop="8dp"
+                    android:weightSum="1"
+                    android:orientation="horizontal"
                     android:visibility="visible">
+                    <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.1"
+                            android:gravity="left"
+                            android:orientation="vertical">
                     <TextView
                         android:id="@+id/txtTotalPayableTitle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentLeft="true"
@@ -71,15 +81,17 @@
                         android:text="@string/text_total_amount"
                         android:textColor="@color/tunaGrey"
                         android:textSize="16dp" />
-                    <TextView
-                        android:id="@+id/txtTotalPayable"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:text="0.00"
-                        android:textColor="@color/tunaGrey"
-                        android:textSize="24dp" />
+                        </LinearLayout>
+                     <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.9"
+                            android:layout_marginLeft="4dp"
+                            android:layout_gravity="right"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentLeft="true"
+                            android:gravity="right"
+                            android:orientation="horizontal">
                     <TextView
                         android:id="@+id/txtTotalPayableCurrency"
                         android:layout_width="wrap_content"
@@ -92,14 +104,30 @@
                         android:text="RM"
                         android:textColor="@color/tunaGrey"
                         android:textSize="14dp" />
-                </RelativeLayout>
+                    <TextView
+                        android:id="@+id/txtTotalPayable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:text="0.00"
+                        android:textColor="@color/tunaGrey"
+                        android:textSize="24dp" />
+                        </LinearLayout>
+                    
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center">
                 <Button
                     android:id="@+id/btnPayBills"
-                    android:layout_height="48dp"
+                    android:layout_height="match_parent"
                     android:layout_width="match_parent"
                     android:textAllCaps="false"
                     style="@style/DarkButton"
                     android:text="Pay Bill" />
+                    </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </FrameLayout>

@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Content.Res;
 using Android.Graphics;
 using Android.OS;
 using Android.Util;
@@ -119,8 +120,16 @@ namespace myTNB_Android.Src.Base.Activity
                 Utility.LoggingNonFatalError(e);
             }
 
-        }
+            Android.Content.Res.Configuration configuration = Resources.Configuration;
+            configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
+            var metrics = this.ApplicationContext.Resources.DisplayMetrics;
+            metrics.ScaledDensity = configuration.FontScale * metrics.Density;
+            configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
+            this.Resources.UpdateConfiguration(configuration, metrics);
 
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_AddAccountLarge : Resource.Style.Theme_AddAccount);
+        }
+       
         public async Task GetImage()
         {
             try

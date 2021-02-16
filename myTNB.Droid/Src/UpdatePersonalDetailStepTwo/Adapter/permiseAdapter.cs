@@ -80,7 +80,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Adapter
                 // the actual image
 
                 var viewHolder = holder as FeedbackGeneralEnquiryStepOneImageViewHolder;
-
+                viewHolder.filename.TextSize = TextViewUtils.GetFontSize(12);
                 bool isPDF = image.Path.ToLower().Contains("pdf");
 
                 if (isPDF == true)
@@ -126,47 +126,47 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Adapter
                 }
                 else
                 {
-                    Picasso.With(viewHolder.ItemView.Context)
-                  .Load(new Java.IO.File(image.Path))
-                  .Fit()
-                  .Into(viewHolder.imageView
-                          , delegate
-                          {
-                              Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
-                              if (imageBitmap != null && !imageBitmap.IsRecycled)
-                              {
-                                  RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
-                                  imageDrawable.CornerRadius = 5f;
-                                  viewHolder.imageView.SetImageDrawable(imageDrawable);
+                Picasso.With(viewHolder.ItemView.Context)
+                    .Load(new Java.IO.File(image.Path))
+                    .Fit()
+                    .Into(viewHolder.imageView
+                            , delegate
+                            {
+                                Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
+                                if (imageBitmap != null && !imageBitmap.IsRecycled)
+                                {
+                                    RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
+                                    imageDrawable.CornerRadius = 5f;
+                                    viewHolder.imageView.SetImageDrawable(imageDrawable);
 
-                                  if (image.Name == null)
-                                  {
-                                      SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
-                                      Calendar calendar = Calendar.GetInstance(Locale.Default);
+                                    if (image.Name == null)
+                                    {
+                                        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+                                        Calendar calendar = Calendar.GetInstance(Locale.Default);
 
-                                      var name = Resource.String.feedback_image_name_convention + dateFormatter.Format(calendar.TimeInMillis) + countFileName + ".jpeg";
-                                      countFileName++;
+                                        var name = Resource.String.feedback_image_name_convention + dateFormatter.Format(calendar.TimeInMillis) + countFileName + ".jpeg";
+                                        countFileName++;
 
-                                      viewHolder.filename.Text = name;
-                                  }
-                                  else
-                                  {
-                                      viewHolder.filename.Text = image.Name;
-                                  }
+                                        viewHolder.filename.Text = name;
+                                    }
+                                    else
+                                    {
+                                        viewHolder.filename.Text = image.Name;
+                                    }
 
 
-                              }
+                                }
 
-                          }
-                          , delegate
-                          {
+                            }
+                            , delegate
+                            {
 
-                          });
+                            });
 
-                    ;
-                }
+                ;
+            }
 
-                  
+            
             }
             else
             {

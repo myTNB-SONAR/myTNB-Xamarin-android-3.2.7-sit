@@ -520,6 +520,38 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 TextViewUtils.SetMuseoSans300Typeface(EditTextServiceRequestNumber, EditTextRElationOwner, EditTextNewIC, EditTextNewAccName, EditTextNewMobileNumber, EditTextNewEmailAddress, EditTextNewMailingAddress, EditTextNewPremiseAddress);
                 TextViewUtils.SetMuseoSans300Typeface(TextInputLayoutServiceRequestNumber, TextInputLayoutRelationOwner, TextInputLayoutNewIC, TextInputLayoutNewAccName, TextInputLayoutNewMobileNumber, TextInputLayoutNewEmailAddress, TextInputLayoutNewMailingAddress, TextInputLayoutNewPremiseAddress);
 
+                txtStatus.TextSize = TextViewUtils.GetFontSize(16f);
+                txtFeedback_status_new.TextSize = TextViewUtils.GetFontSize(16f);
+                txtforMyhouse.TextSize = TextViewUtils.GetFontSize(14f);
+                txtEnquiryDetails.TextSize = TextViewUtils.GetFontSize(14f);
+                txtRelatedScreenshotTitle.TextSize = TextViewUtils.GetFontSize(9f);
+                TextView_contactDetails.TextSize = TextViewUtils.GetFontSize(16f);
+                EditTextServiceRequestNumber.TextSize = TextViewUtils.GetFontSize(16f);
+                EditTextEmailAddress.TextSize = TextViewUtils.GetFontSize(16f);
+                EditTextMobileNumber.TextSize = TextViewUtils.GetFontSize(16f);
+                EditTextName.TextSize = TextViewUtils.GetFontSize(16f);
+                txtFeedback.TextSize = TextViewUtils.GetFontSize(14f);
+
+                TextInputLayoutServiceRequestNumber.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                TextInputLayoutIsOwner.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                TextInputLayoutRelationOwner.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                TextInputLayoutNewIC.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                TextInputLayoutNewAccName.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                TextInputLayoutNewMobileNumber.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                TextInputLayoutNewEmailAddress.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                TextInputLayoutNewMailingAddress.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                TextInputLayoutNewPremiseAddress.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                txtInputLayoutFeedbackId.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                txtInputLayoutStatus.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                txtInputLayoutDateTime.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                txtInputLayoutAccountNo.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                txtInputLayoutFeedback.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                TextInputLayoutname.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                TextInputLayoutEmailAddress.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                TextInputLayoutMobileNumber.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+
+
+
                 //TRANSLATION
                 txtEnquiryDetails.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryDetailsTitle");
 
@@ -537,7 +569,6 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
                 TextInputLayoutname.Hint = Utility.GetLocalizedLabel("Common", "name");
 
-                TextInputLayoutEmailAddress.Hint = Utility.GetLocalizedLabel("Common", "emailAddress");
 
                 TextInputLayoutMobileNumber.Hint = Utility.GetLocalizedLabel("Common", "mobileNo");
 

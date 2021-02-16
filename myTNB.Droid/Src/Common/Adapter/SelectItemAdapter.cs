@@ -41,6 +41,7 @@ namespace myTNB_Android.Src.Common
             vh = new SelectItemViewHolder(convertView, mContext);
             Item item = GetItemObject(position);
             vh.txtItemTitle.Text = item.title;
+            vh.txtItemTitle.TextSize = TextViewUtils.GetFontSize(16f);
             vh.imageActionIcon.Visibility = item.selected ? ViewStates.Visible : ViewStates.Gone;
             return convertView;
         }
@@ -57,6 +58,7 @@ namespace myTNB_Android.Src.Common
             {
                 try
                 {
+                    txtItemTitle.TextSize = TextViewUtils.GetFontSize(16f);
                     if (mContext is AppLanguageActivity)
                     {
                         TextViewUtils.SetMuseoSans500Typeface(txtItemTitle);

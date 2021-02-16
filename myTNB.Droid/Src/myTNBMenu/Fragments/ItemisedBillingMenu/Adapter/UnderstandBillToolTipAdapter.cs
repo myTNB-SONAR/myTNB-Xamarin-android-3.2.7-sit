@@ -52,6 +52,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter
                 TextView labelTitle = linearLayout.FindViewById<TextView>(Resource.Id.txtBillItemLabel);
                 TextViewUtils.SetMuseoSans300Typeface(labelTitle);
                 TextViewUtils.SetMuseoSans500Typeface(labelNumber);
+
+                labelNumber.TextSize = TextViewUtils.GetFontSize(12f);
+                labelTitle.TextSize = TextViewUtils.GetFontSize(14f);
+
                 labelTitle.Text = model.ItemList[i];
                 labelNumber.Text = (i + 1).ToString();
                 vh.tooltipItemsContent.AddView(linearLayout);
@@ -82,6 +86,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter
             tooltipItemsContent = itemView.FindViewById<LinearLayout>(Resource.Id.tooltipItemsContent);
 
             TextViewUtils.SetMuseoSans500Typeface(txtToolTipTitle);
+
+            txtToolTipTitle.TextSize = TextViewUtils.GetFontSize(14f);
         }
     }
 }

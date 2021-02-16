@@ -281,7 +281,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter
                                 RelativeLayout.LayoutParams txtDateParam = vh.txtDate.LayoutParameters as RelativeLayout.LayoutParams;
                                 txtDateParam.RightMargin = (int)DPUtils.ConvertDPToPx(16f);
                                 RelativeLayout.LayoutParams txtTitleParam = vh.txtTitle.LayoutParameters as RelativeLayout.LayoutParams;
-                                txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(86f);
+                                txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(106f);
                             }
                             else
                             {
@@ -291,7 +291,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter
                                 RelativeLayout.LayoutParams txtDateParam = vh.txtDate.LayoutParameters as RelativeLayout.LayoutParams;
                                 txtDateParam.RightMargin = (int)DPUtils.ConvertDPToPx(28f);
                                 RelativeLayout.LayoutParams txtTitleParam = vh.txtTitle.LayoutParameters as RelativeLayout.LayoutParams;
-                                txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(98f);
+                                txtTitleParam.RightMargin = (int)DPUtils.ConvertDPToPx(118f);
                             }
                         }
                         else
@@ -532,7 +532,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter
                 txtDate = itemView.FindViewById<TextView>(Resource.Id.txtDate);
                 whatsNewUnreadImg = itemView.FindViewById<ImageView>(Resource.Id.whatsNewUnreadImg);
 
-                whatsNewMainShimmerTxtLayout = itemView.FindViewById<LinearLayout>(Resource.Id.whatsNewMainShimmerTxtLayout);
+				txtTitle.TextSize = TextViewUtils.GetFontSize(12f);
+				txtDate.TextSize = TextViewUtils.GetFontSize(10f);
+	
+				whatsNewMainShimmerTxtLayout = itemView.FindViewById<LinearLayout>(Resource.Id.whatsNewMainShimmerTxtLayout);
                 shimmerWhatsNewTxtLayout = itemView.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerWhatsNewTxtLayout);
 
                 whatsNewCardView.Click += (s, e) => listener((this), base.LayoutPosition);

@@ -108,6 +108,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
                 }
                 tabTextView.Text = mFragmentTitleList[position];
             }
+            tabTextView.TextSize = TextViewUtils.GetFontSize(14);
             return view;
         }
         public View GetSelectedTabView(int position)

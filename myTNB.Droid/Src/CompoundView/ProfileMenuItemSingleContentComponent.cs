@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Runtime;
 using Android.Util;
 using Android.Widget;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.CompoundView
@@ -39,6 +40,8 @@ namespace myTNB_Android.Src.CompoundView
             itemTitle = FindViewById<TextView>(Resource.Id.itemTitle);
 
             TextViewUtils.SetMuseoSans500Typeface(itemTitle);
+           
+            itemTitle.TextSize = TextViewUtils.GetFontSize(14);
         }
 
         public void SetTitle(string title)

@@ -112,6 +112,12 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
             TextViewUtils.SetMuseoSans300Typeface(txtMaxImageContent, txtFeedbackType, txtFeedback, txtRelatedScreenshotTitle, txtMaxCharacters, txtMobileNo);
             TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
 
+
+            txtMaxCharacters.TextSize = TextViewUtils.GetFontSize(9f);
+            txtRelatedScreenshotTitle.TextSize = TextViewUtils.GetFontSize(9f);
+            txtMaxImageContent.TextSize = TextViewUtils.GetFontSize(9f);
+
+
             adapter = new FeedbackLoginOthersImageRecyclerAdapter(true);
             adapter.Insert(new Base.Models.AttachedImage()
             {
@@ -515,7 +521,7 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
 
         public void ClearErrors()
         {
-            txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
+            txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
             txtInputLayoutFeedback.Error = null;
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedback.FindViewById<TextView>(Resource.Id.textinput_error));
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedback);

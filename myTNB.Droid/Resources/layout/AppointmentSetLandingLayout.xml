@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/bottomLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+         android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
+       android:layout_alignParentBottom="true">
+        <Button
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:text="Add to Calendar"
+					android:id="@+id/btnAddtoCalendar"
+					android:layout_marginTop="16dp"
+				
+					android:textAllCaps="false"
+					style="@style/Theme.AppointmentAddCalendarButton" />
+         <Button
+            android:id="@id/btnTrackApplication"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="View Application Details"
+            android:layout_marginTop="8dp"
+            android:textAllCaps="false"
+            style="@style/Theme.TryAgainButton" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/bottomLayout">
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_gravity="center"
+            android:background="@drawable/smr_application_white_background">
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_display_successful_new"
+                android:layout_gravity="center|center_vertical"
+                android:gravity="center" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textSize="16dp"
+                android:textColor="@color/blue"
+                android:text="Appointment Set!"
+                android:id="@+id/txtTitleInfo"
+                android:layout_gravity="center|center_vertical"
+                android:gravity="center"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="12dp"
+                android:lineSpacingExtra="4dp"
+                android:id="@+id/txtMessageInfo"
+                android:textColor="@color/tunaGrey"
+                android:gravity="center"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:text="Thank you for setting an appointment for your application. Be sure to be have someone at your premises to let our TNB staffs in."
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginTop="8dp" />
+            <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/platinumGrey"/>
+             <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="10dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/silverChalice"
+                    android:text="Service Request Number"
+                    android:id="@+id/servicerequestLabel"/>
+               
+            </LinearLayout>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="14dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/tunaGrey"
+                    android:text="29182839"
+                    android:id="@+id/servicerequest"/>
+              
+            </LinearLayout>
+             <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+               
+                android:background="@color/platinumGrey"/>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="10dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/silverChalice"
+                    android:text="Appointment Date"
+                    android:id="@+id/appointmentLabel"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="10dp"
+                    android:gravity="right"
+                    android:layout_weight=".4"
+                    android:textColor="@color/silverChalice"
+                    android:text="Appointment Time"
+                    android:id="@+id/appointmentTimeLabel"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="14dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/tunaGrey"
+                    android:text="19 Sep 2020"
+                    android:id="@+id/appointmentValue"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="14dp"
+                    android:gravity="right"
+                    android:layout_weight=".4"
+                    android:textColor="@color/tunaGrey"
+                    android:text="11:00 AM"
+                    android:id="@+id/appointmentTimeValue"/>
+            </LinearLayout>
+             <View
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+               
+                android:background="@color/platinumGrey"/>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="10dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/silverChalice"
+                    android:text="PREMISE ADDRESS"
+                    android:id="@+id/premiseLabel"/>
+                
+            </LinearLayout>
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp">
+                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:textSize="14dp"
+                    android:gravity="left"
+                    android:layout_weight=".6"
+                    android:textColor="@color/tunaGrey"
+                    android:text="No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"
+                    android:id="@+id/premiseaddresstext"/>
+               
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

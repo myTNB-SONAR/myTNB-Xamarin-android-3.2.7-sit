@@ -113,6 +113,8 @@ namespace myTNB_Android.Src.Common.Adapter
             public CountryISDCodeViewHolder(View itemView) : base(itemView)
             {
                 TextViewUtils.SetMuseoSans300Typeface(countryISDCode, countryCountryName);
+                countryISDCode.TextSize = TextViewUtils.GetFontSize(16f);
+                countryCountryName.TextSize = TextViewUtils.GetFontSize(16f);
             }
         }
     }

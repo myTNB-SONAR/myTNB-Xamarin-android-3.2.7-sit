@@ -76,6 +76,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             mPresenter = new SubmitMeterTakePhotoPresenter(this);
             isGalleryFirstPress = true;
 
@@ -170,6 +171,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             EnableSubmitButton();
             TextViewUtils.SetMuseoSans500Typeface(btnDeletePhoto, btnSubmitPhotoToOCR);
             TextViewUtils.SetMuseoSans300Typeface(loadingMessage);
+
+            btnDeletePhoto.TextSize = TextViewUtils.GetFontSize(16f);
+            btnSubmitPhotoToOCR.TextSize = TextViewUtils.GetFontSize(16f);
+            loadingMessage.TextSize = TextViewUtils.GetFontSize(16f);
+          
+
             btnDeletePhoto.Text = Utility.GetLocalizedLabel("SSMRCaptureMeter", "deletePhoto");
             btnSubmitPhotoToOCR.Text = Utility.GetLocalizedCommonLabel("submit");
             loadingMessage.Text = Utility.GetLocalizedLabel("SSMRCaptureMeter", "ocrReading");

@@ -63,7 +63,7 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
                 txtBtnLabel = rootView.FindViewById<TextView>(Resource.Id.txtBtnLabel);
 
                 TextViewUtils.SetMuseoSans500Typeface(txtBtnLabel);
-
+                txtBtnLabel.TextSize = TextViewUtils.GetFontSize(16);
                 if (SSMRMeterReadingModelList.Count > 0)
                 {
                     indicator.Visibility = ViewStates.Visible;

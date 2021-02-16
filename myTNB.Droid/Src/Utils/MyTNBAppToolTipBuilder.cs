@@ -1,30 +1,10 @@
 ﻿using System;
 using AFollestad.MaterialDialogs;
-using Android.Content;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Android.Text;
-using myTNB_Android.Src.Utils;
-using Android.Text.Style;
-using Android.Text.Method;
-
 using Android.Graphics;
-
-using System.Collections.Generic;
-using Java.Util.Regex;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.WhatsNewDetail.MVP;
-using System.Globalization;
-using myTNB_Android.Src.FAQ.Activity;
-using myTNB_Android.Src.RewardDetail.MVP;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
-using myTNB_Android.Src.Base.Models;
-using System.Threading.Tasks;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
 
@@ -73,13 +53,16 @@ namespace myTNB_Android.Src.Utils
             if (mToolTipType == ToolTipType.IMAGE_HEADER)
             {
                 layoutResource = Resource.Layout.CustomDialogWithImageHeader;
-            }else if (mToolTipType == ToolTipType.NORMAL_WITH_HEADER)
+            }
+            else if (mToolTipType == ToolTipType.NORMAL_WITH_HEADER)
             {
                 layoutResource = Resource.Layout.CustomToolTipWithHeaderLayout;
-            }else if (mToolTipType == ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
+            }
+            else if (mToolTipType == ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
             {
                 layoutResource = Resource.Layout.CustomDialogWithListViewLayout;
-            }else if (mToolTipType == ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+            }
+            else if (mToolTipType == ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
             {
                 layoutResource = Resource.Layout.CustomToolTipWithHeaderTwoButtonLayout;
             }
@@ -177,7 +160,7 @@ namespace myTNB_Android.Src.Utils
             this.dialog.Dismiss();
         }
 
-          public MyTNBAppToolTipBuilder SetHeaderImageBitmap(Bitmap imageResource)
+        public MyTNBAppToolTipBuilder SetHeaderImageBitmap(Bitmap imageResource)
         {
             this.imageResourceBitmap = imageResource;
             return this;
@@ -194,6 +177,10 @@ namespace myTNB_Android.Src.Utils
 
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
+
+                tooltipTitle.TextSize = TextViewUtils.GetFontSize(14);
+                tooltipMessage.TextSize = TextViewUtils.GetFontSize(14);
+                tooltipCTA.TextSize = TextViewUtils.GetFontSize(16);
 
                 tooltipCTA.Click += delegate
                 {
@@ -215,7 +202,7 @@ namespace myTNB_Android.Src.Utils
                 }
 
                 tooltipMessage = LinkRedirectionUtils
-                    .Create(this.mContext, "")
+                    .Create(this.mContext, string.Empty)
                     .SetTextView(tooltipMessage)
                     .SetMessage(this.message, this.mClickSpanColor, this.mTypeface)
                     .Build()
@@ -237,7 +224,7 @@ namespace myTNB_Android.Src.Utils
                 }
                 tooltipCTA.Text = this.ctaLabel;
             }
-            else if(this.toolTipType == ToolTipType.NORMAL_WITH_HEADER)
+            else if (this.toolTipType == ToolTipType.NORMAL_WITH_HEADER)
             {
                 TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
                 TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
@@ -245,6 +232,9 @@ namespace myTNB_Android.Src.Utils
 
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
+                tooltipTitle.TextSize = TextViewUtils.GetFontSize(14);
+                tooltipMessage.TextSize = TextViewUtils.GetFontSize(14);
+                tooltipCTA.TextSize = TextViewUtils.GetFontSize(16);
 
                 tooltipTitle.Gravity = this.mGravityFlag;
                 tooltipMessage.Gravity = this.mGravityFlag;
@@ -256,6 +246,9 @@ namespace myTNB_Android.Src.Utils
                 };
 
                 tooltipTitle.Text = this.title;
+                tooltipTitle.Visibility = string.IsNullOrEmpty(this.title) || string.IsNullOrWhiteSpace(this.title)
+                    ? ViewStates.Gone
+                    : ViewStates.Visible;
                 if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     tooltipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
@@ -266,7 +259,7 @@ namespace myTNB_Android.Src.Utils
                 }
 
                 tooltipMessage = LinkRedirectionUtils
-                    .Create(this.mContext, "")
+                    .Create(this.mContext, string.Empty)
                     .SetTextView(tooltipMessage)
                     .SetMessage(this.message, this.mClickSpanColor, this.mTypeface)
                     .Build()
@@ -287,6 +280,9 @@ namespace myTNB_Android.Src.Utils
                 recyclerView.SetAdapter(this.adapter);
                 snapTooltipHelper.AttachToRecyclerView(recyclerView);
                 recyclerView.AddOnScrollListener(new ToolTipRecyclerViewOnScrollListener(layoutManager, indicatorContainer));
+
+                tooltipCTA.TextSize = TextViewUtils.GetFontSize(16);
+
 
                 try
                 {
@@ -330,6 +326,11 @@ namespace myTNB_Android.Src.Utils
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
 
+                tooltipTitle.TextSize = TextViewUtils.GetFontSize(14);
+                tooltipMessage.TextSize = TextViewUtils.GetFontSize(14);
+                tooltipPrimaryCTA.TextSize = TextViewUtils.GetFontSize(16);
+                tooltipSecondaryCTA.TextSize = TextViewUtils.GetFontSize(16);
+
                 tooltipTitle.Gravity = this.mGravityFlag;
                 tooltipMessage.Gravity = this.mGravityFlag;
 
@@ -358,7 +359,7 @@ namespace myTNB_Android.Src.Utils
                     tooltipMessage.TextFormatted = Html.FromHtml(this.message);
                 }
                 tooltipMessage = LinkRedirectionUtils
-                    .Create(this.mContext, "")
+                    .Create(this.mContext, string.Empty)
                     .SetTextView(tooltipMessage)
                     .SetMessage(this.message, this.mClickSpanColor, this.mTypeface)
                     .Build()
@@ -373,7 +374,10 @@ namespace myTNB_Android.Src.Utils
                 TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
                 TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
                 TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
-
+                tooltipTitle.TextSize = TextViewUtils.GetFontSize(14);
+                tooltipMessage.TextSize = TextViewUtils.GetFontSize(14);
+                tooltipPrimaryCTA.TextSize = TextViewUtils.GetFontSize(16);
+                tooltipPrimaryCTA.TextSize = TextViewUtils.GetFontSize(16);
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
 
@@ -417,7 +421,7 @@ namespace myTNB_Android.Src.Utils
                     tooltipMessage.TextFormatted = Html.FromHtml(this.message);
                 }
                 tooltipMessage = LinkRedirectionUtils
-                    .Create(this.mContext, "")
+                    .Create(this.mContext, string.Empty)
                     .SetTextView(tooltipMessage)
                     .SetMessage(this.message, this.mClickSpanColor, this.mTypeface)
                     .Build()
@@ -431,10 +435,13 @@ namespace myTNB_Android.Src.Utils
                 TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
                 TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
                 TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
+                tooltipTitle.TextSize = TextViewUtils.GetFontSize(14);
+                tooltipMessage.TextSize = TextViewUtils.GetFontSize(14);
+                tooltipCTA.TextSize = TextViewUtils.GetFontSize(16);
 
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
-
+                tooltipCTA.TextSize = TextViewUtils.GetFontSize(16);
                 tooltipCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
@@ -451,7 +458,7 @@ namespace myTNB_Android.Src.Utils
                     tooltipMessage.TextFormatted = Html.FromHtml(this.message);
                 }
                 tooltipMessage = LinkRedirectionUtils
-                    .Create(this.mContext, "")
+                    .Create(this.mContext, string.Empty)
                     .SetTextView(tooltipMessage)
                     .SetMessage(this.message, this.mClickSpanColor, this.mTypeface)
                     .Build()
@@ -468,6 +475,13 @@ namespace myTNB_Android.Src.Utils
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipCTA);
 
+
+                tooltipMessage.TextSize = TextViewUtils.GetFontSize(14f);
+                tooltipCTA.TextSize = TextViewUtils.GetFontSize(16f);
+
+
+                tooltipCTA.TextSize = TextViewUtils.GetFontSize(16);
+                tooltipMessage.TextSize = TextViewUtils.GetFontSize(14);
                 tooltipCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
@@ -483,7 +497,7 @@ namespace myTNB_Android.Src.Utils
                     tooltipMessage.TextFormatted = Html.FromHtml(this.message);
                 }
                 tooltipMessage = LinkRedirectionUtils
-                    .Create(this.mContext, "")
+                    .Create(this.mContext, string.Empty)
                     .SetTextView(tooltipMessage)
                     .SetMessage(this.message, this.mClickSpanColor, this.mTypeface)
                     .Build()

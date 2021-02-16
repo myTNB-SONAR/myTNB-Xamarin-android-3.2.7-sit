@@ -19,6 +19,7 @@ namespace myTNB_Android.Src.CompoundView
         TextView myApplicationChargesLabel;
         TextView myApplicationChargesValue;
         LinearLayout expandableContainer;
+        bool isApplicaitonStatus = false;
 
         public ExpandableTextViewComponent(Context context) : base(context)
         {
@@ -52,7 +53,8 @@ namespace myTNB_Android.Src.CompoundView
             myApplicationChargesLabel.CompoundDrawablePadding = (int) DPUtils.ConvertDPToPx(4f);
 
             TextViewUtils.SetMuseoSans500Typeface(myApplicationChargesLabel, myApplicationChargesValue);
-
+            myApplicationChargesLabel.TextSize = TextViewUtils.GetFontSize(14f);
+            myApplicationChargesValue.TextSize = TextViewUtils.GetFontSize(14f);
             SetOnClickListener(new OnExpandListener(this));
             expandableContainer.Visibility = ViewStates.Gone;
             expandableContainer.RemoveAllViews();
@@ -65,18 +67,26 @@ namespace myTNB_Android.Src.CompoundView
 
         public void OnClickExpand(bool isExpand)
         {
-            if (isExpand)
+            if (!isApplicaitonStatus)
             {
-                dropdown = ContextCompat.GetDrawable(mContext, Resource.Drawable.ic_action_expand_down_up);
+                if (isExpand)
+                {
+                    dropdown = ContextCompat.GetDrawable(mContext, Resource.Drawable.ic_action_expand_down_up);
+                }
+                else
+                {
+                    dropdown = ContextCompat.GetDrawable(mContext, Resource.Drawable.ic_action_expand_down);
+                }
+                myApplicationChargesLabel.SetCompoundDrawablesWithIntrinsicBounds(null, null, dropdown, null);
+                myApplicationChargesLabel.CompoundDrawablePadding = (int)DPUtils.ConvertDPToPx(4f);
+
+                expandableContainer.Visibility = isExpand ? ViewStates.Visible : ViewStates.Gone;
             }
             else
             {
-                dropdown = ContextCompat.GetDrawable(mContext, Resource.Drawable.ic_action_expand_down);
+                myApplicationChargesLabel.SetCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+               
             }
-            myApplicationChargesLabel.SetCompoundDrawablesWithIntrinsicBounds(null, null, dropdown, null);
-            myApplicationChargesLabel.CompoundDrawablePadding = (int)DPUtils.ConvertDPToPx(4f);
-
-            expandableContainer.Visibility = isExpand ? ViewStates.Visible : ViewStates.Gone;
         }
 
         public void SetOtherCharges(double totalAmount, List<ChargeModel> chargeList)
@@ -94,13 +104,42 @@ namespace myTNB_Android.Src.CompoundView
                     textView.Text = charge.Title;
                     textValue.Text = "RM" + charge.Amount.ToString("#,##0.00", currCult);
                     TextViewUtils.SetMuseoSans300Typeface(textView, textValue);
+                    textView.TextSize = TextViewUtils.GetFontSize(14f);
+                    textValue.TextSize = TextViewUtils.GetFontSize(14f);
                     expandableContainer.AddView(item);
                 }
             });
             expandableContainer.Invalidate();
             expandableContainer.RequestLayout();
         }
+        public void SetApplicationOtherCharges(string oneTimeCharges, string totalAmount, List<ChargeModel> chargeList)
+        {
+            isApplicaitonStatus = true;
+            CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+            myApplicationChargesValue.Text = totalAmount;
+            myApplicationChargesLabel.Text = oneTimeCharges;
+            chargeList.ForEach(charge =>
+            {
+            if (charge.AmountDisplay != string.Empty)
+                {
+                    LinearLayout item = (LinearLayout)LayoutInflater.From(mContext).Inflate(Resource.Layout.MyOtherChargesItemLayout, this, false);
+                    TextView textView = item.FindViewById<TextView>(Resource.Id.otherChargeItem);
+                    TextView textValue = item.FindViewById<TextView>(Resource.Id.otherChargeValue);
 
+                    textView.Text = charge.Title;
+                    textValue.Text = charge.AmountDisplay;
+                    TextViewUtils.SetMuseoSans300Typeface(textView, textValue);
+
+                    textView.TextSize = TextViewUtils.GetFontSize(14f);
+                    textValue.TextSize = TextViewUtils.GetFontSize(14f);
+                    expandableContainer.AddView(item);
+                }
+            });
+            expandableContainer.Invalidate();
+            expandableContainer.RequestLayout();
+            expandableContainer.Visibility = ViewStates.Visible;
+            myApplicationChargesLabel.SetCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        }
         public class OnExpandListener : Java.Lang.Object, IOnClickListener
         {
             ExpandableTextViewComponent ownerView;

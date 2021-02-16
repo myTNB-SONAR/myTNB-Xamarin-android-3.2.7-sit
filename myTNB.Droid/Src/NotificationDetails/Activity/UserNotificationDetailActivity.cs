@@ -159,6 +159,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             {
                 mPresenter = new UserNotificationDetailPresenter(this);
                 base.OnCreate(savedInstanceState);
+                SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
                 Bundle extras = Intent.Extras;
                 if (extras != null)
                 {
@@ -178,6 +179,9 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 TextViewUtils.SetMuseoSans500Typeface(notificationDetailTitle);
                 TextViewUtils.SetMuseoSans300Typeface(notificationDetailMessage);
+
+                notificationDetailTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                notificationDetailMessage.TextSize = TextViewUtils.GetFontSize(14f);
 
                 if (notificationDetails != null && notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID)
                 {

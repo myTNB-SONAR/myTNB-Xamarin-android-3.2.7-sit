@@ -1,6 +1,6 @@
 {
   "Common": {
-	"eppToolTipTitle": "Bagaimana dengan Pelan Bayaran Mudah (PBM)?",
+    "eppToolTipTitle": "Bagaimana dengan Pelan Bayaran Mudah (PBM)?",
     "account": "Akaun",
     "emailAddress": "Alamat E-mel",
     "mobileNumber": "Nombor Telefon",
@@ -56,7 +56,7 @@
     "english": "English",
     "bahasa": "Bahasa Malaysia",
     "saveChanges": "Simpan",
-    "gotIt": "OK!",
+    "gotIt": "Ok",
     "login": "Log Masuk",
     "next": "Seterusnya",
     "resend": "Hantar semula",
@@ -107,7 +107,11 @@
     "emptyAcctSelector": "---",
     "nickname": "Cth. Rumah Saya, Rumah Ibu & Ayah",
     "businessNickname": "Cth. Bangsar Shopping Centre Branch",
-    "password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka."
+    "password": "Kata laluan mesti sekurang-kurangnya 8 aksara abjad angka.",
+    "serviceNotificationNo": "Masukkan Nombor Notifikasi Perkhidmatan 12-digit. Contoh: 000456879313",
+    "serviceRequestNumber": "Masukkan Nombor Permintaan Perkhidmatan 10-digit. Contoh: 1000046986",
+    "electricityAccountNumber": "Masukkan Nombor Akaun Elektrik 12-digit. Contoh: 212313467423",
+    "eg": "Masukkan Nombor Permohonan 10-digit. Contoh: "
   },
   "Error": {
     "invalid_email": "Format e-mel tidak sah.",
@@ -160,7 +164,8 @@
     "paymentCCErrorMsg": "Maaf, kami tidak boleh mendapatkan maklumat kad anda sekarang. Anda masih boleh bayar menggunakan kad lain atau perbankan dalam talian melalui FPX.",
     "profileCCErrorMsg": "Jika anda di sini untuk menguruskan kad anda, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula kemudian.",
     "noMeterAccessErrorTitle": "Maaf, anda mungkin tidak boleh mengakses perkhidmatan ini.",
-    "noMeterAccessErrorMessage": "Anda perlu mempunyai meter yang boleh diakses supaya bacaan meter boleh dilakukan. Sila cuba lagi apabila anda mempunyai akses kepada meter anda."
+    "noMeterAccessErrorMessage": "Anda perlu mempunyai meter yang boleh diakses supaya bacaan meter boleh dilakukan. Sila cuba lagi apabila anda mempunyai akses kepada meter anda.",
+    "invalidReferenceNumber": "Sila masukkan {0} yang sah."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -206,9 +211,10 @@
     "tutorialQuickAccessDesc": "Tekan <b>“Tambah”</b> untuk menambah akaun ke myTNB. <b>“Cari”</b> akaun yang telah ditambah dengan menaip nama ringkas atau nombor akaun.",
     "tutorialQuickActionDesc": "Ciri baharu diketengahkan untuk anda mendapatkan semua perkhidmatan yang ditawarkan oleh myTNB!",
     "tutorialNeedHelpDesc": "Kami ketengahkan soalan lazim untuk anda ketahui.",
-    "gotIt": "OK!",
+    "gotIt": "Ok!",
     "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
-    "receivedExtra": "terima lebih"
+    "receivedExtra": "terima lebih",
+    "applicationStatus": "Status<br>Permohonan"
   },
   "Tabbar": {
     "home": "Utama",
@@ -237,9 +243,8 @@
     "selectReason": "Pilih Sebab",
     "stateReason": "Sila nyatakan sebab anda",
     "selectAnAccount": "Pilih Akaun",
-    "tncSubscribeFAQ":"Dengan menghantar, anda bersetuju pada <a href =\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Soalan Lazim Self Meter Reading</strong></a>, ",
-    "tncSubscribeTNC":"<a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>."
-    
+    "tncSubscribeFAQ": "Dengan menghantar, anda bersetuju pada <a href =\"faqid={0602D664-C937-41CB-8850-F78C53A00FB0}\"><strong>Soalan Lazim Self Meter Reading</strong></a>, ",
+    "tncSubscribeTNC": "<a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>."
   },
   "Status": {
     "feedbackSuccessTitle": "Maklum Balas Berjaya",
@@ -283,18 +288,18 @@
     "noHistoryData": "Nampaknya anda tiada rekod bacaan meter buat masa ini.",
     "tutorialHeaderTitle": "Status bacaan anda sepintas lalu.",
     "tutorialHeaderDesc": "Lihat akaun lain dan dapatkan gambaran keseluruhan status bacaan anda di sini.",
-    "tutorialGotIt": "OK!",
+    "tutorialGotIt": "Ok!",
     "whereIsMyMeter": "Di manakah boleh saya mencari meter saya?",
     "whereIsMyMeterTitle": "Di manakah boleh saya mencari meter saya?",
     "whereIsMyMeterMessage": "Untuk menghantar bacaan meter bulanan, nilai pada skin paparan meter anda haruslah boleh dibaca dengan jelas. Meter anda kebiasaannya terletak berhampiran pintu atau bangunan meter (bilik riser).",
-    "doYouHaveMeterAccess":"Adakah anda mempunyai akses ke meter?"
+    "doYouHaveMeterAccess": "Adakah anda mempunyai akses ke meter?"
   },
   "SSMRReadingHistory_selector": {
     "SMREligibiltyPopUpDetails": [
       {
         "Title": "Mengapa akaun saya tiada di sini?",
         "Description": "Bagi memudahkan anda, kami hanya menyenaraikan akaun elektrik yang layak untuk perkhidmatan Self Meter Reading. <a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">Klik di sini</a> untuk mengetahui syarat kelayakan.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "Not_SMR_CA"
       }
     ]
@@ -321,7 +326,7 @@
     "ocrDownMessage": "Servis menghantar foto tidak tersedia pada masa ini. Sila <b>masukkan bacaan anda secara manual</b> di bawah.",
     "tutorialReadMeterTitle": "Masukkan bacaan meter anda di sini.",
     "tutorialReadMeterDesc": "Masukkan mengikut unit. Anda akan dapat melihat bacaan bulan sebelumnya sebagai rujukan.",
-    "tutorialReadMeterGotIt": "OK!"
+    "tutorialReadMeterGotIt": "Ok!"
   },
   "SSMRCaptureMeter": {
     "ocrReading": "Sila tunggu sebentar sementara kami membaca gambar anda...",
@@ -341,37 +346,37 @@
       {
         "Title": "Muat naik daripada album anda?",
         "Description": "Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin berserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "Single_UploadPhoto"
       },
       {
         "Title": "Bagaimana cara menangkap gambar bacaan?",
         "Description": "Anda perlu menghantar {0} nilai bacaan meter yang berbeza <strong>({1})</strong>.<br><br>Berdiri berhampiran meter anda. Anda hanya perlu menangkap gambar skrin paparan pada meter tersebut. Pastikan nombornya jelas, tidak silau, atau bergegar.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "Multi_TakePhoto"
       },
       {
         "Title": "Bagaimana cara menangkap gambar bacaan?",
         "Description": "Berdiri berhampiran meter anda. Anda hanya perlu menangkap gambar skrin paparan pada meter tersebut. Pastikan nombornya jelas, tidak silau, atau bergegar",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "Single_TakePhoto"
       },
       {
         "Title": "Muat naik daripada album anda?",
         "Description": "Anda perlu menghantar {0} nilai bacaan meter yang berbeza <strong>({1})</strong>.<br><br>Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin berserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "Multi_UploadPhoto"
       },
       {
         "Title": "Bagaimana cara menangkap gambar bacaan?",
         "Description": "Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the values with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "Multi_TakePhoto_One_Missing"
       },
       {
         "Title": "Muat naik daripada album anda?",
         "Description": "Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin berserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "Multi_UploadPhoto_One_Missing"
       }
     ]
@@ -383,7 +388,7 @@
   "Usage": {
     "title": "Usage",
     "accountsMissing": "Why are some of my accounts not here?",
-    "gotIt": "OK!",
+    "gotIt": "Ok!",
     "disconnectionMsg": "<strong>Apakah maksudnya?</strong><br><br>Bekalan elektrik anda telah dipotong. Pemotongan ini mungkin disebabkan oleh permintaan pemilik premis, atau tunggakan bayaran bil.<br><br>Sekiranya anda telah memohon untuk sambungan semula, atau telah membuat bayaran, bekalan anda akan disambung dalam masa terdekat.",
     "projectedCostMsg": "<strong>Bil saya setakat hari ini:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
     "projectedCostTitle": "Apakah ini?",
@@ -392,7 +397,7 @@
     "emptyDataMsg": "Selamat datang! Penggunaan anda akan dipaparkan setelah bil pertama dikeluarkan.",
     "SMOverlayTitle": "Bagaimana cara untuk melihat penggunaan harian saya?",
     "SMOverlayMsg": "Cubit untuk zum masuk atau keluar! Zum masuk untuk melihat penggunaan harian anda.",
-    "SMOverlayBtnTxt": "OK!",
+    "SMOverlayBtnTxt": "Ok!",
     "viewReadHistory": "Kembali ke Penggunaan",
     "showTariff": "Tunjuk Tarif",
     "hideTariff": "Sorok Tarif",
@@ -443,7 +448,7 @@
     "tutorialViewDetailsDesc": "“Lihat Butiran” untuk menyemak pecahan bil anda.",
     "tutorialHistoryNormalAcctDesc": "Lihat dan akses bil serta resit pembayaran anda enam bulan kebelakangan. Gunakan penapis untuk melihat hanya bil atau resit.",
     "tutorialHistoryREAcctDesc": "Lihat dan akses makluman serta resit pembayaran anda enam bulan kebelakangan. Gunakan penapis untuk melihat hanya bil atau resit.",
-    "gotIt": "OK!",
+    "gotIt": "Ok!",
     "emptyHistory": "Sejarah transaksi anda kosong pada masa ini. Setelah ada, bil dan sejarah pembayaran anda akan dipaparkan di sini.",
     "emptyPaymentHistory": "Anda belum lagi membuat pembayaran melalui myTNB. Setelah dibuat, ini akan dipaparkan di sini.",
     "emptyBillHistory": "Anda belum lagi ada bil. Setelah ada, sejarah bil anda akan dipaparkan di sini.",
@@ -456,13 +461,13 @@
       {
         "Title": "Kami mengesyorkan anda menyelesaikan caj sekali bayar anda terlebih dahulu.",
         "Description": "Caj sekali bayar anda seperti Wang Cagaran, Caj Pemprosesan, Duti Setem dan Caj Meter hendaklah dibersihkan terlebih dahulu untuk memastikan permulaan/penerusan perkhidmatan.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "MandatoryCharges"
       },
       {
         "Title": "Kami mengesyorkan anda menyelesaikan caj sekali bayar anda terlebih dahulu.",
         "Description": "Pelangsaian <b>{0}</b> dari caj sekali bayar bertujuan untuk memastikan bekalan dapat dimulakan/berterusan.<br><br>Sila lihat butiran bil anda untuk mengetahui dengan lebih lanjut.",
-        "CTA": "Lihat Butiran,OK!",
+        "CTA": "Lihat Butiran,Ok!",
         "Type": "MandatoryPayment"
       }
     ]
@@ -485,7 +490,7 @@
     "pay": "Bayar",
     "tutorialTitle": "Lihat Bil anda.",
     "tutorialDesc": "Tekan sini untuk mengakses bil versi PDF anda.",
-    "gotIt": "OK!"
+    "gotIt": "Ok!"
   },
   "BillFilter": {
     "title": "Tapis Paparan",
@@ -508,13 +513,13 @@
       {
         "Title": "Kami mengesyorkan anda menyelesaikan caj sekali bayar anda terlebih dahulu.",
         "Description": "Caj sekali bayar anda seperti Wang Cagaran, Caj Pemprosesan, Duti Setem dan Caj Meter hendaklah dibersihkan terlebih dahulu untuk memastikan permulaan/penerusan perkhidmatan.",
-        "CTA": "OK!",
+        "CTA": "Ok!",
         "Type": "MandatoryCharges"
       },
       {
         "Title": "Kami mengesyorkan anda menyelesaikan caj sekali bayar anda terlebih dahulu.",
         "Description": "Pelangsaian <b>{0}</b> dari caj sekali bayar bertujuan untuk memastikan bekalan dapat dimulakan/berterusan.<br><br>Sila lihat butiran bil anda untuk mengetahui dengan lebih lanjut.",
-        "CTA": "Lihat Butiran,OK!",
+        "CTA": "Lihat Butiran,Ok!",
         "Type": "MandatoryPayment"
       }
     ]
@@ -526,7 +531,7 @@
     "otherPaymentMethods": "Kaedah Pembayaran Lain",
     "maxCCAmountMessage": "Untuk bayaran lebih daripada RM 5000, sila gunakan mod pembayaran FPX.",
     "addCard": "Tambah kad",
-    "fpxTitle": " Perbankan dalam talian melalui FPX "
+    "fpxTitle": "Perbankan dalam talian melalui FPX"
   },
   "MakePayment": {
     "enterOTP": "Masukkan Kod OTP",
@@ -620,7 +625,9 @@
     "electricityAccount": "Akaun Elektrik",
     "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
-    "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah."
+    "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah.",
+    "fontChangeSuccess": "Anda berjaya mengemaskini saiz teks paparan anda kepada saiz {0}!",
+    "displaySize": "Tetapkan Saiz Teks Paparan"
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",
@@ -675,7 +682,8 @@
     "callUs": "Hubungi Kami",
     "feedback": "Hantar Maklum Balas",
     "enquiry": "Hantar Pertanyaan",
-    "changeLanguage": "Change language to English"
+    "changeLanguage": "Change language to English",
+    "applicationStatus": "Status Permohonan"
   },
   "Login": {
     "loginTitle": "Log Masuk Akaun myTNB",
@@ -753,6 +761,7 @@
   "Onboarding": {
     "letsStart": "Jom mulakan!",
     "skip": "Langkau",
+    "setSize": "Tetapkan Saiz Teks Paparan",
     "title1": "Selamat datang ke myTNB!",
     "title2": "Ketahui penggunaan terkini anda.",
     "title3": "Bil di hujung jari anda.",
@@ -760,13 +769,19 @@
     "title5": "Nikmati pelbagai Ganjaran melalui myTNB!",
     "title6": "Apa yang baharu dengan myTNB?",
     "title7": "Gunakan myTNB dengan Nombor Telefon Antarabangsa.",
+    "title8": "Sentiasa ketahui status permohonan anda!",
+    "title9": "Pilih Saiz Teks Paparan Anda.",
+    "title10": "Tetapkan janji temu anda!",
     "description1": "Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Pantau dan ketahui penggunaan elektrik anda yang terkini!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan terkini dengan mudah, semuanya di satu tempat.",
     "description4": "Bayar bil elektrik anda semasa di rumah, bercuti, dalam kereta api - bila-bila masa. 'Goodbye' caj lewat dan beratur di kaunter!",
     "description5": "Ya, kini kami berikan hadiah dan ganjaran - segalanya PERCUMA untuk pengguna myTNB! Pergi ke ikon 'Ganjaran' untuk tebus ganjaran anda sekarang!",
     "description6": "Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah.<br><br>We’re now bilingual! You can set your preferred language below.",
-    "description7": "Anda kini boleh mendaftar akaun myTNB dengan nombor telefon antarabangsa."
+    "description7": "Anda kini boleh mendaftar akaun myTNB dengan nombor telefon antarabangsa.",
+    "description8": "Anda boleh jejaki semua status permohonan dengan mudah, pada bila-bila masa dan di mana-mana sahaja.",
+    "description9": "Ubah suai myTNB anda dengan saiz teks paparan bersesuaian untuk pengendalian yang lebih selesa. Anda boleh memilih antara saiz normal atau besar dan boleh mengubah tetapan ini pada bila-bila masa di Profil anda.",
+    "description10": "Anda boleh menetapkan janji temu pemasangan meter anda dengan memilih tarikh dan slot masa yang sesuai."
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
@@ -783,7 +798,7 @@
   },
   "Register": {
     "title": "Daftar",
-    "tnc": "Dengan mendaftar, anda bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat TNB</strong></a>, <a href=\"\\\"><strong>Persetujuan Pengguna</strong></a> dan <a href=\"\\\"><strong>polisi Privasi</strong></a>.",
+    "tnc": "Dengan mendaftar, anda bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat TNB</strong></a>, <a href=\"\\\"><strong>Persetujuan Pengguna</strong></a> dan <a href=\"\\\"><strong>Polisi Privasi</strong></a>.",
     "ctaTitle": "Daftar",
     "confirmEmail": "Sahkan E-mel"
   },
@@ -823,7 +838,8 @@
     "salutation": "Pelanggan yang dihargai,",
     "trnDate": "TARIKH TRANSAKSI",
     "trnID": "ID TRANSAKSI",
-    "trnMethod": "KAEDAH TRANSAKSI"
+    "trnMethod": "KAEDAH TRANSAKSI",
+    "paymentType": "JENIS PEMBAYARAN"
   },
   "FeedbackList": {
     "title": "Maklum Balas"
@@ -956,8 +972,6 @@
   "SelectCountry": {
     "title": "Pilih Negara/Wilayah"
   },
-
-
   "SubmitEnquiry": {
     "enquireTitle": "Pertanyaan",
     "submitEnquiryTitle": "Hantar Pertanyaan Baru",
@@ -1066,7 +1080,7 @@
     "copyOfPermiseProof": "Salinan Perjanjian Jual & Beli / Cukai pintu / Perjanjian Sewa Rumah",
     "nameHintBottom": "Masukkan nama penuh seperti di dalam kad pengenalan anda",
     "enquiryTncRead": "Saya telah membaca dan bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat</strong></a>",
-    "imagePermises": "-/media/myTNBapp/SubmitEnquiry/permises2x2.png",
+    "imagePermises": "-/media/myTNBapp/SubmitEnquiry/premises2x2.png",
     "permisesTooltipTitle": "Bagaimanakah contoh dokumen sokongan?",
     "permisesTitle": "Salinan Perjanjian Jual & Beli/ Cukai Pintu/ Perjanjian Penyewaan",
     "permisesContent": "Kami hanya memerlukan halaman dengan nama, nombor pengenalan dan alamat premis anda",
@@ -1084,6 +1098,1177 @@
     "viewYes": "Ya",
     "viewNo": "Tidak",
     "documentPdf": "Dokumen"
+  },
+  "Tutorial": {
+    "swipeText": "Leret untuk melihat selanjutnya, tekan untuk melangkau.",
+    "skip": "Tekan untuk melangkau.",
+    "applicationStatusLandingTitle": "Ikuti perkembangan permohonan anda.",
+    "applicationStatusLandingDescription": "Permohonan yang telah dihantar akan dipaparkan disini secara automatik supaya anda boleh melihat statusnya. Gunakan tapisan untuk mencari menerusi senarai dengan mudah.",
+    "applicationStatusLandingEmptyTitle": "Ikuti perkembangan permohonan anda.",
+    "applicationStatusLandingEmptyDescription": "Permohonan yang telah dihantar akan dipaparkan secara automatik supaya anda boleh melihat statusnya.",
+    "applicationStatusLandingSearchTitle": "Cari status permohonan yang lain.",
+    "applicationStatusLandingSearchDescription": "Cari dan simpan permohonan yang dihantar oleh pihak lain dengan mengunakan nombor rujukan pilihan anda.",
+    "applicationStatusDetailsNoActionTitle": "Lihat perkembangan status anda di sini.",
+    "applicationStatusDetailsNoActionMessage": "Ikuti status perkembangan semasa anda. Layari Portal myTNB untuk meneruskan atau kemas kini permohonan anda.",
+    "applicationStatusDetailsInProgressTitle": "Lihat perkembangan status anda di sini.",
+    "applicationStatusDetailsInProgressMessage": "Ikuti status perkembangan semasa anda. Layari Portal myTNB untuk melihat maklumat penuh permohonan anda.",
+    "applicationStatusDetailsActionOneTitle": "Lihat perkembangan status anda di sini.",
+    "applicationStatusDetailsActionOneMessage": "Ikuti status perkembangan semasa anda. Layari Portal myTNB untuk melihat maklumat penuh permohonan anda.",
+    "applicationStatusDetailsActionTwoTitle": "Ketahui bila tindakan perlu diambil.",
+    "applicationStatusDetailsActionTwoMessage": "Ambil tindakan yang diperlukan untuk permohonan anda dengan mudah di sini."
+  },
+  "ApplicationStatusLanding": {
+    "title": "Status Permohonan",
+    "search": "Cari Status Permohonan",
+    "emptyApplications": "Nampaknya anda tidak mempunyai apa-apa permohonan pada waktu ini.",
+    "allApplications": "Bagaimana boleh saya melihat semua permohonan?",
+    "allApplicationsTitle": "Lihat semua permohonan anda di myTNB Portal untuk pengalaman yang menyeluruh.",
+    "allApplicationsMessage": "Log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> dengan mengunakan butiran log masuk yang sama. Anda boleh melihat senarai permohonan dan butiran borang penuh, teruskan permohonan anda atau mohon yang baharu.<br><br>Peringatan: Permohonan yang telah dihantar oleh sumber lain sebelum Julai 2020 tidak dipaparkan secara automatik di sini, tetapi anda boleh mencari secara manual dan masukkan ke dalam senarai anda.",
+    "viewMore": "Selebihnya",
+    "viewLess": "Kurangkan Paparan",
+    "displayPerQuery": "5",
+    "saveMessage": "Berjaya! Anda akan melihat kemas kini perkembangan status permohonan tersebut."
+  },
+  "ApplicationStatusSearch": {
+    "title": "Cari Status Permohonan",
+    "searchForTitle": "Saya ingin mencari:",
+    "searchStatus": "Cari Status",
+    "applicationType": "Jenis Permohonan",
+    "searchBy": "Cari Dengan",
+    "searchResultTitle": "Terdapat satu permohonan bawah akaun elektrik ini:",
+    "whereToGetThisNumber": "Di manakah boleh saya perolehi nombor ini?",
+    "whereToGetThisNumberTitleCA": "Di manakah boleh saya perolehi nombor ini?",
+    "whereToGetThisNumberMessageCA": "Nombor akaun elektrik anda juga tertera pada bahagian atas kiri bil kertas bulanan anda.",
+    "whereToGetThisNumberTitle": "Di manakah boleh saya perolehi nombor ini?",
+    "whereToGetThisNumberMessage": "Anda boleh memperolehi <b>{0}</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’ dan juga boleh diperolehi dengan menghubungi TNB CareLine."
+  },
+  "ApplicationStatusFilter": {
+    "title": "Pilih Tapisan",
+    "applicationType": "Jenis Permohonan",
+    "status": "Status",
+    "creationDate": "Tarikh Permintaan",
+    "clear": "Padam",
+    "apply": "Guna Pilihan"
+  },
+  "ApplicationStatusDetails": {
+    "title": "Butiran Permohonan",
+    "status": "Status:",
+    "for": "untuk ",
+    "saveMessage": "Simpan permohonan ini untuk mengetahui status terkini dengan menambahkannya ke senarai permohonan anda.",
+    "addToList": "Tambah ke Senarai",
+    "portalMessage": "Anda boleh pilih untuk meneruskan atau kemas kini permohonan anda di Portal myTNB.",
+    "lastUpdatedDate": "Kemas kini terakhir pada {0}",
+    "viewActivityLog": "Lihat Log Aktiviti",
+    "seeFullDetails": "Bagaimana boleh saya dapatkan maklumat penuh permohonan ini?",
+    "seeFullDetailsTitle": "Lihat permohonan ini di Portal myTNB untuk menikmati pengalaman sepenuhnya.",
+    "seeFullDetailsMessage": "Anda boleh log masuk ke <a style=\"text-decoration:none\" href =\"externalBrowser=https://www.mytnb.com.my\">Portal</a> myTNB dengan mengunakan butiran log masuk yang sama untuk melihat borang permohonan yang lengkap. Sebagai alternatif, anda juga boleh rujuk pada e-mel anda atau borang kertas.",
+    "seeFullDetailsTitleKedai": "Rujuk permohonan anda yang telah dihantar.",
+    "seeFullDetailsMessageKedai": "Anda boleh merujuk pada e-mel atau borang kertas lengkap yang telah dihantar di Kedai Tenaga untuk mengetahui butiran penuh permohonan anda.",
+    "loginTitle": "Log masuk atau daftar untuk menikmati ciri myTNB ini!",
+    "loginMessage": "Anda boleh menambahkan permohonan ini ke senarai permohonan anda melalui akaun myTNB. Daftar untuk akaun baru atau log masuk jika anda sudah memiliki akaun.",
+    "loginPrimaryCTA": "Ok",
+    "loginSecondaryCTA": "Log Masuk / Daftar",
+    "viewDetails": "Lihat Butiran",
+    "payNow": "Bayar Sekarang",
+    "needToPay": "Saya perlu bayar",
+    "linkedWith": "Dihubungkan Bersama",
+    "linkedWithView": "Lihat",
+    "viewReceipt": "Lihat Resit",
+    "taxInvoice": "Invois Cukai",
+    "taxInvoiceView": "Lihat Invois Cukai",
+    "removeTitle": "Alih keluar permohonan ini?",
+    "removeMessage": "Anda sedang di dalam proses mengalih keluar permohonan yang telah disimpan di dalam senarai anda.<br><br>Peringatan: Pengalihan keluar permohonan ini tidak akan membatalkan permohonan anda.",
+    "confirm": "Sahkan",
+    "on": "pada ",
+    "paymentReceiptTitle": " - Pembayaran",
+    "paymentInProgress": "Pembayaran sedang diproses",
+    "bcrmDownMessage": "Nampaknya status anda tidak dapat dimuat turun pada masa ini. Walaubagaimanapun, anda masih boleh melakukan sebarang perubahan pada permohonan anda kerana ianya akan direkod. Sila lihat sebentar lagi untuk kemas kini status anda.",
+    "rateCTA": "Nilaikan Perkhidmatan Kami",
+    "rateSuccessMessage": "Terima kasih atas maklum balas anda!",
+    "youRated": "Anda nilaikan:",
+    "sr": "Nombor permintaan perkhidmatan",
+    "sn": "Nombor notifikasi perkhidmatan",
+    "rateContractor": "Nilaikan Kontraktor",
+    "setAppointmentNowCTA": "Tetapkan janji temu",
+    "rescheduleCTA": "Tetapkan Semula",
+    "setAppointmentCTAMessage": "Tetapkan janji temu pemasangan meter anda sebelum <b>{0}</b>. Jika tidak, kami akan tetapkan janji temu bagi pihak anda.",
+    "rescheduleCTAMessage": "Anda telah menetapkan janji temu pada <b>{0}, di antara {1}</b>. Anda boleh mengubah janji temu anda pada bila-bila masa di halaman butiran permohonan <b>sebelum {2}</b>.",
+    "rescheduleDisabledCTAMessage": "Anda mempunyai janji temu pada <b>{0}, di antara {1}</b>.",
+    "cannotReschedule": "Mengapakah saya tidak boleh mengubah butiran janji temu?",
+    "cannotRescheduleTitle": "Janji temu tidak boleh diubah pada hari janji temu.",
+    "cannotRescheduleMessage": "Anda tidak boleh mengubah janji temu pada hari janji temu tersebut. Sila ambil maklum bahawa anda tidak perlu hadir sekiranya kawasan pemasangan meter anda boleh diakses tanpa memasuki premis.<br><br>Hubungi <a href=\"tel: 1300885454\">TNB Careline</a> sekiranya anda perlu mengubah  atau membatalkan janji temu."
+  },
+  "ApplicationStatusPaymentDetails": {
+    "title": "Maklumat pembayaran",
+    "oneTimeCharges": "Caj sekali bayar",
+    "needToPay": "Saya perlu bayar",
+    "payNow": "Bayar Sekarang",
+    "paymentInProgress": "Pembayaran sedang diproses"
+  },
+  "ApplicationStatusPaymentDetails_selector": {
+    "chargesMapping": [
+      {
+        "key": "connectionChargesAmount",
+        "description": "Caj Sambungan"
+      },
+      {
+        "key": "securityDepositAmount",
+        "description": "Wang Cagaran"
+      },
+      {
+        "key": "meterFeeAmount",
+        "description": "Kos Meter"
+      },
+      {
+        "key": "stampDutyAmount",
+        "description": "Duit Setem"
+      },
+      {
+        "key": "processingFeeAmount",
+        "description": "Caj Pemprosesan"
+      }
+    ]
+  },
+  "ApplicationStatusDetails_selector": {
+    "applicationTypeMapping": [
+      {
+        "key": "ASR",
+        "value": "addressSearchRequest"
+      },
+      {
+        "key": "NC",
+        "value": "newConnectionDetail"
+      },
+      {
+        "key": "PRJ",
+        "value": "projectDetail"
+      },
+      {
+        "key": "COA",
+        "value": "closeOfAccountDetail"
+      },
+      {
+        "key": "COT",
+        "value": "changeOfTenancyDetail"
+      },
+      {
+        "key": "RB_GSL",
+        "value": "gslDetail"
+      },
+      {
+        "key": "RB_SRQ",
+        "value": "helpFormDetail"
+      },
+      {
+        "key": "SMR",
+        "value": "smrDetail"
+      },
+      {
+        "key": "MD",
+        "value": "merdekaIncentiveDetail"
+      },
+      {
+        "key": "RE_TS",
+        "value": "reTechStudyDetail"
+      },
+      {
+        "key": "RW_LC",
+        "value": "changeLoadDetail"
+      },
+      {
+        "key": "RW_PC",
+        "value": "changeProductDetail"
+      },
+      {
+        "key": "GT",
+        "value": "greenTariffDetail"
+      },
+      {
+        "key": "SEARCH",
+        "value": "applicationDetail"
+      },
+      {
+        "key": "KEDAI",
+        "value": "savedApplicationDetail"
+      },
+      {
+        "key": "SAVED",
+        "value": "savedApplicationDetail"
+      }
+    ],
+    "SEARCH": [
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      }
+    ],
+    "KEDAI": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      }
+    ],
+    "SAVED": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      }
+    ],
+    "NC": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "Saya Memohon Sebagai"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
+      }
+    ],
+    "NC_GROUPMOVEIN": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "Saya Memohon Sebagai"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
+      }
+    ],
+    "NC_PREMISECREATION": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
+      }
+    ],
+    "NC_CONTRACTOR": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseCategoryDescription",
+        "description": "Jenis Premis"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Alamat Premis"
+      },
+      {
+        "key": "loadRequirement",
+        "description": "Kategori Kuasa"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
+      }
+    ],
+    "NC_PREMISEINDIVUDUAL": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseCategoryDescription",
+        "description": "Jenis Premis"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Alamat Premis"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "Saya Memohon Sebagai"
+      },
+      {
+        "key": "loadRequirement",
+        "description": "Kategori Kuasa"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
+      }
+    ],
+    "NC_PREMISECONTRACTOR": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseCategoryDescription",
+        "description": "Jenis Bangunan"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Alamat Premis"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "Saya Memohon Sebagai"
+      },
+      {
+        "key": "loadRequirement",
+        "description": "Kategori Kuasa"
+      }
+    ],
+    "ASR": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "shouldShowLinkedWith",
+        "description": "true"
+      }
+    ],
+    "RB_GSL": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Alamat Premis"
+      },
+      {
+        "key": "gsL_CategoryDescription",
+        "description": "Jenis Rebat"
+      }
+    ],
+    "GT": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseTypeItemDescription",
+        "description": "Penerangan Aktiviti"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Alamat Premis"
+      }
+    ],
+    "RW_PC": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseType",
+        "description": "Jenis Premis"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Alamat Premis"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "Saya Memohon Sebagai"
+      },
+      {
+        "key": "loadType",
+        "description": "Kategori Kuasa"
+      }
+    ],
+    "RW_LC": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Alamat Premis"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "Saya Memohon Sebagai"
+      },
+      {
+        "key": "identificationNo",
+        "description": "Nombor Pengenalan Pelanggan"
+      },
+      {
+        "key": "loadRequirement",
+        "description": "Kategori Kuasa"
+      },
+      {
+        "key": "currentVoltage",
+        "description": "Voltan Semasa"
+      },
+      {
+        "key": "newVoltage",
+        "description": "Voltan Baru"
+      }
+    ],
+    "RE_TS": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      }
+    ],
+    "MD": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Alamat Premis"
+      }
+    ],
+    "SMR": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      }
+    ],
+    "RB_SRQ": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      }
+    ],
+    "COT": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Alamat Premis"
+      },
+      {
+        "key": "accountTypeDescription",
+        "description": "Saya Memohon Sebagai"
+      },
+      {
+        "key": "ownershipTypeDescription",
+        "description": "Jenis Pemilikan"
+      },
+      {
+        "key": "hasExistingOwnerSupportingDocumentDisplay",
+        "description": "Adakah anda mempunyai dokumen sokongan dari pemilik semasa?"
+      }
+    ],
+    "COA": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      },
+      {
+        "key": "contractAccountNo",
+        "description": "Nombor Akaun Elektrik"
+      },
+      {
+        "key": "premiseAddress",
+        "description": "Alamat Premis"
+      }
+    ],
+    "PRJ": [
+      {
+        "key": "referenceNo",
+        "description": "Nombor Permohonan"
+      },
+      {
+        "key": "createDateDisplay",
+        "description": "Dicipta Pada"
+      },
+      {
+        "key": "srNo",
+        "description": "Nombor Permintaan Perkhidmatan"
+      }
+    ]
+  },
+  "ApplicationStatusActivityLog": {
+    "title": "Log Aktiviti",
+    "updatedDetails": "Butiran Terbaharu",
+    "comment": "Komen",
+    "submittedBy": "Dihantar Oleh",
+    "status": "Status: ",
+    "reasons": "Sebab-sebab",
+    "attachments": "Lampiran sebelumnya yang dikeluarkan",
+    "add": "Menambahkan {0} ke {1}",
+    "update": "Mengemaskini {0} dari {1} ke {2}",
+    "remove": "{0} telah dialih keluar"
+  },
+  "SearchByNumber": {
+    "title": "Cari Dengan",
+    "whereToGetTheseNumber": "Di manakah boleh saya perolehi nombor ini?",
+    "whereToGetTheseNumberTitle": "Di manakah boleh saya perolehi nombor ini?",
+    "whereToGetTheseNumberMessage": "Anda boleh memperolehi <b>Nombor Permohonan</b>, <b>Nombor Permintaan Perkhidmatan</b> dan <b>Nombor Notifikasi Perkhidmatan</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’. Butiran ini juga boleh diperolehi dengan menghubungi TNB CareLine."
+  },
+  "SelectApplicationType": {
+    "title": "Pilih Jenis Permohonan"
+  },
+  "SelectApplicationStatus": {
+    "title": "Pilih Status"
+  },
+  "SelectApplicationStatus_selector": {
+    "status": [
+      {
+        "key": "Telah Dihantar",
+        "value": "Telah Dihantar"
+      },
+      {
+        "key": "Bayaran Diperlukan",
+        "value": "Bayaran Diperlukan"
+      },
+      {
+        "key": "Menyediakan Bekalan Kuasa",
+        "value": "Menyediakan Bekalan Kuasa"
+      },
+      {
+        "key": "Menunggu Pemasangan Meter",
+        "value": "Menunggu Pemasangan Meter"
+      },
+      {
+        "key": "Memutuskan Bekalan Elektrik",
+        "value": "Memutuskan Bekalan Elektrik"
+      },
+      {
+        "key": "Mengira Caj Sambungan",
+        "value": "Mengira Caj Sambungan"
+      },
+      {
+        "key": "Tindakan Diperlukan",
+        "value": "Tindakan Diperlukan"
+      },
+      {
+        "key": "Menunggu Kelulusan",
+        "value": "Menunggu Kelulusan"
+      },
+      {
+        "key": "Menunggu Kontraktor",
+        "value": "Menunggu Kontraktor"
+      },
+      {
+        "key": "Kontraktor Diperlukan",
+        "value": "Kontraktor Diperlukan"
+      },
+      {
+        "key": "Alamat Disahkan",
+        "value": "Alamat Disahkan"
+      },
+      {
+        "key": "Draf",
+        "value": "Draf"
+      },
+      {
+        "key": "Selesai",
+        "value": "Selesai"
+      },
+      {
+        "key": "Dibatalkan",
+        "value": "Dibatalkan"
+      }
+    ]
+  },
+  "SelectCreationDate": {
+    "title": "Pilih Tarikh Permintaan",
+    "apply": "Gunakan Pilihan",
+    "from": "Dari",
+    "to": "Hingga",
+    "minimumYear": "2016",
+    "clear": "Padam"
+  },
+  "SelectCreationDate_selector": {
+    "months": [
+      {
+        "key": "1",
+        "value": "Januari"
+      },
+      {
+        "key": "2",
+        "value": "Februari"
+      },
+      {
+        "key": "3",
+        "value": "Mac"
+      },
+      {
+        "key": "4",
+        "value": "April"
+      },
+      {
+        "key": "5",
+        "value": "Mei"
+      },
+      {
+        "key": "6",
+        "value": "Jun"
+      },
+      {
+        "key": "7",
+        "value": "Julai"
+      },
+      {
+        "key": "8",
+        "value": "Ogos"
+      },
+      {
+        "key": "9",
+        "value": "September"
+      },
+      {
+        "key": "10",
+        "value": "Oktober"
+      },
+      {
+        "key": "11",
+        "value": "November"
+      },
+      {
+        "key": "12",
+        "value": "Disember"
+      }
+    ]
+  },
+  "SelectFontSize": {
+    "title": "Tetapkan Saiz Teks Paparan",
+    "sectionTitle": "Pilih Saiz Teks Pilihan Anda",
+    "ctaTitle": "Simpan",
+    "popupTitleFormat": "Tukar saiz teks paparan anda?",
+    "popupMessage": "Anda akan menukar saiz teks paparan Aplikasi myTNB anda kepada saiz {0}."
+  },
+  "SelectFontSize_selector": {
+    "fonts": [
+      {
+        "key": "R",
+        "value": "Normal"
+      },
+      {
+        "key": "L",
+        "value": "Besar"
+      }
+    ]
+  },
+  "ApplicationStatusRating": {
+    "title": "Nilaikan",
+    "submit": "Hantar",
+    "freeTextPlaceHolder": "Tulis mesej anda di sini",
+    "freeTextTitle": "MESEJ ANDA (TIDAK WAJIB)",
+    "rateContractor": "Nilaikan Kontraktor"
+  },
+  "ApplicationStatusScheduler": {
+    "title": "Tetapkan Janji Temu",
+    "dateSectionTitle": "Saya mahu tetapkan janji temu pada:",
+    "timeSectionTitle": "Saya mahu janji temu ini di antara:",
+    "hourlySectionTitle": "Saya mahu janji temu ini di:",
+    "note": "Nota: Anda tidak perlu hadir sekiranya kawasan pemasangan meter anda boleh diakses tanpa memasuki premis.",
+    "sameDateTimeError": "Sila pilih tarikh dan slot masa yang berbeza dari janji temu asal.",
+    "confirm": "Sahkan"
+  },
+  "ApplicationStatusAppointmentSuccess": {
+    "title": "Janji Temu Ditetapkan!",
+    "appointmentDetails": "Janji temu anda telah ditetapkan dengan butiran di bawah. Anda boleh mengubah janji temu anda pada bila-bila masa di halaman butiran permohonan <b>sebelum {0}</b>.",
+    "rescheduleDetails": "Slot janji temu anda telah ditetapkan dengan butiran di bawah. Anda boleh mengubah janji temu anda pada bila-bila masa di halaman butiran permohonan <b>sebelum {0}</b>.",
+    "srTitle": "Nombor Permintaan Perkhidmatan",
+    "dateTitle": "Tarikh Janji Temu",
+    "timeTitle": "Slot Masa",
+    "addressTitle": "Alamat Premis",
+    "addToCalendar": "Tambah Ke Kalendar",
+    "viewDetails": "Lihat Butiran",
+    "calendarTitle": "Janji temu TNB: SR {0}",
+    "calendarNote": "Janji temu {0} anda telah ditetapkan. Anda boleh tetapkan janji temu semula di halaman butiran permohonan melalui myTNB sebelum {1}.",
+    "addToCalendarSuccessTitle": "Ditambah ke kalendar",
+    "addToCalendarSuccessMessage": "Janji temu ini telah berjaya ditambah ke dalam kalendar telefon anda"
+  },
+  "ServiceDetails": {
+    "TimeOut": [
+      {
+        "name": "serviceName",
+        "timeout": 3000,
+        "retry": 3
+      }
+    ],
+    "Services": [
+      {
+        "SearchApplicationType": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+            "primaryCTATitle": "Ok!",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          }
+        ],
+        "ApplicationStatus": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "empty",
+            "title": "Kami tidak dapat mencari permohonan ini.",
+            "message": "Sila cuba lagi. Pastikan anda memasukkan maklumat yang betul!",
+            "primaryCTATitle": "Ok",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          },
+          {
+            "code": "7001",
+            "title": "",
+            "message": "Nampaknya permintaan anda tidak dapat dimuat turun pada masa ini. Sila cuba sebentar lagi.",
+            "primaryCTATitle": "Ok",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+            "primaryCTATitle": "Ok!",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          }
+        ],
+        "SaveApplication": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "Berjaya! Anda akan melihat kemas kini perkembangan status permohonan tersebut.",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "toast"
+          },
+          {
+            "code": "9000",
+            "title": "Permohonan ini sudah di dalam senarai anda.",
+            "message": "Lihat permohonan di dalam senarai status permohonan anda.",
+            "primaryCTATitle": "Ok",
+            "secondaryCTATitle": "Semak Status",
+            "isSuccess": false,
+            "type": "popup"
+          },
+          {
+            "code": "9001",
+            "title": "Nampaknya anda telah menambahkan permohonan ini di dalam senarai anda.",
+            "message": "Lihat permohonan di dalam senarai status permohonan anda.",
+            "primaryCTATitle": "Ok",
+            "secondaryCTATitle": "Semak Status",
+            "isSuccess": false,
+            "type": "popup"
+          }
+        ],
+        "AllApplications": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "empty",
+            "title": "",
+            "message": "Nampaknya anda tidak mempunyai apa-apa permohonan pada waktu ini.",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "fullscreen"
+          },
+          {
+            "code": "emptyFilter",
+            "title": "Kami tidak dapat mencari permohonan ini.",
+            "message": "Sila cuba lagi. Pastikan anda memasukkan maklumat yang betul!",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "fullscreen"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "fullscreen"
+          }
+        ],
+        "ApplicationDetail": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "7001",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "RemoveApplication": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "Permohonan ini telah dialih keluar.",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "toast"
+          }
+        ],
+        "SearchApplicationByCA": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "empty",
+            "title": "Kami tidak dapat mencari permohonan ini.",
+            "message": "Sila cuba lagi. Pastikan anda memasukkan maklumat yang betul!",
+            "primaryCTATitle": "Ok",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          },
+          {
+            "code": "7001",
+            "title": "",
+            "message": "Oops! There is an error occured in processing your request. Please try again later.",
+            "primaryCTATitle": "Ok",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          },
+          {
+            "code": "8500",
+            "title": "",
+            "message": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+            "primaryCTATitle": "Ok!",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          }
+        ],
+        "CustomerRatingMaster": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "CustomerRating": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "empty",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "none"
+          }
+        ],
+        "SubmitRating": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "Terima kasih atas maklum balas anda!",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "toast"
+          },
+          {
+            "code": "empty",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "none"
+          }
+        ],
+        "AvailableAppointment": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          },
+          {
+            "code": "empty",
+            "title": "Ada sesuatu yang tidak kena.",
+            "message": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.",
+            "primaryCTATitle": "Ok",
+            "secondaryCTATitle": "",
+            "isSuccess": false,
+            "type": "popup"
+          }
+        ],
+        "SetAppointment": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "SyncSRApplication": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ]
+      }
+    ]
+  },
+  "Mapping": {
+    "ExcludedApplicationTypes": [
+      {
+        "key": "PRJ",
+        "value": "Project"
+      }
+    ],
+    "ExcludedSaveTypes": [
+      {
+        "key": "PRJ",
+        "value": "Project"
+      }
+    ]
   }
-     
 }

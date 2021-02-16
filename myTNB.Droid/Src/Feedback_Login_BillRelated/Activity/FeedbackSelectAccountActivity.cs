@@ -44,7 +44,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             Bundle extras = Intent.Extras;
 
             SetToolBarTitle(Utility.GetLocalizedCommonLabel("selectElectricityAccount"));

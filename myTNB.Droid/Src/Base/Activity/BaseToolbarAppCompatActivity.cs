@@ -1,8 +1,10 @@
 ﻿using Android.Content;
+using Android.Content.Res;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Text;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -32,7 +34,6 @@ namespace myTNB_Android.Src.Base.Activity
             // Add else to manually find the view of toolbar which is using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
             if (toolbar != null)
             {
-
                 SetSupportActionBar(toolbar);
                 SupportActionBar.SetDisplayHomeAsUpEnabled(ShowBackArrowIndicator());
                 SupportActionBar.SetDisplayShowHomeEnabled(true);
@@ -43,8 +44,6 @@ namespace myTNB_Android.Src.Base.Activity
                     title.Text = ToolbarTitle();
                     SupportActionBar.SetDisplayShowTitleEnabled(false);
                 }
-
-
             }
             else
             {
@@ -54,7 +53,6 @@ namespace myTNB_Android.Src.Base.Activity
                 SupportActionBar.SetDisplayShowHomeEnabled(true);
                 if (ShowCustomToolbarTitle())
                 {
-
                     TextView title = toolbar?.FindViewById<TextView>(Resource.Id.toolbar_title);
                     TextViewUtils.SetMuseoSans500Typeface(title);
                     title.Text = ToolbarTitle();
@@ -63,8 +61,15 @@ namespace myTNB_Android.Src.Base.Activity
             }
 
             UserSessions.SetSharedPreference(PreferenceManager.GetDefaultSharedPreferences(this));
-        }
 
+            Android.Content.Res.Configuration configuration = Resources.Configuration;
+            configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
+            var metrics = this.ApplicationContext.Resources.DisplayMetrics;
+            metrics.ScaledDensity = configuration.FontScale * metrics.Density;
+            configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
+            this.Resources.UpdateConfiguration(configuration, metrics);
+        }
+        
         /// <summary>
         /// Whether if we use a custom toolbar title or we use the default one
         /// If true then we will implement a custom title o

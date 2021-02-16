@@ -6,8 +6,6 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-
-
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -18,6 +16,7 @@ using Google.Android.Material.Snackbar;
 using Java.Lang;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.Common;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FAQ.Activity;
@@ -41,7 +40,7 @@ using Refit;
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 {
     public class ProfileMenuFragment : BaseFragmentCustom, ProfileMenuContract.IView
-	{
+    {
         [BindView(Resource.Id.profileMenuRootContent)]
         CoordinatorLayout rootView;
 
@@ -62,7 +61,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         const string PAGE_ID = "Profile";
 
         private int APP_LANGUAGE_REQUEST = 32766;
-
+        private int APP_FONTCHANGE_REQUEST = 32767;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -76,7 +75,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
         public override void OnAttach(Context context)
         {
-
             try
             {
                 if (context is DashboardHomeActivity)
@@ -142,7 +140,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
                 TextViewUtils.SetMuseoSans500Typeface(btnLogout);
                 TextViewUtils.SetMuseoSans300Typeface(appVersion);
-
+                appVersion.TextSize = TextViewUtils.GetFontSize(9f);
                 appVersion.Text = Utility.GetAppVersionName(context);
                 btnLogout.Text = GetLabelByLanguage("logout");
                 PopulateActiveAccountDetails();
@@ -150,6 +148,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 bool hasUpdatedMobile = MyTNBAccountManagement.GetInstance().IsUpdatedMobile();
                 bool hasUpdatedPassword = MyTNBAccountManagement.GetInstance().IsPasswordUpdated();
                 bool hasUpdateLanguage = MyTNBAccountManagement.GetInstance().IsUpdateLanguage();
+                bool hasUpdateLargeFont = MyTNBAccountManagement.GetInstance().IsUpdateLargeFont();
                 if (hasUpdatedMobile)
                 {
                     UserEntity userEntity = UserEntity.GetActive();
@@ -168,6 +167,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                     ShowLanguageUpdateSuccess();
                     MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(false);
                 }
+                if (hasUpdateLargeFont)
+                {
+                    ShowLargeFontUpdateSuccess();
+                    MyTNBAccountManagement.GetInstance().SetIsUpdateLargeFont(false);
+                }
+
             }
             catch (System.Exception e)
             {
@@ -235,7 +240,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
                 if (requestCode == Constants.UPDATE_MOBILE_NO_REQUEST)
                 {
-                    if (resultCode == (int) Result.Ok)
+                    if (resultCode == (int)Result.Ok)
                     {
                         UserEntity userEntity = UserEntity.GetActive();
                         ShowMobileUpdateSuccess(userEntity.MobileNo);
@@ -244,14 +249,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 }
                 else if (requestCode == Constants.UPDATE_PASSWORD_REQUEST)
                 {
-                    if (resultCode == (int) Result.Ok)
+                    if (resultCode == (int)Result.Ok)
                     {
                         MyTNBAccountManagement.GetInstance().SetIsPasswordUpdated(true);
                     }
                 }
                 else if (requestCode == Constants.MANAGE_CARDS_REQUEST)
                 {
-                    if (resultCode == (int) Result.Ok)
+                    if (resultCode == (int)Result.Ok)
                     {
                         CreditCardData creditCard = JsonConvert.DeserializeObject<CreditCardData>(data.Extras.GetString(Constants.REMOVED_CREDIT_CARD));
                         mPresenter.UpdateCardList(creditCard);
@@ -361,6 +366,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             language.SetTitle(GetLabelByLanguage("setAppLanguage"));
             language.SetItemActionCall(ShowAppLanguageSetting);
             settingItems.Add(language);
+
+            if (MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
+            {
+
+                Item selectedItem = new Item();
+                selectedItem.type = "R";
+                selectedItem.title = "Normal";
+                selectedItem.selected = true;
+
+
+                TextViewUtils.SaveFontSize(selectedItem);
+            }
+            else
+            {
+                ProfileMenuItemSingleContentComponent largefont = new ProfileMenuItemSingleContentComponent(context);
+                largefont.SetTitle(GetLabelByLanguage("displaySize"));
+                largefont.SetItemActionCall(ShowAppLargeFontSetting);
+                settingItems.Add(largefont);
+
+            }
 
             settingItem.AddComponentView(settingItems);
             return settingItem;
@@ -472,7 +497,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 {
                     string lastDigit = maskedNo.Substring(maskedNo.Length - 4);
 
-                    maskedNo =  GetString(Resource.String.my_account_ic_no_mask) + " " + lastDigit;
+                    maskedNo = GetString(Resource.String.my_account_ic_no_mask) + " " + lastDigit;
                 }
 
                 referenceNumber.SetValue(maskedNo);
@@ -535,6 +560,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 this.SetIsClicked(true);
                 Intent nextIntent = new Intent(this.Activity, typeof(AppLanguageActivity));
                 StartActivityForResult(nextIntent, APP_LANGUAGE_REQUEST);
+            }
+        }
+
+        private void ShowAppLargeFontSetting()
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent nextIntent = new Intent(this.Activity, typeof(AppLargeFontActivity));
+                StartActivityForResult(nextIntent, APP_FONTCHANGE_REQUEST);
             }
         }
 
@@ -834,10 +869,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                                  // EMPTY WILL CLOSE SNACKBAR
                              }
                             );
-                            View v = logoutErrorSnackbar.View;
-                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                        tv.SetMaxLines(5);
-                        logoutErrorSnackbar.Show();
+                View v = logoutErrorSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                logoutErrorSnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)
@@ -942,10 +977,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         }
 
         private Snackbar mLanguageSnackbar;
+
+        private void ShowLargeFontUpdateSuccess()
+        {
+            try
+            {
+                ToastUtils.OnDisplayToast(Activity, string.Format(GetLabelByLanguage("fontChangeSuccess"), TextViewUtils.FontSelected));
+                /*if (mLanguageSnackbar != null && mLanguageSnackbar.IsShown)
+                {
+                    mLanguageSnackbar.Dismiss();
+                }
+
+                mLanguageSnackbar = Snackbar.Make(rootView,
+                    string.Format(GetLabelByLanguage("fontChangeSuccess"), TextViewUtils.FontSelected),
+                    Snackbar.LengthIndefinite)
+                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = mLanguageSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                mLanguageSnackbar.Show();
+                this.SetIsClicked(false);*/
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
         private void ShowLanguageUpdateSuccess()
         {
             try
             {
+                //ToastUtils.OnDisplayToast(Activity, GetLabelByLanguage("changeLanguageSuccess"));
                 if (mLanguageSnackbar != null && mLanguageSnackbar.IsShown)
                 {
                     mLanguageSnackbar.Dismiss();
@@ -986,10 +1054,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                                 // EMPTY WILL CLOSE SNACKBAR
                             }
                            );
-                           View v = removeCardSnackbar.View;
-                       TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                       tv.SetMaxLines(5);
-                       removeCardSnackbar.Show();
+                View v = removeCardSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                removeCardSnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)

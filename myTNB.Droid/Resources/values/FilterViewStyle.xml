@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- See values-v21 for App.BaseTheme in Styles.xml this is for backward compatibility -->
+  <style name="Theme.FilterView" parent="@style/App.ScreenTheme">
+    <!-- Window Background-->
+    <item name="android:windowBackground">@drawable/HorizontalGradientBackground</item>
+    <!-- End Window Background-->
+    
+    <item name="android:textColorPrimary">@color/tunaGrey</item>
+    <item name="android:textColorSecondary">@color/tunaGrey</item>
+    <item name="android:textColorHint">@color/silverChalice</item>
+
+    <item name="android:textSize">16sp</item>
+    <item name="android:alertDialogTheme">@style/DialogTheme</item>
+
+    <item name="colorAccent">@color/powerBlue</item>
+    <item name="colorControlNormal">@color/platinumGrey</item>
+    <item name="colorControlActivated">@color/platinumGrey</item>
+    <item name="colorControlNormal">@color/platinumGrey</item>
+    <item name="colorError">@color/errorColor</item>
+
+    <item name="android:colorAccent">@color/tunaGrey</item>
+    <item name="android:colorControlNormal">@color/platinumGrey</item>
+    <item name="android:colorControlHighlight">@color/platinumGrey</item>
+    <item name="android:colorControlActivated">@color/platinumGrey</item>
+    <item name="android:textColorHint">@color/silverChalice</item>
+  </style>
+</resources>

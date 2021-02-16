@@ -40,18 +40,64 @@
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Refit" Version="5.1.67" />
+    <PackageReference Include="Refit" Version="4.6.58" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\Entities\" />
     <Folder Include="Business\Managers\" />
     <Folder Include="Resources\" />
-    <Folder Include="Resources\Usage\" />
     <Folder Include="Resources\TnC\" />
     <Folder Include="Resources\FAQ\" />
-    <Folder Include="Resources\Notification\" />
     <Folder Include="Resources\Language\" />
     <Folder Include="Resources\Country\" />
+    <Folder Include="API\" />
+    <Folder Include="API\Managers\" />
+    <Folder Include="API\Models\" />
+    <Folder Include="API\Base\" />
+    <Folder Include="API\Models\Application Status\" />
+    <Folder Include="API\Services\" />
+    <Folder Include="API\Services\Application Status\" />
+    <Folder Include="Sitecore\" />
+    <Folder Include="Sitecore\Services\" />
+    <Folder Include="Sitecore\Manager\" />
+    <Folder Include="Sitecore\Services\Auth\" />
+    <Folder Include="Sitecore\Base\" />
+    <Folder Include="Sitecore\Model\" />
+    <Folder Include="Sitecore\Model\Login\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="API\Models\Application Status\Get Search Application Type\" />
+    <Folder Include="API\Managers\Application Status\" />
+    <Folder Include="API\Models\Application Status\Get Application Status\" />
+    <Folder Include="API\Models\Application Status\Post Save Application\" />
+    <Folder Include="API\Managers\Application Status\Utilities\" />
+    <Folder Include="API\Display Model\" />
+    <Folder Include="API\Display Model\Application Status\" />
+    <Folder Include="API\Models\Application Status\Get All Applications\" />
+    <Folder Include="Session Cache\" />
+    <Folder Include="API\Models\Application Status\Get Application Details\" />
+    <Folder Include="API\Managers\Payment\" />
+    <Folder Include="API\Services\Payment\" />
+    <Folder Include="API\Models\Payment\" />
+    <Folder Include="API\Models\Payment\Post Application Payment\" />
+    <Folder Include="Helpers\Application Status\" />
+    <Folder Include="API\Models\Application Status\Post Remove Application\" />
+    <Folder Include="API\Models\Application Status\Get Applications By CA\" />
+    <Folder Include="API\Models\Payment\Post Applications Paid Details\" />
+    <Folder Include="API\Models\Payment\Get Tax Invoice\" />
+    <Folder Include="API\Models\Notification\" />
+    <Folder Include="API\Models\Notification\Application Status\" />
+    <Folder Include="API\Managers\Rating\" />
+    <Folder Include="API\Services\Rating\" />
+    <Folder Include="API\Models\Rating\" />
+    <Folder Include="API\Models\Rating\Get Customer Rating Master\" />
+    <Folder Include="API\Models\Rating\Post Submit Rating\" />
+    <Folder Include="API\Models\Scheduler\" />
+    <Folder Include="API\Models\Scheduler\Get Available Appointment\" />
+    <Folder Include="API\Services\Scheduler\" />
+    <Folder Include="API\Managers\Scheduler\" />
+    <Folder Include="API\Models\Scheduler\Post Set Appointment\" />
+    <Folder Include="API\Display Model\Scheduler\" />
+    <Folder Include="API\Managers\Scheduler\Utilities\" />
+    <Folder Include="API\Models\Application Status\Post Sync SR Application\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -65,29 +111,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Language\Language_MS.json" />
-    <EmbeddedResource Include="Resources\Usage\AccountUsageSmart.json" />
     <EmbeddedResource Include="Resources\FAQ\FAQ_EN.json" />
     <EmbeddedResource Include="Resources\FAQ\FAQ_MS.json" />
     <EmbeddedResource Include="Resources\TnC\TermsAndConditions_EN.txt" />
     <EmbeddedResource Include="Resources\TnC\TermsAndConditions_MS.txt" />
-    <EmbeddedResource Include="Resources\Notification\GetUserNotifications.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10009.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_1001.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10010.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10011.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_1002.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_1003.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_1004.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_1005.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10050.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10051.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10052.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10053.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_1099.json" />
     <EmbeddedResource Include="Resources\Language\Language_EN.json" />
     <EmbeddedResource Include="Resources\Country\CountryList.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10071.json" />
-    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10072.json" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Remove="Resources\FAQ\FAQ_MS.json" />
@@ -119,8 +148,12 @@
     <None Remove="Resources\Country\CountryList.json" />
     <None Remove="Resources\Notification\NotificationInfo_10071.json" />
     <None Remove="Resources\Notification\NotificationInfo_10072.json" />
+    <None Remove="Test Data\Application Search\Search01.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Resources\Notification\NotificationInfo_10071.Designer.cs" />
+    <Compile Remove="Business\Managers\UserNotificationManager.cs" />
+    <Compile Remove="Business\Managers\AccountUsageManager.cs" />
+    <Compile Remove="Test Data\Application Search\SearchTestManager.cs" />
   </ItemGroup>
 </Project>

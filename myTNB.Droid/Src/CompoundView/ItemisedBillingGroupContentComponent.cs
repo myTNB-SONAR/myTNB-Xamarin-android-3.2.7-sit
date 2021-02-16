@@ -45,6 +45,11 @@ namespace myTNB_Android.Src.CompoundView
             TextViewUtils.SetMuseoSans300Typeface(paidViaView, pendingIndicator);
             TextViewUtils.SetMuseoSans500Typeface(dateHistoryTypeView, amountView);
 
+            dateHistoryTypeView.TextSize = TextViewUtils.GetFontSize(12f);
+            paidViaView.TextSize = TextViewUtils.GetFontSize(12f);
+            amountView.TextSize = TextViewUtils.GetFontSize(12f);
+            pendingIndicator.TextSize = TextViewUtils.GetFontSize(12f);
+
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
                 pendingIndicator.TextFormatted = Html.FromHtml("<i>" + Utility.GetLocalizedCommonLabel("processing") + "</i>", FromHtmlOptions.ModeLegacy);

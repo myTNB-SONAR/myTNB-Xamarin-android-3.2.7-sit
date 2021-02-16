@@ -239,7 +239,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 ContentMessage = Utility.GetLocalizedLabel("BillDetails", "tutorialDesc"),
                 ItemCount = 0,
                 DisplayMode = "",
-                IsButtonShow = true
+                IsButtonShow = false
             });
 
             return newList;

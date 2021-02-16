@@ -24,6 +24,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
                 convertView = LayoutInflater.From(context).Inflate(Resource.Layout.SelectSMRAccountInfoLayout, parent, false);
                 TextView textView = convertView.FindViewById<TextView>(Resource.Id.whyAccountsNotHere);
                 TextViewUtils.SetMuseoSans500Typeface(textView);
+                textView.TextSize = TextViewUtils.GetFontSize(12f);
                 textView.Text = Utility.GetLocalizedLabel("SelectElectricityAccounts", "accountsMissing");
             }
             else
@@ -33,6 +34,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
 
                 SMRAccount item = GetItemObject(position);
                 vh.txtSupplyAccountName.Text = item.accountName;
+                vh.txtSupplyAccountName.TextSize = TextViewUtils.GetFontSize(16);
 
                 if (item.accountSelected)
                 {
@@ -62,6 +64,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
             public AccountTypeViewHolder(View itemView) : base(itemView)
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtSupplyAccountName);
+                txtSupplyAccountName.TextSize = TextViewUtils.GetFontSize(16f);
             }
         }
     }

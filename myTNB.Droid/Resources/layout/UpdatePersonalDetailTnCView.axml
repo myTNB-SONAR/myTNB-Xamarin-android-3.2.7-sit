@@ -1,128 +1,110 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true"
-    android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true"
-    android:orientation="vertical">
-
-       <include
-    android:id="@+id/toolbar"
-    layout="@layout/toolbar" />
-
-
-    <FrameLayout
-        android:id="@+id/rootview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="?actionBarSize"
-        android:background="@color/lightGrey">
-
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:fillViewport="false"
-        android:overScrollMode="never"
-        app:layout_anchor="@+id/rootview"
-        app:layout_anchorGravity="center">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-                <!--android:paddingTop="16dp"-->
-        <!--  android:layout_marginTop="16dp"-->
-
-            <TextView
-                android:id="@+id/TextView_updatePersonalDataDisclaim"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:padding="16dp"
-                android:text="Update Personal Data Disclaimer"
-                android:textAllCaps="false"
-                android:drawableRight="@drawable/ic_action_expand_down"
-                android:textColor="@color/powerBlue"
-                android:textSize="14dp"
-                android:textStyle="normal" />
-
-            <View
-                android:id="@+id/view3"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-
-                android:background="@color/platinumGrey" />
-
-            <TextView
-                android:id="@+id/TextView_tnc_data"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:paddingLeft="16dp"
-                android:paddingTop="16dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="16dp"
-                android:text="tnc"
-                android:textSize="14dp">
-
-
-            </TextView>
-
-            <View
-                android:id="@+id/view4"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/platinumGrey" />
-
-         <TextView
-                android:id="@+id/TextView_TNB_TermOfUse"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:drawableRight="@drawable/expand_right_arrow"
-                android:padding="16dp"
-                android:text="TNB’s Terms of Use,Anti-Spam Policy"
-                android:textAllCaps="false"
-                android:textColor="@color/powerBlue"
-                android:textSize="14dp"
-                android:textStyle="normal" />
-            <View
-                android:id="@+id/view5"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/platinumGrey" />
-            <TextView
-                android:id="@+id/TextView_privacypolicy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:drawableRight="@drawable/expand_right_arrow"
-                android:padding="16dp"
-                android:text="Privacy Policy"
-                android:textAllCaps="false"
-                android:textColor="@color/powerBlue"
-                android:textSize="14dp"
-                android:textStyle="normal" />
-            <View
-                android:id="@+id/view7"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="30dp"
-                android:background="@color/platinumGrey" />
-        </LinearLayout>
-
-    </ScrollView>
-
-    </FrameLayout>
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/rootView"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_alignParentBottom="true"
+	android:layout_centerHorizontal="true"
+	android:descendantFocusability="beforeDescendants"
+	android:focusableInTouchMode="true"
+	android:orientation="vertical">
+	<include
+		android:id="@+id/toolbar"
+		layout="@layout/toolbar" />
+	<FrameLayout
+		android:id="@+id/rootview"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_marginTop="?actionBarSize"
+		android:background="@color/lightGrey">
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_gravity="center"
+			android:fillViewport="false"
+			android:overScrollMode="never"
+			app:layout_anchor="@+id/rootview"
+			app:layout_anchorGravity="center">
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical">
+				<TextView
+					android:id="@+id/TextView_updatePersonalDataDisclaim"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:background="@color/white"
+					android:padding="16dp"
+					android:text="Update Personal Data Disclaimer"
+					android:textAllCaps="false"
+					android:drawableRight="@drawable/ic_action_expand_down"
+					android:textColor="@color/powerBlue"
+					android:textSize="14dp"
+					android:textStyle="normal" />
+				<View
+					android:id="@+id/view3"
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:background="@color/platinumGrey" />
+				<TextView
+					android:id="@+id/TextView_tnc_data"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:background="@color/white"
+					android:paddingLeft="16dp"
+					android:paddingTop="16dp"
+					android:paddingRight="16dp"
+					android:paddingBottom="16dp"
+					android:text="tnc"
+					android:textSize="14dp">
+				</TextView>
+				<View
+					android:id="@+id/view4"
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:background="@color/platinumGrey" />
+				<TextView
+					android:id="@+id/TextView_TNB_TermOfUse"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:background="@color/white"
+					android:drawableRight="@drawable/expand_right_arrow"
+					android:padding="16dp"
+					android:text="TNB’s Terms of Use,Anti-Spam Policy"
+					android:textAllCaps="false"
+					android:textColor="@color/powerBlue"
+					android:textSize="14dp"
+					android:textStyle="normal" />
+				<View
+					android:id="@+id/view5"
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:background="@color/platinumGrey" />
+				<TextView
+					android:id="@+id/TextView_privacypolicy"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_weight="1"
+					android:background="@color/white"
+					android:drawableRight="@drawable/expand_right_arrow"
+					android:padding="16dp"
+					android:text="Privacy Policy"
+					android:textAllCaps="false"
+					android:textColor="@color/powerBlue"
+					android:textSize="14dp"
+					android:textStyle="normal" />
+				<View
+					android:id="@+id/view7"
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:layout_marginBottom="30dp"
+					android:background="@color/platinumGrey" />
+			</LinearLayout>
+		</ScrollView>
+	</FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

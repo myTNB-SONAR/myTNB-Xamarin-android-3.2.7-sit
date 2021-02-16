@@ -29,7 +29,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.MVP
             void ShowError(string message=null);
 
             string copyPDFGetFilePath(Android.Net.Uri realFilePath, string filename);
-            void ShowCamera();
+            void ShowCamera(); 
 
             void ShowGallery();
 

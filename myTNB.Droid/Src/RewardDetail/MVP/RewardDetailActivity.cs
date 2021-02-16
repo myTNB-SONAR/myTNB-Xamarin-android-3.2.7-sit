@@ -155,12 +155,28 @@ namespace myTNB_Android.Src.RewardDetail.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             try
             {
                 TextViewUtils.SetMuseoSans500Typeface(txtRewardUsed, txtTitle, txtRewardPeriodTitle, txtRewardLocationTitle,
                     txtRewardConditionTitle, txtBtnRewardSave, btnRewardUse, btnRewardRedeemed, txtRewardRedeemedWord);
                 TextViewUtils.SetMuseoSans300Typeface(txtRewardPeriodContent, txtRewardLocationContent, txtRewardConditionContent,
                     txtTimeCounter, txtRewardUsedDateTime);
+
+                txtRewardUsed.TextSize = TextViewUtils.GetFontSize(12f);
+                txtTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                txtRewardPeriodTitle.TextSize = TextViewUtils.GetFontSize(14f);
+                txtRewardPeriodContent.TextSize = TextViewUtils.GetFontSize(14f);
+                txtRewardLocationTitle.TextSize = TextViewUtils.GetFontSize(14f);
+                txtRewardLocationContent.TextSize = TextViewUtils.GetFontSize(14f);
+                txtRewardConditionTitle.TextSize = TextViewUtils.GetFontSize(14f);
+                txtRewardConditionContent.TextSize = TextViewUtils.GetFontSize(14f);
+                txtTimeCounter.TextSize = TextViewUtils.GetFontSize(36f);
+                txtRewardRedeemedWord.TextSize = TextViewUtils.GetFontSize(12f);
+                txtRewardUsedDateTime.TextSize = TextViewUtils.GetFontSize(14f);
+                btnRewardRedeemed.TextSize = TextViewUtils.GetFontSize(16f);
+                txtBtnRewardSave.TextSize = TextViewUtils.GetFontSize(16f);
+
                 btnRewardSave.Clickable = true;
                 isPendingRewardConfirm = false;
 

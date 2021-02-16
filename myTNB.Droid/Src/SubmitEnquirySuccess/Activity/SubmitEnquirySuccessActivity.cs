@@ -94,6 +94,12 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
                   TextViewUtils.SetMuseoSans300Typeface(txtContentInfo, txtFeedbackIdTitle, txtFeedbackIdContent);
                   TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, buttonBackToHome, btnViewSubmitted);
 
+                txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16f);
+                txtContentInfo.TextSize = TextViewUtils.GetFontSize(12f);
+                txtFeedbackIdTitle.TextSize = TextViewUtils.GetFontSize(10f);
+                txtFeedbackIdContent.TextSize = TextViewUtils.GetFontSize(14f);
+                btnViewSubmitted.TextSize = TextViewUtils.GetFontSize(16f);
+                buttonBackToHome.TextSize = TextViewUtils.GetFontSize(16f);
                 mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
 

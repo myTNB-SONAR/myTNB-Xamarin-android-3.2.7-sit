@@ -137,6 +137,19 @@ namespace myTNB_Android.Src.UpdateMobileNo
                 TextViewUtils.SetMuseoSans500Typeface(btnResend, OnCompleteResend);
                 TextViewUtils.SetMuseoSans300Typeface(txtErrorPin);
 
+
+                txtInfoTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                txtErrorPin.TextSize = TextViewUtils.GetFontSize(12f);
+                txtDidntReceive.TextSize = TextViewUtils.GetFontSize(16f);
+                OnCompleteResend.TextSize = TextViewUtils.GetFontSize(18f);
+                btnResend.TextSize = TextViewUtils.GetFontSize(18f);
+                txtNumber_1.TextSize = TextViewUtils.GetFontSize(22f);
+                txtNumber_2.TextSize = TextViewUtils.GetFontSize(22f);
+
+                txtNumber_3.TextSize = TextViewUtils.GetFontSize(22f);
+
+                txtNumber_4.TextSize = TextViewUtils.GetFontSize(22f);
+
                 txtInfoTitle.Text = string.Format(Utility.GetLocalizedLabel("VerifyPin", "otpMobileUpdate"), newPhoneNo);
                 txtDidntReceive.Text = Utility.GetLocalizedLabel("VerifyPin","smsNotReceived");
                 btnResend.Text = Utility.GetLocalizedCommonLabel("resend");

@@ -132,6 +132,14 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutMobileNo, txtInputLayoutFeedback, txtInputLayoutLocation, txtInputLayoutPoleNo, txtInputLayoutState);
             TextViewUtils.SetMuseoSans500Typeface(txtFeedbackTitle, btnSubmit);
 
+
+            txtFeedbackTitle.TextSize = TextViewUtils.GetFontSize(16f);
+            txtFeedbackContent.TextSize = TextViewUtils.GetFontSize(14f);
+            txtMaxCharacters.TextSize = TextViewUtils.GetFontSize(9f);
+            txtRelatedScreenshotTitle.TextSize = TextViewUtils.GetFontSize(9f);
+            txtMaxImageContent.TextSize = TextViewUtils.GetFontSize(9f);
+
+
 #if DEBUG
             //txtLocation.Text = "Jalan Timur";
             //txtPoleNo.Text = "17493 8E 1";
@@ -488,7 +496,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
             try
             {
                 //txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
-                txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
 
                 txtInputLayoutLocation.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
                 txtInputLayoutPoleNo.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);

@@ -111,6 +111,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 
                 TextViewUtils.SetMuseoSans500Typeface(btnRefresh);
 
+                txtEmptyWhatsNew.TextSize = TextViewUtils.GetFontSize(14f);
+                txtRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+                btnRefresh.TextSize = TextViewUtils.GetFontSize(16f);
                 whatsNewMainLayout.Visibility = ViewStates.Visible;
 
                 whatsNewEmptyLayout.Visibility = ViewStates.Gone;

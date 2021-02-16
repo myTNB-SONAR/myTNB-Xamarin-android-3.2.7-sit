@@ -1,463 +1,476 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <resources>
-
-  <style name="App.FullScreenTheme" parent="@style/App.BaseTheme">
-    <item name="android:windowFullscreen">true</item>
-  </style>
-
-    <style name="FullScreenDialog" parent="@style/App.BaseTheme" >
-	    <item name="android:windowNoTitle">true</item>
-	    <item name="android:windowFullscreen">true</item>
-	    <item name="android:windowIsFloating">false</item>
-    </style>
-
-  <style name="App.ScreenTheme" parent="@style/App.BaseTheme">
-    <item name="android:windowFullscreen">false</item>
-    <!--<item name="android:editTextStyle">@style/myTNB.EditTextStyle</item>-->
-  </style>
-
-  <style name="TextInformationAppearance" parent="@android:style/TextAppearance">
-    <item name="android:textColor">@color/tunaGrey</item>
-  </style>
-
-  <style name="TextErrorAppearance" parent="@android:style/TextAppearance">
-    <item name="android:textColor">@color/errorColor</item>
-  </style>
-
-  <style name="Theme.LoginButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#FFFFFF</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16sp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/green_button_background</item>
-  </style>
-
-  <style name="Theme.RegisterButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#FFFFFF</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16sp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/green_button_background</item>
-  </style>
-
-  <style name="Theme.PreLoginLoginButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#FFFFFF</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/green_button_background</item>
-  </style>
-
-  <style name="Theme.PreLoginRegisterButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">@color/freshGreen</item>
-    <item name="android:hint">@color/freshGreen</item>
-    <item name="android:textSize">16sp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/light_green_outline_button_background</item>
-  </style>
-
-  <style name="Theme.PayButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#FFFFFF</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/green_button_background</item>
-  </style>
-
-
-  <style name="Theme.DisabledPayButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#FFFFFF</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/silver_chalice_button_background</item>
-  </style>
-
-  <style name="Theme.RefreshButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#FFFFFF</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/green_button_background</item>
-  </style>
-
-  <style name="Theme.RefreshWhiteButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#1c79ca</item>
-    <item name="android:hint">#1c79ca</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/white_filled_button_background</item>
-  </style>
-
-  <style name="Theme.ViewBill" parent="@android:style/Widget.Button">
-    <item name="android:textColor">@color/freshGreen</item>
-    <item name="android:hint">@color/freshGreen</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/light_green_outline_button_background</item>
-  </style>
-
-<style name="Theme.MeterReading" parent="@android:style/Widget.Button">
-    <item name="android:textColor">@color/freshGreen</item>
-    <item name="android:hint">@color/freshGreen</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/light_green_outline_button_background</item>
-  </style>
-
-  <style name="Theme.SSMRDiscontinue" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#FFFFFF</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/green_button_background</item>
-  </style>
-
-  <style name="Theme.SubmitMeterReading" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#FFFFFF</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/green_button_background</item>
-  </style>
-    
-  <style name="Theme.DisableSelfMeterReading" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#e44b21</item>
-    <item name="android:hint">#e44b21</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/red_light_button_background</item>
-  </style>
-
-  <style name="Theme.TryAgainButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#1c79ca</item>
-    <item name="android:hint">#1c79ca</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/white_filled_button_background</item>
-  </style>
-
-<style name="Theme.SMRApplicationButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#FFFFFF</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/white_button_background</item>
-  </style>
-
-  <style name="Theme.LearnMoreButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#FFFFFF</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16sp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/learn_more_button_background</item>
-  </style>
-
-  <style name="Theme.LogoutButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#FFFFFF</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16sp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/red_button_background</item>
-  </style>
-
-  <style name="Theme.ResendButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#FFFFFF</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16sp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/green_button_background</item>
-  </style>
-
-  <style name="Theme.SubmitButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#FFFFFF</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16sp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/green_button_background</item>
-  </style>
-
-  <style name="Theme.SubmitButton.Grey" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#FFFFFF</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16sp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/silver_chalice_button_background</item>
-  </style>
-
-  <style name="Theme.GetAccessButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">#FFFFFF</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16sp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/green_button_background</item>
-  </style>
-
-  <style name="Theme.AddCardButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">@color/tunaGrey</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16sp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/dashed_border_background</item>
-  </style>
-
-  <style name="Theme.OnlinePaymentButton" parent="@android:style/Widget.Button">
-    <item name="android:textColor">@color/tunaGrey</item>
-    <item name="android:hint">#FFFFFF</item>
-    <item name="android:textSize">16sp</item>
-    <item name="android:stateListAnimator">@null</item>
-    <item name="android:background">@drawable/solid_border_background</item>
-  </style>
-
-  <style name="DigitValueTextAppearance" parent="@android:style/TextAppearance">
-    <item name="android:textSize">22sp</item>
-    <item name="android:textColor">#000000</item>
-    <item name="android:textColorHint">#607D8B</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_weight">1</item>
-    <item name="android:layout_marginTop">8dp</item>
-    <item name="android:layout_marginLeft">8dp</item>
-    <item name="android:layout_marginRight">8dp</item>
-    <item name="android:layout_marginBottom">12dp</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_width">0dp</item>
-    <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
-  </style>
-
-  <style name="myTNB.EditTextStyle" parent="@android:style/Widget.EditText">
-    <item name="android:textColor">#000000</item>
-    <item name="android:textColorHint">#607D8B</item>
-    <item name="android:colorAccent">@color/white</item>
-
-  </style>
-
-  <style name="SwitchCompatTheme" >
-    <item name="colorControlActivated">@color/switchColorEnabled</item>
-    <item name="android:colorAccent">@color/switchColorDisabled</item>
-  </style>
-
-
-  <!-- Floating Label -->
-  <style name="TextInputLayout.TextAppearance" parent="TextAppearance.AppCompat">
-    <!-- Hint color and label color in FALSE state -->
-    <item name="android:textColorHint">@color/white</item>
-
-    <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
-    <item name="colorAccent">@color/white</item>
-    <item name="colorControlNormal">@color/white</item>
-    <item name="colorControlActivated">@color/white</item>
-    <item name="colorControlNormal">@color/white</item>
-    <item name="colorError">@color/errorColor</item>
-  </style>
-
-  <style name="TextInputLayout.TextAppearance.Small" parent="TextAppearance.AppCompat">
-    <!-- Hint color and label color in FALSE state -->
-    <item name="android:textColorHint">@color/silverChalice</item>
-    <item name="android:textSize">10dp</item>
-
-    <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
-    <item name="colorAccent">@color/tunaGrey</item>
-    <item name="colorControlNormal">@color/silverChalice</item>
-    <item name="colorControlActivated">@color/tunaGrey</item>
-    <item name="colorError">@color/errorColor</item>
-
-  </style>
-
-  <style name="TextInputLayout.TextAppearance.LightBackground" parent="TextAppearance.AppCompat">
-    <!-- Hint color and label color in FALSE state -->
-    <item name="android:textColorHint">@color/silverChalice</item>
-
-    <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
-    <item name="colorAccent">@color/tunaGrey</item>
-    <item name="colorControlNormal">@color/silverChalice</item>
-    <item name="colorControlActivated">@color/tunaGrey</item>
-    <item name="colorError">@color/errorColor</item>
-
-  </style>
-
-  <!-- End Floating Label -->
-
-  <!-- Floating Label -->
-  <style name="TextInputLayout.TextAppearance.Dark" parent="TextAppearance.AppCompat">
-    <item name="android:textColor">#000000</item>
-    <item name="android:textColorHint">#607D8B</item>
-    <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
-    <item name="colorError">@color/errorColor</item>
-  </style>
-  <!-- End Floating Label -->
-
-  <!-- Alert Dialog-->
-  <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-    <item name="android:colorAccent">@color/dialogButtonColor</item>
-    <item name="colorAccent">@color/dialogButtonColor</item>
-
-    <!--<item name="android:textColorPrimary">@android:color/black</item>-->
-    <!--<item name="android:textColorSecondary">@android:color/black</item>-->
-  </style>
-  <!-- End of Alert Dialog-->
-
-  <style name="ToolBarStyle.Base" parent="">
-    <item name="popupTheme">@android:style/ThemeOverlay.Material.Light</item>
-    <item name="theme">@android:style/ThemeOverlay.Material.Dark.ActionBar</item>
-    <item name="titleTextAppearance">@style/ToolbarTheme.Title</item>
-  </style>
-
-
-  <!--Toolbar Title Style-->
-  <style name="ToolbarTheme.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-    <!--Any text styling can be done here-->
-    <item name="android:gravity">center</item>
-  </style>
-  <!--End of Toolbar Title Style-->
-
-
-  <!-- Buttons Styles -->
-
-  <style name="DarkButton1">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">#ffffff</item>
-    <item name="android:background">@drawable/green_button_background</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_margin">3dp</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-  </style>
-
-  <style name="DarkButton">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">#ffffff</item>
-    <item name="android:background">@drawable/green_button_background</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_margin">3dp</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-  </style>
-
-  <style name="WhiteButton1">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">#1c79ca</item>
-    <item name="android:background">@drawable/white_button_stroke_background</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_margin">3dp</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-  </style>
-  <style name="LightButtonWithIcon">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">#20bd4c</item>
-    <item name="android:background">@drawable/light_button_background</item>
-    <item name="android:layout_margin">3dp</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-  </style>
-  <style name="LightButtonWithIconTakePhoto">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">#20bd4c</item>
-    <item name="android:background">@drawable/light_button_background</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-  </style>
-    
-  <style name="LightButton">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">#20bd4c</item>
-    <item name="android:background">@drawable/light_button_background</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_margin">3dp</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-  </style>
-
-  <style name="LightButtonDisabled">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">#a6a6a6</item>
-    <item name="android:background">@drawable/light_button_background_disabled</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_margin">3dp</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-  </style>
-
-  <style name="WhiteButton">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">@color/white</item>
-    <item name="android:background">@drawable/white_button_background</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_margin">3dp</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-  </style>
-
-  <style name="DisabledButton">
-    <item name="android:layout_width">fill_parent</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">@color/white</item>
-    <item name="android:background">@drawable/silver_chalice_button_background</item>
-    <item name="android:gravity">center</item>
-    <item name="android:layout_margin">3dp</item>
-    <item name="android:textSize">16dp</item>
-    <item name="android:stateListAnimator">@null</item>
-  </style>
-
-  <style name="TextInputLayoutBottomHint" parent="@android:style/TextAppearance.Medium">
-    <item name="android:textColor">@color/tunaGrey</item>
-    <item name="android:textSize">12sp</item>
-  </style>
-
-  <style name="TextInputLayoutBottomErrorHint" parent="@android:style/TextAppearance.Medium">
-    <item name="android:textColor">@color/errorColor</item>
-    <item name="android:textSize">12sp</item>
-  </style>
-    
-  <style name="TextInputLayoutBottomErrorHintAmount" parent="@android:style/TextAppearance.Medium">
-    <item name="android:textColor">@color/tomato</item>
-    <item name="android:textSize">12sp</item>
-  </style>
-
-  <style name="TextInputLayoutFeedbackCount" parent="@android:style/TextAppearance.Medium">
-    <item name="android:textColor">@color/tunaGrey</item>
-	  <item name="android:textSize">10sp</item>
-  </style>
-
-	<style name="TextInputLayoutFeedbackCountSubmitEnquiry" parent="@android:style/TextAppearance.Medium">
-		<item name="android:textColor">@color/tunaGrey</item>
-		<item name="android:textSize">10sp</item>
-	</style>
-  
-  <style name="SMDashboardRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
-    <item name="android:button">@drawable/radio_button_selector</item>
-  </style>
-
-  <style name="AppSearchView" parent="Widget.AppCompat.SearchView" >
-    <item name="android:textSize">12dp</item>
-	<item name="android:textColor">#ffffff</item>
-	<item name="android:hint">#96FFFFFF</item>
-	<item name="android:textColorHint">#96FFFFFF</item>
-  </style>
-
-	<style name="Theme.TooltipButton" parent="@android:style/Widget.Button">
-		<item name="android:textColor">#1c79ca</item>
-		<item name="android:hint">#1c79ca</item>
-		<item name="android:textSize">16dp</item>
-		<item name="android:stateListAnimator">@null</item>
-		<item name="android:background">@drawable/white_filled_button_background</item>
-	</style>
-    <style name="AmountHint.TextInputLayout.TextAppearance.LightBackground" parent="TextAppearance.AppCompat">
-    <!-- Hint color and label color in FALSE state -->
-    <item name="android:textColorHint">@color/silverChalice</item>
-    <item name="android:textSize">10dp</item>
-    <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
-    <item name="colorAccent">@color/tunaGrey</item>
-    <item name="colorControlNormal">@color/silverChalice</item>
-    <item name="colorControlActivated">@color/tunaGrey</item>
-    <item name="colorError">@color/errorColor</item>
-  </style>
+   <style name="App.FullScreenTheme" parent="@style/App.BaseTheme">
+      <item name="android:windowFullscreen">true</item>
+   </style>
+   <style name="FullScreenDialog" parent="@style/App.BaseTheme">
+      <item name="android:windowNoTitle">true</item>
+      <item name="android:windowFullscreen">true</item>
+      <item name="android:windowIsFloating">false</item>
+   </style>
+   <style name="App.ScreenTheme" parent="@style/App.BaseTheme">
+      <item name="android:windowFullscreen">false</item>
+      <!--<item name="android:editTextStyle">@style/myTNB.EditTextStyle</item>-->
+   </style>
+   <style name="TextInformationAppearance" parent="@android:style/TextAppearance">
+      <item name="android:textColor">@color/tunaGrey</item>
+   </style>
+   <style name="TextErrorAppearance" parent="@android:style/TextAppearance">
+      <item name="android:textColor">@color/errorColor</item>
+   </style>
+   <style name="Theme.LoginButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#FFFFFF</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16sp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/green_button_background</item>
+   </style>
+   <style name="Theme.RegisterButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#FFFFFF</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16sp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/green_button_background</item>
+   </style>
+   <style name="Theme.PreLoginLoginButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#FFFFFF</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/green_button_background</item>
+   </style>
+   <style name="Theme.PreLoginRegisterButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">@color/freshGreen</item>
+      <item name="android:hint">@color/freshGreen</item>
+      <item name="android:textSize">16sp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/light_green_outline_button_background</item>
+   </style>
+   <style name="Theme.ApplicationStatusLandingButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">@color/freshGreen</item>
+      <item name="android:hint">@color/freshGreen</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/light_green_outline_button_background</item>
+   </style>
+     <style name="Theme.AppointmentAddCalendarButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">@color/white</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/light_Blue_outline_button_background</item>
+   </style>
+   <style name="Theme.PayButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#FFFFFF</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/green_button_background</item>
+   </style>
+   <style name="Theme.DisabledPayButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#FFFFFF</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/silver_chalice_button_background</item>
+   </style>
+   <style name="Theme.RefreshButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#FFFFFF</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/green_button_background</item>
+   </style>
+   <style name="Theme.RefreshWhiteButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#1c79ca</item>
+      <item name="android:hint">#1c79ca</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/white_filled_button_background</item>
+   </style>
+   <style name="Theme.ViewBill" parent="@android:style/Widget.Button">
+      <item name="android:textColor">@color/freshGreen</item>
+      <item name="android:hint">@color/freshGreen</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/light_green_outline_button_background</item>
+   </style>
+   <style name="Theme.MeterReading" parent="@android:style/Widget.Button">
+      <item name="android:textColor">@color/freshGreen</item>
+      <item name="android:hint">@color/freshGreen</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/light_green_outline_button_background</item>
+   </style>
+   <style name="Theme.SSMRDiscontinue" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#FFFFFF</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/green_button_background</item>
+   </style>
+   <style name="Theme.SubmitMeterReading" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#FFFFFF</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/green_button_background</item>
+   </style>
+   <style name="Theme.DisableSelfMeterReading" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#e44b21</item>
+      <item name="android:hint">#e44b21</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/red_light_button_background</item>
+   </style>
+   <style name="Theme.TryAgainButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#1c79ca</item>
+      <item name="android:hint">#1c79ca</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/white_filled_button_background</item>
+   </style>
+   <style name="Theme.SMRApplicationButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#FFFFFF</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/white_button_background</item>
+   </style>
+   <style name="Theme.LearnMoreButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#FFFFFF</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16sp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/learn_more_button_background</item>
+   </style>
+   <style name="Theme.LogoutButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#FFFFFF</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16sp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/red_button_background</item>
+   </style>
+   <style name="Theme.ResendButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#FFFFFF</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16sp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/green_button_background</item>
+   </style>
+   <style name="Theme.SubmitButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#FFFFFF</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16sp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/green_button_background</item>
+   </style>
+   <style name="Theme.SubmitButton.Grey" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#FFFFFF</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16sp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/silver_chalice_button_background</item>
+   </style>
+   <style name="Theme.GetAccessButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#FFFFFF</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16sp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/green_button_background</item>
+   </style>
+   <style name="Theme.AddCardButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">@color/tunaGrey</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16sp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/dashed_border_background</item>
+   </style>
+   <style name="Theme.OnlinePaymentButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">@color/tunaGrey</item>
+      <item name="android:hint">#FFFFFF</item>
+      <item name="android:textSize">16sp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/solid_border_background</item>
+   </style>
+   <style name="DigitValueTextAppearance" parent="@android:style/TextAppearance">
+      <item name="android:textSize">22sp</item>
+      <item name="android:textColor">#000000</item>
+      <item name="android:textColorHint">#607D8B</item>
+      <item name="android:gravity">center</item>
+      <item name="android:layout_weight">1</item>
+      <item name="android:layout_marginTop">8dp</item>
+      <item name="android:layout_marginLeft">8dp</item>
+      <item name="android:layout_marginRight">8dp</item>
+      <item name="android:layout_marginBottom">12dp</item>
+      <item name="android:layout_height">wrap_content</item>
+      <item name="android:layout_width">0dp</item>
+      <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+   </style>
+   <style name="myTNB.EditTextStyle" parent="@android:style/Widget.EditText">
+      <item name="android:textColor">#000000</item>
+      <item name="android:textColorHint">#607D8B</item>
+      <item name="android:colorAccent">@color/white</item>
+   </style>
+   <style name="SwitchCompatTheme">
+      <item name="colorControlActivated">@color/switchColorEnabled</item>
+      <item name="android:colorAccent">@color/switchColorDisabled</item>
+   </style>
+   <!-- Floating Label -->
+   <style name="TextInputLayout.TextAppearance" parent="TextAppearance.AppCompat">
+      <!-- Hint color and label color in FALSE state -->
+      <item name="android:textColorHint">@color/white</item>
+      <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+      <item name="colorAccent">@color/white</item>
+      <item name="colorControlNormal">@color/white</item>
+      <item name="colorControlActivated">@color/white</item>
+      <item name="colorControlNormal">@color/white</item>
+      <item name="colorError">@color/errorColor</item>
+   </style>
+   <style name="TextInputLayout.TextAppearance.Small" parent="TextAppearance.AppCompat">
+      <!-- Hint color and label color in FALSE state -->
+      <item name="android:textColorHint">@color/silverchalice</item>
+      <item name="android:textSize">10dp</item>
+      <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+      <item name="colorAccent">@color/tunaGrey</item>
+      <item name="colorControlNormal">@color/silverChalice</item>
+      <item name="colorControlActivated">@color/tunaGrey</item>
+      <item name="colorError">@color/errorColor</item>
+   </style>
+   <style name="TextInputLayout.TextAppearance.Large" parent="TextAppearance.AppCompat">
+      <!-- Hint color and label color in FALSE state -->
+      <item name="android:textColorHint">@color/silverChalice</item>
+      <item name="android:textSize">14dp</item>
+      <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+      <item name="colorAccent">@color/tunaGrey</item>
+      <item name="colorControlNormal">@color/silverChalice</item>
+      <item name="colorControlActivated">@color/tunaGrey</item>
+      <item name="colorError">@color/errorColor</item>
+   </style>
+   <style name="TextInputLayout.TextInputLayoutSearchCA.Small" parent="TextAppearance.AppCompat">
+      <!-- Hint color and label color in FALSE state -->
+      <item name="android:textColorHint">@color/silverChalice</item>
+      <item name="android:textSize">10dp</item>
+      <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+      <item name="colorAccent">@color/silverChalice</item>
+      <item name="colorControlNormal">@color/silverChalice</item>
+      <item name="colorControlActivated">@color/tunaGrey</item>
+      <item name="colorError">@color/silverChalice</item>
+   </style>
+   <style name="TextInputLayout.TextAppearance.LightBackground" parent="TextAppearance.AppCompat">
+      <!-- Hint color and label color in FALSE state -->
+      <item name="android:textColorHint">@color/silverChalice</item>
+      <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+      <item name="colorAccent">@color/tunaGrey</item>
+      <item name="colorControlNormal">@color/silverChalice</item>
+      <item name="colorControlActivated">@color/tunaGrey</item>
+      <item name="colorError">@color/errorColor</item>
+   </style>
+   <style name="TextInputLayout.TextAppearance.ColorFix" parent="TextAppearance.AppCompat">
+      <!-- Hint color and label color in FALSE state -->
+      <item name="android:textColorHint">@color/silverChalice</item>
+      <item name="android:textSize">10dp</item>
+      <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+      <item name="colorAccent">@color/tunaGrey</item>
+      <item name="colorControlNormal">@color/platinumGrey</item>
+      <item name="colorControlHighlight">@color/platinumGrey</item>
+      <item name="colorControlActivated">@color/platinumGrey</item>
+      <item name="android:colorControlNormal">@color/platinumGrey</item>
+      <item name="android:colorControlHighlight">@color/platinumGrey</item>
+      <item name="android:colorControlActivated">@color/platinumGrey</item>
+      <item name="colorError">@color/errorColor</item>
+   </style>
+   <style name="TextInputLayout.TextAppearance.ColorFixLarge" parent="TextAppearance.AppCompat">
+      <!-- Hint color and label color in FALSE state -->
+      <item name="android:textColorHint">@color/silverChalice</item>
+      <item name="android:textSize">14dp</item>
+      <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+      <item name="colorAccent">@color/tunaGrey</item>
+      <item name="colorControlNormal">@color/platinumGrey</item>
+      <item name="colorControlHighlight">@color/platinumGrey</item>
+      <item name="colorControlActivated">@color/platinumGrey</item>
+      <item name="android:colorControlNormal">@color/platinumGrey</item>
+      <item name="android:colorControlHighlight">@color/platinumGrey</item>
+      <item name="android:colorControlActivated">@color/platinumGrey</item>
+      <item name="colorError">@color/errorColor</item>
+   </style>
+   <!-- End Floating Label -->
+   <!-- Floating Label -->
+   <style name="TextInputLayout.TextAppearance.Dark" parent="TextAppearance.AppCompat">
+      <item name="android:textColor">#000000</item>
+      <item name="android:textColorHint">#607D8B</item>
+      <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+      <item name="colorError">@color/errorColor</item>
+   </style>
+   <!-- End Floating Label -->
+   <!-- Alert Dialog-->
+   <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+      <item name="android:colorAccent">@color/dialogButtonColor</item>
+      <item name="colorAccent">@color/dialogButtonColor</item>
+      <!--<item name="android:textColorPrimary">@android:color/black</item>-->
+      <!--<item name="android:textColorSecondary">@android:color/black</item>-->
+   </style>
+   <!-- End of Alert Dialog-->
+   <style name="ToolBarStyle.Base" parent="">
+      <item name="popupTheme">@android:style/ThemeOverlay.Material.Light</item>
+      <item name="theme">@android:style/ThemeOverlay.Material.Dark.ActionBar</item>
+      <item name="titleTextAppearance">@style/ToolbarTheme.Title</item>
+   </style>
+   <!--Toolbar Title Style-->
+   <style name="ToolbarTheme.Title" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+      <!--Any text styling can be done here-->
+      <item name="android:gravity">center</item>
+   </style>
+   <!--End of Toolbar Title Style-->
+   <!-- Buttons Styles -->
+   <style name="DarkButton1">
+      <item name="android:layout_width">fill_parent</item>
+      <item name="android:layout_height">wrap_content</item>
+      <item name="android:textColor">#ffffff</item>
+      <item name="android:background">@drawable/green_button_background</item>
+      <item name="android:gravity">center</item>
+      <item name="android:layout_margin">3dp</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+   </style>
+   <style name="DarkButton">
+      <item name="android:layout_width">fill_parent</item>
+      <item name="android:layout_height">wrap_content</item>
+      <item name="android:textColor">#ffffff</item>
+      <item name="android:background">@drawable/green_button_background</item>
+      <item name="android:gravity">center</item>
+      <item name="android:layout_margin">3dp</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+   </style>
+   <style name="WhiteButton1">
+      <item name="android:layout_width">fill_parent</item>
+      <item name="android:layout_height">wrap_content</item>
+      <item name="android:textColor">#1c79ca</item>
+      <item name="android:background">@drawable/white_button_stroke_background</item>
+      <item name="android:gravity">center</item>
+      <item name="android:layout_margin">3dp</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+   </style>
+   <style name="LightButtonWithIcon">
+      <item name="android:layout_width">fill_parent</item>
+      <item name="android:layout_height">wrap_content</item>
+      <item name="android:textColor">#20bd4c</item>
+      <item name="android:background">@drawable/light_button_background</item>
+      <item name="android:layout_margin">3dp</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+   </style>
+   <style name="LightButtonWithIconTakePhoto">
+      <item name="android:layout_width">fill_parent</item>
+      <item name="android:layout_height">wrap_content</item>
+      <item name="android:textColor">#20bd4c</item>
+      <item name="android:background">@drawable/light_button_background</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+   </style>
+   <style name="LightButton">
+      <item name="android:layout_width">fill_parent</item>
+      <item name="android:layout_height">wrap_content</item>
+      <item name="android:textColor">#20bd4c</item>
+      <item name="android:background">@drawable/light_button_background</item>
+      <item name="android:gravity">center</item>
+      <item name="android:layout_margin">3dp</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+   </style>
+   <style name="LightButtonDisabled">
+      <item name="android:layout_width">fill_parent</item>
+      <item name="android:layout_height">wrap_content</item>
+      <item name="android:textColor">#a6a6a6</item>
+      <item name="android:background">@drawable/light_button_background_disabled</item>
+      <item name="android:gravity">center</item>
+      <item name="android:layout_margin">3dp</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+   </style>
+   <style name="WhiteButton">
+      <item name="android:layout_width">fill_parent</item>
+      <item name="android:layout_height">wrap_content</item>
+      <item name="android:textColor">@color/white</item>
+      <item name="android:background">@drawable/white_button_background</item>
+      <item name="android:gravity">center</item>
+      <item name="android:layout_margin">3dp</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+   </style>
+   <style name="DisabledButton">
+      <item name="android:layout_width">fill_parent</item>
+      <item name="android:layout_height">wrap_content</item>
+      <item name="android:textColor">@color/white</item>
+      <item name="android:background">@drawable/silver_chalice_button_background</item>
+      <item name="android:gravity">center</item>
+      <item name="android:layout_margin">3dp</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+   </style>
+   <style name="TextInputLayoutBottomHint" parent="@android:style/TextAppearance.Medium">
+      <item name="android:textColor">@color/tunaGrey</item>
+      <item name="android:textSize">12sp</item>
+   </style>
+   <style name="TextInputLayoutBottomErrorHint" parent="@android:style/TextAppearance.Medium">
+      <item name="android:textColor">@color/errorColor</item>
+      <item name="android:textSize">12sp</item>
+   </style>
+     <style name="TextInputLayoutBottomErrorHintLarge" parent="@android:style/TextAppearance.Medium">
+      <item name="android:textColor">@color/errorColor</item>
+      <item name="android:textSize">16sp</item>
+   </style>
+   <style name="TextInputLayoutBottomErrorHintAmount" parent="@android:style/TextAppearance.Medium">
+      <item name="android:textColor">@color/tomato</item>
+      <item name="android:textSize">12sp</item>
+   </style>
+   <style name="TextInputLayoutFeedbackCount" parent="@android:style/TextAppearance.Medium">
+      <item name="android:textColor">@color/tunaGrey</item>
+      <item name="android:textSize">10sp</item>
+   </style>
+   <style name="TextInputLayoutFeedbackCountLarge" parent="@android:style/TextAppearance.Medium">
+      <item name="android:textColor">@color/tunaGrey</item>
+      <item name="android:textSize">14sp</item>
+   </style>
+   <style name="TextInputLayoutFeedbackCountSubmitEnquiry" parent="@android:style/TextAppearance.Medium">
+      <item name="android:textColor">@color/tunaGrey</item>
+      <item name="android:textSize">10sp</item>
+   </style>
+   <style name="SMDashboardRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
+      <item name="android:button">@drawable/radio_button_selector</item>
+   </style>
+   <style name="AppSearchView" parent="Widget.AppCompat.SearchView">
+      <item name="android:textSize">12dp</item>
+      <item name="android:textColor">#ffffff</item>
+      <item name="android:hint">#96FFFFFF</item>
+      <item name="android:textColorHint">#96FFFFFF</item>
+   </style>
+   <style name="Theme.TooltipButton" parent="@android:style/Widget.Button">
+      <item name="android:textColor">#1c79ca</item>
+      <item name="android:hint">#1c79ca</item>
+      <item name="android:textSize">16dp</item>
+      <item name="android:stateListAnimator">@null</item>
+      <item name="android:background">@drawable/white_filled_button_background</item>
+   </style>
+   <style name="AmountHint.TextInputLayout.TextAppearance.LightBackground" parent="TextAppearance.AppCompat">
+      <!-- Hint color and label color in FALSE state -->
+      <item name="android:textColorHint">@color/silverChalice</item>
+      <item name="android:textSize">10dp</item>
+      <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+      <item name="colorAccent">@color/tunaGrey</item>
+      <item name="colorControlNormal">@color/silverChalice</item>
+      <item name="colorControlActivated">@color/tunaGrey</item>
+      <item name="colorError">@color/errorColor</item>
+   </style>
+   <style name="AmountHint.TextInputLayout.TextAppearance.LightBackgroundLarge" parent="TextAppearance.AppCompat">
+      <!-- Hint color and label color in FALSE state -->
+      <item name="android:textColorHint">@color/silverChalice</item>
+      <item name="android:textSize">14dp</item>
+      <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+      <item name="colorAccent">@color/tunaGrey</item>
+      <item name="colorControlNormal">@color/silverChalice</item>
+      <item name="colorControlActivated">@color/tunaGrey</item>
+      <item name="colorError">@color/errorColor</item>
+   </style>
 </resources>

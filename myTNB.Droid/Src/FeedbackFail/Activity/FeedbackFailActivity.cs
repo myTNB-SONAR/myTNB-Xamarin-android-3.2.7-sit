@@ -43,7 +43,8 @@ namespace myTNB_Android.Src.FeedbackFail.Activity
 
             TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, btnBackToDashboard, btnTryAgain);
-
+            txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16f);
+            txtContentInfo.TextSize = TextViewUtils.GetFontSize(14f);
             if (!UserEntity.IsCurrentlyActive())
             {
                 btnBackToDashboard.Visibility = ViewStates.Gone;

@@ -99,7 +99,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 Console.WriteLine("NotificationSettingsActivity OnCreate");
 
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationTypeTitle, txtNotificationChannelTitle);
-
+                txtNotificationTypeTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                txtNotificationChannelTitle.TextSize = TextViewUtils.GetFontSize(16f);
                 txtNotificationTypeTitle.Text = GetLabelByLanguage("typeDescription");
                 txtNotificationChannelTitle.Text = GetLabelByLanguage("modeDescription");
 

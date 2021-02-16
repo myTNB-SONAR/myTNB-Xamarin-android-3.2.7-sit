@@ -28,7 +28,7 @@ namespace myTNB.SitecoreCMS.Service
         {
             SitecoreService sitecoreService = new SitecoreService();
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Language,
-                PayloadType.Content, new List<ScopeType> { ScopeType.Children }, SiteCoreConfig.FiveSecondTimeSpan, _websiteURL, _language);
+                PayloadType.Content, new List<ScopeType> { ScopeType.Children }, SiteCoreConfig.FiveSecondTimeSpan, "https://sitecore.tnb.com.my/", _language);
 
             var item = req.Result;
             var list = ParseToChildrenItems(item);
@@ -40,7 +40,7 @@ namespace myTNB.SitecoreCMS.Service
         {
             SitecoreService sitecoreService = new SitecoreService();
             var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.Language
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, SiteCoreConfig.FiveSecondTimeSpan, _websiteURL, _language);
+                , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, SiteCoreConfig.FiveSecondTimeSpan, "https://sitecore.tnb.com.my/", _language);
             var item = req.Result;
             var list = ParseToTimestamp(item);
             var itemList = list.Result;

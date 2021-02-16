@@ -437,7 +437,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                 ContentMessage = Utility.GetLocalizedLabel("RewardDetails", "tutorialUseNowDesc"), // "At the merchant’s place and ready<br/>to redeem your reward? Tap here.",
                 ItemCount = 0,
                 DisplayMode = "",
-                IsButtonShow = true
+                IsButtonShow = false
             });
 
             return newList;

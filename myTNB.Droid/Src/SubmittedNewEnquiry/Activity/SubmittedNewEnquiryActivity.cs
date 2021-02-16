@@ -46,6 +46,18 @@ namespace myTNB_Android.Src.SubmittedNewEnquiry.Activity
         [BindView(Resource.Id.txtFeedbackStatus)]
         TextView txtFeedbackStatus;
 
+        [BindView(Resource.Id.txtYourMessage)]
+        TextView txtYourMessage;
+
+       
+        [BindView(Resource.Id.txtEnquiryDetails)]
+        TextView txtEnquiryDetails;
+
+        [BindView(Resource.Id.txtforMyhouse)]
+        TextView txtforMyhouse;
+
+        [BindView(Resource.Id.txtStatus)]
+        TextView txtStatus;
 
         [BindView(Resource.Id.txtFeedback)]
         EditText txtFeedback;
@@ -71,6 +83,14 @@ namespace myTNB_Android.Src.SubmittedNewEnquiry.Activity
 
                 string selectedFeedback = UserSessions.GetSelectedFeedback(PreferenceManager.GetDefaultSharedPreferences(this));
                 submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
+
+                txtStatus.TextSize = TextViewUtils.GetFontSize(16f);
+                txtFeedbackStatus.TextSize = TextViewUtils.GetFontSize(16f);
+                txtforMyhouse.TextSize = TextViewUtils.GetFontSize(14f);
+                txtEnquiryDetails.TextSize = TextViewUtils.GetFontSize(16f);
+                txtYourMessage.TextSize = TextViewUtils.GetFontSize(10f);
+                txtFeedback.TextSize = TextViewUtils.GetFontSize(14f);
+                txtRelatedScreenshotTitle.TextSize = TextViewUtils.GetFontSize(9f);
 
                 // set font
                 //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
@@ -205,6 +225,7 @@ namespace myTNB_Android.Src.SubmittedNewEnquiry.Activity
                // txtFeedbackDateTime.Text = dateTime;
                // txtAccountNo.Text = accountNoName;
                 txtFeedback.Text = feedback;
+                txtFeedback.TextSize = TextViewUtils.GetFontSize(14f);
             }
             catch (Exception e)
             {

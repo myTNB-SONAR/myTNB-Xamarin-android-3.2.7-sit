@@ -111,10 +111,15 @@ namespace myTNB_Android.Src.WhatsNewDetail.MVP
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
+			SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
 			try
 			{
 				TextViewUtils.SetMuseoSans500Typeface(txtTitle);
 				TextViewUtils.SetMuseoSans300Typeface(txtDescription, txtFooter);
+
+				txtTitle.TextSize = TextViewUtils.GetFontSize(16f);
+				txtDescription.TextSize = TextViewUtils.GetFontSize(14f);
+				txtFooter.TextSize = TextViewUtils.GetFontSize(12f);
 			}
 			catch (Exception e)
 			{

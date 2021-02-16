@@ -5,7 +5,6 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Android.App;
-using Android.Util;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB_Android.Src.Base;
@@ -22,13 +21,7 @@ using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
-using Android.Graphics;
-using System.IO;
 using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.myTNBMenu.Requests;
-using System.Net.Http;
-using myTNB_Android.Src.myTNBMenu.Api;
-using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
 using myTNB_Android.Src.NewAppTutorial.MVP;
 using Android.Content;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
@@ -55,7 +48,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private static NewFAQEntity NewFAQManager;
         private static EnergySavingTipsParentEntity EnergySavingTipsParentManager;
         private static EnergySavingTipsEntity EnergySavingTipsManager;
-        // private static List<string> loadedSummaryList;
         private static bool isSMRApplyAllowFlag = true;
         int billingAccoutCount = 0;
         int curentLoadMoreCount = 0;
@@ -205,20 +197,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                     else if (response.Data != null && response.Data.ErrorCode == "8400")
                     {
-                        string contentTxt = "";
+                        string contentTxt = string.Empty;
 
                         if (!string.IsNullOrEmpty(response.Data.DisplayMessage))
                         {
                             contentTxt = response.Data.DisplayMessage;
                         }
 
-                        this.mView.ShowRefreshScreen(false, contentTxt, "");
+                        this.mView.ShowRefreshScreen(false, contentTxt, string.Empty);
                         isAccountRefreshNeeded = true;
                     }
                     else
                     {
-                        string contentTxt = "";
-                        string buttonTxt = "";
+                        string contentTxt = string.Empty;
+                        string buttonTxt = string.Empty;
 
                         if (!string.IsNullOrEmpty(response.Data.RefreshMessage))
                         {
@@ -323,20 +315,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                     else if (response.Data != null && response.Data.ErrorCode == "8400")
                     {
-                        string contentTxt = "";
+                        string contentTxt = string.Empty;
 
                         if (!string.IsNullOrEmpty(response.Data.DisplayMessage))
                         {
                             contentTxt = response.Data.DisplayMessage;
                         }
 
-                        this.mView.ShowRefreshScreen(false, contentTxt, "");
+                        this.mView.ShowRefreshScreen(false, contentTxt, string.Empty);
                         isAccountRefreshNeeded = true;
                     }
                     else
                     {
-                        string contentTxt = "";
-                        string buttonTxt = "";
+                        string contentTxt = string.Empty;
+                        string buttonTxt = string.Empty;
 
                         if (!string.IsNullOrEmpty(response.Data.RefreshMessage))
                         {
@@ -388,9 +380,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
                     lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
                 };
 
                 if (accountList.Count > 0)
@@ -419,9 +411,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
                     lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
                 };
 
                 if (accountList.Count > 0)
@@ -450,9 +442,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
                     lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
                 };
 
                 if (accountList.Count > 0)
@@ -513,7 +505,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 else
                 {
-
                     this.mView.SetAccountListCardsFromLocal(updateDashboardInfoList);
 
                     FetchAccountSummary();
@@ -667,7 +658,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             isQuery = false;
             HomeMenuUtils.SetIsQuery(false);
-            HomeMenuUtils.SetQueryWord("");
+            HomeMenuUtils.SetQueryWord(string.Empty);
             trackCurrentLoadMoreCount = 0;
             HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
             LoadAccounts();
@@ -682,7 +673,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             if (string.IsNullOrEmpty(searchText))
             {
-                searchText = "";
+                searchText = string.Empty;
             }
             updateDashboardInfoList = new List<SummaryDashBoardDetails>();
             List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
@@ -835,7 +826,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             if (string.IsNullOrEmpty(searchText))
             {
-                searchText = "";
+                searchText = string.Empty;
             }
             updateDashboardInfoList = new List<SummaryDashBoardDetails>();
             List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
@@ -1312,9 +1303,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
                     lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
                 };
 
                 AccountSMRStatusResponse accountSMRResponse = await this.serviceApi.GetSMRAccountStatus(new AccountsSMRStatusRequest()
@@ -1382,9 +1373,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
                     lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
                 };
 
                 AccountSMRStatusResponse accountSMRResponse = await this.serviceApi.GetSMRAccountStatus(new AccountsSMRStatusRequest()
@@ -1471,7 +1462,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             energyTipsTokenSource.Cancel();
             isHomeMenuTutorialShown = false;
 
-    }
+        }
 
         public async Task InitiateMyService()
         {
@@ -1626,9 +1617,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
                     lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
                 };
 
                 isSMRApplyAllowFlag = false;
@@ -1736,8 +1727,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 else
                 {
-                    string contentTxt = "";
-                    string buttonTxt = "";
+                    string contentTxt = string.Empty;
+                    string buttonTxt = string.Empty;
 
                     if (getServicesResponse != null && getServicesResponse.Data != null && !string.IsNullOrEmpty(getServicesResponse.Data.RefreshMessage))
                     {
@@ -1761,13 +1752,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             catch (ApiException apiException)
             {
                 isMyServiceRefreshNeeded = true;
-                SetMyServiceRefreshScreen("", "");
+                SetMyServiceRefreshScreen(string.Empty, string.Empty);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
                 isMyServiceRefreshNeeded = true;
-                SetMyServiceRefreshScreen("", "");
+                SetMyServiceRefreshScreen(string.Empty, string.Empty);
                 Utility.LoggingNonFatalError(unknownException);
             }
         }
@@ -1794,22 +1785,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             currentMyServiceList = filterList;
             fetchList = currentMyServiceList;
-            if (fetchList.Count > 3)
-            {
-                fetchList = new List<MyService>();
-                for (int i = 0; i < 3; i++)
-                {
-                    fetchList.Add(currentMyServiceList[i]);
-                }
 
-                this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
-                this.mView.SetMyServiceResult(fetchList);
-            }
-            else
-            {
-                this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
-                this.mView.SetMyServiceResult(fetchList);
-            }
+            this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
+            this.mView.SetMyServiceResult(fetchList);
 
             isMyServiceDone = true;
             OnCheckToCallHomeMenuTutorial();
@@ -1837,7 +1815,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
 
             currentMyServiceList = cachedList;
-            isMyServiceExpanded = HomeMenuUtils.GetIsMyServiceExpanded();
+            isMyServiceExpanded = true;// HomeMenuUtils.GetIsMyServiceExpanded();
             List<MyService> fetchList = new List<MyService>();
             if (isMyServiceExpanded)
             {
@@ -1945,28 +1923,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 List<MyService> fetchList = new List<MyService>();
-
-                if (!isMyServiceExpanded)
-                {
-                    isMyServiceExpanded = true;
-                    HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
-                    fetchList = currentMyServiceList;
-                    this.mView.IsMyServiceLoadMoreButtonVisible(true, true);
-                    this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
-                    this.mView.SetMyServiceResult(fetchList);
-                }
-                else
-                {
-                    isMyServiceExpanded = false;
-                    HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
-                    for (int i = 0; i < 3; i++)
-                    {
-                        fetchList.Add(currentMyServiceList[i]);
-                    }
-                    this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
-                    this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
-                    this.mView.SetMyServiceResult(fetchList);
-                }
+                isMyServiceExpanded = true;
+                HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
+                fetchList = currentMyServiceList;
+                this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
+                this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                this.mView.SetMyServiceResult(fetchList);
             }
             catch (Exception e)
             {
@@ -1990,9 +1952,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ft = FirebaseTokenEntity.GetLatest().FBToken,
                     lang = LanguageUtil.GetAppLanguage().ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
+                    sec_auth_k2 = string.Empty,
+                    ses_param1 = string.Empty,
+                    ses_param2 = string.Empty
                 };
 
                 GetIsSmrApplyAllowedResponse isSMRApplyResponse = await this.serviceApi.GetIsSmrApplyAllowed(new GetIsSmrApplyAllowedRequest()
@@ -2043,7 +2005,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 list.Add(new MyService()
                 {
-                    serviceCategoryName = ""
+                    serviceCategoryName = string.Empty
                 });
             }
 
@@ -2062,7 +2024,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 list.Add(new NewFAQ()
                 {
-                    Title = ""
+                    Title = string.Empty
                 });
             }
 
@@ -2533,7 +2495,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Utility.LoggingNonFatalError(ne);
                         }
 
-						foreach (UserNotification userNotification in response.GetData().UserNotificationList)
+                        foreach (UserNotification userNotification in response.GetData().UserNotificationList)
                         {
                             try
                             {
@@ -2576,16 +2538,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                     else
                     {
-						MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                        MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                     }
                 }
-                else if(response != null && response.Response != null && response.Response.ErrorCode == "8400")
+                else if (response != null && response.Response != null && response.Response.ErrorCode == "8400")
                 {
                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                 }
                 else
                 {
-					MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                    MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                 }
                 this.mView.ShowNotificationCount(UserNotificationEntity.Count());
 
@@ -2596,8 +2558,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (System.Exception ne)
             {
-				MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
-				Utility.LoggingNonFatalError(ne);
+                MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
+                Utility.LoggingNonFatalError(ne);
             }
         }
 
@@ -2634,7 +2596,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         HomeMenuUtils.SetIsMyServiceExpanded(false);
                         isQuery = false;
                         HomeMenuUtils.SetIsQuery(false);
-                        HomeMenuUtils.SetQueryWord("");
+                        HomeMenuUtils.SetQueryWord(string.Empty);
                         HomeMenuUtils.SetIsRestartHomeMenu(true);
                         this.mView.RestartHomeMenu();
                     }
@@ -2721,7 +2683,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     NeedHelpHide = isNeedHelpHide,
-                    IsButtonShow = true
+                    IsButtonShow = false
                 });
             }
             else
@@ -2743,7 +2705,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpDesc"),//"We’ve highlighted some of the<br/>most commonly asked questions<br/>for you to browse through.",
                     ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     NeedHelpHide = isNeedHelpHide,
-                    IsButtonShow = true
+                    IsButtonShow = false
                 });
             }
 

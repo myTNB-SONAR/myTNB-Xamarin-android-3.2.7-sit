@@ -62,11 +62,14 @@ namespace myTNB_Android.Src.Maintenance.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             try
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtContent);
                 TextViewUtils.SetMuseoSans500Typeface(txtHeading);
+
+                txtHeading.TextSize = TextViewUtils.GetFontSize(24f);
+                txtContent.TextSize = TextViewUtils.GetFontSize(16f);
             }
             catch (Exception e)
             {

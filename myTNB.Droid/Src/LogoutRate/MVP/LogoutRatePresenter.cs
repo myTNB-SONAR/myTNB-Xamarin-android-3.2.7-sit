@@ -5,7 +5,6 @@ using myTNB_Android.Src.Utils;
 using Refit;
 using System;
 using System.Net;
-using System.Net.Http;
 using System.Threading;
 
 namespace myTNB_Android.Src.LogoutRate.MVP
@@ -43,27 +42,20 @@ namespace myTNB_Android.Src.LogoutRate.MVP
                     this.mView.HideProgressDialog();
                 }
 
-                if (logoutResponse.IsSuccessResponse())
-                {
-                    UserEntity.RemoveActive();
-                    UserRegister.RemoveActive();
-                    CustomerBillingAccount.RemoveActive();
-                    NotificationFilterEntity.RemoveAll();
-                    UserNotificationEntity.RemoveAll();
-                    SMUsageHistoryEntity.RemoveAll();
-                    UsageHistoryEntity.RemoveAll();
-                    BillHistoryEntity.RemoveAll();
-                    PaymentHistoryEntity.RemoveAll();
-                    REPaymentHistoryEntity.RemoveAll();
-                    AccountDataEntity.RemoveAll();
-                    SummaryDashBoardAccountEntity.RemoveAll();
-                    SelectBillsEntity.RemoveAll();
-                    this.mView.ShowLogoutSuccess();
-                }
-                else
-                {
-                    this.mView.ShowErrorMessage(logoutResponse.Response.DisplayMessage);
-                }
+                UserEntity.RemoveActive();
+                UserRegister.RemoveActive();
+                CustomerBillingAccount.RemoveActive();
+                NotificationFilterEntity.RemoveAll();
+                UserNotificationEntity.RemoveAll();
+                SMUsageHistoryEntity.RemoveAll();
+                UsageHistoryEntity.RemoveAll();
+                BillHistoryEntity.RemoveAll();
+                PaymentHistoryEntity.RemoveAll();
+                REPaymentHistoryEntity.RemoveAll();
+                AccountDataEntity.RemoveAll();
+                SummaryDashBoardAccountEntity.RemoveAll();
+                SelectBillsEntity.RemoveAll();
+                this.mView.ShowLogoutSuccess();
             }
             catch (System.OperationCanceledException e)
             {
@@ -102,7 +94,6 @@ namespace myTNB_Android.Src.LogoutRate.MVP
 
         public void Start()
         {
-            //
         }
     }
 }

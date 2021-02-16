@@ -30,21 +30,18 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
     <DebugType>Full</DebugType>
-    <Optimize>False</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
-    <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
     <AndroidSupportedAbis />
     <MandroidI18n />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>
-    </DebugType>
+    <DebugType></DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE;RELEASE</DefineConstants>
@@ -58,18 +55,18 @@
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>
     </DebugType>
-    <Optimize>True</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\SIT\</OutputPath>
     <DefineConstants>TRACE;SIT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
-    <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+    <AndroidSupportedAbis>arm64-v8a;armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
@@ -517,12 +514,6 @@
     </Reference>
     <Reference Include="Xamarin.AndroidX.WebKit">
       <HintPath>..\packages\Xamarin.AndroidX.WebKit.1.2.0.1\lib\monoandroid90\Xamarin.AndroidX.WebKit.dll</HintPath>
-    </Reference>
-    <Reference Include="HockeySDK.AndroidBindings">
-      <HintPath>..\packages\HockeySDK.Xamarin.5.2.0\lib\MonoAndroid403\HockeySDK.AndroidBindings.dll</HintPath>
-    </Reference>
-    <Reference Include="HockeySDK">
-      <HintPath>..\packages\HockeySDK.Xamarin.5.2.0\lib\MonoAndroid403\HockeySDK.dll</HintPath>
     </Reference>
     <Reference Include="Plugin.CurrentActivity, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Plugin.CurrentActivity.1.0.1\lib\MonoAndroid10\Plugin.CurrentActivity.dll</HintPath>
@@ -1141,7 +1132,6 @@
     <Compile Include="Src\SitecoreCMS\Model\HowDoesProofOfConsentModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\LocationsModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\PreLoginPromoModel.cs" />
-    <Compile Include="Src\SitecoreCMS\Model\TimestampModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\TimestampResponseModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\WalkthroughScreensModel.cs" />
     <Compile Include="Src\SitecoreCMS\Model\PreLoginPromoResponseModel.cs" />
@@ -1245,7 +1235,6 @@
     <Compile Include="Src\Utils\Custom\ProgressButton\ProgressGenerator.cs" />
     <Compile Include="Src\Utils\Custom\ProgressButton\ResendButton.cs" />
     <Compile Include="Src\Utils\HttpLoggingHandler.cs" />
-    <Compile Include="Src\Utils\ResetPasswordNewChangeListener.cs" />
     <Compile Include="Src\Utils\RestrictTextChangeListener.cs" />
     <Compile Include="Src\Utils\SSLFactoryHelper.cs" />
     <Compile Include="Src\Utils\StringUtils.cs" />
@@ -5564,23 +5553,647 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\BaseFullScreenImageViewLayout.xml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
+      <SubType></SubType>
+      <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\ApplicationStatusListGroupItemLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusListing\MVP\ApplicationStatusLandingActivity.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationStatusLandingLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\shadow_effect.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_application_status_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_application_status_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_application_status_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_application_status_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_application_status_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_expand_down_gray.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_expand_down_gray.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_expand_down_gray.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_expand_down_gray.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_expand_down_gray.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusListing\MVP\ApplicationStatusLandingContract.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusListing\MVP\ApplicationStatusLandingPresenter.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusListing\Models\ApplicationStatusModel.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusListing\Adapter\ApplicationStatusLandingAdapter.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\ApplicationStatusFilterActivity.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationStatusFilterLandingLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\ApplicationStatusFilterContract.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\ApplicationStatusFilterPresenter.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationStatusFilterListLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ApplicationStatusFilterListItemLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusFilter\Adapter\ApplicationStatusFilterAdapter.cs" />
+    <Compile Include="Src\Base\Models\BaseKeyValueModel.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\ApplicationStatusFilterSelection\ApplicationStatusFilterSelectionActivity.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\ApplicationStatusFilterSelection\ApplicationStatusFilterDateSelectionActivity.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationStatusFilterListDateLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Base\Fragments\MonthYearPickerDialog.cs" />
+    <AndroidResource Include="Resources\layout\BaseMonthYearPickerDialog.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\values\FilterViewStyle.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\SearchApplicationStatusLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_field_application_type.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_field_application_type.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_field_application_type.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_field_application_type.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_field_application_type.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\MVP\SearchApplicationStatusActivity.cs" />
+    <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\MVP\SearchApplicationStatusContract.cs" />
+    <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\MVP\SearchApplicationStatusPresenter.cs" />
+    <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\SearchApplicationStatusSelection\MVP\SearchApplicationStatusSelectionActivity.cs" />
+    <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\Models\SearchApplicationStatusModel.cs" />
+    <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\SearchApplicationStatusSelection\Adapter\SearchApplicationStatusAdapter.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationStatusDetailLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ApplicationStatusDetailItemStatusLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\img_application_status_in_progress.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\img_application_status_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\img_application_status_in_progress.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\img_application_status_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\img_application_status_in_progress.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\img_application_status_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\img_application_status_in_progress.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\img_application_status_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\img_application_status_in_progress.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\img_application_status_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\application_status_done_indication.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailActivity.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationStatusDetailItemContentLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\Models\ApplicationStatusDetailModel.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\Adapter\ApplicationStatusDetailProgressAdapter.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\Adapter\ApplicationStatusDetailSubDetailAdapter.cs" />
     <Compile Include="Src\Base\Activity\BaseFullScreenImageViewActivity.cs" />
     <Compile Include="Src\Utils\PDFView\PDFView.cs" />
     <Compile Include="Src\Utils\PDFView\PDFRegionDecoder.cs" />
     <Compile Include="Src\Utils\PDFView\PDFDecodeFactory.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationStatusDetailPaymentDetailLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\MVP\ApplicationStatusDetailPaymentActivity.cs" />
     <Compile Include="Src\Utils\ZoomImageView\ZoomImageView.cs" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSet\MVP\AppointmentSetLandingActivity.cs" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSet\MVP\AppointmentSetLandingPresenter.cs" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSet\MVP\AppointmentSetLandingContract.cs" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSelect\MVP\AppointmentSelectContract.cs" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSelect\MVP\CalenderAdapter.cs" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSelect\MVP\AppointmentSelectPresenter.cs" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSelect\MVP\AppointmentSelectActivity.cs" />
+    <AndroidResource Include="Resources\layout\AppointmentSelectLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\AppointmentSetLandingLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_Action_Calender_Back.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_Action_Calender_Nextpng.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_Action_Calender_Back.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_Action_Calender_Next.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_Action_Calender_Back.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_Action_Calender_Next.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_Action_Calender_Back.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_Action_Calender_Next.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_Action_Calender_Back.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_Action_Calender_Next.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\values\AppointmentSchedulerStyle.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_img_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_img_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_img_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\InstallWalkthroughSixthBg.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_6.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\AppointmentCalendarLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\daySelector.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\AppointmentTimeSelector.xml" />
+    <Compile Include="Src\AppointmentScheduler\AppointmentSelect\MVP\TimeAdapter.cs" />
+    <AndroidResource Include="Resources\layout\AppointmentTimeSelectionLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\AppointmentTimeSelectorBackground.xml" />
     <Compile Include="Src\Utils\LinkRedirectionUtils.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailContract.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\ApplicationStatusDetailPresenter.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\Img_application_Active_Payment.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\Img_application_Active_Payment.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\Img_application_Active_Payment.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\Img_application_Active_Payment.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\Img_application_Active_Payment.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ApplicationActivityLog.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\activity_log_status_required.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\activity_log_status_required.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\activity_log_status_required.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\activity_log_status_required.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\activity_log_status_required.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ApplicationDetailActivityLogLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\activity_log_Awaiting_Approval.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\activity_log_Awaiting_Approval.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\activity_log_Awaiting_Approval.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\activity_log_Awaiting_Approval.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\activity_log_Awaiting_Approval.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\ApplicationDetailActivityLog\Adapter\ApplicationDetailActivityAdapter.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationDetailActivityLog\MVP\ApplicationDetailActivityLogActivity.cs" />
+    <Compile Include="Src\ApplicationStatus\ApplicationDetailActivityLog\Adapter\UpdatedDetailsListAdapter.cs" />
+    <AndroidResource Include="Resources\drawable\bullet.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ApplicationActivityListItemView.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ApplicationUpdatedDetailsVIew.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\delete_application.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\delete_application.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\delete_application.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\delete_application.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\delete_application.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\SearchApplicationStatus\Adapter\SearchApplicationAdapter.cs" />
+    <Compile Include="Src\Database\Model\LargeFontEntity.cs" />
+    <Compile Include="Src\Database\Model\LargeFontModel.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\TimestampModel.cs" />
+    <Compile Include="Src\Profile\Activity\AppLargeFontActivity.cs" />
+    <AndroidResource Include="Resources\layout\AppSetFontLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\solid_border_background_submit_enquiry.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\bcrm_offline.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\bcrm_offline.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\bcrm_offline.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\bcrm_offline.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\bcrm_offline.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\pdfIcon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\pdfIcon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\pdfIcon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\pdfIcon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\pdfIcon.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FeedbackSubmittedRowNew.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Utils\ResetPasswordNewChangeListener.cs" />
+    <AndroidResource Include="Resources\drawable\new_labelLarge.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\InstallWalkthroughSeventhBg.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_7.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_img_install_7.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_img_install_7.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_install_7.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_img_install_7.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_7.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_7.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_7.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_7.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_7.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_field_address.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_field_address.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_field_address.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ApplicationStatus_RateUsQuestionItemView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ApplicationStatus_SubmitRatingView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusRating\Activity\ApplicationRatingActivity.cs" />
+    <AndroidResource Include="Resources\layout\ApplicationStauts_rating_view.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ratingApplication.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ratingApplication.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ratingApplication.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ratingApplication.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ratingApplication.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\ApplicationStatus\ApplicationStatusRating\Activity\RateUsActivity.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\application_rating_star.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\application_rating_star.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\application_rating_star.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\application_rating_star.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\application_rating_star.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ToastLayout.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Utils\ToastUtils.cs" />
+    <AndroidResource Include="Resources\drawable\rectangle_rounded_corner_bg_with_shadow.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Async\SyncSRApplicationAPI.cs" />
+    <AndroidResource Include="Resources\drawable\light_Blue_outline_button_background.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_8.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_img_install_8.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_img_install_8.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_install_8.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_img_install_8.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\InstallWalkthroughEightBg.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_8.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_8.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_8.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_8.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <AndroidAsset Include="Assets\fonts\MuseoSans_300.otf" />
     <AndroidAsset Include="Assets\fonts\MuseoSans_500.otf" />
-    <AndroidAsset Include="Assets\Dynatrace.properties" />
     <None Include="GettingStarted.Xamarin" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
@@ -5868,10 +6481,46 @@
     <Folder Include="Src\ResetPassword\Api\" />
     <Folder Include="Src\SelectNotification\Models\" />
     <Folder Include="Src\UpdateMobileNo\Api\" />
+    <Folder Include="Src\ManageSupplyAccount\Api\" />
+    <Folder Include="Src\Common\Activity\" />
+    <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\" />
+    <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\MVP\" />
+    <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Adapter\" />
+    <Folder Include="Src\myTNBMenu\Fragments\WhatsNewMenu\Model\" />
+    <Folder Include="Src\WhatsNewDetail\" />
+    <Folder Include="Src\WhatsNewDetail\MVP\" />
+    <Folder Include="Src\AddAccount\Api\" />
+    <Folder Include="Src\WhatsNewDialog\" />
+    <Folder Include="Src\ApplicationStatus\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusListing\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusListing\MVP\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusListing\Models\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusListing\Adapter\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusFilter\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusFilter\Adapter\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusFilter\MVP\ApplicationStatusFilterSelection\" />
+    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\" />
+    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\MVP\" />
+    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\SearchApplicationStatusSelection\" />
+    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\SearchApplicationStatusSelection\MVP\" />
+    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\Models\" />
+    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\SearchApplicationStatusSelection\Adapter\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetail\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetail\MVP\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetail\Adapter\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetail\Models\" />
     <Folder Include="Src\UpdateNickname\Api\" />
     <Folder Include="Src\UpdatePassword\Api\" />
     <Folder Include="Src\Utils\PDFView\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\MVP\" />
     <Folder Include="Src\Utils\ZoomImageView\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\MVP\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\Adapter\" />
+    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\Adapter\" />
+    <Folder Include="Src\ApplicationStatus\ApplicationStatusRating\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
@@ -7682,7 +8331,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">
-      <Project>{A27A3842-1A8F-47F0-B333-94875BC922ED}</Project>
+      <Project>{61D20414-CF94-4106-B40F-E62E5B282F0C}</Project>
       <Name>myTNB.Mobile</Name>
     </ProjectReference>
   </ItemGroup>
@@ -7836,45 +8485,6 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\group_4.png" />
   </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\FeedbackSubmittedRowNew.axml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\pdfIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\pdfIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\pdfIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\pdfIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\pdfIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\solid_border_background_submit_enquiry.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\dashed_border_background_submit_enquiry.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_field_address.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_field_address.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_field_address.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_field_address.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_field_address.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -7893,7 +8503,6 @@
     <Error Condition="!Exists('..\packages\Xamarin.Firebase.Iid.42.1021.1\build\MonoAndroid70\Xamarin.Firebase.Iid.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Firebase.Iid.42.1021.1\build\MonoAndroid70\Xamarin.Firebase.Iid.targets'))" />
     <Error Condition="!Exists('..\packages\Xamarin.Firebase.Messaging.42.1021.1\build\MonoAndroid70\Xamarin.Firebase.Messaging.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Firebase.Messaging.42.1021.1\build\MonoAndroid70\Xamarin.Firebase.Messaging.targets'))" />
     <Error Condition="!Exists('..\packages\Xamarin.GooglePlayServices.Maps.42.1021.1\build\MonoAndroid70\Xamarin.GooglePlayServices.Maps.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.GooglePlayServices.Maps.42.1021.1\build\MonoAndroid70\Xamarin.GooglePlayServices.Maps.targets'))" />
-    <Error Condition="!Exists('..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets'))" />
   </Target>
   <Import Project="..\packages\Xamarin.Build.Download.0.4.2\build\Xamarin.Build.Download.targets" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.2\build\Xamarin.Build.Download.targets')" />
   <Import Project="..\packages\Xamarin.GooglePlayServices.Basement.42.1021.1\build\MonoAndroid70\Xamarin.GooglePlayServices.Basement.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Basement.42.1021.1\build\MonoAndroid70\Xamarin.GooglePlayServices.Basement.targets')" />
@@ -8047,5 +8656,4 @@
   <Import Project="..\packages\Xamarin.Firebase.Analytics.71.1630.4\build\MonoAndroid90\Xamarin.Firebase.Analytics.targets" Condition="Exists('..\packages\Xamarin.Firebase.Analytics.71.1630.4\build\MonoAndroid90\Xamarin.Firebase.Analytics.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Measurement.Connector.Impl.71.1705.4\build\MonoAndroid90\Xamarin.Firebase.Measurement.Connector.Impl.targets" Condition="Exists('..\packages\Xamarin.Firebase.Measurement.Connector.Impl.71.1705.4\build\MonoAndroid90\Xamarin.Firebase.Measurement.Connector.Impl.targets')" />
   <Import Project="..\packages\Xamarin.Firebase.Core.71.1601.4\build\MonoAndroid90\Xamarin.Firebase.Core.targets" Condition="Exists('..\packages\Xamarin.Firebase.Core.71.1601.4\build\MonoAndroid90\Xamarin.Firebase.Core.targets')" />
-  <Import Project="..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets" Condition="Exists('..\packages\Dynatrace.OneAgent.Xamarin.7.2.12\build\monoandroid410\Dynatrace.OneAgent.Xamarin.targets')" />
 </Project>

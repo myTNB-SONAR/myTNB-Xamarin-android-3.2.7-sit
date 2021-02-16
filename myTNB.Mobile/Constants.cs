@@ -1,22 +1,84 @@
-﻿using System;
-namespace myTNB.Mobile
+﻿namespace myTNB.Mobile
 {
-    public static class Constants
+    internal static class Constants
     {
-#if DEBUG || MASTER
-        public static string ApiDomain = "https://mobiletestingws.tnb.com.my";
+        //Headers
+        internal const string Header_RoleID = "RoleId";
+        internal const string Header_UserID = "UserId";
+        internal const string Header_UserName = "UserName";
+        internal const string Header_SecureKey = "SecureKey";
+        internal const string Header_UserInfo = "UserInfo";
+        internal const string Header_Lang = "Lang";
 
-        public const string ApiUrlPath = "v5/my_billingssp.asmx";
+        //String Constants
+        internal const string EMPTY = "empty";
+        internal const string DEFAULT = "default";
+        internal const string EMPTY_FILTER = "emptyFilter";
+        internal const string SUCCESS_CODE = "7200";
 
-        public static string ApiKeyId = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
+        //Todo: Set to 60000
+        internal const int APITimeOut = 60000;
+        internal const int SitecoreTimeOut = 5000;
+        internal const string SitecoreDomain = "sitecore";
+        internal const string SitecoreUsername = "api_user";
+        internal const string SitecorePassword = "mytnbapiuser!3$@2";
+        internal const string ApiUrlPath = "v6/mytnbappws.asmx";
 
+        private const string DEV1 = "http://10.215.128.191:88";
+        private const string DEV2 = "http://10.215.128.191:89";
+        private const string SIT = "https://mobiletestingws.tnb.com.my";
+        private const string PROD = "https://mytnbapp.tnb.com.my";
+        private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
+        //Mark: http://tnbcsdevapp.tnb.my/
+        private const string SitecoreDEV = "http://10.215.70.246/";
+        //Mark: http://tnbcsstgapp.tnb.my/
+        private const string SitecoreSIT = "http://10.215.70.248/";
+        private const string SitecorePROD = "https://sitecore.tnb.com.my/";
+        private const string ApiKeyIdDEV = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
+        private const string ApiKeyIdPROD = "E6148656-205B-494C-BC95-CC241423E72F";
+
+#if DEBUG
+        internal static string ApiDomain = SIT;
+        internal const string ApiKeyId = ApiKeyIdDEV;
+        internal const string SitecoreURL = SitecorePROD;
+#elif MASTER || SIT
+        internal static string ApiDomain = SIT;
+        internal const string ApiKeyId = ApiKeyIdDEV;
+        internal const string SitecoreURL = SitecoreSIT;
 #else
-        public static string ApiDomain = "https://mytnbapp.tnb.com.my";
-
-        public const string ApiUrlPath = "v5/my_BillingSSP.asmx";
-
-        public static string ApiKeyId = "E6148656-205B-494C-BC95-CC241423E72F";
+        internal static string ApiDomain = PROD;
+        internal const string ApiKeyId = ApiKeyIdPROD;
+        internal const string SitecoreURL = SitecorePROD;
 #endif
 
+        //Service Name
+        internal const string Service_SearchApplicationType = "SearchApplicationType";
+        internal const string Service_GetApplicationStatus = "ApplicationStatus";
+        internal const string Service_SaveApplication = "SaveApplication";
+        internal const string Service_GetAllApplications = "AllApplications";
+        internal const string Service_GetApplicationDetail = "ApplicationDetail";
+        internal const string Service_RemoveApplication = "RemoveApplication";
+        internal const string Service_SearchApplicationByCA = "SearchApplicationByCA";
+        internal const string Service_GetTaxInvoice = "GetTaxInvoiceForApplicationPayment";
+        internal const string Service_TaxInvoice = "GetTaxInvoiceApplicationPayment";
+        internal const string Service_GetCustomerRatingMaster = "CustomerRatingMaster";
+        internal const string Service_PostSubmitRating = "SubmitRating";
+        internal const string Service_GetAvailableAppointment = "AvailableAppointment";
+        internal const string Service_PostSetAppointment = "SetAppointment";
+        internal const string Service_SyncSRApplication = "SyncSRApplication";
+
+        //Language File Constants
+        internal const string LanguageFile_ServiceDetails = "ServiceDetails";
+        internal const string LanguageFile_Services = "Services";
+
+        //Mapping
+        internal const string LanguageFile_Mapping = "Mapping";
+        internal const string LanguageFile_ExcludedApplicationTypes = "ExcludedApplicationTypes";
+
+        //HardCoded Values
+        internal const string Constants_Currency = "RM";
+
+        //API Key
+        internal const string APIKey = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJDaGFubmVsIjoibXlUTkJfQVBJX01vYmlsZSIsIkNoYW5uZWxLZXkiOiJGNUFEQjU0QzM1MkM0NzYwQjUzMkNEOUU1ODdBRTRGNiIsIm5iZiI6MTU5OTE5OTc0OSwiZXhwIjoxNTk5MjAzMzQ5LCJpYXQiOjE1OTkxOTk3NDksImlzcyI6Im15VE5CIEFQSSIsImF1ZCI6Im15VE5CIEFQSSBBdWRpZW5jZSJ9.Sy_xahwMgt2izUgztYq_BQeGECGsahP9oSNHeB1kwB0Ij8Grpg3kQZPCa_b_bbiyngzpjKy38_DFU12wToQAiA";
     }
 }

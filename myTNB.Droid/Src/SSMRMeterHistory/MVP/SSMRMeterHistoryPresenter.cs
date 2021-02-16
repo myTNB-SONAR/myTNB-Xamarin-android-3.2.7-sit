@@ -322,7 +322,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 ContentMessage = Utility.GetLocalizedLabel("SSMRReadingHistory", "tutorialHeaderDesc"),
                 ItemCount = isSubmitButtonHide ? 1 : 0,
                 DisplayMode = isSMR? "SMR" : "NONSMR",
-                IsButtonShow = true
+                IsButtonShow = false
             });
 
             return newList;

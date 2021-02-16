@@ -35,6 +35,13 @@ namespace myTNB_Android.Src.PreLogin.MVP
             void ShowFindUS();
 
             /// <summary>
+            /// Show Check Status
+            /// </summary>
+            void ShowCheckStatus();
+
+
+
+            /// <summary>
             /// Show call us
             /// </summary>
             /// <param name="entity">WeblinkEntity</param>
@@ -62,6 +69,13 @@ namespace myTNB_Android.Src.PreLogin.MVP
             /// Action to navigate to call us
             /// </summary>
             void NavigateToCallUs();
+
+            /// <summary>
+            /// Action to navigate to check status
+            /// </summary>
+            void NavigateToCheckStatus();
+
+
 
             /// <summary>
             /// Action to navigate to feedback

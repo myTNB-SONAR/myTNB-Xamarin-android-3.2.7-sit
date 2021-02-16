@@ -4,6 +4,7 @@ using Android.Content;
 using Java.Lang;
 using Java.Text;
 using Java.Util;
+using myTNB.Mobile;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
@@ -13,26 +14,10 @@ namespace myTNB_Android.Src.Utils
 {
     public sealed class UserSessions
     {
-        //public static Boolean HasSkipped(Context context)
-        //{
-        //    ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(context);
-        //    return prefs.GetBoolean("hasSkipped" , false);
-        //}
-
-        //public static void DoSkipped(Context context)
-        //{
-        //    ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(context);
-        //    ISharedPreferencesEditor editor = prefs.Edit();
-        //    editor.PutBoolean("hasSkipped", true);
-        //    editor.Apply();
-        //}
-
-        private UserSessions()
-        {
-
-        }
+        private UserSessions() { }
 
         private static ISharedPreferences mPreferences;
+        internal static ApplicationStatusNotificationModel ApplicationStatusNotification { private set; get; }
 
         public static void SetCurrentImageCount(ISharedPreferences prefs, int count)
         {
@@ -92,13 +77,34 @@ namespace myTNB_Android.Src.Utils
             return prefs.GetString("notificationType", null);
         }
 
+        internal static void SetApplicationStatusNotification(string saveID
+            , string applciationID
+            , string applicationType
+            , string system)
+        {
+            if (!string.IsNullOrEmpty(applicationType) && (!string.IsNullOrEmpty(saveID) || !string.IsNullOrEmpty(applciationID)))
+            {
+                ApplicationStatusNotification = new ApplicationStatusNotificationModel
+                {
+                    SaveApplicationID = saveID,
+                    ApplicationID = applciationID,
+                    ApplicationType = applicationType,
+                    System = system
+                };
+            }
+            else
+            {
+                ApplicationStatusNotification = null;
+            }
+        }
+
         public static void RemoveNotificationSession(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.Remove("hasNotification").Remove("notificationEmail").Apply();
         }
 
-        public static System.Boolean HasSkipped(ISharedPreferences prefs)
+        public static bool HasSkipped(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasSkipped", false);
         }
@@ -110,7 +116,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasUpdateSkipped(ISharedPreferences prefs)
+        public static bool HasUpdateSkipped(ISharedPreferences prefs)
         {
             return prefs.GetBoolean(Utility.GetAppUpdateId(), false);
         }
@@ -122,7 +128,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasSMROnboardingShown(ISharedPreferences prefs)
+        public static bool HasSMROnboardingShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasSMROnboardingShown", false);
         }
@@ -134,7 +140,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasPayBillShown(ISharedPreferences prefs)
+        public static bool HasPayBillShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasPayBillShown", false);
         }
@@ -146,7 +152,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasViewBillShown(ISharedPreferences prefs)
+        public static bool HasViewBillShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasViewBillShown", false);
         }
@@ -165,12 +171,12 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasCleanUpdateReceiveCache(ISharedPreferences prefs)
+        public static bool HasCleanUpdateReceiveCache(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasCleanUpdateReceiveCache", false);
         }
 
-        public static System.Boolean HasRewardsShown(ISharedPreferences prefs)
+        public static bool HasRewardsShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasRewardsShown", false);
         }
@@ -182,7 +188,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasRewardShown(ISharedPreferences prefs)
+        public static bool HasRewardShown(ISharedPreferences prefs)
         {
             bool flag = prefs.GetBoolean("hasRewardShown", false);
 
@@ -201,11 +207,30 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasRewardsDetailShown(ISharedPreferences prefs)
+        public static bool HasRewardsDetailShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasRewardsDetailShown", false);
         }
-
+        public static bool HasApplicationStatusShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasApplicationStatusShown", false);
+        }
+        public static void DoApplicationStatusShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasApplicationStatusShown", true);
+            editor.Apply();
+        }
+        public static bool HasApplicationDetailShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasApplicationDetailShown", false);
+        }
+        public static void DoApplicationDetailShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasApplicationDetailShown", true);
+            editor.Apply();
+        }
         public static void DoRewardsDetailShown(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
@@ -213,7 +238,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasWhatsNewShown(ISharedPreferences prefs)
+        public static bool HasWhatsNewShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasWhatsNewShown", false);
         }
@@ -225,7 +250,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasWhatNewShown(ISharedPreferences prefs)
+        public static bool HasWhatNewShown(ISharedPreferences prefs)
         {
             bool flag = prefs.GetBoolean("hasWhatNewShown", false);
 
@@ -244,7 +269,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasHomeTutorialShown(ISharedPreferences prefs)
+        public static bool HasHomeTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasHomeTutorialShown", false);
         }
@@ -256,7 +281,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasItemizedBillingNMSMTutorialShown(ISharedPreferences prefs)
+        public static bool HasItemizedBillingNMSMTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasItemizedBillingNMSMTutorialShown", false);
         }
@@ -268,7 +293,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasItemizedBillingRETutorialShown(ISharedPreferences prefs)
+        public static bool HasItemizedBillingRETutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasItemizedBillingRETutorialShown", false);
         }
@@ -280,7 +305,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasItemizedBillingDetailTutorialShown(ISharedPreferences prefs)
+        public static bool HasItemizedBillingDetailTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasItemizedBillingDetailTutorialShown", false);
         }
@@ -292,7 +317,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasSMRMeterHistoryTutorialShown(ISharedPreferences prefs)
+        public static bool HasSMRMeterHistoryTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasSMRMeterHistoryTutorialShown", false);
         }
@@ -304,7 +329,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasSMRSubmitMeterTutorialShown(ISharedPreferences prefs)
+        public static bool HasSMRSubmitMeterTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasSMRSubmitMeterTutorialShown", false);
         }
@@ -316,7 +341,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean HasSMRDashboardTutorialShown(ISharedPreferences prefs)
+        public static bool HasSMRDashboardTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasSMRDashboardTutorialShown", false);
         }
@@ -342,7 +367,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        internal static System.Boolean HasResetFlag(ISharedPreferences mSharedPref)
+        internal static bool HasResetFlag(ISharedPreferences mSharedPref)
         {
             return mSharedPref.GetBoolean("resetPasswordEnabled", false);
         }
@@ -385,7 +410,6 @@ namespace myTNB_Android.Src.Utils
             return mSharePref.GetString(Constants.ADAPTER_TYPE, null);
         }
 
-
         internal static string GetSelectedFeedback(ISharedPreferences mSharePref)
         {
             return mSharePref.GetString(Constants.SELECTED_FEEDBACK, null);
@@ -398,7 +422,7 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static System.Boolean IsDeviceIdUpdated(ISharedPreferences prefs)
+        public static bool IsDeviceIdUpdated(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("deviceIDUpdated", false);
         }
@@ -424,7 +448,7 @@ namespace myTNB_Android.Src.Utils
 
         public static string GetFeedbackUpdateDetailDisabled(ISharedPreferences prefs)
         {
-            return prefs.GetString("IsFeedbackUpdateDetailDisabled",  null);
+            return prefs.GetString("IsFeedbackUpdateDetailDisabled", null);
         }
 
         public static void SaveGetAccountIsExist(ISharedPreferences prefs, string data)
@@ -438,8 +462,6 @@ namespace myTNB_Android.Src.Utils
         {
             return prefs.GetString("IsAccountExist", null);
         }
-
-
 
         public static void SaveLogoutFlag(ISharedPreferences prefs, bool flag)
         {
@@ -602,7 +624,7 @@ namespace myTNB_Android.Src.Utils
 
         public static void SaveAppLanguage(string language)
         {
-            ISharedPreferences sharedPreferences =  Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
             ISharedPreferencesEditor editor = sharedPreferences.Edit();
             editor.PutString(Constants.SHARED_PREF_LANGUAGE_KEY, language);
             editor.Apply();
@@ -611,7 +633,7 @@ namespace myTNB_Android.Src.Utils
         public static string GetAppLanguage()
         {
             ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
-            return sharedPreferences.GetString(Constants.SHARED_PREF_LANGUAGE_KEY,null);
+            return sharedPreferences.GetString(Constants.SHARED_PREF_LANGUAGE_KEY, null);
         }
 
         public static void SaveIsAppLanguageChanged(bool isChanged)

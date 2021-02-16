@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Database.Model;
@@ -78,6 +79,11 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             TextViewUtils.SetMuseoSans500Typeface(titleView);
             TextViewUtils.SetMuseoSans300Typeface(descriptionView, btnToggleEN, btnToggleMS);
 
+            titleView.TextSize = TextViewUtils.GetFontSize(16f);
+            descriptionView.TextSize = TextViewUtils.GetFontSize(12f);
+            btnToggleEN.TextSize = TextViewUtils.GetFontSize(13f);
+            btnToggleMS.TextSize = TextViewUtils.GetFontSize(13f);
+
             appLanguage = LanguageUtil.GetAppLanguage();
 
             if (appLanguage == Constants.DEFAULT_LANG)
@@ -98,6 +104,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             float heightRatio;
             btnToggleContainer.Visibility = ViewStates.Gone;
             bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
+            bool IsLargeFontDisabled = MyTNBAccountManagement.GetInstance().IsLargeFontDisabled();
             switch (imageUrl)
             {
                 case "walkthrough_img_install_0":
@@ -117,7 +124,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 case "walkthrough_img_install_1":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_1);
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
-                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int) DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
 
@@ -184,6 +191,53 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     imgParam.Width = imgWidth;
                     imgParam.Height = imgHeight;
                     break;
+                case "walkthrough_img_install_6":
+                    imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_6);
+                    if (!IsRewardsDisabled)
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFifthBg);
+                    }
+                    else
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFifthBg);
+                    }
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 175f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
+                    break;
+                case "walkthrough_img_install_7":
+                    imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_7);
+
+                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSeventhBg);
+
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 175f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
+                    break;
+                case "walkthrough_img_install_8":
+                    imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_8);
+
+                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
+
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 175f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
+                    break;
                 case "walkthrough_img_update_1":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_4);
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
@@ -205,6 +259,63 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     else
                     {
                         bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
+                    }
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 175f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
+                    break;
+                case "walkthrough_img_update_3":
+                    imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_6);
+                    if (!IsRewardsDisabled)
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSecondBg);
+                    }
+                    else
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSixthBg);
+                    }
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 175f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
+                    break;
+                case "walkthrough_img_update_4":
+                    imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_7);
+                    if (!IsRewardsDisabled)
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSecondBg);
+                    }
+                    else
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughThirdBg);
+                    }
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 175f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
+                    break;
+                case "walkthrough_img_update_5":
+                    imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_8);
+                    if (!IsRewardsDisabled)
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSecondBg);
+                    }
+                    else
+                    {
+                        bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughForthBg);
                     }
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
@@ -238,7 +349,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 bgLayout.Measure(0, 0);
             }
 
-            float diff = ((float) (DPUtils.GetHeight() - bgLayout.MeasuredHeight) / (float) DPUtils.GetHeight());
+            float diff = ((float)(DPUtils.GetHeight() - bgLayout.MeasuredHeight) / (float)DPUtils.GetHeight());
 
             if (isLastItem)
             {
@@ -249,7 +360,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     {
                         titleView.Measure(0, 0);
                     }
-                    int leftHeight = totalHeight - titleView.MeasuredHeight - imgHeight - (int) DPUtils.ConvertDPToPx(48f);
+                    int leftHeight = totalHeight - titleView.MeasuredHeight - imgHeight - (int)DPUtils.ConvertDPToPx(48f);
 
                     LinearLayout.LayoutParams bottomParam = walkthroughBottomView.LayoutParameters as LinearLayout.LayoutParams;
                     bottomParam.Height = leftHeight;
@@ -259,7 +370,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             {
                 if (diff < 0.20f)
                 {
-                    int totalHeight = (int) (DPUtils.GetHeight() * 0.8f);
+                    int totalHeight = (int)(DPUtils.GetHeight() * 0.8f);
                     if (titleView.MeasuredHeight <= 0)
                     {
                         titleView.Measure(0, 0);
@@ -280,6 +391,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 Utility.ShowChangeLanguageDialog(this.Activity, appLanguage, () =>
                 {
                     ((NewWalkthroughActivity)Activity).ShowProgressDialog();
+                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
                     _ = RunUpdateLanguage("EN");
                 }, () =>
                 {
@@ -308,7 +420,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
 
         private Task CheckAppMasterDataDone()
         {
-            return Task.Delay(Constants.LANGUAGE_MASTER_DATA_CHECK_TIMEOUT).ContinueWith(_ => {
+            return Task.Delay(Constants.LANGUAGE_MASTER_DATA_CHECK_TIMEOUT).ContinueWith(_ =>
+            {
                 if (MyTNBAccountManagement.GetInstance().GetIsAppMasterComplete())
                 {
                     if (MyTNBAccountManagement.GetInstance().GetIsAppMasterFailed())
@@ -366,6 +479,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 Utility.ShowChangeLanguageDialog(this.Activity, appLanguage, () =>
                 {
                     ((NewWalkthroughActivity)Activity).ShowProgressDialog();
+                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
                     _ = RunUpdateLanguage("MS");
                 }, () =>
                 {

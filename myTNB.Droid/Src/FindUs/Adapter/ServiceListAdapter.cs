@@ -44,9 +44,11 @@ namespace myTNB_Android.Src.FindUs.Adapter
 			public ServiceListViewHolder(View itemView) : base(itemView)
             {
                 ServiceLabel = itemView.FindViewById<TextView>(Resource.Id.text_service);
-				ServiceBullet = itemView.FindViewById<TextView>(Resource.Id.text_bullet);
+                ServiceBullet = itemView.FindViewById<TextView>(Resource.Id.text_bullet);
+                ServiceBullet.TextSize = TextViewUtils.GetFontSize(16f);
+                ServiceLabel.TextSize = TextViewUtils.GetFontSize(16f);
 
-			}
+            }
 
         }
     }

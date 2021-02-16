@@ -56,13 +56,20 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             // Create your application here
             string jsonResponse = Intent.GetStringExtra("SUBMIT_RESULT");
             SMRregistrationSubmitResponse response = JsonConvert.DeserializeObject<SMRregistrationSubmitResponse>(jsonResponse);
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo);
             TextViewUtils.SetMuseoSans300Typeface(txtMessageInfo,refNumberLabel,appliedOnDateLabel,refNumberValue,appliedOnDateValue);
 
+            txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16f);
+            txtMessageInfo.TextSize = TextViewUtils.GetFontSize(12f);
+            refNumberLabel.TextSize = TextViewUtils.GetFontSize(10f);
+            appliedOnDateLabel.TextSize = TextViewUtils.GetFontSize(10f);
+            refNumberValue.TextSize = TextViewUtils.GetFontSize(14f);
+            appliedOnDateValue.TextSize = TextViewUtils.GetFontSize(14f);
+            btnTrackApplication.TextSize = TextViewUtils.GetFontSize(16f);
             txtTitleInfo.Text = response.Data.DisplayTitle;
             txtMessageInfo.Text = response.Data.DisplayMessage;
 

@@ -8,6 +8,11 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Google.Android.Material.AppBar;
+using myTNB.Mobile;
+using myTNB.Mobile.API.DisplayModel.Scheduler;
+using myTNB.Mobile.API.Managers.Scheduler;
+using myTNB.Mobile.API.Models.ApplicationStatus;
+using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.MultipleAccountPayment.Fragment;
@@ -32,7 +37,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         AccountData selectedAccount;
         List<MPAccount> accounts;
         string total;
-        AndroidX.Fragment.App.Fragment  currentFragment;
+        AndroidX.Fragment.App.Fragment currentFragment;
 
         private MaterialDialog mCancelPaymentDialog;
         public readonly static int SELECT_PAYMENT_ACTIVITY_CODE = 2367;
@@ -41,6 +46,16 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private FrameLayout frameContainer;
         private List<AccountChargeModel> accountChargeList;
         private AndroidX.CoordinatorLayout.Widget.CoordinatorLayout coordinatorLayout;
+
+        // Mark: Application Payment
+        private bool IsApplicationPayment;
+        private ApplicationPaymentDetail ApplicationPaymentDetail;
+        private string ApplicationType = string.Empty;
+        private string SearchTerm = string.Empty;
+        private string ApplicationSystem = string.Empty;
+        private string StatusId = string.Empty;
+        private string StatusCode = string.Empty;
+        internal GetApplicationStatusDisplay ApplicationDetailDisplay;
 
         public bool paymentReceiptGenerated = false;
 
@@ -108,7 +123,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
                     {
                         selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-
                     }
 
                     if (extras.ContainsKey("PAYMENT_ITEMS"))
@@ -120,7 +134,44 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     {
                         accountChargeList = DeSerialze<List<AccountChargeModel>>(extras.GetString("ACCOUNT_CHARGES_LIST"));
                     }
-                    total = Intent.Extras.GetString("TOTAL");
+
+                    if (extras.ContainsKey("ISAPPLICATIONPAYMENT") && Intent.Extras.GetBoolean("ISAPPLICATIONPAYMENT"))
+                    {
+                        IsApplicationPayment = true;
+                        if (extras.ContainsKey("APPLICATIONPAYMENTDETAIL"))
+                        {
+                            ApplicationPaymentDetail = DeSerialze<ApplicationPaymentDetail>(extras.GetString("APPLICATIONPAYMENTDETAIL"));
+                        }
+                        if (extras.ContainsKey("ApplicationDetailDisplay"))
+                        {
+                            ApplicationDetailDisplay = DeSerialze<GetApplicationStatusDisplay>(extras.GetString("ApplicationDetailDisplay"));
+                        }
+                        if (extras.ContainsKey("ApplicationType"))
+                        {
+                            ApplicationType = extras.GetString("ApplicationType");
+                        }
+                        if (extras.ContainsKey("SearchTerm"))
+                        {
+                            SearchTerm = extras.GetString("SearchTerm");
+                        }
+                        if (extras.ContainsKey("ApplicationSystem"))
+                        {
+                            ApplicationSystem = extras.GetString("ApplicationSystem");
+                        }
+                        if (extras.ContainsKey("StatusId"))
+                        {
+                            StatusId = extras.GetString("StatusId");
+                        }
+                        if (extras.ContainsKey("StatusCode"))
+                        {
+                            StatusCode = extras.GetString("StatusCode");
+                        }
+                    }
+
+                    if (extras.ContainsKey("TOTAL"))
+                    {
+                        total = Intent.Extras.GetString("TOTAL");
+                    }
                 }
                 OnLoadMainFragment();
             }
@@ -130,7 +181,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             }
         }
 
-        public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
+        public void NextFragment(AndroidX.Fragment.App.Fragment fragment, Bundle bundle)
         {
             if (fragment is MPSelectPaymentMethodFragment)
             {
@@ -148,11 +199,24 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             if (!IsFinishing && !IsDestroyed)
             {
-                AndroidX.Fragment.App.Fragment  selectPaymentFragment = new MPSelectPaymentMethodFragment();
+                AndroidX.Fragment.App.Fragment selectPaymentFragment = new MPSelectPaymentMethodFragment();
                 Bundle bundle = new Bundle();
-                bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-                bundle.PutString("PAYMENT_ITEMS", JsonConvert.SerializeObject(accounts));
-                bundle.PutString("ACCOUNT_CHARGES_LIST", JsonConvert.SerializeObject(accountChargeList));
+                if (IsApplicationPayment)
+                {
+                    bundle.PutBoolean("ISAPPLICATIONPAYMENT", IsApplicationPayment);
+                    bundle.PutString("APPLICATIONPAYMENTDETAILS", JsonConvert.SerializeObject(ApplicationPaymentDetail));
+                    bundle.PutString("ApplicationType", ApplicationType);
+                    bundle.PutString("SearchTerm", SearchTerm);
+                    bundle.PutString("ApplicationSystem", ApplicationSystem);
+                    bundle.PutString("StatusId", StatusId);
+                    bundle.PutString("StatusCode", StatusCode);
+                }
+                else
+                {
+                    bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                    bundle.PutString("PAYMENT_ITEMS", JsonConvert.SerializeObject(accounts));
+                    bundle.PutString("ACCOUNT_CHARGES_LIST", JsonConvert.SerializeObject(accountChargeList));
+                }
                 bundle.PutString("TOTAL", total);
                 selectPaymentFragment.Arguments = bundle;
                 var fragmentTransaction = SupportFragmentManager.BeginTransaction();
@@ -201,7 +265,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 var manager = this.SupportFragmentManager;
                 if (manager.BackStackEntryCount > 0)
                 {
-                    manager.PopBackStack(SupportFragmentManager.GetBackStackEntryAt(0).Id, (int) Android.App.PopBackStackFlags.Inclusive);
+                    manager.PopBackStack(SupportFragmentManager.GetBackStackEntryAt(0).Id, (int)Android.App.PopBackStackFlags.Inclusive);
                 }
             }
             catch (Exception e)
@@ -239,7 +303,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                             .OnPositive((dialog, which) =>
                             {
                                 this.SupportFragmentManager.PopBackStack();
-                                this.SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod","title"));
+                                this.SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod", "title"));
                             })
                             .NeutralText(Utility.GetLocalizedCommonLabel("no"))
                             .NeutralColor(Resource.Color.black)
@@ -255,7 +319,30 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
 
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void SummaryDashBaordUpdate(SummaryDashBordRequest summaryDashBoardRequest)
@@ -288,7 +375,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             base.Finish();
         }
 
-
         public override void OnTrimMemory(TrimMemory level)
         {
             base.OnTrimMemory(level);
@@ -306,8 +392,44 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             }
         }
 
-        // AndroidX TODO: Temporary Fix for Android 5,5.1 
-        // AndroidX TODO: Due to this: https://github.com/xamarin/AndroidX/issues/131
+        public async void OnSetAppointment()
+        {
+            ShowProgressDialog();
+
+            string appointment = "NewAppointment";
+            try
+            {
+                string businessArea = ApplicationDetailDisplay.BusinessArea ?? string.Empty;
+                SchedulerDisplay response = await ScheduleManager.Instance.GetAvailableAppointment(businessArea);
+                if (response.StatusDetail.IsSuccess)
+                {
+                    Intent intent = new Intent(this, typeof(AppointmentSelectActivity));
+                    intent.PutExtra("applicationDetailDisplay", JsonConvert.SerializeObject(ApplicationDetailDisplay));
+                    intent.PutExtra("newAppointmentResponse", JsonConvert.SerializeObject(response));
+                    intent.PutExtra("appointment", appointment);
+                    StartActivityForResult(intent, Constants.APPLICATION_STATUS_DETAILS_SCHEDULER_REQUEST_CODE);
+                    SetResult(Result.Ok);
+                    Finish();
+                }
+                else
+                {
+                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                       .SetTitle(response.StatusDetail.Title)
+                       .SetMessage(response.StatusDetail.Message)
+                       .SetCTALabel(response.StatusDetail.PrimaryCTATitle)
+                       .Build();
+                    errorPopup.Show();
+                }
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+            HideProgressDialog();
+        }
+
+        //  TODO: AndroidX Temporary Fix for Android 5,5.1 
+        //  TODO: AndroidX Due to this: https://github.com/xamarin/AndroidX/issues/131
         public override AssetManager Assets =>
             (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop && Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.M)
             ? Resources.Assets : base.Assets;

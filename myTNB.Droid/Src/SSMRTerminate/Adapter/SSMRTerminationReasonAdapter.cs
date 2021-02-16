@@ -54,6 +54,7 @@ namespace myTNB_Android.Src.SSMRTerminate.Adapter
             }
 
             TextViewUtils.SetMuseoSans300Typeface(vh.txtTerminationReason);
+            vh.txtTerminationReason.TextSize = TextViewUtils.GetFontSize(16f);
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

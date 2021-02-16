@@ -112,6 +112,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 
                 TextViewUtils.SetMuseoSans500Typeface(btnRefresh);
 
+                txtEmptyReward.TextSize = TextViewUtils.GetFontSize(14f);
+                txtRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+                btnRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+
                 rewardMainLayout.Visibility = ViewStates.Visible;
 
                 rewardEmptyLayout.Visibility = ViewStates.Gone;

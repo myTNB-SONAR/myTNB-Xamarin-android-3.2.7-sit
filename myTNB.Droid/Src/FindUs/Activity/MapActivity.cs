@@ -345,8 +345,10 @@ namespace myTNB_Android.Src.FindUs.Activity
             TextViewUtils.SetMuseoSans300Typeface(selectorLocationType);
             TextViewUtils.SetMuseoSans300Typeface(edtSearch);
             TextViewUtils.SetMuseoSans300Typeface(txtSearch);
-
+            selectorLocationType.TextSize = TextViewUtils.GetFontSize(16f);
+            edtSearch.SetTextSize(ComplexUnitType.Dip,TextViewUtils.GetFontSize(12f));
             txtSearch.Hint = GetLabelByLanguage("searchPlaceholder");
+            txtSearch.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
             if (LocationTypesEntity.HasRecord())
             {
                 locationTypes = LocationTypesEntity.GetLocationTypes();

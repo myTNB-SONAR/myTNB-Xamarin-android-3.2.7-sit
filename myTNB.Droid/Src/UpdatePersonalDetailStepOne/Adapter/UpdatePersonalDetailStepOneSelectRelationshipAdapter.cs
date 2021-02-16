@@ -44,7 +44,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Adapter
 
             SelectRelationshipModel item = GetItemObject(position);
             vh.txtSupplyAccountName.Text = item.Type;
-
+            vh.txtSupplyAccountName.TextSize = TextViewUtils.GetFontSize(16);
             if (item.IsSelected)
             {
                 vh.imageActionIcon.Visibility = ViewStates.Visible;
@@ -67,6 +67,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Adapter
             public AccountTypeViewHolder(View itemView) : base(itemView)
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtSupplyAccountName);
+                txtSupplyAccountName.TextSize = TextViewUtils.GetFontSize(16f);
             }
         }
 

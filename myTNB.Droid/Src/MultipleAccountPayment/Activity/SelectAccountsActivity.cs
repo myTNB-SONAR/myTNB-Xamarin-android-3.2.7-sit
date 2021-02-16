@@ -204,6 +204,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 TextViewUtils.SetMuseoSans500Typeface(textTotalPayableCurrency, textTotalPayableTitle);
                 TextViewUtils.SetMuseoSans500Typeface(btnPayBill);
 
+                textTotalPayableTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                textTotalPayable.TextSize = TextViewUtils.GetFontSize(24f);
+                textTotalPayableCurrency.TextSize = TextViewUtils.GetFontSize(14f);
+                btnPayBill.TextSize = TextViewUtils.GetFontSize(16f);
                 SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 

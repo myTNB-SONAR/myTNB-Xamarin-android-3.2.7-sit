@@ -39,6 +39,3 @@ Thumbs.db
 
 # dotCover
 *.dotCover
-
-#dynatrace build log
-myTNB.Droid/logs/

@@ -64,6 +64,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_UpdatePasswordLarge : Resource.Style.Theme_UpdatePassword);
             try
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutConfirmPassword,
@@ -82,8 +83,8 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                 //txtInputLayoutNewPassword.ErrorEnabled = false;
                 //txtInputLayoutConfirmPassword.ErrorEnabled = false;
 
-                txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                txtInputLayoutConfirmPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                txtInputLayoutNewPassword.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                txtInputLayoutConfirmPassword.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
 
                 TextViewUtils.SetMuseoSans500Typeface(btnSave);
                 btnSave.Text = GetLabelCommonByLanguage("save");

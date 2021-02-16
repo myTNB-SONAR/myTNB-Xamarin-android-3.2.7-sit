@@ -43,6 +43,7 @@
   <string name="prelogin_btn_register">Register</string>
   <string name="prelogin_what_would_you_like_today">What would you like to do today?</string>
   <string name="prelogin_select_location">Find Us</string>
+  <string name="prelogin_appointment_set">Appointment Set</string>
   <string name="prelogin_feedback"><![CDATA[Submit<br/>Feedback]]></string>
   <string name="prelogin_call_us">Call Us</string>
   <string name="prelogin_promotion">Promotion</string>
@@ -1034,11 +1035,13 @@ You acknowledge that you have been provided with and have read and understood th
   <string name="runtime_permission_phone_rationale">This permission is required to allow us to identify your device unique ID . Your data privacy is of utmost importance to us. Please press \'Allow\' in next permission request dialog.</string>
   <string name="runtime_permission_storage_rationale">Allows myTnB app to write files in the storage (eg. pdf generator).</string>
   <string name="runtime_permission_location_rationale">Allows myTnB app to access location to show nearby stores.</string>
+  <string name="runtime_permission_calendar_rationale">Enable myTNB to access your calendar and save appointments.</string>
 
   <string name="runtime_permission_dialog_camera_title">Camera access needs permission.</string>
   <string name="runtime_permission_dialog_phone_title">myTNB App requests your permission.</string>
   <string name="runtime_permission_dialog_storage_title">Storage access needs permission.</string>
   <string name="runtime_permission_dialog_location_title">Location access needs permission.</string>
+  <string name="runtime_permission_dialog_calendar_title">"myTNB" Would Like to Access Your Calendar.</string>
   <string name="runtime_permission_dialog_btn_close">Close</string>
   <string name="runtime_permission_dialog_btn_show">Show</string>
   <!--End of Runtime Permissions-->

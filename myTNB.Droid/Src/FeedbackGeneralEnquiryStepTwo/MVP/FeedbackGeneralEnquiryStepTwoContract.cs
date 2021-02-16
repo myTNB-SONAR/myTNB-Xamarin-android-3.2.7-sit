@@ -52,9 +52,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
 
             void ShowProgressDialog();
 
-           
 
-        }
+            
+            }
 
         public interface IUserActionsListener : IBasePresenter
         {

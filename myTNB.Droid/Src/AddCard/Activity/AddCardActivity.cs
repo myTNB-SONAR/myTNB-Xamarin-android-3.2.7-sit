@@ -140,12 +140,17 @@ namespace myTNB_Android.Src.AddCard.Activity
                 txtCardExpDate.TextChanged += ExpTextChange;
 
                 txtCVV.TextChanged += CvvTextChange;
+
+                txtTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                saveCard.TextSize = TextViewUtils.GetFontSize(16f);
+                btnNext.TextSize = TextViewUtils.GetFontSize(16f);
+                SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_AddCardLarge : Resource.Style.Theme_AddCard);
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-
+           
         }
 
         protected override void OnResume()

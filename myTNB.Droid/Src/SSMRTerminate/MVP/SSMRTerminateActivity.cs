@@ -109,6 +109,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         [BindView(Resource.Id.reasonDetailContainer)]
         LinearLayout reasonDetailContainer;
 
+        [BindView(Resource.Id.ssmrApplicationScrollview)]
+        ScrollView ssmrApplicationScrollview;
+
         public override int ResourceId()
         {
             return Resource.Layout.SSMRDiscontinueApplicationLayout;
@@ -187,6 +190,17 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             TextViewUtils.SetMuseoSans500Typeface(btnDisconnectionSubmit, disconnectionTtile, disconnectionAccountTtile, contactDetailTtile, terminationReasonTitle);
             TextViewUtils.SetMuseoSans300Typeface(disconnectionAccountAddress, contactDetailConsent, txtTermsConditions , txtTermsConditionsFAQ, txtEmail, txtMobileNo, txtSelectReason, txtReason);
 
+            disconnectionTtile.TextSize = TextViewUtils.GetFontSize(16f);
+            disconnectionAccountTtile.TextSize = TextViewUtils.GetFontSize(14f);
+            disconnectionAccountAddress.TextSize = TextViewUtils.GetFontSize(14f);
+            contactDetailTtile.TextSize = TextViewUtils.GetFontSize(16f);
+            contactDetailConsent.TextSize = TextViewUtils.GetFontSize(12f);
+            terminationReasonTitle.TextSize = TextViewUtils.GetFontSize(16f);
+            txtTermsConditions.TextSize = TextViewUtils.GetFontSize(12f);
+            btnDisconnectionSubmit.TextSize = TextViewUtils.GetFontSize(16f);
+            txtSelectReason.TextSize = TextViewUtils.GetFontSize(16f);
+            txtReason.TextSize = TextViewUtils.GetFontSize(16f);
+            txtTermsConditionsFAQ.TextSize = TextViewUtils.GetFontSize(12f);
             contactDetailTtile.Text = GetLabelByLanguage("contactDetails");
             txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("emailAddress");
             txtInputLayoutMobileNo.Hint = GetLabelCommonByLanguage("mobileNumber");
@@ -270,6 +284,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             }
             ShowUIDetails();
+            ssmrApplicationScrollview.Post(()=> {
+                ssmrApplicationScrollview.FullScroll(FocusSearchDirection.Down);
+            });
         }
 
         private void ShowUIDetails()

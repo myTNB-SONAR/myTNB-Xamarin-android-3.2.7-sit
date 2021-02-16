@@ -157,6 +157,13 @@ namespace myTNB_Android.Src.FindUs.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtTitle);
                 TextViewUtils.SetMuseoSans300Typeface(txtAddress);
                 TextViewUtils.SetMuseoSans300Typeface(lblAddress, lblPhone, lblOepningHours, lblServices);
+                txtTitle.TextSize = TextViewUtils.GetFontSize(18f);
+                lblAddress.TextSize = TextViewUtils.GetFontSize(14f);
+                txtAddress.TextSize = TextViewUtils.GetFontSize(16f);
+                lblPhone.TextSize = TextViewUtils.GetFontSize(14f);
+                lblOepningHours.TextSize = TextViewUtils.GetFontSize(14f);
+                lblServices.TextSize = TextViewUtils.GetFontSize(14f);
+               
 
                 lblAddress.Text = Utility.GetLocalizedLabel("LocationDetails", "address").ToUpper();
                 lblPhone.Text = Utility.GetLocalizedLabel("LocationDetails", "phone").ToUpper();

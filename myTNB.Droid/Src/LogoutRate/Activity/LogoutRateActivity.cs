@@ -80,6 +80,9 @@ namespace myTNB_Android.Src.LogoutRate.Activity
 
                 //TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
                 TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, btnSubmit);
+
+                btnSubmit.TextSize = TextViewUtils.GetFontSize(16f);
+                txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16f);
                 // Create your application here
 
                 mPresenter = new LogoutRatePresenter(this);

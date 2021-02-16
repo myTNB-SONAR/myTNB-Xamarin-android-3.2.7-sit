@@ -1,14 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Android.Content;
-using Android.Graphics;
 using Android.OS;
-
-
-
-
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -51,10 +44,15 @@ using AndroidX.Core.Content;
 using AndroidX.AppCompat.App;
 using Google.Android.Material.Snackbar;
 using AndroidX.CoordinatorLayout.Widget;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
+using myTNB.Mobile.SessionCache;
+using myTNB;
+using myTNB.Mobile;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
-    public class HomeMenuFragment : BaseFragmentCustom, HomeMenuContract.IHomeMenuView, ViewTreeObserver.IOnGlobalLayoutListener, View.IOnFocusChangeListener
+    public class HomeMenuFragment : BaseFragmentCustom, HomeMenuContract.IHomeMenuView
+            , ViewTreeObserver.IOnGlobalLayoutListener, View.IOnFocusChangeListener
     {
         [BindView(Resource.Id.newFAQShimmerView)]
         LinearLayout newFAQShimmerView;
@@ -230,7 +228,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private NewFAQScrollListener mListener;
 
-
         private string mSavedTimeStamp = "0000000";
 
         private string savedEnergySavingTipsTimeStamp = "0000000";
@@ -280,6 +277,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             base.OnCreate(savedInstanceState);
             presenter = new HomeMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -331,7 +329,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             if (requestCode == SSMR_METER_HISTORY_ACTIVITY_CODE)
             {
-                if (resultCode == (int) Result.Ok)
+                if (resultCode == (int)Result.Ok)
                 {
                     try
                     {
@@ -389,9 +387,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupMyServiceView();
                 SetupNewFAQView();
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
-                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd, addActionLabel, searchActionLabel,
-                                                    loadMoreLabel, rearrangeLabel, myServiceLoadMoreLabel, txtNewLabel,
-                                                    btnMyServiceRefresh);
+                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
+                    , addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel
+                    , myServiceLoadMoreLabel, txtNewLabel, btnMyServiceRefresh);
+
+                accountGreeting.TextSize = TextViewUtils.GetFontSize(16f);
+                accountGreetingName.TextSize = TextViewUtils.GetFontSize(16f);
+                txtNewLabel.TextSize = TextViewUtils.GetFontSize(8f);
+                refreshMsg.TextSize = TextViewUtils.GetFontSize(14f);
+                addActionLabel.TextSize = TextViewUtils.GetFontSize(12f);
+                searchActionLabel.TextSize = TextViewUtils.GetFontSize(12f);
+                txtAdd.TextSize = TextViewUtils.GetFontSize(14f);
+                rearrangeLabel.TextSize = TextViewUtils.GetFontSize(12f);
+                loadMoreLabel.TextSize = TextViewUtils.GetFontSize(12f);
+                myServiceLoadMoreLabel.TextSize = TextViewUtils.GetFontSize(12f);
+                txtMyServiceRefreshMessage.TextSize = TextViewUtils.GetFontSize(12f);
+                newFAQTitle.TextSize = TextViewUtils.GetFontSize(14f);
+                btnMyServiceRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+                btnRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+                accountHeaderTitle.TextSize = TextViewUtils.GetFontSize(14f);
+
+                SearchView searchView = new SearchView(this.Context);
+                LinearLayout linearLayout1 = (LinearLayout)searchView.GetChildAt(0);
+                LinearLayout linearLayout2 = (LinearLayout)linearLayout1.GetChildAt(2);
+                LinearLayout linearLayout3 = (LinearLayout)linearLayout2.GetChildAt(1);
+                AutoCompleteTextView autoComplete = (AutoCompleteTextView)linearLayout3.GetChildAt(0);
+                autoComplete.SetTextSize(ComplexUnitType.Dip, TextViewUtils.GetFontSize(12f));
 
                 addActionLabel.Text = GetLabelByLanguage("add");
                 searchActionLabel.Text = GetLabelByLanguage("search");
@@ -443,7 +464,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     closeImageView.Clickable = true;
 
-                    closeImageView.Click += delegate {
+                    closeImageView.Click += delegate
+                    {
                         OnSearchOutFocus(true);
                     };
                 }
@@ -502,6 +524,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 StartActivity(LaunchViewIntent);
                 Utility.LoggingNonFatalError(e);
             }
+
         }
 
         public void SetRefreshLayoutParams()
@@ -702,7 +725,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             newFAQShimmerList.SetLayoutManager(linearShimmerLayoutManager);
             LinearSnapHelper shimmerSnapHelper = new LinearSnapHelper();
             shimmerSnapHelper.AttachToRecyclerView(newFAQShimmerList);
-
         }
 
         public void SetMyServiceRecycleView()
@@ -713,7 +735,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             myServiceShimmerView.Visibility = ViewStates.Visible;
             myServiceView.Visibility = ViewStates.Gone;
             this.presenter.InitiateMyService();
-
         }
 
         public void SetMyServiceResult(List<MyService> list)
@@ -740,7 +761,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Utility.LoggingNonFatalError(e);
                         }
                         myServiceShimmerView.Visibility = ViewStates.Gone;
+
                         myServiceView.Visibility = ViewStates.Visible;
+
+
                     }
                     catch (System.Exception ex)
                     {
@@ -881,7 +905,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 {
                                     ImageView image = new ImageView(this.Activity);
                                     image.Id = i;
-                                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent
+                                        , ViewGroup.LayoutParams.WrapContent);
                                     layoutParams.RightMargin = 9;
                                     layoutParams.LeftMargin = 9;
                                     image.LayoutParameters = layoutParams;
@@ -966,7 +991,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 searchEditText.RequestFocus();
                 try
                 {
-                    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.M)
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
                     {
                         searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
                     }
@@ -998,19 +1023,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private void SetAccountActionHeader()
         {
             LinearLayout.LayoutParams param = (LinearLayout.LayoutParams)accountsActionsContainer.LayoutParameters;
-            param.LeftMargin = (int) DPUtils.ConvertDPToPx(16f);
+            param.LeftMargin = (int)DPUtils.ConvertDPToPx(16f);
             param.RightMargin = (int)DPUtils.ConvertDPToPx(16f);
 
             TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle, accountGreeting, accountGreetingName);
             accountHeaderTitle.Text = GetLabelByLanguage("myAccounts");
             searchEditText.SetIconifiedByDefault(false);
-            searchEditText.SetQueryHint(GetLabelByLanguage("searchPlaceholder"));
-            searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this,accountsAdapter));
+            var hintText = TextViewUtils.IsLargeFonts ? (Html.FromHtml("<big>" + GetLabelByLanguage("searchPlaceholder") + "</big>")) : Html.FromHtml(GetLabelByLanguage("searchPlaceholder"));
+            searchEditText.SetQueryHint(hintText);
+            searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this, accountsAdapter));
             searchEditText.SetOnQueryTextFocusChangeListener(this);
 
             try
             {
-                if (Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.N)
+                if (Build.VERSION.SdkInt < BuildVersionCodes.N)
                 {
                     LinearLayout.LayoutParams searchParam = (LinearLayout.LayoutParams)searchEditText.LayoutParameters;
                     searchParam.LeftMargin = -(int)DPUtils.ConvertDPToPx(32f);
@@ -1026,9 +1052,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 EditText searchText = searchEditText.FindViewById<EditText>(searchEditText.Context.Resources.GetIdentifier("android:id/search_src_text", null, null));
                 searchText.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
                 searchText.SetHintTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sixty_opacity_white)));
-                searchText.SetTextSize(ComplexUnitType.Dip, 12f);
+                searchText.SetTextSize(ComplexUnitType.Dip,TextViewUtils.GetFontSize(12f));
                 TextViewUtils.SetMuseoSans500Typeface(searchText);
-                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     searchText.SetPadding((int)DPUtils.ConvertDPToPx(34f), 0, 0, 0);
                 }
@@ -1056,7 +1082,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             try
             {
-                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
                 }
@@ -1183,20 +1209,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         }
 
         public void OnUpdateAccountListChanged(bool isSearchSubmit)
-		{
+        {
             if (isSearchSubmit)
             {
                 ShowSearchAction(false);
-                /*LinearLayoutManager manager = accountsRecyclerView.GetLayoutManager() as LinearLayoutManager;
-                int position = manager.FindFirstCompletelyVisibleItemPosition();
+            }
+        }
 
-                List<string> accountNumberList = accountsAdapter.GetAccountCardNumberLists();
-                this.presenter.LoadSummaryDetailsInBatch(accountNumberList);*/
-			}
-		}
-
-
-        void OnClickChanged(object sender, int position)
+        async void OnClickChanged(object sender, int position)
         {
             try
             {
@@ -1213,18 +1233,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
                         else if (selectedService.ServiceCategoryId == "1001")
                         {
-                            /*Intent applySMRIntent;
-                            if (MyTNBAccountManagement.GetInstance().IsSMROnboardingShown())
-                            {
-                                applySMRIntent = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
-                            }
-                            else
-                            {
-                                applySMRIntent = new Intent(this.Activity, typeof(OnBoardingActivity));
-                            }*/
-
-                            // Hide SMR Onboarding Tutorial
-
                             if (!UserSessions.HasSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
                                 UserSessions.DoSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
@@ -1233,7 +1241,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Intent applySMRIntent = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
                             StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
                         }
-                        else if (selectedService.ServiceCategoryId == "1004" && (Utility.IsEnablePayment() && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded()))
+                        else if (selectedService.ServiceCategoryId == "1004" && (Utility.IsEnablePayment()
+                            && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded()))
                         {
                             if (!UserSessions.HasPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
@@ -1242,7 +1251,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
                             StartActivity(payment_activity);
                         }
-                        else if (selectedService.ServiceCategoryId == "1005" && (!isRefreshShown && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded()))
+                        else if (selectedService.ServiceCategoryId == "1005" && (!isRefreshShown
+                            && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded()))
                         {
                             if (!UserSessions.HasViewBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
@@ -1268,6 +1278,41 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 supplyAccount.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
                                 StartActivity(supplyAccount);
                             }
+                        }
+                        else if (selectedService.ServiceCategoryId == "1006")
+                        {
+                            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
+                            if (searchApplicationTypeResponse == null)
+                            {
+                                ShowProgressDialog();
+                                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+                                if (searchApplicationTypeResponse != null
+                                    && searchApplicationTypeResponse.StatusDetail != null
+                                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                                {
+                                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+                                }
+                                HideProgressDialog();
+                            }
+                            if (searchApplicationTypeResponse != null
+                                && searchApplicationTypeResponse.StatusDetail != null
+                                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                            {
+                                AllApplicationsCache.Instance.Clear();
+                                AllApplicationsCache.Instance.Reset();
+                                Intent applicationLandingIntent = new Intent(this.Activity, typeof(ApplicationStatusLandingActivity));
+                                StartActivity(applicationLandingIntent);
+                            }
+                            else
+                            {
+                                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                     .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
+                                     .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
+                                     .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
+                                     .Build();
+                                errorPopup.Show();
+                            }
+                            this.SetIsClicked(false);
                         }
                         else
                         {
@@ -1392,9 +1437,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             mRearrangeSnackbar = Snackbar.Make(rootView,
                 Utility.GetLocalizedLabel("RearrangeAccount", "rearrangeToastSuccessMsg"),
                 Snackbar.LengthLong);
-                View v = mRearrangeSnackbar.View;
-                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                tv.SetMaxLines(5);
+            View v = mRearrangeSnackbar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
             mRearrangeSnackbar.Show();
         }
 
@@ -1769,7 +1814,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
 
                 string refreshMaintenanceMsg = string.IsNullOrEmpty(contentMsg) ? Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage") : contentMsg;
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMaintenanceMsg, FromHtmlOptions.ModeLegacy);
                 }
@@ -1794,7 +1839,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 string refreshMsg = string.IsNullOrEmpty(contentMsg) ? GetLabelByLanguage("refreshMessage") : contentMsg;
                 string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? GetLabelByLanguage("refreshBtnText") : buttonMsg;
                 btnRefresh.Text = refreshBtnTxt;
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMsg, FromHtmlOptions.ModeLegacy);
                 }
@@ -1984,7 +2029,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     searchEditText.SetQuery(HomeMenuUtils.GetQueryWord(), false);
                     try
                     {
-                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.M)
+                        if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
                         {
                             searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
                         }
@@ -2415,61 +2460,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     try
                     {
-                        if (isVisible)
-                        {
-                            myServiceLoadMoreContainer.Visibility = ViewStates.Visible;
-                            if (isRotate)
-                            {
-                                if (!isMyServiceAlreadyRotated)
-                                {
-                                    isMyServiceAlreadyRotated = true;
-                                    AnimationSet animSet = new AnimationSet(true);
-                                    animSet.Interpolator = new DecelerateInterpolator();
-                                    animSet.FillAfter = true;
-                                    animSet.FillEnabled = true;
-
-                                    RotateAnimation animRotate = new RotateAnimation(0.0f, -180.0f,
-                                        Dimension.RelativeToSelf, 0.5f,
-                                        Dimension.RelativeToSelf, 0.5f);
-
-                                    animRotate.Duration = 500;
-                                    animRotate.FillAfter = true;
-                                    animSet.AddAnimation(animRotate);
-
-                                    myServiceLoadMoreImg.StartAnimation(animSet);
-
-                                    myServiceLoadMoreLabel.Text = GetLabelByLanguage("showLess");
-                                }
-                            }
-                            else
-                            {
-                                if (isMyServiceAlreadyRotated)
-                                {
-                                    isMyServiceAlreadyRotated = false;
-                                    AnimationSet animSet = new AnimationSet(true);
-                                    animSet.Interpolator = new DecelerateInterpolator();
-                                    animSet.FillAfter = true;
-                                    animSet.FillEnabled = true;
-
-                                    RotateAnimation animRotate = new RotateAnimation(-180.0f, 0,
-                                        Dimension.RelativeToSelf, 0.5f,
-                                        Dimension.RelativeToSelf, 0.5f);
-
-                                    animRotate.Duration = 500;
-                                    animRotate.FillAfter = true;
-                                    animSet.AddAnimation(animRotate);
-
-                                    myServiceLoadMoreImg.StartAnimation(animSet);
-
-                                    myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
-
-                                }
-                            }
-                        }
-                        else
-                        {
-                            myServiceLoadMoreContainer.Visibility = ViewStates.Gone;
-                        }
+                        myServiceLoadMoreContainer.Visibility = ViewStates.Gone;
                     }
                     catch (System.Exception e)
                     {
@@ -2503,12 +2494,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             this.presenter.DoLoadMoreAccount();
         }
 
-        [OnClick(Resource.Id.myServiceLoadMoreContainer)]
-        internal void OnMyServiceLoadMorelick(object sender, EventArgs e)
-        {
-            this.presenter.DoMySerivceLoadMoreAccount();
-        }
-
         [OnClick(Resource.Id.rearrangeContainer)]
         internal void OnRearrangeClick(object sender, EventArgs e)
         {
@@ -2539,14 +2524,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     try
                     {
-                        if (isMyServiceExpand)
-                        {
-                            bottomContainer.SetBackgroundResource(Resource.Drawable.dashboard_botton_sheet_bg_expanded);
-                        }
-                        else
-                        {
-                            bottomContainer.SetBackgroundResource(Resource.Drawable.dashboard_botton_sheet_bg);
-                        }
+                        bottomContainer.SetBackgroundResource(Resource.Drawable.dashboard_botton_sheet_bg_expanded);
                     }
                     catch (System.Exception e)
                     {
@@ -2627,7 +2605,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public override string GetPageId()
         {
             return PAGE_ID;
-          }
+        }
 
         public void OnShowHomeMenuFragmentTutorialDialog()
         {
@@ -2706,7 +2684,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public bool CheckIsScrollable()
         {
             View child = (View)summaryNestScrollView.GetChildAt(0);
-
             return summaryNestScrollView.Height < child.Height + summaryNestScrollView.PaddingTop + summaryNestScrollView.PaddingBottom;
         }
 
@@ -3102,7 +3079,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
                         else
                         {
-                            if(firstCompleteItemShow >= i && firstCompleteItemShow < nextLastItem)
+                            if (firstCompleteItemShow >= i && firstCompleteItemShow < nextLastItem)
                             {
                                 selectedDot.SetImageResource(Resource.Drawable.onboarding_circle_active);
                             }

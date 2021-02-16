@@ -55,9 +55,14 @@ namespace myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.Activity
                 TextViewUtils.SetMuseoSans300Typeface(verifyCodeTxtContentInfo);
                 //TextViewUtils.SetMuseoSans300Typeface(verifyCodeTxtContentInfo2);
                 TextViewUtils.SetMuseoSans500Typeface(verifyCodeBtnLogin);
+                verifyCodeTxtTitleInfo.TextSize = TextViewUtils.GetFontSize(16f);
+                verifyCodeTxtContentInfo.TextSize = TextViewUtils.GetFontSize(14f);
+                verifyCodeBtnLogin.TextSize = TextViewUtils.GetFontSize(16f);
+
 
                 verifyCodeTxtTitleInfo.Text = GetLabelByLanguage("title");
                 verifyCodeBtnLogin.Text = GetLabelByLanguage("proceedToLogin");
+
 
                 Bundle extras = Intent.Extras;
 

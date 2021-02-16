@@ -101,7 +101,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 }
                 vh.AmountLabel.Error = "";
                 vh.AmountLabel.ErrorEnabled = false;
-                vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
+                vh.AmountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomHintLarge : Resource.Style.TextInputLayoutBottomHint);
+                
                 vh.Amount.AfterTextChanged += (sender, args) =>
                 {
                     try
@@ -160,7 +161,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     {
                         vh.AmountLabel.Error = Utility.GetLocalizedLabel("Error", "minimumPayAmount");
                         vh.AmountLabel.ErrorEnabled = true;
-                        vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHintAmount);
+                        vh.AmountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                       
                         vh.Amount.SetTextColor(new Color(ContextCompat.GetColor(mActicity,Resource.Color.tomato)));
                         vh.Amount.RequestFocus();
                         item.isValidAmount = false;
@@ -173,7 +175,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     {
                         vh.AmountLabel.Error = "";
                         vh.AmountLabel.ErrorEnabled = false;
-                        vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
+                        vh.AmountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomHintLarge : Resource.Style.TextInputLayoutBottomHint);
+                       
+                       
                         vh.Amount.SetTextColor(new Color(ContextCompat.GetColor(mActicity, Resource.Color.tunaGrey)));
                         item.isValidAmount = true;
                         item.amount = newAmount;
@@ -193,7 +197,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 {
                     vh.AmountLabel.Error = Utility.GetLocalizedLabel("Error", "minimumPayAmount");
                     vh.AmountLabel.ErrorEnabled = true;
-                    vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                    vh.AmountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                   
                     vh.Amount.RequestFocus();
                     item.isValidAmount = false;
                     item.isSelected = false;
@@ -268,6 +273,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
 
                 TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress);
                 TextViewUtils.SetMuseoSans300Typeface(AmountLabel);
+
+                AccountLabel.TextSize = TextViewUtils.GetFontSize(16f);
+                AccountNumber.TextSize = TextViewUtils.GetFontSize(14f);
+                AccountAddress.TextSize = TextViewUtils.GetFontSize(12f);
+                AmountLabel.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.AmountHint_TextInputLayout_TextAppearance_LightBackgroundLarge : Resource.Style.AmountHint_TextInputLayout_TextAppearance_LightBackground);
 
                 Amount.AddTextChangedListener(new RestrictAmountChangeListener(Amount, AmountLabel, 2));
             }

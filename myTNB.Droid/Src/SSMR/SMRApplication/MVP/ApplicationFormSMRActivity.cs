@@ -54,6 +54,10 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [BindView(Resource.Id.selector_smr_account)]
         TextView selectAccountContainer;
 
+        [BindView(Resource.Id.txtAccountType)]
+        TextView txtAccountType;
+        
+
         [BindView(Resource.Id.btnSubmitRegistration)]
         Button btnSubmitRegistration;
 
@@ -94,6 +98,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             TextViewUtils.SetMuseoSans300Typeface(selectAccountContainer,applySMRAddress,txtTermsAndCondition,txtEmail,txtMobileNumber,txtEditingNote);
             TextViewUtils.SetMuseoSans500Typeface(applySMRForLabel, applySMRContactLabel);
 
+           
+            btnSubmitRegistration.TextSize = TextViewUtils.GetFontSize(16f);
+
             txtEmail.TextChanged += TextChange;
             txtMobileNumber.TextChanged += TextChange;
 
@@ -132,6 +139,14 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                     }
                 }
             };
+
+            applySMRForLabel.TextSize = TextViewUtils.GetFontSize(16);
+            txtAccountType.TextSize = TextViewUtils.GetFontSize(12);
+            selectAccountContainer.TextSize = TextViewUtils.GetFontSize(16);
+            applySMRAddress.TextSize = TextViewUtils.GetFontSize(14);
+            applySMRContactLabel.TextSize = TextViewUtils.GetFontSize(16);
+            txtEditingNote.TextSize = TextViewUtils.GetFontSize(12);
+            txtTermsAndCondition.TextSize = TextViewUtils.GetFontSize(12);
         }
 
         public void GetCARegisteredContactInfo()

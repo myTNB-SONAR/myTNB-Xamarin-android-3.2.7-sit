@@ -1,6 +1,10 @@
 ﻿using Android.Graphics;
 using Android.Widget;
 using Google.Android.Material.TextField;
+using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.Common;
+using myTNB_Android.Src.Database;
+using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -9,7 +13,7 @@ namespace myTNB_Android.Src.Utils
 
         public static string MuseoSans300 = "MuseoSans_300.otf";
         public static string MuseoSans500 = "MuseoSans_500.otf";
-
+        public static string FontSelected = string.Empty;
 
         public static void SetTypeface(string family, params EditText[] editTexts)
         {
@@ -29,7 +33,6 @@ namespace myTNB_Android.Src.Utils
             SetTypeface(MuseoSans500, editTexts);
         }
 
-
         public static void SetTypeface(string family, params TextView[] textViews)
         {
             foreach (var textView in textViews)
@@ -47,7 +50,6 @@ namespace myTNB_Android.Src.Utils
         {
             SetTypeface(MuseoSans500, textViews);
         }
-
 
         public static void SetTypeface(string family, params TextInputLayout[] textInputLayouts)
         {
@@ -67,7 +69,6 @@ namespace myTNB_Android.Src.Utils
             SetTypeface(MuseoSans500, textInputLayouts);
         }
 
-
         public static void SetTypeface(string family, params Button[] buttons)
         {
             foreach (var textView in buttons)
@@ -86,5 +87,108 @@ namespace myTNB_Android.Src.Utils
             SetTypeface(MuseoSans500, buttons);
         }
 
+        public static string SelectedFontSize()
+        {
+            LargeFontModel largeFontModel = new LargeFontModel();
+            LargeFontEntity largeFont = new LargeFontEntity();
+            var db = DBHelper.GetSQLiteConnection();
+
+
+            if (LargeFontEntity.TableExists<LargeFontEntity>(db))
+            {
+                var selected = db.Query<LargeFontEntity>("select * from LargeFontEntity");
+                if (selected.Count > 0)
+                {
+                    largeFontModel.selected = selected[0].selected;
+                    largeFontModel.Key = selected[0].Key;
+                    largeFontModel.Value = selected[0].Value;
+                    FontSelected = selected[0].Value;
+                }
+            }
+            return largeFontModel.Key;
+        }
+
+        public static bool IsLargeFonts
+        {
+            get
+            {
+                return SelectedFontSize() == "L";
+            }
+        }
+
+        public static float GetFontSize(float font)
+        {
+
+            var Key = SelectedFontSize();
+
+            if (Key != null && Key == "L")
+            {
+
+                return font + 4;
+            }
+
+            return font;
+        }
+
+        public static void SaveFontSize(Item selectedItem)
+        {
+            LargeFontEntity largeFontEntity = new LargeFontEntity();
+            largeFontEntity.Key = selectedItem.type;
+            largeFontEntity.Value = selectedItem.title;
+            largeFontEntity.selected = selectedItem.selected;
+
+            largeFontEntity.DeleteTable();
+            largeFontEntity.CreateTable();
+
+            largeFontEntity.InsertItem(largeFontEntity);
+        }
+
+        private static void SetTextSize(float size, params TextView[] textViews)
+        {
+            foreach (var textView in textViews)
+            {
+                textView.TextSize = GetFontSize(size);
+            }
+        }
+
+        internal static void SetTextSize9(params TextView[] textViews)
+        {
+            SetTextSize(9, textViews);
+        }
+
+        internal static void SetTextSize10(params TextView[] textViews)
+        {
+            SetTextSize(10, textViews);
+        }
+
+        internal static void SetTextSize11(params TextView[] textViews)
+        {
+            SetTextSize(11, textViews);
+        }
+
+        internal static void SetTextSize12(params TextView[] textViews)
+        {
+            SetTextSize(12, textViews);
+        }
+
+        internal static void SetTextSize14(params TextView[] textViews)
+        {
+            SetTextSize(14, textViews);
+        }
+
+        internal static void SetTextSize16(params TextView[] textViews)
+        {
+            SetTextSize(16, textViews);
+        }
+
+        internal static void SetTextSize20(params TextView[] textViews)
+        {
+            SetTextSize(20, textViews);
+        }
+
+        internal static void SetTextSize24(params TextView[] textViews)
+        {
+            SetTextSize(24, textViews);
+        }
     }
 }

@@ -11,7 +11,6 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using Firebase.Iid;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.MVP;
 using myTNB_Android.Src.Base.Activity;
@@ -36,6 +35,12 @@ using myTNB_Android.Src.MyTNBService.Response;
 using Firebase.DynamicLinks;
 using Google.Android.Material.Snackbar;
 using AndroidX.Core.Content;
+using myTNB.Mobile;
+using myTNB;
+using myTNB.Mobile.SessionCache;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using Newtonsoft.Json;
+using Firebase.Iid;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -75,6 +80,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         private string urlSchemaData = "";
         private string urlSchemaPath = "";
+        private Snackbar mSnackBar;
+        private Snackbar mNoInternetSnackbar;
+        private Snackbar mUnknownExceptionSnackBar;
 
         private AppLaunchNavigation currentNavigation = AppLaunchNavigation.Nothing;
 
@@ -102,21 +110,40 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     if (Intent.Extras.ContainsKey("Type"))
                     {
                         string notifType = Intent.Extras.GetString("Type");
-                        UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                         UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
+                        if (notifType.ToUpper() == ApplicationStatusNotificationModel.TYPE_APPLICATIONSTATUS
+                            && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID)
+                            && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONID)
+                            && Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE))
+                        {
+                            string saveID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_SAVEAPPLICATIONID);
+                            string applicationID = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONID);
+                            string applicationType = Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_APPLICATIONTYPE);
+                            string system = Intent.Extras.ContainsKey(ApplicationStatusNotificationModel.Param_System)
+                                ? Intent.Extras.GetString(ApplicationStatusNotificationModel.Param_System)
+                                : string.Empty;
+                            UserSessions.SetApplicationStatusNotification(saveID, applicationID, applicationType, system);
+                        }
+                        else
+                        {
+                            UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+                        }
                     }
 
                     if (Intent.Extras.ContainsKey("Email"))
                     {
                         string email = Intent.Extras.GetString("Email");
-                        UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
                         UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
+                        if (PreferenceManager.GetDefaultSharedPreferences(this) != null
+                            && !"APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(PreferenceManager.GetDefaultSharedPreferences(this)).ToUpper()))
+                        {
+                            UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+                        }
                     }
-
 
                     // Get CategoryBrowsable intent data
                     var data = Intent?.Data?.EncodedAuthority;
-                    if (!String.IsNullOrEmpty(data))
+                    if (!string.IsNullOrEmpty(data))
                     {
                         urlSchemaData = data;
                         urlSchemaPath = Intent?.Data?.EncodedPath;
@@ -129,8 +156,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
 
         }
-
-
 
         public bool IsActive()
         {
@@ -213,7 +238,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
-        private Snackbar mUnknownExceptionSnackBar;
         public void ShowRetryOptionUknownException(Exception unkownException)
         {
             try
@@ -273,6 +297,48 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, AppLaunchNavigation.Dashboard.ToString());
                     StartActivity(WalkthroughIntent);
                 }
+            }
+        }
+
+        public async void ShowApplicationStatusDetails()
+        {
+            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
+            if (searchApplicationTypeResponse == null)
+            {
+                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+                if (searchApplicationTypeResponse != null
+                    && searchApplicationTypeResponse.StatusDetail != null
+                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                {
+                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+                }
+            }
+
+            if (searchApplicationTypeResponse != null
+                && searchApplicationTypeResponse.StatusDetail != null
+                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+            {
+                ApplicationStatusNotificationModel notificationObj = UserSessions.ApplicationStatusNotification;
+                ApplicationDetailDisplay detailResponse = await ApplicationStatusManager.Instance.GetApplicationDetail(notificationObj.SaveApplicationID
+                       , notificationObj.ApplicationID
+                       , notificationObj.ApplicationType
+                       , notificationObj.System);
+
+                if (detailResponse.StatusDetail.IsSuccess)
+                {
+                    Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+                    applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(detailResponse.Content));
+                    applicationStatusDetailIntent.PutExtra("isPush", true);
+                    StartActivity(applicationStatusDetailIntent);
+                }
+                else
+                {
+                    ShowDashboard();
+                }
+            }
+            else
+            {
+                ShowDashboard();
             }
         }
 
@@ -404,7 +470,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             base.Ready();
         }
 
-
         protected override void OnStart()
         {
             base.OnStart();
@@ -457,7 +522,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         }
                     }
 #endif
-
                     if (!hasBeenCalled)
                     {
                         userActionsListener.Start();
@@ -629,7 +693,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         }
 
-
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             try
@@ -654,7 +717,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-        private Snackbar mSnackBar;
+
         public void ShowSMSPermissionRationale()
         {
             try
@@ -747,6 +810,10 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 txtDialogTitle.Text = title;
                 txtDialogMessage.Text = message;
                 btnUpdateNow.Text = btnLabel;
+                txtDialogTitle.TextSize = TextViewUtils.GetFontSize(16);
+                txtDialogMessage.TextSize = TextViewUtils.GetFontSize(14);
+                btnUpdateNow.TextSize = TextViewUtils.GetFontSize(18);
+
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
                     txtDialogMessage.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
@@ -825,7 +892,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
-
         public override void OnTrimMemory(TrimMemory level)
         {
             try
@@ -850,8 +916,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
-
-        private Snackbar mNoInternetSnackbar;
         public void ShowNoInternetSnackbar()
         {
             if (mNoInternetSnackbar != null && mNoInternetSnackbar.IsShown)
@@ -946,7 +1010,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                                     int secondMilli = 0;
                                     try
                                     {
-                                        secondMilli = (int) (float.Parse(item.ShowForSeconds, CultureInfo.InvariantCulture.NumberFormat) * 1000);
+                                        secondMilli = (int)(float.Parse(item.ShowForSeconds, CultureInfo.InvariantCulture.NumberFormat) * 1000);
                                     }
                                     catch (Exception nea)
                                     {
@@ -1042,25 +1106,60 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 deepLink = pendingResult.Link;
                 string deepLinkUrl = deepLink.ToString();
-                if (!string.IsNullOrEmpty(deepLinkUrl) && deepLinkUrl.Contains("rewards"))
+                if (!string.IsNullOrEmpty(deepLinkUrl))
                 {
-                    urlSchemaData = "rewards";
-                    string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
-                    urlSchemaPath = "rewardId=" + id;
-                }
-                else if (!string.IsNullOrEmpty(deepLinkUrl) && deepLinkUrl.Contains("whatsnew"))
-                {
-                    urlSchemaData = "whatsnew";
-                    string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
-                    urlSchemaPath = "whatsNewId=" + id;
+                    if (deepLinkUrl.Contains("rewards"))
+                    {
+                        urlSchemaData = "rewards";
+                        string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
+                        urlSchemaPath = "rewardId=" + id;
+                    }
+                    else if (deepLinkUrl.Contains("whatsnew"))
+                    {
+                        urlSchemaData = "whatsnew";
+                        string id = deepLinkUrl.Substring(deepLinkUrl.LastIndexOf("=") + 1);
+                        urlSchemaPath = "whatsNewId=" + id;
+                    }
+                    else if (deepLinkUrl.Contains("applicationListing"))
+                    {
+                        urlSchemaData = "applicationListing";
+                    }
+                    else if (deepLinkUrl.Contains("applicationDetails"))
+                    {
+                        urlSchemaData = "applicationDetails";
+                        ApplicationDetailsDeeplinkCache.Instance.SetData(deepLinkUrl);
+                    }
                 }
             }
-
         }
 
         void Android.Gms.Tasks.IOnFailureListener.OnFailure(Java.Lang.Exception e)
         {
             Utility.LoggingNonFatalError(e);
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

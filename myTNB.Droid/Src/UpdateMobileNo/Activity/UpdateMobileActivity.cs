@@ -71,7 +71,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_UpdateMobileLarge : Resource.Style.Theme_UpdateMobile);
             try
             {
                 Bundle intent = Intent.Extras;
@@ -100,6 +100,10 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 lblInfoLabel.Text = GetLabelByLanguage("infoTitle");
                 lblVerifyMobileNo.Text = GetLabelByLanguage("details");
 
+                lblInfoLabel.TextSize = TextViewUtils.GetFontSize(12f);
+                lblVerifyMobileNo.TextSize = TextViewUtils.GetFontSize(14f);
+                btnSave.TextSize = TextViewUtils.GetFontSize(16f);
+
                 progress = new MaterialDialog.Builder(this)
                     .Title(GetString(Resource.String.update_mobile_progress_title))
                     .Content(GetString(Resource.String.update_mobile_progress_content))
@@ -115,7 +119,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 {
                     lblVerifyMobileNo.Visibility = ViewStates.Visible;
                     SetToolBarTitle(GetLabelByLanguage("verifyDeviceTitle"));
-                    
                 }
                 else
                 {

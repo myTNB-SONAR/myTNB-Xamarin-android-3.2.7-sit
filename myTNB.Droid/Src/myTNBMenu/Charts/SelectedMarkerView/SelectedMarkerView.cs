@@ -43,6 +43,8 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
             titlekWhMarker.Gravity = GravityFlags.Center;
             TextViewUtils.SetMuseoSans500Typeface(titleMarker);
             TextViewUtils.SetMuseoSans300Typeface(titlekWhMarker);
+            titleMarker.TextSize = TextViewUtils.GetFontSize(11f);
+            titlekWhMarker.TextSize = TextViewUtils.GetFontSize(11f);
             titlekWhMarker.Visibility = ViewStates.Gone;
             decimalFormat = new DecimalFormat("#,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
             kwhFormat = new DecimalFormat("#,###,##0", new DecimalFormatSymbols(Java.Util.Locale.Us));

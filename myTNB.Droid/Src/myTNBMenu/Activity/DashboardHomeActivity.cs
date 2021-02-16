@@ -1,8 +1,6 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime;
-using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -11,8 +9,6 @@ using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
-using AndroidX.Fragment.App;
-
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -33,7 +29,6 @@ using myTNB_Android.Src.Rating.Activity;
 using myTNB_Android.Src.Rating.Model;
 using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.SelectSupplyAccount.Activity;
-using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.SummaryDashBoard.SummaryListener;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewReceipt.Activity;
@@ -47,6 +42,16 @@ using System.Globalization;
 using AndroidX.CoordinatorLayout.Widget;
 using Google.Android.Material.BottomNavigation;
 using AndroidX.Core.Content;
+using Android.Text;
+using Android.Text.Style;
+using myTNB.Mobile.SessionCache;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using myTNB;
+using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
+using myTNB.Mobile;
+using Android.Util;
+using myTNB_Android.Src.myTNBMenu.Async;
+using Android.Content.Res;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -160,26 +165,53 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             try
             {
+                RelativeSizeSpan relativeSizeSpan = TextViewUtils.IsLargeFonts ? new RelativeSizeSpan(1.5f) : new RelativeSizeSpan(1f);
+
                 IMenu bottomMenu = bottomNavigationView.Menu;
                 IMenuItem item;
 
                 item = bottomMenu.FindItem(Resource.Id.menu_dashboard);
-                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "home"));
+
+
+                SpannableString spanStringhome = new SpannableString(Utility.GetLocalizedLabel("Tabbar", "home"));
+
+                spanStringhome.SetSpan(relativeSizeSpan, 0, spanStringhome.Length(), SpanTypes.ExclusiveExclusive);
+                item.SetTitle(spanStringhome);
 
                 item = bottomMenu.FindItem(Resource.Id.menu_bill);
-                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "bill"));
+
+
+                SpannableString spanStringbill = new SpannableString(Utility.GetLocalizedLabel("Tabbar", "bill"));
+
+                spanStringbill.SetSpan(relativeSizeSpan, 0, spanStringbill.Length(), SpanTypes.ExclusiveExclusive);
+                item.SetTitle(spanStringbill);
 
                 item = bottomMenu.FindItem(Resource.Id.menu_promotion);
-                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
+
+
+                SpannableString spanStringpromotion = new SpannableString(Utility.GetLocalizedLabel("Tabbar", "promotion"));
+
+                spanStringpromotion.SetSpan(relativeSizeSpan, 0, spanStringpromotion.Length(), SpanTypes.ExclusiveExclusive);
+                item.SetTitle(spanStringpromotion);
 
                 item = bottomMenu.FindItem(Resource.Id.menu_reward);
                 if (item != null)
                 {
                     item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "rewards"));
+
+                    SpannableString spanStringprofile = new SpannableString(Utility.GetLocalizedLabel("Tabbar", "rewards"));
+
+                    spanStringprofile.SetSpan(relativeSizeSpan, 0, spanStringprofile.Length(), SpanTypes.ExclusiveExclusive);
+                    item.SetTitle(spanStringprofile);
                 }
 
                 item = bottomMenu.FindItem(Resource.Id.menu_more);
-                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "profile"));
+
+
+                SpannableString spanString = new SpannableString(Utility.GetLocalizedLabel("Tabbar", "profile"));
+                int end = spanString.Length();
+                spanString.SetSpan(relativeSizeSpan, 0, end, SpanTypes.ExclusiveExclusive);
+                item.SetTitle(spanString);
             }
             catch (Exception e)
             {
@@ -190,6 +222,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardHomeLarge : Resource.Style.Theme_DashboardHome);
             dashboardHomeActivity = this;
             base.SetToolBarTitle(GetString(Resource.String.dashboard_activity_title));
             mPresenter = new DashboardHomePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
@@ -269,6 +302,62 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 LaunchViewIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 StartActivity(LaunchViewIntent);
                 Utility.LoggingNonFatalError(e);
+            }
+            txtAccountName.TextSize = TextViewUtils.GetFontSize(18);
+
+            if (ApplicationStatusSearchDetailCache.Instance.ShouldSave)
+            {
+                /*Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+                applicationStatusDetailIntent.PutExtra("applicationStatusResponse"
+                    , JsonConvert.SerializeObject(ApplicationStatusSearchDetailCache.Instance.GetData()));
+                applicationStatusDetailIntent.PutExtra("IsSaveFlow", true);
+                StartActivity(applicationStatusDetailIntent);*/
+
+                RouteToApplicationLanding();
+            }
+
+            try
+            {
+                new SyncSRApplicationAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, string.Empty);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] Sync SR Error: " + e.Message);
+            }
+        }
+
+        private async void RouteToApplicationLanding()
+        {
+            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
+            if (searchApplicationTypeResponse == null)
+            {
+                ShowProgressDialog();
+                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+                if (searchApplicationTypeResponse != null
+                    && searchApplicationTypeResponse.StatusDetail != null
+                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                {
+                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+                }
+                HideProgressDialog();
+            }
+            if (searchApplicationTypeResponse != null
+                && searchApplicationTypeResponse.StatusDetail != null
+                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+            {
+                AllApplicationsCache.Instance.Clear();
+                AllApplicationsCache.Instance.Reset();
+                Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
+                StartActivity(applicationLandingIntent);
+            }
+            else
+            {
+                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                     .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
+                     .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
+                     .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
+                     .Build();
+                errorPopup.Show();
             }
         }
 
@@ -526,7 +615,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        public void OnDataSchemeShow()
+        public async void OnDataSchemeShow()
         {
             try
             {
@@ -661,6 +750,90 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                                 this.mPresenter.OnStartWhatsNewThread();
                             }
+                        }
+                        else if (!string.IsNullOrEmpty(urlSchemaPath) && urlSchemaPath.Contains("applicationListing"))
+                        {
+                            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
+                            if (searchApplicationTypeResponse == null)
+                            {
+                                ShowProgressDialog();
+                                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+                                if (searchApplicationTypeResponse != null
+                                    && searchApplicationTypeResponse.StatusDetail != null
+                                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                                {
+                                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+                                }
+                                HideProgressDialog();
+                            }
+                            if (searchApplicationTypeResponse != null
+                                && searchApplicationTypeResponse.StatusDetail != null
+                                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                            {
+                                AllApplicationsCache.Instance.Clear();
+                                AllApplicationsCache.Instance.Reset();
+                                Intent applicationLandingIntent = new Intent(this, typeof(ApplicationStatusLandingActivity));
+                                StartActivity(applicationLandingIntent);
+                            }
+                            else
+                            {
+                                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                     .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
+                                     .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
+                                     .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
+                                     .Build();
+                                errorPopup.Show();
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(urlSchemaPath) && urlSchemaPath.Contains("applicationDetails"))
+                        {
+                            ShowProgressDialog();
+                            SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
+                            if (searchApplicationTypeResponse == null)
+                            {
+                                searchApplicationTypeResponse = await ApplicationStatusManager.Instance.SearchApplicationType("16", UserEntity.GetActive() != null);
+                                if (searchApplicationTypeResponse != null
+                                    && searchApplicationTypeResponse.StatusDetail != null
+                                    && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                                {
+                                    SearchApplicationTypeCache.Instance.SetData(searchApplicationTypeResponse);
+                                }
+                            }
+                            if (searchApplicationTypeResponse != null
+                                && searchApplicationTypeResponse.StatusDetail != null
+                                && searchApplicationTypeResponse.StatusDetail.IsSuccess)
+                            {
+                                ApplicationDetailDisplay detailsResponse = await ApplicationStatusManager.Instance.GetApplicationDetail(ApplicationDetailsDeeplinkCache.Instance.SaveID
+                                    , ApplicationDetailsDeeplinkCache.Instance.ID
+                                    , ApplicationDetailsDeeplinkCache.Instance.Type
+                                    , ApplicationDetailsDeeplinkCache.Instance.System);
+
+                                if (detailsResponse.StatusDetail.IsSuccess)
+                                {
+                                    Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
+                                    applicationStatusDetailIntent.PutExtra("applicationStatusResponse", JsonConvert.SerializeObject(detailsResponse.Content));
+                                    StartActivity(applicationStatusDetailIntent);
+                                }
+                                else
+                                {
+                                    MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                     .SetTitle(detailsResponse.StatusDetail.Title)
+                                     .SetMessage(detailsResponse.StatusDetail.Message)
+                                     .SetCTALabel(detailsResponse.StatusDetail.PrimaryCTATitle)
+                                     .Build();
+                                    errorPopup.Show();
+                                }
+                            }
+                            else
+                            {
+                                MyTNBAppToolTipBuilder errorPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                                     .SetTitle(searchApplicationTypeResponse.StatusDetail.Title)
+                                     .SetMessage(searchApplicationTypeResponse.StatusDetail.Message)
+                                     .SetCTALabel(searchApplicationTypeResponse.StatusDetail.PrimaryCTATitle)
+                                     .Build();
+                                errorPopup.Show();
+                            }
+                            HideProgressDialog();
                         }
                     }
                 }
@@ -896,7 +1069,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        private void SetReadUnReadNewBottomView(bool flag, bool isGotRead, int count,IMenuItem promotionMenuItem)
+        private void SetReadUnReadNewBottomView(bool flag, bool isGotRead, int count, IMenuItem promotionMenuItem)
         {
             try
             {
@@ -915,11 +1088,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                             RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                             RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
-                            newLabelParam.TopMargin = 0;
+                            newLabelParam.TopMargin = 10;
                             newLabelParam.Height = (int)DPUtils.ConvertDPToPx(16f);
                             bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                             txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
                             txtNewLabel.Text = count.ToString();
+                            txtNewLabel.TextSize = TextViewUtils.GetFontSize(8);
                             txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.white)));
                             newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
                             if (count > 0 && count <= 9)
@@ -996,9 +1170,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         newLabel.SetBackgroundResource(Resource.Drawable.new_label);
                         RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                         RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
-                        newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
+                        newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(TextViewUtils.IsLargeFonts
+                            && LanguageUtil.GetAppLanguage().ToUpper() != Constants.DEFAULT_LANG ? -40 : -25f);
                         newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
-                        newLabelParam.TopMargin = 0;
+                        newLabelParam.TopMargin = 10;
                         newLabelParam.Width = ViewGroup.LayoutParams.WrapContent;
                         newLabel.SetPadding((int)DPUtils.ConvertDPToPx(6f), 0, (int)DPUtils.ConvertDPToPx(6f), 0);
                         if (LanguageUtil.GetAppLanguage().ToUpper() == Constants.DEFAULT_LANG)
@@ -1012,6 +1187,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                         txtNewLabel.Text = word;
+                        txtNewLabel.TextSize = TextViewUtils.GetFontSize(8f);
                         txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
                         TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                         if (!flag)
@@ -1073,9 +1249,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         newLabel.SetBackgroundResource(Resource.Drawable.new_label);
                         RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                         RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
-                        newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-15f);
+                        newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(TextViewUtils.IsLargeFonts
+                            && LanguageUtil.GetAppLanguage().ToUpper() != Constants.DEFAULT_LANG ? -40 : -25f);
                         newLabelParam.Height = (int)DPUtils.ConvertDPToPx(14f);
-                        newLabelParam.TopMargin = 0;
+                        newLabelParam.TopMargin = 10;
                         newLabelParam.Width = ViewGroup.LayoutParams.WrapContent;
                         newLabel.SetPadding((int)DPUtils.ConvertDPToPx(4f), 0, (int)DPUtils.ConvertDPToPx(4f), 0);
                         if (LanguageUtil.GetAppLanguage().ToUpper() == Constants.DEFAULT_LANG)
@@ -1089,6 +1266,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                         txtNewLabel.Text = word;
+                        txtNewLabel.TextSize = TextViewUtils.GetFontSize(8);
                         txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
                         TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                         if (!flag)
@@ -1153,11 +1331,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                             RelativeLayout.LayoutParams newLabelParam = newLabel.LayoutParameters as RelativeLayout.LayoutParams;
                             RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
-                            newLabelParam.TopMargin = 0;
+                            newLabelParam.TopMargin = 10;
                             newLabelParam.Height = (int)DPUtils.ConvertDPToPx(16f);
                             bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                             txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
                             txtNewLabel.Text = count.ToString();
+                            txtNewLabel.TextSize = TextViewUtils.GetFontSize(8);
                             txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.white)));
                             newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
                             if (count > 0 && count <= 9)
@@ -1277,7 +1456,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowHideActionBar(bool flag)
         {
-            if(flag)
+            if (flag)
             {
                 this.SupportActionBar.Show();
             }
@@ -1955,7 +2134,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                                         if ((showDateTime.Date == nowDateTime.Date && FilteredItem.ShowCountForDay >= FilteredItem.ShowEveryCountDays_PopUp))
                                         {
-                                            
+
                                         }
                                         else
                                         {

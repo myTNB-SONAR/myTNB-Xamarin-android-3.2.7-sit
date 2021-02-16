@@ -49,7 +49,9 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo);
                 TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin);
-
+                btnLogin.TextSize = TextViewUtils.GetFontSize(16f);
+                txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16f);
+                txtContentInfo.TextSize = TextViewUtils.GetFontSize(14f);
                 txtTitleInfo.Text = GetLabelByLanguage("title");
                 txtContentInfo.Text = GetLabelByLanguage("resetSuccessMessage");
                 btnLogin.Text = GetLabelCommonByLanguage("login");

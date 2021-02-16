@@ -1,13 +1,16 @@
 ﻿using Android;
 using Android.Content;
 using Android.Content.PM;
+using Android.Content.Res;
 using Android.OS;
 using Android.Runtime;
+using Android.Util;
 using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.Core.Content;
 using CheeseBind;
-using HockeyApp.Android;
+using Java.Lang;
+using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
@@ -34,10 +37,29 @@ namespace myTNB_Android.Src.Base.Activity
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            SetContentView(ResourceId());
-            Cheeseknife.Bind(this);
-            EvaluateRequestPermissions();
+            if (savedInstanceState != null
+                && savedInstanceState.GetInt("my_pid", -1) != Android.OS.Process.MyPid())
+            {
+                Intent LaunchViewIntent = new Intent(Application.BaseContext, typeof(LaunchViewActivity));
+                LaunchViewActivity.MAKE_INITIAL_CALL = true;
+                LaunchViewIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                StartActivity(LaunchViewIntent);
+                Runtime.GetRuntime().Exit(0);
+            }
+            else
+            {
+                base.OnCreate(savedInstanceState);
+                SetContentView(ResourceId());
+                Cheeseknife.Bind(this);
+                EvaluateRequestPermissions();
+
+                Android.Content.Res.Configuration configuration = Resources.Configuration;
+                configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
+                var metrics = this.ApplicationContext.Resources.DisplayMetrics;
+                metrics.ScaledDensity = configuration.FontScale * metrics.Density;
+                configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
+                this.Resources.UpdateConfiguration(configuration, metrics);
+            }
         }
 
         protected override void OnResume()
@@ -61,6 +83,17 @@ namespace myTNB_Android.Src.Base.Activity
         {
             base.OnPause();
             this.isClicked = true;
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+        }
+
+        protected override void OnSaveInstanceState(Bundle outState)
+        {
+            base.OnSaveInstanceState(outState);
+            outState.PutInt("my_pid", Android.OS.Process.MyPid());
         }
 
         private void EvaluateRequestPermissions()
@@ -91,12 +124,10 @@ namespace myTNB_Android.Src.Base.Activity
                     if (ShouldShowRequestPermissionRationale(Manifest.Permission.ReadPhoneState))
                     {
                         ShowRationale(Resource.String.runtime_permission_dialog_phone_title, Resource.String.runtime_permission_phone_rationale, Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE);
-
                     }
                     else
                     {
                         RequestPermissions(new string[] { Manifest.Permission.ReadPhoneState }, Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE);
-
                     }
                     return;
                 }
@@ -107,12 +138,9 @@ namespace myTNB_Android.Src.Base.Activity
                 if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted &&
                     ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted)
                 {
-
-
                     if (ShouldShowRequestPermissionRationale(Manifest.Permission.WriteExternalStorage) || ShouldShowRequestPermissionRationale(Manifest.Permission.ReadExternalStorage))
                     {
                         ShowRationale(Resource.String.runtime_permission_dialog_storage_title, Resource.String.runtime_permission_storage_rationale, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-
                     }
                     else
                     {
@@ -120,19 +148,15 @@ namespace myTNB_Android.Src.Base.Activity
                     }
                     return;
                 }
-
             }
 
             if (LocationPermissionRequired())
             {
                 if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessFineLocation) != (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessCoarseLocation) != (int)Permission.Granted)
                 {
-
-
                     if (ShouldShowRequestPermissionRationale(Manifest.Permission.AccessFineLocation) || ShouldShowRequestPermissionRationale(Manifest.Permission.AccessCoarseLocation))
                     {
                         ShowRationale(LocationTitleRationale(), LocationContentRationale(), Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE);
-
                     }
                     else
                     {
@@ -141,13 +165,30 @@ namespace myTNB_Android.Src.Base.Activity
                     return;
                 }
             }
-        }
 
+            if (CalendarPemissionRequired())
+            {
+                if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadCalendar) != (int)Permission.Granted
+                    && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteCalendar) != (int)Permission.Granted)
+                {
+                    if (ShouldShowRequestPermissionRationale(Manifest.Permission.ReadCalendar)
+                        || ShouldShowRequestPermissionRationale(Manifest.Permission.WriteCalendar))
+                    {
+                        ShowRationale(CalendarTitleRationale(), CalendarContentRationale()
+                            , Constants.RUNTIME_PERMISSION_CALENDAR_REQUEST_CODE);
+                    }
+                    else
+                    {
+                        RequestPermissions(new string[] { Manifest.Permission.ReadCalendar, Manifest.Permission.WriteCalendar }
+                            , Constants.RUNTIME_PERMISSION_CALENDAR_REQUEST_CODE);
+                    }
+                    return;
+                }
+            }
+        }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
-
-
             if (requestCode == Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE)
             {
                 if (Utility.IsPermissionHasCount(grantResults))
@@ -219,7 +260,6 @@ namespace myTNB_Android.Src.Base.Activity
                                     {
                                         rationaleDialog.Dismiss();
                                     });
-
                             }
                         }
                     }
@@ -228,7 +268,6 @@ namespace myTNB_Android.Src.Base.Activity
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-
 
         public void ShowRationale(int rationaleTitle, int rationaleContent, int requestCode)
         {
@@ -246,23 +285,28 @@ namespace myTNB_Android.Src.Base.Activity
                      rationaleDialog.Dismiss();
                      if (requestCode == Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE)
                      {
-                         RequestPermissions(new string[] { Manifest.Permission.Camera, Manifest.Permission.Flashlight }, Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
-
+                         RequestPermissions(new string[] { Manifest.Permission.Camera
+                             , Manifest.Permission.Flashlight }
+                         , Constants.RUNTIME_PERMISSION_CAMERA_REQUEST_CODE);
                      }
                      else if (requestCode == Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE)
                      {
-                         RequestPermissions(new string[] { Manifest.Permission.ReadPhoneState }, Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE);
+                         RequestPermissions(new string[] { Manifest.Permission.ReadPhoneState }
+                         , Constants.RUNTIME_PERMISSION_PHONE_REQUEST_CODE);
 
                      }
                      else if (requestCode == Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE)
                      {
-                         RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage, Manifest.Permission.ReadExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+                         RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage
+                             , Manifest.Permission.ReadExternalStorage }
+                         , Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
 
                      }
                      else if (requestCode == Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE)
                      {
-                         RequestPermissions(new string[] { Manifest.Permission.AccessFineLocation, Manifest.Permission.AccessCoarseLocation }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-
+                         RequestPermissions(new string[] { Manifest.Permission.AccessFineLocation
+                             , Manifest.Permission.AccessCoarseLocation }
+                         , Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
                      }
                  })
                 .Show();
@@ -272,10 +316,15 @@ namespace myTNB_Android.Src.Base.Activity
             Button positiveButton = rationaleDialog.GetButton((int)DialogButtonType.Positive);
             TextViewUtils.SetMuseoSans500Typeface(txtTitle, positiveButton);
             TextViewUtils.SetMuseoSans300Typeface(txtMessage);
-
         }
 
-        public void ShowRationale(int rationaleTitle, int rationaleContent, int requestCode, int positiveStringButton, EventHandler<DialogClickEventArgs> positiveButtonEvent, int negativeStringButton, EventHandler<DialogClickEventArgs> negativeButtonEvent)
+        public void ShowRationale(int rationaleTitle
+            , int rationaleContent
+            , int requestCode
+            , int positiveStringButton
+            , EventHandler<DialogClickEventArgs> positiveButtonEvent
+            , int negativeStringButton
+            , EventHandler<DialogClickEventArgs> negativeButtonEvent)
         {
             if (rationaleDialog != null && rationaleDialog.IsShowing)
             {
@@ -298,7 +347,11 @@ namespace myTNB_Android.Src.Base.Activity
             negativeButton.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.permissionButtonColor)));
             TextViewUtils.SetMuseoSans500Typeface(txtTitle, positiveButton);
             TextViewUtils.SetMuseoSans300Typeface(txtMessage);
+        }
 
+        public virtual bool CalendarPemissionRequired()
+        {
+            return false;
         }
 
         public virtual bool CameraPermissionRequired()
@@ -351,26 +404,40 @@ namespace myTNB_Android.Src.Base.Activity
             return Resource.String.runtime_permission_location_rationale;
         }
 
+        public virtual int CalendarTitleRationale()
+        {
+            return Resource.String.runtime_permission_dialog_calendar_title;
+        }
+
+        public virtual int CalendarContentRationale()
+        {
+            return Resource.String.runtime_permission_calendar_rationale;
+        }
+
         public bool IsLocationGranted()
         {
-            return ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessFineLocation) == (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.AccessCoarseLocation) == (int)Permission.Granted;
+            return ContextCompat.CheckSelfPermission(this
+                    , Manifest.Permission.AccessFineLocation) == (int)Permission.Granted
+                && ContextCompat.CheckSelfPermission(this
+                    , Manifest.Permission.AccessCoarseLocation) == (int)Permission.Granted;
         }
 
         public void InitiateLocationPermission()
         {
-            ShowRationale(LocationTitleRationale(),
-                                LocationContentRationale(),
-                                Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE,
-                                Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_ok, delegate
-                                {
-                                    rationaleDialog.Dismiss();
-                                    RequestPermissions(new string[] { Manifest.Permission.AccessFineLocation, Manifest.Permission.AccessCoarseLocation }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-
-                                },
-                                Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_cancel, delegate
-                                {
-                                    rationaleDialog.Dismiss();
-                                });
+            ShowRationale(LocationTitleRationale()
+                , LocationContentRationale()
+                , Constants.RUNTIME_PERMISSION_LOCATION_REQUEST_CODE
+                , Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_ok
+                    , delegate
+                    {
+                        rationaleDialog.Dismiss();
+                        RequestPermissions(new string[] { Manifest.Permission.AccessFineLocation, Manifest.Permission.AccessCoarseLocation }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+                    }
+                , Resource.String.faulty_street_lamps_feedback_runtime_permission_dialog_btn_cancel
+                    , delegate
+                    {
+                        rationaleDialog.Dismiss();
+                    });
         }
 
         public virtual void Ready()
@@ -394,8 +461,6 @@ namespace myTNB_Android.Src.Base.Activity
                     break;
             }
         }
-
-
 
         protected TResult DeSerialze<TResult>(string responseStream)
         {

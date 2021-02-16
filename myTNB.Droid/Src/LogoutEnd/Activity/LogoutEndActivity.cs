@@ -45,6 +45,11 @@ namespace myTNB_Android.Src.LogoutEnd.Activity
             txtContentInfo.Text = Utility.GetLocalizedLabel("Logout", "message");
             btnBackToHome.Text = Utility.GetLocalizedLabel("Logout", "loginAgain");
 
+            btnBackToHome.TextSize = TextViewUtils.GetFontSize(16f);
+
+            txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16f);
+            txtContentInfo.TextSize = TextViewUtils.GetFontSize(14f);
+
             mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
             UserSessions.SavePhoneVerified(mSharedPref, false);
         }

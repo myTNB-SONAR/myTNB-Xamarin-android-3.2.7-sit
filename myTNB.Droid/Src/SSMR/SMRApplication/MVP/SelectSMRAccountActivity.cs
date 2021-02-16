@@ -48,7 +48,10 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [BindView(Resource.Id.eligibleAccountListContainer)]
         LinearLayout eligibleAccountListContainer;
 
-        
+        [BindView(Resource.Id.noEligibleAccountMessage)]
+        TextView noEligibleAccountMessage;
+
+
         public override int ResourceId()
         {
             return Resource.Layout.SelectSMRAccountLayout;
@@ -82,6 +85,8 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+            noEligibleAccountMessage.TextSize = TextViewUtils.GetFontSize(14f);
             Bundle extras = Intent.Extras;
             if (extras != null && extras.ContainsKey("SMR_ELIGIBLE_ACCOUNT_LIST"))
             {

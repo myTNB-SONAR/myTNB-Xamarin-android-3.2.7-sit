@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.FindUs.Response;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
 using Newtonsoft.Json;
 using Refit;
 
@@ -64,6 +67,9 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [AliasAs("IsFeedbackUpdateDetailDisabled")]
             public bool IsFeedbackUpdateDetailDisabled { get; set; }
 
+            [JsonProperty(PropertyName = "ServicesPreLogin")]
+            [AliasAs("ServicesPreLogin")]
+            public List<MyService> ServicesPreLogin { set; get; }
         }
 
         public class ForceUpdateInfoData

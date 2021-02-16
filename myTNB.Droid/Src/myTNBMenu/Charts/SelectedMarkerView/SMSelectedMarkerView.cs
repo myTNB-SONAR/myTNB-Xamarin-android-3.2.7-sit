@@ -43,6 +43,8 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
             titleMarker = FindViewById<TextView>(Resource.Id.txtMarker);
             titlekWhMarker = FindViewById<TextView>(Resource.Id.txtkWhMarker);
             imgMissingCopy = FindViewById<ImageView>(Resource.Id.imgMissingCopy);
+            titleMarker.TextSize = TextViewUtils.GetFontSize(11f);
+            titlekWhMarker.TextSize = TextViewUtils.GetFontSize(11f);
             titleMarker.Gravity = GravityFlags.Center;
             titlekWhMarker.Gravity = GravityFlags.Center;
             TextViewUtils.SetMuseoSans500Typeface(titleMarker);

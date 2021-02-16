@@ -1270,7 +1270,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 ContentMessage = Utility.GetLocalizedLabel("Usage", "tutorialSMRDesc"),
                 ItemCount = 0,
                 DisplayMode = "",
-                IsButtonShow = true
+                IsButtonShow = false
             });
 
             return newList;

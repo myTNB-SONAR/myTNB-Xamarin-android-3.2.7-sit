@@ -11,6 +11,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
+using myTNB;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -120,7 +121,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 this.mView.ShowCCErrorSnakebar();
                 Utility.LoggingNonFatalError(e);
             }
-
         }
 
         private async void LoadAllUserPrefNotifications(string deviceId)
@@ -129,7 +129,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             {
                 this.mView.ShowNotificationsProgressDialog();
             }
-
             try
             {
                 var notificationTypesApi = await ServiceApiImpl.Instance.UserNotificationTypePreferences(new MyTNBService.Request.BaseRequest());
@@ -206,8 +205,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
-
-
         }
 
         public async void OnLogout(string deviceId)
@@ -228,30 +225,29 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     {
                         this.mView.HideNotificationsProgressDialog();
                     }
+                    AppInfoManager.Instance.SetUserInfo("0"
+                        , string.Empty
+                        , string.Empty
+                        , LanguageUtil.GetAppLanguage() == "MS"
+                            ? LanguageManager.Language.MS
+                            : LanguageManager.Language.EN);
 
-                    if (logoutResponse.IsSuccessResponse())
-                    {
-                        UserEntity.RemoveActive();
-                        UserRegister.RemoveActive();
-                        CustomerBillingAccount.RemoveActive();
-                        NotificationFilterEntity.RemoveAll();
-                        UserNotificationEntity.RemoveAll();
-                        SubmittedFeedbackEntity.Remove();
-                        SMUsageHistoryEntity.RemoveAll();
-                        UsageHistoryEntity.RemoveAll();
-                        BillHistoryEntity.RemoveAll();
-                        PaymentHistoryEntity.RemoveAll();
-                        REPaymentHistoryEntity.RemoveAll();
-                        AccountDataEntity.RemoveAll();
-                        SummaryDashBoardAccountEntity.RemoveAll();
-                        SelectBillsEntity.RemoveAll();
-                        LanguageUtil.SetIsLanguageChanged(false);
-                        this.mView.ShowLogout();
-                    }
-                    else
-                    {
-                        this.mView.ShowLogoutErrorMessage(logoutResponse.Response.DisplayMessage);
-                    }
+                    UserEntity.RemoveActive();
+                    UserRegister.RemoveActive();
+                    CustomerBillingAccount.RemoveActive();
+                    NotificationFilterEntity.RemoveAll();
+                    UserNotificationEntity.RemoveAll();
+                    SubmittedFeedbackEntity.Remove();
+                    SMUsageHistoryEntity.RemoveAll();
+                    UsageHistoryEntity.RemoveAll();
+                    BillHistoryEntity.RemoveAll();
+                    PaymentHistoryEntity.RemoveAll();
+                    REPaymentHistoryEntity.RemoveAll();
+                    AccountDataEntity.RemoveAll();
+                    SummaryDashBoardAccountEntity.RemoveAll();
+                    SelectBillsEntity.RemoveAll();
+                    LanguageUtil.SetIsLanguageChanged(false);
+                    this.mView.ShowLogout();
                 }
             }
             catch (System.OperationCanceledException e)
@@ -284,7 +280,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
-
         }
 
         public void UpdateCardList(CreditCardData creditCard)

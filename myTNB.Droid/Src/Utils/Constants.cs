@@ -69,16 +69,11 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string IMAGE_PERMISES = ".imagePermises";
         internal static readonly string ENTERED_NAME = ".enteredName";
 
-
         internal static readonly string PAGE_TITLE = ".pageTitle";
         internal static readonly string PAGE_STEP_TITLE = ".pageStepTitle";
         internal static readonly string ACCOUNT_NUMBER = ".accountNumber";
         internal static readonly string REQ_EMAIL = ".requesterEmail";
         internal static readonly string REQ_IC = ".requesterIC";
-
-
-
-
 
         internal static readonly int VIEW_TYPE_REAL_RECORD = 0;
         internal static readonly int VIEW_TYPE_DUMMY_RECORD = 1;
@@ -117,8 +112,6 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int REQUEST_FEEDBACK_SUCCESS_VIEW = 0x00;
         internal static readonly int REQUEST_FEEDBACK_FAIL_VIEW = 0x01;
 
-
-
         internal static readonly int UPDATE_NICKNAME_REQUEST = 0x09;
         internal static readonly int RUNTIME_PERMISSION_SMS_REQUEST_CODE = 0x03;
         internal static readonly int RUNTIME_PERMISSION_PHONE_REQUEST_CODE = 0x04;
@@ -127,36 +120,22 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int RUNTIME_PERMISSION_GALLERY_REQUEST_CODE = 0x07;
         internal static readonly int RUNTIME_PERMISSION_LOCATION_REQUEST_CODE = 0x08;
         internal static readonly int RUNTIME_PERMISSION_GALLERY_PDF_REQUEST_CODE = 0x10;
-
-
-
-        //internal static readonly string API_KEY_ID = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
+        internal static readonly int RUNTIME_PERMISSION_CALENDAR_REQUEST_CODE = 0x11;
 
         internal static readonly int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
         internal struct SERVER_URL
         {
 #if DEBUG || STUB
-         //    internal static readonly string END_POINT = "http://10.215.128.191:99";  //dev
-         //    internal static readonly string FPX_PAYMENT = "http://10.215.128.191:99/v5/PayRedirect.aspx?Param1=3&Param2=";  //dev
-         //    internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappdev.page.link";  //dev
-         internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";  //sit
-         internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";  //sit
-         internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link"; //sit
-
+            internal static readonly string END_POINT = "http://10.215.128.191:89";  //dev
+            internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link"; //sit
 #elif DEVELOP || SIT
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
-            internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
-            //internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
-            //internal static readonly string FPX_PAYMENT = "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link";
 #else
-           internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
-            internal static readonly string FPX_PAYMENT = "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
+            internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbapp.page.link";
-
 #endif
-
         }
 
         internal struct APP_CONFIG
@@ -216,7 +195,6 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly string ACCOUNT_REMOVED_FLAG = "ACCOUNT_REMOVED";
 
-
         //RE account date increment
         internal static int RE_ACCOUNT_DATE_INCREMENT_DAYS = 30;
 
@@ -236,7 +214,6 @@ namespace myTNB_Android.Src.Utils
 
         //Itemized Billing
         internal static readonly string ITEMZIED_BILLING_VIEW_KEY = "itemizedBilling";
-
 
         //Refresh View
         internal static readonly string REFRESH_MODE = "FAILED";
@@ -304,16 +281,16 @@ namespace myTNB_Android.Src.Utils
 
         public enum SUPPORTED_LANGUAGES
         {
-            EN,MS
+            EN, MS
         }
 
         //User Notification BCRM IDs
-		public const string BCRM_NOTIFICATION_NEW_BILL_ID = "01";
-		public const string BCRM_NOTIFICATION_BILL_DUE_ID = "02";
-		public const string BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID = "03";
-		public const string BCRM_NOTIFICATION_DISCONNECTED_ID = "04";
-		public const string BCRM_NOTIFICATION_RECONNECTED_ID = "05";
-		public const string BCRM_NOTIFICATION_MAINTENANCE_ID = "99";
+        public const string BCRM_NOTIFICATION_NEW_BILL_ID = "01";
+        public const string BCRM_NOTIFICATION_BILL_DUE_ID = "02";
+        public const string BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID = "03";
+        public const string BCRM_NOTIFICATION_DISCONNECTED_ID = "04";
+        public const string BCRM_NOTIFICATION_RECONNECTED_ID = "05";
+        public const string BCRM_NOTIFICATION_MAINTENANCE_ID = "99";
         public const string BCRM_NOTIFICATION_METER_READING_OPEN_ID = "0009";
         public const string BCRM_NOTIFICATION_METER_READING_REMIND_ID = "0010";
         public const string BCRM_NOTIFICATION_SMR_DISABLED_ID = "0011";
@@ -384,10 +361,30 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string ITEMIZED_BILLING_PAYMENT_KEY = "PAYMENT";
 
         internal static readonly int LANGUAGE_MASTER_DATA_CHECK_TIMEOUT = 500;
-        
+
         internal static readonly int REWARDS_DATA_CHECK_TIMEOUT = 500;
 
-        //Dynatrace Action
+        internal static readonly string APPLICATION_STATUS_FILTER_TYPE_KEY = "applicationType";
+        internal static readonly string APPLICATION_STATUS_FILTER_STATUS_KEY = "status";
+        internal static readonly string APPLICATION_STATUS_FILTER_DATE_KEY = "date";
+        internal static readonly string APPLICATION_STATUS_FILTER_FROM_DATE_KEY = "fromdate";
+        internal static readonly string APPLICATION_STATUS_FILTER_TO_DATE_KEY = "todate";
+        internal static readonly string APPLICATION_STATUS_TYPE_LIST_KEY = "typeList";
+        internal static readonly string APPLICATION_STATUS_STATUS_LIST_KEY = "statusList";
+        internal static readonly string APPLICATION_STATUS_SEARCH_BY_LIST_KEY = "searchByList";
+        internal static readonly string APPLICATION_STATUS_FILTER_REQUEST_KEY = "filterRequest";
+        internal static readonly string APPLICATION_STATUS_FILTER_INDIVIDUAL_CLEAR_KEY = "individualClear";
+        internal static readonly string APPLICATION_STATUS_DETAIL_TITLE_KEY = "applicationStatusTitle";
+        internal static readonly int APPLICATION_STATUS_FILTER_REQUEST_CODE = 29800;
+        internal static readonly int APPLICATION_STATUS_FILTER_TYPE_REQUEST_CODE = 29801;
+        internal static readonly int APPLICATION_STATUS_FILTER_STATUS_REQUEST_CODE = 29802;
+        internal static readonly int APPLICATION_STATUS_FILTER_DATE_REQUEST_CODE = 29803;
+        internal static readonly int APPLICATION_STATUS_FILTER_SEARCH_BY_REQUEST_CODE = 29804;
+        internal static readonly int APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE = 29805;
+        internal static readonly int APPLICATION_STATUS_RATING_REQUEST_CODE = 29806;
+        internal static readonly int APPLICATION_STATUS_DETAILS_REMOVE_REQUEST_CODE = 29807;
+        internal static readonly int APPLICATION_STATUS_DETAILS_SCHEDULER_REQUEST_CODE = 29808;
+
         internal static readonly string WEBVIEW_PAYMENT = "WebViewPayment";
         internal static readonly string WEBVIEW_PAYMENT_FPX = "WebViewPaymentFPX";
         internal static readonly string WEBVIEW_PAYMENT_CC = "WebViewPaymentCC";

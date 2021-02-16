@@ -137,6 +137,10 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtMaxImageContent, txtFullName, txtEmail, txtAccountNo, txtFeedback, txtRelatedScreenshotTitle, txtMaxCharacters);
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
 
+                txtMaxCharacters.TextSize = TextViewUtils.GetFontSize(9f);
+                txtRelatedScreenshotTitle.TextSize = TextViewUtils.GetFontSize(9f);
+                txtMaxImageContent.TextSize = TextViewUtils.GetFontSize(9f);
+
                 txtInputLayoutFullName.Hint = Utility.GetLocalizedCommonLabel("fullname");
                 txtInputLayoutEmail.Hint = Utility.GetLocalizedCommonLabel("email");
                 txtInputLayoutAccountNo.Hint = Utility.GetLocalizedCommonLabel("accountNo");
@@ -681,7 +685,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
         public void ClearErrors()
         {
-            txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
+            txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
             txtInputLayoutFullName.Error = null;
             //txtInputLayoutMobileNo.Error = null;
             txtInputLayoutEmail.Error = null;

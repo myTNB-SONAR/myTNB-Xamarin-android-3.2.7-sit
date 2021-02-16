@@ -4,7 +4,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-
 using Android.Text;
 using Android.Views;
 using Android.Widget;
@@ -22,8 +21,6 @@ using Refit;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
-
-
 using static Android.Widget.CompoundButton;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.myTNBMenu.Activity;
@@ -33,8 +30,8 @@ using Google.Android.Material.Snackbar;
 
 namespace myTNB_Android.Src.Notifications.Activity
 {
-
-    enum EditNotificationStates{
+    enum EditNotificationStates
+    {
         SHOW,
         HIDE
     }
@@ -51,10 +48,8 @@ namespace myTNB_Android.Src.Notifications.Activity
         UNSELECTED
     }
 
-
     [Activity(Label = "@string/notification_activity_title"
-              //, MainLauncher = true
-              ,Icon = "@drawable/ic_launcher"
+    , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Notification")]
     public class NotificationActivity : BaseActivityCustom, NotificationContract.IView, IOnCheckedChangeListener
@@ -94,7 +89,6 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         [BindView(Resource.Id.refresh_image)]
         ImageView refresh_image;
-
 
         private IMenu notificationMenu;
         NotificationRecyclerAdapter notificationRecyclerAdapter;
@@ -137,6 +131,11 @@ namespace myTNB_Android.Src.Notifications.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationName, selectAllNotificationLabel, btnNewRefresh);
                 TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage, txtNotificationsContent);
+                txtNotificationName.TextSize = TextViewUtils.GetFontSize(12f);
+                selectAllNotificationLabel.TextSize = TextViewUtils.GetFontSize(14f);
+                txtNewRefreshMessage.TextSize = TextViewUtils.GetFontSize(16f);
+                txtNotificationsContent.TextSize = TextViewUtils.GetFontSize(16f);
+                btnNewRefresh.TextSize = TextViewUtils.GetFontSize(16f);
 
                 selectAllNotificationLabel.Text = GetLabelCommonByLanguage("selectAll");
                 txtNotificationsContent.Text = GetLabelByLanguage("noNotification");
@@ -150,7 +149,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                 SetInitialNotificationState();
                 if (MyTNBAccountManagement.GetInstance().IsNotificationServiceFailed())
                 {
-                    ShowRefreshView(true, null,null);
+                    ShowRefreshView(true, null, null);
                 }
                 else if (MyTNBAccountManagement.GetInstance().IsNotificationServiceMaintenance())
                 {
@@ -560,7 +559,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                 }
                 else
                 {
-                    // LinSiong TODO: update bcrmdown to notification
+                    //  TODO: LinSiong update bcrmdown to notification
                     refresh_image.SetImageResource(Resource.Drawable.maintenance_new);
                     if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                     {
@@ -601,7 +600,7 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void UpdateReadNotifications()
         {
-            foreach(UserNotificationData notificationData in notificationRecyclerAdapter.GetAllNotifications())
+            foreach (UserNotificationData notificationData in notificationRecyclerAdapter.GetAllNotifications())
             {
                 if (notificationData.IsSelected)
                 {
@@ -660,7 +659,8 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
 
             mCancelledErrorSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate {
+            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate 
+            {
                 mCancelledErrorSnackBar.Dismiss();
             }
             );
@@ -914,7 +914,8 @@ namespace myTNB_Android.Src.Notifications.Activity
         private int GetSelectedNotificationCount()
         {
             int selectedCount = 0;
-            foreach(UserNotificationData notification in notificationRecyclerAdapter.GetAllNotifications()){
+            foreach (UserNotificationData notification in notificationRecyclerAdapter.GetAllNotifications())
+            {
                 if (notification.IsSelected)
                 {
                     selectedCount++;

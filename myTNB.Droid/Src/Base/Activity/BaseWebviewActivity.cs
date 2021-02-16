@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.Content.Res;
 using Android.Net.Http;
 using Android.OS;
+using Android.Util;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
@@ -19,8 +20,6 @@ namespace myTNB_Android.Src.Base.Activity
         , Theme = "@style/Theme.AddAccount")]
     public class BaseWebviewActivity : BaseToolbarAppCompatActivity
     {
-
-
         [BindView(Resource.Id.webView)]
         private static WebView webView;
 
@@ -54,6 +53,10 @@ namespace myTNB_Android.Src.Base.Activity
 
                 if (extra != null)
                 {
+                    if (extra.ContainsKey("action") && extra.GetString("action") == "contractorRating")
+                    {
+                        //Todo: Update Back Arrow to X
+                    }
                     if (extra.ContainsKey(Constants.IN_APP_LINK))
                     {
                         webLink = extra.GetString(Constants.IN_APP_LINK);
@@ -91,8 +94,17 @@ namespace myTNB_Android.Src.Base.Activity
             {
                 Utility.LoggingNonFatalError(ex);
             }
-        }
 
+            Android.Content.Res.Configuration configuration = Resources.Configuration;
+            configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
+            var metrics = this.ApplicationContext.Resources.DisplayMetrics;
+            metrics.ScaledDensity = configuration.FontScale * metrics.Density;
+            configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
+            this.Resources.UpdateConfiguration(configuration, metrics);
+
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_AddAccountLarge : Resource.Style.Theme_AddAccount);
+        }
+       
         protected override void OnStart()
         {
             base.OnStart();
@@ -153,6 +165,12 @@ namespace myTNB_Android.Src.Base.Activity
             {
                 if (ConnectionUtils.HasInternetConnection(mActivity))
                 {
+                    if (url.Contains("mytnbapp://action=contractorRatingCompleted")
+                        || url.Contains("contractorRatingCompleted"))
+                    {
+                        mActivity.SetResult(Result.Ok);
+                        mActivity.Finish();
+                    }
                     if (url.Contains(baseUrl))
                     {
                         view.LoadUrl(url);
@@ -256,11 +274,12 @@ namespace myTNB_Android.Src.Base.Activity
 
         public override void OnBackPressed()
         {
+            SetResult(Result.Ok);
             Finish();
         }
 
-        // AndroidX TODO: Temporary Fix for Android 5,5.1 
-        // AndroidX TODO: Due to this: https://github.com/xamarin/AndroidX/issues/131
+        //  TODO: AndroidX Temporary Fix for Android 5,5.1 
+        //  TODO: AndroidX Due to this: https://github.com/xamarin/AndroidX/issues/131
         public override AssetManager Assets =>
             (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop && Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.M)
             ? Resources.Assets : base.Assets;

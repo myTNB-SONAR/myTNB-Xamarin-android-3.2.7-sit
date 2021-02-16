@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -23,59 +22,37 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
 {
-    [Activity( ScreenOrientation = ScreenOrientation.Portrait
-           , WindowSoftInputMode = SoftInput.AdjustPan
-   , Theme = "@style/Theme.FaultyStreetLamps")]
+    [Activity(ScreenOrientation = ScreenOrientation.Portrait
+        , WindowSoftInputMode = SoftInput.AdjustPan
+        , Theme = "@style/Theme.FaultyStreetLamps")]
     public class UpdatePersonalDetailTnCActivity : BaseToolbarAppCompatActivity, UpdatePersonalDetailTnCContract.IView
-    {   
-
-
-
+    {
         [BindView(Resource.Id.TextView_tnc_data)]
         TextView TextView_tnc_data;
-
-        
 
         [BindView(Resource.Id.TextView_updatePersonalDataDisclaim)]
         TextView TextView_updatePersonalDataDisclaim;
 
-            
         [BindView(Resource.Id.TextView_TNB_TermOfUse)]
         TextView TextView_TNB_TermOfUse;
 
-      
-
-        
         [BindView(Resource.Id.TextView_privacypolicy)]
         TextView TextView_privacypolicy;
 
-
-
         UpdatePersonalDetailTnCPresenter mPresenter;
-
         private ISharedPreferences mSharedPref;
-
         UpdatePersonalDetailTnCContract.IUserActionsListener userActionsListener;
 
-
-
-
         private string reqEmail;
-
         private string caNumber;
-
         private string pageTitle;
-
         private string caIC;
-
         private bool isOwner;
-
         private string enteredNAme;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-
             try
             {
                 //init shared pref
@@ -111,67 +88,56 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
                     {
                         isOwner = bool.Parse(extras.GetString(Constants.SELECT_REGISTERED_OWNER));
                     }
-
                 }
 
                 //set presenter
                 this.mPresenter = new UpdatePersonalDetailTnCPresenter(this);
 
                 //pass title
-                var test =Utility.GetLocalizedLabel("SubmitEnquiry", "tnc");
+                var test = Utility.GetLocalizedLabel("SubmitEnquiry", "tnc");
 
                 //set tittle
                 SetToolBarTitle(test);
-
 
                 //set translation 
                 TextView_updatePersonalDataDisclaim.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "personalDisclamer");
                 TextView_TNB_TermOfUse.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "tnbTermUse");
                 TextView_privacypolicy.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "privacyPolicyTitle");
 
-
-
                 //set font 
                 TextViewUtils.SetMuseoSans300Typeface(TextView_tnc_data); //inputLay
                 TextViewUtils.SetMuseoSans500Typeface(TextView_updatePersonalDataDisclaim, TextView_TNB_TermOfUse, TextView_privacypolicy); //edit text
 
+                TextView_updatePersonalDataDisclaim.TextSize = TextViewUtils.GetFontSize(14f);
+                TextView_tnc_data.TextSize = TextViewUtils.GetFontSize(14f);
+                TextView_TNB_TermOfUse.TextSize = TextViewUtils.GetFontSize(14f);
+                TextView_privacypolicy.TextSize = TextViewUtils.GetFontSize(14f);
 
-  
                 //  CustomerBillingAccount selectedAcc;
                 CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(caNumber);
-
 
                 string data;
                 // if owner tnc is different
                 if (isOwner)
                 {
-                    data= Utility.GetLocalizedLabel("SubmitEnquiry", "tncAgreeOwner");
+                    data = Utility.GetLocalizedLabel("SubmitEnquiry", "tncAgreeOwner");
                 }
                 else
                 {
                     data = Utility.GetLocalizedLabel("SubmitEnquiry", "tncAgreeNonOwner");
                 }
 
-
                 string acc = UserSessions.GetAccountIsExist(PreferenceManager.GetDefaultSharedPreferences(this));
-                GetSearchForAccountResponse.GetSearchForAccountModel  AccData = JsonConvert.DeserializeObject<GetSearchForAccountResponse.GetSearchForAccountModel>(acc);
+                GetSearchForAccountResponse.GetSearchForAccountModel AccData = JsonConvert.DeserializeObject<GetSearchForAccountResponse.GetSearchForAccountModel>(acc);
 
-
-
-                //string temp = string.Format(data, reqEmail, AccData.ContractAccount, AccData.FullName);
-
-                string temp = string.Format(data, enteredNAme, reqEmail, AccData.ContractAccount );
+                string temp = string.Format(data, enteredNAme, reqEmail, AccData.ContractAccount);
 
                 TextView_tnc_data.TextFormatted = GetFormattedText(temp);
-
-
-
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-
         }
 
         public override int ResourceId()
@@ -207,7 +173,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
             this.userActionsListener = userActionListener;
         }
 
-
         [OnClick(Resource.Id.TextView_TNB_TermOfUse)]
         void OnTNC(object sender, EventArgs eventArgs)
         {
@@ -223,9 +188,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
 
         }
 
-        
-
-       [OnClick(Resource.Id.TextView_privacypolicy)]
+        [OnClick(Resource.Id.TextView_privacypolicy)]
         void onPrivacyPolicy(object sender, EventArgs eventArgs)
         {
             if (!this.GetIsClicked())
@@ -237,7 +200,5 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
                 this.StartActivity(webIntent);
             }
         }
-
-
     }
 }

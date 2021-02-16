@@ -79,6 +79,7 @@ namespace myTNB_Android.Src.Barcode.Activity
                
 
             base.OnCreate(savedInstanceState);
+            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_BarCodeLarge : Resource.Style.Theme_BarCode);
             mPresenter = new BarcodePresenter(this);
             barCodeView.Click += delegate
             {
@@ -91,6 +92,8 @@ namespace myTNB_Android.Src.Barcode.Activity
 
             TextViewUtils.SetMuseoSans500Typeface(txtTitle);
             txtTitle.Text = GetLabelByLanguage("scanMessage");
+            txtTitle.TextSize = TextViewUtils.GetFontSize(14);
+
         }
 
         protected override void OnResume()

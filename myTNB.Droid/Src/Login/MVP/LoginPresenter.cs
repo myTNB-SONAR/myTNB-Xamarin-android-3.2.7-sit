@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Text;
 using Android.Util;
 using Firebase.Iid;
+using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
@@ -99,17 +100,18 @@ namespace myTNB_Android.Src.Login.MVP
             Log.Debug(TAG, "Awaiting...");
             try
             {
-                string fcmToken = String.Empty;
+                string fcmToken = string.Empty;
 
                 if (FirebaseTokenEntity.HasLatest())
                 {
                     fcmToken = FirebaseTokenEntity.GetLatest().FBToken;
                 }
-                else
+                if (string.IsNullOrEmpty(fcmToken) || string.IsNullOrWhiteSpace(fcmToken))
                 {
                     fcmToken = FirebaseInstanceId.Instance.Token;
                     FirebaseTokenEntity.InsertOrReplace(fcmToken, true);
                 }
+                Log.Debug(TAG, "[DEBUG] FCM TOKEN: " + fcmToken);
                 UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);
                 userAuthRequest.SetUserName(usrNme);
                 var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthRequest);
@@ -333,6 +335,22 @@ namespace myTNB_Android.Src.Login.MVP
                                     this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                                 }
                                 await LanguageUtil.SaveUpdatedLanguagePreference();
+
+                                AppInfoManager.Instance.SetUserInfo("16"
+                                           , UserEntity.GetActive().UserID
+                                           , UserEntity.GetActive().UserName
+                                           , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
+                                           AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
+
+                                if (LanguageUtil.GetAppLanguage() == "MS")
+                                {
+                                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.MS);
+                                }
+                                else
+                                {
+                                    AppInfoManager.Instance.SetLanguage(LanguageManager.Language.EN);
+                                }
+
                                 this.mView.ShowDashboard();
                             }
                             else

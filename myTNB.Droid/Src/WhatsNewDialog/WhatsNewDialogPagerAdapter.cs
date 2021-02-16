@@ -1,37 +1,18 @@
-﻿using Android.Content;
-using Android.Graphics;
+﻿using Android.Graphics;
 using Android.OS;
-
-
-
 using Android.Text;
-using Android.Text.Method;
-using Android.Text.Style;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.CardView.Widget;
-using AndroidX.Core.Content;
 using AndroidX.ViewPager.Widget;
 using DynatraceAndroid;
 using Facebook.Shimmer;
-using Java.Util.Regex;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.FAQ.Activity;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
-using myTNB_Android.Src.RewardDetail.MVP;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.WhatsNewDetail.MVP;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -76,6 +57,9 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 ImageView imgWhatsNew = (ImageView)rootView.FindViewById(Resource.Id.image_whatsnew);
                 LinearLayout whatsNewCheckBoxLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewCheckBoxLayout);
                 CheckBox chkDontShow = (CheckBox)rootView.FindViewById(Resource.Id.chk_remember_me);
+
+                chkDontShow.TextSize = TextViewUtils.GetFontSize(12f);
+                btnGotIt.TextSize = TextViewUtils.GetFontSize(16f);
 
                 LinearLayout whatsNewMainImgLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewMainShimmerImgLayout);
                 ShimmerFrameLayout shimmerWhatsNewImageLayout = (ShimmerFrameLayout)rootView.FindViewById(Resource.Id.shimmerWhatsNewImageLayout);
@@ -178,7 +162,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
 
                 CardView whatsNewCardView = (CardView)rootView.FindViewById(Resource.Id.whatsNewDialogCardView);
 
-                
+
                 LinearLayout whatsNewDialogMainView = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewDialogMainView);
                 LinearLayout whatsNewMainImgLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewMainShimmerImgLayout);
                 ShimmerFrameLayout shimmerWhatsNewImageLayout = (ShimmerFrameLayout)rootView.FindViewById(Resource.Id.shimmerWhatsNewImageLayout);
@@ -192,6 +176,11 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 CheckBox chkDontShow = (CheckBox)rootView.FindViewById(Resource.Id.chk_remember_me);
 
                 Button btnGotIt = (Button)rootView.FindViewById(Resource.Id.btnWhatsNewGotIt);
+
+                txtWhatsNewTitle.TextSize = TextViewUtils.GetFontSize(14f);
+                txtWhatsNewMessage.TextSize = TextViewUtils.GetFontSize(14f);
+                chkDontShow.TextSize = TextViewUtils.GetFontSize(12f);
+                btnGotIt.TextSize = TextViewUtils.GetFontSize(16f);
 
                 if (model.PopUp_Text_Only)
                 {
@@ -358,12 +347,12 @@ namespace myTNB_Android.Src.WhatsNewDialog
             }
         }
 
-        private void DynatraceTag(string title) {
-
+        private void DynatraceTag(string title)
+        {
             try
             {
-               // dynatrace
-                IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(!string.IsNullOrEmpty(title)? title : Constants.DYNA_WHATS_NEW_DEFAULT);
+                // dynatrace
+                IDTXAction dynaTrace = DynatraceAndroid.Dynatrace.EnterAction(!string.IsNullOrEmpty(title) ? title : Constants.DYNA_WHATS_NEW_DEFAULT);
                 dynaTrace.LeaveAction();
             }
             catch (System.Exception e)
@@ -411,7 +400,7 @@ namespace myTNB_Android.Src.WhatsNewDialog
                     {
                         currentImgWidth = mContext.Resources.DisplayMetrics.WidthPixels - 8 * GetDeviceHorizontalScaleInPixel(0.006f);
                     }
-                    else if(mContext.Resources.DisplayMetrics.HeightPixels >= 2200)
+                    else if (mContext.Resources.DisplayMetrics.HeightPixels >= 2200)
                     {
                         currentImgWidth = mContext.Resources.DisplayMetrics.WidthPixels - 6 * GetDeviceHorizontalScaleInPixel(0.016f);
                     }

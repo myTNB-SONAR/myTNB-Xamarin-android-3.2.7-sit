@@ -84,6 +84,8 @@ namespace myTNB_Android.Src.NotificationFilter.Adapter
             public NotificationFilterViewHolder(View itemView) : base(itemView)
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationTitle);
+                txtNotificationTitle.TextSize = TextViewUtils.GetFontSize(16f);
+
             }
         }
     }

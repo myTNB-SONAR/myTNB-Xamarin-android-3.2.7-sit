@@ -413,7 +413,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
                                 foreach (UserNotification userNotification in response.GetData().UserNotificationList)
                                 {
-                                    // tODO : SAVE ALL NOTIFICATIONs
+                                    // TODO : SAVE ALL NOTIFICATIONs
                                     int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
                                 }
 
@@ -521,7 +521,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         {
                             foreach (UserNotification userNotification in response.GetData().UserNotificationList)
                             {
-                                // tODO : SAVE ALL NOTIFICATIONs
+                                // TODO : SAVE ALL NOTIFICATIONs
                                 int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
                             }
                         }

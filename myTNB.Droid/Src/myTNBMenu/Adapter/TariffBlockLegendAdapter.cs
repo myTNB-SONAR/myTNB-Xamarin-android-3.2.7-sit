@@ -101,6 +101,9 @@ namespace myTNB_Android.Src.myTNBMenu.Adapter
                 TariffBlockName = itemView.FindViewById<TextView>(Resource.Id.tariffBlockName);
                 TariffBlockUnit = itemView.FindViewById<TextView>(Resource.Id.tariffBlockUnit);
                 ImgTariff = itemView.FindViewById<ImageView>(Resource.Id.imgTariff);
+
+                TariffBlockName.TextSize = TextViewUtils.GetFontSize(11f);
+                TariffBlockUnit.TextSize = TextViewUtils.GetFontSize(11f);
             }
         }
 

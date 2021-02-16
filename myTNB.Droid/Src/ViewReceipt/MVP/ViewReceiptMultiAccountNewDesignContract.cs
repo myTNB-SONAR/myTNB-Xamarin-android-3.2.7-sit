@@ -1,6 +1,5 @@
 ﻿using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.ViewReceipt.Model;
 
 namespace myTNB_Android.Src.ViewReceipt.MVP
 {
@@ -9,7 +8,6 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
         public ViewReceiptMultiAccountNewDesignContract()
         {
         }
-
 
         public interface IView : IBaseView<IUserActionsListener>
         {
@@ -23,7 +21,7 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
 
             void OnDownloadPDF();
 
-            void createPDF(GetPaymentReceiptResponse response);
+            void CreatePDF(GetPaymentReceiptResponse response);
 
             void ShowPaymentReceiptError();
         }
@@ -31,7 +29,7 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
         public interface IUserActionsListener : IBasePresenter
         {
 
-            void NevigateToNextScreen();
+            void NavigateToNextScreen();
 
             void GetReceiptDetails(string selectedAccountNumber, string detailedInfoNumber, bool isOwnedAccount, bool showAllReceipt);
         }

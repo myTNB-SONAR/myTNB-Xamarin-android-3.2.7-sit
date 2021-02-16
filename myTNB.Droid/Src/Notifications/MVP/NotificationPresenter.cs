@@ -2,9 +2,7 @@
 using Android.Content;
 using Android.Runtime;
 using Android.Text;
-using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.Utils;
@@ -12,14 +10,8 @@ using Refit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Threading;
 using Newtonsoft.Json;
-using myTNB_Android.Src.AppLaunch.Api;
-using myTNB_Android.Src.AppLaunch.Requests;
-using static Android.Widget.CompoundButton;
-using myTNB_Android.Src.NotificationDetails.Requests;
 using System.Threading.Tasks;
 using myTNB_Android.Src.Notifications.Api;
 using myTNB_Android.Src.MyTNBService.Response;
@@ -89,7 +81,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                         notificationReadResponse = await ServiceApiImpl.Instance.ReadUserNotification(new UserNotificationReadRequest(selectedNotificationList));
                         if (notificationReadResponse.IsSuccessResponse())
                         {
-                            foreach(UserNotificationData userNotificationData in selectedNotificationList)
+                            foreach (UserNotificationData userNotificationData in selectedNotificationList)
                             {
                                 UserNotificationEntity.UpdateIsRead(userNotificationData.Id, true);
                             }
@@ -257,12 +249,14 @@ namespace myTNB_Android.Src.Notifications.MVP
 
                 var appNotificationTypesResponse = await ServiceApiImpl.Instance.AppNotificationTypes(new BaseRequest());
 
-                if (appNotificationChannelsResponse != null && appNotificationChannelsResponse.Response != null && appNotificationChannelsResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                if (appNotificationChannelsResponse != null
+                    && appNotificationChannelsResponse.Response != null
+                    && appNotificationChannelsResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                 {
-                    if (appNotificationTypesResponse != null && appNotificationTypesResponse.Response != null && appNotificationTypesResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                    if (appNotificationTypesResponse != null
+                        && appNotificationTypesResponse.Response != null
+                        && appNotificationTypesResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
                     {
-
-
                         foreach (AppNotificationChannelsResponse.ResponseData notificationChannel in appNotificationChannelsResponse.GetData())
                         {
                             NotificationChannels channel = new NotificationChannels()
@@ -279,7 +273,6 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 ShowInFilterList = notificationChannel.ShowInFilterList == "true" ? true : false
                             };
                             NotificationChannelEntity.InsertOrReplace(channel);
-
                         }
 
                         foreach (AppNotificationTypesResponse.ResponseData notificationTypes in appNotificationTypesResponse.GetData())
@@ -297,7 +290,6 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 ShowInPreference = notificationTypes.ShowInPreference == "true" ? true : false,
                                 ShowInFilterList = notificationTypes.ShowInFilterList == "true" ? true : false
                             };
-
                             NotificationTypesEntity.InsertOrReplace(type);
                         }
 
@@ -323,7 +315,10 @@ namespace myTNB_Android.Src.Notifications.MVP
                                         {
                                             try
                                             {
-                                                if ((userNotification.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_BILL_DUE_ID) || userNotification.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID)) && !userNotification.IsDeleted && !TextUtils.IsEmpty(userNotification.NotificationTypeId))
+                                                if ((userNotification.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_BILL_DUE_ID)
+                                                    || userNotification.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID))
+                                                    && !userNotification.IsDeleted
+                                                    && !TextUtils.IsEmpty(userNotification.NotificationTypeId))
                                                 {
                                                     CustomerBillingAccount selected = CustomerBillingAccount.FindByAccNum(userNotification.AccountNum);
                                                     if (selected.billingDetails != null)
@@ -368,7 +363,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                                         MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                                     }
                                 }
-                                else if(response != null && response.Response != null && response.Response.ErrorCode == "8400")
+                                else if (response != null && response.Response != null && response.Response.ErrorCode == "8400")
                                 {
                                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                                     // TODO: Show Maintenance Screen
@@ -514,7 +509,11 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 UserNotificationData userNotificationData = UserNotificationData.Get(entity, notificationTypesEntity.Code);
                                 if (!userNotificationData.IsDeleted)
                                 {
-                                    if (userNotificationData.NotificationType != "ODN")
+                                    if (userNotificationData.IsForceDisplay)
+                                    {
+                                        listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
+                                    }
+                                    else if (userNotificationData.NotificationType != "ODN")
                                     {
                                         if (userNotificationData.ODNBatchSubcategory == "ODNAsBATCH")
                                         {
@@ -522,8 +521,8 @@ namespace myTNB_Android.Src.Notifications.MVP
                                         }
                                         else
                                         {
-                                            if (UserEntity.GetActive().Email.Equals(userNotificationData.Email) &&
-                                            MyTNBAccountManagement.GetInstance().IsAccountNumberExist(userNotificationData.AccountNum))
+                                            if (UserEntity.GetActive().Email.Equals(userNotificationData.Email)
+                                                && MyTNBAccountManagement.GetInstance().IsAccountNumberExist(userNotificationData.AccountNum))
                                             {
                                                 listOfNotifications.Add(UserNotificationData.Get(entity, notificationTypesEntity.Code));
                                             }
@@ -672,7 +671,8 @@ namespace myTNB_Android.Src.Notifications.MVP
             {
                 if (accountList != null && accountList.Count > 0)
                 {
-                    UserNotificationDeleteResponse notificationDeleteResponse = await ServiceApiImpl.Instance.DeleteUserNotification(new UserNotificationDeleteRequest(accountList));
+                    UserNotificationDeleteResponse notificationDeleteResponse =
+                        await ServiceApiImpl.Instance.DeleteUserNotification(new UserNotificationDeleteRequest(accountList));
 
                     if (notificationDeleteResponse.IsSuccessResponse())
                     {

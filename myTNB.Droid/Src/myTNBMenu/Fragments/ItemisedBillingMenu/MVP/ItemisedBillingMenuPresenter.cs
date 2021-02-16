@@ -709,7 +709,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     ContentMessage = Utility.GetLocalizedLabel("Bills", "tutorialHistoryREAcctDesc"),//"View and access your advices and<br/>payment receipts from the<br/>previous six months. Use the filter<br/>to see only advices or receipts.",
                     ItemCount = ItemCount,
                     DisplayMode = DisplayMode,
-                    IsButtonShow = true
+                    IsButtonShow = false
                 });
             }
             else
@@ -751,7 +751,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     ContentMessage = Utility.GetLocalizedLabel("Bills", "tutorialHistoryNormalAcctDesc"),//"View and access your bills and<br/>payment receipts from the<br/>previous six months. Use the<br/>filter to see only bills or receipts.",
                     ItemCount = ItemCount,
                     DisplayMode = DisplayMode,
-                    IsButtonShow = true
+                    IsButtonShow = false
                 });
             }
 
