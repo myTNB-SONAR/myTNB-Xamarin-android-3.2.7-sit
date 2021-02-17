@@ -642,7 +642,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     {
                         if (!account.isOwned)
                         {
-                            if (account.mobileNoOwner.Equals("") && account.emailOwner.Equals("") && account.accountTypeId.Equals("1"))
+                            if (string.IsNullOrEmpty(account.mobileNoOwner) && string.IsNullOrEmpty(account.emailOwner) && account.accountTypeId.Equals("1"))
                             { 
                                 i++;
                             }

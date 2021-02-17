@@ -13,6 +13,7 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.UpdateNameFull.MVP;
 using myTNB_Android.Src.Utils;
@@ -54,7 +55,7 @@ namespace myTNB_Android.Src.UpdateNameFull.Activity
 
             try
             {
-
+                UserEntity user = UserEntity.GetActive();
                 progress = new MaterialDialog.Builder(this)
                     .Title(GetString(Resource.String.update_account_progress_title))
                     .Content(GetString(Resource.String.update_account_progress_content))
@@ -69,6 +70,7 @@ namespace myTNB_Android.Src.UpdateNameFull.Activity
 
                 txtInputLayoutNameFull.Hint = GetLabelCommonByLanguage("name");
                 btnSave.Text = GetLabelCommonByLanguage("save");
+                txtNameFull.Text = user.DisplayName;
 
                 txtNameFull.AddTextChangedListener(new InputFilterFormField(txtNameFull, txtInputLayoutNameFull));
 

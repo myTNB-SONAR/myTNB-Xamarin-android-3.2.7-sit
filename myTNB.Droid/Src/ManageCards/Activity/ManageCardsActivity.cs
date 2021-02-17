@@ -232,16 +232,16 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 {
                     layoutEmptyCards.Visibility = ViewStates.Visible;
                     layoutCards.Visibility = ViewStates.Gone;
-                    layoutLabelAutopay.Visibility = ViewStates.Gone;
+                    /*layoutLabelAutopay.Visibility = ViewStates.Gone;
                     layoutAutopay.Visibility = ViewStates.Gone;
-                    layoutListviewAutopay.Visibility = ViewStates.Gone;
+                    layoutListviewAutopay.Visibility = ViewStates.Gone;*/
                 }
                 else
                 {
-                    layoutLabelAutopay.Visibility = ViewStates.Visible;
-                    layoutAutopay.Visibility = ViewStates.Gone;
+                    //layoutLabelAutopay.Visibility = ViewStates.Visible;
+                    //layoutAutopay.Visibility = ViewStates.Gone;
+                    //layoutListviewAutopay.Visibility = ViewStates.Visible;
                     layoutCards.Visibility = ViewStates.Visible;
-                    layoutListviewAutopay.Visibility = ViewStates.Visible;
                     layoutEmptyCards.Visibility = ViewStates.Gone;
                 }
             }
@@ -259,13 +259,13 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 {
                     layoutEmptyCards.Visibility = ViewStates.Visible;
                     layoutCards.Visibility = ViewStates.Gone;
-                    layoutLabelAutopay.Visibility = ViewStates.Gone;
-                    layoutAutopay.Visibility = ViewStates.Gone;
+                    //layoutLabelAutopay.Visibility = ViewStates.Gone;
+                    //layoutAutopay.Visibility = ViewStates.Gone;
                 }
                 else
                 {
-                    layoutLabelAutopay.Visibility = ViewStates.Visible;
-                    layoutAutopay.Visibility = ViewStates.Visible;
+                    //layoutLabelAutopay.Visibility = ViewStates.Visible;
+                    //layoutAutopay.Visibility = ViewStates.Visible;
                     layoutCards.Visibility = ViewStates.Visible;
                     layoutEmptyCards.Visibility = ViewStates.Gone;
                     mAdapter.AddAll(cardsList);
@@ -338,8 +338,8 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
                     layoutEmptyCards.Visibility = ViewStates.Visible;
                     layoutCards.Visibility = ViewStates.Gone;
-                    layoutLabelAutopay.Visibility = ViewStates.Gone;
-                    layoutAutopay.Visibility = ViewStates.Gone;
+                    //layoutLabelAutopay.Visibility = ViewStates.Gone;
+                    //layoutAutopay.Visibility = ViewStates.Gone;
                     listView.Visibility = ViewStates.Gone;
                     this.userActionsListener.OnRemoveStay(RemovedCard, position);
 

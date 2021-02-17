@@ -156,15 +156,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
             android:background="@color/white"
-            android:layout_gravity="bottom">
+            android:layout_gravity="bottom">          
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp"
+                android:layout_gravity="left|center"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="16dp"
                 android:background="@color/white">
                 <CheckBox
                     android:id="@+id/checkboxCondition"
@@ -172,28 +174,35 @@
                     android:layout_width="wrap_content"
                     android:checked="false"
                     android:textSize="12dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:gravity="center_vertical"
+                    android:paddingTop="-4dp"
+                    android:layout_gravity="center_vertical"
                     android:button="@drawable/checkbox_selector" />
                 <TextView
-                    android:text=" By confirming, I have read and agreed to the Terms and Conditions."
+                    android:text="By confirming, I have read and agreed to the Terms and Conditions."
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:textSize="12dp"
-                    android:paddingLeft="3dp"
                     android:id="@+id/txtTermsConditions"
                     android:textColorLink="@color/powerBlue"
-                    android:gravity="center_vertical"/>
-            </LinearLayout>
-            <Button
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/registration_form_btn_register"
-                android:id="@+id/btnRegister"
-                android:layout_marginTop="15dp"
-                style="@style/Theme.RegisterButton" />
+                    android:paddingLeft="3dp"
+                    android:layout_gravity="center_vertical"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="15dp"
+                    android:background="@color/white">
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/registration_form_btn_register"
+                    android:id="@+id/btnRegister"
+                    style="@style/Theme.RegisterButton" />
+                </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
