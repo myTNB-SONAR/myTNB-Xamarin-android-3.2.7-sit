@@ -924,10 +924,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 txtNoPayableTitle.TextSize = TextViewUtils.GetFontSize(15f);
                 txtNoPayable.TextSize = TextViewUtils.GetFontSize(25f);
                 txtNoPayableCurrency.TextSize = TextViewUtils.GetFontSize(13f);
-                txtTotalPayableTitle.TextSize = TextViewUtils.GetFontSize(15f);
-                txtTotalPayable.TextSize = TextViewUtils.GetFontSize(25f);
-                txtTotalPayableCurrency.TextSize = TextViewUtils.GetFontSize(13f);
-                txtDueDate.TextSize = TextViewUtils.GetFontSize(15f);
+                txtTotalPayableTitle.TextSize = 14;// TextViewUtils.GetFontSize(15f);
+                txtTotalPayable.TextSize = 24;// TextViewUtils.GetFontSize(25f);
+                txtTotalPayableCurrency.TextSize = 14;// TextViewUtils.GetFontSize(13f);
+                txtDueDate.TextSize = 14;// TextViewUtils.GetFontSize(15f);
                 lblinfoLabelEPP.TextSize = TextViewUtils.GetFontSize(11f);
                 btnPay.TextSize = TextViewUtils.GetFontSize(16f);
                 btnNewRefresh.TextSize = TextViewUtils.GetFontSize(16f);
