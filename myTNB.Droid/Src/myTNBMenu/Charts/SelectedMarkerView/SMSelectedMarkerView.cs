@@ -17,7 +17,6 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
 {
     public class SMSelectedMarkerView : MarkerView
     {
-
         private DecimalFormat decimalFormat;
         private DecimalFormat kwhFormat;
         private DecimalFormat zoonInkWhFormat;
@@ -43,8 +42,6 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
             titleMarker = FindViewById<TextView>(Resource.Id.txtMarker);
             titlekWhMarker = FindViewById<TextView>(Resource.Id.txtkWhMarker);
             imgMissingCopy = FindViewById<ImageView>(Resource.Id.imgMissingCopy);
-            titleMarker.TextSize = TextViewUtils.GetFontSize(11f);
-            titlekWhMarker.TextSize = TextViewUtils.GetFontSize(11f);
             titleMarker.Gravity = GravityFlags.Center;
             titlekWhMarker.Gravity = GravityFlags.Center;
             TextViewUtils.SetMuseoSans500Typeface(titleMarker);
@@ -143,7 +140,6 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                         float valKwh = (float)smDayViewUsageList[index];
                         titleMarker.Text = kwhFormat.Format(Math.Round(Math.Abs(valKwh), MidpointRounding.AwayFromZero)) + " " + smDayUsageUnit;
                     }
-
                 }
                 else
                 {
@@ -157,8 +153,6 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                 titlekWhMarker.Visibility = ViewStates.Gone;
                 titleMarker.Text = "RM " + decimalFormat.Format(e.GetY());
             }
-
-
             base.RefreshContent(e, highlight);
         }
 
