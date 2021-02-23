@@ -66,6 +66,7 @@
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
                     android:text="Where is my account number?"
+                    android:paddingLeft="5dp"
                     android:drawableLeft="@drawable/smr_why_accounts_info"/>
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/account_label_layout"
