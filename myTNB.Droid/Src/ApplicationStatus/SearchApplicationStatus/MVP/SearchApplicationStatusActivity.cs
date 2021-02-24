@@ -421,15 +421,10 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         {
             try
             {
-               if (ErrorMessage != null && ErrorMessage != string.Empty)
+               if (txtServiceRequestNum.Text != string.Empty && ErrorMessage != null && ErrorMessage != string.Empty)
                 {
-                    txtInputLayoutServiceRequestNum.Error = ErrorMessage;
-                    txtInputLayoutServiceRequestNum.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
-                    if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
-                    {
-                        //txtInputLayoutServiceRequestNum.ErrorEnabled = true;
-                    }
-                 
+                    txtInputLayoutServiceRequestNum.HelperText = ErrorMessage;
+                    txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
                 }
             }
             catch (Exception ex)
@@ -448,25 +443,15 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     if (searchType == ApplicationStatusSearchType.ServiceRequestNo)
                     {
                         txtServiceRequestNum.SetFilters(new IInputFilter[] { });
-                        if (txtServiceRequestNum.Text.Count() == 0 || txtServiceRequestNum.Text.Count() == 10)
-                        {
-                            //txtInputLayoutServiceRequestNum.Error = null;
-                            //txtInputLayoutServiceRequestNum.ErrorEnabled = false;
-                        }
+                        
                         if (txtServiceRequestNum.Text.Count() == 10)
                         {
                             EnableButton();
                             txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(10) });
-                            //txtInputLayoutServiceRequestNum.Error = null;
-                            //txtInputLayoutServiceRequestNum.ErrorEnabled = false;
                         }
                         else if (txtServiceRequestNum.Text.Count() != 10 && txtServiceRequestNum.Text != string.Empty)
                         {
                             ErrorMessage = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
-                            if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
-                            {
-                                //txtInputLayoutServiceRequestNum.ErrorEnabled = true;
-                            }
                             DisableButton();
                         }
                     }
@@ -474,25 +459,14 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     if (searchType == ApplicationStatusSearchType.CA)
                     {
                         txtServiceRequestNum.SetFilters(new IInputFilter[] { });
-                        if (txtServiceRequestNum.Text.Count() == 0 || txtServiceRequestNum.Text.Count() == 12)
-                        {
-                            //txtInputLayoutServiceRequestNum.Error = null;
-                            //txtInputLayoutServiceRequestNum.ErrorEnabled = false;
-                        }
                         if (txtServiceRequestNum.Text.Count() == 12)
                         {
                             txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(12) });
-                            //txtInputLayoutServiceRequestNum.Error = null;
-                            //txtInputLayoutServiceRequestNum.ErrorEnabled = false;
                             EnableButton();
                         }
                         else if (txtServiceRequestNum.Text.Count() != 12)
                         {
                             ErrorMessage = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
-                            if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
-                            {
-                                //txtInputLayoutServiceRequestNum.ErrorEnabled = true;
-                            }
                             DisableButton();
                         }
                     }
@@ -625,17 +599,10 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         if (txtServiceRequestNum.Text.Count() == format.Count())
                         {
                             EnableButton();
-                            //txtInputLayoutServiceRequestNum.ErrorEnabled = false;
-                            //txtInputLayoutServiceRequestNum.Error = null;
                         }
                         else
                         {
-                            //if (txtServiceRequestNum.Text.Count() != preffix.Count())
-                            {
                                 ErrorMessage = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
-                                //if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
-                                    //txtInputLayoutServiceRequestNum.ErrorEnabled = true;
-                            }
                         }
                         isEdiging = false;
                     }
@@ -643,25 +610,15 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     if (searchType == ApplicationStatusSearchType.ServiceNotificationNo)
                     {
                         txtServiceRequestNum.SetFilters(new IInputFilter[] { });
-                        if (txtServiceRequestNum.Text.Count() == 0 || txtServiceRequestNum.Text.Count() == 12)
-                        {
-                            //txtInputLayoutServiceRequestNum.Error = null;
-                            //txtInputLayoutServiceRequestNum.ErrorEnabled = false;
-                        }
+                       
                         if (txtServiceRequestNum.Text.Count() == 12)
                         {
                             EnableButton();
                             txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(10) });
-                            //txtInputLayoutServiceRequestNum.Error = null;
-                            //txtInputLayoutServiceRequestNum.ErrorEnabled = false;
                         }
                         else if (txtServiceRequestNum.Text.Count() != 10 && txtServiceRequestNum.Text != string.Empty)
                         {
                             ErrorMessage = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
-                            if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
-                            {
-                                //txtInputLayoutServiceRequestNum.ErrorEnabled = true;
-                            }
                             DisableButton();
                         }
                     }
@@ -708,8 +665,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 {
                     if (resultCode == Result.Ok)
                     {
-                        //txtInputLayoutServiceRequestNum.Error = null;
-                        //txtInputLayoutServiceRequestNum.ErrorEnabled = false;
                         isTextChange = false;
                         targetSearchBy = string.Empty;
                         Bundle extra = data.Extras;
@@ -765,8 +720,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 {
                     if (resultCode == Result.Ok)
                     {
-                        //txtInputLayoutServiceRequestNum.Error = null;
-                        //txtInputLayoutServiceRequestNum.ErrorEnabled = false;
                         isTextChange = false;
                         Bundle extra = data.Extras;
                         List<SearchByModel> resultSearchByList = new List<SearchByModel>();
