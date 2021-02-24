@@ -48,6 +48,7 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.Mobile.SessionCache;
 using myTNB;
 using myTNB.Mobile;
+using myTNB_Android.Src.EnergyBudget.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -1314,6 +1315,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             }
                             this.SetIsClicked(false);
                         }
+                        else if (selectedService.ServiceCategoryId == "1007")
+                        {
+                            if (!UserSessions.HasSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                            {
+                                UserSessions.DoSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                            }
+                            Intent energy_budget_activity = new Intent(this.Activity, typeof(EnergyBudgetActivity));
+                            StartActivity(energy_budget_activity);
+                        }
                         else
                         {
                             this.SetIsClicked(false);
@@ -1871,9 +1881,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
                 List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
+                List<CustomerBillingAccount> smartmeterAccounts = CustomerBillingAccount.SMeterBudgetAccountList();        //smart meter ca
                 List<CustomerBillingAccount> list = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
                 List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
                 List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
+                List<SMRAccount> SMeterAccountList = new List<SMRAccount>();
                 if (eligibleSMRBillingAccounts.Count > 0)
                 {
                     foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
@@ -1897,6 +1909,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         smrAccount.accountAddress = billingAccount.AccountStAddress;
                         smrAccount.accountSelected = false;
                         currentSmrAccountList.Add(smrAccount);
+                    }
+                }
+
+                if (smartmeterAccounts.Count > 0)
+                {
+                    foreach (CustomerBillingAccount billingAccount in smartmeterAccounts)
+                    {
+                        SMRAccount smrAccount = new SMRAccount();
+                        smrAccount.accountNumber = billingAccount.AccNum;
+                        smrAccount.accountName = billingAccount.AccDesc;
+                        smrAccount.accountAddress = billingAccount.AccountStAddress;
+                        smrAccount.accountSelected = false;
+                        SMeterAccountList.Add(smrAccount);
                     }
                 }
 
@@ -1928,8 +1953,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     SetBottmLayoutParams(21f);
                 }
 
+                List<SMRAccount> allSMRBlillingAccounts = new List<SMRAccount>();       //energy budget
+                allSMRBlillingAccounts.AddRange(SMeterAccountList);
+
                 UserSessions.SetSMRAccountList(currentSmrAccountList);
                 UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
+                UserSessions.EnergyBudget(allSMRBlillingAccounts);                  //energy budget
 
                 accountListRefreshContainer.Visibility = ViewStates.Gone;
                 accountListViewContainer.Visibility = ViewStates.Visible;
@@ -1948,9 +1977,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
                 List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
+                List<CustomerBillingAccount> smartmeterAccounts = CustomerBillingAccount.SMeterBudgetAccountList();        //smart meter ca
                 List<CustomerBillingAccount> list = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
                 List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
                 List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
+                List<SMRAccount> SMeterAccountList = new List<SMRAccount>();
                 if (eligibleSMRBillingAccounts.Count > 0)
                 {
                     foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
@@ -1974,6 +2005,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         smrAccount.accountAddress = billingAccount.AccountStAddress;
                         smrAccount.accountSelected = false;
                         currentSmrAccountList.Add(smrAccount);
+                    }
+                }
+
+                if (smartmeterAccounts.Count > 0)
+                {
+                    foreach (CustomerBillingAccount billingAccount in smartmeterAccounts)
+                    {
+                        SMRAccount smrAccount = new SMRAccount();
+                        smrAccount.accountNumber = billingAccount.AccNum;
+                        smrAccount.accountName = billingAccount.AccDesc;
+                        smrAccount.accountAddress = billingAccount.AccountStAddress;
+                        smrAccount.accountSelected = false;
+                        SMeterAccountList.Add(smrAccount);
                     }
                 }
 
@@ -2005,8 +2049,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     SetBottmLayoutParams(21f);
                 }
 
+                List<SMRAccount> allSMRBlillingAccounts = new List<SMRAccount>();       //energy budget
+                allSMRBlillingAccounts.AddRange(SMeterAccountList);
+
                 UserSessions.SetSMRAccountList(currentSmrAccountList);
                 UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
+                UserSessions.EnergyBudget(allSMRBlillingAccounts);                  //energy budget
 
                 accountListRefreshContainer.Visibility = ViewStates.Gone;
                 accountListViewContainer.Visibility = ViewStates.Visible;

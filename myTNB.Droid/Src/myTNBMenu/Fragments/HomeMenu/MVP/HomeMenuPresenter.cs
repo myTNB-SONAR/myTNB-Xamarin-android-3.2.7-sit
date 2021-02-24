@@ -30,6 +30,7 @@ using myTNB_Android.Src.MyTNBService.Request;
 using Android.Text;
 using Android.OS;
 using System.Globalization;
+using Java.Util;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -1783,6 +1784,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     MyServiceEntity.InsertOrReplace(currentMyServiceList[i]);
                 }
             }
+
+            //testing adding icon
+            var testicon = new MyService()
+            {
+                ServiceCategoryId = "1007",
+                serviceCategoryName = "test",
+                serviceCategoryIcon = "test",
+                serviceCategoryIconUrl = "test",
+                serviceCategoryDesc = "test",
+            };
+            //filterList.Add(testicon);
+            filterList.Insert(2, testicon);
+
+            MyServiceEntity.InsertOrReplace(testicon);
+
             currentMyServiceList = filterList;
             fetchList = currentMyServiceList;
 
@@ -1802,18 +1818,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void RestoreCurrentMyServiceState()
         {
             List<MyServiceEntity> cachedDBList = new List<MyServiceEntity>();
-
+            var testicon = new MyService();
             List<MyService> cachedList = new List<MyService>();
             cachedDBList = MyServiceEntity.GetAll();
             for (int i = 0; i < cachedDBList.Count; i++)
             {
-                cachedList.Add(new MyService()
+                if (cachedDBList[i].ServiceCategoryId.Contains("1007"))
                 {
-                    ServiceCategoryId = cachedDBList[i].ServiceCategoryId,
-                    serviceCategoryName = cachedDBList[i].serviceCategoryName
-                });
+                    testicon = new MyService()
+                    {
+                        ServiceCategoryId = "1007",
+                        serviceCategoryName = "test",
+                    };
+                }
+                else
+                {
+                    cachedList.Add(new MyService()
+                    {
+                        ServiceCategoryId = cachedDBList[i].ServiceCategoryId,
+                        serviceCategoryName = cachedDBList[i].serviceCategoryName
+                    });
+                }                              
             }
-
+            cachedList.Insert(2, testicon);
             currentMyServiceList = cachedList;
             isMyServiceExpanded = true;// HomeMenuUtils.GetIsMyServiceExpanded();
             List<MyService> fetchList = new List<MyService>();

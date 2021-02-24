@@ -221,6 +221,18 @@ namespace myTNB_Android.Src.Utils
             editor.PutBoolean("hasApplicationStatusShown", true);
             editor.Apply();
         }
+
+        public static bool HasSmartMeterShown(ISharedPreferences prefs)             //energy budget
+        {
+            return prefs.GetBoolean("hasSmartMeterShown", false);
+        }
+        public static void DoSmartMeterShown(ISharedPreferences prefs)              //energy budget
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasSmartMeterShown", true);
+            editor.Apply();
+        }
+
         public static bool HasApplicationDetailShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasApplicationDetailShown", false);
@@ -544,6 +556,25 @@ namespace myTNB_Android.Src.Utils
         public static List<SMRAccount> GetSMRAccountList()
         {
             string accountList = mPreferences.GetString("SMR_ACCOUNT_LIST", null);
+            List<SMRAccount> selectAccountList = new List<SMRAccount>();
+            if (accountList != null)
+            {
+                selectAccountList = JsonConvert.DeserializeObject<List<SMRAccount>>(accountList);
+            }
+            return selectAccountList;
+        }
+
+        public static void EnergyBudget(List<SMRAccount> sMRAccounts)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(sMRAccounts);
+            editor.PutString("SMR_ACCOUNT_LIST_ENERGY_BUDGET", jsonAccountList);
+            editor.Apply();
+        }
+
+        public static List<SMRAccount> GetEnergyBudgetList()
+        {
+            string accountList = mPreferences.GetString("SMR_ACCOUNT_LIST_ENERGY_BUDGET", null);
             List<SMRAccount> selectAccountList = new List<SMRAccount>();
             if (accountList != null)
             {

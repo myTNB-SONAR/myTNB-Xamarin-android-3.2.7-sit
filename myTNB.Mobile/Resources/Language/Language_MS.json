@@ -214,7 +214,8 @@
     "gotIt": "Ok!",
     "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
     "receivedExtra": "terima lebih",
-    "applicationStatus": "Status<br>Permohonan"
+    "applicationStatus": "Status<br>Permohonan",
+    "energyBudget": "My Energy<br>Budget"
   },
   "Tabbar": {
     "home": "Utama",

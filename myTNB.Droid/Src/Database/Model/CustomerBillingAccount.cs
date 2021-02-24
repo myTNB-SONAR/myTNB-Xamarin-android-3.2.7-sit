@@ -1198,5 +1198,12 @@ namespace myTNB_Android.Src.Database.Model
             return enabled;
         }
 
+        public static List<CustomerBillingAccount> SMeterBudgetAccountList()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            List<CustomerBillingAccount> eligibleSMAccounts = new List<CustomerBillingAccount>();
+            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode = 'TRIL'").ToList().OrderBy(x => x.AccDesc).ToList();
+            return eligibleSMAccounts;
+        }
     }
 }

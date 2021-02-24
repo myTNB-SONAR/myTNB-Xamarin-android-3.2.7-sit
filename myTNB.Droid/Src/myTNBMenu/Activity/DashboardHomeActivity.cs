@@ -59,7 +59,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
               , Icon = "@drawable/ic_launcher"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.DashboardHome"
-        , WindowSoftInputMode = SoftInput.AdjustNothing)]
+        , WindowSoftInputMode = SoftInput.AdjustPan)]
     public class DashboardHomeActivity : BaseToolbarAppCompatActivity, DashboardHomeContract.IView, ISummaryFragmentToDashBoardActivtyListener
     {
         internal readonly string TAG = typeof(DashboardHomeActivity).Name;

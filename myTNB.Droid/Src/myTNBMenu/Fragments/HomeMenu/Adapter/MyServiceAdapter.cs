@@ -6,6 +6,7 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.Utils;
 using System;
@@ -50,7 +51,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 MyServiceViewHolder vh = holder as MyServiceViewHolder;
 
                 MyService model = myServiceList[position];
-
                 try
                 {
                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
@@ -384,6 +384,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             if (UserSessions.HasApplicationStatusShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
                             {
                                 vh.newLabel.Visibility = ViewStates.Gone;
+                            }
+                            break;
+                        case "1007":
+                            if (UserSessions.GetEnergyBudgetList().Count > 0)
+                            {
+                                vh.serviceImg.SetImageResource(Resource.Drawable.Check_Status_Icon);
+                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                {
+                                    vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "energyBudget"), FromHtmlOptions.ModeLegacy);
+                                }
+                                else
+                                {
+                                    vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "energyBudget"));
+                                }
+                                if (UserSessions.HasSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
+                                {
+                                    vh.newLabel.Visibility = ViewStates.Gone;
+                                }
                             }
                             break;
                     }
