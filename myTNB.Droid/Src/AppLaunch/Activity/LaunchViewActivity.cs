@@ -298,12 +298,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     StartActivity(WalkthroughIntent);
                 }
             }
-            else
-            {
-                Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
-                DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                StartActivity(DashboardIntent);
-            }
         }
 
         public async void ShowApplicationStatusDetails()

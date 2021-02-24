@@ -497,8 +497,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                int belowHeight = (int)DPUtils.ConvertDPToPx(110f);
-
+                                float h2 = TextViewUtils.IsLargeFonts ? 90f : 90f;
+                                int belowHeight = (int)DPUtils.ConvertDPToPx(h2);
                                 if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(135);
@@ -677,8 +677,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                int belowHeight = (int)DPUtils.ConvertDPToPx(110f);
-
+                                float h2 = TextViewUtils.IsLargeFonts ? 90f : 90f;
+                                int belowHeight = (int)DPUtils.ConvertDPToPx(h2);
                                 if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(135);
@@ -857,8 +857,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                int belowHeight = (int)DPUtils.ConvertDPToPx(110f);
-
+                                float h2 = TextViewUtils.IsLargeFonts ? 90f : 100f;
+                                int belowHeight = (int)DPUtils.ConvertDPToPx(h2);
                                 if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(135);
@@ -1015,8 +1015,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                int belowHeight = (int)DPUtils.ConvertDPToPx(110f);
-
+                                float h2 = TextViewUtils.IsLargeFonts ? 90f : 100f;
+                                int belowHeight = (int)DPUtils.ConvertDPToPx(h2);
                                 if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(135);
@@ -1173,8 +1173,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                int belowHeight = (int)DPUtils.ConvertDPToPx(110f);
-
+                                float h2 = TextViewUtils.IsLargeFonts ? 90f : 100f;
+                                int belowHeight = (int)DPUtils.ConvertDPToPx(h2);
                                 if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
                                     belowHeight = (int)DPUtils.ConvertDPToPx(135);
@@ -2214,7 +2214,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
 
                         RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                        innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts? (int)DPUtils.ConvertDPToPx(150f) : (int)DPUtils.ConvertDPToPx(110f);
+                        innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts? (int)DPUtils.ConvertDPToPx(250f) : (int)DPUtils.ConvertDPToPx(110f);
                         innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                         innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                         innerTopLayout.RequestLayout();

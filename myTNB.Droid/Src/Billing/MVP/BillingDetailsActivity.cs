@@ -118,7 +118,7 @@ namespace myTNB_Android.Src.Billing.MVP
         AccountChargeModel selectedAccountChargeModel;
         AccountData selectedAccountData;
         BillingDetailsContract.IPresenter billingDetailsPresenter;
-		private bool fromSelectAccountPage;
+        private bool fromSelectAccountPage;
         private const string PAGE_ID = "BillDetails";
         ISharedPreferences mPref;
 
@@ -186,25 +186,33 @@ namespace myTNB_Android.Src.Billing.MVP
         {
             base.OnCreate(savedInstanceState);
             SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
-            TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, accountPayAmountValue, refreshBillingDetailMessage);
+            TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, refreshBillingDetailMessage);
             TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue,
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency,
                 accountMinChargeLabel, btnPayBill, btnViewBill, btnBillingDetailefresh);
 
             accountAddress.TextSize = TextViewUtils.GetFontSize(12f);
             accountPayAmountDate.TextSize = TextViewUtils.GetFontSize(14f);
-            accountPayAmountValue.TextSize = TextViewUtils.GetFontSize(24f);
+            accountPayAmountValue.TextSize = TextViewUtils.GetFontSize(TextViewUtils.IsLargeFonts ? 14 : 24f);
+            if (TextViewUtils.IsLargeFonts)
+            {
+                TextViewUtils.SetMuseoSans500Typeface(accountPayAmountValue);
+            }
+            else
+            {
+                TextViewUtils.SetMuseoSans300Typeface(accountPayAmountValue);
+            }
             refreshBillingDetailMessage.TextSize = TextViewUtils.GetFontSize(12f);
 
             accountName.TextSize = TextViewUtils.GetFontSize(14f);
             myBillDetailsLabel.TextSize = TextViewUtils.GetFontSize(16f);
             accountChargeLabel.TextSize = TextViewUtils.GetFontSize(14f);
             accountChargeValue.TextSize = TextViewUtils.GetFontSize(14f);
-            
+
             accountBillThisMonthLabel.TextSize = TextViewUtils.GetFontSize(14f);
             accountBillThisMonthValue.TextSize = TextViewUtils.GetFontSize(14f);
             accountPayAmountLabel.TextSize = TextViewUtils.GetFontSize(14f);
-            accountPayAmountCurrency.TextSize = TextViewUtils.GetFontSize(12f);
+            accountPayAmountCurrency.TextSize = TextViewUtils.GetFontSize(TextViewUtils.IsLargeFonts ? 14 : 12f);
             accountMinChargeLabel.TextSize = TextViewUtils.GetFontSize(12f);
             btnPayBill.TextSize = TextViewUtils.GetFontSize(16f);
             btnViewBill.TextSize = TextViewUtils.GetFontSize(16f);
@@ -229,14 +237,14 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 selectedAccountChargeModel = JsonConvert.DeserializeObject<AccountChargeModel>(extras.GetString("SELECTED_BILL_DETAILS"));
             }
-			if (extras.ContainsKey("PEEK_BILL_DETAILS"))
-			{
+            if (extras.ContainsKey("PEEK_BILL_DETAILS"))
+            {
                 fromSelectAccountPage = extras.GetBoolean("PEEK_BILL_DETAILS");
-			}
-			else
-			{
-				fromSelectAccountPage = false;
-			}
+            }
+            else
+            {
+                fromSelectAccountPage = false;
+            }
             if (extras.ContainsKey("PENDING_PAYMENT"))
             {
                 isCheckPendingPaymentNeeded = false;
@@ -247,7 +255,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 isCheckPendingPaymentNeeded = true;
                 isPendingPayment = false;
             }
-			SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+            SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
             accountName.Text = selectedAccountData.AccountNickName;
@@ -283,7 +291,7 @@ namespace myTNB_Android.Src.Billing.MVP
             }
         }
 
-         private void EnableEppTooltip(bool isTooltipShown)
+        private void EnableEppTooltip(bool isTooltipShown)
         {
             if (isTooltipShown == true)
             {
@@ -294,7 +302,7 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 infoLabelContainerDetailEPP.Visibility = ViewStates.Gone;
             }
-            
+
         }
 
         private void EnablePayBillButtons()
@@ -426,13 +434,13 @@ namespace myTNB_Android.Src.Billing.MVP
             CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
             if (selectedAccountChargeModel.OutstandingCharges < 0f)
             {
-                accountChargeValue.Text = "- RM " + (Math.Abs(selectedAccountChargeModel.OutstandingCharges)*-1).ToString("#,##0.00", currCult);
+                accountChargeValue.Text = "- RM " + (Math.Abs(selectedAccountChargeModel.OutstandingCharges) * -1).ToString("#,##0.00", currCult);
             }
             else
             {
                 accountChargeValue.Text = "RM " + (Math.Abs(selectedAccountChargeModel.OutstandingCharges)).ToString("#,##0.00", currCult);
             }
-            
+
             if (selectedAccountChargeModel.OutstandingCharges < 0f)
             {
                 accountChargeLabel.Text = GetLabelByLanguage("paidExtra");
@@ -446,14 +454,14 @@ namespace myTNB_Android.Src.Billing.MVP
 
             if (selectedAccountChargeModel.CurrentCharges < 0f)
             {
-                accountBillThisMonthValue.Text = "- RM " + (selectedAccountChargeModel.CurrentCharges*-1).ToString("#,##0.00", currCult);
+                accountBillThisMonthValue.Text = "- RM " + (selectedAccountChargeModel.CurrentCharges * -1).ToString("#,##0.00", currCult);
             }
             else
             {
                 accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00", currCult);  //ori code
             }
 
-           
+
             accountPayAmountValue.Text = selectedAccountChargeModel.AmountDue.ToString("#,##0.00", currCult);
             if (selectedAccountChargeModel.IsNeedPay)
             {
@@ -465,7 +473,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
                 accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
-            else if(selectedAccountChargeModel.IsPaidExtra)
+            else if (selectedAccountChargeModel.IsPaidExtra)
             {
                 accountPayAmountLabel.Visibility = ViewStates.Visible;
                 accountPayAmountDate.Visibility = ViewStates.Gone;
@@ -614,7 +622,7 @@ namespace myTNB_Android.Src.Billing.MVP
 
                     eppTooltip.Show();
                 }
-            }            
+            }
         }
 
         public void ShowBillPDF()
@@ -724,7 +732,7 @@ namespace myTNB_Android.Src.Billing.MVP
 
                 rootView.OffsetDescendantRectToMyCoords(bottomLayout, offsetViewBounds);
 
-                i = offsetViewBounds.Top + (int) DPUtils.ConvertDPToPx(14f);
+                i = offsetViewBounds.Top + (int)DPUtils.ConvertDPToPx(14f);
 
             }
             catch (System.Exception e)

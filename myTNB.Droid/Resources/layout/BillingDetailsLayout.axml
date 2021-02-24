@@ -162,9 +162,9 @@
                         android:weightSum="1"
                         android:orientation="horizontal">
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
+                            android:layout_weight="0.9"
                             android:gravity="center|left"
                             android:orientation="vertical">
                             <TextView
@@ -190,7 +190,7 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
+                            android:layout_weight="0.1"
                             android:layout_gravity="right|center"
                             android:gravity="right"
                             android:orientation="horizontal">
@@ -235,7 +235,7 @@
                         android:id="@+id/infoLabelContainerDetailEPP"
                         android:layout_width="match_parent"
                         android:visibility="gone"
-                        android:layout_height="24dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:paddingLeft="2dp"
                         android:background="@drawable/rectangle_rounded_corner_light_blue_bg"

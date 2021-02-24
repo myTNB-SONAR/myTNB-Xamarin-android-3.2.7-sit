@@ -670,12 +670,12 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 float heightRatio = 84f / 72f;
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
-                currentCard.Height = cardHeight;
-                currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 80 : cardWidth;
+                //currentCard.Height = cardHeight;
+                currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth;
 
                 float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
-                findUsLayout.SetPadding(padding, padding, padding, padding);
+                findUsLayout.SetPadding(padding, padding, padding, 0);
 
                 float imgHeightRatio = 28f / 72f;
                 int imgHeight = (int)(cardWidth * (imgHeightRatio));
@@ -700,8 +700,8 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 float heightRatio = 84f / 72f;
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
-                currentCard.Height = cardHeight;
-                currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 80 : cardWidth;
+                //currentCard.Height = cardHeight;
+                currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth;
 
                 float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
@@ -734,12 +734,12 @@ namespace myTNB_Android.Src.PreLogin.Activity
                     float heightRatio = 84f / 72f;
                     int cardHeight = (int)(cardWidth * (heightRatio));
 
-                    currentCard.Height = cardHeight + 27;
-                    currentCard.Width = cardWidth + 80;
+                    //currentCard.Height = cardHeight + 27;
+                    currentCard.Width = cardWidth + 85;
 
                     float paddingRatio = 10f / 72f;
                     int padding = (int)(cardWidth * (paddingRatio));
-                    feedbackLayout.SetPadding(padding, padding, padding, padding);
+                    feedbackLayout.SetPadding(0, padding, 0, 0);
 
                     float imgHeightRatio = 28f / 72f;
                     int imgHeight = (int)(cardWidth * (imgHeightRatio));
@@ -759,12 +759,12 @@ namespace myTNB_Android.Src.PreLogin.Activity
                     float heightRatio = 84f / 72f;
                     int cardHeight = (int)(cardWidth * (heightRatio));
 
-                    currentCard.Height = cardHeight;
-                    currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 80 : cardWidth;
+                    //currentCard.Height = cardHeight;
+                    currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth;
 
                     float paddingRatio = 10f / 72f;
                     int padding = (int)(cardWidth * (paddingRatio));
-                    feedbackLayout.SetPadding(padding, padding, padding, padding);
+                    feedbackLayout.SetPadding(0, padding, 0, 0);
 
                     float imgHeightRatio = 28f / 72f;
                     int imgHeight = (int)(cardWidth * (imgHeightRatio));
@@ -791,16 +791,16 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
                 currentCard.Height = TextViewUtils.IsLargeFonts ? cardHeight + 25 : cardHeight;
-                currentCard.Width = (TextViewUtils.IsLargeFonts ? cardWidth + 80 : cardWidth) + 5;
+                currentCard.Width = (TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth) + 5;
 
                 float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
-                checkStatusLayout.SetPadding(padding, padding, padding, padding);
+                checkStatusLayout.SetPadding(0, padding, 0, 0);
 
                 float imgHeightRatio = 28f / 72f;
                 int imgHeight = (int)(cardWidth * (imgHeightRatio));
 
-                currentImg.Height = imgHeight;
+                //currentImg.Height = imgHeight;
                 currentImg.Width = imgHeight;
 
                 cardCheckStatus.Visibility = isApplicationStatusEnabled
