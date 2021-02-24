@@ -99,7 +99,7 @@ namespace myTNB_Android.Src.Base.Activity
         private void EvaluateRequestPermissions()
         {
 #if DEBUG || DEVELOP
-            CrashManager.Register(this);
+            //CrashManager.Register(this);
 #endif
             if (CameraPermissionRequired())
             {

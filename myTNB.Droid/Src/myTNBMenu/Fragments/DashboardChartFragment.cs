@@ -12,6 +12,7 @@ using Android.Text;
 using Android.Text.Method;
 using Android.Views;
 using Android.Views.Animations;
+using Android.Views.InputMethods;
 using Android.Widget;
 using AndroidX.AppCompat.App;
 using AndroidX.CoordinatorLayout.Widget;
@@ -309,6 +310,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.smStatisticContainer)]
         LinearLayout smStatisticContainer;
 
+        [BindView(Resource.Id.energyBudgetContainer)]
+        LinearLayout energyBudgetContainer;
+
         [BindView(Resource.Id.sm_statistic_bill)]
         LinearLayout smStatisticBillMainLayout;
 
@@ -495,6 +499,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.infoLabelEPP)]
         TextView lblinfoLabelEPP;
 
+        [BindView(Resource.Id.energyBudgetRMinput)]
+        EditText energyBudgetRMinput;
+
+        [BindView(Resource.Id.btnSetNewBudget)]
+        Button btnSetNewBudget;
 
         private static bool isZoomIn = false;
 
@@ -5025,6 +5034,69 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        //energy budget button set //wan
+        [OnClick(Resource.Id.btnSetNewBudget)]
+        internal void OnsetFocusBillInput(object sender, EventArgs e)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                energyBudgetRMinput.RequestFocus();
+                ShowHideKeyboard(energyBudgetRMinput, true);
+                energyBudgetRMinput.Text = "";
+                btnSetNewBudget.Text = "Save New Budget";
+                DisableSetEnergyBudgetButton();
+                try
+                {
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Set New Budget Buttom Clicked");
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
+            }
+            if (btnSetNewBudget.Text == "Save New Budget")
+            {
+
+            }
+        }
+
+        //energy budget keyboard set //wan
+        public void ShowHideKeyboard(EditText edt, bool flag)
+        {
+            try
+            {
+                InputMethodManager inputMethodManager = Activity.GetSystemService(Context.InputMethodService) as InputMethodManager;
+                if (flag)
+                {
+                    inputMethodManager.ShowSoftInput(edt, ShowFlags.Forced);
+                    inputMethodManager.ToggleSoftInput(ShowFlags.Forced, HideSoftInputFlags.ImplicitOnly);
+                }
+                else
+                {
+                    inputMethodManager.HideSoftInputFromWindow(scrollViewContent.WindowToken, 0);
+                }
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+        }
+
+        //energy budget button set enable //wan
+        public void EnableSetEnergyBudgetButton()
+        {
+            btnSetNewBudget.Enabled = true;
+            btnSetNewBudget.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);
+        }
+
+        //energy budget button set disable //wan
+        public void DisableSetEnergyBudgetButton()
+        {
+            btnSetNewBudget.Enabled = false;
+            btnSetNewBudget.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
+        }
+
         private void OnGenerateTariffLegendValue(int index, bool isShow)
         {
             try
@@ -8488,6 +8560,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     shimmrtSMStatisticPredictDueDate.StartShimmer();
                     shimmrtSmStatisticTooltip.StartShimmer();
 
+                    energyBudgetContainer.Visibility = ViewStates.Visible; //test energy budget layout
                     smStatisticContainer.Visibility = ViewStates.Visible;
                     smStatisticBillMainLayout.Visibility = ViewStates.Visible;
                     smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
