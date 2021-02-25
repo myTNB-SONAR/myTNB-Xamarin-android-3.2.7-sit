@@ -760,11 +760,12 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         }
                     }
                 }
-
-                Drawable accountNo = ContextCompat.GetDrawable(this, Resource.Drawable.ic_field_account_no);
-                accountNo.SetBounds(0, 0, accountNo.IntrinsicWidth, accountNo.IntrinsicHeight);
-                txtServiceRequestNum.SetCompoundDrawablesWithIntrinsicBounds(accountNo, null, null, null);
-
+                if (resultCode == Result.Ok)
+                {
+                    Drawable accountNo = ContextCompat.GetDrawable(this, Resource.Drawable.ic_field_account_no);
+                    accountNo.SetBounds(0, 0, accountNo.IntrinsicWidth, accountNo.IntrinsicHeight);
+                    txtServiceRequestNum.SetCompoundDrawablesWithIntrinsicBounds(accountNo, null, null, null);
+                }
                 if (requestCode == Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE)
                 {
                     if (resultCode == Result.Ok)
