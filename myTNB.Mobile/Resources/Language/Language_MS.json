@@ -782,7 +782,11 @@
     "description7": "Anda kini boleh mendaftar akaun myTNB dengan nombor telefon antarabangsa.",
     "description8": "Anda boleh jejaki semua status permohonan dengan mudah, pada bila-bila masa dan di mana-mana sahaja.",
     "description9": "Ubah suai myTNB anda dengan saiz teks paparan bersesuaian untuk pengendalian yang lebih selesa. Anda boleh memilih antara saiz normal atau besar dan boleh mengubah tetapan ini pada bila-bila masa di Profil anda.",
-    "description10": "Anda boleh menetapkan janji temu pemasangan meter anda dengan memilih tarikh dan slot masa yang sesuai."
+    "description10": "Anda boleh menetapkan janji temu pemasangan meter anda dengan memilih tarikh dan slot masa yang sesuai.",
+
+    //addBy irul
+    "title11": "BM_Energy Budget",
+    "description11": "BM_A new way to manage your energy lifestyle.<br><br>This feature is not available for Renewable Energy customers at the moment."
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
