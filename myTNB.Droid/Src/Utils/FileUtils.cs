@@ -316,14 +316,52 @@ namespace myTNB_Android.Src.Utils
             return BitmapFactory.DecodeByteArray(imageBytes, 0, Math.Min(imageBytes.Length, fileSize));
         }
 
-        public static Task<Bitmap> GetImageFromHexAsync(string hex, int fileSize)
+public static Task<Bitmap> GetImageFromHexAsync(string hex, int fileSize)
         {
             return Task.Run<Bitmap>(() =>
             {
+                Bitmap imgData;
                 byte[] imageBytes = StringToByteArray(hex);
-                return BitmapFactory.DecodeByteArray(imageBytes, 0, Math.Min(imageBytes.Length, fileSize));
+
+                try
+                {
+                    imgData = BitmapFactory.DecodeByteArray(imageBytes, 0, Math.Min(imageBytes.Length, fileSize));
+
+                    if (imgData.Height > 0)
+                    {
+                        //this function will go exeption if null 
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //ios hex conversion
+                    byte[] imageBytesIOS = ConvertHexToByteArrayIOS(hex.Replace("-", ""));
+                    imgData = BitmapFactory.DecodeByteArray(imageBytesIOS, 0, imageBytesIOS.Length);
+                }
+                return imgData;
             });
 
+        }
+
+        private static byte[] ConvertHexToByteArrayIOS(string hex)
+        {
+            if (hex.Length % 2 == 1)
+            {
+                return new byte[] { };
+            }
+            byte[] arr = new byte[hex.Length >> 1];
+
+            for (int i = 0; i < hex.Length >> 1; ++i)
+            {
+                arr[i] = (byte)((GetHexValueIOS(hex[i << 1]) << 4) + (GetHexValueIOS(hex[(i << 1) + 1])));
+            }
+            return arr;
+        }
+
+        private static int GetHexValueIOS(char hex)
+        {
+            int val = (int)hex;
+            return val - (val < 58 ? 48 : 55);
         }
 
         public static byte[] StringToByteArray(string hex)
