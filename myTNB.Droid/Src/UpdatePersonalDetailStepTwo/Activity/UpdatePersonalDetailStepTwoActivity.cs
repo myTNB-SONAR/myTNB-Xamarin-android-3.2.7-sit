@@ -1019,32 +1019,6 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
         public void ShowinfoLabelProofOfConsent()
         {
-            //List<HowDoesProofOfConsentResponseBitmapModel> modelList = MyTNBAppToolTipData.GetHowDoesProofOfConsentToolTipData();
-
-            //if (modelList != null && modelList.Count > 0)
-            //{
-            //    MyTNBAppToolTipBuilder Tooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-            //        .SetHeaderImageBitmap(modelList[0].ImageBitmap)
-            //        .SetTitle(modelList[0].PopUpTitle)
-            //        .SetMessage(modelList[0].PopUpBody)
-            //        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-            //        .SetCTAaction(() => { this.SetIsClicked(false); })
-            //        .Build();
-            //        Tooltip.Show();
-            //}
-            //else
-            //{
-            //    //fallback if sitecore cannot select data
-            //    //TODO sitecore
-            //    MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-            // .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "consentTitle"))
-            // .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "poc"))
-            // .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-            // .SetCTAaction(() => { this.SetIsClicked(false); })
-            // .Build();
-            //    infoLabelWhoIsRegistered.Show();
-            //}
-
             string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
 
             if (!base64Image.IsNullOrEmpty())
@@ -1061,19 +1035,15 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
 
             }
             else
-            {   /// if sql lite is return null , pulling and deleting already done front
-                //     var url = Utility.GetLocalizedLabel("SubmitEnquiry", "imageConsent");
-                //     Bitmap imageCache = ImageUtils.GetImageBitmapFromUrl(SiteCoreConfig.SITECORE_URL + url);
-
-                //     MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                //    .SetHeaderImageBitmap(imageCache)
-                //    .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "consentTitle"))
-                //    .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "poc"))
-                //    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                //    .SetCTAaction(() => { this.SetIsClicked(false); })
-                //    .Build();
-                //     infoLabelWhoIsRegistered.Show();
-                this.SetIsClicked(false);
+            {   /// if sql lite is return null , user local image
+                MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                .SetHeaderImage(Resource.Drawable.ProofOfConsent)
+                .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "consentTitle"))
+                .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "poc"))
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                .SetCTAaction(() => { this.SetIsClicked(false); })
+                .Build();
+                infoLabelWhoIsRegistered.Show();
 
             }
         }
@@ -1098,20 +1068,15 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
                 infoLabelWhoIsRegistered.Show();
             }
             else
-            {
-                //     var url = Utility.GetLocalizedLabel("SubmitEnquiry", "imageCopyIC");
-
-                //     Bitmap imageCache = ImageUtils.GetImageBitmapFromUrl(SiteCoreConfig.SITECORE_URL + url);
-
-                //     MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                //    .SetHeaderImageBitmap(imageCache)
-                //    .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "copyICTitle"))
-                //    .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "copyIcDet"))
-                //    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                //    .SetCTAaction(() => { this.SetIsClicked(false); })
-                //    .Build();
-                //     infoLabelWhoIsRegistered.Show();
-                this.SetIsClicked(false);
+            { //fallback image
+                MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                .SetHeaderImage(Resource.Drawable.icSample)
+                .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "copyICTitle"))
+                .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "copyIcDet"))
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                .SetCTAaction(() => { this.SetIsClicked(false); })
+                .Build();
+                infoLabelWhoIsRegistered.Show();
             }
         }
 
@@ -1133,19 +1098,15 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
             }
             else
             {  // incase base 64 is corrupt or null
-               // var url = Utility.GetLocalizedLabel("SubmitEnquiry", "imagePermises");
 
-                // Bitmap imageCache = ImageUtils.GetImageBitmapFromUrl(SiteCoreConfig.SITECORE_URL + url);
-
-                // MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                //.SetHeaderImageBitmap(imageCache)
-                //.SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "permisesTitle"))
-                //.SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "permisesContent"))
-                //.SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                //.SetCTAaction(() => { this.SetIsClicked(false); })
-                //.Build();
-                // infoLabelWhoIsRegistered.Show();
-                this.SetIsClicked(false);
+                MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                .SetHeaderImage(Resource.Drawable.CukaiPintuSample)
+                .SetTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "permisesTitle"))
+                .SetMessage(Utility.GetLocalizedLabel("SubmitEnquiry", "permisesContent"))
+                .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                .SetCTAaction(() => { this.SetIsClicked(false); })
+                .Build();
+                infoLabelWhoIsRegistered.Show();
             }
         }
 
