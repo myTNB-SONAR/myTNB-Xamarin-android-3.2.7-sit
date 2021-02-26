@@ -421,7 +421,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         {
             try
             {
-               if (txtServiceRequestNum.Text != string.Empty && ErrorMessage != null && ErrorMessage != string.Empty)
+                if (txtServiceRequestNum.Text != string.Empty && ErrorMessage != null && ErrorMessage != string.Empty)
                 {
                     txtInputLayoutServiceRequestNum.HelperText = ErrorMessage;
                     txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
@@ -443,7 +443,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     if (searchType == ApplicationStatusSearchType.ServiceRequestNo)
                     {
                         txtServiceRequestNum.SetFilters(new IInputFilter[] { });
-                        
+
                         if (txtServiceRequestNum.Text.Count() == 10)
                         {
                             EnableButton();
@@ -602,7 +602,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         }
                         else
                         {
-                                ErrorMessage = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
+                            ErrorMessage = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
                         }
                         isEdiging = false;
                     }
@@ -610,7 +610,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     if (searchType == ApplicationStatusSearchType.ServiceNotificationNo)
                     {
                         txtServiceRequestNum.SetFilters(new IInputFilter[] { });
-                       
+
                         if (txtServiceRequestNum.Text.Count() == 12)
                         {
                             EnableButton();
@@ -648,7 +648,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 Utility.LoggingNonFatalError(ex);
             }
         }
-  
+
         public bool IsValid(string key)
         {
             return !string.IsNullOrEmpty(key) && !string.IsNullOrWhiteSpace(key);
@@ -914,7 +914,8 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                             isSearchByCA = true;
                             txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "electricityAccountNumber");
                         }
-                        txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);}
+                        txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                    }
                 }
             }
             CheckError();
