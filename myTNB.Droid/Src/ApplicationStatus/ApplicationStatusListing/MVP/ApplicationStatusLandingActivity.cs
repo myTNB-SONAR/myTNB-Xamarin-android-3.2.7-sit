@@ -120,6 +120,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
                     SearchApplicationTypeResponse searchApplicationTypeResponse = SearchApplicationTypeCache.Instance.GetData();
                     Intent applicationLandingIntent = new Intent(this, typeof(SearchApplicationStatusActivity));
                     applicationLandingIntent.PutExtra("searchApplicationType", JsonConvert.SerializeObject(searchApplicationTypeResponse.Content));
+                    applicationStatusLandingEmptyLayout.Visibility = ViewStates.Gone;
                     StartActivityForResult(applicationLandingIntent, Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE);
                 }
                 else

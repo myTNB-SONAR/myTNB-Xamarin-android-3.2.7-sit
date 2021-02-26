@@ -92,7 +92,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         GetApplicationsByCAResponse applicationsByCAResponse;
         ApplicationDetailDisplay applicationDetailDisplay;
         int searchApplicationPosition;
-
+        string ErrorMessage = string.Empty;
         public override int ResourceId()
         {
             return Resource.Layout.SearchApplicationStatusLayout;
@@ -172,14 +172,20 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         internal void OnConfirmClickAsync(object sender, EventArgs e)
         {
             searchApplicatioStatuListResult.Visibility = ViewStates.Gone;
-
-            if (isSearchByCA)
+            if (ErrorMessage != null && ErrorMessage != string.Empty)
             {
-                GetSearchByCA();
+                ShowError();
             }
             else
             {
-                GetApplicationStatus();
+                if (isSearchByCA)
+                {
+                    GetSearchByCA();
+                }
+                else
+                {
+                    GetApplicationStatus();
+                }
             }
         }
 
@@ -409,38 +415,43 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
         private void TxtServiceRequestNum_AfterTextChanged(object sender, Android.Text.AfterTextChangedEventArgs e)
         {
             CheckError();
+            EnableButton();
         }
-
+        private void ShowError()
+        {
+            try
+            {
+               if (txtServiceRequestNum.Text != string.Empty && ErrorMessage != null && ErrorMessage != string.Empty)
+                {
+                    txtInputLayoutServiceRequestNum.HelperText = ErrorMessage;
+                    txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
         private void CheckError()
         {
             try
             {
+                ErrorMessage = string.Empty;
                 if (isTextChange && searchByModel != null && selectedType != null && selectedType.SearchTypes != null)
                 {
                     var searchType = selectedType.SearchTypes.Count == 1 ? selectedType.SearchTypes[0].Type : searchByModel.Type;
                     if (searchType == ApplicationStatusSearchType.ServiceRequestNo)
                     {
                         txtServiceRequestNum.SetFilters(new IInputFilter[] { });
-                        if (txtServiceRequestNum.Text.Count() == 0 || txtServiceRequestNum.Text.Count() == 10)
-                        {
-                            txtInputLayoutServiceRequestNum.Error = null;
-                            txtInputLayoutServiceRequestNum.ErrorEnabled = false;
-                        }
+                        
                         if (txtServiceRequestNum.Text.Count() == 10)
                         {
                             EnableButton();
                             txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(10) });
-                            txtInputLayoutServiceRequestNum.Error = null;
-                            txtInputLayoutServiceRequestNum.ErrorEnabled = false;
                         }
                         else if (txtServiceRequestNum.Text.Count() != 10 && txtServiceRequestNum.Text != string.Empty)
                         {
-                            txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
-                            txtInputLayoutServiceRequestNum.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
-                            if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
-                            {
-                                txtInputLayoutServiceRequestNum.ErrorEnabled = true;
-                            }
+                            ErrorMessage = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
                             DisableButton();
                         }
                     }
@@ -448,26 +459,14 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     if (searchType == ApplicationStatusSearchType.CA)
                     {
                         txtServiceRequestNum.SetFilters(new IInputFilter[] { });
-                        if (txtServiceRequestNum.Text.Count() == 0 || txtServiceRequestNum.Text.Count() == 12)
-                        {
-                            txtInputLayoutServiceRequestNum.Error = null;
-                            txtInputLayoutServiceRequestNum.ErrorEnabled = false;
-                        }
                         if (txtServiceRequestNum.Text.Count() == 12)
                         {
                             txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(12) });
-                            txtInputLayoutServiceRequestNum.Error = null;
-                            txtInputLayoutServiceRequestNum.ErrorEnabled = false;
                             EnableButton();
                         }
                         else if (txtServiceRequestNum.Text.Count() != 12)
                         {
-                            txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
-                            txtInputLayoutServiceRequestNum.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
-                            if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
-                            {
-                                txtInputLayoutServiceRequestNum.ErrorEnabled = true;
-                            }
+                            ErrorMessage = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
                             DisableButton();
                         }
                     }
@@ -600,19 +599,10 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         if (txtServiceRequestNum.Text.Count() == format.Count())
                         {
                             EnableButton();
-                            txtInputLayoutServiceRequestNum.ErrorEnabled = false;
-                            txtInputLayoutServiceRequestNum.Error = null;
                         }
                         else
                         {
-                            DisableButton();
-                            if (txtServiceRequestNum.Text.Count() != preffix.Count())
-                            {
-                                txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
-                                txtInputLayoutServiceRequestNum.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
-                                if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
-                                    txtInputLayoutServiceRequestNum.ErrorEnabled = true;
-                            }
+                                ErrorMessage = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
                         }
                         isEdiging = false;
                     }
@@ -620,29 +610,37 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                     if (searchType == ApplicationStatusSearchType.ServiceNotificationNo)
                     {
                         txtServiceRequestNum.SetFilters(new IInputFilter[] { });
-                        if (txtServiceRequestNum.Text.Count() == 0 || txtServiceRequestNum.Text.Count() == 12)
-                        {
-                            txtInputLayoutServiceRequestNum.Error = null;
-                            txtInputLayoutServiceRequestNum.ErrorEnabled = false;
-                        }
+                       
                         if (txtServiceRequestNum.Text.Count() == 12)
                         {
                             EnableButton();
                             txtServiceRequestNum.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(10) });
-                            txtInputLayoutServiceRequestNum.Error = null;
-                            txtInputLayoutServiceRequestNum.ErrorEnabled = false;
                         }
                         else if (txtServiceRequestNum.Text.Count() != 10 && txtServiceRequestNum.Text != string.Empty)
                         {
-                            txtInputLayoutServiceRequestNum.Error = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
-                            txtInputLayoutServiceRequestNum.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
-                            if (!txtInputLayoutServiceRequestNum.ErrorEnabled)
-                            {
-                                txtInputLayoutServiceRequestNum.ErrorEnabled = true;
-                            }
+                            ErrorMessage = string.Format(Utility.GetLocalizedLabel("Error", "invalidReferenceNumber"), selectedType.SearchTypes[selectedTypeIndex].SearchTypeDescDisplay);
                             DisableButton();
                         }
                     }
+                    if (searchType == ApplicationStatusSearchType.ApplicationNo)
+                    {
+                        txtInputLayoutServiceRequestNum.HelperText = selectedType.ApplicationNoHint;
+                    }
+                    else if (searchType == ApplicationStatusSearchType.ServiceNotificationNo)
+                    {
+                        txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "serviceNotificationNo");
+                    }
+                    else if (searchType == ApplicationStatusSearchType.ServiceRequestNo)
+                    {
+                        txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "serviceRequestNumber");
+                    }
+                    else if (searchType == ApplicationStatusSearchType.CA)
+                    {
+                        isSearchByCA = true;
+                        txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "electricityAccountNumber");
+                    }
+                    txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+
                 }
             }
             catch (Exception ex)
@@ -650,7 +648,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 Utility.LoggingNonFatalError(ex);
             }
         }
-
+  
         public bool IsValid(string key)
         {
             return !string.IsNullOrEmpty(key) && !string.IsNullOrWhiteSpace(key);
@@ -667,8 +665,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 {
                     if (resultCode == Result.Ok)
                     {
-                        txtInputLayoutServiceRequestNum.Error = null;
-                        txtInputLayoutServiceRequestNum.ErrorEnabled = false;
                         isTextChange = false;
                         targetSearchBy = string.Empty;
                         Bundle extra = data.Extras;
@@ -724,8 +720,6 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 {
                     if (resultCode == Result.Ok)
                     {
-                        txtInputLayoutServiceRequestNum.Error = null;
-                        txtInputLayoutServiceRequestNum.ErrorEnabled = false;
                         isTextChange = false;
                         Bundle extra = data.Extras;
                         List<SearchByModel> resultSearchByList = new List<SearchByModel>();
@@ -766,11 +760,12 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                         }
                     }
                 }
-
-                Drawable accountNo = ContextCompat.GetDrawable(this, Resource.Drawable.ic_field_account_no);
-                accountNo.SetBounds(0, 0, accountNo.IntrinsicWidth, accountNo.IntrinsicHeight);
-                txtServiceRequestNum.SetCompoundDrawablesWithIntrinsicBounds(accountNo, null, null, null);
-
+                if (resultCode == Result.Ok)
+                {
+                    Drawable accountNo = ContextCompat.GetDrawable(this, Resource.Drawable.ic_field_account_no);
+                    accountNo.SetBounds(0, 0, accountNo.IntrinsicWidth, accountNo.IntrinsicHeight);
+                    txtServiceRequestNum.SetCompoundDrawablesWithIntrinsicBounds(accountNo, null, null, null);
+                }
                 if (requestCode == Constants.APPLICATION_STATUS_SEARCH_DETAILS_REQUEST_CODE)
                 {
                     if (resultCode == Result.Ok)
@@ -906,7 +901,20 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                                 txtServiceRequestNum.SetSelection(preffix.Length);
                             }
                         }
-                    }
+                        if (searchType == ApplicationStatusSearchType.ServiceNotificationNo)
+                        {
+                            txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "serviceNotificationNo");
+                        }
+                        else if (searchType == ApplicationStatusSearchType.ServiceRequestNo)
+                        {
+                            txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "serviceRequestNumber");
+                        }
+                        else if (searchType == ApplicationStatusSearchType.CA)
+                        {
+                            isSearchByCA = true;
+                            txtInputLayoutServiceRequestNum.HelperText = Utility.GetLocalizedLabel("Hint", "electricityAccountNumber");
+                        }
+                        txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);}
                 }
             }
             CheckError();
