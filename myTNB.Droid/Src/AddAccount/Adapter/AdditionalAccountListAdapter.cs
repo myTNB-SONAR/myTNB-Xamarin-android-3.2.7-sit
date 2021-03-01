@@ -6,6 +6,7 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.TextField;
+using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Common.Activity;
@@ -21,10 +22,10 @@ namespace myTNB_Android.Src.AddAccount
     public class AdditionalAccountListAdapter : RecyclerView.Adapter
     {
         private BaseAppCompatActivity mActicity;
+        private Android.App.Activity mActivity;
         private List<NewAccount> accountList = new List<NewAccount>();
         private List<NewAccount> orgAccountList = new List<NewAccount>();
         public event EventHandler<int> AdditionalItemClick;
-
 
         public void Clear()
         {
@@ -151,6 +152,8 @@ namespace myTNB_Android.Src.AddAccount
                 EmailFieldDetail.SetTextColor(Color.ParseColor("#1c79ca"));
             };
 
+
+
             NoMobileFieldDetail.Text = Utility.GetLocalizedCommonLabel("mobileNumber");
             EmailFieldDetail.Text = Utility.GetLocalizedCommonLabel("emailAddress");
             textInputLayoutAccountLabel.Hint = Utility.GetLocalizedCommonLabel("acctNickname");
@@ -208,6 +211,11 @@ namespace myTNB_Android.Src.AddAccount
             context.StartActivity(new Intent(context, typeof(SelectCountryActivity)));
         }
 
+        public void checkingEmailnPhone()
+        {
+            ((LinkAccountActivity)context).CheckingEmailAndPhoneNo();
+        }
+
         private void OnValidateMobileNumber(bool isValidated)
         {
             string ISD = mobileNumberInputComponent.GetISDOnly();
@@ -251,6 +259,7 @@ namespace myTNB_Android.Src.AddAccount
                 this.item.ISDmobileNo = mobileNumberInputComponent.GetISDOnly();
                 this.item.mobileNoOwner = mobileNumberInputComponent.GetMobileNumberValueWithISDCode();
             }
+            checkingEmailnPhone();
         }
 
         public void PopulateData(NewAccount item)
@@ -297,8 +306,9 @@ namespace myTNB_Android.Src.AddAccount
 
                 EmailEditText.Text = this.item.emailOwner;
                 EmailEditText.AfterTextChanged += (sender, args) =>
-                {
+                {                    
                     item.emailOwner = EmailEditText.Text.Trim();
+                    checkingEmailnPhone();
                 };
 
                 //checking and display non-onwer layout

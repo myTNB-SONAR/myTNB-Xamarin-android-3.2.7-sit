@@ -103,7 +103,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
         private LinkAccountContract.IUserActionsListener userActionsListener;
 
         private bool fromDashboard = false;
+
         private bool fromRegisterPage = false;
+
+        private bool checkedCondition = false;
+
         const string PAGE_ID = "AddAccount";
 
         private ISharedPreferences mSharedPref;
@@ -335,7 +339,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 };
 
                 txtboxcondition.CheckedChange += CheckedChange;
-
+                txtboxcondition.Checked = false;
                 //Get apiId and userId from the bundle
                 string email = UserEntity.GetActive().UserID;
                 string idNumber = UserEntity.GetActive().IdentificationNo; // Get IC number from registration;
@@ -469,17 +473,20 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             if (!txtboxcondition.Checked)
             {
+                checkedCondition = true;
                 txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc"));
                 StripUnderlinesFromLinks(txtTermsConditions);
             }
             else
             {
+                checkedCondition = false;
                 txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc_checked"));
                 StripUnderlinesFromLinks(txtTermsConditions);
             }
             int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
             string totalAcc = totalAccountAdded.ToString();
             this.userActionsListener.CheckRequiredFields(totalAcc, txtboxcondition.Checked);
+            CheckingEmailAndPhoneNo();
         }
 
         [OnClick(Resource.Id.txtTermsConditions)]
@@ -636,9 +643,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         account.mobileNoOwner = item.mobileNoOwner;
                         accounts.Add(account);
                     }
-                    int i = 0;
-                    TOTAL_NO_OF_ACCOUNTS_TO_ADD = accounts.Count;
-                    foreach (Models.AddAccount account in accounts)
+                    //int i = 0;
+                    //TOTAL_NO_OF_ACCOUNTS_TO_ADD = accounts.Count;
+                    /*foreach (Models.AddAccount account in accounts)
                     {
                         if (!account.isOwned)
                         {
@@ -656,7 +663,10 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     else
                     {
                         this.userActionsListener.AddMultipleAccounts(apiKeyID, userID, email, accounts);
-                    }
+                    }*/
+
+                    this.userActionsListener.AddMultipleAccounts(apiKeyID, userID, email, accounts);
+
                 }
                 else
                 {
@@ -1320,6 +1330,70 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
+            }
+        }
+
+        public void CheckingEmailAndPhoneNo()
+        {
+            try
+            {
+
+                List<NewAccount> additionalList = additionalAdapter.GetAccountList();
+
+                if (additionalList.Count > 0)
+                {
+                    string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
+                    string userID = UserEntity.GetActive().UserID;
+                    string email = UserEntity.GetActive().Email;
+                    List<Models.AddAccount> accounts = new List<Models.AddAccount>();
+                    foreach (NewAccount item in additionalList)
+                    {
+                        Models.AddAccount account = new Models.AddAccount();
+                        account.accountNumber = item.accountNumber;
+                        account.accountNickName = item.accountLabel;
+                        account.accountStAddress = item.accountAddress;
+                        account.icNum = item.icNum;
+                        account.isOwned = item.isOwner;
+                        account.accountTypeId = item.type;
+                        account.accountCategoryId = item.accountCategoryId;
+                        account.emailOwner = item.emailOwner;
+                        account.mobileNoOwner = item.mobileNoOwner;
+                        accounts.Add(account);
+                    }
+                    int i = 0;
+                    TOTAL_NO_OF_ACCOUNTS_TO_ADD = accounts.Count;
+                    foreach (Models.AddAccount account in accounts)
+                    {
+                        if (!account.isOwned)
+                        {
+                            if (string.IsNullOrEmpty(account.mobileNoOwner) && string.IsNullOrEmpty(account.emailOwner) && account.accountTypeId.Equals("1"))
+                            {
+                                i++;
+                            }
+                        }
+                    }
+
+                    if (i > 0)
+                    {
+                        DisableConfirmButton();
+                    }
+                    else
+                    {
+                        if (txtboxcondition.Checked)
+                        {
+                            EnableConfirmButton();
+                        }
+                        else
+                        {
+                            DisableConfirmButton();
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
             }
         }
 
