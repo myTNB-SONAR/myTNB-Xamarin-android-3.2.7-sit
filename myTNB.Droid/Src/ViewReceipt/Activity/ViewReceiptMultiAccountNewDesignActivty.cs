@@ -245,6 +245,237 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             }
         }
 
+        //public void createPDF(GetPaymentReceiptResponse response)
+        //{
+        //    if (downloadClicked)
+        //    {
+        //        mProgressBar.Visibility = ViewStates.Gone;
+        //        ShowGetReceiptDialog();
+
+        //        RunOnUiThread(() =>
+        //        {
+        //            Log.Debug(TAG, "Receipt :" + response.GetData());
+        //            RECEPT_NO = response.GetData().referenceNum;
+        //            try
+        //            {
+        //                string rootPath = this.FilesDir.AbsolutePath;
+
+        //                if (FileUtils.IsExternalStorageReadable() && FileUtils.IsExternalStorageWritable())
+        //                {
+        //                    rootPath = this.GetExternalFilesDir(null).AbsolutePath;
+        //                }
+
+        //                var directory = System.IO.Path.Combine(rootPath, "pdf");
+        //                if (!Directory.Exists(directory))
+        //                {
+        //                    Directory.CreateDirectory(directory);
+        //                }
+
+        //                var path = System.IO.Path.Combine(directory, RECEPT_NO + ".pdf");
+
+        //                if (File.Exists(path))
+        //                {
+        //                    File.Delete(path);
+        //                }
+        //                var fs = new FileStream(path, FileMode.Create);
+
+
+        //                iTextSharp.text.Document document = new iTextSharp.text.Document(PageSize.A4, 25, 25, 30, 30);
+
+        //                PdfWriter writer = PdfWriter.GetInstance(document, fs);
+
+
+
+        //                iTextSharp.text.Color blueColour = new iTextSharp.text.Color(28.0f / 255.0f, 121.0f / 255.0f, 202.0f / 255.0f, 1.0f);
+        //                var tunaGreyColour = new iTextSharp.text.Color(73.0f / 255.0f, 73.0f / 255.0f, 74.0f / 255.0f, 1.0f);
+        //                var silverChaliceColour = new iTextSharp.text.Color(0.65f, 0.65f, 0.65f, 1.0f);
+
+
+        //                AssetManager assets = this.Assets;
+        //                var bytes = default(byte[]);
+        //                using (StreamReader reader = new StreamReader(assets.Open("fonts/MuseoSans_500.otf")))
+        //                {
+        //                    using (var memstream = new MemoryStream())
+        //                    {
+        //                        reader.BaseStream.CopyTo(memstream);
+        //                        bytes = memstream.ToArray();
+        //                    }
+        //                }
+
+        //                BaseFont titleBf = BaseFont.CreateFont("MuseoSans_500.otf", BaseFont.IDENTITY_H, true, false, bytes, null);
+
+        //                Font titleFont = new Font(titleBf, 30f, 0, blueColour);
+        //                Font detailsFont = new Font(titleBf, 24f, 0, tunaGreyColour);
+        //                Font labelFont = new Font(titleBf, 18f, 0, silverChaliceColour);
+        //                Font totalAmounFont = new Font(titleBf, 48f, 0, tunaGreyColour);
+        //                //Font titleFont = new Font(FontFactory.GetFont(titleBf, 30f, blueColour));
+        //                //Font detailsFont = new Font(FontFactory.GetFont(myTNBFont.FONTNAME_500, 24f, tunaGreyColour));
+        //                //Font labelFont = new Font(FontFactory.GetFont(myTNBFont.FONTNAME_500, 18f, silverChaliceColour));
+        //                //Font totalAmounFont = new Font(FontFactory.GetFont(myTNBFont.FONTNAME_500, 48f, tunaGreyColour));
+
+        //                //Font titleFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 30f, blueColour));
+        //                //Font detailsFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 24f, tunaGreyColour));
+        //                //Font labelFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 18f, silverChaliceColour));
+        //                //Font totalAmounFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 48f, tunaGreyColour));
+
+
+        //                Drawable d = ContextCompat.GetDrawable(this, Resource.Drawable.tnb_receipt_logo_header);
+        //                Bitmap bitmap = ((BitmapDrawable)d).Bitmap;
+        //                MemoryStream stream = new MemoryStream();
+        //                bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
+        //                byte[] bitmapdata = stream.ToArray();
+
+        //                //string filepath = Android.OS.Environment.;
+        //                var headerImage = iTextSharp.text.Image.GetInstance(bitmapdata);
+
+        //                document.Open();
+
+
+
+        //                //document.Open();
+        //                PdfContentByte cb = writer.DirectContent;
+
+        //                PdfPTable grayLine = new PdfPTable(1);
+        //                grayLine.TotalWidth = document.PageSize.Width - 40;
+        //                WriteGrayContent(grayLine);
+
+        //                headerImage.ScaleToFit(document.PageSize.Width, document.PageSize.Height);
+        //                //headerImage.SetAbsolutePosition(0, document.PageSize.Height - headerImage.Height + 5);//+ 30);
+
+        //                //headerImage.SetAbsolutePosition(0, document.PageSize.Height - headerImage.Height + 5);//+ 30);
+
+        //                float y = document.PageSize.Height - document.TopMargin - headerImage.Height;
+
+        //                if (y < 700)
+        //                {
+        //                    float diff = 700 - y;
+        //                    y = y + diff;
+        //                }
+
+        //                headerImage.SetAbsolutePosition(0, y);
+
+        //                document.Add(headerImage);
+        //                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+        //                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+        //                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+        //                document.Add(new Paragraph(System.Environment.NewLine, detailsFont));
+        //                document.Add(new Paragraph(GetLabelByLanguage("title"), titleFont));
+        //                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+        //                document.Add(new Paragraph(GetLabelByLanguage("salutation"), detailsFont));
+        //                document.Add(new Paragraph(System.Environment.NewLine, detailsFont));
+        //                document.Add(new Paragraph(GetLabelByLanguage("messagePartOne"), detailsFont));
+        //                document.Add(new Paragraph(string.Format(GetLabelByLanguage("messagePartTwo"),
+        //                                                         response.GetData().payMethod), detailsFont));
+
+        //                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+        //                document.Add(grayLine);
+        //                document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+
+        //                document.Add(new Paragraph(GetLabelByLanguage("referenceNumber").ToUpper(), labelFont));
+        //                document.Add(new Paragraph(response.GetData().referenceNum, detailsFont));
+
+        //                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+        //                document.Add(grayLine);
+        //                document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+
+        //                foreach (var item in response.GetData().accMultiPay)
+        //                {
+        //                    document.Add(new Paragraph(GetLabelCommonByLanguage("accountNo").ToUpper(), labelFont));
+        //                    document.Add(new Paragraph(item.accountNum, detailsFont));
+        //                    document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+        //                    document.Add(new Paragraph(GetLabelByLanguage("accountHolder").ToUpper(), labelFont));
+        //                    document.Add(new Paragraph(!string.IsNullOrEmpty(item.accountOwnerName) ? item.accountOwnerName : System.Environment.NewLine, detailsFont));
+        //                    document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+        //                    document.Add(new Paragraph(GetLabelCommonByLanguage("amountRM").ToUpper(), labelFont));
+        //                    document.Add(new Paragraph(item.itmAmt, detailsFont));
+
+        //                    document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+        //                    document.Add(grayLine);
+        //                    document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+        //                }
+
+        //                document.Add(new Paragraph(GetLabelByLanguage("trnDate").ToUpper(), labelFont));
+        //                document.Add(new Paragraph(response.GetData().payTransDate, detailsFont));
+
+        //                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+        //                document.Add(grayLine);
+        //                document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+
+        //                document.Add(new Paragraph(GetLabelByLanguage("trnID").ToUpper(), labelFont));
+        //                document.Add(new Paragraph(response.GetData().payTransID, detailsFont));
+
+        //                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+        //                document.Add(grayLine);
+        //                document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+
+        //                document.Add(new Paragraph(GetLabelByLanguage("trnMethod").ToUpper(), labelFont));
+        //                document.Add(new Paragraph(response.GetData().payMethod, detailsFont));
+
+        //                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+        //                document.Add(grayLine);
+        //                document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+
+        //                document.Add(new Paragraph(GetLabelCommonByLanguage("totalAmountRM").ToUpper(), detailsFont));
+        //                document.Add(new Paragraph(response.GetData().payAmt, totalAmounFont));
+
+        //                document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+        //                document.Add(grayLine);
+        //                document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+
+        //                document.Add(new Paragraph(GetLabelByLanguage("note"), labelFont));
+
+
+        //                document.Close();
+        //                writer.Close();
+        //                fs.Close();
+
+        //                if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+        //                {
+        //                    mErrorMessageSnackBar.Dismiss();
+        //                }
+
+        //                string downloadLinkLocation = string.Format(Utility.GetLocalizedCommonLabel("pdfDownloadMessage"), path);
+
+        //                mErrorMessageSnackBar = Snackbar.Make(baseView, downloadLinkLocation, Snackbar.LengthIndefinite)
+        //                .SetAction(Utility.GetLocalizedCommonLabel("open"), delegate
+        //                {
+        //                    Java.IO.File file = new Java.IO.File(path);
+        //                    Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
+        //                            ApplicationContext.PackageName + ".fileprovider", file);
+
+        //                    Intent intent = new Intent(Intent.ActionView);
+        //                    intent.SetDataAndType(fileUri, "application/pdf");
+        //                    intent.AddFlags(ActivityFlags.GrantReadUriPermission);
+        //                    StartActivity(intent);
+        //                    mErrorMessageSnackBar.Dismiss();
+        //                }
+        //                );
+
+        //                View v = mErrorMessageSnackBar.View;
+        //                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+        //                tv.SetMaxLines(5);
+        //                Button btn = (Button)v.FindViewById<Button>(Resource.Id.snackbar_action);
+        //                btn.SetTextColor(Android.Graphics.Color.Yellow);
+        //                mErrorMessageSnackBar.Show();
+        //                downloadClicked = false;
+        //                mProgressBar.Visibility = ViewStates.Gone;
+        //                HideGetReceiptDialog();
+
+        //            }
+        //            catch (Exception e)
+        //            {
+        //                Log.Debug("ViewReceiptActivity", e.StackTrace);
+        //                downloadClicked = false;
+        //                mProgressBar.Visibility = ViewStates.Gone;
+        //                HideGetReceiptDialog();
+        //                Utility.LoggingNonFatalError(e);
+        //            }
+        //        });
+        //    }
+        //    downloadClicked = false;
+        //}
+
+        //newView
         public void createPDF(GetPaymentReceiptResponse response)
         {
             if (downloadClicked)
@@ -280,16 +511,13 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                         var fs = new FileStream(path, FileMode.Create);
 
 
-                        iTextSharp.text.Document document = new iTextSharp.text.Document(PageSize.A4, 25, 25, 30, 30);
+                        Document document = new Document(PageSize.A4, 25, 25, 30, 30);
 
                         PdfWriter writer = PdfWriter.GetInstance(document, fs);
-
-
 
                         iTextSharp.text.Color blueColour = new iTextSharp.text.Color(28.0f / 255.0f, 121.0f / 255.0f, 202.0f / 255.0f, 1.0f);
                         var tunaGreyColour = new iTextSharp.text.Color(73.0f / 255.0f, 73.0f / 255.0f, 74.0f / 255.0f, 1.0f);
                         var silverChaliceColour = new iTextSharp.text.Color(0.65f, 0.65f, 0.65f, 1.0f);
-
 
                         AssetManager assets = this.Assets;
                         var bytes = default(byte[]);
@@ -304,20 +532,10 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
                         BaseFont titleBf = BaseFont.CreateFont("MuseoSans_500.otf", BaseFont.IDENTITY_H, true, false, bytes, null);
 
-                        Font titleFont = new Font(titleBf, 30f, 0, blueColour);
-                        Font detailsFont = new Font(titleBf, 24f, 0, tunaGreyColour);
-                        Font labelFont = new Font(titleBf, 18f, 0, silverChaliceColour);
-                        Font totalAmounFont = new Font(titleBf, 48f, 0, tunaGreyColour);
-                        //Font titleFont = new Font(FontFactory.GetFont(titleBf, 30f, blueColour));
-                        //Font detailsFont = new Font(FontFactory.GetFont(myTNBFont.FONTNAME_500, 24f, tunaGreyColour));
-                        //Font labelFont = new Font(FontFactory.GetFont(myTNBFont.FONTNAME_500, 18f, silverChaliceColour));
-                        //Font totalAmounFont = new Font(FontFactory.GetFont(myTNBFont.FONTNAME_500, 48f, tunaGreyColour));
-
-                        //Font titleFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 30f, blueColour));
-                        //Font detailsFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 24f, tunaGreyColour));
-                        //Font labelFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 18f, silverChaliceColour));
-                        //Font totalAmounFont = new Font(FontFactory.GetFont(FontFactory.TIMES_BOLD, 48f, tunaGreyColour));
-
+                        Font titleFont = new Font(titleBf, 14f, 0, blueColour);
+                        Font detailsFont = new Font(titleBf, 11f, 0, tunaGreyColour);
+                        Font labelFont = new Font(titleBf, 8f, 0, silverChaliceColour);
+                        Font totalAmounFont = new Font(titleBf, 22f, 0, tunaGreyColour);
 
                         Drawable d = ContextCompat.GetDrawable(this, Resource.Drawable.tnb_receipt_logo_header);
                         Bitmap bitmap = ((BitmapDrawable)d).Bitmap;
@@ -326,11 +544,9 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                         byte[] bitmapdata = stream.ToArray();
 
                         //string filepath = Android.OS.Environment.;
-                        var headerImage = iTextSharp.text.Image.GetInstance(bitmapdata);
+                        var headerImage = Image.GetInstance(bitmapdata);
 
                         document.Open();
-
-
 
                         //document.Open();
                         PdfContentByte cb = writer.DirectContent;
@@ -340,10 +556,6 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                         WriteGrayContent(grayLine);
 
                         headerImage.ScaleToFit(document.PageSize.Width, document.PageSize.Height);
-                        //headerImage.SetAbsolutePosition(0, document.PageSize.Height - headerImage.Height + 5);//+ 30);
-
-                        //headerImage.SetAbsolutePosition(0, document.PageSize.Height - headerImage.Height + 5);//+ 30);
-
                         float y = document.PageSize.Height - document.TopMargin - headerImage.Height;
 
                         if (y < 700)
@@ -355,72 +567,141 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                         headerImage.SetAbsolutePosition(0, y);
 
                         document.Add(headerImage);
-                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                        document.Add(new Paragraph(System.Environment.NewLine, detailsFont));
+                        document.Add(new Paragraph(Environment.NewLine, titleFont));
+                        document.Add(new Paragraph(Environment.NewLine, titleFont));
+                        document.Add(new Paragraph(Environment.NewLine, titleFont));
+                        document.Add(new Paragraph(Environment.NewLine, detailsFont));
+                        document.Add(new Paragraph(Environment.NewLine, detailsFont));
+                        document.Add(new Paragraph(Environment.NewLine, detailsFont));
+                        document.Add(new Paragraph(Environment.NewLine, detailsFont));
                         document.Add(new Paragraph(GetLabelByLanguage("title"), titleFont));
-                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
                         document.Add(new Paragraph(GetLabelByLanguage("salutation"), detailsFont));
-                        document.Add(new Paragraph(System.Environment.NewLine, detailsFont));
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
                         document.Add(new Paragraph(GetLabelByLanguage("messagePartOne"), detailsFont));
-                        document.Add(new Paragraph(string.Format(GetLabelByLanguage("messagePartTwo"),
-                                                                 response.GetData().payMethod), detailsFont));
+                        document.Add(new Paragraph(string.Format(GetLabelByLanguage("messagePartTwo")
+                            , response.GetData().payMethod), detailsFont));
 
-                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
                         document.Add(grayLine);
-                        document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
 
                         document.Add(new Paragraph(GetLabelByLanguage("referenceNumber").ToUpper(), labelFont));
                         document.Add(new Paragraph(response.GetData().referenceNum, detailsFont));
 
-                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
                         document.Add(grayLine);
-                        document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
 
+                        //for (var x = 0; x < response.GetData().accMultiPay.Count; x++)
+                        //{
+                        //    if (response.GetData().accMultiPay.Count == 1)
+                        //    {
+                        //        document.Add(new Paragraph(GetLabelCommonByLanguage("accountNo").ToUpper(), labelFont));
+                        //        document.Add(new Paragraph(response.GetData().accMultiPay[x].accountNum, detailsFont));
+                        //        document.Add(new Paragraph(Environment.NewLine, labelFont));
+                        //        document.Add(new Paragraph(GetLabelByLanguage("accountHolder").ToUpper(), labelFont));
+                        //        document.Add(new Paragraph(!string.IsNullOrEmpty(response.GetData().accMultiPay[x].accountOwnerName) ? response.GetData().accMultiPay[x].accountOwnerName : Environment.NewLine, detailsFont));
+                        //        document.Add(new Paragraph(Environment.NewLine, labelFont));
+                        //        document.Add(new Paragraph(GetLabelCommonByLanguage("amountRM").ToUpper(), labelFont));
+                        //        document.Add(new Paragraph(response.GetData().accMultiPay[x].itmAmt, detailsFont));
+
+                        //        document.Add(new Paragraph(Environment.NewLine, titleFont));
+                        //        document.Add(grayLine);
+                        //        document.Add(new Paragraph(Environment.NewLine, labelFont));
+                        //    }
+                        //    else
+                        //    {
+                        //        document.NewPage();
+                        //        document.Add(new Paragraph(GetLabelCommonByLanguage("accountNo").ToUpper(), labelFont));
+                        //        document.Add(new Paragraph(response.GetData().accMultiPay[x].accountNum, detailsFont));
+                        //        document.Add(new Paragraph(Environment.NewLine, labelFont));
+                        //        document.Add(new Paragraph(GetLabelByLanguage("accountHolder").ToUpper(), labelFont));
+                        //        document.Add(new Paragraph(!string.IsNullOrEmpty(response.GetData().accMultiPay[x].accountOwnerName) ? response.GetData().accMultiPay[x].accountOwnerName : Environment.NewLine, detailsFont));
+                        //        document.Add(new Paragraph(Environment.NewLine, labelFont));
+                        //        document.Add(new Paragraph(GetLabelCommonByLanguage("amountRM").ToUpper(), labelFont));
+                        //        document.Add(new Paragraph(response.GetData().accMultiPay[x].itmAmt, detailsFont));
+
+                        //        document.Add(new Paragraph(Environment.NewLine, titleFont));
+                        //        document.Add(grayLine);
+                        //        document.Add(new Paragraph(Environment.NewLine, labelFont));
+
+                        //    }
+                        //}
+                        bool first = true;
                         foreach (var item in response.GetData().accMultiPay)
                         {
-                            document.Add(new Paragraph(GetLabelCommonByLanguage("accountNo").ToUpper(), labelFont));
-                            document.Add(new Paragraph(item.accountNum, detailsFont));
-                            document.Add(new Paragraph(System.Environment.NewLine, labelFont));
-                            document.Add(new Paragraph(GetLabelByLanguage("accountHolder").ToUpper(), labelFont));
-                            document.Add(new Paragraph(!string.IsNullOrEmpty(item.accountOwnerName) ? item.accountOwnerName : System.Environment.NewLine, detailsFont));
-                            document.Add(new Paragraph(System.Environment.NewLine, labelFont));
-                            document.Add(new Paragraph(GetLabelCommonByLanguage("amountRM").ToUpper(), labelFont));
-                            document.Add(new Paragraph(item.itmAmt, detailsFont));
+                            if (first)
+                            {
 
-                            document.Add(new Paragraph(System.Environment.NewLine, titleFont));
-                            document.Add(grayLine);
-                            document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+                                document.Add(new Paragraph(GetLabelCommonByLanguage("accountNo").ToUpper(), labelFont));
+                                document.Add(new Paragraph(item.accountNum, detailsFont));
+                                document.Add(new Paragraph(Environment.NewLine, labelFont));
+                                document.Add(new Paragraph(GetLabelByLanguage("accountHolder").ToUpper(), labelFont));
+                                document.Add(new Paragraph(!string.IsNullOrEmpty(item.accountOwnerName) ? item.accountOwnerName : Environment.NewLine, detailsFont));
+                                document.Add(new Paragraph(Environment.NewLine, labelFont));
+                                document.Add(new Paragraph(GetLabelCommonByLanguage("amountRM").ToUpper(), labelFont));
+                                document.Add(new Paragraph(item.itmAmt, detailsFont));
+
+                                document.Add(new Paragraph(Environment.NewLine, titleFont));
+                                document.Add(grayLine);
+                                document.Add(new Paragraph(Environment.NewLine, labelFont));
+                                first = false;
+                            }
+                            else
+                            {
+                                document.Add(new Paragraph(GetLabelCommonByLanguage("accountNo").ToUpper(), labelFont));
+                                document.Add(new Paragraph(item.accountNum, detailsFont));
+                                document.Add(new Paragraph(Environment.NewLine, labelFont));
+                                document.Add(new Paragraph(GetLabelByLanguage("accountHolder").ToUpper(), labelFont));
+                                document.Add(new Paragraph(!string.IsNullOrEmpty(item.accountOwnerName) ? item.accountOwnerName : Environment.NewLine, detailsFont));
+                                document.Add(new Paragraph(Environment.NewLine, labelFont));
+                                document.Add(new Paragraph(GetLabelCommonByLanguage("amountRM").ToUpper(), labelFont));
+                                document.Add(new Paragraph(item.itmAmt, detailsFont));
+
+                                document.Add(new Paragraph(Environment.NewLine, titleFont));
+                                document.Add(grayLine);
+                                document.Add(new Paragraph(Environment.NewLine, labelFont));
+
+                            }
                         }
 
                         document.Add(new Paragraph(GetLabelByLanguage("trnDate").ToUpper(), labelFont));
                         document.Add(new Paragraph(response.GetData().payTransDate, detailsFont));
 
-                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
                         document.Add(grayLine);
-                        document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
 
                         document.Add(new Paragraph(GetLabelByLanguage("trnID").ToUpper(), labelFont));
                         document.Add(new Paragraph(response.GetData().payTransID, detailsFont));
 
-                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
                         document.Add(grayLine);
-                        document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
+
+                        document.Add(new Paragraph(GetLabelByLanguage("trnMethod").ToUpper(), labelFont));
+                        document.Add(new Paragraph(response.GetData().payMethod, detailsFont));
+                        //document.Add(new Paragraph(GetLabelByLanguage("paymentType").ToUpper(), labelFont));
+                        //document.Add(new Paragraph(response.GetData().paymentType, detailsFont));
+
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
+                        document.Add(grayLine);
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
 
                         document.Add(new Paragraph(GetLabelByLanguage("trnMethod").ToUpper(), labelFont));
                         document.Add(new Paragraph(response.GetData().payMethod, detailsFont));
 
-                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
                         document.Add(grayLine);
-                        document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
 
                         document.Add(new Paragraph(GetLabelCommonByLanguage("totalAmountRM").ToUpper(), detailsFont));
                         document.Add(new Paragraph(response.GetData().payAmt, totalAmounFont));
 
-                        document.Add(new Paragraph(System.Environment.NewLine, titleFont));
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
                         document.Add(grayLine);
-                        document.Add(new Paragraph(System.Environment.NewLine, labelFont));
+                        document.Add(new Paragraph(Environment.NewLine, labelFont));
 
                         document.Add(new Paragraph(GetLabelByLanguage("note"), labelFont));
 
