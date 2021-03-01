@@ -2145,7 +2145,7 @@
           {
             "code": "7001",
             "title": "",
-            "message": "Oops! There is an error occured in processing your request. Please try again later.",
+            "message": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.",
             "primaryCTATitle": "Ok",
             "secondaryCTATitle": "",
             "isSuccess": false,
