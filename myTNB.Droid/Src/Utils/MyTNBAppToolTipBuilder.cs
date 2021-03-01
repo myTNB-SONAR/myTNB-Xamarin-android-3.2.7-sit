@@ -88,11 +88,14 @@ namespace myTNB_Android.Src.Utils
             if (mToolTipType != ToolTipType.NORMAL_STRETCHABLE)
             {
                 dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
-                WindowManagerLayoutParams wlp = tooltipBuilder.dialog.Window.Attributes;
-                wlp.Gravity = GravityFlags.Center;
-                wlp.Width = ViewGroup.LayoutParams.MatchParent;
-                wlp.Height = ViewGroup.LayoutParams.WrapContent;
-                tooltipBuilder.dialog.Window.Attributes = wlp;
+                if (mToolTipType != ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON && mToolTipType != ToolTipType.NORMAL_WITH_HEADER)
+                {
+                    WindowManagerLayoutParams wlp = tooltipBuilder.dialog.Window.Attributes;
+                    wlp.Gravity = GravityFlags.Center;
+                    wlp.Width = ViewGroup.LayoutParams.MatchParent;
+                    wlp.Height = ViewGroup.LayoutParams.WrapContent;
+                    tooltipBuilder.dialog.Window.Attributes = wlp;
+                }
             }
 
             return tooltipBuilder;

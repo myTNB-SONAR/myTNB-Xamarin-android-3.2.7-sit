@@ -33,7 +33,7 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
         public ChartDataType ChartDataType { get; set; }
         public string AccountType { get; set; }
         public int CurrentParentIndex = -1;
-        
+
         public Context currentContext;
         public SelectedMarkerView(Context context) : base(context, Resource.Layout.NewMarkerView)
         {
@@ -43,8 +43,6 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
             titlekWhMarker.Gravity = GravityFlags.Center;
             TextViewUtils.SetMuseoSans500Typeface(titleMarker);
             TextViewUtils.SetMuseoSans300Typeface(titlekWhMarker);
-            titleMarker.TextSize = TextViewUtils.GetFontSize(11f);
-            titlekWhMarker.TextSize = TextViewUtils.GetFontSize(11f);
             titlekWhMarker.Visibility = ViewStates.Gone;
             decimalFormat = new DecimalFormat("#,###,##0.00", new DecimalFormatSymbols(Java.Util.Locale.Us));
             kwhFormat = new DecimalFormat("#,###,##0", new DecimalFormatSymbols(Java.Util.Locale.Us));
@@ -54,8 +52,6 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
         protected SelectedMarkerView(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
         }
-
-
 
         public override void RefreshContent(Entry e, Highlight highlight)
         {
@@ -121,8 +117,6 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                 titlekWhMarker.Visibility = ViewStates.Gone;
                 titleMarker.Text = "RM " + decimalFormat.Format(e.GetY());
             }
-
-
             base.RefreshContent(e, highlight);
         }
 
