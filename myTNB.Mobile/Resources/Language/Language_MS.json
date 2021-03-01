@@ -215,7 +215,10 @@
     "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
     "receivedExtra": "terima lebih",
     "applicationStatus": "Status<br>Permohonan",
-    "energyBudget": "My Energy<br>Budget"
+    "energyBudget": "My Energy<br>Budget",
+    //yana
+    "tutorialEnergyBudgetTitle": "Discover your Energy Budget",
+    "tutorialEnergyBudgetDesc": "Set your monthly energy budget here to monitor energy usage and receive notification"
   },
   "Tabbar": {
     "home": "Utama",
