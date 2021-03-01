@@ -1,6 +1,4 @@
 ﻿
-using System;
-using System.Threading.Tasks;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
@@ -10,6 +8,8 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
+using System;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
 {
@@ -228,6 +228,20 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_8);
 
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
+
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 175f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
+                    break;
+                case "walkthrough_img_install_9":
+                    imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_9);
+
+                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughNinthBg);
 
                     imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
