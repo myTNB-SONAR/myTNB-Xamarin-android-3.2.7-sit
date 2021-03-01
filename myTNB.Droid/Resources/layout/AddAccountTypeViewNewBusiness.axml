@@ -93,6 +93,7 @@
                     android:drawablePadding="8dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
+                    android:paddingLeft="5dp"
                     android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
                     android:text="Where is my account number?"
                     android:drawableLeft="@drawable/smr_why_accounts_info"/>

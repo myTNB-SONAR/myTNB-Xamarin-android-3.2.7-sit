@@ -92,6 +92,7 @@
                     android:drawablePadding="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="10dp"
+                    android:paddingLeft="5dp"
                     android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
                     android:text="Why can't I see my full address?"
                     android:drawableLeft="@drawable/smr_why_accounts_info"/>
