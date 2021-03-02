@@ -171,7 +171,8 @@
     //yana
     "accountLengthNew": "Sila masukkan nombor akaun elektrik 12 digit yang sah.",
     "error_duplicateAccountMessageNew": "Nombor akaun elektrik ini telah ditambah ke senarai.",
-    "error_emptyIcAndEmailOwner": "Pemilik e-mel atau nombor telefon tidak boleh kosong."
+    "error_emptyIcAndEmailOwner": "Pemilik e-mel atau nombor telefon tidak boleh kosong.",
+    "error_NotExistsAccountMessage": "Nombor akaun yang anda masukkan tidak dijumpai."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",

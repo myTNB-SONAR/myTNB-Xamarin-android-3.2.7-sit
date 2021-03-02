@@ -411,11 +411,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             this.userActionsListener = userActionListener;
         }
 
-        public void ShowAddAccountFail(string errorMessage)
+        public void ShowAddAccountFail(string errorMessage) 
         {
 
             textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountNo.Error = Utility.GetLocalizedLabel("OT_Uncategorize", "error_NotExistsAccountMessage");
+            textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("error_NotExistsAccountMessage");
             //textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("error_NotExistsAccountMessage");
             /* if (mSnackBar != null && mSnackBar.IsShown)
              {
