@@ -34,7 +34,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
         private AndroidX.Fragment.App.DialogFragment mDialog;
         private AndroidX.Fragment.App.Fragment mFragment;
         private ISharedPreferences mPref;
-       
+
 
         public NewAppTutorialPagerAdapter(Activity ctx, AndroidX.Fragment.App.Fragment fragment, ISharedPreferences pref, AndroidX.Fragment.App.DialogFragment dialog, List<NewAppModel> items)
         {
@@ -43,7 +43,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             this.mDialog = dialog;
             this.mFragment = fragment;
             this.mPref = pref;
-           
+
         }
 
         public NewAppTutorialPagerAdapter()
@@ -371,8 +371,9 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             int deviceWidth = this.mContext.Resources.DisplayMetrics.WidthPixels;
                             int rightAreaWidth = (int)DPUtils.ConvertDPToPx(8f);
-                            int middleAreaWidth = (int)DPUtils.ConvertDPToPx(140f);
+                            int middleAreaWidth = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(160f) : (int)DPUtils.ConvertDPToPx(140f);
                             int leftAreaWidth = deviceWidth - middleAreaWidth - rightAreaWidth;
+
 
                             LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
                             highlightedLeftLayoutParam.Width = leftAreaWidth;
@@ -416,6 +417,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
                                 cardHeight = cardWidth;
                             }
+
                             int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
 
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
@@ -436,7 +438,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             topLayoutParam.Height = topHeight;
                             topLayout.RequestLayout();
                             LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
+                            middleLayoutParam.Height = ((HomeMenuFragment)this.mFragment).GetMyServiceContainerHeight();
                             middleLayout.RequestLayout();
                             LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
                             highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
@@ -458,7 +460,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             }
                             else
                             {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
                             }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
@@ -616,7 +618,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             topLayoutParam.Height = topHeight;
                             topLayout.RequestLayout();
                             LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
+                            middleLayoutParam.Height = ((HomeMenuFragment)this.mFragment).GetMyServiceContainerHeight();
                             middleLayout.RequestLayout();
                             LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
                             highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
@@ -638,7 +640,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             }
                             else
                             {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
                             }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
@@ -796,7 +798,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             topLayoutParam.Height = topHeight;
                             topLayout.RequestLayout();
                             LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
+                            middleLayoutParam.Height = ((HomeMenuFragment)this.mFragment).GetMyServiceContainerHeight();
                             middleLayout.RequestLayout();
                             LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
                             highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
@@ -818,7 +820,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             }
                             else
                             {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
                             }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
@@ -954,7 +956,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             topLayoutParam.Height = topHeight;
                             topLayout.RequestLayout();
                             LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
+                            middleLayoutParam.Height = ((HomeMenuFragment)this.mFragment).GetMyServiceContainerHeight();
                             middleLayout.RequestLayout();
                             LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
                             highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
@@ -976,7 +978,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             }
                             else
                             {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
                             }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
@@ -1112,7 +1114,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             topLayoutParam.Height = topHeight;
                             topLayout.RequestLayout();
                             LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
+                            middleLayoutParam.Height = ((HomeMenuFragment)this.mFragment).GetMyServiceContainerHeight();
                             middleLayout.RequestLayout();
                             LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
                             highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
@@ -1134,7 +1136,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             }
                             else
                             {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
                             }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
@@ -1358,7 +1360,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     {
                         if (position == 0)
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(55f);
+                            float h1 = TextViewUtils.IsLargeFonts ? 65f : 55f;
+                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
                             int middleHeight = (int)DPUtils.ConvertDPToPx(285f);
                             int checkPoint = (int)DPUtils.ConvertDPToPx(200f);
                             if (model.DisplayMode == "Extra")
@@ -1408,7 +1411,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else if (position == 1)
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(359f);
+                            float h1 = TextViewUtils.IsLargeFonts ? 373f : 359f;
+                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(8f);
                             if (model.DisplayMode == "Extra")
                             {
@@ -1446,7 +1450,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else if (position == 2)
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(359f);
+                            float h1 = TextViewUtils.IsLargeFonts ? 373f : 359f;
+                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(8f);
                             if (model.DisplayMode == "Extra")
                             {
@@ -1540,7 +1545,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 {
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)) + (int)DPUtils.ConvertDPToPx(20f);
+                                        float h2 = TextViewUtils.IsLargeFonts ? 2f : 20f;
+                                        int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)) + (int)DPUtils.ConvertDPToPx(h2);
                                         topHeight = topHeight - diff;
                                     }
                                 }
@@ -2100,7 +2106,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 }
             }
             else if (this.mContext is ApplicationStatusLandingActivity)
-             {
+            {
                 if (model.DisplayMode == "Extra")
                 {
                     int topHeight = (int)DPUtils.ConvertDPToPx(55f);
@@ -2214,7 +2220,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
 
                         RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                        innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts? (int)DPUtils.ConvertDPToPx(250f) : (int)DPUtils.ConvertDPToPx(110f);
+                        innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(250f) : (int)DPUtils.ConvertDPToPx(110f);
                         innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                         innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                         innerTopLayout.RequestLayout();
@@ -2238,8 +2244,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetHighlightedHeight() - (int)DPUtils.ConvertDPToPx(-80);
                         middleHeight = (int)DPUtils.ConvertDPToPx(170);
                     }
-                  
-                   
+
+
 
                     int leftWidth = 0;
                     int rightWidth = 0;
