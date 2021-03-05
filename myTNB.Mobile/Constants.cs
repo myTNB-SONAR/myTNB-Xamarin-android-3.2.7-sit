@@ -27,6 +27,7 @@
         private const string DEV1 = "http://10.215.128.191:88";
         private const string DEV2 = "http://10.215.128.191:89";
         private const string SIT = "https://mobiletestingws.tnb.com.my";
+        //private const string SIT = "http://10.215.128.191:97";
         private const string PROD = "https://mytnbapp.tnb.com.my";
         private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
         //Mark: http://tnbcsdevapp.tnb.my/

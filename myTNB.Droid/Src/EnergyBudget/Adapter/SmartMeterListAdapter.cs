@@ -46,6 +46,7 @@ namespace myTNB_Android.Src.EnergyBudget.Adapter
             }
 
             viewHolder.txtAccountName.Text = account.accountName;
+            viewHolder.txtAccountName.TextSize = TextViewUtils.GetFontSize(16);
 
             return convertView;
         }
@@ -58,6 +59,7 @@ namespace myTNB_Android.Src.EnergyBudget.Adapter
             public MyAccountViewHolder(View itemView) : base(itemView)
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountName);
+                txtAccountName.TextSize = TextViewUtils.GetFontSize(16f);
             }
         }
     }

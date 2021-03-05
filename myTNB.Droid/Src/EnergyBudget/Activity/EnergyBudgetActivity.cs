@@ -8,6 +8,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.EnergyBudget.Adapter;
@@ -34,7 +35,7 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
 
         [BindView(Resource.Id.listView)]
         ListView listView;
-
+       
         EnergyBudgetContract.IUserActionsListener userActionsListener;
         EnergyBudgetPresenter mPresenter;
 
@@ -42,7 +43,9 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
 
         SmartMeterListAdapter adapter;
 
-        const string PAGE_ID = "Smart Meter";
+        SMRAccount accountData;
+
+        const string PAGE_ID = "EnregyBudgetListing";
 
         public override int ResourceId()
         {
@@ -67,7 +70,7 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
                 listView.SetNoScroll();
                 listView.ItemClick += ListView_ItemClick;
 
-                SetToolBarTitle(Utility.GetLocalizedLabel("AddUserAccess", "title"));
+                SetToolBarTitle(Utility.GetLocalizedLabel("EnregyBudgetListing", "title"));
 
                 mPresenter = new EnergyBudgetPresenter(this);
                 this.userActionsListener.Start();
@@ -83,8 +86,8 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                /*CustomerBillingAccount customerBillingAccount = adapter.GetItemObject(e.Position);
-                ShowManageSupplyAccount(AccountData.Copy(customerBillingAccount, false), e.Position);*/
+                accountData = adapter.GetItemObject(e.Position);
+                selectedsmaccount();
             }
         }
 
@@ -100,6 +103,43 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        [OnClick(Resource.Id.infoLabelContainerAccNotListed)]
+        internal void OnUserClickRM(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    showAccNotListedTooltip();
+                }
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+
+        }
+
+        private void showAccNotListedTooltip()
+        {
+            MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                    .SetTitle(Utility.GetLocalizedLabel("EnregyBudgetListing", "tootltipTitle"))
+                    .SetMessage(Utility.GetLocalizedLabel("EnregyBudgetListing", "tooltipBody"))
+                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                    .SetCTAaction(() => { this.SetIsClicked(false); })
+                    .Build();
+            eppTooltip.Show();
+        }
+
+        public void selectedsmaccount()
+        {
+            Intent result = new Intent();
+            result.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            SetResult(Result.Ok, result);
+            Finish();
         }
 
         public void ShowProgressDialog()
@@ -152,21 +192,6 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
         public bool IsActive()
         {
             return Window.DecorView.RootView.IsShown;
-        }
-
-        public void ShowAccountList(List<CustomerBillingAccount> accountList)
-        {
-            try
-            {
-                /*adapter.AddAll(accountList);
-                adapter.NotifyDataSetChanged();
-                listView.SetNoScroll();
-                btnAddAnotherAccount.Visibility = ViewStates.Visible;*/
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)

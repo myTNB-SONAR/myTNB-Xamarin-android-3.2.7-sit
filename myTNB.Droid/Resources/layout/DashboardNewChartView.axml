@@ -965,7 +965,7 @@
 							android:layout_marginLeft="11dp"
 							android:layout_marginRight="11dp"
 							android:layout_marginBottom="8dp"
-							android:visibility="visible">
+							android:visibility="gone">
 							<androidx.cardview.widget.CardView
 								android:orientation="vertical"
 								android:layout_width="match_parent"
@@ -1039,6 +1039,7 @@
 												android:maxLength="10"
 												android:visibility="visible"
 												android:paddingBottom="8.5dp"
+												android:clickable="false"
 												android:textSize="15dp"/>
 										</LinearLayout>
 									</RelativeLayout>
@@ -1253,7 +1254,25 @@
 												android:maxLines="1"
 												android:maxWidth="150dp"
 												android:ellipsize="end"/>
-										</RelativeLayout>
+										</RelativeLayout>										
+									</LinearLayout>
+									<LinearLayout
+											android:id="@+id/LayoutbtnEditBudget"
+											android:layout_width="match_parent"
+											android:layout_height="wrap_content"
+											android:paddingBottom="16dp"
+											android:paddingTop="16dp"
+											android:visibility="gone"
+											android:orientation="horizontal">
+											<Button
+												android:id="@+id/btnEditBudget"
+												style="@style/Theme.ViewBill"
+												android:layout_width="match_parent"
+												android:layout_height="wrap_content"
+												android:layout_marginLeft="16dp"
+												android:layout_marginRight="16dp"
+												android:text="Edit Budget"
+												android:textAllCaps="false" />
 									</LinearLayout>
 									<View
 										android:id="@+id/smStatisticDivider"

@@ -237,6 +237,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public readonly static int REARRANGE_ACTIVITY_CODE = 8806;
 
+        internal static readonly int SELECT_SM_ACCOUNT_REQUEST_CODE = 8809;
+
         private static List<MyService> currentMyServiceList = new List<MyService>();
 
         private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
@@ -364,6 +366,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     HomeMenuUtils.SetIsShowRearrangeAccountSuccessfulNeed(true);
                     RestartHomeMenu();
+                }
+            }
+            else if (requestCode == SELECT_SM_ACCOUNT_REQUEST_CODE)
+            {
+                if (resultCode == (int)Result.Ok)
+                {
+                    Bundle extras = data.Extras;
+
+                    SMRAccount selectedAccount = JsonConvert.DeserializeObject<SMRAccount>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                    this.SetIsClicked(false);
+                    ShowAccountDetails(selectedAccount.accountNumber);
                 }
             }
         }
@@ -1321,8 +1334,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             {
                                 UserSessions.DoSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
                             }
-                            Intent energy_budget_activity = new Intent(this.Activity, typeof(EnergyBudgetActivity));
-                            StartActivity(energy_budget_activity);
+                            if (UserSessions.GetEnergyBudgetList().Count == 1)
+                            {
+                                this.SetIsClicked(false);
+                                List<SMRAccount> smacc = new List<SMRAccount>();
+                                smacc = UserSessions.GetEnergyBudgetList();
+                                ShowAccountDetails(smacc[0].accountNumber); 
+                            }
+                            else if (UserSessions.GetEnergyBudgetList().Count > 1)
+                            {
+                                Intent energy_budget_activity = new Intent(this.Activity, typeof(EnergyBudgetActivity));
+                                StartActivityForResult(energy_budget_activity, SELECT_SM_ACCOUNT_REQUEST_CODE);
+                            }                                                     
                         }
                         else
                         {

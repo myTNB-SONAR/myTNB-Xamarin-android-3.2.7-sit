@@ -421,7 +421,14 @@
     "tariffLegendNote": "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill.",
     "prevReadingEmptyTitle": "Sorry, we are unable to perform this action right now.",
     "prevReadingEmptyMsg": "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you.",
-    "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while."
+    "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
+    //EnergyBudget
+    "myMonthlyBudget":"My monthly budget is",
+    "whyIsAmountDiff":"Why is my usage amount different from my bill amount?",
+    "whyIsAmountDiffBody":"Your current usage amount is the amount of energy you've used up so far. As this amount is yet to be billed according to your monthly billing cycle, it is not yet subjected to any tax, discount or additional charges by us.",
+    "editEnergyButton":"Edit Budget",
+    "setEnergyButton":"Set New Budget",
+    "saveEnergyButton":"Save New Budget"
   },
   "Bills": {
     "title": "Bills",
@@ -2279,5 +2286,10 @@
         "value": "Project"
       }
     ]
+  },
+  "EnregyBudgetListing":{
+    "title":"Select Smart Meter Account",
+    "tootltipTitle":"Why are some of my accounts not listed?",
+    "tooltipBody":"As Energy Budget is a Smart Meter feature, only Smart Meter accounts are listed here. Once your normal meter has been converted into Smart Meter, it will be automatically added into the list."
   }
 }

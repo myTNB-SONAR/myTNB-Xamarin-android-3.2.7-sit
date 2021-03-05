@@ -89,7 +89,10 @@ namespace myTNB_Android.Src.Database.Model
 
         [Column("IsViewBillShown")]
         public bool IsViewBillShown { get; set; }
-        
+
+        [Column("RmEnergyBudget")]
+        public string RmEnergyBudget { get; set; }
+
         public static int CreateTable()
         {
             var db = DBHelper.GetSQLiteConnection();
@@ -1203,6 +1206,27 @@ namespace myTNB_Android.Src.Database.Model
             var db = DBHelper.GetSQLiteConnection();
             List<CustomerBillingAccount> eligibleSMAccounts = new List<CustomerBillingAccount>();
             eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode = 'TRIL'").ToList().OrderBy(x => x.AccDesc).ToList();
+            return eligibleSMAccounts;
+        }
+
+        public static void UpdateEnergyBudgetRM(string TotalBudget, string accNum)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Execute("Update CustomerBillingAccountEntity SET RmEnergyBudget = ? WHERE accNum = ?", TotalBudget, accNum);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public static List<CustomerBillingAccount> EnergyBudgetRM(string accNum)
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            List<CustomerBillingAccount> eligibleSMAccounts = new List<CustomerBillingAccount>();
+            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accNum = ?", accNum).ToList().OrderBy(x => x.AccDesc).ToList();
             return eligibleSMAccounts;
         }
     }

@@ -421,7 +421,14 @@
     "tariffLegendNote": "Nota: Blok berwarna di atas mewakili kadar elektrik anda. Untuk melihat pecahan terperinci, sila rujuk bil anda.",
     "prevReadingEmptyTitle": "Maaf, kami tidak dapat melakukan tindakan ini sekarang.",
     "prevReadingEmptyMsg": "Sila cuba semula sebentar lagi. Jika masalah ini berterusan, hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> dan kami akan membantu anda.",
-    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi."
+    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+    //EnergyBudget
+    "myMonthlyBudget":"BM_My monthly budget is",
+    "whyIsAmountDiff":"BM_Why is my usage amount different from my bill amount?",
+    "whyIsAmountDiffBody":"BM_Your current usage amount is the amount of energy you've used up so far. As this amount is yet to be billed according to your monthly billing cycle, it is not yet subjected to any tax, discount or additional charges by us.",
+    "editEnergyButton":"BM_Edit Budget",
+    "setEnergyButton":"BM_Set New Budget",
+    "saveEnergyButton":"Bm_Save New Budget"
   },
   "Bills": {
     "title": "Bil",
@@ -2271,5 +2278,10 @@
         "value": "Project"
       }
     ]
+  },
+  "EnregyBudgetListing":{
+    "title":"Select Smart Meter Account",
+    "tootltipTitle":"Why are some of my accounts not listed?",
+    "tooltipBody":"As Energy Budget is a Smart Meter feature, only Smart Meter accounts are listed here. Once your normal meter has been converted into Smart Meter, it will be automatically added into the list."
   }
 }
