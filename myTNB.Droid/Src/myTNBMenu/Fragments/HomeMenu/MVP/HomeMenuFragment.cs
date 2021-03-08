@@ -515,7 +515,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
                 this.presenter.SetDynaUserTAG();  //call dyna set username
                 OnStartLoadAccount();
-                
+
             }
             catch (System.Exception e)
             {
@@ -1053,7 +1053,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 EditText searchText = searchEditText.FindViewById<EditText>(searchEditText.Context.Resources.GetIdentifier("android:id/search_src_text", null, null));
                 searchText.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
                 searchText.SetHintTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sixty_opacity_white)));
-                searchText.SetTextSize(ComplexUnitType.Dip,TextViewUtils.GetFontSize(12f));
+                searchText.SetTextSize(ComplexUnitType.Dip, TextViewUtils.GetFontSize(12f));
                 TextViewUtils.SetMuseoSans500Typeface(searchText);
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
@@ -2734,7 +2734,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             View child = (View)summaryNestScrollView.GetChildAt(0);
             return summaryNestScrollView.Height < child.Height + summaryNestScrollView.PaddingTop + summaryNestScrollView.PaddingBottom;
         }
-
+        public int GetMyServiceContainerHeight()
+        {
+            return myServiceContainer.Height;
+        }
         public void ResetNewFAQScroll()
         {
             try
