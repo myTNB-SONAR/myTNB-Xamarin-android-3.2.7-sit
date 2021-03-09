@@ -217,8 +217,8 @@
     "applicationStatus": "Application<br>Status",
     "energyBudget": "My Energy<br>Budget",
     //yana
-    "tutorialEnergyBudgetTitle": "Discover your Energy Budget",
-    "tutorialEnergyBudgetDesc": "Set your monthly energy budget here to monitor energy usage and receive notification"
+    "tutorialEnergyBudgetTitle": "Begin your Energy Budget journey",
+    "tutorialEnergyBudgetDesc": "Access Energy Budget easily from homepage to start setting up your desired monthly bill amount"
   },
   "Tabbar": {
     "home": "Home",
