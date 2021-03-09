@@ -788,8 +788,8 @@
     "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot.",
 
     //addBy irul
-    "title11": "Energy Budget",
-    "description11": "A new way to manage your energy lifestyle.<br><br>This feature is not available for Renewable Energy customers at the moment."
+    "title11": "Set your energy budget now",
+    "description11": "You can now manage your energy consumption better by setting your monthly budget in myTNB! We'll let you know when it is reaching its monthly limit."
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
