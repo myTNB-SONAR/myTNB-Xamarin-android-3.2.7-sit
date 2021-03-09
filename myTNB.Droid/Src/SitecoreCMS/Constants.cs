@@ -184,34 +184,39 @@
                     public const string Image = "Image";
                 }
 
-                public struct WhereIsMyAccToolTip{
+                public struct WhereIsMyAccToolTip
+                {
                     public const string PopUpTitle = "Pop Up Title";
                     public const string PopUpBody = "Pop Up Body";
                     public const string Image = "Image";
                 }
-           
-                 public struct WhoIsRegisteredOwnerToolTip{
+
+                public struct WhoIsRegisteredOwnerToolTip
+                {
                     public const string PopUpTitle = "Pop Up Title";
                     public const string PopUpBody = "Pop Up Body";
                 }
 
-                 public struct DoIneedOwnerConsentToolTip{
+                public struct DoIneedOwnerConsentToolTip
+                {
                     public const string PopUpTitle = "Pop Up Title";
                     public const string PopUpBody = "Pop Up Body";
                 }
 
-                 public struct HowDoesCopyOfIdentification{
+                public struct HowDoesCopyOfIdentification
+                {
                     public const string PopUpTitle = "Pop Up Title";
                     public const string PopUpBody = "Pop Up Body";
                     public const string Image = "Image";
-   
+
                 }
 
-                 public struct HowDoesProofOfConsent{
+                public struct HowDoesProofOfConsent
+                {
                     public const string PopUpTitle = "Pop Up Title";
                     public const string PopUpBody = "Pop Up Body";
                     public const string Image = "Image";
-   
+
                 }
 
             }
@@ -254,19 +259,15 @@
 
                 public const string Rewards = "/sitecore/content/myTNBapp/Contents/Rewards";
                 public const string Country = "/sitecore/content/myTNBapp/Contents/Country List Json";
-#if !RELEASE
-                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json Test";
-#else
                 public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
-#endif
                 public const string WhatsNew = "/sitecore/content/myTNBapp/Contents/WhatsNewV2";
 
                 public const string EppToolTip = "/sitecore/content/myTNBapp/Contents/EppToolTip";
-                public const string WhereIsMyAccToolTip ="/sitecore/content/myTNBapp/Contents/WhereIsMyAccToolTip";
-                public const string WhoIsRegisteredOwnerToolTip="/sitecore/content/myTNBapp/Contents/WhoIsRegisteredOwner";
-                public const string DoIneedOwnerConsentToolTip="/sitecore/content/myTNBapp/Contents/DoINeedOwnerConsentToolTip";
-                public const string HowDoesCopyOfIdentification="/sitecore/content/myTNBapp/Contents/HowDoesCopyOfIdentificationToolTip";
-                public const string HowDoesProofOfConsent="/sitecore/content/myTNBapp/Contents/ProofOwnerConsentToolTips";
+                public const string WhereIsMyAccToolTip = "/sitecore/content/myTNBapp/Contents/WhereIsMyAccToolTip";
+                public const string WhoIsRegisteredOwnerToolTip = "/sitecore/content/myTNBapp/Contents/WhoIsRegisteredOwner";
+                public const string DoIneedOwnerConsentToolTip = "/sitecore/content/myTNBapp/Contents/DoINeedOwnerConsentToolTip";
+                public const string HowDoesCopyOfIdentification = "/sitecore/content/myTNBapp/Contents/HowDoesCopyOfIdentificationToolTip";
+                public const string HowDoesProofOfConsent = "/sitecore/content/myTNBapp/Contents/ProofOwnerConsentToolTips";
             }
         }
     }
