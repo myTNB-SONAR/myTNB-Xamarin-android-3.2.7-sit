@@ -215,8 +215,8 @@
     "serviceRefreshMessage": "Seksyen Akses Mudah terputus sambungan. 'Refresh' untuk kekalkan sambungan! ",
     "receivedExtra": "terima lebih",
     "applicationStatus": "Status<br>Permohonan",
-    "energyBudget": "My Energy<br>Budget",
-    //yana
+    //EnergyBudget
+    "energyBudget": "Perbelanjaan <br> Bulanan Saya",
     "tutorialEnergyBudgetTitle": "Mulakan langkah untuk menguruskan tenaga anda",
     "tutorialEnergyBudgetDesc": "Anda boleh mengakses Perbelanjaan Bulanan dari laman utama untuk mula menetapkan jumlah bil yang anda inginkan"
   },
@@ -424,7 +424,15 @@
     "tariffLegendNote": "Nota: Blok berwarna di atas mewakili kadar elektrik anda. Untuk melihat pecahan terperinci, sila rujuk bil anda.",
     "prevReadingEmptyTitle": "Maaf, kami tidak dapat melakukan tindakan ini sekarang.",
     "prevReadingEmptyMsg": "Sila cuba semula sebentar lagi. Jika masalah ini berterusan, hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> dan kami akan membantu anda.",
-    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi."
+    "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
+    //EnergyBudget
+    "myMonthlyBudget":"Perbelanjaan bulanan saya adalah",
+    "whyIsAmountDiff":"Mengapakah jumlah penggunaan saya lain daripada jumlah bil saya?",
+    "whyIsAmountDiffBody":"Jumlah penggunaan terkini anda adalah jumlah tenaga yang anda telah guna setakat ini. Oleh kerana jumlah ini belum dibilkan mengikuti kitaran pembilan anda, ia belum tertakluk kepada cukai, diskaun atau caj tambahan dari kami.",
+    "editEnergyButton":"Edit perbelanjaan",
+    "setEnergyButton":"Tetapkan perbelanjaan baharu",
+    "saveEnergyButton":"Simpan perbelanjaan baharu",
+    "toastSaveBudgetuccessfull":"BM_You've successfully set your monthly budget!"
   },
   "Bills": {
     "title": "Bil",
@@ -786,8 +794,7 @@
     "description8": "Anda boleh jejaki semua status permohonan dengan mudah, pada bila-bila masa dan di mana-mana sahaja.",
     "description9": "Ubah suai myTNB anda dengan saiz teks paparan bersesuaian untuk pengendalian yang lebih selesa. Anda boleh memilih antara saiz normal atau besar dan boleh mengubah tetapan ini pada bila-bila masa di Profil anda.",
     "description10": "Anda boleh menetapkan janji temu pemasangan meter anda dengan memilih tarikh dan slot masa yang sesuai.",
-
-    //addBy irul
+    //EnergyBudget
     "title11": "Tetapkan perbelajaan bulanan tenaga anda.",
     "description11": "Kini anda boleh menguruskan penggunaan tenaga anda dengan menetapkan perbelanjaan bulanan melalui myTNB! Kami akan maklumkan jika penggunaan anda sudah berdekatan had bulanan anda."
   },
@@ -2153,7 +2160,7 @@
           {
             "code": "7001",
             "title": "",
-            "message": "Oops! There is an error occured in processing your request. Please try again later.",
+            "message": "Maaf, kami tidak dapat melakukan tindakan ini sekarang. Sila cuba semula sebentar lagi.",
             "primaryCTATitle": "Ok",
             "secondaryCTATitle": "",
             "isSuccess": false,
@@ -2278,5 +2285,10 @@
         "value": "Project"
       }
     ]
+  },
+  "EnregyBudgetListing":{
+    "title":"Pilih Akaun Meter Pintar",
+    "tootltipTitle":"Mengapakah sesetengah akaun saya tidak disenaraikan?",
+    "tooltipBody":"Oleh kerana Belanjawan Tenaga adalah ciri meter pintar, hanya akaun meter pintar sahaja akan disenaraikan di sini. Apabila meter anda telah ditukarkan ke meter pintar, akaun tersebut akan ditambah secara automatik ke dalam senarai ini."
   }
 }

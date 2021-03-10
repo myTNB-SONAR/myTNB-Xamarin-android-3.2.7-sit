@@ -215,8 +215,8 @@
     "serviceRefreshMessage": "Uh oh, looks like your quick actions have been unplugged. Refresh to stay plugged in!",
     "receivedExtra": "received extra",
     "applicationStatus": "Application<br>Status",
+    //EnergyBudget
     "energyBudget": "My Energy<br>Budget",
-    //yana
     "tutorialEnergyBudgetTitle": "Begin your Energy Budget journey",
     "tutorialEnergyBudgetDesc": "Access Energy Budget easily from homepage to start setting up your desired monthly bill amount"
   },
@@ -424,7 +424,15 @@
     "tariffLegendNote": "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill.",
     "prevReadingEmptyTitle": "Sorry, we are unable to perform this action right now.",
     "prevReadingEmptyMsg": "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you.",
-    "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while."
+    "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
+    //EnergyBudget
+    "myMonthlyBudget":"My monthly budget is",
+    "whyIsAmountDiff":"Why is my usage amount different from my bill amount?",
+    "whyIsAmountDiffBody":"Your current usage amount is the amount of energy you've used up so far. As this amount is yet to be billed according to your monthly billing cycle, it is not yet subjected to any tax, discount or additional charges by us.",
+    "editEnergyButton":"Edit Budget",
+    "setEnergyButton":"Set New Budget",
+    "saveEnergyButton":"Save New Budget",
+    "toastSaveBudgetuccessfull":"You've successfully set your monthly budget!"
   },
   "Bills": {
     "title": "Bills",
@@ -786,8 +794,7 @@
     "description8": "You can now track all your application status with zero hassle, anytime and anywhere.",
     "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
     "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot.",
-
-    //addBy irul
+    //EnergyBudget
     "title11": "Set your energy budget now.",
     "description11": "You can now manage your energy consumption better by setting your monthly budget in myTNB! We'll let you know when it is reaching its monthly limit."
   },
@@ -2286,5 +2293,10 @@
         "value": "Project"
       }
     ]
+  },
+  "EnregyBudgetListing":{
+    "title":"Select Smart Meter Account",
+    "tootltipTitle":"Why are some of my accounts not listed?",
+    "tooltipBody":"As Energy Budget is a Smart Meter feature, only Smart Meter accounts are listed here. Once your normal meter has been converted into Smart Meter, it will be automatically added into the list."
   }
 }
