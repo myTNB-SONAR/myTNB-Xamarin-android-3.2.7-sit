@@ -116,6 +116,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         }
 
+        public void SaveEnergyBudgetAmmount(string accnum, int AmmSaveBudget)
+        {
+            SetEnergyBudget(accnum, AmmSaveBudget);
+        }
+
         private async Task GetAccountStatus()
         {
             try
@@ -838,6 +843,44 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 else
                 {
                     this.mView.ShowViewBill();
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                this.mView.HideProgress();
+                this.mView.ShowLoadBillRetryOptions();
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideProgress();
+                this.mView.ShowLoadBillRetryOptions();
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                this.mView.HideProgress();
+                this.mView.ShowLoadBillRetryOptions();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public async void SetEnergyBudget(string accnum, int amountEnergybudget)
+        {
+            this.mView.ShowProgress();
+            try
+            {
+                var saveEnergyBudgetResponse = await ServiceApiImpl.Instance.SaveEnergyBudget(new MyTNBService.Request.SaveEnergyBudgetRequest(accnum, amountEnergybudget));
+
+                this.mView.HideProgress();
+
+                if (saveEnergyBudgetResponse.IsSuccessResponse())
+                {
+                    this.mView.ShowEnergyBudgetSuccess();
+                }
+                else
+                {
+                    this.mView.ShowErrorMessageResponse(saveEnergyBudgetResponse.Response.DisplayMessage);
                 }
             }
             catch (System.OperationCanceledException e)

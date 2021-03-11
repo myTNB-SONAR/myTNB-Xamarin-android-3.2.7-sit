@@ -1768,6 +1768,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             List<MyService> fetchList = new List<MyService>();
             List<MyService> filterList = new List<MyService>();
+            var energyBudget = new MyService();
             for (int i = 0; i < currentMyServiceList.Count; i++)
             {
                 if (currentMyServiceList[i].ServiceCategoryId == "1001")
@@ -1778,6 +1779,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         MyServiceEntity.InsertOrReplace(currentMyServiceList[i]);
                     }
                 }
+                else if (currentMyServiceList[i].ServiceCategoryId == "1007")
+                {
+                    energyBudget = new MyService()
+                    {
+                        ServiceCategoryId = currentMyServiceList[i].ServiceCategoryId,
+                        serviceCategoryName = currentMyServiceList[i].serviceCategoryName,
+                        serviceCategoryIcon = currentMyServiceList[i].serviceCategoryIcon,
+                        serviceCategoryIconUrl = currentMyServiceList[i].serviceCategoryIconUrl,
+                        serviceCategoryDesc = currentMyServiceList[i].serviceCategoryDesc,
+                    };
+                }
                 else
                 {
                     filterList.Add(currentMyServiceList[i]);
@@ -1786,21 +1798,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
 
             //testing adding icon
-            var testicon = new MyService()
+            /*var testicon = new MyService()
             {
                 ServiceCategoryId = "1007",
                 serviceCategoryName = "My Energy Budget",
                 serviceCategoryIcon = "test",
                 serviceCategoryIconUrl = "test",
                 serviceCategoryDesc = "test",
-            };
+            };*/
             //filterList.Add(testicon);
             if (UserSessions.GetEnergyBudgetList().Count > 0)
             {
-                filterList.Insert(2, testicon);
+                filterList.Insert(2, energyBudget);
             }
 
-            MyServiceEntity.InsertOrReplace(testicon);
+            MyServiceEntity.InsertOrReplace(energyBudget);
 
             currentMyServiceList = filterList;
             fetchList = currentMyServiceList;
@@ -1821,17 +1833,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void RestoreCurrentMyServiceState()
         {
             List<MyServiceEntity> cachedDBList = new List<MyServiceEntity>();
-            var testicon = new MyService();
+            var energyBudget = new MyService();
             List<MyService> cachedList = new List<MyService>();
             cachedDBList = MyServiceEntity.GetAll();
             for (int i = 0; i < cachedDBList.Count; i++)
             {
                 if (cachedDBList[i].ServiceCategoryId.Contains("1007"))
                 {
-                    testicon = new MyService()
+                    energyBudget = new MyService()
                     {
-                        ServiceCategoryId = "1007",
-                        serviceCategoryName = "My Energy Budget",
+                        ServiceCategoryId = cachedDBList[i].ServiceCategoryId,
+                        serviceCategoryName = cachedDBList[i].serviceCategoryName
                     };
                 }
                 else
@@ -1846,7 +1858,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             if (UserSessions.GetEnergyBudgetList().Count > 0)
             {
-                cachedList.Insert(2, testicon);
+                cachedList.Insert(2, energyBudget);
             }
 
             currentMyServiceList = cachedList;

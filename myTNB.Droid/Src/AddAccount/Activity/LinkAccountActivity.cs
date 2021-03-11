@@ -475,10 +475,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
                     string userID = UserEntity.GetActive().UserID;
                     string email = UserEntity.GetActive().Email;
-                    List<Models.AddAccount> accounts = new List<Models.AddAccount>();
+                    //List<Models.AddAccount> accounts = new List<Models.AddAccount>();
+                    List<Models.AddAccountV2> accounts = new List<Models.AddAccountV2>();
                     foreach (NewAccount item in newList)
                     {
-                        Models.AddAccount account = new Models.AddAccount();
+                        Models.AddAccountV2 account = new Models.AddAccountV2();
                         account.accountNumber = item.accountNumber;
                         account.accountNickName = item.accountLabel;
                         account.accountStAddress = item.accountAddress;
@@ -490,7 +491,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     }
                     foreach (NewAccount item in additionalList)
                     {
-                        Models.AddAccount account = new Models.AddAccount();
+                        Models.AddAccountV2 account = new Models.AddAccountV2();
                         account.accountNumber = item.accountNumber;
                         account.accountNickName = item.accountLabel;
                         account.accountStAddress = item.accountAddress;

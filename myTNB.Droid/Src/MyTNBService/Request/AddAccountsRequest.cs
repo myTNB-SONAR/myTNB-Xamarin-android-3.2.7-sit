@@ -5,8 +5,8 @@ namespace myTNB_Android.Src.MyTNBService.Request
 {
     public class AddAccountsRequest : BaseRequest
     {
-        public List<AddAccount.Models.AddAccount> billAccounts;
-        public AddAccountsRequest(List<AddAccount.Models.AddAccount> accountList)
+        public List<AddAccount.Models.AddAccountV2> billAccounts;
+        public AddAccountsRequest(List<AddAccount.Models.AddAccountV2> accountList)
         {
             billAccounts = accountList;
         }

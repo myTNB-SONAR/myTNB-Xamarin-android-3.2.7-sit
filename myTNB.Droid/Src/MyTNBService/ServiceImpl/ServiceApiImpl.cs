@@ -423,6 +423,16 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         }
 
         /// <summary>
+        /// Call SaveEnergyBudget with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SaveEnergyBudgetResponse> SaveEnergyBudget([Body] Request.BaseRequest request)
+        {
+            return api.SaveEnergyBudget<SaveEnergyBudgetResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
         /// Call GetLocations with default timeout.
         /// </summary>
         /// <param name="request"></param>

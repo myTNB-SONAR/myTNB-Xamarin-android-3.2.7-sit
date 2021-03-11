@@ -110,7 +110,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         }
 
-        public void AddMultipleAccounts(string apiKeyId, string sspUserId, string email, List<Models.AddAccount> accounts)
+        public void AddMultipleAccounts(string apiKeyId, string sspUserId, string email, List<Models.AddAccountV2> accounts)
         {
             try
             {
@@ -128,7 +128,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
             }
         }
 
-        private async void AddMultipleAccountsAsync(string apiKeyId, string sspUserID, string email, List<Models.AddAccount> accounts)
+        private async void AddMultipleAccountsAsync(string apiKeyId, string sspUserID, string email, List<Models.AddAccountV2> accounts)
         {
             try
             {

@@ -723,6 +723,7 @@
     <Compile Include="Src\AddAccount\Models\AccountsResponse.cs" />
     <Compile Include="Src\AddAccount\Models\AccountsResquest.cs" />
     <Compile Include="Src\AddAccount\Models\AccountType.cs" />
+    <Compile Include="Src\AddAccount\Models\AddAccountV2.cs" />
     <Compile Include="Src\AddAccount\Models\AddAccount.cs" />
     <Compile Include="Src\AddAccount\Models\AddAccountResponse.cs" />
     <Compile Include="Src\AddAccount\Models\AddAccountResquest.cs" />
@@ -1023,9 +1024,11 @@
     <Compile Include="Src\myTNBMenu\Requests\SMUsageHistoryRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationChannelRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationTypeRequest.cs" />
+    <Compile Include="Src\MyTNBService\Request\SaveEnergyBudgetRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetSearchForAccountRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\SubmitEnquiryRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\GetSearchForAccountResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\SaveEnergyBudgetResponse.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetails.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetailsDeleteResponse.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetailsResponse.cs" />

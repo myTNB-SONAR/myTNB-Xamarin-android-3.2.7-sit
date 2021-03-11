@@ -54,10 +54,19 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                 this.mView.ShowRemoveProgress();
             }
 
+            bool isTaggedSMR = false;
+            for (int i = 0; i < UserSessions.GetEnergyBudgetList().Count; i++)
+            {
+                if (UserSessions.GetEnergyBudgetList()[i].accountNumber == accountData.AccountNum)
+                {
+                    isTaggedSMR = true;
+                }
+            }
+
             UserEntity user = UserEntity.GetActive();
             try
             {
-                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(new RemoveAccountRequest(accountData.AccountNum));
+                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(new RemoveAccountRequest(accountData.AccountNum, isTaggedSMR));
 
                 if (mView.IsActive())
                 {

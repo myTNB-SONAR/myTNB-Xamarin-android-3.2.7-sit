@@ -61,13 +61,21 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Post("/v6/mytnbappws.asmx/GetLocationsByKeyword")]
         Task<T> LocationsByKeyword<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
-        [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/IsUserAuth")]
-        Task<T> UserAuthenticate<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+        //[Headers("Content-Type:application/json; charset=utf-8")]
+        //[Post("/v6/mytnbappws.asmx/IsUserAuth")]
+        //Task<T> UserAuthenticate<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/SaveUserNotificationTypePreference")]
-        Task<T> SaveUserNotificationTypePreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+        [Post("/v6/mytnbappws.asmx/IsUserAuthV2")]
+        Task<T> UserAuthenticate<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        //[Headers("Content-Type:application/json; charset=utf-8")]
+        //[Post("/v6/mytnbappws.asmx/SaveUserNotificationTypePreference")]
+        //Task<T> SaveUserNotificationTypePreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SaveUserNotificationTypePreferenceV2")]
+        Task<T> SaveUserNotificationTypePreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //cep new api //wan
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/SaveUserNotificationChannelPreference")]
@@ -155,9 +163,17 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Post("/v6/mytnbappws.asmx/GetBillHistory")]
         Task<T> GetBillHistory<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
+        //[Headers("Content-Type:application/json; charset=utf-8")]
+        //[Post("/v6/mytnbappws.asmx/RemoveAccount")]
+        //Task<T> RemoveAccount<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/RemoveAccount")]
-        Task<T> RemoveAccount<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+        [Post("/v6/mytnbappws.asmx/RemoveAccountV2")]
+        Task<T> RemoveAccount<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);         //cep new api //wan
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SaveEnergyBudget")]
+        Task<T> SaveEnergyBudget<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);         //cep new api //wan
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetLocations")]
@@ -187,9 +203,13 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Post("/v6/mytnbappws.asmx/ReadUserNotification")]
         Task<T> ReadUserNotification<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
+        //[Headers("Content-Type:application/json; charset=utf-8")]
+        //[Post("/v6/mytnbappws.asmx/AddAccounts")]
+        //Task<T> AddMultipleAccounts<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/AddAccounts")]
-        Task<T> AddMultipleAccounts<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+        [Post("/v6/mytnbappws.asmx/AddAccountsV2")]
+        Task<T> AddMultipleAccounts<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);           //cep new api //wan
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetAccountsCharges")]
