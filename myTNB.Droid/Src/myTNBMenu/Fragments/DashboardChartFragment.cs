@@ -987,7 +987,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 //energybudget
                 TextViewUtils.SetMuseoSans300Typeface(energyBudgetRMinput);
 
-                energyBudgetRMinput.TextSize = TextViewUtils.GetFontSize(17f);
+                energyBudgetRMinput.TextSize = TextViewUtils.GetFontSize(16f);
                 btnSetNewBudget.TextSize = TextViewUtils.GetFontSize(16f);
                 btnEditBudget.TextSize = TextViewUtils.GetFontSize(16f);
                 energyBudgetAccountStatusText.TextSize = TextViewUtils.GetFontSize(13f);

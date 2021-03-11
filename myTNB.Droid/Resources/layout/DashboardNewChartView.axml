@@ -1050,7 +1050,6 @@
 													android:layout_height="wrap_content"
 													android:gravity="right|center"
 													android:text="RM"
-													android:layout_marginRight="2dp"
 													android:textColor="@color/charcoalGrey"
 													android:textSize="11dp"/>
 												<EditText
