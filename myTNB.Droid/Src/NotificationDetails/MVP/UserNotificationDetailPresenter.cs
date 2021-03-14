@@ -216,11 +216,27 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             }
                             break;
                         }
+                    case Constants.BCRM_NOTIFICATION_ENERGY_BUDGET:
+                        {
+                            imageResourceBanner = Resource.Drawable.SMRillustration;
+                            //pageTitle = "EnergyBudget";
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBudget"),
+                                delegate () { ViewMyUsage(notificationDetails); });
+                            ctaList.Add(primaryCTA);
+                            break;
+                        }
                     default:
                         imageResourceBanner = Resource.Drawable.notification_generic_banner;
                         break;
                 }
                 notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_NICKNAME_PATTERN, accountName);
+
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET)
+                {
+                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, "#profileName#", UserEntity.GetActive().DisplayName);
+                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, "#accno#", notificationDetails.AccountNum);
+                }
+
                 notificationDetailModel = new NotificationDetailModel(imageResourceBanner, pageTitle, notificationDetailTitle,
                     notificationDetailMessage, ctaList);
             }

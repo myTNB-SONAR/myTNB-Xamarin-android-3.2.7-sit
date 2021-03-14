@@ -1021,7 +1021,7 @@
 												android:paddingRight="3dp"
 												android:paddingBottom="3dp"
 												android:paddingTop="5dp"
-												android:layout_marginRight="7dp"
+												android:layout_marginRight="5dp"
 												android:src="@drawable/ic_menu_feedback_budget"
 												android:layout_centerVertical="true"
 												android:scaleType="fitCenter"
@@ -1036,8 +1036,8 @@
 												android:textColor="@color/charcoalGrey"
 												android:textSize="13dp"
 												android:maxLines="1"
-												android:maxWidth="150dp"
-												android:ellipsize="end"/>
+												android:maxWidth="146dp"
+												android:ellipsize="middle"/>
 											<LinearLayout
 												android:layout_toRightOf="@+id/energyBudgetAccountStatusText"
 												android:layout_width="match_parent"
@@ -1058,13 +1058,12 @@
 													android:fitsSystemWindows="true"
 													android:layout_width="wrap_content"
 													android:layout_height="wrap_content"
-													android:gravity="center"
 													android:textColor="@color/charcoalGrey"
 													android:text="-  -"
 													android:inputType="number"
 													android:maxLength="8"
 													android:visibility="visible"
-													android:paddingBottom="8.5dp"
+													android:paddingBottom="9.5dp"
 													android:clickable="false"
 													android:textSize="15dp"/>
 											</LinearLayout>
@@ -1392,7 +1391,7 @@
 												android:textSize="13dp"
 												android:maxLines="1"
 												android:maxWidth="150dp"
-												android:ellipsize="end" />
+												android:ellipsize="middle" />
 											<TextView
 												android:id="@+id/smStatisticPredict"
 												android:layout_width="wrap_content"
@@ -1614,6 +1613,22 @@
 									</LinearLayout>
 								</LinearLayout>
 							</androidx.cardview.widget.CardView>
+							<LinearLayout
+								android:id="@+id/layoutunderCardview"
+								android:layout_width="match_parent"
+								android:layout_height="wrap_content"
+								android:visibility="gone"
+								android:layout_marginBottom="10dp"
+								android:orientation="horizontal">
+								<Button
+									style="@style/Theme.ViewBill"
+									android:layout_width="match_parent"
+									android:layout_height="wrap_content"
+									android:layout_marginLeft="16dp"
+									android:layout_marginRight="16dp"
+									android:text="Edit Budget"
+									android:textAllCaps="false" />
+							</LinearLayout>
 						</LinearLayout>
 						<LinearLayout
 							android:id="@+id/energyTipsShimmerView"

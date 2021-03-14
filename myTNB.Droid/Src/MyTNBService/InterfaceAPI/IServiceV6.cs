@@ -78,7 +78,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> SaveUserNotificationTypePreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //cep new api //wan
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/SaveUserNotificationChannelPreference")]
+        [Post("/v6/mytnbappws.asmx/SaveUserNotificationChannelPreferenceV2")]
         Task<T> SaveUserNotificationChannelPreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
@@ -156,7 +156,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> GetLanguagePreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/SaveLanguagePreference")]
+        [Post("/v6/mytnbappws.asmx/SaveLanguagePreferenceV2")]
         Task<T> SaveLanguagePreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]

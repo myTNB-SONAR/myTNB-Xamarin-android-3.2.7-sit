@@ -137,6 +137,8 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     mView.ShowAddingAccountProgressDialog();
                 }
 
+                AddAccountsRequest addaccountssesponse = new AddAccountsRequest(accounts);
+                addaccountssesponse.SetSesParam1(UserEntity.GetActive().DisplayName);
                 AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts(new AddAccountsRequest(accounts));
 
                 if (result.IsSuccessResponse())

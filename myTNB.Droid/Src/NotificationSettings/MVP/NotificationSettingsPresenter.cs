@@ -141,13 +141,15 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             // LOAD TYPES / CHANNELS NOTIFICATIONS LIST
             try
             {
+                List<CustomerBillingAccount> smartmeterAccounts = CustomerBillingAccount.SMeterBudgetAccountList();        //smart meter ca                                                                                                                           //energy budget
+
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
                 List<UserNotificationChannelEntity> channelsList = UserNotificationChannelEntity.ListAllActive();
                 List<UserNotificationTypesEntity> typesList = UserNotificationTypesEntity.ListAllActive();
 
                 List<NotificationChannelUserPreference> channelUserPrefList = new List<NotificationChannelUserPreference>();
                 List<NotificationTypeUserPreference> typeUserPrefList = new List<NotificationTypeUserPreference>();
-
+                List<NotificationTypeUserPreference> filtertypeUserPrefList = new List<NotificationTypeUserPreference>();
 
                 foreach (UserNotificationChannelEntity channel in channelsList)
                 {
@@ -157,13 +159,28 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
                     }
                 }
 
-                foreach (UserNotificationTypesEntity type in typesList)
+                //EnergyBudget if smart meter not exist remove energy budget notification
+                if (smartmeterAccounts.Count == 0)
                 {
-                    if (type.ShowInPreference)
+                    foreach (UserNotificationTypesEntity type in typesList)
                     {
-                        typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
+                        if (type.ShowInPreference && type.MasterId != "1000020")
+                        {
+                            typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
+                        }
                     }
                 }
+                else
+                {
+                    foreach (UserNotificationTypesEntity type in typesList)
+                    {
+                        if (type.ShowInPreference)
+                        {
+                            typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
+                        }
+                    }
+                }
+
 
                 this.mView.ShowNotificationTypesList(typeUserPrefList);
                 this.mView.ShowNotificationChannelList(channelUserPrefList);

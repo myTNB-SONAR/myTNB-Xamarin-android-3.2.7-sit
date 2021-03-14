@@ -432,7 +432,8 @@
     "editEnergyButton":"Edit perbelanjaan",
     "setEnergyButton":"Tetapkan perbelanjaan baharu",
     "saveEnergyButton":"Simpan perbelanjaan baharu",
-    "toastSaveBudgetuccessfull":"BM_You've successfully set your monthly budget!"
+    "toastSaveBudgetuccessfull":"Anda telah berjaya menetapkan perbelanjaan bulanan anda!",
+    "myUsageSoFar":"Penggunaan saya setakat ini"
   },
   "Bills": {
     "title": "Bil",
@@ -576,7 +577,8 @@
     "reenableSSMR": "Aktifkan semula SMR",
     "viewReadingHistory": "Kembali ke Penggunaan",
     "paymentHistory": "Rekod bayaran",
-    "viewReceipt": "Melihat Resit"
+    "viewReceipt": "Melihat Resit",
+    "viewBudget": "Melihat Perbelanjaan"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",

@@ -432,7 +432,8 @@
     "editEnergyButton":"Edit Budget",
     "setEnergyButton":"Set New Budget",
     "saveEnergyButton":"Save New Budget",
-    "toastSaveBudgetuccessfull":"You've successfully set your monthly budget!"
+    "toastSaveBudgetuccessfull":"You've successfully set your monthly budget!",
+    "myUsageSoFar":"My usage so far"
   },
   "Bills": {
     "title": "Bills",
@@ -576,7 +577,8 @@
     "reenableSSMR": "Re-start Self Meter Reading",
     "viewReadingHistory": "View Reading History",
     "paymentHistory": "Payment history",
-    "viewReceipt": "View Receipt"
+    "viewReceipt": "View Receipt",
+    "viewBudget": "View Budget"
   },
   "AddAccount": {
     "title": "Add Electricity Account",
