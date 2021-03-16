@@ -35,7 +35,10 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
 
         [BindView(Resource.Id.listView)]
         ListView listView;
-       
+
+        [BindView(Resource.Id.infoLabelAccNotListed)]
+        TextView infoLabelAccNotListed;
+
         EnergyBudgetContract.IUserActionsListener userActionsListener;
         EnergyBudgetPresenter mPresenter;
 
@@ -71,6 +74,10 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
                 listView.ItemClick += ListView_ItemClick;
 
                 SetToolBarTitle(Utility.GetLocalizedLabel("EnregyBudgetListing", "title"));
+                infoLabelAccNotListed.Text = Utility.GetLocalizedLabel("EnregyBudgetListing", "tootltipTitle");
+
+                TextViewUtils.SetMuseoSans500Typeface(infoLabelAccNotListed);
+                infoLabelAccNotListed.TextSize = TextViewUtils.GetFontSize(13f);
 
                 mPresenter = new EnergyBudgetPresenter(this);
                 this.userActionsListener.Start();

@@ -267,7 +267,7 @@ namespace myTNB_Android.Src.Login.MVP
                         {
                             UserEntity.UpdateDeviceId(deviceId);
 
-                            BaseRequest baseRequest = new BaseRequest();
+                            GetAcccountsV2Request baseRequest = new GetAcccountsV2Request();
                             baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                             CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
                             if (customerAccountListResponse != null && customerAccountListResponse.GetData() != null && customerAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)

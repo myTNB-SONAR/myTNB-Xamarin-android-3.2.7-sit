@@ -110,7 +110,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                         int Id = UserEntity.InsertOrReplace(userResponse.GetData());
                         if (Id > 0)
                         {
-                            BaseRequest baseRequest = new BaseRequest();
+                            GetAcccountsV2Request baseRequest = new GetAcccountsV2Request();
                             baseRequest.SetSesParam1(UserEntity.GetActive().DisplayName);
                             CustomerAccountListResponse customerAccountListResponse = await ServiceApiImpl.Instance.GetCustomerAccountList(baseRequest);
                             if (customerAccountListResponse.IsSuccessResponse())

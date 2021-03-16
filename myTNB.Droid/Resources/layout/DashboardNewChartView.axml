@@ -958,7 +958,7 @@
 							</androidx.cardview.widget.CardView>
 						</LinearLayout>
 						<LinearLayout
-							android:id="@+id/energyBudgetContainer"
+							android:id="@+id/energyBudgetMDMSDownContainer"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:orientation="vertical"
@@ -974,7 +974,48 @@
 								segmentedgroup:cardBackgroundColor="@color/white"
 								segmentedgroup:cardUseCompatPadding="true"
 								segmentedgroup:cardElevation="4dp"
-								android:id="@+id/energyBudget_sm_account_status_card">								
+								android:id="@+id/energyBudget_MDMSDown_status_card">
+								<LinearLayout
+									android:id="@+id/layout_EB_MDMSDown_image"
+									android:orientation="vertical"
+									android:layout_width="match_parent"
+									android:layout_height="match_parent"
+									android:gravity="center"
+									android:visibility="gone">
+									<LinearLayout
+										android:orientation="vertical"
+										android:layout_width="match_parent"
+										android:layout_height="match_parent">
+										<ImageView
+											android:layout_width="132dp"
+											android:layout_height="wrap_content"
+											android:layout_marginTop="48dp"
+											android:src="@drawable/icons_display_refresh_grey"
+											android:id="@+id/EB_MDMSDown_image"
+											android:layout_gravity="center"/>
+										<TextView
+											android:id="@+id/refresh_content_EB_MDMSDown"
+											android:gravity="center"
+											android:layout_width="match_parent"
+											android:layout_height="wrap_content"
+											android:layout_marginTop="24dp"
+											android:layout_marginLeft="32dp"
+											android:layout_marginRight="32dp"
+											android:lineSpacingExtra="3dp"
+											android:textSize="14dp"
+											android:textColor="@color/white"
+											android:layout_gravity="center"/>
+										<Button
+											android:layout_width="match_parent"
+											android:layout_height="wrap_content"
+											android:layout_marginTop="18dp"
+											android:layout_marginLeft="16dp"
+											android:layout_marginRight="16dp"
+											android:layout_weight="1"
+											android:id="@+id/btnRefresh_EB_MDMS"
+											style="@style/Theme.RefreshWhiteButton" />
+									</LinearLayout>
+								</LinearLayout>
 							</androidx.cardview.widget.CardView>
 						</LinearLayout>
 						<LinearLayout
@@ -1036,7 +1077,6 @@
 												android:textColor="@color/charcoalGrey"
 												android:textSize="13dp"
 												android:maxLines="1"
-												android:maxWidth="146dp"
 												android:ellipsize="middle"/>
 											<LinearLayout
 												android:layout_toRightOf="@+id/energyBudgetAccountStatusText"
@@ -1061,7 +1101,6 @@
 													android:textColor="@color/charcoalGrey"
 													android:text="-  -"
 													android:inputType="number"
-													android:maxLength="8"
 													android:visibility="visible"
 													android:paddingBottom="9.5dp"
 													android:clickable="false"

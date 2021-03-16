@@ -1328,7 +1328,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             }
                             this.SetIsClicked(false);
                         }
-                        else if (selectedService.ServiceCategoryId == "1007")
+                        else if (selectedService.ServiceCategoryId == "1007" && Utility.IsMDMSDownEnergyBudget())
                         {
                             if (!UserSessions.HasSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {

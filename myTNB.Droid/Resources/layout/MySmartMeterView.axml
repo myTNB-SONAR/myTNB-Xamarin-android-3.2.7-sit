@@ -45,6 +45,8 @@
 					android:textSize="11dp"
 					android:textColor="#1c79ca"
 					android:drawablePadding="8dp"
+                    android:singleLine="true"
+                    android:ellipsize="middle"
 					android:text="Why are some of my accounts not listed?"
 					android:drawableLeft="@drawable/smr_why_accounts_info"/>
 			</LinearLayout>

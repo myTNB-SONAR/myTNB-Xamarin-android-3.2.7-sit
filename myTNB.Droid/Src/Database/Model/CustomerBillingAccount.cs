@@ -1205,7 +1205,7 @@ namespace myTNB_Android.Src.Database.Model
         {
             var db = DBHelper.GetSQLiteConnection();
             List<CustomerBillingAccount> eligibleSMAccounts = new List<CustomerBillingAccount>();
-            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode = 'TRIL'").ToList().OrderBy(x => x.AccDesc).ToList();
+            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode = 'TRIL' AND accountCategoryId = 1").ToList().OrderBy(x => x.AccDesc).ToList();
             return eligibleSMAccounts;
         }
 
