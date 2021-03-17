@@ -5133,7 +5133,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 //smStatisticContainer.Visibility = ViewStates.Gone;
                 energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
                 energyBudgetRMinput.Enabled = true;
-                energyBudgetAccountStatusText.SetMaxWidth(410);
+                //energyBudgetAccountStatusText.SetMaxWidth(410);
                 energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(8) });
                 energyBudgetRMinput.RequestFocus();
                 ShowHideKeyboard(energyBudgetRMinput, true);
@@ -8784,6 +8784,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     smStatisticPredictLayout.Visibility = ViewStates.Gone;
                     smStatisticTrendMainLayout.Visibility = ViewStates.Gone;
                     smStatisticTooltip.Visibility = ViewStates.Gone;
+                    //energyBudgetContainer.Visibility = ViewStates.Visible;
                 }
                 else
                 {
@@ -8868,7 +8869,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 StopSMStatisticShimmer();
                 smStatisticContainer.Visibility = ViewStates.Gone;
-                energyBudgetContainer.Visibility = ViewStates.Gone;
+                //energyBudgetContainer.Visibility = ViewStates.Gone;
                 if (GetIsMDMSDown())
                 {
                     rootView.SetBackgroundResource(0);
@@ -8944,14 +8945,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             btnSetNewBudget.Visibility = ViewStates.Gone;
                             smStatisticTooltip.Visibility = ViewStates.Visible;
                             
-                            if (selectedCusBillAcc.RmEnergyBudget.Length < 8)
+                            /*if (selectedCusBillAcc.RmEnergyBudget.Length < 8)
                             {
                                 energyBudgetAccountStatusText.SetMaxWidth(410);
                             }
                             else
                             {
                                 energyBudgetAccountStatusText.SetMaxWidth(350);
-                            }   
+                            } */  
                             
                             energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(13) });
                             energyBudgetRMinput.Text = smDecimalFormat.Format(double.Parse(selectedCusBillAcc.RmEnergyBudget, currCult));
@@ -8981,7 +8982,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             smStatisticTooltip.Visibility = ViewStates.Gone;
                             energyBudgetRMinput.Text = "- -";
                             btnSetNewBudget.Text = Utility.GetLocalizedLabel("Usage", "setEnergyButton");
-                            energyBudgetAccountStatusText.SetMaxWidth(410);
+                            //energyBudgetAccountStatusText.SetMaxWidth(410);
                             energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(8) });
                         }                        
 
@@ -8999,17 +9000,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     //smStatisticBill.Text = selectedCusBillAcc.RmEnergyBudget;
                                     //smStatisticBillCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
                                     //smStatisticBillCurrency.Text = "";
-                                    if (isMDMSDown)
-                                    {
-                                        /*smStatisticBillSubTitle.Text = "- -";
-                                        smStatisticBill.Text = "- -";*/
-                                        btnSetNewBudget.Enabled = false;
-                                        btnEditBudget.Enabled = false;
-                                    }
-                                }
-                                else if (costValue.Key == Constants.PROJECTED_COST_KEY)
-                                {
-                                    //smStatisticPredictTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title; "My usage so far";
                                     smStatisticPredictSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
                                     smStatisticPredict.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smDecimalFormat.Format(double.Parse(costValue.Value, currCult));
                                     smStatisticPredictCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
@@ -9017,7 +9007,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         smStatisticPredictSubTitle.Text = "- -";
                                         smStatisticPredict.Text = "- -";
+                                        btnSetNewBudget.Enabled = false;
+                                        btnEditBudget.Enabled = false;
                                     }
+                                }
+                                else if (costValue.Key == Constants.PROJECTED_COST_KEY)
+                                {
                                 }
                             }
                         }
