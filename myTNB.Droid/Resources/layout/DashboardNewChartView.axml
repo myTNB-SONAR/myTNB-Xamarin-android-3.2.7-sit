@@ -1086,6 +1086,7 @@
 												android:layout_width="wrap_content"
 												android:layout_height="38dp"
 												android:gravity="right|center"
+												android:layout_marginLeft="10dp"
 												android:orientation="horizontal">
 												<TextView
 													android:id="@+id/energyBudgetRMtxt"
@@ -1649,7 +1650,7 @@
 											android:textColor="@color/powerBlue"
 											android:textSize="13dp"
 											android:singleLine="true"
-											android:ellipsize="end"
+											android:ellipsize="middle"
 											android:layout_gravity="right|center_vertical"
 											android:text="What are these?"/>
 									</LinearLayout>
