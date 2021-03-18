@@ -433,7 +433,9 @@
     "setEnergyButton":"Tetapkan perbelanjaan baharu",
     "saveEnergyButton":"Simpan perbelanjaan baharu",
     "toastSaveBudgetuccessfull":"Anda telah berjaya menetapkan perbelanjaan bulanan anda!",
-    "myUsageSoFar":"Penggunaan saya setakat ini"
+    "myUsageSoFar":"Penggunaan saya setakat ini",
+    "disconnectedEnergyBudget":"Nampaknya Perbelanjaan Bulanan anda terputus sambungan. Refresh untuk sambung semula!",
+    "refreshNowEnergyBudgetButton":"'Refresh' Sekarang"
   },
   "Bills": {
     "title": "Bil",

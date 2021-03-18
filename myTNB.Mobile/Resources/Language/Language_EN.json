@@ -433,7 +433,9 @@
     "setEnergyButton":"Set New Budget",
     "saveEnergyButton":"Save New Budget",
     "toastSaveBudgetuccessfull":"You've successfully set your monthly budget!",
-    "myUsageSoFar":"My usage so far"
+    "myUsageSoFar":"My usage so far",
+    "disconnectedEnergyBudget":"Uh-oh, looks like your Energy Budget have been unplugged. Refresh to stay plugged in!",
+    "refreshNowEnergyBudgetButton":"Refresh Now"
   },
   "Bills": {
     "title": "Bills",
