@@ -489,9 +489,9 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                                 if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                 {
-                                    float h2 = TextViewUtils.IsLargeFonts ? 473f : 423f;
+                                    float h2 = TextViewUtils.IsLargeFonts ? 385f : 345f;
                                     topHeight = (int)DPUtils.ConvertDPToPx(h2);
-                                    int offsetHeight = (int)DPUtils.ConvertDPToPx(220f);
+                                    int offsetHeight = (int)DPUtils.ConvertDPToPx(65f);
                                     int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
                                     int halfScroll = offsetHeight / 2;
 
@@ -534,7 +534,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
                                 }
                                 innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(0f);
-                                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(40f);
+                                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(32f);
                                 innerTopLayout.RequestLayout();
                             }
                             else
