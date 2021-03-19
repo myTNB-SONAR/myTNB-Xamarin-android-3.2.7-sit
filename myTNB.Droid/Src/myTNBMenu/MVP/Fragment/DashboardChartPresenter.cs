@@ -696,8 +696,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     {
                         this.mView.OnSetBackendTariffDisabled(true);
                     }
-                    //this.mView.SetISMDMSDown(false);
-                    this.mView.SetISMDMSDown(true);     //debug data
+
+                    this.mView.SetISMDMSDown(false);
+                    //this.mView.SetISMDMSDown(true);     //debug data
                     this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
                     OnByRM();
                 }
