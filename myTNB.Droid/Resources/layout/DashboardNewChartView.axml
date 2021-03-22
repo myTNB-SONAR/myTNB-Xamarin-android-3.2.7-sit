@@ -695,6 +695,7 @@
 											android:layout_height="wrap_content"
 											android:background="@color/white"
 											android:visibility="visible">
+
 											<TextView
 												android:id="@+id/reTotalPayableTitle"
 												android:layout_width="wrap_content"
@@ -705,7 +706,6 @@
 												android:textColor="@color/charcoalGrey"
 												android:textSize="13dp"
 												android:maxLines="1"
-												android:maxWidth="150dp"
 												android:ellipsize="end"/>
 											<TextView
 												android:id="@+id/reTotalPayable"
@@ -754,23 +754,21 @@
 											android:orientation="horizontal">
 											<TextView
 												android:id="@+id/txtReNoPayableTitle"
-												android:layout_width="0dp"
+												android:layout_width="wrap_content"
 												android:layout_height="wrap_content"
 												android:layout_alignParentStart="true"
 												android:layout_alignParentTop="true"
-												android:layout_weight="0.5"
 												android:layout_gravity="center"
 												android:text="@string/dashboard_need_pay"
 												android:textColor="@color/charcoalGrey"
 												android:textSize="13dp"
 												android:lineSpacingExtra="2dp"
 												android:maxLines="1"
-												android:maxWidth="150dp"
+												
 												android:ellipsize="end"/>
 											<RelativeLayout
-												android:layout_width="0dp"
-												android:layout_height="wrap_content"
-												android:layout_weight="0.5">
+												android:layout_width="wrap_content"
+												android:layout_height="wrap_content">
 												<TextView
 													android:id="@+id/txtReNoPayable"
 													android:layout_width="wrap_content"
@@ -1810,20 +1808,19 @@
 					android:orientation="horizontal">
 					<TextView
 						android:id="@+id/txtNoPayableTitle"
-						android:layout_width="0dp"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_alignParentStart="true"
 						android:layout_alignParentTop="true"
-						android:layout_weight="0.5"
+						
 						android:layout_gravity="center"
 						android:text="@string/dashboard_need_pay"
 						android:textColor="@color/charcoalGrey"
 						android:textSize="15dp"
 						android:lineSpacingExtra="3dp"/>
 					<RelativeLayout
-						android:layout_width="0dp"
-						android:layout_height="wrap_content"
-						android:layout_weight="0.5">
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content">
 						<TextView
 							android:id="@+id/txtNoPayable"
 							android:layout_width="wrap_content"
@@ -1884,7 +1881,7 @@
 					android:text="0.00"
 					android:textColor="@color/tunaGrey"
 					android:textSize="25dp"
-					android:maxWidth="130dp"
+					
 					android:ellipsize="end"
 					android:singleLine="false"
 					android:maxLines="1" />

@@ -2723,7 +2723,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             if (isNeedHelpHide)
             {
-                //yana
+                //Energy budget
                 if (UserSessions.GetEnergyBudgetList().Count > 0)
                 {
                     newList.Add(new NewAppModel()
@@ -2736,12 +2736,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         IsButtonShow = false
                     });
 
-                    
+
                     newList.Add(new NewAppModel()
                     {
                         ContentShowPosition = ContentType.TopRight,
-                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetTitle"),//"Quick actions.",
-                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
+                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetTitle"),//"Begin your Energy Budget journey",
+                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetDesc"),//"Access Energy Budget easily from homepage to start setting up your desired monthly bill amount",
                         ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                         NeedHelpHide = isNeedHelpHide,
                         IsButtonShow = false
@@ -2758,11 +2758,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         NeedHelpHide = isNeedHelpHide,
                         IsButtonShow = false
                     });
-                }
+                //}
             }
             else
             {
-                //yana
+                //Energy budget
                 if (UserSessions.GetEnergyBudgetList().Count > 0)
                 {
 
@@ -2780,8 +2780,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     newList.Add(new NewAppModel()
                     {
                         ContentShowPosition = ContentType.TopRight,
-                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetTitle"),//"Quick actions.",
-                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
+                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetTitle"),//"Begin your Energy Budget journey",
+                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetDesc"),//"Access Energy Budget easily from homepage to start setting up your desired monthly bill amount",
                         ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                         NeedHelpHide = isNeedHelpHide,
                         IsButtonShow = false

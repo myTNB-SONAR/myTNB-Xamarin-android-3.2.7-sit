@@ -964,10 +964,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 txtNoPayableTitle.TextSize = TextViewUtils.GetFontSize(15f);
                 txtNoPayable.TextSize = TextViewUtils.GetFontSize(25f);
                 txtNoPayableCurrency.TextSize = TextViewUtils.GetFontSize(13f);
-                txtTotalPayableTitle.TextSize = TextViewUtils.GetFontSize(15f);
-                txtTotalPayable.TextSize = TextViewUtils.GetFontSize(25f);
-                txtTotalPayableCurrency.TextSize = TextViewUtils.GetFontSize(13f);
-                txtDueDate.TextSize = TextViewUtils.GetFontSize(15f);
+                txtTotalPayableTitle.TextSize = 14;// TextViewUtils.GetFontSize(15f);
+                txtTotalPayable.TextSize = 24;// TextViewUtils.GetFontSize(25f);
+                txtTotalPayableCurrency.TextSize = 14;// TextViewUtils.GetFontSize(13f);
+                txtDueDate.TextSize = 14;// TextViewUtils.GetFontSize(15f);
                 lblinfoLabelEPP.TextSize = TextViewUtils.GetFontSize(11f);
                 btnPay.TextSize = TextViewUtils.GetFontSize(16f);
                 btnNewRefresh.TextSize = TextViewUtils.GetFontSize(16f);
@@ -6819,6 +6819,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             txtDueDate.Text = Utility.GetLocalizedLabel("Usage", "iWillGetBy") + " " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
                                             reDueDate.Text = Utility.GetLocalizedLabel("Usage", "iWillGetBy") + " " + dateString;
                                         }
+
+                                        if (accountDueAmount.AmountDue.ToString().Length > 10)
+                                        {
+                                            txtReNoPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                            reDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                            txtDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                            reTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                            txtTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+
+                                        }
+                                        else if (accountDueAmount.AmountDue.ToString().Length > 5)
+                                        {
+                                            txtReNoPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                            reDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                            txtDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                            reTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                            txtTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                        }
+                                        else
+                                        {
+                                            txtReNoPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                            reDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                            txtDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                            reTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                            txtTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                        }
+
                                     }
                                     else
                                     {
@@ -6860,6 +6887,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             txtNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.lightOrange)));
                                             txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
                                             txtDueDate.Text = "- -";
+                                        }
+
+                                        if (accountDueAmount.AmountDue.ToString().Length > 10)
+                                        {
+                                            txtNoPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(150f));
+                                            txtTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(150f));
+                                            txtDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(150f)); 
+                                        }
+                                        else if (accountDueAmount.AmountDue.ToString().Length > 5)
+                                        {
+                                            txtNoPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(190f));
+                                            txtTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(190f));
+                                            txtDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(190f));
+                                        }
+                                        else
+                                        {
+                                            txtNoPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(220f));
+                                            txtTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(220f));
+                                            txtDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(220f));
                                         }
                                     }
                                 }
@@ -6934,6 +6980,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             ShowAmountDueFailed();
                                         }
+                                        if (accountDueAmount.AmountDue.ToString().Length > 10)
+                                        {
+                                            txtTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                            reTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                            reDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                        }
+                                        else if (accountDueAmount.AmountDue.ToString().Length > 5)
+                                        {
+                                            txtTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                            reTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                            reDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                        }
+                                        else
+                                        {   
+                                            txtTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                            reTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                            reDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                        }
                                     }
                                     else
                                     {
@@ -6968,6 +7032,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                 txtNoPayableCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.lightOrange)));
                                                 txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
                                                 txtDueDate.Text = "- -";
+                                            }
+                                            
+                                            if (accountDueAmount.AmountDue.ToString().Length > 10)
+                                            {
+                                                txtNoPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(150f));
+                                            }
+                                            else if (accountDueAmount.AmountDue.ToString().Length > 5)
+                                            {
+                                                txtNoPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(190f));
+                                            }
+                                            else
+                                            {
+                                                txtNoPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(220f));
                                             }
                                         }
                                         else
@@ -9006,6 +9083,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         btnSetNewBudget.Enabled = false;
                                         btnEditBudget.Enabled = false;
                                     }
+                                   
+                                    if(costValue.Value.Length > 10)
+                                    {
+                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                    }
+                                    else if(costValue.Value.Length > 5 )
+                                    {
+                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                    }
+                                    else
+                                    {
+                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                    }
+                                   
                                 }
                                 else if (costValue.Key == Constants.PROJECTED_COST_KEY)
                                 {
@@ -9017,6 +9111,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         smStatisticPredictSubTitle.Text = "- -";
                                         smStatisticPredict.Text = "- -";
+                                    }
+
+                                    if (costValue.Value.Length > 10)
+                                    {
+                                        smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                        smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                    }
+                                    else if (costValue.Value.Length > 5)
+                                    {
+                                        smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                        smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                    }
+                                    else
+                                    {
+                                        smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                        smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
                                     }
                                 }
                             }
@@ -9032,6 +9142,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 }
                             }
                         }
+                       
+
                     }
                     else if (ChartDataType == ChartDataType.kWh)
                     {
@@ -9076,6 +9188,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         smStatisticBillSubTitle.Text = "- -";
                                         smStatisticBillKwh.Text = "- -";
                                     }
+
+                                    if (costValue.Value.Length > 10)
+                                    {
+                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                    }
+                                    else if (costValue.Value.Length > 5)
+                                    {
+                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                    }
+                                    else
+                                    {
+                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                    }
                                 }
                                 else if (costValue.Key == Constants.AVERAGE_USAGE_KEY)
                                 {
@@ -9112,6 +9240,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         smStatisticTrendSubTitle.Text = "- -";
                                         smStatisticTrend.Text = "- -%";
+                                    }
+                                    if (costValue.Value.Length > 10)
+                                    {
+                                        smStatisticTrendTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                        smStatisticTrendSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                    }
+                                    else if (costValue.Value.Length > 5)
+                                    {
+                                        smStatisticTrendTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                        smStatisticTrendSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                    }
+                                    else
+                                    {
+                                        smStatisticTrendTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                        smStatisticTrendSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
                                     }
                                 }
                             }

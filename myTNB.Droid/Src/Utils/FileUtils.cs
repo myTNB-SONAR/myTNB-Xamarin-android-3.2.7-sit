@@ -10,34 +10,24 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-
-
-
-
-
-
-
 namespace myTNB_Android.Src.Utils
 {
     public class FileUtils
     {
         #region Fields
-
         private const string _externalStorageAuthority = "com.android.externalstorage.documents";
         private const string _downloadsAuthority = "com.android.providers.downloads.documents";
         private const string _mediaAuthority = "com.android.providers.media.documents";
         private const string _photoAuthority = "com.google.android.apps.photos.content";
         private const string _diskAuthority = "com.google.android.apps.docs.storage";
         private const string _diskLegacyAuthority = "com.google.android.apps.docs.storage.legacy";
-
         #endregion
-
 
         internal const string TEMP_IMAGE_FOLDER = "tmpImages";
         internal const string PDF_FOLDER = "Pdf";
         internal const string IMAGE_FOLDER = "Images";
-
         internal const string PROMO_IMAGE_FOLDER = "PromoImages";
+
         public static string GetImagesPath(Context context, string pFolder)
         {
             string path = context.FilesDir.AbsolutePath;
@@ -82,14 +72,11 @@ namespace myTNB_Android.Src.Utils
             {
                 File.Delete(filePath);
             }
-
         }
 
         public static string Save(Context context, Bitmap bitmap, string pFolder, string pFileName)
         {
-
             string path = context.FilesDir.AbsolutePath;
-
             string filePath = System.IO.Path.Combine(path, pFolder, pFileName);
             Console.WriteLine(string.Format("Folder Personal {0} File Path {1}", path, filePath));
             if (IsExternalStorageReadable() && IsExternalStorageWritable())
@@ -115,7 +102,6 @@ namespace myTNB_Android.Src.Utils
 
         public static string CopyPDF(Context context, Android.Net.Uri realFilepath, string pFolder, string pFileName)
         {
-
             string path = context.FilesDir.AbsolutePath;
 
             string filePath = System.IO.Path.Combine(path, pFolder, pFileName);
@@ -134,11 +120,9 @@ namespace myTNB_Android.Src.Utils
 
             //var stream = new FileStream(filePath, FileMode.Create);
 
-            try {
-
-
+            try
+            {
                 // SaveFileFromUri(context, realFilepath, filePath);
-
                 if (IsExternalStorageReadable() && IsExternalStorageWritable())
                 {
 
@@ -168,7 +152,7 @@ namespace myTNB_Android.Src.Utils
                 {
                     return "no file access";
                 }
-               
+
             }
             catch (Exception e)
             {
@@ -210,36 +194,33 @@ namespace myTNB_Android.Src.Utils
         {
             return Task.Run<string>(() =>
             {
-            string rootPath = context.FilesDir.AbsolutePath;
-            string path = "";
+                string rootPath = context.FilesDir.AbsolutePath;
+                string path = "";
 
-            if (IsExternalStorageReadable() && IsExternalStorageWritable())
-            {
-                rootPath = context.GetExternalFilesDir(null).AbsolutePath;
-            }
-
-            var directory = System.IO.Path.Combine(rootPath, "pdf");
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
-
-            string filename = pFileName;
-
-            path = System.IO.Path.Combine(directory, filename);
-
-            if (!string.IsNullOrEmpty(path))
-            {
-                if (File.Exists(path))
+                if (IsExternalStorageReadable() && IsExternalStorageWritable())
                 {
-                    File.Delete(path);
+                    rootPath = context.GetExternalFilesDir(null).AbsolutePath;
                 }
 
+                var directory = System.IO.Path.Combine(rootPath, "pdf");
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
 
-            }
+                string filename = pFileName;
 
+                path = System.IO.Path.Combine(directory, filename);
 
-            FileStream fileStream = new FileStream(path, FileMode.Create);
+                if (!string.IsNullOrEmpty(path))
+                {
+                    if (File.Exists(path))
+                    {
+                        File.Delete(path);
+                    }
+                }
+
+                FileStream fileStream = new FileStream(path, FileMode.Create);
                 {
                     // Write the data to the file, byte by byte.
                     for (int i = 0; i < fileArray.Length; i++)
@@ -299,9 +280,6 @@ namespace myTNB_Android.Src.Utils
             return pdfdata;
         }
 
-    
-        
-
         public static string ByteArrayToString(byte[] ba)
         {
             StringBuilder hex = new StringBuilder(ba.Length * 2);
@@ -320,10 +298,48 @@ namespace myTNB_Android.Src.Utils
         {
             return Task.Run<Bitmap>(() =>
             {
+                Bitmap imgData;
                 byte[] imageBytes = StringToByteArray(hex);
-                return BitmapFactory.DecodeByteArray(imageBytes, 0, Math.Min(imageBytes.Length, fileSize));
+
+                try
+                {
+                    imgData = BitmapFactory.DecodeByteArray(imageBytes, 0, Math.Min(imageBytes.Length, fileSize));
+
+                    if (imgData.Height > 0)
+                    {
+                        //this function will go exeption if null 
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //ios hex conversion
+                    byte[] imageBytesIOS = ConvertHexToByteArrayIOS(hex.Replace("-", ""));
+                    imgData = BitmapFactory.DecodeByteArray(imageBytesIOS, 0, imageBytesIOS.Length);
+                }
+                return imgData;
             });
 
+        }
+
+        private static byte[] ConvertHexToByteArrayIOS(string hex)
+        {
+            if (hex.Length % 2 == 1)
+            {
+                return new byte[] { };
+            }
+            byte[] arr = new byte[hex.Length >> 1];
+
+            for (int i = 0; i < hex.Length >> 1; ++i)
+            {
+                arr[i] = (byte)((GetHexValueIOS(hex[i << 1]) << 4) + (GetHexValueIOS(hex[(i << 1) + 1])));
+            }
+            return arr;
+        }
+
+        private static int GetHexValueIOS(char hex)
+        {
+            int val = (int)hex;
+            return val - (val < 58 ? 48 : 55);
         }
 
         public static byte[] StringToByteArray(string hex)
@@ -334,7 +350,6 @@ namespace myTNB_Android.Src.Utils
                 bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2).ToLower(), 16);
             return bytes;
         }
-
 
         /// <summary>
         /// Checks if external storage is available for read and write
@@ -637,7 +652,7 @@ namespace myTNB_Android.Src.Utils
             {
                 return uri.Path;
             }
-               
+
 
             return null;
         }
@@ -682,7 +697,7 @@ namespace myTNB_Android.Src.Utils
             }
             catch (Exception ex)
             {
-           
+
                 return null;
             }
 
@@ -824,7 +839,7 @@ namespace myTNB_Android.Src.Utils
             }
             catch (Exception ex)
             {
-               ;
+                ;
             }
             finally
             {
@@ -835,7 +850,7 @@ namespace myTNB_Android.Src.Utils
                 }
                 catch (Exception ex)
                 {
-                   
+
                 }
             }
         }
