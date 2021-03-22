@@ -216,9 +216,9 @@
     "receivedExtra": "terima lebih",
     "applicationStatus": "Status<br>Permohonan",
     //EnergyBudget
-    "energyBudget": "Perbelanjaan <br> Bulanan Saya",
+    "energyBudget": "Energy <br> Budget Saya",
     "tutorialEnergyBudgetTitle": "Mulakan langkah untuk menguruskan tenaga anda",
-    "tutorialEnergyBudgetDesc": "Anda boleh mengakses Perbelanjaan Bulanan dari laman utama untuk mula menetapkan jumlah bil yang anda inginkan"
+    "tutorialEnergyBudgetDesc": "Anda boleh mengakses Energy Budget dari laman utama untuk mula menetapkan jumlah bil yang anda inginkan"
   },
   "Tabbar": {
     "home": "Utama",
@@ -426,15 +426,15 @@
     "prevReadingEmptyMsg": "Sila cuba semula sebentar lagi. Jika masalah ini berterusan, hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> dan kami akan membantu anda.",
     "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     //EnergyBudget
-    "myMonthlyBudget":"Perbelanjaan bulanan saya adalah",
+    "myMonthlyBudget":"Energy Budget saya adalah",
     "whyIsAmountDiff":"Mengapakah jumlah penggunaan saya lain daripada jumlah bil saya?",
     "whyIsAmountDiffBody":"Jumlah penggunaan terkini anda adalah jumlah tenaga yang anda telah guna setakat ini. Oleh kerana jumlah ini belum dibilkan mengikuti kitaran pembilan anda, ia belum tertakluk kepada cukai, diskaun atau caj tambahan dari kami.",
-    "editEnergyButton":"Tetapkan perbelanjaan",
-    "setEnergyButton":"Tetapkan perbelanjaan baharu",
-    "saveEnergyButton":"Simpan perbelanjaan baharu",
-    "toastSaveBudgetuccessfull":"Anda telah berjaya menetapkan perbelanjaan bulanan anda!",
+    "editEnergyButton":"Tetapkan Energy Budget anda",
+    "setEnergyButton":"Tetapkan Energy Budget baharu anda",
+    "saveEnergyButton":"Simpan Energy Budget baharu",
+    "toastSaveBudgetuccessfull":"Anda telah berjaya menetapkan Energy Budget anda!",
     "myUsageSoFar":"Penggunaan saya setakat ini",
-    "disconnectedEnergyBudget":"Nampaknya Perbelanjaan Bulanan anda terputus sambungan. Refresh untuk sambung semula!",
+    "disconnectedEnergyBudget":"Nampaknya Energy Budget anda terputus sambungan. Refresh untuk sambung semula!",
     "refreshNowEnergyBudgetButton":"'Refresh' Sekarang"
   },
   "Bills": {
