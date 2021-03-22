@@ -979,17 +979,17 @@
 									android:id="@+id/layout_EB_MDMSDown_image"
 									android:orientation="vertical"
 									android:layout_width="match_parent"
-									android:layout_height="match_parent"
+									android:layout_height="wrap_content"
 									android:gravity="center"
-									android:visibility="gone">
+									android:visibility="visible">
 									<LinearLayout
 										android:orientation="vertical"
 										android:layout_width="match_parent"
-										android:layout_height="match_parent">
+										android:layout_height="wrap_content">
 										<ImageView
-											android:layout_width="132dp"
+											android:layout_width="wrap_content"
 											android:layout_height="wrap_content"
-											android:layout_marginTop="48dp"
+											android:layout_marginTop="18dp"
 											android:src="@drawable/icons_display_refresh_grey"
 											android:id="@+id/EB_MDMSDown_image"
 											android:layout_gravity="center"/>
@@ -998,12 +998,12 @@
 											android:gravity="center"
 											android:layout_width="match_parent"
 											android:layout_height="wrap_content"
-											android:layout_marginTop="24dp"
+											android:layout_marginTop="20dp"
 											android:layout_marginLeft="32dp"
 											android:layout_marginRight="32dp"
 											android:lineSpacingExtra="3dp"
 											android:textSize="14dp"
-											android:textColor="@color/white"
+											android:textColor="@color/charcoalGrey"
 											android:layout_gravity="center"/>
 										<Button
 											android:layout_width="match_parent"
@@ -1011,9 +1011,10 @@
 											android:layout_marginTop="18dp"
 											android:layout_marginLeft="16dp"
 											android:layout_marginRight="16dp"
+											android:layout_marginBottom="18dp"
 											android:layout_weight="1"
 											android:id="@+id/btnRefresh_EB_MDMS"
-											style="@style/Theme.RefreshWhiteButton" />
+											style="@style/Theme.ViewBill" />
 									</LinearLayout>
 								</LinearLayout>
 							</androidx.cardview.widget.CardView>
