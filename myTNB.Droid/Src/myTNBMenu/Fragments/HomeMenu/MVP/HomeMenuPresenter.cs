@@ -2758,48 +2758,48 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         NeedHelpHide = isNeedHelpHide,
                         IsButtonShow = false
                     });
-                //}
+                }
             }
             else
             {
-                //Energy budget
+                    //Energy budget
                 if (UserSessions.GetEnergyBudgetList().Count > 0)
-                {
-
-                    newList.Add(new NewAppModel()
                     {
-                        ContentShowPosition = ContentType.TopLeft,
-                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionTitle"),//"Quick actions.",
-                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
-                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                        NeedHelpHide = isNeedHelpHide,
-                        IsButtonShow = false
-                    });
 
-                   
-                    newList.Add(new NewAppModel()
-                    {
-                        ContentShowPosition = ContentType.TopRight,
-                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetTitle"),//"Begin your Energy Budget journey",
-                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetDesc"),//"Access Energy Budget easily from homepage to start setting up your desired monthly bill amount",
-                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                        NeedHelpHide = isNeedHelpHide,
-                        IsButtonShow = false
-                    });
+                        newList.Add(new NewAppModel()
+                        {
+                            ContentShowPosition = ContentType.TopLeft,
+                            ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionTitle"),//"Quick actions.",
+                            ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionDesc"),//"Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
+                            ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                            NeedHelpHide = isNeedHelpHide,
+                            IsButtonShow = false
+                        });
 
-                    newList.Add(new NewAppModel()
+
+                        newList.Add(new NewAppModel()
+                        {
+                            ContentShowPosition = ContentType.TopRight,
+                            ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetTitle"),//"Begin your Energy Budget journey",
+                            ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetDesc"),//"Access Energy Budget easily from homepage to start setting up your desired monthly bill amount",
+                            ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                            NeedHelpHide = isNeedHelpHide,
+                            IsButtonShow = false
+                        });
+
+                        newList.Add(new NewAppModel()
+                        {
+                            ContentShowPosition = ContentType.TopLeft,
+                            ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpTitle"),//"Need help?",
+                            ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpDesc"),//"We’ve highlighted some of the<br/>most commonly asked questions<br/>for you to browse through.",
+                            ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                            NeedHelpHide = isNeedHelpHide,
+                            IsButtonShow = false
+                        });
+                    }
+                    else
                     {
-                        ContentShowPosition = ContentType.TopLeft,
-                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpTitle"),//"Need help?",
-                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpDesc"),//"We’ve highlighted some of the<br/>most commonly asked questions<br/>for you to browse through.",
-                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                        NeedHelpHide = isNeedHelpHide,
-                        IsButtonShow = false
-                    });
-                }
-                else
-                {
-                    newList.Add(new NewAppModel()
+                        newList.Add(new NewAppModel()
                     {
                         ContentShowPosition = ContentType.TopLeft,
                         ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialQuickActionTitle"),//"Quick actions.",

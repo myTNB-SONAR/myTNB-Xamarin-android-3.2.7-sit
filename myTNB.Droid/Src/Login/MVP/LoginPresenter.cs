@@ -516,7 +516,8 @@ namespace myTNB_Android.Src.Login.MVP
                             OwnerName = acc.OwnerName,
                             AccountCategoryId = acc.AccountCategoryId,
                             SmartMeterCode = acc.SmartMeterCode == null ? "0" : acc.SmartMeterCode,
-                            IsSelected = false
+                            IsSelected = false,
+                            BudgetAmount = acc.BudgetAmount
                         };
 
                         if (index != -1)
@@ -555,7 +556,8 @@ namespace myTNB_Android.Src.Login.MVP
                                 OwnerName = newAcc.OwnerName,
                                 AccountCategoryId = newAcc.AccountCategoryId,
                                 SmartMeterCode = newAcc.SmartMeterCode == null ? "0" : newAcc.SmartMeterCode,
-                                IsSelected = false
+                                IsSelected = false,
+                                BudgetAmount = newAcc.BudgetAmount
                             };
 
                             newExistingList.Add(newRecord);

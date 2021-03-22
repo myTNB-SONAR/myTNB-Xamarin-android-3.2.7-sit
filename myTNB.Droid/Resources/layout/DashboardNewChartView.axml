@@ -1067,6 +1067,7 @@
 												android:visibility="visible" />
 											<TextView
 												android:layout_toRightOf="@+id/energyBudget_img"
+												android:layout_toLeftOf="@+id/testenergyBudgetRMtxt"
 												android:id="@+id/energyBudgetAccountStatusText"
 												android:gravity="left|center"
 												android:layout_width="wrap_content"
@@ -1074,13 +1075,16 @@
 												android:text="My bill amount so far"
 												android:textColor="@color/charcoalGrey"
 												android:textSize="13dp"
+												android:maxWidth="145dp"
 												android:maxLines="1"
 												android:ellipsize="middle"/>
 											<LinearLayout
-												android:layout_toRightOf="@+id/energyBudgetAccountStatusText"
-												android:layout_width="match_parent"
+												android:layout_alignParentRight="true"
+												android:id="@+id/testenergyBudgetRMtxt"
+												android:layout_width="wrap_content"
 												android:layout_height="38dp"
 												android:gravity="right|center"
+												android:layout_marginLeft="10dp"
 												android:orientation="horizontal">
 												<TextView
 													android:id="@+id/energyBudgetRMtxt"
@@ -1644,7 +1648,7 @@
 											android:textColor="@color/powerBlue"
 											android:textSize="13dp"
 											android:singleLine="true"
-											android:ellipsize="end"
+											android:ellipsize="middle"
 											android:layout_gravity="right|center_vertical"
 											android:text="What are these?"/>
 									</LinearLayout>

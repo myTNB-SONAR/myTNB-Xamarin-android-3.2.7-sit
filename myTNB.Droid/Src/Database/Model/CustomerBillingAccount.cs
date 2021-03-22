@@ -90,8 +90,8 @@ namespace myTNB_Android.Src.Database.Model
         [Column("IsViewBillShown")]
         public bool IsViewBillShown { get; set; }
 
-        [Column("RmEnergyBudget")]
-        public string RmEnergyBudget { get; set; }
+        [Column("BudgetAmount")]
+        public string BudgetAmount { get; set; }
 
         public static int CreateTable()
         {
@@ -187,7 +187,8 @@ namespace myTNB_Android.Src.Database.Model
                 IsTaggedSMR = accountResponse.IsTaggedSMR == "true" ? true : false,
                 isOwned = accountResponse.IsOwned,
                 IsSMROnBoardingDontShowAgain = false,
-                IsPeriodOpen = false
+                IsPeriodOpen = false,
+                BudgetAmount = accountResponse.BudgetAmount
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);
@@ -1205,7 +1206,7 @@ namespace myTNB_Android.Src.Database.Model
         {
             var db = DBHelper.GetSQLiteConnection();
             List<CustomerBillingAccount> eligibleSMAccounts = new List<CustomerBillingAccount>();
-            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode = 'TRIL' AND accountCategoryId = 1").ToList().OrderBy(x => x.AccDesc).ToList();
+            eligibleSMAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode = 'TRIL' AND accountCategoryId != 2").ToList().OrderBy(x => x.AccDesc).ToList();
             return eligibleSMAccounts;
         }
 
@@ -1214,7 +1215,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                db.Execute("Update CustomerBillingAccountEntity SET RmEnergyBudget = ? WHERE accNum = ?", TotalBudget, accNum);
+                db.Execute("Update CustomerBillingAccountEntity SET BudgetAmount = ? WHERE accNum = ?", TotalBudget, accNum);
             }
             catch (Exception e)
             {
