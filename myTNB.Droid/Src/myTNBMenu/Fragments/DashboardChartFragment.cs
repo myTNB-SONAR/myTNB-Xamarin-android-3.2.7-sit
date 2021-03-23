@@ -9269,34 +9269,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     //smStatisticBill.Text = selectedCusBillAcc.RmEnergyBudget;
                                     //smStatisticBillCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
                                     //smStatisticBillCurrency.Text = "";
-                                    if (isMDMSDown)
-                                    {
-                                        /*smStatisticBillSubTitle.Text = "- -";
-                                        smStatisticBill.Text = "- -";*/
-                                        btnSetNewBudget.Enabled = false;
-                                        btnEditBudget.Enabled = false;
-                                    }
-                                   
-                                    // if(costValue.Value.Length > 10)
-                                    // {
-                                    //     smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
-                                    //     smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
-                                    // }
-                                    // else if(costValue.Value.Length > 5 )
-                                    // {
-                                    //     smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
-                                    //     smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
-                                    // }
-                                    // else
-                                    // {
-                                    //     smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
-                                    //     smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
-                                    // }
-                                   
-                                }
-                                else if (costValue.Key == Constants.PROJECTED_COST_KEY)
-                                {
-                                    //smStatisticPredictTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title; "My usage so far";
                                     smStatisticPredictSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
                                     smStatisticPredict.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smDecimalFormat.Format(double.Parse(costValue.Value, currCult));
                                     smStatisticPredictCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
@@ -9322,7 +9294,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
                                         smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
-                                    }
+                                    }                                                                  
                                 }
                                 else if (costValue.Key == Constants.PROJECTED_COST_KEY)
                                 {
