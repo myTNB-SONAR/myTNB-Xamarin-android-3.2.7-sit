@@ -799,8 +799,8 @@
     "description9": "Ubah suai myTNB anda dengan saiz teks paparan bersesuaian untuk pengendalian yang lebih selesa. Anda boleh memilih antara saiz normal atau besar dan boleh mengubah tetapan ini pada bila-bila masa di Profil anda.",
     "description10": "Anda boleh menetapkan janji temu pemasangan meter anda dengan memilih tarikh dan slot masa yang sesuai.",
     //EnergyBudget
-    "title11": "Tetapkan perbelanjaan bulanan tenaga anda.",
-    "description11": "Kini anda boleh menguruskan penggunaan tenaga anda dengan menetapkan perbelanjaan bulanan melalui myTNB! Kami akan maklumkan jika penggunaan anda sudah berdekatan had bulanan anda."
+    "title11": "Tetapkan Energy Budget anda.",
+    "description11": "Kini anda boleh menguruskan penggunaan tenaga anda dengan menetapkan Energy Budget melalui myTNB! Kami akan maklumkan jika penggunaan anda sudah berdekatan had bulanan anda."
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
@@ -2290,9 +2290,9 @@
       }
     ]
   },
-  "EnregyBudgetListing":{
-    "title":"Pilih Akaun Meter Pintar",
-    "tootltipTitle":"Mengapakah sesetengah akaun saya tidak disenaraikan?",
-    "tooltipBody":"Oleh kerana Belanjawan Tenaga adalah ciri meter pintar, hanya akaun meter pintar sahaja akan disenaraikan di sini. Apabila meter anda telah ditukarkan ke meter pintar, akaun tersebut akan ditambah secara automatik ke dalam senarai ini."
+  "EnregyBudgetListing": {
+    "title": "Pilih Akaun Meter Pintar",
+    "tootltipTitle": "Mengapakah sesetengah akaun saya tidak disenaraikan?",
+    "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun meter pintar sahaja akan disenaraikan di sini. Apabila meter anda telah ditukarkan ke meter pintar, akaun tersebut akan ditambah secara automatik ke dalam senarai ini."
   }
 }
