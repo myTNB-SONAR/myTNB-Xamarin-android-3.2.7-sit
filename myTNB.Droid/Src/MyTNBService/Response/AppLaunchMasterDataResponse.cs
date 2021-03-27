@@ -70,6 +70,11 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "ServicesPreLogin")]
             [AliasAs("ServicesPreLogin")]
             public List<MyService> ServicesPreLogin { set; get; }
+            
+            [JsonProperty(PropertyName = "UserVerificationInfo")]
+            [AliasAs("NotificatiUserVerificationInfoonType")]
+            public UserVerificationInfo UserVerificationInfo { get; set; }
+
         }
 
         public class ForceUpdateInfoData
@@ -93,6 +98,12 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [JsonProperty(PropertyName = "ModalBtnText")]
             [AliasAs("ModalBtnText")]
             public string ModalBtnText { get; set; }
+        }
+
+        public class UserVerificationInfo
+        {
+            [JsonProperty("Email")]
+            public bool Email { get; set; }
         }
     }
 }

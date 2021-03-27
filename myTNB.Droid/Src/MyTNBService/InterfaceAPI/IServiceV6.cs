@@ -66,6 +66,74 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> UserAuthenticate<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/CancelInvitation_OT")]
+        Task<T> CancelInvitation_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //wan //api cancel invited user
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SendReInviteEmail")]
+        Task<T> SendReInviteEmail<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //irul //api resend invited user
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/AddUserAccess_OT")]
+        Task<T> AddUserAcess_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //wan //api add user access
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/RemoveUserAccess_OT")]
+        Task<T> RemoveUserAcess_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //wan //api delete user access
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetAccountActivityLogList")]
+        Task<T> GetAccountActivityLogList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //wan //api log activity user access
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/UpdateAccountAccessRight")]
+        Task<T> UpdateAccountAccessRight<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //2enapps wan //api update account access right
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/AddAccounts_OT")]
+        Task<T> AddMultipleAccounts_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //2enapps wan //api add account
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/ValidateManualAccountLinking_OT")]
+        Task<T> ValidateManualAccount_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);            //2enapps wan //api validate manual linking acc
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetAccountAccessRightList")]
+        Task<T> GetAccountAccessRightList<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan //api get account access right list account
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetAccountAccessRight")]
+        Task<T> GetAccountAccessRight<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);       //2enapps wan //api get account access r account
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetReviewAccount")]
+        Task<T> GetReviewAccount<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan //api review account
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/CreateNewUserWithToken_OT")]
+        Task<T> CreateNewUserWithToken_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan //api register baru
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/IsUserAuth_OT")]
+        Task<T> UserAuthenticateLoginNew<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);      //2enapps wan //api login baru
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetRegisteredUser")]
+        Task<T> UserAuthenticateEmail<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetRegisteredUser")]
+        Task<T> UserAuthenticateID<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/UpdateIdentificationNo")]
+        Task<T> UserUpdateIdentifcationNo<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/UpdateUserInfo")]
+        Task<T> UserUpdateName<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);        //2enapps wan
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/SaveUserNotificationTypePreference")]
         Task<T> SaveUserNotificationTypePreference<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
@@ -82,7 +150,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> UserNotificationChannelPreferences<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/SendRegistrationTokenSMS")]
+        [Post("/v6/mytnbappws.asmx/SendRegistrationTokenSMS_OT")]
         Task<T> SendRegistrationTokenSMS<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
@@ -122,6 +190,14 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/ChangeNewPassword")]
         Task<T> ChangeNewPassword<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SendResetPasswordCode_OT")]
+        Task<T> SendResetPasswordCode_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token); //yana
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/SendEmailVerification")]
+        Task<T> SendEmailVerification<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token); //yana
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/SendUpdatePhoneTokenSMSV2")]
@@ -202,5 +278,6 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetPaymentTransactionId")]
         Task<T> GetPaymentTransactionId<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+        
     }
 }

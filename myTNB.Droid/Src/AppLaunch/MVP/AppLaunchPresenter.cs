@@ -161,6 +161,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                         UserSessions.SaveFeedbackUpdateDetailDisabled(mSharedPref, responseData.IsFeedbackUpdateDetailDisabled.ToString());  //save sharedpref cater prelogin & after login
 
+                        UserSessions.SaveCheckEmailVerified(mSharedPref, responseData.UserVerificationInfo.Email.ToString());  //save sharedpref check email  //wan
+
                         if (responseData.AppVersionList != null && responseData.AppVersionList.Count > 0)
                         {
                             appUpdateAvailable = IsAppNeedsUpdate(responseData.ForceUpdateInfo);

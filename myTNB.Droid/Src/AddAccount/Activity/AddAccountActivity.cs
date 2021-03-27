@@ -8,6 +8,9 @@ using Android.Util;
 using Android.Views;
 using myTNB_Android.Src.AddAccount.Fragment;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.UpdateID.Activity;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Runtime;
@@ -18,9 +21,12 @@ namespace myTNB_Android.Src.AddAccount.Activity
     [Activity(Label = "Add Electricity Account"
         , ScreenOrientation = ScreenOrientation.Portrait
         , WindowSoftInputMode = SoftInput.StateHidden
-        , Theme = "@style/Theme.AddAccount")]
+        , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class AddAccountActivity : BaseToolbarAppCompatActivity
     {
+
+        private bool fromRegisterPage;
+
         public override int ResourceId()
         {
             return Resource.Layout.AddAccountView;
@@ -32,7 +38,18 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            AndroidX.Fragment.App.Fragment  addAccountTypeFragment = new AddAccountTypeFragment();
+            if (Intent.HasExtra("fromRegisterPage"))
+            {
+                fromRegisterPage = Intent.Extras.GetBoolean("fromRegisterPage", true);
+            }
+
+            Bundle bundle = new Bundle();
+            bundle.PutBoolean("fromRegisterPage", fromRegisterPage);
+            //bundle.PutBoolean("hasRights", false);
+
+
+            AndroidX.Fragment.App.Fragment  addAccountTypeFragment = new AddAccountTypeFragmentNew();
+            addAccountTypeFragment.Arguments = bundle;
             var fragmentTransaction = SupportFragmentManager.BeginTransaction();
             fragmentTransaction.Add(Resource.Id.fragment_container, addAccountTypeFragment);
             fragmentTransaction.Commit();
@@ -41,17 +58,75 @@ namespace myTNB_Android.Src.AddAccount.Activity
             SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_AddAccountLarge : Resource.Style.Theme_AddAccount);
             //Initialize scanner
             MobileBarcodeScanner.Initialize(Application);
+            //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
         }
       
 
         public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
         {
-            if (fragment is AddAccountTypeFragment)
+            //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+            if (fragment is AddAccountTypeFragmentNew)
             {
                 bool isOwner = bundle.GetBoolean("isOwner");
+                bool fromRegister = bundle.GetBoolean("fromRegister");
+                bool isCommercial = bundle.GetBoolean("isCommercial");
                 if (isOwner)
                 {
-                    var addAccountForm = new AddAccountFormFragment();
+                    var addAccountForm = new AddAccountTypeFragmentOwner();
+                    addAccountForm.Arguments = bundle;
+                    var fragmentTransaction = SupportFragmentManager.BeginTransaction();
+                    fragmentTransaction.Add(Resource.Id.fragment_container, addAccountForm);
+                    fragmentTransaction.AddToBackStack(null);
+                    fragmentTransaction.Commit();
+                }
+                else if (fromRegister)
+                {
+                    Intent nextIntent = new Intent(this, typeof(DashboardHomeActivity));
+                    StartActivity(nextIntent);
+                }
+                else if (isCommercial)
+                {
+                    //var addAccountForm = new AddAccountTypeFragmentBusiness();
+                    var addAccountForm = new AddAccountFormFragmentBusiness();
+                    addAccountForm.Arguments = bundle;
+                    var fragmentTransaction = SupportFragmentManager.BeginTransaction();
+                    fragmentTransaction.Add(Resource.Id.fragment_container, addAccountForm);
+                    fragmentTransaction.Commit();
+                }                
+                else
+                {
+                    var addAccountForm = new AddAccountTypeFragmentOwner();
+                    addAccountForm.Arguments = bundle;
+                    var fragmentTransaction = SupportFragmentManager.BeginTransaction();
+                    fragmentTransaction.Add(Resource.Id.fragment_container, addAccountForm);
+                    fragmentTransaction.AddToBackStack(null);
+                    fragmentTransaction.Commit();
+                }
+            }
+            else if (fragment is AddAccountFormFragmentBusiness)
+            {
+                bool isResidential = bundle.GetBoolean("isResidential");
+                bool fromRegister = bundle.GetBoolean("fromRegister");
+                if (isResidential)
+                {
+                    var addAccountForm = new AddAccountTypeFragmentNew();
+                    addAccountForm.Arguments = bundle;
+                    var fragmentTransaction = SupportFragmentManager.BeginTransaction();
+                    fragmentTransaction.Add(Resource.Id.fragment_container, addAccountForm);
+                    fragmentTransaction.Commit();
+                }
+                else if (fromRegister)
+                {
+                    Intent nextIntent = new Intent(this, typeof(DashboardHomeActivity));
+                    StartActivity(nextIntent);
+                }
+            }
+            else if (fragment is AddAccountTypeFragmentOwner)
+            {
+                bool isUpdateId = bundle.GetBoolean("isUpdateId");
+                if (isUpdateId)
+                {
+                    var addAccountForm = new AddAccountFormFragmentNonOwner();
                     addAccountForm.Arguments = bundle;
                     var fragmentTransaction = SupportFragmentManager.BeginTransaction();
                     fragmentTransaction.Add(Resource.Id.fragment_container, addAccountForm);
@@ -60,22 +135,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 }
                 else
                 {
-                    var addAccountForm = new AddAccountByRightsFragment();
-                    addAccountForm.Arguments = bundle;
-                    var fragmentTransaction = SupportFragmentManager.BeginTransaction();
-                    fragmentTransaction.Add(Resource.Id.fragment_container, addAccountForm);
-                    fragmentTransaction.AddToBackStack(null);
-                    fragmentTransaction.Commit();
+                    Intent nextIntent = new Intent(this, typeof(FeedbackPreloginNewICActivity));
+                    StartActivity(nextIntent);
                 }
-            }
-            else if (fragment is AddAccountByRightsFragment)
-            {
-                var addAccountForm = new AddAccountFormFragment();
-                addAccountForm.Arguments = bundle;
-                var fragmentTransaction = SupportFragmentManager.BeginTransaction();
-                fragmentTransaction.Add(Resource.Id.fragment_container, addAccountForm);
-                fragmentTransaction.AddToBackStack(null);
-                fragmentTransaction.Commit();
             }
         }
 
@@ -121,6 +183,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             return Utility.GetLocalizedLabel("AddAccount","title");
         }
+
+        /*public void SetInnerDashboardToolbarBackground()
+        {
+            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+        }*/
 
         public override void OnTrimMemory(TrimMemory level)
         {

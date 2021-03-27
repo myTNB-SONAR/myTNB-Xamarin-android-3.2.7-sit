@@ -1,7 +1,9 @@
 ﻿using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ManageCards.Models;
 using Refit;
 using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.ManageCards.MVP
 {
@@ -9,6 +11,12 @@ namespace myTNB_Android.Src.ManageCards.MVP
     {
         public interface IView : IBaseView<IUserActionsListener>
         {
+
+            /// <summary>
+            /// Shows account list
+            /// </summary>
+            /// <param name="accountList">List<paramref name="CustomerBillingAccount"/></param>
+            void ShowAccountList(List<CustomerBillingAccount> accountList);
 
             /// <summary>
             /// Shows progress dialog

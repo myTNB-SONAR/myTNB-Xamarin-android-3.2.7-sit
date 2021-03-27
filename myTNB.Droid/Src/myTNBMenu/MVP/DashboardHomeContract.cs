@@ -15,6 +15,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 	{
 		public interface IView : IBaseView<IUserActionsListener>
 		{
+			void OnCheckProfileTab(bool key, bool isFromHome);
+
+			void HideUnverifiedProfile(bool key, bool isFromHome);
+
+			void ShowUnverifiedProfile(bool key, bool isFromHome);
+
 			/// <summary>
 			/// Shows the bill menu
 			/// </summary>
@@ -180,8 +186,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			void OnResetEppTooltip();
 
 			void OnResetWhereIsMyAccNumber();
-
-		}
+            void SetMenuMoreCheck();
+            void PopulateIdentificationDetails();
+        }
 
         public interface IUserActionsListener : IBasePresenter
 		{

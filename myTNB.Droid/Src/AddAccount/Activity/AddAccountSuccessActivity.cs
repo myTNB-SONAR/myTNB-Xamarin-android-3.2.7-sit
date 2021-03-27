@@ -36,6 +36,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
         [BindView(Resource.Id.txtTitleInfo)]
         TextView textAddAccountSuccess;
 
+        [BindView(Resource.Id.txtVerifyNotification)]
+        TextView txtAddAccVerifyNotification;
+
         public override int ResourceId()
         {
             return Resource.Layout.AddAccountsSuccess;
@@ -82,9 +85,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
             };
 
             TextViewUtils.SetMuseoSans500Typeface(textAddAccountSuccess);
+            TextViewUtils.SetMuseoSans300Typeface(txtAddAccVerifyNotification);
             TextViewUtils.SetMuseoSans500Typeface(done);
 
             textAddAccountSuccess.Text = Utility.GetLocalizedLabel("AddAccount", "addAcctSuccessMsg");
+            txtAddAccVerifyNotification.Text = Utility.GetLocalizedLabel("AddAccount", "addAcctSuccessMsgBody");
             done.Text = Utility.GetLocalizedCommonLabel("done");
 
             appBarLayout = FindViewById<AppBarLayout>(Resource.Id.appBar);

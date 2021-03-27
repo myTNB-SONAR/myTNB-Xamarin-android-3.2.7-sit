@@ -1,4 +1,5 @@
-﻿using Android.Util;
+﻿using Android.Text;
+using Android.Util;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.Requests;
 using myTNB_Android.Src.Base;
@@ -10,6 +11,7 @@ using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -50,8 +52,34 @@ namespace myTNB_Android.Src.AddAccount.MVP
             this.mView.ShowDashboard();
         }
 
+        public void CheckRequiredFields(string total, bool checkbox)
+        {
+
+            try
+            {
+                if (!TextUtils.IsEmpty(total) && (checkbox))
+                {
+                    if(total.Equals("0"))
+                    {
+                        this.mView.DisableConfirmButton();
+                        return;
+                    }
+                    this.mView.EnableConfirmButton();
+                }
+                else
+                {
+                    this.mView.DisableConfirmButton();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void GetAccountByIC(string apiKeyID, string currentLinkedAccounts, string userID, string identificationNo)
         {
+            this.mView.DisableConfirmButton();
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
             GetCustomerAccountsByIC(apiKeyID, currentLinkedAccounts, userID, identificationNo);
         }
@@ -136,15 +164,15 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 {
                     mView.ShowAddingAccountProgressDialog();
                 }
-
-                AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts(new AddAccountsRequest(accounts));
+                //var tempReq = JsonConvert.SerializeObject(accounts);
+                AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts_OT(new AddAccountsRequest(accounts));
 
                 if (result.IsSuccessResponse())
                 {
-                    if (mView.IsActive())
+                    /*if (mView.IsActive())
                     {
                         mView.HideAddingAccountProgressDialog();
-                    }
+                    }*/
                     mView.ShowAddAccountSuccess(result.GetData());
                     MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                     HomeMenuUtils.ResetAll();
@@ -231,6 +259,10 @@ namespace myTNB_Android.Src.AddAccount.MVP
         private async void CallSummaryAPI(SummaryDashBordRequest summaryDashBoardRequest)
         {
             await SummaryDashBoardApiCall.GetSummaryDetails(summaryDashBoardRequest);
+        }
+        public void NavigateToTermsAndConditions()
+        {
+            this.mView.ShowTermsAndConditions();
         }
     }
 }

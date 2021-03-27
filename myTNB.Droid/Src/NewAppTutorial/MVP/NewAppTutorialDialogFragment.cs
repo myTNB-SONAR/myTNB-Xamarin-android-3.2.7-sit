@@ -11,6 +11,8 @@ using AndroidX.Fragment.App;
 using AndroidX.ViewPager.Widget;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
+using myTNB_Android.Src.ManageAccess.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
@@ -117,6 +119,13 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "skip"));
                         txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "skip"));
                     }
+                //     txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"), FromHtmlOptions.ModeLegacy);
+                //     txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"), FromHtmlOptions.ModeLegacy);
+                // }
+                // else
+                // {
+                //     txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"));
+                //     txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"));
                 }
 
                 TextViewUtils.SetMuseoSans300Typeface(txtDoubleTapDismiss, txtTopDoubleTapDismiss);
@@ -210,6 +219,43 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         ((WhatsNewMenuFragment)this.mFragment).StopScrolling();
                     }
                 }
+                else if (this.mContext is ManageAccessActivity)
+                {
+                    if (NewAppTutorialList.Count > 0)
+                    {
+                        int ItemCount = NewAppTutorialList[1].ItemCount;
+                        if (ItemCount > 0)
+                        {
+                            int topHeight = (int)DPUtils.ConvertDPToPx(65f);
+                            if (((ManageAccessActivity)this.mContext).CheckIsScrollable())
+                            {
+                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((ManageAccessActivity)this.mContext).OnGetEndOfScrollView());
+                                int halfScroll = topHeight / 2;
+
+                                if (diffHeight < halfScroll)
+                                {
+                                    ((ManageAccessActivity)this.mContext).HomeMenuCustomScrolling(topHeight / 2);
+                                }
+                                else
+                                {
+                                    ((ManageAccessActivity)this.mContext).HomeMenuCustomScrolling(0);
+                                }
+                            }
+                            else
+                            {
+                                ((ManageAccessActivity)this.mContext).HomeMenuCustomScrolling(0);
+                            }
+                        }
+                        else
+                        {
+                            ((ManageAccessActivity)this.mContext).HomeMenuCustomScrolling(0);
+                        }
+                    }
+                    else
+                    {
+                        ((ManageAccessActivity)this.mContext).HomeMenuCustomScrolling(0);
+                    }
+                }                                  
                 else
                 {
                     if (this.mContext is SSMRMeterHistoryActivity)
@@ -271,6 +317,16 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         }
                         txtDoubleTapDismiss.Visibility = ViewStates.Visible;
                         txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
+                        indicator.Visibility = ViewStates.Visible;
+                        indicatorTopContainer.Visibility = ViewStates.Visible;
+                    }
+                    else if(this.mContext is DashboardHomeActivity)
+                    {
+                        swipeTopDoubleTapLayout.Visibility = ViewStates.Gone;
+                        swipeDoubleTapLayout.Visibility = ViewStates.Visible;
+
+                        txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                        txtDoubleTapDismiss.Text = Utility.GetLocalizedLabel("Common", "tutorialSwipeTextlastNew");
                         indicator.Visibility = ViewStates.Visible;
                         indicatorTopContainer.Visibility = ViewStates.Visible;
                     }
@@ -445,13 +501,18 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                             if (e.Position == NewAppTutorialList.Count - 1)
                             {
-                                txtDoubleTapDismiss.Visibility = ViewStates.Gone;
-                                txtTopDoubleTapDismiss.Visibility = ViewStates.Gone;
+                                txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextlastNew"));
+                                txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextlastNew"));
+                                //txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                                //txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
                             }
                             else
                             {
-                                txtDoubleTapDismiss.Visibility = ViewStates.Visible;
-                                txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
+                                txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"));
+                                txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"));
+
+                                //txtDoubleTapDismiss.Visibility = ViewStates.Visible;
+                                //txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
                             }
                             if (this.mContext != null && this.mContext is ApplicationStatusLandingActivity)
                             {
@@ -991,6 +1052,14 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     else if (this.mActivity is RewardDetailActivity)
                     {
                         UserSessions.DoRewardsDetailShown(this.mPref);
+                    }
+                    else if (this.mActivity is DashboardHomeActivity)
+                    {
+                        UserSessions.DoManageAccessIconTutorialShown(this.mPref);
+                    }
+                    else if (this.mActivity is ManageAccessActivity)
+                    {
+                        UserSessions.DoManageAccessPageTutorialShown(this.mPref);
                     }
                 }
                 return true;

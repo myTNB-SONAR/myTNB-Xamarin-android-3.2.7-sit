@@ -25,5 +25,7 @@ namespace myTNB_Android.Src.RegistrationForm.Models
         [JsonProperty("confirm_password")]
         public string ConfirmPassword { get; set; }
 
+        [JsonProperty("idtype")]
+        public string IdType { get; set; }
     }
 }

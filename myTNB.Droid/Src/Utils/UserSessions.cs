@@ -305,7 +305,31 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
-        public static bool HasItemizedBillingDetailTutorialShown(ISharedPreferences prefs)
+        public static System.Boolean HasManageAccessIconTutorialShown(ISharedPreferences prefs)            //new manage access tutorial icon
+        {
+            return prefs.GetBoolean("hasManageAccessIconTutorialShown", false);
+        }
+
+        public static void DoManageAccessIconTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasManageAccessIconTutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasManageAccessPageTutorialShown(ISharedPreferences prefs)            //new manage access tutorial page
+        {
+            return prefs.GetBoolean("hasManageAccessPageTutorialShown", false);
+        }
+
+        public static void DoManageAccessPageTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasManageAccessPageTutorialShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasItemizedBillingDetailTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasItemizedBillingDetailTutorialShown", false);
         }
@@ -398,6 +422,13 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        internal static void SaveSelectedCountry(ISharedPreferences mSharedPref, string largeJsonString)     //pref for selected country
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.PutString("selectedcountry", largeJsonString);
+            editor.Apply();
+        } 
+
         internal static void SaveAdapterType(ISharedPreferences mSharedPref, string largeJsonString)
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();
@@ -415,6 +446,11 @@ namespace myTNB_Android.Src.Utils
             return mSharePref.GetString(Constants.SELECTED_FEEDBACK, null);
         }
 
+        internal static string GetSelectedCountry(ISharedPreferences mSharePref)    //get pref for selected country
+        {
+            return mSharePref.GetString("selectedcountry", null);
+        }
+
         internal static void UpdateDeviceId(ISharedPreferences mSharedPref)
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();
@@ -425,6 +461,30 @@ namespace myTNB_Android.Src.Utils
         public static bool IsDeviceIdUpdated(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("deviceIDUpdated", false);
+        }
+
+        internal static void UpdateIdDialog(ISharedPreferences mSharedPref)                 //for Update ID dialog
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.PutBoolean("DialogIDUpdated", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean IsIdDialogUpdated(ISharedPreferences prefs)            //for Update ID dialog
+        {
+            return prefs.GetBoolean("DialogIDUpdated", false);
+        }
+
+        public static void SaveCheckEmailVerified(ISharedPreferences prefs, string data)    //for Check Email Verified
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("IsFeedbackUpdateDetailDisabled", data);
+            editor.Apply();
+        }
+
+        public static string GetCheckEmailVerified(ISharedPreferences prefs)              //for Check Email Verified
+        {
+            return prefs.GetString("IsFeedbackUpdateDetailDisabled", null);
         }
 
         public static void SaveDeviceId(ISharedPreferences prefs, string deviceID)

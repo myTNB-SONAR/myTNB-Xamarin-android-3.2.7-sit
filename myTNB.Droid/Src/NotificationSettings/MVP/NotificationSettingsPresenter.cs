@@ -1,5 +1,6 @@
 ﻿using Android.Text;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.SelectNotification.Models;
@@ -130,6 +131,115 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             {
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e, item, position);
+                Utility.LoggingNonFatalError(e);
+            }
+
+
+        }
+
+        public void OnNotification(string deviceId)
+        {
+            LoadAllUserPrefNotifications(deviceId);
+        }
+
+        private async void LoadAllUserPrefNotifications(string deviceId)
+        {
+            if (mView.IsActive())
+            {
+                this.mView.ShowProgressDialog();
+            }
+            try
+            {
+                var notificationTypesApi = await ServiceApiImpl.Instance.UserNotificationTypePreferences(new MyTNBService.Request.BaseRequest());
+
+                if (notificationTypesApi.IsSuccessResponse())
+                {
+                    var notificationChannelApi = await ServiceApiImpl.Instance.UserNotificationChannelPreferences(new MyTNBService.Request.BaseRequest());
+                    
+                    if (mView.IsActive())
+                    {
+                        this.mView.HideShowProgressDialog();
+                    }
+
+                    if (notificationChannelApi.IsSuccessResponse())
+                    {
+                        UserNotificationTypesEntity.RemoveActive();
+                        UserNotificationChannelEntity.RemoveActive();
+
+                        foreach (UserNotificationType notificationType in notificationTypesApi.GetData())
+                        {
+                            int newRecord = UserNotificationTypesEntity.InsertOrReplace(notificationType);
+                            Console.WriteLine(string.Format("New Type Created {0}", newRecord));
+                        }
+
+                        foreach (UserNotificationChannel notificationChannel in notificationChannelApi.GetData())
+                        {
+                            int newRecord = UserNotificationChannelEntity.InsertOrReplace(notificationChannel);
+                            Console.WriteLine(string.Format("New Channel Created {0}", newRecord));
+                        }
+
+                        ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                        List<UserNotificationTypesEntity> typesList = UserNotificationTypesEntity.ListAllActive();
+                        List<UserNotificationChannelEntity> channelsList = UserNotificationChannelEntity.ListAllActive();
+
+                        List<NotificationTypeUserPreference> typeUserPrefList = new List<NotificationTypeUserPreference>();
+                        List<NotificationChannelUserPreference> channelUserPrefList = new List<NotificationChannelUserPreference>();
+
+                        foreach (UserNotificationTypesEntity type in typesList)
+                        {
+                            if (type.ShowInPreference)
+                            {
+                                typeUserPrefList.Add(NotificationTypeUserPreference.Get(type));
+                            }
+                        }
+
+                        foreach (UserNotificationChannelEntity channel in channelsList)
+                        {
+                            if (channel.ShowInPreference)
+                            {
+                                channelUserPrefList.Add(NotificationChannelUserPreference.Get(channel));
+                            }
+                        }
+                        this.mView.ShowNotificationTypesList(typeUserPrefList);
+                        this.mView.ShowNotificationChannelList(channelUserPrefList);
+                    }
+                    else
+                    {
+                        // SHOW ERROR
+                        this.mView.ShowRetryOptionsApiException(null);
+                    }
+                }
+                else
+                {
+                    // SHOW ERROR
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideShowProgressDialog();
+                }
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideShowProgressDialog();
+                }
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideShowProgressDialog();
+                }
+                this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using Android.Content;
+using Android.Graphics;
 using Android.Util;
 using Android.Widget;
 using AndroidX.Core.Content;
@@ -9,7 +10,7 @@ namespace myTNB_Android.Src.CompoundView
 {
     public class ProfileMenuItemContentComponent : RelativeLayout
     {
-        private TextView itemTitle, itemValue, itemAction;
+        private TextView itemTitle, itemValue, itemAction, itemVerifyLabel, infoVerifyIcon;
         private LinearLayout itemActionContainer;
 
         public ProfileMenuItemContentComponent(Context context) : base(context)
@@ -38,6 +39,8 @@ namespace myTNB_Android.Src.CompoundView
             itemTitle = FindViewById<TextView>(Resource.Id.itemTitle);
             itemValue = FindViewById<TextView>(Resource.Id.itemValue);
             itemAction = FindViewById<TextView>(Resource.Id.itemAction);
+            itemVerifyLabel = FindViewById<TextView>(Resource.Id.infoLabel);
+            infoVerifyIcon = FindViewById<TextView>(Resource.Id.infoVerifyIcon);
             itemActionContainer = FindViewById<LinearLayout>(Resource.Id.itemActionContainer);
 
             TextViewUtils.SetMuseoSans300Typeface(itemTitle, itemValue);
@@ -51,6 +54,40 @@ namespace myTNB_Android.Src.CompoundView
         public void SetTitle(string title)
         {
             itemTitle.Text = title;
+        }
+
+        public void SetFlagID(bool FlagID)
+        {
+            if (FlagID)
+            {
+                //itemVerifyLabel.Visibility = Android.Views.ViewStates.Visible;
+                itemActionContainer.Visibility = Android.Views.ViewStates.Visible;
+                //itemVerifyLabel.SetBackgroundResource(Resource.Drawable.icons_verify_email);
+                itemAction.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.icons_verify_email, 0, 0, 0);
+                itemValue.SetTextColor(Color.ParseColor("#a6a6a6"));
+            }
+            else
+            {
+                itemVerifyLabel.Visibility = Android.Views.ViewStates.Gone;
+                itemActionContainer.Visibility = Android.Views.ViewStates.Gone;
+                itemValue.SetTextColor(Color.ParseColor("#a6a6a6"));
+            }
+        }
+
+        public void SetFlagEmailVerify(bool FlagID)
+        {
+            if (FlagID)
+            {
+                //infoVerifyIcon.Visibility = Android.Views.ViewStates.Visible;
+                itemVerifyLabel.Visibility = Android.Views.ViewStates.Gone;
+                itemActionContainer.Visibility = Android.Views.ViewStates.Gone;
+                itemValue.SetCompoundDrawablesWithIntrinsicBounds(0, 0, Resource.Drawable.icons_email_verified, 0);
+            }
+            else
+            {
+                itemAction.SetCompoundDrawablesWithIntrinsicBounds(Resource.Drawable.icons_verify_email, 0, 0, 0);
+                //infoVerifyIcon.Visibility = Android.Views.ViewStates.Gone;
+            }
         }
 
         public void SetValue(string value)
@@ -70,7 +107,7 @@ namespace myTNB_Android.Src.CompoundView
 
         public void SetItemActionCall(Action action)
         {
-            itemActionContainer.Click += delegate
+            itemAction.Click += delegate
             {
                 action();
             };

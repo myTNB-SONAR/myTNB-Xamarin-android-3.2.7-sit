@@ -1,15 +1,24 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Graphics.Drawables;
 using Android.Text;
 using Android.Text.Style;
 using Android.Util;
 using myTNB;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
 using myTNB_Android.Src.Database.Model;
-using Newtonsoft.Json;
+using myTNB_Android.Src.SiteCore;
+using myTNB_Android.Src.SSMR.Util;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 using myTNB_Android.Src.Base.Models;
 using myTNB.Mobile.Helpers;
 
@@ -19,6 +28,12 @@ namespace myTNB_Android.Src.Utils
     {
         private static bool IsPayDisableNotFromAppLaunch = false;
         private static string AppUpdateId = "";
+
+
+        public enum Masking
+        {
+            Address
+        }
 
         public Utility()
         {
@@ -62,7 +77,6 @@ namespace myTNB_Android.Src.Utils
             }
             return false;
         }
-
 
         public static void LoggingNonFatalError(Exception e)
         {
@@ -218,6 +232,7 @@ namespace myTNB_Android.Src.Utils
         {
             return LanguageManager.Instance.GetSelectorsByPage(page);
         }
+
         /// <summary>
         /// Gets the Error labels by key
         /// </summary>
@@ -237,6 +252,33 @@ namespace myTNB_Android.Src.Utils
             return label;
         }
 
+        public static void ShowUpdateIdDialog(Activity context, string ic_no, Action confirmAction, Action cancelAction = null)
+        {
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(Utility.GetLocalizedLabel("Common", "updateIdTitle"))
+                        .SetMessage(Utility.GetLocalizedLabel("Common", "updateIdMessage"))
+                        .SetContentGravity(Android.Views.GravityFlags.Center)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "re_enter"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+        }
+
         public static void ShowChangeLanguageDialog(Activity context, string selectedLanguage, Action confirmAction, Action cancelAction = null)
         {
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
@@ -245,6 +287,119 @@ namespace myTNB_Android.Src.Utils
                         .SetContentGravity(Android.Views.GravityFlags.Center)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageNo_" + selectedLanguage))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageYes_" + selectedLanguage))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+        }
+
+        public static void ShowIdentificationUpdateProfileDialog(Activity context, Action confirmAction, Action checkboxAction, Action uncheckboxAction, Action cancelAction = null)
+        {
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.DIALOGBOX_WITH_CHECKBOX)
+                        .SetTitle(Utility.GetLocalizedLabel("DashboardHome", "titleIcUpdate"))
+                        .SetMessage(Utility.GetLocalizedLabel("DashboardHome", "bodyIcUpdate"))
+                        .SetTitleCheckBox("Don't Show This Again")
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
+                        .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "later"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "update"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .SetCheckBoxCTaction(() =>
+                        {
+                            checkboxAction();
+                        })
+                        .SetUnCheckBoxCTaction(() =>
+                        {
+                            uncheckboxAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+        }
+
+        public static void ShowEmailErrorDialog(Activity context, string selectedAction, Action confirmAction, Action cancelAction = null)
+        {
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(Utility.GetLocalizedLabel("RegisterNew", "EmailHeaderError"))
+                        .SetMessage(Utility.GetLocalizedLabel("RegisterNew", "EmailBodyError"))
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
+                        .SetCTALabel(Utility.GetLocalizedLabel("RegisterNew", "Reset"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "tryAgain"))
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    confirmAction();
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+        }
+
+        public static void ShowEmailVerificationDialog(Activity context, Action confirmAction, Action cancelAction = null)
+        {
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(Utility.GetLocalizedLabel("Tnb_Profile", "verifyEmailPopupTitle"))
+                        .SetMessage(Utility.GetLocalizedLabel("Tnb_Profile", "verifyEmailPopupBody"))
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Tnb_Profile", "gotIt"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Tnb_Profile", "resend"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
+        }
+
+        public static void ShowIdentificationErrorDialog(Activity context, Action confirmAction, Action cancelAction = null)
+        {
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(Utility.GetLocalizedLabel("OneLastThing", "IdHeaderError"))
+                        .SetMessage(Utility.GetLocalizedLabel("OneLastThing", "IdBodyError"))
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "gotIt"))
                         .SetSecondaryCTAaction(() =>
                         {
                             confirmAction();
@@ -376,6 +531,78 @@ namespace myTNB_Android.Src.Utils
                 LoggingNonFatalError(e);
             }
         }
+
+        public static string StringMasking(Masking masking , string premasking){
+            //proceed when is not null or empty
+            if (!String.IsNullOrEmpty(premasking))
+            {
+                if (masking.Equals(Masking.Address))
+                {
+
+                    int commaIndex = premasking.IndexOf(',');
+                    if (commaIndex != -1)
+                    {
+
+                        string postMasking = premasking.Substring(commaIndex);
+                        string frontMasking=premasking.Substring(0, commaIndex);
+                        Regex replaceString = new Regex("\\S");
+                        frontMasking = replaceString.Replace(frontMasking, "*");
+                        return frontMasking + postMasking;
+                    }
+                    else
+                    {
+                        //premasking not contain any ,
+                        return premasking;
+                    }
+                }
+                else
+                {
+                    return premasking;
+                }
+            }
+            else { 
+                return premasking; 
+            }
+        }
+
+        public static string StringSpaceMasking(Masking masking, string premasking){
+
+            //proceed when is not null or empty
+            if (!String.IsNullOrEmpty(premasking))
+            {
+                if (masking.Equals(Masking.Address))
+                {
+
+                    char characterToMatch = (char)ConsoleKey.Spacebar;
+                    int first = premasking.IndexOf(characterToMatch);
+                    //need to +1 if not the the value are the same with 1st index
+                    int second = premasking.IndexOf(characterToMatch, first + 1);
+                    if (second != -1)
+                    {
+                        string postMasking = premasking.Substring(second);
+                        string frontMasking = premasking.Substring(0, second);
+                        Regex replaceString = new Regex("\\S");
+                        frontMasking = replaceString.Replace(frontMasking, "*");
+                        return frontMasking + postMasking;
+                    }
+                    else
+                    {
+                        //premasking not contain any ,
+                        return premasking;
+                    }
+                }
+                else
+                {
+                    return premasking;
+                }
+            }
+            else
+            {
+                return premasking;
+            }
+        }
+
+
 
         public static string GetAppUpdateId()
         {

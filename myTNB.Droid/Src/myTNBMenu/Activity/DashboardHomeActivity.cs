@@ -52,6 +52,9 @@ using myTNB.Mobile;
 using Android.Util;
 using myTNB_Android.Src.myTNBMenu.Async;
 using Android.Content.Res;
+using myTNB_Android.Src.ForgetPassword.Activity;
+using myTNB_Android.Src.UpdateID.Activity;
+using myTNB_Android.Src.ManageSupplyAccount.Activity;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -119,6 +122,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         private static bool isFirstInitiate = false;
 
         private static bool isWhatNewDialogOnHold = false;
+
+        private static bool isFromHomeMenu = false;
+
+        private static bool isFromLogin = false;
+
+        private IMenu ManageSupplyAccountMenu;
+
+        ISharedPreferences mPref;
 
         public bool IsActive()
         {
@@ -227,6 +238,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             base.SetToolBarTitle(GetString(Resource.String.dashboard_activity_title));
             mPresenter = new DashboardHomePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
             TextViewUtils.SetMuseoSans500Typeface(txtAccountName);
+            mPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
             bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
             if (IsRewardsDisabled)
@@ -281,8 +293,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     urlSchemaPath = extras.GetString("urlSchemaPath");
                 }
             }
-
             this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
+
+            if (extras != null && extras.ContainsKey("FromDashBoard"))
+            {
+                isFromLogin = true;
+            }
 
             try
             {
@@ -293,6 +309,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     this.mPresenter.OnGetEPPTooltipContentDetail();
                     this.mPresenter.OnGetBillTooltipContent();
                     alreadyStarted = true;
+                    //PopulateIdentificationDetails();
                 }
             }
             catch (System.Exception e)
@@ -443,9 +460,101 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.userActionsListener.OnMenuSelect(e.Item.ItemId);
         }
 
-        public override bool OnCreateOptionsMenu(IMenu menu)
+        /*public override bool OnCreateOptionsMenu(IMenu menu)
         {
             return base.OnCreateOptionsMenu(menu);
+        }*/
+
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            if (DashboardHomeActivity.GO_TO_INNER_DASHBOARD)
+            {
+                CustomerBillingAccount selected = new CustomerBillingAccount();
+                selected = CustomerBillingAccount.GetSelected();
+                DashboardHomeActivity.GO_TO_INNER_DASHBOARD = false;
+                MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
+                ManageSupplyAccountMenu = menu;
+                ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.manage_account)).SetVisible(true);
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (!UserSessions.HasManageAccessIconTutorialShown(this.mPref))
+                    {
+                        OnManageAccessIconTutorialDialog(selected.isOwned);
+                    }
+                };
+                h.PostDelayed(myAction, 50);
+            }
+            return base.OnCreateOptionsMenu(menu);
+           
+        }
+
+        public void OnManageAccessIconTutorialDialog(bool flag)
+        {
+            Handler h = new Handler();
+            Action myAction = () =>
+            {
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.mPresenter.OnGeneraNewAppTutorialList(flag));
+            };
+            h.PostDelayed(myAction, 100);
+        }
+
+        public int GetViewBillButtonHeight()
+        {
+            
+            int height = ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).Icon.IntrinsicHeight;
+            return height;
+        }
+
+        public int GetViewBillButtonWidth()
+        {
+           
+           
+            int width = ManageSupplyAccountMenu.FindItem(Resource.Id.icon_log_activity_unread).Icon.IntrinsicWidth;
+            return width;
+        }
+
+        public int GetTopHeight()
+        {
+            int i = 0;
+
+            try
+            {
+                Rect offsetViewBounds = new Rect();
+                //returns the visible bounds
+                toolbar.GetDrawingRect(offsetViewBounds);
+                // calculates the relative coordinates to the parent
+
+                rootView.OffsetDescendantRectToMyCoords(toolbar, offsetViewBounds);
+
+                i = offsetViewBounds.Top + (int) DPUtils.ConvertDPToPx(14f);
+
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            string mAccountNumber = null;
+            switch (item.ItemId)
+            {
+                case Resource.Id.icon_log_activity_unread:
+                    CustomerBillingAccount selected = new CustomerBillingAccount();
+                    selected = CustomerBillingAccount.GetSelected();
+                    UsageHistoryEntity storedEntity = new UsageHistoryEntity();
+                    storedEntity = UsageHistoryEntity.GetItemByAccountNo(selected.AccNum);
+                    ShowManageSupplyAccount(AccountData.Copy(selected, false));
+                    break;
+
+            }
+
+            return base.OnOptionsItemSelected(item);
         }
 
         protected override void OnResume()
@@ -468,6 +577,22 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.userActionsListener.SelectSupplyAccount();
         }
 
+        public void ShowManageSupplyAccount(AccountData accountData)
+        {
+            try
+            {
+                Intent manageAccount = new Intent(this, typeof(ManageSupplyAccountActivityEdit));
+                manageAccount.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+                //manageAccount.PutExtra(Constants.SELECTED_ACCOUNT_POSITION);
+                StartActivityForResult(manageAccount, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
         public void ShowSelectSupplyAccount()
         {
             if (!this.GetIsClicked())
@@ -483,6 +608,42 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             base.OnActivityResult(requestCode, resultCode, data);
             this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
 
+        }
+
+        public void PopulateIdentificationDetails()
+        {
+            UserEntity user = UserEntity.GetActive();
+
+            try
+            {
+                if(user.IdentificationNo.Equals("") && !UserSessions.IsIdDialogUpdated(this.mPref))
+                {
+                    Utility.ShowIdentificationUpdateProfileDialog(this, () =>
+                    {
+                        ShowIdentificationUpdate();
+                    },
+                    () =>
+                    {
+                        UserSessions.UpdateIdDialog(this.mPref);
+                    },
+                    () =>
+                    {
+                        this.mPref.Edit().Remove("DialogIDUpdated").Apply();
+                    }
+                    );
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowIdentificationUpdate()
+        {
+            // TODO : START ACTIVITY
+            Intent updateID = new Intent(this, typeof(UpdateIDActivity));
+            StartActivityForResult(updateID, Constants.UPDATE_ID_REQUEST);
         }
 
         public void ShowBillMenu(AccountData selectedAccount)
@@ -888,7 +1049,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowMoreMenu()
         {
-            ProfileMenuFragment profileMenuFragment = new ProfileMenuFragment();
+            //ProfileMenuFragment profileMenuFragment = new ProfileMenuFragment();
+            ProfileMainMenuFragment profileMenuFragment = new ProfileMainMenuFragment();
+
             if (currentFragment != null)
             {
                 SupportFragmentManager.PopBackStack();
@@ -1069,7 +1232,147 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
-        private void SetReadUnReadNewBottomView(bool flag, bool isGotRead, int count, IMenuItem promotionMenuItem)
+        public void HideUnverifiedProfile(bool keypress, bool isfromHome)
+        {
+            if (bottomNavigationView != null && bottomNavigationView.Menu != null)
+            {
+                IMenu bottomMenu = bottomNavigationView.Menu;
+
+                IMenuItem profileMenuItem = bottomMenu.FindItem(Resource.Id.menu_more);
+                if (profileMenuItem != null)
+                {
+                    SetVerifiedMenuMoreBottomView(keypress, isfromHome, 0, profileMenuItem);
+                    bottomNavigationView.SetImageFontSize(this, 28, 5, 10f);
+                }
+            }
+        }
+
+        public void ShowUnverifiedProfile(bool keypress, bool isfromHome)
+        {
+            if (bottomNavigationView != null && bottomNavigationView.Menu != null)
+            {
+                IMenu bottomMenu = bottomNavigationView.Menu;
+
+                IMenuItem profileMenuItem = bottomMenu.FindItem(Resource.Id.menu_more);
+                if (profileMenuItem != null)
+                {
+                    SetUnverifiedMenuMoreBottomView(keypress, isfromHome, 0, profileMenuItem);
+                    bottomNavigationView.SetImageFontSize(this, 28, 5, 10f);
+                }
+            }
+        }
+
+        public void SetUnverifiedMenuMoreBottomView(bool keypress, bool isfromHome, int count, IMenuItem profileMenuItem)
+        {
+            try
+            {
+                RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayoutProfile, null, false);
+                        ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
+                        if (keypress)
+                        {
+                            RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
+                            if (isfromHome)
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.profile_unverified);
+                            }
+                            else
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_more_toggled);
+                            }
+                        }
+                        else
+                        {
+                            if (isfromHome)
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.profile_unverified);
+                            }
+                            else
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_more_toggled);
+                            }
+                        }
+                        int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
+                        v.Measure(specWidth, specWidth);
+                        Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                        Canvas c = new Canvas(b);
+                        v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f));
+                        v.Draw(c);
+
+                        var bitmapDrawable = new BitmapDrawable(b);
+                        profileMenuItem.SetIcon(bitmapDrawable);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        public void SetVerifiedMenuMoreBottomView(bool flag, bool Indicator, int count, IMenuItem profileMenuItem)
+        {
+            try
+            {
+                RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        View v = this.LayoutInflater.Inflate(Resource.Layout.BottomViewNavigationItemLayoutProfile, null, false);
+                        ImageView bottomImg = v.FindViewById<ImageView>(Resource.Id.bottomViewImg);
+                        if (Indicator)
+                        {
+                            RelativeLayout.LayoutParams bottomImgParam = bottomImg.LayoutParameters as RelativeLayout.LayoutParams;
+                            if (!flag)
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_more);
+                            }
+                            else
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_more_toggled);
+                            }
+                        }
+                        else
+                        {
+                            if (!flag)
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_more);
+                            }
+                            else
+                            {
+                                bottomImg.SetImageResource(Resource.Drawable.ic_menu_more_toggled);
+                            }
+                        }
+                        int specWidth = MeasureSpec.MakeMeasureSpec(0 /* any */, MeasureSpecMode.Unspecified);
+                        v.Measure(specWidth, specWidth);
+                        Bitmap b = Bitmap.CreateBitmap((int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f), Bitmap.Config.Argb8888);
+                        Canvas c = new Canvas(b);
+                        v.Layout(0, 0, (int)DPUtils.ConvertDPToPx(65f), (int)DPUtils.ConvertDPToPx(28f));
+                        v.Draw(c);
+
+                        var bitmapDrawable = new BitmapDrawable(b);
+                        profileMenuItem.SetIcon(bitmapDrawable);
+                    }
+                    catch (Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        private void SetReadUnReadNewBottomView(bool flag, bool isGotRead, int count,IMenuItem promotionMenuItem)
         {
             try
             {
@@ -1420,6 +1723,30 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 isWhatNewDialogOnHold = false;
                 OnCheckWhatsNewTab();
             }
+
+            UserEntity user = UserEntity.GetActive();
+            var sharedpref_data = UserSessions.GetCheckEmailVerified(this.mPref);
+            bool isUpdatePersonalDetail = bool.Parse(sharedpref_data);  //get from shared pref
+            
+            if (isFromLogin)
+            {
+                UserSessions.SaveCheckEmailVerified(this.mPref, user.IsActivated.ToString());  //save sharedpref check email  //wan
+                if (string.IsNullOrEmpty(user.IdentificationNo) || !user.IsActivated)
+                {
+                    isFromHomeMenu = true;
+                    OnCheckProfileTab(true, isFromHomeMenu);
+                }
+            }
+            else if (string.IsNullOrEmpty(user.IdentificationNo) || !isUpdatePersonalDetail)
+            {
+                isFromHomeMenu = true;
+                OnCheckProfileTab(true, isFromHomeMenu);
+            }
+            else
+            {
+                isFromHomeMenu = true;
+                OnCheckProfileTab(false, isFromHomeMenu);
+            }
         }
 
         public override void OnTrimMemory(TrimMemory level)
@@ -1447,6 +1774,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void SetDashboardHomeCheck()
         {
             bottomNavigationView.Menu.FindItem(Resource.Id.menu_dashboard).SetChecked(true);
+        }
+
+        public void SetMenuMoreCheck()
+        {
+            bottomNavigationView.Menu.FindItem(Resource.Id.menu_more).SetChecked(true);
         }
 
         public void ShowToBeAddedToast()
@@ -1569,6 +1901,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void OnSelectAccount()
         {
+
             this.userActionsListener.SelectSupplyAccount();
         }
 
@@ -1995,6 +2328,23 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
+        public void OnCheckProfileTab(bool key, bool isfromHomeMenu)
+        {
+            try
+            {
+                //WhatsNewMenuUtils.OnSetWhatsNewLoading(false);
+
+                if (this.mPresenter != null)
+                {
+                    this.mPresenter.OnResumeUpdateProfileUnRead(key, isfromHomeMenu);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void OnCheckWhatsNewTab()
         {
             try
@@ -2310,11 +2660,19 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                                     dialogFragmnet.Arguments = extras;
                                     dialogFragmnet.Show(SupportFragmentManager, "WhatsNew Dialog");
                                 }
+                                else
+                                {
+                                    PopulateIdentificationDetails();
+                                }
                             }
                         }
                         else if (bcrmEntity != null && bcrmEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
                         {
                             OnShowBCRMPopup(bcrmEntity);
+                        }
+                        else
+                        {
+                            PopulateIdentificationDetails();
                         }
                     }
                     else
@@ -2364,6 +2722,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         }
 
         public void SetIsRootTutorialShown(bool flag)
+        {
+            IsRootTutorialShown = flag;
+        }
+
+        public bool GetIsRootTutorialDone()                 //testing //not using yet
+        {
+            return IsRootTutorialShown;
+        }
+
+        public void SetIsRootTutorialDone(bool flag)         //testing //not using yet
         {
             IsRootTutorialShown = flag;
         }

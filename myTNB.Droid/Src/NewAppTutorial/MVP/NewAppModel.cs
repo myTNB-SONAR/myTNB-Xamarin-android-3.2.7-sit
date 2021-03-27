@@ -15,6 +15,7 @@
         public string ContentMessage { get; set; }
         public int ItemCount { get; set; }
         public bool IsButtonShow { get; set; }
+        public bool IsButtonUpdateShow { get; set; }
         public string DisplayMode { get; set; }
         public bool NeedHelpHide { get; set; }
     }

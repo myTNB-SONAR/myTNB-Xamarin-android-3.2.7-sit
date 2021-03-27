@@ -31,7 +31,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            View rootView = inflater.Inflate(Resource.Layout.AddAccountTypeView, container, false);
+            View rootView = inflater.Inflate(Resource.Layout.AddAccountTypeViewNew, container, false);
             radio_non_owner = rootView.FindViewById<LinearLayout>(Resource.Id.btnNonOwner);
             radio_owner = rootView.FindViewById<LinearLayout>(Resource.Id.btnOwner);
 

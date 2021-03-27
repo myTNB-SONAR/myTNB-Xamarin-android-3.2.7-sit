@@ -46,6 +46,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("selectedLanguage")]
         public string SelectedLanguage { get; set; }
 
+        [Column("isActivated")]
+        public bool IsActivated { get; set; }
+
 
         public static int CreateTable()
         {
@@ -76,7 +79,8 @@ namespace myTNB_Android.Src.Database.Model
                 LastLoginDate = user.LastLoginDate ?? "",
                 MobileNo = user.MobileNo,
                 IdentificationNo = user.IdentificationNo,
-                Status = Constants.ACTIVE
+                Status = Constants.ACTIVE,
+                IsActivated = user.IsActivated
             };
 
             int newRecordId = db.InsertOrReplace(newRecord);
@@ -86,6 +90,24 @@ namespace myTNB_Android.Src.Database.Model
             }
 
             return 0;
+            //}
+        }
+
+        public static int UpdateFullname(string fullname)
+        {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            return db.Execute("UPDATE UserEntity SET displayName = ?", fullname);
+            //}
+        }
+
+        public static int UpdateICno(string icno)
+        {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH))
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            return db.Execute("UPDATE UserEntity SET identificationNo = ?", icno);
             //}
         }
 

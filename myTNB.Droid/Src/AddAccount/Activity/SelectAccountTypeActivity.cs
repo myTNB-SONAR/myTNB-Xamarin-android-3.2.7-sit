@@ -18,7 +18,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
     [Activity(Label = "Select Account Type"
               , Icon = "@drawable/ic_launcher"
     , ScreenOrientation = ScreenOrientation.Portrait
-    , Theme = "@style/Theme.Dashboard")]
+    , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class SelectAccountActivity : BaseActivityCustom
     {
 
@@ -50,7 +50,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
             AccountType Commercial = new AccountType();
             Commercial.Id = "2";
-            Commercial.Type = GetLabelByLanguage("commercial");
+            Commercial.Type = GetLabelByLanguage("business");
 
             //AccountType Government = new AccountType();
             //Government.Id = "3";

@@ -26,7 +26,7 @@ namespace myTNB_Android.Src.FindUs.Activity
 {
     [Activity(Label = "Store Type"
         , ScreenOrientation = ScreenOrientation.Portrait
-        , Theme = "@style/Theme.FindUs")]
+        , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class LocationDetailsActivity : BaseToolbarAppCompatActivity, LocationDetailsContract.IView
     {
 

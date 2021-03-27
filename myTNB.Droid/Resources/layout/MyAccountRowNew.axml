@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<com.daimajia.swipe.SwipeLayout
+    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    swipe:leftEdgeSwipeOffset="0dp"
+    swipe:rightEdgeSwipeOffset="0dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#FF5534"
+        android:gravity="right | center"
+        android:tag="Bottom3"
+        android:id="@+id/trash"
+        android:weightSum="10">
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="10"
+            android:text=""
+            android:textColor="#FF5534" />
+    </LinearLayout>
+    <LinearLayout
+        android:padding="16dp"
+        android:orientation="horizontal"
+        android:layout_height="80dp"
+        android:layout_width="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="left | center"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content">
+            <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="left | center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+            <TextView
+                android:id="@+id/txtAccountName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Account Name"
+                android:maxWidth="200dp"
+                android:singleLine="true"
+                android:textColor="#49494a"
+                android:textSize="14dp"/>
+            <ImageView
+                android:id="@+id/imageLeaf"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="6dp"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/ic_display_releaf"
+                android:visibility="visible" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/txtAccountNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Account Number"
+                android:textStyle="normal"
+                android:textColor="#49494a"
+                android:lineSpacingExtra="4sp"
+                android:layout_marginTop="6dp"
+                android:textSize="12dp" />            
+        </LinearLayout>
+        <LinearLayout
+        android:id="@+id/itemActionContainer"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:gravity="right | center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/itemAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/expand_right_arrow"
+                android:gravity="center"/>
+         </LinearLayout>
+     </LinearLayout>
+</com.daimajia.swipe.SwipeLayout>

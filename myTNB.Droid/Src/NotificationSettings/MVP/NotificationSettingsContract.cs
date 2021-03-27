@@ -10,6 +10,10 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
     {
         public interface IView : IBaseView<IUserActionsListener>
         {
+            void HideShowProgressDialog();
+
+            void ShowProgressDialog();
+
             /// <summary>
             /// Show notification types list
             /// </summary>
@@ -36,6 +40,24 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             /// <param name="position">integer</param>
             void ShowSuccessUpdatedNotificationChannel(NotificationChannelUserPreference channelPreference, int position);
 
+            /// <summary>
+            /// Shows a cancelled exception with an option to retry
+            /// </summary>
+            /// <param name="operationCanceledException">the returned exception</param>
+            void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException);
+
+            /// <summary>
+            /// Shows an api exception with an option to retry
+            /// </summary>
+            /// <param name="apiException">the returned exception</param>
+            void ShowRetryOptionsApiException(ApiException apiException);
+
+
+            /// <summary>
+            /// Shows an unknown exception with an option to retry
+            /// </summary>
+            /// <param name="exception">the returned exception</param>
+            void ShowRetryOptionsUnknownException(Exception exception);
 
             /// <summary>
             /// Shows a notification type cancelled exception with an option to retry
@@ -90,6 +112,12 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
 
         public interface IUserActionsListener : IBasePresenter
         {
+            /// <summary>
+            /// Action to navigate to notification
+            /// </summary>
+            /// <param name="deviceId">string</param>
+            void OnNotification(string deviceId);
+
             /// <summary>
             /// Action to select to type item
             /// </summary>

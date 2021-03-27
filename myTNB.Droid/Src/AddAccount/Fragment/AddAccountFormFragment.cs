@@ -409,7 +409,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                             {
                                 edtOwnerMotherName.Visibility = ViewStates.Gone;
                                 edtOwnersIC.RemoveTextChangedListener(mFormField);
-                                textInputLayoutOwnerIC.Hint = Utility.GetLocalizedLabel("AddAccount", "rocNumber");
+                                textInputLayoutOwnerIC.Hint = Utility.GetLocalizedLabel("AddAccount", "rocNumberOptional");
                                 mFormField = new InputFilterFormField(edtOwnersIC, textInputLayoutOwnerIC);
                                 edtOwnersIC.AddTextChangedListener(mFormField);
                                 if (edtOwnersIC.HasFocus)
@@ -473,7 +473,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 {
                     MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                         .SetTitle(Utility.GetLocalizedErrorLabel("error_duplicateAccountTitle"))
-                        .SetMessage(Utility.GetLocalizedErrorLabel("error_duplicateAccountMessage"))
+                        .SetMessage(Utility.GetLocalizedErrorLabel("error_duplicateAccountMessageNew"))
                         .SetContentGravity(GravityFlags.Center)
                         .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
                         .Build().Show();
@@ -647,9 +647,9 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                        
                      
 
-                        if (textInputLayoutAccountNo.Error != Utility.GetLocalizedErrorLabel("accountLength"))
+                        if (textInputLayoutAccountNo.Error != Utility.GetLocalizedErrorLabel("accountLengthNew"))
                         {
-                            textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLength");  // fix bouncing issue
+                            textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLengthNew");  // fix bouncing issue
                         }
                         
                         textInputLayoutAccountNo.RequestLayout();
@@ -944,6 +944,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 }
             }
             return false;
+        }
+
+        public void GovermentDialog()
+        {
+            throw new NotImplementedException();
         }
     }
 }

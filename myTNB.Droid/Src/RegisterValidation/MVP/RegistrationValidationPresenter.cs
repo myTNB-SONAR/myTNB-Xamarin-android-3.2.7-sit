@@ -44,7 +44,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
 
         public void OnNavigateToAccountListActivity()
         {
-            this.mView.ShowAccountListActivity();
+            //this.mView.ShowAccountListActivity();
+            this.mView.ShowEmailRegisterPopUp();
+;
         }
 
         public async void OnRegister(string num1, string num2, string num3, string num4, string deviceId)
@@ -82,9 +84,9 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             try
             {
                 CreateNewUserWithTokenRequest createNewUserWithTokenRequest = new CreateNewUserWithTokenRequest(userCredentialsEntity.Fullname, string.Format("{0}{1}{2}{3}", num1, num2, num3, num4),
-                    userCredentialsEntity.Password, userCredentialsEntity.ICNo, userCredentialsEntity.MobileNo);
+                    userCredentialsEntity.Password, userCredentialsEntity.ICNo, userCredentialsEntity.IdType, userCredentialsEntity.MobileNo);
                 createNewUserWithTokenRequest.SetUserName(userCredentialsEntity.Email);
-                var userRegistrationResponse = await ServiceApiImpl.Instance.CreateNewUserWithToken(createNewUserWithTokenRequest);
+                var userRegistrationResponse = await ServiceApiImpl.Instance.CreateNewUserWithToken_OT(createNewUserWithTokenRequest);
 
                 if (userRegistrationResponse.IsSuccessResponse())
                 {
@@ -97,7 +99,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     }
                     UserAuthenticateRequest userAuthenticateRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), userCredentialsEntity.Password);
                     userAuthenticateRequest.SetUserName(userCredentialsEntity.Email);
-                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthenticateRequest);
+                    var userResponse = await ServiceApiImpl.Instance.UserAuthenticateLogin(userAuthenticateRequest);
 
                     if (!userResponse.IsSuccessResponse())
                     {
@@ -190,7 +192,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                             MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                             HomeMenuUtils.ResetAll();
-                            this.mView.ShowAccountListActivity();
+                            //this.mView.ShowAccountListActivity();
+                            this.mView.ShowEmailRegisterPopUp();
                             UserSessions.SavePhoneVerified(mSharedPref, true);
                         }
                         else

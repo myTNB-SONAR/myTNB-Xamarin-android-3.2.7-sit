@@ -104,7 +104,15 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly int MANAGE_CARDS_REQUEST = 0x07;
 
+        internal static readonly int UPDATE_EMAIL_REQUEST = 0x010;
+
+        internal static readonly int UPDATE_NAME_REQUEST = 0x011;
+
+        internal static readonly int UPDATE_IC_REQUEST = 0x012;
+
         internal static readonly int MANAGE_SUPPLY_ACCOUNT_REQUEST = 0x08;
+
+        internal static readonly int UPDATE_ID_REQUEST = 0x013;
 
         internal static readonly int REQUEST_ATTACHED_CAMERA_IMAGE = 0x09;
         internal static readonly int REQUEST_ATTACHED_GALLERY_IMAGE = 0x0a;
@@ -127,10 +135,13 @@ namespace myTNB_Android.Src.Utils
         internal struct SERVER_URL
         {
 #if DEBUG || STUB
-            internal static readonly string END_POINT = "http://10.215.128.191:89";  //dev
+            //internal static readonly string END_POINT = "http://10.215.128.191:99";  //dev
+            //internal static readonly string END_POINT = "http://10.215.128.191:89";  //dev
+            internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link"; //sit
 #elif DEVELOP || SIT
-            internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
+            internal static readonly string END_POINT = "http://10.215.128.191:99";  //dev
+            //internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link";
 #else
             internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
@@ -200,6 +211,9 @@ namespace myTNB_Android.Src.Utils
 
         //FAQ ID
         internal static readonly string FAQ_ID_PARAM = ".faqID";
+
+        //Add User Access 
+        internal static readonly int ADD_USER = 1;
 
         //Summary dashboard
         internal static readonly int SUMMARY_DASHBOARD_PAGE_COUNT = 5;

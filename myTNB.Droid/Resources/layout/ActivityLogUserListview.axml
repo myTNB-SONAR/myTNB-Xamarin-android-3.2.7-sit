@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/itemActionContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+    <LinearLayout
+        android:layout_alignParentLeft="true"
+        android:gravity="left"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/itemIcon"
+            android:src="@drawable/profile_selected"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginRight="8dp"/>
+         <TextView
+            android:id="@+id/itemTitle"
+            android:text="Item Title"
+            android:gravity="left|center"
+            android:textSize="12dp"
+            android:lineSpacingExtra="4sp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textColor="#49494a"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_marginRight="15dp"/>
+        <TextView
+            android:textColor="#a6a6a6"
+            android:text="test"
+            android:textSize="10sp"
+            android:visibility="visible"
+            android:id="@+id/infoLabelDate"
+            android:gravity="left|center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</RelativeLayout>

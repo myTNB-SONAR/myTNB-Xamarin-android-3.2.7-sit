@@ -23,7 +23,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
 {
     [Activity(Label = "@string/update_password_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait
-        , Theme = "@style/Theme.UpdatePassword")]
+        , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class UpdatePasswordActivity : BaseActivityCustom, UpdatePasswordContract.IView
     {
 

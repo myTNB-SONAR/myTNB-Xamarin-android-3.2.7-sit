@@ -26,7 +26,9 @@
 
         private const string DEV1 = "http://10.215.128.191:88";
         private const string DEV2 = "http://10.215.128.191:89";
+        private const string DEV3 = "http://10.215.128.191:99";
         private const string SIT = "https://mobiletestingws.tnb.com.my";
+        //private const string SIT = "http://10.215.128.191:99";
         private const string PROD = "https://mytnbapp.tnb.com.my";
         private const string DEVUNIFIED = "http://dev.mytnb.com.my:8322";
         //Mark: http://tnbcsdevapp.tnb.my/
@@ -46,8 +48,10 @@
         internal const string ApiKeyId = ApiKeyIdDEV;
         internal const string SitecoreURL = SitecoreSIT;
 #else
-        internal static string ApiDomain = PROD;
-        internal const string ApiKeyId = ApiKeyIdPROD;
+        //internal static string ApiDomain = PROD;
+        //internal const string ApiKeyId = ApiKeyIdPROD;
+        internal static string ApiDomain = DEV3;
+        internal const string ApiKeyId = ApiKeyIdDEV;
         internal const string SitecoreURL = SitecorePROD;
 #endif
 

@@ -46,6 +46,10 @@ namespace myTNB_Android.Src.Login.Models
         [AliasAs("isPhoneVerified")]
         public bool isPhoneVerified { get; set; }
 
+        [JsonProperty(PropertyName = "isActivated")]
+        [AliasAs("isActivated")]
+        public bool IsActivated { get; set; }
+
 
         public User(string __type, string userId, string displayName, string userName, string email, string dateCreated, string lastLoginDate)
         {

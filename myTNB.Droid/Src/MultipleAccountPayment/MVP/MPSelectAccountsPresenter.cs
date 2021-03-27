@@ -77,7 +77,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                             OpenChargeTotal = 0.00,
                             amount = dueAmount,
                             orgAmount = dueAmount,
-                            minimumAmountDue = accountCharge.MandatoryCharges.TotalAmount
+                            minimumAmountDue = accountCharge.MandatoryCharges.TotalAmount,
+                            isOwner = customerBillingAccount.isOwned
                         };
                         newAccountList.Add(mpAccount);
                         /*** Save SM Usage History For the Day***/

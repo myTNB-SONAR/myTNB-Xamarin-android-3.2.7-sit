@@ -26,7 +26,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
     [Activity(Label = "@string/forget_password_activity_title"
               , Icon = "@drawable/ic_launcher"
    , ScreenOrientation = ScreenOrientation.Portrait
-   , Theme = "@style/Theme.ForgetPassword")]
+   , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class ForgetPasswordActivity : BaseActivityCustom, ForgetPasswordContract.IView
     {
 
@@ -269,7 +269,48 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
          
             }
         }
-        
+
+        public void ShowEmailResendSuccess()
+        {
+            this.SetIsClicked(false);
+            Utility.ShowEmailVerificationDialog(this, () =>
+            {
+                //ShowProgressDialog();
+                //ShowEmailUpdateSuccess();
+                string email = txtEmail.Text;
+                this.userActionsListener.ResendEmailVerify(Constants.APP_CONFIG.API_KEY_ID, email);
+            });
+
+        }
+
+        public void ShowEmailUpdateSuccess(string message)
+        {
+            try
+            {
+                //string Email = "";
+                //UserEntity userEntity = UserEntity.GetActive();
+                //Email = userEntity.Email;
+                string Email = txtEmail.Text;
+                Snackbar updateEmailBar = Snackbar.Make(rootView, Utility.GetLocalizedLabel("Tnb_Profile", "toast_email_send") + Email, Snackbar.LengthIndefinite)
+                            .SetAction(Utility.GetLocalizedCommonLabel("close"),
+                             (view) =>
+                             {
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
+                            );
+                View v = updateEmailBar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(4);
+                updateEmailBar.Show();
+                this.SetIsClicked(false);
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void EnableSubmitButton()
         {
             btnSubmit.Enabled = true;

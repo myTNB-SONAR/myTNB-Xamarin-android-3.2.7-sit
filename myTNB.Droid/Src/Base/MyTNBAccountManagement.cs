@@ -29,6 +29,10 @@ namespace myTNB_Android.Src.Base
         private int appLaunchMasterDataTimeout;
         private bool IsUpdatedMobileNumber = false;
         private bool IsUpdatedPassword = false;
+        private bool IsUpdatedName = false;
+        private bool IsUpdatedEmail = false;
+        private bool IsUpdatedID = false;
+        private bool IsAddedNewUser = false;
         private bool IsAppMasterComplete = false;
         private bool IsAppMasterFailed = false;
         private string MaintenanceTitle = "";
@@ -553,6 +557,45 @@ namespace myTNB_Android.Src.Base
                 Utility.LoggingNonFatalError(e);
                 //EvaluateServiceRetry();
             }
+        }
+
+        public void AddNewUserAdded(bool AddedNewUser)
+        {
+            IsAddedNewUser = AddedNewUser;
+        }
+
+        public bool IsNewUserAdd()
+        {
+            return IsAddedNewUser;
+        }
+
+        public void SetIsNameUpdated(bool isUpdated)
+        {
+            IsUpdatedName = isUpdated;
+        }
+
+        public bool IsNameUpdated()
+        {
+            return IsUpdatedName;
+        }
+
+        public void SetIsIDUpdated(bool isUpdated)
+        {
+            IsUpdatedID = isUpdated;
+        }
+
+        public bool IsIDUpdated()
+        {
+            return IsUpdatedID;
+        }
+        public void SetIsEmailUpdated(bool isUpdated)
+        {
+            IsUpdatedEmail = isUpdated;
+        }
+
+        public bool IsEmailUpdated()
+        {
+            return IsUpdatedEmail;
         }
 
         public void SetIsUpdatedMobile(bool isUpdated)

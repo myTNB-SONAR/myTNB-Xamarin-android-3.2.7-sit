@@ -1,9 +1,11 @@
-﻿using myTNB_Android.Src.ManageCards.Models;
+﻿using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.ManageCards.Models;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -90,6 +92,23 @@ namespace myTNB_Android.Src.ManageCards.MVP
         {
             //
             this.mView.ShowCards();
+            try
+            {
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                if (CustomerBillingAccount.HasItems())
+                {
+                    List<CustomerBillingAccount> customerAccountList = CustomerBillingAccount.List();
+                    if (customerAccountList != null && customerAccountList.Count > 0)
+                    {
+                        this.mView.ShowAccountList(customerAccountList);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
+
     }
 }

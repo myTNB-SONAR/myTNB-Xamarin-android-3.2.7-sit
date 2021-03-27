@@ -31,7 +31,7 @@ namespace myTNB_Android.Src.SubmittedNewEnquiry.Activity
     [Activity(Label = "Submitted Enquiry"
       , ScreenOrientation = ScreenOrientation.Portrait
               , WindowSoftInputMode = SoftInput.AdjustPan
-      , Theme = "@style/Theme.FaultyStreetLamps")]
+      , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class SubmittedNewEnquiryActivity : BaseToolbarAppCompatActivity, SubmittedNewEnquiryContract.IView
     {
         SubmittedNewEnquiryContract.IUserActionsListener userActionListener;

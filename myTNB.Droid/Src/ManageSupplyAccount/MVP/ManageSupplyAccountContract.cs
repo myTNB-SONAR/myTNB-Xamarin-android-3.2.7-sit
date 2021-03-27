@@ -12,6 +12,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
     {
         public interface IView : IBaseView<IUserActionsListener>
         {
+
+            void ManageUserActivity();
+
             /// <summary>
             /// Show remove progress dialog
             /// </summary>
@@ -71,6 +74,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
         }
         public interface IUserActionsListener : IBasePresenter
         {
+            /// <summary>
+            /// The returned result from another activity
+            /// </summary>
+            void ManageAccessUser(AccountData accountData);
+
             /// <summary>
             /// Action on update nickname
             /// </summary>

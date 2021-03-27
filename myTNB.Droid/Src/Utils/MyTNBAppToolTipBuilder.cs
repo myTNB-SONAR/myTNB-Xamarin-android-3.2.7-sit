@@ -21,17 +21,23 @@ namespace myTNB_Android.Src.Utils
             IMAGE_HEADER_TWO_BUTTON,
             NORMAL,
             NORMAL_STRETCHABLE,
+            THREE_PART_WITH_HEADER_TWO_BUTTON,
+            DIALOGBOX_WITH_CHECKBOX,
         }
 
         private ToolTipType toolTipType;
         private int imageResource;
         private string title;
+        private string subtitle;
         private string message;
         private string ctaLabel;
         private string secondaryCTALabel;
+        private string CheckboxTitle;
         private RecyclerView.Adapter adapter;
         private Action ctaAction;
         private Action secondaryCTAAction;
+        private Action checkedBoxAction;
+        private Action uncheckedBoxAction;
         private MaterialDialog dialog;
         private Color mClickSpanColor;
         private Typeface mTypeface;
@@ -78,6 +84,14 @@ namespace myTNB_Android.Src.Utils
             {
                 layoutResource = Resource.Layout.WhatIsThisDialogView;
             }
+            else if (mToolTipType == ToolTipType.THREE_PART_WITH_HEADER_TWO_BUTTON)
+            {
+                layoutResource = Resource.Layout.CustomToolTipWithHeaderSubheaderTwoButtonLayout;
+            }
+            else if (mToolTipType == ToolTipType.DIALOGBOX_WITH_CHECKBOX)
+            {
+                layoutResource = Resource.Layout.CustomToolTipWithIDDialogTwoButtonLayout;
+            }
             tooltipBuilder.dialog = new MaterialDialog.Builder(context)
                 .CustomView(layoutResource, false)
                 .Cancelable(false)
@@ -110,6 +124,12 @@ namespace myTNB_Android.Src.Utils
         public MyTNBAppToolTipBuilder SetTitle(string title)
         {
             this.title = title;
+            return this;
+        }
+
+        public MyTNBAppToolTipBuilder SetSubTitle(string subtitle)
+        {
+            this.subtitle = subtitle;
             return this;
         }
 
@@ -149,6 +169,24 @@ namespace myTNB_Android.Src.Utils
         public MyTNBAppToolTipBuilder SetSecondaryCTAaction(Action ctaFunc)
         {
             this.secondaryCTAAction = ctaFunc;
+            return this;
+        }
+
+        public MyTNBAppToolTipBuilder SetCheckBoxCTaction(Action ctaFunc)
+        {
+            this.checkedBoxAction = ctaFunc;
+            return this;
+        }
+
+        public MyTNBAppToolTipBuilder SetUnCheckBoxCTaction(Action ctaFunc)
+        {
+            this.uncheckedBoxAction = ctaFunc;
+            return this;
+        }
+
+        public MyTNBAppToolTipBuilder SetTitleCheckBox(string checkboxtitle)
+        {
+            this.CheckboxTitle = checkboxtitle;
             return this;
         }
 
@@ -363,6 +401,116 @@ namespace myTNB_Android.Src.Utils
                 }
                 tooltipMessage = LinkRedirectionUtils
                     .Create(this.mContext, string.Empty)
+                    .SetTextView(tooltipMessage)
+                    .SetMessage(this.message, this.mClickSpanColor, this.mTypeface)
+                    .Build()
+                    .GetProcessedTextView();
+                tooltipPrimaryCTA.Text = this.ctaLabel;
+                tooltipSecondaryCTA.Text = this.secondaryCTALabel;
+            }
+            else if (this.toolTipType == ToolTipType.THREE_PART_WITH_HEADER_TWO_BUTTON)
+            {
+                TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
+                TextView tooltipSubTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipSubTitle);
+                TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
+                TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
+                TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
+
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipSubTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
+
+                tooltipTitle.Gravity = this.mGravityFlag;
+                tooltipSubTitle.Gravity = this.mGravityFlag;
+                tooltipMessage.Gravity = this.mGravityFlag;
+
+                tooltipPrimaryCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    this.ctaAction?.Invoke();
+                };
+
+                tooltipSecondaryCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    if (secondaryCTAAction != null)
+                    {
+                        this.secondaryCTAAction();
+                    }
+                };
+
+                tooltipTitle.Text = this.title;
+                tooltipSubTitle.Text = this.subtitle;
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message);
+                }
+                tooltipMessage = LinkRedirectionUtils
+                    .Create(this.mContext, "")
+                    .SetTextView(tooltipMessage)
+                    .SetMessage(this.message, this.mClickSpanColor, this.mTypeface)
+                    .Build()
+                    .GetProcessedTextView();
+                tooltipPrimaryCTA.Text = this.ctaLabel;
+                tooltipSecondaryCTA.Text = this.secondaryCTALabel;
+            }
+            else if (this.toolTipType == ToolTipType.DIALOGBOX_WITH_CHECKBOX)
+            {
+                TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
+                TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
+                TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
+                TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
+                CheckBox tooltipCheckBoxCTA = this.dialog.FindViewById<CheckBox>(Resource.Id.ToolTipCheckBox);
+                TextView tooltipCheckBoxText = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitleCheckBox);
+
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA, tooltipCheckBoxText);
+
+                tooltipTitle.Gravity = this.mGravityFlag;
+                tooltipMessage.Gravity = this.mGravityFlag;
+
+                tooltipPrimaryCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    this.ctaAction?.Invoke();
+                };
+
+                tooltipCheckBoxCTA.CheckedChange += (sender, e) =>
+                {
+                    if (e.IsChecked)
+                    {
+                        this.checkedBoxAction();
+                    }
+                    else
+                    {
+                        this.uncheckedBoxAction();
+                    }
+                };
+
+                tooltipSecondaryCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    if (secondaryCTAAction != null)
+                    {
+                        this.secondaryCTAAction();
+                    }
+                };
+
+                tooltipTitle.Text = this.title;
+                tooltipCheckBoxText.Text = this.CheckboxTitle;
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message);
+                }
+                tooltipMessage = LinkRedirectionUtils
+                    .Create(this.mContext, "")
                     .SetTextView(tooltipMessage)
                     .SetMessage(this.message, this.mClickSpanColor, this.mTypeface)
                     .Build()

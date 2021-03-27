@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
     android:orientation="vertical">
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
@@ -38,16 +40,18 @@
                 android:id="@+id/text_no_of_account"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:textSize="18dp"
+                android:textSize="16dp"
                 android:textColor="@color/blue"
-                android:padding="6dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
                 android:text="@string/no_account_found" />
             <TextView
                 android:id="@+id/label_your_account"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:textSize="16dp"
-                android:padding="6dp"
+                android:textSize="14dp"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
                 android:textColor="@color/tunaGrey"
                 android:text="@string/account_nickname_info" />
         </LinearLayout>
@@ -83,15 +87,28 @@
                             android:id="@+id/text_additional_accounts"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:textSize="18dp"
+                            android:textSize="16dp"
                             android:paddingBottom="4dp"
-                            android:paddingTop="4dp"
+                            android:paddingTop="16dp"
                             android:paddingLeft="16dp"
                             android:paddingRight="16dp"
                             android:textColor="@color/blue"
-                            android:background="@color/lightGrey"
+                            android:background="@color/white"
                             android:visibility="gone"
                             android:text="Additional account" />
+                        <TextView
+                            android:id="@+id/label_additional_accounts"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:textSize="14dp"
+                            android:paddingBottom="16dp"
+                            android:paddingTop="4dp"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:textColor="@color/tunaGrey"
+                            android:background="@color/white"
+                            android:visibility="gone"
+                            android:text="Label" />
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/additional_account_list_recycler_view"
                             android:scrollbars="vertical"
@@ -105,12 +122,48 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:orientation="vertical"
-                    android:paddingLeft="32dp"
-                    android:paddingRight="32dp"
-                    android:paddingBottom="24dp"
                     android:layout_alignParentBottom="true"
                     android:gravity="center|bottom"
+                    android:background="@color/lightGrey"
                     android:layout_below="@id/layout1">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="left|center"
+                        android:paddingLeft="18dp"
+                        android:paddingRight="18dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="16dp"
+                        android:background="@color/white">
+                        <CheckBox
+                            android:id="@+id/checkboxCondition"
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:checked="false"
+                            android:textSize="12dp"
+                            android:paddingTop="-4dp"
+                            android:layout_gravity="center_vertical"
+                            android:button="@drawable/checkbox_selector" />
+                        <TextView
+                            android:text="By confirming, I have read and agreed to the Terms and Conditions."
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="12dp"
+                            android:id="@+id/txtTermsConditions"
+                            android:textColorLink="@color/powerBlue"
+                            android:paddingLeft="3dp"
+                            android:layout_gravity="center_vertical"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingBottom="15dp"
+                        android:background="@color/white">
                     <Button
                         android:id="@+id/btnAddAnotherAccount"
                         android:layout_height="wrap_content"
@@ -124,7 +177,8 @@
                         android:layout_width="match_parent"
                         android:text="Confirm"
                         android:textAllCaps="false"
-                        style="@style/DarkButton" />
+                        style="@style/DarkButton1" />
+                    </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
         </ScrollView>

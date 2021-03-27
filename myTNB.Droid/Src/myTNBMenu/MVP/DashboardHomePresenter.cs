@@ -23,6 +23,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SummaryDashBoard;
@@ -105,6 +106,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			UserEntity.RemoveActive();
 			UserRegister.RemoveActive();
 			CustomerBillingAccount.RemoveActive();
+            UserManageAccessAccount.RemoveActive();
 			UserSessions.RemovePersistPassword(mSharedPref);
 			NotificationFilterEntity.RemoveAll();
 			SMUsageHistoryEntity.RemoveAll();
@@ -120,20 +122,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 		public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
 		{
-			try
-			{
-				if (requestCode == Constants.SELECT_ACCOUNT_REQUEST_CODE)
-				{
-					if (resultCode == Result.Ok)
-					{
-						Bundle extras = data.Extras;
+            try
+            {
+                if (requestCode == Constants.SELECT_ACCOUNT_REQUEST_CODE)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        Bundle extras = data.Extras;
 
                         CustomerBillingAccount selectedAccount = JsonConvert.DeserializeObject<CustomerBillingAccount>(extras.GetString(Constants.SELECTED_ACCOUNT));
 
-						if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
-						{
+                        if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
+                        {
                             if (selectedAccount != null && selectedAccount.SmartMeterCode != null && selectedAccount.SmartMeterCode.Equals("0"))
-							{
+                            {
                                 if (!string.IsNullOrEmpty(selectedAccount.AccNum) && !UsageHistoryEntity.IsSMDataUpdated(selectedAccount.AccNum))
                                 {
                                     UsageHistoryEntity storedEntity = new UsageHistoryEntity();
@@ -172,8 +174,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                     LoadUsageHistory(selectedAccount);
                                 }
                             }
-							else
-							{
+                            else
+                            {
                                 if (!SMUsageHistoryEntity.IsSMDataUpdated(selectedAccount.AccNum))
                                 {
                                     //Get stored data
@@ -224,8 +226,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                 }
                             }
                         }
-						else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
-						{
+                        else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
+                        {
                             this.mView.SetAccountName(selectedAccount.AccDesc);
                             AccountData accountData = new AccountData();
                             CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccNum);
@@ -237,13 +239,21 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
                             this.mView.ShowBillMenu(accountData);
                         }
-					}
-				}
-			}
-			catch (System.Exception e)
-			{
-				Utility.LoggingNonFatalError(e);
-			}
+                    }
+                }
+                else if (requestCode == Constants.UPDATE_ID_REQUEST)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        this.mView.SetMenuMoreCheck();
+                        OnMenuSelect(Resource.Id.menu_more);
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
 		}
 
 		public void OnMenuSelect(int resourceId)
@@ -343,12 +353,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         this.mView.DisableBillMenu();
                     }
 
+                    this.mView.OnCheckProfileTab(false, true);
                     OnUpdateRewardUnRead();
                     break;
 				case Resource.Id.menu_promotion:
                     currentBottomNavigationMenu = Resource.Id.menu_promotion;
                     trackBottomNavigationMenu = Resource.Id.menu_promotion;
                     this.mView.ShowWhatsNewMenu();
+                    this.mView.OnCheckProfileTab(false, true);
 
                     isWhatNewClicked = true;
 
@@ -372,6 +384,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     currentBottomNavigationMenu = Resource.Id.menu_reward;
                     trackBottomNavigationMenu = Resource.Id.menu_reward;
                     this.mView.ShowRewardsMenu();
+                    this.mView.OnCheckProfileTab(false, true);
 
                     isRewardClicked = true;
 
@@ -401,6 +414,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             currentBottomNavigationMenu = Resource.Id.menu_more;
             trackBottomNavigationMenu = Resource.Id.menu_more;
             OnUpdateRewardUnRead();
+            this.mView.OnCheckProfileTab(true, false);
             this.mView.ShowMoreMenu();
         }
 
@@ -607,6 +621,23 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             {
                 this.mView.HideUnreadWhatsNew();
 
+            }
+        }
+
+        public void OnResumeUpdateProfileUnRead(bool key, bool isfromHome)
+        {
+            UserEntity user = UserEntity.GetActive();
+            var sharedpref_data = UserSessions.GetCheckEmailVerified(this.mSharedPref);
+            bool isUpdatePersonalDetail = bool.Parse(sharedpref_data);  //get from shared pref
+
+            if (string.IsNullOrEmpty(user.IdentificationNo) || !isUpdatePersonalDetail)
+            {
+                this.mView.ShowUnverifiedProfile(key, isfromHome);
+
+            }
+            else
+            {
+                this.mView.HideUnverifiedProfile(key, isfromHome);
             }
         }
 
@@ -1652,6 +1683,38 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             }
             wtManager.UpdateReadItem(itemID, flag, formattedDate);
+        }
+
+        public List<NewAppModel> OnGeneraNewAppTutorialList(bool isOwner)
+        {
+            List<NewAppModel> newList = new List<NewAppModel>();
+            bool isNeedHelpHide = true;
+
+            if (isOwner)
+            {
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.BottomRight,
+                    ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageTitle"),
+                    ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageDesc"),
+                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    NeedHelpHide = isNeedHelpHide,
+                    IsButtonShow = false
+                });
+            }
+            else
+            {
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.BottomRight,
+                    ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageTitle"),
+                    ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialUsageDescNonOwner"),
+                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    NeedHelpHide = isNeedHelpHide,
+                    IsButtonShow = false
+                });
+            }            
+            return newList;
         }
 
     }

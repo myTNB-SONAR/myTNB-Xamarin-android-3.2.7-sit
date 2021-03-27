@@ -205,7 +205,11 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 {
                     mView.HideAddingAccountProgressDialog();
                 }
-                if (result != null && result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS)
+                if (result != null && result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS && result.Response.DisplayType.Equals("POPUP"))
+                {
+                    mView.GovermentDialog();
+                }
+               else if (result != null && result.Response != null && result.Response.ErrorCode != Constants.SERVICE_CODE_SUCCESS)
                 {
                     mView.ShowAddAccountFail(result.Response.DisplayMessage);
                 }
@@ -221,9 +225,11 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     account.accountLabel = accountLable;
                     account.icNum = userIdentificationNum;
                     account.accountCategoryId = result.GetData().accountCategoryId;
+                    account.emailOwner = result.GetData().emailOwner;
+                    account.mobileNoOwner = result.GetData().mobileNoOwner;
                     mView.ShowValidateAccountSucess(account);
                 }
-
+               
             }
             catch (System.OperationCanceledException cancelledException)
             {
@@ -276,7 +282,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 if (!TextUtils.IsEmpty(accountno) && !TextUtils.IsEmpty(accountNickName))
                 {
 
-                    if (isOwner && TextUtils.IsEmpty(ownerIC) || !Utility.AddAccountNumberValidation(accountno.Length))
+                    if (isOwner && !Utility.AddAccountNumberValidation(accountno.Length))
                     {
                         if (!Utility.AddAccountNumberValidation(accountno.Length))
                         {

@@ -1,44 +1,73 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="16dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:weightSum="1.0"
+    android:orientation="horizontal">
     <LinearLayout
+        android:layout_weight="0.8"
+        android:layout_marginRight="15dp"
         android:orientation="vertical"
         android:layout_alignParentLeft="true"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/itemTitle"
             android:text="Item Title"
-            android:gravity="center"
+            android:gravity="left"
             android:textSize="10dp"
             android:textColor="#a6a6a6"
-            android:layout_width="wrap_content" 
-            android:layout_height="14dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
         <TextView
             android:id="@+id/itemValue"
-            android:gravity="center"
+            android:gravity="left | bottom"
+            android:drawablePadding="10dp" 
             android:text="Item Value"
             android:textSize="14dp"
+            android:singleLine="true"
+            android:ellipsize="middle"
             android:textColor="#49494a"
-            android:layout_width="wrap_content" 
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/icons_email_verified"
+            android:visibility="gone"
+            android:id="@+id/infoVerifyIcon"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/itemActionContainer"
-        android:visibility="gone"
-        android:orientation="vertical"
+        android:visibility="visible"
+        android:orientation="horizontal"
         android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:layout_width="wrap_content"
+        android:gravity="right|center"
+        android:layout_weight="0.2"
+        android:layout_width="0dp"
         android:layout_height="match_parent">
         <TextView
+            android:visibility="gone"
+            android:id="@+id/infoLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
             android:id="@+id/itemAction"
+            android:drawablePadding="5dp" 
             android:text="Manage"
             android:textSize="12dp"
+            android:singleLine="true"
+            android:gravity="right"
             android:textColor="#1c79ca"
-            android:layout_width="wrap_content" 
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

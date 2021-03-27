@@ -1,4 +1,4 @@
-﻿using AFollestad.MaterialDialogs;
+﻿/*using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 {
     [Activity(Label = "@string/manage_supply_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
-    , Theme = "@style/Theme.ManageSupplyAccount")]
+    , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class ManageSupplyAccountActivity : BaseActivityCustom, ManageSupplyAccountContract.IView
     {
         [BindView(Resource.Id.rootView)]
@@ -106,7 +106,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 btnRemoveAccount.Text = GetLabelByLanguage("removeAccount");
 
                 txtNickName.AddTextChangedListener(new InputFilterFormField(txtNickName, txtInputLayoutNickName));
-
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
                 mPresenter = new ManageSupplyAccountPresenter(this, accountData);
                 this.userActionsListener.Start();
@@ -387,3 +387,4 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         }
     }
 }
+*/

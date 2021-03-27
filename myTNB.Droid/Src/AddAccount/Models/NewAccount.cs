@@ -33,5 +33,19 @@
         public bool IsTaggedSMR { get; set; }
 
         public bool isOwned { get; set; }
+
+        public string emailOwner { get; set; }
+
+        public string mobileNoOwner { get; set; }
+
+        public string ISDmobileNo { get; set; }
+
+        public bool isNoDetailOwner { get; set; }
+
+        public bool CountryCheck { get; set; }
+
+        public string countryDetail { get; set; }
+
+        public bool CountryCheckNoPhone { get; set; }
     }
 }

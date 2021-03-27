@@ -65,22 +65,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     {
                         cardList.Add(CreditCardData.Copy(card));
                     }
-
-                    this.mView.ShowUserData(userEntity, cardList.Count);
-
-                    if (cardList.Count > 0)
-                    {
-                        this.mView.EnableManageCards();
-                    }
-                    else
-                    {
-                        this.mView.DisableManageCards();
-                    }
                 }
                 else
                 {
-                    this.mView.DisableManageCards();
-                    this.mView.ShowUserData(userEntity, 0);
                     this.mView.ShowCCErrorSnakebar();
                 }
 
@@ -92,8 +79,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideNotificationsProgressDialog();
                 }
                 // ADD OPERATION CANCELLED HERE
-                this.mView.DisableManageCards();
-                this.mView.ShowUserData(userEntity, 0);
+                //this.mView.DisableManageCards();
+                //this.mView.ShowUserData(userEntity, 0);
                 this.mView.ShowCCErrorSnakebar();
                 Utility.LoggingNonFatalError(e);
             }
@@ -104,8 +91,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideNotificationsProgressDialog();
                 }
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                this.mView.DisableManageCards();
-                this.mView.ShowUserData(userEntity, 0);
+                //this.mView.DisableManageCards();
+                //this.mView.ShowUserData(userEntity, 0);
                 this.mView.ShowCCErrorSnakebar();
                 Utility.LoggingNonFatalError(apiException);
             }
@@ -116,8 +103,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     this.mView.HideNotificationsProgressDialog();
                 }
                 // ADD UNKNOWN EXCEPTION HERE
-                this.mView.DisableManageCards();
-                this.mView.ShowUserData(userEntity, 0);
+                //this.mView.DisableManageCards();
+                //this.mView.ShowUserData(userEntity, 0);
                 this.mView.ShowCCErrorSnakebar();
                 Utility.LoggingNonFatalError(e);
             }
@@ -232,22 +219,31 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                             ? LanguageManager.Language.MS
                             : LanguageManager.Language.EN);
 
-                    UserEntity.RemoveActive();
-                    UserRegister.RemoveActive();
-                    CustomerBillingAccount.RemoveActive();
-                    NotificationFilterEntity.RemoveAll();
-                    UserNotificationEntity.RemoveAll();
-                    SubmittedFeedbackEntity.Remove();
-                    SMUsageHistoryEntity.RemoveAll();
-                    UsageHistoryEntity.RemoveAll();
-                    BillHistoryEntity.RemoveAll();
-                    PaymentHistoryEntity.RemoveAll();
-                    REPaymentHistoryEntity.RemoveAll();
-                    AccountDataEntity.RemoveAll();
-                    SummaryDashBoardAccountEntity.RemoveAll();
-                    SelectBillsEntity.RemoveAll();
-                    LanguageUtil.SetIsLanguageChanged(false);
-                    this.mView.ShowLogout();
+                    if (logoutResponse.IsSuccessResponse())
+                    {
+                        UserEntity.RemoveActive();
+                        UserRegister.RemoveActive();
+                        CustomerBillingAccount.RemoveActive();
+                        UserManageAccessAccount.RemoveActive();
+                        LogUserAccessEntity.RemoveAll();
+                        NotificationFilterEntity.RemoveAll();
+                        UserNotificationEntity.RemoveAll();
+                        SubmittedFeedbackEntity.Remove();
+                        SMUsageHistoryEntity.RemoveAll();
+                        UsageHistoryEntity.RemoveAll();
+                        BillHistoryEntity.RemoveAll();
+                        PaymentHistoryEntity.RemoveAll();
+                        REPaymentHistoryEntity.RemoveAll();
+                        AccountDataEntity.RemoveAll();
+                        SummaryDashBoardAccountEntity.RemoveAll();
+                        SelectBillsEntity.RemoveAll();
+                        LanguageUtil.SetIsLanguageChanged(false);
+                        this.mView.ShowLogout();
+                    }
+                    else
+                    {
+                        this.mView.ShowLogoutErrorMessage(logoutResponse.Response.DisplayMessage);
+                    }
                 }
             }
             catch (System.OperationCanceledException e)
@@ -288,11 +284,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             this.mView.ShowRemovedCardSuccess(creditCard, cardList.Count);
             if (cardList.Count > 0)
             {
-                this.mView.EnableManageCards();
+                //this.mView.EnableManageCards();
             }
             else
             {
-                this.mView.DisableManageCards();
+                //this.mView.DisableManageCards();
             }
         }
     }

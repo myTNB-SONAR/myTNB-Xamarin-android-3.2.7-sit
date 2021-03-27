@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
 {
     [Activity(Label = "@string/select_submitted_feedback_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
-    , Theme = "@style/Theme.SelectFeedbackStateStyle")]
+    , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class SelectSubmittedFeedbackActivity : BaseToolbarAppCompatActivity, SelectSubmittedFeedbackContract.IView
     {
         [BindView(Resource.Id.rootView)]

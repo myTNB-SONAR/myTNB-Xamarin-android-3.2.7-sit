@@ -87,6 +87,8 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
             /// </summary>
             void ShowAccountListActivity();
 
+            void ShowEmailRegisterPopUp();
+
             /// <summary>
             /// Show snackbar error from api response
             /// </summary>

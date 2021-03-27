@@ -64,7 +64,7 @@ namespace myTNB_Android.Src.Utils
                 ViewGroup.LayoutParams layoutParams = iconView.LayoutParameters;
                 var paddingTop = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, topPadding, displayMetrics);
                 iconView.SetPadding(0, paddingTop, 0, 0);
-                if (bottomNavigationMenuView.GetChildAt(i).Id == Resource.Id.menu_promotion || bottomNavigationMenuView.GetChildAt(i).Id == Resource.Id.menu_reward)
+                if (bottomNavigationMenuView.GetChildAt(i).Id == Resource.Id.menu_promotion || bottomNavigationMenuView.GetChildAt(i).Id == Resource.Id.menu_reward || bottomNavigationMenuView.GetChildAt(i).Id == Resource.Id.menu_more)
                 {
                     layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 28f, displayMetrics);
                     layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 60f, displayMetrics);

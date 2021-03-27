@@ -87,7 +87,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <returns></returns>
         public Task<ValidateManualAccountResponse> ValidateManualAccount([Body] Request.BaseRequest request)
 		{
-			return api.ValidateManualAccount<ValidateManualAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
+			return api.ValidateManualAccount_OT<ValidateManualAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
 		}
 
         /// <summary>
@@ -190,6 +190,155 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<UserAuthenticateResponse> UserAuthenticate([Body] Request.BaseRequest request)
         {
             return api.UserAuthenticate<UserAuthenticateResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+        /// <summary>
+        /// Call CancelInvitation_OT with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<ManageAccessAccountListNullResponse> CancelInvitation_OT([Body] Request.BaseRequest request)
+        {
+            return api.CancelInvitation_OT<ManageAccessAccountListNullResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //wan   //api cancel invited user
+        }
+
+
+        /// <summary>
+        /// Call SendReInviteEmail with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<ManageAccessAccountListNullResponse> SendReInviteEmail([Body] Request.BaseRequest request)
+        {
+            return api.SendReInviteEmail<ManageAccessAccountListNullResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //irul   //api resend invited user
+        }
+
+        /// <summary>
+        /// Call GetAccountActivityLogList with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<LogUserAccessResponse> AddUserAcess_OT([Body] Request.BaseRequest request)
+        {
+            return api.AddUserAcess_OT<LogUserAccessResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //wan   //api add user access
+        }
+
+        /// <summary>
+        /// Call GetAccountActivityLogList with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<LogUserAccessResponse> RemoveUserAcess_OT([Body] Request.BaseRequest request)
+        {
+            return api.RemoveUserAcess_OT<LogUserAccessResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //wan   //api remove user access
+        }
+
+        /// <summary>
+        /// Call GetAccountActivityLogList with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<LogUserAccessResponse> GetAccountActivityLogList([Body] Request.BaseRequest request)
+        {
+            return api.GetAccountActivityLogList<LogUserAccessResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //2enapps wan   //api log activity user access
+        }
+
+        /// <summary>
+        /// Call UpdateAccountAccessRight with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<ManageAccessAccountListNullResponse> UpdateAccountAccessRight([Body] Request.BaseRequest request)
+        {
+            return api.UpdateAccountAccessRight<ManageAccessAccountListNullResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //2enapps wan   //api add multiple account new
+        }
+
+        /// <summary>
+        /// Call AddAccounts with default timeout
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<AddAccountsResponse> AddMultipleAccounts_OT([Body] Request.BaseRequest request)
+        {
+            return api.AddMultipleAccounts_OT<AddAccountsResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //2enapps wan   //api add multiple account new
+        }
+
+        /// <summary>
+        /// Call GetAccountAccessRightList with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<ManageAccessAccountListResponse> GetAccountAccessRightList([Body] Request.BaseRequest request)
+        {
+            return api.GetAccountAccessRightList<ManageAccessAccountListResponse>(request, CancellationTokenSourceWrapper.GetToken());     //2enapps wan   //api get manage access list
+        }
+
+        /// <summary>
+        /// Call GetAccountAccessRight with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<ManageAccessAccountListResponse> GetAccountAccessRight([Body] Request.BaseRequest request)
+        {
+            return api.GetAccountAccessRight<ManageAccessAccountListResponse>(request, CancellationTokenSourceWrapper.GetToken());     //2enapps wan   //api get manage access  
+        }
+
+        /// <summary>
+        /// Call CreateNewUserWithToken with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<CreateNewUserWithTokenResponse> CreateNewUserWithToken_OT([Body] Request.BaseRequest request)
+        {
+            return api.CreateNewUserWithToken_OT<CreateNewUserWithTokenResponse>(request, CancellationTokenSourceWrapper.GetToken());     //2enapps wan   //api register baru
+        }
+
+        /// <summary>
+        /// Call IsUserAuth with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<UserAuthenticateResponse> UserAuthenticateLogin([Body] Request.BaseRequest request)
+        {
+            return api.UserAuthenticateLoginNew<UserAuthenticateResponse>(request, CancellationTokenSourceWrapper.GetToken());  //2enapss wan //api login baru
+        }
+
+        public Task<UserAuthenticateResponseEmail> UserAuthenticateEmail([Body] Request.BaseRequest request)
+        {
+            return api.UserAuthenticate<UserAuthenticateResponseEmail>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+
+        public Task<SendEmailRegisterCodeResponse> UserAuthenticateEmailOnlyNew([Body] Request.BaseRequest request)
+        {
+            return api.UserAuthenticateEmail<SendEmailRegisterCodeResponse>(request, CancellationTokenSourceWrapper.GetToken());      //irul
+        }
+
+
+        public Task<SendDetailRegisterCodeResponse> UserAuthenticateIDOnlyNew([Body] Request.BaseRequest request)
+        {
+            return api.UserAuthenticateID<SendDetailRegisterCodeResponse>(request, CancellationTokenSourceWrapper.GetToken());      //irul
+        }
+
+
+        public Task<UserAuthenticateResponseEmail> UserAuthenticateEmailOnly([Body] Request.BaseRequest request)
+        {
+            return api.UserAuthenticateEmail<UserAuthenticateResponseEmail>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
+        }
+
+        public Task<UserAuthenticateResponseID> UserAuthenticateIDOnly([Body] Request.BaseRequest request)
+        {
+            return api.UserAuthenticateID<UserAuthenticateResponseID>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
+        }
+
+        public Task<UserAuthenticateResponseID> UserAuthenticateUpdateID([Body] Request.BaseRequest request)
+        {
+            return api.UserUpdateIdentifcationNo<UserAuthenticateResponseID>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
+        }
+
+        public Task<UserAuthenticateResponseName> UserAuthenticateUpdateName([Body] Request.BaseRequest request)
+        {
+            return api.UserUpdateName<UserAuthenticateResponseName>(request, CancellationTokenSourceWrapper.GetToken());      //2enapps wan
         }
 
         /// <summary>
@@ -330,6 +479,27 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         public Task<ChangeNewPasswordResponse> ChangeNewPassword([Body] Request.BaseRequest request)
         {
             return api.ChangeNewPassword<ChangeNewPasswordResponse>(request, CancellationTokenSourceWrapper.GetToken());
+        }
+
+
+        /// <summary>
+        /// Call ChangeNewPassword with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SendResetPasswordCodeResponse> ChangeNewPasswordNew([Body] Request.BaseRequest request)
+        {
+            return api.SendResetPasswordCode_OT<SendResetPasswordCodeResponse>(request, CancellationTokenSourceWrapper.GetToken()); //yana
+        }
+
+        /// <summary>
+        /// Call Resend Email Verification with default timeout.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public Task<SendEmailVerificationResponse> SendEmailVerify([Body] Request.BaseRequest request)
+        {
+            return api.SendEmailVerification<SendEmailVerificationResponse>(request, CancellationTokenSourceWrapper.GetToken()); //yana
         }
 
         /// <summary>

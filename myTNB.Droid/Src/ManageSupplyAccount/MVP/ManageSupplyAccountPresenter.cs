@@ -5,11 +5,13 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -135,6 +137,130 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                 Utility.LoggingNonFatalError(e);
             }
 
+        }
+
+        public async void ManageAccessUser(AccountData accountData)
+        {
+            if (mView.IsActive())
+            {
+                this.mView.ShowRemoveProgress();
+            }
+            try
+            {
+
+                ManageAccessAccountListResponse manageAccessAccountListResponse = await ServiceApiImpl.Instance.GetAccountAccessRightList( new GetAccountAccessRight(accountData.AccountNum));
+
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemoveProgress();
+                }
+
+                if (manageAccessAccountListResponse != null && manageAccessAccountListResponse.Response.ErrorCode == Constants.SERVICE_CODE_SUCCESS)
+                {
+                    if (manageAccessAccountListResponse.GetData().Count > 0)
+                    {
+                        UserManageAccessAccount.RemoveActive();
+                        ProcessManageAccessAccount(manageAccessAccountListResponse.GetData());
+                    }
+                    this.mView.ManageUserActivity();
+                }
+                else
+                {
+                    this.mView.ManageUserActivity();
+                    //this.mView.ShowErrorMessageResponse(manageAccessAccountListResponse.Response.DisplayMessage);
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemoveProgress();
+                }
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemoveProgress();
+                }
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideRemoveProgress();
+                }
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
+        private void ProcessManageAccessAccount(List<ManageAccessAccountListResponse.CustomerAccountData> list)
+        {
+            try
+            {
+                int ctr = 0;
+                if (list.Count > 0)
+                {
+                    //List<UserManageAccessAccount> existingSortedList = AccountSortingEntity.List(UserEntity.GetActive().Email, Constants.APP_CONFIG.ENV);
+
+                    List<UserManageAccessAccount> fetchList = new List<UserManageAccessAccount>();
+
+                    List<UserManageAccessAccount> newExistingList = new List<UserManageAccessAccount>();
+                    List<int> newExisitingListArray = new List<int>();
+                    List<UserManageAccessAccount> newAccountList = new List<UserManageAccessAccount>();
+
+                    foreach (ManageAccessAccountListResponse.CustomerAccountData acc in list)
+                    {
+                        //int index = existingSortedList.FindIndex(x => x.AccNum == acc.AccountNumber);
+
+                        var newRecord = new UserManageAccessAccount()
+                        {
+                            AccNum = acc.AccountNumber,
+                            AccDesc = acc.AccountDescription,
+                            UserAccountId = acc.AccountId,
+                            IsApplyEBilling = acc.IsApplyEBilling,
+                            IsHaveAccess = acc.IsHaveAccess,
+                            IsOwnedAccount = acc.IsOwnedAccount,
+                            IsPreRegister = acc.IsPreRegister,
+                            email = acc.Email,
+                            name = acc.Name,
+                            userId = acc.UserId,
+                        };
+                        newAccountList.Add(newRecord);
+                    }
+
+                    if (newAccountList.Count > 0)
+                    {
+                        newAccountList.Sort((x, y) => string.Compare(x.AccDesc, y.AccDesc));
+                        foreach (ManageAccessAccountListResponse.CustomerAccountData acc in list)
+                        {
+                            int rowChange = UserManageAccessAccount.InsertOrReplace(acc);
+                            ctr++;
+
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (ManageAccessAccountListResponse.CustomerAccountData acc in list)
+                    {
+                        int rowChange = UserManageAccessAccount.InsertOrReplace(acc);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void OnUpdateNickname()

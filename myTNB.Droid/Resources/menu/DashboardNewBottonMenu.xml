@@ -34,5 +34,5 @@
     android:enabled="true"
     android:icon="@drawable/ic_menu_more_selector"
     android:title="@string/menu_more"
-    app:showAsAction="ifRoom" />
+    app:showAsAction="ifRoom" />  
 </menu>

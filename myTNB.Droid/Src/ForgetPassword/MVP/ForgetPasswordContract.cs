@@ -27,6 +27,11 @@ namespace myTNB_Android.Src.ForgetPassword.MVP
             void ShowInvalidEmailError();
 
             /// <summary>
+            /// Shows a snackbar after success resend email verification
+            /// </summary>
+            void ShowEmailUpdateSuccess(string message);
+
+            /// <summary>
             /// Shows error message
             /// </summary>
             /// <param name="errorMessage"></param>
@@ -37,6 +42,7 @@ namespace myTNB_Android.Src.ForgetPassword.MVP
             /// </summary>
             /// <param name="message"></param>
             void ShowSuccess(string message);
+
 
             void ShowCodeVerifiedSuccess();
 
@@ -155,6 +161,8 @@ namespace myTNB_Android.Src.ForgetPassword.MVP
 
             void ShowEmptyErrorPin();
 
+            void ShowEmailResendSuccess();
+
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -175,6 +183,12 @@ namespace myTNB_Android.Src.ForgetPassword.MVP
             void GetCode(string apiKeyId, string email);
 
             void OnComplete();
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="email"></param>
+            void ResendEmailVerify(string apiKeyId, string email);
         }
     }
 }

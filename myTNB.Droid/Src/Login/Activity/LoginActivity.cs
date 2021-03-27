@@ -20,6 +20,7 @@ using myTNB_Android.Src.RegistrationForm.Activity;
 using myTNB_Android.Src.ResetPassword.Activity;
 using myTNB_Android.Src.UpdateMobileNo.Activity;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.XEmailRegistrationForm.Activity;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -406,6 +407,7 @@ namespace myTNB_Android.Src.Login.Activity
         {
             // TODO : START ACTIVITY DASHBOARD
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            DashboardIntent.PutExtra("FromDashBoard", true);
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
         }
@@ -575,7 +577,7 @@ namespace myTNB_Android.Src.Login.Activity
 
         public void ShowRegisterForm()
         {
-            StartActivity(typeof(RegistrationFormActivity));
+            StartActivity(typeof(EmailRegistrationFormActivity));
         }
 
         public string GetCustomerAccountsStub()
