@@ -59,7 +59,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
             try
             {
                 string action = "U";
-                var updateUserAccessReponse = await ServiceApiImpl.Instance.UpdateAccountAccessRight(new UpdateUserAccessRequest(userId, haveAccess, haveEBiling, action, accountData.AccNum));
+                var updateUserAccessReponse = await ServiceApiImpl.Instance.UpdateAccountAccessRight(new UpdateUserAccessRequest(userId, haveAccess, haveEBiling, action, accountData.AccNum, accountData.name));
 
                 if (mView.IsActive())
                 {
