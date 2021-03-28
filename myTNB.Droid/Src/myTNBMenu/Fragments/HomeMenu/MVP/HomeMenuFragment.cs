@@ -3027,6 +3027,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public int GetMyServiceContainerHeight()
+        {
+            return myServiceContainer.Height;
+        }
+
         public class NewFAQScrollListener : RecyclerView.OnScrollListener
         {
             private List<NewFAQ> mList = new List<NewFAQ>();
