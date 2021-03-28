@@ -1379,6 +1379,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (!string.IsNullOrEmpty(energyBudgetRMinput.Text))
                 {
                     EnableSetEnergyBudgetButton();
+                    editBudget = false;
+                    setEnergyBudgetlayout = false;
                 }
                 else
                 {
@@ -5130,6 +5132,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 mChart.Clear();
                 SetUp();
+                editBudget = false;
+                setEnergyBudgetlayout = false;
+                energyBudgetRMinput.ClearFocus();
 
                 if (isToggleTariff && isClickedShowTariff)
                 {
@@ -5217,7 +5222,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 CustomerBillingAccount.UpdateEnergyBudgetRM(energyBudgetRMinput.Text, selectedAccount.AccountNum);
                 if (!GetIsMDMSDown())
                 {
-                    this.SetIsClicked(true);                   
+                    this.SetIsClicked(true);
+                    setEnergyBudgetlayout = false;
                     string amount = energyBudgetRMinput.Text;
                     int saveamount = Convert.ToInt32(amount);
                     this.userActionsListener.SaveEnergyBudgetAmmount(selectedAccount.AccountNum, saveamount);
@@ -5276,7 +5282,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 ToastUtils.OnDisplayToast(Activity, string.Format(Utility.GetLocalizedLabel("Usage", "toastSaveBudgetuccessfull")));
                 isHaveEnergyBudget = true;
                 editBudget = false;
-                ShowSMStatisticCard();
+                SetUp();
                 energyBudgetRMinput.Enabled = false;
             }
             catch (System.Exception e)
@@ -7566,18 +7572,53 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 View view = (View)scrollView.GetChildAt(scrollView.ChildCount - 1);
                 int scrollPosition = t - oldt;
 
-                int k = smStatisticContainer.Height;
-                if ((editBudget && this.GetIsClicked() == true) || (editBudget && oldt == 0))
-                {
-                    t = -1;
-                    scrollPosition = -1;
-                    this.SetIsClicked(false);
-                    SetVirtualHeightParams(8f);
-                }
                 // if diff is zero, then the bottom has been reached
                 if (!isREAccount)
                 {
-                    if (t == 0)
+                    if (editBudget)
+                    {
+                        if (isSMAccount)
+                        {
+                            int childHeight = scrollViewContent.Height;
+                            int screenHeightWithoutBottomSheet = rootView.Height - bottomSheet.Height + shadowLayout.Height;
+                            int screenHeightWithoutVirtualHeight = childHeight + scrollView.PaddingTop + scrollView.PaddingBottom - virtualHeight.Height;
+
+                            if (smStatisticContainer.Visibility == ViewStates.Visible && t == 0 && this.GetIsClicked())
+                            {
+                                requireScroll = true;
+                                editBudget = false;
+                                bottomSheet.RequestLayout();
+                            }
+                            else if (smStatisticContainer.Visibility == ViewStates.Visible && (scrollPosition > 0 || scrollPosition < 0))
+                            {                       
+                                if (screenHeightWithoutVirtualHeight > screenHeightWithoutBottomSheet)
+                                {
+                                    requireScroll = true;
+                                    bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                                    shadowLayout.SetBackgroundResource(0);
+                                    if (isClickedShowTariff)
+                                    {
+                                        isClickedShowTariff = false;
+                                        isHideBottomSheetShowTariff = false;
+                                    }
+                                }
+                                else
+                                {
+                                    requireScroll = false;
+                                    setEnergyBudgetlayout = true;
+                                    bottomSheet.RequestLayout();
+                                    if (isClickedShowTariff)
+                                    {
+                                        isClickedShowTariff = false;
+                                        isHideBottomSheetShowTariff = false;
+                                    }
+                                    bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+                                    shadowLayout.SetBackgroundResource(0);
+                                }
+                            }                            
+                        }
+                    }
+                    else if (t == 0)
                     {
                         requireScroll = false;
                         if (!isTutorialShow)
@@ -7593,7 +7634,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 if (isSMAccount || isSMR)
                                 {
                                     if (isSMAccount)
-                                    {                                        
+                                    {
                                         if (smStatisticContainer.Visibility == ViewStates.Visible)
                                         {
                                             rootView.SetBackgroundResource(0);
@@ -7619,12 +7660,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                             try
                                             {
-                                                 ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
-                                                 ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+                                                ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
                                             }
-                                             catch (System.Exception e)
+                                            catch (System.Exception e)
                                             {
-                                                 Utility.LoggingNonFatalError(e);
+                                                Utility.LoggingNonFatalError(e);
                                             }
                                             energyBudgetMDMSContainer.Visibility = ViewStates.Invisible;
                                         }
@@ -7656,7 +7697,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     if (isSMAccount)
                                     {
-                                        if (smStatisticContainer.Visibility == ViewStates.Invisible )
+                                        if (smStatisticContainer.Visibility == ViewStates.Invisible)
                                         {
                                             try
                                             {
@@ -7716,7 +7757,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                                             dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                             smStatisticContainer.Visibility = ViewStates.Visible;
-                                        }                                        
+                                        }
                                     }
                                     else if (isSMR)
                                     {
@@ -7757,28 +7798,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             if (isSMAccount || isSMR)
                             {
                                 if (isSMAccount)
-                                {                                  
-                                    if (smStatisticContainer.Visibility == ViewStates.Visible && editBudget)      //Edit budget when user first time enter this page 
-                                    {
-                                        try
-                                        {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
-                                            ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-                                        }
-                                        catch (System.Exception e)
-                                        {
-                                            Utility.LoggingNonFatalError(e);
-                                        }
-                                        rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
-                                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
-                                        dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
-                                        isChangeVirtualHeightNeed = true;
-                                        shadowLayout.SetBackgroundResource(0);
-                                        bottomSheet.RequestLayout();
-                                        layoutunderCardview.Visibility = ViewStates.Invisible;
-                                        SetVirtualHeightParams(10f);
-                                    }
-                                    else if (smStatisticContainer.Visibility == ViewStates.Invisible)
+                                {                                    
+                                    if (smStatisticContainer.Visibility == ViewStates.Invisible)
                                     {
                                         try
                                         {
@@ -7793,15 +7814,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                                         dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         smStatisticContainer.Visibility = ViewStates.Visible;
-                                        layoutunderCardview.Visibility = ViewStates.Invisible;
                                         if (!isHaveEnergyBudget)
                                         {
                                             EnableSetEnergyBudgetButton();
                                         }
-                                        /*else if (isHaveEnergyBudget && !editBudget)
-                                        {
-                                            ShowSMStatisticCard();
-                                        }*/
                                     }
                                     else if (energyBudgetMDMSContainer.Visibility == ViewStates.Invisible && GetIsMDMSDown())
                                     {
@@ -7809,14 +7825,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                                         dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         try
-                                         {
-                                             ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
-                                             ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
-                                         }
-                                         catch (System.Exception e)
-                                         {
-                                             Utility.LoggingNonFatalError(e);
-                                         }
+                                        {
+                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+                                            ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                                        }
+                                        catch (System.Exception e)
+                                        {
+                                            Utility.LoggingNonFatalError(e);
+                                        }
                                         layoutunderCardview.Visibility = ViewStates.Invisible;
                                         energyBudgetMDMSContainer.Visibility = ViewStates.Visible;
                                     }
@@ -7841,11 +7857,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     }
                                 }
                             }
-                        }
-                        else
-                        {
-                            isChangeVirtualHeightNeed = true;
-                        }
+                        }                        
                     }
                 }
             }
@@ -8102,7 +8114,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 if (isSMAccount)
                                 {
-                                    if (smStatisticContainer.Visibility == ViewStates.Visible && !setEnergyBudgetlayout)
+                                    if (setEnergyBudgetlayout && bottomSheetBehavior.State == BottomSheetBehavior.StateHidden)  //after click edit
+                                    {
+                                        
+                                        if (screenHeightWithoutVirtualHeight > screenHeightWithoutBottomSheet)
+                                        {
+                                            bottomSheet.RequestLayout();
+                                            requireScroll = false;
+                                        }
+                                        else
+                                        {
+                                            bottomSheet.RequestLayout();
+                                            requireScroll = true;
+                                        }
+                                    }
+                                    else if (smStatisticContainer.Visibility == ViewStates.Visible)
                                     {
                                         rootView.SetBackgroundResource(0);
                                         scrollViewContent.SetBackgroundResource(0);
@@ -8199,22 +8225,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         smStatisticContainer.Visibility = ViewStates.Visible;
                                     }
-                                    /*else if (smStatisticContainer.Visibility == ViewStates.Visible)
-                                    {
-                                        try
-                                        {
-                                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
-                                            ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-                                        }
-                                        catch (System.Exception e)
-                                        {
-                                            Utility.LoggingNonFatalError(e);
-                                        }
-                                        rootView.SetBackgroundResource(Resource.Color.background_pale_grey);
-                                        dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
-                                        smStatisticContainer.Visibility = ViewStates.Visible;
-                                        layoutunderCardview.Visibility = ViewStates.Invisible;    //test expand layout
-                                    }*/
                                 }
                                 else if (isSMR)
                                 {
@@ -8294,14 +8304,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             float newVirtualHeight = DPUtils.ConvertPxToDP(virtualHeight.Height) + DPUtils.ConvertPxToDP((screenHeightWithoutVirtualHeight - screenHeightWithoutBottomSheet) / 2);
                             SetVirtualHeightParams(newVirtualHeight);
                             bottomSheet.RequestLayout();
-
-                            if (setEnergyBudgetlayout)
-                            {
-                                shadowLayout.SetBackgroundResource(0);
-                                bottomSheet.RequestLayout();
-                                bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-                                requireScroll = false;
-                            }
                         }
                         else
                         {
@@ -8316,39 +8318,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     if (isSMAccount)
                                     {
-                                        if (setEnergyBudgetlayout)
+                                        if (setEnergyBudgetlayout && bottomSheetBehavior.State == BottomSheetBehavior.StateHidden)
                                         {
                                             shadowLayout.SetBackgroundResource(0);
                                             bottomSheet.RequestLayout();
                                             bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
                                             requireScroll = false;
-                                        }
-                                        /*float newVirtualHeightnew = DPUtils.ConvertPxToDP(150);
-                                        SetVirtualHeightParams(newVirtualHeightnew);
-                                        bottomSheet.RequestLayout();*/
-                                        /*if (smStatisticContainer.Visibility == ViewStates.Visible && editBudget && setEnergyBudgetlayout)
-                                        {
-                                            try
-                                            {
-                                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
-                                                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-                                            }
-                                            catch (System.Exception e)
-                                            {
-                                                Utility.LoggingNonFatalError(e);
-                                            }
-                                            *//*rootView.SetBackgroundResource(0);
-                                            scrollViewContent.SetBackgroundResource(0);
-                                            dashboard_bottom_view.SetBackgroundResource(0);
-                                            smStatisticContainer.Visibility = ViewStates.Invisible;*//*
-
-                                            isChangeVirtualHeightNeed = true;
-                                            //shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
-                                            //float newVirtualHeightEB = DPUtils.ConvertPxToDP(virtualHeight.Height + 300);
-                                            //SetVirtualHeightParams(newVirtualHeightEB);
-                                            //bottomSheet.RequestLayout();                                            
-                                            //layoutunderCardview.Visibility = ViewStates.Invisible;
-                                        }*/
+                                        }                                       
                                         else if (smStatisticContainer.Visibility == ViewStates.Invisible)
                                         {
                                             try
@@ -8405,16 +8381,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     }
                                 }
                             }
-                            /*else
+                            else
                             {
-                                if (CheckIsScrollable()  && editBudget)
+                                if (isSMAccount)
                                 {
-                                    *//*float newVirtualHeightnew = DPUtils.ConvertPxToDP(200);
-                                    SetVirtualHeightParams(newVirtualHeightnew);
-                                    bottomSheet.RequestLayout();*//*
+                                    if (setEnergyBudgetlayout && bottomSheetBehavior.State == BottomSheetBehavior.StateHidden && smStatisticContainer.Visibility == ViewStates.Visible)
+                                    {
+                                        bottomSheet.RequestLayout();
+                                        bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                                        requireScroll = false;
+                                    }
                                 }
-                                
-                            }*/
+                            }
                         }
                     }
                     else
@@ -9211,16 +9189,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
                             btnSetNewBudget.Visibility = ViewStates.Gone;
                             smStatisticTooltip.Visibility = ViewStates.Visible;
-                            
-                            /*if (selectedCusBillAcc.RmEnergyBudget.Length < 8)
-                            {
-                                energyBudgetAccountStatusText.SetMaxWidth(410);
-                            }
-                            else
-                            {
-                                energyBudgetAccountStatusText.SetMaxWidth(350);
-                            } */  
-                            
+                            energyBudgetRMinput.ClearFocus();
+
                             energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(13) });
                             energyBudgetRMinput.Text = smDecimalFormat.Format(double.Parse(selectedCusBillAcc.BudgetAmount, currCult));
                         }
