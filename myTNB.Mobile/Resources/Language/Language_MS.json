@@ -1443,7 +1443,7 @@
     "armyid": "ID Tentera",
     "passport": "Pasport",
     "mykadhint": "Sila masukkan 12 digit nombor IC / Mykad yang sah.",
-    "armyidhint": "ID Tentera mesti antara 5-50 aksara.",
+    "armyidhint": "ID Tentera mesti antara 5-15 aksara.",
     "passporthint": "Pasport mestilah antara 5-50 aksara.",
     "IdHeaderError": "Nombor kad pengenalan ini telah digunakan untuk akaun yang sedia ada.",
     "IdBodyError": "Sila pastikan bahawa anda telah memasukkan nombor kad pengenalan yang betul, atau hubungi TNB CareLine untuk bertanya mengenai perkara ini.",
