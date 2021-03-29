@@ -9,7 +9,7 @@ namespace myTNB_Android.Src.MyTNBService.Request
 
         public UpdateUserAccessRequest(string userid, bool haveaccess, bool isEbilling, string actionLog, string accNo, string accName)
         {
-            //deviceInf = new DeviceInfoRequest();
+            deviceInf = new DeviceInfoRequest();
             this.accountId = userid;
             this.isHaveAccess = haveaccess;
             this.isApplyBilling = isEbilling;
