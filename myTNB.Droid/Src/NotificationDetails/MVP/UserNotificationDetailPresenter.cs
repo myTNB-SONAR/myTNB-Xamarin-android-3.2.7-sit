@@ -216,6 +216,16 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             }
                             break;
                         }
+                    case Constants.BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED:
+                        {
+                            imageResourceBanner = Resource.Drawable.noti_acc_addby_someone;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_REMOVE_ACCOUNT:
+                        {
+                            imageResourceBanner = Resource.Drawable.noti_removed_by_owner;
+                            break;
+                        }
                     default:
                         imageResourceBanner = Resource.Drawable.notification_generic_banner;
                         break;
