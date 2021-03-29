@@ -95,6 +95,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
             ///Show account removed success
             ///</summary>
             void ShowAccountRemovedSuccess();
+            void showsuccessDelete();
         }
 
         public interface IUserActionsListener : IBasePresenter

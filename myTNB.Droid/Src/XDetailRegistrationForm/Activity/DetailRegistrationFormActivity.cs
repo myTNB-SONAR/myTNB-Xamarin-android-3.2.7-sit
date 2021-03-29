@@ -351,6 +351,14 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                         eText.SetSelection(eText.Text.Length);
                     }
                 }
+                else if (Idtype.Equals("Army ID"))
+                {
+                    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(15) });
+                }
+                else if (Idtype.Equals("Passport"))
+                {
+                    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
+                }
 
             }
 

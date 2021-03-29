@@ -178,14 +178,17 @@ namespace myTNB_Android.Src.MyAccount.Activity
             ShowDeleteAccDialog(this, position, () =>
             {
                 CustomerBillingAccount account = adapter.GetItemObject(position);
-                CustomerBillingAccount.Remove(account.AccNum);
-                this.mPresenter.OnRemoveAccount(account.AccNum);
-                adapter.Clear();
-                listView.Adapter = null;
-                listView.Adapter = adapter;
-                adapter.setCustomButtonListner(this);
-                this.userActionsListener.Start();
+                this.mPresenter.OnRemoveAccount(account.AccNum);                
             });           
+        }
+
+        public void showsuccessDelete()
+        {
+            adapter.Clear();
+            listView.Adapter = null;
+            listView.Adapter = adapter;
+            adapter.setCustomButtonListner(this);
+            this.userActionsListener.Start();
         }
 
         private Snackbar mCancelledExceptionSnackBar;

@@ -106,7 +106,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
                     SummaryDashBoardAccountEntity.RemoveAll();
                     MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                     HomeMenuUtils.ResetAll();
-                    //this.mView.ShowSuccessRemovedAccount();
+                    this.mView.showsuccessDelete();
                 }
                 else
                 {
