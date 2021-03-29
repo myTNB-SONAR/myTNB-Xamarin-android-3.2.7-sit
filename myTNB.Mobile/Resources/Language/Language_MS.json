@@ -99,7 +99,7 @@
     "open": "Buka",
     "paymentPendingMsg": "Pembayaran sedang diproses",
     "processing": "sedang diproses",
-    "dontShowThisAgain": "Jangan paparkan lagi"
+    "dontShowThisAgain": "Jangan paparkan lagi",
     //OT Add
     "verify": "Sahkan",
 
@@ -230,8 +230,8 @@
     //addby wan
     "later": "Tangguhkan",
     "update": "Kemas kini",
-    "proceed":"Teruskan",
-    "chkBoxTitle":"Jangan tunjuk ini lagi",
+    "proceed": "Teruskan",
+    "chkBoxTitle": "Jangan tunjuk ini lagi",
     "titleIcUpdate": "Lengkapkan profil myTNB anda sekarang untuk pengalaman myTNB yang lebih baik!",
     "bodyIcUpdate": "Nombor pengenalan anda tidak tercatat dalam profil myTNB anda. Kemas kini sekarang untuk akses dan kawalan yang lebih menyeluruh atas akaun elektrik anda!",
     "tutorialUpdateNicknameBtn": "Kemas kini Nama Gelaran",
@@ -759,7 +759,7 @@
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
     "noAccounts": "Tiada Akaun Elektrik",
     "addAccountMessage": "Tambah Akaun Elektrik TNB sedia ada untuk melihat butiran penggunaan dan transaksi.",
-    "popupremoveAccountTitleSwipe":"Alih Keluar Akaun",
+    "popupremoveAccountTitleSwipe": "Alih Keluar Akaun",
     "popupremoveAccountMessageSwipe": "Anda sedang mengalih keluar <b>{0}</b>, Nombor Akaun <b>{1}</b> daripada aplikasi.<br><br>Nota: Tindakan ini tidak menutup akaun elektrik anda. Layari Portal myTNB atau Kedai Tenaga untuk menutup akaun elektrik anda."
 
   },
@@ -1241,14 +1241,14 @@
     "mobileNumberVerified": "Anda telah berjaya mengemas kini nombor telefon anda!",
     "IDUpdateSuccess": "Terima kasih kerana mengemaskini! Aktiviti anda telah dirakam seperti di bawah.",
     //syahmi add
-    "lblID":"IC / ID Askar / Nombor Pasport",
+    "lblID": "IC / ID Askar / Nombor Pasport",
     "passwordchange": "Tukar Kata Laluan Saya",
-    "gotIt":"Ok",
-    "resend":"Hantar semula",
-    "verifyEmailPopupBody":"Sila sahkan alamat e-mel anda dengan pautan yang telah kami kirimkan. Anda juga boleh meminta kiriman semula jika anda tidak menerima pautan tersebut.",
-    "verifyEmailPopupTitle":"Pengesahan E-mel Belum Selesai",
-    "toast_email_send":"Pengesahan e-mel telah dihantar ke ",
-    "toast_SuccessUpdateName":"Anda telah berjaya mengemaskini nama anda!"
+    "gotIt": "Ok",
+    "resend": "Hantar semula",
+    "verifyEmailPopupBody": "Sila sahkan alamat e-mel anda dengan pautan yang telah kami kirimkan. Anda juga boleh meminta kiriman semula jika anda tidak menerima pautan tersebut.",
+    "verifyEmailPopupTitle": "Pengesahan E-mel Belum Selesai",
+    "toast_email_send": "Pengesahan e-mel telah dihantar ke ",
+    "toast_SuccessUpdateName": "Anda telah berjaya mengemaskini nama anda!"
   },
   "ApplicationStatusLanding": {
     "title": "Status Permohonan",
@@ -1261,7 +1261,7 @@
     "viewLess": "Kurangkan Paparan",
     "displayPerQuery": "5",
     "saveMessage": "Berjaya! Anda akan melihat kemas kini perkembangan status permohonan tersebut."
-   },
+  },
   "UpdateName": {
     //syahmi add
     "title": "Kemaskini Nama"
@@ -1278,7 +1278,7 @@
     "whereToGetThisNumberMessageCA": "Nombor akaun elektrik anda juga tertera pada bahagian atas kiri bil kertas bulanan anda.",
     "whereToGetThisNumberTitle": "Di manakah boleh saya perolehi nombor ini?",
     "whereToGetThisNumberMessage": "Anda boleh memperolehi <b>{0}</b> di dalam maklumat permohonan yang boleh didapati dalam ‘Status Permohonan’ dan juga boleh diperolehi dengan menghubungi TNB CareLine."
-   },
+  },
   "LearnMoreAboutTnb": {
     "title": "Ketahui Lebih Lanjut mengenai TNB",
     "tnc": "Terma & Syarat",
@@ -1358,7 +1358,7 @@
     "AddTitle": "Tambah",
     "RemoveTitle": "Alih Keluar",
     "HeaderRemoveTitle": "Pilih pengguna untuk dialih keluar:",
-    "cancleBtn":"Batal",
+    "cancleBtn": "Batal",
     "deleteSuccessMessage": "Pengguna telah berjaya dialih keluar",
     "deleteUserTitle": "Adakah anda pasti mahu mengalih keluar pengguna ini?",
     "deleteUserBody": "Setelah dikeluarkan, akses pengguna ini akan dimansuhkan dan mereka tidak lagi boleh melihat maklumat berkaitan dengan akaun ini.",
@@ -1443,7 +1443,7 @@
     "armyid": "ID Tentera",
     "passport": "Pasport",
     "mykadhint": "Sila masukkan 12 digit nombor IC / Mykad yang sah.",
-    "armyidhint": "ID Tentera mesti antara 5-50 aksara.",
+    "armyidhint": "ID Tentera mesti antara 5-15 aksara.",
     "passporthint": "Pasport mestilah antara 5-50 aksara.",
     "IdHeaderError": "Nombor kad pengenalan ini telah digunakan untuk akaun yang sedia ada.",
     "IdBodyError": "Sila pastikan bahawa anda telah memasukkan nombor kad pengenalan yang betul, atau hubungi TNB CareLine untuk bertanya mengenai perkara ini.",
@@ -1986,10 +1986,10 @@
   },
 
   "RegisterSuccess": {
-    "acccreated" : "Akaun Dibuat!",
-    "emailverify" : "Sila sahkan alamat e-mel anda",
-    "emailVerifiedLinkSent" : "Kami telah menghantar pautan pengesahan ke <b>{0}</b>. Anda boleh mengesahkannya dengan mengklik pautan dalam e-mel anda untuk menikmati segalanya yang myTNB tawarkan!",
-    "continue" : "Teruskan"
+    "acccreated": "Akaun Dibuat!",
+    "emailverify": "Sila sahkan alamat e-mel anda",
+    "emailVerifiedLinkSent": "Kami telah menghantar pautan pengesahan ke <b>{0}</b>. Anda boleh mengesahkannya dengan mengklik pautan dalam e-mel anda untuk menikmati segalanya yang myTNB tawarkan!",
+    "continue": "Teruskan"
   },
   "ApplicationStatusActivityLog": {
     "title": "Log Aktiviti",
@@ -2004,23 +2004,23 @@
     "remove": "{0} telah dialih keluar"
   },
 
-   "CompleteYourProfile":{
-   "title":"BM_Complete Your Profile",
-   "lblTitle":"BM_Provide us your identification number for better experience!",
-   "lblSubTitle":"BM_Get better access and enjoy more TNB offerings on myTNB by helping us validate your identification.",
-   "txtFieldIDType":"Jenis Pengenalan",
-   "txtFieldID":"Nombor Pengenalan",
-   "mykad": "IC / Mykad",
-   "armyid": "ID Tentera",
-   "passport": "Pasport",
-   "icHint": "Kami akan menggunakan pengenalan ini untuk membantu anda menyiapkan akaun anda.",
-   "icError": "Sila masukkan 12 digit nombor IC / Mykad yang sah.",
-   "armyError": "ID Tentera mesti antara 5-50 aksara.",
-   "passportError": "Pasport mestilah antara 5-50 aksara.",
-   "updateIdTitle": "Sahkan Nombor Pengenalan Anda:",
-   "confrimButton": "Sahkan",
-   "re_enter": "Masukkan semula",
-   "updateIdMessage": "Pastikan nomnor pengenalan anda betul kerana hanya boleh mengemaskini sekali sahaja."
+  "CompleteYourProfile": {
+    "title": "BM_Complete Your Profile",
+    "lblTitle": "BM_Provide us your identification number for better experience!",
+    "lblSubTitle": "BM_Get better access and enjoy more TNB offerings on myTNB by helping us validate your identification.",
+    "txtFieldIDType": "Jenis Pengenalan",
+    "txtFieldID": "Nombor Pengenalan",
+    "mykad": "IC / Mykad",
+    "armyid": "ID Tentera",
+    "passport": "Pasport",
+    "icHint": "Kami akan menggunakan pengenalan ini untuk membantu anda menyiapkan akaun anda.",
+    "icError": "Sila masukkan 12 digit nombor IC / Mykad yang sah.",
+    "armyError": "ID Tentera mesti antara 5-50 aksara.",
+    "passportError": "Pasport mestilah antara 5-50 aksara.",
+    "updateIdTitle": "Sahkan Nombor Pengenalan Anda:",
+    "confrimButton": "Sahkan",
+    "re_enter": "Masukkan semula",
+    "updateIdMessage": "Pastikan nomnor pengenalan anda betul kerana hanya boleh mengemaskini sekali sahaja."
   },
   "SearchByNumber": {
     "title": "Cari Dengan",
@@ -2111,7 +2111,7 @@
       {
         "key": "Dibatalkan",
         "value": "Dibatalkan"
-       },
+      },
       {
         "key": "Diselesaikan",
         "value": "Diselesaikan"

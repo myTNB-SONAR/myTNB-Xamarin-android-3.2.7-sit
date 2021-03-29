@@ -1247,7 +1247,7 @@
     "resend":"Resend",
     "verifyEmailPopupBody":"Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
     "verifyEmailPopupTitle":"Pending Email Verification ",
-    "toast_email_send":"An email verification link has been sent to {0}",
+    "toast_email_send":"An email verification link has been sent to ",
     "toast_SuccessUpdateName":"You’ve successfully updated your name!"
   },
   "ApplicationStatusLanding": {

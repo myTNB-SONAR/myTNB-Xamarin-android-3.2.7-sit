@@ -138,12 +138,12 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
         }
 
-        public void AddMultipleAccounts(string apiKeyId, string sspUserId, string email, List<Models.AddAccount> accounts)
+        public void AddMultipleAccounts(string apiKeyId, string sspUserId, string email, string name, List<Models.AddAccount> accounts)
         {
             try
             {
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-                AddMultipleAccountsAsync(apiKeyId, sspUserId, email, accounts);
+                AddMultipleAccountsAsync(apiKeyId, sspUserId, email, name, accounts);
             }
             catch (Exception unknownException)
             {
@@ -156,7 +156,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
             }
         }
 
-        private async void AddMultipleAccountsAsync(string apiKeyId, string sspUserID, string email, List<Models.AddAccount> accounts)
+        private async void AddMultipleAccountsAsync(string apiKeyId, string sspUserID, string email, string name, List<Models.AddAccount> accounts)
         {
             try
             {
@@ -165,7 +165,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     mView.ShowAddingAccountProgressDialog();
                 }
                 //var tempReq = JsonConvert.SerializeObject(accounts);
-                AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts_OT(new AddAccountsRequest(accounts));
+                AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts_OT(new AddAccountsRequest(accounts,name));
 
                 if (result.IsSuccessResponse())
                 {

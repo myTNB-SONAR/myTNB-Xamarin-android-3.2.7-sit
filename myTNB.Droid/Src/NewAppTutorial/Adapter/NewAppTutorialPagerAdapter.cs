@@ -330,919 +330,921 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 if (this.mFragment is HomeMenuFragment)
                 {
                     if ((list.Count == 4 && !model.NeedHelpHide) || (list.Count == 3 && model.NeedHelpHide))
-                    {
-                        if (position == 0)
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(65f);
-                            int middleHeight = (int)DPUtils.ConvertDPToPx(176f);
-                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                            if (position == 0)
                             {
-                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                int halfScroll = topHeight / 2;
-
-                                if (diffHeight < halfScroll)
+                                int topHeight = (int)DPUtils.ConvertDPToPx(65f);
+                                int middleHeight = (int)DPUtils.ConvertDPToPx(275f);
+                                if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                 {
-                                    topHeight = topHeight / 2;
+                                    int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                    int halfScroll = topHeight / 2;
+
+                                    if (diffHeight < halfScroll)
+                                    {
+                                        topHeight = topHeight / 2;
+                                    }
                                 }
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = middleHeight;
+                                middleLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(42f);
+                                innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
+                                innerUpperBottomLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTxtBtnBottomLayout.RequestLayout();
+
                             }
-
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
-                            middleLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
-
-                            LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(42f);
-                            innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
-                            innerUpperBottomLayout.RequestLayout();
-
-                            LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTxtBtnBottomLayout.RequestLayout();
-
-                        }
-                        else if (position == 1)
-                        {
-                            float h1 = TextViewUtils.IsLargeFonts ? 75f : 65f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
-
-                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                            else if (position == 1)
                             {
-                                float h2 = TextViewUtils.IsLargeFonts ? 95f : 65f;
-                                topHeight = (int)DPUtils.ConvertDPToPx(h2);
-                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                int halfScroll = topHeight / 2;
+                                float h1 = TextViewUtils.IsLargeFonts ? 75f : 65f;
+                                int topHeight = (int)DPUtils.ConvertDPToPx(h1);
 
-                                if (diffHeight < halfScroll)
+                                if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                 {
-                                    topHeight = topHeight / 2;
+                                    float h2 = TextViewUtils.IsLargeFonts ? 95f : 65f;
+                                    topHeight = (int)DPUtils.ConvertDPToPx(h2);
+                                    int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                    int halfScroll = topHeight / 2;
+
+                                    if (diffHeight < halfScroll)
+                                    {
+                                        topHeight = topHeight / 2;
+                                    }
                                 }
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = (int)DPUtils.ConvertDPToPx(50f);
+                                middleLayout.RequestLayout();
+
+                                int deviceWidth = this.mContext.Resources.DisplayMetrics.WidthPixels;
+                                int rightAreaWidth = (int)DPUtils.ConvertDPToPx(8f);
+                                int middleAreaWidth = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(160f) : (int)DPUtils.ConvertDPToPx(140f);
+                                int leftAreaWidth = deviceWidth - middleAreaWidth - rightAreaWidth;
+
+
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = leftAreaWidth;
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = middleAreaWidth;
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = rightAreaWidth;
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(44f);
+                                innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(40f);
+                                innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
+                                innerUpperBottomLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(40f);
+                                innerTxtBtnBottomLayout.RequestLayout();
                             }
-
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = (int)DPUtils.ConvertDPToPx(50f);
-                            middleLayout.RequestLayout();
-
-                            int deviceWidth = this.mContext.Resources.DisplayMetrics.WidthPixels;
-                            int rightAreaWidth = (int)DPUtils.ConvertDPToPx(8f);
-                            int middleAreaWidth = (int)DPUtils.ConvertDPToPx(140f);
-                            int leftAreaWidth = deviceWidth - middleAreaWidth - rightAreaWidth;
-
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = leftAreaWidth;
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = middleAreaWidth;
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = rightAreaWidth;
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
-
-                            LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(44f);
-                            innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(40f);
-                            innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
-                            innerUpperBottomLayout.RequestLayout();
-
-                            LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(40f);
-                            innerTxtBtnBottomLayout.RequestLayout();
-                        }
-                        else if (position == 2)
-                        {
-                            float h1 = TextViewUtils.IsLargeFonts ? 385f : 345f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
-                            int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
-                            float heightRatio = 84f / 96f;
-                            int cardHeight = (int)(cardWidth * (heightRatio));
-                            if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
+                            else if (position == 2)
                             {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
-                                cardHeight = cardWidth;
-                            }
-                            else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
-                            {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
-                                cardHeight = cardWidth;
-                            }
-                            int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
-
-                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
-                            {
-                                float h2 = TextViewUtils.IsLargeFonts ? 385f : 345f;
-                                topHeight = (int)DPUtils.ConvertDPToPx(h2);
-                                int offsetHeight = (int)DPUtils.ConvertDPToPx(65f);
-                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                int halfScroll = offsetHeight / 2;
-
-                                if (diffHeight < halfScroll)
+                                float h1 = TextViewUtils.IsLargeFonts ? 385f : 345f;
+                                int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                                int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
+                                float heightRatio = 84f / 96f;
+                                int cardHeight = (int)(cardWidth * (heightRatio));
+                                if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
                                 {
-                                    topHeight = topHeight - (offsetHeight / 2);
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+                                    cardHeight = cardWidth;
                                 }
-                            }
+                                else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
+                                {
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
+                                    cardHeight = cardWidth;
+                                }
 
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
-                            middleLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f);
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
+                                int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
 
-                            RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            if (model.NeedHelpHide)
-                            {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
+                                if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                                {
+                                    float h2 = TextViewUtils.IsLargeFonts ? 385f : 345f;
+                                    topHeight = (int)DPUtils.ConvertDPToPx(h2);
+                                    int offsetHeight = (int)DPUtils.ConvertDPToPx(65f);
+                                    int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                    int halfScroll = offsetHeight / 2;
+
+                                    if (diffHeight < halfScroll)
+                                    {
+                                        topHeight = topHeight - (offsetHeight / 2);
+                                    }
+                                }
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = ((HomeMenuFragment)this.mFragment).GetMyServiceContainerHeight();
+                                middleLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f);
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                                if (model.NeedHelpHide)
+                                {
+                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
+                                }
+                                else
+                                {
+                                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
+                                }
+                                innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTopLayout.RequestLayout();
                             }
                             else
                             {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
-                            }
-                            innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTopLayout.RequestLayout();
-                        }
-                        else
-                        {
-                            float h1 = TextViewUtils.IsLargeFonts ? 385f : 345f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
-                            int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
-                            float heightRatio = 84f / 96f;
-                            int cardHeight = (int)(cardWidth * (heightRatio));
-                            if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
-                            {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
-                                cardHeight = cardWidth;
-                            }
-                            else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
-                            {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
-                                cardHeight = cardWidth;
-                            }
-                            int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
-                            topHeight = topHeight + middleHeight + middleHeight + (int)DPUtils.ConvertDPToPx(12f);
-                            if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
-                            {
-                                topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
-                            }
-
-                            cardWidth = (int)((this.mContext.Resources.DisplayMetrics.WidthPixels / 3.05) - DPUtils.ConvertDPToPx(16f));
-
-                            heightRatio = 56f / 92f;
-                            cardHeight = (int)(cardWidth * (heightRatio));
-
-                            middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(42f);
-
-                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
-                            {
-                                float h2 = TextViewUtils.IsLargeFonts ? 90f : 90f;
-                                int belowHeight = (int)DPUtils.ConvertDPToPx(h2);
-                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
+                                float h1 = TextViewUtils.IsLargeFonts ? 385f : 345f;
+                                int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                                int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
+                                float heightRatio = 84f / 96f;
+                                int cardHeight = (int)(cardWidth * (heightRatio));
+                                if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
                                 {
-                                    belowHeight = (int)DPUtils.ConvertDPToPx(135);
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+                                    cardHeight = cardWidth;
+                                }
+                                else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
+                                {
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
+                                    cardHeight = cardWidth;
+                                }
+                                int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
+                                topHeight = topHeight + middleHeight + middleHeight - (int)DPUtils.ConvertDPToPx(33f);
+                                if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
+                                {
+                                    topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
                                 }
 
-                                topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight;
-                            }
+                                cardWidth = (int)((this.mContext.Resources.DisplayMetrics.WidthPixels / 3.05) - DPUtils.ConvertDPToPx(16f));
 
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
-                            middleLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
+                                heightRatio = 56f / 92f;
+                                cardHeight = (int)(cardWidth * (heightRatio));
 
-                            RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
-                            innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTopLayout.RequestLayout();
-                        }
-                    }
-                    else if (model.ItemCount == 3)
-                    {
-                        if (position == 0)
-                        {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(65f);
-                            int middleHeight = (int)DPUtils.ConvertDPToPx(235f);
-                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
-                            {
-                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                int halfScroll = topHeight / 2;
+                                middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(42f);
 
-                                if (diffHeight < halfScroll)
+                                if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                 {
-                                    topHeight = topHeight / 2;
+                                    float h2 = TextViewUtils.IsLargeFonts ? 90f : 90f;
+                                    int belowHeight = (int)DPUtils.ConvertDPToPx(h2);
+                                    if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
+                                    {
+                                        belowHeight = (int)DPUtils.ConvertDPToPx(135);
+                                    }
+
+                                    topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight - (int)DPUtils.ConvertDPToPx(18f);
                                 }
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = middleHeight;
+                                middleLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
+                                innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTopLayout.RequestLayout();
                             }
-
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
-                            middleLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
-
-                            LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(42f);
-                            innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
-                            innerUpperBottomLayout.RequestLayout();
-
-                            LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTxtBtnBottomLayout.RequestLayout();
                         }
-                        else if (position == 1)
+                        else if (model.ItemCount == 3)
                         {
-                            float h1 = TextViewUtils.IsLargeFonts ? 365f : 325f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
-                            int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
-                            float heightRatio = 84f / 96f;
-                            int cardHeight = (int)(cardWidth * (heightRatio));
-                            if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
+                            if (position == 0)
                             {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
-                                cardHeight = cardWidth;
-                            }
-                            else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
-                            {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
-                                cardHeight = cardWidth;
-                            }
-                            int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
-
-                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
-                            {
-                                int offsetHeight = (int)DPUtils.ConvertDPToPx(65f);
-                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                int halfScroll = offsetHeight / 2;
-
-                                if (diffHeight < halfScroll)
+                                int topHeight = (int)DPUtils.ConvertDPToPx(65f);
+                                int middleHeight = (int)DPUtils.ConvertDPToPx(235f);
+                                if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                 {
-                                    topHeight = topHeight - (offsetHeight / 2);
+                                    int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                    int halfScroll = topHeight / 2;
+
+                                    if (diffHeight < halfScroll)
+                                    {
+                                        topHeight = topHeight / 2;
+                                    }
                                 }
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = middleHeight;
+                                middleLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(42f);
+                                innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
+                                innerUpperBottomLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTxtBtnBottomLayout.RequestLayout();
                             }
-
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
-                            middleLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f);
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
-
-                            RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            if (model.NeedHelpHide)
+                            else if (position == 1)
                             {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
+                                float h1 = TextViewUtils.IsLargeFonts ? 365f : 325f;
+                                int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                                int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
+                                float heightRatio = 84f / 96f;
+                                int cardHeight = (int)(cardWidth * (heightRatio));
+                                if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
+                                {
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+                                    cardHeight = cardWidth;
+                                }
+                                else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
+                                {
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
+                                    cardHeight = cardWidth;
+                                }
+                                int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
+
+                                if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                                {
+                                    int offsetHeight = (int)DPUtils.ConvertDPToPx(65f);
+                                    int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                    int halfScroll = offsetHeight / 2;
+
+                                    if (diffHeight < halfScroll)
+                                    {
+                                        topHeight = topHeight - (offsetHeight / 2);
+                                    }
+                                }
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = ((HomeMenuFragment)this.mFragment).GetMyServiceContainerHeight();
+                                middleLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f);
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                                if (model.NeedHelpHide)
+                                {
+                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
+                                }
+                                else
+                                {
+                                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
+                                }
+                                innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTopLayout.RequestLayout();
                             }
                             else
                             {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
-                            }
-                            innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTopLayout.RequestLayout();
-                        }
-                        else
-                        {
-                            float h1 = TextViewUtils.IsLargeFonts ? 365f : 325f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
-                            int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
-                            float heightRatio = 84f / 96f;
-                            int cardHeight = (int)(cardWidth * (heightRatio));
-                            if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
-                            {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
-                                cardHeight = cardWidth;
-                            }
-                            else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
-                            {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
-                                cardHeight = cardWidth;
-                            }
-                            int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
-                            topHeight = topHeight + middleHeight + middleHeight + (int)DPUtils.ConvertDPToPx(12f);
-                            if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
-                            {
-                                topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
-                            }
-
-                            cardWidth = (int)((this.mContext.Resources.DisplayMetrics.WidthPixels / 3.05) - DPUtils.ConvertDPToPx(16f));
-
-                            heightRatio = 56f / 92f;
-                            cardHeight = (int)(cardWidth * (heightRatio));
-
-                            middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(42f);
-
-                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
-                            {
-                                float h2 = TextViewUtils.IsLargeFonts ? 90f : 90f;
-                                int belowHeight = (int)DPUtils.ConvertDPToPx(h2);
-                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
+                                float h1 = TextViewUtils.IsLargeFonts ? 365f : 325f;
+                                int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                                int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
+                                float heightRatio = 84f / 96f;
+                                int cardHeight = (int)(cardWidth * (heightRatio));
+                                if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
                                 {
-                                    belowHeight = (int)DPUtils.ConvertDPToPx(135);
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+                                    cardHeight = cardWidth;
+                                }
+                                else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
+                                {
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
+                                    cardHeight = cardWidth;
+                                }
+                                int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
+                                topHeight = topHeight + middleHeight + middleHeight - (int)DPUtils.ConvertDPToPx(33f);
+                                if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
+                                {
+                                    topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
                                 }
 
-                                topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight;
-                            }
+                                cardWidth = (int)((this.mContext.Resources.DisplayMetrics.WidthPixels / 3.05) - DPUtils.ConvertDPToPx(16f));
 
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
-                            middleLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
+                                heightRatio = 56f / 92f;
+                                cardHeight = (int)(cardWidth * (heightRatio));
 
-                            RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
-                            innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTopLayout.RequestLayout();
-                        }
-                    }
-                    else if (model.ItemCount == 2)
-                    {
-                        if (position == 0)
-                        {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(65f);
-                            int middleHeight = (int)DPUtils.ConvertDPToPx(175f);
-                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
-                            {
-                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                int halfScroll = topHeight / 2;
+                                middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(42f);
 
-                                if (diffHeight < halfScroll)
+                                if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                 {
-                                    topHeight = topHeight / 2;
+                                    float h2 = TextViewUtils.IsLargeFonts ? 90f : 90f;
+                                    int belowHeight = (int)DPUtils.ConvertDPToPx(h2);
+                                    if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
+                                    {
+                                        belowHeight = (int)DPUtils.ConvertDPToPx(135);
+                                    }
+
+                                    topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight - (int)DPUtils.ConvertDPToPx(18f);
                                 }
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = middleHeight;
+                                middleLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
+                                innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTopLayout.RequestLayout();
                             }
-
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
-                            middleLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
-
-                            LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(42f);
-                            innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
-                            innerUpperBottomLayout.RequestLayout();
-
-                            LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTxtBtnBottomLayout.RequestLayout();
                         }
-                        else if (position == 1)
+                        else if (model.ItemCount == 2)
                         {
-                            float h1 = TextViewUtils.IsLargeFonts ? 298f : 268f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
-                            int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
-                            float heightRatio = 84f / 96f;
-                            int cardHeight = (int)(cardWidth * (heightRatio));
-                            if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
+                            if (position == 0)
                             {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
-                                cardHeight = cardWidth;
-                            }
-                            else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
-                            {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
-                                cardHeight = cardWidth;
-                            }
-                            int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
-
-                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
-                            {
-                                int offsetHeight = (int)DPUtils.ConvertDPToPx(65f);
-                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                int halfScroll = offsetHeight / 2;
-
-                                if (diffHeight < halfScroll)
+                                int topHeight = (int)DPUtils.ConvertDPToPx(65f);
+                                int middleHeight = (int)DPUtils.ConvertDPToPx(175f);
+                                if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                 {
-                                    topHeight = topHeight - (offsetHeight / 2);
+                                    int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                    int halfScroll = topHeight / 2;
+
+                                    if (diffHeight < halfScroll)
+                                    {
+                                        topHeight = topHeight / 2;
+                                    }
                                 }
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = middleHeight;
+                                middleLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(42f);
+                                innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
+                                innerUpperBottomLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTxtBtnBottomLayout.RequestLayout();
                             }
-
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
-                            middleLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f);
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
-
-                            RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            if (model.NeedHelpHide)
+                            else if (position == 1)
                             {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
+                                float h1 = TextViewUtils.IsLargeFonts ? 298f : 268f;
+                                int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                                int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
+                                float heightRatio = 84f / 96f;
+                                int cardHeight = (int)(cardWidth * (heightRatio));
+                                if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
+                                {
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+                                    cardHeight = cardWidth;
+                                }
+                                else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
+                                {
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
+                                    cardHeight = cardWidth;
+                                }
+                                int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
+
+                                if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                                {
+                                    int offsetHeight = (int)DPUtils.ConvertDPToPx(65f);
+                                    int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                    int halfScroll = offsetHeight / 2;
+
+                                    if (diffHeight < halfScroll)
+                                    {
+                                        topHeight = topHeight - (offsetHeight / 2);
+                                    }
+                                }
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = ((HomeMenuFragment)this.mFragment).GetMyServiceContainerHeight();
+                                middleLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f);
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                                if (model.NeedHelpHide)
+                                {
+                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
+                                }
+                                else
+                                {
+                                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
+                                }
+                                innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTopLayout.RequestLayout();
                             }
                             else
                             {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
-                            }
-                            innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTopLayout.RequestLayout();
-                        }
-                        else
-                        {
-                            float h1 = TextViewUtils.IsLargeFonts ? 298f : 268f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
-                            int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
-                            float heightRatio = 84f / 96f;
-                            int cardHeight = (int)(cardWidth * (heightRatio));
-                            if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
-                            {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
-                                cardHeight = cardWidth;
-                            }
-                            else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
-                            {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
-                                cardHeight = cardWidth;
-                            }
-                            int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
-                            topHeight = topHeight + middleHeight + middleHeight + (int)DPUtils.ConvertDPToPx(12f);
-                            if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
-                            {
-                                topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
-                            }
-
-                            cardWidth = (int)((this.mContext.Resources.DisplayMetrics.WidthPixels / 3.05) - DPUtils.ConvertDPToPx(16f));
-
-                            heightRatio = 56f / 92f;
-                            cardHeight = (int)(cardWidth * (heightRatio));
-
-                            middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(42f);
-
-                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
-                            {
-                                float h2 = TextViewUtils.IsLargeFonts ? 90f : 100f;
-                                int belowHeight = (int)DPUtils.ConvertDPToPx(h2);
-                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
+                                float h1 = TextViewUtils.IsLargeFonts ? 298f : 268f;
+                                int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                                int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
+                                float heightRatio = 84f / 96f;
+                                int cardHeight = (int)(cardWidth * (heightRatio));
+                                if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
                                 {
-                                    belowHeight = (int)DPUtils.ConvertDPToPx(135);
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+                                    cardHeight = cardWidth;
+                                }
+                                else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
+                                {
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
+                                    cardHeight = cardWidth;
+                                }
+                                int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(1f);
+                                topHeight = topHeight + middleHeight + middleHeight - (int)DPUtils.ConvertDPToPx(35f);
+                                if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
+                                {
+                                    topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
                                 }
 
-                                topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight;
+                                cardWidth = (int)((this.mContext.Resources.DisplayMetrics.WidthPixels / 3.05) - DPUtils.ConvertDPToPx(16f));
+
+                                heightRatio = 56f / 92f;
+                                cardHeight = (int)(cardWidth * (heightRatio));
+
+                                middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(45f);
+
+                                if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                                {
+                                    float h2 = TextViewUtils.IsLargeFonts ? 90f : 100f;
+                                    int belowHeight = (int)DPUtils.ConvertDPToPx(h2);
+                                    if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
+                                    {
+                                        belowHeight = (int)DPUtils.ConvertDPToPx(135);
+                                    }
+
+                                    topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight - (int)DPUtils.ConvertDPToPx(10f);
+                                }
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = middleHeight;
+                                middleLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
+                                innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTopLayout.RequestLayout();
                             }
-
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
-                            middleLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
-
-                            RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
-                            innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTopLayout.RequestLayout();
                         }
-                    }
-                    else if (model.ItemCount == 1)
-                    {
-                        if (position == 0)
+                        else if (model.ItemCount == 1)
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(75f);
-                            int middleHeight = (int)DPUtils.ConvertDPToPx(120f);
-
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
-                            middleLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
-
-                            LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(42f);
-                            innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
-                            innerUpperBottomLayout.RequestLayout();
-
-                            LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTxtBtnBottomLayout.RequestLayout();
-                        }
-                        else if (position == 1)
-                        {
-                            float h1 = TextViewUtils.IsLargeFonts ? 250f : 228f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
-                            int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
-                            float heightRatio = 84f / 96f;
-                            int cardHeight = (int)(cardWidth * (heightRatio));
-                            if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
+                            if (position == 0)
                             {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
-                                cardHeight = cardWidth;
+                                int topHeight = (int)DPUtils.ConvertDPToPx(75f);
+                                int middleHeight = (int)DPUtils.ConvertDPToPx(120f);
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = middleHeight;
+                                middleLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(42f);
+                                innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
+                                innerUpperBottomLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTxtBtnBottomLayout.RequestLayout();
                             }
-                            else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
+                            else if (position == 1)
                             {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
-                                cardHeight = cardWidth;
-                            }
-                            int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
+                                float h1 = TextViewUtils.IsLargeFonts ? 250f : 228f;
+                                int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                                int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
+                                float heightRatio = 84f / 96f;
+                                int cardHeight = (int)(cardWidth * (heightRatio));
+                                if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
+                                {
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+                                    cardHeight = cardWidth;
+                                }
+                                else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
+                                {
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
+                                    cardHeight = cardWidth;
+                                }
+                                int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
 
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
-                            middleLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f);
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = ((HomeMenuFragment)this.mFragment).GetMyServiceContainerHeight();
+                                middleLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f);
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
 
-                            RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            if (model.NeedHelpHide)
-                            {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
+                                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                                if (model.NeedHelpHide)
+                                {
+                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
+                                }
+                                else
+                                {
+                                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
+                                }
+                                innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTopLayout.RequestLayout();
                             }
                             else
                             {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
+                                float h1 = TextViewUtils.IsLargeFonts ? 248f : 228f;
+                                int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                                int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
+                                float heightRatio = 84f / 96f;
+                                int cardHeight = (int)(cardWidth * (heightRatio));
+                                if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
+                                {
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+                                    cardHeight = cardWidth;
+                                }
+                                else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
+                                {
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
+                                    cardHeight = cardWidth;
+                                }
+                                int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(1f);
+                                topHeight = topHeight + middleHeight + middleHeight - (int)DPUtils.ConvertDPToPx(33f);
+                                if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
+                                {
+                                    topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
+                                }
+
+                                cardWidth = (int)((this.mContext.Resources.DisplayMetrics.WidthPixels / 3.05) - DPUtils.ConvertDPToPx(16f));
+
+                                heightRatio = 56f / 92f;
+                                cardHeight = (int)(cardWidth * (heightRatio));
+
+                                middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(45f);
+
+                                if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                                {
+                                    float h2 = TextViewUtils.IsLargeFonts ? 90f : 100f;
+                                    int belowHeight = (int)DPUtils.ConvertDPToPx(h2);
+                                    if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
+                                    {
+                                        belowHeight = (int)DPUtils.ConvertDPToPx(135);
+                                    }
+
+                                    topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight - (int)DPUtils.ConvertDPToPx(10f);
+                                }
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = middleHeight;
+                                middleLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
+                                innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTopLayout.RequestLayout();
                             }
-                            innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTopLayout.RequestLayout();
                         }
                         else
                         {
-                            float h1 = TextViewUtils.IsLargeFonts ? 248f : 228f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
-                            int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
-                            float heightRatio = 84f / 96f;
-                            int cardHeight = (int)(cardWidth * (heightRatio));
-                            if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
+                            if (position == 0)
                             {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
-                                cardHeight = cardWidth;
+                                int topHeight = (int)DPUtils.ConvertDPToPx(75f);
+                                int middleHeight = (int)DPUtils.ConvertDPToPx(118f);
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = middleHeight;
+                                middleLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(42f);
+                                innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
+                                innerUpperBottomLayout.RequestLayout();
+
+                                LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTxtBtnBottomLayout.RequestLayout();
                             }
-                            else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
+                            else if (position == 1)
                             {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
-                                cardHeight = cardWidth;
-                            }
-                            int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
-                            topHeight = topHeight + middleHeight + middleHeight + (int)DPUtils.ConvertDPToPx(12f);
-                            if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
-                            {
-                                topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
-                            }
-
-                            cardWidth = (int)((this.mContext.Resources.DisplayMetrics.WidthPixels / 3.05) - DPUtils.ConvertDPToPx(16f));
-
-                            heightRatio = 56f / 92f;
-                            cardHeight = (int)(cardWidth * (heightRatio));
-
-                            middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(42f);
-
-                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
-                            {
-                                float h2 = TextViewUtils.IsLargeFonts ? 90f : 100f;
-                                int belowHeight = (int)DPUtils.ConvertDPToPx(h2);
-                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
+                                float h1 = TextViewUtils.IsLargeFonts ? 235f : 218f;
+                                int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                                int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
+                                float heightRatio = 84f / 96f;
+                                int cardHeight = (int)(cardWidth * (heightRatio));
+                                if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
                                 {
-                                    belowHeight = (int)DPUtils.ConvertDPToPx(135);
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+                                    cardHeight = cardWidth;
                                 }
+                                else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
+                                {
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
+                                    cardHeight = cardWidth;
+                                }
+                                int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
 
-                                topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight;
-                            }
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = ((HomeMenuFragment)this.mFragment).GetMyServiceContainerHeight();
+                                middleLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f);
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
 
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
-                            middleLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
-
-                            RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
-                            innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTopLayout.RequestLayout();
-                        }
-                    }
-                    else
-                    {
-                        if (position == 0)
-                        {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(75f);
-                            int middleHeight = (int)DPUtils.ConvertDPToPx(118f);
-
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
-                            middleLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
-
-                            LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(42f);
-                            innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
-                            innerUpperBottomLayout.RequestLayout();
-
-                            LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTxtBtnBottomLayout.RequestLayout();
-                        }
-                        else if (position == 1)
-                        {
-                            float h1 = TextViewUtils.IsLargeFonts ? 235f : 218f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
-                            int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
-                            float heightRatio = 84f / 96f;
-                            int cardHeight = (int)(cardWidth * (heightRatio));
-                            if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
-                            {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
-                                cardHeight = cardWidth;
-                            }
-                            else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
-                            {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
-                                cardHeight = cardWidth;
-                            }
-                            int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
-
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
-                            middleLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f);
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
-
-                            RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            if (model.NeedHelpHide)
-                            {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
+                                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                                if (model.NeedHelpHide)
+                                {
+                                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(192f);
+                                }
+                                else
+                                {
+                                    innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
+                                }
+                                innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTopLayout.RequestLayout();
                             }
                             else
                             {
-                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(122f);
-                            }
-                            innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTopLayout.RequestLayout();
-                        }
-                        else
-                        {
-                            float h1 = TextViewUtils.IsLargeFonts ? 238f : 218f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
-                            int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
-                            float heightRatio = 84f / 96f;
-                            int cardHeight = (int)(cardWidth * (heightRatio));
-                            if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
-                            {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
-                                cardHeight = cardWidth;
-                            }
-                            else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
-                            {
-                                cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
-                                cardHeight = cardWidth;
-                            }
-                            int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(2f);
-                            topHeight = topHeight + middleHeight + middleHeight + (int)DPUtils.ConvertDPToPx(12f);
-                            if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
-                            {
-                                topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
-                            }
-
-                            cardWidth = (int)((this.mContext.Resources.DisplayMetrics.WidthPixels / 3.05) - DPUtils.ConvertDPToPx(16f));
-
-                            heightRatio = 56f / 92f;
-                            cardHeight = (int)(cardWidth * (heightRatio));
-
-                            middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(42f);
-
-                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
-                            {
-                                float h2 = TextViewUtils.IsLargeFonts ? 90f : 100f;
-                                int belowHeight = (int)DPUtils.ConvertDPToPx(h2);
-                                if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
+                                float h1 = TextViewUtils.IsLargeFonts ? 238f : 218f;
+                                int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                                int cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(14f);
+                                float heightRatio = 84f / 96f;
+                                int cardHeight = (int)(cardWidth * (heightRatio));
+                                if (DPUtils.ConvertDPToPixel(cardWidth) > 91f && DPUtils.ConvertPxToDP(cardWidth) <= 120f)
                                 {
-                                    belowHeight = (int)DPUtils.ConvertDPToPx(135);
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(12f);
+                                    cardHeight = cardWidth;
+                                }
+                                else if (DPUtils.ConvertPxToDP(cardWidth) <= 91f)
+                                {
+                                    cardWidth = (this.mContext.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(10f);
+                                    cardHeight = cardWidth;
+                                }
+                                int middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(1f);
+                                topHeight = topHeight + middleHeight + middleHeight - (int)DPUtils.ConvertDPToPx(33f);
+                                if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
+                                {
+                                    topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
                                 }
 
-                                topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight;
+                                cardWidth = (int)((this.mContext.Resources.DisplayMetrics.WidthPixels / 3.05) - DPUtils.ConvertDPToPx(16f));
+
+                                heightRatio = 56f / 92f;
+                                cardHeight = (int)(cardWidth * (heightRatio));
+
+                                middleHeight = cardHeight + (int)DPUtils.ConvertDPToPx(42f);
+
+                                if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                                {
+                                    float h2 = TextViewUtils.IsLargeFonts ? 90f : 100f;
+                                    int belowHeight = (int)DPUtils.ConvertDPToPx(h2);
+                                    if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
+                                    {
+                                        belowHeight = (int)DPUtils.ConvertDPToPx(135);
+                                    }
+
+                                    topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight - middleHeight - (int)DPUtils.ConvertDPToPx(10f);
+                                }
+
+                                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                topLayoutParam.Height = topHeight;
+                                topLayout.RequestLayout();
+                                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                middleLayoutParam.Height = middleHeight;
+                                middleLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedLeftLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                                highlightedLayout.RequestLayout();
+                                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                                highlightedRightLayout.RequestLayout();
+                                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                                bottomLayout.RequestLayout();
+
+                                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
+                                innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                                innerTopLayout.RequestLayout();
                             }
-
-                            LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            topLayoutParam.Height = topHeight;
-                            topLayout.RequestLayout();
-                            LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            middleLayoutParam.Height = middleHeight;
-                            middleLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedLeftLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
-                            highlightedLayout.RequestLayout();
-                            LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                            highlightedRightLayout.RequestLayout();
-                            LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                            bottomLayout.RequestLayout();
-
-                            RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(175f);
-                            innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                            innerTopLayout.RequestLayout();
                         }
-                    }
                 }
                 else if (this.mFragment is ItemisedBillingMenuFragment)
                 {

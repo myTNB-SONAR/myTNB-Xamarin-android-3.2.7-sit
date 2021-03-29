@@ -624,6 +624,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
                     string userID = UserEntity.GetActive().UserID;
                     string email = UserEntity.GetActive().Email;
+                    string name = UserEntity.GetActive().DisplayName;
                     List<Models.AddAccount> accounts = new List<Models.AddAccount>();
                     foreach (NewAccount item in newList)
                     {
@@ -673,7 +674,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         this.userActionsListener.AddMultipleAccounts(apiKeyID, userID, email, accounts);
                     }*/
 
-                    this.userActionsListener.AddMultipleAccounts(apiKeyID, userID, email, accounts);
+                    this.userActionsListener.AddMultipleAccounts(apiKeyID, userID, email, name, accounts);
 
                 }
                 else
