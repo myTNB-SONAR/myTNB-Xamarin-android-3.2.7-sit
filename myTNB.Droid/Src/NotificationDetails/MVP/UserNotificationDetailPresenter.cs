@@ -218,12 +218,12 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED:
                         {
-                            imageResourceBanner = Resource.Drawable.noti_acc_addby_someone;
+                            imageResourceBanner = Resource.Drawable.notification_payment_failed_banner;
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_REMOVE_ACCOUNT:
                         {
-                            imageResourceBanner = Resource.Drawable.noti_removed_by_owner;
+                            imageResourceBanner = Resource.Drawable.notification_payment_failed_banner;
                             break;
                         }
                     default:
