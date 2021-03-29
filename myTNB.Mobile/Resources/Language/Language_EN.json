@@ -1443,7 +1443,7 @@
     "armyid": "Army ID",
     "passport": "Passport",
     "mykadhint": "Please enter a valid 12 digits IC / Mykad number.",
-    "armyidhint": "The Army ID must be between 5-50 characters.",
+    "armyidhint": "The Army ID must be between 5-15 characters.",
     "passporthint": "The Passport must be between 5-50 characters.",
     "IdHeaderError": "This identification number has been used for an existing account.",
     "IdBodyError": "Please ensure that you’ve entered the correct identification number, or contact TNB CareLine to enquire further about this matter.",

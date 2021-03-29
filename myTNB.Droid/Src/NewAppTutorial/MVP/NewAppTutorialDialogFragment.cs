@@ -326,7 +326,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         swipeDoubleTapLayout.Visibility = ViewStates.Visible;
 
                         txtDoubleTapDismiss.Visibility = ViewStates.Visible;
-                        txtDoubleTapDismiss.Text = Utility.GetLocalizedLabel("Common", "tutorialSwipeTextlastNew");
+                        txtDoubleTapDismiss.Text = Utility.GetLocalizedLabel("Tutorial", "skip");
                         indicator.Visibility = ViewStates.Visible;
                         indicatorTopContainer.Visibility = ViewStates.Visible;
                     }
@@ -500,16 +500,16 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             }
 
                             if (e.Position == NewAppTutorialList.Count - 1)
-                            {
-                                txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextlastNew"));
-                                txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextlastNew"));
+                 {
+                                txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "skip"));
+                                txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "skip"));
                                 //txtDoubleTapDismiss.Visibility = ViewStates.Visible;
                                 //txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
                             }
                             else
                             {
-                                txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"));
-                                txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedCommonLabel("tutorialSwipeTextNew"));
+                                txtDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "swipeText"));
+                                txtTopDoubleTapDismiss.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Tutorial", "swipeText"));
 
                                 //txtDoubleTapDismiss.Visibility = ViewStates.Visible;
                                 //txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
@@ -988,6 +988,14 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     else if (this.mActivity is ApplicationStatusDetailActivity)
                     {
                         UserSessions.DoApplicationDetailShown(this.mPref);
+                    }
+                    else if (this.mActivity is DashboardHomeActivity)
+                    {
+                        UserSessions.DoManageAccessIconTutorialShown(this.mPref);
+                    }
+                    else if (this.mActivity is ManageAccessActivity)
+                    {
+                        UserSessions.DoManageAccessPageTutorialShown(this.mPref);
                     }
                 }
                 return true;
