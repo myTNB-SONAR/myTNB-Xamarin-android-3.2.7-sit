@@ -218,12 +218,16 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED:
                         {
-                            imageResourceBanner = Resource.Drawable.notification_payment_failed_banner;
+                            imageResourceBanner = Resource.Drawable.noti_nonowner_to_owner;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("NotificationAddAccount", "btnManageAccess"),
+                                delegate () { ViewManageAccess(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
                             break;
                         }
-                    case Constants.BCRM_NOTIFICATION_REMOVE_ACCOUNT:
+                    case Constants.BCRM_NOTIFICATION_REMOVE_ACCESS:
                         {
-                            imageResourceBanner = Resource.Drawable.notification_payment_failed_banner;
+                            imageResourceBanner = Resource.Drawable.noti_removed_by_owner;
                             break;
                         }
                     default:
@@ -231,6 +235,13 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         break;
                 }
                 notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_NICKNAME_PATTERN, accountName);
+
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED)
+                {
+                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_FULLNAME_PATTERN, UserEntity.GetActive().DisplayName+"/"+ UserEntity.GetActive().Email);
+                    
+                }
+
                 notificationDetailModel = new NotificationDetailModel(imageResourceBanner, pageTitle, notificationDetailTitle,
                     notificationDetailMessage, ctaList);
             }
@@ -555,6 +566,22 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 accountChargeModelList.Add(accountChargeModel);
             });
             return accountChargeModelList;
+        }
+
+        private void ViewManageAccess(Models.NotificationDetails notificationDetails)
+        {
+            AccountData accountData = new AccountData();
+            CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+            CustomerBillingAccount.RemoveSelected();
+            CustomerBillingAccount.SetSelected(notificationDetails.AccountNum);
+
+            accountData.AccountNickName = account.AccDesc;
+            accountData.AccountName = account.OwnerName;
+            accountData.AccountNum = account.AccNum;
+            accountData.AddStreet = account.AccountStAddress;
+            accountData.IsOwner = account.isOwned;
+            accountData.AccountCategoryId = account.AccountCategoryId;
+            this.mView.ViewManageAccess(accountData);
         }
 
         private void ViewBillHistory(Models.NotificationDetails notificationDetails)

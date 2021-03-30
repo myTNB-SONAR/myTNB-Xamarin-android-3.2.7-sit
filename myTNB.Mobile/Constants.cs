@@ -40,13 +40,13 @@
         private const string ApiKeyIdPROD = "E6148656-205B-494C-BC95-CC241423E72F";
 
 #if DEBUG
-        internal static string ApiDomain = SIT;
+        internal static string ApiDomain = DEV3;
         internal const string ApiKeyId = ApiKeyIdDEV;
         internal const string SitecoreURL = SitecorePROD;
 #elif MASTER || SIT
-        internal static string ApiDomain = SIT;
+        internal static string ApiDomain = DEV3;
         internal const string ApiKeyId = ApiKeyIdDEV;
-        internal const string SitecoreURL = SitecoreSIT;
+        internal const string SitecoreURL = SitecorePROD;
 #else
         //internal static string ApiDomain = PROD;
         //internal const string ApiKeyId = ApiKeyIdPROD;

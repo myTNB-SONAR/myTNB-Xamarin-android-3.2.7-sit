@@ -18,6 +18,8 @@ using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FAQ.Activity;
+using myTNB_Android.Src.ManageAccess.Activity;
+using myTNB_Android.Src.ManageSupplyAccount.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -410,6 +412,14 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             DashboardIntent.PutExtra("MENU","BillMenu");
             DashboardIntent.PutExtra("DATA",JsonConvert.SerializeObject(mSelectedAccountData));
             StartActivity(DashboardIntent);
+        }
+
+        public void ViewManageAccess(AccountData accountData)
+        {
+            Intent manageAccount = new Intent(this, typeof(ManageSupplyAccountActivityEdit));
+            manageAccount.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            manageAccount.PutExtra(Constants.SELECTED_ACCOUNT_POSITION, position);
+            StartActivityForResult(manageAccount, Constants.MANAGE_SUPPLY_ACCOUNT_REQUEST);
         }
 
         public void ShowPaymentReceipt(GetPaymentReceiptResponse response)
