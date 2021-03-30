@@ -239,6 +239,14 @@ namespace myTNB_Android.Src.UpdateID.Activity
                         eText.SetSelection(eText.Text.Length);
                     }
                 }
+                else if (Idtype.Equals("Army ID"))
+                {
+                    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(15) });
+                }
+                else if (Idtype.Equals("Passport"))
+                {
+                    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
+                }
             }
 
         }
@@ -417,11 +425,11 @@ namespace myTNB_Android.Src.UpdateID.Activity
         {
             string ic_no = txtICNumber.Text.ToString().Trim();
             MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.THREE_PART_WITH_HEADER_TWO_BUTTON)
-                        .SetTitle(Utility.GetLocalizedLabel("Profile", "updateIdTitle"))
+                        .SetTitle(Utility.GetLocalizedLabel("CompleteYourProfile", "updateIdTitle"))
                         .SetSubTitle(ic_no)
-                        .SetMessage(Utility.GetLocalizedLabel("Profile", "updateIdMessage"))
+                        .SetMessage(Utility.GetLocalizedLabel("CompleteYourProfile", "updateIdMessage"))
                         .SetContentGravity(Android.Views.GravityFlags.Left)
-                        .SetCTALabel(Utility.GetLocalizedLabel("Profile", "re_enter"))
+                        .SetCTALabel(Utility.GetLocalizedLabel("CompleteYourProfile", "re_enter"))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "confirm"))
                         .SetSecondaryCTAaction(() =>
                         {

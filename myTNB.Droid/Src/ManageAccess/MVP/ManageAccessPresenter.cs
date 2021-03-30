@@ -359,26 +359,31 @@ namespace myTNB_Android.Src.ManageAccess.MVP
         {
             List<NewAppModel> newList = new List<NewAppModel>();
 
-            newList.Add(new NewAppModel()
-            {
-                ContentShowPosition = ContentType.BottomRight,
-                ContentTitle = Utility.GetLocalizedLabel("UserAccess", "walkthroughStep1Title"),
-                ContentMessage = Utility.GetLocalizedLabel("UserAccess", "walkthroughStep1"),
-                ItemCount = 0,
-                NeedHelpHide = true,
-                IsButtonShow = false
-            });
 
-            newList.Add(new NewAppModel()
+            List<UserManageAccessAccount> customerAccountList = UserManageAccessAccount.List(accountData?.AccountNum);
+            if (customerAccountList != null && customerAccountList.Count > 0)
             {
-                ContentShowPosition = ContentType.BottomLeft,
-                ContentTitle = Utility.GetLocalizedLabel("UserAccess", "walkthroughStep2Title"),
-                ContentMessage = Utility.GetLocalizedLabel("UserAccess", "walkthroughStep2"),
-                ItemCount = UserManageAccessAccount.List(accountData.AccountNum).Count,
-                NeedHelpHide = true,
-                IsButtonShow = false
-            });
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.BottomRight,
+                    ContentTitle = Utility.GetLocalizedLabel("UserAccess", "walkthroughStep1Title"),
+                    ContentMessage = Utility.GetLocalizedLabel("UserAccess", "walkthroughStep1"),
+                    ItemCount = 0,
+                    NeedHelpHide = true,
+                    IsButtonShow = false
+                });
 
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.BottomLeft,
+                    ContentTitle = Utility.GetLocalizedLabel("UserAccess", "walkthroughStep2Title"),
+                    ContentMessage = Utility.GetLocalizedLabel("UserAccess", "walkthroughStep2"),
+                    ItemCount = UserManageAccessAccount.List(accountData.AccountNum).Count,
+                    NeedHelpHide = true,
+                    IsButtonShow = false
+                });
+
+            }
             return newList;
         }
 

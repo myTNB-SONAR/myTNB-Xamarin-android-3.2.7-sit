@@ -209,7 +209,7 @@ namespace myTNB_Android.Src.UpdateID.MVP
             bool isValid = false;
             try
             {
-                isValid = hasNumber.IsMatch(icno) && hasMinimum5until50Chars.IsMatch(icno);
+                isValid = hasNumber.IsMatch(icno) && (icno.Length > 5 && icno.Length < 16);
             }
             catch (System.Exception e)
             {
@@ -222,7 +222,7 @@ namespace myTNB_Android.Src.UpdateID.MVP
             bool isValid = false;
             try
             {
-                isValid = hasNumber.IsMatch(icno) && hasUpperChar.IsMatch(icno) && hasMinimum8Chars.IsMatch(icno);
+                isValid = hasNumber.IsMatch(icno) && hasUpperChar.IsMatch(icno) && (icno.Length > 5 && icno.Length < 51);
             }
             catch (System.Exception e)
             {
