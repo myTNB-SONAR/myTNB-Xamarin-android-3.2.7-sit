@@ -12,6 +12,7 @@ using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.Utils;
 using Refit;
 using myTNB;
+using myTNB_Android.Src.AppLaunch.Models;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -151,6 +152,24 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         {
                             int newRecord = UserNotificationTypesEntity.InsertOrReplace(notificationType);
                             Console.WriteLine(string.Format("New Type Created {0}", newRecord));
+
+                            if (notificationType.MasterId == "1000020")
+                            {
+                                NotificationTypes type = new NotificationTypes()
+                                {
+                                    MasterId = notificationType.Id,
+                                    Title = notificationType.Title,
+                                    Code = notificationType.Code,
+                                    PreferenceMode = notificationType.PreferenceMode,
+                                    Type = notificationType.Type,
+                                    CreatedDate = notificationType.CreatedDate,
+                                    Id = notificationType.MasterId,
+                                    IsOpted = notificationType.IsOpted,
+                                    ShowInPreference = notificationType.ShowInPreference,
+                                    ShowInFilterList = notificationType.ShowInFilterList
+                                };
+                                NotificationTypesEntity.InsertOrReplace(type);
+                            }
                         }
 
                         foreach (UserNotificationChannel notificationChannel in notificationChannelApi.GetData())
