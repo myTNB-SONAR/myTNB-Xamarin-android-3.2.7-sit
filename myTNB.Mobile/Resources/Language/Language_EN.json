@@ -591,7 +591,9 @@
     "reenableSSMR": "Re-start Self Meter Reading",
     "viewReadingHistory": "View Reading History",
     "paymentHistory": "Payment history",
-    "viewReceipt": "View Receipt"
+    "viewReceipt": "View Receipt",
+    "viewManageAccess": "Manage Access",
+    "viewAccount": "View Account"
   },
   "AddAccount": {
     "title": "Add Electricity Account",

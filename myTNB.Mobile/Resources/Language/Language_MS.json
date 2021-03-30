@@ -591,7 +591,9 @@
     "reenableSSMR": "Aktifkan semula SMR",
     "viewReadingHistory": "Kembali ke Penggunaan",
     "paymentHistory": "Rekod bayaran",
-    "viewReceipt": "Melihat Resit"
+    "viewReceipt": "Melihat Resit",
+    "viewManageAccess": "Urus Akses",
+    "viewAccount": "Lihat Akaun"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",

@@ -316,6 +316,8 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID = "72";
         public const string BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED = "10001";
         public const string BCRM_NOTIFICATION_REMOVE_ACCESS = "10002";
+        public const string BCRM_NOTIFICATION_NEW_ACCESS_ADDED = "10003";
+        public const string BCRM_NOTIFICATION_UPDATE_ACCESS = "10004";
 
         public const string ACCOUNT_NICKNAME_PATTERN = "#accountNickname#";
         public const string ACCOUNT_FULLNAME_PATTERN = "#accountFullname/accountEmailAddress#";

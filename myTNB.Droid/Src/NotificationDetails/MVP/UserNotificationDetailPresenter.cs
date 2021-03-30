@@ -219,7 +219,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED:
                         {
                             imageResourceBanner = Resource.Drawable.noti_nonowner_to_owner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("NotificationAddAccount", "btnManageAccess"),
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewManageAccess"),
                                 delegate () { ViewManageAccess(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
                             ctaList.Add(primaryCTA);
@@ -228,6 +228,24 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_REMOVE_ACCESS:
                         {
                             imageResourceBanner = Resource.Drawable.noti_removed_by_owner;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewAccount"),
+                                delegate () { ViewManageAccess(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_NEW_ACCESS_ADDED:
+                        {
+                            imageResourceBanner = Resource.Drawable.noti_access_changed_by_owner;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewAccount"),
+                                delegate () { ViewManageAccess(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_UPDATE_ACCESS:
+                        {
+                            imageResourceBanner = Resource.Drawable.noti_access_changed_by_owner;
                             break;
                         }
                     default:
