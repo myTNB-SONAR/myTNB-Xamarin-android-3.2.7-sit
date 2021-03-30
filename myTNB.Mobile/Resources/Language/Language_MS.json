@@ -593,7 +593,8 @@
     "paymentHistory": "Rekod bayaran",
     "viewReceipt": "Melihat Resit",
     "viewManageAccess": "Urus Akses",
-    "viewAccount": "Lihat Akaun"
+    "viewAccount": "Lihat Akaun",
+    "addNickname": "Tambah Nama Gelaran"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",
@@ -710,7 +711,8 @@
     "modeDescription": "Pilih cara anda mahu menerima pemberitahuan",
     "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah.",
     //addby syahmi 
-    "selectApplang": "Pilih bahasa aplikasi pilihan anda:"
+    "selectApplang": "Pilih bahasa aplikasi pilihan anda:",
+    "setTextSize": "Tetapkan saiz tulisan anda"
   },
 
   //new added

@@ -228,24 +228,30 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_REMOVE_ACCESS:
                         {
                             imageResourceBanner = Resource.Drawable.noti_removed_by_owner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewAccount"),
-                                delegate () { ViewManageAccess(notificationDetails); });
-                            primaryCTA.SetSolidCTA(true);
-                            ctaList.Add(primaryCTA);
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_NEW_ACCESS_ADDED:
                         {
                             imageResourceBanner = Resource.Drawable.noti_access_changed_by_owner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewAccount"),
-                                delegate () { ViewManageAccess(notificationDetails); });
-                            primaryCTA.SetSolidCTA(true);
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewMyUsage"),
+                               delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
+                            if (notificationDetails.MerchantTransId != null)
+                            {
+                                secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "addNickname"),
+                                delegate () { ViewManageAccess(notificationDetails); });
+                                ctaList.Add(secondaryCTA);
+                            }
+                            
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_UPDATE_ACCESS:
                         {
                             imageResourceBanner = Resource.Drawable.noti_access_changed_by_owner;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewAccount"),
+                                delegate () { ViewManageAccess(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            ctaList.Add(primaryCTA);
                             break;
                         }
                     default:

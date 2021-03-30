@@ -593,7 +593,8 @@
     "paymentHistory": "Payment history",
     "viewReceipt": "View Receipt",
     "viewManageAccess": "Manage Access",
-    "viewAccount": "View Account"
+    "viewAccount": "View Account",
+    "addNickname": "Add Nickname"
   },
   "AddAccount": {
     "title": "Add Electricity Account",
@@ -709,8 +710,9 @@
     "typeDescription": "Select the type of notifications you wish to receive from TNB",
     "modeDescription": "Select how you wish to receive your notifications",
     "changeLanguageSuccess": "Your language preference has been changed successfully.",
-    //addby syahmi 
-    "selectApplang":"Select your preferred app language:"
+    //addby syahmi
+    "selectApplang": "Select your preferred app language:",
+    "setTextSize": "Set Your Text Size"
   },
 
   //new added
