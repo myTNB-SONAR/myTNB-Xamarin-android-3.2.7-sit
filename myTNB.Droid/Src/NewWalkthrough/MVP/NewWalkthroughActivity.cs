@@ -88,9 +88,10 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     }
                 }
 
-                if (position == (MyTNBAccountManagement.GetInstance().IsAppointmentDisabled
-                    ? (newWalkthroughAdapter.Count - 1)
-                    : (newWalkthroughAdapter.Count - 2)))
+                //if (position == (MyTNBAccountManagement.GetInstance().IsAppointmentDisabled
+                //    ? (newWalkthroughAdapter.Count - 1)
+                //    : (newWalkthroughAdapter.Count - 2)))
+                if(position == newWalkthroughAdapter.Count - 2)
                 {
                     ShowSubmitButton(true);
                 }
