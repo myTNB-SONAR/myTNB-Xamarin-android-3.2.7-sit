@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Android.Content;
 using Android.Graphics;
-using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -47,10 +46,18 @@ namespace myTNB_Android.Src.CompoundView
             configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
             var metrics = Resources.DisplayMetrics;
             metrics.ScaledDensity = configuration.FontScale * metrics.Density;
-
-
-            configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
-
+            try
+            {
+                configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
+            }
+            catch (Java.Lang.Exception javaEx)
+            {
+                Console.WriteLine("[DEBUG] configuration.DensityDpi Java Exception: " + javaEx.Message);
+            }
+            catch (System.Exception sysEx)
+            {
+                Console.WriteLine("[DEBUG] configuration.DensityDpi System Exception: " + sysEx.Message);
+            }
             context.Resources.UpdateConfiguration(configuration, metrics);
         }
 
