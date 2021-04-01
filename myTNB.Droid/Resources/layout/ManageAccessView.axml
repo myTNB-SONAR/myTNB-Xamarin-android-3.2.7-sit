@@ -72,7 +72,7 @@
                             android:layout_marginTop="80dp"
                             android:layout_marginBottom="8dp"
                             android:id="@+id/imgEmptyCard"
-                            android:src="@drawable/ic_empty_creditcards" />
+                            android:src="@drawable/user_access_empty" />
                         <TextView
                             android:id="@+id/txtEmptyManageAccess"
                             android:layout_width="match_parent"

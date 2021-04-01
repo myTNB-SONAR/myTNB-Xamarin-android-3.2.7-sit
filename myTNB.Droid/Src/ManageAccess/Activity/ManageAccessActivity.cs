@@ -125,7 +125,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         {
             MenuInflater.Inflate(Resource.Menu.ManageSupplyAccountToolbarMenu, menu);
             ManageAccessMenu = menu;
-            ManageAccessMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.icon_activity_log)).SetVisible(true);
+            ManageAccessMenu.FindItem(Resource.Id.icon_log_activity_unread).SetIcon(GetDrawable(Resource.Drawable.icon_log_empty)).SetVisible(true);
 
             return base.OnCreateOptionsMenu(menu);
         }
