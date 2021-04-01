@@ -126,6 +126,10 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(texttitleThisWeek, texttitleLastWeek, texttitleLastMonth);
 
+                //texttitleThisWeek.TextSize = TextViewUtils.GetFontSize(14);
+                //texttitleLastWeek.TextSize = TextViewUtils.GetFontSize(14);
+                //texttitleLastMonth.TextSize = TextViewUtils.GetFontSize(14);
+
                 texttitleThisWeek.Text = Utility.GetLocalizedLabel("UserAccess", "thisWeekTitle");
                 texttitleLastWeek.Text = Utility.GetLocalizedLabel("UserAccess", "lastWeekTitle");
                 texttitleLastMonth.Text = Utility.GetLocalizedLabel("UserAccess", "lastMonthTitle");

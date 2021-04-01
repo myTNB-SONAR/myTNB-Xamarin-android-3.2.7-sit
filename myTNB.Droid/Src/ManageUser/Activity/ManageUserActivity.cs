@@ -129,11 +129,23 @@ namespace myTNB_Android.Src.ManageUser.Activity
                 }
            
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail);
-                TextViewUtils.SetMuseoSans300Typeface( txtNickName );
+                TextViewUtils.SetMuseoSans300Typeface(txtNickName);
                 TextViewUtils.SetMuseoSans300Typeface(txtEmail);
+                TextViewUtils.SetMuseoSans300Typeface(infoManageUser);
                 TextViewUtils.SetMuseoSans300Typeface(itemTitleFullBill, itemTitleBilling);
                 TextViewUtils.SetMuseoSans500Typeface(btnSave, itemTitle, btnCancelAddAccess, btnResendInviteAccessUser);
                 //TextViewUtils.SetMuseoSans500Typeface(bottomLayout_Cancel_Resend, bottomLayoutSave);
+
+                txtInputLayoutEmail.TextSize = TextViewUtils.GetFontSize(12);
+                txtNickName.TextSize = TextViewUtils.GetFontSize(12);
+                txtEmail.TextSize = TextViewUtils.GetFontSize(12);
+                itemTitleFullBill.TextSize = TextViewUtils.GetFontSize(12);
+                itemTitleBilling.TextSize = TextViewUtils.GetFontSize(12);
+                infoManageUser.TextSize = TextViewUtils.GetFontSize(12);
+                btnSave.TextSize = TextViewUtils.GetFontSize(14);
+                itemTitle.TextSize = TextViewUtils.GetFontSize(14);
+                btnCancelAddAccess.TextSize = TextViewUtils.GetFontSize(14);
+                btnResendInviteAccessUser.TextSize = TextViewUtils.GetFontSize(14);
 
                 itemTitleFullBill.Text = Utility.GetLocalizedLabel("manageUser", "fullElectricity");
                 itemTitleBilling.Text = Utility.GetLocalizedLabel("manageUser", "e_billing");

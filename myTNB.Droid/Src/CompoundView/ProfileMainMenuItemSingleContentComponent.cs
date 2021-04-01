@@ -45,6 +45,7 @@ namespace myTNB_Android.Src.CompoundView
             ContainerAction = FindViewById<LinearLayout>(Resource.Id.ContainerAction);
 
             TextViewUtils.SetMuseoSans500Typeface(itemTitle);
+            itemTitle.TextSize = TextViewUtils.GetFontSize(14);
         }
 
         public void SetTitle(string title)

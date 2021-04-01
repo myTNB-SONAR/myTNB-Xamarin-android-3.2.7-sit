@@ -169,6 +169,17 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 btnRemoveSelectedAccessUser.Text = Utility.GetLocalizedLabel("UserAccess", "RemoveTitle");
                 btnRemoveSelectedAccessUser.Enabled = false;
 
+                TextViewUtils.SetMuseoSans300Typeface(txtEmptyManageAccess);
+                TextViewUtils.SetMuseoSans500Typeface(txtManageAccessTitle, btnAddUser, btnRemoveAccess, btnAddAccessUser, btnCancelRemoveAccess, btnRemoveSelectedAccessUser);
+
+                txtEmptyManageAccess.TextSize = TextViewUtils.GetFontSize(12);
+                txtManageAccessTitle.TextSize = TextViewUtils.GetFontSize(14);
+                btnAddUser.TextSize = TextViewUtils.GetFontSize(14);
+                btnRemoveAccess.TextSize = TextViewUtils.GetFontSize(14);
+                btnAddAccessUser.TextSize = TextViewUtils.GetFontSize(14);
+                btnCancelRemoveAccess.TextSize = TextViewUtils.GetFontSize(14);
+                btnRemoveSelectedAccessUser.TextSize = TextViewUtils.GetFontSize(14);
+
                 adapter = new ManageAccessAdapter(this, false);
                 adapterDelete = new ManageAccessDeleteAdapter(this, false);
                 listViewRemoveAcc.Adapter = adapterDelete;

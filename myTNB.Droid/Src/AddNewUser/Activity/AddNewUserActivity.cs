@@ -107,9 +107,18 @@ namespace myTNB_Android.Src.AddNewUser.Activity
 
                 TextViewUtils.SetMuseoSans300Typeface(textInputLayoutUserEmail);
                 TextViewUtils.SetMuseoSans300Typeface(txtUserEmail);
-                TextViewUtils.SetMuseoSans300Typeface(txtValue, itemTitleFullBill, itemTitleBilling);
+                TextViewUtils.SetMuseoSans300Typeface(txtValue, itemTitleFullBill, itemTitleBilling, infoAddress);
                 TextViewUtils.SetMuseoSans500Typeface(txtAddNewUserTitle, txtNewUserOptionalTitle);
                 TextViewUtils.SetMuseoSans500Typeface(btnAddUser);
+
+                itemTitleFullBill.TextSize = TextViewUtils.GetFontSize(12);
+                itemTitleBilling.TextSize = TextViewUtils.GetFontSize(12);
+                txtUserEmail.TextSize = TextViewUtils.GetFontSize(12);
+                txtValue.TextSize = TextViewUtils.GetFontSize(12);
+                infoAddress.TextSize = TextViewUtils.GetFontSize(12);
+                txtAddNewUserTitle.TextSize = TextViewUtils.GetFontSize(14);
+                txtNewUserOptionalTitle.TextSize = TextViewUtils.GetFontSize(14);
+                btnAddUser.TextSize = TextViewUtils.GetFontSize(14);
 
                 itemTitleFullBill.Text = Utility.GetLocalizedLabel("AddUserAccess", "viewFullElec");
                 itemTitleBilling.Text = Utility.GetLocalizedLabel("AddUserAccess", "applyEBilling");
