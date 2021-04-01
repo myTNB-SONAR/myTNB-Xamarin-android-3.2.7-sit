@@ -71,71 +71,76 @@
                     android:minWidth="25px" />
             </LinearLayout>
             <LinearLayout
-            android:id="@+id/appLanguageContainer"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/linearLayout3"
-            android:orientation="vertical"
-            android:background="@color/lightGrey">
-            <LinearLayout
-            android:id="@+id/appLanguageMessageContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/lightGrey"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/appLanguageMessage"
+                android:id="@+id/appLanguageContainer"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_below="@+id/linearLayout3"
+                android:orientation="vertical"
+                android:background="@color/lightGrey">
+                <LinearLayout
+                android:id="@+id/appLanguageMessageContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="Select Your Preferred Language"
-                android:textColor="@color/blue"
-                android:textSize="16dp"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/appLanguageListContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/lightGrey"
                 android:orientation="vertical">
-                <ListView
-                    android:minWidth="25px"
-                    android:minHeight="25px"
+                <TextView
+                    android:id="@+id/appLanguageMessage"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/language_list_view"
-                    android:background="@color/white"/>
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="Select Your Preferred Language"
+                    android:textColor="@color/blue"
+                    android:textSize="16dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/appLanguageListContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:minHeight="25px"
+                    android:minWidth="25px">
+                    <ListView
+                        android:minWidth="25px"
+                        android:minHeight="25px"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/language_list_view"
+                        android:background="@color/white"/>
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
-            android:id="@+id/textSizeMessageContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/lightGrey"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/textSizeMessage"
+                android:id="@+id/textSizeMessageContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="Set Your Text Size"
-                android:textColor="@color/blue"
-                android:textSize="16dp"/>
+                android:background="@color/lightGrey"
+                android:orientation="vertical"
+                android:layout_below="@+id/appLanguageContainer">
+                <TextView
+                    android:id="@+id/textSizeMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:text="Set Your Text Size"
+                    android:textColor="@color/blue"
+                    android:textSize="16dp"/>
             </LinearLayout>
              <LinearLayout
                 android:id="@+id/textSizeListContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:orientation="vertical">
-                <ListView
+                android:orientation="vertical"
+                android:minWidth="25px"
+                android:minHeight="25px">
+                <!--<ListView
                     android:minWidth="25px"
                     android:minHeight="25px"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/textsize_list_view"
-                    android:background="@color/white"/>
+                    android:background="@color/white"/>-->
             </LinearLayout>
-            </LinearLayout>
+            
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

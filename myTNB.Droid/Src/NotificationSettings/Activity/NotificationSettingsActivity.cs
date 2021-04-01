@@ -57,8 +57,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
         [BindView(Resource.Id.language_list_view)]
         ListView languageListView;
 
-        [BindView(Resource.Id.textsize_list_view)]
-        ListView textsizeListView;
+        [BindView(Resource.Id.textSizeListContainer)]
+        LinearLayout textSizeListContainer;
 
         [BindView(Resource.Id.appLanguageMessage)]
         TextView appLanguageMessage;
@@ -195,26 +195,23 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 //TextViewUtils.SetMuseoSans500Typeface(txtNotificationTypeTitle, txtNotificationChannelTitle);
                 txtNotificationTypeTitle.TextSize = TextViewUtils.GetFontSize(16f);
                 txtNotificationChannelTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                textSizeMessage.TextSize = TextViewUtils.GetFontSize(16f);
                 //txtNotificationTypeTitle.Text = GetLabelByLanguage("typeDescription");
                 //txtNotificationChannelTitle.Text = GetLabelByLanguage("modeDescription");
-                TextViewUtils.SetMuseoSans500Typeface(txtNotificationTypeTitle, txtNotificationChannelTitle, appLanguageMessage);
+                TextViewUtils.SetMuseoSans500Typeface(txtNotificationTypeTitle, txtNotificationChannelTitle, appLanguageMessage, textSizeMessage);
 
                 txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("NotificationSettings", "typeDescription"); 
                 txtNotificationChannelTitle.Text = Utility.GetLocalizedLabel("NotificationSettings", "modeDescription");
+                textSizeMessage.Text = Utility.GetLocalizedLabel("NotificationSettings", "setTextSize");
 
                 notificationChannelLayoutManager = new LinearLayoutManager(this);
                 notificationTypeLayoutManager = new LinearLayoutManager(this);
                 notificationTypeRecyclerView.SetLayoutManager(notificationTypeLayoutManager);
                 notificationChannelRecyclerView.SetLayoutManager(notificationChannelLayoutManager);
 
-               
-                //settingsItem.SetHeaderTitle(Utility.GetLocalizedLabel("NotificationSettings", "setTextSize"););
-                //profileMenuItemsContent.AddView(settingsItem);
-
                 savedLanguage = LanguageUtil.GetAppLanguage();
                 languageItemList = new List<Item>();
-                //ProfileMenuItemComponent settingsItem = GetSettingsItems();
-                //textsizeItemList = new List<Item>();
+
                 isSelectionChange = false;
 
                 foreach (string languageName in Enum.GetNames(typeof(Constants.SUPPORTED_LANGUAGES)))
@@ -230,12 +227,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 selectItemAdapter = new SelectItemAdapter(this, languageItemList);
                 languageListView.Adapter = selectItemAdapter;
 
-
-                //textsizeListView.ItemClick += ListView_ItemClick;
-                //selectItemTextSizeAdapter = new SelectItemAdapter(this, textsizeItemList);
-                //textsizeListView.Adapter = selectItemTextSizeAdapter;
-
-
                 typeAdapter = new NotificationTypeAdapter(true);
                 typeAdapter.ClickEvent += TypeAdapter_ClickEvent;
                 notificationTypeRecyclerView.SetAdapter(typeAdapter);
@@ -245,6 +236,12 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 channelAdapter.ClickEvent += ChannelAdapter_ClickEvent;
                 notificationChannelRecyclerView.SetAdapter(channelAdapter);
                 notificationTypeRecyclerView.NestedScrollingEnabled = (false);
+
+
+                ProfileMenuItemComponent setTextItem = GetSetTextItems();
+                setTextItem.SetHeaderTitle(Utility.GetLocalizedLabel("NotificationSettings", "setTextSize"));
+                setTextItem.HideHeaderTitle();
+                textSizeListContainer.AddView(setTextItem);
 
                 UpdateLabels();
                 SetSelectedLanguage(null);
@@ -291,58 +288,38 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
         }
 
-        //internal void ListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
-        //{
-        //    Item selectedItem = selectItemTextSizeAdapter.GetItemObject(e.Position);
-        //    if (!this.GetIsClicked())
-        //    {
-        //        this.SetIsClicked(true);
-        //        //CustomerBillingAccount customerBillingAccount = adapter.GetItemObject(e.Position);
-        //        //ShowManageSupplyAccount(AccountData.Copy(customerBillingAccount, false), e.Position);
+        private ProfileMenuItemComponent GetSetTextItems()
+        {
+            Context context = this.ApplicationContext;
 
-        //        Context context = this.ApplicationContext;
+            ProfileMenuItemComponent setTextItem = new ProfileMenuItemComponent(context);
 
-        //        //ProfileMenuItemComponent settingItems = new ProfileMenuItemComponent(context);
-
-        //        List<View> shareItems = new List<View>();
-        //        ProfileMenuItemSingleContentComponent largefont = new ProfileMenuItemSingleContentComponent(context);
-        //        largefont.SetTitle(GetLabelByLanguage("displaySize"));
-        //        largefont.SetItemActionCall(ShowAppLargeFontSetting);
-        //        shareItems.Add(largefont);
-        //    }
-        //}
-
-        //private ProfileMenuItemComponent GetSettingsItems()
-        //{
-        //    Context context = this.ApplicationContext;
-
-        //    ProfileMenuItemComponent settingItem = new ProfileMenuItemComponent(context);
-
-        //    List<View> settingItems = new List<View>();
-
-        //    if (MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
-        //    {
-
-        //        Item selectedItem = new Item();
-        //        selectedItem.type = "R";
-        //        selectedItem.title = "Normal";
-        //        selectedItem.selected = true;
+            List<View> setTextItems = new List<View>();
 
 
-        //        TextViewUtils.SaveFontSize(selectedItem);
-        //    }
-        //    else
-        //    {
-        //        ProfileMenuItemSingleContentComponent largefont = new ProfileMenuItemSingleContentComponent(context);
-        //        largefont.SetTitle(GetLabelByLanguage("displaySize"));
-        //        largefont.SetItemActionCall(ShowAppLargeFontSetting);
-        //        settingItems.Add(largefont);
+            if (MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
+            {
 
-        //    }
+                Item selectedItem = new Item();
+                selectedItem.type = "R";
+                selectedItem.title = "Normal";
+                selectedItem.selected = true;
 
-        //    settingItem.AddComponentView(settingItems);
-        //    return settingItem;
-        //}
+
+                TextViewUtils.SaveFontSize(selectedItem);
+            }
+            else
+            {
+                ProfileMenuItemSingleContentComponent largefont = new ProfileMenuItemSingleContentComponent(context);
+                largefont.SetTitle(Utility.GetLocalizedLabel("Profile", "displaySize"));
+                largefont.SetItemActionCall(ShowAppLargeFontSetting);
+                setTextItems.Add(largefont);
+
+            }
+
+            setTextItem.AddComponentView(setTextItems);
+            return setTextItem;
+        }
 
         private async void UpdateLanguage()
         {

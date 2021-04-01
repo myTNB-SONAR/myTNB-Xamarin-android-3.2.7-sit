@@ -111,6 +111,12 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName);
                 TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
 
+                txtAccountAddress.TextSize = TextViewUtils.GetFontSize(12);
+                txtNickName.TextSize = TextViewUtils.GetFontSize(12);
+                txtAccountNumber.TextSize = TextViewUtils.GetFontSize(14);
+                btnTextUpdateNickName.TextSize = TextViewUtils.GetFontSize(14);
+                btnRemoveAccount.TextSize = TextViewUtils.GetFontSize(14);
+
 
                 txtAccountNumber.Text = accountData.AccountNum;
                 //txtAccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, accountData.AddStreet);

@@ -75,6 +75,12 @@ namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
             TextViewUtils.SetMuseoSans500Typeface(headerText, headerText2, headerText3);
             TextViewUtils.SetMuseoSans300Typeface(detailsText, detailsText2);
 
+            detailsText.TextSize = TextViewUtils.GetFontSize(12);
+            detailsText2.TextSize = TextViewUtils.GetFontSize(12);
+            headerText3.TextSize = TextViewUtils.GetFontSize(14);
+            headerText.TextSize = TextViewUtils.GetFontSize(14);
+            headerText2.TextSize = TextViewUtils.GetFontSize(14);
+
             string email = user.Email;
             string data;
             data = Utility.GetLocalizedLabel("AddAccount", "DisclaimerDetails1");

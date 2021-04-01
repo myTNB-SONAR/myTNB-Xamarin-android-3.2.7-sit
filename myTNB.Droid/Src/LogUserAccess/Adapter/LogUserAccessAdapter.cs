@@ -191,6 +191,9 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                 TextViewUtils.SetMuseoSans300Typeface(infoLabelDate);
 
                 TextViewUtils.SetMuseoSans500Typeface(itemTitle);
+
+                //infoLabelDate.TextSize = TextViewUtils.GetFontSize(12);
+                //itemTitle.TextSize = TextViewUtils.GetFontSize(14);
             }
         }
     }
