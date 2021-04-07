@@ -26,11 +26,6 @@ namespace myTNB_Android.Src.UpdateID.MVP
         private Regex hasNumber = new Regex(@"[0-9]+");
         private Regex hasUpperChar = new Regex(@"[a-zA-Z]+");
         private Regex hasMinimum8Chars = new Regex(@".{8,}");
-        private Regex hasMinimum12Chars = new Regex(@".{14,}");
-        private Regex hasMinimum5until50Chars = new Regex(@".{5,50}");
-        private Regex hasHyphens = new Regex(@"/(?([0-9]{3}))?([ .-]?)([0-9]{3})\2([0-9]{4})/");
-
-
 
         CancellationTokenSource registerCts;
         private readonly string TAG = typeof(UpdateIDPresenter).Name;
@@ -133,7 +128,8 @@ namespace myTNB_Android.Src.UpdateID.MVP
             {
                 if (!TextUtils.IsEmpty(icno) && !TextUtils.IsEmpty(idtype))
                 {
-                    if (!CheckIdentificationIsValid(icno) && idtype.Equals("1"))
+                    string ic_no = icno.Replace("-", string.Empty);
+                    if (!CheckIdentificationIsValid(ic_no) && idtype.Equals("1"))
                     {
                         MyTNBAccountManagement.GetInstance().SetIsIDUpdated(false);
                         return;
@@ -195,7 +191,7 @@ namespace myTNB_Android.Src.UpdateID.MVP
             bool isValid = false;
             try
             {
-                isValid = hasNumber.IsMatch(icno) && hasMinimum12Chars.IsMatch(icno);
+                isValid = hasNumber.IsMatch(icno) && icno.Length == 12;
             }
             catch (System.Exception e)
             {
@@ -209,7 +205,7 @@ namespace myTNB_Android.Src.UpdateID.MVP
             bool isValid = false;
             try
             {
-                isValid = hasNumber.IsMatch(icno) && (icno.Length > 5 && icno.Length < 16);
+                isValid = hasNumber.IsMatch(icno) &&  icno.Length > 4 && icno.Length < 16;
             }
             catch (System.Exception e)
             {
@@ -222,7 +218,7 @@ namespace myTNB_Android.Src.UpdateID.MVP
             bool isValid = false;
             try
             {
-                isValid = hasNumber.IsMatch(icno) && hasUpperChar.IsMatch(icno) && (icno.Length > 5 && icno.Length < 51);
+                isValid = hasNumber.IsMatch(icno) && hasUpperChar.IsMatch(icno) && (icno.Length > 4 && icno.Length < 51);
             }
             catch (System.Exception e)
             {

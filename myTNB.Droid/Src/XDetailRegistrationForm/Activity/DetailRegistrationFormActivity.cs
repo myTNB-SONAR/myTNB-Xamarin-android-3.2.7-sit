@@ -38,6 +38,7 @@ using System.Linq;
 using Android.InputMethodServices;
 using static myTNB_Android.Src.RegistrationForm.Activity.DetailRegistrationFormActivity.KeyListener;
 using myTNB_Android.Src.Base;
+using Java.Util.Regex;
 
 namespace myTNB_Android.Src.RegistrationForm.Activity
 {
@@ -302,31 +303,19 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             public void BeforeTextChanged(Java.Lang.ICharSequence s, int start, int count, int after)
             {
                 mAfter = after;
-                /*string Idtype = idText.Text;
-
-                if (Idtype.Equals("IC / Mykad"))
-                {
-                    int len = eText.Text.Length;
-                    if ((start == 6 || start == 9) && count == 0)
-                    {
-                        eText.Text = eText.Text + "-";
-                        eText.SetSelection(eText.Text.Length);
-                    }
-                }*/
             }
 
             public void OnTextChanged(Java.Lang.ICharSequence s, int start, int before, int count)
             {
                 string Idtype = idText.Text;
-
-               if (Idtype.Equals("IC / Mykad"))
+                string icnuminput = eText.Text;
+                if (Idtype.Equals("IC / Mykad"))
                 {
                     int len = eText.Text.Length;
                     if ((len == 6 || len == 9 || start == 5 || start == 8) && before == 0)
                     {
                         eText.Text = eText.Text + "-";
                         eText.SetSelection(eText.Text.Length);
-
                     }
 
                     if(len == 7 && before == 0)
@@ -351,11 +340,11 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                         eText.SetSelection(eText.Text.Length);
                     }
                 }
-                else if (Idtype.Equals("Army ID"))
-                {
+                else if (Idtype.Equals("Army ID") || Idtype.Equals("ID Tentera"))
+                {                   
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(15) });
                 }
-                else if (Idtype.Equals("Passport"))
+                else if (Idtype.Equals("Passport") || Idtype.Equals("Pasport"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
                 }
@@ -621,9 +610,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         public void ShowIdentificationHint()
         {
             ClearICMinimumCharactersError();
-            if (textInputLayoutICNo.HelperText != Utility.GetLocalizedErrorLabel("identificationhint"))
+            if (textInputLayoutICNo.HelperText != Utility.GetLocalizedLabel("OneLastThing", "identificationhint"))
             {
-                textInputLayoutICNo.HelperText = Utility.GetLocalizedErrorLabel("identificationhint");
+                textInputLayoutICNo.HelperText = Utility.GetLocalizedLabel("OneLastThing", "identificationhint");
             }
 
             if (!textInputLayoutICNo.HelperTextEnabled)
@@ -1248,8 +1237,10 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                                     txtICNumber.InputType = InputTypes.ClassNumber;
                                 }
                                 else
-                                {
-                                    txtICNumber.InputType = InputTypes.ClassText;
+                                {                                                                        
+                                    string digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz"; // or any characters you want to allow
+                                    txtICNumber.KeyListener = Android.Text.Method.DigitsKeyListener.GetInstance(digits);
+                                    txtICNumber.SetRawInputType(InputTypes.ClassText);
                                 }
                             }
                         }

@@ -71,6 +71,20 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
                     isCorrect = false;
                 }
 
+                string ic_no = icno.Replace("-", string.Empty);
+                if (ic_no.Length < 12 && idtype == "1")
+                {
+                    isCorrect = false;
+                }
+                else if (icno.Length < 5 && icno.Length < 15 && idtype == "2")
+                {
+                    isCorrect = false;
+                }
+                else if (icno.Length < 5 && icno.Length < 50 && idtype == "3")
+                {
+                    isCorrect = false;
+                }
+
                 //handle button to enable or disable
                 if (isCorrect == true)
                 {
@@ -109,7 +123,8 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
                     {
                         this.mView.ClearFullNameError();
                     }
-                    if (!CheckIdentificationIsValid(icno) && idtype.Equals("1"))
+                    string ic_no = icno.Replace("-", string.Empty);
+                    if (!CheckIdentificationIsValid(ic_no) && idtype.Equals("1"))
                     {
                         this.mView.ShowFullICError();
                         this.mView.DisableRegisterButton();
@@ -382,7 +397,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             bool isValid = false;
             try
             {
-                isValid = hasNumber.IsMatch(icno) && hasMinimum12Chars.IsMatch(icno);
+                isValid = hasNumber.IsMatch(icno) && icno.Length == 12;
             }
             catch (System.Exception e)
             {
@@ -396,7 +411,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             bool isValid = false;
             try
             {
-                isValid = hasNumber.IsMatch(icno) && (icno.Length > 5 && icno.Length < 16);
+                isValid = hasNumber.IsMatch(icno) && hasUpperChar.IsMatch(icno) && (icno.Length > 4 && icno.Length < 16);
             }
             catch (System.Exception e)
             {
@@ -409,7 +424,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             bool isValid = false;
             try
             {
-                isValid = hasNumber.IsMatch(icno) && hasUpperChar.IsMatch(icno) && (icno.Length > 5 && icno.Length < 51);
+                isValid = hasNumber.IsMatch(icno) && hasUpperChar.IsMatch(icno) && (icno.Length > 4 && icno.Length < 51);
             }
             catch (System.Exception e)
             {

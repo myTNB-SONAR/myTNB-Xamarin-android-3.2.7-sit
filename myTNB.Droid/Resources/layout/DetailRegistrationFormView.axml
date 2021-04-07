@@ -140,7 +140,8 @@
                             android:drawablePadding="6dp"
                             android:drawableLeft="@drawable/placeholder_account_no"
                             android:maxLines="1"
-                            android:inputType="text" />
+                            android:digits="@string/name_validation_digits"
+                            android:inputType="textPersonName|textCapWords" />
                     </com.google.android.material.textfield.TextInputLayout>
                     <LinearLayout
                         android:id="@+id/mobileNumberFieldContainer"

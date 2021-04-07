@@ -206,7 +206,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
             public void OnTextChanged(Java.Lang.ICharSequence s, int start, int before, int count)
             {
                 string Idtype = idText.Text;
-
+                string icnuminput = eText.Text;
                 if (Idtype.Equals("IC / Mykad"))
                 {
                     int len = eText.Text.Length;
@@ -239,11 +239,11 @@ namespace myTNB_Android.Src.UpdateID.Activity
                         eText.SetSelection(eText.Text.Length);
                     }
                 }
-                else if (Idtype.Equals("Army ID"))
+                else if (Idtype.Equals("Army ID") || Idtype.Equals("ID Tentera"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(15) });
                 }
-                else if (Idtype.Equals("Passport"))
+                else if (Idtype.Equals("Passport") || Idtype.Equals("Pasport"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
                 }
@@ -781,7 +781,9 @@ namespace myTNB_Android.Src.UpdateID.Activity
                                 }
                                 else
                                 {
-                                    txtICNumber.InputType = InputTypes.ClassText;
+                                    string digits = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz"; // or any characters you want to allow
+                                    txtICNumber.KeyListener = Android.Text.Method.DigitsKeyListener.GetInstance(digits);
+                                    txtICNumber.SetRawInputType(InputTypes.ClassText);
                                 }
                             }
                         }
