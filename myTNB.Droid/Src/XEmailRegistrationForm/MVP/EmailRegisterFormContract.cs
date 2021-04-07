@@ -38,6 +38,12 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
             /// </summary>
             void ShowEmailHint();
 
+            /// <summary>
+            /// Show  hint password
+            /// Pre Validation
+            /// </summary>
+            void ShowPasswordHint();
+
             void ClearInvalidEmailHint();
 
             void ShowInvalidEmailPasswordError();

@@ -80,6 +80,7 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
                     this.mView.ClearInvalidPasswordHint();
                     isCorrect = false;
                 }
+
                 //handle button to enable or disable
                 if (isCorrect == true)
                 {

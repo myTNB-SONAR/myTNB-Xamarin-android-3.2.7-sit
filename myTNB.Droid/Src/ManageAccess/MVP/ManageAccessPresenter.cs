@@ -195,6 +195,8 @@ namespace myTNB_Android.Src.ManageAccess.MVP
                     UserManageAccessAccount.DeleteSelected(accountData.AccountNum);
                     if (this.mView.checkListUserEmpty() == 0)
                     {
+                        
+                        this.mView.UserAccessRemoveSuccess();
                         this.mView.ShowEmptyAccount();
 
                     }

@@ -367,9 +367,9 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
         public void ShowPasswordHint()
         {
             ClearPasswordMinimumOf6CharactersError();
-            if (textInputLayoutPasswordReg.HelperText != Utility.GetLocalizedErrorLabel("passwordHint"))
+            if (textInputLayoutPasswordReg.HelperText != Utility.GetLocalizedLabel("RegisterNew", "passwordHint"))
             {
-                textInputLayoutPasswordReg.HelperText = Utility.GetLocalizedErrorLabel("passwordHint");
+                textInputLayoutPasswordReg.HelperText = Utility.GetLocalizedLabel("RegisterNew", "passwordHint");
             }
 
             if (!textInputLayoutPasswordReg.HelperTextEnabled)
@@ -390,10 +390,10 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
         public void ShowEmailHint()
         {
-            ClearInvalidEmailError();
-            if (textInputLayoutEmailReg.HelperText != Utility.GetLocalizedErrorLabel("EmailHint"))
+            ClearInvalidEmailError(); 
+            if (textInputLayoutEmailReg.HelperText != Utility.GetLocalizedLabel("RegisterNew", "EmailHint"))
             {
-                textInputLayoutEmailReg.HelperText = Utility.GetLocalizedErrorLabel("EmailHint");
+                textInputLayoutEmailReg.HelperText = Utility.GetLocalizedLabel("RegisterNew", "EmailHint");
             }
 
             if (!textInputLayoutEmailReg.HelperTextEnabled)
@@ -674,6 +674,7 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
                 textInputLayoutEmailReg.ErrorEnabled = false;
             }
         }
+
         public void ClearInvalidEmailHint()
         {
             textInputLayoutEmailReg.HelperText = null;
