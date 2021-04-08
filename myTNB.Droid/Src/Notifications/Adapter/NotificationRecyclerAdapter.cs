@@ -23,6 +23,7 @@ using myTNB_Android.Src.Base;
 using System.Text.RegularExpressions;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
+using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.Notifications.Adapter
 {
@@ -146,6 +147,17 @@ namespace myTNB_Android.Src.Notifications.Adapter
 
                 string notificationAccountName = MyTNBAccountManagement.GetInstance().GetNotificationAccountName(notificationData.AccountNum);
                 viewHolder.txtNotificationContent.Text = Regex.Replace(notificationData.Message, Constants.ACCOUNT_NICKNAME_PATTERN, notificationAccountName);
+
+
+                if (notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET)
+                {
+
+                    string message = Regex.Replace(notificationData.Message, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
+                    message = Regex.Replace(message, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + notificationAccountName + "\"");
+                    string ebMessage = Regex.Replace(message, Constants.ACCOUNT_NICKNAME_PATTERN, notificationAccountName);
+                    viewHolder.txtNotificationContent.Text = ebMessage;
+
+                }
 
                 if (notificationData.ShowSelectButton)
                 {

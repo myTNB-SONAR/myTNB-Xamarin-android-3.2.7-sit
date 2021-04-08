@@ -233,8 +233,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
                 if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET)
                 {
-                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, "#profileName#", UserEntity.GetActive().DisplayName);
-                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, "#accno#", "\"" + accountName + "\"");
+                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
+                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + accountName + "\"");
                 }
 
                 notificationDetailModel = new NotificationDetailModel(imageResourceBanner, pageTitle, notificationDetailTitle,
