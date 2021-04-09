@@ -127,9 +127,9 @@ namespace myTNB_Android.Src.Utils
         internal struct SERVER_URL
         {
 #if DEBUG || STUB
-            internal static readonly string END_POINT = "http://10.215.128.191:89";  //dev
+            //internal static readonly string END_POINT = "http://10.215.128.191:89";  //dev
             //internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
-            //internal static readonly string END_POINT = "http://10.215.128.191:97";  //dev cep
+            internal static readonly string END_POINT = "http://10.215.128.191:97";  //dev cep
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link"; //sit
 #elif DEVELOP || SIT
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
@@ -306,7 +306,12 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID = "72";
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET = "11001";
 
+        public const string BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED = "10001";
+
         public const string ACCOUNT_NICKNAME_PATTERN = "#accountNickname#";
+        public const string ACCOUNT_PROFILENAME_PATTERN = "#profileName#";
+        public const string ACCOUNT_ACCNO_PATTERN = "#accno#";
+        public const string ACCOUNT_FULLNAME_PATTERN = "#accountFullname/accountEmailAddress#";
 
         public const string APP_TUTORIAL_PATTERN = "#dropdown#";
 
