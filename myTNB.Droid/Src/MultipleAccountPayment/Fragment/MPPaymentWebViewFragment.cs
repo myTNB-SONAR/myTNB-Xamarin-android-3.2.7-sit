@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Net.Http;
 using Android.Net.Wifi;
 using Android.OS;
+using Android.Util;
 using Android.Views;
 using Android.Webkit;
 using Android.Widget;
@@ -242,6 +243,22 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+            try
+            {
+                Android.Content.Res.Configuration configuration = Resources.Configuration;
+                configuration.FontScale = 1.3F;
+                DisplayMetrics metrics = Resources.DisplayMetrics;
+                metrics.ScaledDensity = configuration.FontScale * metrics.Density;
+                Resources.UpdateConfiguration(configuration, metrics);
+            }
+            catch (Java.Lang.Exception javaEx)
+            {
+                System.Console.WriteLine("[DEBUG] configuration.DensityDpi Java Exception: " + javaEx.Message);
+            }
+            catch (System.Exception sysEx)
+            {
+                System.Console.WriteLine("[DEBUG] configuration.DensityDpi System Exception: " + sysEx.Message);
             }
             return rootView;
         }

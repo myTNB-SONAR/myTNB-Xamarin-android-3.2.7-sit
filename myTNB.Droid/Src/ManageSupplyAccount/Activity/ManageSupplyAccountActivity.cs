@@ -48,7 +48,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [BindView(Resource.Id.btnRemoveAccount)]
         Button btnRemoveAccount;
 
-
         AccountData accountData;
         int position;
 

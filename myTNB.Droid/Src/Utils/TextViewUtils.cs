@@ -145,24 +145,24 @@ namespace myTNB_Android.Src.Utils
 
         internal static void SetTextSize(float size, TextView textView, bool shouldScale = true)
         {
-            textView.SetTextSize(ComplexUnitType.Sp, shouldScale ? GetFontSize(size) : size);
+            textView.SetTextSize(ComplexUnitType.Dip, shouldScale ? GetFontSize(size) : size);
         }
 
         internal static void SetTextSize(float size, EditText editText, bool shouldScale = true)
         {
-            editText.SetTextSize(ComplexUnitType.Sp, shouldScale ? GetFontSize(size) : size);
+            editText.SetTextSize(ComplexUnitType.Dip, shouldScale ? GetFontSize(size) : size);
         }
 
         internal static void SetTextSize(float size, Button button, bool shouldScale = true)
         {
-            button.SetTextSize(ComplexUnitType.Sp, shouldScale ? GetFontSize(size) : size);
+            button.SetTextSize(ComplexUnitType.Dip, shouldScale ? GetFontSize(size) : size);
         }
 
         private static void SetTextSize(float size, params TextView[] textViews)
         {
             foreach (var textView in textViews)
             {
-                textView.SetTextSize(ComplexUnitType.Sp, GetFontSize(size));
+                textView.SetTextSize(ComplexUnitType.Dip, GetFontSize(size));
             }
         }
 
@@ -170,7 +170,7 @@ namespace myTNB_Android.Src.Utils
         {
             foreach (var textView in editTexts)
             {
-                textView.SetTextSize(ComplexUnitType.Sp, GetFontSize(size));
+                textView.SetTextSize(ComplexUnitType.Dip, GetFontSize(size));
             }
         }
 
@@ -178,7 +178,7 @@ namespace myTNB_Android.Src.Utils
         {
             foreach (var textView in buttons)
             {
-                textView.SetTextSize(ComplexUnitType.Sp, GetFontSize(size));
+                textView.SetTextSize(ComplexUnitType.Dip, GetFontSize(size));
             }
         }
 

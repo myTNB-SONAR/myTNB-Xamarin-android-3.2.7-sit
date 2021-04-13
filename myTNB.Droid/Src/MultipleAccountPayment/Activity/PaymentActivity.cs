@@ -40,7 +40,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         string total;
         AndroidX.Fragment.App.Fragment currentFragment;
 
-        private MaterialDialog mCancelPaymentDialog;
         public readonly static int SELECT_PAYMENT_ACTIVITY_CODE = 2367;
         private AndroidX.AppCompat.Widget.Toolbar toolbar;
         private AppBarLayout appBarLayout;
@@ -295,20 +294,18 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     Log.Debug("MakePaymentActivity", "Current Fragment :" + currentFragment.Class);
                     if (currentFragment is MPPaymentWebViewFragment)
                     {
-                        mCancelPaymentDialog = new MaterialDialog.Builder(this)
-                            .Title(Utility.GetLocalizedLabel("MakePayment", "abortTitle"))
-                            .Content(Utility.GetLocalizedLabel("MakePayment", "abortMessage"))
-                            .Cancelable(false)
-                            .PositiveText(Utility.GetLocalizedCommonLabel("yes"))
-                            .PositiveColor(Resource.Color.black)
-                            .OnPositive((dialog, which) =>
+                        MyTNBAppToolTipBuilder cancelPaymentPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                            .SetTitle(Utility.GetLocalizedLabel("MakePayment", "abortTitle"))
+                            .SetMessage(Utility.GetLocalizedLabel("MakePayment", "abortMessage"))
+                            .SetCTALabel(Utility.GetLocalizedCommonLabel("no"))
+                            .SetSecondaryCTALabel(Utility.GetLocalizedCommonLabel("yes"))
+                            .SetSecondaryCTAaction(() =>
                             {
                                 this.SupportFragmentManager.PopBackStack();
                                 this.SetToolBarTitle(Utility.GetLocalizedLabel("SelectPaymentMethod", "title"));
                             })
-                            .NeutralText(Utility.GetLocalizedCommonLabel("no"))
-                            .NeutralColor(Resource.Color.black)
-                            .OnNeutral((dialog, which) => mCancelPaymentDialog.Dismiss()).Show();
+                            .Build();
+                        cancelPaymentPopup.Show();
                     }
                     else
                     {

@@ -53,9 +53,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
         LinearLayoutManager notificationChannelLayoutManager, notificationTypeLayoutManager;
 
-
-        MaterialDialog progressUpdateType, progressUpdateChannel;
-
         const string PAGE_ID = "NotificationSettings";
 
         public bool IsActive()
