@@ -279,10 +279,7 @@ namespace myTNB_Android.Src.ApplicationStatusRating.Activity
                 txtTellUsMore.TextChanged += TextChanged;
                 txtTellUsMore.SetOnTouchListener(this);
 
-                txtPageTitleInfo.TextSize = TextViewUtils.GetFontSize(16);
-                txtTitleQuestion.TextSize = TextViewUtils.GetFontSize(16);
-                txtTellUsTitleInfo.TextSize = TextViewUtils.GetFontSize(16);
-                txtTellUsMore.TextSize = TextViewUtils.GetFontSize(16);
+                TextViewUtils.SetTextSize16(txtPageTitleInfo, txtTitleQuestion, txtTellUsTitleInfo, txtTellUsMore);
 
                 btnSubmit.Enabled = false;
                 btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);

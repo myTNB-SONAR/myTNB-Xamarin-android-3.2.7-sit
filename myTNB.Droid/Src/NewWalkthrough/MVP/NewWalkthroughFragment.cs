@@ -78,11 +78,9 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
 
             TextViewUtils.SetMuseoSans500Typeface(titleView);
             TextViewUtils.SetMuseoSans300Typeface(descriptionView, btnToggleEN, btnToggleMS);
-
-            titleView.TextSize = TextViewUtils.GetFontSize(16f);
-            descriptionView.TextSize = TextViewUtils.GetFontSize(12f);
-            btnToggleEN.TextSize = TextViewUtils.GetFontSize(13f);
-            btnToggleMS.TextSize = TextViewUtils.GetFontSize(13f);
+            TextViewUtils.SetTextSize12(descriptionView);
+            TextViewUtils.SetTextSize13(btnToggleEN, btnToggleMS);
+            TextViewUtils.SetTextSize16(titleView);
 
             appLanguage = LanguageUtil.GetAppLanguage();
 

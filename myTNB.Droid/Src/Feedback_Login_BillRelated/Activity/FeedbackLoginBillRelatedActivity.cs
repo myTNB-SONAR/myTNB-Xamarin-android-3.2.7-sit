@@ -7,9 +7,6 @@ using Android.Graphics;
 using Android.Preferences;
 using Android.Provider;
 using Android.Runtime;
-
-
-
 using Android.Text;
 using Android.Views;
 using Android.Widget;
@@ -121,12 +118,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo, txtInputLayoutFeedback);
                 TextViewUtils.SetMuseoSans300Typeface(txtMaxImageContent, txtAccountNo, txtFeedback, txtRelatedScreenshotTitle, txtMaxCharacters);
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
-
-                txtMaxCharacters.TextSize = TextViewUtils.GetFontSize(9f);
-                txtRelatedScreenshotTitle.TextSize = TextViewUtils.GetFontSize(9f);
-                txtMaxImageContent.TextSize = TextViewUtils.GetFontSize(9f);
-                txtMaxCharacters.TextSize = TextViewUtils.GetFontSize(16f);
-                txtMaxCharacters.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize9(txtMaxCharacters, txtRelatedScreenshotTitle, txtMaxImageContent);
 
                 txtInputLayoutAccountNo.Hint = Utility.GetLocalizedCommonLabel("accountNo");
                 txtInputLayoutFeedback.Hint = Utility.GetLocalizedLabel("FeedbackForm", "feedback");
@@ -387,7 +379,9 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         {
             try
             {
-                txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayoutFeedbackCountLarge
+                    : Resource.Style.TextInputLayoutFeedbackCount);
                 txtInputLayoutAccountNo.Error = null;
                 txtInputLayoutFeedback.Error = null;
 

@@ -48,7 +48,7 @@ namespace myTNB_Android.Src.Dashboard.Adapter
             {
                 CustomerBillingAccount item = GetItemObject(position);
                 vh.txtSupplyAccountName.Text = item.AccDesc;
-                vh.txtSupplyAccountName.TextSize = TextViewUtils.GetFontSize(16);
+                TextViewUtils.SetTextSize16(vh.txtSupplyAccountName);
                 if (item.AccountCategoryId.Equals("2"))
                 {
                     vh.imageLeaf.Visibility = ViewStates.Visible;
@@ -103,7 +103,7 @@ namespace myTNB_Android.Src.Dashboard.Adapter
         public AccountListViewHolder(View itemView) : base(itemView)
         {
             TextViewUtils.SetMuseoSans300Typeface(txtSupplyAccountName);
-            txtSupplyAccountName.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize16(txtSupplyAccountName);
         }
     }
 

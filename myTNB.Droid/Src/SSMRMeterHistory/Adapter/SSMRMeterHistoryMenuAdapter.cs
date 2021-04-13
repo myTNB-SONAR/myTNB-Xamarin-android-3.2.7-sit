@@ -51,9 +51,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.Adapter
             else
             {
                 TextViewUtils.SetMuseoSans300Typeface(vh.btnMenu);
-                vh.btnMenu.TextSize = TextViewUtils.GetFontSize(14f);
+                TextViewUtils.SetTextSize14(vh.btnMenu);
             }
-            
+
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

@@ -395,10 +395,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 if (requestCode == 12345)
                 {
-                    if (resultCode == (int) Result.Ok)
+                    if (resultCode == (int)Result.Ok)
                     {
                         UpdateBillingHistory(data.GetStringExtra("SELECTED_ITEM_FILTER"));
-                        itemisedBillingScrollView.ScrollTo(0,0);
+                        itemisedBillingScrollView.ScrollTo(0, 0);
                     }
                 }
             }
@@ -432,23 +432,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 btnChargeRefresh, btnBillingHistoryRefresh, accountSelectionRefresh);
             TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount, emptyBillingHistoryMessage, unavailableBillMsg,
                                             unavailableChargeMsg, refreshBillingHistoryMessage);
-
-            unavailableChargeMsg.TextSize = TextViewUtils.GetFontSize(14f);
-            itemisedBillingInfoNote.TextSize = TextViewUtils.GetFontSize(14f);
-            itemisedBillingInfoAmountCurrency.TextSize = TextViewUtils.GetFontSize(16f);
-            itemisedBillingInfoAmount.TextSize = TextViewUtils.GetFontSize(36f);
-            itemisedBillingInfoDate.TextSize = TextViewUtils.GetFontSize(14f);
-            btnViewDetails.TextSize = TextViewUtils.GetFontSize(16f);
-            btnPayBill.TextSize = TextViewUtils.GetFontSize(16f);
-            myBillHistoryTitle.TextSize = TextViewUtils.GetFontSize(16f);
-            emptyBillingHistoryMessage.TextSize = TextViewUtils.GetFontSize(14f);
-            refreshBillingHistoryMessage.TextSize = TextViewUtils.GetFontSize(12f);
-            accountSelection.TextSize = TextViewUtils.GetFontSize(16f);
-            unavailableBillMsg.TextSize = TextViewUtils.GetFontSize(14f);
-            accountSelectionRefresh.TextSize = TextViewUtils.GetFontSize(16f);
-            btnChargeRefresh.TextSize = TextViewUtils.GetFontSize(16f);
-            btnBillingHistoryRefresh.TextSize = TextViewUtils.GetFontSize(16f);
-            btnRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize12(refreshBillingHistoryMessage);
+            TextViewUtils.SetTextSize14(unavailableChargeMsg, itemisedBillingInfoNote, itemisedBillingInfoDate
+                , emptyBillingHistoryMessage, unavailableBillMsg);
+            TextViewUtils.SetTextSize16(itemisedBillingInfoAmountCurrency, btnViewDetails, btnPayBill, myBillHistoryTitle
+                , accountSelection, accountSelectionRefresh, btnChargeRefresh, btnBillingHistoryRefresh, btnRefresh);
+            TextViewUtils.SetTextSize36(itemisedBillingInfoAmount);
             RenderUI();
 
             mPresenter.GetBillingHistoryDetails(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner, (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
@@ -591,10 +580,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                 content.SetShowBillingDetailsListener(null);
                             }
                             itemisedBillingGroupComponent.AddContent(content);
-							itemisedBillingGroupComponent.ShowContentSeparators();
+                            itemisedBillingGroupComponent.ShowContentSeparators();
 
 
-						}
+                        }
                         //Rendering Filtered History Type
                         else
                         {
@@ -623,10 +612,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                     content.SetShowBillingDetailsListener(null);
                                 }
                                 itemisedBillingGroupComponent.AddContent(content);
-								itemisedBillingGroupComponent.ShowContentSeparators();
-							}
+                                itemisedBillingGroupComponent.ShowContentSeparators();
+                            }
                         }
-					}
+                    }
                     itemisedBillingList.AddView(itemisedBillingGroupComponent);
                 }
             }
@@ -732,7 +721,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         private void UpdateFilterItems(List<AccountBillPayFilter> billPayFilters)
         {
             itemFilterList = new List<Item>();
-            billPayFilters.ForEach(filter => {
+            billPayFilters.ForEach(filter =>
+            {
                 Item item = new Item();
                 item.title = filter.Text;
                 item.type = filter.Type;

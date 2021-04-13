@@ -85,13 +85,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
             TextViewUtils.SetMuseoSans300Typeface(txtBottomContent, txtTopContent);
             TextViewUtils.SetMuseoSans500Typeface(txtBottomTitle, txtTopTitle, btnBottomGotIt, btnTopGotIt);
-
-            txtTopTitle.TextSize = TextViewUtils.GetFontSize(14f);
-            txtTopContent.TextSize = TextViewUtils.GetFontSize(14f);
-            txtBottomTitle.TextSize = TextViewUtils.GetFontSize(14f);
-            txtBottomContent.TextSize = TextViewUtils.GetFontSize(14f);
-            btnTopGotIt.TextSize = TextViewUtils.GetFontSize(16f);
-            btnBottomGotIt.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize14(txtTopTitle, txtTopContent, txtBottomTitle, txtBottomContent);
+            TextViewUtils.SetTextSize16(btnTopGotIt, btnBottomGotIt);
 
             btnTopGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
             btnBottomGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");

@@ -797,7 +797,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
                                 applicationStatusDetailSingleButtonLayout.Visibility = ViewStates.Visible;
 
                                 TextViewUtils.SetMuseoSans500Typeface(txtCannotRescheduleTooltip);
-                                txtCannotRescheduleTooltip.TextSize = TextViewUtils.GetFontSize(12);
+                                TextViewUtils.SetTextSize12(txtCannotRescheduleTooltip);
                             }
                             else if (applicationDetailDisplay.CTAType == DetailCTAType.PayOffline)
                             {
@@ -906,27 +906,15 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 
                 TextViewUtils.SetMuseoSans500Typeface(txtApplicationStatusMainTitle, txtApplicationStatusTitle, txtApplicationStatusBottomPayableTitle);
                 TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusSubTitle, txtApplicationStatusDetailNote);
-                txtApplicationStatusTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                txtApplicationStatusMainTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                txtApplicationStatusSubTitle.TextSize = TextViewUtils.GetFontSize(14f);
-                txtApplicationStatusUpdated.TextSize = TextViewUtils.GetFontSize(12f);
-                txtApplicationStatusDetail.TextSize = TextViewUtils.GetFontSize(12f);
-                txtLinkedWithHeader.TextSize = TextViewUtils.GetFontSize(10f);
-                txtLinkedWithReferencNo.TextSize = TextViewUtils.GetFontSize(14f);
-                txtLinkedWithView.TextSize = TextViewUtils.GetFontSize(12f);
-                btnViewActivityLog.TextSize = TextViewUtils.GetFontSize(16f);
-                txtApplicationStatusDetailNote.TextSize = TextViewUtils.GetFontSize(12f);
-                //xtApplicationStatusHeader.TextSize = TextViewUtils.GetFontSize(10f);
-                txtApplicationStatusDetail.TextSize = TextViewUtils.GetFontSize(14f);
-                //txtViewReceipt.TextSize = TextViewUtils.GetFontSize(12f);
-                howDoISeeApplicaton.TextSize = TextViewUtils.GetFontSize(12f);
-                //txtApplicationStatusBottomNote.TextSize = TextViewUtils.GetFontSize(14f);
-                txtApplicationStatusBottomPayableTitle.TextSize = TextViewUtils.GetFontSize(14f);
-                txtApplicationStatusBottomPayable.TextSize = TextViewUtils.GetFontSize(25f);
-                txtApplicationStatusBottomPayableCurrency.TextSize = TextViewUtils.GetFontSize(13f);
-                btnPrimaryCTA.TextSize = TextViewUtils.GetFontSize(16f);
-                btnApplicationStatusViewBill.TextSize = TextViewUtils.GetFontSize(16f);
-                btnApplicationStatusPay.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize10(txtLinkedWithHeader);
+                TextViewUtils.SetTextSize12(txtApplicationStatusUpdated, txtApplicationStatusDetail, txtLinkedWithView
+                    , txtApplicationStatusDetailNote, howDoISeeApplicaton);
+                TextViewUtils.SetTextSize13(txtApplicationStatusBottomPayableCurrency);
+                TextViewUtils.SetTextSize14(txtApplicationStatusSubTitle, txtLinkedWithReferencNo, txtApplicationStatusDetail
+                    , txtApplicationStatusBottomPayableTitle);
+                TextViewUtils.SetTextSize16(txtApplicationStatusTitle, txtApplicationStatusMainTitle, btnViewActivityLog
+                    , btnPrimaryCTA, btnApplicationStatusViewBill, btnApplicationStatusPay);
+                TextViewUtils.SetTextSize25(txtApplicationStatusBottomPayable);
             }
         }
 

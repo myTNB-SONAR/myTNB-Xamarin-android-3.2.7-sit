@@ -34,7 +34,7 @@ namespace myTNB_Android.Src.Base.Fragments
                 Cheeseknife.Bind(this, inflateView);
                 EvaluateRequestPermissions();
 
-                Android.Content.Res.Configuration configuration = Resources.Configuration;
+                /*Android.Content.Res.Configuration configuration = Resources.Configuration;
                 configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
                 var metrics = this.Activity.ApplicationContext.Resources.DisplayMetrics;
                 metrics.ScaledDensity = configuration.FontScale * metrics.Density;
@@ -50,7 +50,7 @@ namespace myTNB_Android.Src.Base.Fragments
                 {
                     Console.WriteLine("[DEBUG] configuration.DensityDpi System Exception: " + sysEx.Message);
                 }
-                this.Context.Resources.UpdateConfiguration(configuration, metrics);
+                this.Context.Resources.UpdateConfiguration(configuration, metrics);*/
             }
             catch (Exception e)
             {

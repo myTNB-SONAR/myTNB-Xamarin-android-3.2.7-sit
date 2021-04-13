@@ -20,7 +20,7 @@ using AndroidX.Core.Graphics.Drawable;
 
 namespace myTNB_Android.Src.FeedbackDetails.Adapter
 {
- 
+
     public class FeedbackImageRecyclerAdapterNew : BaseRecyclerAdapter<AttachedImage>
     {
         public event EventHandler<int> SelectClickEvent;
@@ -52,8 +52,8 @@ namespace myTNB_Android.Src.FeedbackDetails.Adapter
             {
                 AttachedImage image = GetItemObject(position);
                 var viewHolder = holder as FeedbackPreLoginImageViewHolder;
-                viewHolder.fileName.TextSize = TextViewUtils.GetFontSize(12f);
-                 if (image.Name.ToLower().Contains("pdf"))
+                TextViewUtils.SetTextSize12(viewHolder.fileName);
+                if (image.Name.ToLower().Contains("pdf"))
                 {
                     Picasso.With(viewHolder.ItemView.Context)
                    .Load(Resource.Drawable.pdfIcon)
@@ -78,27 +78,27 @@ namespace myTNB_Android.Src.FeedbackDetails.Adapter
                 }
                 else
                 {
-                Picasso.With(viewHolder.ItemView.Context)
-                    .Load(new Java.IO.File(image.Path))
-                    .Fit()
-                    .Into(viewHolder.imageView
-                            , delegate
-                            {
-                                Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
-                                if (imageBitmap != null && !imageBitmap.IsRecycled)
+                    Picasso.With(viewHolder.ItemView.Context)
+                        .Load(new Java.IO.File(image.Path))
+                        .Fit()
+                        .Into(viewHolder.imageView
+                                , delegate
                                 {
-                                    RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
-                                    imageDrawable.CornerRadius = 5f;
-                                    viewHolder.imageView.SetImageDrawable(imageDrawable);
-                                    viewHolder.fileName.Text = image.Name;
+                                    Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
+                                    if (imageBitmap != null && !imageBitmap.IsRecycled)
+                                    {
+                                        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
+                                        imageDrawable.CornerRadius = 5f;
+                                        viewHolder.imageView.SetImageDrawable(imageDrawable);
+                                        viewHolder.fileName.Text = image.Name;
 
+                                    }
                                 }
-                            }
-                            , delegate
-                            {
+                                , delegate
+                                {
 
-                            });
-            }
+                                });
+                }
 
 
             }

@@ -43,7 +43,8 @@ namespace myTNB_Android.Src.AddAccount.Adapter
 
             AccountType item = GetItemObject(position);
             vh.txtSupplyAccountName.Text = item.Type;
-            vh.txtSupplyAccountName.TextSize = TextViewUtils.GetFontSize(16);
+            TextViewUtils.SetTextSize16(vh.txtSupplyAccountName);
+
             if (item.IsSelected)
             {
                 vh.imageActionIcon.Visibility = ViewStates.Visible;
@@ -69,7 +70,7 @@ namespace myTNB_Android.Src.AddAccount.Adapter
         public AccountTypeViewHolder(View itemView) : base(itemView)
         {
             TextViewUtils.SetMuseoSans300Typeface(txtSupplyAccountName);
-            txtSupplyAccountName.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize16(txtSupplyAccountName);
         }
     }
 }

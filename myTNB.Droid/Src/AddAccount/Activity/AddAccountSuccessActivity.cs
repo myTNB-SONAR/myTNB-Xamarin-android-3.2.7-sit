@@ -89,7 +89,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
             appBarLayout = FindViewById<AppBarLayout>(Resource.Id.appBar);
             appBarLayout.Visibility = ViewStates.Gone;
-            textAddAccountSuccess.TextSize = TextViewUtils.GetFontSize(16);
+
+            TextViewUtils.SetTextSize16(textAddAccountSuccess);
         }
 
         public override void OnBackPressed()
@@ -119,7 +120,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         protected override void OnPause()
         {
-           base.OnPause(); 
+            base.OnPause();
         }
 
         public override void OnTrimMemory(TrimMemory level)

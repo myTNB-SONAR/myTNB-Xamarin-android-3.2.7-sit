@@ -153,7 +153,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             base.OnCreate(savedInstanceState);
 
             TextViewUtils.SetMuseoSans500Typeface(btnMultiFilterApply);
-            btnMultiFilterApply.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize16(btnMultiFilterApply);
 
             Bundle extras = Intent.Extras;
 

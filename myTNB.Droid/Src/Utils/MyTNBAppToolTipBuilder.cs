@@ -180,10 +180,8 @@ namespace myTNB_Android.Src.Utils
 
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
-
-                tooltipTitle.TextSize = TextViewUtils.GetFontSize(14);
-                tooltipMessage.TextSize = TextViewUtils.GetFontSize(14);
-                tooltipCTA.TextSize = TextViewUtils.GetFontSize(16);
+                TextViewUtils.SetTextSize14(tooltipTitle, tooltipMessage);
+                TextViewUtils.SetTextSize16(tooltipCTA);
 
                 tooltipCTA.Click += delegate
                 {
@@ -235,9 +233,8 @@ namespace myTNB_Android.Src.Utils
 
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
-                tooltipTitle.TextSize = TextViewUtils.GetFontSize(14);
-                tooltipMessage.TextSize = TextViewUtils.GetFontSize(14);
-                tooltipCTA.TextSize = TextViewUtils.GetFontSize(16);
+                TextViewUtils.SetTextSize14(tooltipMessage, tooltipTitle);
+                TextViewUtils.SetTextSize16(tooltipCTA);
 
                 tooltipTitle.Gravity = this.mGravityFlag;
                 tooltipMessage.Gravity = this.mGravityFlag;
@@ -283,9 +280,7 @@ namespace myTNB_Android.Src.Utils
                 recyclerView.SetAdapter(this.adapter);
                 snapTooltipHelper.AttachToRecyclerView(recyclerView);
                 recyclerView.AddOnScrollListener(new ToolTipRecyclerViewOnScrollListener(layoutManager, indicatorContainer));
-
-                tooltipCTA.TextSize = TextViewUtils.GetFontSize(16);
-
+                TextViewUtils.SetTextSize16(tooltipCTA);
 
                 try
                 {
@@ -328,11 +323,8 @@ namespace myTNB_Android.Src.Utils
 
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
-
-                tooltipTitle.TextSize = TextViewUtils.GetFontSize(14);
-                tooltipMessage.TextSize = TextViewUtils.GetFontSize(14);
-                tooltipPrimaryCTA.TextSize = TextViewUtils.GetFontSize(16);
-                tooltipSecondaryCTA.TextSize = TextViewUtils.GetFontSize(16);
+                TextViewUtils.SetTextSize14(tooltipTitle, tooltipMessage);
+                TextViewUtils.SetTextSize16(tooltipPrimaryCTA, tooltipSecondaryCTA);
 
                 tooltipTitle.Gravity = this.mGravityFlag;
                 tooltipMessage.Gravity = this.mGravityFlag;
@@ -377,10 +369,8 @@ namespace myTNB_Android.Src.Utils
                 TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
                 TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
                 TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
-                tooltipTitle.TextSize = TextViewUtils.GetFontSize(14);
-                tooltipMessage.TextSize = TextViewUtils.GetFontSize(14);
-                tooltipPrimaryCTA.TextSize = TextViewUtils.GetFontSize(16);
-                tooltipPrimaryCTA.TextSize = TextViewUtils.GetFontSize(16);
+                TextViewUtils.SetTextSize14(tooltipTitle, tooltipMessage);
+                TextViewUtils.SetTextSize16(tooltipPrimaryCTA, tooltipPrimaryCTA);
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
 
@@ -438,13 +428,10 @@ namespace myTNB_Android.Src.Utils
                 TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
                 TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
                 TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
-                tooltipTitle.TextSize = TextViewUtils.GetFontSize(14);
-                tooltipMessage.TextSize = TextViewUtils.GetFontSize(14);
-                tooltipCTA.TextSize = TextViewUtils.GetFontSize(16);
-
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
-                tooltipCTA.TextSize = TextViewUtils.GetFontSize(16);
+                TextViewUtils.SetTextSize14(tooltipTitle, tooltipMessage);
+                TextViewUtils.SetTextSize16(tooltipCTA);
                 tooltipCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
@@ -477,14 +464,9 @@ namespace myTNB_Android.Src.Utils
 
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipCTA);
+                TextViewUtils.SetTextSize14(tooltipMessage);
+                TextViewUtils.SetTextSize16(tooltipCTA);
 
-
-                tooltipMessage.TextSize = TextViewUtils.GetFontSize(14f);
-                tooltipCTA.TextSize = TextViewUtils.GetFontSize(16f);
-
-
-                tooltipCTA.TextSize = TextViewUtils.GetFontSize(16);
-                tooltipMessage.TextSize = TextViewUtils.GetFontSize(14);
                 tooltipCTA.Click += delegate
                 {
                     this.dialog.Dismiss();

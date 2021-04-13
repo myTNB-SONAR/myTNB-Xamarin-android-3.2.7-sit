@@ -100,9 +100,8 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 mRecyclerView.SetAdapter(mAdapter);
 
                 TextViewUtils.SetMuseoSans300Typeface(txtManageCardsTitle, txtEmptyCard);
-
-                txtManageCardsTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                txtEmptyCard.TextSize = TextViewUtils.GetFontSize(14f);
+                TextViewUtils.SetTextSize14(txtEmptyCard);
+                TextViewUtils.SetTextSize16(txtManageCardsTitle);
 
                 txtManageCardsTitle.Text = GetLabelByLanguage("details");
                 txtEmptyCard.Text = GetLabelByLanguage("noCards");

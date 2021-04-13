@@ -57,9 +57,8 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 ImageView imgWhatsNew = (ImageView)rootView.FindViewById(Resource.Id.image_whatsnew);
                 LinearLayout whatsNewCheckBoxLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewCheckBoxLayout);
                 CheckBox chkDontShow = (CheckBox)rootView.FindViewById(Resource.Id.chk_remember_me);
-
-                chkDontShow.TextSize = TextViewUtils.GetFontSize(12f);
-                btnGotIt.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize12(chkDontShow);
+                TextViewUtils.SetTextSize16(btnGotIt);
 
                 LinearLayout whatsNewMainImgLayout = (LinearLayout)rootView.FindViewById(Resource.Id.whatsNewMainShimmerImgLayout);
                 ShimmerFrameLayout shimmerWhatsNewImageLayout = (ShimmerFrameLayout)rootView.FindViewById(Resource.Id.shimmerWhatsNewImageLayout);
@@ -176,11 +175,9 @@ namespace myTNB_Android.Src.WhatsNewDialog
                 CheckBox chkDontShow = (CheckBox)rootView.FindViewById(Resource.Id.chk_remember_me);
 
                 Button btnGotIt = (Button)rootView.FindViewById(Resource.Id.btnWhatsNewGotIt);
-
-                txtWhatsNewTitle.TextSize = TextViewUtils.GetFontSize(14f);
-                txtWhatsNewMessage.TextSize = TextViewUtils.GetFontSize(14f);
-                chkDontShow.TextSize = TextViewUtils.GetFontSize(12f);
-                btnGotIt.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize12(chkDontShow);
+                TextViewUtils.SetTextSize14(txtWhatsNewTitle, txtWhatsNewMessage);
+                TextViewUtils.SetTextSize16(btnGotIt);
 
                 if (model.PopUp_Text_Only)
                 {

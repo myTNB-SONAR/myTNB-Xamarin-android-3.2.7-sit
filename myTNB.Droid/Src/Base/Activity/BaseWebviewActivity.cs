@@ -95,7 +95,7 @@ namespace myTNB_Android.Src.Base.Activity
                 Utility.LoggingNonFatalError(ex);
             }
 
-            Android.Content.Res.Configuration configuration = Resources.Configuration;
+            /*Android.Content.Res.Configuration configuration = Resources.Configuration;
             configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
             var metrics = this.ApplicationContext.Resources.DisplayMetrics;
             metrics.ScaledDensity = configuration.FontScale * metrics.Density;
@@ -113,6 +113,7 @@ namespace myTNB_Android.Src.Base.Activity
             }
             this.Resources.UpdateConfiguration(configuration, metrics);
             SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_AddAccountLarge : Resource.Style.Theme_AddAccount);
+            */
         }
 
         protected override void OnStart()

@@ -18,13 +18,13 @@ using System.Collections.Generic;
 
 namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
 {
-	public class SSMRMeterReadingDialogFragment : DialogFragment
-	{
+    public class SSMRMeterReadingDialogFragment : DialogFragment
+    {
 
-		private Context mContext;
-		private ViewPager pager;
-		private SSMRMeterReadingPagerAdapter adapter;
-		private LinearLayout indicator;
+        private Context mContext;
+        private ViewPager pager;
+        private SSMRMeterReadingPagerAdapter adapter;
+        private LinearLayout indicator;
         //private CheckBox dontShowAgainCheckbox;
         private LinearLayout txtBtnFirst;
         private TextView txtBtnLabel;
@@ -32,8 +32,8 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
         private List<SSMRMeterReadingModel> SSMRMeterReadingModelList = new List<SSMRMeterReadingModel>();
 
         public SSMRMeterReadingDialogFragment(Context ctx, bool setIsSinglePhase, List<SSMRMeterReadingModel> list)
-		{
-			this.mContext = ctx;
+        {
+            this.mContext = ctx;
             this.isSinglePhase = setIsSinglePhase;
             if (list != null && list.Count > 0)
             {
@@ -41,21 +41,21 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
             }
         }
 
-		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-		{
-			Dialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.Transparent));
-			Dialog.SetCancelable(false);
-			Dialog.SetCanceledOnTouchOutside(false);
+        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        {
+            Dialog.Window.SetBackgroundDrawable(new ColorDrawable(Color.Transparent));
+            Dialog.SetCancelable(false);
+            Dialog.SetCanceledOnTouchOutside(false);
             WindowManagerLayoutParams wlp = Dialog.Window.Attributes;
             wlp.Gravity = GravityFlags.Center;
             wlp.Width = ViewGroup.LayoutParams.MatchParent;
             wlp.Height = ViewGroup.LayoutParams.WrapContent;
             Dialog.Window.Attributes = wlp;
 
-			View rootView = inflater.Inflate(Resource.Layout.CustomDialogWithImgViewPageOneButtonLayout, container, false);
+            View rootView = inflater.Inflate(Resource.Layout.CustomDialogWithImgViewPageOneButtonLayout, container, false);
 
-			try
-			{
+            try
+            {
                 pager = rootView.FindViewById<ViewPager>(Resource.Id.onBoardingSMRViewPager);
                 indicator = rootView.FindViewById<LinearLayout>(Resource.Id.indicatorContainer);
                 //dontShowAgainCheckbox = rootView.FindViewById<CheckBox>(Resource.Id.dontShowAgainCheckbox);
@@ -63,7 +63,7 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
                 txtBtnLabel = rootView.FindViewById<TextView>(Resource.Id.txtBtnLabel);
 
                 TextViewUtils.SetMuseoSans500Typeface(txtBtnLabel);
-                txtBtnLabel.TextSize = TextViewUtils.GetFontSize(16);
+                TextViewUtils.SetTextSize16(txtBtnLabel);
                 if (SSMRMeterReadingModelList.Count > 0)
                 {
                     indicator.Visibility = ViewStates.Visible;
@@ -97,7 +97,8 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
                     adapter = new SSMRMeterReadingPagerAdapter(mContext, SSMRMeterReadingModelList);
                     pager.Adapter = adapter;
 
-                    pager.PageSelected += (object sender, ViewPager.PageSelectedEventArgs e) => {
+                    pager.PageSelected += (object sender, ViewPager.PageSelectedEventArgs e) =>
+                    {
                         for (int i = 0; i < SSMRMeterReadingModelList.Count; i++)
                         {
                             ImageView selectedDot = (ImageView)indicator.GetChildAt(i);
@@ -134,12 +135,12 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
 
 
             }
-			catch (Exception ex)
-			{
-				Utility.LoggingNonFatalError(ex);
-			}
-			return rootView;
-		}
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+            return rootView;
+        }
 
         private void GotIt_Click(object sender, EventArgs e)
         {
@@ -155,9 +156,9 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
         }
 
         public override void OnCreate(Bundle savedInstanceState)
-		{
-			base.OnCreate(savedInstanceState);
-		}
+        {
+            base.OnCreate(savedInstanceState);
+        }
 
     }
 }

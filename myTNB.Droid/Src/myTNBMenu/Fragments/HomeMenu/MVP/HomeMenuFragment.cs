@@ -390,29 +390,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
                     , addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel
                     , myServiceLoadMoreLabel, txtNewLabel, btnMyServiceRefresh);
-
-                accountGreeting.TextSize = TextViewUtils.GetFontSize(16f);
-                accountGreetingName.TextSize = TextViewUtils.GetFontSize(16f);
-                txtNewLabel.TextSize = TextViewUtils.GetFontSize(8f);
-                refreshMsg.TextSize = TextViewUtils.GetFontSize(14f);
-                addActionLabel.TextSize = TextViewUtils.GetFontSize(12f);
-                searchActionLabel.TextSize = TextViewUtils.GetFontSize(12f);
-                txtAdd.TextSize = TextViewUtils.GetFontSize(14f);
-                rearrangeLabel.TextSize = TextViewUtils.GetFontSize(12f);
-                loadMoreLabel.TextSize = TextViewUtils.GetFontSize(12f);
-                myServiceLoadMoreLabel.TextSize = TextViewUtils.GetFontSize(12f);
-                txtMyServiceRefreshMessage.TextSize = TextViewUtils.GetFontSize(12f);
-                newFAQTitle.TextSize = TextViewUtils.GetFontSize(14f);
-                btnMyServiceRefresh.TextSize = TextViewUtils.GetFontSize(16f);
-                btnRefresh.TextSize = TextViewUtils.GetFontSize(16f);
-                accountHeaderTitle.TextSize = TextViewUtils.GetFontSize(14f);
+                TextViewUtils.SetTextSize8(txtNewLabel);
+                TextViewUtils.SetTextSize12(addActionLabel, searchActionLabel, rearrangeLabel
+                    , loadMoreLabel, myServiceLoadMoreLabel, txtMyServiceRefreshMessage);
+                TextViewUtils.SetTextSize14(refreshMsg, txtAdd, newFAQTitle, accountHeaderTitle);
+                TextViewUtils.SetTextSize16(accountGreeting, accountGreetingName, btnMyServiceRefresh, btnRefresh);
 
                 SearchView searchView = new SearchView(this.Context);
                 LinearLayout linearLayout1 = (LinearLayout)searchView.GetChildAt(0);
                 LinearLayout linearLayout2 = (LinearLayout)linearLayout1.GetChildAt(2);
                 LinearLayout linearLayout3 = (LinearLayout)linearLayout2.GetChildAt(1);
                 AutoCompleteTextView autoComplete = (AutoCompleteTextView)linearLayout3.GetChildAt(0);
-                autoComplete.SetTextSize(ComplexUnitType.Dip, TextViewUtils.GetFontSize(12f));
+                TextViewUtils.SetTextSize(12, autoComplete, true);
 
                 addActionLabel.Text = GetLabelByLanguage("add");
                 searchActionLabel.Text = GetLabelByLanguage("search");
@@ -1052,7 +1041,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 EditText searchText = searchEditText.FindViewById<EditText>(searchEditText.Context.Resources.GetIdentifier("android:id/search_src_text", null, null));
                 searchText.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
                 searchText.SetHintTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sixty_opacity_white)));
-                searchText.SetTextSize(ComplexUnitType.Dip, TextViewUtils.GetFontSize(12f));
+                TextViewUtils.SetTextSize12(searchText);
                 TextViewUtils.SetMuseoSans500Typeface(searchText);
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {

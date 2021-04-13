@@ -58,8 +58,9 @@ namespace myTNB_Android.Src.FAQ.Adapter
 
                 TextViewUtils.SetMuseoSans500Typeface(vh.Question);
                 TextViewUtils.SetMuseoSans300Typeface(vh.Answer);
-                vh.Question.TextSize = TextViewUtils.GetFontSize(16f);
-                vh.Answer.TextSize = TextViewUtils.GetFontSize(14f);
+                TextViewUtils.SetTextSize14(vh.Answer);
+                TextViewUtils.SetTextSize16(vh.Question);
+
                 SpannableString s = new SpannableString(vh.Answer.TextFormatted);
                 var spans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
                 if (spans != null && spans.Length > 0)

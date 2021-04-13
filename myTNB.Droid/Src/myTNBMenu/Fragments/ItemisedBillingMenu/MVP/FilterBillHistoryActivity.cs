@@ -48,7 +48,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 {
                     this.SetIsClicked(true);
                     Intent resultIntent = new Intent();
-                    resultIntent.PutExtra("SELECTED_ITEM_FILTER", JsonConvert.SerializeObject(itemFilterList.Find(itemFilter=> { return itemFilter.selected; })));
+                    resultIntent.PutExtra("SELECTED_ITEM_FILTER", JsonConvert.SerializeObject(itemFilterList.Find(itemFilter => { return itemFilter.selected; })));
                     SetResult(Result.Ok, resultIntent);
                     Finish();
                 }
@@ -101,14 +101,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+            SetTheme(TextViewUtils.IsLargeFonts
+                ? Resource.Style.Theme_DashboardLarge
+                : Resource.Style.Theme_Dashboard);
             Bundle extras = Intent.Extras;
             TextViewUtils.SetMuseoSans500Typeface(billFilterMessage, btnBillFilter);
             TextViewUtils.SetMuseoSans300Typeface(txtFilterLabel, txtFilterSelected);
-            btnBillFilter.TextSize = TextViewUtils.GetFontSize(16f);
-            billFilterMessage.TextSize = TextViewUtils.GetFontSize(16f);
-            txtFilterLabel.TextSize = TextViewUtils.GetFontSize(9f);
-            txtFilterSelected.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize9(txtFilterLabel);
+            TextViewUtils.SetTextSize16(btnBillFilter, billFilterMessage, txtFilterSelected);
 
             btnBillFilter.Text = GetLabelByLanguage("applyFilter");
             txtFilterLabel.Text = GetLabelByLanguage("filterBy").ToUpper();

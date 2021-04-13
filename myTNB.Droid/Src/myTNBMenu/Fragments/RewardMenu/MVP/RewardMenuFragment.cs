@@ -109,17 +109,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
                 rewardViewPager.OverScrollMode = OverScrollMode.Never;
 
                 TextViewUtils.SetMuseoSans300Typeface(txtEmptyReward, txtRefresh);
-
                 TextViewUtils.SetMuseoSans500Typeface(btnRefresh);
-
-                txtEmptyReward.TextSize = TextViewUtils.GetFontSize(14f);
-                txtRefresh.TextSize = TextViewUtils.GetFontSize(16f);
-                btnRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize14(txtEmptyReward);
+                TextViewUtils.SetTextSize16(txtRefresh, btnRefresh);
 
                 rewardMainLayout.Visibility = ViewStates.Visible;
-
                 rewardEmptyLayout.Visibility = ViewStates.Gone;
-
                 rewardRefreshLayout.Visibility = ViewStates.Gone;
 
                 OnGetRewardTimestamp();

@@ -5,9 +5,6 @@ using Android.Content.PM;
 using Android.Net;
 using Android.OS;
 using Android.Runtime;
-
-
-
 using Android.Text;
 using Android.Text.Method;
 using Android.Util;
@@ -203,11 +200,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 TextViewUtils.SetMuseoSans300Typeface(textTotalPayable);
                 TextViewUtils.SetMuseoSans500Typeface(textTotalPayableCurrency, textTotalPayableTitle);
                 TextViewUtils.SetMuseoSans500Typeface(btnPayBill);
+                TextViewUtils.SetTextSize14(textTotalPayableCurrency);
+                TextViewUtils.SetTextSize16(textTotalPayableTitle, btnPayBill);
+                TextViewUtils.SetTextSize24(textTotalPayable);
 
-                textTotalPayableTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                textTotalPayable.TextSize = TextViewUtils.GetFontSize(24f);
-                textTotalPayableCurrency.TextSize = TextViewUtils.GetFontSize(14f);
-                btnPayBill.TextSize = TextViewUtils.GetFontSize(16f);
                 SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
@@ -297,7 +293,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         AccountChargeModel model = mPresenter.GetAccountChargeModel(account);
                         if (account.tooltipPopUp)
                         {
-                            ShowHasMinimumAmoutToPayTooltip(account,model);
+                            ShowHasMinimumAmoutToPayTooltip(account, model);
                         }
                     }
                     Log.Debug("Selected Accounts", " List " + list);
@@ -488,7 +484,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                                     accountLabel = customerBillingAccount.AccDesc,
                                     accountNumber = customerBillingAccount.AccNum,
                                     accountAddress = customerBillingAccount.AccountStAddress,
-                                    isSelected = (selectedAccount!= null && selectedAccount.AccountNum.Equals(customerBillingAccount.AccNum)) ? true && dueAmount > 0 : false,
+                                    isSelected = (selectedAccount != null && selectedAccount.AccountNum.Equals(customerBillingAccount.AccNum)) ? true && dueAmount > 0 : false,
                                     isTooltipShow = false,
                                     OpenChargeTotal = 0.00,
                                     amount = dueAmount,
@@ -687,7 +683,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     string accountId = string.IsNullOrEmpty(account.accountLabel) ? account.accountNumber : account.accountLabel;
                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                         .SetTitle(mandatoryTooltipModel.Title)
-                        .SetMessage(string.Format(mandatoryTooltipModel.Description, "RM" + accountChargeModel.MandatoryCharges.TotalAmount.ToString("#,##0.00", currCult),accountId))
+                        .SetMessage(string.Format(mandatoryTooltipModel.Description, "RM" + accountChargeModel.MandatoryCharges.TotalAmount.ToString("#,##0.00", currCult), accountId))
                         .SetCTALabel(ctaList[0])
                         .SetCTAaction(() => { ShowBillingDetails(accountChargeModel); })
                         .SetSecondaryCTALabel(ctaList[1])

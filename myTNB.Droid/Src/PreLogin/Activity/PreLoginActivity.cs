@@ -191,17 +191,11 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtWelcome, txtFindUs, txtFeedbackFirst, txtFeedbackSecond, txtCallUs, txtCheckStatus, txtChangeLanguage);
                 TextViewUtils.SetMuseoSans300Typeface(txtManageAccount, txtPromotion);
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin, btnRegister);
-                txtWelcome.TextSize = TextViewUtils.GetFontSize(16f);
-                txtManageAccount.TextSize = TextViewUtils.GetFontSize(12f);
-                txtFindUs.TextSize = TextViewUtils.GetFontSize(10f);
-                txtCallUs.TextSize = TextViewUtils.GetFontSize(10f);
-                txtCheckStatus.TextSize = TextViewUtils.GetFontSize(10f);
-                txtFeedbackFirst.TextSize = TextViewUtils.GetFontSize(10f);
-                txtFeedbackSecond.TextSize = TextViewUtils.GetFontSize(10f);
-                txtChangeLanguage.TextSize = TextViewUtils.GetFontSize(12f);
-                txtPromotion.TextSize = TextViewUtils.GetFontSize(14f);
-                btnRegister.TextSize = TextViewUtils.GetFontSize(16f);
-                btnLogin.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize10(txtFindUs, txtCallUs, txtCheckStatus, txtFeedbackFirst, txtFeedbackSecond);
+                TextViewUtils.SetTextSize12(txtManageAccount, txtChangeLanguage);
+                TextViewUtils.SetTextSize14(txtPromotion);
+                TextViewUtils.SetTextSize16(txtWelcome, btnRegister, btnLogin);
+
                 AppLaunchMasterDataResponse masterDataResponse = MyTNBAccountManagement.GetInstance().GetMasterDataResponse();
                 if (masterDataResponse != null
                     && masterDataResponse.GetData().ServicesPreLogin is List<MyService> services

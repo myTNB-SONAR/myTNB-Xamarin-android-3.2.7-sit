@@ -32,19 +32,20 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             base.OnCreate(savedInstanceState);
 
-            AndroidX.Fragment.App.Fragment  addAccountTypeFragment = new AddAccountTypeFragment();
+            AndroidX.Fragment.App.Fragment addAccountTypeFragment = new AddAccountTypeFragment();
             var fragmentTransaction = SupportFragmentManager.BeginTransaction();
             fragmentTransaction.Add(Resource.Id.fragment_container, addAccountTypeFragment);
             fragmentTransaction.Commit();
 
-           
-            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_AddAccountLarge : Resource.Style.Theme_AddAccount);
+            SetTheme(TextViewUtils.IsLargeFonts
+                ? Resource.Style.Theme_AddAccountLarge
+                : Resource.Style.Theme_AddAccount);
             //Initialize scanner
             MobileBarcodeScanner.Initialize(Application);
         }
-      
 
-        public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
+
+        public void nextFragment(AndroidX.Fragment.App.Fragment fragment, Bundle bundle)
         {
             if (fragment is AddAccountTypeFragment)
             {
@@ -119,7 +120,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public override string ToolbarTitle()
         {
-            return Utility.GetLocalizedLabel("AddAccount","title");
+            return Utility.GetLocalizedLabel("AddAccount", "title");
         }
 
         public override void OnTrimMemory(TrimMemory level)

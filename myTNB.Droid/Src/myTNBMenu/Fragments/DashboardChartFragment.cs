@@ -883,58 +883,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans300Typeface(txtReNoPayable, txtReNoPayableCurrency);
                 TextViewUtils.SetMuseoSans500Typeface(txtReNoPayableTitle);
 
-                txtNewRefreshMessage.TextSize = TextViewUtils.GetFontSize(14f);
-                dashboardAccountName.TextSize = TextViewUtils.GetFontSize(18f);
-                txtAddress.TextSize = TextViewUtils.GetFontSize(11f);
-                btnToggleDay.TextSize = TextViewUtils.GetFontSize(13f);
-                btnToggleMonth.TextSize = TextViewUtils.GetFontSize(13f);
-                txtEnergyDisconnection.TextSize = TextViewUtils.GetFontSize(13f);
-                newAccountContent.TextSize = TextViewUtils.GetFontSize(15f);
-                txtRange.TextSize = TextViewUtils.GetFontSize(13f);
-                txtMdmsDayViewDown.TextSize = TextViewUtils.GetFontSize(15f);
-                txtDayViewZoomInIndicator.TextSize = TextViewUtils.GetFontSize(11f);
-                txtTariffBlockLegendDisclaimer.TextSize = TextViewUtils.GetFontSize(11f);
-                kwhLabel.TextSize = TextViewUtils.GetFontSize(13f);
-                rmLabel.TextSize = TextViewUtils.GetFontSize(13f);
-                rmKwhLabel.TextSize = TextViewUtils.GetFontSize(13f);
-                txtTarifToggle.TextSize = TextViewUtils.GetFontSize(13f);
-                reTotalPayableTitle.TextSize = TextViewUtils.GetFontSize(13f);
-                reTotalPayable.TextSize = TextViewUtils.GetFontSize(17f);
-                reTotalPayableCurrency.TextSize = TextViewUtils.GetFontSize(11f);
-                reDueDate.TextSize = TextViewUtils.GetFontSize(13f);
-                txtReNoPayableTitle.TextSize = TextViewUtils.GetFontSize(13f);
-                txtReNoPayable.TextSize = TextViewUtils.GetFontSize(17f);
-                txtReNoPayableCurrency.TextSize = TextViewUtils.GetFontSize(13f);
-                ssmrAccountStatusText.TextSize = TextViewUtils.GetFontSize(13f);
-                btnTxtSsmrViewHistory.TextSize = TextViewUtils.GetFontSize(13f);
-                smStatisticBillTitle.TextSize = TextViewUtils.GetFontSize(13f);
-                smStatisticBill.TextSize = TextViewUtils.GetFontSize(17f);
-                smStatisticBillCurrency.TextSize = TextViewUtils.GetFontSize(11f);
-                smStatisticBillKwhUnit.TextSize = TextViewUtils.GetFontSize(11f);
-                smStatisticBillKwh.TextSize = TextViewUtils.GetFontSize(17f);
-                smStatisticBillSubTitle.TextSize = TextViewUtils.GetFontSize(13f);
-                smStatisticPredictTitle.TextSize = TextViewUtils.GetFontSize(13f);
-                smStatisticPredict.TextSize = TextViewUtils.GetFontSize(17f);
-                smStatisticPredictCurrency.TextSize = TextViewUtils.GetFontSize(13f);
-                smStatisticPredictSubTitle.TextSize = TextViewUtils.GetFontSize(13f);
-                smStatisticTrendTitle.TextSize = TextViewUtils.GetFontSize(13f);
-                smStatisticTrend.TextSize = TextViewUtils.GetFontSize(17f);
-                smStatisticTrendSubTitle.TextSize = TextViewUtils.GetFontSize(13f);
-                txtSmStatisticTooltip.TextSize = TextViewUtils.GetFontSize(13f);
-                txtNoPayableTitle.TextSize = TextViewUtils.GetFontSize(15f);
-                txtNoPayable.TextSize = TextViewUtils.GetFontSize(25f);
-                txtNoPayableCurrency.TextSize = TextViewUtils.GetFontSize(13f);
-                txtTotalPayableTitle.TextSize = 14;// TextViewUtils.GetFontSize(15f);
-                txtTotalPayable.TextSize = 24;// TextViewUtils.GetFontSize(25f);
-                txtTotalPayableCurrency.TextSize = 14;// TextViewUtils.GetFontSize(13f);
-                txtDueDate.TextSize = 14;// TextViewUtils.GetFontSize(15f);
-                lblinfoLabelEPP.TextSize = TextViewUtils.GetFontSize(11f);
-                btnPay.TextSize = TextViewUtils.GetFontSize(16f);
-                btnNewRefresh.TextSize = TextViewUtils.GetFontSize(16f);
-                btnMDMSDownRefresh.TextSize = TextViewUtils.GetFontSize(16f);
-                btnReView.TextSize = TextViewUtils.GetFontSize(16f);
-                btnViewBill.TextSize = TextViewUtils.GetFontSize(16f);
-                btnReadingHistory.TextSize = TextViewUtils.GetFontSize(16f);
+                /*
+                 DO NOT DELETE
+                    Retain Fonts for:
+                    1. txtTotalPayableTitle
+                    2. txtTotalPayable
+                    3. txtTotalPayableCurrency
+                    4. txtDueDate
+
+                 */
+
+                TextViewUtils.SetTextSize(14, txtTotalPayableTitle, false);
+                TextViewUtils.SetTextSize(24, txtTotalPayable, false);
+                TextViewUtils.SetTextSize(14, txtTotalPayableCurrency, false);
+                TextViewUtils.SetTextSize(14, txtDueDate, false);
+
+                TextViewUtils.SetTextSize11(txtAddress, txtDayViewZoomInIndicator, txtTariffBlockLegendDisclaimer
+                    , reTotalPayableCurrency, smStatisticBillCurrency, smStatisticBillKwhUnit, lblinfoLabelEPP);
+                TextViewUtils.SetTextSize13(btnToggleDay, btnToggleMonth, txtEnergyDisconnection, txtRange
+                    , kwhLabel, rmLabel, rmKwhLabel, txtTarifToggle, reTotalPayableTitle, reDueDate, txtReNoPayableTitle
+                    , txtReNoPayableCurrency, ssmrAccountStatusText, btnTxtSsmrViewHistory, smStatisticBillTitle
+                    , smStatisticBillSubTitle, smStatisticPredictTitle, smStatisticPredictCurrency, smStatisticPredictSubTitle
+                    , smStatisticTrendTitle, smStatisticTrendSubTitle, txtSmStatisticTooltip, txtNoPayableCurrency);
+                TextViewUtils.SetTextSize14(txtNewRefreshMessage);
+                TextViewUtils.SetTextSize15(newAccountContent, txtMdmsDayViewDown, txtNoPayableTitle);
+                TextViewUtils.SetTextSize16(btnPay, btnNewRefresh, btnMDMSDownRefresh
+                    , btnReView, btnViewBill, btnReadingHistory);
+                TextViewUtils.SetTextSize17(reTotalPayable, txtReNoPayable, smStatisticBill
+                    , smStatisticBillKwh, smStatisticPredict, smStatisticTrend);
+                TextViewUtils.SetTextSize18(dashboardAccountName);
+                TextViewUtils.SetTextSize25(txtNoPayable);
 
                 txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                 btnViewBill.Text = Utility.GetLocalizedLabel("Usage", "viewDetails");
@@ -5872,11 +5850,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 txtTitle.Text = Utility.GetLocalizedLabel("Usage", "missedReadMsg");
                 btnGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
 
-                txtTitle.TextSize = TextViewUtils.GetFontSize(14);
-                txtMessage.TextSize = TextViewUtils.GetFontSize(14);
-                btnGotIt.TextSize = TextViewUtils.GetFontSize(16);
-
-
+                TextViewUtils.SetTextSize14(txtTitle, txtMessage);
+                TextViewUtils.SetTextSize16(btnGotIt);
 
                 foreach (SMUsageHistoryData.SmartMeterToolTips costValue in selectedSMHistoryData.ToolTips)
                 {
@@ -6659,7 +6634,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             txtNoPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(150f));
                                             txtTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(150f));
-                                            txtDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(150f)); 
+                                            txtDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(150f));
                                         }
                                         else if (accountDueAmount.AmountDue.ToString().Length > 5)
                                         {
@@ -6759,7 +6734,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             reDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
                                         }
                                         else
-                                        {   
+                                        {
                                             txtTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
                                             reTotalPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
                                             reDueDate.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
@@ -6799,7 +6774,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                 txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
                                                 txtDueDate.Text = "- -";
                                             }
-                                            
+
                                             if (accountDueAmount.AmountDue.ToString().Length > 10)
                                             {
                                                 txtNoPayableTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(150f));
@@ -8723,13 +8698,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         smStatisticBillSubTitle.Text = "- -";
                                         smStatisticBill.Text = "- -";
                                     }
-                                   
-                                    if(costValue.Value.Length > 10)
+
+                                    if (costValue.Value.Length > 10)
                                     {
                                         smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
                                         smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
                                     }
-                                    else if(costValue.Value.Length > 5 )
+                                    else if (costValue.Value.Length > 5)
                                     {
                                         smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
                                         smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
@@ -8739,7 +8714,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
                                         smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
                                     }
-                                   
+
                                 }
                                 else if (costValue.Key == Constants.PROJECTED_COST_KEY)
                                 {
@@ -8782,7 +8757,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 }
                             }
                         }
-                       
+
 
                     }
                     else if (ChartDataType == ChartDataType.kWh)

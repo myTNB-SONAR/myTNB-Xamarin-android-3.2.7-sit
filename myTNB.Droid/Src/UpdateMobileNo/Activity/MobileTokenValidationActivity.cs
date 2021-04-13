@@ -136,22 +136,13 @@ namespace myTNB_Android.Src.UpdateMobileNo
                 TextViewUtils.SetMuseoSans300Typeface(txtNumber_1, txtNumber_2, txtNumber_3, txtNumber_4);
                 TextViewUtils.SetMuseoSans500Typeface(btnResend, OnCompleteResend);
                 TextViewUtils.SetMuseoSans300Typeface(txtErrorPin);
-
-
-                txtInfoTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                txtErrorPin.TextSize = TextViewUtils.GetFontSize(12f);
-                txtDidntReceive.TextSize = TextViewUtils.GetFontSize(16f);
-                OnCompleteResend.TextSize = TextViewUtils.GetFontSize(18f);
-                btnResend.TextSize = TextViewUtils.GetFontSize(18f);
-                txtNumber_1.TextSize = TextViewUtils.GetFontSize(22f);
-                txtNumber_2.TextSize = TextViewUtils.GetFontSize(22f);
-
-                txtNumber_3.TextSize = TextViewUtils.GetFontSize(22f);
-
-                txtNumber_4.TextSize = TextViewUtils.GetFontSize(22f);
+                TextViewUtils.SetTextSize12(txtErrorPin);
+                TextViewUtils.SetTextSize16(txtInfoTitle, txtDidntReceive);
+                TextViewUtils.SetTextSize18(OnCompleteResend, btnResend);
+                TextViewUtils.SetTextSize22(txtNumber_1, txtNumber_2, txtNumber_3, txtNumber_4);
 
                 txtInfoTitle.Text = string.Format(Utility.GetLocalizedLabel("VerifyPin", "otpMobileUpdate"), newPhoneNo);
-                txtDidntReceive.Text = Utility.GetLocalizedLabel("VerifyPin","smsNotReceived");
+                txtDidntReceive.Text = Utility.GetLocalizedLabel("VerifyPin", "smsNotReceived");
                 btnResend.Text = Utility.GetLocalizedCommonLabel("resend");
                 OnCompleteResend.Text = Utility.GetLocalizedCommonLabel("resend");
                 txtErrorPin.Text = Utility.GetLocalizedErrorLabel("invalid_pin");
@@ -167,9 +158,9 @@ namespace myTNB_Android.Src.UpdateMobileNo
                 Snackbar mPinSentInfo = Snackbar.Make(rootView,
                     Utility.GetLocalizedLabel("VerifyPin", "resendPinMessage"),
                     Snackbar.LengthLong);
-                    View v = mPinSentInfo.View;
-                    TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                    tv.SetMaxLines(5);
+                View v = mPinSentInfo.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mPinSentInfo.Show();
                 this.userActionsListener.Start();
             }
@@ -461,7 +452,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
 
         public void OnProgress(int count)
         {
-          btnResend.Text = Utility.GetLocalizedCommonLabel("resend") + "(" + Math.Abs(count - 30) + ")";
+            btnResend.Text = Utility.GetLocalizedCommonLabel("resend") + "(" + Math.Abs(count - 30) + ")";
         }
 
         public void ShowEmptyErrorPin_1()
