@@ -205,7 +205,7 @@ namespace myTNB_Android.Src.UpdateID.MVP
             bool isValid = false;
             try
             {
-                isValid = hasNumber.IsMatch(icno) &&  icno.Length > 4 && icno.Length < 16;
+                isValid = icno.Length > 4 && icno.Length < 51;
             }
             catch (System.Exception e)
             {
@@ -218,7 +218,7 @@ namespace myTNB_Android.Src.UpdateID.MVP
             bool isValid = false;
             try
             {
-                isValid = hasNumber.IsMatch(icno) && hasUpperChar.IsMatch(icno) && (icno.Length > 4 && icno.Length < 51);
+                isValid = (icno.Length > 4 && icno.Length < 51);
             }
             catch (System.Exception e)
             {

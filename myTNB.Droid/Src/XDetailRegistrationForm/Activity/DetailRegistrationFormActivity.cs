@@ -340,9 +340,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                         eText.SetSelection(eText.Text.Length);
                     }
                 }
-                else if (Idtype.Equals("Army ID") || Idtype.Equals("ID Tentera"))
+                else if (Idtype.Equals("ArmyID/PoliceID") || Idtype.Equals("IDTentera/IDPolis"))
                 {                   
-                    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(15) });
+                    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
                 }
                 else if (Idtype.Equals("Passport") || Idtype.Equals("Pasport"))
                 {
