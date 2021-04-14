@@ -117,6 +117,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 settings.LoadWithOverviewMode = true;
                 settings.BuiltInZoomControls = false;
 
+                System.Console.WriteLine("[DEBUG] TextZoom 1: " + settings.TextZoom);
+                settings.TextZoom = TextViewUtils.IsLargeFonts ? 130 : 100;
+                System.Console.WriteLine("[DEBUG] TextZoom 2: " + settings.TextZoom);
+
                 if (Arguments.ContainsKey("html_fpx"))
                 {
                     mWebView.LoadUrl(Arguments.GetString("html_fpx"));
