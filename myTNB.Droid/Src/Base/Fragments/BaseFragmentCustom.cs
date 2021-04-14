@@ -47,23 +47,6 @@ namespace myTNB_Android.Src.Base.Fragments
                 {
                     Console.WriteLine("[DEBUG] configuration.DensityDpi System Exception: " + sysEx.Message);
                 }
-                /*Android.Content.Res.Configuration configuration = Resources.Configuration;
-                configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
-                var metrics = this.Activity.ApplicationContext.Resources.DisplayMetrics;
-                metrics.ScaledDensity = configuration.FontScale * metrics.Density;
-                try
-                {
-                    configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
-                }
-                catch (Java.Lang.Exception javaEx)
-                {
-                    Console.WriteLine("[DEBUG] configuration.DensityDpi Java Exception: " + javaEx.Message);
-                }
-                catch (System.Exception sysEx)
-                {
-                    Console.WriteLine("[DEBUG] configuration.DensityDpi System Exception: " + sysEx.Message);
-                }
-                this.Context.Resources.UpdateConfiguration(configuration, metrics);*/
             }
             catch (Exception e)
             {
