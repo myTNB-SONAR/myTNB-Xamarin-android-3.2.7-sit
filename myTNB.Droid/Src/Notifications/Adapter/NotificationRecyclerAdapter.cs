@@ -23,6 +23,7 @@ using myTNB_Android.Src.Base;
 using System.Text.RegularExpressions;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
+using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.Notifications.Adapter
 {
@@ -146,6 +147,14 @@ namespace myTNB_Android.Src.Notifications.Adapter
 
                 string notificationAccountName = MyTNBAccountManagement.GetInstance().GetNotificationAccountName(notificationData.AccountNum);
                 viewHolder.txtNotificationContent.Text = Regex.Replace(notificationData.Message, Constants.ACCOUNT_NICKNAME_PATTERN, notificationAccountName);
+
+                if (notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED)
+                {
+                    string message = Regex.Replace(notificationData.Message, Constants.ACCOUNT_FULLNAME_PATTERN, UserEntity.GetActive().DisplayName + "/" + UserEntity.GetActive().Email);
+                    message = Regex.Replace(message, Constants.ACCOUNT_NICKNAME_PATTERN, notificationAccountName);
+                    viewHolder.txtNotificationContent.Text = message;
+
+                }
 
                 if (notificationData.ShowSelectButton)
                 {
