@@ -69,6 +69,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.newFAQTitle)]
         TextView newFAQTitle;
 
+        [BindView(Resource.Id.newFAQContainer)]
+        LinearLayout newFAQContainer;
+
         [BindView(Resource.Id.myServiceShimmerView)]
         LinearLayout myServiceShimmerView;
 
@@ -2678,6 +2681,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public int GetMyServiceContainerHeight()
         {
             return myServiceContainer.Height;
+        }
+        public int GettopRootViewHeight()
+        {
+            return topRootView.Height;
+        }
+        public int GetnewFAQContainerHeight()
+        {
+            return newFAQContainer.Height;
+        }
+        public int GetnewFAQTitleHeight()
+        {
+            return newFAQTitle.Height;
+        }
+        public int GetloadMoreContainerHeight()
+        {
+            return loadMoreContainer.Height;
         }
         public void ResetNewFAQScroll()
         {
