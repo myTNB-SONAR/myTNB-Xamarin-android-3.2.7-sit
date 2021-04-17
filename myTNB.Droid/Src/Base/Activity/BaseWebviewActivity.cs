@@ -94,7 +94,9 @@ namespace myTNB_Android.Src.Base.Activity
             {
                 Utility.LoggingNonFatalError(ex);
             }
-            //SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_AddAccountLarge : Resource.Style.Theme_AddAccount);
+            SetTheme(TextViewUtils.IsLargeFonts
+                ? Resource.Style.Theme_AddAccountLarge
+                : Resource.Style.Theme_AddAccount);
         }
 
         protected override void OnStart()
