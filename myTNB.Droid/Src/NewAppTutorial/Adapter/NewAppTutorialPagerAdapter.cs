@@ -342,19 +342,16 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else if (position == 1)
                         {
-                            float h1 = TextViewUtils.IsLargeFonts ? 75f : 65f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
-
+                            int topHeight = ((HomeMenuFragment)this.mFragment).GettopRootViewHeight() + (int)DPUtils.ConvertDPToPx(20f) - ((HomeMenuFragment)this.mFragment).GetloadMoreContainerHeight();
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                float h2 = TextViewUtils.IsLargeFonts ? 95f : 65f;
-                                topHeight = (int)DPUtils.ConvertDPToPx(h2);
+                                int offsetHeight = (int)DPUtils.ConvertDPToPx(65f);
                                 int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                int halfScroll = topHeight / 2;
+                                int halfScroll = offsetHeight / 2;
 
                                 if (diffHeight < halfScroll)
                                 {
-                                    topHeight = topHeight / 2;
+                                    topHeight = topHeight - (offsetHeight / 2);
                                 }
                             }
 
