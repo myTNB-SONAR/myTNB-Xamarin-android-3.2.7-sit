@@ -4,8 +4,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-
-
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
@@ -29,13 +27,11 @@ namespace myTNB_Android.Src.ManageCards.Activity
     , Theme = "@style/Theme.ManageCards")]
     public class ManageCardsActivity : BaseActivityCustom, ManageCardsContract.IView
     {
-
         [BindView(Resource.Id.layout_cards)]
         LinearLayout layoutCards;
 
         [BindView(Resource.Id.layout_empty_cards)]
         LinearLayout layoutEmptyCards;
-
 
         [BindView(Resource.Id.recyclerView)]
         RecyclerView mRecyclerView;
@@ -63,8 +59,6 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
         private string PAGE_ID = "ManageCards";
 
-        AlertDialog removeDialog;
-
         List<CreditCardData> cardsList;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -79,12 +73,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
                     if (extras.ContainsKey(Constants.CREDIT_CARD_LIST))
                     {
                         string cardsListString = extras.GetString(Constants.CREDIT_CARD_LIST);
-                        //cardsList = JsonConvert.DeserializeObject<List<CreditCardData>>(cardsListString);
                         cardsList = DeSerialze<List<CreditCardData>>(cardsListString);
                     }
                 }
-
-                //Console.WriteLine("Card List " + cardsListString);
 
                 progress = new MaterialDialog.Builder(this)
                     .Title(GetString(Resource.String.manage_cards_progress_title))
@@ -114,40 +105,31 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
         [Preserve]
         private void MAdapter_RemoveClick(object sender, int e)
         {
             try
             {
-                if (removeDialog != null && removeDialog.IsShowing)
-                {
-                    removeDialog.Dismiss();
-                }
                 CreditCardData creditCardData = mAdapter.GetItemObject(e);
                 string lastDigit = creditCardData.LastDigits.Substring(creditCardData.LastDigits.Length - 4);
-                removeDialog = new AlertDialog.Builder(this)
 
+                MyTNBAppToolTipBuilder removeSavedCardTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                     .SetTitle(GetLabelByLanguage("removeCardTitle"))
                     .SetMessage(string.Format(GetLabelByLanguage("removeCardMessage"), lastDigit))
-                    .SetNegativeButton(GetLabelCommonByLanguage("cancel"),
-                    delegate
-                    {
-                        removeDialog.Dismiss();
-                    })
-                    .SetPositiveButton(GetLabelCommonByLanguage("ok"),
-                    delegate
+                    .SetCTALabel(GetLabelCommonByLanguage("cancel"))
+                    .SetSecondaryCTALabel(GetLabelCommonByLanguage("ok"))
+                    .SetSecondaryCTAaction(() =>
                     {
                         this.userActionsListener.OnRemove(creditCardData, e);
                     })
-                    .Show()
-                    ;
+                    .Build();
+                removeSavedCardTooltip.Show();
             }
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
-
-
         }
 
         public bool IsActive()

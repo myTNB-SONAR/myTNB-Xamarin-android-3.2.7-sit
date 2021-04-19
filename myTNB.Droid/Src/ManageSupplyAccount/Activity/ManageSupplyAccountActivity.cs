@@ -4,7 +4,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -89,9 +88,12 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNickName);
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountAddress, txtNickName);
                 TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName);
+                txtInputLayoutNickName.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
                 TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
                 TextViewUtils.SetTextSize14(txtAccountNumber, txtAccountAddress, btnTextUpdateNickName);
-                TextViewUtils.SetTextSize16(btnRemoveAccount);
+                TextViewUtils.SetTextSize16(btnRemoveAccount, txtNickName);
                 txtAccountNumber.Text = accountData.AccountNum;
                 txtAccountAddress.Text = accountData.AddStreet;
 

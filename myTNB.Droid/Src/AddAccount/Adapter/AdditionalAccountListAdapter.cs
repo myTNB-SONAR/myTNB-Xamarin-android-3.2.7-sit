@@ -101,6 +101,9 @@ namespace myTNB_Android.Src.AddAccount
             TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress, AccountLabel);
             TextViewUtils.SetMuseoSans300Typeface(textInputLayoutAccountLabel);
             textInputLayoutAccountLabel.Hint = Utility.GetLocalizedCommonLabel("acctNickname");
+            textInputLayoutAccountLabel.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
             textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
                 ? Resource.Style.TextInputLayoutFeedbackCountLarge
                 : Resource.Style.TextInputLayoutFeedbackCount);

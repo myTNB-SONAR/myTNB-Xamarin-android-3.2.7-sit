@@ -1,12 +1,5 @@
-﻿using AFollestad.MaterialDialogs;
-using Android.Content;
-using Android.Graphics;
-using Android.OS;
-
-
-
+﻿using Android.Graphics;
 using Android.Text;
-using Android.Text.Method;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -15,11 +8,8 @@ using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.TextField;
 using Java.Text;
 using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
-using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -29,7 +19,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
 {
     public class SelectAccountListAdapter : RecyclerView.Adapter
     {
-
         private BaseAppCompatActivity mActicity;
         private List<MPAccount> accountList = new List<MPAccount>();
         private List<MPAccount> orgAccountList = new List<MPAccount>();
@@ -275,12 +264,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 TextViewUtils.SetMuseoSans300Typeface(AmountLabel);
                 TextViewUtils.SetTextSize12(AccountAddress);
                 TextViewUtils.SetTextSize14(AccountNumber);
-                TextViewUtils.SetTextSize16(AccountLabel);
-                AmountLabel.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.AmountHint_TextInputLayout_TextAppearance_LightBackgroundLarge : Resource.Style.AmountHint_TextInputLayout_TextAppearance_LightBackground);
+                TextViewUtils.SetTextSize16(AccountLabel, Amount);
+                AmountLabel.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.AmountHint_TextInputLayout_TextAppearance_LightBackgroundLarge
+                    : Resource.Style.AmountHint_TextInputLayout_TextAppearance_LightBackground);
 
                 Amount.AddTextChangedListener(new RestrictAmountChangeListener(Amount, AmountLabel, 2));
             }
-
         }
 
         public void ToggleSelection(int pos)
