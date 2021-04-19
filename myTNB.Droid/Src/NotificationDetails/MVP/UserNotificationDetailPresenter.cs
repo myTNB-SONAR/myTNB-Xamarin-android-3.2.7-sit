@@ -268,8 +268,10 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
                 if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_NEW_ACCESS_ADDED)
                 {
-                    notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_FULLNAME_PATTERN, UserEntity.GetActive().DisplayName);
-
+                    CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+                    string address = Utility.StringSpaceMasking(Utility.Masking.Address, account.AccountStAddress);
+                    string message = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_FULLNAME_PATTERN, UserEntity.GetActive().DisplayName);
+                    notificationDetailMessage = Regex.Replace(message, Constants.ACCOUNT_ADDRESS_PATTERN, address);
                 }
 
                 notificationDetailModel = new NotificationDetailModel(imageResourceBanner, pageTitle, notificationDetailTitle,

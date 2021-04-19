@@ -156,6 +156,17 @@ namespace myTNB_Android.Src.Notifications.Adapter
 
                 }
 
+                if (notificationData.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_NEW_ACCESS_ADDED)
+                {
+                    CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationData.AccountNum);
+                    string address = Utility.StringSpaceMasking(Utility.Masking.Address, account.AccountStAddress);
+                    string message = Regex.Replace(notificationData.Message, Constants.ACCOUNT_FULLNAME_PATTERN, UserEntity.GetActive().DisplayName);
+                    message = Regex.Replace(message, Constants.ACCOUNT_ADDRESS_PATTERN, address);
+
+                    viewHolder.txtNotificationContent.Text = message;
+
+                }
+
                 if (notificationData.ShowSelectButton)
                 {
                     viewHolder.selectItemCheckbox.Visibility = ViewStates.Visible;
