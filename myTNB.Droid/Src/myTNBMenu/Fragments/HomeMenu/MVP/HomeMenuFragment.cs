@@ -48,6 +48,7 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.Mobile.SessionCache;
 using myTNB;
 using myTNB.Mobile;
+using AndroidX.ConstraintLayout.Widget;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -226,6 +227,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         [BindView(Resource.Id.myServiceHideView)]
         LinearLayout myServiceHideView;
+
+        [BindView(Resource.Id.accountContainer)]
+        ConstraintLayout accountContainer;
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
@@ -2681,6 +2685,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public int GetMyServiceContainerHeight()
         {
             return myServiceContainer.Height;
+        }
+        public int GetAccountContainerHeight()
+        {
+            return accountContainer.Height;
         }
         public int GettopRootViewHeight()
         {
