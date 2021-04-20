@@ -44,9 +44,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
         List<NewAccount> accountList = new List<NewAccount>();
         List<NewAccount> additionalAccountList = new List<NewAccount>();
 
-        private AlertDialog mDeleteDialog;
-        private AlertDialog mNoAccountFoundDialog;
-
         private AlertDialog mGetAccountsProgressDialog;
         private MaterialDialog mAddAccountProgressDialog;
         private Snackbar mSnackBar;
@@ -129,51 +126,35 @@ namespace myTNB_Android.Src.AddAccount.Activity
             try
             {
                 NewAccount item = accountList[position];
-                mDeleteDialog = new AlertDialog.Builder(this)
-                  .SetTitle(GetLabelByLanguage("removeAcct"))
-                  .SetPositiveButton(GetLabelCommonByLanguage("ok"), (senderAlert, args) =>
-                  {
-                      accountList.Remove(item);
-                      adapter = new AccountListAdapter(this, accountList);
-                      accountListRecyclerView.SetAdapter(adapter);
-                      adapter.ItemClick += OnItemClick;
-                      adapter.NotifyDataSetChanged();
-                      int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
-                      if (accountList != null && totalAccountAdded < Constants.ADD_ACCOUNT_LIMIT)
-                      {
-                          btnAddAnotherAccount.Visibility = ViewStates.Visible;
-                      }
-                      if (accountList.Count() > 0)
-                      {
-                          textNoOfAcoount.Text = accountList.Count() + " " + GetLabelByLanguage("supplyAcctCount");
-                      }
-                      else
-                      {
-                          textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
-                      }
-                      TextViewUtils.SetTextSize18(textNoOfAcoount);
-
-                      mDeleteDialog.Dismiss();
-                  })
-                 .SetNegativeButton(GetLabelCommonByLanguage("cancel"), (senderAlert, args) =>
-                 {
-                     mDeleteDialog.Dismiss();
-                 })
-                  .SetCancelable(false)
-                  .Create();
-
-                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                {
-                    mDeleteDialog.SetMessage(Html.FromHtml(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber), FromHtmlOptions.ModeLegacy));
-                }
-                else
-                {
-                    mDeleteDialog.SetMessage(Html.FromHtml(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber)));
-                }
-                if (!mDeleteDialog.IsShowing)
-                {
-                    mDeleteDialog.Show();
-                }
+                MyTNBAppToolTipBuilder removeAccountPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                    .SetTitle(GetLabelByLanguage("removeAcct"))
+                    .SetMessage(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber))
+                    .SetCTALabel(GetLabelCommonByLanguage("cancel"))
+                    .SetSecondaryCTALabel(GetLabelCommonByLanguage("ok"))
+                    .SetSecondaryCTAaction(() =>
+                    {
+                        accountList.Remove(item);
+                        adapter = new AccountListAdapter(this, accountList);
+                        accountListRecyclerView.SetAdapter(adapter);
+                        adapter.ItemClick += OnItemClick;
+                        adapter.NotifyDataSetChanged();
+                        int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
+                        if (accountList != null && totalAccountAdded < Constants.ADD_ACCOUNT_LIMIT)
+                        {
+                            btnAddAnotherAccount.Visibility = ViewStates.Visible;
+                        }
+                        if (accountList.Count() > 0)
+                        {
+                            textNoOfAcoount.Text = accountList.Count() + " " + GetLabelByLanguage("supplyAcctCount");
+                        }
+                        else
+                        {
+                            textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
+                        }
+                        TextViewUtils.SetTextSize18(textNoOfAcoount);
+                    })
+                    .Build();
+                removeAccountPopup.Show();
             }
             catch (Exception e)
             {
@@ -186,45 +167,30 @@ namespace myTNB_Android.Src.AddAccount.Activity
             try
             {
                 NewAccount item = additionalAccountList[position];
-                mDeleteDialog = new AlertDialog.Builder(this)
-                  .SetTitle(GetLabelByLanguage("removeAcct"))
-                  .SetPositiveButton(GetLabelCommonByLanguage("ok"), (senderAlert, args) =>
-                  {
-                      additionalAccountList.Remove(item);
-                      additionalAdapter = new AdditionalAccountListAdapter(this, additionalAccountList);
-                      additionalAccountListRecyclerView.SetAdapter(additionalAdapter);
-                      additionalAdapter.AdditionalItemClick += OnAdditionalItemClick;
-                      additionalAdapter.NotifyDataSetChanged();
-                      if (additionalAccountList.Count == 0)
-                      {
-                          textAdditionalAcoount.Visibility = ViewStates.Gone;
-                      }
-                      int totalAccountAdded = adapter.GetAccountList().Count + additionalAdapter.GetAccountList().Count();
-                      if (accountList != null && totalAccountAdded < Constants.ADD_ACCOUNT_LIMIT)
-                      {
-                          btnAddAnotherAccount.Visibility = ViewStates.Visible;
-                      }
-                      mDeleteDialog.Dismiss();
-                  })
-                 .SetNegativeButton(GetLabelCommonByLanguage("cancel"), (senderAlert, args) =>
-                 {
-                     mDeleteDialog.Dismiss();
-                 })
-                  .SetCancelable(false)
-                  .Create();
-
-                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                {
-                    mDeleteDialog.SetMessage(Html.FromHtml(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber), FromHtmlOptions.ModeLegacy));
-                }
-                else
-                {
-                    mDeleteDialog.SetMessage(Html.FromHtml(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber)));
-                }
-                if (!mDeleteDialog.IsShowing)
-                {
-                    mDeleteDialog.Show();
-                }
+                MyTNBAppToolTipBuilder removeAccountPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                    .SetTitle(GetLabelByLanguage("removeAcct"))
+                    .SetMessage(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber))
+                    .SetCTALabel(GetLabelCommonByLanguage("cancel"))
+                    .SetSecondaryCTALabel(GetLabelCommonByLanguage("ok"))
+                    .SetSecondaryCTAaction(() =>
+                    {
+                        additionalAccountList.Remove(item);
+                        additionalAdapter = new AdditionalAccountListAdapter(this, additionalAccountList);
+                        additionalAccountListRecyclerView.SetAdapter(additionalAdapter);
+                        additionalAdapter.AdditionalItemClick += OnAdditionalItemClick;
+                        additionalAdapter.NotifyDataSetChanged();
+                        if (additionalAccountList.Count == 0)
+                        {
+                            textAdditionalAcoount.Visibility = ViewStates.Gone;
+                        }
+                        int totalAccountAdded = adapter.GetAccountList().Count + additionalAdapter.GetAccountList().Count();
+                        if (accountList != null && totalAccountAdded < Constants.ADD_ACCOUNT_LIMIT)
+                        {
+                            btnAddAnotherAccount.Visibility = ViewStates.Visible;
+                        }
+                    })
+                    .Build();
+                removeAccountPopup.Show();
             }
             catch (Exception e)
             {

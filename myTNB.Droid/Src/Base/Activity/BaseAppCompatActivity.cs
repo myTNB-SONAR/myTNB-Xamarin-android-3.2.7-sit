@@ -57,16 +57,17 @@ namespace myTNB_Android.Src.Base.Activity
                 {
                     Configuration configuration = Resources.Configuration;
                     System.Console.WriteLine("[DEBUG] FONT SCALE 1: " + configuration.FontScale);//2, 1.5, 1.3, 1.1
-                    configuration.FontScale = 1.3F;
+                    configuration.FontScale = configuration.FontScale >= 1.3F ? 1.3f : configuration.FontScale;
                     System.Console.WriteLine("[DEBUG] FONT SCALE 2: " + configuration.FontScale);//2, 1.5, 1.3, 1.1
 
                     DisplayMetrics metrics = Resources.DisplayMetrics;
                     System.Console.WriteLine("[DEBUG] SCALED DENSITY 1: " + metrics.ScaledDensity);//7, 5.25, 4.55, 3.85
                     System.Console.WriteLine("[DEBUG] DENSITY: " + metrics.Density);//3.5, 3.5, 3.5, 3.5
                     System.Console.WriteLine("[DEBUG] DENSITYDPI: " + metrics.DensityDpi);//D560, D560, D560, D560
-
+                    //280 //Xhigh //D360
                     metrics.ScaledDensity = configuration.FontScale * metrics.Density;
                     System.Console.WriteLine("[DEBUG] SCALED DENSITY 2: " + metrics.ScaledDensity);
+
                     Resources.UpdateConfiguration(configuration, metrics);
                 }
                 catch (Java.Lang.Exception javaEx)
@@ -77,24 +78,6 @@ namespace myTNB_Android.Src.Base.Activity
                 {
                     Console.WriteLine("[DEBUG] configuration.DensityDpi System Exception: " + sysEx.Message);
                 }
-
-                /*Android.Content.Res.Configuration configuration = Resources.Configuration;
-                configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
-                var metrics = this.ApplicationContext.Resources.DisplayMetrics;
-                metrics.ScaledDensity = configuration.FontScale * metrics.Density;
-                try
-                {
-                    configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
-                }
-                catch (Java.Lang.Exception javaEx)
-                {
-                    Console.WriteLine("[DEBUG] configuration.DensityDpi Java Exception: " + javaEx.Message);
-                }
-                catch (System.Exception sysEx)
-                {
-                    Console.WriteLine("[DEBUG] configuration.DensityDpi System Exception: " + sysEx.Message);
-                }
-                this.Resources.UpdateConfiguration(configuration, metrics);*/
             }
         }
 

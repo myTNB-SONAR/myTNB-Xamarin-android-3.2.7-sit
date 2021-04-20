@@ -294,12 +294,18 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 
             txtSearchApplicationTitle.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchForTitle");
             txtInputLayoutApplicationType.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "applicationType");
-            txtInputLayoutApplicationType.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+            txtInputLayoutApplicationType.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                ? Resource.Style.TextInputLayout_TextAppearance_Large
+                : Resource.Style.TextInputLayout_TextAppearance_Small);
             txtInputLayoutSearchBy.Hint = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchBy");
-            txtInputLayoutSearchBy.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+            txtInputLayoutSearchBy.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                ? Resource.Style.TextInputLayout_TextAppearance_Large
+                : Resource.Style.TextInputLayout_TextAppearance_Small);
             btnSearchApplication.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchStatus");
             txtSearchApplicationStatusListResult.Text = Utility.GetLocalizedLabel("ApplicationStatusSearch", "searchResultTitle");
-            txtInputLayoutServiceRequestNum.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+            txtInputLayoutServiceRequestNum.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                ? Resource.Style.TextInputLayout_TextAppearance_Large
+                : Resource.Style.TextInputLayout_TextAppearance_Small);
             mPresenter = new SearchApplicationStatusPresenter(this);
 
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutApplicationType, txtInputLayoutSearchBy, txtInputLayoutServiceRequestNum);
@@ -420,7 +426,9 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
                 if (txtServiceRequestNum.Text != string.Empty && ErrorMessage != null && ErrorMessage != string.Empty)
                 {
                     txtInputLayoutServiceRequestNum.HelperText = ErrorMessage;
-                    txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                    txtInputLayoutServiceRequestNum.SetHelperTextTextAppearance(TextViewUtils.IsLargeFonts
+                        ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                        : Resource.Style.TextInputLayoutBottomErrorHint);
                 }
             }
             catch (Exception ex)

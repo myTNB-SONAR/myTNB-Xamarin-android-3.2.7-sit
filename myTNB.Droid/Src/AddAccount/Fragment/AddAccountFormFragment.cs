@@ -179,6 +179,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 addAccount = rootView.FindViewById<Button>(Resource.Id.btnAddAccount);
                 TextViewUtils.SetMuseoSans500Typeface(addAccount);
+                TextViewUtils.SetTextSize16(addAccount);
                 addAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
                 addAccount.Click += delegate
                 {
