@@ -13,8 +13,8 @@
             android:id="@+id/itemTitle"
             android:gravity="left|center"
             android:text="Item Value"
-            android:textSize="14dp"
-            android:textColor="#49494a"
+            android:textSize="16dp"
+            android:textColor="@color/tunaGrey"
             android:layout_width="wrap_content" 
             android:layout_height="20dp"/>
     </LinearLayout>
