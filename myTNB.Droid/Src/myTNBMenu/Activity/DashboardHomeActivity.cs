@@ -162,6 +162,20 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
+        public int BottomNavigationViewHeight()
+        {
+            try
+            {
+                return bottomNavigationView.Height;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return 0;
+        }
+
         public override bool ShowBackArrowIndicator()
         {
             return isBackButtonVisible;

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Android.Content;
 using Android.Graphics;
-using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -41,7 +40,7 @@ namespace myTNB_Android.Src.CompoundView
             profileItemContent = FindViewById<LinearLayout>(Resource.Id.profileItemContent);
 
             /*TextViewUtils.SetMuseoSans500Typeface(itemHeaderTitle);
-            itemHeaderTitle.TextSize = TextViewUtils.GetFontSize(16f);
+            itemHeaderTitle.TextSize = TextViewUtils.GetFontSize(16f);*/
 
             Android.Content.Res.Configuration configuration = Resources.Configuration;
             configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
@@ -51,7 +50,21 @@ namespace myTNB_Android.Src.CompoundView
 
             configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
 
-            context.Resources.UpdateConfiguration(configuration, metrics);*/
+            context.Resources.UpdateConfiguration(configuration, metrics);
+
+            try
+            {
+                configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
+            }
+            catch (Java.Lang.Exception javaEx)
+            {
+                Console.WriteLine("[DEBUG] configuration.DensityDpi Java Exception: " + javaEx.Message);
+            }
+            catch (System.Exception sysEx)
+            {
+                Console.WriteLine("[DEBUG] configuration.DensityDpi System Exception: " + sysEx.Message);
+            }
+            context.Resources.UpdateConfiguration(configuration, metrics);
         }
 
         public void SetHeaderTitle(string title)

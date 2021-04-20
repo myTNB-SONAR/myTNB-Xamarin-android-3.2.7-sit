@@ -244,6 +244,7 @@ namespace myTNB_Android.Src.Profile.Activity
                 StartActivity(WalkthroughIntent);
                 SetResult(Result.Ok);
                 Finish();
+                base.OnBackPressed();
             }
             else
             {

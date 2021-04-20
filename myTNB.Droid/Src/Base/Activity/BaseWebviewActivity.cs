@@ -99,12 +99,22 @@ namespace myTNB_Android.Src.Base.Activity
             configuration.FontScale = (float)1; //0.85 small size, 1 normal size, 1,15 big etc
             var metrics = this.ApplicationContext.Resources.DisplayMetrics;
             metrics.ScaledDensity = configuration.FontScale * metrics.Density;
-            configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
+            try
+            {
+                configuration.DensityDpi = DisplayMetrics.DensityDeviceStable;
+            }
+            catch (Java.Lang.Exception javaEx)
+            {
+                Console.WriteLine("[DEBUG] configuration.DensityDpi Java Exception: " + javaEx.Message);
+            }
+            catch (System.Exception sysEx)
+            {
+                Console.WriteLine("[DEBUG] configuration.DensityDpi System Exception: " + sysEx.Message);
+            }
             this.Resources.UpdateConfiguration(configuration, metrics);
-
             SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_AddAccountLarge : Resource.Style.Theme_AddAccount);
         }
-       
+
         protected override void OnStart()
         {
             base.OnStart();
