@@ -693,7 +693,7 @@ namespace myTNB_Android.Src.Billing.MVP
             Handler h = new Handler();
             Action myAction = () =>
             {
-                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.billingDetailsPresenter.OnGeneraNewAppTutorialList());
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.billingDetailsPresenter.OnGeneraNewAppTutorialList(),true);
             };
             h.PostDelayed(myAction, 100);
         }

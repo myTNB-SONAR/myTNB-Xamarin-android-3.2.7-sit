@@ -1230,7 +1230,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(40f);
+                            innerUpperBottomLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(45f) : (int)DPUtils.ConvertDPToPx(40f);
                             innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
