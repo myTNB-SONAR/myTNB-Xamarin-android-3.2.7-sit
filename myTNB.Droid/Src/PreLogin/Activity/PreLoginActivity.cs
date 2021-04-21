@@ -117,6 +117,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.img_feedback)]
         ImageView imgFeedback;
 
+        [BindView(Resource.Id.img_feedback_2)]
+        ImageView imgFeedback2;
+
         [BindView(Resource.Id.txtFeedbackFirst)]
         TextView txtFeedbackFirst;
 
@@ -205,7 +208,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                     int index = services.FindIndex(x => x.ServiceCategoryId == "1006");
                     isApplicationStatusEnabled = index > -1;
                 }
-                cardCount = isApplicationStatusEnabled || TextViewUtils.IsLargeFonts ? 4 : 3;
+                cardCount = isApplicationStatusEnabled || !TextViewUtils.IsLargeFonts ? 4 : 3;
 
                 UpdateLabels();
                 GenerateTopLayoutLayout();
@@ -660,12 +663,14 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 LinearLayout.LayoutParams currentCard = cardFindUs.LayoutParameters as LinearLayout.LayoutParams;
                 ViewGroup.LayoutParams currentImg = imgFindUs.LayoutParameters;
 
-                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / cardCount;
+                var divisor = TextViewUtils.IsLargeFonts && cardCount == 4 ? 3 : 4;
+
+                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / divisor;
                 float heightRatio = 84f / 72f;
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
                 //currentCard.Height = cardHeight;
-                currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth;
+                currentCard.Width = cardWidth; //currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth;
 
                 float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
@@ -690,16 +695,18 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 LinearLayout.LayoutParams currentCard = cardCallUs.LayoutParameters as LinearLayout.LayoutParams;
                 ViewGroup.LayoutParams currentImg = imgCallUs.LayoutParameters;
 
-                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / cardCount;
+                var divisor = TextViewUtils.IsLargeFonts && cardCount == 4 ? 3 : 4;
+
+                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / divisor;
                 float heightRatio = 84f / 72f;
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
                 //currentCard.Height = cardHeight;
-                currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth;
+                currentCard.Width = cardWidth; //currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth;
 
                 float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
-                callUsLayout.SetPadding(padding, padding, padding, padding);
+                callUsLayout.SetPadding(padding, padding, padding, 0);
 
                 float imgHeightRatio = 28f / 72f;
                 int imgHeight = (int)(cardWidth * (imgHeightRatio));
@@ -722,18 +729,20 @@ namespace myTNB_Android.Src.PreLogin.Activity
                     cardFeedbackFirstRow.Visibility = ViewStates.Gone;
                     secondLayout.Visibility = ViewStates.Visible;
                     LinearLayout.LayoutParams currentCard = cardFeedbackSecondRow.LayoutParameters as LinearLayout.LayoutParams;
-                    ViewGroup.LayoutParams currentImg = imgFeedback.LayoutParameters;
+                    ViewGroup.LayoutParams currentImg = imgFeedback2.LayoutParameters;
 
-                    int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / cardCount;
+                    var divisor = TextViewUtils.IsLargeFonts && cardCount == 4 ? 3 : 4;
+
+                    int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / divisor;
                     float heightRatio = 84f / 72f;
                     int cardHeight = (int)(cardWidth * (heightRatio));
 
                     //currentCard.Height = cardHeight + 27;
-                    currentCard.Width = cardWidth + 85;
+                    currentCard.Width = cardWidth; //currentCard.Width = cardWidth + 85;
 
                     float paddingRatio = 10f / 72f;
                     int padding = (int)(cardWidth * (paddingRatio));
-                    feedbackLayout.SetPadding(0, padding, 0, 0);
+                    feedbackLayout.SetPadding(padding, padding, padding, 0);
 
                     float imgHeightRatio = 28f / 72f;
                     int imgHeight = (int)(cardWidth * (imgHeightRatio));
@@ -749,16 +758,18 @@ namespace myTNB_Android.Src.PreLogin.Activity
                     LinearLayout.LayoutParams currentCard = cardFeedbackFirstRow.LayoutParameters as LinearLayout.LayoutParams;
                     ViewGroup.LayoutParams currentImg = imgFeedback.LayoutParameters;
 
-                    int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(30f)) / cardCount;
+                    var divisor = TextViewUtils.IsLargeFonts && cardCount == 4 ? 3 : 4;
+
+                    int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / divisor;
                     float heightRatio = 84f / 72f;
                     int cardHeight = (int)(cardWidth * (heightRatio));
 
                     //currentCard.Height = cardHeight;
-                    currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth;
+                    currentCard.Width = cardWidth; //currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth;
 
                     float paddingRatio = 10f / 72f;
                     int padding = (int)(cardWidth * (paddingRatio));
-                    feedbackLayout.SetPadding(0, padding, 0, 0);
+                    feedbackLayout.SetPadding(padding, padding, padding, 0);
 
                     float imgHeightRatio = 28f / 72f;
                     int imgHeight = (int)(cardWidth * (imgHeightRatio));
@@ -780,21 +791,23 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 LinearLayout.LayoutParams currentCard = cardCheckStatus.LayoutParameters as LinearLayout.LayoutParams;
                 ViewGroup.LayoutParams currentImg = imgCheckStatus.LayoutParameters;
 
-                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(30f)) / cardCount;
+                var divisor = TextViewUtils.IsLargeFonts && cardCount == 4 ? 3 : 4;
+
+                int cardWidth = (this.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f)) / divisor;
                 float heightRatio = 84f / 72f;
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
-                currentCard.Height = TextViewUtils.IsLargeFonts ? cardHeight + 25 : cardHeight;
-                currentCard.Width = (TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth) + 5;
+                //currentCard.Height = TextViewUtils.IsLargeFonts ? cardHeight + 25 : cardHeight;
+                currentCard.Width = cardWidth; //currentCard.Width = (TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth) + 5;
 
                 float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
-                checkStatusLayout.SetPadding(0, padding, 0, 0);
+                checkStatusLayout.SetPadding(padding, padding, padding, 0);
 
                 float imgHeightRatio = 28f / 72f;
                 int imgHeight = (int)(cardWidth * (imgHeightRatio));
 
-                //currentImg.Height = imgHeight;
+                currentImg.Height = imgHeight;
                 currentImg.Width = imgHeight;
 
                 cardCheckStatus.Visibility = isApplicationStatusEnabled
