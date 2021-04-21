@@ -11,6 +11,8 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using AndroidX.ViewPager.Widget;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
+using myTNB_Android.Src.ManageAccess.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
@@ -25,6 +27,8 @@ using System;
 using System.Collections.Generic;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB_Android.Src.MyAccount.Activity;
+using Newtonsoft.Json;
+using myTNB_Android.Src.myTNBMenu.Models;
 
 namespace myTNB_Android.Src.NewAppTutorial.Adapter
 {
@@ -36,6 +40,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
         private AndroidX.Fragment.App.Fragment mFragment;
         private ISharedPreferences mPref;
 
+
         public NewAppTutorialPagerAdapter(Activity ctx, AndroidX.Fragment.App.Fragment fragment, ISharedPreferences pref, AndroidX.Fragment.App.DialogFragment dialog, List<NewAppModel> items)
         {
             this.mContext = ctx;
@@ -43,10 +48,12 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             this.mDialog = dialog;
             this.mFragment = fragment;
             this.mPref = pref;
-
         }
 
-        public NewAppTutorialPagerAdapter() { }
+        public NewAppTutorialPagerAdapter()
+        {
+
+        }
 
         public override Java.Lang.Object InstantiateItem(ViewGroup container, int position)
         {
@@ -68,6 +75,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             LinearLayout innerTxtBtnBottomLayout = rootView.FindViewById(Resource.Id.innerTxtBtnBottomLayout) as LinearLayout;
             LinearLayout innerMiddleTopLayout = rootView.FindViewById(Resource.Id.innerMiddleTopLayout) as LinearLayout;
 
+
             TextView txtBottomTitle = rootView.FindViewById(Resource.Id.txtBottomTitle) as TextView;
             TextView txtBottomContent = rootView.FindViewById(Resource.Id.txtBottomContent) as TextView;
             TextView txtTopTitle = rootView.FindViewById(Resource.Id.txtTopTitle) as TextView;
@@ -76,12 +84,13 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             Button btnBottomGotIt = rootView.FindViewById(Resource.Id.btnBottomGotIt) as Button;
             Button btnTopGotIt = rootView.FindViewById(Resource.Id.btnTopGotIt) as Button;
 
-            btnBottomGotIt.Click += BtnGotIt_Click;
-            btnTopGotIt.Click += BtnGotIt_Click;
-
-            //add OT
+            //add yana
             Button btnTopUpdateNickname = rootView.FindViewById(Resource.Id.btnTopUpdateNickname) as Button;
             btnTopUpdateNickname.Click += BtnUpdate_Click;
+
+
+            btnBottomGotIt.Click += BtnGotIt_Click;
+            btnTopGotIt.Click += BtnGotIt_Click;
 
             TextViewUtils.SetMuseoSans300Typeface(txtBottomContent, txtTopContent);
             TextViewUtils.SetMuseoSans500Typeface(txtBottomTitle, txtTopTitle, btnBottomGotIt, btnTopGotIt, btnTopUpdateNickname);
@@ -96,9 +105,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             btnTopGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
             btnBottomGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
 
-            //OT
+            //yana
             btnTopUpdateNickname.Text = Utility.GetLocalizedLabel("DashboardHome", "tutorialUpdateNicknameBtn");
-
 
             NewAppModel model = list[position];
 
@@ -213,6 +221,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                     txtBottomContent.TextFormatted = firstPageString;
                 }
+
             }
             else
             {
@@ -223,8 +232,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 LinearLayout.LayoutParams btnTopGotItParam = btnTopGotIt.LayoutParameters as LinearLayout.LayoutParams;
                 LinearLayout.LayoutParams innerMiddleTopLayoutParam = innerMiddleTopLayout.LayoutParameters as LinearLayout.LayoutParams;
 
-
-                //OT
+                //yana
                 LinearLayout.LayoutParams btnTopUpdateaNicknameParam = btnTopUpdateNickname.LayoutParameters as LinearLayout.LayoutParams;
 
                 if (model.ContentShowPosition == ContentType.TopLeft)
@@ -234,11 +242,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     txtTopContentParam.Gravity = GravityFlags.Left;
                     txtTopTitleParam.Gravity = GravityFlags.Left;
                     btnTopGotItParam.Gravity = GravityFlags.Left;
-                    innerMiddleTopLayoutParam.Gravity = GravityFlags.Left;
-                    innerMiddleTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(12f);
-                    innerMiddleTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-
-                    //OT
+                    //yana
                     btnTopUpdateaNicknameParam.Gravity = GravityFlags.Center;
                     innerMiddleTopLayoutParam.Gravity = GravityFlags.Left;
                     innerMiddleTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(12f);
@@ -251,6 +255,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     txtTopContentParam.Gravity = GravityFlags.Right;
                     txtTopTitleParam.Gravity = GravityFlags.Right;
                     btnTopGotItParam.Gravity = GravityFlags.Right;
+                    //yana
+                    btnTopUpdateaNicknameParam.Gravity = GravityFlags.Center;
                     innerMiddleTopLayoutParam.Gravity = GravityFlags.Right;
                     innerMiddleTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(0);
                     innerMiddleTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(12f);
@@ -258,13 +264,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                 txtTopContentParam.Width = (int)((float)this.mContext.Resources.DisplayMetrics.WidthPixels * 0.705);
 
-
                 txtTopContent.RequestLayout();
                 txtTopTitle.RequestLayout();
                 btnTopGotIt.RequestLayout();
-                innerMiddleTopLayout.RequestLayout();
-
-                //OT
+                //yana
                 btnTopUpdateNickname.RequestLayout();
                 innerMiddleTopLayout.RequestLayout();
                 btnTopUpdateNickname.RequestLayout();
@@ -310,7 +313,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 btnBottomGotIt.Visibility = ViewStates.Gone;
             }
 
-            //OT
+            //yana
             if (model.IsButtonUpdateShow)
             {
                 btnTopUpdateNickname.Visibility = ViewStates.Visible;
@@ -1234,8 +1237,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     {
                         if (position == 0)
                         {
-                            float h1 = TextViewUtils.IsLargeFonts ? 65f : 55f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                            int topHeight = (int)DPUtils.ConvertDPToPx(55f);
                             int middleHeight = (int)DPUtils.ConvertDPToPx(285f);
                             int checkPoint = (int)DPUtils.ConvertDPToPx(200f);
                             if (model.DisplayMode == "Extra")
@@ -1285,8 +1287,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else if (position == 1)
                         {
-                            float h1 = TextViewUtils.IsLargeFonts ? 373f : 359f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                            int topHeight = (int)DPUtils.ConvertDPToPx(359f);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(8f);
                             if (model.DisplayMode == "Extra")
                             {
@@ -1324,8 +1325,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else if (position == 2)
                         {
-                            float h1 = TextViewUtils.IsLargeFonts ? 373f : 359f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                            int topHeight = (int)DPUtils.ConvertDPToPx(359f);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(8f);
                             if (model.DisplayMode == "Extra")
                             {
@@ -1419,8 +1419,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 {
                                     if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        float h2 = TextViewUtils.IsLargeFonts ? 2f : 20f;
-                                        int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)) + (int)DPUtils.ConvertDPToPx(h2);
+                                        int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)) + (int)DPUtils.ConvertDPToPx(20f);
                                         topHeight = topHeight - diff;
                                     }
                                 }
@@ -1452,7 +1451,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             innerTopLayout.RequestLayout();
                         }
                     }
-
                 }
                 else if (this.mFragment is DashboardChartFragment)
                 {
@@ -1811,6 +1809,186 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 innerTopLayout.RequestLayout();
 
             }
+            else if (this.mContext is DashboardHomeActivity)
+            {
+                int middleHeight = ((DashboardHomeActivity)this.mContext).GetViewBillButtonHeight() + (int)DPUtils.ConvertDPToPx(15f);
+                int topHeight = ((DashboardHomeActivity)this.mContext).GetTopHeight() - (int)DPUtils.ConvertDPToPx(7f);
+
+
+                int rightWidth = (int)DPUtils.ConvertDPToPx(5f);
+                int middleWidth = (int)DPUtils.ConvertDPToPx(40f);
+                int leftWidth = this.mContext.Resources.DisplayMetrics.WidthPixels - rightWidth - middleWidth;
+
+                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                topLayoutParam.Height = topHeight;
+                topLayout.RequestLayout();
+                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                middleLayoutParam.Height = middleHeight;
+                middleLayout.RequestLayout();
+                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                highlightedLeftLayoutParam.Width = leftWidth;
+                highlightedLeftLayout.RequestLayout();
+                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                highlightedLayoutParam.Width = middleWidth;
+                highlightedLayout.RequestLayout();
+                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                highlightedRightLayoutParam.Width = rightWidth;
+                highlightedRightLayout.RequestLayout();
+                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                bottomLayout.RequestLayout();
+
+                LinearLayout.LayoutParams rightInnerUpperBottomLineLayoutParam = rightInnerUpperBottomLineLayout.LayoutParameters as LinearLayout.LayoutParams;
+                rightInnerUpperBottomLineLayoutParam.Height = (int)DPUtils.ConvertDPToPx(70f); ;
+                rightInnerUpperBottomLineLayout.RequestLayout();
+
+                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(160f);
+                innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                innerTopLayout.RequestLayout();
+
+
+                LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(70f);
+                innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(50f);
+                innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(20f);
+                innerUpperBottomLayout.RequestLayout();
+
+                /* LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                 innerTxtBtnBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(70f);
+                 innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(50f);
+                 innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(60f);
+                 innerTxtBtnBottomLayout.RequestLayout();*/
+
+
+            }
+            else if (this.mContext is ManageAccessActivity)
+            {
+                if (list.Count == 2)
+                {
+                    if (position == 0)
+                    {
+                        int middleHeight = ((ManageAccessActivity)this.mContext).GetViewBillButtonHeight() + (int)DPUtils.ConvertDPToPx(15f);
+                        int topHeight = ((ManageAccessActivity)this.mContext).GetTopHeight() - (int)DPUtils.ConvertDPToPx(7f);
+
+
+                        int rightWidth = (int)DPUtils.ConvertDPToPx(5f);
+                        int middleWidth = (int)DPUtils.ConvertDPToPx(40f);
+                        int leftWidth = this.mContext.Resources.DisplayMetrics.WidthPixels - rightWidth - middleWidth;
+
+                        LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        topLayoutParam.Height = topHeight;
+                        topLayout.RequestLayout();
+                        LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        middleLayoutParam.Height = middleHeight;
+                        middleLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedLeftLayoutParam.Width = leftWidth;
+                        highlightedLeftLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedLayoutParam.Width = middleWidth;
+                        highlightedLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedRightLayoutParam.Width = rightWidth;
+                        highlightedRightLayout.RequestLayout();
+                        LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                        bottomLayout.RequestLayout();
+
+                        LinearLayout.LayoutParams rightInnerUpperBottomLineLayoutParam = rightInnerUpperBottomLineLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        rightInnerUpperBottomLineLayoutParam.Height = (int)DPUtils.ConvertDPToPx(70f); ;
+                        rightInnerUpperBottomLineLayout.RequestLayout();
+
+                        RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                        innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(160f);
+                        innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                        innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                        innerTopLayout.RequestLayout();
+
+
+                        LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(70f);
+                        innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(50f);
+                        innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(20f);
+                        innerUpperBottomLayout.RequestLayout();
+                    }
+                    else
+                    {
+                        int topHeight = (((ManageAccessActivity)this.mContext).GetViewBillButtonHeight()) + (int)DPUtils.ConvertDPToPx(30f);
+                        int middleHeight = (((ManageAccessActivity)this.mContext).OnGetEndOfScrollView());
+
+                        if (model.ItemCount == 0)
+                        {
+                            if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)))
+                            {
+                                if (((ManageAccessActivity)this.mContext).CheckIsScrollable())
+                                {
+                                    int bottomHeight = (int)DPUtils.ConvertDPToPx(90f);
+                                    topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - bottomHeight - middleHeight;
+                                }
+                            }
+                        }
+                        else if (model.ItemCount == 1)
+                        {
+                            middleHeight = (((ManageAccessActivity)this.mContext).OnGetEndOfScrollView());
+                        }
+                        else if (model.ItemCount == 2)
+                        {
+                            middleHeight = (((ManageAccessActivity)this.mContext).OnGetEndOfScrollView2());
+                        }
+                        else
+                        {
+                            middleHeight = (((ManageAccessActivity)this.mContext).OnGetEndOfScrollView2());
+                        }
+
+                        LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        topLayoutParam.Height = topHeight;
+                        topLayout.RequestLayout();
+                        LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        middleLayoutParam.Height = middleHeight;
+                        middleLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                        highlightedLeftLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                        highlightedLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                        highlightedRightLayout.RequestLayout();
+                        LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                        bottomLayout.RequestLayout();
+
+                        //LinearLayout.LayoutParams leftInnerUpperBottomLineLayoutParam = leftInnerUpperBottomLineLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        //leftInnerUpperBottomLineLayoutParam.Height = (int)DPUtils.ConvertDPToPx(70f); ;
+                        //leftInnerUpperBottomLineLayout.RequestLayout();
+
+                        //LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        //innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(70f);
+                        //innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(50f);
+                        //innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(20f);
+                        //innerUpperBottomLayout.RequestLayout();
+
+
+
+                        LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(40f);
+                        innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                        innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                        innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
+                        innerUpperBottomLayout.RequestLayout();
+
+                        LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                        innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                        innerTxtBtnBottomLayout.RequestLayout();
+
+
+                    }
+                }
+            }
             else if (this.mContext is SSMRMeterHistoryActivity)
             {
                 int topHeight = (int)DPUtils.ConvertDPToPx(255f);
@@ -2026,6 +2204,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 {
                     if (position == 0)
                     {
+
                         int topHeight = ((ApplicationStatusLandingActivity)this.mContext).GetTopHeight() - GetStatusBarHeight();
                         int middleHeight = ((ApplicationStatusLandingActivity)this.mContext).GetHighlightedHeight();
 
@@ -2092,12 +2271,14 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
                         bottomLayout.RequestLayout();
 
+
                         RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
                         innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(250f) : (int)DPUtils.ConvertDPToPx(110f);
                         innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                         innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                         innerTopLayout.RequestLayout();
                     }
+
                 }
             }
             else if (this.mContext is ApplicationStatusDetailActivity)
@@ -2116,6 +2297,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetHighlightedHeight() - (int)DPUtils.ConvertDPToPx(-80);
                         middleHeight = (int)DPUtils.ConvertDPToPx(170);
                     }
+
+
 
                     int leftWidth = 0;
                     int rightWidth = 0;
@@ -2151,6 +2334,9 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 {
                     if (position == 0)
                     {
+
+
+
                         int topHeight = ((ApplicationStatusDetailActivity)this.mContext).GetTopCtaHeight() + (int)DPUtils.ConvertDPToPx(45f);
 
                         int middleHeight = (int)DPUtils.ConvertDPToPx(180f);
@@ -2226,6 +2412,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                         innerTopLayout.RequestLayout();
                     }
+
                 }
             }
 
@@ -2301,7 +2488,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             }
         }
 
-        ////OT
+        ////yana
         private void BtnUpdate_Click(object sender, EventArgs e)
         {
             //try
@@ -2379,6 +2566,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
         }
 
+
+
         public override int GetItemPosition(Java.Lang.Object @object)
         {
             return PagerAdapter.PositionNone;
@@ -2405,6 +2594,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
         private int GetStatusBarHeight()
         {
             int statusBarHeight = 0;
+
             try
             {
                 Rect rectangle = new Rect();
