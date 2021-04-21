@@ -688,10 +688,17 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
                 textInputLayoutPasswordReg.Error = null;
                 textInputLayoutPasswordReg.ErrorEnabled = false;
             }
+            else
+            {
+                textInputLayoutPasswordReg.Error = null;
+                textInputLayoutPasswordReg.ErrorEnabled = false;
+            }
+
         }
 
         public void ClearInvalidPasswordHint()
         {
+            textInputLayoutPasswordReg.HelperText = null;
             textInputLayoutPasswordReg.HelperTextEnabled = false;
         }
 
