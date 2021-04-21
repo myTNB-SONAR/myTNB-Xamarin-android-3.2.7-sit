@@ -8684,6 +8684,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         txtSmStatisticTooltip.Text = Utility.GetLocalizedLabel("Usage", "projectedCostTitle");
                         if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.CostData != null))
                         {
+                            float maxWidth = 130f;
+                            try
+                            {
+                                maxWidth = this.Activity.Resources.DisplayMetrics.Density <= 2.55 ? 170f : 130f;
+                            }
+                            catch (Java.Lang.Exception javaEx)
+                            {
+                                Console.WriteLine("[DEBUG] this.Activity.Resources.DisplayMetrics.Density Java Exception: " + javaEx.Message);
+                            }
+                            catch (System.Exception sysEx)
+                            {
+                                Console.WriteLine("[DEBUG] this.Activity.Resources.DisplayMetrics.Density System Exception: " + sysEx.Message);
+                            }
                             foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.CostData)
                             {
                                 System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
@@ -8704,17 +8717,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
                                         smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
                                     }
-                                    else if (costValue.Value.Length > 5)
-                                    {
-                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
-                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
-                                    }
                                     else
                                     {
-                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
-                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
+                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
                                     }
-
                                 }
                                 else if (costValue.Key == Constants.PROJECTED_COST_KEY)
                                 {
@@ -8733,15 +8740,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
                                         smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
                                     }
-                                    else if (costValue.Value.Length > 5)
-                                    {
-                                        smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
-                                        smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
-                                    }
                                     else
                                     {
-                                        smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
-                                        smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                        smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
+                                        smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
                                     }
                                 }
                             }
@@ -8757,8 +8759,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 }
                             }
                         }
-
-
                     }
                     else if (ChartDataType == ChartDataType.kWh)
                     {
@@ -8777,6 +8777,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smStatisticTrend.Text = "- -%";
                         if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.UsageData != null && selectedSMHistoryData.OtherUsageMetrics.UsageData.Count > 0))
                         {
+                            float maxWidth = 170;
+                            try
+                            {
+                                maxWidth = this.Activity.Resources.DisplayMetrics.Density <= 2.55 ? 200f : 170;
+                            }
+                            catch (Java.Lang.Exception javaEx)
+                            {
+                                Console.WriteLine("[DEBUG] this.Activity.Resources.DisplayMetrics.Density Java Exception: " + javaEx.Message);
+                            }
+                            catch (System.Exception sysEx)
+                            {
+                                Console.WriteLine("[DEBUG] this.Activity.Resources.DisplayMetrics.Density System Exception: " + sysEx.Message);
+                            }
                             foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.UsageData)
                             {
                                 System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
@@ -8797,15 +8810,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
                                         smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
                                     }
-                                    else if (costValue.Value.Length > 5)
-                                    {
-                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
-                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
-                                    }
                                     else
                                     {
-                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
-                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
+                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
                                     }
                                 }
                                 else if (costValue.Key == Constants.AVERAGE_USAGE_KEY)
@@ -8849,15 +8857,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         smStatisticTrendTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
                                         smStatisticTrendSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
                                     }
-                                    else if (costValue.Value.Length > 5)
-                                    {
-                                        smStatisticTrendTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
-                                        smStatisticTrendSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
-                                    }
                                     else
                                     {
-                                        smStatisticTrendTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
-                                        smStatisticTrendSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                        smStatisticTrendTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
+                                        smStatisticTrendSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
                                     }
                                 }
                             }

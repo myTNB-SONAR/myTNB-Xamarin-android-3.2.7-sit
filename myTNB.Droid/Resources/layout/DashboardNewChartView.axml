@@ -764,7 +764,6 @@
 												android:textSize="13dp"
 												android:lineSpacingExtra="2dp"
 												android:maxLines="1"
-												
 												android:ellipsize="end"/>
 											<RelativeLayout
 												android:layout_width="wrap_content"
@@ -1083,8 +1082,6 @@
 												android:text="My bill amount so far"
 												android:textColor="@color/charcoalGrey"
 												android:textSize="13dp"
-												android:maxLines="1"
-												android:maxWidth="150dp"
 												android:ellipsize="end" />
 											<TextView
 												android:id="@+id/smStatisticBill"
@@ -1148,8 +1145,6 @@
 												android:layout_marginTop="2dp"
 												android:textColor="@color/new_grey"
 												android:text="for - "
-												android:maxLines="1"
-												android:maxWidth="150dp"
 												android:ellipsize="end"/>
 										</RelativeLayout>
 									</LinearLayout>
@@ -1269,8 +1264,6 @@
 												android:text="My bill may reach"
 												android:textColor="@color/charcoalGrey"
 												android:textSize="13dp"
-												android:maxLines="1"
-												android:maxWidth="150dp"
 												android:ellipsize="end" />
 											<TextView
 												android:id="@+id/smStatisticPredict"
@@ -1306,8 +1299,6 @@
 												android:layout_marginTop="2dp"
 												android:textColor="@color/new_grey"
 												android:text="for - "
-												android:maxLines="1"
-												android:maxWidth="150dp"
 												android:ellipsize="end"/>
 										</RelativeLayout>
 									</LinearLayout>
@@ -1416,7 +1407,7 @@
 												android:layout_alignParentTop="true"
 												android:text="My current usage trend is"
 												android:textColor="@color/charcoalGrey"
-												android:textSize="13dp" />
+												android:textSize="13dp"/>
 											<TextView
 												android:id="@+id/smStatisticTrend"
 												android:layout_width="wrap_content"
@@ -1637,7 +1628,6 @@
 						android:layout_height="wrap_content"
 						android:layout_alignParentStart="true"
 						android:layout_alignParentTop="true"
-						
 						android:layout_gravity="center"
 						android:text="@string/dashboard_need_pay"
 						android:textColor="@color/charcoalGrey"
@@ -1706,7 +1696,6 @@
 					android:text="0.00"
 					android:textColor="@color/tunaGrey"
 					android:textSize="25dp"
-					
 					android:ellipsize="end"
 					android:singleLine="false"
 					android:maxLines="1" />
