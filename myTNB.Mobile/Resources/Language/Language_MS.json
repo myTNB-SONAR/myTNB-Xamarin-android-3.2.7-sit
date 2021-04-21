@@ -697,13 +697,13 @@
     "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
     "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah.",
     "fontChangeSuccess": "Anda berjaya mengemaskini saiz teks paparan anda kepada saiz {0}!",
-    "displaySize": "Tetapkan Saiz Teks Paparan",
     //addby syahmi
     "titleProfile": "Profil myTNB",
     "paymentMethod": "Kaedah Pembayaran Saya",
     "myElecttricityAcc": "Akaun Elektrik Saya",
     "appSetting": "Tetapan Aplikasi",
     "learnMore": "Ketahui Lebih Lanjut mengenai TNB"
+    
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",
@@ -711,8 +711,8 @@
     "modeDescription": "Pilih cara anda mahu menerima pemberitahuan",
     "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah.",
     //addby syahmi 
-    "selectApplang": "Pilih bahasa aplikasi pilihan anda:",
-    "setTextSize": "Tetapkan saiz tulisan anda"
+    "selectApplang": "Pilih bahasa aplikasi pilihan anda:"
+    
   },
 
   //new added
@@ -726,6 +726,17 @@
     "ownernNotificationDetailMessage": "BM_We want to let you  know that your access to {account nickname} has been changed to Owner access and you can now enjoy full account access like initiating applications!",
     "ownernNotificationDetail": "BM_Plus, stay in control of your account information and permissions by definig what you let others access as an owner of an electricity account, view your account now!"
   },
+
+  "ApplicationSetting": {
+    "title": "Tetapan Aplikasi",
+    "typeDescription": "Pilih jenis pemberitahuan yang ingin diterima daripada TNB",
+    "modeDescription": "Pilih cara anda mahu menerima pemberitahuan",
+    "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah.",
+    "selectApplang": "Pilih bahasa aplikasi pilihan anda:",
+    "setTextSize": "Tetapkan saiz tulisan anda",
+    "displaySize": "Tetapkan saiz teks paparan"
+  },
+
   "FAQ": {
     "title": "Soalan Lazim"
   },

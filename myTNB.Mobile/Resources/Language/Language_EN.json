@@ -177,7 +177,7 @@
     "accountLengthNew": "Please enter a valid 12-digit electricity account number",
     "error_duplicateAccountMessageNew": "This electricity account number has already been added to the list.",
     "error_emptyIcAndEmailOwner": "Email or phone number owner cannot be empty.",
-    "error_NotExistsAccountMessage":  "The account number you entered cannot be found."
+    "error_NotExistsAccountMessage": "The account number you entered cannot be found."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -230,8 +230,8 @@
     //addby wan
     "later": "Later",
     "update": "Update",
-    "proceed":"Proceed",
-    "chkBoxTitle":"Don’t show this again",
+    "proceed": "Proceed",
+    "chkBoxTitle": "Don’t show this again",
     "titleIcUpdate": "Complete your myTNB profile now for a better myTNB experience!",
     "bodyIcUpdate": "Your identification number is not captured in your myTNB profile, update it now to have better access and controls over your electricity accounts!",
     "tutorialUpdateNicknameBtn": "Update Nickname",
@@ -697,9 +697,8 @@
     "passwordUpdateSuccess": "Your password has been changed successfully.",
     "changeLanguageSuccess": "Your language preference has been changed successfully.",
     "fontChangeSuccess": "You've successfully updated your display text size to {0}!",
-    "displaySize": "Set Display Text Size",
     //addby syahmi
-    "titleProfile":"myTNB Profile",
+    "titleProfile": "myTNB Profile",
     "paymentMethod": "My Payment Methods",
     "myElecttricityAcc": "My Electricity Accounts",
     "appSetting": "App Settings",
@@ -711,8 +710,8 @@
     "modeDescription": "Select how you wish to receive your notifications",
     "changeLanguageSuccess": "Your language preference has been changed successfully.",
     //addby syahmi
-    "selectApplang": "Select your preferred app language:",
-    "setTextSize": "Set your text size"
+    "selectApplang": "Select your preferred app language:"
+    
   },
 
   //new added
@@ -726,6 +725,17 @@
     "ownernNotificationDetailMessage": "We want to let you  know that your access to {account nickname} has been changed to Owner access and you can now enjoy full account access like initiating applications! ",
     "ownernNotificationDetail": "Plus, stay in control of your account information and permissions by definig what you let others access as an owner of an electricity account, view your account now!"
   },
+
+  "ApplicationSetting": {
+    "title": "App Settings",
+    "typeDescription": "Select the type of notifications you wish to receive from TNB",
+    "modeDescription": "Select how you wish to receive your notifications",
+    "changeLanguageSuccess": "Your language preference has been changed successfully.",
+    "selectApplang": "Select your preferred app language:",
+    "setTextSize": "Set your text size",
+    "displaySize": "Set Display Text Size"
+  },
+
   "FAQ": {
     "title": "FAQ"
   },
@@ -763,7 +773,7 @@
     "passwordUpdateSuccess": "Your password has been changed successfully.",
     "noAccounts": "No Electricity Account",
     "addAccountMessage": "Add your existing TNB Electricity Supply Account to view usage and transaction details.",
-    "popupremoveAccountTitleSwipe":"Remove Account",
+    "popupremoveAccountTitleSwipe": "Remove Account",
     "popupremoveAccountMessageSwipe": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b> from the app.<br><br>Note: This does not close your electricity account. Visit the myTNB Portal or Kedai Tenaga to close your electricity supply account."
 
   },
@@ -1249,14 +1259,14 @@
     "mobileNumberVerified": "You've successfully updated your phone number!",
     "IDUpdateSuccess": "Thank you for updating! Your update has been recorded below.",
     //syahmi add
-    "lblID":"Ic / Army ID / Passport Number",
+    "lblID": "Ic / Army ID / Passport Number",
     "passwordchange": "Change My Password",
-    "gotIt":"Got It",
-    "resend":"Resend",
-    "verifyEmailPopupBody":"Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
-    "verifyEmailPopupTitle":"Pending Email Verification ",
-    "toast_email_send":"An email verification link has been sent to ",
-    "toast_SuccessUpdateName":"You’ve successfully updated your name!"
+    "gotIt": "Got It",
+    "resend": "Resend",
+    "verifyEmailPopupBody": "Please verify your email address by clicking the link that we have sent. You may also request for a resend if you did not receive it.",
+    "verifyEmailPopupTitle": "Pending Email Verification ",
+    "toast_email_send": "An email verification link has been sent to ",
+    "toast_SuccessUpdateName": "You’ve successfully updated your name!"
   },
   "ApplicationStatusLanding": {
     "title": "Application Status",
@@ -1293,8 +1303,8 @@
     "findUs": "Find Us",
     "faq": "FAQ",
     //addby syahmi
-    "callUsBill":"Call Us (Billing Enquiries)",
-    "callUsOutage":"Call Us (Outages & Breakdown)"
+    "callUsBill": "Call Us (Billing Enquiries)",
+    "callUsOutage": "Call Us (Outages & Breakdown)"
   },
   "ApplicationStatusFilter": {
     "title": "Select Filter",
@@ -1366,7 +1376,7 @@
     "AddTitle": "Add",
     "RemoveTitle": "Remove",
     "HeaderRemoveTitle": "Select users you want to remove:",
-    "cancleBtn":"Cancle",
+    "cancleBtn": "Cancle",
     "deleteSuccessMessage": "User(s) has been removed successfully.",
     "deleteUserTitle": "Are you sure you want to remove the current user(s)?",
     "deleteUserBody": "Once removed, the selected user(s) will be revoked of all access and unable to view any information related to this account.",
@@ -1377,7 +1387,7 @@
     "tapToSkip": "Tap to skip",
     "pendingRegistration": "Pending Registration",
     //syahmi
-    "cancelAddSuccess":"{0} is cancelled from being added as a viewer to this electricity account.",
+    "cancelAddSuccess": "{0} is cancelled from being added as a viewer to this electricity account.",
     //add by wan
     "AddTNBUserSuccess": "{0} now has access to {1} on myTNB.",
     "AddNonTNBUserSuccess": "{0} is invited to join myTNB and will have access to {1}.",
@@ -1406,12 +1416,12 @@
   //new add follow IOS
   "RegisterNew": {
     "title": "Register",
-    "etitleRegister" : "Let's Get Started!",
-    "ebodyRegister" : "Create your account with the details below.",
+    "etitleRegister": "Let's Get Started!",
+    "ebodyRegister": "Create your account with the details below.",
     "EmailHint": "You will use this email address to log in in the future.",
     "passwordHint": "Your password must have at least 8 alphanumeric characters.",
-    "EmailHeaderError" : "The email address have been registered",
-    "EmailBodyError" : "Please try again with a different email address. Alternatively, you may also reset your password below to use the same email address.",
+    "EmailHeaderError": "The email address have been registered",
+    "EmailBodyError": "Please try again with a different email address. Alternatively, you may also reset your password below to use the same email address.",
     "Reset": "Reset",
     "emailRequired": "Please enter an email address.",
     "passwordRequired": "Please enter a password."
@@ -1994,12 +2004,12 @@
   },
 
   "RegisterSuccess": {
-    "acccreated" : "Account Created!",
-    "emailverify" : "Please verify your email",
-    "emailVerifiedLinkSent" : "We have sent a verification link to <strong>{0}</strong>. You may verify it by clicking the link in your email afterwards to unlock all the things that myTNB has to offer!",
-    "continue" : "Continue"
+    "acccreated": "Account Created!",
+    "emailverify": "Please verify your email",
+    "emailVerifiedLinkSent": "We have sent a verification link to <strong>{0}</strong>. You may verify it by clicking the link in your email afterwards to unlock all the things that myTNB has to offer!",
+    "continue": "Continue"
   },
- "ApplicationStatusActivityLog": {
+  "ApplicationStatusActivityLog": {
     "title": "Activity Log",
     "updatedDetails": "Updated Details",
     "comment": "Comment",
@@ -2012,23 +2022,23 @@
     "remove": "Removed {0}"
   },
 
-   "CompleteYourProfile":{
-   "title":"Complete Your Profile",
-   "lblTitle":"Provide us your identification number for better experience!",
-   "lblSubTitle":"Get better access and enjoy more TNB offerings on myTNB by helping us validate your identification.",
-   "txtFieldIDType":"Identification Type",
-   "txtFieldID":"Identification Number",
-   "mykad": "IC / Mykad",
-   "armyid": "Army ID",
-   "passport": "Passport",
-   "icHint": "We'll use this identification to help you set up your account.",
-   "icError": "Please enter a valid 12 digits IC / Mykad number.",
-   "armyError": "The Army ID must be between 5-50 characters.",
-   "passportError": "The Passport must be between 5-50 characters.",
-   "updateIdTitle": "Confirm your identification Number:",
-   "confrimButton": "Confirm",
-   "re_enter": "Re-enter",
-   "updateIdMessage": "Please make sure your identification number is correct as you can only update this once."
+  "CompleteYourProfile": {
+    "title": "Complete Your Profile",
+    "lblTitle": "Provide us your identification number for better experience!",
+    "lblSubTitle": "Get better access and enjoy more TNB offerings on myTNB by helping us validate your identification.",
+    "txtFieldIDType": "Identification Type",
+    "txtFieldID": "Identification Number",
+    "mykad": "IC / Mykad",
+    "armyid": "Army ID",
+    "passport": "Passport",
+    "icHint": "We'll use this identification to help you set up your account.",
+    "icError": "Please enter a valid 12 digits IC / Mykad number.",
+    "armyError": "The Army ID must be between 5-50 characters.",
+    "passportError": "The Passport must be between 5-50 characters.",
+    "updateIdTitle": "Confirm your identification Number:",
+    "confrimButton": "Confirm",
+    "re_enter": "Re-enter",
+    "updateIdMessage": "Please make sure your identification number is correct as you can only update this once."
   },
   "SearchByNumber": {
     "title": "Search By",
@@ -2036,24 +2046,24 @@
     "whereToGetTheseNumberTitle": "Where do I get these numbers?",
     "whereToGetTheseNumberMessage": "You can find the <b>Application Number</b>, <b>Service Request Number</b> and <b>Service Notification Number</b> in your submitted application details at ‘Application Status’ page. These details are also available upon request by contacting TNB CareLine."
   },
-"manageUser": {
-  "title":"Manage User",
-  "ManageUserTitle": "Give this user access to:",
-  "fullElectricity": "View Full Electricity Bill",
-  "e_billing": "Apply for e-Billing",
-  "whatIsThis":"What does this mean?",
-  "usremail": "User Email Address",
-  "titleDialogWhatIsThis": "Giving your users more access.",
-  "bodyDialogWhatIsThis": "To protect your information, we’re not showing non-owners your personal infromation and some application features. However, you can grant them access listed here if you see fit and they will be notified about it.",
-  "manageUserDialogTitle":"You're about to make changes to {0}'s access.",
-  "manageUserDialogMessage":"Once confirmed, {0} will have their access updated and be notified about the accesses you selected for them to your electricity account.",
-  "notSaveTitle":"Are you sure you want to leave without saving changes you made to {0}’s access?",
-  "notSaveBody":"The changes to {0}’s access will not be saved if you choose to leave this page and their accesses will remain as before.",
-  "saveSuccess":"Changes to user access has been saved and user has been notified of their access update",
-  "manageUserInviteAccessDialogTitle":"Do you want to send another invitation to join myTNB?",
-  "manageUserInviteAccessDialogMessage":"We have sent {0} to join myTNB and view your electricity account. You can send another one again in case they missed it.",
-  "manageUserCancelAddAccessDialogTitle":"Are you sure you want to cancel adding {0} as a viewer?",
-  "manageUserCancelAddAccessDialogMessage":"Once cancelled, the invitation will be invalid and they will not have access to your account. You can add them again if you wish. ",
+  "manageUser": {
+    "title": "Manage User",
+    "ManageUserTitle": "Give this user access to:",
+    "fullElectricity": "View Full Electricity Bill",
+    "e_billing": "Apply for e-Billing",
+    "whatIsThis": "What does this mean?",
+    "usremail": "User Email Address",
+    "titleDialogWhatIsThis": "Giving your users more access.",
+    "bodyDialogWhatIsThis": "To protect your information, we’re not showing non-owners your personal infromation and some application features. However, you can grant them access listed here if you see fit and they will be notified about it.",
+    "manageUserDialogTitle": "You're about to make changes to {0}'s access.",
+    "manageUserDialogMessage": "Once confirmed, {0} will have their access updated and be notified about the accesses you selected for them to your electricity account.",
+    "notSaveTitle": "Are you sure you want to leave without saving changes you made to {0}’s access?",
+    "notSaveBody": "The changes to {0}’s access will not be saved if you choose to leave this page and their accesses will remain as before.",
+    "saveSuccess": "Changes to user access has been saved and user has been notified of their access update",
+    "manageUserInviteAccessDialogTitle": "Do you want to send another invitation to join myTNB?",
+    "manageUserInviteAccessDialogMessage": "We have sent {0} to join myTNB and view your electricity account. You can send another one again in case they missed it.",
+    "manageUserCancelAddAccessDialogTitle": "Are you sure you want to cancel adding {0} as a viewer?",
+    "manageUserCancelAddAccessDialogMessage": "Once cancelled, the invitation will be invalid and they will not have access to your account. You can add them again if you wish. ",
     "inviteSuccess": "We have resent an invitation to {0} to join myTNB."
   },
   "SelectApplicationType": {
@@ -2556,16 +2566,16 @@
   },
 
   "AddUserAccess": {
-    "title":"Add New User",
+    "title": "Add New User",
     "titleAddNewUser": "Provide user’s email address they use for their myTNB account.",
-    "titleAddEmail":"We'll invite them to register for an account if they don't have any.",
-    "lblEmailTitle":"User's Email Address",
+    "titleAddEmail": "We'll invite them to register for an account if they don't have any.",
+    "lblEmailTitle": "User's Email Address",
     "bodyAddNewUser": "Do you want to give this user more access (optional)?",
-    "viewFullElec":"View Full Electricity Bill",
-    "applyEBilling":"Apply for e-Billing",
-    "whatIsThisMean":"What does this mean?",
-    "toottipTitle":"Give your users more access.",
-    "tooltipBody":"To protect your information, we’re not showing non-owners your personal infromation and some application features. However, you can grant them access listed here if you see fit and they will be notified about it.",
-    "addUserButton":"Add User"
+    "viewFullElec": "View Full Electricity Bill",
+    "applyEBilling": "Apply for e-Billing",
+    "whatIsThisMean": "What does this mean?",
+    "toottipTitle": "Give your users more access.",
+    "tooltipBody": "To protect your information, we’re not showing non-owners your personal infromation and some application features. However, you can grant them access listed here if you see fit and they will be notified about it.",
+    "addUserButton": "Add User"
   }
 }

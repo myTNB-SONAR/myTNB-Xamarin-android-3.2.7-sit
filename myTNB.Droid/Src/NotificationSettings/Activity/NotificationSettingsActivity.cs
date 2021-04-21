@@ -85,7 +85,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
         //private int APP_LANGUAGE_REQUEST = 32766;
         private int APP_FONTCHANGE_REQUEST = 32767;
 
-        const string PAGE_ID = "NotificationSettings";
+        const string PAGE_ID = "ApplicationSetting";
 
         public bool IsActive()
         {
@@ -147,11 +147,11 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
         private void UpdateLabels()
         {
-            SetToolBarTitle(Utility.GetLocalizedLabel("Profile", "appSetting")); 
-            txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("NotificationSettings", "typeDescription");
-            txtNotificationChannelTitle.Text = Utility.GetLocalizedLabel("NotificationSettings", "modeDescription");
-            appLanguageMessage.Text = Utility.GetLocalizedLabel("NotificationSettings", "selectApplang");
-            textSizeMessage.Text = Utility.GetLocalizedLabel("NotificationSettings", "setTextSize");
+            SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationSetting", "title")); 
+            txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("ApplicationSetting", "typeDescription");
+            txtNotificationChannelTitle.Text = Utility.GetLocalizedLabel("ApplicationSetting", "modeDescription");
+            appLanguageMessage.Text = Utility.GetLocalizedLabel("ApplicationSetting", "selectApplang");
+            textSizeMessage.Text = Utility.GetLocalizedLabel("ApplicationSetting", "setTextSize");
         }
 
         private void UpdateFontSize()
@@ -202,9 +202,9 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationTypeTitle, txtNotificationChannelTitle, appLanguageMessage, textSizeMessage);
 
-                txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("NotificationSettings", "typeDescription"); 
-                txtNotificationChannelTitle.Text = Utility.GetLocalizedLabel("NotificationSettings", "modeDescription");
-                textSizeMessage.Text = Utility.GetLocalizedLabel("NotificationSettings", "setTextSize");
+                txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("ApplicationSetting", "typeDescription"); 
+                txtNotificationChannelTitle.Text = Utility.GetLocalizedLabel("ApplicationSetting", "modeDescription");
+                textSizeMessage.Text = Utility.GetLocalizedLabel("ApplicationSetting", "setTextSize");
 
                 notificationChannelLayoutManager = new LinearLayoutManager(this);
                 notificationTypeLayoutManager = new LinearLayoutManager(this);
@@ -241,7 +241,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
 
                 ProfileMenuItemComponent setTextItem = GetSetTextItems();
-                setTextItem.SetHeaderTitle(Utility.GetLocalizedLabel("NotificationSettings", "setTextSize"));
+                setTextItem.SetHeaderTitle(Utility.GetLocalizedLabel("ApplicationSetting", "setTextSize"));
                 setTextItem.HideHeaderTitle();
                 textSizeListContainer.AddView(setTextItem);
 
@@ -319,7 +319,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             else
             {
                 ProfileMenuItemSingleContentComponent largefont = new ProfileMenuItemSingleContentComponent(context);
-                largefont.SetTitle(Utility.GetLocalizedLabel("Profile", "displaySize"));
+                largefont.SetTitle(Utility.GetLocalizedLabel("ApplicationSetting", "displaySize"));
                 largefont.SetItemActionCall(ShowAppLargeFontSetting);
                 setTextItems.Add(largefont);
 
