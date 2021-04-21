@@ -192,8 +192,17 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
 
                 TextViewUtils.SetMuseoSans500Typeface(itemTitle);
 
-                //infoLabelDate.TextSize = TextViewUtils.GetFontSize(12);
-                //itemTitle.TextSize = TextViewUtils.GetFontSize(14);
+                infoLabelDate.TextSize = TextViewUtils.GetFontSize(12);
+                itemTitle.TextSize = TextViewUtils.GetFontSize(14);
+                
+                ViewGroup.LayoutParams layoutParams = itemTitle.LayoutParameters;
+                //layoutParams.Height = tesst;
+                if (TextViewUtils.IsLargeFonts)
+                {
+                    layoutParams.Height = layoutParams.Height + 100;
+                }
+                itemTitle.LayoutParameters = (layoutParams);
+                itemTitle.RequestLayout();
             }
         }
     }

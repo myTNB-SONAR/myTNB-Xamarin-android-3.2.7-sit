@@ -189,6 +189,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
             listView.Adapter = adapter;
             adapter.setCustomButtonListner(this);
             this.userActionsListener.Start();
+            ShowAccountRemovedSuccess();
         }
 
         private Snackbar mCancelledExceptionSnackBar;

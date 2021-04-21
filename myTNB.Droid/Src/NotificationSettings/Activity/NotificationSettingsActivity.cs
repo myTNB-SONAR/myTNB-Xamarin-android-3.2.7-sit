@@ -3,8 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-
-
+using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
@@ -155,6 +154,14 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             textSizeMessage.Text = Utility.GetLocalizedLabel("NotificationSettings", "setTextSize");
         }
 
+        private void UpdateFontSize()
+        {
+            txtNotificationTypeTitle.TextSize = TextViewUtils.GetFontSize(16f);
+            txtNotificationChannelTitle.TextSize = TextViewUtils.GetFontSize(16f);
+            textSizeMessage.TextSize = TextViewUtils.GetFontSize(16f);
+            appLanguageMessage.TextSize = TextViewUtils.GetFontSize(16f);
+        }
+
         private void UpdateTypesList()
         {
             typeAdapter.ClearAll();
@@ -180,6 +187,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             {
                 this.SetIsClicked(true);
                 Intent nextIntent = new Intent(this, typeof(AppLargeFontActivity));
+                //nextIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 StartActivityForResult(nextIntent, APP_FONTCHANGE_REQUEST);
             }
         }
@@ -192,12 +200,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 // Create your application here
                 Console.WriteLine("NotificationSettingsActivity OnCreate");
 
-                //TextViewUtils.SetMuseoSans500Typeface(txtNotificationTypeTitle, txtNotificationChannelTitle);
-                txtNotificationTypeTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                txtNotificationChannelTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                textSizeMessage.TextSize = TextViewUtils.GetFontSize(16f);
-                //txtNotificationTypeTitle.Text = GetLabelByLanguage("typeDescription");
-                //txtNotificationChannelTitle.Text = GetLabelByLanguage("modeDescription");
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationTypeTitle, txtNotificationChannelTitle, appLanguageMessage, textSizeMessage);
 
                 txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("NotificationSettings", "typeDescription"); 
@@ -245,7 +247,13 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
                 UpdateLabels();
                 SetSelectedLanguage(null);
-                //SetTextSize();
+
+                //SetTextSize
+                txtNotificationTypeTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                txtNotificationChannelTitle.TextSize = TextViewUtils.GetFontSize(16f);
+                textSizeMessage.TextSize = TextViewUtils.GetFontSize(16f);
+                appLanguageMessage.TextSize = TextViewUtils.GetFontSize(16f);
+
                 mPresenter = new NotificationSettingsPresenter(this);
                 this.userActionsListener.Start();
                 bool hasUpdateLanguage = MyTNBAccountManagement.GetInstance().IsUpdateLanguage();
@@ -802,6 +810,25 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            try
+            {
+                if (requestCode == APP_FONTCHANGE_REQUEST)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        UpdateFontSize();
+                        UpdateTypesList();
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

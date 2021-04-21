@@ -126,9 +126,9 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(texttitleThisWeek, texttitleLastWeek, texttitleLastMonth);
 
-                //texttitleThisWeek.TextSize = TextViewUtils.GetFontSize(14);
-                //texttitleLastWeek.TextSize = TextViewUtils.GetFontSize(14);
-                //texttitleLastMonth.TextSize = TextViewUtils.GetFontSize(14);
+                texttitleThisWeek.TextSize = TextViewUtils.GetFontSize(14);
+                texttitleLastWeek.TextSize = TextViewUtils.GetFontSize(14);
+                texttitleLastMonth.TextSize = TextViewUtils.GetFontSize(14);
 
                 texttitleThisWeek.Text = Utility.GetLocalizedLabel("UserAccess", "thisWeekTitle");
                 texttitleLastWeek.Text = Utility.GetLocalizedLabel("UserAccess", "lastWeekTitle");
@@ -157,25 +157,6 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-       /* private void ScrollviewLog_ScrollChange(object sender, View.ScrollChangeEventArgs e)
-        {
-            if (!scrollviewLog.CanScrollVertically(1))
-            {
-                if (LogListData.Count > 15 && firstdata == 15)
-                {
-                    this.userActionsListener.SortLogListDataByDateAfterScroll(LogListData);
-                }
-                else if (firstdata == 50 || LogListData.Count < 15)
-                {
-                    progressbarlayout.Visibility = ViewStates.Gone;
-                }
-            }
-            if (!scrollviewLog.CanScrollVertically(-1))
-            {
-                // top of scroll view
-            }
-        }*/
 
         public void FirstLoadData(int datatotal)
         {

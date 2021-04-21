@@ -27,6 +27,7 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:overScrollMode="never"
+            android:nestedScrollingEnabled="false"
             android:fillViewport="true">
             <RelativeLayout
                 android:layout_height="wrap_content"
@@ -54,8 +55,7 @@
                     <ListView
                         android:id="@+id/this_week_list_recycler_view"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
+                        android:layout_height="fill_parent"
                         android:background="@color/white"
                         android:listSelector="@android:color/transparent" 
                         android:cacheColorHint="@android:color/transparent"/>
@@ -70,14 +70,14 @@
                     <ListView
                         android:id="@+id/last_week_list_recycler_view"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="fill_parent"
                         android:scrollbars="none"
                         android:background="@color/white"
                         android:listSelector="@android:color/transparent" 
                         android:cacheColorHint="@android:color/transparent" />
                     <TextView
                         android:id="@+id/text_title_last_month"
-                        android:layout_height="wrap_content"
+                        android:layout_height="fill_parent"
                         android:layout_width="match_parent"
                         android:textSize="16dp"
                         android:textColor="@color/blue"
