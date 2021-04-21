@@ -108,6 +108,8 @@ namespace myTNB_Android.Src.NotificationSettings.MVP
             /// <param name="channelPreference">NotificationChannelUserPreference</param>
             /// <param name="position">integer</param>
             void ShowRetryOptionsUnknownException(Exception exception, NotificationChannelUserPreference channelPreference, int position);
+
+            void UpdateSizeFontText();
         }
 
         public interface IUserActionsListener : IBasePresenter

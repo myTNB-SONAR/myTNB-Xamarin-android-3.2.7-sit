@@ -154,12 +154,11 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             textSizeMessage.Text = Utility.GetLocalizedLabel("ApplicationSetting", "setTextSize");
         }
 
-        private void UpdateFontSize()
+        public void UpdateSizeFontText()
         {
-            txtNotificationTypeTitle.TextSize = TextViewUtils.GetFontSize(16f);
-            txtNotificationChannelTitle.TextSize = TextViewUtils.GetFontSize(16f);
-            textSizeMessage.TextSize = TextViewUtils.GetFontSize(16f);
-            appLanguageMessage.TextSize = TextViewUtils.GetFontSize(16f);
+            textSizeListContainer.RemoveAllViewsInLayout();
+            ProfileDetailItemComponent setTextItem = GetSetTextItems();
+            textSizeListContainer.AddView(setTextItem);
         }
 
         private void UpdateTypesList()
@@ -228,6 +227,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 languageListView.ItemClick += OnItemClick;
                 selectItemAdapter = new SelectItemAdapter(this, languageItemList);
                 languageListView.Adapter = selectItemAdapter;
+                languageListView.SetNoScroll();
+                languageListView.SetScrollContainer(false);
 
                 typeAdapter = new NotificationTypeAdapter(true);
                 typeAdapter.ClickEvent += TypeAdapter_ClickEvent;
@@ -239,10 +240,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 notificationChannelRecyclerView.SetAdapter(channelAdapter);
                 notificationTypeRecyclerView.NestedScrollingEnabled = (false);
 
-
-                ProfileMenuItemComponent setTextItem = GetSetTextItems();
-                setTextItem.SetHeaderTitle(Utility.GetLocalizedLabel("ApplicationSetting", "setTextSize"));
-                setTextItem.HideHeaderTitle();
+                ProfileDetailItemComponent setTextItem = GetSetTextItems();
                 textSizeListContainer.AddView(setTextItem);
 
                 UpdateLabels();
@@ -296,14 +294,13 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
         }
 
-        private ProfileMenuItemComponent GetSetTextItems()
+        private ProfileDetailItemComponent GetSetTextItems()
         {
             Context context = this.ApplicationContext;
 
-            ProfileMenuItemComponent setTextItem = new ProfileMenuItemComponent(context);
+            ProfileDetailItemComponent setTextItem = new ProfileDetailItemComponent(context);
 
             List<View> setTextItems = new List<View>();
-
 
             if (MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
             {
@@ -322,7 +319,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 largefont.SetTitle(Utility.GetLocalizedLabel("ApplicationSetting", "displaySize"));
                 largefont.SetItemActionCall(ShowAppLargeFontSetting);
                 setTextItems.Add(largefont);
-
             }
 
             setTextItem.AddComponentView(setTextItems);
@@ -434,6 +430,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                                     SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
                                     UpdateLanguage();
                                     UpdateTypesList();
+                                    UpdateSizeFontText();
                                     MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(false);
                                     OnMaintenanceProceed();
                                 }
@@ -462,9 +459,10 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                                     HomeMenuUtils.ResetAll();
                                     SMRPopUpUtils.SetSSMRMeterReadingRefreshNeeded(true);
                                     SMRPopUpUtils.OnResetSSMRMeterReadingTimestamp();
-                                    UpdateLanguage();
                                     MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(true);
-                                    UpdateTypesList();                                    
+                                    UpdateTypesList();
+                                    UpdateLanguage();
+                                    UpdateSizeFontText();
                                     ShowLanguageUpdateSuccess();
                                     HideShowProgressDialog();
                                 }
@@ -812,6 +810,11 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             return PAGE_ID;
         }
 
+        //protected void onRestart()
+        //{
+        //    this.Recreate();
+        //}
+
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             try
@@ -820,8 +823,11 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 {
                     if (resultCode == Result.Ok)
                     {
-                        UpdateFontSize();
-                        UpdateTypesList();
+                        MyTNBAccountManagement.GetInstance().SetIsUpdateLanguage(false);
+                        Finish();
+                        OverridePendingTransition(0, 0);
+                        StartActivity(Intent);
+                        OverridePendingTransition(0, 0);
                     }
                 }
             }
