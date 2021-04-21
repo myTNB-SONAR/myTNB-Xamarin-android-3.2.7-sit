@@ -73,6 +73,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.newFAQContainer)]
         LinearLayout newFAQContainer;
 
+
         [BindView(Resource.Id.myServiceShimmerView)]
         LinearLayout myServiceShimmerView;
 
@@ -231,6 +232,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.accountContainer)]
         ConstraintLayout accountContainer;
 
+
         AccountsRecyclerViewAdapter accountsAdapter;
 
         private NewFAQScrollListener mListener;
@@ -284,7 +286,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             base.OnCreate(savedInstanceState);
             presenter = new HomeMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
-
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -402,7 +403,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     , loadMoreLabel, myServiceLoadMoreLabel, txtMyServiceRefreshMessage);
                 TextViewUtils.SetTextSize14(refreshMsg, txtAdd, newFAQTitle, accountHeaderTitle);
                 TextViewUtils.SetTextSize16(accountGreeting, accountGreetingName, btnMyServiceRefresh, btnRefresh);
-
                 SearchView searchView = new SearchView(this.Context);
                 LinearLayout linearLayout1 = (LinearLayout)searchView.GetChildAt(0);
                 LinearLayout linearLayout2 = (LinearLayout)linearLayout1.GetChildAt(2);
@@ -713,8 +713,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
             newFAQListRecycleView.SetLayoutManager(linearLayoutManager);
-            LinearSnapHelper snapHelper = new LinearSnapHelper();
-            snapHelper.AttachToRecyclerView(newFAQListRecycleView);
+            //LinearSnapHelper snapHelper = new LinearSnapHelper();
+            //snapHelper.AttachToRecyclerView(newFAQListRecycleView);
 
 
             LinearLayoutManager linearShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
@@ -875,13 +875,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             newFAQListRecycleView.SetAdapter(newFAQAdapter);
                             currentNewFAQList.Clear();
                             currentNewFAQList.AddRange(list);
-
+                            int visibleCards = TextViewUtils.IsLargeFonts ? 2 : 3;
                             if (indicatorContainer != null && indicatorContainer.ChildCount > 0)
                             {
                                 indicatorContainer.RemoveAllViews();
                             }
 
-                            if (list != null && list.Count > 3)
+                            if (list != null && list.Count > visibleCards)
                             {
                                 indicatorContainer.Visibility = ViewStates.Visible;
                                 if (mListener == null)
@@ -897,7 +897,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 }
 
                                 int count = 0;
-                                for (int i = 0; i < list.Count; i += 3)
+                                for (int i = 0; i < list.Count; i += visibleCards)
                                 {
                                     ImageView image = new ImageView(this.Activity);
                                     image.Id = i;
@@ -2706,6 +2706,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             return loadMoreContainer.Height;
         }
+        public int GetaccountCardHeight()
+        {
+            return accountCard.Height;
+        }
+
         public void ResetNewFAQScroll()
         {
             try
@@ -3069,8 +3074,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             public override void OnScrollStateChanged(RecyclerView recyclerView, int newState)
             {
                 base.OnScrollStateChanged(recyclerView, newState);
-
-                if (newState == (int)ScrollState.Idle && mList != null && mList.Count > 3)
+                int visibleCards = TextViewUtils.IsLargeFonts ? 2 : 3;
+                if (newState == (int)ScrollState.Idle && mList != null && mList.Count > visibleCards)
                 {
                     LinearLayoutManager layoutManager = recyclerView.GetLayoutManager() as LinearLayoutManager;
                     int firstCompleteItemShow = layoutManager.FindFirstCompletelyVisibleItemPosition();
@@ -3080,10 +3085,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                     int count = 0;
 
-                    for (int i = 0; i < mList.Count; i += 3)
+
+                    for (int i = 0; i < mList.Count; i += visibleCards)
                     {
                         ImageView selectedDot = (ImageView)mIndicatorContainer.GetChildAt(count);
-                        int nextLastItem = i + 3;
+                        int nextLastItem = i + visibleCards;
 
                         if (isLastItemReach)
                         {

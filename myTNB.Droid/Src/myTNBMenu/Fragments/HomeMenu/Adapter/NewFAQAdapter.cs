@@ -99,10 +99,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
                     ViewGroup.LayoutParams currentCard = vh.faqCardView.LayoutParameters;
 
-                    int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 3.05) - DPUtils.ConvertDPToPx(16f));
+                    float h1 = TextViewUtils.IsLargeFonts ? 65f : 0f;
+                    int cardWidth = (int)(((this.mActivity.Resources.DisplayMetrics.WidthPixels / 3.05) + DPUtils.ConvertDPToPx(h1)) - DPUtils.ConvertDPToPx(16f));
 
                     float heightRatio = 56f / 92f;
-                    int cardHeight = (int)(cardWidth * (heightRatio));
+                    int cardHeight = (int)((int)(((this.mActivity.Resources.DisplayMetrics.WidthPixels / 3.05)) - DPUtils.ConvertDPToPx(16f)) * (heightRatio));
 
                     currentCard.Height = cardHeight;
                     currentCard.Width = cardWidth;
