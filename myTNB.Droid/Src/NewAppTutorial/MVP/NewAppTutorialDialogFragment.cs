@@ -278,6 +278,17 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         txtTopDoubleTapDismiss.Visibility = ViewStates.Visible;
                         indicatorTopContainer.Visibility = ViewStates.Visible;
                         indicator.Visibility = ViewStates.Gone;
+
+                        if (IndicationShowTop)
+                        {
+                            swipeTopDoubleTapLayout.Visibility = ViewStates.Visible;
+                            swipeDoubleTapLayout.Visibility = ViewStates.Gone;
+                        }
+                        else
+                        {
+                            swipeTopDoubleTapLayout.Visibility = ViewStates.Gone;
+                            swipeDoubleTapLayout.Visibility = ViewStates.Visible;
+                        }
                     }
 
                     if (this.mFragment != null && this.mFragment is ItemisedBillingMenuFragment)
@@ -372,6 +383,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             if (i == 0)
                             {
                                 image.SetImageResource(Resource.Drawable.white_circle_active);
+                                txtDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
+                                txtTopDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
                             }
                             else
                             {
@@ -711,6 +724,8 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                 {
                                                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                                                 }
+                                                txtDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
+                                                txtTopDoubleTapDismiss.Visibility = TextViewUtils.IsLargeFonts ? ViewStates.Gone : ViewStates.Visible;
                                             }
                                             else
                                             {
