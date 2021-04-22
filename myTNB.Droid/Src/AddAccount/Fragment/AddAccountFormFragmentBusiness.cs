@@ -171,13 +171,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 txtTitleROC.Text = Utility.GetLocalizedLabel("AddAccount", "ROCDetailsText");
                 btnWhereIsMyAccountNo.Hint = Utility.GetLocalizedLabel("AddAccount", "WhereAccNo");
                
-                txtAccountType.TextSize = TextViewUtils.GetFontSize(18);
-                txtTitlePremise.TextSize = TextViewUtils.GetFontSize(18);
-                txtTitle.TextSize = TextViewUtils.GetFontSize(18);
-                txtTitleROC.TextSize = TextViewUtils.GetFontSize(18);
-                btnWhereIsMyAccountNo.TextSize = TextViewUtils.GetFontSize(18);
-                accountType.TextSize = TextViewUtils.GetFontSize(14);
-                txtSkipAcc.TextSize = TextViewUtils.GetFontSize(14);
+               
 
                 TextViewUtils.SetMuseoSans300Typeface(edtAccountLabel
                     , edtAccountNo
@@ -245,6 +239,14 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     }
                     dialogWhereMyAccountNo.Show();
                 };
+
+                txtAccountType.TextSize = TextViewUtils.GetFontSize(18);
+                txtTitlePremise.TextSize = TextViewUtils.GetFontSize(18);
+                txtTitle.TextSize = TextViewUtils.GetFontSize(18);
+                txtTitleROC.TextSize = TextViewUtils.GetFontSize(18);
+                btnWhereIsMyAccountNo.TextSize = TextViewUtils.GetFontSize(18);
+                accountType.TextSize = TextViewUtils.GetFontSize(14);
+                txtSkipAcc.TextSize = TextViewUtils.GetFontSize(14);
 
                 AccountType Individual = new AccountType();
                 Individual.Id = "2";
