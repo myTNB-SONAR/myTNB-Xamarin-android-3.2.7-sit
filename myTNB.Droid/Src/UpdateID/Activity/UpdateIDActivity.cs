@@ -201,42 +201,56 @@ namespace myTNB_Android.Src.UpdateID.Activity
             public void BeforeTextChanged(Java.Lang.ICharSequence s, int start, int count, int after)
             {
                 mAfter = after;
+                int len = eText.Text.Length;
+                int totallength = eText.SelectionStart;
+                int totallenafter = len - totallength;
+                string Idtype = idText.Text;
+
+                if (Idtype.Equals("IC / Mykad") && len > 0 && KeyListener.KeyDel == 1 && (totallenafter != 0) && (totallength == 7 ||
+                    totallength == 10))
+                {
+                    KeyListener.KeyDel = 0;
+                    string input = s.ToString();
+                    char a = input[totallength - 1];
+                    string b = a.ToString();
+                    if (b.Equals("-"))
+                    {
+                        eText.Text = s.ToString();
+                        eText.SetSelection(eText.Text.Length);
+                    }
+                }
             }
 
             public void OnTextChanged(Java.Lang.ICharSequence s, int start, int before, int count)
             {
                 string Idtype = idText.Text;
-                string icnuminput = eText.Text;
                 if (Idtype.Equals("IC / Mykad"))
                 {
-                    int len = eText.Text.Length;
-                    if ((len == 6 || len == 9 || start == 5 || start == 8) && before == 0)
+                    eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(14) });
+                    if (KeyListener.KeyDel == 0)
                     {
-                        eText.Text = eText.Text + "-";
-                        eText.SetSelection(eText.Text.Length);
+                        int len = eText.Text.Length;
+                        if ((len == 6 || len == 9 || start == 5 || start == 8) && before == 0)
+                        {
+                            eText.Text = eText.Text + "-";
+                            eText.SetSelection(eText.Text.Length);
+                        }
 
-                    }
+                        if (len == 7 && before == 0)
+                        {
+                            string first6digit = eText.Text.Substring(0, 6);
+                            string last1digit = eText.Text.Substring(eText.Text.Length - 1);
+                            eText.Text = first6digit + "-" + last1digit;
+                            eText.SetSelection(eText.Text.Length);
+                        }
 
-                    if (len == 7 && before == 0)
-                    {
-                        string first6digit = eText.Text.Substring(0, 6);
-                        string last1digit = eText.Text.Substring(eText.Text.Length - 1);
-                        eText.Text = first6digit + "-" + last1digit;
-                        eText.SetSelection(eText.Text.Length);
-                    }
-
-                    if (len == 10 && before == 0)
-                    {
-                        string first9digit = eText.Text.Substring(0, 9);
-                        string last1digit = eText.Text.Substring(eText.Text.Length - 1);
-                        eText.Text = first9digit + "-" + last1digit;
-                        eText.SetSelection(eText.Text.Length);
-                    }
-
-                    if (len > 14)
-                    {
-                        eText.Text = eText.Text.ToString().Substring(0, 14);
-                        eText.SetSelection(eText.Text.Length);
+                        if (len == 10 && before == 0)
+                        {
+                            string first9digit = eText.Text.Substring(0, 9);
+                            string last1digit = eText.Text.Substring(eText.Text.Length - 1);
+                            eText.Text = first9digit + "-" + last1digit;
+                            eText.SetSelection(eText.Text.Length);
+                        }
                     }
                 }
                 else if (Idtype.Equals("ArmyID/PoliceID") || Idtype.Equals("IDTentera/IDPolis"))
