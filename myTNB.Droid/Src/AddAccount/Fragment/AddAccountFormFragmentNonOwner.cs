@@ -149,6 +149,15 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 TextViewUtils.SetMuseoSans300Typeface(txtNonOwnerTitle);
 
+
+                edtAccountLabel.TextSize = TextViewUtils.GetFontSize(18);
+                edtAccountNo.TextSize = TextViewUtils.GetFontSize(18);
+                edtOwnerMotherName.TextSize = TextViewUtils.GetFontSize(18);
+                btnWhereIsMyAccountNo.TextSize = TextViewUtils.GetFontSize(18);
+                txtNonOwnerTitle.TextSize = TextViewUtils.GetFontSize(18);
+                addAccount.TextSize = TextViewUtils.GetFontSize(16);
+
+
                 addAccount = rootView.FindViewById<Button>(Resource.Id.btnAddAccount);
                 TextViewUtils.SetMuseoSans500Typeface(addAccount);
                 addAccount.Text = Utility.GetLocalizedLabel("Common", "next");
