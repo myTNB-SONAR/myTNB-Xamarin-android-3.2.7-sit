@@ -57,6 +57,13 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             txttitleUpdateId.Text = Utility.GetLocalizedLabel("AddAccount", "titleUpdateId");
             txttitleContinue.Text = Utility.GetLocalizedLabel("AddAccount", "titleContinue");
 
+            txtbodyOwner.TextSize = TextViewUtils.GetFontSize(18);
+            txtbodyContinue.TextSize = TextViewUtils.GetFontSize(18);
+            txtTitle.TextSize = TextViewUtils.GetFontSize(18);
+            txtbodyUpdateId.TextSize = TextViewUtils.GetFontSize(18);
+            txttitleUpdateId.TextSize = TextViewUtils.GetFontSize(18);
+            txttitleContinue.TextSize = TextViewUtils.GetFontSize(18);
+
             btn_updateId.Click += delegate
             {
                 Bundle bundle = new Bundle();
