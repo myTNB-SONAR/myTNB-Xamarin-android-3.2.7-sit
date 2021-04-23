@@ -703,7 +703,7 @@
     "myElecttricityAcc": "Akaun Elektrik Saya",
     "appSetting": "Tetapan Aplikasi",
     "learnMore": "Ketahui Lebih Lanjut mengenai TNB"
-    
+
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",
@@ -712,7 +712,7 @@
     "changeLanguageSuccess": "Pilihan bahasa anda telah berjaya diubah.",
     //addby syahmi 
     "selectApplang": "Pilih bahasa aplikasi pilihan anda:"
-    
+
   },
 
   //new added
@@ -916,6 +916,15 @@
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
+    "noCards": "Tiada kad kredit / debit disimpan dalam aplikasi ini. Anda boleh menambah kad kredit/debit semasa membuat pembayaran.",
+    "details": "Anda hanya boleh menambah kad kredit / debit baharu semasa membuat pembayaran.",
+    "cardRemoveSuccess": "Kad kredit / debit yang berakhir dengan {0} telah berjaya dialih keluar.",
+    "removeCardMessage": "Anda akan mengalih keluar kad kredit / debit yang berakhir dengan {0}.",
+    "removeCardTitle": "Alih Keluar Kad Kredit / Debit",
+    "cardNotRemovedMessage": "Kad Kredit / Debit yang berakhir dengan {0} tidak berjaya dialih keluar. Sila cuba semula sebentar lagi."
+  },
+  "MyPaymentMethod": {
+    "title": "Kaedah Pembayaran Saya",
     "noCards": "Tiada kad kredit / debit disimpan dalam aplikasi ini. Anda boleh menambah kad kredit/debit semasa membuat pembayaran.",
     "details": "Anda hanya boleh menambah kad kredit / debit baharu semasa membuat pembayaran.",
     "cardRemoveSuccess": "Kad kredit / debit yang berakhir dengan {0} telah berjaya dialih keluar.",

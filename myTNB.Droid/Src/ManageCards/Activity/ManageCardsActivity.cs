@@ -91,7 +91,7 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
         MaterialDialog progress;
 
-        private string PAGE_ID = "ManageCards";
+        private string PAGE_ID = "MyPaymentMethod";
 
         AlertDialog removeDialog;
 
