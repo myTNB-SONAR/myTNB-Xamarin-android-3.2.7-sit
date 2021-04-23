@@ -565,8 +565,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     //CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
                     //string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
                     string custName = selectedPaymentItemList.Count > 1
-                        ? selectedPaymentItemList[0].AccountOwnerName ?? string.Empty
-                        : UserEntity.GetActive().DisplayName ?? string.Empty;
+                        ? UserEntity.GetActive().DisplayName ?? string.Empty
+                        : selectedPaymentItemList[0].AccountOwnerName ?? string.Empty;
                     //string accNum = selectedAccount.AccountNum;
                     //double payableAmt = double.Parse(txtTotalAmount.Text, currCult);
                     //string payAm = txtTotalAmount.Text;
