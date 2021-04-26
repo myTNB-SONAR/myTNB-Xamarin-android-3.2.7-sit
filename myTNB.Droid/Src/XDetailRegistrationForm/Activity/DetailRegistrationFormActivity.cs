@@ -279,7 +279,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 eText = text;
                 idText = idtype;
             }
-            private bool mFormatting;
+            private bool flagDel = false;
             private EditText eText;
             private TextView idText;
 
@@ -294,8 +294,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 int totallenafter = len - totallength;
                 string Idtype = idText.Text;
 
-                if (Idtype.Equals("IC / Mykad") && len > 0 && KeyListener.KeyDel == 1 && (totallenafter != 0))
+                if (Idtype.Equals("IC / Mykad") && len > 0 && (totallenafter != 0) && !flagDel)
                 {
+                    flagDel = true;
                     KeyListener.KeyDel = 0;
                     eText.Text = s.ToString();
                     eText.SetSelection(eText.Text.Length);
@@ -317,7 +318,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 if (Idtype.Equals("IC / Mykad"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(14) });
-                    if (KeyListener.KeyDel == 0)
+                    if (!flagDel)
                     {
                         int len = eText.Text.Length;
                         if ((len == 6 || len == 9 || start == 5 || start == 8) && before == 0)
@@ -342,6 +343,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                             eText.SetSelection(eText.Text.Length);
                         }
                     }
+                    flagDel = false;
                 }
                 else if (Idtype.Equals("ArmyID/PoliceID") || Idtype.Equals("IDTentera/IDPolis"))
                 {
