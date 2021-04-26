@@ -271,7 +271,7 @@ namespace myTNB_Android.Src.UpdateID.Activity
             public static int KeyDel { get; set; }
             public bool OnKey(Android.Views.View v, Android.Views.Keycode keyCode, Android.Views.KeyEvent e)
             {
-                if (keyCode == Android.Views.Keycode.Del)
+                if (keyCode == Android.Views.Keycode.Del || keyCode == Android.Views.Keycode.Back)
                     KeyDel = 1;
                 else
                     KeyDel = 0;
