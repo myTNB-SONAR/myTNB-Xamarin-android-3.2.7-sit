@@ -300,7 +300,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
 
             //if (true)
-            if (accountData.IsOwner && accountData.AccountCategoryId == "1")
+            if (accountData.IsOwner && accountData.AccountTypeId == "1")
             {
                 SupplyAccMenuItemSingleContentComponent manageUser = new SupplyAccMenuItemSingleContentComponent(this);
                 manageUser.SetTitle(Utility.GetLocalizedLabel("ManageAccount", "manageUserAccess")); 

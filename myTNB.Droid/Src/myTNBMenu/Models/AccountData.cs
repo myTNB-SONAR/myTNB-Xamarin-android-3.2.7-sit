@@ -112,6 +112,9 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [JsonProperty("smartMeterCode")]
         public string SmartMeterCode { get; set; }
 
+        [JsonProperty("accountTypeId")]
+        public string AccountTypeId { get; set; }
+
         internal static AccountData Copy(AccountDetails accountDetails, bool isSelected)
         {
             return new AccountData()
@@ -147,6 +150,7 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 WhatIsThisMessage = accountDetails.WhatIsThisMessage,
                 WhatIsThisButtonText = accountDetails.WhatIsThisButtonText,
                 AccountCategoryId = "",
+                AccountTypeId = "",
                 SmartMeterCode = accountDetails.SmartMeterCode,
                 IsSelected = isSelected
 
@@ -189,6 +193,7 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 WhatIsThisMessage = accountDetails.WhatIsThisMessage,
                 WhatIsThisButtonText = accountDetails.WhatIsThisButtonText,
                 AccountCategoryId = customerBilling.AccountCategoryId,
+                AccountTypeId = customerBilling.AccountTypeId,
                 IsOwner = customerBilling.isOwned,
                 SmartMeterCode = customerBilling.SmartMeterCode,
                 IsSelected = isSelected
@@ -233,6 +238,7 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 WhatIsThisButtonText = "",
                 IsOwner = accountDetails.isOwned,
                 AccountCategoryId = accountDetails.AccountCategoryId,
+                AccountTypeId = accountDetails.AccountTypeId,
                 SmartMeterCode = accountDetails.SmartMeterCode,
                 IsSelected = isSelected
 
