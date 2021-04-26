@@ -206,18 +206,20 @@ namespace myTNB_Android.Src.UpdateID.Activity
                 int totallenafter = len - totallength;
                 string Idtype = idText.Text;
 
-                if (Idtype.Equals("IC / Mykad") && len > 0 && KeyListener.KeyDel == 1 && (totallenafter != 0) && (totallength == 7 ||
-                    totallength == 10))
+                if (Idtype.Equals("IC / Mykad") && len > 0 && KeyListener.KeyDel == 1 && (totallenafter != 0))
                 {
                     KeyListener.KeyDel = 0;
-                    string input = s.ToString();
-                    char a = input[totallength - 1];
-                    string b = a.ToString();
-                    if (b.Equals("-"))
-                    {
-                        eText.Text = s.ToString();
-                        eText.SetSelection(eText.Text.Length);
-                    }
+                    eText.Text = s.ToString();
+                    eText.SetSelection(eText.Text.Length);
+                    //KeyListener.KeyDel = 0;
+                    //string input = s.ToString();
+                    //char a = input[totallength - 1];
+                    //string b = a.ToString();
+                    //if (b.Equals("-"))
+                    //{
+                    //    eText.Text = s.ToString();
+                    //    eText.SetSelection(eText.Text.Length);
+                    //}
                 }
             }
 

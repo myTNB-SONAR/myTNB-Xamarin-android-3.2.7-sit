@@ -39,6 +39,7 @@ using Android.InputMethodServices;
 using static myTNB_Android.Src.RegistrationForm.Activity.DetailRegistrationFormActivity.KeyListener;
 using myTNB_Android.Src.Base;
 using Java.Util.Regex;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.RegistrationForm.Activity
 {
@@ -126,8 +127,6 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         [BindView(Resource.Id.txtBodyRegister)]
         TextView txtBodyRegister;
-
-        private bool isExistId = false;
 
         private bool isClicked = false;
 
@@ -280,11 +279,9 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 eText = text;
                 idText = idtype;
             }
-            private int mAfter;
             private bool mFormatting;
             private EditText eText;
             private TextView idText;
-            private InputTypes position;
 
             public void AfterTextChanged(IEditable s)
             {
@@ -292,31 +289,31 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
             public void BeforeTextChanged(Java.Lang.ICharSequence s, int start, int count, int after)
             {
-                mAfter = after;
                 int len = eText.Text.Length;
                 int totallength = eText.SelectionStart;
                 int totallenafter = len - totallength;
                 string Idtype = idText.Text;
 
-                if (Idtype.Equals("IC / Mykad") && len > 0 && KeyListener.KeyDel == 1 && (totallenafter != 0) && (totallength == 7 ||
-                    totallength == 10))
+                if (Idtype.Equals("IC / Mykad") && len > 0 && KeyListener.KeyDel == 1 && (totallenafter != 0))
                 {
                     KeyListener.KeyDel = 0;
-                    string input = s.ToString();
-                    char a = input[totallength - 1];
-                    string b = a.ToString();
-                    if (b.Equals("-"))
-                    {
-                        eText.Text = s.ToString();
-                        eText.SetSelection(eText.Text.Length);
-                    }
+                    eText.Text = s.ToString();
+                    eText.SetSelection(eText.Text.Length);
+                    //string input = s.ToString();
+                    //char a = input[totallength - 1];
+                    //string b = a.ToString();
+                    //if (b.Equals("-"))
+                    //{
+                    //    eText.Text = s.ToString();
+                    //    eText.SetSelection(eText.Text.Length);
+                    //}
                 }
             }
 
             public void OnTextChanged(Java.Lang.ICharSequence s, int start, int before, int count)
             {
                 string Idtype = idText.Text;
-                
+
                 if (Idtype.Equals("IC / Mykad"))
                 {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(14) });
@@ -344,11 +341,10 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                             eText.Text = first9digit + "-" + last1digit;
                             eText.SetSelection(eText.Text.Length);
                         }
-
                     }
                 }
                 else if (Idtype.Equals("ArmyID/PoliceID") || Idtype.Equals("IDTentera/IDPolis"))
-                {                   
+                {
                     eText.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(50) });
                 }
                 else if (Idtype.Equals("Passport") || Idtype.Equals("Pasport"))
