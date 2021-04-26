@@ -711,7 +711,7 @@
     "changeLanguageSuccess": "Your language preference has been changed successfully.",
     //addby syahmi
     "selectApplang": "Select your preferred app language:"
-    
+
   },
 
   //new added
@@ -915,6 +915,15 @@
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
+    "noCards": "Looks like you have no credit / debit cards stored. You may add a credit/debit card during payment.",
+    "details": "You may only add a new credit / debit card when making payment.",
+    "cardRemoveSuccess": "The credit / debit card ending with {0} has been removed successfully.",
+    "removeCardMessage": "You are about to remove the credit / debit card ending with {0}.",
+    "removeCardTitle": "Remove Credit / Debit Card",
+    "cardNotRemovedMessage": "Credit / Debit Card ending with {0} was not removed. Please try again."
+  },
+  "MyPaymentMethod": {
+    "title": "My Payment Methods",
     "noCards": "Looks like you have no credit / debit cards stored. You may add a credit/debit card during payment.",
     "details": "You may only add a new credit / debit card when making payment.",
     "cardRemoveSuccess": "The credit / debit card ending with {0} has been removed successfully.",
