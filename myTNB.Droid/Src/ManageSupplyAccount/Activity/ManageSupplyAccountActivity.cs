@@ -126,41 +126,58 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 this.userActionsListener.OnUpdateNickname();
             }
         }
-        AlertDialog removeDialog;
+        //AlertDialog removeDialog;
         [OnClick(Resource.Id.btnRemoveAccount)]
         void OnClickRemoveAccount(object sender, EventArgs eventArgs)
         {
             try
             {
-                if (removeDialog != null && removeDialog.IsShowing)
+
+                if (!this.GetIsClicked())
                 {
-                    removeDialog.Dismiss();
-                }
-
-                removeDialog = new AlertDialog.Builder(this)
-
-                    .SetTitle(GetLabelByLanguage("popupremoveAccountTitle"))
-                    .SetMessage(GetFormattedText(string.Format(GetLabelByLanguage("popupremoveAccountMessage"), accountData.AccountNickName, accountData.AccountNum)))
-                    .SetNegativeButton(GetLabelCommonByLanguage("cancel"),
-                    delegate
-                    {
-                        removeDialog.Dismiss();
-                    })
-                    .SetPositiveButton(GetLabelCommonByLanguage("ok"),
-                    delegate
+                    this.SetIsClicked(true);
+                    ShowRemoveAccountDialog(this, () =>
                     {
                         this.userActionsListener.OnRemoveAccount(accountData);
-                    })
-                    .Show()
-                    ;
+                    });
+                }
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
-            //int titleId = Resources.GetIdentifier("alertTitle", "id", "android");
-            //TextView txtTitle = removeDialog.FindViewById<TextView>(titleId);
-            //txtTitle.SetTextSize(ComplexUnitType.Sp ,17);
+        }
+
+        //AlertDialog removeDialog;
+        void ShowRemoveAccountDialog(Android.App.Activity context, Action confirmAction, Action cancelAction = null)
+        {
+            //CustomerBillingAccount account = adapter.GetItemObject(position);
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(Utility.GetLocalizedLabel("ManageAccount", "popupremoveAccountTitle"))
+                        //.SetMessage(Utility.GetLocalizedLabel("Common", "updateIdMessage"))
+                        .SetMessage(string.Format(Utility.GetLocalizedLabel("ManageAccount", "popupremoveAccountMessage"), accountData.AccountNickName, accountData.AccountNum))
+                        .SetContentGravity(Android.Views.GravityFlags.Left)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "ok"))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            confirmAction();
+                        })
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
 
         }
 
