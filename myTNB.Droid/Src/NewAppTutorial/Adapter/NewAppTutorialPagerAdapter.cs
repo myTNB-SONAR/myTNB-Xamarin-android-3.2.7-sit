@@ -120,8 +120,17 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     innerUpperBottomLayoutParam.Gravity = GravityFlags.Right;
                     innerTxtBtnBottomLayoutParam.Gravity = GravityFlags.Right;
                 }
-
-                txtBottomContentParam.Width = (int)((float)this.mContext.Resources.DisplayMetrics.WidthPixels * 0.705);
+                try
+                {
+                    if (!(this.mFragment is ItemisedBillingMenuFragment))
+                    {
+                        txtBottomContentParam.Width = (int)((float)this.mContext.Resources.DisplayMetrics.WidthPixels * 0.705);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
 
                 txtBottomContent.RequestLayout();
                 btnBottomGotIt.RequestLayout();
@@ -1232,14 +1241,14 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
                             LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
                             innerUpperBottomLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(45f) : (int)DPUtils.ConvertDPToPx(40f);
-                            innerUpperBottomLayoutParam.LeftMargin = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(8f) : (int)DPUtils.ConvertDPToPx(16f);
-                            innerUpperBottomLayoutParam.RightMargin = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(8f) : (int)DPUtils.ConvertDPToPx(16f);
+                            innerUpperBottomLayoutParam.LeftMargin = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(8f) : (int)DPUtils.ConvertDPToPx(8f);
+                            innerUpperBottomLayoutParam.RightMargin = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(0f) : (int)DPUtils.ConvertDPToPx(8f);
                             innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
                             innerUpperBottomLayout.RequestLayout();
 
                             LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerTxtBtnBottomLayoutParam.LeftMargin = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(8f) : (int)DPUtils.ConvertDPToPx(16f);
-                            innerTxtBtnBottomLayoutParam.RightMargin = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(8f) : (int)DPUtils.ConvertDPToPx(16f);
+                            innerTxtBtnBottomLayoutParam.LeftMargin = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(0f) : (int)DPUtils.ConvertDPToPx(8f);
+                            innerTxtBtnBottomLayoutParam.RightMargin = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(0f) : (int)DPUtils.ConvertDPToPx(8f);
                             innerTxtBtnBottomLayout.RequestLayout();
                         }
                         else if (position == 1)
