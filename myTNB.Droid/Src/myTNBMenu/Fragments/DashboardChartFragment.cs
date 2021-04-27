@@ -893,24 +893,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                  */
 
+                TextViewUtils.SetTextSize(13, smStatisticBillTitle, false);
+                TextViewUtils.SetTextSize(13, smStatisticBillSubTitle, false);
+                TextViewUtils.SetTextSize(13, smStatisticPredictTitle, false);
+                TextViewUtils.SetTextSize(13, smStatisticPredictCurrency, false);
+                TextViewUtils.SetTextSize(13, smStatisticPredictSubTitle, false);
+                TextViewUtils.SetTextSize(13, smStatisticTrendTitle, false);
+                TextViewUtils.SetTextSize(13, smStatisticTrendSubTitle, false);
                 TextViewUtils.SetTextSize(14, txtTotalPayableTitle, false);
-                TextViewUtils.SetTextSize(24, txtTotalPayable, false);
                 TextViewUtils.SetTextSize(14, txtTotalPayableCurrency, false);
                 TextViewUtils.SetTextSize(14, txtDueDate, false);
+                TextViewUtils.SetTextSize(17, smStatisticBill, false);
+                TextViewUtils.SetTextSize(17, smStatisticBillKwh, false);
+                TextViewUtils.SetTextSize(17, smStatisticPredict, false);
+                TextViewUtils.SetTextSize(17, smStatisticTrend, false);
+                TextViewUtils.SetTextSize(24, txtTotalPayable, false);
 
                 TextViewUtils.SetTextSize11(txtAddress, txtDayViewZoomInIndicator, txtTariffBlockLegendDisclaimer
                     , reTotalPayableCurrency, smStatisticBillCurrency, smStatisticBillKwhUnit, lblinfoLabelEPP);
                 TextViewUtils.SetTextSize13(btnToggleDay, btnToggleMonth, txtEnergyDisconnection, txtRange
                     , kwhLabel, rmLabel, rmKwhLabel, txtTarifToggle, reTotalPayableTitle, reDueDate, txtReNoPayableTitle
-                    , txtReNoPayableCurrency, ssmrAccountStatusText, btnTxtSsmrViewHistory, smStatisticBillTitle
-                    , smStatisticBillSubTitle, smStatisticPredictTitle, smStatisticPredictCurrency, smStatisticPredictSubTitle
-                    , smStatisticTrendTitle, smStatisticTrendSubTitle, txtSmStatisticTooltip, txtNoPayableCurrency);
+                    , txtReNoPayableCurrency, ssmrAccountStatusText, btnTxtSsmrViewHistory, txtSmStatisticTooltip, txtNoPayableCurrency);
                 TextViewUtils.SetTextSize14(txtNewRefreshMessage);
                 TextViewUtils.SetTextSize15(newAccountContent, txtMdmsDayViewDown, txtNoPayableTitle);
                 TextViewUtils.SetTextSize16(btnPay, btnNewRefresh, btnMDMSDownRefresh
                     , btnReView, btnViewBill, btnReadingHistory);
-                TextViewUtils.SetTextSize17(reTotalPayable, txtReNoPayable, smStatisticBill
-                    , smStatisticBillKwh, smStatisticPredict, smStatisticTrend);
+                TextViewUtils.SetTextSize17(reTotalPayable, txtReNoPayable);
                 TextViewUtils.SetTextSize18(dashboardAccountName);
                 TextViewUtils.SetTextSize25(txtNoPayable);
 
@@ -8684,19 +8692,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         txtSmStatisticTooltip.Text = Utility.GetLocalizedLabel("Usage", "projectedCostTitle");
                         if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.CostData != null))
                         {
-                            float maxWidth = 130f;
-                            try
-                            {
-                                maxWidth = this.Activity.Resources.DisplayMetrics.Density <= 2.55 ? 170f : 130f;
-                            }
-                            catch (Java.Lang.Exception javaEx)
-                            {
-                                Console.WriteLine("[DEBUG] this.Activity.Resources.DisplayMetrics.Density Java Exception: " + javaEx.Message);
-                            }
-                            catch (System.Exception sysEx)
-                            {
-                                Console.WriteLine("[DEBUG] this.Activity.Resources.DisplayMetrics.Density System Exception: " + sysEx.Message);
-                            }
                             foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.CostData)
                             {
                                 System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
@@ -8711,17 +8706,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         smStatisticBillSubTitle.Text = "- -";
                                         smStatisticBill.Text = "- -";
                                     }
-
-                                    if (costValue.Value.Length > 10)
-                                    {
-                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
-                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
-                                    }
-                                    else
-                                    {
-                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
-                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
-                                    }
                                 }
                                 else if (costValue.Key == Constants.PROJECTED_COST_KEY)
                                 {
@@ -8733,17 +8717,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         smStatisticPredictSubTitle.Text = "- -";
                                         smStatisticPredict.Text = "- -";
-                                    }
-
-                                    if (costValue.Value.Length > 10)
-                                    {
-                                        smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
-                                        smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
-                                    }
-                                    else
-                                    {
-                                        smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
-                                        smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
                                     }
                                 }
                             }
@@ -8777,19 +8750,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smStatisticTrend.Text = "- -%";
                         if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.UsageData != null && selectedSMHistoryData.OtherUsageMetrics.UsageData.Count > 0))
                         {
-                            float maxWidth = 170;
-                            try
-                            {
-                                maxWidth = this.Activity.Resources.DisplayMetrics.Density <= 2.55 ? 200f : 170;
-                            }
-                            catch (Java.Lang.Exception javaEx)
-                            {
-                                Console.WriteLine("[DEBUG] this.Activity.Resources.DisplayMetrics.Density Java Exception: " + javaEx.Message);
-                            }
-                            catch (System.Exception sysEx)
-                            {
-                                Console.WriteLine("[DEBUG] this.Activity.Resources.DisplayMetrics.Density System Exception: " + sysEx.Message);
-                            }
                             foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.UsageData)
                             {
                                 System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
@@ -8803,17 +8763,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         smStatisticBillSubTitle.Text = "- -";
                                         smStatisticBillKwh.Text = "- -";
-                                    }
-
-                                    if (costValue.Value.Length > 10)
-                                    {
-                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
-                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
-                                    }
-                                    else
-                                    {
-                                        smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
-                                        smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
                                     }
                                 }
                                 else if (costValue.Key == Constants.AVERAGE_USAGE_KEY)
@@ -8851,16 +8800,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     {
                                         smStatisticTrendSubTitle.Text = "- -";
                                         smStatisticTrend.Text = "- -%";
-                                    }
-                                    if (costValue.Value.Length > 10)
-                                    {
-                                        smStatisticTrendTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
-                                        smStatisticTrendSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
-                                    }
-                                    else
-                                    {
-                                        smStatisticTrendTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
-                                        smStatisticTrendSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(maxWidth));
                                     }
                                 }
                             }

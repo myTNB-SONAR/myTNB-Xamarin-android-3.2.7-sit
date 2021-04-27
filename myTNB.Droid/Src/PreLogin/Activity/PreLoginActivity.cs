@@ -670,7 +670,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
                 //currentCard.Height = cardHeight;
-                currentCard.Width = cardWidth; //currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth;
+                currentCard.Width = cardWidth;
 
                 float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
@@ -702,7 +702,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
                 //currentCard.Height = cardHeight;
-                currentCard.Width = cardWidth; //currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth;
+                currentCard.Width = cardWidth;
 
                 float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
@@ -738,7 +738,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                     int cardHeight = (int)(cardWidth * (heightRatio));
 
                     //currentCard.Height = cardHeight + 27;
-                    currentCard.Width = cardWidth; //currentCard.Width = cardWidth + 85;
+                    currentCard.Width = cardWidth + 20;
 
                     float paddingRatio = 10f / 72f;
                     int padding = (int)(cardWidth * (paddingRatio));
@@ -765,7 +765,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                     int cardHeight = (int)(cardWidth * (heightRatio));
 
                     //currentCard.Height = cardHeight;
-                    currentCard.Width = cardWidth; //currentCard.Width = TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth;
+                    currentCard.Width = cardWidth + 20;
 
                     float paddingRatio = 10f / 72f;
                     int padding = (int)(cardWidth * (paddingRatio));
@@ -798,7 +798,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 int cardHeight = (int)(cardWidth * (heightRatio));
 
                 //currentCard.Height = TextViewUtils.IsLargeFonts ? cardHeight + 25 : cardHeight;
-                currentCard.Width = cardWidth; //currentCard.Width = (TextViewUtils.IsLargeFonts ? cardWidth + 85 : cardWidth) + 5;
+                currentCard.Width = cardWidth + (TextViewUtils.IsLargeFonts ? 50 : 15);
 
                 float paddingRatio = 10f / 72f;
                 int padding = (int)(cardWidth * (paddingRatio));
@@ -855,7 +855,5 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-
     }
 }
