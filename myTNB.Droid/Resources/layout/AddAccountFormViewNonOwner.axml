@@ -122,8 +122,10 @@
                         android:id="@+id/owner_mother_maiden_name_edittext" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+            <View
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
             <LinearLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -131,6 +133,7 @@
                 android:padding="16dp"
                 android:layout_alignParentBottom="true"
                 android:background="@color/white"
+                android:clickable="false"
                 android:gravity="center">
                 <Button
                     android:id="@+id/btnAddAccount"
@@ -140,6 +143,6 @@
                     android:textAllCaps="false"
                     android:text="Next" />
             </LinearLayout>
-        
-    
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
