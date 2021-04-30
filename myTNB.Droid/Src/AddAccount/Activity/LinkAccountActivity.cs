@@ -1101,6 +1101,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             extraAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
                             extraAccount.isOwned = item.isOwned;
                             extraAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
+                            extraAccount.accountTypeId = item.accountTypeId == null ? string.Empty : item.accountTypeId;
                             finalAccountList.Add(extraAccount);
                         }
                     }
