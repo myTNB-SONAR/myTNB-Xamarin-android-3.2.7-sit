@@ -438,6 +438,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                             ClearICMinimumCharactersError();
                             ClearICHint();
                         }
+
                     }
                 }
             }
@@ -455,6 +456,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Register", "tnc"));
                 //txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tncNew"));
                 StripUnderlinesFromLinks(txtTermsConditions);
+                mobileNumberInputComponent.ClearError();
 
             }
             else
@@ -462,12 +464,22 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 txtTermsConditions.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("OneLastThing", "tnc_checked"));
                 //txtTermsConditions.TextFormatted = GetFormattedText(GetLabelByLanguage("tnc_checked"));
                 StripUnderlinesFromLinks(txtTermsConditions);
+                if (mobileNumberInputComponent.IsTextClear())
+                {
+                    mobileNumberInputComponent.NewRaiseError();
+                }
+                else
+                {
+                    mobileNumberInputComponent.ClearError();
+                }
             }
             string fullname = txtFullName.Text.ToString().Trim();
             string ic_no = txtICNumber.Text.ToString().Trim(); 
             string Idtype = selectedIdentificationType.Id;
             string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
             this.userActionsListener.CheckRequiredFields(fullname, ic_no, mobile_no, Idtype, txtboxcondition.Checked);
+
+
 
         }
 
@@ -478,6 +490,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             string Idtype = selectedIdentificationType.Id;
             string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
             this.userActionsListener.CheckRequiredFields(fullname, ic_no, mobile_no, Idtype, txtboxcondition.Checked);
+
         }
 
         public void OnPause()
@@ -647,6 +660,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             textInputLayoutICNo.ErrorEnabled = false;
         }
 
+
         public void ShowNotEqualConfirmEmailError()
         {
             //ClearNotEqualConfirmEmailError();
@@ -716,7 +730,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                         else
                         {
                           ShowFullPassportError();
-                        }                    
+                        }
                     }
                 }
                 this.SetIsClicked(false);

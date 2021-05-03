@@ -197,6 +197,12 @@ namespace myTNB_Android.Src.CompoundView
             ViewCompat.SetBackgroundTintList(editTextMobileNumber, ColorStateList.ValueOf(Android.Graphics.Color.ParseColor("#e44b21"))); //red color
             countryCodeError.Text = errText;
         }
+        public void NewRaiseError()
+        {
+            //countryCodeError.Visibility = Android.Views.ViewStates.Visible;
+            //countryCodeHeaderTitle.SetTextColor(Android.Graphics.Color.ParseColor("#e44b21"));//red color
+            ViewCompat.SetBackgroundTintList(editTextMobileNumber, ColorStateList.ValueOf(Android.Graphics.Color.ParseColor("#e44b21"))); //red color
+        }
         public void ClearError()
         {
             if (editTextMobileNumber.IsFocused)
