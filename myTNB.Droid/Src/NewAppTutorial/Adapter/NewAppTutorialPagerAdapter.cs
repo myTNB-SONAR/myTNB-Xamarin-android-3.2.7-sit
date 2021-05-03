@@ -1206,11 +1206,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             int topHeight = (int)DPUtils.ConvertDPToPx(h1);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight();
                             int checkPoint = (int)DPUtils.ConvertDPToPx(200f);
-                            //if (model.DisplayMode == "Extra")
-                            //{
-                              //  middleHeight = (int)DPUtils.ConvertDPToPx(265f);
-                              //  checkPoint = (int)DPUtils.ConvertDPToPx(180f);
-                            //}
 
                             if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                             {
@@ -1255,11 +1250,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         {
                             int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + (int)DPUtils.ConvertDPToPx(55f);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(8f);
-                            //if (model.DisplayMode == "Extra")
-                            //{
-                                //topHeight = (int)DPUtils.ConvertDPToPx(335f);
-                            //}
-
+                           
                             int rightWidth = (int)DPUtils.ConvertDPToPx(12f);
                             int middleWidth = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonWidth() + (int)DPUtils.ConvertDPToPx(8f);
                             int leftWidth = this.mContext.Resources.DisplayMetrics.WidthPixels - rightWidth - middleWidth;
@@ -1293,11 +1284,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         {
                             int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + (int)DPUtils.ConvertDPToPx(55f);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(8f);
-                            //if (model.DisplayMode == "Extra")
-                            //{
-                                //topHeight = (int)DPUtils.ConvertDPToPx(335f);
-                            //}
-
+                           
                             int leftWidth = (int)DPUtils.ConvertDPToPx(12f);
                             int middleWidth = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonWidth() + (int)DPUtils.ConvertDPToPx(8f);
                             int rightWidth = this.mContext.Resources.DisplayMetrics.WidthPixels - leftWidth - middleWidth;
@@ -1331,10 +1318,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         {
                             int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(85f);
                             int middleHeight = (int)DPUtils.ConvertDPToPx(208f);
-                            //if (model.DisplayMode == "Extra")
-                            //{
-                               // topHeight = (int)DPUtils.ConvertDPToPx(405f);
-                            //}
 
                             if (model.ItemCount == 0)
                             {
