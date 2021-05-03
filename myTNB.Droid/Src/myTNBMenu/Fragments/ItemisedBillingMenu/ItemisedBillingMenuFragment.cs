@@ -123,6 +123,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         [BindView(Resource.Id.chargeAvailableContainer)]
         LinearLayout chargeAvailableContainer;
 
+        [BindView(Resource.Id.chargeAvailableNoCTAContainer)]
+        LinearLayout chargeAvailableNoCTAContainer;
+        
+
         [BindView(Resource.Id.unavailableChargeContainer)]
         LinearLayout unavailableChargeContainer;
 
@@ -478,7 +482,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 accountSelectionRefresh.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
         }
-
+        public int GetItemisedBillingHeaderImageHeight()
+        {
+            return itemisedBillingHeaderImage.Height;
+        }
+        public int GetitemisedBillingInfoContainerHeight()
+        {
+            return itemisedBillingInfoContainer.Height;
+        }
+        public int GetitemisedBillingInfoShimmerHeight()
+        {
+            return itemisedBillingInfoShimmer.Height;
+        }
+        public int GetChargeAvailableContainerHeight()
+        {
+            return chargeAvailableContainer.Height;
+        }
+        public int GetchargeAvailableNoCTAContainerHeight()
+        {
+            return chargeAvailableNoCTAContainer.Height;
+        }
+        
         public void ShowShimmerLoading()
         {
             itemisedBillingHeaderImage.SetImageResource(Resource.Drawable.bill_menu_loading_banner);
