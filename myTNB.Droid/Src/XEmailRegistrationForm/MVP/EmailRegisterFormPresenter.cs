@@ -45,6 +45,7 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
 
                 if (!string.IsNullOrEmpty(email))
                 {
+                                      
                     if (!Patterns.EmailAddress.Matcher(email).Matches())
                     {
                         this.mView.ShowInvalidEmailError();
@@ -57,7 +58,8 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
                 }
                 else
                 {   //disable button if no text
-                    this.mView.ClearInvalidEmailHint();
+                    //this.mView.ClearInvalidEmailHint();
+                    this.mView.ShowEmptyEmailErrorNew();
                     isCorrect = false;
                 }
 
@@ -77,7 +79,8 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
                 else
                 {
                     //disable button if no text
-                    this.mView.ClearInvalidPasswordHint();
+                    //this.mView.ClearInvalidPasswordHint();
+                    this.mView.ShowEmptyPasswordErrorNew();
                     isCorrect = false;
                 }
 

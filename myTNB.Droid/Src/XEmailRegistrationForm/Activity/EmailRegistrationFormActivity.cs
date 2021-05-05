@@ -417,6 +417,32 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.Activity
 
         }
 
+        public void ShowEmptyEmailErrorNew()
+        {
+            ClearInvalidEmailHint();
+            textInputLayoutEmailReg.Error = null;
+            if (textInputLayoutEmailReg.Error != Utility.GetLocalizedLabel("RegisterNew", "emailRequired"))
+            {
+                textInputLayoutEmailReg.Error = Utility.GetLocalizedLabel("RegisterNew", "emailRequired");
+            }
+
+            if (!textInputLayoutEmailReg.ErrorEnabled)
+                textInputLayoutEmailReg.ErrorEnabled = true;
+        }
+
+        public void ShowEmptyPasswordErrorNew()
+        {
+            ClearPasswordMinimumOf6CharactersError();
+            ClearInvalidPasswordHint();
+            textInputLayoutPasswordReg.Error = null;
+            if (textInputLayoutPasswordReg.Error != Utility.GetLocalizedLabel("RegisterNew", "passwordRequired"))
+            {
+                textInputLayoutPasswordReg.Error = Utility.GetLocalizedLabel("RegisterNew", "passwordRequired");
+            }
+            if (!textInputLayoutPasswordReg.ErrorEnabled)
+                textInputLayoutPasswordReg.ErrorEnabled = true;
+        }
+
         public void ShowForgetPassword()
         {
             // TODO : START ACTIVITY FORGET PASSWORD

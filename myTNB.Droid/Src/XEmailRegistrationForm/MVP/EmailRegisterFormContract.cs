@@ -26,6 +26,18 @@ namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
             /// </summary>
             void ShowEmptyEmailError();
 
+            //void ShowEmailMessage();
+            /// <summary>
+            /// Show email message
+            /// </summary>
+            void ShowEmptyEmailErrorNew();
+
+            //void ShowEmailMessage();
+            /// <summary>
+            /// Show email message
+            /// </summary>
+            void ShowEmptyPasswordErrorNew();
+
             /// <summary>
             /// Show invalid email error using regex
             /// Pre Validation
