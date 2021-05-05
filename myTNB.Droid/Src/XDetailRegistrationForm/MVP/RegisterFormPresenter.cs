@@ -145,7 +145,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
                     else
                     {
                         this.mView.ClearICMinimumCharactersError();
-                        this.mView.ShowIdentificationHint();
+                        //this.mView.ShowIdentificationHint();
                     }
                     this.mView.EnableRegisterButton();
                 }

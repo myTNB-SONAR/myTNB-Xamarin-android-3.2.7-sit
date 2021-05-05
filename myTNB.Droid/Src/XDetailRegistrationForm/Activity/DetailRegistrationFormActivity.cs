@@ -263,7 +263,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 string Idtype = selectedIdentificationType.Id;
                 string mobile_no = mobileNumberInputComponent.GetMobileNumberValue();
                 ClearICMinimumCharactersError();
-                ClearICHint();
+                //ClearICHint();
+                ShowIdentificationHint();
                 this.userActionsListener.validateField(fullname, ic_no, mobile_no, Idtype, checkbox);
             }
             catch (Exception ex)
@@ -390,6 +391,8 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
                 if (!e.HasFocus)
                 {
+                    ClearICMinimumCharactersError();
+                    ClearICHint();
                     this.userActionsListener.CheckRequiredFields(fullname, ic_no, mobile_no, Idtype, txtboxcondition.Checked);
 
                     if (ic_no.Equals(""))
@@ -404,34 +407,37 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                             ic_no = ic_no.Replace("-", string.Empty);
                             if (!this.mPresenter.CheckIdentificationIsValid(ic_no))
                             {
+                                ClearICHint();
                                 ShowFullICError();
                             }
-                            else
-                            {
-                                ShowIdentificationHint();
-                            }
+                            //else
+                            //{
+                            //    ShowIdentificationHint();
+                            //}
                         }
                         else if (Idtype.Equals("2"))
                         {
                             if (!this.mPresenter.CheckArmyIdIsValid(ic_no))
                             {
+                                ClearICHint();
                                 ShowFullArmyIdError();
                             }
-                            else
-                            {
-                                ShowIdentificationHint();
-                            }
+                            //else
+                            //{
+                            //    ShowIdentificationHint();
+                            //}
                         }
                         else if (Idtype.Equals("3"))
                         {
                             if (!this.mPresenter.CheckPassportIsValid(ic_no))
                             {
+                                ClearICHint();
                                 ShowFullPassportError();
                             }
-                            else
-                            {
-                                ShowIdentificationHint();
-                            }
+                            //else
+                            //{
+                            //    ShowIdentificationHint();
+                            //}
                         }
                         else
                         {
@@ -440,6 +446,10 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                         }
 
                     }
+                }
+                else
+                {
+                    ShowIdentificationHint();
                 }
             }
             catch (Exception ex)
@@ -652,6 +662,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ClearICHint()
         {
+            textInputLayoutICNo.HelperText = null;
             textInputLayoutICNo.HelperTextEnabled = false;
         }
 
@@ -1090,7 +1101,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowFullICError()
         {
-            ClearICHint();
+            //ClearICHint();
             if (textInputLayoutICNo.Error != Utility.GetLocalizedLabel("OneLastThing", "mykadhint"))
             {
                 textInputLayoutICNo.Error = Utility.GetLocalizedLabel("OneLastThing", "mykadhint");
@@ -1102,7 +1113,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowFullArmyIdError()
         {
-            ClearICHint();
+            //ClearICHint();
             if (textInputLayoutICNo.Error != Utility.GetLocalizedLabel("OneLastThing", "armyidhint")) 
             {
                 textInputLayoutICNo.Error = Utility.GetLocalizedLabel("OneLastThing", "armyidhint");
@@ -1114,7 +1125,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowFullPassportError()
         {
-            ClearICHint();
+            //ClearICHint();
             if (textInputLayoutICNo.Error != Utility.GetLocalizedLabel("OneLastThing", "passporthint"))
             {
                 textInputLayoutICNo.Error = Utility.GetLocalizedLabel("OneLastThing", "passporthint");
