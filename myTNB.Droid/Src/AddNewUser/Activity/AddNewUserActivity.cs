@@ -155,7 +155,8 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                 {
                     string email = txtUserEmail.Text.ToString().Trim();
                     this.SetIsClicked(true);
-                    this.userActionsListener.OnAddAccount(email, accountData.AccountNum, checkboxfullbill, checkboxbilling);
+                    string address = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
+                    this.userActionsListener.OnAddAccount(email, accountData.AccountNum, checkboxfullbill, checkboxbilling, address, accountData.AccountName);
 
 
                     //ShowAddTNBUserSuccess();

@@ -64,7 +64,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             }
         }
 
-        public async void OnAddAccount(string emailNewUser, string accNo, bool ishaveAccess, bool ishaveEBilling)
+        public async void OnAddAccount(string emailNewUser, string accNo, bool ishaveAccess, bool ishaveEBilling, string accAddress, string accName)
         {
             if (mView.IsActive())
             {
@@ -74,7 +74,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                var AddNewUserAccountResponse = await ServiceApiImpl.Instance.AddUserAcess_OT(new AddUserAccessAccountRequest(emailNewUser, accNo, ishaveAccess, ishaveEBilling));
+                var AddNewUserAccountResponse = await ServiceApiImpl.Instance.AddUserAcess_OT(new AddUserAccessAccountRequest(emailNewUser, accNo, ishaveAccess, ishaveEBilling, accAddress, accName));
 
                 if (mView.IsActive())
                 {
