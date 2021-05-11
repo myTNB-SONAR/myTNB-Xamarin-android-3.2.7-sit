@@ -75,11 +75,11 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/AddUserAccess_OT")]
-        Task<T> AddUserAcess_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //wan //api add user access
+        Task<T> AddUserAcess_OT<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);              //wan //api add user access
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/RemoveUserAccess_OT")]
-        Task<T> RemoveUserAcess_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //wan //api delete user access
+        Task<T> RemoveUserAcess_OT<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);              //wan //api delete user access
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetAccountActivityLogList")]
@@ -87,11 +87,11 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/UpdateAccountAccessRight")]
-        Task<T> UpdateAccountAccessRight<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //2enapps wan //api update account access right
+        Task<T> UpdateAccountAccessRight<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);              //2enapps wan //api update account access right
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/AddAccounts_OT")]
-        Task<T> AddMultipleAccounts_OT<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);              //2enapps wan //api add account
+        Task<T> AddMultipleAccounts_OT<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);              //2enapps wan //api add account
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/ValidateManualAccountLinking_OT")]
@@ -233,7 +233,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/RemoveAccount")]
-        Task<T> RemoveAccount<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
+        Task<T> RemoveAccount<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetLocations")]

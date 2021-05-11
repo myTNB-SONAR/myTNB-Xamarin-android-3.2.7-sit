@@ -24,6 +24,7 @@ using myTNB_Android.Src.ManageUser.MVP;
 using AndroidX.Core.Content;
 using myTNB_Android.Src.Base;
 using AndroidX.CoordinatorLayout.Widget;
+using Android.Preferences;
 
 namespace myTNB_Android.Src.ManageUser.Activity
 {
@@ -181,7 +182,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
 
                 MyTNBAccountManagement.GetInstance().AddNewUserAdded(false);
                 //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-                mPresenter = new ManageUserPresenter(this, account);
+                mPresenter = new ManageUserPresenter(this, account, PreferenceManager.GetDefaultSharedPreferences(this));
                 this.userActionsListener.Start();
             }
             catch (Exception e)

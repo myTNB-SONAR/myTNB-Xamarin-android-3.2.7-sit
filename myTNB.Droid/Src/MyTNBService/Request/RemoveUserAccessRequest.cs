@@ -2,7 +2,7 @@
 using System;
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class RemoveUserAccountRequest : BaseRequest
+    public class RemoveUserAccountRequest : BaseRequestV2
     {
         public string AccountNo;
         public bool isHaveAccess, isApplyBilling;

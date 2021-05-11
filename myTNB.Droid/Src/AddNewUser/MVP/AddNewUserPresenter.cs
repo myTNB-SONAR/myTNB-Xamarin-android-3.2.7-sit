@@ -25,9 +25,12 @@ namespace myTNB_Android.Src.AddNewUser.MVP
         private AddNewUserContract.IView mView;
         CancellationTokenSource cts;
         AccountData accountData;
-        public AddNewUserPresenter(AddNewUserContract.IView mView, AccountData accountData)
+        private ISharedPreferences mSharedPref;
+
+        public AddNewUserPresenter(AddNewUserContract.IView mView, AccountData accountData, ISharedPreferences mSharedPref)
         {
             this.mView = mView;
+            this.mSharedPref = mSharedPref;
             this.mView.SetPresenter(this);
             this.accountData = accountData;
         }
@@ -74,7 +77,11 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                var AddNewUserAccountResponse = await ServiceApiImpl.Instance.AddUserAcess_OT(new AddUserAccessAccountRequest(emailNewUser, accNo, ishaveAccess, ishaveEBilling));
+                AddUserAccessAccountRequest addUserAccessAccountRequest = new AddUserAccessAccountRequest(emailNewUser, accNo, ishaveAccess, ishaveEBilling);
+                addUserAccessAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
+                string dt = JsonConvert.SerializeObject(addUserAccessAccountRequest);
+
+                var AddNewUserAccountResponse = await ServiceApiImpl.Instance.AddUserAcess_OT(addUserAccessAccountRequest);
 
                 if (mView.IsActive())
                 {

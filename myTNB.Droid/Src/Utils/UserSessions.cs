@@ -535,6 +535,21 @@ namespace myTNB_Android.Src.Utils
             return preferences.GetBoolean("loggedOut", false);
         }
 
+        //whitelist setter
+        public static void SaveWhiteList(ISharedPreferences prefs, bool flag)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("IsWhiteList", flag);
+            editor.Apply();
+        }
+
+        //whitelist getter
+        public static bool GetWhiteList(ISharedPreferences preferences)
+        {
+            return preferences.GetBoolean("IsWhiteList", false);
+        }
+
+
         public static void SavePhoneVerified(ISharedPreferences prefs, bool flag)
         {
             ISharedPreferencesEditor editor = prefs.Edit();

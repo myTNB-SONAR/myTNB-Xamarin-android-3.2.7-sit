@@ -34,9 +34,12 @@ namespace myTNB_Android.Src.ManageAccess.MVP
         AccountData accountData;
         LogUserAccessData logAccount;
         int position;
-        public ManageAccessPresenter(ManageAccessContract.IView mView, AccountData accountData)
+        private ISharedPreferences mSharedPref;
+
+        public ManageAccessPresenter(ManageAccessContract.IView mView, AccountData accountData, ISharedPreferences mSharedPref)
         {
             this.mView = mView;
+            this.mSharedPref = mSharedPref;
             this.mView.SetPresenter(this);
             this.accountData = accountData;
         }
@@ -100,7 +103,12 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveUserAcess_OT(new RemoveAccountRequest(AccountNum));
+
+                RemoveAccountRequest removeAccountRequest = new RemoveAccountRequest(AccountNum);
+                removeAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
+                string dt = JsonConvert.SerializeObject(removeAccountRequest);
+
+                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveUserAcess_OT(removeAccountRequest);
 
                 if (removeAccountResponse.IsSuccessResponse())
                 {
@@ -183,7 +191,11 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveUserAcess_OT(new RemoveUserAccountRequest(accountIdList, accountData.AccountNum));
+                RemoveUserAccountRequest removeUserAccountRequest = new RemoveUserAccountRequest(accountIdList, accountData.AccountNum);
+                removeUserAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
+                string dt = JsonConvert.SerializeObject(removeUserAccountRequest);
+
+                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveUserAcess_OT(removeUserAccountRequest);
 
                 if (mView.IsActive())
                 {

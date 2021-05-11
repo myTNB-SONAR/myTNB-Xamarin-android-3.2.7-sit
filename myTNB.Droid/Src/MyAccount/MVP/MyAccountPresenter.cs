@@ -24,10 +24,12 @@ namespace myTNB_Android.Src.MyAccount.MVP
     {
 
         private MyAccountContract.IView mView;
+        private ISharedPreferences mSharedPref;
 
-        public MyAccountPresenter(MyAccountContract.IView mView)
+        public MyAccountPresenter(MyAccountContract.IView mView, ISharedPreferences mSharedPref)
         {
             this.mView = mView;
+            this.mSharedPref = mSharedPref;
             this.mView.SetPresenter(this);
         }
 
@@ -71,7 +73,11 @@ namespace myTNB_Android.Src.MyAccount.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(new RemoveAccountRequest(AccountNum));
+                RemoveAccountRequest removeAccountRequest = new RemoveAccountRequest(AccountNum);
+                removeAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
+                string dt = JsonConvert.SerializeObject(removeAccountRequest);
+
+                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(removeAccountRequest);
 
                 if (removeAccountResponse.IsSuccessResponse())
                 {

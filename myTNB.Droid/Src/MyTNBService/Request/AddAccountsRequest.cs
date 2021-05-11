@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class AddAccountsRequest : BaseRequest
+    public class AddAccountsRequest : BaseRequestV2
     {
         public bool isHaveAccess, isApplyBilling;
         public List<AddAccount.Models.AddAccount> billAccounts;

@@ -294,7 +294,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             base.OnCreate(savedInstanceState);
             try
             {
-                mPresenter = new LinkAccountPresenter(this);
+                mPresenter = new LinkAccountPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
 
                 mGetAccountsProgressDialog = new AlertDialog.Builder(this)
                    .SetTitle("Loading..")

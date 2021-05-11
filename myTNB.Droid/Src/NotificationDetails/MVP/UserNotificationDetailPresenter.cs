@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Android.Content;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
@@ -35,11 +36,13 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         List<NotificationDetailModel.NotificationCTA> ctaList;
         SSMRTerminateImpl terminationApi;
         AccountData mSelectedAccountData;
+        private ISharedPreferences mSharedPref;
         bool isTaggedSMR = true;
 
-        public UserNotificationDetailPresenter(UserNotificationDetailContract.IView view)
+        public UserNotificationDetailPresenter(UserNotificationDetailContract.IView view, ISharedPreferences mSharedPref)
         {
             mView = view;
+            this.mSharedPref = mSharedPref;
             terminationApi = new SSMRTerminateImpl();
         }
 
@@ -218,40 +221,51 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED:
                         {
-                            imageResourceBanner = Resource.Drawable.noti_nonowner_to_owner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewManageAccess"),
-                                delegate () { ViewManageAccess(notificationDetails); });
-                            primaryCTA.SetSolidCTA(true);
-                            ctaList.Add(primaryCTA);
+                            if (UserSessions.GetWhiteList(mSharedPref) == false)
+                            {
+                                imageResourceBanner = Resource.Drawable.noti_nonowner_to_owner;
+                                primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewManageAccess"),
+                                    delegate () { ViewManageAccess(notificationDetails); });
+                                primaryCTA.SetSolidCTA(true);
+                                ctaList.Add(primaryCTA);
+                            }
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_REMOVE_ACCESS:
                         {
-                            imageResourceBanner = Resource.Drawable.noti_removed_by_owner;
+                            if (UserSessions.GetWhiteList(mSharedPref) == false)
+                            {
+                                imageResourceBanner = Resource.Drawable.noti_removed_by_owner;
+                            }
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_NEW_ACCESS_ADDED:
                         {
-                            imageResourceBanner = Resource.Drawable.noti_access_changed_by_owner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewMyUsage"),
-                               delegate () { ViewMyUsage(notificationDetails); });
-                            ctaList.Add(primaryCTA);
-                            if (notificationDetails.MerchantTransId != null)
+                            if (UserSessions.GetWhiteList(mSharedPref) == false)
                             {
-                                secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "addNickname"),
-                                delegate () { ViewManageAccess(notificationDetails); });
-                                ctaList.Add(secondaryCTA);
+                                imageResourceBanner = Resource.Drawable.noti_access_changed_by_owner;
+                                primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewMyUsage"),
+                                   delegate () { ViewMyUsage(notificationDetails); });
+                                ctaList.Add(primaryCTA);
+                                if (notificationDetails.MerchantTransId != null)
+                                {
+                                    secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "addNickname"),
+                                    delegate () { ViewManageAccess(notificationDetails); });
+                                    ctaList.Add(secondaryCTA);
+                                }
                             }
-                            
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_UPDATE_ACCESS:
                         {
-                            imageResourceBanner = Resource.Drawable.noti_access_changed_by_owner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewAccount"),
-                                delegate () { ViewManageAccess(notificationDetails); });
-                            primaryCTA.SetSolidCTA(true);
-                            ctaList.Add(primaryCTA);
+                            if (UserSessions.GetWhiteList(mSharedPref) == false)
+                            {
+                                imageResourceBanner = Resource.Drawable.noti_access_changed_by_owner;
+                                primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewAccount"),
+                                    delegate () { ViewManageAccess(notificationDetails); });
+                                primaryCTA.SetSolidCTA(true);
+                                ctaList.Add(primaryCTA);
+                            }
                             break;
                         }
                     default:

@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 
 using Android.Views;
@@ -109,7 +110,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 listView.SetNoScroll();
                 listView.ItemClick += ListView_ItemClick;
 
-                mPresenter = new MyAccountPresenter(this);
+                mPresenter = new MyAccountPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
                 this.userActionsListener.Start();
             }
             catch (Exception e)

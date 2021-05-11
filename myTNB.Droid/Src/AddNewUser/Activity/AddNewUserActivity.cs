@@ -24,6 +24,7 @@ using System.Runtime;
 using Android.Support.V4.Content;
 using Android.Text;
 using myTNB_Android.Src.Database.Model;
+using Android.Preferences;
 
 namespace myTNB_Android.Src.AddNewUser.Activity
 {
@@ -137,7 +138,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                 itemActionFullBill.CheckedChange += CheckedChange;
                 itemActionBilling.CheckedChange += CheckedChanged;
 
-                mPresenter = new AddNewUserPresenter(this, accountData);
+                mPresenter = new AddNewUserPresenter(this, accountData, PreferenceManager.GetDefaultSharedPreferences(this));
                 this.userActionsListener.Start();
             }
             catch (Exception e)

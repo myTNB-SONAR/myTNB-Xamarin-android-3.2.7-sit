@@ -4,7 +4,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
-
+using Android.Preferences;
 using Android.Text;
 using Android.Text.Method;
 using Android.Text.Style;
@@ -159,7 +159,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             try
             {
-                mPresenter = new UserNotificationDetailPresenter(this);
+                mPresenter = new UserNotificationDetailPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
                 base.OnCreate(savedInstanceState);
                 SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
                 Bundle extras = Intent.Extras;

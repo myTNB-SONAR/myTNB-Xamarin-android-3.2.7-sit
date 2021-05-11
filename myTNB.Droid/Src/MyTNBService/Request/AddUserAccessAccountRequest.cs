@@ -1,7 +1,7 @@
 ﻿using System;
 namespace myTNB_Android.Src.MyTNBService.Request
 {
-    public class AddUserAccessAccountRequest : BaseRequest
+    public class AddUserAccessAccountRequest : BaseRequestV2
     {
         public string AccountNo, Email;
         public bool isHaveAccess, isApplyBilling;

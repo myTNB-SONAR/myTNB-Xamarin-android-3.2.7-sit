@@ -27,6 +27,7 @@ using Org.BouncyCastle.Crypto.Signers;
 using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.ManageAccess.Activity;
 using myTNB_Android.Src.Database.Model;
+using Android.Preferences;
 
 namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 {
@@ -145,7 +146,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 // this.SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 //SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
 
-                mPresenter = new ManageSupplyAccountPresenter(this, accountData);
+                mPresenter = new ManageSupplyAccountPresenter(this, accountData, PreferenceManager.GetDefaultSharedPreferences(this));
                 this.userActionsListener.Start();
             }
             catch (Exception e)

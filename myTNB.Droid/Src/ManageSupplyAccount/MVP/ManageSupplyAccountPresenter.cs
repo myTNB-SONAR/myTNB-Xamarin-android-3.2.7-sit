@@ -23,9 +23,12 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
         private ManageSupplyAccountContract.IView mView;
         CancellationTokenSource cts;
         AccountData accountData;
-        public ManageSupplyAccountPresenter(ManageSupplyAccountContract.IView mView, AccountData accountData)
+        private ISharedPreferences mSharedPref;
+
+        public ManageSupplyAccountPresenter(ManageSupplyAccountContract.IView mView, AccountData accountData, ISharedPreferences mSharedPref)
         {
             this.mView = mView;
+            this.mSharedPref = mSharedPref;
             this.mView.SetPresenter(this);
             this.accountData = accountData;
         }
@@ -59,7 +62,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(new RemoveAccountRequest(accountData.AccountNum));
+                RemoveAccountRequest removeAccountRequest = new RemoveAccountRequest(accountData.AccountNum);
+                removeAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
+                string dt = JsonConvert.SerializeObject(removeAccountRequest);
+
+                var removeAccountResponse = await ServiceApiImpl.Instance.RemoveAccount(removeAccountRequest);
 
                 if (mView.IsActive())
                 {

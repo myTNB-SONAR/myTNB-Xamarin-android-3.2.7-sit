@@ -9,6 +9,10 @@ namespace myTNB_Android.Src.Login.Models
         [AliasAs("__type")]
         public string __type { get; set; }
 
+        [JsonProperty(PropertyName = "IsWhiteList")]
+        [AliasAs("IsWhiteList")]
+        public bool IsWhiteList { get; set; }
+
         [JsonProperty(PropertyName = "userID")]
         [AliasAs("userID")]
         public string UserId { get; set; }
@@ -49,6 +53,8 @@ namespace myTNB_Android.Src.Login.Models
         [JsonProperty(PropertyName = "isActivated")]
         [AliasAs("isActivated")]
         public bool IsActivated { get; set; }
+
+        
 
 
         public User(string __type, string userId, string displayName, string userName, string email, string dateCreated, string lastLoginDate)

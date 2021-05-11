@@ -122,6 +122,8 @@ namespace myTNB_Android.Src.Login.MVP
                     {
                         this.mView.HideProgressDialog();
                         this.mView.ShowInvalidEmailPasswordError(userResponse.Response.DisplayMessage);
+
+                        UserSessions.SaveWhiteList(mSharedPref, false);
                     }
                 }
                 else
@@ -156,6 +158,13 @@ namespace myTNB_Android.Src.Login.MVP
                     {
                         UserSessions.SaveUserEmail(mSharedPref, "");
                     }
+
+
+                    ///<summary>
+                    ///THIS TO SAVE WHITELIST
+                    ///</summary>
+                    UserSessions.SaveWhiteList(mSharedPref, userResponse.GetData().IsWhiteList);
+                   
 
                     // TODO : REMOVE PASSWORD PERSISTANCE INSTEAD FOLLOW IOS WORKFLOW
                     // TODO : IF THERES AN EXISTING FORGET PASSWORD DO NOT SAVE USER

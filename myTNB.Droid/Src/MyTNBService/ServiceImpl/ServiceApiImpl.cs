@@ -218,7 +218,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<LogUserAccessResponse> AddUserAcess_OT([Body] Request.BaseRequest request)
+        public Task<LogUserAccessResponse> AddUserAcess_OT([Body] Request.BaseRequestV2 request)
         {
             return api.AddUserAcess_OT<LogUserAccessResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //wan   //api add user access
         }
@@ -228,7 +228,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<LogUserAccessResponse> RemoveUserAcess_OT([Body] Request.BaseRequest request)
+        public Task<LogUserAccessResponse> RemoveUserAcess_OT([Body] Request.BaseRequestV2 request)
         {
             return api.RemoveUserAcess_OT<LogUserAccessResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //wan   //api remove user access
         }
@@ -248,7 +248,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<ManageAccessAccountListNullResponse> UpdateAccountAccessRight([Body] Request.BaseRequest request)
+        public Task<ManageAccessAccountListNullResponse> UpdateAccountAccessRight([Body] Request.BaseRequestV2 request)
         {
             return api.UpdateAccountAccessRight<ManageAccessAccountListNullResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //2enapps wan   //api add multiple account new
         }
@@ -258,7 +258,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<AddAccountsResponse> AddMultipleAccounts_OT([Body] Request.BaseRequest request)
+        public Task<AddAccountsResponse> AddMultipleAccounts_OT([Body] Request.BaseRequestV2 request)
         {
             return api.AddMultipleAccounts_OT<AddAccountsResponse>(request, CancellationTokenSourceWrapper.GetToken());                     //2enapps wan   //api add multiple account new
         }
@@ -587,7 +587,7 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task<RemoveAccountResponse> RemoveAccount([Body] Request.BaseRequest request)
+        public Task<RemoveAccountResponse> RemoveAccount([Body] Request.BaseRequestV2 request)
         {
             return api.RemoveAccount<RemoveAccountResponse>(request, CancellationTokenSourceWrapper.GetToken());
         }

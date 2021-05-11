@@ -1,4 +1,5 @@
-﻿using Android.Text;
+﻿using Android.Content;
+using Android.Text;
 using Android.Util;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.Requests;
@@ -24,10 +25,14 @@ namespace myTNB_Android.Src.AddAccount.MVP
     {
         private static string TAG = "AddAccountPresenter";
         private LinkAccountContract.IView mView;
+        private ISharedPreferences mSharedPref;
 
-        public LinkAccountPresenter(LinkAccountContract.IView mView)
+
+        public LinkAccountPresenter(LinkAccountContract.IView mView, ISharedPreferences mSharedPref)
+        //public LinkAccountPresenter(LinkAccountContract.IView mView)
         {
             this.mView = mView;
+            this.mSharedPref = mSharedPref;
             this.mView.SetPresenter(this);
         }
 
@@ -165,7 +170,13 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     mView.ShowAddingAccountProgressDialog();
                 }
                 //var tempReq = JsonConvert.SerializeObject(accounts);
-                AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts_OT(new AddAccountsRequest(accounts,name));
+
+                //bool flag = UserSessions.GetWhiteList(mSharedPref);
+
+                AddAccountsRequest addaccRequest = new AddAccountsRequest(accounts, name);
+                addaccRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
+                string dt = JsonConvert.SerializeObject(addaccRequest);
+                AddAccountsResponse result = await ServiceApiImpl.Instance.AddMultipleAccounts_OT(addaccRequest);
 
                 if (result.IsSuccessResponse())
                 {

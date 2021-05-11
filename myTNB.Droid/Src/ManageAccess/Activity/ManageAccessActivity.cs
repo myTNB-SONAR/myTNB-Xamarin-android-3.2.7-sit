@@ -189,7 +189,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 listView.SetNoScroll();
                 listView.ItemClick += ListView_ItemClick;
 
-                mPresenter = new ManageAccessPresenter(this, accountData);
+                mPresenter = new ManageAccessPresenter(this, accountData, mPref);
                 this.userActionsListener.Start();
             }
             catch (Exception e)

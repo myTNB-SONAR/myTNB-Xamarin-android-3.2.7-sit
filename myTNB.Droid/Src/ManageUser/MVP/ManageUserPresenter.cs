@@ -21,10 +21,13 @@ namespace myTNB_Android.Src.ManageUser.MVP
         private ManageUserContract.IView mView;
         CancellationTokenSource cts;
         UserManageAccessAccount accountData;
-        public ManageUserPresenter(ManageUserContract.IView mView, UserManageAccessAccount accountData)
+        private ISharedPreferences mSharedPref;
+
+        public ManageUserPresenter(ManageUserContract.IView mView, UserManageAccessAccount accountData, ISharedPreferences mSharedPref)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
+            this.mSharedPref = mSharedPref;
             this.accountData = accountData;
         }
 
@@ -59,7 +62,11 @@ namespace myTNB_Android.Src.ManageUser.MVP
             try
             {
                 string action = "U";
-                var updateUserAccessReponse = await ServiceApiImpl.Instance.UpdateAccountAccessRight(new UpdateUserAccessRequest(userId, haveAccess, haveEBiling, action, accountData.AccNum, user.DisplayName));
+                UpdateUserAccessRequest updateUserAccessRequest = new UpdateUserAccessRequest(userId, haveAccess, haveEBiling, action, accountData.AccNum, user.DisplayName);
+                updateUserAccessRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
+                string dt = JsonConvert.SerializeObject(updateUserAccessRequest);
+
+                var updateUserAccessReponse = await ServiceApiImpl.Instance.UpdateAccountAccessRight(updateUserAccessRequest);
 
                 if (mView.IsActive())
                 {
