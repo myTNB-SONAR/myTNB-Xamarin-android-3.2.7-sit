@@ -221,28 +221,25 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED:
                         {
-                            if (UserSessions.GetWhiteList(mSharedPref) == false)
-                            {
+                            
                                 imageResourceBanner = Resource.Drawable.noti_nonowner_to_owner;
                                 primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewManageAccess"),
                                     delegate () { ViewManageAccess(notificationDetails); });
                                 primaryCTA.SetSolidCTA(true);
                                 ctaList.Add(primaryCTA);
-                            }
+                            
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_REMOVE_ACCESS:
                         {
-                            if (UserSessions.GetWhiteList(mSharedPref) == false)
-                            {
+                            
                                 imageResourceBanner = Resource.Drawable.noti_removed_by_owner;
-                            }
+                            
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_NEW_ACCESS_ADDED:
                         {
-                            if (UserSessions.GetWhiteList(mSharedPref) == false)
-                            {
+                            
                                 imageResourceBanner = Resource.Drawable.noti_access_changed_by_owner;
                                 primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewMyUsage"),
                                    delegate () { ViewMyUsage(notificationDetails); });
@@ -253,19 +250,18 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                                     delegate () { ViewManageAccess(notificationDetails); });
                                     ctaList.Add(secondaryCTA);
                                 }
-                            }
+                            
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_UPDATE_ACCESS:
                         {
-                            if (UserSessions.GetWhiteList(mSharedPref) == false)
-                            {
+                            
                                 imageResourceBanner = Resource.Drawable.noti_access_changed_by_owner;
                                 primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewAccount"),
                                     delegate () { ViewManageAccess(notificationDetails); });
                                 primaryCTA.SetSolidCTA(true);
                                 ctaList.Add(primaryCTA);
-                            }
+                            
                             break;
                         }
                     default:

@@ -114,6 +114,7 @@ namespace myTNB_Android.Src.Login.MVP
                 Log.Debug(TAG, "[DEBUG] FCM TOKEN: " + fcmToken);
                 UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);
                 userAuthRequest.SetUserName(usrNme);
+                //string dt = JsonConvert.SerializeObject(userAuthRequest);
                 var userResponse = await ServiceApiImpl.Instance.UserAuthenticateLogin(userAuthRequest);
 
                 if (!userResponse.IsSuccessResponse())

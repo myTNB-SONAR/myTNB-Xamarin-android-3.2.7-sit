@@ -77,7 +77,7 @@ namespace myTNB_Android.Src.AddNewUser.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                AddUserAccessAccountRequest addUserAccessAccountRequest = new AddUserAccessAccountRequest(emailNewUser, accNo, ishaveAccess, ishaveEBilling, accAddress, accName));
+                AddUserAccessAccountRequest addUserAccessAccountRequest = new AddUserAccessAccountRequest(emailNewUser, accNo, ishaveAccess, ishaveEBilling, accAddress, accName);
                 addUserAccessAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(addUserAccessAccountRequest);
 
