@@ -216,7 +216,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             ShowDeleteAccDialog(this, () =>
             {
                 UserManageAccessAccount account = adapter.GetItemObject(position);
-                UserManageAccessAccount.SetSelected(account.AccNum, true, account.UserAccountId);
+                UserManageAccessAccount.SetSelected(account.AccNum, true, account.UserAccountId, account.email);
                 List<UserManageAccessAccount> DeletedSelectedUser = UserManageAccessAccount.ListIsSelected(accountData?.AccountNum);
                 mPresenter.OnRemoveAccountMultiple(DeletedSelectedUser, false);
             });           
