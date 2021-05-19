@@ -1081,6 +1081,7 @@
     <Compile Include="Src\myTNBMenu\Requests\SMUsageHistoryRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationChannelRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationTypeRequest.cs" />
+    <Compile Include="Src\MyTNBService\Request\RemoveAccountRequestNew.cs" />
     <Compile Include="Src\MyTNBService\Request\ResendInviteUserAccessRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetSearchForAccountRequest.cs" />
     <Compile Include="Src\MyTNBService\Request\GetRegisteredUser.cs" />

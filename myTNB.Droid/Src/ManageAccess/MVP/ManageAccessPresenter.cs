@@ -173,15 +173,31 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             int i = 0;
             String[] accountIdList = new String[DeletedSelectedUser.Count];
 
+            ArrayList nameList3 = new ArrayList();
+            int m = 0;
+            String[] accountemailList = new String[DeletedSelectedUser.Count];
+
             foreach (UserManageAccessAccount accUser in DeletedSelectedUser)
             {
                 if (accUser.UserAccountId != null)
                 {                   
                     nameList2.Add(accUser.UserAccountId);
                     accountIdList[i] = accUser.UserAccountId;
+                    nameList3.Add(accUser.email);
+                    accountemailList[i] = accUser.email;
                     ++i;
                 }
             }
+
+            //foreach (UserManageAccessAccount accUser in DeletedSelectedUser)
+            //{
+            //    if (accUser.email != null)
+            //    {
+            //        nameList3.Add(accUser.email);
+            //        accountemailList[i] = accUser.email;
+            //        ++m;
+            //    }
+            //}
 
             if (mView.IsActive())
             {
@@ -191,7 +207,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                RemoveUserAccountRequest removeUserAccountRequest = new RemoveUserAccountRequest(accountIdList, accountData.AccountNum);
+                RemoveUserAccountRequest removeUserAccountRequest = new RemoveUserAccountRequest(accountIdList, accountemailList, accountData.AccountNum);
                 removeUserAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(removeUserAccountRequest);
 
