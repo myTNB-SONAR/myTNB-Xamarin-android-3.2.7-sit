@@ -35,7 +35,7 @@
                 android:background="@color/lightGrey">
             <LinearLayout
                 android:id="@+id/log_activity_layout"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:orientation="vertical">
                 <LinearLayout
@@ -52,13 +52,19 @@
                         android:textColor="@color/blue"
                         android:padding="16dp"
                         android:text="This Week" />
-                    <ListView
+                    <!--<ListView
                         android:id="@+id/this_week_list_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="fill_parent"
                         android:background="@color/white"
                         android:listSelector="@android:color/transparent" 
-                        android:cacheColorHint="@android:color/transparent"/>
+                        android:cacheColorHint="@android:color/transparent"/>-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/this_week_list_recycler_view"
+                        android:scrollbars="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"/>
                     <TextView
                         android:id="@+id/text_title_last_week"
                         android:layout_height="wrap_content"
@@ -67,14 +73,20 @@
                         android:textColor="@color/blue"
                         android:padding="16dp"
                         android:text="Last Week" />
-                    <ListView
+                    <!--<ListView
                         android:id="@+id/last_week_list_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="fill_parent"
                         android:scrollbars="none"
                         android:background="@color/white"
                         android:listSelector="@android:color/transparent" 
-                        android:cacheColorHint="@android:color/transparent" />
+                        android:cacheColorHint="@android:color/transparent" />-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/last_week_list_recycler_view"
+                        android:scrollbars="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"/>
                     <TextView
                         android:id="@+id/text_title_last_month"
                         android:layout_height="fill_parent"
@@ -83,7 +95,13 @@
                         android:textColor="@color/blue"
                         android:padding="16dp"
                         android:text="Last Month"/>
-                    <ListView
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/month_list_recycler_view"
+                        android:scrollbars="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"/>
+                    <!--<ListView
                         android:id="@+id/month_list_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -91,7 +109,7 @@
                         android:background="@color/white"
                         android:listSelector="@android:color/transparent" 
                         android:cacheColorHint="@android:color/transparent"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp" />-->
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/progressbarlayout"

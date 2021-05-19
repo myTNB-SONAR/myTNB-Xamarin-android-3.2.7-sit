@@ -61,6 +61,7 @@
                                         app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                                         app:errorEnabled="true"
                                         android:layout_marginTop="12dp"
+                                        android:layout_marginLeft="-2dp"
                                         android:id="@+id/textInputLayoutUserEmail">
                                         <EditText
                                             android:hint="@string/registration_form_full_name_hint"

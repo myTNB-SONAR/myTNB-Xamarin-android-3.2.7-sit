@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.LogUserAccess.Adapter;
@@ -27,10 +28,10 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
         TextView texttitleThisWeek;
 
         [BindView(Resource.Id.this_week_list_recycler_view)]
-        ListView ThisWeeklistview;
+        RecyclerView ThisWeeklistview;
 
         [BindView(Resource.Id.last_week_list_recycler_view)]
-        ListView LastWeeklistview;
+        RecyclerView LastWeeklistview;
 
         [BindView(Resource.Id.text_title_last_week)]
         TextView texttitleLastWeek;
@@ -39,7 +40,7 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
         TextView texttitleLastMonth;
 
         [BindView(Resource.Id.month_list_recycler_view)]
-        ListView LastMonthlistview;
+        RecyclerView LastMonthlistview;
 
         [BindView(Resource.Id.log_activity_layout)]
         LinearLayout log_activity_layout;
@@ -55,6 +56,7 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
 
         LogUserAccessAdapter adapter;
 
+        LogUserAccessRecyclerviewAdapter logUserAccessRecyclerviewAdapter;
         LogUserAccessContract.IUserActionsListener userActionsListener;
         LogUserAccessPresenter mPresenter;
         List<LogUserAccessNewData> LogListData;
@@ -82,31 +84,71 @@ namespace myTNB_Android.Src.LogUserAccess.Activity
             return true;
         }
 
-        public void ShowLogList(List<LogUserAccessNewData> logUserData)
-        {
-            adapter = new LogUserAccessAdapter(this, logUserData);
-            adapter.NotifyDataSetChanged();
-            LastMonthlistview.Adapter = adapter;
-            LastMonthlistview.SetNoScroll();
-            LastMonthlistview.SetScrollContainer(false);
-        }
-
         public void ShowLogListThisWeek(List<LogUserAccessNewData> logUserDataThisWeek)
         {
-            adapter = new LogUserAccessAdapter(this, logUserDataThisWeek);
-            adapter.NotifyDataSetChanged();
-            ThisWeeklistview.Adapter = adapter;
-            ThisWeeklistview.SetNoScroll();
-            ThisWeeklistview.SetScrollContainer(false);
+            DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(ThisWeeklistview.Context,
+            DividerItemDecoration.Vertical);
+            ThisWeeklistview.AddItemDecoration(mDividerItemDecoration);
+
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+            ThisWeeklistview.SetLayoutManager(linearLayoutManager);
+            logUserAccessRecyclerviewAdapter = new LogUserAccessRecyclerviewAdapter(this, logUserDataThisWeek);
+
+            ThisWeeklistview.SetAdapter(logUserAccessRecyclerviewAdapter);
+            logUserAccessRecyclerviewAdapter.NotifyDataSetChanged();
+            logUserAccessRecyclerviewAdapter.OnAttachedToRecyclerView(ThisWeeklistview);
+
+            //LogUserAccessRecyclerviewAdapter.NotifyDataSetChanged();
+            //logUserAccessRecyclerviewAdapter.(logUserDataThisWeek);
+            //ThisWeeklistview.Adapter = adapter;
+            //ThisWeeklistview.SetNoScroll();
+            //ThisWeeklistview.SetScrollContainer(false);
         }
 
         public void ShowLogListLastWeek(List<LogUserAccessNewData> logUserDataLastWeek)
         {
-            adapter = new LogUserAccessAdapter(this, logUserDataLastWeek);
-            adapter.NotifyDataSetChanged();
-            LastWeeklistview.Adapter = adapter;
-            LastWeeklistview.SetNoScroll();
-            LastWeeklistview.SetScrollContainer(false);
+            DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(LastWeeklistview.Context,
+            DividerItemDecoration.Vertical);
+            LastWeeklistview.AddItemDecoration(mDividerItemDecoration);
+
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+            LastWeeklistview.SetLayoutManager(linearLayoutManager);
+            logUserAccessRecyclerviewAdapter = new LogUserAccessRecyclerviewAdapter(this, logUserDataLastWeek);
+
+            LastWeeklistview.SetAdapter(logUserAccessRecyclerviewAdapter);
+            logUserAccessRecyclerviewAdapter.NotifyDataSetChanged();
+            logUserAccessRecyclerviewAdapter.OnAttachedToRecyclerView(LastWeeklistview);
+
+            //logUserAccessRecyclerviewAdapter = new LogUserAccessRecyclerviewAdapter(this, this, true);
+            //logUserAccessRecyclerviewAdapter.NotifyDataSetChanged();
+            //logUserAccessRecyclerviewAdapter.AddAll(logUserDataLastWeek);
+
+            //LastWeeklistview.Adapter = adapter;
+            //LastWeeklistview.SetNoScroll();
+            //LastWeeklistview.SetScrollContainer(false);
+        }
+
+        public void ShowLogList(List<LogUserAccessNewData> logUserData)
+        {
+            DividerItemDecoration mDividerItemDecoration = new DividerItemDecoration(LastMonthlistview.Context,
+            DividerItemDecoration.Vertical);
+            LastMonthlistview.AddItemDecoration(mDividerItemDecoration);
+
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
+            LastMonthlistview.SetLayoutManager(linearLayoutManager);
+            logUserAccessRecyclerviewAdapter = new LogUserAccessRecyclerviewAdapter(this, logUserData);
+
+            LastMonthlistview.SetAdapter(logUserAccessRecyclerviewAdapter);
+            logUserAccessRecyclerviewAdapter.NotifyDataSetChanged();
+            logUserAccessRecyclerviewAdapter.OnAttachedToRecyclerView(LastMonthlistview);
+
+            //logUserAccessRecyclerviewAdapter = new LogUserAccessRecyclerviewAdapter(this, this, true);
+            //logUserAccessRecyclerviewAdapter.NotifyDataSetChanged();
+            //logUserAccessRecyclerviewAdapter.AddAll(logUserData);
+
+            //LastMonthlistview.Adapter = adapter;
+            //LastMonthlistview.SetNoScroll();
+            //LastMonthlistview.SetScrollContainer(false);
         }
 
         protected override void OnCreate(Bundle savedInstanceState)

@@ -95,7 +95,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 }                
                 else
                 {
-                    var addAccountForm = new AddAccountTypeFragmentOwner();
+                    var addAccountForm = new AddAccountFormFragmentNonOwner();
                     addAccountForm.Arguments = bundle;
                     var fragmentTransaction = SupportFragmentManager.BeginTransaction();
                     fragmentTransaction.Add(Resource.Id.fragment_container, addAccountForm);

@@ -6843,6 +6843,7 @@
       <Generator>
       </Generator>
     </AndroidResource>
+    <Compile Include="Src\LogUserAccess\Adapter\LogUserAccessRecyclerviewAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
