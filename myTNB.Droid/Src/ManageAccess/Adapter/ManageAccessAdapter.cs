@@ -124,7 +124,7 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
             throw new System.NotImplementedException();
         }
 
-        public void OnRemoveAccount(string numacc)
+        public void OnRemoveAccount(List<UserManageAccessAccount> DeletedSelectedUser,List<Models.DeleteAccessAccount> accounts, string AccountNum)
         {
             throw new NotImplementedException();
         }

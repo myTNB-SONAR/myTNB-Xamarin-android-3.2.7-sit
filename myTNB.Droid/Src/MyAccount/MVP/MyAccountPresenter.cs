@@ -75,7 +75,7 @@ namespace myTNB_Android.Src.MyAccount.MVP
             {
                 bool isHaveAccess = false;
                 bool isApplyBilling = false;
-                RemoveAccountRequestNew removeAccountRequest = new RemoveAccountRequestNew(AccountNum,isHaveAccess, isApplyBilling);
+                RemoveAccountRequestNew removeAccountRequest = new RemoveAccountRequestNew(AccountNum);
                 removeAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(removeAccountRequest);
 

@@ -34,6 +34,7 @@ using AndroidX.Core.Content;
 using myTNB_Android.Src.LogUserAccess.Activity;
 using myTNB_Android.Src.LogUserAccess.Models;
 using Java.Util;
+using myTNB_Android.Src.ManageAccess.Models;
 
 namespace myTNB_Android.Src.ManageAccess.Activity
 {
@@ -218,7 +219,8 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 UserManageAccessAccount account = adapter.GetItemObject(position);
                 UserManageAccessAccount.SetSelected(account.AccNum, true, account.UserAccountId, account.email);
                 List<UserManageAccessAccount> DeletedSelectedUser = UserManageAccessAccount.ListIsSelected(accountData?.AccountNum);
-                mPresenter.OnRemoveAccountMultiple(DeletedSelectedUser, false);
+                List<DeleteAccessAccount> accountList = new List<DeleteAccessAccount>();
+                mPresenter.OnRemoveAccountMultiple(DeletedSelectedUser, false, accountList, accountData.AccountNum);
             });           
         }
 
@@ -374,7 +376,8 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                     ShowDeleteAccDialog(this, () =>
                     {
                         List<UserManageAccessAccount> DeletedSelectedUser = UserManageAccessAccount.ListIsSelected(accountData?.AccountNum);
-                        mPresenter.OnRemoveAccountMultiple(DeletedSelectedUser, true);                        
+                        List<DeleteAccessAccount> accountList = new List<DeleteAccessAccount>();
+                        mPresenter.OnRemoveAccountMultiple(DeletedSelectedUser, false, accountList, accountData.AccountNum);
                     });
                 }
                 this.SetIsClicked(false);

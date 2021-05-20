@@ -64,7 +64,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
             {
                 bool isHaveAccess = false;
                 bool isApplyBilling = false;
-                RemoveAccountRequestNew removeAccountRequest = new RemoveAccountRequestNew(accountData.AccountNum,isHaveAccess, isApplyBilling);
+                RemoveAccountRequestNew removeAccountRequest = new RemoveAccountRequestNew(accountData.AccountNum);
                 removeAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(removeAccountRequest);
 
@@ -157,7 +157,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
             try
             {
 
-                ManageAccessAccountListResponse manageAccessAccountListResponse = await ServiceApiImpl.Instance.GetAccountAccessRightList( new GetAccountAccessRight(accountData.AccountNum));
+                ManageAccessAccountListResponse manageAccessAccountListResponse = await ServiceApiImpl.Instance.GetAccountAccessRightList(new GetAccountAccessRight(accountData.AccountNum));
 
                 if (mView.IsActive())
                 {

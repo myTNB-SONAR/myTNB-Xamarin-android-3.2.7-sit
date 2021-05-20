@@ -232,7 +232,7 @@ namespace myTNB_Android.Src.MyTNBService.InterfaceAPI
         Task<T> GetBillHistory<T>([Body] MyTNBService.Request.BaseRequest request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v6/mytnbappws.asmx/RemoveAccount")]
+        [Post("/v6/mytnbappws.asmx/RemoveAccount_OT")]
         Task<T> RemoveAccount<T>([Body] MyTNBService.Request.BaseRequestV2 request, CancellationToken token);
 
         [Headers("Content-Type:application/json; charset=utf-8")]

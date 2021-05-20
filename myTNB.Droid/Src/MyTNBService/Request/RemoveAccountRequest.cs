@@ -1,15 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
+
 namespace myTNB_Android.Src.MyTNBService.Request
 {
     public class RemoveAccountRequest : BaseRequestV2
     {
-        public string accNum;
+        public string AccountNo;
         public DeviceInfoRequest deviceInf;
+        public List<ManageAccess.Models.DeleteAccessAccount> removeAccounts;
 
-        public RemoveAccountRequest(string accNum)
+        public RemoveAccountRequest(List<ManageAccess.Models.DeleteAccessAccount> accountList, string accNum)
         {
             deviceInf = new DeviceInfoRequest();
-            this.accNum = accNum;
+            this.AccountNo = accNum;
+            removeAccounts = accountList;
+            
         }
+        
     }
 }

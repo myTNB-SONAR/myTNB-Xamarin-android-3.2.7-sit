@@ -97,14 +97,14 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             }
         }
 
-        public async void OnRemoveAccount(string AccountNum)
+        public async void OnRemoveAccount(List<UserManageAccessAccount> DeletedSelectedUser,List<DeleteAccessAccount> accountList, string AccountNum)
         {
 
             UserEntity user = UserEntity.GetActive();
             try
             {
 
-                RemoveAccountRequest removeAccountRequest = new RemoveAccountRequest(AccountNum);
+                RemoveAccountRequest removeAccountRequest = new RemoveAccountRequest(accountList, AccountNum);
                 removeAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(removeAccountRequest);
 
@@ -166,38 +166,63 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             }
         }
 
-        public async void OnRemoveAccountMultiple(List<UserManageAccessAccount> DeletedSelectedUser, bool MultipleDelete)
+        public async void OnRemoveAccountMultiple(List<UserManageAccessAccount> DeletedSelectedUser, bool MultipleDelete, List<DeleteAccessAccount> accountList, string AccountNum)
         {
-            //List<LogUserAccessNewData> newAccountList = new List<LogUserAccessNewData>();
-            ArrayList nameList2 = new ArrayList();
-            int i = 0;
-            String[] accountIdList = new String[DeletedSelectedUser.Count];
+            List<LogUserAccessNewData> newAccountList = new List<LogUserAccessNewData>();
+            List<DeleteAccessAccount> AccountList = new List<DeleteAccessAccount>();
 
-            ArrayList nameList3 = new ArrayList();
-            int m = 0;
-            String[] accountemailList = new String[DeletedSelectedUser.Count];
+            //ArrayList nameList2 = new ArrayList();
+            //int i = 0;
+
+
+            //ArrayList nameList3 = new ArrayList();
+            //int m = 0;
+            //String[] accountemailList = new String[DeletedSelectedUser.Count];
+
+            //foreach (var accUser in accountList)
+            //{
+            //    AccountList.Add(new UserManageAccessAccount
+            //    {
+            //        UserAccountId = accUser.UserAccountId,
+            //        IsApplyEBilling = accUser.IsApplyEBilling,
+            //        IsHaveAccess = accUser.IsHaveAccess,
+            //        userId = accUser.userId,
+            //        email = accUser.email
+            //    });
+            //}
+
 
             foreach (UserManageAccessAccount accUser in DeletedSelectedUser)
             {
                 if (accUser.UserAccountId != null)
-                {                   
-                    nameList2.Add(accUser.UserAccountId);
-                    accountIdList[i] = accUser.UserAccountId;
-                    nameList3.Add(accUser.email);
-                    accountemailList[i] = accUser.email;
-                    ++i;
+                {
+                    var newRecord = new DeleteAccessAccount()
+                    {
+                        UserAccountId = accUser.UserAccountId,
+                        IsApplyEBilling = accUser.IsApplyEBilling,
+                        IsHaveAccess = accUser.IsHaveAccess,
+                        userId = accUser.userId,
+                        email = accUser.email,
+                    };
+                    AccountList.Add(newRecord);
                 }
             }
 
+
+            //}
+            //String[] accountIdList = new String[DeletedSelectedUser.Count];
+
             //foreach (UserManageAccessAccount accUser in DeletedSelectedUser)
             //{
-            //    if (accUser.email != null)
+            //    if (accUser.UserAccountId != null)
             //    {
-            //        nameList3.Add(accUser.email);
-            //        accountemailList[i] = accUser.email;
-            //        ++m;
+            //        nameList2.Add(accUser.UserAccountId);
+            //        accountIdList[i] = accUser.UserAccountId;
+
+            //        ++i;
             //    }
             //}
+
 
             if (mView.IsActive())
             {
@@ -207,7 +232,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
             UserEntity user = UserEntity.GetActive();
             try
             {
-                RemoveUserAccountRequest removeUserAccountRequest = new RemoveUserAccountRequest(accountIdList, accountemailList, accountData.AccountNum);
+                RemoveAccountRequest removeUserAccountRequest = new RemoveAccountRequest(AccountList, AccountNum);
                 removeUserAccountRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(removeUserAccountRequest);
 

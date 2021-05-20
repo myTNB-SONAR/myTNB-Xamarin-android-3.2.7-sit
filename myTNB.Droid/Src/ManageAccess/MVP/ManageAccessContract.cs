@@ -121,7 +121,7 @@ namespace myTNB_Android.Src.ManageAccess.MVP
         public interface IUserActionsListener : IBasePresenter
         {
 
-            void OnRemoveAccount(string numacc);
+            void OnRemoveAccount(List<UserManageAccessAccount> DeletedSelectedUser,List<Models.DeleteAccessAccount> accounts, string AccountNum);
 
             void OnAddLogUserAccess(AccountData accountData);
 
