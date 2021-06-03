@@ -76,7 +76,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
             /// <param name="data">intent</param>
             void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data);
 
-            void UpdateAccountAccessRight(string userAccountId, bool isHaveAccess, bool isApplyEBilling, string email);
+            void UpdateAccountAccessRight(string userAccountId, string userId, bool isHaveAccess, bool isApplyEBilling, string email);
 
             void CancelInvitedUser(string userId);
 
