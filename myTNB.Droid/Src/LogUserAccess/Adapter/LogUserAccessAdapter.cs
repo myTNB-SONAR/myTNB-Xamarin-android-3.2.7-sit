@@ -8,6 +8,7 @@ using CheeseBind;
 using Java.Text;
 using Java.Util;
 using myTNB_Android.Src.Base.Adapter;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.LogUserAccess.Models;
 using myTNB_Android.Src.Utils;
 using System;
@@ -73,18 +74,37 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
 
                 if (data.Action.Equals("A"))
                 {
-                    viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_joined));
-                    string txtdata = Utility.GetLocalizedLabel("UserAccess", "addAccountUserAccesssLog");
-                    string temp = string.Format(txtdata, data.UserName);
-
-                    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    if (UserEntity.GetActive().Email == data.CreateBy)
                     {
-                        viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
+                        viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_joined));
+                        string txtdata = Utility.GetLocalizedLabel("UserAccess", "addAccountUserAccesssLog");
+                        string temp = string.Format(txtdata, data.UserName);
+
+                        if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
+                        }
+                        else
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
+                        }
                     }
                     else
                     {
-                        viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
+                        viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_joined));
+                        string txtData = Utility.GetLocalizedLabel("UserAccess", "addAccountUserLog");
+                        string temp2 = string.Format(txtData, data.UserName);
+
+                        if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp2, FromHtmlOptions.ModeLegacy);
+                        }
+                        else
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp2);
+                        }
                     }
+                   
                 }
                 else if (data.Action.Equals("U"))
                 {
@@ -154,18 +174,38 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                 }
                 else
                 {
-                    viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_left));
-                    string txtdata = Utility.GetLocalizedLabel("UserAccess", "removeAccountUserAccesssLog");
-                    string temp = string.Format(txtdata, data.UserName);
 
-                    if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                    if (UserEntity.GetActive().Email == data.CreateBy)
                     {
-                        viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
+                        viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_left));
+                        string txtData = Utility.GetLocalizedLabel("UserAccess", "removeAccountUserAccesssLog");
+                        string temp2 = string.Format(txtData, data.UserName);
+
+                        if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp2, FromHtmlOptions.ModeLegacy);
+                        }
+                        else
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp2);
+                        }
                     }
                     else
                     {
-                        viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
+                        viewHolder.itemIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.icons_activity_log_left));
+                        string txtdata = Utility.GetLocalizedLabel("UserAccess", "removeAccountLog");
+                        string temp = string.Format(txtdata, data.UserName);
+
+                        if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp, FromHtmlOptions.ModeLegacy);
+                        }
+                        else
+                        {
+                            viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
+                        }
                     }
+                   
                 }
             }
             catch (Exception e)
