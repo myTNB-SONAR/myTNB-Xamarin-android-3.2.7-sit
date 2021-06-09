@@ -28,10 +28,6 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-[assembly: MetaData("net.hockeyapp.android.appIdentifier", Value = "6febc75ee45a4523a5212cd60379d56a")]
-
 [assembly: UsesPermission(Manifest.Permission.AccessFineLocation)]
 [assembly: UsesPermission(Manifest.Permission.AccessCoarseLocation)]
 [assembly: UsesPermission(Manifest.Permission.Internet)]
-
