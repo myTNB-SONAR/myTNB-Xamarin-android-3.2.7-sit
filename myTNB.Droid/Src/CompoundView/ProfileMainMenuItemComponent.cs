@@ -41,7 +41,7 @@ namespace myTNB_Android.Src.CompoundView
             profileItemContent = FindViewById<LinearLayout>(Resource.Id.profileItemContent);
 
             TextViewUtils.SetMuseoSans500Typeface(itemHeaderTitle);
-            itemHeaderTitle.TextSize = TextViewUtils.GetFontSize(14);
+            TextViewUtils.SetTextSize14(itemHeaderTitle);
         }
 
         public void SetHeaderTitle(string title)

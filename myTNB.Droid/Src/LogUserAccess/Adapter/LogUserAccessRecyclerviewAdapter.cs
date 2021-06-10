@@ -234,11 +234,9 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                 itemTitle = itemView.FindViewById<TextView>(Resource.Id.itemTitle);
 
                 TextViewUtils.SetMuseoSans300Typeface(infoLabelDate);
-
                 TextViewUtils.SetMuseoSans500Typeface(itemTitle);
-
-                infoLabelDate.TextSize = TextViewUtils.GetFontSize(12);
-                itemTitle.TextSize = TextViewUtils.GetFontSize(14);
+                TextViewUtils.SetTextSize12(infoLabelDate);
+                TextViewUtils.SetTextSize14(itemTitle);
 
             }
         }

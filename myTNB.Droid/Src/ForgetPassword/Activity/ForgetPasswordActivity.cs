@@ -3,8 +3,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
-
-
 using Android.Text;
 using Android.Util;
 using Android.Views;
@@ -159,12 +157,12 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             //    txtInputLayoutEmail.ErrorEnabled = false;
             //}
 
-            if(txtInputLayoutEmail.Error != Utility.GetLocalizedLabel("Error", "invalid_email"))
+            if (txtInputLayoutEmail.Error != Utility.GetLocalizedLabel("Error", "invalid_email"))
             {
-               txtInputLayoutEmail.Error = Utility.GetLocalizedLabel("Error", "invalid_email");
+                txtInputLayoutEmail.Error = Utility.GetLocalizedLabel("Error", "invalid_email");
             }
 
-            
+
             if (!txtInputLayoutEmail.ErrorEnabled)
                 txtInputLayoutEmail.ErrorEnabled = true;
             this.SetIsClicked(false);
@@ -201,27 +199,16 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
 
                 TextViewUtils.SetMuseoSans500Typeface(txtEmailTitle);
-
                 TextViewUtils.SetMuseoSans300Typeface(txtEmailLinkInfo, txtEmail, txtVerificationCode, txtGetACode);
-
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail, textInputLayoutVerificationCode);
-
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
-                txtEmailTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                txtEmailLinkInfo.TextSize = TextViewUtils.GetFontSize(14f);
-                btnSubmit.TextSize = TextViewUtils.GetFontSize(16f);
-
-
+                TextViewUtils.SetTextSize14(txtEmailLinkInfo);
+                TextViewUtils.SetTextSize16(txtEmailTitle, btnSubmit);
 
                 txtEmailTitle.Text = GetLabelByLanguage("subTitle");
                 txtEmailLinkInfo.Text = GetLabelByLanguage("details");
                 btnSubmit.Text = GetLabelCommonByLanguage("submit");
-
-
                 txtEmail.TextChanged += TxtEmail_TextChanged;
-
-
-
                 DisableSubmitButton();
             }
             catch (Exception e)
@@ -231,7 +218,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         }
 
         private void TxtEmail_TextChanged(object sender, TextChangedEventArgs e)
-        { 
+        {
             // when typed there will be no error only raised when validated
             txtInputLayoutEmail.Error = null;
 
@@ -243,8 +230,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             {
                 this.EnableSubmitButton();
             }
-            
-            
+
+
         }
 
 
@@ -266,7 +253,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                     this.SetIsClicked(false);
                 }
 
-         
+
             }
         }
 
@@ -469,7 +456,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             {
                 textInputLayoutVerificationCode.Error = GetString(Resource.String.forget_password_empty_code_error);
             }
-            
+
 
             if (!textInputLayoutVerificationCode.ErrorEnabled)
                 textInputLayoutVerificationCode.ErrorEnabled = true;
@@ -639,7 +626,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 }
 
                 return false;
-           
+
             }
             catch (Exception ex)
             {

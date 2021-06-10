@@ -88,10 +88,11 @@ namespace myTNB_Android.Src.Profile.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+            SetTheme(TextViewUtils.IsLargeFonts
+                ? Resource.Style.Theme_DashboardLarge
+                : Resource.Style.Theme_Dashboard);
             TextViewUtils.SetMuseoSans500Typeface(appFontMessage, btnSaveChanges);
-            appFontMessage.TextSize = TextViewUtils.GetFontSize(16);
-            btnSaveChanges.TextSize = TextViewUtils.GetFontSize(16);
+            TextViewUtils.SetTextSize16(appFontMessage, btnSaveChanges);
 
             Bundle extras = Intent.Extras;
 

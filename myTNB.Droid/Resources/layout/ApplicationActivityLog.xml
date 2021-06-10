@@ -57,7 +57,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:id="@+id/lbl_date_text"
-			android:textSize="10sp"
+			android:textSize="10dp"
 			android:layout_marginTop="18dp"
 			android:textColor="#a6a6a6"
 			android:gravity="end"

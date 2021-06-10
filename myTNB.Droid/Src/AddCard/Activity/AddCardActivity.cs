@@ -141,16 +141,17 @@ namespace myTNB_Android.Src.AddCard.Activity
 
                 txtCVV.TextChanged += CvvTextChange;
 
-                txtTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                saveCard.TextSize = TextViewUtils.GetFontSize(16f);
-                btnNext.TextSize = TextViewUtils.GetFontSize(16f);
-                SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_AddCardLarge : Resource.Style.Theme_AddCard);
+                TextViewUtils.SetTextSize16(txtTitle, saveCard, btnNext);
+
+                SetTheme(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.Theme_AddCardLarge
+                    : Resource.Style.Theme_AddCard);
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-           
+
         }
 
         protected override void OnResume()
@@ -178,14 +179,14 @@ namespace myTNB_Android.Src.AddCard.Activity
                 {
                     textInputLayoutCardNo.Error = null;
                 }
-                   
+
 
                 if (String.IsNullOrEmpty(cardNo) || cardNo.Length < 15)
                 {
                     DisableSaveButton();
                     if (!String.IsNullOrEmpty(cardNo) && cardNo.Length < 15)
                     {
-                       
+
                         if (textInputLayoutCardNo.Error != Utility.GetLocalizedLabel("AddCard", "invalidCardNumber"))
                         {
                             textInputLayoutCardNo.Error = Utility.GetLocalizedLabel("AddCard", "invalidCardNumber");
@@ -199,7 +200,7 @@ namespace myTNB_Android.Src.AddCard.Activity
                     {
                         textInputLayoutCardNo.Error = Utility.GetLocalizedLabel("AddCard", "invalidCardNumber");
                     }
-                    
+
                 }
                 else
                 {
@@ -249,25 +250,25 @@ namespace myTNB_Android.Src.AddCard.Activity
                     textInputLayoutCardExpDate.Error = null;
                 }
 
-            
+
                 if (String.IsNullOrEmpty(exp) || exp.Length != 5 || !exp.Contains("/"))
                 {
                     DisableSaveButton();
                     if (!String.IsNullOrEmpty(exp))
-                    {   
+                    {
 
-                        if(textInputLayoutCardExpDate.Error != Utility.GetLocalizedLabel("AddCard", "invalidCardExpiry"))
+                        if (textInputLayoutCardExpDate.Error != Utility.GetLocalizedLabel("AddCard", "invalidCardExpiry"))
                         {
                             textInputLayoutCardExpDate.Error = Utility.GetLocalizedLabel("AddCard", "invalidCardExpiry");
                         }
-                     
+
                     }
                 }
                 else
                 {
                     textInputLayoutCardExpDate.Error = null;
                     EnableSaveButton();
-                   
+
                 }
             }
             catch (Exception ex)
@@ -288,18 +289,18 @@ namespace myTNB_Android.Src.AddCard.Activity
                     textInputLayoutCVV.Error = null;
                 }
 
-           
+
                 if (String.IsNullOrEmpty(cvv) || cvv.Length < 3)
                 {
                     DisableSaveButton();
 
                     if (!String.IsNullOrEmpty(cvv))
-                    {   
-                        if(textInputLayoutCVV.Error != Utility.GetLocalizedLabel("AddCard", "invalidCVV"))
+                    {
+                        if (textInputLayoutCVV.Error != Utility.GetLocalizedLabel("AddCard", "invalidCVV"))
                         {
                             textInputLayoutCVV.Error = Utility.GetLocalizedLabel("AddCard", "invalidCVV");
                         }
-                        
+
                     }
 
                 }

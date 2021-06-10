@@ -138,10 +138,8 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
                 tncWebView = FindViewById<WebView>(Resource.Id.tncWebView);
                 TextViewUtils.SetMuseoSans500Typeface(txtTitle);
                 TextViewUtils.SetMuseoSans300Typeface(txtVersion/*, txtTnCHtml*/);
+                TextViewUtils.SetTextSize14(txtTitle, txtVersion);
 
-                txtTitle.TextSize = TextViewUtils.GetFontSize(14f);
-                txtVersion.TextSize = TextViewUtils.GetFontSize(14f);
-           
                 progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
 
                 txtTitle.Text = "";

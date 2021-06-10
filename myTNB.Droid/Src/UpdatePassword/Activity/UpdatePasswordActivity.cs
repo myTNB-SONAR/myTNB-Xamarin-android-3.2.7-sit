@@ -74,10 +74,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtCurrentPassword,
                     txtNewPassword,
                     txtConfirmPassword);
-                
-                txtCurrentPassword.TextSize = TextViewUtils.GetFontSize(12);
-                txtNewPassword.TextSize = TextViewUtils.GetFontSize(12);
-                txtConfirmPassword.TextSize = TextViewUtils.GetFontSize(12);
+                TextViewUtils.SetTextSize12(txtCurrentPassword, txtNewPassword, txtConfirmPassword);
 
                 txtInputLayoutCurrentPassword.Hint = GetLabelByLanguage("currentPassword");
                 txtInputLayoutNewPassword.Hint = GetLabelByLanguage("newPassword");
@@ -91,8 +88,7 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                 txtInputLayoutConfirmPassword.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
 
                 TextViewUtils.SetMuseoSans500Typeface(btnSave);
-                btnSave.TextSize = TextViewUtils.GetFontSize(14);
-
+                TextViewUtils.SetTextSize14(btnSave);
                 btnSave.Text = GetLabelCommonByLanguage("save");
 
                 txtCurrentPassword.FocusChange += TxtCurrentPassword_FocusChange1; //OnCurrentPasswordTextChange;

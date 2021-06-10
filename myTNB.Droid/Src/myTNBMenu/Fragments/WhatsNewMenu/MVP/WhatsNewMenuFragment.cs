@@ -108,12 +108,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                 whatsNewViewPager.OverScrollMode = OverScrollMode.Never;
 
                 TextViewUtils.SetMuseoSans300Typeface(txtEmptyWhatsNew, txtRefresh);
-
                 TextViewUtils.SetMuseoSans500Typeface(btnRefresh);
-
-                txtEmptyWhatsNew.TextSize = TextViewUtils.GetFontSize(14f);
-                txtRefresh.TextSize = TextViewUtils.GetFontSize(16f);
-                btnRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize14(txtEmptyWhatsNew);
+                TextViewUtils.SetTextSize16(txtRefresh, btnRefresh);
                 whatsNewMainLayout.Visibility = ViewStates.Visible;
 
                 whatsNewEmptyLayout.Visibility = ViewStates.Gone;

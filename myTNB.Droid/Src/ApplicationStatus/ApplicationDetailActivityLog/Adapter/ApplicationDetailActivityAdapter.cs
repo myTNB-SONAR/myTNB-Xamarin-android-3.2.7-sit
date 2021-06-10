@@ -5,13 +5,9 @@ using Android.Content;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
-using CheeseBind;
-using myTNB;
 using myTNB.Mobile;
-using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
-
 
 namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapter
 {
@@ -19,8 +15,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
     {
         BaseAppCompatActivity mActivity;
         List<ApplicationActivityLogDetailDisplay> mApplicationActivityLogDetail = new List<ApplicationActivityLogDetailDisplay>();
-
-
 
         public void Clear()
         {
@@ -56,10 +50,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
             var id = Resource.Layout.ApplicationActivityLog;
             var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
 
-            
+
             return new ApplicationActivityLogViewHolder(itemView);
         }
-        
+
         public class ApplicationActivityLogViewHolder : RecyclerView.ViewHolder
         {
             public ImageView imgstatus_required { get; private set; }
@@ -70,7 +64,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
             public TextView lbl_submittedby_email { get; private set; }
             public View activityLogLine { get; private set; }
 
-            
+
             public TextView lbl_Status { get; private set; }
             public TextView lbl_details { get; private set; }
             public TextView lbl_comment { get; private set; }
@@ -86,7 +80,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
             public LinearLayout Layout_comment { get; private set; }
             public LinearLayout Layout_submittedby { get; private set; }
 
-            
+
             public TextView lbl_attachments { get; private set; }
 
             public RecyclerView listview_attachments_details { get; private set; }
@@ -128,27 +122,17 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                 Layout_comment = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_comment);
                 Layout_submittedby = itemView.FindViewById<LinearLayout>(Resource.Id.Layout_submittedby);
 
-                lbl_Status.TextSize = TextViewUtils.GetFontSize(16);
-                text_status.TextSize = TextViewUtils.GetFontSize(16);
-                lbl_date_text.TextSize = TextViewUtils.GetFontSize(10);
-                lbl_details.TextSize = TextViewUtils.GetFontSize(10);
-                lbl_reason.TextSize = TextViewUtils.GetFontSize(10);
-                lbl_attachments.TextSize = TextViewUtils.GetFontSize(10);
-                lbl_comment.TextSize = TextViewUtils.GetFontSize(10);
-                lbl_comment_text.TextSize = TextViewUtils.GetFontSize(14);
-                lbl_submittedby.TextSize = TextViewUtils.GetFontSize(10);
-                lbl_submittedby_email.TextSize = TextViewUtils.GetFontSize(14);
-
+                TextViewUtils.SetTextSize10(lbl_submittedby, lbl_comment
+                    , lbl_attachments, lbl_reason, lbl_details, lbl_date_text);
+                TextViewUtils.SetTextSize14(lbl_submittedby_email, lbl_comment_text);
+                TextViewUtils.SetTextSize16(lbl_Status, text_status);
             }
-            
 
             public void PopulateData(ApplicationActivityLogDetailDisplay item, List<ApplicationActivityLogDetailDisplay> mApplicationActivityLogDetail, int position)
             {
                 this.item = item;
                 try
                 {
-                   
-                   
                     TextViewUtils.SetMuseoSans300Typeface(text_status);
                     TextViewUtils.SetMuseoSans300Typeface(lbl_date_text);
                     TextViewUtils.SetMuseoSans300Typeface(lbl_comment_text);
@@ -163,11 +147,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                     TextViewUtils.SetMuseoSans300Typeface(lbl_reason);
                     TextViewUtils.SetMuseoSans300Typeface(lbl_attachments);
 
-
-
-
-
-
                     lbl_Status.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "status");
                     lbl_comment.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "comment").ToUpper();
                     lbl_submittedby.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "submittedBy").ToUpper();
@@ -176,7 +155,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                     lbl_attachments.Text = Utility.GetLocalizedLabel("ApplicationStatusActivityLog", "attachments").ToUpper();
 
                     text_status.Text = item.StatusDescription;
-                    
+
                     CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(LanguageUtil.GetAppLanguage());
                     string date = item.CreatedDate != null && item.CreatedDate.Value != null
                         ? item.CreatedDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
@@ -185,7 +164,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                     lbl_date_text.Text = date;
 
 
-                    if(item.IsAwaitingApproval)
+                    if (item.IsAwaitingApproval)
                     {
                         imgstatus_Approval.Visibility = ViewStates.Visible;
                         imgstatus_required.Visibility = ViewStates.Gone;
@@ -206,22 +185,22 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                     {
                         Layout_comment.Visibility = ViewStates.Gone;
                     }
-                    if(item.CreatedBy!=null && item.CreatedBy != string.Empty)
+                    if (item.CreatedBy != null && item.CreatedBy != string.Empty)
                     {
                         Layout_submittedby.Visibility = ViewStates.Visible;
                         lbl_submittedby_email.Text = item.CreatedBy;
                     }
-                   else
+                    else
                     {
                         Layout_submittedby.Visibility = ViewStates.Gone;
                     }
 
-                   
-                
-                    if(item.DetailsUpdateList != null && item.DetailsUpdateList.Count != 0)
+
+
+                    if (item.DetailsUpdateList != null && item.DetailsUpdateList.Count != 0)
                     {
                         Layout_updated_details.Visibility = ViewStates.Visible;
-                        updatedDetailsListAdapter = new UpdatedDetailsListAdapter( item.DetailsUpdateList);
+                        updatedDetailsListAdapter = new UpdatedDetailsListAdapter(item.DetailsUpdateList);
                         layoutManagerService = new LinearLayoutManager(context, LinearLayoutManager.Vertical, false);
                         listview_updated_details.SetLayoutManager(layoutManagerService);
                         listview_updated_details.SetAdapter(updatedDetailsListAdapter);
@@ -235,16 +214,16 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                     if (item.Reasons != null && item.Reasons.Count != 0)
                     {
                         Layout_reason.Visibility = ViewStates.Visible;
-                        updatedDetailsListAdapter = new UpdatedDetailsListAdapter( item.Reasons);
+                        updatedDetailsListAdapter = new UpdatedDetailsListAdapter(item.Reasons);
                         layoutManagerService = new LinearLayoutManager(context, LinearLayoutManager.Vertical, false);
                         listview_reason_details.SetLayoutManager(layoutManagerService);
                         listview_reason_details.SetAdapter(updatedDetailsListAdapter);
                         updatedDetailsListAdapter.NotifyDataSetChanged();
-                      
+
                     }
                     else
                     {
-                         Layout_reason.Visibility = ViewStates.Gone;
+                        Layout_reason.Visibility = ViewStates.Gone;
                     }
                     if (item.DocumentsUpdateList != null && item.DocumentsUpdateList.Count != 0)
                     {
@@ -257,14 +236,14 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                     }
                     else
                     {
-                      Layout_attachments.Visibility = ViewStates.Gone;
+                        Layout_attachments.Visibility = ViewStates.Gone;
                     }
 
 
                     if (mApplicationActivityLogDetail.Count > 0 && mApplicationActivityLogDetail.Count == position + 1)
                     {
                         activityLogLine.Visibility = ViewStates.Gone;
-                       
+
                     }
 
                 }
@@ -273,8 +252,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapt
                     Utility.LoggingNonFatalError(e);
                 }
             }
-            
-
         }
     }
 }

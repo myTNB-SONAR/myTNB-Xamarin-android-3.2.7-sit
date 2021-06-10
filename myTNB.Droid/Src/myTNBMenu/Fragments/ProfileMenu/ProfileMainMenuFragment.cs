@@ -52,7 +52,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         , Theme = "@style/Theme.OwnerTenantBaseTheme"
         , WindowSoftInputMode = SoftInput.AdjustNothing)]
     public class ProfileMainMenuFragment : BaseFragmentCustom, ProfileMenuContract.IView
-	{
+    {
         [BindView(Resource.Id.profileMenuRootContent)]
         CoordinatorLayout rootView;
 
@@ -164,8 +164,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
                 TextViewUtils.SetMuseoSans500Typeface(btnLogout);
                 TextViewUtils.SetMuseoSans300Typeface(appVersion);
-                btnLogout.TextSize = TextViewUtils.GetFontSize(14);
-                appVersion.TextSize = TextViewUtils.GetFontSize(12);
+                TextViewUtils.SetTextSize12(appVersion);
+                TextViewUtils.SetTextSize14(btnLogout);
 
                 appVersion.Text = Utility.GetAppVersionName(context);
                 btnLogout.Text = GetLabelByLanguage("logout");
@@ -258,7 +258,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
                 if (requestCode == Constants.UPDATE_MOBILE_NO_REQUEST)
                 {
-                    if (resultCode == (int) Result.Ok)
+                    if (resultCode == (int)Result.Ok)
                     {
                         UserEntity userEntity = UserEntity.GetActive();
                         ShowMobileUpdateSuccess(userEntity.MobileNo);
@@ -267,14 +267,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 }
                 else if (requestCode == Constants.UPDATE_PASSWORD_REQUEST)
                 {
-                    if (resultCode == (int) Result.Ok)
+                    if (resultCode == (int)Result.Ok)
                     {
                         MyTNBAccountManagement.GetInstance().SetIsPasswordUpdated(true);
                     }
                 }
                 else if (requestCode == Constants.MANAGE_CARDS_REQUEST)
                 {
-                    if (resultCode == (int) Result.Ok)
+                    if (resultCode == (int)Result.Ok)
                     {
                         CreditCardData creditCard = JsonConvert.DeserializeObject<CreditCardData>(data.Extras.GetString(Constants.REMOVED_CREDIT_CARD));
                         mPresenter.UpdateCardList(creditCard);
@@ -348,7 +348,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             settingItems.Add(AppSetting);
 
             ProfileMainMenuItemSingleContentComponent learnMoreTNB = new ProfileMainMenuItemSingleContentComponent(context);
-            learnMoreTNB.SetTitle(Utility.GetLocalizedLabel("Profile", "learnMore")); 
+            learnMoreTNB.SetTitle(Utility.GetLocalizedLabel("Profile", "learnMore"));
             learnMoreTNB.SetIcon(4);
             learnMoreTNB.SetItemActionVisibility(true);
             learnMoreTNB.SetItemActionCall(LearnMoreAboutTnb);
@@ -367,7 +367,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
             List<View> shareItems = new List<View>();
 
             ProfileMenuItemSingleContentComponent share = new ProfileMenuItemSingleContentComponent(context);
-            share.SetTitle(Utility.GetLocalizedLabel("Profile", "shareDescription")); 
+            share.SetTitle(Utility.GetLocalizedLabel("Profile", "shareDescription"));
             share.SetItemActionCall(ShowShareApp);
             shareItems.Add(share);
 
@@ -388,7 +388,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
         private void PopulateActiveAccountDetails()
         {
             UserEntity user = UserEntity.GetActive();
-            
+
             try
             {
                 fullName.SetValue(user.DisplayName);
@@ -400,7 +400,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                 {
                     string lastDigit = maskedNo.Substring(maskedNo.Length - 4);
 
-                    maskedNo =  GetString(Resource.String.my_account_ic_no_mask) + " " + lastDigit;
+                    maskedNo = GetString(Resource.String.my_account_ic_no_mask) + " " + lastDigit;
                 }
             }
             catch (System.Exception e)
@@ -687,10 +687,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                                  // EMPTY WILL CLOSE SNACKBAR
                              }
                             );
-                            View v = logoutErrorSnackbar.View;
-                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                        tv.SetMaxLines(5);
-                        logoutErrorSnackbar.Show();
+                View v = logoutErrorSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                logoutErrorSnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)
@@ -759,10 +759,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
                                 // EMPTY WILL CLOSE SNACKBAR
                             }
                            );
-                           View v = removeCardSnackbar.View;
-                       TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                       tv.SetMaxLines(5);
-                       removeCardSnackbar.Show();
+                View v = removeCardSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                removeCardSnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (System.Exception e)

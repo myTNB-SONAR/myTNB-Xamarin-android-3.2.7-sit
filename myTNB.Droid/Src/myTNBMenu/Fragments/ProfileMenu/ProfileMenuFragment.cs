@@ -140,7 +140,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
 
                 TextViewUtils.SetMuseoSans500Typeface(btnLogout);
                 TextViewUtils.SetMuseoSans300Typeface(appVersion);
-                appVersion.TextSize = TextViewUtils.GetFontSize(9f);
+                TextViewUtils.SetTextSize9(appVersion);
                 appVersion.Text = Utility.GetAppVersionName(context);
                 btnLogout.Text = GetLabelByLanguage("logout");
                 PopulateActiveAccountDetails();

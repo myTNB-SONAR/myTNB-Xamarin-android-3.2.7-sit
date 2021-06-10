@@ -132,11 +132,7 @@ namespace myTNB_Android.Src.MyAccount.Adapter
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountName, txtAccountNum);
                 //TextViewUtils.SetMuseoSans500Typeface(txtAccountManage);
-
-                txtAccountName.TextSize = TextViewUtils.GetFontSize(14f);
-                txtAccountNum.TextSize = TextViewUtils.GetFontSize(14f);
-                //txtAccountManage.TextSize = TextViewUtils.GetFontSize(14f);
-
+                TextViewUtils.SetTextSize14(txtAccountName, txtAccountNum);
             }
         }
     }

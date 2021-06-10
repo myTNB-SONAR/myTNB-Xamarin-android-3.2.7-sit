@@ -62,28 +62,26 @@ namespace myTNB_Android.Src.CompoundView
             countryCodeHeaderTitle = FindViewById<TextView>(Resource.Id.countryCodeHeaderTitle);
             imgFlag = FindViewById<ImageView>(Resource.Id.countryIcon);
             countryISDCode = FindViewById<TextView>(Resource.Id.coutryCodeValue);
-            countryCodeError= FindViewById<TextView>(Resource.Id.countryCodeError);
+            countryCodeError = FindViewById<TextView>(Resource.Id.countryCodeError);
             editTextMobileNumber = FindViewById<EditText>(Resource.Id.txtMobileNo);
-          //  TextInputLayoutMobileNo = FindViewById<TextInputLayout>(Resource.Id.TextInputLayoutMobileNo);
+            //  TextInputLayoutMobileNo = FindViewById<TextInputLayout>(Resource.Id.TextInputLayoutMobileNo);
             isSelectionTapped = false;
 
             LinearLayout countryISDCodeContainer = FindViewById<LinearLayout>(Resource.Id.countryISDCodeContainer);
             countryISDCodeContainer.Click += CountryISDCodeContainer_Click;
 
-            TextViewUtils.SetMuseoSans300Typeface(countryCodeHeaderTitle,countryISDCode,editTextMobileNumber, countryCodeError);
+            TextViewUtils.SetMuseoSans300Typeface(countryCodeHeaderTitle, countryISDCode, editTextMobileNumber, countryCodeError);
             editTextMobileNumber.TextChanged += OnMobileNumberChangeValue;
 
             editTextMobileNumber.FocusChange += EditTextMobileNumber_FocusChange;
-
-            countryCodeHeaderTitle.TextSize = TextViewUtils.GetFontSize(10f);
-            countryISDCode.TextSize = TextViewUtils.GetFontSize(16f);
-            editTextMobileNumber.TextSize = TextViewUtils.GetFontSize(16f);
-            countryCodeError.TextSize = TextViewUtils.GetFontSize(12f);
+            TextViewUtils.SetTextSize10(countryCodeHeaderTitle);
+            TextViewUtils.SetTextSize12(countryCodeError);
+            TextViewUtils.SetTextSize16(countryISDCode, editTextMobileNumber);
         }
 
         private void EditTextMobileNumber_FocusChange(object sender, FocusChangeEventArgs e)
         {
-           
+
             if (editTextMobileNumber.IsFocused)
             {
                 ViewCompat.SetBackgroundTintList(editTextMobileNumber, ColorStateList.ValueOf(Android.Graphics.Color.ParseColor("#1c79ca")));  //blue color
@@ -108,10 +106,6 @@ namespace myTNB_Android.Src.CompoundView
             validateAction?.Invoke(!string.IsNullOrEmpty(editTextMobileNumber.Text));
         }
 
-        
-
-    
-
         public void SetOnTapCountryCodeAction(Action onTapAction)
         {
             onSelectCountryISDCodeAction = onTapAction;
@@ -128,7 +122,7 @@ namespace myTNB_Android.Src.CompoundView
 
         public void SetValidationAction(Action<bool> action)
         {
-                validateAction = action;
+            validateAction = action;
         }
 
         public void SetMobileNumberLabel(string label)
@@ -150,7 +144,7 @@ namespace myTNB_Android.Src.CompoundView
         public bool GetIsFromCountryCode()
         {
             bool holdIsFromCountryCode = isFromCountryCode;
-            isFromCountryCode =false;   
+            isFromCountryCode = false;
             return holdIsFromCountryCode;
         }
 
@@ -186,9 +180,9 @@ namespace myTNB_Android.Src.CompoundView
 
         public void ClearMobileNumber()
         {
-            
-            editTextMobileNumber.Text="";
-            
+
+            editTextMobileNumber.Text = "";
+
         }
         public void RaiseError(string errText)
         {
@@ -224,7 +218,7 @@ namespace myTNB_Android.Src.CompoundView
             try
             {
                 int plusPosition = selectedCountry.isd.IndexOf(PLUS_CHARACTER, StringComparison.Ordinal);
-                string removedPlus = selectedCountry.isd.Remove(plusPosition,1);
+                string removedPlus = selectedCountry.isd.Remove(plusPosition, 1);
                 int count = removedPlus.Length;
                 int maxNumberInputValue = MAX_NUMBER_INPUT - count;
                 editTextMobileNumber.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(maxNumberInputValue) });

@@ -152,7 +152,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
-                for(int i = 0; i < terminationList.Count; i++)
+                for (int i = 0; i < terminationList.Count; i++)
                 {
                     if (terminationList[i].IsSelected)
                     {
@@ -188,19 +188,12 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutReason, txtInputLayoutEmail, txtInputLayoutMobileNo, txtInputLayoutTxtReason);
             TextViewUtils.SetMuseoSans500Typeface(btnDisconnectionSubmit, disconnectionTtile, disconnectionAccountTtile, contactDetailTtile, terminationReasonTitle);
-            TextViewUtils.SetMuseoSans300Typeface(disconnectionAccountAddress, contactDetailConsent, txtTermsConditions , txtTermsConditionsFAQ, txtEmail, txtMobileNo, txtSelectReason, txtReason);
+            TextViewUtils.SetMuseoSans300Typeface(disconnectionAccountAddress, contactDetailConsent, txtTermsConditions, txtTermsConditionsFAQ, txtEmail, txtMobileNo, txtSelectReason, txtReason);
+            TextViewUtils.SetTextSize12(txtTermsConditionsFAQ, txtTermsConditions, contactDetailConsent);
+            TextViewUtils.SetTextSize14(disconnectionAccountTtile, disconnectionAccountAddress);
+            TextViewUtils.SetTextSize16(disconnectionTtile, contactDetailTtile, terminationReasonTitle
+                , btnDisconnectionSubmit, txtSelectReason, txtReason);
 
-            disconnectionTtile.TextSize = TextViewUtils.GetFontSize(16f);
-            disconnectionAccountTtile.TextSize = TextViewUtils.GetFontSize(14f);
-            disconnectionAccountAddress.TextSize = TextViewUtils.GetFontSize(14f);
-            contactDetailTtile.TextSize = TextViewUtils.GetFontSize(16f);
-            contactDetailConsent.TextSize = TextViewUtils.GetFontSize(12f);
-            terminationReasonTitle.TextSize = TextViewUtils.GetFontSize(16f);
-            txtTermsConditions.TextSize = TextViewUtils.GetFontSize(12f);
-            btnDisconnectionSubmit.TextSize = TextViewUtils.GetFontSize(16f);
-            txtSelectReason.TextSize = TextViewUtils.GetFontSize(16f);
-            txtReason.TextSize = TextViewUtils.GetFontSize(16f);
-            txtTermsConditionsFAQ.TextSize = TextViewUtils.GetFontSize(12f);
             contactDetailTtile.Text = GetLabelByLanguage("contactDetails");
             txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("emailAddress");
             txtInputLayoutMobileNo.Hint = GetLabelCommonByLanguage("mobileNumber");
@@ -284,7 +277,8 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             }
             ShowUIDetails();
-            ssmrApplicationScrollview.Post(()=> {
+            ssmrApplicationScrollview.Post(() =>
+            {
                 ssmrApplicationScrollview.FullScroll(FocusSearchDirection.Down);
             });
         }
@@ -338,7 +332,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 }
 
                 StripUnderlinesFromLinks(txtTermsConditions);
-       
+
 
                 EnableSubmitButton();
             }
@@ -611,7 +605,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             string output = mobileNumber;
             if (mobileNumber != "" && mobileNumber.Contains("+60"))
             {
-                output = mobileNumber.Replace("+60","0");
+                output = mobileNumber.Replace("+60", "0");
             }
             return output;
         }

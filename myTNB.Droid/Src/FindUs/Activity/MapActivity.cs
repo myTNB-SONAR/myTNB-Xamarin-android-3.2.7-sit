@@ -345,10 +345,12 @@ namespace myTNB_Android.Src.FindUs.Activity
             TextViewUtils.SetMuseoSans300Typeface(selectorLocationType);
             TextViewUtils.SetMuseoSans300Typeface(edtSearch);
             TextViewUtils.SetMuseoSans300Typeface(txtSearch);
-            selectorLocationType.TextSize = TextViewUtils.GetFontSize(16f);
-            edtSearch.SetTextSize(ComplexUnitType.Dip,TextViewUtils.GetFontSize(12f));
+            TextViewUtils.SetTextSize12(edtSearch);
+            TextViewUtils.SetTextSize16(selectorLocationType);
             txtSearch.Hint = GetLabelByLanguage("searchPlaceholder");
-            txtSearch.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+            txtSearch.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                ? Resource.Style.TextInputLayout_TextAppearance_Large
+                : Resource.Style.TextInputLayout_TextAppearance_Small);
             if (LocationTypesEntity.HasRecord())
             {
                 locationTypes = LocationTypesEntity.GetLocationTypes();
@@ -361,14 +363,6 @@ namespace myTNB_Android.Src.FindUs.Activity
                         {
                             selectorLocationType.Text = type.Description;
                             selectedLocationType = type;
-                            //if (!type.Description.ToLower().Equals(KEDAI_TENAGA))
-                            //{
-                            //    mLocationDescription += type.Description;
-                            //    if (index != locationTypes.Count - 1)
-                            //    {
-                            //        mLocationDescription += ",";
-                            //    }
-                            //}
                         }
                     }
                 }
@@ -384,18 +378,6 @@ namespace myTNB_Android.Src.FindUs.Activity
                     StartActivityForResult(accountType, SELECT_LOCATION_TYPE_CODE);
                 }
             };
-
-            //edtSearch.AfterTextChanged += (sender, args) =>
-            //{
-            //    if (_currentLocation != null)
-            //    {
-            //        string s = edtSearch.Text;
-            //        if (s.Length > 2)
-            //        {
-            //            this.userActionsListener.GetLocationsByKeyword(Constants.APP_CONFIG.API_KEY_ID, GoogelApiKey, _currentLocation.Latitude.ToString(), _currentLocation.Longitude.ToString(), selectedLocationType.Title, selectedLocationType.Description, s);
-            //        }
-            //    }
-            //};
 
             edtSearch.EditorAction += (sender, e) =>
             {
@@ -771,10 +753,10 @@ namespace myTNB_Android.Src.FindUs.Activity
             ApiException mException = e.JavaCast<ApiException>();
             switch (mException.StatusCode)
             {
-                case (int) LocationSettingsStatusCodes.ResolutionRequired:
+                case (int)LocationSettingsStatusCodes.ResolutionRequired:
                     try
                     {
-                        ResolvableApiException resolvable = (ResolvableApiException) mException;
+                        ResolvableApiException resolvable = (ResolvableApiException)mException;
                         resolvable.StartResolutionForResult(
                                         this,
                                         LocationRequest.PriorityHighAccuracy);

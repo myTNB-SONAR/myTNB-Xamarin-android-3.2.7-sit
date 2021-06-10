@@ -185,40 +185,31 @@ namespace myTNB_Android.Src.Billing.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
+            SetTheme(TextViewUtils.IsLargeFonts
+                ? Resource.Style.Theme_DashboardLarge
+                : Resource.Style.Theme_Dashboard);
             TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, refreshBillingDetailMessage);
             TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue,
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency,
                 accountMinChargeLabel, btnPayBill, btnViewBill, btnBillingDetailefresh);
 
-            accountAddress.TextSize = TextViewUtils.GetFontSize(12f);
-            accountPayAmountDate.TextSize = TextViewUtils.GetFontSize(14f);
-            accountPayAmountValue.TextSize = TextViewUtils.GetFontSize(TextViewUtils.IsLargeFonts ? 14 : 24f);
             if (TextViewUtils.IsLargeFonts)
             {
                 TextViewUtils.SetMuseoSans500Typeface(accountPayAmountValue);
+                TextViewUtils.SetTextSize14(accountPayAmountValue, accountPayAmountCurrency);
             }
             else
             {
                 TextViewUtils.SetMuseoSans300Typeface(accountPayAmountValue);
+                TextViewUtils.SetTextSize24(accountPayAmountValue);
+                TextViewUtils.SetTextSize12(accountPayAmountCurrency);
             }
-            refreshBillingDetailMessage.TextSize = TextViewUtils.GetFontSize(12f);
 
-            accountName.TextSize = TextViewUtils.GetFontSize(14f);
-            myBillDetailsLabel.TextSize = TextViewUtils.GetFontSize(16f);
-            accountChargeLabel.TextSize = TextViewUtils.GetFontSize(14f);
-            accountChargeValue.TextSize = TextViewUtils.GetFontSize(14f);
-
-            accountBillThisMonthLabel.TextSize = TextViewUtils.GetFontSize(14f);
-            accountBillThisMonthValue.TextSize = TextViewUtils.GetFontSize(14f);
-            accountPayAmountLabel.TextSize = TextViewUtils.GetFontSize(14f);
-            accountPayAmountCurrency.TextSize = TextViewUtils.GetFontSize(TextViewUtils.IsLargeFonts ? 14 : 12f);
-            accountMinChargeLabel.TextSize = TextViewUtils.GetFontSize(12f);
-            btnPayBill.TextSize = TextViewUtils.GetFontSize(16f);
-            btnViewBill.TextSize = TextViewUtils.GetFontSize(16f);
-            btnBillingDetailefresh.TextSize = TextViewUtils.GetFontSize(16f);
-
-            infoLabelDetailEPP.TextSize = TextViewUtils.GetFontSize(11f);
+            TextViewUtils.SetTextSize11(infoLabelDetailEPP);
+            TextViewUtils.SetTextSize12(accountAddress, refreshBillingDetailMessage, accountMinChargeLabel);
+            TextViewUtils.SetTextSize14(accountPayAmountDate, accountName, accountChargeLabel, accountChargeValue
+                , accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel);
+            TextViewUtils.SetTextSize16(myBillDetailsLabel, btnPayBill, btnViewBill, btnBillingDetailefresh);
 
             billingDetailsPresenter = new BillingDetailsPresenter(this);
             myBillDetailsLabel.Text = GetLabelByLanguage("billDetails");
@@ -713,7 +704,7 @@ namespace myTNB_Android.Src.Billing.MVP
             Handler h = new Handler();
             Action myAction = () =>
             {
-                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.billingDetailsPresenter.OnGeneraNewAppTutorialList());
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.billingDetailsPresenter.OnGeneraNewAppTutorialList(),true);
             };
             h.PostDelayed(myAction, 100);
         }

@@ -147,7 +147,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
         private void UpdateLabels()
         {
-            SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationSetting", "title")); 
+            SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationSetting", "title"));
             txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("ApplicationSetting", "typeDescription");
             txtNotificationChannelTitle.Text = Utility.GetLocalizedLabel("ApplicationSetting", "modeDescription");
             appLanguageMessage.Text = Utility.GetLocalizedLabel("ApplicationSetting", "selectApplang");
@@ -201,9 +201,10 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationTypeTitle, txtNotificationChannelTitle, appLanguageMessage, textSizeMessage);
 
-                txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("ApplicationSetting", "typeDescription"); 
+                txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("ApplicationSetting", "typeDescription");
                 txtNotificationChannelTitle.Text = Utility.GetLocalizedLabel("ApplicationSetting", "modeDescription");
                 textSizeMessage.Text = Utility.GetLocalizedLabel("ApplicationSetting", "setTextSize");
+                TextViewUtils.SetTextSize16(txtNotificationTypeTitle, txtNotificationChannelTitle, textSizeMessage, appLanguageMessage);
 
                 notificationChannelLayoutManager = new LinearLayoutManager(this);
                 notificationTypeLayoutManager = new LinearLayoutManager(this);
@@ -246,12 +247,6 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 UpdateLabels();
                 SetSelectedLanguage(null);
 
-                //SetTextSize
-                txtNotificationTypeTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                txtNotificationChannelTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                textSizeMessage.TextSize = TextViewUtils.GetFontSize(16f);
-                appLanguageMessage.TextSize = TextViewUtils.GetFontSize(16f);
-
                 mPresenter = new NotificationSettingsPresenter(this);
                 this.userActionsListener.Start();
                 bool hasUpdateLanguage = MyTNBAccountManagement.GetInstance().IsUpdateLanguage();
@@ -269,7 +264,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
         }
         internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            
+
             try
             {
                 Item selectedItem = selectItemAdapter.GetItemObject(e.Position);
@@ -406,7 +401,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
         private Task CheckAppMasterDataDone()
         {
-            return Task.Delay(Constants.LANGUAGE_MASTER_DATA_CHECK_TIMEOUT).ContinueWith(_ => {
+            return Task.Delay(Constants.LANGUAGE_MASTER_DATA_CHECK_TIMEOUT).ContinueWith(_ =>
+            {
                 if (MyTNBAccountManagement.GetInstance().GetIsAppMasterComplete())
                 {
                     if (MyTNBAccountManagement.GetInstance().GetIsAppMasterFailed())
@@ -522,7 +518,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 }
 
                 mLanguageSnackbar = Snackbar.Make(rootView,
-                    Utility.GetLocalizedLabel("Profile", "changeLanguageSuccess"), 
+                    Utility.GetLocalizedLabel("Profile", "changeLanguageSuccess"),
                     Snackbar.LengthIndefinite)
                             .SetAction(Utility.GetLocalizedCommonLabel("close"),
                              (view) =>
@@ -566,9 +562,10 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_cancelled_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_cancelled_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_settings_cancelled_exception_btn_close), delegate
+            {
 
-               mCancelledExceptionSnackBar.Dismiss();
+                mCancelledExceptionSnackBar.Dismiss();
             }
             );
             mCancelledExceptionSnackBar.Show();
@@ -584,7 +581,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_api_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_api_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_settings_api_exception_btn_close), delegate
+            {
 
                 mApiExcecptionSnackBar.Dismiss();
 
@@ -603,11 +601,12 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             }
 
             mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_settings_unknown_exception_error), Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.notification_settings_unknown_exception_btn_close), delegate {
+            .SetAction(GetString(Resource.String.notification_settings_unknown_exception_btn_close), delegate
+            {
 
                 mUknownExceptionSnackBar.Dismiss();
 
-           }
+            }
             );
             mUknownExceptionSnackBar.Show();
         }

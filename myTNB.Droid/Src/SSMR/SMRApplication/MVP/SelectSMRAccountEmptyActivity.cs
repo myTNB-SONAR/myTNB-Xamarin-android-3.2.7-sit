@@ -51,9 +51,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
                 TextViewUtils.SetMuseoSans300Typeface(SMRMainTitle);
-
-                SMRMainTitle.TextSize = TextViewUtils.GetFontSize(14f);
-           
+                TextViewUtils.SetTextSize14(SMRMainTitle);
             }
             catch (Exception e)
             {

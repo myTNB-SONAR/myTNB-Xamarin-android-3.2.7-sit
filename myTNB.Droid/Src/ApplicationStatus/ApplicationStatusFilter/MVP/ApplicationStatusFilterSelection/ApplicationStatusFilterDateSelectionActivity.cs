@@ -176,13 +176,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             txtInputLayoutToDate.SetHintTextAppearance(TextViewUtils.IsLargeFonts
                 ? Resource.Style.TextInputLayout_TextAppearance_ColorFixLarge
                 : Resource.Style.TextInputLayout_TextAppearance_ColorFix);
-            txtFromDate.TextSize = TextViewUtils.GetFontSize(16f);
-            txtToDate.TextSize = TextViewUtils.GetFontSize(16f);
-            btnApply.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize16(txtFromDate, txtToDate, btnApply, btnClear, btnApply);
             btnApply.Text = Utility.GetLocalizedLabel("SelectCreationDate", "apply");
             btnClear.Text = Utility.GetLocalizedLabel("SelectCreationDate", "clear");
-            btnClear.TextSize= TextViewUtils.GetFontSize(16f);
-            btnApply.TextSize = TextViewUtils.GetFontSize(16f);
 
             SetToolBarTitle(Utility.GetLocalizedLabel("SelectCreationDate", "title"));
 

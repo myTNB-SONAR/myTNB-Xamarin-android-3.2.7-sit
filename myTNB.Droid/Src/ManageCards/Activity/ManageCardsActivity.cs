@@ -4,8 +4,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-
-
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
@@ -31,7 +29,6 @@ namespace myTNB_Android.Src.ManageCards.Activity
     , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class ManageCardsActivity : BaseActivityCustom, ManageCardsContract.IView
     {
-
         [BindView(Resource.Id.layout_cards)]
         LinearLayout layoutCards;
 
@@ -74,8 +71,8 @@ namespace myTNB_Android.Src.ManageCards.Activity
         [BindView(Resource.Id.btnAutoPay)]
         Button btnAutoPay;
 
-/*        [BindView(Resource.Id.btnLoadMore)]
-        Button btnLoadMore;*/
+        /*        [BindView(Resource.Id.btnLoadMore)]
+                Button btnLoadMore;*/
 
         [BindView(Resource.Id.imgEmptyCard)]
         ImageView imgEmptyCard;
@@ -93,8 +90,6 @@ namespace myTNB_Android.Src.ManageCards.Activity
 
         private string PAGE_ID = "MyPaymentMethod";
 
-        AlertDialog removeDialog;
-
         List<CreditCardData> cardsList;
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -109,12 +104,9 @@ namespace myTNB_Android.Src.ManageCards.Activity
                     if (extras.ContainsKey(Constants.CREDIT_CARD_LIST))
                     {
                         string cardsListString = extras.GetString(Constants.CREDIT_CARD_LIST);
-                        //cardsList = JsonConvert.DeserializeObject<List<CreditCardData>>(cardsListString);
                         cardsList = DeSerialze<List<CreditCardData>>(cardsListString);
                     }
                 }
-
-                //Console.WriteLine("Card List " + cardsListString);
 
                 progress = new MaterialDialog.Builder(this)
                     .Title(GetString(Resource.String.manage_cards_progress_title))
@@ -132,17 +124,14 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 //TextViewUtils.SetMuseoSans300Typeface(txtEmptyCard, txtValue);
                 //TextViewUtils.SetMuseoSans500Typeface(txtManageAutoPayTitle, txtManageCardsTitle, txtTitle);
 
-                txtManageCardsTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                txtEmptyCard.TextSize = TextViewUtils.GetFontSize(14f);
-                txtTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                txtValue.TextSize = TextViewUtils.GetFontSize(14f);
-                txtManageAutoPayTitle.TextSize = TextViewUtils.GetFontSize(16f);
-
-                //txtManageCardsTitle.Text = GetLabelByLanguage("details");
                 txtManageAutoPayTitle.Text = GetLabelByLanguage("titleAutoPay");
                 txtTitle.Text = GetLabelByLanguage("titleNoAutoPay");
                 txtValue.Text = GetLabelByLanguage("bodyNoAutoPay");
                 txtManageCardsTitle.Text = GetLabelByLanguage("titleCard");
+                TextViewUtils.SetMuseoSans300Typeface(txtManageCardsTitle, txtEmptyCard);
+                TextViewUtils.SetTextSize14(txtEmptyCard, txtValue);
+                TextViewUtils.SetTextSize16(txtTitle, txtManageCardsTitle, txtManageAutoPayTitle);
+
                 txtEmptyCard.Text = GetLabelByLanguage("noCards");
 
                 AccAdapter = new MyAccountAdapter(this, false);
@@ -157,40 +146,31 @@ namespace myTNB_Android.Src.ManageCards.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
         [Preserve]
         private void MAdapter_RemoveClick(object sender, int e)
         {
             try
             {
-                if (removeDialog != null && removeDialog.IsShowing)
-                {
-                    removeDialog.Dismiss();
-                }
                 CreditCardData creditCardData = mAdapter.GetItemObject(e);
                 string lastDigit = creditCardData.LastDigits.Substring(creditCardData.LastDigits.Length - 4);
-                removeDialog = new AlertDialog.Builder(this)
 
+                MyTNBAppToolTipBuilder removeSavedCardTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                     .SetTitle(GetLabelByLanguage("removeCardTitle"))
                     .SetMessage(string.Format(GetLabelByLanguage("removeCardMessage"), lastDigit))
-                    .SetNegativeButton(GetLabelCommonByLanguage("cancel"),
-                    delegate
-                    {
-                        removeDialog.Dismiss();
-                    })
-                    .SetPositiveButton(GetLabelCommonByLanguage("ok"),
-                    delegate
+                    .SetCTALabel(GetLabelCommonByLanguage("cancel"))
+                    .SetSecondaryCTALabel(GetLabelCommonByLanguage("ok"))
+                    .SetSecondaryCTAaction(() =>
                     {
                         this.userActionsListener.OnRemove(creditCardData, e);
                     })
-                    .Show()
-                    ;
+                    .Build();
+                removeSavedCardTooltip.Show();
             }
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
-
-
         }
 
         public bool IsActive()

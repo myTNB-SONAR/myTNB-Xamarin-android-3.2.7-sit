@@ -45,8 +45,8 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         , Theme = "@style/Theme.OwnerTenantBaseTheme")]
     public class ManageAccessActivity : BaseActivityCustom, ManageAccessContract.IView, customButtonListener, customCheckboxListener
     {
-/*        [BindView(Resource.Id.rootView)]
-        LinearLayout rootView;*/
+        /*        [BindView(Resource.Id.rootView)]
+                LinearLayout rootView;*/
 
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
@@ -171,15 +171,11 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 btnRemoveSelectedAccessUser.Enabled = false;
 
                 TextViewUtils.SetMuseoSans300Typeface(txtEmptyManageAccess);
-                TextViewUtils.SetMuseoSans500Typeface(txtManageAccessTitle, btnAddUser, btnRemoveAccess, btnAddAccessUser, btnCancelRemoveAccess, btnRemoveSelectedAccessUser);
-
-                txtEmptyManageAccess.TextSize = TextViewUtils.GetFontSize(12);
-                txtManageAccessTitle.TextSize = TextViewUtils.GetFontSize(14);
-                btnAddUser.TextSize = TextViewUtils.GetFontSize(14);
-                btnRemoveAccess.TextSize = TextViewUtils.GetFontSize(14);
-                btnAddAccessUser.TextSize = TextViewUtils.GetFontSize(14);
-                btnCancelRemoveAccess.TextSize = TextViewUtils.GetFontSize(14);
-                btnRemoveSelectedAccessUser.TextSize = TextViewUtils.GetFontSize(14);
+                TextViewUtils.SetMuseoSans500Typeface(txtManageAccessTitle, btnAddUser, btnRemoveAccess
+                    , btnAddAccessUser, btnCancelRemoveAccess, btnRemoveSelectedAccessUser);
+                TextViewUtils.SetTextSize12(txtEmptyManageAccess);
+                TextViewUtils.SetTextSize14(txtManageAccessTitle, btnAddUser, btnRemoveAccess
+                    , btnAddAccessUser, btnCancelRemoveAccess, btnRemoveSelectedAccessUser);
 
                 adapter = new ManageAccessAdapter(this, false);
                 adapterDelete = new ManageAccessDeleteAdapter(this, false);
@@ -201,7 +197,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         [Preserve]
 
         private void ListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
-        { 
+        {
 
             if (!this.GetIsClicked())
             {
@@ -221,7 +217,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                 List<UserManageAccessAccount> DeletedSelectedUser = UserManageAccessAccount.ListIsSelected(accountData?.AccountNum);
                 List<DeleteAccessAccount> accountList = new List<DeleteAccessAccount>();
                 mPresenter.OnRemoveAccountMultiple(DeletedSelectedUser, false, accountList, accountData.AccountNum);
-            });           
+            });
         }
 
         public void AdapterClean()
@@ -348,7 +344,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                     this.SetIsClicked(true);
                     UserManageAccessAccount.UnSelectAll();
                     List<UserManageAccessAccount> customerAccountLatest = UserManageAccessAccount.List(accountData?.AccountNum);
-                    
+
                     if (customerAccountLatest.Count > 0)
                     {
                         AdapterClean();
@@ -399,7 +395,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
             AdapterDeleteClean();
 
             List<UserManageAccessAccount> customerAccountLatest = UserManageAccessAccount.List(accountData?.AccountNum);
-            
+
             if (customerAccountLatest.Count > 0)
             {
                 ShowAccountDeleteList(customerAccountLatest);
@@ -407,7 +403,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
 
             listViewRemoveAcc.Visibility = ViewStates.Visible;
             bottomLayoutDeleteMultiple.Visibility = ViewStates.Visible;
-            bottomLayout.Visibility = ViewStates.Gone;        
+            bottomLayout.Visibility = ViewStates.Gone;
             ShowRemoveMessageResponse();
         }
 
@@ -966,7 +962,7 @@ namespace myTNB_Android.Src.ManageAccess.Activity
         {
             try
             {
-                
+
                 Snackbar saveSnackBar = Snackbar.Make(rootView, (message), Snackbar.LengthIndefinite)
                             .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
@@ -1007,13 +1003,13 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                             (view) =>
                             {
 
-                            // EMPTY WILL CLOSE SNACKBAR
-                        }
+                                // EMPTY WILL CLOSE SNACKBAR
+                            }
                            );
-                           View v = removeSupplySnackbar.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
-            removeSupplySnackbar.Show();
+                View v = removeSupplySnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                removeSupplySnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (Exception e)
@@ -1040,8 +1036,8 @@ namespace myTNB_Android.Src.ManageAccess.Activity
                              (view) =>
                              {
 
-                             // EMPTY WILL CLOSE SNACKBAR
-                         }
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
                             );
 
                 View v = updatePassWordBar.View;

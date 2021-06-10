@@ -9,7 +9,7 @@
     <item name="android:textColorSecondary">@color/tunaGrey</item>
     <item name="android:textColorHint">@color/silverChalice</item>
     <item name="android:colorAccent">@color/sunGlow</item>
-    <item name="android:textSize">16sp</item>
+    <item name="android:textSize">16dp</item>
     <item name="android:alertDialogTheme">@style/DialogTheme</item>
   </style>
 

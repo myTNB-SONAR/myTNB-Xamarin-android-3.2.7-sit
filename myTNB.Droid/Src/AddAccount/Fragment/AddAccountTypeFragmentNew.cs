@@ -14,7 +14,7 @@ using Android.App;
 
 namespace myTNB_Android.Src.AddAccount.Fragment
 {
-    public class AddAccountTypeFragmentNew : AndroidX.Fragment.App.Fragment 
+    public class AddAccountTypeFragmentNew : AndroidX.Fragment.App.Fragment
     {
         private AccountType selectedAccountType;
         private readonly int SELECT_ACCOUNT_TYPE_REQ_CODE = 2011;
@@ -85,15 +85,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             txtSkipAcc.Text = Utility.GetLocalizedLabel("AddAccount", "skip");
             txtAccountType.Text = Utility.GetLocalizedLabel("AddAccount", "PremisesHint").ToUpper();
 
-            txtTitlePremise.TextSize = TextViewUtils.GetFontSize(18);
-            txtYes.TextSize = TextViewUtils.GetFontSize(18);
-            txtNo.TextSize = TextViewUtils.GetFontSize(18);
-            txtTitle.TextSize = TextViewUtils.GetFontSize(18);
-            txtOwnerRights.TextSize = TextViewUtils.GetFontSize(18);
-            txtNonOwnerRights.TextSize = TextViewUtils.GetFontSize(18);
-            txtSkipAcc.TextSize = TextViewUtils.GetFontSize(16);
-            txtAccountType.TextSize = TextViewUtils.GetFontSize(16);
-
+            TextViewUtils.SetTextSize16(txtSkipAcc, txtAccountType);
+            TextViewUtils.SetTextSize18(txtTitlePremise, txtYes, txtNo, txtTitle, txtOwnerRights, txtNonOwnerRights);
 
             AccountType Individual = new AccountType();
             Individual.Id = "1";
@@ -202,7 +195,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                                 bundle.PutBoolean("fromRegisterPage", fromRegisterPage);
                                 ((AddAccountActivity)Activity).nextFragment(this, bundle);
                             }
-                           
+
                         }
                     }
                 }

@@ -74,12 +74,8 @@ namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
 
             TextViewUtils.SetMuseoSans500Typeface(headerText, headerText2, headerText3);
             TextViewUtils.SetMuseoSans300Typeface(detailsText, detailsText2);
-
-            detailsText.TextSize = TextViewUtils.GetFontSize(12);
-            detailsText2.TextSize = TextViewUtils.GetFontSize(12);
-            headerText3.TextSize = TextViewUtils.GetFontSize(14);
-            headerText.TextSize = TextViewUtils.GetFontSize(14);
-            headerText2.TextSize = TextViewUtils.GetFontSize(14);
+            TextViewUtils.SetTextSize12(detailsText, detailsText2);
+            TextViewUtils.SetTextSize14(headerText3, headerText, headerText2);
 
             string email = user.Email;
             string data;
@@ -90,19 +86,19 @@ namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
             headerText.TextFormatted = GetFormattedText(GetLabelByLanguage("DiclaimerHeaderAddElectricity"));
             headerText2.TextFormatted = GetFormattedText(GetLabelByLanguage("DiclaimerHeaderTNBTerm"));
             headerText3.TextFormatted = GetFormattedText(GetLabelByLanguage("DiclaimerHeaderPersonalData"));
-           
-            string temp = string.Format(data,email);
+
+            string temp = string.Format(data, email);
             detailsText.TextFormatted = GetFormattedText(temp);
             detailsText2.Text = GetLabelByLanguage("DisclaimerDetails2");
             itemAction = FindViewById<ImageView>(Resource.Id.itemAction);
             itemAction.SetBackgroundResource(Resource.Drawable.expand_down_arrow);
         }
-       
+
         [OnClick(Resource.Id.layoutHeader)]
         void OnClickDetails(object sender, EventArgs eventArgs)
         {
             itemAction = FindViewById<ImageView>(Resource.Id.itemAction);
-            
+
             try
             {
                 if (!this.GetIsClicked())

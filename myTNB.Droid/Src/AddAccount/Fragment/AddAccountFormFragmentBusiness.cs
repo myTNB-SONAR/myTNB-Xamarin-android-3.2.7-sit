@@ -24,7 +24,7 @@ using System;
 
 namespace myTNB_Android.Src.AddAccount.Fragment
 {
-    public class AddAccountFormFragmentBusiness : AndroidX.Fragment.App.Fragment , AddAccountContract.IView, View.IOnTouchListener
+    public class AddAccountFormFragmentBusiness : AndroidX.Fragment.App.Fragment, AddAccountContract.IView, View.IOnTouchListener
     {
         private static string TAG = "AddAccountForm";
         private bool isOwner = true;
@@ -163,15 +163,15 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
                 txtAccountType.Text = Utility.GetLocalizedLabel("AddAccount", "PremisesHint").ToUpper();
                 textInputLayoutAccountNo.Hint = Utility.GetLocalizedLabel("AddAccount", "accNumber");
-                textInputLayoutAccountLabel.Hint = Utility.GetLocalizedLabel("Common","acctNickname");
+                textInputLayoutAccountLabel.Hint = Utility.GetLocalizedLabel("Common", "acctNickname");
                 textInputLayoutRocNo.Hint = Utility.GetLocalizedLabel("AddAccount", "rocNumberOptional").ToUpper();
                 //txtTitlePremise.Hint = Utility.GetLocalizedLabel("AddAccount", "AccHeaderText");
                 txtTitlePremise.Text = Utility.GetLocalizedLabel("AddAccount", "AccHeaderText");
                 txtTitle.Text = Utility.GetLocalizedLabel("AddAccount", "ROCHeaderText");
                 txtTitleROC.Text = Utility.GetLocalizedLabel("AddAccount", "ROCDetailsText");
                 btnWhereIsMyAccountNo.Hint = Utility.GetLocalizedLabel("AddAccount", "WhereAccNo");
-               
-               
+
+
 
                 TextViewUtils.SetMuseoSans300Typeface(edtAccountLabel
                     , edtAccountNo
@@ -233,20 +233,15 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                             TextViewUtils.SetMuseoSans500Typeface(titleText);
                             TextViewUtils.SetMuseoSans300Typeface(infoText);
 
-                            titleText.Text = Utility.GetLocalizedLabel("AddAccount","whereIsMyAccountTitle");
+                            titleText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountTitle");
                             infoText.Text = Utility.GetLocalizedLabel("AddAccount", "whereIsMyAccountDetails");
                         }
                     }
                     dialogWhereMyAccountNo.Show();
                 };
 
-                txtAccountType.TextSize = TextViewUtils.GetFontSize(18);
-                txtTitlePremise.TextSize = TextViewUtils.GetFontSize(18);
-                txtTitle.TextSize = TextViewUtils.GetFontSize(18);
-                txtTitleROC.TextSize = TextViewUtils.GetFontSize(18);
-                btnWhereIsMyAccountNo.TextSize = TextViewUtils.GetFontSize(18);
-                accountType.TextSize = TextViewUtils.GetFontSize(14);
-                txtSkipAcc.TextSize = TextViewUtils.GetFontSize(14);
+                TextViewUtils.SetTextSize14(accountType, txtSkipAcc);
+                TextViewUtils.SetTextSize18(txtAccountType, txtTitlePremise, txtTitle, txtTitleROC, btnWhereIsMyAccountNo);
 
                 AccountType Individual = new AccountType();
                 Individual.Id = "2";
@@ -321,7 +316,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 ClearText();
                 ClearAllErrorFields();
 
-                textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);               
+                textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                 textInputLayoutRocNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
 
@@ -389,7 +384,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 base.OnActivityResult(requestCode, resultCode, data);
                 if (requestCode == Constants.BARCODE_REQUEST_CODE)
                 {
-                    if (resultCode == (int) Result.Ok)
+                    if (resultCode == (int)Result.Ok)
                     {
 
                         string barcodeResultText = data.GetStringExtra(Constants.BARCODE_RESULT);
@@ -400,7 +395,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 else if (requestCode == SELECT_ACCOUNT_TYPE_REQ_CODE)
                 {
 
-                    if (resultCode == (int) Result.Ok)
+                    if (resultCode == (int)Result.Ok)
                     {
                         selectedAccountType = JsonConvert.DeserializeObject<AccountType>(data.GetStringExtra("selectedAccountType"));
                         if (selectedAccountType != null)
@@ -473,11 +468,11 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 string suppliedMotherName = edtOwnerMotherName.Text;
                 string accountLabel = edtAccountLabel.Text;
 
-                if(icNumber.Equals(""))
+                if (icNumber.Equals(""))
                 {
                     owner = false;
                 }
-                else 
+                else
                 {
                     owner = true;
                 }
@@ -564,7 +559,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public void ShowEmptyAccountNickNameError()
         {
             textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-            textInputLayoutAccountLabel.HelperText = "Invalid Account NickName";          
+            textInputLayoutAccountLabel.HelperText = "Invalid Account NickName";
         }
 
         public void ShowEmptyAccountNumberError()
@@ -588,7 +583,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
-            }          
+            }
         }
 
         public void ShowEmptyMothersMaidenNameError()
@@ -617,7 +612,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                         {
                             textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("accountLengthNew");  // fix bouncing issue
                         }
-                        
+
                         textInputLayoutAccountNo.RequestLayout();
                     }
                     catch (Exception ex)
@@ -683,7 +678,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             }
 
             string msg = Utility.GetLocalizedErrorLabel("defaultErrorMessage");
-            
+
             mUknownExceptionSnackBar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)
             .SetAction(Utility.GetLocalizedCommonLabel("retry"), delegate
             {
@@ -736,7 +731,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         public void RemoveNameErrorMessage()
         {
             textInputLayoutAccountLabel.HelperText = "";
-            
+
         }
 
         public void RemoveNumberErrorMessage()

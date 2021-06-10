@@ -52,9 +52,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
         List<NewAccount> accountList = new List<NewAccount>();
         List<NewAccount> additionalAccountList = new List<NewAccount>();
 
-        private AlertDialog mDeleteDialog;
-        private AlertDialog mNoAccountFoundDialog;
-
         private AlertDialog mGetAccountsProgressDialog;
         private MaterialDialog mAddAccountProgressDialog;
         private Snackbar mSnackBar;
@@ -156,65 +153,35 @@ namespace myTNB_Android.Src.AddAccount.Activity
             try
             {
                 NewAccount item = accountList[position];
-                mDeleteDialog = new AlertDialog.Builder(this)
-                  .SetTitle(GetLabelByLanguage("removeAcct"))
-                  .SetPositiveButton(GetLabelCommonByLanguage("ok"), (senderAlert, args) =>
-                  {
-                      accountList.Remove(item);
-                      adapter = new AccountListAdapter(this, accountList);
-                      accountListRecyclerView.SetAdapter(adapter);
-                      adapter.ItemClick += OnItemClick;
-                      adapter.NotifyDataSetChanged();
-                      int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
-                      if (accountList != null && totalAccountAdded < Constants.ADD_ACCOUNT_LIMIT)
-                      {
-                          btnAddAnotherAccount.Visibility = ViewStates.Visible;
-                      }
-                      if (accountList.Count() > 0)
-                      {
-                          //textNoOfAcoount.Text = accountList.Count() + " " + GetLabelByLanguage("supplyAccountCount");
-                          textNoOfAcoount.Text = string.Format(Utility.GetLocalizedLabel("AddAccount", "OwnerDetectTitle"), accountList.Count());
-
-                      }
-                      else
-                      {
-                          textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
-                      }
-                      textNoOfAcoount.TextSize = TextViewUtils.GetFontSize(18);
-
-                      //mDeleteDialog.Dismiss();
-
-                      if (accountList.Count() == 0 && additionalAccountList.Count() > 0)
-                      {
-                          NoAccountLayout.Visibility = ViewStates.Gone;
-                      }
-
-                      if (accountList.Count() == 0 && additionalAccountList.Count() == 0)
-                      {
-                          DisableConfirmButton();
-                      }
-
-                      mDeleteDialog.Dismiss();
-                  })
-                 .SetNegativeButton(GetLabelCommonByLanguage("cancel"), (senderAlert, args) =>
-                 {
-                     mDeleteDialog.Dismiss();
-                 })
-                  .SetCancelable(false)
-                  .Create();
-
-                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                {
-                    mDeleteDialog.SetMessage(Html.FromHtml(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber), FromHtmlOptions.ModeLegacy));
-                }
-                else
-                {
-                    mDeleteDialog.SetMessage(Html.FromHtml(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber)));
-                }
-                if (!mDeleteDialog.IsShowing)
-                {
-                    mDeleteDialog.Show();
-                }
+                MyTNBAppToolTipBuilder removeAccountPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                    .SetTitle(GetLabelByLanguage("removeAcct"))
+                    .SetMessage(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber))
+                    .SetCTALabel(GetLabelCommonByLanguage("cancel"))
+                    .SetSecondaryCTALabel(GetLabelCommonByLanguage("ok"))
+                    .SetSecondaryCTAaction(() =>
+                    {
+                        accountList.Remove(item);
+                        adapter = new AccountListAdapter(this, accountList);
+                        accountListRecyclerView.SetAdapter(adapter);
+                        adapter.ItemClick += OnItemClick;
+                        adapter.NotifyDataSetChanged();
+                        int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
+                        if (accountList != null && totalAccountAdded < Constants.ADD_ACCOUNT_LIMIT)
+                        {
+                            btnAddAnotherAccount.Visibility = ViewStates.Visible;
+                        }
+                        if (accountList.Count() > 0)
+                        {
+                            textNoOfAcoount.Text = accountList.Count() + " " + GetLabelByLanguage("supplyAcctCount");
+                        }
+                        else
+                        {
+                            textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
+                        }
+                        TextViewUtils.SetTextSize18(textNoOfAcoount);
+                    })
+                    .Build();
+                removeAccountPopup.Show();
             }
             catch (Exception e)
             {
@@ -227,53 +194,30 @@ namespace myTNB_Android.Src.AddAccount.Activity
             try
             {
                 NewAccount item = additionalAccountList[position];
-                mDeleteDialog = new AlertDialog.Builder(this)
-                  .SetTitle(GetLabelByLanguage("removeAcct"))
-                  .SetPositiveButton(GetLabelCommonByLanguage("ok"), (senderAlert, args) =>
-                  {
-                      additionalAccountList.Remove(item);
-                      additionalAdapter = new AdditionalAccountListAdapter(this, additionalAccountList);
-                      additionalAccountListRecyclerView.SetAdapter(additionalAdapter);
-                      additionalAdapter.AdditionalItemClick += OnAdditionalItemClick;
-                      additionalAdapter.NotifyDataSetChanged();
-                      if (additionalAccountList.Count == 0)
-                      {
-                          textAdditionalAcoount.Visibility = ViewStates.Gone;
-                          textlabelAdditionalAcoount.Visibility = ViewStates.Gone;
-                          textNoOfAcoount.Visibility = ViewStates.Visible;
-                          labelAccountLabel.Visibility = ViewStates.Visible;
-                          NoAccountLayout.Visibility = ViewStates.Visible;
-                      }
-                      int totalAccountAdded = adapter.GetAccountList().Count + additionalAdapter.GetAccountList().Count();
-                      if (accountList != null && totalAccountAdded < Constants.ADD_ACCOUNT_LIMIT)
-                      {
-                          btnAddAnotherAccount.Visibility = ViewStates.Visible;
-                      }
-                      if (accountList.Count() == 0 && additionalAccountList.Count() == 0)
-                      {
-                          DisableConfirmButton();
-                      }
-                      mDeleteDialog.Dismiss();
-                  })
-                 .SetNegativeButton(GetLabelCommonByLanguage("cancel"), (senderAlert, args) =>
-                 {
-                     mDeleteDialog.Dismiss();
-                 })
-                  .SetCancelable(false)
-                  .Create();
-
-                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                {
-                    mDeleteDialog.SetMessage(Html.FromHtml(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber), FromHtmlOptions.ModeLegacy));
-                }
-                else
-                {
-                    mDeleteDialog.SetMessage(Html.FromHtml(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber)));
-                }
-                if (!mDeleteDialog.IsShowing)
-                {
-                    mDeleteDialog.Show();
-                }
+                MyTNBAppToolTipBuilder removeAccountPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                    .SetTitle(GetLabelByLanguage("removeAcct"))
+                    .SetMessage(string.Format(GetLabelByLanguage("removeAcctMsg"), item.accountLabel, item.accountNumber))
+                    .SetCTALabel(GetLabelCommonByLanguage("cancel"))
+                    .SetSecondaryCTALabel(GetLabelCommonByLanguage("ok"))
+                    .SetSecondaryCTAaction(() =>
+                    {
+                        additionalAccountList.Remove(item);
+                        additionalAdapter = new AdditionalAccountListAdapter(this, additionalAccountList);
+                        additionalAccountListRecyclerView.SetAdapter(additionalAdapter);
+                        additionalAdapter.AdditionalItemClick += OnAdditionalItemClick;
+                        additionalAdapter.NotifyDataSetChanged();
+                        if (additionalAccountList.Count == 0)
+                        {
+                            textAdditionalAcoount.Visibility = ViewStates.Gone;
+                        }
+                        int totalAccountAdded = adapter.GetAccountList().Count + additionalAdapter.GetAccountList().Count();
+                        if (accountList != null && totalAccountAdded < Constants.ADD_ACCOUNT_LIMIT)
+                        {
+                            btnAddAnotherAccount.Visibility = ViewStates.Visible;
+                        }
+                    })
+                    .Build();
+                removeAccountPopup.Show();
             }
             catch (Exception e)
             {
@@ -341,11 +285,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     ScaleY = 0.8f
                 };
 
-                labelAccountLabel.TextSize = TextViewUtils.GetFontSize(16f);
-                textAdditionalAcoount.TextSize = TextViewUtils.GetFontSize(18f);
-                btnAddAnotherAccount.TextSize = TextViewUtils.GetFontSize(16f);
-                btnConfirm.TextSize = TextViewUtils.GetFontSize(16f);
-                textlabelAdditionalAcoount.TextSize = TextViewUtils.GetFontSize(14f);
+                TextViewUtils.SetTextSize14(textlabelAdditionalAcoount);
+                TextViewUtils.SetTextSize16(labelAccountLabel, btnAddAnotherAccount, btnConfirm);
+                TextViewUtils.SetTextSize18(textAdditionalAcoount);
 
                 txtboxcondition.CheckedChange += CheckedChange;
                 txtboxcondition.Checked = false;
@@ -363,7 +305,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     {
                         currentLinkedAccounts += ",";
                     }
-
                 }
 
                 btnAddAnotherAccount.Click += delegate
@@ -373,7 +314,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         this.SetIsClicked(true);
                         ShowAddAnotherAccountScreen();
                     }
-
                 };
 
                 btnConfirm.Click += delegate
@@ -420,7 +360,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             base.OnResume();
             try
             {
-                if(additionalAccountList.Count > 0)
+                if (additionalAccountList.Count > 0)
                 {
                     additionalAdapter.Clear();
                     additionalAdapter = new AdditionalAccountListAdapter(this, additionalAccountList);
@@ -734,7 +674,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
                                 if (vh != null)
                                 {
-                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                                        ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                                        : Resource.Style.TextInputLayoutBottomErrorHint);
 
                                     vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                 }
@@ -752,7 +694,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                     AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(index);
                                     if (vh != null)
                                     {
-                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                                            ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                                            : Resource.Style.TextInputLayoutBottomErrorHint);
                                         vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                     }
                                 }
@@ -778,8 +722,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
                                 if (vh != null)
                                 {
-                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
-
+                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                                        ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                                        : Resource.Style.TextInputLayoutBottomErrorHint);
 
                                     vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                 }
@@ -797,7 +742,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                     AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(additioanlIndex);
                                     if (vh != null)
                                     {
-                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                                            ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                                            : Resource.Style.TextInputLayoutBottomErrorHint);
 
                                         vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                     }
@@ -845,7 +792,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(currentItemIndex);
                                 if (vh != null)
                                 {
-                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                                        ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                                        : Resource.Style.TextInputLayoutBottomErrorHint);
 
                                     vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                 }
@@ -863,7 +812,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                     AdditionalAccountViewHolder vh = (AdditionalAccountViewHolder)additionalAccountListRecyclerView.FindViewHolderForAdapterPosition(index);
                                     if (vh != null)
                                     {
-                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                                            ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                                            : Resource.Style.TextInputLayoutBottomErrorHint);
 
                                         vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                     }
@@ -890,7 +841,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                 if (vh != null)
                                 {
 
-                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                                    vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                                        ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                                        : Resource.Style.TextInputLayoutBottomErrorHint);
 
 
                                     vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
@@ -909,7 +862,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
                                     AccountListViewHolder vh = (AccountListViewHolder)accountListRecyclerView.FindViewHolderForAdapterPosition(newlistIndex);
                                     if (vh != null)
                                     {
-                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+                                        vh.textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                                            ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                                            : Resource.Style.TextInputLayoutBottomErrorHint);
 
                                         vh.textInputLayoutAccountLabel.Error = Utility.GetLocalizedErrorLabel("duplicateNickname");
                                     }
@@ -1012,7 +967,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             account.ISDmobileNo = "+06";
                             account.CountryCheck = false;
                             account.CountryCheckNoPhone = false;
-                            account.countryDetail = ""; 
+                            account.countryDetail = "";
 
                             foreach (NewAccount item in accountList)
                             {
@@ -1172,16 +1127,13 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         TextView infoText = view.FindViewById<TextView>(Resource.Id.txtMessage);
                         titleText.Text = title;
                         infoText.Text = message;
-
-                        titleText.TextSize = TextViewUtils.GetFontSize(16);
-                        infoText.TextSize = TextViewUtils.GetFontSize(16);
+                        TextViewUtils.SetTextSize16(titleText, infoText);
                         if (titleText != null && infoText != null)
                         {
                             TextViewUtils.SetMuseoSans500Typeface(titleText);
                             TextViewUtils.SetMuseoSans300Typeface(infoText);
                         }
                     }
-
 
                     if (mAddAccountProgressDialog != null && !mAddAccountProgressDialog.IsShowing)
                     {

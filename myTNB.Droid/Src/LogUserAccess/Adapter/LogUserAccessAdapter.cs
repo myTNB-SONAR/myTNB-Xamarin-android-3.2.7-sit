@@ -68,7 +68,7 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                 int year = referenceDate.Year;
 
                 string monthName = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(month);
-                string formateddate = day.ToString() + " " + monthName.Substring(0,3) + " " + year.ToString();
+                string formateddate = day.ToString() + " " + monthName.Substring(0, 3) + " " + year.ToString();
 
                 viewHolder.infoLabelDate.Text = formateddate;
 
@@ -104,7 +104,7 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                             viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp2);
                         }
                     }
-                   
+
                 }
                 else if (data.Action.Equals("U"))
                 {
@@ -205,7 +205,7 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
                             viewHolder.itemTitle.TextFormatted = Html.FromHtml(temp);
                         }
                     }
-                   
+
                 }
             }
             catch (Exception e)
@@ -229,12 +229,10 @@ namespace myTNB_Android.Src.LogUserAccess.Adapter
             public LogUserAccessDataViewHolder(View itemView) : base(itemView)
             {
                 TextViewUtils.SetMuseoSans300Typeface(infoLabelDate);
-
                 TextViewUtils.SetMuseoSans500Typeface(itemTitle);
+                TextViewUtils.SetTextSize12(infoLabelDate);
+                TextViewUtils.SetTextSize14(itemTitle);
 
-                infoLabelDate.TextSize = TextViewUtils.GetFontSize(12);
-                itemTitle.TextSize = TextViewUtils.GetFontSize(14);
-                
                 ViewGroup.LayoutParams layoutParams = itemTitle.LayoutParameters;
                 //layoutParams.Height = tesst;
                 if (TextViewUtils.IsLargeFonts)

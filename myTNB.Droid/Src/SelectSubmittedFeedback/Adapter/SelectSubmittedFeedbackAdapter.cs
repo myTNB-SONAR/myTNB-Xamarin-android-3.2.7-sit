@@ -79,7 +79,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 // vh.txtFeedbackContent.Visibility = ViewStates.Gone;
 
                 vh.txtSRstatus.Text = item.StatusDesc;
-                vh.txtSRNumber.Text = "SR: "+item.FeedbackId;
+                vh.txtSRNumber.Text = "SR: " + item.FeedbackId;
 
 
                 if (!item.IsRead.Equals("true"))
@@ -92,11 +92,11 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
                 }
 
                 //statusCode color 
-                if (item.StatusCode.Equals("CL01") )
+                if (item.StatusCode.Equals("CL01"))
                 {
                     vh.txtSRstatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(context, Resource.Color.tunagrey)));
                 }
-               else if (item.StatusCode.Equals("CL02"))
+                else if (item.StatusCode.Equals("CL02"))
                 {
 
                 }
@@ -115,23 +115,23 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
 
                 if (item.FeedbackCategoryId.Equals("1"))
                 {
-                   // vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.general_enquiry));
+                    // vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.general_enquiry));
                     vh.txtFeedbackTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle");
 
                 }
                 else if (item.FeedbackCategoryId.Equals("2"))
                 {
-                   // vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_streetlamp));
+                    // vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_streetlamp));
                 }
                 else if (item.FeedbackCategoryId.Equals("3"))
                 {
-                 //   vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_others));
+                    //   vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_feedback_submitted_others));
                 }
                 else if (item.FeedbackCategoryId.Equals("4"))
                 {
-                  //  vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.update_personal_details));
+                    //  vh.imgFeedback.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.update_personal_details));
                     vh.txtFeedbackTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle");
-                  //  vh.txtFeedbackTitle.SetPadding(0, 24, 7, 0);
+                    //  vh.txtFeedbackTitle.SetPadding(0, 24, 7, 0);
                 }
             }
             catch (Exception e)
@@ -158,15 +158,12 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
             [BindView(Resource.Id.completeIndicator)]
             internal ImageView completeIndicator;
 
-            
-
             public SubmitFeedbackViewHolder(View itemView) : base(itemView)
             {
-                TextViewUtils.SetMuseoSans500Typeface(txtFeedbackTitle , txtSRstatus, txtFeedbackDate);
-                TextViewUtils.SetMuseoSans300Typeface(txtSRNumber );
-                txtFeedbackTitle.TextSize = TextViewUtils.GetFontSize(14f);
-                //txtFeedbackContent.TextSize = TextViewUtils.GetFontSize(9f);
-                txtFeedbackDate.TextSize = TextViewUtils.GetFontSize(11f);
+                TextViewUtils.SetMuseoSans500Typeface(txtFeedbackTitle, txtSRstatus, txtFeedbackDate);
+                TextViewUtils.SetMuseoSans300Typeface(txtSRNumber);
+                TextViewUtils.SetTextSize11(txtFeedbackDate);
+                TextViewUtils.SetTextSize14(txtFeedbackTitle);
             }
         }
     }

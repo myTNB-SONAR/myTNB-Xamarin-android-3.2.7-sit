@@ -111,15 +111,8 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtValue, itemTitleFullBill, itemTitleBilling, infoAddress);
                 TextViewUtils.SetMuseoSans500Typeface(txtAddNewUserTitle, txtNewUserOptionalTitle);
                 TextViewUtils.SetMuseoSans500Typeface(btnAddUser);
-
-                itemTitleFullBill.TextSize = TextViewUtils.GetFontSize(14);
-                itemTitleBilling.TextSize = TextViewUtils.GetFontSize(14);
-                txtUserEmail.TextSize = TextViewUtils.GetFontSize(14);
-                txtValue.TextSize = TextViewUtils.GetFontSize(14);
-                infoAddress.TextSize = TextViewUtils.GetFontSize(14);
-                txtAddNewUserTitle.TextSize = TextViewUtils.GetFontSize(14);
-                txtNewUserOptionalTitle.TextSize = TextViewUtils.GetFontSize(14);
-                btnAddUser.TextSize = TextViewUtils.GetFontSize(14);
+                TextViewUtils.SetTextSize14(itemTitleFullBill, itemTitleBilling, txtUserEmail, txtValue, infoAddress
+                    , txtAddNewUserTitle, txtNewUserOptionalTitle, btnAddUser);
 
                 itemTitleFullBill.Text = Utility.GetLocalizedLabel("AddUserAccess", "viewFullElec");
                 itemTitleBilling.Text = Utility.GetLocalizedLabel("AddUserAccess", "applyEBilling");
@@ -171,7 +164,7 @@ namespace myTNB_Android.Src.AddNewUser.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-        
+
         private void CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
         {
             if (e.IsChecked)

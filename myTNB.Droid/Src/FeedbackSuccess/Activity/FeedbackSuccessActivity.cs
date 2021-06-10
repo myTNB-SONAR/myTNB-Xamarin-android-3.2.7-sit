@@ -64,14 +64,9 @@ namespace myTNB_Android.Src.FeedbackSuccess.Activity
 
                 TextViewUtils.SetMuseoSans300Typeface(txtContentInfo, txtFeedbackIdContent, txtTransactionScheduleContent);
                 TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, txtFeedbackIdTitle, txtTransactionScheduleTitle, btnBackToFeedback);
-
-                txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16f);
-                txtContentInfo.TextSize = TextViewUtils.GetFontSize(14f);
-                txtTransactionScheduleTitle.TextSize = TextViewUtils.GetFontSize(9f);
-                txtFeedbackIdTitle.TextSize = TextViewUtils.GetFontSize(9f);
-                txtTransactionScheduleContent.TextSize = TextViewUtils.GetFontSize(14f);
-                txtFeedbackIdContent.TextSize = TextViewUtils.GetFontSize(14f);
-                btnBackToFeedback.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize9(txtTransactionScheduleTitle, txtFeedbackIdTitle);
+                TextViewUtils.SetTextSize14(txtContentInfo, txtTransactionScheduleContent, txtFeedbackIdContent);
+                TextViewUtils.SetTextSize16(txtTitleInfo, btnBackToFeedback);
                 txtFeedbackIdContent.Text = feedbackId;
                 SetStaticLabels();
 

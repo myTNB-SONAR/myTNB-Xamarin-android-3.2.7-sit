@@ -40,10 +40,10 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         const string PAGE_ID = "SelectElectricityAccounts";
 
         [BindView(Resource.Id.account_list_view)]
-        ListView accountSMRList; 
+        ListView accountSMRList;
 
         [BindView(Resource.Id.noEligibleAccountContainer)]
-        LinearLayout noEligibleAccountContainer; 
+        LinearLayout noEligibleAccountContainer;
 
         [BindView(Resource.Id.eligibleAccountListContainer)]
         LinearLayout eligibleAccountListContainer;
@@ -64,9 +64,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         public void UpdateSelectedAccount(int position)
         {
-            for (int i=0; i < accountList.Count; i++)
+            for (int i = 0; i < accountList.Count; i++)
             {
-                if (i==position)
+                if (i == position)
                 {
                     accountList[i].accountSelected = true;
                 }
@@ -86,7 +86,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         {
             base.OnCreate(savedInstanceState);
             SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
-            noEligibleAccountMessage.TextSize = TextViewUtils.GetFontSize(14f);
+            TextViewUtils.SetTextSize14(noEligibleAccountMessage);
             Bundle extras = Intent.Extras;
             if (extras != null && extras.ContainsKey("SMR_ELIGIBLE_ACCOUNT_LIST"))
             {
@@ -103,7 +103,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             {
                 if (CustomerBillingAccount.HasSelected())
                 {
-                    CustomerBillingAccount selectedAccount =  CustomerBillingAccount.GetSelected();
+                    CustomerBillingAccount selectedAccount = CustomerBillingAccount.GetSelected();
                     int index = accountList.FindIndex(x => x.accountNumber == selectedAccount.AccNum);
                     if (index != -1)
                     {

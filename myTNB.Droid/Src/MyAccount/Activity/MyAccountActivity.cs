@@ -67,7 +67,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         const string PAGE_ID = "ManageAccount";
 
-        private static int HORIZONTAL_MIN = 30; 
+        private static int HORIZONTAL_MIN = 30;
 
         public override int ResourceId()
         {
@@ -92,12 +92,12 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 //    btnAddAccount);
 
                 //txtTnBSupplyAccountTitle.TextSize = TextViewUtils.GetFontSize(18f);
-                txtMyAccountNoAccountTitle.TextSize = TextViewUtils.GetFontSize(14f);
-                txtMyAccountNoAccountContent.TextSize = TextViewUtils.GetFontSize(12f);
-                btnAddAccount.TextSize = TextViewUtils.GetFontSize(16f);
-                btnAddAnotherAccount.TextSize = TextViewUtils.GetFontSize(16f);
                 //txtTnBSupplyAccountTitle.Text = GetLabelByLanguage("accountSectionTitle");
-                
+
+                TextViewUtils.SetTextSize12(txtMyAccountNoAccountContent);
+                TextViewUtils.SetTextSize14(txtMyAccountNoAccountTitle);
+                TextViewUtils.SetTextSize16(btnAddAccount, btnAddAnotherAccount);
+
                 btnAddAnotherAccount.Text = GetLabelCommonByLanguage("addAnotherAcct");
                 txtMyAccountNoAccountTitle.Text = GetLabelByLanguage("noAccounts");
                 txtMyAccountNoAccountContent.Text = GetLabelByLanguage("addAccountMessage");
@@ -119,47 +119,47 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
         }
 
-/*        public bool OnTouch(View v, MotionEvent e)
-        {
-            float downX, downY, upX, upY;
-            if (v is ListView)
-            {
-                ListView eListView = v as ListView;
-                if (eListView.Id == Resource.Id.listView)
+        /*        public bool OnTouch(View v, MotionEvent e)
                 {
-                    switch (e.Action)
+                    float downX, downY, upX, upY;
+                    if (v is ListView)
                     {
-                        case MotionEventActions.Down:
+                        ListView eListView = v as ListView;
+                        if (eListView.Id == Resource.Id.listView)
+                        {
+                            switch (e.Action)
                             {
-                                 downX = e.GetX();
-                                 downY = e.GetY();
-                                 return false; // allow other events like Click to be processed
+                                case MotionEventActions.Down:
+                                    {
+                                         downX = e.GetX();
+                                         downY = e.GetY();
+                                         return false; // allow other events like Click to be processed
+                                    }
+                                case MotionEventActions.Move:
+                                    upX = e.GetX();
+                                    upY = e.GetY();
+                                    *//*float deltaX = downX - upX;
+                                    float deltaY = downY - upY;*//*
+                                    if (Math.Abs(upX) > HORIZONTAL_MIN)
+                                    {
+                                        // left or right
+                                        if (upX < 0)
+                                        {
+                                            ((SwipeLayout)(listView.GetChildAt(listView.FirstVisiblePosition))).Open(SwipeLayout.DragEdge.Right);
+                                            return true;
+                                        }
+                                        if (upX > 0)
+                                        {
+                                            return true;
+                                        }
+                                    }
+                                    break;
                             }
-                        case MotionEventActions.Move:
-                            upX = e.GetX();
-                            upY = e.GetY();
-                            *//*float deltaX = downX - upX;
-                            float deltaY = downY - upY;*//*
-                            if (Math.Abs(upX) > HORIZONTAL_MIN)
-                            {
-                                // left or right
-                                if (upX < 0)
-                                {
-                                    ((SwipeLayout)(listView.GetChildAt(listView.FirstVisiblePosition))).Open(SwipeLayout.DragEdge.Right);
-                                    return true;
-                                }
-                                if (upX > 0)
-                                {
-                                    return true;
-                                }
-                            }
-                            break;
+                            return true;
+                        }
                     }
-                    return true;
-                }
-            }
-            return false;
-        }*/
+                    return false;
+                }*/
 
         [Preserve]
 
@@ -179,8 +179,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
             ShowDeleteAccDialog(this, position, () =>
             {
                 CustomerBillingAccount account = adapter.GetItemObject(position);
-                this.mPresenter.OnRemoveAccount(account.AccNum);                
-            });           
+                this.mPresenter.OnRemoveAccount(account.AccNum);
+            });
         }
 
         public void showsuccessDelete()
@@ -527,13 +527,13 @@ namespace myTNB_Android.Src.MyAccount.Activity
                             (view) =>
                             {
 
-                            // EMPTY WILL CLOSE SNACKBAR
-                        }
+                                // EMPTY WILL CLOSE SNACKBAR
+                            }
                            );
-                           View v = removeSupplySnackbar.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
-            removeSupplySnackbar.Show();
+                View v = removeSupplySnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                removeSupplySnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (Exception e)
@@ -560,8 +560,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
                              (view) =>
                              {
 
-                             // EMPTY WILL CLOSE SNACKBAR
-                         }
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
                             );
 
                 View v = updatePassWordBar.View;

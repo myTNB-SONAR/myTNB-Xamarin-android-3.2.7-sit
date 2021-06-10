@@ -126,9 +126,9 @@ namespace myTNB_Android.Src.AddAccount
             MobileLinearLayout = itemView.FindViewById<LinearLayout>(Resource.Id.mobileNumberFieldContainer);
             OwnerNoContactLinearLayout = itemView.FindViewById<LinearLayout>(Resource.Id.layout_owner_no_contact);
             textInputLayoutEmailEditText = itemView.FindViewById<TextInputLayout>(Resource.Id.textInputLayoutEmailReg);
-            
 
-            EmailFieldDetail.Click += (sender, e) => 
+
+            EmailFieldDetail.Click += (sender, e) =>
             {
                 OwnerNoContactLinearLayout.RequestFocus();
                 MobileLinearLayout.Visibility = ViewStates.Gone;
@@ -157,18 +157,21 @@ namespace myTNB_Android.Src.AddAccount
             NoMobileFieldDetail.Text = Utility.GetLocalizedCommonLabel("mobileNumber");
             EmailFieldDetail.Text = Utility.GetLocalizedCommonLabel("emailAddress");
             textInputLayoutAccountLabel.Hint = Utility.GetLocalizedCommonLabel("acctNickname");
-            textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+            textInputLayoutAccountLabel.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
+            textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                ? Resource.Style.TextInputLayoutFeedbackCountLarge
+                : Resource.Style.TextInputLayoutFeedbackCount);
             context = itemView.Context;
             AccountLabel.AddTextChangedListener(new InputFilterFormField(AccountLabel, textInputLayoutAccountLabel));
-            AccountLabel.TextSize = TextViewUtils.GetFontSize(16);
-            AccountNumber.TextSize = TextViewUtils.GetFontSize(14);
-            AccountAddress.TextSize = TextViewUtils.GetFontSize(12);
-            OwnerDetailTitle.TextSize = TextViewUtils.GetFontSize(14);
-            EmailFieldDetail.TextSize = TextViewUtils.GetFontSize(16);
-            NoMobileFieldDetail.TextSize = TextViewUtils.GetFontSize(16);
 
             OwnerDetailTitle.Text = Utility.GetLocalizedLabel("AddAccount", "titleOwnerDetailRegion");
             textInputLayoutEmailEditText.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+
+            TextViewUtils.SetTextSize12(AccountAddress);
+            TextViewUtils.SetTextSize14(AccountNumber, OwnerDetailTitle);
+            TextViewUtils.SetTextSize16(AccountLabel, EmailFieldDetail, NoMobileFieldDetail);
 
             //TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress, AccountLabel, OwnerDetailTitle);
             //TextViewUtils.SetMuseoSans500Typeface(EmailFieldDetail, NoMobileFieldDetail);
@@ -177,7 +180,7 @@ namespace myTNB_Android.Src.AddAccount
             //context = itemView.Context;
             //AccountLabel.AddTextChangedListener(new InputFilterFormField(AccountLabel, textInputLayoutAccountLabel));
             EmailEditText.AddTextChangedListener(new InputFilterFormField(EmailEditText, textInputLayoutEmailEditText));
-           
+
             AccountLabel.FocusChange += (sender, e) =>
             {
                 textInputLayoutAccountLabel.Error = null;
@@ -211,7 +214,7 @@ namespace myTNB_Android.Src.AddAccount
             mobileNumberInputComponent.SetMobileNumberLabel(Utility.GetLocalizedCommonLabel("mobileNo"));
             mobileNumberInputComponent.SetSelectedCountry(CountryUtil.Instance.GetDefaultCountry());
             mobileNumberInputComponent.SetValidationAction(OnValidateMobileNumber);
-            MobileLinearLayout.AddView(mobileNumberInputComponent);          
+            MobileLinearLayout.AddView(mobileNumberInputComponent);
         }
 
         public void OnTapCountryCode()
@@ -251,7 +254,7 @@ namespace myTNB_Android.Src.AddAccount
                     item.CountryCheckNoPhone = false;
                     this.item.mobileNoOwner = "";
                 }
-                else if (!validatedMobileNumber.Equals("") && validatedMobileNumber.Substring(0,2) == ISD.Substring(0,2))
+                else if (!validatedMobileNumber.Equals("") && validatedMobileNumber.Substring(0, 2) == ISD.Substring(0, 2))
                 {
                     string MobileNumber = this.item.mobileNoOwner.Substring(ISD.Length, this.item.mobileNoOwner.Length - ISD.Length);
                     if (!MobileNumber.Equals("") && MobileNumber.Length == 1)
@@ -260,7 +263,7 @@ namespace myTNB_Android.Src.AddAccount
                     }
                 }
             }
-            else if(!mobileNumberInputComponent.GetMobileNumberReset() && !isValidated && item.CountryCheckNoPhone)
+            else if (!mobileNumberInputComponent.GetMobileNumberReset() && !isValidated && item.CountryCheckNoPhone)
             {
                 item.CountryCheckNoPhone = false;
                 this.item.mobileNoOwner = "";
@@ -282,7 +285,8 @@ namespace myTNB_Android.Src.AddAccount
                 AccountNumber.Text = this.item.accountNumber;
 
                 //if not owner mask the address IRUL
-                if (!this.item.isOwner == true) {
+                if (!this.item.isOwner == true)
+                {
                     AccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, this.item.accountAddress);
                     //AccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, this.item.accountAddress);
                 }
@@ -293,7 +297,7 @@ namespace myTNB_Android.Src.AddAccount
 
 
                 if (this.item.accountLabel.Equals(EG_ACCOUNT_LABEL))
-                {   
+                {
                     AccountLabel.Hint = this.item.accountLabel;
                 }
                 else
@@ -317,7 +321,7 @@ namespace myTNB_Android.Src.AddAccount
 
                 EmailEditText.Text = this.item.emailOwner;
                 EmailEditText.AfterTextChanged += (sender, args) =>
-                {                    
+                {
                     item.emailOwner = EmailEditText.Text.Trim();
                     checkingEmailnPhone();
                 };
@@ -344,7 +348,7 @@ namespace myTNB_Android.Src.AddAccount
                     mobileNumberInputComponent.SetSelectedCountry(selectedCountry);
 
                 }
-                else if(!item.countryDetail.Equals(""))
+                else if (!item.countryDetail.Equals(""))
                 {
                     Country selectedCountry = JsonConvert.DeserializeObject<Country>(item.countryDetail);
                     this.item.ISDmobileNo = selectedCountry.isd;
@@ -360,8 +364,8 @@ namespace myTNB_Android.Src.AddAccount
                     {
                         int value = Java.Lang.Integer.ParseInt(mobileNoOnly);
                         mobileNumberInputComponent.SetMobileNumber(value);
-                    }                
-                }      
+                    }
+                }
             }
             catch (Exception e)
             {

@@ -424,10 +424,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
                     TextViewUtils.SetMuseoSans500Typeface(vh.serviceTitle, vh.txtNewLabel);
                     vh.txtNewLabel.Text = Utility.GetLocalizedCommonLabel("new");
-
-                    vh.txtNewLabel.TextSize = TextViewUtils.GetFontSize(8f);
-                    vh.serviceTitle.TextSize = TextViewUtils.GetFontSize(10f);
-
+                    TextViewUtils.SetTextSize8(vh.txtNewLabel);
+                    TextViewUtils.SetTextSize10(vh.serviceTitle);
                 }
                 catch (Exception e)
                 {
@@ -479,14 +477,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             {
                 serviceImg = itemView.FindViewById<ImageView>(Resource.Id.service_img);
                 serviceTitle = itemView.FindViewById<TextView>(Resource.Id.service_title);
-                
+
                 myServiceCardView = itemView.FindViewById<LinearLayout>(Resource.Id.rootView);
                 newLabel = itemView.FindViewById<LinearLayout>(Resource.Id.newLabel);
                 txtNewLabel = itemView.FindViewById<TextView>(Resource.Id.txtNewLabel);
-
-                serviceTitle.TextSize = TextViewUtils.GetFontSize(12f);
-                
-           
+                TextViewUtils.SetTextSize12(serviceTitle);
                 myServiceCardView.Click += (s, e) => listener((this), base.LayoutPosition);
             }
         }

@@ -106,27 +106,21 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 ManageSupplyItemComponent manageSupplyItem = GetManageSupply();
                 profileMenuItemsContent.AddView(manageSupplyItem);
 
-               
+
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNickName);
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountAddress, txtNickName);
                 TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName);
                 TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
-
-                txtAccountAddress.TextSize = TextViewUtils.GetFontSize(14);
-                txtNickName.TextSize = TextViewUtils.GetFontSize(14);
-                txtAccountNumber.TextSize = TextViewUtils.GetFontSize(14);
-                btnTextUpdateNickName.TextSize = TextViewUtils.GetFontSize(14);
-                btnRemoveAccount.TextSize = TextViewUtils.GetFontSize(14);
-                txtInputLayoutNickName.TextSize = TextViewUtils.GetFontSize(14);
-
+                TextViewUtils.SetTextSize14(txtAccountAddress, txtNickName, txtAccountNumber, btnTextUpdateNickName
+                    , btnRemoveAccount, txtInputLayoutNickName);
                 txtAccountNumber.Text = accountData.AccountNum;
                 //txtAccountAddress.Text = Utility.StringMasking(Utility.Masking.Address, accountData.AddStreet);
 
                 //if not owner mask the address IRUL
                 if (!accountData.IsOwner == true)
                 {
-                   txtAccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
-                   infoAddress.Visibility = ViewStates.Visible;
+                    txtAccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
+                    infoAddress.Visibility = ViewStates.Visible;
                 }
                 else
                 {
@@ -192,7 +186,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
 
         //AlertDialog removeDialog;
-        
+
         void ShowRemoveAccountDialog(Android.App.Activity context, Action confirmAction, Action cancelAction = null)
         {
 
@@ -251,7 +245,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             //    Utility.LoggingNonFatalError(e);
             //}
         }
-      
+
         public bool IsActive()
         {
             return Window.DecorView.RootView.IsShown;
@@ -304,7 +298,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             if (accountData.IsOwner && accountData.AccountTypeId == "1")
             {
                 SupplyAccMenuItemSingleContentComponent manageUser = new SupplyAccMenuItemSingleContentComponent(this);
-                manageUser.SetTitle(Utility.GetLocalizedLabel("ManageAccount", "manageUserAccess")); 
+                manageUser.SetTitle(Utility.GetLocalizedLabel("ManageAccount", "manageUserAccess"));
                 manageUser.SetIcon(1);
                 manageUser.SetItemActionVisibility(true);
                 manageUser.SetItemActionCall(ShowManageUser);
@@ -380,13 +374,13 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 .SetAction(GetLabelCommonByLanguage("close"),
                  (view) =>
                  {
-                 // EMPTY WILL CLOSE SNACKBAR
-               }
+                     // EMPTY WILL CLOSE SNACKBAR
+                 }
                );
-            View v = updateSnackbar.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
-            updateSnackbar.Show();
+                View v = updateSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                updateSnackbar.Show();
                 SetResult(Result.Ok);
             }
             catch (Exception e)
@@ -433,7 +427,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                        .Build().Show();
 
         }
-       
+
 
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)

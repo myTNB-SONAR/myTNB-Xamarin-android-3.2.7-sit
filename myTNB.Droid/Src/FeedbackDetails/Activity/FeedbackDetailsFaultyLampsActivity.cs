@@ -3,9 +3,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
-
-
-
 using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
@@ -189,9 +186,12 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
                 string selectedFeedback = UserSessions.GetSelectedFeedback(PreferenceManager.GetDefaultSharedPreferences(this));
                 submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
 
-                TextViewUtils.SetMuseoSans300Typeface(txtRelatedScreenshotTitle, txtFeedbackId, txtFeedbackDateTime, txtState, txtLocation, txtPoleNo, txtFeedback, txtFeedbackStatus);
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedbackId, txtInputLayoutFeedback, txtInputLayoutLocation, txtInputLayoutDateTime, txtInputLayoutPoleNo, txtInputLayoutState, txtInputLayoutStatus);
-                txtRelatedScreenshotTitle.TextSize = TextViewUtils.GetFontSize(9f);
+                TextViewUtils.SetMuseoSans300Typeface(txtRelatedScreenshotTitle, txtFeedbackId
+                    , txtFeedbackDateTime, txtState, txtLocation, txtPoleNo, txtFeedback, txtFeedbackStatus);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFeedbackId, txtInputLayoutFeedback
+                    , txtInputLayoutLocation, txtInputLayoutDateTime, txtInputLayoutPoleNo, txtInputLayoutState, txtInputLayoutStatus);
+                TextViewUtils.SetTextSize9(txtRelatedScreenshotTitle);
+
                 adapter = new FeedbackImageRecyclerAdapter(true);
                 layoutManager = new GridLayoutManager(this, Constants.GRID_IMAGE_COUNT);
                 recyclerView.SetLayoutManager(layoutManager);
@@ -206,7 +206,6 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-
         }
 
         protected override void OnResume()

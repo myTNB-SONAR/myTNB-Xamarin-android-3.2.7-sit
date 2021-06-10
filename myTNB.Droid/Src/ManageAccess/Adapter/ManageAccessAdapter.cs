@@ -91,8 +91,8 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
                 {
                     viewHolder.txtAccountName.Text = account.email;
                     viewHolder.txtAccountNum.Visibility = ViewStates.Visible;
-                    viewHolder.txtAccountNum.Text = Utility.GetLocalizedLabel("UserAccess", "pendingRegistration"); ;
-                    viewHolder.txtAccountNum.TextSize = TextViewUtils.GetFontSize(14);
+                    viewHolder.txtAccountNum.Text = Utility.GetLocalizedLabel("UserAccess", "pendingRegistration");
+                    TextViewUtils.SetTextSize14(viewHolder.txtAccountNum);
                 }
                 else
                 {
@@ -124,7 +124,7 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
             throw new System.NotImplementedException();
         }
 
-        public void OnRemoveAccount(List<UserManageAccessAccount> DeletedSelectedUser,List<Models.DeleteAccessAccount> accounts, string AccountNum)
+        public void OnRemoveAccount(List<UserManageAccessAccount> DeletedSelectedUser, List<Models.DeleteAccessAccount> accounts, string AccountNum)
         {
             throw new NotImplementedException();
         }
@@ -145,11 +145,10 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
 
             public MyAccountViewHolder(View itemView) : base(itemView)
             {
-                TextViewUtils.SetMuseoSans300Typeface( txtAccountNum);
+                TextViewUtils.SetMuseoSans300Typeface(txtAccountNum);
                 TextViewUtils.SetMuseoSans500Typeface(txtAccountName);
-
-                txtAccountNum.TextSize = TextViewUtils.GetFontSize(12);
-                txtAccountName.TextSize = TextViewUtils.GetFontSize(14);
+                TextViewUtils.SetTextSize12(txtAccountNum);
+                TextViewUtils.SetTextSize14(txtAccountName);
             }
         }
     }
