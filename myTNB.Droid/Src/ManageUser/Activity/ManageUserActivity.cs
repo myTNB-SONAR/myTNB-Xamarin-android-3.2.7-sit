@@ -407,7 +407,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     this.SetIsClicked(true);
                     ShowCancelAddAccessDialog(this, () =>
                     {
-                        this.userActionsListener.CancelInvitedUser(account.UserAccountId);
+                        this.userActionsListener.CancelInvitedUser(account.email, account.AccNum, account.UserAccountId);
                     });
                 }
                 this.SetIsClicked(false);

@@ -128,7 +128,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
 
         }
 
-        public async void CancelInvitedUser(string userId)
+        public async void CancelInvitedUser(string email, string AccNum, string userId)
         {
             if (mView.IsActive())
             {
@@ -137,7 +137,10 @@ namespace myTNB_Android.Src.ManageUser.MVP
 
             try
             {
-                var updateUserAccessReponse = await ServiceApiImpl.Instance.CancelInvitation_OT(new CancelInviteUserAccessRequest(userId));
+                CancelInviteUserAccessRequest cancelInviteUserAccessRequest = new CancelInviteUserAccessRequest(email, AccNum, userId);
+                
+                string dt = JsonConvert.SerializeObject(cancelInviteUserAccessRequest);
+                var updateUserAccessReponse = await ServiceApiImpl.Instance.CancelInvitation_OT(cancelInviteUserAccessRequest);
 
                 if (mView.IsActive())
                 {

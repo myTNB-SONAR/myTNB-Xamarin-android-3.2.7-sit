@@ -78,7 +78,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
 
             void UpdateAccountAccessRight(string userAccountId, string userId, bool isHaveAccess, bool isApplyEBilling, string email);
 
-            void CancelInvitedUser(string userId);
+            void CancelInvitedUser(string email, string AccNum, string userId);
 
             void ResendInvitedUser(string email, string AccNum, bool isHaveAccess,bool isApplyEBilling);
         }
