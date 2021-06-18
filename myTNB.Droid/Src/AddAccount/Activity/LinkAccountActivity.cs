@@ -346,6 +346,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 btnAddAnotherAccount.TextSize = TextViewUtils.GetFontSize(16f);
                 btnConfirm.TextSize = TextViewUtils.GetFontSize(16f);
                 textlabelAdditionalAcoount.TextSize = TextViewUtils.GetFontSize(14f);
+                txtTermsConditions.TextSize = TextViewUtils.GetFontSize(12f);
 
                 txtboxcondition.CheckedChange += CheckedChange;
                 txtboxcondition.Checked = false;

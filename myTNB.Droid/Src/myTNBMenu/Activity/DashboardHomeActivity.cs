@@ -1744,6 +1744,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             
             if (isFromLogin)
             {
+                isFromLogin = false; 
                 UserSessions.SaveCheckEmailVerified(this.mPref, user.IsActivated.ToString());  //save sharedpref check email  //wan
                 if (string.IsNullOrEmpty(user.IdentificationNo) || !user.IsActivated)
                 {
