@@ -276,6 +276,12 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     
                 }
 
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_UPDATE_ACCESS)
+                {
+                    notificationDetailTitle = Regex.Replace(notificationDetailTitle, Constants.ACCOUNT_NICKNAME_PATTERN, accountName);
+
+                }
+
                 if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_NEW_ACCESS_ADDED)
                 {
                     CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);

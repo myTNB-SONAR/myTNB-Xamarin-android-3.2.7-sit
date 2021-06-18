@@ -384,7 +384,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     this.SetIsClicked(true);
                     ShowSaveDialog(this, () =>
                     {
-                        this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, checkboxfullbill, checkboxbilling, account.email);
+                        this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, account.userId, checkboxfullbill, checkboxbilling, account.email);
                         //ShowSaveSuccess();
                     });
                 }
@@ -407,7 +407,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
                     this.SetIsClicked(true);
                     ShowCancelAddAccessDialog(this, () =>
                     {
-                        this.userActionsListener.CancelInvitedUser(account.UserAccountId);
+                        this.userActionsListener.CancelInvitedUser(account.email, account.AccNum, account.UserAccountId);
                     });
                 }
                 this.SetIsClicked(false);
@@ -449,7 +449,7 @@ namespace myTNB_Android.Src.ManageUser.Activity
             {
                 ShowBackDialog(this, () =>
                 {                    
-                    this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, checkboxfullbill, checkboxbilling, account.email);
+                    this.userActionsListener.UpdateAccountAccessRight(account.UserAccountId, account.userId, checkboxfullbill, checkboxbilling, account.email);
                 });
             }
             else

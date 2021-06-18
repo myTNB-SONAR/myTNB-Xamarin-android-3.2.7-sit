@@ -488,12 +488,14 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 }
                 else
                 {
-                    MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                        .SetTitle(Utility.GetLocalizedErrorLabel("error_duplicateAccountTitle"))
-                        .SetMessage(Utility.GetLocalizedErrorLabel("error_duplicateAccountMessageNew"))
-                        .SetContentGravity(GravityFlags.Center)
-                        .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
-                        .Build().Show();
+                    textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                    textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("error_duplicateAccountMessageNew");
+                    //MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                    //    .SetTitle(Utility.GetLocalizedErrorLabel("error_duplicateAccountTitle"))
+                    //    .SetMessage(Utility.GetLocalizedErrorLabel("error_duplicateAccountMessageNew"))
+                    //    .SetContentGravity(GravityFlags.Center)
+                    //    .SetCTALabel(Utility.GetLocalizedCommonLabel("ok"))
+                    //    .Build().Show();
                 }
             }
             catch (Exception e)
@@ -509,20 +511,23 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public void ShowAddAccountFail(string errorMessage)
         {
-            if (mSnackBar != null && mSnackBar.IsShown)
-            {
-                mSnackBar.Dismiss();
 
-            }
+            textInputLayoutAccountNo.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+            textInputLayoutAccountNo.Error = Utility.GetLocalizedErrorLabel("error_NotExistsAccountMessage");
+            //if (mSnackBar != null && mSnackBar.IsShown)
+            //{
+            //    mSnackBar.Dismiss();
 
-            mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
-            .SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
-            );
-            View v = mSnackBar.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
+            //}
 
-            mSnackBar.Show();
+            //mSnackBar = Snackbar.Make(rootView, errorMessage, Snackbar.LengthIndefinite)
+            //.SetAction(Utility.GetLocalizedCommonLabel("close"), delegate { mSnackBar.Dismiss(); }
+            //);
+            //View v = mSnackBar.View;
+            //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            //tv.SetMaxLines(5);
+
+            //mSnackBar.Show();
         }
 
         public void ShowAddAccountResponse(ServiceResponse response)
@@ -803,7 +808,14 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public void GovermentDialog()
         {
-            throw new NotImplementedException();
+            string data = Utility.GetLocalizedLabel("AddAccount", "GovDialogDetails");
+            string temp = string.Format(data);
+            MyTNBAppToolTipBuilder.Create(Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                       .SetTitle((string.Format(Utility.GetLocalizedLabel("AddAccount", "GovDialogTitle"))))
+                       .SetMessage(temp)
+                       .SetContentGravity(GravityFlags.Left)
+                       .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                       .Build().Show();
         }
     }
 }

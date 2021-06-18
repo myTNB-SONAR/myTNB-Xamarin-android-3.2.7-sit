@@ -51,7 +51,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
         }
 
        
-        public async void UpdateAccountAccessRight(string userId, bool haveAccess, bool haveEBiling, string email)
+        public async void UpdateAccountAccessRight(string accountId, string userId, bool haveAccess, bool haveEBiling, string email)
         {
             if (mView.IsActive())
             {
@@ -62,7 +62,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
             try
             {
                 string action = "U";
-                UpdateUserAccessRequest updateUserAccessRequest = new UpdateUserAccessRequest(userId, haveAccess, haveEBiling, action, accountData.AccNum, user.DisplayName, email);
+                UpdateUserAccessRequest updateUserAccessRequest = new UpdateUserAccessRequest(accountId, userId, haveAccess, haveEBiling, action, accountData.AccNum, user.DisplayName, email);
                 updateUserAccessRequest.SetIsWhiteList(UserSessions.GetWhiteList(mSharedPref));
                 string dt = JsonConvert.SerializeObject(updateUserAccessRequest);
 
@@ -76,7 +76,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
                 if (updateUserAccessReponse.IsSuccessResponse())
                 {
                     
-                    UserManageAccessAccount.UpdateManageAccess(accountData.AccNum, userId, haveAccess, haveEBiling);
+                    UserManageAccessAccount.UpdateManageAccess(accountData.AccNum, accountId, haveAccess, haveEBiling);
 
                     var updateacc = new UserManageAccessAccount()
                     {
@@ -128,7 +128,7 @@ namespace myTNB_Android.Src.ManageUser.MVP
 
         }
 
-        public async void CancelInvitedUser(string userId)
+        public async void CancelInvitedUser(string email, string AccNum, string userId)
         {
             if (mView.IsActive())
             {
@@ -137,7 +137,10 @@ namespace myTNB_Android.Src.ManageUser.MVP
 
             try
             {
-                var updateUserAccessReponse = await ServiceApiImpl.Instance.CancelInvitation_OT(new CancelInviteUserAccessRequest(userId));
+                CancelInviteUserAccessRequest cancelInviteUserAccessRequest = new CancelInviteUserAccessRequest(email, AccNum, userId);
+                
+                string dt = JsonConvert.SerializeObject(cancelInviteUserAccessRequest);
+                var updateUserAccessReponse = await ServiceApiImpl.Instance.CancelInvitation_OT(cancelInviteUserAccessRequest);
 
                 if (mView.IsActive())
                 {
