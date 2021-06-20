@@ -1328,6 +1328,20 @@ namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity
         }
 
 
+        public string getFilename(Android.Net.Uri uri)
+        {
+            try
+            {
+                string filename = FileUtils.getFilenameUsingContentResolver(this, uri);
+                return filename;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
 
 
     }
