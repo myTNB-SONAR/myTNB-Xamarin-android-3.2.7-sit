@@ -169,6 +169,39 @@ namespace myTNB_Android.Src.Utils
 
         }
 
+
+        public static String getFilenameUsingContentResolver(Context context, Android.Net.Uri uri)
+        {
+
+            try
+            {
+
+                var cursor = context.ContentResolver.Query(uri, null, null, null, null);
+                int nameIndex = cursor.GetColumnIndex(OpenableColumns.DisplayName);
+                int sizeIndex = cursor.GetColumnIndex(OpenableColumns.Size);
+                cursor.MoveToFirst();
+
+
+                string filename = cursor.GetString(nameIndex);
+
+
+                cursor.Close();
+
+                return filename;
+
+            }
+            catch
+
+            {
+
+                return null;
+
+            }
+
+        }
+
+
+
         public static Task<string> SaveAsync(Context context, Bitmap bitmap, string pFolder, string pFileName)
         {
             return Task.Run<string>(() =>
