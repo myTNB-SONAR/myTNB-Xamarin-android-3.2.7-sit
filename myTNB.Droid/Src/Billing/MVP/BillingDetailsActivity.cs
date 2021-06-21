@@ -280,8 +280,37 @@ namespace myTNB_Android.Src.Billing.MVP
                 topLayout.Visibility = ViewStates.Invisible;
                 this.billingDetailsPresenter.ShowBillDetails(selectedAccountData, isCheckPendingPaymentNeeded);
             }
+            ShowGoPapperless();
         }
 
+        private void ShowGoPapperless()
+        {
+            string ebilltype = "NonTargted";
+            if(ebilltype == "NonTargted")
+            {
+
+            }
+            else if (ebilltype == "AutoConvert")
+            {
+
+            }
+            else if (ebilltype == "DigitalBill")
+            {
+
+            }
+            else if (ebilltype == "BillEmail")
+            {
+
+            }
+            else if (ebilltype == "PaperBills")
+            {
+
+            }
+            else if (ebilltype == "WhatsappBills")
+            {
+
+            }
+        }
         private void EnableEppTooltip(bool isTooltipShown)
         {
             if (isTooltipShown == true)

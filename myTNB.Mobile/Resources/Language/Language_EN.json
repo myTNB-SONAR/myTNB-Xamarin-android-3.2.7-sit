@@ -24,7 +24,7 @@
     "viewBill": "View Bill",
     "all": "All",
     "maintenanceTitle": "We’ll be back shortly!",
-    "maintenanceMsg": "We’ll be back shortly! nmyTNB system maintenance is currently in progress. In the meantime, you can still pay your bill via JomPay and Online Banking channels. Thank you for your understanding.",
+    "maintenanceMsg": "We’ll be back shortly! myTNB system maintenance is currently in progress. In the meantime, you can still pay your bill via JomPay and Online Banking channels. Thank you for your understanding.",
     "day": "Day",
     "month": "Month",
     "customerAccountNumber": "Customer Account Number {0}",
@@ -223,6 +223,24 @@
     "rewards": "Rewards",
     "profile": "Profile"
   },
+  "MarketingPopup": {
+    "autoconvertpretitle": "TNB is going green with digital bill!",
+    "nontargtedttitle": "TNB is going green with digital bill!",
+    "autoconvertposttitle": "Your bills are now paperless!",
+    "autoconvertpreDescription": "We’re excited to announce that starting July 2021, your paper bills will be replaced by digital bills - a better and more environmentally friendly way to receive your electricity bills via myTNB. <br> <br>Get a head start in making your impact, go paperless today for your next bill!",
+    "nontargtedDescription": "We’re excited to introduce digital bills as a new bill delivery method - a better and more environmentally friendly way to receive your electricity bills via myTNB. <br><br> Get a head start in making your impact, go paperless today for your next bill!",
+    "autoconvertpostDescription": "Your paper bills have been replaced by digital bills and delivered via myTNB for your electricity accounts as part of our mission to reduce our carbon footprint. You can always view your bill delivery method in ‘Manage Electricity Account’ page and go to ‘Manage Bill Delivery’.",
+    "gopaperless": "Go Paperless"
+  },
+  "ManageBillDelivery": {
+    "title1": "Go green and save the trees.",
+    "description1": "Reduce paper waste and minimise your carbon footprint, and play your part in our collective move towards a sustainable future.",
+    "title2": "Fast and convenient bill viewing.",
+    "description2": "Enjoy faster and on-the-dot delivery of your monthly electricity bills and view them directly on myTNB App & Portal, anytime, anywhere.",
+    "title3": "Secure billing for a peace of mind.",
+    "description3": "Get your digital bills directly and securely on myTNB. No more worry about others seeing your bills, risk getting stolen or lost in the mail. "
+
+  },
   "SSMROnboarding": {
     "skip": "Skip",
     "onboardingTitle1": "What is Self Meter Reading?",
@@ -420,7 +438,9 @@
     "tariffLegendNote": "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill.",
     "prevReadingEmptyTitle": "Sorry, we are unable to perform this action right now.",
     "prevReadingEmptyMsg": "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you.",
-    "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while."
+    "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
+    "tutorialDigitalBillTitle": "Your account bill delivery method.",
+    "tutorialDigitalBillDesc": "View your bill delivery method here and tap to manage your preference."
   },
   "Bills": {
     "title": "Bills",
@@ -781,7 +801,16 @@
     "description7": "You can now register a myTNB account or update your existing one with an international phone number.",
     "description8": "You can now track all your application status with zero hassle, anytime and anywhere.",
     "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
-    "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot."
+    "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot.",
+    //addby irul
+    "title11": "Enhanced access controls to safeguard your information.",
+    "description11": "Stay in control of your account information and permissions by defining what you let others access as an owner of an electricity account.",
+    "title12_1": "TNB is going green with digital bill!",
+    "description12_1": "Starting July 2021, your paper bills will be replaced by digital bils - a better and more environmentally friendly way to receive your electricity bills via myTNB. Get a head start in making your impact and go paperless today for your next bill!",
+    "title12_2": "TNB is going green with digital bill!,",
+    "description12_2": "We’re excited to introduce digital bills as a new bill delivery method - a better and more environmentally friendly way to receive your electricity bills via myTNB. Get a head start in making your impact and go paperless today for your next bill!",
+    "title12_3": "Your electricity bills are now paperless!,",
+    "description12_3": "Your paper bills have been replaced by digital bills and delivered via myTNB for all your electricity accounts as part of our mission to reduce our carbon footprint. "
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",

@@ -98,6 +98,16 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 {
                     ShowSubmitButton(false);
                 }
+                if (position == (MyTNBAccountManagement.GetInstance().IsDigitalBillDisabled
+                    ? (newWalkthroughAdapter.Count - 1)
+                    : (newWalkthroughAdapter.Count - 2)))
+                {
+                    ShowSubmitButton(true);
+                }
+                else
+                {
+                    ShowSubmitButton(false);
+                }
             }
         }
 

@@ -22,6 +22,7 @@
     "months": "Bulan",
     "days": "Hari",
     "viewBill": "Lihat Bil",
+    "gopaperless": "MS_ Go Paperless",
     "all": "Semua",
     "maintenanceTitle": "Kami sedang membuat penambahbaikan!",
     "maintenanceMsg": "Kami menambahbaik beberapa ciri untuk pengalaman myTNB yang lebih baik. Nantikan ketibaannya.",
@@ -222,6 +223,14 @@
     "promotion": "Terkini",
     "rewards": "Ganjaran",
     "profile": "Profil"
+  },
+  "MarketingPopup": {
+    "autoconvertpretitle": "MS_TNB is going green with digital bill!",
+    "nontargtedttitle": "MS_TNB is going green with digital bill!",
+    "autoconvertposttitle": "MS_Your bills are now paperless!",
+    "autoconvertpreDescription": "MS_We’re excited to announce that starting July 2021, your paper bills will be replaced by digital bills - a better and more environmentally friendly way to receive your electricity bills via myTNB. <br> <br>Get a head start in making your impact, go paperless today for your next bill!",
+    "nontargtedDescription": "MS_We’re excited to introduce digital bills as a new bill delivery method - a better and more environmentally friendly way to receive your electricity bills via myTNB. <br><br> Get a head start in making your impact, go paperless today for your next bill!",
+    "autoconvertpostDescription": "MS_Your paper bills have been replaced by digital bills and delivered via myTNB for your electricity accounts as part of our mission to reduce our carbon footprint. You can always view your bill delivery method in ‘Manage Electricity Account’ page and go to ‘Manage Bill Delivery’."
   },
   "SSMROnboarding": {
     "skip": "Langkau",
@@ -454,7 +463,9 @@
     "emptyBillHistory": "Anda belum lagi ada bil. Setelah ada, sejarah bil anda akan dipaparkan di sini.",
     "emptyHistoryRE": "Sejarah transaksi anda kosong pada masa ini. Setelah ada, makluman dan sejarah pembayaran anda akan dipaparkan di sini.",
     "emptyPaymentHistoryRE": "Kami belum lagi buat bayaran. Setelah dibuat, sejarah pembayaran anda akan dipaparkan di sini.",
-    "emptyBillHistoryRE": "Anda belum lagi ada makluman. Setelah ada, sejarah makluman anda akan dipaparkan di sini."
+    "emptyBillHistoryRE": "Anda belum lagi ada makluman. Setelah ada, sejarah makluman anda akan dipaparkan di sini.",
+    "tutorialDigitalBillTitle": "MS_Your account bill delivery method.",
+    "tutorialDigitalBillDesc": "MS_View your bill delivery method here and tap to manage your preference."
   },
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [

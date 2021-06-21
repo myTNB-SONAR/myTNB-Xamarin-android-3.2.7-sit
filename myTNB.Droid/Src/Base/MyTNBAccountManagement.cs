@@ -354,7 +354,14 @@ namespace myTNB_Android.Src.Base
                 return appMasterDataResponse.Response.IsAppointmentDisabled;
             }
         }
-
+        public bool IsDigitalBillDisabled
+        {
+            get
+            {
+                return false;
+            }
+        }
+        
         public bool IsMaintenanceDialogShown()
         {
             return IsMaintenanceShown;

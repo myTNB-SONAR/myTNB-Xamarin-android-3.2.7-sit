@@ -37,6 +37,7 @@ using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewBill.Activity;
 using myTNB_Android.Src.ViewReceipt.Activity;
 using Newtonsoft.Json;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 {
@@ -151,6 +152,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         [BindView(Resource.Id.accountSelectionRefresh)]
         TextView accountSelectionRefresh;
 
+        [BindView(Resource.Id.digital_container)]
+        LinearLayout digital_container;
 
         ItemisedBillingMenuPresenter mPresenter;
         AccountData mSelectedAccountData;
@@ -189,8 +192,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
             }
+            ShowGoPapperless();
         }
+        private void ShowGoPapperless()
+        {
+            string ebilltype = "NonTargted";
+            if (ebilltype == "NonTargted")
+            {
 
+            }
+            else if (ebilltype == "AutoConvert")
+            {
+
+            }
+            else if (ebilltype == "DigitalBill")
+            {
+
+            }
+            else if (ebilltype == "BillEmail")
+            {
+
+            }
+            else if (ebilltype == "PaperBills")
+            {
+
+            }
+            else if (ebilltype == "WhatsappBills")
+            {
+
+            }
+        }
         public override int ResourceId()
         {
             return Resource.Layout.ItemisedBillingMenuLayout;
@@ -260,6 +291,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 {
                     return true;
                 }
+            }
+        }
+
+        [OnClick(Resource.Id.digital_container)]
+        void OnManageBillDelivery(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
+                StartActivity(intent);
             }
         }
 
@@ -399,10 +441,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 if (requestCode == 12345)
                 {
-                    if (resultCode == (int)Result.Ok)
+                    if (resultCode == (int) Result.Ok)
                     {
                         UpdateBillingHistory(data.GetStringExtra("SELECTED_ITEM_FILTER"));
-                        itemisedBillingScrollView.ScrollTo(0, 0);
+                        itemisedBillingScrollView.ScrollTo(0,0);
                     }
                 }
             }
@@ -1264,6 +1306,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public int GetButtonHeight()
         {
             return btnPayBill.Height;
+        }
+        public int GetDigitalContainerHeight()
+        {
+            return digital_container.Height;
         }
 
         public int OnGetEndOfScrollView()

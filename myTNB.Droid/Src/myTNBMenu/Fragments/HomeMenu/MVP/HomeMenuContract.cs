@@ -27,6 +27,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void SetNewFAQRecycleView();
             void SetMyServiceResult(List<MyService> list);
             void SetNewFAQResult(List<NewFAQ> list);
+            void SetDiscoverResult();
             string GetDeviceId();
             void ShowMyServiceRetryOptions(string msg);
             void OnSavedTimeStamp(string savedTimeStamp);
@@ -86,6 +87,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void RestartHomeMenu();
 
             void HideNewFAQ();
+
+            void HideDiscoverViewView();
 
             bool CheckNeedHelpHide();
 

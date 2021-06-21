@@ -337,6 +337,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 System.Diagnostics.Debug.WriteLine("[DEBUG] Sync SR Error: " + e.Message);
             }
+            UserEntity user = UserEntity.GetActive();
+            int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
+            if (loginCount == 2)
+            {
+                ShowMarketingTooltip();
+            }
         }
 
         private async void RouteToApplicationLanding()
@@ -856,7 +862,26 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+        public void ShowMarketingTooltip()
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+                    .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
+                    .SetTitle(Utility.GetLocalizedLabel("MarketingPopup", "autoconvertpretitle"))
+                    .SetMessage(Utility.GetLocalizedLabel("MarketingPopup", "autoconvertpreDescription"))
+                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                    .SetCTAaction(() => { this.SetIsClicked(false); })
+                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel("MarketingPopup", "gopaperless"))
+                    .SetSecondaryCTAaction(() => ShowManageBill())
+                    .Build();
+            }
+        }
+        public void ShowManageBill()
+        {
 
+        }
         public void ShowFeedbackMenu()
         {
             ShowBackButton(false);

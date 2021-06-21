@@ -55,6 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/topLayout"
+                android:background="@color/lightGrey"
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -251,6 +252,8 @@
                             android:text="What about Easy Payment Plan (EPP)?"
                             android:drawableLeft="@drawable/smr_why_accounts_info"/>
                     </LinearLayout>
+
+                    
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -289,6 +292,40 @@
                         android:id="@+id/btnBillingDetailefresh"
                         style="@style/Theme.RefreshButton" />
                 </LinearLayout>
+                 <LinearLayout
+                android:id="@+id/digital_container"
+                android:layout_below="@+id/ssmr_meter_reading_header_layout"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:orientation="horizontal"
+                android:background="@color/white"
+                android:paddingBottom="12dp">
+                <ImageView
+                    android:id="@+id/bill_paperless_icon"
+                    android:layout_marginTop="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/icon_paperless_bill"/>
+                <TextView
+                    android:id="@+id/paperlessTitle"
+                    android:layout_marginTop="16dp"
+                    android:text="This account is still receiving paper bills. Go paperless today!"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="12dp"
+                    android:textColor="#1c79ca"/>
+                <ImageView
+                    android:id="@+id/gopaperless_right_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/expand_right_arrow"/>
+            </LinearLayout>
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>

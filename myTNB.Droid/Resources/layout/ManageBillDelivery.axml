@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:theme="@style/Theme.Notification"
+    android:id="@+id/rootView">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <include
+            layout="@layout/toolbar"
+            android:id="@+id/toolbar" />
+
+        <TextView
+            android:id="@+id/txt_notification_name"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginBottom="16dp"
+            android:drawableRight="@drawable/ic_spinner_dropdown"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxEms="20"
+            android:maxLines="1"
+            android:text="My House"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/white"
+            android:textSize="12dp" />
+
+        
+
+        <LinearLayout
+            android:id="@+id/layout_api_refresh"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/white">
+                <ImageView
+                    android:id="@+id/refreshBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp"
+                    android:layout_marginTop="-35dp"
+                    android:foregroundGravity="center_horizontal|center"
+                    android:layout_gravity="bottom"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/bg_smr" />
+                <ImageView
+                    android:layout_width="177dp"
+                    android:layout_height="140dp"
+                    android:layout_marginTop="-105dp"
+                    android:foregroundGravity="center_horizontal|center"
+                    android:layout_gravity="center"
+                    android:id="@+id/refresh_image"
+                    android:src="@drawable/refresh_1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:lineSpacingExtra="4dp"
+                    android:textColor="#8b8b8b"
+                    android:id="@+id/refresh_content"
+                    android:text="Uh oh, looks like your bill/payment history have been unplugged. Refresh to stay plugged in!"/>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:text="Refresh Now"
+                    android:id="@+id/btnRefresh"
+                    style="@style/Theme.RefreshButton" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="288dp">
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"/>
+                <RelativeLayout
+                    android:id="@+id/applicationIndicator"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center"
+                    android:paddingLeft="24dp"
+                    android:paddingRight="24dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal">
+      <LinearLayout
+          android:id="@+id/indicatorContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="4dp"
+            android:orientation="horizontal"/>
+      
+  </RelativeLayout>      
+    </FrameLayout>
+            
+         
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:gravity="bottom"
+                android:layout_gravity="bottom"
+                android:layout_weight="0.1"
+                android:paddingLeft="16dp"
+                android:layout_marginBottom="16dp"
+                android:paddingRight="16dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:gravity="center">
+                <Button
+                    android:id="@+id/btnStartDigitalBill"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:textAllCaps="false"
+                    style="@style/DarkButton"
+                    android:text="Start Digital Bill" />
+                    </RelativeLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

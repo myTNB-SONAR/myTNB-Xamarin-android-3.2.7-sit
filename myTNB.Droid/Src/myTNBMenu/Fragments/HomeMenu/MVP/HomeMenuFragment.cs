@@ -232,6 +232,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.accountContainer)]
         ConstraintLayout accountContainer;
 
+        [BindView(Resource.Id.discoverShimmerView)]
+        LinearLayout discoverShimmerView;
+
+        [BindView(Resource.Id.discoverView)]
+        LinearLayout discoverView;
+
+        [BindView(Resource.Id.img_discover_digital_bill)]
+        ImageView img_discover_digital_bill;
+
+        [BindView(Resource.Id.discoverTitle)]
+        TextView discoverTitle;
+
+        [BindView(Resource.Id.shimmerBillView)]
+        ShimmerFrameLayout shimmerBillView;
+
+        [BindView(Resource.Id.shimmerPayView)]
+        ShimmerFrameLayout shimmerPayView;
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
@@ -394,6 +411,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetAccountActionHeader();
                 SetupMyServiceView();
                 SetupNewFAQView();
+                SetupDiscoverView();
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
                     , addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel
@@ -722,6 +740,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             LinearSnapHelper shimmerSnapHelper = new LinearSnapHelper();
             shimmerSnapHelper.AttachToRecyclerView(newFAQShimmerList);
         }
+        
+        
+        private void SetupDiscoverView()
+        {
+            string imgsource = "discover_non_targeted";
+            if (imgsource == "discover_non_targeted")
+            {
+                discoverView.Visibility = ViewStates.Visible;
+                img_discover_digital_bill.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.discover_non_targeted_bm: Resource.Drawable.discover_non_targeted_en);
+                /*bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughZeroBg);
+                bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+
+                imgParam = img_discover_digital_bill.LayoutParameters as LinearLayout.LayoutParams;
+
+                imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                heightRatio = 216f / 250f;
+                imgHeight = (int)(imgWidth * (heightRatio));
+                imgParam.Width = imgWidth;
+                imgParam.Height = imgHeight;*/
+            }
+            else if (imgsource == "discover_targeted")
+            {
+                discoverView.Visibility = ViewStates.Visible;
+                img_discover_digital_bill.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.discover_targeted_bm : Resource.Drawable.discover_targeted_en);
+
+            }
+            //else if (imgsource == "discover_post_conversion")
+            else 
+            {
+                discoverView.Visibility = ViewStates.Visible;
+                img_discover_digital_bill.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.discover_post_conversion_bm : Resource.Drawable.discover_post_conversion_en);
+                
+            }
+        }
 
         public void SetMyServiceRecycleView()
         {
@@ -829,6 +881,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+        private void SetupDsicoverShimmerEffect()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        discoverTitle.Visibility = ViewStates.Visible;
+
+                        discoverShimmerView.Visibility = ViewStates.Visible;
+                        discoverView.Visibility = ViewStates.Gone;
+                        var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+                        if (shimmerBuilder != null)
+                        {
+                            shimmerBillView.SetShimmer(shimmerBuilder?.Build());
+                            shimmerPayView.SetShimmer(shimmerBuilder?.Build());
+                        }
+                        shimmerBillView.StartShimmer();
+                        shimmerPayView.StartShimmer();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         public void HideNewFAQ()
         {
@@ -855,12 +939,77 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+        public void HideDiscoverViewView()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        discoverShimmerView.Visibility = ViewStates.Gone;
+                        discoverTitle.Visibility = ViewStates.Gone;
+                        discoverView.Visibility = ViewStates.Gone;
+
+                        OnHideBottomView();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         public bool CheckNeedHelpHide()
         {
             return newFAQTitle.Visibility == ViewStates.Gone;
         }
 
+        public void SetDiscoverResult()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        // Check eligibility service.
+
+                        try
+                        {
+                                shimmerBillView.StopShimmer();
+                                shimmerPayView.StopShimmer();
+                                newFAQShimmerAdapter = new NewFAQShimmerAdapter(null, this.Activity);
+                                newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
+                            }
+                            catch (System.Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                            discoverShimmerView.Visibility = ViewStates.Gone;
+                            discoverView.Visibility = ViewStates.Visible;
+                        
+                    }
+                    catch (System.Exception ex)
+                    {
+                        // TODO: To Hide the FAQ
+                        // HideNewFAQ();
+                        Utility.LoggingNonFatalError(ex);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                // TODO: To Hide the FAQ
+                // HideNewFAQ();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
         public void SetNewFAQResult(List<NewFAQ> list)
         {
             try

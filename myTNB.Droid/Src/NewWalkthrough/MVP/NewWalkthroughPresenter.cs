@@ -90,6 +90,35 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                         Image = "walkthrough_img_install_8"
                     });
                 }
+                bool IsDigitalBillApplied = true; // MyTNBAccountManagement.GetInstance().IsDigitalBilApplied();
+                bool IsBillPostConversion = true;
+                if (IsDigitalBillApplied)
+                {
+                    newWalkthroughList.Add(new NewWalkthroughModel()
+                    {
+                        Title = Utility.GetLocalizedLabel("Onboarding", "title12_1"),
+                        Description = Utility.GetLocalizedLabel("Onboarding", "description12_1"),
+                        Image = "walkthrough_img_install_9"
+                    });
+                }
+                else if (IsBillPostConversion)
+                {
+                    newWalkthroughList.Add(new NewWalkthroughModel()
+                    {
+                        Title = Utility.GetLocalizedLabel("Onboarding", "title12_2"),
+                        Description = Utility.GetLocalizedLabel("Onboarding", "description12_2"),
+                        Image = "walkthrough_img_install_9"
+                    });
+                }
+                else
+                {
+                    newWalkthroughList.Add(new NewWalkthroughModel()
+                    {
+                        Title = Utility.GetLocalizedLabel("Onboarding", "title12_3"),
+                        Description = Utility.GetLocalizedLabel("Onboarding", "description12_3"),
+                        Image = "walkthrough_img_install_9"
+                    });
+                }
             }
             else
             {
@@ -139,6 +168,35 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                         Title = Utility.GetLocalizedLabel("Onboarding", "title10"),
                         Description = Utility.GetLocalizedLabel("Onboarding", "description10"),
                         Image = "walkthrough_img_update_5"
+                    });
+                }
+                bool IsDigitalBillApplied = true; // MyTNBAccountManagement.GetInstance().IsDigitalBilApplied();
+                bool IsBillPostConversion = true;
+                if (IsDigitalBillApplied)
+                {
+                    newWalkthroughList.Add(new NewWalkthroughModel()
+                    {
+                        Title = Utility.GetLocalizedLabel("Onboarding", "title12_1"),
+                        Description = Utility.GetLocalizedLabel("Onboarding", "description12_1"),
+                        Image = "walkthrough_img_install_9"
+                    });
+                }
+                else if (IsBillPostConversion)
+                {
+                    newWalkthroughList.Add(new NewWalkthroughModel()
+                    {
+                        Title = Utility.GetLocalizedLabel("Onboarding", "title12_2"),
+                        Description = Utility.GetLocalizedLabel("Onboarding", "description12_2"),
+                        Image = "walkthrough_img_install_9"
+                    });
+                }
+                else
+                {
+                    newWalkthroughList.Add(new NewWalkthroughModel()
+                    {
+                        Title = Utility.GetLocalizedLabel("Onboarding", "title12_3"),
+                        Description = Utility.GetLocalizedLabel("Onboarding", "description12_3"),
+                        Image = "walkthrough_img_install_9"
                     });
                 }
             }

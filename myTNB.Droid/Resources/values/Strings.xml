@@ -661,6 +661,8 @@ You acknowledge that you have been provided with and have read and understood th
   <string name="mp_receipt_transcation_id">Transaction ID :</string>
   <string name="mp_receipt_thank_you">Thank you for using myTNB.</string>
 
+  <!--ManageBillDelivery-->
+  <string name="managebilldelivery_activity_title">Manage Bill Delivery</string>
 
   <!--Notification-->
   <string name="notification_activity_title">Notifications</string>
