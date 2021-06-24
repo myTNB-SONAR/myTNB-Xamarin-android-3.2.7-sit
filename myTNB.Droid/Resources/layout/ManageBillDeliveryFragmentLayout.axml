@@ -8,37 +8,47 @@
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:background="@color/white"
 		android:orientation="vertical">
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center"
 			android:orientation="vertical"
-			android:paddingTop="75dp"
-			android:id="@+id/walkthrough_layout"
-			android:background="@drawable/InstallWalkthroughFirstBg">
+			android:layout_marginBottom="16dp"
+			android:id="@+id/walkthrough_layout">
+			
+				<LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:gravity="top"
+                android:layout_gravity="top">
 			<ImageView
 				android:id="@+id/img_display"
-				android:layout_height="216dp"
-				android:layout_width="250dp"
-				android:layout_gravity="center_horizontal"
-				android:src="@drawable/walkthrough_img_install_1" />
+				android:layout_height="88dp"
+				android:layout_width="match_parent"
+				android:layout_marginTop="32dp"
+				android:layout_gravity="center_horizontal"/>
+				</LinearLayout>
 			<TextView
 				android:layout_height="wrap_content"
 				android:layout_width="match_parent"
-				android:layout_marginTop="26dp"
+				android:layout_marginTop="16dp"
 				android:textSize="16dp"
+				android:textColor="@color/tunaGrey"
 				android:lineSpacingExtra="8dp"
-				android:textColor="@color/powerBlue"
 				android:textStyle="bold"
-				android:layout_marginLeft="16dp"
-				android:layout_marginRight="16dp"
+				android:layout_marginLeft="32dp"
+				android:layout_marginRight="32dp"
 				android:gravity="center_horizontal"
-				android:text="@string/walkthrough_install_title_1"
+				android:text="Test Title"
 				android:id="@+id/txtTitle" />
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
+				android:layout_marginLeft="32dp"
+				android:layout_marginRight="32dp"
 				android:id="@+id/walkthroughBottomView"
 				android:orientation="vertical">
 				<ScrollView
@@ -53,48 +63,16 @@
 						<TextView
 							android:layout_height="wrap_content"
 							android:layout_width="match_parent"
-							android:textSize="12dp"
-							android:textColor="@color/new_grey"
+							android:textSize="14dp"
+							android:textColor="@color/tunaGrey"
+							android:text="Test Title"
 							android:gravity="center_horizontal"
-							android:layout_marginTop="20dp"
+							android:layout_marginTop="8dp"
 							android:lineSpacingExtra="4dp"
-							android:layout_marginLeft="8dp"
-							android:layout_marginRight="8dp"
-							android:text="@string/walkthrough_install_msg_1"
+							android:layout_marginLeft="32dp"
+							android:layout_marginRight="32dp"
 							android:id="@+id/txtMessage" />
-						<RelativeLayout
-							android:id="@+id/btnToggleContainer"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:layout_marginTop="19dp"
-							android:gravity="center">
-							<info.hoang8f.android.segmented.SegmentedGroup
-								android:id="@+id/segmented2"
-								android:layout_width="122dp"
-								android:layout_height="24dp"
-								android:orientation="horizontal"
-								segmentedgroup:sc_checked_text_color="@color/white"
-								segmentedgroup:sc_corner_radius="100dp"
-								segmentedgroup:sc_tint_color="@color/powerBlue">
-								<RadioButton
-									android:id="@+id/btnToggleEN"
-									style="@style/RadioButton"
-									android:layout_width="0dp"
-									android:layout_height="wrap_content"
-									android:layout_weight="1"
-									android:checked="true"
-									android:text="EN"
-									android:textSize="13dp" />
-								<RadioButton
-									android:id="@+id/btnToggleMS"
-									style="@style/RadioButton"
-									android:layout_width="0dp"
-									android:layout_height="wrap_content"
-									android:layout_weight="1"
-									android:text="BM"
-									android:textSize="13dp" />
-							</info.hoang8f.android.segmented.SegmentedGroup>
-						</RelativeLayout>
+						
 					</LinearLayout>
 				</ScrollView>
 			</LinearLayout>

@@ -9577,118 +9577,124 @@ namespace myTNB_Android
 			public const int walkthrough_bg_install_1 = 2131231794;
 			
 			// aapt resource value: 0x7F080433
-			public const int walkthrough_bg_install_2 = 2131231795;
+			public const int walkthrough_bg_install_10 = 2131231795;
 			
 			// aapt resource value: 0x7F080434
-			public const int walkthrough_bg_install_3 = 2131231796;
+			public const int walkthrough_bg_install_2 = 2131231796;
 			
 			// aapt resource value: 0x7F080435
-			public const int walkthrough_bg_install_4 = 2131231797;
+			public const int walkthrough_bg_install_3 = 2131231797;
 			
 			// aapt resource value: 0x7F080436
-			public const int walkthrough_bg_install_5 = 2131231798;
+			public const int walkthrough_bg_install_4 = 2131231798;
 			
 			// aapt resource value: 0x7F080437
-			public const int walkthrough_bg_install_6 = 2131231799;
+			public const int walkthrough_bg_install_5 = 2131231799;
 			
 			// aapt resource value: 0x7F080438
-			public const int walkthrough_bg_install_7 = 2131231800;
+			public const int walkthrough_bg_install_6 = 2131231800;
 			
 			// aapt resource value: 0x7F080439
-			public const int walkthrough_bg_install_8 = 2131231801;
+			public const int walkthrough_bg_install_7 = 2131231801;
 			
 			// aapt resource value: 0x7F08043A
-			public const int walkthrough_bg_install_9 = 2131231802;
+			public const int walkthrough_bg_install_8 = 2131231802;
 			
 			// aapt resource value: 0x7F08043B
-			public const int walkthrough_bg_update_1 = 2131231803;
+			public const int walkthrough_bg_install_9 = 2131231803;
 			
 			// aapt resource value: 0x7F08043C
-			public const int walkthrough_img_install_0 = 2131231804;
+			public const int walkthrough_bg_update_1 = 2131231804;
 			
 			// aapt resource value: 0x7F08043D
-			public const int walkthrough_img_install_1 = 2131231805;
+			public const int walkthrough_img_install_0 = 2131231805;
 			
 			// aapt resource value: 0x7F08043E
-			public const int walkthrough_img_install_2 = 2131231806;
+			public const int walkthrough_img_install_1 = 2131231806;
 			
 			// aapt resource value: 0x7F08043F
-			public const int walkthrough_img_install_3 = 2131231807;
+			public const int walkthrough_img_install_2 = 2131231807;
 			
 			// aapt resource value: 0x7F080440
-			public const int walkthrough_img_install_4 = 2131231808;
+			public const int walkthrough_img_install_3 = 2131231808;
 			
 			// aapt resource value: 0x7F080441
-			public const int walkthrough_img_install_5 = 2131231809;
+			public const int walkthrough_img_install_4 = 2131231809;
 			
 			// aapt resource value: 0x7F080442
-			public const int walkthrough_img_install_6 = 2131231810;
+			public const int walkthrough_img_install_5 = 2131231810;
 			
 			// aapt resource value: 0x7F080443
-			public const int walkthrough_img_install_7 = 2131231811;
+			public const int walkthrough_img_install_6 = 2131231811;
 			
 			// aapt resource value: 0x7F080444
-			public const int walkthrough_img_install_8 = 2131231812;
+			public const int walkthrough_img_install_7 = 2131231812;
 			
 			// aapt resource value: 0x7F080445
-			public const int walkthrough_img_install_9 = 2131231813;
+			public const int walkthrough_img_install_8 = 2131231813;
 			
 			// aapt resource value: 0x7F080446
-			public const int walkthrough_img_update_1 = 2131231814;
+			public const int walkthrough_img_install_9 = 2131231814;
 			
 			// aapt resource value: 0x7F080447
-			public const int welcome_illustration = 2131231815;
+			public const int walkthrough_img_install_9_1 = 2131231815;
 			
 			// aapt resource value: 0x7F080448
-			public const int wf = 2131231816;
+			public const int walkthrough_img_update_1 = 2131231816;
 			
 			// aapt resource value: 0x7F080449
-			public const int white_background_rect = 2131231817;
+			public const int welcome_illustration = 2131231817;
 			
 			// aapt resource value: 0x7F08044A
-			public const int white_button_background = 2131231818;
+			public const int wf = 2131231818;
 			
 			// aapt resource value: 0x7F08044B
-			public const int white_button_stroke_background = 2131231819;
+			public const int white_background_rect = 2131231819;
 			
 			// aapt resource value: 0x7F08044C
-			public const int white_circle = 2131231820;
+			public const int white_button_background = 2131231820;
 			
 			// aapt resource value: 0x7F08044D
-			public const int white_circle_active = 2131231821;
+			public const int white_button_stroke_background = 2131231821;
 			
 			// aapt resource value: 0x7F08044E
-			public const int white_filled_button_background = 2131231822;
+			public const int white_circle = 2131231822;
 			
 			// aapt resource value: 0x7F08044F
-			public const int white_selector_pressable = 2131231823;
+			public const int white_circle_active = 2131231823;
 			
 			// aapt resource value: 0x7F080450
-			public const int ws = 2131231824;
+			public const int white_filled_button_background = 2131231824;
 			
 			// aapt resource value: 0x7F080451
-			public const int xk = 2131231825;
+			public const int white_selector_pressable = 2131231825;
 			
 			// aapt resource value: 0x7F080452
-			public const int ye = 2131231826;
+			public const int ws = 2131231826;
 			
 			// aapt resource value: 0x7F080453
-			public const int yellow_circle_active = 2131231827;
+			public const int xk = 2131231827;
 			
 			// aapt resource value: 0x7F080454
-			public const int yt = 2131231828;
+			public const int ye = 2131231828;
 			
 			// aapt resource value: 0x7F080455
-			public const int za = 2131231829;
+			public const int yellow_circle_active = 2131231829;
 			
 			// aapt resource value: 0x7F080456
-			public const int zm = 2131231830;
+			public const int yt = 2131231830;
 			
 			// aapt resource value: 0x7F080457
-			public const int zoom_out = 2131231831;
+			public const int za = 2131231831;
 			
 			// aapt resource value: 0x7F080458
-			public const int zw = 2131231832;
+			public const int zm = 2131231832;
+			
+			// aapt resource value: 0x7F080459
+			public const int zoom_out = 2131231833;
+			
+			// aapt resource value: 0x7F08045A
+			public const int zw = 2131231834;
 			
 			static Drawable()
 			{

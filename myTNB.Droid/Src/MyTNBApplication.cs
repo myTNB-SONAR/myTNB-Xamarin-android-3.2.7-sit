@@ -38,6 +38,7 @@ namespace myTNB_Android.Src
             FacebookSdk.SdkInitialize(ApplicationContext);
             AccountTypeEntity.CreateTable();
             UserEntity.CreateTable();
+            UserLoginCountEntity.CreateTable();
             UserRegister.CreateTable();
             CustomerBillingAccount.CreateTable();
             UserNotificationEntity.CreateTable();

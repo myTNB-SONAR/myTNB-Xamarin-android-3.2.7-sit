@@ -867,7 +867,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+                MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
                     .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
                     .SetTitle(Utility.GetLocalizedLabel("MarketingPopup", "autoconvertpretitle"))
                     .SetMessage(Utility.GetLocalizedLabel("MarketingPopup", "autoconvertpreDescription"))
@@ -876,6 +876,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     .SetSecondaryCTALabel(Utility.GetLocalizedLabel("MarketingPopup", "gopaperless"))
                     .SetSecondaryCTAaction(() => ShowManageBill())
                     .Build();
+                marketingTooltip.Show();
             }
         }
         public void ShowManageBill()

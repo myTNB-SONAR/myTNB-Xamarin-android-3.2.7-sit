@@ -90,7 +90,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                         Image = "walkthrough_img_install_8"
                     });
                 }
-                bool IsDigitalBillApplied = true; // MyTNBAccountManagement.GetInstance().IsDigitalBilApplied();
+                bool IsDigitalBillApplied = false; // MyTNBAccountManagement.GetInstance().IsDigitalBilApplied();
                 bool IsBillPostConversion = true;
                 if (IsDigitalBillApplied)
                 {
@@ -170,7 +170,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                         Image = "walkthrough_img_update_5"
                     });
                 }
-                bool IsDigitalBillApplied = true; // MyTNBAccountManagement.GetInstance().IsDigitalBilApplied();
+                bool IsDigitalBillApplied = false; // MyTNBAccountManagement.GetInstance().IsDigitalBilApplied();
                 bool IsBillPostConversion = true;
                 if (IsDigitalBillApplied)
                 {

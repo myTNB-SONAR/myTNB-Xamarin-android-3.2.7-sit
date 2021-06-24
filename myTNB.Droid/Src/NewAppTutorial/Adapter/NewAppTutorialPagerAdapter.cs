@@ -1395,7 +1395,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(170f);
+                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(100f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();

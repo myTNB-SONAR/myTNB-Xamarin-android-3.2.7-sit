@@ -34,14 +34,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [BindView(Resource.Id.txtMessage)]
         TextView descriptionView;
 
-        [BindView(Resource.Id.btnToggleEN)]
-        RadioButton btnToggleEN;
 
-        [BindView(Resource.Id.btnToggleMS)]
-        RadioButton btnToggleMS;
-
-        [BindView(Resource.Id.btnToggleContainer)]
-        RelativeLayout btnToggleContainer;
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -72,79 +65,38 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             bool isLastItem = Arguments.GetBoolean(IS_LAST_ITEM, false);
 
             TextViewUtils.SetMuseoSans500Typeface(titleView);
-            TextViewUtils.SetMuseoSans300Typeface(descriptionView, btnToggleEN, btnToggleMS);
+            TextViewUtils.SetMuseoSans300Typeface(descriptionView);
 
-            TextViewUtils.SetTextSize12(descriptionView);
-            TextViewUtils.SetTextSize14(titleView);
+            TextViewUtils.SetTextSize14(descriptionView);
+            TextViewUtils.SetTextSize16(titleView);
 
             appLanguage = LanguageUtil.GetAppLanguage();
 
             LinearLayout.LayoutParams imgParam;
             int imgWidth, imgHeight;
             float heightRatio;
+            
             switch (imageUrl)
             {
                 case "manage_bill_delivery_0":
-                    btnToggleContainer.Visibility = ViewStates.Visible;
                     imageSource.SetImageResource(Resource.Drawable.manage_bill_delivery_0);
-                    bgLayout.SetBackgroundResource(Resource.Drawable.manage_bill_delivery_0);
-                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
-
-                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
-
-                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
-                    heightRatio = 216f / 250f;
-                    imgHeight = (int)(imgWidth * (heightRatio));
-                    imgParam.Width = imgWidth;
-                    imgParam.Height = imgHeight;
                     break;
                 case "manage_bill_delivery_1":
                     imageSource.SetImageResource(Resource.Drawable.manage_bill_delivery_1);
-                    bgLayout.SetBackgroundResource(Resource.Drawable.manage_bill_delivery_1);
-                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
-
-                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
-
-                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
-                    heightRatio = 216f / 250f;
-                    imgHeight = (int)(imgWidth * (heightRatio));
-                    imgParam.Width = imgWidth;
-                    imgParam.Height = imgHeight;
                     break;
                 case "manage_bill_delivery_2":
                     imageSource.SetImageResource(Resource.Drawable.manage_bill_delivery_2);
-                    bgLayout.SetBackgroundResource(Resource.Drawable.manage_bill_delivery_2);
-                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(79f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
-
-                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
-
-                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
-                    heightRatio = 207f / 250f;
-                    imgHeight = (int)(imgWidth * (heightRatio));
-
-                    imgParam.Width = imgWidth;
-                    imgParam.Height = imgHeight;
                     break;
                 
                 default:
                     imageSource.SetImageResource(Resource.Drawable.manage_bill_delivery_0);
-                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
-                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
-
-                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
-
-                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
-                    heightRatio = 216f / 250f;
-                    imgHeight = (int)(imgWidth * (heightRatio));
-                    imgParam.Width = imgWidth;
-                    imgParam.Height = imgHeight;
                     break;
             }
 
             titleView.Text = title;
             descriptionView.TextFormatted = GetFormattedText(description);
 
-            if (bgLayout.MeasuredHeight <= 0)
+            /*if (bgLayout.MeasuredHeight <= 0)
             {
                 bgLayout.Measure(0, 0);
             }
@@ -172,7 +124,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         titleView.Measure(0, 0);
                     }
                 }
-            }
+            }*/
         }
 
        

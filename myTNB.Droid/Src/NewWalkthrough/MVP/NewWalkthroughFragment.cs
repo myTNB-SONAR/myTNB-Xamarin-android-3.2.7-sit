@@ -237,7 +237,21 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     imgParam.Height = imgHeight;
                     break;
                 case "walkthrough_img_install_9":
-                    imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_9);
+                    bool IsDigitalBillApplied = false; // MyTNBAccountManagement.GetInstance().IsDigitalBilApplied();
+                    bool IsBillPostConversion = false;
+                    if (IsDigitalBillApplied)
+                    {
+                        imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_9_1);
+                    }
+                    else if (IsBillPostConversion)
+                    {
+                        imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_9);
+                    }
+                    else
+                    {
+                        imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_9);
+                    }
+                    
 
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughNinthBg);
 

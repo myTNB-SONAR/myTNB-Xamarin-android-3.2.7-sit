@@ -233,12 +233,14 @@
     "gopaperless": "Go Paperless"
   },
   "ManageBillDelivery": {
+    "title": "Manage Bill Delivery",
     "title1": "Go green and save the trees.",
     "description1": "Reduce paper waste and minimise your carbon footprint, and play your part in our collective move towards a sustainable future.",
     "title2": "Fast and convenient bill viewing.",
     "description2": "Enjoy faster and on-the-dot delivery of your monthly electricity bills and view them directly on myTNB App & Portal, anytime, anywhere.",
     "title3": "Secure billing for a peace of mind.",
-    "description3": "Get your digital bills directly and securely on myTNB. No more worry about others seeing your bills, risk getting stolen or lost in the mail. "
+    "description3": "Get your digital bills directly and securely on myTNB. No more worry about others seeing your bills, risk getting stolen or lost in the mail.",
+    "title4": "account is still receiving paper bills.\n<strong> Go paperless today!</strong>"
 
   },
   "SSMROnboarding": {
@@ -438,9 +440,7 @@
     "tariffLegendNote": "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill.",
     "prevReadingEmptyTitle": "Sorry, we are unable to perform this action right now.",
     "prevReadingEmptyMsg": "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you.",
-    "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
-    "tutorialDigitalBillTitle": "Your account bill delivery method.",
-    "tutorialDigitalBillDesc": "View your bill delivery method here and tap to manage your preference."
+    "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while."
   },
   "Bills": {
     "title": "Bills",
@@ -474,7 +474,9 @@
     "emptyBillHistory": "Looks like you have no bills yet. This will appear here once you have any.",
     "emptyHistoryRE": "Looks like your history is empty at the moment. The advice and payment history will appear here once you have any.",
     "emptyPaymentHistoryRE": "Looks like we have not made any payments yet. Once we have, the payment history will appear here.",
-    "emptyBillHistoryRE": "Looks like you have no advices yet. Once you do, your advice history will appear here."
+    "emptyBillHistoryRE": "Looks like you have no advices yet. Once you do, your advice history will appear here.",
+    "tutorialDigitalBillTitle": "Your account bill delivery method.",
+    "tutorialDigitalBillDesc": "View your bill delivery method here and tap to manage your preference."
   },
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [

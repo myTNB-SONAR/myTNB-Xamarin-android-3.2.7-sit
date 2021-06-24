@@ -1,21 +1,26 @@
 ﻿using System.Collections.Generic;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base;
+using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Runtime;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
-    public class ManageBillDeliveryPresenter
+    public class ManageBillDeliveryPresenter : ManageBillDeliveryContract.IUserActionsListener
     {
         List<ManageBillDeliveryModel> ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
         ManageBillDeliveryContract.IView mView;
         public ManageBillDeliveryPresenter(ManageBillDeliveryContract.IView view)
         {
             this.mView = view;
+            this.mView.SetPresenter(this);
             ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
         }
 
-        public List<ManageBillDeliveryModel> GenerateManageBillDeliveryList(string currentAppNavigation)
+        public List<ManageBillDeliveryModel> GenerateManageBillDeliveryList()
         {
             ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
                 ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
@@ -41,6 +46,50 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
            
 
             return ManageBillDeliveryList;
+        }
+
+        public void InitialSetFilterName()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            try
+            {
+                if (requestCode == Constants.SELECT_ACCOUNT_REQUEST_CODE)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        Bundle extras = data.Extras;
+
+                        CustomerBillingAccount selectedAccount = JsonConvert.DeserializeObject<CustomerBillingAccount>(extras.GetString(Constants.SELECTED_ACCOUNT));
+
+                            this.mView.SetAccountName(selectedAccount.AccDesc);
+                       
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+     
+
+        public void SelectSupplyAccount()
+        {
+            List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+            if (accountList.Count >= 1)
+            {
+                this.mView.ShowSelectSupplyAccount();
+            }
+        }
+
+        public void Start()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

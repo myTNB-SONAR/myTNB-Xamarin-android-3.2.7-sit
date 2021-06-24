@@ -155,6 +155,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         [BindView(Resource.Id.digital_container)]
         LinearLayout digital_container;
 
+        [BindView(Resource.Id.bill_paperless_icon)]
+        ImageView bill_paperless_icon;
+
+        [BindView(Resource.Id.paperlessTitle)]
+        TextView paperlessTitle;
+        
         ItemisedBillingMenuPresenter mPresenter;
         AccountData mSelectedAccountData;
 
@@ -199,27 +205,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             string ebilltype = "NonTargted";
             if (ebilltype == "NonTargted")
             {
-
+                //bill_paperless_icon.SetImageResource(Resource.Drawable.icon_paperless_bill);
+                //paperlessTitle.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "title4");
             }
             else if (ebilltype == "AutoConvert")
             {
-
+                //bill_paperless_icon.SetImageResource(Resource.Drawable.icon_paperless_bill);
+                //paperlessTitle.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "title4");
             }
             else if (ebilltype == "DigitalBill")
             {
-
+                //bill_paperless_icon.SetImageResource(Resource.Drawable.icon_paperless_bill);
+                //paperlessTitle.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "title4");
             }
             else if (ebilltype == "BillEmail")
             {
-
+                //bill_paperless_icon.SetImageResource(Resource.Drawable.icon_paperless_bill);
+                //paperlessTitle.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "title4");
             }
             else if (ebilltype == "PaperBills")
             {
-
+                //bill_paperless_icon.SetImageResource(Resource.Drawable.icon_paperless_bill);
+                //paperlessTitle.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "title4");
             }
             else if (ebilltype == "WhatsappBills")
             {
-
+                //bill_paperless_icon.SetImageResource(Resource.Drawable.icon_paperless_bill);
+                //paperlessTitle.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "title4");
             }
         }
         public override int ResourceId()

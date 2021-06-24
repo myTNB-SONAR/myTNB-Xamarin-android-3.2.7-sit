@@ -1,4 +1,6 @@
-﻿using AFollestad.MaterialDialogs;
+﻿using System;
+using System.Runtime;
+using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -7,31 +9,17 @@ using Android.Runtime;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
-using CheeseBind;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.NotificationDetails.Activity;
-using myTNB_Android.Src.NotificationFilter.Activity;
-using myTNB_Android.Src.Notifications.Adapter;
-using myTNB_Android.Src.Notifications.Models;
-using myTNB_Android.Src.Notifications.MVP;
-using myTNB_Android.Src.Utils;
-using Newtonsoft.Json;
-using Refit;
-using System;
-using System.Collections.Generic;
-using System.Runtime;
-using static Android.Widget.CompoundButton;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.myTNBMenu.Activity;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.RecyclerView.Widget;
-using Google.Android.Material.Snackbar;
 using AndroidX.ViewPager.Widget;
+using CheeseBind;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.SelectSupplyAccount.Activity;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
-   
+
 
     [Activity(Label = "@string/managebilldelivery_activity_title"
     , Icon = "@drawable/ic_launcher"
@@ -42,22 +30,11 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
 
-        
-
-        [BindView(Resource.Id.notification_recyclerView)]
-        RecyclerView notificationRecyclerView;
-
         [BindView(Resource.Id.txt_notification_name)]
         TextView txtNotificationName;
 
-        [BindView(Resource.Id.txtNotificationsContent)]
-        TextView txtNotificationsContent;
-
         [BindView(Resource.Id.emptyLayout)]
         LinearLayout emptyLayout;
-
-        [BindView(Resource.Id.notificationSelectAllHeader)]
-        LinearLayout notificationSelectAllContainer;
 
         [BindView(Resource.Id.selectAllCheckBox)]
         CheckBox selectAllCheckboxButton;
@@ -67,9 +44,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         [BindView(Resource.Id.refresh_content)]
         TextView txtNewRefreshMessage;
-
-        [BindView(Resource.Id.selectAllNotificationLabel)]
-        TextView selectAllNotificationLabel;
 
         [BindView(Resource.Id.refresh_image)]
         ImageView refresh_image;
@@ -81,18 +55,11 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         LinearLayout indicatorContainer;
         [BindView(Resource.Id.applicationIndicator)]
         RelativeLayout applicationIndicator;
-
-        private IMenu notificationMenu;
-        NotificationRecyclerAdapter notificationRecyclerAdapter;
-        NotificationContract.IUserActionsListener userActionsListener;
-        NotificationPresenter mPresenter;
+        ManageBillDeliveryContract.IUserActionsListener userActionsListener;
         MaterialDialog mProgressDialog, mQueryProgressDialog;
         ItemTouchHelper itemTouchHelper;
-        private static NotificationSwipeDeleteCallback notificationSwipeDelete;
         private MaterialDialog deleteAllDialog;
         private MaterialDialog markReadAllDialog;
-        private int selectedNotification;
-        private bool hasNotification = false;
         const string PAGE_ID = "ManageBillDelivery";
 
         ManageBillDeliveryPresenter presenter;
@@ -110,7 +77,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             viewPager.AddOnPageChangeListener(this);
             ManageBillDeliveryAdapter = new ManageBillDeliveryAdapter(SupportFragmentManager);
 
-            ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList("test"));
+            ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList());
 
             viewPager.Adapter = ManageBillDeliveryAdapter;
 
@@ -123,45 +90,14 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 {
                     currentAppNavigation = extras.GetString(Constants.APP_NAVIGATION_KEY);
 
-                    ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList("test"));
+                    ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList());
 
                     viewPager.Adapter = ManageBillDeliveryAdapter;
 
                     UpdateAccountListIndicator();
                 }
             }
-            try
-            {
-                if (MyTNBAccountManagement.GetInstance().IsNotificationServiceFailed())
-                {
-                    ShowRefreshView(true, null, null);
-                }
-                else if (MyTNBAccountManagement.GetInstance().IsNotificationServiceMaintenance())
-                {
-                    ShowRefreshView(false, null, null);
-                }
-                else
-                {
-                    if (MyTNBAccountManagement.GetInstance().IsNotificationServiceCompleted())
-                    {
-                        this.userActionsListener.Start();
-                    }
-                    else
-                    {
-                        this.userActionsListener.QueryOnLoad(this.DeviceId());
-                    }
-                }
-
-                Bundle extras2 = Intent.Extras;
-                if (extras2 != null && extras2.ContainsKey(Constants.HAS_NOTIFICATION) && extras2.GetBoolean(Constants.HAS_NOTIFICATION))
-                {
-                    this.userActionsListener.QueryOnLoad(this.DeviceId());
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+            
         }
         public void OnPageScrolled(int position, float positionOffset, int positionOffsetPixels)
         {
@@ -228,29 +164,13 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
             }
         }
-       
-
-      
-
-        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
-        {
-            try
-            {
-                base.OnActivityResult(requestCode, resultCode, data);
-                this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
 
         protected override void OnResume()
         {
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Notifications Listing");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Manage Bill Delivery");
             }
             catch (Exception e)
             {
@@ -282,14 +202,13 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         //===========================================================================================================================
 
-     
 
         public override int ResourceId()
         {
             return Resource.Layout.ManageBillDelivery;
         }
 
-        public void SetPresenter(NotificationContract.IUserActionsListener userActionListener)
+        public void SetPresenter(ManageBillDeliveryContract.IUserActionsListener userActionListener)
         {
             this.userActionsListener = userActionListener;
         }
@@ -304,36 +223,33 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                this.userActionsListener.OnShowNotificationFilter();
+                this.userActionsListener.SelectSupplyAccount();
             }
         }
 
+        public void ShowSelectSupplyAccount()
+        {
+                this.SetIsClicked(true);
+                Intent supplyAccount = new Intent(this, typeof(SelectSupplyAccountActivity));
+                StartActivityForResult(supplyAccount, Constants.SELECT_ACCOUNT_REQUEST_CODE);
+        }
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
 
-       
-
-        
-
-       
-
-      
-       
-
-       
-
-        
+        }
+        public void SetAccountName(string accountName)
+        {
+            txtNotificationName.Text = accountName;
+        }
 
         public void ShowRefreshView(bool isRefresh, string contentTxt, string btnTxt)
         {
             try
             {
                 FindViewById(Resource.Id.emptyLayout).Visibility = ViewStates.Gone;
-                notificationRecyclerView.Visibility = ViewStates.Gone;
                 btnNewRefresh.Text = string.IsNullOrEmpty(btnTxt) ? GetLabelCommonByLanguage("refreshNow") : btnTxt;
-                if (notificationMenu != null)
-                {
-                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
-                    notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
-                }
 
                 if (isRefresh)
                 {
@@ -352,7 +268,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 }
                 else
                 {
-                    //  TODO: LinSiong update bcrmdown to notification
+                   
                     refresh_image.SetImageResource(Resource.Drawable.maintenance_new);
                     if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                     {
@@ -375,16 +291,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [OnClick(Resource.Id.btnRefresh)]
         internal void OnRefresh(object sender, EventArgs e)
         {
-            this.userActionsListener.QueryOnLoad(this.DeviceId());
+            this.userActionsListener.SelectSupplyAccount();
         }
-
-
-       
-
-       
-
-       
-       
 
         public override string GetPageId()
         {
@@ -395,32 +303,17 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             try
             {
-                if (MyTNBAccountManagement.GetInstance().IsUsageFromNotification())
-                {
-                    MyTNBAccountManagement.GetInstance().SetIsAccessUsageFromNotification(false);
-                    if (MyTNBAccountManagement.GetInstance().IsNotificationsFromLaunch())
-                    {
-                        MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(false);
-                        base.OnBackPressed();
-                    }
-                    else
-                    {
-                        Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
-                        MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
-                        HomeMenuUtils.ResetAll();
-                        DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                        StartActivity(DashboardIntent);
-                    }
-                }
-                else
-                {
-                    base.OnBackPressed();
-                }
+                base.OnBackPressed();
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public bool IsActive()
+        {
+            throw new NotImplementedException();
         }
     }
 }

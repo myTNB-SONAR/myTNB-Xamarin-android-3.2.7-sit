@@ -263,6 +263,19 @@ namespace myTNB_Android.Src.Login.MVP
                         }
 
                         int Id = UserEntity.InsertOrReplace(userResponse.GetData());
+                        try
+                        {
+                            int loginCount = UserLoginCountEntity.GetLoginCount(userResponse.GetData().Email);
+                            int recordId;
+                            if (loginCount < 3)
+                            {
+                                recordId = UserLoginCountEntity.InsertOrReplace(userResponse.GetData(), loginCount + 1);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
                         if (Id > 0)
                         {
                             UserEntity.UpdateDeviceId(deviceId);
