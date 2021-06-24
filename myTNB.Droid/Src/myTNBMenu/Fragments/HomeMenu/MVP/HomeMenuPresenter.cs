@@ -2737,15 +2737,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     });
 
 
-                    newList.Add(new NewAppModel()
-                    {
-                        ContentShowPosition = ContentType.TopRight,
-                        ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetTitle"),//"Begin your Energy Budget journey",
-                        ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetDesc"),//"Access Energy Budget easily from homepage to start setting up your desired monthly bill amount",
-                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                        NeedHelpHide = isNeedHelpHide,
-                        IsButtonShow = false
-                    });
+                    //Overlay EnergyBudget removed
+
                 }
                 else
                 {
@@ -2777,17 +2770,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         });
 
 
-                        newList.Add(new NewAppModel()
-                        {
-                            ContentShowPosition = ContentType.TopRight,
-                            ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetTitle"),//"Begin your Energy Budget journey",
-                            ContentMessage = Utility.GetLocalizedLabel("DashboardHome", "tutorialEnergyBudgetDesc"),//"Access Energy Budget easily from homepage to start setting up your desired monthly bill amount",
-                            ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                            NeedHelpHide = isNeedHelpHide,
-                            IsButtonShow = false
-                        });
+                    //Overlay EnergyBudget removed
 
-                        newList.Add(new NewAppModel()
+                    newList.Add(new NewAppModel()
                         {
                             ContentShowPosition = ContentType.TopLeft,
                             ContentTitle = Utility.GetLocalizedLabel("DashboardHome", "tutorialNeedHelpTitle"),//"Need help?",
