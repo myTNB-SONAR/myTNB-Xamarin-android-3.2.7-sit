@@ -90,12 +90,12 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                         Image = "walkthrough_img_install_8"
                     });
                 }
-                newWalkthroughList.Add(new NewWalkthroughModel()
+                /*newWalkthroughList.Add(new NewWalkthroughModel()
                 {
                     Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
                     Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
                     Image = "walkthrough_img_install_9"
-                });
+                });*/
 
             }
             else
@@ -148,12 +148,12 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                         Image = "walkthrough_img_update_5"
                     });
                 }
-                newWalkthroughList.Add(new NewWalkthroughModel()
+                /*newWalkthroughList.Add(new NewWalkthroughModel()
                 {
                     Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
                     Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
                     Image = "walkthrough_img_install_9"
-                });
+                });*/
             }
 
             return newWalkthroughList;

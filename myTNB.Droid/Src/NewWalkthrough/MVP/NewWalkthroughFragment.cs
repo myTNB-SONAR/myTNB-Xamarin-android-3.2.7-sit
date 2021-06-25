@@ -238,7 +238,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     imgParam.Width = imgWidth;
                     imgParam.Height = imgHeight;
                     break;
-                case "walkthrough_img_install_9":
+                /*case "walkthrough_img_install_9":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_9);
 
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughNinthBg);
@@ -251,7 +251,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     imgHeight = (int)(imgWidth * (heightRatio));
                     imgParam.Width = imgWidth;
                     imgParam.Height = imgHeight;
-                    break;
+                    break;*/
                 case "walkthrough_img_update_1":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_4);
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
