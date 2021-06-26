@@ -31,7 +31,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         [BindView(Resource.Id.btnTryAgainFailed)]
         Button btnTryAgainFailed;
-        
+
 
         public override int ResourceId()
         {
@@ -50,11 +50,8 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             // Create your application here
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfoError);
             TextViewUtils.SetMuseoSans300Typeface(txtMessageInfoError);
-
-            btnBackToHomeFailed.TextSize = TextViewUtils.GetFontSize(16f);
-            btnTryAgainFailed.TextSize = TextViewUtils.GetFontSize(16f);
-            txtTitleInfoError.TextSize = TextViewUtils.GetFontSize(16f);
-            txtMessageInfoError.TextSize = TextViewUtils.GetFontSize(12f);
+            TextViewUtils.SetTextSize12(txtMessageInfoError);
+            TextViewUtils.SetTextSize16(btnBackToHomeFailed, btnTryAgainFailed, txtTitleInfoError);
         }
 
         [OnClick(Resource.Id.btnBackToHomeFailed)]
@@ -63,7 +60,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                Intent intent = new Intent(this,typeof(DashboardHomeActivity));
+                Intent intent = new Intent(this, typeof(DashboardHomeActivity));
                 StartActivity(intent);
             }
         }

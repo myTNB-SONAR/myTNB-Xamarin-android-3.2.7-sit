@@ -47,9 +47,8 @@ namespace myTNB_Android.Src.CompoundView
             if (ctaList.Count == 1)
             {
                 Button primaryBtn = FindViewById<Button>(Resource.Id.btnPrimary);
-                primaryBtn.TextSize = TextViewUtils.GetFontSize(16f);
-               
-                
+                TextViewUtils.SetTextSize16(primaryBtn);
+
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)primaryBtn.LayoutParameters;
                 layoutParams.Weight = 1f;
                 primaryBtn.LayoutParameters = layoutParams;
@@ -83,7 +82,7 @@ namespace myTNB_Android.Src.CompoundView
             else
             {
                 Button primaryBtn = FindViewById<Button>(Resource.Id.btnPrimary);
-                primaryBtn.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize16(primaryBtn);
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)primaryBtn.LayoutParameters;
                 layoutParams.Weight = 0.5f;
                 primaryBtn.LayoutParameters = layoutParams;
@@ -95,7 +94,7 @@ namespace myTNB_Android.Src.CompoundView
                 };
 
                 Button secondaryBtn = FindViewById<Button>(Resource.Id.btnSecondary);
-                secondaryBtn.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize16(secondaryBtn);
                 layoutParams = (LinearLayout.LayoutParams)secondaryBtn.LayoutParameters;
                 layoutParams.Weight = 0.5f;
                 secondaryBtn.LayoutParameters = layoutParams;

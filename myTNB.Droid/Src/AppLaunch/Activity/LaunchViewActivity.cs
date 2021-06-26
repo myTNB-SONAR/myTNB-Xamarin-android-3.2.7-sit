@@ -810,9 +810,10 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 txtDialogTitle.Text = title;
                 txtDialogMessage.Text = message;
                 btnUpdateNow.Text = btnLabel;
-                txtDialogTitle.TextSize = TextViewUtils.GetFontSize(16);
-                txtDialogMessage.TextSize = TextViewUtils.GetFontSize(14);
-                btnUpdateNow.TextSize = TextViewUtils.GetFontSize(18);
+
+                TextViewUtils.SetTextSize14(txtDialogMessage);
+                TextViewUtils.SetTextSize16(txtDialogTitle);
+                TextViewUtils.SetTextSize18(btnUpdateNow);
 
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {

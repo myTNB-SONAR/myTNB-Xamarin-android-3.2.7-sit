@@ -36,7 +36,7 @@ namespace myTNB_Android.Src.CompoundView
 
         public void Init(Context context)
         {
-            Inflate(context,Resource.Layout.ItemisedBillingGroupContentLayout,this);
+            Inflate(context, Resource.Layout.ItemisedBillingGroupContentLayout, this);
             dateHistoryTypeView = FindViewById<TextView>(Resource.Id.itemisedBillingItemTitle);
             paidViaView = FindViewById<TextView>(Resource.Id.itemisedBillingItemSubTitle);
             amountView = FindViewById<TextView>(Resource.Id.itemisedBillingItemAmount);
@@ -44,11 +44,7 @@ namespace myTNB_Android.Src.CompoundView
 
             TextViewUtils.SetMuseoSans300Typeface(paidViaView, pendingIndicator);
             TextViewUtils.SetMuseoSans500Typeface(dateHistoryTypeView, amountView);
-
-            dateHistoryTypeView.TextSize = TextViewUtils.GetFontSize(12f);
-            paidViaView.TextSize = TextViewUtils.GetFontSize(12f);
-            amountView.TextSize = TextViewUtils.GetFontSize(12f);
-            pendingIndicator.TextSize = TextViewUtils.GetFontSize(12f);
+            TextViewUtils.SetTextSize12(dateHistoryTypeView, paidViaView, amountView, pendingIndicator);
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
@@ -76,7 +72,7 @@ namespace myTNB_Android.Src.CompoundView
         }
 
         public void SetAmount(string amount, bool isPendingPayment)
-        { 
+        {
             amountView.Text = amount;
 
             if (isPendingPayment)

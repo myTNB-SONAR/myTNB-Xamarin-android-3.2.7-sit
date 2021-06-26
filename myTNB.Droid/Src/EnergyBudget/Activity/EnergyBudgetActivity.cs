@@ -77,7 +77,8 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
                 infoLabelAccNotListed.Text = Utility.GetLocalizedLabel("EnregyBudgetListing", "tootltipTitle");
 
                 TextViewUtils.SetMuseoSans500Typeface(infoLabelAccNotListed);
-                infoLabelAccNotListed.TextSize = TextViewUtils.GetFontSize(13f);
+                TextViewUtils.SetTextSize13(infoLabelAccNotListed);
+                //infoLabelAccNotListed.TextSize = TextViewUtils.GetFontSize(13f);
 
                 mPresenter = new EnergyBudgetPresenter(this);
                 this.userActionsListener.Start();

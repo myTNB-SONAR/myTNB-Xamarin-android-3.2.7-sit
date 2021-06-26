@@ -41,15 +41,11 @@ namespace myTNB_Android.Src.LogoutEnd.Activity
             base.OnCreate(savedInstanceState);
             TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
             TextViewUtils.SetMuseoSans500Typeface(btnBackToHome, txtTitleInfo);
-            txtTitleInfo.Text = Utility.GetLocalizedLabel("Logout","logoutTitle");
+            txtTitleInfo.Text = Utility.GetLocalizedLabel("Logout", "logoutTitle");
             txtContentInfo.Text = Utility.GetLocalizedLabel("Logout", "message");
             btnBackToHome.Text = Utility.GetLocalizedLabel("Logout", "loginAgain");
-
-            btnBackToHome.TextSize = TextViewUtils.GetFontSize(16f);
-
-            txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16f);
-            txtContentInfo.TextSize = TextViewUtils.GetFontSize(14f);
-
+            TextViewUtils.SetTextSize14(txtContentInfo);
+            TextViewUtils.SetTextSize16(btnBackToHome, txtTitleInfo);
             mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
             UserSessions.SavePhoneVerified(mSharedPref, false);
         }

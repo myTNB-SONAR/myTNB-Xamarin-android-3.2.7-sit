@@ -42,10 +42,9 @@ namespace myTNB_Android.Src.CompoundView
 
             TextViewUtils.SetMuseoSans300Typeface(itemTitle, itemValue);
             TextViewUtils.SetMuseoSans500Typeface(itemAction);
-            itemTitle.TextSize = TextViewUtils.GetFontSize(10f);
-            itemValue.TextSize = TextViewUtils.GetFontSize(14f);
-            itemAction.TextSize = TextViewUtils.GetFontSize(12f);
-
+            TextViewUtils.SetTextSize10(itemTitle);
+            TextViewUtils.SetTextSize12(itemAction);
+            TextViewUtils.SetTextSize14(itemValue);
         }
 
         public void SetTitle(string title)

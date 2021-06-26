@@ -1,104 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/rootView">
-    <include
-        layout="@layout/toolbar"
-        android:id="@+id/toolbar" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/lightGrey"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:padding="18dp">
-            <TextView
-                android:id="@+id/txtAccountNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="2222222222"
-                android:textSize="14dp" />
-            <TextView
-                android:id="@+id/txtAccountAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No. 3 Lot Meulrur 12 Taman Melir, 68000 Ampang, Selangor"
-                android:textSize="14dp" />
-        </LinearLayout>
-        <View
-            android:id="@+id/view2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/platinumGrey" />
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:padding="18dp">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/btnTextUpdateNickName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_marginBottom="5dp"
-                    android:layout_centerInParent="true"
-                    android:text="@string/manage_supply_update_account_nickname"
-                    android:textColor="@color/powerBlue"
-                    android:layout_alignParentRight="true"
-                    android:textSize="14dp" />
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txtInputLayoutNickName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:errorEnabled="true"
-                    android:layout_marginRight="20dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@+id/btnTextUpdateNickName"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
-                    <EditText
-                        android:id="@+id/txtNickName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:enabled="false"
-                        android:focusable="false"
-                        android:hint="ACCOUNT NICKNAME"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:maxWidth="200dp" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </RelativeLayout>
-        </FrameLayout>
-        <View
-            android:id="@+id/view3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/platinumGrey" />
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white">
-            <Button
-                android:id="@+id/btnRemoveAccount"
-                style="@style/LightButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_margin="18dp"
-                android:text="@string/manage_supply_account_btn_remove"
-                android:textAllCaps="false" />
-        </FrameLayout>
-    </LinearLayout>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:id="@+id/rootView">
+	<include
+		layout="@layout/toolbar"
+		android:id="@+id/toolbar" />
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@color/lightGrey"
+		android:orientation="vertical">
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/white"
+			android:orientation="vertical"
+			android:padding="18dp">
+			<TextView
+				android:id="@+id/txtAccountNumber"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="2222222222"
+				android:textSize="14dp" />
+			<TextView
+				android:id="@+id/txtAccountAddress"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="No. 3 Lot Meulrur 12 Taman Melir, 68000 Ampang, Selangor"
+				android:textSize="14dp" />
+		</LinearLayout>
+		<View
+			android:id="@+id/view2"
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:background="@color/platinumGrey" />
+		<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/white"
+			android:padding="18dp">
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content">
+				<TextView
+					android:id="@+id/btnTextUpdateNickName"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="right|center_vertical"
+					android:layout_marginBottom="5dp"
+					android:layout_centerInParent="true"
+					android:text="@string/manage_supply_update_account_nickname"
+					android:textColor="@color/powerBlue"
+					android:layout_alignParentRight="true"
+					android:textSize="14dp" />
+				<com.google.android.material.textfield.TextInputLayout
+					android:id="@+id/txtInputLayoutNickName"
+					android:layout_marginTop="8dp"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					app:errorEnabled="true"
+					android:layout_marginRight="20dp"
+					android:layout_alignParentLeft="true"
+					android:layout_toLeftOf="@+id/btnTextUpdateNickName"
+					app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+					<EditText
+						android:id="@+id/txtNickName"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:background="@android:color/transparent"
+						android:paddingTop="5dp"
+						android:enabled="false"
+						android:focusable="false"
+						android:hint="ACCOUNT NICKNAME"
+						android:inputType="text"
+						android:singleLine="true"
+						android:ellipsize="end"
+						android:maxLines="1"
+						android:maxWidth="200dp" />
+				</com.google.android.material.textfield.TextInputLayout>
+			</RelativeLayout>
+		</FrameLayout>
+		<View
+			android:id="@+id/view3"
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:background="@color/platinumGrey" />
+		<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/white">
+			<Button
+				android:id="@+id/btnRemoveAccount"
+				style="@style/LightButton"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="bottom"
+				android:layout_margin="18dp"
+				android:text="@string/manage_supply_account_btn_remove"
+				android:textAllCaps="false" />
+		</FrameLayout>
+	</LinearLayout>
 </LinearLayout>

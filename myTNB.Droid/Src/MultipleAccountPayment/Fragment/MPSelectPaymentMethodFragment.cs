@@ -342,16 +342,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 TextViewUtils.SetMuseoSans500Typeface(lblCreditDebitCard, lblOtherPaymentMethods, txtTotalAmount);
                 TextViewUtils.SetMuseoSans300Typeface(btnAddCard, btnFPXPayment);
 
-                lblTotalAmount.TextSize = TextViewUtils.GetFontSize(10f);
-                txtTotalAmount.TextSize = TextViewUtils.GetFontSize(16f);
-                btnFPXPayment.TextSize = TextViewUtils.GetFontSize(16f);
-                btnAddCard.TextSize = TextViewUtils.GetFontSize(16f);
-                lblCreditDebitCard.TextSize = TextViewUtils.GetFontSize(18f);
-                lblOtherPaymentMethods.TextSize = TextViewUtils.GetFontSize(18f);
-                edtNumber1.TextSize = TextViewUtils.GetFontSize(22f);
-                edtNumber2.TextSize = TextViewUtils.GetFontSize(22f);
-                edtNumber3.TextSize = TextViewUtils.GetFontSize(22f);
-                edtNumber4.TextSize = TextViewUtils.GetFontSize(22f);
+                TextViewUtils.SetTextSize10(lblTotalAmount);
+                TextViewUtils.SetTextSize16(txtTotalAmount, btnFPXPayment, btnAddCard);
+                TextViewUtils.SetTextSize18(lblCreditDebitCard, lblOtherPaymentMethods);
+                TextViewUtils.SetTextSize22(edtNumber1, edtNumber2, edtNumber3, edtNumber4);
 
                 TextViewUtils.SetMuseoSans300Typeface(lblCvvInfo);
                 TextViewUtils.SetMuseoSans300Typeface(edtNumber1, edtNumber2, edtNumber3, edtNumber4);
@@ -571,8 +565,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     //CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
                     //string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
                     string custName = selectedPaymentItemList.Count > 1
-                        ? selectedPaymentItemList[0].AccountOwnerName ?? string.Empty
-                        : UserEntity.GetActive().DisplayName ?? string.Empty;
+                        ? UserEntity.GetActive().DisplayName ?? string.Empty
+                        : selectedPaymentItemList[0].AccountOwnerName ?? string.Empty;
                     //string accNum = selectedAccount.AccountNum;
                     //double payableAmt = double.Parse(txtTotalAmount.Text, currCult);
                     //string payAm = txtTotalAmount.Text;

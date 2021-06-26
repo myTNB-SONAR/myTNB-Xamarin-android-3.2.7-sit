@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true"
-    android:orientation="vertical">
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:overScrollMode="never"
-        android:background="@color/white"
-        android:layout_marginTop="?attr/actionBarSize">
-        <LinearLayout
-            android:id="@+id/rootView"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:background="@color/white">
-            <!--<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:layout_alignParentBottom="true"
+	android:layout_centerHorizontal="true"
+	android:orientation="vertical">
+	<include
+		android:id="@+id/toolbar"
+		layout="@layout/toolbar" />
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:fillViewport="true"
+		android:overScrollMode="never"
+		android:background="@color/white"
+		android:layout_marginTop="?attr/actionBarSize">
+		<LinearLayout
+			android:id="@+id/rootView"
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:orientation="vertical"
+			android:background="@color/white">
+			<!--<LinearLayout
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:orientation="vertical">
@@ -30,7 +31,7 @@
                     android:id="@+id/txtMyAccountTitle"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:textSize="18sp"
+                    android:textSize="18dp"
                     android:paddingBottom="8dp"
                     android:paddingTop="8dp"
                     android:paddingLeft="16dp"
@@ -128,7 +129,7 @@
                             android:layout_marginBottom="5dp"
                             android:text="Update"
                             android:textColor="@color/powerBlue"
-                            android:textSize="14sp" />
+                            android:textSize="14dp" />
                     </FrameLayout>
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -158,7 +159,7 @@
                             android:layout_marginBottom="5dp"
                             android:text="Update"
                             android:textColor="@color/powerBlue"
-                            android:textSize="14sp" />
+                            android:textSize="14dp" />
                     </FrameLayout>
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -188,111 +189,111 @@
                             android:layout_marginBottom="5dp"
                             android:text="Manage"
                             android:textColor="@color/powerBlue"
-                            android:textSize="14sp" />
+                            android:textSize="14dp" />
                     </FrameLayout>
                 </LinearLayout>
             </LinearLayout>-->
-            <TextView
-                android:id="@+id/txtTnBSupplyAccountTitle"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:textSize="18sp"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:textColor="@color/blue"
-                android:text="@string/my_account_supply_account_title"
-                android:background="@color/lightGrey" />
-            <ListView
-                android:id="@+id/listView"
-                android:scrollbars="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/lightGrey"
-                android:layout_marginBottom="8dp" />
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/no_account_layout"
-                android:visibility="gone">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="42dp"
-                    android:layout_marginRight="42dp"
-                    android:gravity="center"
-                    android:id="@+id/linearLayout2">
-                    <TextView
-                        android:id="@+id/txtMyAccountNoAccountTitle"
-                        android:text="@string/dashboard_chartview_no_account_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/tunaGrey"
-                        android:textSize="14sp"
-                        android:gravity="center_vertical" />
-                    <TextView
-                        android:id="@+id/txtMyAccountNoAccountContent"
-                        android:text="@string/dashboard_chartview_no_account_content"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/tunaGrey"
-                        android:textSize="12sp"
-                        android:gravity="center" />
-                    <Button
-                        android:id="@+id/btnAddAccount"
-                        android:text="@string/dashboard_chartview_no_account_add_account"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAllCaps="false"
-                        android:layout_marginTop="15dp"
-                        style="@style/LightButton"
-                        android:layout_marginLeft="48dp"
-                        android:layout_marginRight="48dp"
-                        android:layout_marginBottom="24dp"
-                        android:paddingLeft="37dp"
-                        android:paddingRight="37dp"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp" />
-                </LinearLayout>
-            </FrameLayout>
-            <LinearLayout
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp">
-                <Button
-                    android:id="@+id/btnAddAnotherAccount"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:text="@string/my_account_btn_add_another_account"
-                    android:textAllCaps="false"
-                    style="@style/LightButton"
+			<TextView
+				android:id="@+id/txtTnBSupplyAccountTitle"
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:textSize="18dp"
+				android:paddingBottom="8dp"
+				android:paddingTop="8dp"
+				android:paddingLeft="16dp"
+				android:paddingRight="16dp"
+				android:textColor="@color/blue"
+				android:text="@string/my_account_supply_account_title"
+				android:background="@color/lightGrey" />
+			<ListView
+				android:id="@+id/listView"
+				android:scrollbars="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@color/lightGrey"
+				android:layout_marginBottom="8dp" />
+			<FrameLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/no_account_layout"
+				android:visibility="gone">
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					android:layout_marginLeft="42dp"
+					android:layout_marginRight="42dp"
+					android:gravity="center"
+					android:id="@+id/linearLayout2">
+					<TextView
+						android:id="@+id/txtMyAccountNoAccountTitle"
+						android:text="@string/dashboard_chartview_no_account_title"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/tunaGrey"
+						android:textSize="14dp"
+						android:gravity="center_vertical" />
+					<TextView
+						android:id="@+id/txtMyAccountNoAccountContent"
+						android:text="@string/dashboard_chartview_no_account_content"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textColor="@color/tunaGrey"
+						android:textSize="12dp"
+						android:gravity="center" />
+					<Button
+						android:id="@+id/btnAddAccount"
+						android:text="@string/dashboard_chartview_no_account_add_account"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textAllCaps="false"
+						android:layout_marginTop="15dp"
+						style="@style/LightButton"
+						android:layout_marginLeft="48dp"
+						android:layout_marginRight="48dp"
+						android:layout_marginBottom="24dp"
+						android:paddingLeft="37dp"
+						android:paddingRight="37dp"
+						android:paddingTop="12dp"
+						android:paddingBottom="12dp" />
+				</LinearLayout>
+			</FrameLayout>
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="vertical"
+				android:paddingLeft="32dp"
+				android:paddingRight="32dp"
+				android:paddingBottom="8dp"
+				android:paddingTop="8dp">
+				<Button
+					android:id="@+id/btnAddAnotherAccount"
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"
+					android:text="@string/my_account_btn_add_another_account"
+					android:textAllCaps="false"
+					style="@style/LightButton"
                      />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:paddingBottom="12dp"
-                android:paddingTop="8dp"
-                android:visibility="gone"
-                android:background="@color/lightGrey">
-                <Button
-                    android:id="@+id/btnLogout"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:textAllCaps="false"
-                    android:text="@string/my_account_btn_logout"
-                    style="@style/DarkButton"
+			</LinearLayout>
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="vertical"
+				android:paddingLeft="32dp"
+				android:paddingRight="32dp"
+				android:paddingBottom="12dp"
+				android:paddingTop="8dp"
+				android:visibility="gone"
+				android:background="@color/lightGrey">
+				<Button
+					android:id="@+id/btnLogout"
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"
+					android:textAllCaps="false"
+					android:text="@string/my_account_btn_logout"
+					style="@style/DarkButton"
                     />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+			</LinearLayout>
+		</LinearLayout>
+	</ScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

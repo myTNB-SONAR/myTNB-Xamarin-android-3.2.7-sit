@@ -106,10 +106,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
                 ApplicationStatusItemTitle.Text = this.item.ApplicationModuleDescription;
                 ApplicationStatusItemStatus.Text = this.item.StatusDescription;
                 ApplicationStatusItemSubTitle.Text = this.item.ReferenceNumberDisplay;
-
-                ApplicationStatusItemTitle.TextSize = TextViewUtils.GetFontSize(12);
-                ApplicationStatusItemStatus.TextSize = TextViewUtils.GetFontSize(12);
-                ApplicationStatusItemSubTitle.TextSize = TextViewUtils.GetFontSize(12);
+                TextViewUtils.SetTextSize12(ApplicationStatusItemTitle, ApplicationStatusItemStatus, ApplicationStatusItemSubTitle);
 
                 ApplicationStatusItemStatus.SetTextColor(Android.Graphics.Color.Rgb(this.item.StatusColor[0], this.item.StatusColor[1], this.item.StatusColor[2]));
             }

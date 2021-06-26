@@ -45,9 +45,7 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.Adapter
             TextView titleView = rootView.FindViewById(Resource.Id.applyTitle) as TextView;
             TextView descriptionView = rootView.FindViewById(Resource.Id.applyDescription) as TextView;
             descriptionView.MovementMethod = new ScrollingMovementMethod();
-
-            titleView.TextSize = TextViewUtils.GetFontSize(14f);
-            descriptionView.TextSize = TextViewUtils.GetFontSize(14f);
+            TextViewUtils.SetTextSize14(titleView, descriptionView);
 
             TextViewUtils.SetMuseoSans500Typeface(titleView);
             TextViewUtils.SetMuseoSans300Typeface(descriptionView);

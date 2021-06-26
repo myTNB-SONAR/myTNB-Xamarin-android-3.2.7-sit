@@ -45,16 +45,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter
             vh.txtToolTipTitle.Text = model.Title;
 
             LinearLayout linearLayout;
-            for (int i=0; i < model.ItemList.Count; i++)
+            for (int i = 0; i < model.ItemList.Count; i++)
             {
                 linearLayout = (LinearLayout)LayoutInflater.From(this.mParent.Context).Inflate(Resource.Layout.UnderstandBillTooltipItem, this.mParent, false);
                 TextView labelNumber = linearLayout.FindViewById<TextView>(Resource.Id.txtBillItemNumber);
                 TextView labelTitle = linearLayout.FindViewById<TextView>(Resource.Id.txtBillItemLabel);
                 TextViewUtils.SetMuseoSans300Typeface(labelTitle);
                 TextViewUtils.SetMuseoSans500Typeface(labelNumber);
-
-                labelNumber.TextSize = TextViewUtils.GetFontSize(12f);
-                labelTitle.TextSize = TextViewUtils.GetFontSize(14f);
+                TextViewUtils.SetTextSize12(labelNumber);
+                TextViewUtils.SetTextSize14(labelTitle);
 
                 labelTitle.Text = model.ItemList[i];
                 labelNumber.Text = (i + 1).ToString();
@@ -66,7 +65,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
             var id = Resource.Layout.UnderstandBillTooltipItemLayout;
-            var itemView = LayoutInflater.From(parent.Context).Inflate(id,parent,false);
+            var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
             mParent = parent;
             return new UnderstandBillViewHolder(itemView);
         }
@@ -86,8 +85,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter
             tooltipItemsContent = itemView.FindViewById<LinearLayout>(Resource.Id.tooltipItemsContent);
 
             TextViewUtils.SetMuseoSans500Typeface(txtToolTipTitle);
-
-            txtToolTipTitle.TextSize = TextViewUtils.GetFontSize(14f);
+            TextViewUtils.SetTextSize14(txtToolTipTitle);
         }
     }
 }

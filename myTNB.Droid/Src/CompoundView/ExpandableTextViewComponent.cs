@@ -41,7 +41,7 @@ namespace myTNB_Android.Src.CompoundView
 
         private void Init()
         {
-            Inflate(mContext,Resource.Layout.ExpandingTextViewLayout,this);
+            Inflate(mContext, Resource.Layout.ExpandingTextViewLayout, this);
 
             dropdown = ContextCompat.GetDrawable(mContext, Resource.Drawable.ic_action_expand_down);
 
@@ -50,11 +50,10 @@ namespace myTNB_Android.Src.CompoundView
             expandableContainer = FindViewById<LinearLayout>(Resource.Id.expandedContent);
 
             myApplicationChargesLabel.SetCompoundDrawablesWithIntrinsicBounds(null, null, dropdown, null);
-            myApplicationChargesLabel.CompoundDrawablePadding = (int) DPUtils.ConvertDPToPx(4f);
+            myApplicationChargesLabel.CompoundDrawablePadding = (int)DPUtils.ConvertDPToPx(4f);
 
             TextViewUtils.SetMuseoSans500Typeface(myApplicationChargesLabel, myApplicationChargesValue);
-            myApplicationChargesLabel.TextSize = TextViewUtils.GetFontSize(14f);
-            myApplicationChargesValue.TextSize = TextViewUtils.GetFontSize(14f);
+            TextViewUtils.SetTextSize14(myApplicationChargesLabel, myApplicationChargesValue);
             SetOnClickListener(new OnExpandListener(this));
             expandableContainer.Visibility = ViewStates.Gone;
             expandableContainer.RemoveAllViews();
@@ -85,7 +84,7 @@ namespace myTNB_Android.Src.CompoundView
             else
             {
                 myApplicationChargesLabel.SetCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-               
+
             }
         }
 
@@ -97,15 +96,14 @@ namespace myTNB_Android.Src.CompoundView
             {
                 if (charge.Amount > 0.00)
                 {
-                    LinearLayout item = (LinearLayout)LayoutInflater.From(mContext).Inflate(Resource.Layout.MyOtherChargesItemLayout,this,false);
+                    LinearLayout item = (LinearLayout)LayoutInflater.From(mContext).Inflate(Resource.Layout.MyOtherChargesItemLayout, this, false);
                     TextView textView = item.FindViewById<TextView>(Resource.Id.otherChargeItem);
                     TextView textValue = item.FindViewById<TextView>(Resource.Id.otherChargeValue);
 
                     textView.Text = charge.Title;
                     textValue.Text = "RM" + charge.Amount.ToString("#,##0.00", currCult);
                     TextViewUtils.SetMuseoSans300Typeface(textView, textValue);
-                    textView.TextSize = TextViewUtils.GetFontSize(14f);
-                    textValue.TextSize = TextViewUtils.GetFontSize(14f);
+                    TextViewUtils.SetTextSize14(textView, textValue);
                     expandableContainer.AddView(item);
                 }
             });
@@ -120,7 +118,7 @@ namespace myTNB_Android.Src.CompoundView
             myApplicationChargesLabel.Text = oneTimeCharges;
             chargeList.ForEach(charge =>
             {
-            if (charge.AmountDisplay != string.Empty)
+                if (charge.AmountDisplay != string.Empty)
                 {
                     LinearLayout item = (LinearLayout)LayoutInflater.From(mContext).Inflate(Resource.Layout.MyOtherChargesItemLayout, this, false);
                     TextView textView = item.FindViewById<TextView>(Resource.Id.otherChargeItem);
@@ -129,9 +127,7 @@ namespace myTNB_Android.Src.CompoundView
                     textView.Text = charge.Title;
                     textValue.Text = charge.AmountDisplay;
                     TextViewUtils.SetMuseoSans300Typeface(textView, textValue);
-
-                    textView.TextSize = TextViewUtils.GetFontSize(14f);
-                    textValue.TextSize = TextViewUtils.GetFontSize(14f);
+                    TextViewUtils.SetTextSize14(textView, textValue);
                     expandableContainer.AddView(item);
                 }
             });
@@ -163,4 +159,3 @@ namespace myTNB_Android.Src.CompoundView
         }
     }
 }
-    

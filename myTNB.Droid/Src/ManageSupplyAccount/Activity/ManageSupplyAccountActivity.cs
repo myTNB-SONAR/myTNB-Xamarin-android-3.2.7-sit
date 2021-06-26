@@ -4,7 +4,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -48,7 +47,6 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [BindView(Resource.Id.btnRemoveAccount)]
         Button btnRemoveAccount;
 
-
         AccountData accountData;
         int position;
 
@@ -90,12 +88,12 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNickName);
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountAddress, txtNickName);
                 TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName);
+                txtInputLayoutNickName.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
                 TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
-
-                txtAccountNumber.TextSize = TextViewUtils.GetFontSize(14f);
-                txtAccountAddress.TextSize = TextViewUtils.GetFontSize(14f);
-                btnTextUpdateNickName.TextSize = TextViewUtils.GetFontSize(14f);
-                btnRemoveAccount.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize14(txtAccountNumber, txtAccountAddress, btnTextUpdateNickName);
+                TextViewUtils.SetTextSize16(btnRemoveAccount, txtNickName);
                 txtAccountNumber.Text = accountData.AccountNum;
                 txtAccountAddress.Text = accountData.AddStreet;
 
@@ -126,59 +124,26 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 this.userActionsListener.OnUpdateNickname();
             }
         }
-        //AlertDialog removeDialog;
+        
         [OnClick(Resource.Id.btnRemoveAccount)]
         void OnClickRemoveAccount(object sender, EventArgs eventArgs)
         {
             try
             {
-
-                if (!this.GetIsClicked())
-                {
-                    this.SetIsClicked(true);
-                    ShowRemoveAccountDialog(this, () =>
-                    {
-                        this.userActionsListener.OnRemoveAccount(accountData);
-                    });
-                }
-                this.SetIsClicked(false);
+                MyTNBAppToolTipBuilder removeAccountPopup = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                    .SetTitle(GetLabelByLanguage("popupremoveAccountTitle"))
+                    .SetMessage(string.Format(GetLabelByLanguage("popupremoveAccountMessage"), accountData.AccountNickName, accountData.AccountNum))
+                    .SetCTALabel(GetLabelCommonByLanguage("cancel"))
+                    .SetSecondaryCTALabel(GetLabelCommonByLanguage("ok"))
+                    .SetSecondaryCTAaction(() => this.userActionsListener.OnRemoveAccount(accountData))
+                    .Build();
+                removeAccountPopup.Show();
             }
             catch (Exception e)
             {
                 this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
-        }
-
-        //AlertDialog removeDialog;
-        void ShowRemoveAccountDialog(Android.App.Activity context, Action confirmAction, Action cancelAction = null)
-        {
-            //CustomerBillingAccount account = adapter.GetItemObject(position);
-            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                        .SetTitle(Utility.GetLocalizedLabel("ManageAccount", "popupremoveAccountTitle"))
-                        //.SetMessage(Utility.GetLocalizedLabel("Common", "updateIdMessage"))
-                        .SetMessage(string.Format(Utility.GetLocalizedLabel("ManageAccount", "popupremoveAccountMessage"), accountData.AccountNickName, accountData.AccountNum))
-                        .SetContentGravity(Android.Views.GravityFlags.Left)
-                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "cancel"))
-                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "ok"))
-                        .SetSecondaryCTAaction(() =>
-                        {
-                            confirmAction();
-                        })
-                        .Build();
-            tooltipBuilder.SetCTAaction(() =>
-            {
-                if (cancelAction != null)
-                {
-                    cancelAction();
-                    tooltipBuilder.DismissDialog();
-                }
-                else
-                {
-                    tooltipBuilder.DismissDialog();
-                }
-            }).Show();
-
         }
 
         public bool IsActive()
@@ -253,13 +218,13 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 .SetAction(GetLabelCommonByLanguage("close"),
                  (view) =>
                  {
-                 // EMPTY WILL CLOSE SNACKBAR
-               }
+                     // EMPTY WILL CLOSE SNACKBAR
+                 }
                );
-            View v = updateSnackbar.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
-            updateSnackbar.Show();
+                View v = updateSnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                updateSnackbar.Show();
                 SetResult(Result.Ok);
             }
             catch (Exception e)

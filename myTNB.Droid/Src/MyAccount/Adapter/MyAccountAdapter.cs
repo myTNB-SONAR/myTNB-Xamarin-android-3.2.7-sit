@@ -46,7 +46,7 @@ namespace myTNB_Android.Src.MyAccount.Adapter
 
             viewHolder.txtAccountName.Text = account.AccDesc;
             viewHolder.txtAccountNum.Text = account.AccNum;
-            viewHolder.txtAccountManage.Text = Utility.GetLocalizedLabel("Common","manage");
+            viewHolder.txtAccountManage.Text = Utility.GetLocalizedLabel("Common", "manage");
 
             if (account.AccountCategoryId.Equals("2"))
             {
@@ -78,11 +78,7 @@ namespace myTNB_Android.Src.MyAccount.Adapter
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountName, txtAccountNum);
                 TextViewUtils.SetMuseoSans500Typeface(txtAccountManage);
-
-                txtAccountName.TextSize = TextViewUtils.GetFontSize(14f);
-                txtAccountNum.TextSize = TextViewUtils.GetFontSize(14f);
-                txtAccountManage.TextSize = TextViewUtils.GetFontSize(14f);
-
+                TextViewUtils.SetTextSize14(txtAccountName, txtAccountNum, txtAccountManage);
             }
         }
     }

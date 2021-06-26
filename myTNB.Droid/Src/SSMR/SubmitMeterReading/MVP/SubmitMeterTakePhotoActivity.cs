@@ -102,7 +102,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 if (requiredMeterReadingModelList.Count == 0)
                 {
                     requiredMeterReadingModelList = meterReadingModelList;
-                    requiredMeterReadingModelList.ForEach(model=> {
+                    requiredMeterReadingModelList.ForEach(model =>
+                    {
                         model.isValidated = false;
                     });
                 }
@@ -171,11 +172,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             EnableSubmitButton();
             TextViewUtils.SetMuseoSans500Typeface(btnDeletePhoto, btnSubmitPhotoToOCR);
             TextViewUtils.SetMuseoSans300Typeface(loadingMessage);
-
-            btnDeletePhoto.TextSize = TextViewUtils.GetFontSize(16f);
-            btnSubmitPhotoToOCR.TextSize = TextViewUtils.GetFontSize(16f);
-            loadingMessage.TextSize = TextViewUtils.GetFontSize(16f);
-          
+            TextViewUtils.SetTextSize16(btnDeletePhoto, btnSubmitPhotoToOCR, loadingMessage);
 
             btnDeletePhoto.Text = Utility.GetLocalizedLabel("SSMRCaptureMeter", "deletePhoto");
             btnSubmitPhotoToOCR.Text = Utility.GetLocalizedCommonLabel("submit");
@@ -291,9 +288,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             container.RemoveAllViews();
             int meterCardLength = meteredCapturedDataList.Count;
 
-            for (int i=0; i < meterCardLength; i++)
+            for (int i = 0; i < meterCardLength; i++)
             {
-                PhotoContainerBox photoContainerBox = new PhotoContainerBox(this, i+1);
+                PhotoContainerBox photoContainerBox = new PhotoContainerBox(this, i + 1);
                 photoContainerBox.SetMeterId(meteredCapturedDataList[i].meterId);
                 photoContainerBox.UpdateBackground();
                 container.AddView(photoContainerBox);
@@ -317,7 +314,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             Matrix matrix = new Matrix();
             matrix.PostRotate(rotation);
-            return Bitmap.CreateBitmap(sourceBitmap,0,0,sourceBitmap.Width,sourceBitmap.Height,matrix,true);
+            return Bitmap.CreateBitmap(sourceBitmap, 0, 0, sourceBitmap.Width, sourceBitmap.Height, matrix, true);
         }
 
         public void AddCapturedImage(Bitmap capturedImage)
@@ -326,7 +323,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             Bitmap checkedCapturedImage = capturedImage;
             if (rotation == 90)
             {
-                checkedCapturedImage = FixRotatedBitmap(capturedImage,rotation);
+                checkedCapturedImage = FixRotatedBitmap(capturedImage, rotation);
             }
             if (!isSinglePhase)
             {
@@ -334,8 +331,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 photoContainerBox.SetPhotoImage(checkedCapturedImage);
                 UpdateAllPhotoBoxes();
                 SetPhotoBoxClickable();
-				takePhotoFragment.ResetZoom();
-			}
+                takePhotoFragment.ResetZoom();
+            }
             else
             {
                 ScaledImageView previewImage = FindViewById<ScaledImageView>(Resource.Id.adjust_photo_preview);
@@ -359,13 +356,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 photoBox.Clickable = true;
                 if (photoBox.mIsActive)
                 {
-                    photoBox.Click += delegate {
+                    photoBox.Click += delegate
+                    {
                         ShowImagePreView(false);
                     };
                 }
                 if (photoBox.mHasPhoto)
                 {
-                    photoBox.Click += delegate {
+                    photoBox.Click += delegate
+                    {
                         ShowImagePreView(true);
                         ScaledImageView previewImage = FindViewById<ScaledImageView>(Resource.Id.adjust_photo_preview);
                         //previewImage.SetScaleType(ImageView.ScaleType.CenterCrop);
@@ -491,7 +490,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private void ShowTakePhotoTooltip()
         {
             List<string> needMeterCaptureList = new List<string>();
-            for (int i=0; i < requiredMeterReadingModelList.Count; i++)
+            for (int i = 0; i < requiredMeterReadingModelList.Count; i++)
             {
                 needMeterCaptureList.Add(requiredMeterReadingModelList[i].meterReadingUnitDisplay);
             }
@@ -601,7 +600,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             List<string> doneUnitList = new List<string>();
             List<string> notDoneUnitList = new List<string>();
 
-            for (int i=0; i < meterReadingModelList.Count; i++)
+            for (int i = 0; i < meterReadingModelList.Count; i++)
             {
                 if (meterReadingModelList[i].isValidated)
                 {
@@ -616,7 +615,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             //Construct done meter reading message
             if (doneUnitList.Count > 1)
             {
-                finalString = string.Format(pluralDone, "<font color='#20bd4c'>" + doneUnitList[0] + "</font>","<font color = '#20bd4c'>" + doneUnitList[1] + "</font>");
+                finalString = string.Format(pluralDone, "<font color='#20bd4c'>" + doneUnitList[0] + "</font>", "<font color = '#20bd4c'>" + doneUnitList[1] + "</font>");
             }
             else
             {
@@ -689,7 +688,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 rectPaint.Color = Color.White;
                 rectPaint.SetStyle(Paint.Style.Stroke);
                 rectPaint.StrokeWidth = 10;
-                canvas.DrawRoundRect(-10,top,width+10,bottom,0,0,rectPaint);
+                canvas.DrawRoundRect(-10, top, width + 10, bottom, 0, 0, rectPaint);
             }
 
             public Rect GetCropAreaRect()
