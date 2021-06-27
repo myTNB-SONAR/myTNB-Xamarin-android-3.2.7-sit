@@ -306,15 +306,19 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 txtInputLayoutName.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHint");
                 txtInputLayoutEmail.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "emailHint");
                 btnSubmit.Text = Utility.GetLocalizedLabel("Common", "submit");
-                btnSubmit.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize16(btnSubmit);
 
-                txtInputLayoutName.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
-                txtInputLayoutEmail.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                txtInputLayoutName.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
+                txtInputLayoutEmail.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
 
                 //set translation of string 
                 txtTermsConditionsGeneralEnquiry.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryTnc"));
 
-                 StripUnderlinesFromLinks(txtTermsConditionsGeneralEnquiry);
+                StripUnderlinesFromLinks(txtTermsConditionsGeneralEnquiry);
 
 
 
@@ -352,7 +356,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
                     if (txtName.HasFocus)
                     {
-                        txtInputLayoutName.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                        txtInputLayoutName.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                            ? Resource.Style.TextInputLayoutFeedbackCountLarge
+                            : Resource.Style.TextInputLayoutFeedbackCount);
                         TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error));
                         txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
 
@@ -413,23 +419,14 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
                                 mobileNumberInputComponent.SetMobileNumber(int.Parse(tempPhone.Trim()));
                             }
                         }
-
-
                     }
-
-
                 }
                 else
                 {
                     txtName.Text = "";
                 }
-
-                txtstep2of2.TextSize = TextViewUtils.GetFontSize(12f);
-                WhoShouldWeContact.TextSize = TextViewUtils.GetFontSize(16f);
-                txtName.TextSize = TextViewUtils.GetFontSize(16f);
-                txtEmail.TextSize = TextViewUtils.GetFontSize(16f);
-                txtTermsConditionsGeneralEnquiry.TextSize = TextViewUtils.GetFontSize(12f);
-
+                TextViewUtils.SetTextSize12(txtstep2of2, txtTermsConditionsGeneralEnquiry);
+                TextViewUtils.SetTextSize16(WhoShouldWeContact, txtName, txtEmail);
             }
             catch (Exception e)
             {
@@ -642,7 +639,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
         public void ShowFullNameError()
         {
-            txtInputLayoutName.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            txtInputLayoutName.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                : Resource.Style.TextInputLayoutBottomErrorHint);
 
 
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error));
@@ -663,7 +662,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
             if (txtName.HasFocus)
             {
-                txtInputLayoutName.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutName.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayoutFeedbackCountLarge
+                    : Resource.Style.TextInputLayoutFeedbackCount);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error));
                 txtInputLayoutName.Error = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHintBottom");
                 var handleBounceError = txtInputLayoutName.FindViewById<TextView>(Resource.Id.textinput_error);
@@ -678,7 +679,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
         public void ShowInvalidEmailError()
         {
-            txtInputLayoutEmail.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
+            txtInputLayoutEmail.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                : Resource.Style.TextInputLayoutBottomErrorHint);
 
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail.FindViewById<TextView>(Resource.Id.textinput_error));
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail);

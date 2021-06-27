@@ -104,23 +104,15 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 Bundle extras = Intent.Extras;
                 email = extras.GetString("email");
 
-                txtInfoTitle.Text = string.Format(GetLabelByLanguage("details"),email);
+                txtInfoTitle.Text = string.Format(GetLabelByLanguage("details"), email);
                 TextViewUtils.SetMuseoSans300Typeface(txtInfoTitle, txtDidntReceive);
                 TextViewUtils.SetMuseoSans300Typeface(txtNumber_1, txtNumber_2, txtNumber_3, txtNumber_4);
                 TextViewUtils.SetMuseoSans500Typeface(btnResend, OnCompleteResend);
                 TextViewUtils.SetMuseoSans300Typeface(txtErrorPin);
-
-                txtInfoTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                txtErrorPin.TextSize = TextViewUtils.GetFontSize(12f);
-                txtDidntReceive.TextSize = TextViewUtils.GetFontSize(16f);
-                OnCompleteResend.TextSize = TextViewUtils.GetFontSize(18f);
-                btnResend.TextSize = TextViewUtils.GetFontSize(18f);
-                txtNumber_1.TextSize = TextViewUtils.GetFontSize(22f);
-                txtNumber_2.TextSize = TextViewUtils.GetFontSize(22f);
-                txtNumber_3.TextSize = TextViewUtils.GetFontSize(22f);
-                txtNumber_4.TextSize = TextViewUtils.GetFontSize(22f);
-
-
+                TextViewUtils.SetTextSize12(txtErrorPin);
+                TextViewUtils.SetTextSize16(txtInfoTitle, txtDidntReceive);
+                TextViewUtils.SetTextSize18(OnCompleteResend, btnResend);
+                TextViewUtils.SetTextSize22(txtNumber_1, txtNumber_2, txtNumber_3, txtNumber_4);
 
                 txtDidntReceive.Text = GetLabelByLanguage("emailNotReceived");
                 btnResend.Text = Utility.GetLocalizedLabel("Common", "resend");
@@ -550,7 +542,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         {
             try
             {
-                btnResend.Text = Utility.GetLocalizedLabel("Common","resend") + "(30)";
+                btnResend.Text = Utility.GetLocalizedLabel("Common", "resend") + "(30)";
                 //btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loaded), null, null, null);
                 btnResend.Visibility = ViewStates.Gone;
                 OnCompleteResend.Visibility = ViewStates.Visible;

@@ -40,11 +40,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            btnBackToHomeFailed.TextSize = TextViewUtils.GetFontSize(16f);
-            btnTryAgainFailed.TextSize = TextViewUtils.GetFontSize(16f);
-            txtTitleInfoError.TextSize = TextViewUtils.GetFontSize(16f);
-            txtMessageInfoError.TextSize = TextViewUtils.GetFontSize(12f);
-            // Create your application here
+            TextViewUtils.SetTextSize12(txtMessageInfoError);
+            TextViewUtils.SetTextSize16(btnBackToHomeFailed, btnTryAgainFailed, txtTitleInfoError);
         }
     }
 }

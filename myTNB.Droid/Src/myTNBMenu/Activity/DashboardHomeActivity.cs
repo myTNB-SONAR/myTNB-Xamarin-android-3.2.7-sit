@@ -160,12 +160,29 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             currentFragment = fragment;
         }
+        public int BottomNavigationViewHeight()
+        {
+            try
+            {
+                return bottomNavigationView.Height;
+
+
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return 0;
+        }
 
         private void SetBottomNavigationLabels()
         {
             try
             {
-                RelativeSizeSpan relativeSizeSpan = TextViewUtils.IsLargeFonts ? new RelativeSizeSpan(1.5f) : new RelativeSizeSpan(1f);
+                RelativeSizeSpan relativeSizeSpan = TextViewUtils.IsLargeFonts
+                    ? new RelativeSizeSpan(1.5f)
+                    : new RelativeSizeSpan(1f);
 
                 IMenu bottomMenu = bottomNavigationView.Menu;
                 IMenuItem item;
@@ -222,7 +239,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardHomeLarge : Resource.Style.Theme_DashboardHome);
+            SetTheme(TextViewUtils.IsLargeFonts
+                ? Resource.Style.Theme_DashboardHomeLarge
+                : Resource.Style.Theme_DashboardHome);
             dashboardHomeActivity = this;
             base.SetToolBarTitle(GetString(Resource.String.dashboard_activity_title));
             mPresenter = new DashboardHomePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
@@ -303,16 +322,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 StartActivity(LaunchViewIntent);
                 Utility.LoggingNonFatalError(e);
             }
-            txtAccountName.TextSize = TextViewUtils.GetFontSize(18);
+            TextViewUtils.SetTextSize18(txtAccountName);
 
             if (ApplicationStatusSearchDetailCache.Instance.ShouldSave)
             {
-                /*Intent applicationStatusDetailIntent = new Intent(this, typeof(ApplicationStatusDetailActivity));
-                applicationStatusDetailIntent.PutExtra("applicationStatusResponse"
-                    , JsonConvert.SerializeObject(ApplicationStatusSearchDetailCache.Instance.GetData()));
-                applicationStatusDetailIntent.PutExtra("IsSaveFlow", true);
-                StartActivity(applicationStatusDetailIntent);*/
-
                 RouteToApplicationLanding();
             }
 
@@ -1093,7 +1106,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                             txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
                             txtNewLabel.Text = count.ToString();
-                            txtNewLabel.TextSize = TextViewUtils.GetFontSize(8);
+                            TextViewUtils.SetTextSize8(txtNewLabel);
                             txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.white)));
                             newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
                             if (count > 0 && count <= 9)
@@ -1187,7 +1200,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                         txtNewLabel.Text = word;
-                        txtNewLabel.TextSize = TextViewUtils.GetFontSize(8f);
+                        TextViewUtils.SetTextSize8(txtNewLabel);
                         txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
                         TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                         if (!flag)
@@ -1266,7 +1279,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                         txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 8f);
                         txtNewLabel.Text = word;
-                        txtNewLabel.TextSize = TextViewUtils.GetFontSize(8);
+                        TextViewUtils.SetTextSize8(txtNewLabel);
                         txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.charcoalGrey)));
                         TextViewUtils.SetMuseoSans500Typeface(txtNewLabel);
                         if (!flag)
@@ -1336,7 +1349,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             bottomImgParam.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
                             txtNewLabel.SetTextSize(Android.Util.ComplexUnitType.Dip, 10f);
                             txtNewLabel.Text = count.ToString();
-                            txtNewLabel.TextSize = TextViewUtils.GetFontSize(8);
+                            TextViewUtils.SetTextSize8(txtNewLabel);
                             txtNewLabel.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.white)));
                             newLabelParam.LeftMargin = (int)DPUtils.ConvertDPToPx(-3f);
                             if (count > 0 && count <= 9)

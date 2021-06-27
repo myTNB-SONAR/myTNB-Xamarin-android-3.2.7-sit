@@ -49,7 +49,7 @@ namespace myTNB_Android.Src.Barcode.Activity
             return Resource.Layout.BarcodeScannerView;
         }
 
-        
+
 
         public override bool ShowCustomToolbarTitle()
         {
@@ -68,18 +68,18 @@ namespace myTNB_Android.Src.Barcode.Activity
                 if (extras.ContainsKey(Constants.PAGE_TITLE))
                 {
 
-              
+
                     PAGE_ID = "SubmitEnquiry";
 
 
 
                 }
-            } 
-
-               
+            }
 
             base.OnCreate(savedInstanceState);
-            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_BarCodeLarge : Resource.Style.Theme_BarCode);
+            SetTheme(TextViewUtils.IsLargeFonts
+                ? Resource.Style.Theme_BarCodeLarge
+                : Resource.Style.Theme_BarCode);
             mPresenter = new BarcodePresenter(this);
             barCodeView.Click += delegate
             {
@@ -92,8 +92,8 @@ namespace myTNB_Android.Src.Barcode.Activity
 
             TextViewUtils.SetMuseoSans500Typeface(txtTitle);
             txtTitle.Text = GetLabelByLanguage("scanMessage");
-            txtTitle.TextSize = TextViewUtils.GetFontSize(14);
 
+            TextViewUtils.SetTextSize14(txtTitle);
         }
 
         protected override void OnResume()
@@ -231,7 +231,8 @@ namespace myTNB_Android.Src.Barcode.Activity
                     try
                     {
                         await Task.Delay(2000);
-                        RunOnUiThread(() => {
+                        RunOnUiThread(() =>
+                        {
                             try
                             {
                                 if (scanFragment != null)

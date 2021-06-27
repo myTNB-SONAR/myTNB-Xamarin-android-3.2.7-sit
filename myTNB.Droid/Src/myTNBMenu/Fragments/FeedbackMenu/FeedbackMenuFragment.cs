@@ -80,7 +80,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         View spaceOthers;
 
         MaterialDialog progressDialog;
-        
+
 
         [BindView(Resource.Id.feedbackMenuHeaderImage)]
         ImageView feedbackMenuHeaderImage;
@@ -108,7 +108,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         string submittedFeedbackTitle = "";
         //syahhmi add
         string feedbackNewIc = "";
-   
+
 
 
         public override int ResourceId()
@@ -145,39 +145,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                         txtSubmittedFeedback,
                         txtFeedbackOthers, txtViewid_FeedbackNewIC);
 
-
-            txtViewid_FeedbackNewIC.TextSize = TextViewUtils.GetFontSize(14f);
-            textviewid_subContent_FeedbackNewIC.TextSize = TextViewUtils.GetFontSize(12f);
-            txtFeedbackBillingAndPayment.TextSize = TextViewUtils.GetFontSize(14f);
-            txtFeedbackBillingAndPaymentContent.TextSize = TextViewUtils.GetFontSize(12f);
-            txtFeedbackFaultyStreetLamps.TextSize = TextViewUtils.GetFontSize(14f);
-            txtFeedbackFaultyStreetLampsContent.TextSize = TextViewUtils.GetFontSize(12f);
-            txtFeedbackOthers.TextSize = TextViewUtils.GetFontSize(14f);
-            txtFeedbackOthersContent.TextSize = TextViewUtils.GetFontSize(12f);
-            txtSubmittedFeedback.TextSize = TextViewUtils.GetFontSize(14f);
-            txtSubmittedFeedbackContent.TextSize = TextViewUtils.GetFontSize(12f);
-            txtFeedbackOthers.TextSize = TextViewUtils.GetFontSize(14f);
-
-
-            //if (UserEntity.IsCurrentlyActive())
-            //{
-            //    ;
-            //}
-            //else
-            //{  // ori code
-            //    ((DashboardHomeActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("FeedbackList", "title"));
-            //}
-
+            TextViewUtils.SetTextSize12(textviewid_subContent_FeedbackNewIC, txtFeedbackBillingAndPaymentContent
+                , txtFeedbackFaultyStreetLampsContent, txtFeedbackOthersContent, txtSubmittedFeedbackContent);
+            TextViewUtils.SetTextSize14(txtViewid_FeedbackNewIC, txtFeedbackBillingAndPayment
+                , txtFeedbackFaultyStreetLamps, txtFeedbackOthers, txtSubmittedFeedback, txtFeedbackOthers);
 
             ((DashboardHomeActivity)Activity).SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "enquireTitle"));
-
-
 
             feedbackMenuHeaderImage.Visibility = ViewStates.Gone;
 
             this.userActionsListener.Start();
-
-
         }
 
         public override void OnAttach(Context context)
@@ -247,7 +224,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         {
             // TODO : ADD FAULTY STREE
             var faultyStreetLamps = new Intent(this.Activity, typeof(FeedbackLoginFaultyStreetLampsActivity));
-            faultyStreetLamps.PutExtra("TITLE",feedbackStreetLampTitle);
+            faultyStreetLamps.PutExtra("TITLE", feedbackStreetLampTitle);
             StartActivity(faultyStreetLamps);
         }
 
@@ -255,7 +232,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         {
             // TODO : ADD OTHERS
             var feedbackOthers = new Intent(this.Activity, typeof(FeedbackLoginOthersActivity));
-            feedbackOthers.PutExtra("TITLE",feedbackOthersTitle);
+            feedbackOthers.PutExtra("TITLE", feedbackOthersTitle);
             StartActivity(feedbackOthers);
         }
 
@@ -481,7 +458,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 spaceOthers.Visibility = ViewStates.Gone;
 
                 //syahmi add
-                submitNewEnquiryConstraint.Visibility= ViewStates.Gone;
+                submitNewEnquiryConstraint.Visibility = ViewStates.Gone;
                 spaceNewEnquiry.Visibility = ViewStates.Gone;
 
 
@@ -489,11 +466,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 {
                     if (fc.Id.Equals("1"))
                     {
-                         submitNewEnquiryConstraint.Visibility = ViewStates.Visible;
-                         spaceNewEnquiry.Visibility = ViewStates.Visible;
-                         feedbackNewIc = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle");  // fc.Name;
-                         txtViewid_FeedbackNewIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle");  //fc.Name;
-                         textviewid_subContent_FeedbackNewIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryDescription"); //fc.Desc;
+                        submitNewEnquiryConstraint.Visibility = ViewStates.Visible;
+                        spaceNewEnquiry.Visibility = ViewStates.Visible;
+                        feedbackNewIc = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle");  // fc.Name;
+                        txtViewid_FeedbackNewIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle");  //fc.Name;
+                        textviewid_subContent_FeedbackNewIC.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryDescription"); //fc.Desc;
                     }
                     else if (fc.Id.Equals("2"))
                     {

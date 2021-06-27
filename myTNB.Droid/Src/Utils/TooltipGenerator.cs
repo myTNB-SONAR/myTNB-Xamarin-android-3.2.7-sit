@@ -59,11 +59,11 @@ namespace myTNB_Android.Src.Utils
             TextView toolTipActionView = materialDialog.FindViewById<TextView>(Resource.Id.txtToolTipAction);
             TextViewUtils.SetMuseoSans500Typeface(toolTipActionView);
             toolTipActionView.Text = this.tooltipActions[0].GetLabel();
+            TextViewUtils.SetTextSize14(toolTipContentView);
+            TextViewUtils.SetTextSize16(toolTipActionView);
 
-            toolTipContentView.TextSize = TextViewUtils.GetFontSize(14f);
-            toolTipActionView.TextSize = TextViewUtils.GetFontSize(16f);
-
-            toolTipActionView.Click += delegate {
+            toolTipActionView.Click += delegate
+            {
                 this.materialDialog.Dismiss();
             };
 

@@ -49,7 +49,7 @@ namespace myTNB_Android.Src.SubmittedNewEnquiry.Activity
         [BindView(Resource.Id.txtYourMessage)]
         TextView txtYourMessage;
 
-       
+
         [BindView(Resource.Id.txtEnquiryDetails)]
         TextView txtEnquiryDetails;
 
@@ -77,20 +77,16 @@ namespace myTNB_Android.Src.SubmittedNewEnquiry.Activity
 
             try
             {
-           
+
                 SetToolBarTitle("Submitted Enquiry");
-            
+
 
                 string selectedFeedback = UserSessions.GetSelectedFeedback(PreferenceManager.GetDefaultSharedPreferences(this));
                 submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
-
-                txtStatus.TextSize = TextViewUtils.GetFontSize(16f);
-                txtFeedbackStatus.TextSize = TextViewUtils.GetFontSize(16f);
-                txtforMyhouse.TextSize = TextViewUtils.GetFontSize(14f);
-                txtEnquiryDetails.TextSize = TextViewUtils.GetFontSize(16f);
-                txtYourMessage.TextSize = TextViewUtils.GetFontSize(10f);
-                txtFeedback.TextSize = TextViewUtils.GetFontSize(14f);
-                txtRelatedScreenshotTitle.TextSize = TextViewUtils.GetFontSize(9f);
+                TextViewUtils.SetTextSize9(txtRelatedScreenshotTitle);
+                TextViewUtils.SetTextSize10(txtYourMessage);
+                TextViewUtils.SetTextSize14(txtFeedback, txtforMyhouse);
+                TextViewUtils.SetTextSize16(txtEnquiryDetails, txtFeedbackStatus, txtStatus);
 
                 // set font
                 //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
@@ -198,7 +194,7 @@ namespace myTNB_Android.Src.SubmittedNewEnquiry.Activity
         {
             try
             {
-               // txtFeedbackId.Text = feedbackId;
+                // txtFeedbackId.Text = feedbackId;
                 txtFeedbackStatus.Text = feedbackStatus;
 
                 if (feedbackCode.Equals("CL01"))
@@ -222,10 +218,10 @@ namespace myTNB_Android.Src.SubmittedNewEnquiry.Activity
                     txtFeedbackStatus.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.cancelledColor)));
                 }
 
-               // txtFeedbackDateTime.Text = dateTime;
-               // txtAccountNo.Text = accountNoName;
+                // txtFeedbackDateTime.Text = dateTime;
+                // txtAccountNo.Text = accountNoName;
                 txtFeedback.Text = feedback;
-                txtFeedback.TextSize = TextViewUtils.GetFontSize(14f);
+                TextViewUtils.SetTextSize14(txtFeedback);
             }
             catch (Exception e)
             {

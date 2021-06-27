@@ -158,7 +158,7 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.Applic
             base.OnCreate(savedInstanceState);
 
             TextViewUtils.SetMuseoSans500Typeface(btnClear);
-            btnClear.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize16(btnClear);
             btnClear.Text = Utility.GetLocalizedLabel("ApplicationStatusFilter", "clear");
             Bundle extras = Intent.Extras;
 

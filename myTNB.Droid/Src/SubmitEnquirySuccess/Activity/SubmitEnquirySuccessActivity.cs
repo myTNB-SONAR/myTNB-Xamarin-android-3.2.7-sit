@@ -4,14 +4,11 @@ using Android.Content.PM;
 using Android.Gms.Common.Apis;
 using Android.OS;
 using Android.Preferences;
-
 using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using Java.Text;
-using Java.Util;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
@@ -19,16 +16,12 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FeedbackDetails.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.MyTNBService.ServiceImpl;
 using myTNB_Android.Src.PreLogin.Activity;
-using myTNB_Android.Src.SubmittedNewEnquiry.Activity;
-using myTNB_Android.Src.SubmittedNewEnquiry.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Runtime;
 using System.Threading.Tasks;
 
@@ -39,14 +32,12 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
   , Theme = "@style/Theme.BillRelated")]
     public class SubmitEnquirySuccessActivity : BaseAppCompatActivity
     {
-
-
         private string date;
         private string feedbackId;
 
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
-        
+
 
         [BindView(Resource.Id.txtTitleInfo)]
         TextView txtTitleInfo;
@@ -76,7 +67,7 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
             return Resource.Layout.SubmitEnquirySuccessView;
         }
 
-   
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -91,15 +82,13 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
                     feedbackId = extras.GetString(Constants.RESPONSE_FEEDBACK_ID);
                 }
 
-                  TextViewUtils.SetMuseoSans300Typeface(txtContentInfo, txtFeedbackIdTitle, txtFeedbackIdContent);
-                  TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, buttonBackToHome, btnViewSubmitted);
+                TextViewUtils.SetMuseoSans300Typeface(txtContentInfo, txtFeedbackIdTitle, txtFeedbackIdContent);
+                TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, buttonBackToHome, btnViewSubmitted);
+                TextViewUtils.SetTextSize10(txtFeedbackIdTitle);
+                TextViewUtils.SetTextSize12(txtContentInfo);
+                TextViewUtils.SetTextSize14(txtFeedbackIdContent);
+                TextViewUtils.SetTextSize16(txtTitleInfo, btnViewSubmitted, buttonBackToHome);
 
-                txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16f);
-                txtContentInfo.TextSize = TextViewUtils.GetFontSize(12f);
-                txtFeedbackIdTitle.TextSize = TextViewUtils.GetFontSize(10f);
-                txtFeedbackIdContent.TextSize = TextViewUtils.GetFontSize(14f);
-                btnViewSubmitted.TextSize = TextViewUtils.GetFontSize(16f);
-                buttonBackToHome.TextSize = TextViewUtils.GetFontSize(16f);
                 mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
 
@@ -107,22 +96,11 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
                 SetStaticLabels();
 
                 string dateTime = "NA";
-
-   
-
-
-              
-           
-
-
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-
-          
-
         }
 
         private void SetStaticLabels()
@@ -138,7 +116,6 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
             {
                 buttonBackToHome.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "backLogin");
             }
-           
 
             btnViewSubmitted.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "viewSubmittedEnquiry");
         }
@@ -175,7 +152,7 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
         }
 
         [OnClick(Resource.Id.btnViewSubmitted)]
-         async void OnViewSubmitted(object sender, EventArgs eventArgs)
+        async void OnViewSubmitted(object sender, EventArgs eventArgs)
         {
             if (!this.GetIsClicked())
             {
@@ -195,7 +172,7 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
         {
             var detailsResponse = await ServiceApiImpl.Instance.SubmittedFeedbackWithContactDetails(new SubmittedFeedbackDetailsRequest(FeedbackId));
             UserSessions.SaveSelectedFeedback(mSharedPref, JsonConvert.SerializeObject(detailsResponse.GetData()));
-            return  detailsResponse.GetData();
+            return detailsResponse.GetData();
         }
 
 
@@ -263,8 +240,8 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
 
         public override void OnBackPressed()
         {
-           
-            
+
+
         }
 
 
@@ -299,12 +276,12 @@ namespace myTNB_Android.Src.SubmitEnquirySuccess.Activity
                 else
                 {
                     /// copy logout style
-                    
-                        LaunchViewActivity.MAKE_INITIAL_CALL = true;
-                        Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
-                        PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                        StartActivity(PreLoginIntent);
-                    
+
+                    LaunchViewActivity.MAKE_INITIAL_CALL = true;
+                    Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
+                    PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                    StartActivity(PreLoginIntent);
+
 
                 }
 

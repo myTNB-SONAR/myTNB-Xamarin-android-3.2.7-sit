@@ -28,7 +28,8 @@ namespace myTNB_Android.Src.SiteCore
         public static string SITECORE_URL = "https://sitecore.tnb.com.my/";  //prod
 #elif SIT
         public static string SITECORE_URL = "https://sitecore.tnb.com.my/";
-        // static string SITECORE_URL = "http://tnbcsstgapp.tnb.my/"; //"http://tnbcsdevapp.tnb.my/"; 
+
+        //public static string SITECORE_URL = "http://tnbcsstgapp.tnb.my/"; //"http://tnbcsdevapp.tnb.my/"; 
 #else
         public static string SITECORE_URL = "https://sitecore.tnb.com.my/";
 #endif

@@ -51,11 +51,8 @@ namespace myTNB_Android.Src.SSMR.SSMRBase.MVP
 
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, btnTrackApplication, btnBackToHomeSuccess);
             TextViewUtils.SetMuseoSans300Typeface(txtMessageInfo);
-
-            txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16f);
-            txtMessageInfo.TextSize = TextViewUtils.GetFontSize(12f);
-            btnTrackApplication.TextSize = TextViewUtils.GetFontSize(16f);
-            btnBackToHomeSuccess.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize12(txtMessageInfo);
+            TextViewUtils.SetTextSize16(txtTitleInfo, btnTrackApplication, btnBackToHomeSuccess);
 
             btnBackToHomeSuccess.Text = "Back to My Usage";
             btnTrackApplication.Text = "View Reading History";

@@ -35,11 +35,11 @@ namespace myTNB_Android.Src.CompoundView
 
         public void Init(Context context)
         {
-            Inflate(context,Resource.Layout.ItemisedBillingHistoryGroupingLayout,this);
+            Inflate(context, Resource.Layout.ItemisedBillingHistoryGroupingLayout, this);
             TextView monthYearLabel = FindViewById<TextView>(Resource.Id.itemisedBillingGroupLabel);
-    
+
             TextViewUtils.SetMuseoSans500Typeface(monthYearLabel);
-            monthYearLabel.TextSize = TextViewUtils.GetFontSize(12f);
+            TextViewUtils.SetTextSize12(monthYearLabel);
             RelativeLayout.LayoutParams layoutParams = monthYearLabel.LayoutParameters as RelativeLayout.LayoutParams;
             layoutParams.Width = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(90f) : (int)DPUtils.ConvertDPToPx(70f);
             layoutParams.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(27f) : (int)DPUtils.ConvertDPToPx(24f);
@@ -48,7 +48,7 @@ namespace myTNB_Android.Src.CompoundView
 
         public void AddContent(LinearLayout contentLayout)
         {
-            LinearLayout linearLayout =  FindViewById<LinearLayout>(Resource.Id.itemisedBillingGroupContent);
+            LinearLayout linearLayout = FindViewById<LinearLayout>(Resource.Id.itemisedBillingGroupContent);
             linearLayout.AddView(contentLayout);
         }
 
@@ -64,7 +64,7 @@ namespace myTNB_Android.Src.CompoundView
             monthYearLabel.Text = monthYear;
             RelativeLayout.LayoutParams layoutParams = monthYearLabel.LayoutParameters as RelativeLayout.LayoutParams;
             layoutParams.Width = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(90f) : (int)DPUtils.ConvertDPToPx(70f);
-            layoutParams.Height = TextViewUtils.IsLargeFonts? (int)DPUtils.ConvertDPToPx(27f) : (int)DPUtils.ConvertDPToPx(24f);
+            layoutParams.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(27f) : (int)DPUtils.ConvertDPToPx(24f);
             monthYearLabel.LayoutParameters = layoutParams;
         }
 

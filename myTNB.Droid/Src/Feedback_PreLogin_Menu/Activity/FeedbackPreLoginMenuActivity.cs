@@ -3,8 +3,6 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-
-
 using Android.Views;
 using Android.Widget;
 using AndroidX.ConstraintLayout.Widget;
@@ -12,7 +10,6 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity;
 using myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity;
 using myTNB_Android.Src.Feedback_PreLogin_Menu.MVP;
 using myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity;
@@ -131,18 +128,12 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                             txtSubmittedFeedback,
                             txtFeedbackOthers);
 
-                txtFeedbackBillingAndPayment.TextSize = TextViewUtils.GetFontSize(16f);
-                txtFeedbackBillingAndPaymentContent.TextSize = TextViewUtils.GetFontSize(12f);
-                txtFeedbackFaultyStreetLamps.TextSize = TextViewUtils.GetFontSize(16f);
-                txtFeedbackFaultyStreetLampsContent.TextSize = TextViewUtils.GetFontSize(12f);
-                txtFeedbackOthers.TextSize = TextViewUtils.GetFontSize(16f);
-                txtFeedbackOthersContent.TextSize = TextViewUtils.GetFontSize(12f);
-                txtSubmittedFeedback.TextSize = TextViewUtils.GetFontSize(16f);
-                txtSubmittedFeedbackContent.TextSize = TextViewUtils.GetFontSize(12f);
-         
+                TextViewUtils.SetTextSize12(txtFeedbackBillingAndPaymentContent
+                    ,  txtFeedbackFaultyStreetLampsContent, txtFeedbackOthersContent, txtSubmittedFeedbackContent);
+                TextViewUtils.SetTextSize16(txtFeedbackBillingAndPayment, txtFeedbackFaultyStreetLamps
+                    , txtFeedbackOthers, txtSubmittedFeedback);
 
                 SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "enquireTitle"));
-
 
                 mPresenter = new FeedbackPreLoginMenuPresenter(this, this.DeviceId());
 
@@ -155,7 +146,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_Menu.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
 
         public void ShowBillingPayment()
         {

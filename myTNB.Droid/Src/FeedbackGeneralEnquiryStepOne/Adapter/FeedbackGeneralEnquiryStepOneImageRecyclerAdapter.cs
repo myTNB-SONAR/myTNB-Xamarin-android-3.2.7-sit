@@ -1,8 +1,6 @@
 ﻿using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Icu.Text;
-
-
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -13,9 +11,6 @@ using Square.Picasso;
 using System;
 using System.Collections.Generic;
 using Java.Util;
-using Android.Preferences;
-using Android.App;
-using System.IO;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Graphics.Drawable;
 using Android.Content.Res;
@@ -68,25 +63,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter
             }
         }
 
-
-
-
         public override int GetItemViewType(int position)
         {
             return itemList[position].ViewType;
         }
-
-        //public string GetImageName( )
-        //{   
-            
-        //    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
-        //    Calendar calendar = Calendar.GetInstance(Locale.Default);
-        //    return GetString(Resource.String.feedback_image_name_convention, dateFormatter.Format(calendar.TimeInMillis), UserSessions.GetCurrentImageCount(PreferenceManager.GetDefaultSharedPreferences(this)) + itemCount);
-        //   // return Resource.String.feedback_image_name_convention + dateFormatter.Format(calendar.TimeInMillis)+ ".jpeg";
-        //}
-
-
-
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
@@ -94,16 +74,16 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter
             if (holder is FeedbackGeneralEnquiryStepOneImageViewHolder)
             {
                 // the actual image
-                
+
                 var viewHolder = holder as FeedbackGeneralEnquiryStepOneImageViewHolder;
-                viewHolder.filename.TextSize = TextViewUtils.GetFontSize(12);
-                 bool isPDF = image.Path.ToLower().Contains("pdf");
+                TextViewUtils.SetTextSize12(viewHolder.filename);
+                bool isPDF = image.Path.ToLower().Contains("pdf");
 
                 if (isPDF == true)
                 {
 
                     Picasso.With(viewHolder.ItemView.Context)
-                   .Load( Resource.Drawable.pdfIcon)
+                   .Load(Resource.Drawable.pdfIcon)
                    .Fit()
                    .Into(viewHolder.imageView
                            , delegate
@@ -141,54 +121,54 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter
                 }
                 else
                 {
-                Picasso.With(viewHolder.ItemView.Context)
-                    .Load(new Java.IO.File(image.Path))
-                    .Fit()
-                    .Into(viewHolder.imageView
-                            , delegate
-                            {
-                                Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
-                                if (imageBitmap != null && !imageBitmap.IsRecycled)
+                    Picasso.With(viewHolder.ItemView.Context)
+                        .Load(new Java.IO.File(image.Path))
+                        .Fit()
+                        .Into(viewHolder.imageView
+                                , delegate
                                 {
-                                    RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
-                                    imageDrawable.CornerRadius = 5f;
-                                    viewHolder.imageView.SetImageDrawable(imageDrawable);
-
-                                    if (image.Name == null)
+                                    Bitmap imageBitmap = ((BitmapDrawable)viewHolder.imageView.Drawable).Bitmap;
+                                    if (imageBitmap != null && !imageBitmap.IsRecycled)
                                     {
-                                        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
-                                        Calendar calendar = Calendar.GetInstance(Locale.Default);
+                                        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.Create(viewHolder.ItemView.Context.Resources, imageBitmap);
+                                        imageDrawable.CornerRadius = 5f;
+                                        viewHolder.imageView.SetImageDrawable(imageDrawable);
 
-                                        var name = Resource.String.feedback_image_name_convention + dateFormatter.Format(calendar.TimeInMillis) + countFileName + ".jpeg";
-                                        countFileName++;
+                                        if (image.Name == null)
+                                        {
+                                            SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+                                            Calendar calendar = Calendar.GetInstance(Locale.Default);
 
-                                        viewHolder.filename.Text = name;
+                                            var name = Resource.String.feedback_image_name_convention + dateFormatter.Format(calendar.TimeInMillis) + countFileName + ".jpeg";
+                                            countFileName++;
+
+                                            viewHolder.filename.Text = name;
+                                        }
+                                        else
+                                        {
+                                            viewHolder.filename.Text = image.Name;
+                                        }
+
+
+
+
+
+
+
+
                                     }
-                                    else
-                                    {
-                                        viewHolder.filename.Text = image.Name;
-                                    }
-
-                            
-
-
-
-
-
 
                                 }
+                                , delegate
+                                {
 
-                            }
-                            , delegate
-                            {
+                                });
 
-                            });
+                    ;
+                }
 
-                ;
+
             }
-
-
-        }
             else
             {
                 // the dummy view

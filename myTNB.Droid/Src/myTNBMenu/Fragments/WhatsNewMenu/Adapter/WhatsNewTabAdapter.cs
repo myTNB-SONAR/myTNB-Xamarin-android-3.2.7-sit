@@ -153,7 +153,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter
                 }
                 tabTextView.Text = mFragmentTitleList[position];
             }
-            tabTextView.TextSize = TextViewUtils.GetFontSize(14);
+            TextViewUtils.SetTextSize14(tabTextView);
             return view;
         }
 

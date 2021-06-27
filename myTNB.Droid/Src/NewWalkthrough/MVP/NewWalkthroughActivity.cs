@@ -170,8 +170,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
 
 
             TextViewUtils.SetMuseoSans500Typeface(btnSkip, btnStart);
-            btnSkip.TextSize = TextViewUtils.GetFontSize(12f);
-            btnStart.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize12(btnSkip);
+            TextViewUtils.SetTextSize16(btnStart);
             btnSkip.Text = Utility.GetLocalizedLabel("Onboarding", "skip");
             if (!MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
             {

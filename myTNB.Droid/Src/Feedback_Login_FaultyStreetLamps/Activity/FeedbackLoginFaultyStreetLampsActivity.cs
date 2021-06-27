@@ -6,9 +6,6 @@ using Android.Graphics;
 using Android.Preferences;
 using Android.Provider;
 using Android.Runtime;
-
-
-
 using Android.Text;
 using Android.Views;
 using Android.Widget;
@@ -44,7 +41,6 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
       , Theme = "@style/Theme.FaultyStreetLamps")]
     public class FeedbackLoginFaultyStreetLampsActivity : BaseToolbarAppCompatActivity, FeedbackLoginFaultyStreetLampsContract.IView, View.IOnTouchListener
     {
-
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
 
@@ -53,7 +49,6 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 
         [BindView(Resource.Id.txtFeedbackContent)]
         TextView txtFeedbackContent;
-
 
         [BindView(Resource.Id.txtInputLayoutState)]
         TextInputLayout txtInputLayoutState;
@@ -82,7 +77,6 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
         [BindView(Resource.Id.txtFeedback)]
         EditText txtFeedback;
 
-
         [BindView(Resource.Id.txtMobileNo)]
         EditText txtMobileNo;
 
@@ -102,7 +96,6 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
         [BindView(Resource.Id.btnSubmit)]
         Button btnSubmit;
 
-
         MaterialDialog submitDialog;
         FeedbackLoginFaultyStreetLampsRecyclerAdapter adapter;
         GridLayoutManager layoutManager;
@@ -111,11 +104,11 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
         FeedbackLoginFaultyStreetLampsPresenter mPresenter;
         FeedbackState currentFeedbackState;
 
-
         public override Boolean ShowCustomToolbarTitle()
         {
             return true;
         }
+
         protected override void OnCreate(Android.OS.Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -132,20 +125,9 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutMobileNo, txtInputLayoutFeedback, txtInputLayoutLocation, txtInputLayoutPoleNo, txtInputLayoutState);
             TextViewUtils.SetMuseoSans500Typeface(txtFeedbackTitle, btnSubmit);
 
-
-            txtFeedbackTitle.TextSize = TextViewUtils.GetFontSize(16f);
-            txtFeedbackContent.TextSize = TextViewUtils.GetFontSize(14f);
-            txtMaxCharacters.TextSize = TextViewUtils.GetFontSize(9f);
-            txtRelatedScreenshotTitle.TextSize = TextViewUtils.GetFontSize(9f);
-            txtMaxImageContent.TextSize = TextViewUtils.GetFontSize(9f);
-
-
-#if DEBUG
-            //txtLocation.Text = "Jalan Timur";
-            //txtPoleNo.Text = "17493 8E 1";
-            //txtFeedback.Text = GetString(Resource.String.bill_related_feedback_text);
-#endif
-
+            TextViewUtils.SetTextSize9(txtMaxCharacters, txtRelatedScreenshotTitle, txtMaxImageContent);
+            TextViewUtils.SetTextSize14(txtFeedbackContent);
+            TextViewUtils.SetTextSize16(txtFeedbackTitle);
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
             {
@@ -155,7 +137,6 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
             {
                 txtFeedbackContent.TextFormatted = Html.FromHtml(GetString(Resource.String.faulty_street_lamps_txt_content));
             }
-
 
             adapter = new FeedbackLoginFaultyStreetLampsRecyclerAdapter(true);
             adapter.Insert(new Base.Models.AttachedImage()
@@ -168,19 +149,6 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
 
             adapter.AddClickEvent += Adapter_AddClickEvent;
             adapter.RemoveClickEvent += Adapter_RemoveClickEvent;
-
-
-
-            //txtMobileNo.FocusChange += (object sender, View.FocusChangeEventArgs e) =>
-            //{
-            //    if (e.HasFocus)
-            //    {
-            //        if (string.IsNullOrEmpty(txtMobileNo.Text))
-            //        {
-            //            txtMobileNo.Append("+60");
-            //        }
-            //    }
-            //};
 
             txtFeedback.AddTextChangedListener(new InputFilterFormField(txtFeedback, txtInputLayoutFeedback));
             txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
@@ -211,6 +179,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
             txtInputLayoutFeedback.Error = GetString(Resource.String.feedback_total_character_left);
 
         }
+
         [Preserve]
         private void TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -239,7 +208,6 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
             }
 
         }
-
 
         private void FeedBackCharacCount()
         {
@@ -496,7 +464,9 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
             try
             {
                 //txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
-                txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayoutFeedbackCountLarge
+                    : Resource.Style.TextInputLayoutFeedbackCount);
 
                 txtInputLayoutLocation.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
                 txtInputLayoutPoleNo.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);

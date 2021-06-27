@@ -475,13 +475,9 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 
             TextViewUtils.SetMuseoSans300Typeface(txtApplicationStatusLandingEmpty, refreshMsg);
             TextViewUtils.SetMuseoSans500Typeface(btnSearchApplicationStatus, viewMoreLabel, txtApplicationStatsTooltip);
-
-            txtApplicationStatusLandingEmpty.TextSize = TextViewUtils.GetFontSize(14f);
-            viewMoreLabel.TextSize = TextViewUtils.GetFontSize(12f);
-            refreshMsg.TextSize = TextViewUtils.GetFontSize(16f);
-            btnSearchApplicationStatus.TextSize = TextViewUtils.GetFontSize(16f);
-            txtApplicationStatsTooltip.TextSize = TextViewUtils.GetFontSize(12f);
-            btnRefresh.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize12(viewMoreLabel, txtApplicationStatsTooltip);
+            TextViewUtils.SetTextSize14(txtApplicationStatusLandingEmpty);
+            TextViewUtils.SetTextSize16(refreshMsg, btnSearchApplicationStatus, btnRefresh);
 
             btnSearchApplicationStatus.Text = Utility.GetLocalizedLabel("ApplicationStatusLanding", "search");
             txtApplicationStatsTooltip.Text = Utility.GetLocalizedLabel("ApplicationStatusLanding", "allApplications");

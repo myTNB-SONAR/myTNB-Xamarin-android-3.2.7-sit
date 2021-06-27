@@ -107,7 +107,6 @@
 					android:layout_width="match_parent"
 					android:orientation="horizontal"
 					android:paddingLeft="16dp"
-					android:paddingRight="16dp"
 					android:layout_marginBottom="10dp">
 					<androidx.cardview.widget.CardView
 						android:orientation="vertical"
@@ -253,7 +252,6 @@
 					android:orientation="horizontal"
 					android:id="@+id/secondLayout"
 					android:paddingLeft="16dp"
-					android:paddingRight="16dp"
 					android:layout_marginBottom="10dp">
 					<androidx.cardview.widget.CardView
 						android:orientation="vertical"
@@ -269,11 +267,10 @@
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
 							android:orientation="vertical"
-							android:layout_gravity="center_vertical"
-							android:gravity="center"
-							android:id="@+id/feedbackLayout">
+							android:id="@+id/feedbackLayout"
+							android:padding="13.5dp">
 							<ImageView
-								android:id="@+id/img_feedback"
+								android:id="@+id/img_feedback_2"
 								android:layout_height="28dp"
 								android:layout_width="28dp"
 								android:layout_gravity="center_horizontal"
@@ -286,9 +283,6 @@
 								android:layout_marginTop="12dp"
 								android:textSize="10dp"
 								android:gravity="center"
-								android:layout_gravity="center_vertical"
-								android:layout_marginLeft="0dp"
-								android:layout_marginRight="0dp"
 								android:id="@+id/txtFeedbackSecond" />
 						</LinearLayout>
 					</androidx.cardview.widget.CardView>

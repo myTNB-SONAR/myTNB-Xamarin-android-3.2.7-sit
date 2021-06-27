@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Android.Content.Res;
 using Android.Graphics;
 using Android.Views;
 using Android.Widget;
@@ -141,7 +140,7 @@ namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
                 textViewTime = (TextView)ItemView.FindViewById<TextView>(Resource.Id.timeList);
                 relativeLayoutTime = (RelativeLayout)ItemView.FindViewById<RelativeLayout>(Resource.Id.relativeLayoutTime);
                 TextViewUtils.SetMuseoSans500Typeface(textViewTime);
-                textViewTime.TextSize = TextViewUtils.GetFontSize(12f);
+                TextViewUtils.SetTextSize12(textViewTime);
             }
         }
     }

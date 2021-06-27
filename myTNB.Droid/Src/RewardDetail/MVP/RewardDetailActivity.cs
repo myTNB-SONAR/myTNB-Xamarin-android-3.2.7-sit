@@ -162,20 +162,11 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     txtRewardConditionTitle, txtBtnRewardSave, btnRewardUse, btnRewardRedeemed, txtRewardRedeemedWord);
                 TextViewUtils.SetMuseoSans300Typeface(txtRewardPeriodContent, txtRewardLocationContent, txtRewardConditionContent,
                     txtTimeCounter, txtRewardUsedDateTime);
-
-                txtRewardUsed.TextSize = TextViewUtils.GetFontSize(12f);
-                txtTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                txtRewardPeriodTitle.TextSize = TextViewUtils.GetFontSize(14f);
-                txtRewardPeriodContent.TextSize = TextViewUtils.GetFontSize(14f);
-                txtRewardLocationTitle.TextSize = TextViewUtils.GetFontSize(14f);
-                txtRewardLocationContent.TextSize = TextViewUtils.GetFontSize(14f);
-                txtRewardConditionTitle.TextSize = TextViewUtils.GetFontSize(14f);
-                txtRewardConditionContent.TextSize = TextViewUtils.GetFontSize(14f);
-                txtTimeCounter.TextSize = TextViewUtils.GetFontSize(36f);
-                txtRewardRedeemedWord.TextSize = TextViewUtils.GetFontSize(12f);
-                txtRewardUsedDateTime.TextSize = TextViewUtils.GetFontSize(14f);
-                btnRewardRedeemed.TextSize = TextViewUtils.GetFontSize(16f);
-                txtBtnRewardSave.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize12(txtRewardUsed, txtRewardRedeemedWord);
+                TextViewUtils.SetTextSize14(txtRewardPeriodTitle, txtRewardPeriodContent, txtRewardLocationTitle
+                    , txtRewardLocationContent, txtRewardConditionTitle, txtRewardConditionContent, txtRewardUsedDateTime);
+                TextViewUtils.SetTextSize16(txtTitle, btnRewardRedeemed, txtBtnRewardSave);
+                TextViewUtils.SetTextSize36(txtTimeCounter);
 
                 btnRewardSave.Clickable = true;
                 isPendingRewardConfirm = false;
@@ -321,7 +312,7 @@ namespace myTNB_Android.Src.RewardDetail.MVP
 
                     if (diff.TotalSeconds > 0)
                     {
-                        CountDownTimerSecond = (int) diff.TotalSeconds;
+                        CountDownTimerSecond = (int)diff.TotalSeconds;
 
                         OnUpdateCountDownView();
 
@@ -704,7 +695,8 @@ namespace myTNB_Android.Src.RewardDetail.MVP
                     .SetMessage(!string.IsNullOrEmpty(LocalItem.RewardUseDescription) ? LocalItem.RewardUseDescription : Utility.GetLocalizedLabel("RewardDetails", "useNowPopupMessage"))
                     .SetHeaderImage(Resource.Drawable.img_tooltip_reward_confirm)
                     .SetCTALabel(Utility.GetLocalizedLabel("RewardDetails", "useLater"))
-                    .SetCTAaction(() => {
+                    .SetCTAaction(() =>
+                    {
                         this.SetIsClicked(false);
                     })
                     .SetSecondaryCTAaction(() =>
@@ -1106,13 +1098,15 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             private String sd;
             private String si;
 
-            public String getURLEncode(String input){
+            public String getURLEncode(String input)
+            {
 
                 try
                 {
                     return Java.Net.URLEncoder.Encode(input, "UTF-8");
                 }
-                catch (Exception ex){
+                catch (Exception ex)
+                {
                     if (String.IsNullOrEmpty(input))
                     {
                         input = "";
@@ -1127,19 +1121,22 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             // https://mytnbdev.page.link
             // https://mytnbsit.page.link
             // https://mytnb.page.link
-            public LinkBuilder setDomain(String domain) {
+            public LinkBuilder setDomain(String domain)
+            {
                 this.domain = domain;
                 return this;
             }
 
             // Constants.SERVER_URL.END_POINT + "/rewards/redirect.aspx/rid=" + ID
-            public LinkBuilder setLink(String link) {
+            public LinkBuilder setLink(String link)
+            {
                 this.link = getURLEncode(link);
                 return this;
             }
 
             // Android Package Name, for our case com.mytnb.mytnb
-            public LinkBuilder setApn(String apn) {
+            public LinkBuilder setApn(String apn)
+            {
                 this.apn = apn;
                 return this;
             }
@@ -1147,50 +1144,58 @@ namespace myTNB_Android.Src.RewardDetail.MVP
             // Android Min Version Code Suport,
             // for our testing now let's put 169,
             // but before creating build need to set to the build before the current available SIT build
-            public LinkBuilder setAmv(String amv) {
+            public LinkBuilder setAmv(String amv)
+            {
                 this.amv = amv;
                 return this;
             }
 
             // iOS Package Name, for our case com.mytnb.mytnb
-            public LinkBuilder setIbi(String ibi) {
+            public LinkBuilder setIbi(String ibi)
+            {
                 this.ibi = ibi;
                 return this;
             }
 
             // iOS Min Version Code Suport
             // 2.1.0
-            public LinkBuilder setImv(String imv) {
+            public LinkBuilder setImv(String imv)
+            {
                 this.imv = imv;
                 return this;
             }
 
             // iOS App Store ID, now is unclear
             // Need it to do the redirection to App Store
-            public LinkBuilder setIsi(String isi) {
+            public LinkBuilder setIsi(String isi)
+            {
                 this.isi = isi;
                 return this;
             }
 
             // Social Post Title when been shared
-            public LinkBuilder setSt(String st) {
+            public LinkBuilder setSt(String st)
+            {
                 this.st = getURLEncode(st);
                 return this;
             }
 
             // Social Post Descriptiom when been shared
-            public LinkBuilder setSd(String sd) {
+            public LinkBuilder setSd(String sd)
+            {
                 this.sd = getURLEncode(sd);
                 return this;
             }
 
             // Social Post Image when been shared
-            public LinkBuilder setSi(String si) {
+            public LinkBuilder setSi(String si)
+            {
                 this.si = getURLEncode(si);
                 return this;
             }
 
-            public String build(){
+            public String build()
+            {
                 return String.Format("{0}/?link={1}&apn={2}&amv={3}&ibi={4}&imv={5}&isi={6}&st={7}&sd={8}&si={9}"
                         , domain, link, apn, amv, ibi, imv, isi, st, sd, si);
             }
