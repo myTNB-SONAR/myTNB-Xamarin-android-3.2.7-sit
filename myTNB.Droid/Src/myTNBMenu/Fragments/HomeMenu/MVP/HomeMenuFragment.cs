@@ -49,6 +49,7 @@ using myTNB.Mobile.SessionCache;
 using myTNB;
 using myTNB.Mobile;
 using AndroidX.ConstraintLayout.Widget;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -541,6 +542,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         }
 
+        [OnClick(Resource.Id.discoverView)]
+        void OnManageBillDelivery(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
+                StartActivity(intent);
+            }
+        }
         public void SetRefreshLayoutParams()
         {
             LinearLayout.LayoutParams refreshImgParams = refreshImg.LayoutParameters as LinearLayout.LayoutParams;
@@ -748,17 +759,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (imgsource == "discover_non_targeted")
             {
                 discoverView.Visibility = ViewStates.Visible;
-                img_discover_digital_bill.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.discover_non_targeted_bm: Resource.Drawable.discover_non_targeted_en);
-                /*bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughZeroBg);
-                bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+                //img_discover_digital_bill.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.discover_non_targeted_bm: Resource.Drawable.discover_non_targeted_en);
+                discoverView.SetBackgroundResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.discover_non_targeted_bm : Resource.Drawable.discover_non_targeted_en);
+                //bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
-                imgParam = img_discover_digital_bill.LayoutParameters as LinearLayout.LayoutParams;
+                //imgParam = img_discover_digital_bill.LayoutParameters as LinearLayout.LayoutParams;
 
-                imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
-                heightRatio = 216f / 250f;
-                imgHeight = (int)(imgWidth * (heightRatio));
-                imgParam.Width = imgWidth;
-                imgParam.Height = imgHeight;*/
+                //imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                //heightRatio = 216f / 250f;
+                //imgHeight = (int)(imgWidth * (heightRatio));
+                //imgParam.Width = imgWidth;
+                //imgParam.Height = imgHeight;*/
             }
             else if (imgsource == "discover_targeted")
             {
@@ -1198,7 +1209,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 searchText.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.white)));
                 searchText.SetHintTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this.Activity, Resource.Color.sixty_opacity_white)));
                 TextViewUtils.SetTextSize12(searchText);
-                TextViewUtils.SetMuseoSans500Typeface(searchText);
+                if (TextViewUtils.IsLargeFonts)
+                {
+                    TextViewUtils.SetTextSize16(discoverTitle);
+                }
+                else
+                {
+                    TextViewUtils.SetTextSize14(discoverTitle);
+                }
+                
+                TextViewUtils.SetMuseoSans500Typeface(searchText, discoverTitle);
+                discoverTitle.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "discovermore");
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     searchText.SetPadding((int)DPUtils.ConvertDPToPx(34f), 0, 0, 0);

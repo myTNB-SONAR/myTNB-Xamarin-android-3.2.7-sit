@@ -240,8 +240,13 @@
     "description2": "Enjoy faster and on-the-dot delivery of your monthly electricity bills and view them directly on myTNB App & Portal, anytime, anywhere.",
     "title3": "Secure billing for a peace of mind.",
     "description3": "Get your digital bills directly and securely on myTNB. No more worry about others seeing your bills, risk getting stolen or lost in the mail.",
-    "title4": "account is still receiving paper bills.\n<strong> Go paperless today!</strong>"
-
+    "title4": "account is still receiving paper bills.\n<strong> Go paperless today!</strong>",
+    "popuptile": "I Want",
+    "popupdiscription": "Nevermind",
+    "discovermore": "Discover More",
+    "digitalBillLabel": "What if I still want paper bills?",
+    "SelectAccountPopupTitle": "Why are some of my accounts not here?",
+    "SelectAccountPopupDescription": "In our push for a more sustainabale future. we're introducing this as a pilot program for Smart Meter accounts in smaller areas of Malaysia and we are showing you only electricity accounts that are eligible for digital bills. We're working hard for the program to expand nationwide and be available to all your other accounts soon!"
   },
   "SSMROnboarding": {
     "skip": "Skip",

@@ -227,7 +227,7 @@
                     android:layout_width="27dp"
                     android:layout_height="26dp"
                     android:layout_marginRight="10dp"
-                    android:src="@drawable/icon_paperless_bill"/>
+                    android:src="@drawable/icons_display_going_green"/>
                 <TextView
                     android:id="@+id/paperlessTitle"
                     android:layout_marginTop="16dp"

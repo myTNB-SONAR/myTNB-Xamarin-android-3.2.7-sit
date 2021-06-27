@@ -33,8 +33,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [BindView(Resource.Id.txt_notification_name)]
         TextView txtNotificationName;
 
-        [BindView(Resource.Id.emptyLayout)]
-        LinearLayout emptyLayout;
 
         [BindView(Resource.Id.selectAllCheckBox)]
         CheckBox selectAllCheckboxButton;
@@ -50,6 +48,11 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         [BindView(Resource.Id.viewPager)]
         ViewPager viewPager;
+
+        [BindView(Resource.Id.digitalBillLabel)]
+        TextView digitalBillLabel;
+
+        
 
         [BindView(Resource.Id.indicatorContainer)]
         LinearLayout indicatorContainer;
@@ -83,6 +86,16 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
             UpdateAccountListIndicator();
             Bundle extras = Intent.Extras;
+            digitalBillLabel.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "digitalBillLabel");
+            TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel);
+            if (TextViewUtils.IsLargeFonts)
+            {
+                TextViewUtils.SetTextSize14(digitalBillLabel);
+            }
+            else
+            {
+                TextViewUtils.SetTextSize12(digitalBillLabel);
+            }
 
             if (extras != null)
             {
@@ -95,14 +108,36 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     viewPager.Adapter = ManageBillDeliveryAdapter;
 
                     UpdateAccountListIndicator();
+                   
                 }
             }
-            
+            ScrollPage();
+
         }
-        public void OnPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+        public void ScrollPage()
         {
-            //throw new NotImplementedException();
+            var timer = new System.Timers.Timer();
+            timer.Interval = 3000;
+            timer.Enabled = true;
+            int page = 0;
+            timer.Elapsed += (sender, args) =>
+            {
+                RunOnUiThread(() =>
+                {
+                    if (page <= viewPager.Adapter.Count)
+                    {
+                        page++;
+                    }
+                    else
+                    {
+                        page = 0;
+                    }
+                    viewPager.SetCurrentItem(page, true);
+                });
+            };
         }
+
+       
         public string GetAppString(int id)
         {
             return this.GetString(id);
@@ -226,12 +261,34 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 this.userActionsListener.SelectSupplyAccount();
             }
         }
+        [OnClick(Resource.Id.digitalBillLabelContainer)]
+        void OnTapManageBillDeliveryTooltip(object sender, EventArgs eventArgs)
+        {
+            ShowManageBillDeliveryPopup();
+        }
+        public void ShowManageBillDeliveryPopup()
+        {
+            MyTNBAppToolTipBuilder dbrTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
+                  .SetTitle(Utility.GetLocalizedLabel("MarketingPopup", "autoconvertpretitle"))
+                    .SetMessage(Utility.GetLocalizedLabel("MarketingPopup", "autoconvertpreDescription"))
+                   .SetCTALabel(Utility.GetLocalizedLabel("ManageBillDelivery", "popuptile"))
+                   .SetCTAaction(() => AddDigitalBill())
+                   .SetSecondaryCTALabel(Utility.GetLocalizedLabel("ManageBillDelivery", "popupdiscription"))
+                   .SetSecondaryCTAaction(() => { this.SetIsClicked(false); })
+                   .Build();
 
+            dbrTooltip.Show();
+        }
+        public void AddDigitalBill()
+        {
+
+        }
         public void ShowSelectSupplyAccount()
         {
-                this.SetIsClicked(true);
-                Intent supplyAccount = new Intent(this, typeof(SelectSupplyAccountActivity));
-                StartActivityForResult(supplyAccount, Constants.SELECT_ACCOUNT_REQUEST_CODE);
+            this.SetIsClicked(true);
+            Intent supplyAccount = new Intent(this, typeof(SelectSupplyAccountActivity));
+            supplyAccount.PutExtra(Constants.DBR_KEY, Constants.SELECT_ACCOUNT_DBR_REQUEST_CODE);
+            StartActivityForResult(supplyAccount, Constants.SELECT_ACCOUNT_REQUEST_CODE);
         }
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
@@ -311,9 +368,15 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             }
         }
 
+       
+        public void OnPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+        {
+          
+        }
+
         public bool IsActive()
         {
-            throw new NotImplementedException();
+            return Window.DecorView.RootView.IsShown;
         }
     }
 }

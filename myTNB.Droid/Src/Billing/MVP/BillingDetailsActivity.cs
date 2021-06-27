@@ -20,6 +20,7 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.CompoundView;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
@@ -112,6 +113,9 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.infoLabelDetailEPP)]
         TextView infoLabelDetailEPP;
 
+        [BindView(Resource.Id.digital_container)]
+        LinearLayout digital_container;
+
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd", LocaleUtils.GetDefaultLocale());
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy", LocaleUtils.GetCurrentLocale());
 
@@ -181,7 +185,6 @@ namespace myTNB_Android.Src.Billing.MVP
         {
             return true;
         }
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -309,6 +312,17 @@ namespace myTNB_Android.Src.Billing.MVP
             else if (ebilltype == "WhatsappBills")
             {
 
+            }
+        }
+
+        [OnClick(Resource.Id.digital_container)]
+        void OnManageBillDelivery(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                StartActivity(intent);
             }
         }
         private void EnableEppTooltip(bool isTooltipShown)

@@ -68,7 +68,7 @@
                     android:lineSpacingExtra="4dp"
                     android:textColor="#8b8b8b"
                     android:id="@+id/refresh_content"
-                    android:text="Uh oh, looks like your bill/payment history have been unplugged. Refresh to stay plugged in!"/>
+                    android:text=""/>
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -86,26 +86,29 @@
             android:background="@color/lightGrey">
             <FrameLayout
             android:layout_width="match_parent"
-                android:background="@color/white"
-            android:layout_height="288dp">
+                android:background="@color/lightGrey"
+            android:layout_height="328dp">
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="48dp"
+                android:background="@color/white"
                 android:overScrollMode="never"/>
                 <RelativeLayout
                     android:id="@+id/applicationIndicator" 
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
+                    android:background="@color/white"
                     android:gravity="center"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="48dp"
                     android:orientation="horizontal">
                     <LinearLayout
                         android:id="@+id/indicatorContainer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="@color/white"
                         android:gravity="bottom"
                         android:layout_gravity="bottom"
                         android:layout_marginBottom="16dp"
@@ -113,7 +116,7 @@
       
                 </RelativeLayout>
             <LinearLayout
-                        android:id="@+id/accountMinChargeLabelContainer"
+                        android:id="@+id/digitalBillLabelContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingLeft="2dp"
@@ -124,13 +127,13 @@
                         android:layout_marginRight="16dp"
                         android:orientation="horizontal">
                         <TextView
-                            android:id="@+id/accountMinChargeLabel"
+                            android:id="@+id/digitalBillLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="12dp"
                             android:textColor="#1c79ca"
                             android:drawablePadding="8dp"
-                            android:text="This account has a minimum charge."
+                            android:text="What if I still want paper bills?"
                             android:drawableLeft="@drawable/smr_why_accounts_info"
                             android:gravity="center_vertical"/>
                     </LinearLayout>

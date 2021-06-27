@@ -39,6 +39,10 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         [BindView(Resource.Id.btnAddAnotherAccount)]
         Button btnAddAnotherAccount;
 
+        [BindView(Resource.Id.digitalBillLabelContainer)]
+        LinearLayout digitalBillLabelContainer;
+
+        
         SelectSupplyAccountAdapter accountListAdapter;
 
         MaterialDialog materialDialog;
@@ -46,6 +50,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         const string PAGE_ID = "SelectElectricityAccounts";
 
         private bool isFromQuickAction = false;
+        private bool isFromDBRAction = false;
 
         public bool IsActive()
         {
@@ -136,6 +141,8 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             try
             {
                 isFromQuickAction = false;
+                isFromDBRAction = false;
+
 
                 Bundle extras = Intent.Extras;
 
@@ -143,6 +150,17 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
                 {
                     isFromQuickAction = true;
                 }
+                if (extras != null && extras.ContainsKey(Constants.DBR_KEY) && extras.GetInt(Constants.DBR_KEY) == Constants.SELECT_ACCOUNT_DBR_REQUEST_CODE)
+                {
+                    isFromDBRAction = true;
+                    digitalBillLabelContainer.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    isFromDBRAction = false;
+                    digitalBillLabelContainer.Visibility = ViewStates.Gone;
+                }
+
 
                 mPresenter = new SelectSupplyAccountPresenter(this);
 
@@ -158,7 +176,21 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+        [OnClick(Resource.Id.digitalBillLabelContainer)]
+        void OnTapManageBillDeliveryTooltip(object sender, EventArgs eventArgs)
+        {
+            ShowManageBillDeliveryPopup();
+        }
+        public void ShowManageBillDeliveryPopup()
+        {
+            MyTNBAppToolTipBuilder dbrTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                  .SetTitle(Utility.GetLocalizedLabel("ManageBillDelivery", "SelectAccountPopupTitle"))
+                    .SetMessage(Utility.GetLocalizedLabel("ManageBillDelivery", "SelectAccountPopupDescription"))
+                   .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                   .Build();
 
+            dbrTooltip.Show();
+        }
         protected override void OnResume()
         {
             base.OnResume();

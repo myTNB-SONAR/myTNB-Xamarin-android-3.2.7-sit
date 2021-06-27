@@ -1316,7 +1316,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else if (position == 3)
                         {
-                            int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(85f);
+                            int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(95f);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetDigitalContainerHeight() - (int)DPUtils.ConvertDPToPx(5f);
 
                             if (model.ItemCount == 0)
@@ -1402,8 +1402,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else
                         {
-                            int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(85f);
-                            int middleHeight = (int)DPUtils.ConvertDPToPx(208f);
+                            int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetDigitalContainerHeight() + (int)DPUtils.ConvertDPToPx(85f);
+                            int middleHeight = (int)DPUtils.ConvertDPToPx(130f);
 
                             if (model.ItemCount == 0)
                             {
@@ -1456,7 +1456,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     {
                                         float h2 = TextViewUtils.IsLargeFonts ? 2f : 20f;
                                         int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(62f)) + (int)DPUtils.ConvertDPToPx(h2);
-                                        topHeight = topHeight - diff;
+                                        topHeight = (topHeight + +((ItemisedBillingMenuFragment)this.mFragment).GetDigitalContainerHeight()) - diff;
                                     }
                                 }
                             }

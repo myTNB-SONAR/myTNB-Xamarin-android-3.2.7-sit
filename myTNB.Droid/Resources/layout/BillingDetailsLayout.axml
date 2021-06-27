@@ -294,7 +294,6 @@
                 </LinearLayout>
                  <LinearLayout
                 android:id="@+id/digital_container"
-                android:layout_below="@+id/ssmr_meter_reading_header_layout"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:layout_marginTop="8dp"
@@ -309,7 +308,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:src="@drawable/icon_paperless_bill"/>
+                    android:src="@drawable/icons_display_going_green"/>
                 <TextView
                     android:id="@+id/paperlessTitle"
                     android:layout_marginTop="16dp"

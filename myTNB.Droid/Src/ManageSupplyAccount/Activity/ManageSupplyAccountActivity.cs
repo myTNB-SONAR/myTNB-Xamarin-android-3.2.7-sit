@@ -10,6 +10,7 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.ManageSupplyAccount.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.UpdateNickname.Activity;
@@ -50,6 +51,10 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         AccountData accountData;
         int position;
 
+        [BindView(Resource.Id.manageBillTitle)]
+        TextView manageBillTitle;
+
+
         ManageSupplyAccountContract.IUserActionsListener userActionsListener;
         ManageSupplyAccountPresenter mPresenter;
 
@@ -87,12 +92,12 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNickName);
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountAddress, txtNickName);
-                TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName);
+                TextViewUtils.SetMuseoSans500Typeface(txtAccountNumber, btnTextUpdateNickName, manageBillTitle);
                 txtInputLayoutNickName.SetHintTextAppearance(TextViewUtils.IsLargeFonts
                     ? Resource.Style.TextInputLayout_TextAppearance_Large
                     : Resource.Style.TextInputLayout_TextAppearance_Small);
                 TextViewUtils.SetMuseoSans500Typeface(btnRemoveAccount);
-                TextViewUtils.SetTextSize14(txtAccountNumber, txtAccountAddress, btnTextUpdateNickName);
+                TextViewUtils.SetTextSize14(txtAccountNumber, txtAccountAddress, btnTextUpdateNickName, manageBillTitle);
                 TextViewUtils.SetTextSize16(btnRemoveAccount, txtNickName);
                 txtAccountNumber.Text = accountData.AccountNum;
                 txtAccountAddress.Text = accountData.AddStreet;
@@ -102,6 +107,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 txtInputLayoutNickName.Hint = GetLabelCommonByLanguage("acctNickname");
                 btnTextUpdateNickName.Text = GetLabelCommonByLanguage("update");
                 btnRemoveAccount.Text = GetLabelByLanguage("removeAccount");
+                manageBillTitle.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "digitalBillLabel");
 
                 txtNickName.AddTextChangedListener(new InputFilterFormField(txtNickName, txtInputLayoutNickName));
 
@@ -114,6 +120,18 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        [OnClick(Resource.Id.ManageBill_container)]
+        void OnManageBillDelivery(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                StartActivity(intent);
+            }
+        }
+        
 
         [OnClick(Resource.Id.btnTextUpdateNickName)]
         void OnClickUpdateNickname(object sender, EventArgs eventArgs)

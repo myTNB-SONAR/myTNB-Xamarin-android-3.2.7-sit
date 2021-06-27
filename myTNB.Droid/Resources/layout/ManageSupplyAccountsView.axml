@@ -90,74 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/platinumGrey" />
-         <LinearLayout
-                android:id="@+id/manageuseraccesscontainer"
-                android:layout_below="@+id/ssmr_meter_reading_header_layout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="8dp"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
-                android:orientation="horizontal"
-                android:background="@color/white"
-                android:paddingBottom="12dp">
-                <ImageView
-                    android:id="@+id/display_user_access"
-                    android:layout_marginTop="20dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/icon_paperless_bill"/>
-                <TextView
-                    android:id="@+id/manageUserAccessTitle"
-                    android:layout_marginTop="16dp"
-                    android:text="Manage User Access"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="14dp"
-                    android:textColor="@color/tunaGrey"/>
-                <ImageView
-                    android:id="@+id/itemisedBillingRightArrowShimmer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:src="@drawable/expand_right_arrow"/>
-            </LinearLayout>
-         <LinearLayout
-                android:id="@+id/manageauto_container"
-                android:layout_below="@+id/ssmr_meter_reading_header_layout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="8dp"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
-                android:orientation="horizontal"
-                android:background="@color/white"
-                android:paddingBottom="12dp">
-                <ImageView
-                    android:id="@+id/icon_paperless_bill"
-                    android:layout_marginTop="20dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/icon_paperless_bill"/>
-                <TextView
-                    android:id="@+id/manageAutoPayTitle"
-                    android:layout_marginTop="16dp"
-                    android:text="Manage AutoPay"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="14dp"
-                    android:textColor="@color/tunaGrey"/>
-                <ImageView
-                    android:id="@+id/itemisedBillingRightArrowShimmer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:src="@drawable/expand_right_arrow"/>
-            </LinearLayout>
+        
          <LinearLayout
                 android:id="@+id/ManageBill_container"
                 android:layout_below="@+id/ssmr_meter_reading_header_layout"
@@ -175,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
-                    android:src="@drawable/icon_paperless_bill"/>
+                    android:src="@drawable/icons_display_going_green"/>
                 <TextView
                     android:id="@+id/manageBillTitle"
                     android:layout_marginTop="16dp"
@@ -185,6 +118,13 @@
                     android:layout_weight="1"
                     android:textSize="14dp"
                     android:textColor="@color/tunaGrey"/>
+                <ImageView
+                    android:id="@+id/icon_myaccount_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/icon_myaccount_new"/>
                 <ImageView
                     android:id="@+id/itemisedBillingRightArrowShimmer"
                     android:layout_width="wrap_content"
