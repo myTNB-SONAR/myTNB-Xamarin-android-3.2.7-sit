@@ -1060,6 +1060,9 @@
     <Compile Include="Src\Notifications\Models\UserNotificationData.cs" />
     <Compile Include="Src\Notifications\MVP\NotificationContract.cs" />
     <Compile Include="Src\Notifications\MVP\NotificationPresenter.cs" />
+    <Compile Include="Src\EBPopupScreen\Activity\EBPopupScreenActivity.cs" />
+    <Compile Include="Src\EBPopupScreen\MVP\EBPopupScreenContract.cs" />
+    <Compile Include="Src\EBPopupScreen\MVP\EBPopupScreenPresenter.cs" />
     <Compile Include="Src\Rating\Activity\RatingActivity.cs" />
     <Compile Include="Src\Rating\Adapter\RateUsQuestionsAdapter.cs" />
     <Compile Include="Src\Rating\Fargment\SubmitRatingFragment.cs" />
@@ -8961,6 +8964,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\Icons_Display_Refresh_Grey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\EBPopupView.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

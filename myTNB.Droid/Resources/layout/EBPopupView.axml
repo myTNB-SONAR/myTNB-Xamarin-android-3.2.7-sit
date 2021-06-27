@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+	<ScrollView
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:overScrollMode="never"
+		android:background="@color/white"
+		android:scrollbars="none"
+		android:fillViewport="true">
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical">
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:orientation="vertical"
+				android:paddingTop="21dp"
+				android:paddingRight="16dp"
+				android:paddingLeft="16dp">								
+			</LinearLayout>
+			<ImageView
+					android:id="@+id/img_display"
+					android:layout_height="132dp"
+					android:layout_width="203dp"
+					android:layout_marginTop="10dp"
+					android:layout_gravity="center_horizontal"
+					android:layout_marginBottom="6dp"
+					android:src="@drawable/welcome_illustration" />
+				<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"
+					android:layout_marginTop="10dp"
+					android:layout_marginBottom="8dp"
+					android:paddingRight="16dp"
+					android:paddingLeft="16dp"
+					android:lineSpacingExtra="4dp"
+					android:textSize="16dp"
+					android:textColor="@color/water_blue"
+					android:gravity="left"
+					android:text="Take control of your energy usage with the new Energy Budget feature!"
+					android:id="@+id/txtTitlePopupEB" />
+				<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"
+					android:textSize="12dp"
+					android:lineSpacingExtra="2dp"
+					android:textColor="@color/new_grey"
+					android:gravity="left"
+					android:layout_marginTop="6dp"
+					android:layout_marginBottom="11dp"
+					android:layout_marginLeft="16dp"
+					android:layout_marginRight="16dp"
+					android:text="Saving money in 3 easy steps:"
+					android:id="@+id/txtThreeStep" />
+			<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+				android:paddingRight="16dp"
+				android:paddingLeft="16dp"
+				android:orientation="horizontal">
+				<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:layout_marginTop="10dp"
+					android:layout_marginBottom="8dp"
+					android:paddingRight="16dp"
+					android:paddingLeft="16dp"
+					android:lineSpacingExtra="4dp"
+					android:textSize="24dp"
+					android:textColor="@color/water_blue"
+					android:gravity="left"
+					android:text="01"/>
+				<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"
+					android:textSize="14dp"
+					android:lineSpacingExtra="2dp"
+					android:textColor="@color/new_grey"
+					android:gravity="left"
+					android:layout_marginTop="4dp"
+					android:layout_marginBottom="11dp"
+					android:layout_marginLeft="16dp"
+					android:layout_marginRight="16dp"
+					android:text="SET a budget for your monthly energy usage "
+					android:id="@+id/txtSetbudget" />
+			</LinearLayout>
+			<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+				android:paddingRight="16dp"
+				android:paddingLeft="16dp"
+				android:orientation="horizontal">
+				<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:layout_marginTop="10dp"
+					android:layout_marginBottom="8dp"
+					android:paddingRight="16dp"
+					android:paddingLeft="16dp"
+					android:lineSpacingExtra="4dp"
+					android:textSize="24dp"
+					android:textColor="@color/water_blue"
+					android:gravity="left"
+					android:text="02"/>
+				<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"
+					android:textSize="14dp"
+					android:lineSpacingExtra="2dp"
+					android:textColor="@color/new_grey"
+					android:gravity="left"
+					android:layout_marginTop="4dp"
+					android:layout_marginBottom="11dp"
+					android:layout_marginLeft="16dp"
+					android:layout_marginRight="16dp"
+					android:text="MONITOR your energy usage right at your fingertips"
+					android:id="@+id/txtMonitor" />
+			</LinearLayout>
+			<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+				android:paddingRight="16dp"
+				android:paddingLeft="16dp"
+				android:paddingBottom="16dp"
+				android:orientation="horizontal">
+				<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:layout_marginTop="10dp"
+					android:layout_marginBottom="8dp"
+					android:paddingRight="16dp"
+					android:paddingLeft="16dp"
+					android:lineSpacingExtra="4dp"
+					android:textSize="24dp"
+					android:textColor="@color/water_blue"
+					android:gravity="left"
+					android:text="03"/>
+				<TextView
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"
+					android:textSize="14dp"
+					android:lineSpacingExtra="2dp"
+					android:textColor="@color/new_grey"
+					android:gravity="left"
+					android:layout_marginTop="4dp"
+					android:layout_marginBottom="11dp"
+					android:layout_marginLeft="16dp"
+					android:layout_marginRight="16dp"
+					android:text="SAVINGS starts with you getting notified when reaching your set budget"
+					android:id="@+id/txtSavingbudget" />
+			</LinearLayout>
+			<LinearLayout
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"
+					android:orientation="vertical"
+					android:layout_marginTop="11dp"
+					android:layout_marginBottom="11dp"
+					android:layout_marginLeft="11dp"
+					android:layout_marginRight="11dp"
+					android:weightSum="1">
+					<Button
+						android:id="@id/btnGetStarted"
+						android:text="Let's Get Started"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_weight="0.5"
+						android:layout_marginRight="2dp"
+						style="@style/DarkButton"
+						android:textAllCaps="false" />
+					<Button
+						android:id="@+id/btnMaybeLater"
+						android:text="Maybe Later"
+						android:layout_width="match_parent"
+						android:layout_weight="0.5"
+						android:layout_marginLeft="2dp"
+						android:layout_height="wrap_content"
+						style="@style/LightButton"
+						android:textAllCaps="false" />
+				</LinearLayout>
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>
