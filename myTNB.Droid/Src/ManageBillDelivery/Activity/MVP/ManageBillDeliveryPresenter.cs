@@ -1,25 +1,43 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using Android.App;
 using Android.Content;
+using Android.Gms.Common.Apis;
 using Android.OS;
 using Android.Runtime;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.SSMR.SMRApplication.Api;
+using myTNB_Android.Src.SSMR.SMRApplication.MVP;
+using myTNB_Android.Src.SSMRMeterHistory.Api;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
-    public class ManageBillDeliveryPresenter : ManageBillDeliveryContract.IUserActionsListener
+    public class ManageBillDeliveryPresenter : ManageBillDeliveryContract.IUserActionsListener, ManageBillDeliveryContract.IPresenter
     {
         List<ManageBillDeliveryModel> ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
         ManageBillDeliveryContract.IView mView;
+        SMRregistrationApi api;
         public ManageBillDeliveryPresenter(ManageBillDeliveryContract.IView view)
         {
             this.mView = view;
             this.mView.SetPresenter(this);
             ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
         }
-
+        public async void CheckSMRAccountEligibility(List<SMRAccount> smrAccountList)
+        {
+            
+            List<string> accountList = new List<string>();
+            
+            if (accountList.Count == 0)
+            {
+                this.mView.ShowSMREligibleAccountList(smrAccountList);
+            }
+         
+        }
         public List<ManageBillDeliveryModel> GenerateManageBillDeliveryList()
         {
             ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
@@ -46,6 +64,30 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
            
 
             return ManageBillDeliveryList;
+        }
+
+        public List<ManageBillDeliveryModel> GenerateNewWalkthroughList(string currentAppNavigation)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public List<SMRAccount> GetEligibleSMRAccountList()
+        {
+            List<CustomerBillingAccount> eligibleSMRAccountList = CustomerBillingAccount.List();
+            List<SMRAccount> smrEligibleAccountList = new List<SMRAccount>();
+            SMRAccount smrEligibleAccount;
+            eligibleSMRAccountList.ForEach(account =>
+            {
+                smrEligibleAccount = new SMRAccount();
+                smrEligibleAccount.accountNumber = account.AccNum;
+                smrEligibleAccount.accountName = account.AccDesc;
+                smrEligibleAccount.accountSelected = account.IsSelected;
+                smrEligibleAccount.isTaggedSMR = account.IsTaggedSMR;
+                smrEligibleAccount.accountAddress = account.AccountStAddress;
+                smrEligibleAccount.accountOwnerName = account.OwnerName;
+                smrEligibleAccountList.Add(smrEligibleAccount);
+            });
+            return smrEligibleAccountList;
         }
 
         public void InitialSetFilterName()

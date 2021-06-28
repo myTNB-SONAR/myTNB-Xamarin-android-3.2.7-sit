@@ -176,21 +176,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-        [OnClick(Resource.Id.digitalBillLabelContainer)]
-        void OnTapManageBillDeliveryTooltip(object sender, EventArgs eventArgs)
-        {
-            ShowManageBillDeliveryPopup();
-        }
-        public void ShowManageBillDeliveryPopup()
-        {
-            MyTNBAppToolTipBuilder dbrTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                  .SetTitle(Utility.GetLocalizedLabel("SelectElectricityAccounts", "accountsMissing"))
-                    .SetMessage(Utility.GetLocalizedLabel("SelectElectricityAccounts", "dbrMissingAccountsMessage"))
-                   .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                   .Build();
-
-            dbrTooltip.Show();
-        }
+        
         protected override void OnResume()
         {
             base.OnResume();

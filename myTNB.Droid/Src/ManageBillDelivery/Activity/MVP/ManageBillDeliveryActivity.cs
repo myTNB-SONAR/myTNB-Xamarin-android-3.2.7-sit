@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime;
 using AFollestad.MaterialDialogs;
 using Android.App;
@@ -14,8 +15,11 @@ using AndroidX.RecyclerView.Widget;
 using AndroidX.ViewPager.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SelectSupplyAccount.Activity;
+using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -66,7 +70,12 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         ItemTouchHelper itemTouchHelper;
         private MaterialDialog deleteAllDialog;
         private MaterialDialog markReadAllDialog;
+        private List<SMRAccount> smrAccountList = new List<SMRAccount>();
         const string PAGE_ID = "ManageDigitalBillLanding";
+        public readonly static int SSMR_SELECT_ACCOUNT_ACTIVITY_CODE = 8798;
+        private string selectedAccountNumber;
+        private SMRAccount selectedEligibleAccount;
+        private string selectedAccountNickName;
 
         ManageBillDeliveryPresenter presenter;
         ManageBillDeliveryAdapter ManageBillDeliveryAdapter;
@@ -94,6 +103,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel, btnStartDigitalBill);
             TextViewUtils.SetTextSize12(digitalBillLabel);
             TextViewUtils.SetTextSize16(btnStartDigitalBill);
+            smrAccountList = this.presenter.GetEligibleSMRAccountList();
             if (extras != null)
             {
                 if (extras.ContainsKey(Constants.APP_NAVIGATION_KEY))
@@ -234,7 +244,29 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         //===========================================================================================================================
 
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnRunLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
+        public void HideProgressDialog()
+        {
+            try
+            {
+                LoadingOverlayUtils.OnStopLoadingAnimation(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
         public override int ResourceId()
         {
             return Resource.Layout.ManageBillDelivery;
@@ -255,8 +287,22 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                this.userActionsListener.SelectSupplyAccount();
+                if (smrAccountList != null && smrAccountList.Count > 0)
+                {
+                    this.presenter.CheckSMRAccountEligibility(smrAccountList);
+                }
+                else
+                {
+                    Intent intent = new Intent(this, typeof(SelectDBRAccountActivity));
+                    StartActivityForResult(intent, SSMR_SELECT_ACCOUNT_ACTIVITY_CODE);
+                }
             }
+        }
+        public void ShowSMREligibleAccountList(List<SMRAccount> smrEligibleAccountList)
+        {
+            Intent intent = new Intent(this, typeof(SelectDBRAccountActivity));
+            intent.PutExtra("SMR_ELIGIBLE_ACCOUNT_LIST", JsonConvert.SerializeObject(smrEligibleAccountList));
+            StartActivityForResult(intent, SSMR_SELECT_ACCOUNT_ACTIVITY_CODE);
         }
         [OnClick(Resource.Id.digitalBillLabelContainer)]
         void OnTapManageBillDeliveryTooltip(object sender, EventArgs eventArgs)
@@ -283,15 +329,48 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         public void ShowSelectSupplyAccount()
         {
             this.SetIsClicked(true);
-            Intent supplyAccount = new Intent(this, typeof(SelectSupplyAccountActivity));
+            Intent supplyAccount = new Intent(this, typeof(SelectDBRAccountActivity));
             supplyAccount.PutExtra(Constants.DBR_KEY, Constants.SELECT_ACCOUNT_DBR_REQUEST_CODE);
             StartActivityForResult(supplyAccount, Constants.SELECT_ACCOUNT_REQUEST_CODE);
         }
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
+            
+            if (requestCode == SSMR_SELECT_ACCOUNT_ACTIVITY_CODE)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    selectedAccountNumber = data.GetStringExtra("SELECTED_ACCOUNT_NUMBER");
+                    foreach (SMRAccount account in smrAccountList)
+                    {
+                        if (account.accountNumber == selectedAccountNumber)
+                        {
+                            selectedEligibleAccount = account;
+                            account.accountSelected = true;
+                        }
+                        else
+                        {
+                            account.accountSelected = false;
+                        }
+                    }
+                    selectedAccountNickName = selectedEligibleAccount.accountName;
+                    txtNotificationName.Text = selectedAccountNickName;
+                    CustomerBillingAccount.RemoveSelected();
+                    CustomerBillingAccount.SetSelected(selectedEligibleAccount.accountNumber);
+                    if (selectedEligibleAccount.isTaggedSMR)
+                    {
+                       
+                        //this.presenter.GetSSMRAccountStatus(selectedAccountNumber);
+                    }
+                    else
+                    {
+                       
+                        //UpdateUIForNonSMR();
+                    }
+                }
+            }
             base.OnActivityResult(requestCode, resultCode, data);
-            this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
-
         }
         public void SetAccountName(string accountName)
         {
