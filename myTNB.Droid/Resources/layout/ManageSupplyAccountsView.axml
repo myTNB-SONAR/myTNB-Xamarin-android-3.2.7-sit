@@ -14,7 +14,33 @@
         android:layout_height="match_parent"
         android:background="@color/lightGrey"
         android:orientation="vertical">
-        <FrameLayout
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="18dp">
+            <TextView
+                android:id="@+id/txtAccountNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2222222222"
+                android:textSize="14dp" />
+            <TextView
+                android:id="@+id/txtAccountAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No. 3 Lot Meulrur 12 Taman Melir, 68000 Ampang, Selangor"
+                android:textSize="14dp" />
+        </LinearLayout>
+        
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/platinumGrey" />
+      
+          <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -60,31 +86,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </RelativeLayout>
         </FrameLayout>
-        
-        <View
-            android:id="@+id/view2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/platinumGrey" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:padding="18dp">
-            <TextView
-                android:id="@+id/txtAccountNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="2222222222"
-                android:textSize="14dp" />
-            <TextView
-                android:id="@+id/txtAccountAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No. 3 Lot Meulrur 12 Taman Melir, 68000 Ampang, Selangor"
-                android:textSize="14dp" />
-        </LinearLayout>
         <View
             android:id="@+id/view3"
             android:layout_width="match_parent"
@@ -104,11 +105,11 @@
                 android:paddingBottom="12dp">
                 <ImageView
                     android:id="@+id/display_insights_paperless"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/icons_display_going_green"/>
+                    android:layout_marginRight="24dp"
+                    android:src="@drawable/icons_display_paperless"/>
                 <TextView
                     android:id="@+id/manageBillTitle"
                     android:layout_marginTop="16dp"

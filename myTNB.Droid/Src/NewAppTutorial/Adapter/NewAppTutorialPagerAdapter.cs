@@ -24,6 +24,8 @@ using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.NewAppTutorial.Adapter
 {

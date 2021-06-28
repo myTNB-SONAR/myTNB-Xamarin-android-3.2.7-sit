@@ -152,8 +152,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     {
                         newWalkthroughList.Add(new NewWalkthroughModel()
                         {
-                            Title = Utility.GetLocalizedLabel("Onboarding", "title12_1"),
-                            Description = Utility.GetLocalizedLabel("Onboarding", "description12_1"),
+                            Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
+                            Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
                             Image = "walkthrough_img_install_9"
                         });
                     }
@@ -161,8 +161,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     {
                         newWalkthroughList.Add(new NewWalkthroughModel()
                         {
-                            Title = Utility.GetLocalizedLabel("Onboarding", "title12_2"),
-                            Description = Utility.GetLocalizedLabel("Onboarding", "description12_2"),
+                            Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
+                            Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
                             Image = "walkthrough_img_install_9"
                         });
                     }
@@ -170,8 +170,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     {
                         newWalkthroughList.Add(new NewWalkthroughModel()
                         {
-                            Title = Utility.GetLocalizedLabel("Onboarding", "title12_3"),
-                            Description = Utility.GetLocalizedLabel("Onboarding", "description12_3"),
+                            Title = Utility.GetLocalizedLabel("Onboarding", "title11"),
+                            Description = Utility.GetLocalizedLabel("Onboarding", "description11"),
                             Image = "walkthrough_img_install_9"
                         });
                     }

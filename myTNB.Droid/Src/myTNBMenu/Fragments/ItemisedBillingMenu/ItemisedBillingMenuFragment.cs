@@ -38,6 +38,7 @@ using myTNB_Android.Src.ViewBill.Activity;
 using myTNB_Android.Src.ViewReceipt.Activity;
 using Newtonsoft.Json;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
+using Android.Text;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 {
@@ -198,7 +199,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
             }
-            ShowGoPapperless();
+            //ShowGoPapperless();
         }
         private void ShowGoPapperless()
         {
@@ -208,6 +209,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 //bill_paperless_icon.SetImageResource(Resource.Drawable.icon_paperless_bill);
                 //TextView textView = rootView.FindViewById<TextView>(Resource.Id.paperlessTitle);
                 //textView.Text = Utility.GetLocalizedLabel("Common", "dbrPaperBill");
+                //paperlessTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Common", "dbrPaperBill"), FromHtmlOptions.ModeLegacy);
             }
             else if (ebilltype == "AutoConvert")
             {
@@ -480,6 +482,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             base.OnViewCreated(view, savedInstanceState);
             itemisedBillingInfoShimmer = view.FindViewById<ShimmerFrameLayout>(Resource.Id.itemisedBillingInfoShimmer);
+            paperlessTitle = view.FindViewById<TextView>(Resource.Id.paperlessTitle);
+            paperlessTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Common", "dbrPaperBill"), FromHtmlOptions.ModeLegacy);
             itemisedBillingInfoShimmer.SetShimmer(ShimmerUtils.ShimmerBuilderConfig().Build());
             itemisedBillingInfoShimmer.StartShimmer();
             billFilterIcon.Enabled = false;
@@ -1320,6 +1324,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             return btnPayBill.Height;
         }
+        
         public int GetDigitalContainerHeight()
         {
             return digital_container.Height;

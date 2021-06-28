@@ -223,7 +223,7 @@ namespace myTNB_Android.Src.Billing.MVP
             accountMinChargeLabel.Text = GetLabelByLanguage("minimumChargeDescription");
             btnViewBill.Text = GetLabelCommonByLanguage("viewBill");
             btnPayBill.Text = GetLabelByLanguage("pay");
-            paperlessTitle.Text = Utility.GetLocalizedLabel("Common", "dbrPaperBill");
+            paperlessTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Common", "dbrPaperBill"), FromHtmlOptions.ModeLegacy);
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             Bundle extras = Intent.Extras;
 
