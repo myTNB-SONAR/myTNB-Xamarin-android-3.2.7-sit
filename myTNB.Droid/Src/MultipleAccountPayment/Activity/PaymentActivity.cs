@@ -16,6 +16,7 @@ using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.MultipleAccountPayment.Fragment;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -389,7 +390,20 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     break;
             }
         }
-
+        public async void OnManageBillDelivery()
+        {
+            ShowProgressDialog();
+            try
+            {
+                Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                StartActivity(intent);
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+            HideProgressDialog();
+        }
         public async void OnSetAppointment()
         {
             ShowProgressDialog();

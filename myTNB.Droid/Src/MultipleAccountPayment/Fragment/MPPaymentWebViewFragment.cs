@@ -460,6 +460,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     {
                         mActivity.OnSetAppointment();
                     }
+                    else if (url.Contains("mytnbapp://action=startDigitalBilling") && !isRedirected)
+                    {
+                        mActivity.OnManageBillDelivery();
+                    }
                     else
                     {
                         progressBar.Visibility = ViewStates.Gone;

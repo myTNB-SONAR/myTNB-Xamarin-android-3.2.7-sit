@@ -107,7 +107,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 txtInputLayoutNickName.Hint = GetLabelCommonByLanguage("acctNickname");
                 btnTextUpdateNickName.Text = GetLabelCommonByLanguage("update");
                 btnRemoveAccount.Text = GetLabelByLanguage("removeAccount");
-                manageBillTitle.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "digitalBillLabel");
+                manageBillTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "whatIfIStillWantPaperBills");
 
                 txtNickName.AddTextChangedListener(new InputFilterFormField(txtNickName, txtInputLayoutNickName));
 

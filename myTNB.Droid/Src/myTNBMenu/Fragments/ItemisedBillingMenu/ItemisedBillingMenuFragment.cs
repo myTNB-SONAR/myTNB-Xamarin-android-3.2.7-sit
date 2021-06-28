@@ -206,7 +206,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             if (ebilltype == "NonTargted")
             {
                 //bill_paperless_icon.SetImageResource(Resource.Drawable.icon_paperless_bill);
-                //paperlessTitle.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "title4");
+                //TextView textView = rootView.FindViewById<TextView>(Resource.Id.paperlessTitle);
+                //textView.Text = Utility.GetLocalizedLabel("Common", "dbrPaperBill");
             }
             else if (ebilltype == "AutoConvert")
             {

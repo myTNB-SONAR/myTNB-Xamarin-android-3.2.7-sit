@@ -71,6 +71,9 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.accountMinChargeLabel)]
         TextView accountMinChargeLabel;
 
+        [BindView(Resource.Id.paperlessTitle)]
+        TextView paperlessTitle;
+
         [BindView(Resource.Id.otherChargesExpandableView)]
         ExpandableTextViewComponent otherChargesExpandableView;
 
@@ -220,6 +223,7 @@ namespace myTNB_Android.Src.Billing.MVP
             accountMinChargeLabel.Text = GetLabelByLanguage("minimumChargeDescription");
             btnViewBill.Text = GetLabelCommonByLanguage("viewBill");
             btnPayBill.Text = GetLabelByLanguage("pay");
+            paperlessTitle.Text = Utility.GetLocalizedLabel("Common", "dbrPaperBill");
             mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             Bundle extras = Intent.Extras;
 

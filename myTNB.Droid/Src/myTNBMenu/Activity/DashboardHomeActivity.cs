@@ -869,11 +869,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 this.SetIsClicked(true);
                 MyTNBAppToolTipBuilder marketingTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
                     .SetHeaderImage(Resource.Drawable.popup_non_targeted_digital_bill)
-                    .SetTitle(Utility.GetLocalizedLabel("MarketingPopup", "autoconvertpretitle"))
-                    .SetMessage(Utility.GetLocalizedLabel("MarketingPopup", "autoconvertpreDescription"))
-                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                    .SetTitle(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupTitle"))
+                    .SetMessage(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupMessage"))
+                    .SetCTALabel(Utility.GetLocalizedLabel("DashboardHome", "gotIt"))
                     .SetCTAaction(() => { this.SetIsClicked(false); })
-                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel("MarketingPopup", "gopaperless"))
+                    .SetSecondaryCTALabel(Utility.GetLocalizedLabel("DashboardHome", "dbrReminderPopupStartNow"))
                     .SetSecondaryCTAaction(() => ShowManageBill())
                     .Build();
                 marketingTooltip.Show();

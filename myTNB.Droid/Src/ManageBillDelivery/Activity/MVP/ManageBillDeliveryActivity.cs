@@ -40,6 +40,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [BindView(Resource.Id.btnRefresh)]
         Button btnNewRefresh;
 
+        [BindView(Resource.Id.btnStartDigitalBill)]
+        Button btnStartDigitalBill;
+
         [BindView(Resource.Id.refresh_content)]
         TextView txtNewRefreshMessage;
 
@@ -63,7 +66,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         ItemTouchHelper itemTouchHelper;
         private MaterialDialog deleteAllDialog;
         private MaterialDialog markReadAllDialog;
-        const string PAGE_ID = "ManageBillDelivery";
+        const string PAGE_ID = "ManageDigitalBillLanding";
 
         ManageBillDeliveryPresenter presenter;
         ManageBillDeliveryAdapter ManageBillDeliveryAdapter;
@@ -86,17 +89,11 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
             UpdateAccountListIndicator();
             Bundle extras = Intent.Extras;
-            digitalBillLabel.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "digitalBillLabel");
-            TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel);
-            if (TextViewUtils.IsLargeFonts)
-            {
-                TextViewUtils.SetTextSize14(digitalBillLabel);
-            }
-            else
-            {
-                TextViewUtils.SetTextSize12(digitalBillLabel);
-            }
-
+            digitalBillLabel.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "whatIfIStillWantPaperBills");
+            btnStartDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "startDigitalBillCTA");
+            TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel, btnStartDigitalBill);
+            TextViewUtils.SetTextSize12(digitalBillLabel);
+            TextViewUtils.SetTextSize16(btnStartDigitalBill);
             if (extras != null)
             {
                 if (extras.ContainsKey(Constants.APP_NAVIGATION_KEY))
@@ -117,7 +114,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         public void ScrollPage()
         {
             var timer = new System.Timers.Timer();
-            timer.Interval = 3000;
+            timer.Interval = 5000;
             timer.Enabled = true;
             int page = 0;
             timer.Elapsed += (sender, args) =>
@@ -269,11 +266,11 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         public void ShowManageBillDeliveryPopup()
         {
             MyTNBAppToolTipBuilder dbrTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
-                  .SetTitle(Utility.GetLocalizedLabel("MarketingPopup", "autoconvertpretitle"))
-                    .SetMessage(Utility.GetLocalizedLabel("MarketingPopup", "autoconvertpreDescription"))
-                   .SetCTALabel(Utility.GetLocalizedLabel("ManageBillDelivery", "popuptile"))
+                  .SetTitle(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "whatIfIStillWantPaperBillsTitle"))
+                    .SetMessage(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "whatIfIStillWantPaperBillsDetails"))
+                   .SetCTALabel(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "iWant"))
                    .SetCTAaction(() => AddDigitalBill())
-                   .SetSecondaryCTALabel(Utility.GetLocalizedLabel("ManageBillDelivery", "popupdiscription"))
+                   .SetSecondaryCTALabel(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "nevermind"))
                    .SetSecondaryCTAaction(() => { this.SetIsClicked(false); })
                    .Build();
 

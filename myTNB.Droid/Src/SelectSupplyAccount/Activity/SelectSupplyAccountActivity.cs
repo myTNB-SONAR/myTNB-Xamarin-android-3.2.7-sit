@@ -184,8 +184,8 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         public void ShowManageBillDeliveryPopup()
         {
             MyTNBAppToolTipBuilder dbrTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
-                  .SetTitle(Utility.GetLocalizedLabel("ManageBillDelivery", "SelectAccountPopupTitle"))
-                    .SetMessage(Utility.GetLocalizedLabel("ManageBillDelivery", "SelectAccountPopupDescription"))
+                  .SetTitle(Utility.GetLocalizedLabel("SelectElectricityAccounts", "accountsMissing"))
+                    .SetMessage(Utility.GetLocalizedLabel("SelectElectricityAccounts", "dbrMissingAccountsMessage"))
                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                    .Build();
 

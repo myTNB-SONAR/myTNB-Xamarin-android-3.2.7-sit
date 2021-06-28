@@ -635,7 +635,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 
         public void OnCheckToCallItemizedTutorial()
         {
-            //if ((storedAccountTypeValue == "RE" && !UserSessions.HasItemizedBillingRETutorialShown(this.mPref)) || (storedAccountTypeValue != "RE" && !UserSessions.HasItemizedBillingNMSMTutorialShown(this.mPref)))
+            if ((storedAccountTypeValue == "RE" && !UserSessions.HasItemizedBillingRETutorialShown(this.mPref)) || (storedAccountTypeValue != "RE" && !UserSessions.HasItemizedBillingNMSMTutorialShown(this.mPref)))
             {
                 this.mView.OnShowItemizedFragmentTutorialDialog();
             }
@@ -746,8 +746,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 newList.Add(new NewAppModel()
                 {
                     ContentShowPosition = ContentType.TopLeft,
-                    ContentTitle = Utility.GetLocalizedLabel("Bills", "tutorialDigitalBillTitle"),
-                    ContentMessage = Utility.GetLocalizedLabel("Bills", "tutorialDigitalBillDesc"),
+                    ContentTitle = Utility.GetLocalizedLabel("Tutorial", "dbrBillTitle"),
+                    ContentMessage = Utility.GetLocalizedLabel("Tutorial", "dbrBillMessage"),
                     ItemCount = ItemCount,
                     DisplayMode = DisplayMode,
                     IsButtonShow = false

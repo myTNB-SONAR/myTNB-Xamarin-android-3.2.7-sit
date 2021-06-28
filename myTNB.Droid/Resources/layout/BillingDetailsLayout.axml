@@ -292,37 +292,41 @@
                         android:id="@+id/btnBillingDetailefresh"
                         style="@style/Theme.RefreshButton" />
                 </LinearLayout>
-                 <LinearLayout
+                       <LinearLayout
                 android:id="@+id/digital_container"
+                android:layout_below="@+id/ssmr_meter_reading_header_layout"
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
+                android:layout_height="80dp"
                 android:layout_marginTop="8dp"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:orientation="horizontal"
                 android:background="@color/white"
+                android:clickable="true"
                 android:paddingBottom="12dp">
                 <ImageView
                     android:id="@+id/bill_paperless_icon"
-                    android:layout_marginTop="16dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="28dp"
+                    android:layout_width="27dp"
+                    android:layout_height="26dp"
+                    android:layout_marginRight="12dp"
                     android:src="@drawable/icons_display_going_green"/>
                 <TextView
                     android:id="@+id/paperlessTitle"
-                    android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
+                    android:layout_gravity="center"
                     android:text="This account is still receiving paper bills. Go paperless today!"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textSize="12dp"
-                    android:textColor="#1c79ca"/>
+                    android:textColor="#424141"/>
                 <ImageView
                     android:id="@+id/gopaperless_right_arrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_gravity="center_vertical"
                     android:src="@drawable/expand_right_arrow"/>
             </LinearLayout>
             </LinearLayout>
