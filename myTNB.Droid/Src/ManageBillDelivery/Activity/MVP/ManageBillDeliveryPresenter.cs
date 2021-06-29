@@ -8,11 +8,9 @@ using Android.OS;
 using Android.Runtime;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.SSMR.SMRApplication.Api;
-using myTNB_Android.Src.SSMR.SMRApplication.MVP;
-using myTNB_Android.Src.SSMRMeterHistory.Api;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using myTNB_Android.Src.DBR.DBRApplication.MVP;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -20,21 +18,21 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
     {
         List<ManageBillDeliveryModel> ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
         ManageBillDeliveryContract.IView mView;
-        SMRregistrationApi api;
+        //SMRregistrationApi api;
         public ManageBillDeliveryPresenter(ManageBillDeliveryContract.IView view)
         {
             this.mView = view;
             this.mView.SetPresenter(this);
             ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
         }
-        public async void CheckSMRAccountEligibility(List<SMRAccount> smrAccountList)
+        public async void CheckDBRAccountEligibility(List<DBRAccount> dbrAccountList)
         {
             
             List<string> accountList = new List<string>();
             
             if (accountList.Count == 0)
             {
-                this.mView.ShowSMREligibleAccountList(smrAccountList);
+                this.mView.ShowDBREligibleAccountList(dbrAccountList);
             }
          
         }
@@ -71,23 +69,23 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             throw new System.NotImplementedException();
         }
 
-        public List<SMRAccount> GetEligibleSMRAccountList()
+        public List<DBRAccount> GetEligibleDBRAccountList()
         {
-            List<CustomerBillingAccount> eligibleSMRAccountList = CustomerBillingAccount.List();
-            List<SMRAccount> smrEligibleAccountList = new List<SMRAccount>();
-            SMRAccount smrEligibleAccount;
-            eligibleSMRAccountList.ForEach(account =>
+            List<CustomerBillingAccount> eligibleDBRAccountList = CustomerBillingAccount.List();
+            List<DBRAccount> dbrEligibleAccountList = new List<DBRAccount>();
+            DBRAccount dbrEligibleAccount;
+            eligibleDBRAccountList.ForEach(account =>
             {
-                smrEligibleAccount = new SMRAccount();
-                smrEligibleAccount.accountNumber = account.AccNum;
-                smrEligibleAccount.accountName = account.AccDesc;
-                smrEligibleAccount.accountSelected = account.IsSelected;
-                smrEligibleAccount.isTaggedSMR = account.IsTaggedSMR;
-                smrEligibleAccount.accountAddress = account.AccountStAddress;
-                smrEligibleAccount.accountOwnerName = account.OwnerName;
-                smrEligibleAccountList.Add(smrEligibleAccount);
+                dbrEligibleAccount = new DBRAccount();
+                dbrEligibleAccount.accountNumber = account.AccNum;
+                dbrEligibleAccount.accountName = account.AccDesc;
+                dbrEligibleAccount.accountSelected = account.IsSelected;
+                dbrEligibleAccount.isTaggedSMR = account.IsTaggedSMR;
+                dbrEligibleAccount.accountAddress = account.AccountStAddress;
+                dbrEligibleAccount.accountOwnerName = account.OwnerName;
+                dbrEligibleAccountList.Add(dbrEligibleAccount);
             });
-            return smrEligibleAccountList;
+            return dbrEligibleAccountList;
         }
 
         public void InitialSetFilterName()

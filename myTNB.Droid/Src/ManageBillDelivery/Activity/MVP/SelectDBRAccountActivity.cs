@@ -1,46 +1,33 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
-
-using Android.Text;
-using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
-using myTNB_Android.Src.AddAccount.Adapter;
-using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.FAQ.Activity;
-using myTNB_Android.Src.MultipleAccountPayment.Adapter;
-using myTNB_Android.Src.MultipleAccountPayment.Model;
-using myTNB_Android.Src.SSMR.SMRApplication.Adapter;
-using myTNB_Android.Src.SSMR.Util;
+using myTNB_Android.Src.DBR.DBRApplication.Adapter;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
+namespace myTNB_Android.Src.DBR.DBRApplication.MVP
 {
     [Activity(Label = "Select Electricity Account"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.Dashboard")]
-    public class SelectDBRAccountActivity : BaseActivityCustom, SelectSMRAccountContract.IView
+    public class SelectDBRAccountActivity : BaseActivityCustom
     {
-        List<SMRAccount> accountList = new List<SMRAccount>();
+        List<DBRAccount> accountList = new List<DBRAccount>();
         private SelectAccountAdapter selectAccountAdapter;
         const string PAGE_ID = "SelectElectricityAccounts";
 
         [BindView(Resource.Id.account_list_view)]
-        ListView accountSMRList;
+        ListView accountDBRList;
 
         [BindView(Resource.Id.noEligibleAccountContainer)]
         LinearLayout noEligibleAccountContainer;
@@ -75,7 +62,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                     accountList[i].accountSelected = false;
                 }
             }
-            UserSessions.SetRealSMREligibilityAccountList(accountList);
+            UserSessions.SetRealDBREligibilityAccountList(accountList);
             Intent returnIntent = new Intent();
             returnIntent.PutExtra("SELECTED_ACCOUNT_NUMBER", accountList.Find(x => { return x.accountSelected; }).accountNumber);
             SetResult(Result.Ok, returnIntent);
@@ -88,11 +75,11 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_DashboardLarge : Resource.Style.Theme_Dashboard);
             TextViewUtils.SetTextSize14(noEligibleAccountMessage);
             Bundle extras = Intent.Extras;
-            if (extras != null && extras.ContainsKey("SMR_ELIGIBLE_ACCOUNT_LIST"))
+            if (extras != null && extras.ContainsKey("DBR_ELIGIBLE_ACCOUNT_LIST"))
             {
                 try
                 {
-                    accountList = JsonConvert.DeserializeObject<List<SMRAccount>>(extras.GetString("SMR_ELIGIBLE_ACCOUNT_LIST"));
+                    accountList = JsonConvert.DeserializeObject<List<DBRAccount>>(extras.GetString("DBR_ELIGIBLE_ACCOUNT_LIST"));
                 }
                 catch (Exception e)
                 {
@@ -120,12 +107,12 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 }
                 noEligibleAccountContainer.Visibility = ViewStates.Gone;
                 eligibleAccountListContainer.Visibility = ViewStates.Visible;
-                List<SMRAccount> newItemList = accountList.GetRange(0, accountList.Count);
-                newItemList.Add(new SMRAccount()); //To show info item
+                List<DBRAccount> newItemList = accountList.GetRange(0, accountList.Count);
+                newItemList.Add(new DBRAccount()); //To show info item
                 selectAccountAdapter = new SelectAccountAdapter(this, newItemList);
-                accountSMRList.Adapter = selectAccountAdapter;
+                accountDBRList.Adapter = selectAccountAdapter;
 
-                accountSMRList.ItemClick += OnItemClick;
+                accountDBRList.ItemClick += OnItemClick;
             }
             else
             {
@@ -182,7 +169,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Select SMR Electricity Account");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Select DBR Electricity Account");
             }
             catch (Exception e)
             {

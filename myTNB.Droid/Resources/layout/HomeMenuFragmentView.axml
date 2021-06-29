@@ -463,7 +463,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="13dp"
-                    android:layout_marginBottom="26dp"
                     android:id="@+id/discovercontainer">
                     <TextView
                         android:id="@+id/discoverTitle"
@@ -472,7 +471,7 @@
                         android:textSize="14dp"
                         android:text="Discover More"
                         android:layout_marginLeft="16dp"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginBottom="8dp"
                         android:textColor="@color/powerBlue"
                         android:layout_gravity="left"/>
                     <LinearLayout
@@ -549,7 +548,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="13dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginBottom="26dp"
                     android:id="@+id/newFAQContainer">
                     <TextView

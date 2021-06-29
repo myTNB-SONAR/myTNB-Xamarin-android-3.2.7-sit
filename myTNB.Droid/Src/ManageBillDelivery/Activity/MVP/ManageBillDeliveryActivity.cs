@@ -17,9 +17,9 @@ using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SelectSupplyAccount.Activity;
-using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using myTNB_Android.Src.DBR.DBRApplication.MVP;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -70,11 +70,11 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         ItemTouchHelper itemTouchHelper;
         private MaterialDialog deleteAllDialog;
         private MaterialDialog markReadAllDialog;
-        private List<SMRAccount> smrAccountList = new List<SMRAccount>();
+        private List<DBRAccount> dbrAccountList = new List<DBRAccount>();
         const string PAGE_ID = "ManageDigitalBillLanding";
-        public readonly static int SSMR_SELECT_ACCOUNT_ACTIVITY_CODE = 8798;
+        public readonly static int DBR_SELECT_ACCOUNT_ACTIVITY_CODE = 8798;
         private string selectedAccountNumber;
-        private SMRAccount selectedEligibleAccount;
+        private DBRAccount selectedEligibleAccount;
         private string selectedAccountNickName;
 
         ManageBillDeliveryPresenter presenter;
@@ -103,7 +103,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel, btnStartDigitalBill);
             TextViewUtils.SetTextSize12(digitalBillLabel);
             TextViewUtils.SetTextSize16(btnStartDigitalBill);
-            smrAccountList = this.presenter.GetEligibleSMRAccountList();
+            dbrAccountList = this.presenter.GetEligibleDBRAccountList();
             if (extras != null)
             {
                 if (extras.ContainsKey(Constants.APP_NAVIGATION_KEY))
@@ -287,22 +287,22 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                if (smrAccountList != null && smrAccountList.Count > 0)
+                if (dbrAccountList != null && dbrAccountList.Count > 0)
                 {
-                    this.presenter.CheckSMRAccountEligibility(smrAccountList);
+                    this.presenter.CheckDBRAccountEligibility(dbrAccountList);
                 }
                 else
                 {
                     Intent intent = new Intent(this, typeof(SelectDBRAccountActivity));
-                    StartActivityForResult(intent, SSMR_SELECT_ACCOUNT_ACTIVITY_CODE);
+                    StartActivityForResult(intent, DBR_SELECT_ACCOUNT_ACTIVITY_CODE);
                 }
             }
         }
-        public void ShowSMREligibleAccountList(List<SMRAccount> smrEligibleAccountList)
+        public void ShowDBREligibleAccountList(List<DBRAccount> dbrEligibleAccountList)
         {
             Intent intent = new Intent(this, typeof(SelectDBRAccountActivity));
-            intent.PutExtra("SMR_ELIGIBLE_ACCOUNT_LIST", JsonConvert.SerializeObject(smrEligibleAccountList));
-            StartActivityForResult(intent, SSMR_SELECT_ACCOUNT_ACTIVITY_CODE);
+            intent.PutExtra("DBR_ELIGIBLE_ACCOUNT_LIST", JsonConvert.SerializeObject(dbrEligibleAccountList));
+            StartActivityForResult(intent, DBR_SELECT_ACCOUNT_ACTIVITY_CODE);
         }
         [OnClick(Resource.Id.digitalBillLabelContainer)]
         void OnTapManageBillDeliveryTooltip(object sender, EventArgs eventArgs)
@@ -336,13 +336,13 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             
-            if (requestCode == SSMR_SELECT_ACCOUNT_ACTIVITY_CODE)
+            if (requestCode == DBR_SELECT_ACCOUNT_ACTIVITY_CODE)
             {
                 if (resultCode == Result.Ok)
                 {
                     NewAppTutorialUtils.ForceCloseNewAppTutorial();
                     selectedAccountNumber = data.GetStringExtra("SELECTED_ACCOUNT_NUMBER");
-                    foreach (SMRAccount account in smrAccountList)
+                    foreach (DBRAccount account in dbrAccountList)
                     {
                         if (account.accountNumber == selectedAccountNumber)
                         {
@@ -358,16 +358,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     txtNotificationName.Text = selectedAccountNickName;
                     CustomerBillingAccount.RemoveSelected();
                     CustomerBillingAccount.SetSelected(selectedEligibleAccount.accountNumber);
-                    if (selectedEligibleAccount.isTaggedSMR)
-                    {
-                       
-                        //this.presenter.GetSSMRAccountStatus(selectedAccountNumber);
-                    }
-                    else
-                    {
-                       
-                        //UpdateUIForNonSMR();
-                    }
                 }
             }
             base.OnActivityResult(requestCode, resultCode, data);

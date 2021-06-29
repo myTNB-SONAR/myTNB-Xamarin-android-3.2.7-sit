@@ -494,8 +494,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 btnViewDetails, btnPayBill, itemisedBillingInfoAmountCurrency, myBillHistoryTitle, btnRefresh,
                 btnChargeRefresh, btnBillingHistoryRefresh, accountSelectionRefresh);
             TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount, emptyBillingHistoryMessage, unavailableBillMsg,
-                                            unavailableChargeMsg, refreshBillingHistoryMessage);
-            TextViewUtils.SetTextSize12(refreshBillingHistoryMessage);
+                                            unavailableChargeMsg, refreshBillingHistoryMessage, paperlessTitle);
+            TextViewUtils.SetTextSize12(refreshBillingHistoryMessage, paperlessTitle);
             TextViewUtils.SetTextSize14(unavailableChargeMsg, itemisedBillingInfoNote, itemisedBillingInfoDate
                 , emptyBillingHistoryMessage, unavailableBillMsg);
             TextViewUtils.SetTextSize16(itemisedBillingInfoAmountCurrency, btnViewDetails, btnPayBill, myBillHistoryTitle

@@ -206,9 +206,9 @@ namespace myTNB_Android.Src.Billing.MVP
             }
             else
             {
-                TextViewUtils.SetMuseoSans300Typeface(accountPayAmountValue);
+                TextViewUtils.SetMuseoSans300Typeface(accountPayAmountValue, paperlessTitle);
                 TextViewUtils.SetTextSize24(accountPayAmountValue);
-                TextViewUtils.SetTextSize12(accountPayAmountCurrency);
+                TextViewUtils.SetTextSize12(accountPayAmountCurrency, paperlessTitle);
             }
 
             TextViewUtils.SetTextSize11(infoLabelDetailEPP);

@@ -3,7 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Runtime;
 using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.SSMR.SMRApplication.MVP;
+using myTNB_Android.Src.DBR.DBRApplication.MVP;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -21,7 +21,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 			/// </summary>
 			/// <param name="accountName">string</param>tive
 			void SetAccountName(string accountName);
-            void ShowSMREligibleAccountList(List<SMRAccount> smrAccountList);
+            void ShowDBREligibleAccountList(List<DBRAccount> dbrAccountList);
             void ShowProgressDialog();
             void HideProgressDialog();
         }
@@ -29,8 +29,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         public interface IPresenter
         {
             List<ManageBillDeliveryModel> GenerateNewWalkthroughList(string currentAppNavigation);
-            List<SMRAccount> GetEligibleSMRAccountList();
-            void CheckSMRAccountEligibility(List<SMRAccount> smrAccountList);
+            List<DBRAccount> GetEligibleDBRAccountList();
+            void CheckDBRAccountEligibility(List<DBRAccount> dbrAccountList);
         }
         public interface IUserActionsListener : IBasePresenter
         {

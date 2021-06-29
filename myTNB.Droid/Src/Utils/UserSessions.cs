@@ -8,6 +8,7 @@ using myTNB.Mobile;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
+using myTNB_Android.Src.DBR.DBRApplication.MVP;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.Utils
@@ -578,7 +579,13 @@ namespace myTNB_Android.Src.Utils
             editor.PutString("SMR_REAL_ELIGIBILITY_ACCOUNT_LIST", jsonAccountList);
             editor.Apply();
         }
-
+        public static void SetRealDBREligibilityAccountList(List<DBRAccount> dBRccounts)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(dBRccounts);
+            editor.PutString("DBR_REAL_ELIGIBILITY_ACCOUNT_LIST", jsonAccountList);
+            editor.Apply();
+        }
         public static List<SMRAccount> GetRealSMREligibilityAccountList()
         {
             string accountList = mPreferences.GetString("SMR_REAL_ELIGIBILITY_ACCOUNT_LIST", null);
