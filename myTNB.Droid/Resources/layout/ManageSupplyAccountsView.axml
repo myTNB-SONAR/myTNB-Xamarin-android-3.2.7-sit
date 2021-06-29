@@ -9,9 +9,14 @@
     <include
         layout="@layout/toolbar"
         android:id="@+id/toolbar" />
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/lightGrey"
+        android:orientation="vertical">
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/lightGrey"
         android:orientation="vertical">
         <LinearLayout
@@ -40,7 +45,7 @@
             android:layout_height="1dp"
             android:background="@color/platinumGrey" />
       
-          <FrameLayout
+          <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -85,13 +90,13 @@
                         android:maxWidth="200dp" />
                 </com.google.android.material.textfield.TextInputLayout>
             </RelativeLayout>
-        </FrameLayout>
+        </LinearLayout>
         <View
             android:id="@+id/view3"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/platinumGrey" />
-        
+       
          <LinearLayout
                 android:id="@+id/ManageBill_container"
                 android:layout_below="@+id/ssmr_meter_reading_header_layout"
@@ -99,7 +104,6 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="8dp"
                 android:paddingLeft="24dp"
-                android:paddingRight="24dp"
                 android:orientation="horizontal"
                 android:background="@color/white"
                 android:paddingBottom="12dp">
@@ -125,17 +129,23 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:src="@drawable/icon_myaccount_new"/>
                 <ImageView
                     android:id="@+id/itemisedBillingRightArrowShimmer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
                     android:layout_marginTop="16dp"
                     android:src="@drawable/expand_right_arrow"/>
             </LinearLayout>
-        <FrameLayout
+             </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="bottom"
+            android:layout_gravity="bottom"
             android:background="@color/white">
             <Button
                 android:id="@+id/btnRemoveAccount"
@@ -146,6 +156,6 @@
                 android:layout_margin="18dp"
                 android:text="@string/manage_supply_account_btn_remove"
                 android:textAllCaps="false" />
-        </FrameLayout>
-    </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>
