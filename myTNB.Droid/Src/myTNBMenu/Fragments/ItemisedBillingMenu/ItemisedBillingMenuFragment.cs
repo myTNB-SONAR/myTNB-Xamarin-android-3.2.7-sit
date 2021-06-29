@@ -194,7 +194,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             base.OnCreate(savedInstanceState);
             mPresenter = new ItemisedBillingMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
             Bundle extras = Arguments;
-
+            itemisedBillingInfoContainer.Visibility = ViewStates.Gone;
             if (extras.ContainsKey(SELECTED_ACCOUNT_KEY))
             {
                 mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
