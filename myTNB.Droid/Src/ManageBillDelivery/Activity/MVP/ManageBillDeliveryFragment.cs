@@ -1,14 +1,8 @@
-﻿
-using System;
-using System.Threading.Tasks;
-using Android.OS;
+﻿using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB;
-using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
-using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
@@ -33,7 +27,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         [BindView(Resource.Id.txtMessage)]
         TextView descriptionView;
-
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -75,7 +68,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             LinearLayout.LayoutParams imgParam;
             int imgWidth, imgHeight;
             float heightRatio;
-            
+
             switch (imageUrl)
             {
                 case "manage_bill_delivery_0":
@@ -87,7 +80,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 case "manage_bill_delivery_2":
                     imageSource.SetImageResource(Resource.Drawable.manage_bill_delivery_2);
                     break;
-                
+
                 default:
                     imageSource.SetImageResource(Resource.Drawable.manage_bill_delivery_0);
                     break;
@@ -95,40 +88,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
             titleView.Text = title;
             descriptionView.TextFormatted = GetFormattedText(description);
-
-            /*if (bgLayout.MeasuredHeight <= 0)
-            {
-                bgLayout.Measure(0, 0);
-            }
-
-            float diff = ((float)(DPUtils.GetHeight() - bgLayout.MeasuredHeight) / (float)DPUtils.GetHeight());
-
-            if (isLastItem)
-            {
-                if (diff < 0.26f)
-                {
-                    int totalHeight = (int)(DPUtils.GetHeight() * 0.74f);
-                    if (titleView.MeasuredHeight <= 0)
-                    {
-                        titleView.Measure(0, 0);
-                    }
-                }
-            }
-            else
-            {
-                if (diff < 0.20f)
-                {
-                    int totalHeight = (int)(DPUtils.GetHeight() * 0.8f);
-                    if (titleView.MeasuredHeight <= 0)
-                    {
-                        titleView.Measure(0, 0);
-                    }
-                }
-            }*/
         }
-
-       
-
 
         public override int ResourceId()
         {

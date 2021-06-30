@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime;
-using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -11,24 +10,20 @@ using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
-using AndroidX.RecyclerView.Widget;
 using AndroidX.ViewPager.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.SelectSupplyAccount.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using myTNB_Android.Src.DBR.DBRApplication.MVP;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
-
-
     [Activity(Label = "@string/managebilldelivery_activity_title"
-    , Icon = "@drawable/ic_launcher"
-      , ScreenOrientation = ScreenOrientation.Portrait
-      , Theme = "@style/Theme.Notification")]
+        , Icon = "@drawable/ic_launcher"
+        , ScreenOrientation = ScreenOrientation.Portrait
+        , Theme = "@style/Theme.Notification")]
     public class ManageBillDeliveryActivity : BaseActivityCustom, ViewPager.IOnPageChangeListener, ManageBillDeliveryContract.IView
     {
         [BindView(Resource.Id.rootView)]
@@ -36,7 +31,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         [BindView(Resource.Id.txt_notification_name)]
         TextView txtNotificationName;
-
 
         [BindView(Resource.Id.selectAllCheckBox)]
         CheckBox selectAllCheckboxButton;
@@ -59,17 +53,14 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [BindView(Resource.Id.digitalBillLabel)]
         TextView digitalBillLabel;
 
-        
-
         [BindView(Resource.Id.indicatorContainer)]
         LinearLayout indicatorContainer;
+
         [BindView(Resource.Id.applicationIndicator)]
         RelativeLayout applicationIndicator;
+
         ManageBillDeliveryContract.IUserActionsListener userActionsListener;
-        MaterialDialog mProgressDialog, mQueryProgressDialog;
-        ItemTouchHelper itemTouchHelper;
-        private MaterialDialog deleteAllDialog;
-        private MaterialDialog markReadAllDialog;
+
         private List<DBRAccount> dbrAccountList = new List<DBRAccount>();
         const string PAGE_ID = "ManageDigitalBillLanding";
         public readonly static int DBR_SELECT_ACCOUNT_ACTIVITY_CODE = 8798;
@@ -115,17 +106,19 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     viewPager.Adapter = ManageBillDeliveryAdapter;
 
                     UpdateAccountListIndicator();
-                   
+
                 }
             }
             ScrollPage();
-
         }
+
         public void ScrollPage()
         {
-            var timer = new System.Timers.Timer();
-            timer.Interval = 5000;
-            timer.Enabled = true;
+            System.Timers.Timer? timer = new System.Timers.Timer
+            {
+                Interval = 5000,
+                Enabled = true
+            };
             int page = 0;
             timer.Elapsed += (sender, args) =>
             {
@@ -144,14 +137,14 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             };
         }
 
-       
         public string GetAppString(int id)
         {
             return this.GetString(id);
         }
+
         public void OnPageScrollStateChanged(int state)
         {
-            //throw new NotImplementedException();
+            System.Diagnostics.Debug.WriteLine("[DEBUG] OnPageScrollStateChanged Error");
         }
 
         public void OnPageSelected(int position)
@@ -170,8 +163,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         selectedDot.SetImageResource(Resource.Drawable.onboarding_circle_inactive);
                     }
                 }
-
-                
             }
         }
 
@@ -202,8 +193,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             else
             {
                 applicationIndicator.Visibility = ViewStates.Gone;
-                
-
             }
         }
 
@@ -281,6 +270,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             return true;
         }
+
         [OnClick(Resource.Id.txt_notification_name)]
         void OnNotificationFilter(object sender, EventArgs eventArgs)
         {
@@ -298,34 +288,38 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 }
             }
         }
+
         public void ShowDBREligibleAccountList(List<DBRAccount> dbrEligibleAccountList)
         {
             Intent intent = new Intent(this, typeof(SelectDBRAccountActivity));
             intent.PutExtra("DBR_ELIGIBLE_ACCOUNT_LIST", JsonConvert.SerializeObject(dbrEligibleAccountList));
             StartActivityForResult(intent, DBR_SELECT_ACCOUNT_ACTIVITY_CODE);
         }
+
         [OnClick(Resource.Id.digitalBillLabelContainer)]
         void OnTapManageBillDeliveryTooltip(object sender, EventArgs eventArgs)
         {
             ShowManageBillDeliveryPopup();
         }
+
         public void ShowManageBillDeliveryPopup()
         {
             MyTNBAppToolTipBuilder dbrTooltip = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER_TWO_BUTTON)
-                  .SetTitle(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "whatIfIStillWantPaperBillsTitle"))
-                    .SetMessage(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "whatIfIStillWantPaperBillsDetails"))
-                   .SetCTALabel(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "iWant"))
-                   .SetCTAaction(() => AddDigitalBill())
-                   .SetSecondaryCTALabel(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "nevermind"))
-                   .SetSecondaryCTAaction(() => { this.SetIsClicked(false); })
-                   .Build();
-
+                .SetTitle(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "whatIfIStillWantPaperBillsTitle"))
+                .SetMessage(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "whatIfIStillWantPaperBillsDetails"))
+                .SetCTALabel(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "iWant"))
+                .SetCTAaction(() => AddDigitalBill())
+                .SetSecondaryCTALabel(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "nevermind"))
+                .SetSecondaryCTAaction(() => { this.SetIsClicked(false); })
+                .Build();
             dbrTooltip.Show();
         }
+
         public void AddDigitalBill()
         {
 
         }
+
         public void ShowSelectSupplyAccount()
         {
             this.SetIsClicked(true);
@@ -335,7 +329,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         }
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            
+
             if (requestCode == DBR_SELECT_ACCOUNT_ACTIVITY_CODE)
             {
                 if (resultCode == Result.Ok)
@@ -380,26 +374,34 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
                     if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                     {
-                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedErrorLabel("refreshMessage"), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)
+                            ? Html.FromHtml(Utility.GetLocalizedErrorLabel("refreshMessage"), FromHtmlOptions.ModeLegacy)
+                            : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
                     }
                     else
                     {
-                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedErrorLabel("refreshMessage")) : Html.FromHtml(contentTxt);
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)
+                            ? Html.FromHtml(Utility.GetLocalizedErrorLabel("refreshMessage"))
+                            : Html.FromHtml(contentTxt);
                     }
 
                     btnNewRefresh.Visibility = ViewStates.Visible;
                 }
                 else
                 {
-                   
+
                     refresh_image.SetImageResource(Resource.Drawable.maintenance_new);
                     if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                     {
-                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage"), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)
+                            ? Html.FromHtml(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage"), FromHtmlOptions.ModeLegacy)
+                            : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
                     }
                     else
                     {
-                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage")) : Html.FromHtml(contentTxt);
+                        txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt)
+                            ? Html.FromHtml(Utility.GetLocalizedLabel("Error", "plannedDownTimeMessage"))
+                            : Html.FromHtml(contentTxt);
                     }
 
                     btnNewRefresh.Visibility = ViewStates.Gone;
@@ -434,10 +436,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             }
         }
 
-       
         public void OnPageScrolled(int position, float positionOffset, int positionOffsetPixels)
         {
-          
+
         }
 
         public bool IsActive()

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Collections.Generic;
 using Android.App;
 using Android.Content;
-using Android.Gms.Common.Apis;
 using Android.OS;
 using Android.Runtime;
-using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -25,42 +21,40 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             this.mView.SetPresenter(this);
             ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
         }
+
         public async void CheckDBRAccountEligibility(List<DBRAccount> dbrAccountList)
         {
-            
             List<string> accountList = new List<string>();
-            
+
             if (accountList.Count == 0)
             {
                 this.mView.ShowDBREligibleAccountList(dbrAccountList);
             }
-         
         }
+
         public List<ManageBillDeliveryModel> GenerateManageBillDeliveryList()
         {
             ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
-                ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
-                {
-                    Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle1"),
-                    Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription1"),
-                    Image = "manage_bill_delivery_0"
-                });
+            ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
+            {
+                Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle1"),
+                Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription1"),
+                Image = "manage_bill_delivery_0"
+            });
 
-                ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
-                {
-                    Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle2"),
-                    Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription2"),
-                    Image = "manage_bill_delivery_1"
-                });
+            ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
+            {
+                Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle2"),
+                Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription2"),
+                Image = "manage_bill_delivery_1"
+            });
 
-                ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
-                {
-                    Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle3"),
-                    Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription3"),
-                    Image = "manage_bill_delivery_2"
-                });
-           
-
+            ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
+            {
+                Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle3"),
+                Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription3"),
+                Image = "manage_bill_delivery_2"
+            });
             return ManageBillDeliveryList;
         }
 
@@ -105,8 +99,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
                         CustomerBillingAccount selectedAccount = JsonConvert.DeserializeObject<CustomerBillingAccount>(extras.GetString(Constants.SELECTED_ACCOUNT));
 
-                            this.mView.SetAccountName(selectedAccount.AccDesc);
-                       
+                        this.mView.SetAccountName(selectedAccount.AccDesc);
+
                     }
                 }
             }
@@ -115,8 +109,6 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
-
-     
 
         public void SelectSupplyAccount()
         {

@@ -17,20 +17,19 @@
 			android:orientation="vertical"
 			android:layout_marginBottom="16dp"
 			android:id="@+id/walkthrough_layout">
-			
-				<LinearLayout
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:gravity="top"
-                android:layout_gravity="top">
-			<ImageView
-				android:id="@+id/img_display"
-				android:layout_height="88dp"
+			<LinearLayout
+				android:layout_height="wrap_content"
 				android:layout_width="match_parent"
-				android:layout_marginTop="32dp"
-				android:layout_gravity="center_horizontal"/>
-				</LinearLayout>
+				android:orientation="vertical"
+				android:gravity="top"
+				android:layout_gravity="top">
+				<ImageView
+					android:id="@+id/img_display"
+					android:layout_height="88dp"
+					android:layout_width="match_parent"
+					android:layout_marginTop="32dp"
+					android:layout_gravity="center_horizontal"/>
+			</LinearLayout>
 			<TextView
 				android:layout_height="wrap_content"
 				android:layout_width="match_parent"
@@ -70,7 +69,6 @@
 							android:layout_marginLeft="32dp"
 							android:layout_marginRight="32dp"
 							android:id="@+id/txtMessage" />
-						
 					</LinearLayout>
 				</ScrollView>
 			</LinearLayout>
