@@ -1795,6 +1795,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     filterList.Add(currentMyServiceList[i]);
                     MyServiceEntity.InsertOrReplace(currentMyServiceList[i]);
                 }
+
+                //this.mView.StopShimmerDiscoverMore();
             }
 
             //testing adding icon

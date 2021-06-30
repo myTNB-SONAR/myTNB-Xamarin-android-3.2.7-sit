@@ -78,6 +78,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.myServiceShimmerView)]
         LinearLayout myServiceShimmerView;
 
+        //[BindView(Resource.Id.DiscoverMoreShimmerImgLayout)]
+        //LinearLayout DiscoverMoreShimmerImgLayout;
+
+        //[BindView(Resource.Id.DiscoverMoreShimmerTxtLayout)]
+        //LinearLayout DiscoverMoreShimmerTxtLayout;
+
+        [BindView(Resource.Id.NewDiscoverMoreShimmerImgLayout)]
+        LinearLayout NewDiscoverMoreShimmerImgLayout;
+
+        [BindView(Resource.Id.discoverMoreContainer)]
+        LinearLayout discoverMoreContainer;
+
+        [BindView(Resource.Id.newDiscoverMoreShimmerTxtLayout)]
+        RelativeLayout newDiscoverMoreShimmerTxtLayout;
+
+        //[BindView(Resource.Id.shimmerDiscoverMoreImageLayout)]
+        //ShimmerFrameLayout shimmerDiscoverMoreImageLayout;
+        
+        //[BindView(Resource.Id.shimmerDiscoverMoreTxtLayout)]
+        //ShimmerFrameLayout shimmerDiscoverMoreTxtLayout;
+
         [BindView(Resource.Id.myServiceList)]
         RecyclerView myServiceListRecycleView;
 
@@ -191,6 +212,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         [BindView(Resource.Id.bottomContainer)]
         LinearLayout bottomContainer;
+
+        [BindView(Resource.Id.discoverMoreTitle)]
+        TextView discoverMoreTitle;
+
+        [BindView(Resource.Id.txtTitleDiscoverMore)]
+        TextView txtTitleDiscoverMore;
 
         ImageView closeImageView;
 
@@ -408,14 +435,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetAccountActionHeader();
                 SetupMyServiceView();
                 SetupNewFAQView();
+
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
-                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd
+                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, discoverMoreTitle, btnRefresh, txtAdd
                     , addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel
-                    , myServiceLoadMoreLabel, txtNewLabel, btnMyServiceRefresh);
+                    , myServiceLoadMoreLabel, txtNewLabel, txtTitleDiscoverMore, btnMyServiceRefresh);
                 TextViewUtils.SetTextSize8(txtNewLabel);
-                TextViewUtils.SetTextSize12(addActionLabel, searchActionLabel, rearrangeLabel
+                TextViewUtils.SetTextSize12(addActionLabel, txtTitleDiscoverMore, searchActionLabel, rearrangeLabel
                     , loadMoreLabel, myServiceLoadMoreLabel, txtMyServiceRefreshMessage);
-                TextViewUtils.SetTextSize14(refreshMsg, txtAdd, newFAQTitle, accountHeaderTitle);
+                TextViewUtils.SetTextSize14(refreshMsg, discoverMoreTitle, txtAdd, newFAQTitle, accountHeaderTitle);
                 TextViewUtils.SetTextSize16(accountGreeting, accountGreetingName, btnMyServiceRefresh, btnRefresh);
                 SearchView searchView = new SearchView(this.Context);
                 LinearLayout linearLayout1 = (LinearLayout)searchView.GetChildAt(0);
@@ -430,6 +458,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 newFAQTitle.Text = GetLabelByLanguage("needHelp");
                 rearrangeLabel.Text = GetLabelByLanguage("rearrangeAccts");
                 loadMoreLabel.Text = GetLabelByLanguage("moreAccts");
+                discoverMoreTitle.Text = GetLabelByLanguage("discoverMoreTitle");
+                txtTitleDiscoverMore.Text = GetLabelByLanguage("discoverMoreTextTitle");
                 myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
 
                 addActionContainer.SetOnClickListener(null);
@@ -461,6 +491,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         try
                         {
                             FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Notification");
+                        }
+                        catch (System.Exception err)
+                        {
+                            Utility.LoggingNonFatalError(err);
+                        }
+                        StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
+                    }
+                };
+
+                discoverMoreContainer.Click += delegate
+                {
+                    if (!this.GetIsClicked())
+                    {
+                        this.SetIsClicked(true);
+                        try
+                        {
+                            FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Discover More");
                         }
                         catch (System.Exception err)
                         {
@@ -524,6 +571,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
                 this.presenter.SetDynaUserTAG();  //call dyna set username
                 OnStartLoadAccount();
+                //StartShimmerDiscoverMore();
 
             }
             catch (System.Exception e)
@@ -811,6 +859,58 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             this.presenter.GetSavedNewFAQTimeStamp();
         }
 
+        //private void StartShimmerDiscoverMore()
+        //{
+        //    try
+        //    {
+        //        DiscoverMoreShimmerImgLayout.Visibility = ViewStates.Visible;
+        //        DiscoverMoreShimmerTxtLayout.Visibility = ViewStates.Visible;
+        //        NewDiscoverMoreShimmerImgLayout.Visibility = ViewStates.Gone;
+        //        newDiscoverMoreShimmerTxtLayout.Visibility = ViewStates.Gone;
+        //        var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+        //        if (shimmerBuilder != null)
+        //        {
+        //            shimmerDiscoverMoreImageLayout.SetShimmer(shimmerBuilder?.Build());
+        //            shimmerDiscoverMoreTxtLayout.SetShimmer(shimmerBuilder?.Build());
+        //        }
+        //        shimmerDiscoverMoreImageLayout.StartShimmer();
+        //        shimmerDiscoverMoreTxtLayout.StartShimmer();
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        Utility.LoggingNonFatalError(ex);
+        //    }
+        //}
+
+        //public void StopShimmerDiscoverMore()
+        //{
+        //    try
+        //    {
+        //        Activity.RunOnUiThread(() =>
+        //        {
+        //            try
+        //            {
+
+        //                shimmerDiscoverMoreImageLayout.StopShimmer();
+        //                shimmerDiscoverMoreTxtLayout.StopShimmer();
+        //            }
+        //            catch (System.Exception ex)
+        //            {
+        //                Utility.LoggingNonFatalError(ex);
+        //            }
+        //            NewDiscoverMoreShimmerImgLayout.Visibility = ViewStates.Visible;
+        //            newDiscoverMoreShimmerTxtLayout.Visibility = ViewStates.Visible;
+        //            DiscoverMoreShimmerImgLayout.Visibility = ViewStates.Gone;
+        //            DiscoverMoreShimmerTxtLayout.Visibility = ViewStates.Gone;
+        //        });
+        //    }
+        //    catch (System.Exception ex)
+        //    {
+        //        Utility.LoggingNonFatalError(ex);
+        //    }
+            
+        //}
+
         private void SetupNewFAQShimmerEffect()
         {
             try
@@ -961,6 +1061,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             }
                             newFAQShimmerView.Visibility = ViewStates.Gone;
                             newFAQView.Visibility = ViewStates.Visible;
+
                         }
                     }
                     catch (System.Exception ex)
@@ -1335,13 +1436,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 this.SetIsClicked(false);
                                 List<SMRAccount> smacc = new List<SMRAccount>();
                                 smacc = UserSessions.GetEnergyBudgetList();
-                                ShowAccountDetails(smacc[0].accountNumber); 
+                                ShowAccountDetails(smacc[0].accountNumber);
                             }
                             else if (UserSessions.GetEnergyBudgetList().Count > 1)
                             {
                                 Intent energy_budget_activity = new Intent(this.Activity, typeof(EnergyBudgetActivity));
                                 StartActivityForResult(energy_budget_activity, SELECT_SM_ACCOUNT_REQUEST_CODE);
-                            }                                                     
+                            }
                         }
                         else
                         {
