@@ -218,7 +218,10 @@
     //EnergyBudget
     "energyBudget": "My Energy<br>Budget",
     "tutorialEnergyBudgetTitle": "Begin your Energy Budget journey",
-    "tutorialEnergyBudgetDesc": "Access Energy Budget easily from homepage to start setting up your desired monthly bill amount"
+    "tutorialEnergyBudgetDesc": "Access Energy Budget easily from homepage to start setting up your desired monthly bill amount",
+    //DiscoverMore
+    "discoverMoreTitle": "Discover More",
+    "discoverMoreTextTitle": "The new Energy Budget feature is here!"
   },
   "Tabbar": {
     "home": "Home",

@@ -218,7 +218,10 @@
     //EnergyBudget
     "energyBudget": "Energy <br> Budget Saya",
     "tutorialEnergyBudgetTitle": "Mulakan langkah untuk menguruskan tenaga anda",
-    "tutorialEnergyBudgetDesc": "Anda boleh mengakses Energy Budget dari laman utama untuk mula menetapkan jumlah bil yang anda inginkan"
+    "tutorialEnergyBudgetDesc": "Anda boleh mengakses Energy Budget dari laman utama untuk mula menetapkan jumlah bil yang anda inginkan",
+    //DiscoverMore
+    "discoverMoreTitle": "MS_Discover More",
+    "discoverMoreTextTitle": "MS_The new Energy Budget feature is here!"
   },
   "Tabbar": {
     "home": "Utama",
