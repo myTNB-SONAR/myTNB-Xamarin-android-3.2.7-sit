@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Android.App;
 using Android.Content;
@@ -37,7 +36,6 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
 
         [BindView(Resource.Id.noEligibleAccountMessage)]
         TextView noEligibleAccountMessage;
-
 
         public override int ResourceId()
         {
@@ -122,7 +120,6 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                 eligibleAccountListContainer.Visibility = ViewStates.Gone;
             }
         }
-
 
         public class OnSelectAccountListener : Java.Lang.Object, RecyclerView.IOnClickListener
         {

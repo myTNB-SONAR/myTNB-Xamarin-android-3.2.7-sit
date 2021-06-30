@@ -368,6 +368,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         isRedirected = true;
                         mActivity.OnSetAppointment();
                     }
+                    else if (url.Contains("mytnbapp://action=startDigitalBilling"))
+                    {
+                        isRedirected = true;
+                        mActivity.OnManageBillDelivery();
+                    }
                     else
                     {
                         view.LoadUrl(url);
@@ -459,10 +464,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     else if (url.Contains("mytnbapp://action=setAppointment") && !isRedirected)
                     {
                         mActivity.OnSetAppointment();
-                    }
-                    else if (url.Contains("mytnbapp://action=startDigitalBilling") && !isRedirected)
-                    {
-                        mActivity.OnManageBillDelivery();
                     }
                     else
                     {

@@ -36,19 +36,41 @@
         private const string SitecorePROD = "https://sitecore.tnb.com.my/";
         private const string ApiKeyIdDEV = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         private const string ApiKeyIdPROD = "E6148656-205B-494C-BC95-CC241423E72F";
+        //AWS DEV
+        private const string SaltKeyDEV = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
+        private const string PassphraseDEV = "PW-myTNBDbrSso";
+        private const string DBROriginURLDEV = "https://test.mytnb.com.my";
+        private const string DBRRedirectURLDEV = "http://EC2Co-EcsEl-11MUE9B1S2T04-1563452123.ap-southeast-1.elb.amazonaws.com/DigitalBill/Start";
+        //AWS PROD
+        private const string SaltKeyPROD = "Salt-5123BEB842C046609AD5FB67A0A2D5D0";
+        private const string PassphrasePROD = "PW-myTNBDbrSso";
+        private const string DBROriginURLPROD = "https://test.mytnb.com.my";
+        private const string DBRRedirectURLPROD = "http://EC2Co-EcsEl-11MUE9B1S2T04-1563452123.ap-southeast-1.elb.amazonaws.com/DigitalBill/Start";
 
 #if DEBUG
         internal static string ApiDomain = SIT;
         internal const string ApiKeyId = ApiKeyIdDEV;
-        internal const string SitecoreURL = SitecoreSIT;
+        internal const string SitecoreURL = SitecorePROD;
+        internal const string SaltKey = SaltKeyDEV;
+        internal const string PassPhrase = PassphraseDEV;
+        internal const string DBROriginURL = DBROriginURLDEV;
+        internal const string DBRRedirectURL = DBRRedirectURLDEV;
 #elif MASTER || SIT
         internal static string ApiDomain = SIT;
         internal const string ApiKeyId = ApiKeyIdDEV;
-        internal const string SitecoreURL = SitecoreSIT;
+        internal const string SitecoreURL = SitecorePROD;
+        internal const string SaltKey = SaltKeyDEV;
+        internal const string PassPhrase = PassphraseDEV;
+        internal const string DBROriginURL = DBROriginURLDEV;
+        internal const string DBRRedirectURL = DBRRedirectURLDEV;
 #else
         internal static string ApiDomain = PROD;
         internal const string ApiKeyId = ApiKeyIdPROD;
         internal const string SitecoreURL = SitecorePROD;
+        internal const string SaltKey = SaltKeyPROD;
+        internal const string PassPhrase = PassphrasePROD;
+        internal const string DBROriginURL = DBROriginURLPROD;
+        internal const string DBRRedirectURL = DBRRedirectURLPROD;
 #endif
 
         //Service Name

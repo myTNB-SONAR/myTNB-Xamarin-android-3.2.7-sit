@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Android.App;
@@ -8,11 +7,6 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
-using Android.Runtime;
-
-
-
-
 using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
@@ -22,7 +16,6 @@ using CheeseBind;
 using Facebook.Shimmer;
 using Google.Android.Material.Snackbar;
 using Java.Text;
-using Java.Util;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.Common;
@@ -32,7 +25,6 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
-using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewBill.Activity;
 using myTNB_Android.Src.ViewReceipt.Activity;
@@ -127,7 +119,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         [BindView(Resource.Id.chargeAvailableNoCTAContainer)]
         LinearLayout chargeAvailableNoCTAContainer;
-        
+
 
         [BindView(Resource.Id.unavailableChargeContainer)]
         LinearLayout unavailableChargeContainer;
@@ -161,7 +153,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         [BindView(Resource.Id.paperlessTitle)]
         TextView paperlessTitle;
-        
+
         ItemisedBillingMenuPresenter mPresenter;
         AccountData mSelectedAccountData;
 
@@ -194,49 +186,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             base.OnCreate(savedInstanceState);
             mPresenter = new ItemisedBillingMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
             Bundle extras = Arguments;
-            itemisedBillingInfoContainer.Visibility = ViewStates.Gone;
+
             if (extras.ContainsKey(SELECTED_ACCOUNT_KEY))
             {
                 mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
             }
-            //ShowGoPapperless();
         }
-        private void ShowGoPapperless()
-        {
-            string ebilltype = "NonTargted";
-            if (ebilltype == "NonTargted")
-            {
-                //bill_paperless_icon.SetImageResource(Resource.Drawable.icon_paperless_bill);
-                //TextView textView = rootView.FindViewById<TextView>(Resource.Id.paperlessTitle);
-                //textView.Text = Utility.GetLocalizedLabel("Common", "dbrPaperBill");
-                //paperlessTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("Common", "dbrPaperBill"), FromHtmlOptions.ModeLegacy);
-            }
-            else if (ebilltype == "AutoConvert")
-            {
-                //bill_paperless_icon.SetImageResource(Resource.Drawable.icon_paperless_bill);
-                //paperlessTitle.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "title4");
-            }
-            else if (ebilltype == "DigitalBill")
-            {
-                //bill_paperless_icon.SetImageResource(Resource.Drawable.icon_paperless_bill);
-                //paperlessTitle.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "title4");
-            }
-            else if (ebilltype == "BillEmail")
-            {
-                //bill_paperless_icon.SetImageResource(Resource.Drawable.icon_paperless_bill);
-                //paperlessTitle.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "title4");
-            }
-            else if (ebilltype == "PaperBills")
-            {
-                //bill_paperless_icon.SetImageResource(Resource.Drawable.icon_paperless_bill);
-                //paperlessTitle.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "title4");
-            }
-            else if (ebilltype == "WhatsappBills")
-            {
-                //bill_paperless_icon.SetImageResource(Resource.Drawable.icon_paperless_bill);
-                //paperlessTitle.Text = Utility.GetLocalizedLabel("ManageBillDelivery", "title4");
-            }
-        }
+
         public override int ResourceId()
         {
             return Resource.Layout.ItemisedBillingMenuLayout;
@@ -456,10 +412,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 if (requestCode == 12345)
                 {
-                    if (resultCode == (int) Result.Ok)
+                    if (resultCode == (int)Result.Ok)
                     {
                         UpdateBillingHistory(data.GetStringExtra("SELECTED_ITEM_FILTER"));
-                        itemisedBillingScrollView.ScrollTo(0,0);
+                        itemisedBillingScrollView.ScrollTo(0, 0);
                     }
                 }
             }
@@ -493,8 +449,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             TextViewUtils.SetMuseoSans500Typeface(accountSelection, itemisedBillingInfoNote,
                 btnViewDetails, btnPayBill, itemisedBillingInfoAmountCurrency, myBillHistoryTitle, btnRefresh,
                 btnChargeRefresh, btnBillingHistoryRefresh, accountSelectionRefresh);
-            TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount, emptyBillingHistoryMessage, unavailableBillMsg,
-                                            unavailableChargeMsg, refreshBillingHistoryMessage, paperlessTitle);
+            TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount
+                , emptyBillingHistoryMessage, unavailableBillMsg, unavailableChargeMsg, refreshBillingHistoryMessage, paperlessTitle);
             TextViewUtils.SetTextSize12(refreshBillingHistoryMessage, paperlessTitle);
             TextViewUtils.SetTextSize14(unavailableChargeMsg, itemisedBillingInfoNote, itemisedBillingInfoDate
                 , emptyBillingHistoryMessage, unavailableBillMsg);
@@ -561,7 +517,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             return chargeAvailableNoCTAContainer.Height;
         }
-        
+
         public void ShowShimmerLoading()
         {
             itemisedBillingHeaderImage.SetImageResource(Resource.Drawable.bill_menu_loading_banner);
@@ -1324,7 +1280,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             return btnPayBill.Height;
         }
-        
+
         public int GetDigitalContainerHeight()
         {
             return digital_container.Height;

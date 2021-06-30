@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Master;SIT;Release;Debug</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|AnyCPU' ">
@@ -98,6 +99,8 @@
     <Folder Include="API\Display Model\Scheduler\" />
     <Folder Include="API\Managers\Scheduler\Utilities\" />
     <Folder Include="API\Models\Application Status\Post Sync SR Application\" />
+    <Folder Include="AWS\" />
+    <Folder Include="AWS\SSO\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />

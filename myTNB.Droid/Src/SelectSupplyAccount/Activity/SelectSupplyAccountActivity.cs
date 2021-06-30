@@ -4,7 +4,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -25,9 +24,9 @@ using System.Runtime;
 namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 {
     [Activity(Label = "Select Electricity Account"
-              , Icon = "@drawable/ic_launcher"
-    , ScreenOrientation = ScreenOrientation.Portrait
-    , Theme = "@style/Theme.Dashboard")]
+        , Icon = "@drawable/ic_launcher"
+        , ScreenOrientation = ScreenOrientation.Portrait
+        , Theme = "@style/Theme.Dashboard")]
     public class SelectSupplyAccountActivity : BaseActivityCustom, SelectSupplyAccountContract.IView
     {
 
@@ -39,10 +38,6 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         [BindView(Resource.Id.btnAddAnotherAccount)]
         Button btnAddAnotherAccount;
 
-        [BindView(Resource.Id.digitalBillLabelContainer)]
-        LinearLayout digitalBillLabelContainer;
-
-        
         SelectSupplyAccountAdapter accountListAdapter;
 
         MaterialDialog materialDialog;
@@ -50,7 +45,6 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         const string PAGE_ID = "SelectElectricityAccounts";
 
         private bool isFromQuickAction = false;
-        private bool isFromDBRAction = false;
 
         public bool IsActive()
         {
@@ -141,8 +135,6 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             try
             {
                 isFromQuickAction = false;
-                isFromDBRAction = false;
-
 
                 Bundle extras = Intent.Extras;
 
@@ -150,17 +142,6 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
                 {
                     isFromQuickAction = true;
                 }
-                if (extras != null && extras.ContainsKey(Constants.DBR_KEY) && extras.GetInt(Constants.DBR_KEY) == Constants.SELECT_ACCOUNT_DBR_REQUEST_CODE)
-                {
-                    isFromDBRAction = true;
-                    digitalBillLabelContainer.Visibility = ViewStates.Visible;
-                }
-                else
-                {
-                    isFromDBRAction = false;
-                    digitalBillLabelContainer.Visibility = ViewStates.Gone;
-                }
-
 
                 mPresenter = new SelectSupplyAccountPresenter(this);
 
@@ -176,7 +157,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-        
+
         protected override void OnResume()
         {
             base.OnResume();
@@ -377,7 +358,6 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
             StartActivity(viewBill);
         }
-
 
         public override void OnTrimMemory(TrimMemory level)
         {
