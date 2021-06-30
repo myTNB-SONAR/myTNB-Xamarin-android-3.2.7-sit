@@ -38,19 +38,19 @@
 				android:textColor="@color/tunaGrey"
 				android:lineSpacingExtra="8dp"
 				android:textStyle="bold"
-				android:layout_marginLeft="32dp"
-				android:layout_marginRight="32dp"
+				android:layout_marginLeft="16dp"
+				android:layout_marginRight="16dp"
 				android:gravity="center_horizontal"
 				android:id="@+id/txtTitle" />
 			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginLeft="32dp"
-				android:layout_marginRight="32dp"
+				android:layout_marginLeft="16dp"
+				android:layout_marginRight="16dp"
 				android:id="@+id/walkthroughBottomView"
 				android:orientation="vertical">
 				<ScrollView
-					android:layout_height="match_parent"
+					android:layout_height="wrap_content"
 					android:layout_width="match_parent"
 					android:overScrollMode="never"
 					android:fillViewport="true">
@@ -66,8 +66,8 @@
 							android:gravity="center_horizontal"
 							android:layout_marginTop="8dp"
 							android:lineSpacingExtra="4dp"
-							android:layout_marginLeft="32dp"
-							android:layout_marginRight="32dp"
+							android:layout_marginLeft="0dp"
+							android:layout_marginRight="0dp"
 							android:id="@+id/txtMessage" />
 					</LinearLayout>
 				</ScrollView>

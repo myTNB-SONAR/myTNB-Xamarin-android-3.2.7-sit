@@ -49,19 +49,18 @@ using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using myTNB;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.Mobile;
-using Android.Util;
 using myTNB_Android.Src.myTNBMenu.Async;
-using Android.Content.Res;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
     [Activity(Label = "@string/dashboard_activity_title"
-              , Icon = "@drawable/ic_launcher"
+        , Icon = "@drawable/ic_launcher"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.DashboardHome"
         , WindowSoftInputMode = SoftInput.AdjustNothing)]
     public class DashboardHomeActivity : BaseToolbarAppCompatActivity, DashboardHomeContract.IView, ISummaryFragmentToDashBoardActivtyListener
     {
+        internal static bool IsFromLogin;
         internal readonly string TAG = typeof(DashboardHomeActivity).Name;
 
         public readonly static int PAYMENT_RESULT_CODE = 5451;
@@ -339,7 +338,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
             UserEntity user = UserEntity.GetActive();
             int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
-            if (loginCount == 2)
+
+            if (IsFromLogin && loginCount == 2)
             {
                 ShowMarketingTooltip();
             }
