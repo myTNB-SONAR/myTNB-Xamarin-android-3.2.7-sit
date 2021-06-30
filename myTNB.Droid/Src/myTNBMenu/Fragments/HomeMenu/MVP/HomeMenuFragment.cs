@@ -262,9 +262,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.accountContainer)]
         ConstraintLayout accountContainer;
 
-        // [BindView(Resource.Id.discoverMoreCardView)]
-        // CardView discoverMoreCardView;
-
         AccountsRecyclerViewAdapter accountsAdapter;
 
         private NewFAQScrollListener mListener;
@@ -521,23 +518,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         try
                         {
                             FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Notification");
-                        }
-                        catch (System.Exception err)
-                        {
-                            Utility.LoggingNonFatalError(err);
-                        }
-                        StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
-                    }
-                };
-
-                discoverMoreContainer.Click += delegate
-                {
-                    if (!this.GetIsClicked())
-                    {
-                        this.SetIsClicked(true);
-                        try
-                        {
-                            FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Discover More");
                         }
                         catch (System.Exception err)
                         {
@@ -2487,26 +2467,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        // [OnClick(Resource.Id.discoverMoreCardView)]
-        // internal void OndiscoverMoreCardView(object sender, EventArgs e)
-        // {
-        //     if (!this.GetIsClicked())
-        //     {
-        //         this.SetIsClicked(true);
-        //         try
-        //         {
-        //             FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Energy Budget Screen Popup");
-        //         }
-        //         catch (System.Exception err)
-        //         {
-        //             Utility.LoggingNonFatalError(err);
-        //         }
+        [OnClick(Resource.Id.discoverMoreContainer)]
+        internal void OndiscoverMoreCardView(object sender, EventArgs e)
+        {
+            if (!this.GetIsClicked())
+            {
+                 this.SetIsClicked(true);
+                 try
+                 {
+                     FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Energy Budget Screen Popup");
+                 }
+                 catch (System.Exception err)
+                 {
+                     Utility.LoggingNonFatalError(err);
+                 }
 
-        //         Intent EBPopupPage = new Intent(this.Activity, typeof(EBPopupScreenActivity));
-        //         EBPopupPage.PutExtra("fromDashboard", true);
-        //         StartActivityForResult(EBPopupPage, SELECT_SM_POPUP_REQUEST_CODE);
-        //     }
-        // }
+                 Intent EBPopupPage = new Intent(this.Activity, typeof(EBPopupScreenActivity));
+                 EBPopupPage.PutExtra("fromDashboard", true);
+                 StartActivityForResult(EBPopupPage, SELECT_SM_POPUP_REQUEST_CODE);
+            }
+        }
 
         public void OnSavedEnergySavingTipsTimeStamp(string mSavedTimeStamp)
         {
