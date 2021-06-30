@@ -426,16 +426,16 @@
     "prevReadingEmptyMsg": "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you.",
     "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
     //EnergyBudget
-    "myMonthlyBudget":"My monthly budget is",
-    "whyIsAmountDiff":"Why is my usage amount different from my bill amount?",
-    "whyIsAmountDiffBody":"Your current usage amount is the amount of energy you've used up so far. As this amount is yet to be billed according to your monthly billing cycle, it is not yet subjected to any tax, discount or additional charges by us.",
-    "editEnergyButton":"Edit Budget",
-    "setEnergyButton":"Set New Budget",
-    "saveEnergyButton":"Save New Budget",
-    "toastSaveBudgetuccessfull":"You've successfully set your monthly budget!",
-    "myUsageSoFar":"My usage so far",
-    "disconnectedEnergyBudget":"Uh-oh, looks like your Energy Budget have been unplugged. Refresh to stay plugged in!",
-    "refreshNowEnergyBudgetButton":"Refresh Now"
+    "myMonthlyBudget": "My monthly budget is",
+    "whyIsAmountDiff": "Why is my usage amount different from my bill amount?",
+    "whyIsAmountDiffBody": "Your current usage amount is the amount of energy you've used up so far. As this amount is yet to be billed according to your monthly billing cycle, it is not yet subjected to any tax, discount or additional charges by us.",
+    "editEnergyButton": "Edit Budget",
+    "setEnergyButton": "Set New Budget",
+    "saveEnergyButton": "Save New Budget",
+    "toastSaveBudgetuccessfull": "You've successfully set your monthly budget!",
+    "myUsageSoFar": "My usage so far",
+    "disconnectedEnergyBudget": "Uh-oh, looks like your Energy Budget have been unplugged. Refresh to stay plugged in!",
+    "refreshNowEnergyBudgetButton": "Refresh Now"
   },
   "Bills": {
     "title": "Bills",
@@ -2298,9 +2298,19 @@
       }
     ]
   },
-  "EnregyBudgetListing":{
-    "title":"Select Smart Meter Account",
-    "tootltipTitle":"Why are some of my accounts not listed?",
-    "tooltipBody":"As Energy Budget is a Smart Meter feature, only Smart Meter accounts are listed here. Once your normal meter has been converted into Smart Meter, it will be automatically added into the list."
+  "EnregyBudgetListing": {
+    "title": "Select Smart Meter Account",
+    "tootltipTitle": "Why are some of my accounts not listed?",
+    "tooltipBody": "As Energy Budget is a Smart Meter feature, only Smart Meter accounts are listed here. Once your normal meter has been converted into Smart Meter, it will be automatically added into the list."
+  },
+  "EnergyBudgetPopup": {
+    "title": "Take control of your energy usage with the new Energy Budget feature!",
+    "threeEasyStep": "Saving money in 3 easy steps:",
+    "firstStep": "SET a budget for your monthly energy usage",
+    "secondStep": "MONITOR your energy usage right at your fingertips",
+    "thirdStep": "SAVINGS starts with you getting notified when reaching your set budget",
+    "txtLetgetstarted": "Let's Get Started",
+    "txtViewmybudget": "View My Budget",
+    "txtMaybelater": "Maybe Later"
   }
 }

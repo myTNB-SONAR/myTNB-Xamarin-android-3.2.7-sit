@@ -100,7 +100,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void ShowFAQFromHide();
 
             bool GetHomeTutorialCallState();
-
+            
+            void EBPopupActivity();
         }
 
         public interface IHomeMenuPresenter

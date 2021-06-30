@@ -426,16 +426,16 @@
     "prevReadingEmptyMsg": "Sila cuba semula sebentar lagi. Jika masalah ini berterusan, hubungi <b><a href=\"tel: 1300885454\">TNB Careline</a></b> dan kami akan membantu anda.",
     "bcrmDownMessage": "Halaman ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     //EnergyBudget
-    "myMonthlyBudget":"Energy Budget saya adalah",
-    "whyIsAmountDiff":"Mengapakah jumlah penggunaan saya lain daripada jumlah bil saya?",
-    "whyIsAmountDiffBody":"Jumlah penggunaan terkini anda adalah jumlah tenaga yang anda telah guna setakat ini. Oleh kerana jumlah ini belum dibilkan mengikuti kitaran pembilan anda, ia belum tertakluk kepada cukai, diskaun atau caj tambahan dari kami.",
-    "editEnergyButton":"Tetapkan Energy Budget anda",
-    "setEnergyButton":"Tetapkan Energy Budget anda",
-    "saveEnergyButton":"Simpan Energy Budget baharu",
-    "toastSaveBudgetuccessfull":"Anda telah berjaya menetapkan Energy Budget anda!",
-    "myUsageSoFar":"Penggunaan saya setakat ini",
-    "disconnectedEnergyBudget":"Nampaknya Energy Budget anda terputus sambungan. Refresh untuk sambung semula!",
-    "refreshNowEnergyBudgetButton":"'Refresh' Sekarang"
+    "myMonthlyBudget": "Energy Budget saya adalah",
+    "whyIsAmountDiff": "Mengapakah jumlah penggunaan saya lain daripada jumlah bil saya?",
+    "whyIsAmountDiffBody": "Jumlah penggunaan terkini anda adalah jumlah tenaga yang anda telah guna setakat ini. Oleh kerana jumlah ini belum dibilkan mengikuti kitaran pembilan anda, ia belum tertakluk kepada cukai, diskaun atau caj tambahan dari kami.",
+    "editEnergyButton": "Tetapkan Energy Budget anda",
+    "setEnergyButton": "Tetapkan Energy Budget anda",
+    "saveEnergyButton": "Simpan Energy Budget baharu",
+    "toastSaveBudgetuccessfull": "Anda telah berjaya menetapkan Energy Budget anda!",
+    "myUsageSoFar": "Penggunaan saya setakat ini",
+    "disconnectedEnergyBudget": "Nampaknya Energy Budget anda terputus sambungan. Refresh untuk sambung semula!",
+    "refreshNowEnergyBudgetButton": "'Refresh' Sekarang"
   },
   "Bills": {
     "title": "Bil",
@@ -2294,5 +2294,15 @@
     "title": "Pilih Akaun Meter Pintar",
     "tootltipTitle": "Mengapakah sesetengah akaun saya tidak disenaraikan?",
     "tooltipBody": "Oleh kerana Energy Budget adalah ciri meter pintar, hanya akaun meter pintar sahaja akan disenaraikan di sini. Apabila meter anda telah ditukarkan ke meter pintar, akaun tersebut akan ditambah secara automatik ke dalam senarai ini."
+  },
+  "EnergyBudgetPopup": {
+    "title": "MS_Take control of your energy usage with the new Energy Budget feature!",
+    "threeEasyStep": "MS_Saving money in 3 easy steps:",
+    "firstStep": "MS_SET a budget for your monthly energy usage",
+    "secondStep": "MS_MONITOR your energy usage right at your fingertips",
+    "thirdStep": "MS_SAVINGS starts with you getting notified when reaching your set budget",
+    "txtLetgetstarted": "MS_Let's Get Started",
+    "txtViewmybudget": "MS_View My Budget",
+    "txtMaybelater": "MS_Maybe Later"
   }
 }

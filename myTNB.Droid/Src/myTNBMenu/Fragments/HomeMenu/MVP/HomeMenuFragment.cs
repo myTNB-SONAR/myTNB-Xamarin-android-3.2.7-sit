@@ -50,6 +50,8 @@ using myTNB;
 using myTNB.Mobile;
 using myTNB_Android.Src.EnergyBudget.Activity;
 using AndroidX.ConstraintLayout.Widget;
+using myTNB_Android.Src.EBPopupScreen.Activity;
+using AndroidX.CardView.Widget;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -233,6 +235,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.accountContainer)]
         ConstraintLayout accountContainer;
 
+        // [BindView(Resource.Id.discoverMoreCardView)]
+        // CardView discoverMoreCardView;
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
@@ -247,6 +251,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public readonly static int REARRANGE_ACTIVITY_CODE = 8806;
 
         internal static readonly int SELECT_SM_ACCOUNT_REQUEST_CODE = 8809;
+
+        internal static readonly int SELECT_SM_POPUP_REQUEST_CODE = 8810;
 
         private static List<MyService> currentMyServiceList = new List<MyService>();
 
@@ -385,6 +391,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     SMRAccount selectedAccount = JsonConvert.DeserializeObject<SMRAccount>(extras.GetString(Constants.SELECTED_ACCOUNT));
                     this.SetIsClicked(false);
                     ShowAccountDetails(selectedAccount.accountNumber);
+                }
+            }
+            else if (requestCode == SELECT_SM_POPUP_REQUEST_CODE)
+            {
+                if (resultCode == (int)Result.Ok)
+                {
+                    this.SetIsClicked(false);
+                    Bundle extras = data.Extras;
+
+                    if (extras.ContainsKey("EBList"))
+                    {
+                        if (UserSessions.GetEnergyBudgetList().Count == 1)
+                        {
+                            this.SetIsClicked(false);
+                            List<SMRAccount> smaccEB = new List<SMRAccount>();
+                            smaccEB = UserSessions.GetEnergyBudgetList();
+                            ShowAccountDetails(smaccEB[0].accountNumber);
+                        }
+                        else if (UserSessions.GetEnergyBudgetList().Count > 1)
+                        {
+                            Intent energy_budget_activity = new Intent(this.Activity, typeof(EnergyBudgetActivity));
+                            StartActivityForResult(energy_budget_activity, SELECT_SM_ACCOUNT_REQUEST_CODE);
+                        }
+                    }                   
                 }
             }
         }
@@ -2356,6 +2386,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        // [OnClick(Resource.Id.discoverMoreCardView)]
+        // internal void OndiscoverMoreCardView(object sender, EventArgs e)
+        // {
+        //     if (!this.GetIsClicked())
+        //     {
+        //         this.SetIsClicked(true);
+        //         try
+        //         {
+        //             FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Energy Budget Screen Popup");
+        //         }
+        //         catch (System.Exception err)
+        //         {
+        //             Utility.LoggingNonFatalError(err);
+        //         }
+
+        //         Intent EBPopupPage = new Intent(this.Activity, typeof(EBPopupScreenActivity));
+        //         EBPopupPage.PutExtra("fromDashboard", true);
+        //         StartActivityForResult(EBPopupPage, SELECT_SM_POPUP_REQUEST_CODE);
+        //     }
+        // }
+
         public void OnSavedEnergySavingTipsTimeStamp(string mSavedTimeStamp)
         {
             if (mSavedTimeStamp != null)
@@ -3191,5 +3242,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }
         }
+
+        public void EBPopupActivity()
+        {
+            try
+            {
+                Intent eb_popup_activity = new Intent(this.Activity, typeof(EBPopupScreenActivity));
+                eb_popup_activity.PutExtra("fromLogin", "fromLogin");
+                StartActivityForResult(eb_popup_activity, SELECT_SM_POPUP_REQUEST_CODE);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
     }
 }

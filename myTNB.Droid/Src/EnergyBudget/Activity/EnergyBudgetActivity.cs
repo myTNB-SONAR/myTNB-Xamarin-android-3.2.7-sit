@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 
 using Android.Views;
@@ -46,7 +47,11 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
 
         SmartMeterListAdapter adapter;
 
+        List<SMRAccount> listSmartMeter;
+
         SMRAccount accountData;
+
+        private ISharedPreferences mSharedPref;
 
         const string PAGE_ID = "EnregyBudgetListing";
 
@@ -68,10 +73,12 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
             {
                 // Create your application here
                
-                adapter = new SmartMeterListAdapter(this, false);
+                adapter = new SmartMeterListAdapter(this, true);
                 listView.Adapter = adapter;
                 listView.SetNoScroll();
                 listView.ItemClick += ListView_ItemClick;
+
+                mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
                 SetToolBarTitle(Utility.GetLocalizedLabel("EnregyBudgetListing", "title"));
                 infoLabelAccNotListed.Text = Utility.GetLocalizedLabel("EnregyBudgetListing", "tootltipTitle");
@@ -79,6 +86,8 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
                 TextViewUtils.SetMuseoSans500Typeface(infoLabelAccNotListed);
                 TextViewUtils.SetTextSize13(infoLabelAccNotListed);
                 //infoLabelAccNotListed.TextSize = TextViewUtils.GetFontSize(13f);
+
+                listSmartMeter = UserSessions.GetEnergyBudgetList();
 
                 mPresenter = new EnergyBudgetPresenter(this);
                 this.userActionsListener.Start();
@@ -95,6 +104,20 @@ namespace myTNB_Android.Src.EnergyBudget.Activity
             {
                 this.SetIsClicked(true);
                 accountData = adapter.GetItemObject(e.Position);
+                List<SMRAccount> SMeterAccountList = new List<SMRAccount>();
+                foreach (var item in listSmartMeter)
+                {
+                    if (item.accountNumber.Equals(accountData.accountNumber))
+                    {
+                        item.accountSelected = true;
+                    }
+                    SMeterAccountList.Add(item);
+                }
+
+                UserSessions.DeleteEnergyBudgetList(mSharedPref);
+                UserSessions.EnergyBudget(SMeterAccountList);
+                adapter.Clear();
+                this.userActionsListener.Start();
                 selectedsmaccount();
             }
         }

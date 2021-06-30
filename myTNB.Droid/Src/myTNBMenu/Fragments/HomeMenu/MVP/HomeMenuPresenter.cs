@@ -2627,7 +2627,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 isHomeMenuTutorialShown = true;
                 HomeMenuUtils.SetIsLoadedHomeMenu(true);
 
-                if (!UserSessions.HasHomeTutorialShown(this.mPref))
+                if(!UserSessions.HasHomeTutorialShown(this.mPref))
                 {
                     if (HomeMenuUtils.GetIsRestartHomeMenu())
                     {
@@ -2647,6 +2647,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         HomeMenuUtils.SetIsRestartHomeMenu(true);
                         this.mView.RestartHomeMenu();
                     }
+                }
+            }
+            else if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsFromLoginPage() && !UserSessions.GetSavePopUpCountEB(this.mPref).Equals("2"))
+            {
+
+                if (UserSessions.GetSavePopUpCountEB(this.mPref).Equals(string.Empty))
+                {
+                    UserSessions.SavePopUpCountEB(this.mPref, "1");
+                }
+                else if (UserSessions.GetSavePopUpCountEB(this.mPref).Equals("1"))
+                {
+                    UserSessions.SavePopUpCountEB(this.mPref, "2");
+                }
+
+                try
+                {
+                    MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
+                    UserSessions.DoHomeTutorialShown(this.mPref);
+                    this.mView.EBPopupActivity();
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
                 }
             }
         }

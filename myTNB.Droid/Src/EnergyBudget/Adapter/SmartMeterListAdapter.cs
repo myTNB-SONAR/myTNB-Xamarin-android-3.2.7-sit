@@ -47,7 +47,15 @@ namespace myTNB_Android.Src.EnergyBudget.Adapter
 
             viewHolder.txtAccountName.Text = account.accountName;
             TextViewUtils.SetTextSize16(viewHolder.txtAccountName);
-            //viewHolder.txtAccountName.TextSize = TextViewUtils.GetFontSize(16);
+
+            if (account.accountSelected)
+            {
+                viewHolder.imageActionIconTick.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                viewHolder.imageActionIconTick.Visibility = ViewStates.Invisible;
+            }
 
             return convertView;
         }
@@ -57,11 +65,13 @@ namespace myTNB_Android.Src.EnergyBudget.Adapter
             [BindView(Resource.Id.txtAccountName)]
             internal TextView txtAccountName;
 
+            [BindView(Resource.Id.imageActionIconTick)]
+            internal ImageView imageActionIconTick;
+
             public MyAccountViewHolder(View itemView) : base(itemView)
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountName);
                 TextViewUtils.SetTextSize16(txtAccountName);
-                //txtAccountName.TextSize = TextViewUtils.GetFontSize(16f);
             }
         }
     }
