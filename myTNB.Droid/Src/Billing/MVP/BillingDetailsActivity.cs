@@ -194,7 +194,7 @@ namespace myTNB_Android.Src.Billing.MVP
             SetTheme(TextViewUtils.IsLargeFonts
                 ? Resource.Style.Theme_DashboardLarge
                 : Resource.Style.Theme_Dashboard);
-            TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, refreshBillingDetailMessage);
+            TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, refreshBillingDetailMessage, paperlessTitle);
             TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue,
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency,
                 accountMinChargeLabel, btnPayBill, btnViewBill, btnBillingDetailefresh);
@@ -206,13 +206,13 @@ namespace myTNB_Android.Src.Billing.MVP
             }
             else
             {
-                TextViewUtils.SetMuseoSans300Typeface(accountPayAmountValue, paperlessTitle);
+                TextViewUtils.SetMuseoSans300Typeface(accountPayAmountValue);
                 TextViewUtils.SetTextSize24(accountPayAmountValue);
-                TextViewUtils.SetTextSize12(accountPayAmountCurrency, paperlessTitle);
+                TextViewUtils.SetTextSize12(accountPayAmountCurrency);
             }
 
             TextViewUtils.SetTextSize11(infoLabelDetailEPP);
-            TextViewUtils.SetTextSize12(accountAddress, refreshBillingDetailMessage, accountMinChargeLabel);
+            TextViewUtils.SetTextSize12(accountAddress, refreshBillingDetailMessage, accountMinChargeLabel, paperlessTitle);
             TextViewUtils.SetTextSize14(accountPayAmountDate, accountName, accountChargeLabel, accountChargeValue
                 , accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel);
             TextViewUtils.SetTextSize16(myBillDetailsLabel, btnPayBill, btnViewBill, btnBillingDetailefresh);
@@ -326,6 +326,7 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 this.SetIsClicked(true);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
                 StartActivity(intent);
             }
         }

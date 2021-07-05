@@ -17,6 +17,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using myTNB_Android.Src.DBR.DBRApplication.MVP;
+using myTNB_Android.Src.myTNBMenu.Models;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -63,10 +64,12 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         private List<DBRAccount> dbrAccountList = new List<DBRAccount>();
         const string PAGE_ID = "ManageDigitalBillLanding";
+        const string SELECTED_ACCOUNT_KEY = ".selectedAccount";
         public readonly static int DBR_SELECT_ACCOUNT_ACTIVITY_CODE = 8798;
         private string selectedAccountNumber;
         private DBRAccount selectedEligibleAccount;
         private string selectedAccountNickName;
+        AccountData mSelectedAccountData;
 
         ManageBillDeliveryPresenter presenter;
         ManageBillDeliveryAdapter ManageBillDeliveryAdapter;
@@ -108,7 +111,13 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     UpdateAccountListIndicator();
 
                 }
+                if (extras.ContainsKey(SELECTED_ACCOUNT_KEY))
+                {
+                    mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
+                    txtNotificationName.Text = mSelectedAccountData.AccountNickName;
+                }
             }
+            
             ScrollPage();
         }
 

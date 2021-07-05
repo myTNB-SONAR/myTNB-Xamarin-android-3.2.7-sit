@@ -16,6 +16,7 @@ using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.MultipleAccountPayment.Fragment;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
@@ -395,7 +396,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             ShowProgressDialog();
             try
             {
+                CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+                AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
                 StartActivity(intent);
             }
             catch (System.Exception ne)

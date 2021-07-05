@@ -548,8 +548,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
+                CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+                AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
                 Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
-                //intent.PutString(SELECTED_ACCOUNT_KEY, JsonConvert.SerializeObject(selectedAccount));
+                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
                 StartActivity(intent);
             }
         }

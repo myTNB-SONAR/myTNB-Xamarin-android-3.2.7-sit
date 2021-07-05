@@ -10,6 +10,7 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.ManageSupplyAccount.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -127,7 +128,10 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
+                CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+                AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
                 StartActivity(intent);
             }
         }
