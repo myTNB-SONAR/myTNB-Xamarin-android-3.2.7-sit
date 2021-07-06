@@ -6714,6 +6714,13 @@
     </AndroidResource>
     <Compile Include="Src\ManageBillDelivery\Activity\MVP\DBRAccount.cs" />
     <Compile Include="Src\ManageBillDelivery\Adapter\SelectAccountAdapter.cs" />
+    <Compile Include="Src\DigitalBill\Activity\DigitalBillActivity.cs" />
+    <Compile Include="Src\DigitalBill\MVP\DigitalBillContract.cs" />
+    <Compile Include="Src\DigitalBill\MVP\DigitalBillPresenter.cs" />
+    <AndroidResource Include="Resources\layout\DigitalBillView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -7048,6 +7055,7 @@
     <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\Adapter\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusRating\" />
     <Folder Include="Src\ManageBillDelivery\Adapter\" />
+    <Folder Include="Src\DigitalBill\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

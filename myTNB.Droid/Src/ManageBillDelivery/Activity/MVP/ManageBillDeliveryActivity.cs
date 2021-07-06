@@ -18,6 +18,9 @@ using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using myTNB_Android.Src.DBR.DBRApplication.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MultipleAccountPayment.Fragment;
+using myTNB_Android.Src.TermsAndConditions.Activity;
+using myTNB_Android.Src.DigitalBill.Activity;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -119,8 +122,29 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             }
             
             ScrollPage();
-        }
 
+            btnStartDigitalBill.Click += delegate
+            {
+                   
+                    InitiateDBRRequest();
+            };
+        }
+        public void InitiateDBRRequest()
+        {
+            try
+            {
+                StartActivity(typeof(DigitalBillActivity));
+
+
+
+
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] InitiatePaymentRequest: " + e.Message);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
         public void ScrollPage()
         {
             System.Timers.Timer? timer = new System.Timers.Timer
