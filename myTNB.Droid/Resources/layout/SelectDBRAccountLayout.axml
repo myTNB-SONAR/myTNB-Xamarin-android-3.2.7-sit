@@ -42,7 +42,7 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Looks like your accounts aren’t eligible to enable Self Meter Reading service"
+            android:text=""
             android:layout_marginTop="24dp"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"

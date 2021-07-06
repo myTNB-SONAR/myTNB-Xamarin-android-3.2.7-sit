@@ -701,7 +701,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     DisplayMode = DisplayMode,
                     IsButtonShow = false
                 });
-
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.TopLeft,
+                    ContentTitle = Utility.GetLocalizedLabel("Tutorial", "dbrBillTitle"),
+                    ContentMessage = Utility.GetLocalizedLabel("Tutorial", "dbrBillMessage"),
+                    ItemCount = ItemCount,
+                    DisplayMode = DisplayMode,
+                    IsButtonShow = false
+                });
                 newList.Add(new NewAppModel()
                 {
                     ContentShowPosition = ContentType.TopLeft,

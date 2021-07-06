@@ -103,22 +103,16 @@ namespace myTNB_Android.Src.DBR.DBRApplication.MVP
                 {
                     accountList[0].accountSelected = true;
                 }
-                noEligibleAccountContainer.Visibility = ViewStates.Gone;
-                eligibleAccountListContainer.Visibility = ViewStates.Visible;
-                List<DBRAccount> newItemList = accountList.GetRange(0, accountList.Count);
-                newItemList.Add(new DBRAccount()); //To show info item
-                selectAccountAdapter = new SelectAccountAdapter(this, newItemList);
-                accountDBRList.Adapter = selectAccountAdapter;
+               
+            }
+            noEligibleAccountContainer.Visibility = ViewStates.Gone;
+            eligibleAccountListContainer.Visibility = ViewStates.Visible;
+            List<DBRAccount> newItemList = accountList.GetRange(0, accountList.Count);
+            newItemList.Add(new DBRAccount()); //To show info item
+            selectAccountAdapter = new SelectAccountAdapter(this, newItemList);
+            accountDBRList.Adapter = selectAccountAdapter;
 
-                accountDBRList.ItemClick += OnItemClick;
-            }
-            else
-            {
-                SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
-                SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
-                noEligibleAccountContainer.Visibility = ViewStates.Visible;
-                eligibleAccountListContainer.Visibility = ViewStates.Gone;
-            }
+            accountDBRList.ItemClick += OnItemClick;
         }
 
         public class OnSelectAccountListener : Java.Lang.Object, RecyclerView.IOnClickListener

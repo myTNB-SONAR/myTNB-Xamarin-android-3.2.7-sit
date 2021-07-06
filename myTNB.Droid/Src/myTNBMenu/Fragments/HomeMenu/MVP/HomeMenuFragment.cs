@@ -251,6 +251,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.shimmerPayView)]
         ShimmerFrameLayout shimmerPayView;
 
+        [BindView(Resource.Id.discovercontainer)]
+        LinearLayout discovercontainer;
+
+        
+
         AccountsRecyclerViewAdapter accountsAdapter;
 
         private NewFAQScrollListener mListener;
@@ -547,12 +552,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             if (!this.GetIsClicked())
             {
-                this.SetIsClicked(true);
-                CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
-                AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
-                Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
-                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-                StartActivity(intent);
+                try
+                {
+                    this.SetIsClicked(true);
+                    CustomerBillingAccount customerAccount = CustomerBillingAccount.GetSelected();
+                    AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
+                    Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
+                    intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                    StartActivity(intent);
+                }
+                catch (System.Exception e)
+                {
+                    Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
+                    StartActivity(intent);
+                    Utility.LoggingNonFatalError(e);
+                }
             }
         }
         public void SetRefreshLayoutParams()
@@ -2883,7 +2897,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             return accountCard.Height;
         }
-
+        public int GetDiscovercontainerHeight()
+        {
+            return discovercontainer.Height;
+        }
+        
         public void ResetNewFAQScroll()
         {
             try
