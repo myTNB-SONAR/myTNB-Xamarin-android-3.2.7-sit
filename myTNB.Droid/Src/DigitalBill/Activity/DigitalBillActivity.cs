@@ -89,23 +89,12 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             {
                 mPresenter = new DigitalBillPresenter(this);
 
-                // Create your application here
-                //txtTitle = FindViewById<TextView>(Resource.Id.txt_tnc_title);
-                //txtVersion = FindViewById<TextView>(Resource.Id.txt_tnc_version);
-                //txtTnCHtml = FindViewById<TextView>(Resource.Id.txt_tnc_html);
-                //txtTnCHtml.MovementMethod = LinkMovementMethod.Instance;
-                //txtTnCHtml.JustificationMode = JustificationMode.InterWord;
-
                 tncWebView = FindViewById<WebView>(Resource.Id.tncWebView);
-                //TextViewUtils.SetMuseoSans500Typeface(txtTitle);
-                //TextViewUtils.SetMuseoSans300Typeface(txtVersion/*, txtTnCHtml*/);
-                //TextViewUtils.SetTextSize14(txtTitle, txtVersion);
+                tncWebView.Settings.JavaScriptEnabled = (true);
 
                 progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
+                ShowDigitalBill(true);
 
-                //txtTitle.Text = "";
-
-                GetDataFromSiteCore();
             }
             catch (Exception e)
             {
@@ -119,86 +108,10 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             {
                 string HTMLText = "<html>" + "<body><b>MicroSite</b><br/><br/></body>" +
                                "</html>";
-
-                //txtVersion.Text = "Version [" + tncArray[1] + "]";
-                //txtTitle.Text = tncArray[0];
-                // txtTnCHtml.TextFormatted = Html.FromHtml(GetString(Resource.String.tnc_html));
                 tncWebView.LoadDataWithBaseURL("", HTMLText, "text/html", "UTF-8", "");
             }
             catch (Exception e)
             {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void GetDataFromSiteCore()
-        {
-            try
-            {
-                progressBar.Visibility = ViewStates.Visible;
-                this.userActionsListener.GetSavedDigitalBillTimeStamp();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void OnSavedTimeStamp(string savedTimeStamp)
-        {
-            if (savedTimeStamp != null)
-            {
-                this.mSavedTimeStamp = savedTimeStamp;
-            }
-            this.userActionsListener.OnGetDigitalBillTimeStamp();
-        }
-
-        public void ShowDigitalBillTimestamp(bool success)
-        {
-            try
-            {
-                if (success)
-                {
-                    TimeStampEntity wtManager = new TimeStampEntity();
-                    List<TimeStampEntity> items = wtManager.GetAllItems();
-                    if (items != null)
-                    {
-                        TimeStampEntity entity = items[0];
-                        if (entity != null)
-                        {
-                            if (!entity.Timestamp.Equals(mSavedTimeStamp))
-                            {
-                                MyTNBApplication.siteCoreUpdated = true;
-                                this.userActionsListener.GetDigitalBillData();
-                            }
-                            else
-                            {
-                                MyTNBApplication.siteCoreUpdated = false;
-                                ShowDigitalBill(true);
-                            }
-                        }
-                        else
-                        {
-                            MyTNBApplication.siteCoreUpdated = true;
-                            this.userActionsListener.GetDigitalBillData();
-                        }
-                    }
-                    else
-                    {
-                        MyTNBApplication.siteCoreUpdated = true;
-                        this.userActionsListener.GetDigitalBillData();
-                    }
-                }
-                else
-                {
-                    MyTNBApplication.siteCoreUpdated = true;
-                    this.userActionsListener.GetDigitalBillData();
-                }
-            }
-            catch (Exception e)
-            {
-                MyTNBApplication.siteCoreUpdated = true;
-                this.userActionsListener.GetDigitalBillData();
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -239,21 +152,5 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop && Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.M)
             ? Resources.Assets : base.Assets;
 
-        //public override void OnTrimMemory(TrimMemory level)
-        //{
-        //    base.OnTrimMemory(level);
-
-        //    switch (level)
-        //    {
-        //        case TrimMemory.RunningLow:
-        //            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-        //            GC.Collect();
-        //            break;
-        //        default:
-        //            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-        //            GC.Collect();
-        //            break;
-        //    }
-        //}
     }
 }
