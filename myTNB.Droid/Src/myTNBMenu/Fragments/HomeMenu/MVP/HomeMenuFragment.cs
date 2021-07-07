@@ -52,6 +52,8 @@ using myTNB_Android.Src.EnergyBudget.Activity;
 using AndroidX.ConstraintLayout.Widget;
 using myTNB_Android.Src.EBPopupScreen.Activity;
 using AndroidX.CardView.Widget;
+using System.Globalization;
+
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -118,6 +120,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         [BindView(Resource.Id.accountGreetingName)]
         TextView accountGreetingName;
+
+        [BindView(Resource.Id.txtDate)]
+        TextView txtDate;
 
         [BindView(Resource.Id.searchAction)]
         ImageView searchActionIcon;
@@ -466,8 +471,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, discoverMoreTitle, btnRefresh, txtAdd
                     , addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel
-                    , myServiceLoadMoreLabel, txtNewLabel, txtTitleDiscoverMore, btnMyServiceRefresh);
+                    , myServiceLoadMoreLabel, txtNewLabel, txtDate, txtTitleDiscoverMore, btnMyServiceRefresh);
                 TextViewUtils.SetTextSize8(txtNewLabel);
+                TextViewUtils.SetTextSize10(txtDate);
                 TextViewUtils.SetTextSize12(addActionLabel, txtTitleDiscoverMore, searchActionLabel, rearrangeLabel
                     , loadMoreLabel, myServiceLoadMoreLabel, txtMyServiceRefreshMessage);
                 TextViewUtils.SetTextSize14(refreshMsg, discoverMoreTitle, txtAdd, newFAQTitle, accountHeaderTitle);
@@ -581,7 +587,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
                 this.presenter.SetDynaUserTAG();  //call dyna set username
                 OnStartLoadAccount();
-                //StartShimmerDiscoverMore();
+                //ShowDiscoverMoreLayoit();
 
             }
             catch (System.Exception e)
@@ -802,6 +808,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             myServiceShimmerView.Visibility = ViewStates.Visible;
             myServiceView.Visibility = ViewStates.Gone;
+            ShowDiscoverMoreLayoit();
             this.presenter.InitiateMyService();
         }
 
@@ -1962,6 +1969,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMaintenanceMsg);
                 }
+                discoverMoreContainer.Visibility = ViewStates.Visible;
             }
             else
             {
@@ -1978,6 +1986,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 string refreshMsg = string.IsNullOrEmpty(contentMsg) ? GetLabelByLanguage("refreshMessage") : contentMsg;
                 string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? GetLabelByLanguage("refreshBtnText") : buttonMsg;
+                discoverMoreContainer.Visibility = ViewStates.Gone;
                 btnRefresh.Text = refreshBtnTxt;
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
@@ -3320,6 +3329,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
                         count++;
                     }
+                }
+            }
+        }
+
+
+        public void ShowDiscoverMoreLayoit()
+        {
+            if (UserSessions.GetEnergyBudgetList().Count > 0)
+            {          
+                discoverMoreContainer.Visibility = ViewStates.Visible;
+                bool isDateAvailable = false;
+                try
+                {
+                    //DateTime publishDateTime = DateTime.ParseExact(whatsNewList[position].PublishDate, "yyyyMMddTHHmmss",
+                    DateTime publishDateTime = DateTime.UtcNow;
+                    //CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                    if (LanguageUtil.GetAppLanguage().ToUpper() == "MS")
+                    {
+                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("ms-MY");
+                        txtDate.Text = publishDateTime.ToString("dd MMM yyyy", currCult);
+                        isDateAvailable = true;
+                    }
+                    else
+                    {
+                        CultureInfo currCult = CultureInfo.CreateSpecificCulture("en-US");
+                        txtDate.Text = publishDateTime.ToString("dd MMM yyyy", currCult);
+                        isDateAvailable = true;
+                    }
+                }
+                catch(System.Exception e)
+                {
+                   txtDate.Text = "";
+                    Utility.LoggingNonFatalError(e);
                 }
             }
         }
