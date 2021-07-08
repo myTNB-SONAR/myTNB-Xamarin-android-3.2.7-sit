@@ -221,9 +221,9 @@
     "receivedExtra": "received extra",
     "applicationStatus": "Application<br>Status",
     "discoverMore": "Discover More",
-    "dbrReminderPopupTitle": "Be environmentally friendly and start digital bill today!",
-    "dbrReminderPopupMessage": "We’re excited to introduce myTNB Digital Bill as a new bill delivery method - a better and more environmentally friendly way to receive your bills via myTNB App & Portal. Get a head start in making your impact today, change to digital bills for your next bill!",
-    "dbrReminderPopupStartNow": "Start Now"
+    "dbrReminderPopupTitle": "Be the first to go paperless with myTNB Bill today!",
+    "dbrReminderPopupMessage": "Make an impact today and choose to go without paper for your next bills! With myTNB, you have a better and more environmentally friendly way to receive you paperless bills digitally via App and Portal.",
+    "dbrReminderPopupStartNow": "View More"
   },
   "Tabbar": {
     "home": "Home",
@@ -767,7 +767,8 @@
     "removeAccount": "Remove This Account",
     "popupremoveAccountTitle": "Remove Account",
     "popupremoveAccountMessage": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b> from the app.<br><br>Note: This does not close your electricity account. Visit the myTNB Portal or Kedai Tenaga to close your electricity supply account.",
-    "dbrManageDeliveryMethod": "Manage Bill Delivery"
+    "dbrManageDeliveryMethod": "Manage Bill Delivery",
+    "dbrViewBillDelivery": "View Bill Delivery"
   },
   "Onboarding": {
     "letsStart": "Let's get started!",
@@ -2298,9 +2299,11 @@
   },
   "ManageDigitalBillLanding": {
     "title": "Manage Bill Delivery",
+    "dbrInfoTitle0": "This account is receiving myTNB Bill & Paper Bill",
     "dbrInfoTitle1": "Go green and save the trees.",
     "dbrInfoTitle2": "Fast and convenient bill viewing.",
     "dbrInfoTitle3": "Secure billing for a peace of mind.",
+    "dbrInfoDescription0": "Swipe left to learn how you can benefit from going without paper bills today!",
     "dbrInfoDescription1": "Reduce paper waste and minimise your carbon footprint, and play your part in our collective move towards a sustainable future.",
     "dbrInfoDescription2": "Enjoy faster and on-the-dot delivery of your monthly electricity bills and view them directly on myTNB App & Portal, anytime, anywhere.",
     "dbrInfoDescription3": "Get your digital bills directly and securely on myTNB. No more worry about others seeing your bills, risk getting stolen or lost in the mail. ",
@@ -2309,6 +2312,28 @@
     "whatIfIStillWantPaperBillsTitle": "What if I still want paper bills?",
     "whatIfIStillWantPaperBillsDetails": "You can still choose to continue having paper bills mailed to you but your digital bills will always be available for viewing on myTNB. Let us know if you prefer to opt in for paper bills below. You can update your billing method anytime in this page.",
     "iWant": "I Want",
-    "nevermind": "Nevermind"
+    "nevermind": "Nevermind",
+    "nonOwnerPreLaunchTitle": "Your bill delivery method will be changed to myTNB digital bills soon.",
+    "nonOwnerPreLaunchDescription": "<b>Starting July 2021</b>, you’ll be receiving digital bills via myTNB App & Portal for this account as part of our mission to reduce paper waste.",
+    "anotherDeliveryMethod": "What if I want another bill delivery method?",
+    "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "What if I want another bill delivery method?",
+    "nonOwnerPreLaunchAnotherDeliveryMethodDetails": "Your digital bills will always be available for viewing on myTNB. However, you can continue having email or paper bills delivered to you by contacting the account owner to update the account bill delivery method if you prefer another method.",
+    "goPaperlessCTA": "Go Paperless",
+    "updateBillDeliveryMethodCTA": "Update Bill Delivery Method",
+    "deliveringToTitle": "Delivering to",
+    "you": "You",
+    "eBillTitle": "This is an environmentally friendly account with myTNB Bill!",
+    "emailBillTitle": "This account is receiving myTNB Bill & Email Bill.",
+    "eBillDescription": "You are receiving bills via App & Portal.<br>Thanks for going green!",
+    "emailBillDescription": "You are receiving bills via App & Portal and to your email address."
+  },
+  "DBRWebview": {
+    "startDigitalBill": "Start Digital Bill"
+  },
+  "ServiceConfiguration": {
+    "GetEligibility": {
+      "enabled": true,
+      "callInterval": 480
+    }
   }
 }

@@ -83,7 +83,7 @@
 			<FrameLayout
 				android:layout_width="match_parent"
 				android:background="@color/lightGrey"
-				android:layout_height="328dp">
+				android:layout_height="338dp">
 				<androidx.viewpager.widget.ViewPager
 					android:id="@+id/viewPager"
 					android:layout_width="match_parent"

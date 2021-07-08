@@ -370,7 +370,7 @@ namespace myTNB_Android.Src.Utils
                 TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
                 TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
                 TextViewUtils.SetTextSize14(tooltipTitle, tooltipMessage);
-                TextViewUtils.SetTextSize16(tooltipPrimaryCTA, tooltipPrimaryCTA);
+                TextViewUtils.SetTextSize16(tooltipPrimaryCTA, tooltipPrimaryCTA, tooltipSecondaryCTA);
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
 

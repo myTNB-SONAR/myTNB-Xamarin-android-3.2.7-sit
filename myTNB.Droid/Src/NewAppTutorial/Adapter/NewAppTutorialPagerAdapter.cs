@@ -458,7 +458,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
                             {
                                 topHeight = (int)DPUtils.ConvertDPToPx(TextViewUtils.IsLargeFonts ? 385f : 345f);
-                                topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f);
+                                topHeight = topHeight + (int)DPUtils.ConvertDPToPx(38f); 
                             }
                             if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
                             {
@@ -467,8 +467,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
                                 int belowHeight = ((myTNB_Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
-                                middleHeight += ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight();
-                                topHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight) - middleHeight - ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight();
+                                middleHeight += (int)DPUtils.ConvertDPToPx(15f); 
+                                topHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight) - middleHeight - ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight() + (TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(20f) : (int)DPUtils.ConvertDPToPx(30f));
                             }
 
                             LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
@@ -1187,7 +1187,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
                             bottomLayout.RequestLayout();
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(100f);
+                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
@@ -1479,7 +1479,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(100f);
+                            innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
                             innerTopLayout.RequestLayout();
