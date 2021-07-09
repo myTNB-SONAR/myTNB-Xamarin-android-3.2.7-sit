@@ -134,7 +134,7 @@ namespace myTNB_Android.Src.ResetPassword.MVP
                                     NotificationFilterEntity.InsertOrReplace(notificationType.Id, notificationType.Title, false);
                                 }
                             }
-                            UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new BaseRequest());
+                            UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new BaseRequest());
                             if (response.IsSuccessResponse())
                             {
                                 try

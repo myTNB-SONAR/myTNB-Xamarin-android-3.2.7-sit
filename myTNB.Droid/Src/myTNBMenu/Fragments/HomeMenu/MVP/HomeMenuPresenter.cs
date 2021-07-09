@@ -2528,7 +2528,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
 
                 List<Notifications.Models.UserNotificationData> ToBeDeleteList = new List<Notifications.Models.UserNotificationData>();
-                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new MyTNBService.Request.BaseRequest());
+                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new MyTNBService.Request.BaseRequest());
                 if (response.IsSuccessResponse())
                 {
                     if (response.GetData() != null && response.GetData().UserNotificationList != null)

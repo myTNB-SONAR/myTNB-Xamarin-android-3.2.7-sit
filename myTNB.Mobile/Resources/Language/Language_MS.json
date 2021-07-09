@@ -580,7 +580,9 @@
     "viewReadingHistory": "Kembali ke Penggunaan",
     "paymentHistory": "Rekod bayaran",
     "viewReceipt": "Melihat Resit",
-    "viewBudget": "Paparkan Energy Budget"
+    "viewBudget": "Paparkan Energy Budget",
+    "viewTips": "Rujuk Tips",
+    "linkEB": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks"
   },
   "AddAccount": {
     "title": "Tambah Akaun Elektrik",

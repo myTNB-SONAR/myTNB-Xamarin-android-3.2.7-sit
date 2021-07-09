@@ -24,6 +24,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             void ShowPaymentReceiptError();
             void ShowLoadingScreen();
             void HideLoadingScreen();
+            void ViewTips();
 
             /// <summary>
             /// 

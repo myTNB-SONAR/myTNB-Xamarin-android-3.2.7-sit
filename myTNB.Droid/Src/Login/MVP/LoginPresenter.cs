@@ -114,6 +114,7 @@ namespace myTNB_Android.Src.Login.MVP
                 Log.Debug(TAG, "[DEBUG] FCM TOKEN: " + fcmToken);
                 UserAuthenticateRequest userAuthRequest = new UserAuthenticateRequest(DeviceIdUtils.GetAppVersionName(), pwd);
                 userAuthRequest.SetUserName(usrNme);
+                string s = JsonConvert.SerializeObject(userAuthRequest);
                 var userResponse = await ServiceApiImpl.Instance.UserAuthenticate(userAuthRequest);
 
                 if (!userResponse.IsSuccessResponse())
@@ -295,7 +296,7 @@ namespace myTNB_Android.Src.Login.MVP
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
                                 MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
-                                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotifications(new BaseRequest());
+                                UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new BaseRequest());
                                 if(response.IsSuccessResponse())
                                 {
                                     if (response.GetData() != null)
