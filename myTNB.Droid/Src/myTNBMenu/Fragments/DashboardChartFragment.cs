@@ -532,6 +532,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.layoutunderCardview)]
         LinearLayout layoutunderCardview;
 
+        [BindView(Resource.Id.layEnergyBudgetRMtxt)]
+        LinearLayout layEnergyBudgetRMtxt;
+
+        [BindView(Resource.Id.energyBudgetbodytxt)]
+        TextView energyBudgetbodytxt;
+
+        [BindView(Resource.Id.OuterlayoutHorizontolBar)]
+        LinearLayout OuterlayoutHorizontolBar;
+
+        [BindView(Resource.Id.InnerlayoutHorizontolBar)]
+        LinearLayout InnerlayoutHorizontolBar;
+
+        [BindView(Resource.Id.percentagetxt)]
+        TextView percentagetxt;
+
         private static bool largescreen = false;
 
         private static bool isZoomIn = false;
@@ -588,13 +603,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         bool isHaveEnergyBudget = false;
 
-        bool haveSetTheEnergyBudget = false;
-
         bool editBudget = false;
+
+        bool setBtn = false;
+
+        bool saveBtn = false;
+
+        bool editBtn = false;
 
         private static bool setEnergyBudgetlayout = false;
 
         CustomerBillingAccount selectedCusBillAcc;
+
+        List<CustomerBillingAccount> SMEnergybudgetCheck;
 
         public StackedBarChartRenderer renderer;
 
@@ -920,7 +941,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans300Typeface(reTotalPayable, reTotalPayableCurrency
                     , reDueDate, txtNoPayable);
                 TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView
-                    , txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency, btnRefresh_EB_MDMS);
+                    , txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency, btnRefresh_EB_MDMS
+                    , percentagetxt);
                 TextViewUtils.SetMuseoSans300Typeface(smStatisticBillSubTitle, smStatisticBill
                     , smStatisticBillCurrency, smStatisticBillKwhUnit, smStatisticBillKwh
                     , smStatisticPredictSubTitle, smStatisticPredict, smStatisticPredictCurrency
@@ -929,7 +951,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     , txtSmStatisticTooltip, smStatisticTrendTitle, txtDayViewZoomInIndicator
                     , energyBudgetAccountStatusText);
                 TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth
-                    , txtMdmsDayViewDown, newAccountContent, txtTariffBlockLegendDisclaimer, refreshcontentEBMDMSDown);
+                    , txtMdmsDayViewDown, newAccountContent, txtTariffBlockLegendDisclaimer, refreshcontentEBMDMSDown
+                    , energyBudgetbodytxt);
                 TextViewUtils.SetMuseoSans300Typeface(txtReNoPayable, txtReNoPayableCurrency);
                 TextViewUtils.SetMuseoSans500Typeface(txtReNoPayableTitle);
 
@@ -973,7 +996,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetTextSize25(txtNoPayable);
                 TextViewUtils.SetTextSize16(energyBudgetRMinput);
                 TextViewUtils.SetTextSize13(energyBudgetAccountStatusText, energyBudgetRMtxt);
-                TextViewUtils.SetTextSize12(refreshcontentEBMDMSDown);
+                TextViewUtils.SetTextSize12(refreshcontentEBMDMSDown, energyBudgetbodytxt, percentagetxt);
 
                 txtTarifToggle.Text = Utility.GetLocalizedLabel("Usage", "tariffBlock");
                 btnViewBill.Text = Utility.GetLocalizedLabel("Usage", "viewDetails");
@@ -988,21 +1011,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 //energybudget
                 TextViewUtils.SetMuseoSans300Typeface(energyBudgetRMinput);
-
-                /*btnRefresh_EB_MDMS.TextSize = TextViewUtils.GetFontSize(16f);
-                refreshcontentEBMDMSDown.TextSize = TextViewUtils.GetFontSize(12f);
-                energyBudgetRMinput.TextSize = TextViewUtils.GetFontSize(16f);
-                btnSetNewBudget.TextSize = TextViewUtils.GetFontSize(16f);
-                btnEditBudget.TextSize = TextViewUtils.GetFontSize(16f);
-                energyBudgetAccountStatusText.TextSize = TextViewUtils.GetFontSize(13f);
-                energyBudgetRMtxt.TextSize = TextViewUtils.GetFontSize(13f);*/
+                MyTNBAccountManagement.GetInstance().SetIsEBUser(true);
 
                 energyBudgetRMinput.Text = "- -";
                 btnEditBudget.Text = Utility.GetLocalizedLabel("Usage", "editEnergyButton");
-                energyBudgetAccountStatusText.Text = Utility.GetLocalizedLabel("Usage", "myMonthlyBudget");
+                energyBudgetAccountStatusText.Text = Utility.GetLocalizedLabel("Usage", "youHaveNotSetBudget");
                 btnSetNewBudget.Text = Utility.GetLocalizedLabel("Usage", "setEnergyButton");
                 btnRefresh_EB_MDMS.Text = Utility.GetLocalizedLabel("Usage", "refreshNowEnergyBudgetButton");
                 refreshcontentEBMDMSDown.Text = Utility.GetLocalizedLabel("Usage", "disconnectedEnergyBudget");
+                energyBudgetbodytxt.Text = Utility.GetLocalizedLabel("Usage", "youHaveNotSetBudgetSubtitle");
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
 
@@ -1036,7 +1053,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                 
-                List<CustomerBillingAccount> SMEnergybudgetCheck = new List<CustomerBillingAccount>();              //checking energy budget empty
+                //checking energy budget empty
                 SMEnergybudgetCheck = CustomerBillingAccount.EnergyBudgetRM(selectedAccount.AccountNum);
                 selectedCusBillAcc = SMEnergybudgetCheck[0];
 
@@ -1367,9 +1384,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (!string.IsNullOrEmpty(energyBudgetRMinput.Text))
                 {
-                    EnableSetEnergyBudgetButton();
-                    editBudget = false;
-                    setEnergyBudgetlayout = false;
+                    string amount = energyBudgetRMinput.Text;
+                    int saveamount = Convert.ToInt32(amount);
+                    if (setBtn && !saveamount.Equals(0))
+                    {
+                        EnableSetEnergyBudgetButton();
+                        editBudget = false;
+                        setEnergyBudgetlayout = false;
+                    }
+                    else if (editBtn && !saveBtn)
+                    {
+                        EnableSetEnergyBudgetButton();
+                        editBudget = false;
+                        setEnergyBudgetlayout = false;
+                    }
                 }
                 else
                 {
@@ -5151,6 +5179,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 this.SetIsClicked(true);
                 editBudget = true;
+                saveBtn = false;
+                editBtn = true;
                 setEnergyBudgetlayout = true;
                 isChangeVirtualHeightNeed = true;
                 energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
@@ -5162,12 +5192,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 btnSetNewBudget.Text = Utility.GetLocalizedLabel("Usage", "saveEnergyButton");
                 DisableSetEnergyBudgetButton();
                 energyBudgetRMinput.TextChanged += EnergyBudgetRMinput_TextChanged;
-                //ShowSMStatisticCard();
                 LayoutbtnEditBudget.Visibility = ViewStates.Gone;
                 energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
                 smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
                 btnSetNewBudget.Visibility = ViewStates.Visible;
                 smStatisticTooltip.Visibility = ViewStates.Gone;
+                OuterlayoutHorizontolBar.Visibility = ViewStates.Gone;
                 SetVirtualHeightParams(6f);
                 try
                 {
@@ -5182,49 +5212,91 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         //energy budget button set //wan
         [OnClick(Resource.Id.btnSetNewBudget)]
-        internal void OnsetFocusBillInput(object sender, EventArgs e)
-        {            
-            if (!this.GetIsClicked() && btnSetNewBudget.Text == Utility.GetLocalizedLabel("Usage", "setEnergyButton"))
+        internal void OnsetEnergyBudgetInput(object sender, EventArgs e)
+        {
+            try
             {
-                this.SetIsClicked(true);
-                editBudget = false;
-                //energyBudgetRMinput.Enabled = true;
-                energyBudgetRMinput.Enabled = true;
-                energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(8) });
-                energyBudgetRMinput.RequestFocus();
-                ShowHideKeyboard(energyBudgetRMinput, true);
-                energyBudgetRMinput.Text = "";
-                btnSetNewBudget.Text = Utility.GetLocalizedLabel("Usage", "saveEnergyButton");
-                energyBudgetRMinput.TextChanged += EnergyBudgetRMinput_TextChanged;
-                DisableSetEnergyBudgetButton();
-                try
-                {
-                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Set New Budget Buttom Clicked");
-                }
-                catch (System.Exception ne)
-                {
-                    Utility.LoggingNonFatalError(ne);
-                }
-            }
-            else if (!this.GetIsClicked() && btnSetNewBudget.Text == Utility.GetLocalizedLabel("Usage", "saveEnergyButton"))
-            {
-                CustomerBillingAccount.UpdateEnergyBudgetRM(energyBudgetRMinput.Text, selectedAccount.AccountNum);
-                if (!GetIsMDMSDown())
+                if (!this.GetIsClicked() && btnSetNewBudget.Text == Utility.GetLocalizedLabel("Usage", "setEnergyButton"))
                 {
                     this.SetIsClicked(true);
-                    setEnergyBudgetlayout = false;
-                    string amount = energyBudgetRMinput.Text;
-                    int saveamount = Convert.ToInt32(amount);
-                    this.userActionsListener.SaveEnergyBudgetAmmount(selectedAccount.AccountNum, saveamount);
-                }               
+                    editBudget = true;
+                    setBtn = true;
+                    energyBudgetRMinput.Enabled = true;
+                    energyBudgetbodytxt.Visibility = ViewStates.Gone;
+                    layEnergyBudgetRMtxt.Visibility = ViewStates.Visible;
+                    LayoutbtnEditBudget.Visibility = ViewStates.Gone;
+                    energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
+                    smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
+                    btnSetNewBudget.Visibility = ViewStates.Visible;
+                    smStatisticTooltip.Visibility = ViewStates.Gone;
+                    energyBudgetRMinput.Text = "";
+                    btnSetNewBudget.Text = Utility.GetLocalizedLabel("Usage", "saveEnergyButton");
+                    energyBudgetAccountStatusText.Text = Utility.GetLocalizedLabel("Usage", "myMonthlyBudget");
+                    energyBudgetAccountStatusText.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.charcoalGrey));
+                    energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(8) });
+                    energyBudgetRMinput.RequestFocus();
+                    ShowHideKeyboard(energyBudgetRMinput, true);
+                    energyBudgetRMinput.TextChanged += EnergyBudgetRMinput_TextChanged;
+                    DisableSetEnergyBudgetButton();
+                    isChangeVirtualHeightNeed = true;
+                    OuterlayoutHorizontolBar.Visibility = ViewStates.Gone;
+                    SetVirtualHeightParams(6f);
+                    try
+                    {
+                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Set New Budget Buttom Clicked");
+                    }
+                    catch (System.Exception ne)
+                    {
+                        Utility.LoggingNonFatalError(ne);
+                    }
+                }
+                else if (!this.GetIsClicked() && btnSetNewBudget.Text == Utility.GetLocalizedLabel("Usage", "saveEnergyButton"))
+                {
+                    if (!GetIsMDMSDown())
+                    {
+                        this.SetIsClicked(true);
+                        setEnergyBudgetlayout = false;
+                        setBtn = false;
+                        saveBtn = true;
+                        string amount = energyBudgetRMinput.Text;
+                        int saveamount = Convert.ToInt32(amount);
+
+                        List<CustomerBillingAccount> EnergybudgetAmount = new List<CustomerBillingAccount>();
+                        EnergybudgetAmount = CustomerBillingAccount.EnergyBudgetRM(selectedAccount.AccountNum);
+
+                        if (EnergybudgetAmount[0].BudgetAmount.Equals(saveamount.ToString()))
+                        {
+                            editBtn = false;
+                            ShowEnergyBudgetSuccess();
+                            //ShowSMStatisticCard();
+                        }
+                        else if (saveamount.Equals(0))
+                        {
+                            UpdateEnergyBudgetLocal(saveamount.ToString(), selectedAccount.AccountNum);
+                            isHaveEnergyBudget = false;
+                            saveBtn = false;
+                            editBtn = false;
+                            ShowSMStatisticCard();
+                        }
+                        else
+                        {
+                            editBtn = false;
+                            userActionsListener.SaveEnergyBudgetAmmount(selectedAccount.AccountNum, saveamount);
+                        }
+                        ShowHideKeyboard(energyBudgetRMinput, false);
+                    }
+                }
+                this.SetIsClicked(false);
             }
-            this.SetIsClicked(false);
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
-        public void ResetButtonToEnabel()
+        public void UpdateEnergyBudgetLocal(string EBInput, string AccNum)
         {
-            energyBudgetRMinput.Text = "--";
-            btnSetNewBudget.Text = Utility.GetLocalizedLabel("Usage", "setEnergyButton");
+            CustomerBillingAccount.UpdateEnergyBudgetRM(EBInput, AccNum);
         }
 
         //energy budget keyboard set //wan
@@ -5264,6 +5336,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             btnSetNewBudget.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
         }
 
+        //energy budget button edit enable //wan
+        public void EnableEditEnergyBudgetButton()
+        {
+            this.SetIsClicked(false);
+            btnEditBudget.Enabled = true;
+            btnEditBudget.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+            btnEditBudget.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
+        }
+
+        //energy budget button edit disable //wan
+        public void DisableEditEnergyBudgetButton()
+        {
+            btnEditBudget.Enabled = false;
+            btnEditBudget.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverchalice));
+            btnEditBudget.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+        }
+
         public void ShowEnergyBudgetSuccess()
         {
             try
@@ -5271,7 +5360,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 ToastUtils.OnDisplayToast(Activity, string.Format(Utility.GetLocalizedLabel("Usage", "toastSaveBudgetuccessfull")));
                 isHaveEnergyBudget = true;
                 editBudget = false;
-                SetUp();
+                //SetUp();
+                ShowSMStatisticCard();
+                energyBudgetRMinput.Enabled = false;
+            }
+            catch (System.Exception e)
+            {
+                this.SetIsClicked(false);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowEnergyBudgetSuccessSamevalue()
+        {
+            try
+            {
+                ToastUtils.OnDisplayToast(Activity, string.Format(Utility.GetLocalizedLabel("Usage", "toastSaveBudgetuccessfull")));
+                isHaveEnergyBudget = true;
+                editBudget = false;
                 energyBudgetRMinput.Enabled = false;
             }
             catch (System.Exception e)
@@ -7579,6 +7685,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {                       
                                 if (screenHeightWithoutVirtualHeight > screenHeightWithoutBottomSheet)
                                 {
+                                    editBudget = false;
                                     requireScroll = true;
                                     bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
                                     shadowLayout.SetBackgroundResource(0);
@@ -7800,10 +7907,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                                         dashboard_bottom_view.SetBackgroundResource(Resource.Drawable.usage_bottom_view);
                                         smStatisticContainer.Visibility = ViewStates.Visible;
-                                        if (!isHaveEnergyBudget)
+                                        /*if (!isHaveEnergyBudget)
                                         {
                                             EnableSetEnergyBudgetButton();
-                                        }
+                                        }*/
                                     }
                                     else if (energyBudgetMDMSContainer.Visibility == ViewStates.Invisible && GetIsMDMSDown())
                                     {
@@ -9004,8 +9111,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
                     shimmerSMStatisticPredictImg.Visibility = ViewStates.Visible;
                     shimmerSMStatisticPredictLayout.Visibility = ViewStates.Visible;
-                    //shimmerSMStatisticBillImg.Visibility = ViewStates.Visible;
-                    //shimmerSMStatisticBillLayout.Visibility = ViewStates.Visible;
+                    shimmerSMStatisticBillImg.Visibility = ViewStates.Visible;
+                    shimmerSMStatisticBillLayout.Visibility = ViewStates.Visible;
                     shimmrtSmStatisticTooltip.Visibility = ViewStates.Visible;
                     smStatisticBillLayout.Visibility = ViewStates.Gone;
                     smStatisticBillImg.Visibility = ViewStates.Gone;
@@ -9135,216 +9242,396 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     SMEnergybudgetCheck = CustomerBillingAccount.EnergyBudgetRM(selectedAccount.AccountNum);
                     selectedCusBillAcc = SMEnergybudgetCheck[0];
                     System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
-                    //this.SetIsClicked(false);
 
                     StopSMStatisticShimmer();
-                    if (ChartDataType == ChartDataType.RM)
+
+                    if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
                     {
-                        smStatisticTooltip.Visibility = ViewStates.Visible;                        
-                        smStatisticTrendMainLayout.Visibility = ViewStates.Gone;
-                        smStatisticBill.Visibility = ViewStates.Visible;
-                        smStatisticBillCurrency.Visibility = ViewStates.Visible;
-                        smStatisticBillKwhUnit.Visibility = ViewStates.Gone;
-                        smStatisticBillKwh.Visibility = ViewStates.Gone;
-                        smStatisticBillTitle.Text = "My bill amount so far";
-                        smStatisticBillSubTitle.Text = "- -";
-                        smStatisticBill.Text = "- -";
-                        //smStatisticPredictTitle.Text = "My bill may reach";
-                        smStatisticPredictSubTitle.Text = "- -";
-                        smStatisticPredict.Text = "- -";
-                        txtSmStatisticTooltip.Text = Utility.GetLocalizedLabel("Usage", "whyIsAmountDiff");
-                        smStatisticPredictTitle.Text = Utility.GetLocalizedLabel("Usage", "myUsageSoFar");
-                        btnEditBudget.Text = Utility.GetLocalizedLabel("Usage", "editEnergyButton");
 
-                        //changing icon and hide divider
-                        //smStatisticBillImg.SetImageResource(Resource.Drawable.ic_menu_feedback_budget);
-                        smStatisticPredictImg.SetImageResource(Resource.Drawable.calendar);
-                        energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
-                        smStatisticDivider.Visibility = ViewStates.Gone;
-                        smStatisticBillSubTitle.Visibility = ViewStates.Gone;
-                        smStatisticBillImg.Visibility = ViewStates.Gone;
-                        smStatisticBillTitle.Visibility = ViewStates.Gone;
-                        smStatisticBillCurrency.Visibility = ViewStates.Gone;
-                        smStatisticBill.Visibility = ViewStates.Gone;
-                        smStatisticBillMainLayout.Visibility = ViewStates.Gone;
-
-                        if (!editBudget && isHaveEnergyBudget)
+                        if (ChartDataType == ChartDataType.RM)
                         {
-                            LayoutbtnEditBudget.Visibility = ViewStates.Visible;
-                            energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
-                            smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
-                            btnSetNewBudget.Visibility = ViewStates.Gone;
                             smStatisticTooltip.Visibility = ViewStates.Visible;
-                            energyBudgetRMinput.ClearFocus();
+                            smStatisticTrendMainLayout.Visibility = ViewStates.Gone;
+                            smStatisticBill.Visibility = ViewStates.Visible;
+                            smStatisticBillCurrency.Visibility = ViewStates.Visible;
+                            smStatisticBillKwhUnit.Visibility = ViewStates.Gone;
+                            smStatisticBillKwh.Visibility = ViewStates.Gone;
+                            smStatisticBillTitle.Text = "My bill amount so far";
+                            smStatisticBillSubTitle.Text = "- -";
+                            smStatisticBill.Text = "- -";
+                            smStatisticPredictSubTitle.Text = "- -";
+                            smStatisticPredict.Text = "- -";
+                            txtSmStatisticTooltip.Text = Utility.GetLocalizedLabel("Usage", "whyIsAmountDiff");
+                            smStatisticPredictTitle.Text = Utility.GetLocalizedLabel("Usage", "myUsageSoFar");
+                            btnEditBudget.Text = Utility.GetLocalizedLabel("Usage", "editEnergyButton");
 
-                            energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(13) });
-                            energyBudgetRMinput.Text = smDecimalFormat.Format(double.Parse(selectedCusBillAcc.BudgetAmount, currCult));
-                        }
-                        else if (editBudget && isHaveEnergyBudget)
-                        {
-                            LayoutbtnEditBudget.Visibility = ViewStates.Gone;
+                            //changing icon and hide divider
+                            smStatisticPredictImg.SetImageResource(Resource.Drawable.calendar);
                             energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
-                            smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
-                            btnSetNewBudget.Visibility = ViewStates.Visible;
-                            smStatisticTooltip.Visibility = ViewStates.Gone;
-                            setEnergyBudgetlayout = false;
-                        }
-                        else if (editBudget && !isHaveEnergyBudget)
-                        {
-                            LayoutbtnEditBudget.Visibility = ViewStates.Gone;
-                            energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
-                            smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
-                            btnSetNewBudget.Visibility = ViewStates.Visible;
-                            smStatisticTooltip.Visibility = ViewStates.Gone;
-                            setEnergyBudgetlayout = false;
-                        }
-                        else if (!isHaveEnergyBudget && !editBudget)
-                        {
-                            LayoutbtnEditBudget.Visibility = ViewStates.Gone;
-                            energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
-                            smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
-                            btnSetNewBudget.Visibility = ViewStates.Visible;
-                            smStatisticTooltip.Visibility = ViewStates.Gone;
-                            energyBudgetRMinput.Text = "- -";
-                            btnSetNewBudget.Text = Utility.GetLocalizedLabel("Usage", "setEnergyButton");
-                            //energyBudgetAccountStatusText.SetMaxWidth(410);
-                            energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(8) });
-                        }                        
+                            smStatisticDivider.Visibility = ViewStates.Gone;
+                            smStatisticBillSubTitle.Visibility = ViewStates.Gone;
+                            smStatisticBillImg.Visibility = ViewStates.Gone;
+                            smStatisticBillTitle.Visibility = ViewStates.Gone;
+                            smStatisticBillCurrency.Visibility = ViewStates.Gone;
+                            smStatisticBill.Visibility = ViewStates.Gone;
+                            smStatisticBillMainLayout.Visibility = ViewStates.Gone;
+                            OuterlayoutHorizontolBar.Visibility = ViewStates.Gone;
+                            percentagetxt.Visibility = ViewStates.Visible;
+                            EnableSetEnergyBudgetButton();
+                            EnableEditEnergyBudgetButton();
 
-                        if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.CostData != null))
-                        {
-                            foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.CostData)
+                            if (!saveBtn && !editBtn && !setBtn && isHaveEnergyBudget)
                             {
-                                //System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
-                                if (costValue.Key == Constants.CURRENT_COST_KEY)
+                                EnableEditEnergyBudgetButton();
+                                LayoutbtnEditBudget.Visibility = ViewStates.Visible;
+                                energyBudgetbodytxt.Visibility = ViewStates.Gone;
+                                energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
+                                smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
+                                btnSetNewBudget.Visibility = ViewStates.Gone;
+                                smStatisticTooltip.Visibility = ViewStates.Visible;
+                                energyBudgetRMinput.ClearFocus();
+                                energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(13) });
+                                energyBudgetRMinput.Text = smDecimalFormat.Format(double.Parse(selectedCusBillAcc.BudgetAmount, currCult));
+                                energyBudgetAccountStatusText.Text = Utility.GetLocalizedLabel("Usage", "myMonthlyBudget");
+                                energyBudgetAccountStatusText.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.charcoalGrey));
+                                SetGraphBarHorizontal(120);
+                            }
+                            else if (saveBtn && !editBtn && !setBtn && isHaveEnergyBudget)
+                            {
+                                LayoutbtnEditBudget.Visibility = ViewStates.Visible;
+                                energyBudgetbodytxt.Visibility = ViewStates.Gone;
+                                energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
+                                smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
+                                btnSetNewBudget.Visibility = ViewStates.Gone;
+                                smStatisticTooltip.Visibility = ViewStates.Visible;
+                                energyBudgetRMinput.ClearFocus();
+                                energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(13) });
+                                energyBudgetRMinput.Text = smDecimalFormat.Format(double.Parse(selectedCusBillAcc.BudgetAmount, currCult));
+                                SetGraphBarHorizontal(120);
+                            }
+                            else if (saveBtn && editBtn && !setBtn && !isHaveEnergyBudget)
+                            {
+                                LayoutbtnEditBudget.Visibility = ViewStates.Gone;
+                                energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
+                                smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
+                                btnSetNewBudget.Visibility = ViewStates.Visible;
+                                smStatisticTooltip.Visibility = ViewStates.Gone;
+                                smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
+                            }
+                            else if (!saveBtn && editBtn && !setBtn && isHaveEnergyBudget)
+                            {
+                                LayoutbtnEditBudget.Visibility = ViewStates.Visible;
+                                energyBudgetbodytxt.Visibility = ViewStates.Gone;
+                                energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
+                                smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
+                                btnSetNewBudget.Visibility = ViewStates.Gone;
+                                smStatisticTooltip.Visibility = ViewStates.Visible;
+                                energyBudgetRMinput.ClearFocus();
+                                energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(13) });
+                                energyBudgetRMinput.Text = smDecimalFormat.Format(double.Parse(selectedCusBillAcc.BudgetAmount, currCult));
+                                SetGraphBarHorizontal(120);
+                            }
+                            else
+                            {
+                                layEnergyBudgetRMtxt.Visibility = ViewStates.Gone;
+                                energyBudgetbodytxt.Visibility = ViewStates.Visible;
+                                energyBudgetAccountStatusText.Text = Utility.GetLocalizedLabel("Usage", "youHaveNotSetBudget");
+                                energyBudgetAccountStatusText.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.blue));
+                                energyBudgetRMinput.Enabled = false;
+                                btnSetNewBudget.Text = Utility.GetLocalizedLabel("Usage", "setEnergyButton");
+                                LayoutbtnEditBudget.Visibility = ViewStates.Gone;
+                                energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
+                                btnSetNewBudget.Visibility = ViewStates.Visible;
+                                smStatisticTooltip.Visibility = ViewStates.Gone;
+                                smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
+                                EnableSetEnergyBudgetButton();
+                            }
+
+                            editBtn = false;
+
+                            if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.CostData != null))
+                            {
+                                foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.CostData)
                                 {
-                                    //smStatisticBillTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
-                                    //smStatisticBillTitle.Text = "My monthly budget is xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-                                    //smStatisticBillSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
-                                    //smStatisticBill.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smDecimalFormat.Format(double.Parse(costValue.Value, currCult));
-                                    //smStatisticBill.Text = selectedCusBillAcc.RmEnergyBudget;
-                                    //smStatisticBillCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
-                                    //smStatisticBillCurrency.Text = "";
-                                    if (isMDMSDown)
+                                    if (costValue.Key == Constants.CURRENT_COST_KEY)
                                     {
-                                        smStatisticPredictSubTitle.Text = "- -";
-                                        smStatisticPredict.Text = "- -";
-                                        btnSetNewBudget.Enabled = false;
-                                        btnEditBudget.Enabled = false;
+                                        smStatisticPredictTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
+                                        smStatisticPredictSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
+                                        smStatisticPredict.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smDecimalFormat.Format(double.Parse(costValue.Value, currCult));
+                                        smStatisticPredictCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
+                                        if (isMDMSDown)
+                                        {
+                                            smStatisticPredictSubTitle.Text = "- -";
+                                            smStatisticPredict.Text = "- -";
+                                            btnSetNewBudget.Enabled = false;
+                                            btnEditBudget.Enabled = false;
+                                        }                                                                  
                                     }
-
-                                    // if (costValue.Value.Length > 10)
-                                    // {
-                                    //     smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
-                                    //     smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
-                                    // }
-                                    // else if (costValue.Value.Length > 5)
-                                    // {
-                                    //     smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
-                                    //     smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
-                                    // }
-                                    // else
-                                    // {
-                                    //     smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
-                                    //     smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
-                                    // }                                                                  
-                                }
-                                else if (costValue.Key == Constants.PROJECTED_COST_KEY)
-                                {
                                 }
                             }
                         }
-
-                        if (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.ToolTips != null && selectedSMHistoryData.ToolTips.Count > 0)
+                        else if (ChartDataType == ChartDataType.kWh)
                         {
-                            foreach (SMUsageHistoryData.SmartMeterToolTips costValue in selectedSMHistoryData.ToolTips)
+                            smStatisticDivider.Visibility = ViewStates.Gone;
+                            smStatisticBillSubTitle.Visibility = ViewStates.Gone;
+                            smStatisticBillImg.Visibility = ViewStates.Gone;
+                            smStatisticBillTitle.Visibility = ViewStates.Gone;
+                            smStatisticBillCurrency.Visibility = ViewStates.Gone;
+                            smStatisticBill.Visibility = ViewStates.Gone;
+                            smStatisticBillMainLayout.Visibility = ViewStates.Gone;
+
+                             if (!saveBtn && !editBtn && !setBtn && isHaveEnergyBudget)
                             {
-                                if (costValue.Type == Constants.PROJECTED_COST_KEY)
-                                {
-                                    //txtSmStatisticTooltip.Text = string.IsNullOrEmpty(costValue.SMLink) ? Utility.GetLocalizedLabel("Usage", "projectedCostTitle") : costValue.SMLink;
-                                }
+                                LayoutbtnEditBudget.Visibility = ViewStates.Visible;
+                                energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
+                                smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
+                                btnSetNewBudget.Visibility = ViewStates.Gone;
+                                smStatisticTooltip.Visibility = ViewStates.Visible;
                             }
+                            else if (!saveBtn && !editBtn && !setBtn && !isHaveEnergyBudget)
+                            {
+                                LayoutbtnEditBudget.Visibility = ViewStates.Gone;
+                                energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
+                                smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
+                                btnSetNewBudget.Visibility = ViewStates.Visible;
+                                smStatisticTooltip.Visibility = ViewStates.Gone;
+                            }
+                            else if (saveBtn && !editBtn && !setBtn && isHaveEnergyBudget)
+                            {
+                                LayoutbtnEditBudget.Visibility = ViewStates.Visible;
+                                energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
+                                smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
+                                btnSetNewBudget.Visibility = ViewStates.Gone;
+                                smStatisticTooltip.Visibility = ViewStates.Visible;
+                                SetGraphBarHorizontal(120);
+                            }
+                            else if (!saveBtn && editBtn && !setBtn && isHaveEnergyBudget)
+                            {
+                                setBtn = false;
+                                editBtn = false;
+                                LayoutbtnEditBudget.Visibility = ViewStates.Visible;
+                                energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
+                                smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
+                                btnSetNewBudget.Visibility = ViewStates.Gone;
+                                smStatisticTooltip.Visibility = ViewStates.Visible;
+                                energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(13) });
+                                energyBudgetRMinput.Text = smDecimalFormat.Format(double.Parse(selectedCusBillAcc.BudgetAmount, currCult));
+                                SetGraphBarHorizontal(120);
+                            }
+                            else
+                            {
+                                layEnergyBudgetRMtxt.Visibility = ViewStates.Gone;
+                                energyBudgetbodytxt.Visibility = ViewStates.Visible;
+                                energyBudgetAccountStatusText.Text = Utility.GetLocalizedLabel("Usage", "youHaveNotSetBudget");
+                                energyBudgetAccountStatusText.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.blue));
+                                LayoutbtnEditBudget.Visibility = ViewStates.Gone;
+                                energyBudgetbodytxt.Visibility = ViewStates.Visible;
+                                energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
+                                smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
+                                btnSetNewBudget.Visibility = ViewStates.Visible;
+                                smStatisticTooltip.Visibility = ViewStates.Gone;
+                            }
+                            energyBudgetRMinput.Enabled = false;
+                            DisableSetEnergyBudgetButton();
+                            DisableEditEnergyBudgetButton();
                         }
                     }
-                    else if (ChartDataType == ChartDataType.kWh)
+                    else
                     {
-                        smStatisticTooltip.Visibility = ViewStates.Gone;
-                        smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
-                        smStatisticBillMainLayout.Visibility = ViewStates.Visible;
-                        smStatisticTrendMainLayout.Visibility = ViewStates.Visible;
-                        smStatisticBill.Visibility = ViewStates.Gone;
-                        smStatisticBillCurrency.Visibility = ViewStates.Gone;
-                        smStatisticBillKwhUnit.Visibility = ViewStates.Visible;
-                        smStatisticBillKwh.Visibility = ViewStates.Visible;
-                        smStatisticBillTitle.Text = "My current usage";
-                        smStatisticBillSubTitle.Text = "- -";
-                        smStatisticBillKwh.Text = "- -";
-                        smStatisticTrendTitle.Text = "My current usage trend is";
-                        smStatisticTrendSubTitle.Text = "- -";
-                        smStatisticTrend.Text = "- -%";
-
-                        //changing icon and hide divider
-                        smStatisticBillImg.SetImageResource(Resource.Drawable.calendar);
-                        smStatisticPredictImg.SetImageResource(Resource.Drawable.predict);
-                        smStatisticDivider.Visibility = ViewStates.Visible;
-                        smStatisticBillSubTitle.Visibility = ViewStates.Visible;
-                        smStatisticBillImg.Visibility = ViewStates.Visible;
-                        smStatisticBillTitle.Visibility = ViewStates.Visible;
-                        LayoutbtnEditBudget.Visibility = ViewStates.Gone;
-                        energyBudgetsmaccountstatus.Visibility = ViewStates.Gone;
-
-                        if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.UsageData != null && selectedSMHistoryData.OtherUsageMetrics.UsageData.Count > 0))
+                        if (ChartDataType == ChartDataType.RM)
                         {
-                            foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.UsageData)
+                            LayoutbtnEditBudget.Visibility = ViewStates.Gone;
+                            energyBudgetsmaccountstatus.Visibility = ViewStates.Gone;
+                            btnSetNewBudget.Visibility = ViewStates.Gone;
+                            smStatisticTooltip.Visibility = ViewStates.Visible;
+                            smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
+                            smStatisticTrendMainLayout.Visibility = ViewStates.Gone;
+                            smStatisticBill.Visibility = ViewStates.Visible;
+                            smStatisticBillCurrency.Visibility = ViewStates.Visible;
+                            smStatisticBillKwhUnit.Visibility = ViewStates.Gone;
+                            smStatisticBillKwh.Visibility = ViewStates.Gone;
+                            smStatisticBillTitle.Text = "My bill amount so far";
+                            smStatisticBillSubTitle.Text = "- -";
+                            smStatisticBill.Text = "- -";
+                            smStatisticPredictTitle.Text = "My bill may reach";
+                            smStatisticPredictSubTitle.Text = "- -";
+                            smStatisticPredict.Text = "- -";
+                            txtSmStatisticTooltip.Text = Utility.GetLocalizedLabel("Usage", "projectedCostTitle");
+                            if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.CostData != null))
                             {
-                                //System.Globalization.CultureInfo currCult = System.Globalization.CultureInfo.CreateSpecificCulture("en-US");
-                                if (costValue.Key == Constants.CURRENT_USAGE_KEY)
+                                foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.CostData)
                                 {
-                                    smStatisticBillTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
-                                    smStatisticBillSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
-                                    smStatisticBillKwh.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smKwhFormat.Format(double.Parse(costValue.Value, currCult));
-                                    smStatisticBillKwhUnit.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "kWh" : costValue.ValueUnit;
-                                    if (isMDMSDown)
+                                    if (costValue.Key == Constants.CURRENT_COST_KEY)
                                     {
-                                        smStatisticBillSubTitle.Text = "- -";
-                                        smStatisticBillKwh.Text = "- -";
-                                    }
-                                }
-                                else if (costValue.Key == Constants.AVERAGE_USAGE_KEY)
-                                {
-                                    smStatisticTrendTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My current usage trend is" : costValue.Title;
-                                    smStatisticTrendSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
-                                    string trendString = "- -%";
-                                    if (!string.IsNullOrEmpty(costValue.Value))
-                                    {
-                                        if (!string.IsNullOrEmpty(costValue.ValueIndicator) && costValue.ValueIndicator.Equals("+"))
+                                        smStatisticBillTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
+                                        smStatisticBillSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
+                                        smStatisticBill.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smDecimalFormat.Format(double.Parse(costValue.Value, currCult));
+                                        smStatisticBillCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
+                                        if (isMDMSDown)
                                         {
-                                            trendString = GetString(Resource.String.avg_electric_usage_up) + costValue.Value;
+                                            smStatisticBillSubTitle.Text = "- -";
+                                            smStatisticBill.Text = "- -";
                                         }
-                                        else if (!string.IsNullOrEmpty(costValue.ValueIndicator) && costValue.ValueIndicator.Equals("-"))
+
+                                        if (costValue.Value.Length > 10)
                                         {
-                                            trendString = GetString(Resource.String.avg_electric_usage_down) + costValue.Value;
+                                            smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                            smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                        }
+                                        else if (costValue.Value.Length > 5)
+                                        {
+                                            smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                            smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
                                         }
                                         else
                                         {
-                                            trendString = costValue.Value;
+                                            smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                            smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                        }
+
+                                    }
+                                    else if (costValue.Key == Constants.PROJECTED_COST_KEY)
+                                    {
+                                        smStatisticPredictTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
+                                        smStatisticPredictSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
+                                        smStatisticPredict.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smDecimalFormat.Format(double.Parse(costValue.Value, currCult));
+                                        smStatisticPredictCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
+                                        if (isMDMSDown)
+                                        {
+                                            smStatisticPredictSubTitle.Text = "- -";
+                                            smStatisticPredict.Text = "- -";
+                                        }
+
+                                        if (costValue.Value.Length > 10)
+                                        {
+                                            smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                            smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                        }
+                                        else if (costValue.Value.Length > 5)
+                                        {
+                                            smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                            smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                        }
+                                        else
+                                        {
+                                            smStatisticPredictTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                            smStatisticPredictSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
                                         }
                                     }
+                                }
+                            }
 
-                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                            if (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.ToolTips != null && selectedSMHistoryData.ToolTips.Count > 0)
+                            {
+                                foreach (SMUsageHistoryData.SmartMeterToolTips costValue in selectedSMHistoryData.ToolTips)
+                                {
+                                    if (costValue.Type == Constants.PROJECTED_COST_KEY)
                                     {
-
-                                        smStatisticTrend.TextFormatted = Html.FromHtml(trendString, FromHtmlOptions.ModeLegacy);
+                                        txtSmStatisticTooltip.Text = string.IsNullOrEmpty(costValue.SMLink) ? Utility.GetLocalizedLabel("Usage", "projectedCostTitle") : costValue.SMLink;
                                     }
-                                    else
-                                    {
-                                        smStatisticTrend.TextFormatted = Html.FromHtml(trendString);
-                                    }
+                                }
+                            }
 
-                                    if (isMDMSDown)
+
+                        }
+                        else if (ChartDataType == ChartDataType.kWh)
+                        {
+                            smStatisticTooltip.Visibility = ViewStates.Gone;
+                            smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
+                            smStatisticTrendMainLayout.Visibility = ViewStates.Visible;
+                            smStatisticBill.Visibility = ViewStates.Gone;
+                            smStatisticBillCurrency.Visibility = ViewStates.Gone;
+                            smStatisticBillKwhUnit.Visibility = ViewStates.Visible;
+                            smStatisticBillKwh.Visibility = ViewStates.Visible;
+                            smStatisticBillTitle.Text = "My current usage";
+                            smStatisticBillSubTitle.Text = "- -";
+                            smStatisticBillKwh.Text = "- -";
+                            smStatisticTrendTitle.Text = "My current usage trend is";
+                            smStatisticTrendSubTitle.Text = "- -";
+                            smStatisticTrend.Text = "- -%";
+                            if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.UsageData != null && selectedSMHistoryData.OtherUsageMetrics.UsageData.Count > 0))
+                            {
+                                foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.UsageData)
+                                {
+                                    if (costValue.Key == Constants.CURRENT_USAGE_KEY)
                                     {
-                                        smStatisticTrendSubTitle.Text = "- -";
-                                        smStatisticTrend.Text = "- -%";
+                                        smStatisticBillTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
+                                        smStatisticBillSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
+                                        smStatisticBillKwh.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smKwhFormat.Format(double.Parse(costValue.Value, currCult));
+                                        smStatisticBillKwhUnit.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "kWh" : costValue.ValueUnit;
+                                        if (isMDMSDown)
+                                        {
+                                            smStatisticBillSubTitle.Text = "- -";
+                                            smStatisticBillKwh.Text = "- -";
+                                        }
+
+                                        if (costValue.Value.Length > 10)
+                                        {
+                                            smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                            smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                        }
+                                        else if (costValue.Value.Length > 5)
+                                        {
+                                            smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                            smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                        }
+                                        else
+                                        {
+                                            smStatisticBillTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                            smStatisticBillSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                        }
+                                    }
+                                    else if (costValue.Key == Constants.AVERAGE_USAGE_KEY)
+                                    {
+                                        smStatisticTrendTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My current usage trend is" : costValue.Title;
+                                        smStatisticTrendSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
+                                        string trendString = "- -%";
+                                        if (!string.IsNullOrEmpty(costValue.Value))
+                                        {
+                                            if (!string.IsNullOrEmpty(costValue.ValueIndicator) && costValue.ValueIndicator.Equals("+"))
+                                            {
+                                                trendString = GetString(Resource.String.avg_electric_usage_up) + costValue.Value;
+                                            }
+                                            else if (!string.IsNullOrEmpty(costValue.ValueIndicator) && costValue.ValueIndicator.Equals("-"))
+                                            {
+                                                trendString = GetString(Resource.String.avg_electric_usage_down) + costValue.Value;
+                                            }
+                                            else
+                                            {
+                                                trendString = costValue.Value;
+                                            }
+                                        }
+
+                                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                        {
+
+                                            smStatisticTrend.TextFormatted = Html.FromHtml(trendString, FromHtmlOptions.ModeLegacy);
+                                        }
+                                        else
+                                        {
+                                            smStatisticTrend.TextFormatted = Html.FromHtml(trendString);
+                                        }
+
+                                        if (isMDMSDown)
+                                        {
+                                            smStatisticTrendSubTitle.Text = "- -";
+                                            smStatisticTrend.Text = "- -%";
+                                        }
+                                        if (costValue.Value.Length > 10)
+                                        {
+                                            smStatisticTrendTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                            smStatisticTrendSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(120f));
+                                        }
+                                        else if (costValue.Value.Length > 5)
+                                        {
+                                            smStatisticTrendTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                            smStatisticTrendSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(170f));
+                                        }
+                                        else
+                                        {
+                                            smStatisticTrendTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                            smStatisticTrendSubTitle.SetMaxWidth((int)DPUtils.ConvertDPToPx(200f));
+                                        }
                                     }
                                 }
                             }
@@ -9522,6 +9809,75 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 virtualHeightParams.Height = (int)DPUtils.ConvertDPToPx(heightInDP);
                 virtualHeight.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void SetGraphBarHorizontal(int amountUsage)
+        {
+            try
+            {
+                OuterlayoutHorizontolBar.Visibility = ViewStates.Visible;
+                int widthInnerLayout = InnerlayoutHorizontolBar.Width;
+
+                string amount = selectedCusBillAcc.BudgetAmount;
+                int totalAmount = Integer.ParseInt(amount);
+
+                double totalPercentage = (double)totalAmount/amountUsage;
+                double Percentage = totalPercentage * 100;
+
+                LinearLayout.LayoutParams OuterLayout = OuterlayoutHorizontolBar.LayoutParameters as LinearLayout.LayoutParams;
+
+                int widthS = DPUtils.GetWidth();
+                OuterlayoutHorizontolBar.Measure((int)MeasureSpecMode.Unspecified, (int)MeasureSpecMode.Unspecified);
+                int margin = (int)(16 * Resources.DisplayMetrics.Density);
+                int widthT = widthS - (margin * 4);
+
+                OuterLayout.Width = widthT;
+                int widthOuterLayout = OuterLayout.Width;
+                int percentageBarGraph = (int)System.Math.Round(System.Math.Abs(totalPercentage * widthOuterLayout));
+                OuterlayoutHorizontolBar.RequestLayout();
+
+                LinearLayout.LayoutParams InnerLayout = InnerlayoutHorizontolBar.LayoutParameters as LinearLayout.LayoutParams;
+                InnerLayout.Width = percentageBarGraph;
+
+                if (Percentage > 0 && Percentage <= 49)
+                {
+                    if (percentageBarGraph < 110)
+                    {
+                        InnerLayout.Width = 110;
+                    }
+                    OuterlayoutHorizontolBar.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.outline_linear_layout_graphbar_green);
+                    InnerlayoutHorizontolBar.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.graph_green_background);
+                }
+                else if (Percentage >= 50 && Percentage <= 79)
+                {
+                    OuterlayoutHorizontolBar.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.outline_linear_layout_graphbar_orange);
+                    InnerlayoutHorizontolBar.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.graph_orange_background);
+                }
+                else if (Percentage >= 80 && Percentage <= 100 && widthOuterLayout >= percentageBarGraph)
+                {
+                    OuterlayoutHorizontolBar.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.outline_linear_layout_graphbar_red);
+                    InnerlayoutHorizontolBar.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.graph_red_background);
+                }
+                else if (Percentage > 100 && widthOuterLayout <= percentageBarGraph)
+                {
+                    InnerLayout.Width = widthOuterLayout;
+                    OuterlayoutHorizontolBar.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.outline_linear_layout_graphbar_red);
+                    InnerlayoutHorizontolBar.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.graph_red_background);
+                }
+
+                InnerlayoutHorizontolBar.RequestLayout();
+
+                int PerHundred = (int)System.Math.Round(Percentage);
+                if (PerHundred > 100)
+                {
+                    PerHundred = 100;
+                }
+                percentagetxt.Text = PerHundred.ToString() + "%";
             }
             catch (System.Exception e)
             {

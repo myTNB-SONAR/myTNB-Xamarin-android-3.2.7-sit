@@ -438,7 +438,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Intent energy_budget_activity = new Intent(this.Activity, typeof(EnergyBudgetActivity));
                             StartActivityForResult(energy_budget_activity, SELECT_SM_ACCOUNT_REQUEST_CODE);
                         }
-                    }                   
+                    }
+                    else
+                    {
+                        MyTNBAccountManagement.GetInstance().SetMaybeLater(true);
+                        RestartHomeMenu();
+                    }
                 }
             }
         }
@@ -803,6 +808,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             myServiceShimmerView.Visibility = ViewStates.Visible;
             myServiceView.Visibility = ViewStates.Gone;
             this.presenter.InitiateMyService();
+        }
+
+        public void SetDiscoverMoreView()
+        {
+            if (!isBCRMDown && !Utility.IsMDMSDownEnergyBudget())
+            {
+                discoverMoreContainer.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                discoverMoreContainer.Visibility = ViewStates.Visible;
+            }
         }
 
         public void SetMyServiceResult(List<MyService> list)
@@ -1435,7 +1452,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             }
                             this.SetIsClicked(false);
                         }
-                        else if (selectedService.ServiceCategoryId == "1007" && Utility.IsMDMSDownEnergyBudget())
+                        else if (selectedService.ServiceCategoryId == "1007" && !Utility.IsMDMSDownEnergyBudget())
                         {
                             if (!UserSessions.HasSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
