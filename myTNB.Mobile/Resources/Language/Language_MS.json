@@ -438,7 +438,9 @@
     "toastSaveBudgetuccessfull": "Anda telah berjaya menetapkan Energy Budget anda!",
     "myUsageSoFar": "Penggunaan saya setakat ini",
     "disconnectedEnergyBudget": "Nampaknya Energy Budget anda terputus sambungan. Refresh untuk sambung semula!",
-    "refreshNowEnergyBudgetButton": "'Refresh' Sekarang"
+    "refreshNowEnergyBudgetButton": "'Refresh' Sekarang",
+    "youHaveNotSetBudget": "You have not set up your Energy Budget",
+    "youHaveNotSetBudgetSubtitle": "Set your Energy Budget, monitor your usage and be notified when reaching your Energy Budget!"
   },
   "Bills": {
     "title": "Bil",

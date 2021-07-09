@@ -1428,6 +1428,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                            .Replace(Resource.Id.content_layout, currentFragment)
                            .CommitAllowingStateLoss();
 
+            if ( MyTNBAccountManagement.GetInstance().IsFromLoginPage() && !MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag())
+            {
+                this.mPresenter.SetIsWhatsNewDialogShowNeed(false);
+                isWhatNewDialogOnHold = false;
+            }
+
             if (isWhatNewDialogOnHold)
             {
                 isWhatNewDialogOnHold = false;

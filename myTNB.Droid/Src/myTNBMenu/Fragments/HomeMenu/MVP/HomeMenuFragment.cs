@@ -443,7 +443,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             Intent energy_budget_activity = new Intent(this.Activity, typeof(EnergyBudgetActivity));
                             StartActivityForResult(energy_budget_activity, SELECT_SM_ACCOUNT_REQUEST_CODE);
                         }
-                    }                   
+                    }
+                    else
+                    {
+                        MyTNBAccountManagement.GetInstance().SetMaybeLater(true);
+                        RestartHomeMenu();
+                    }
                 }
             }
         }
@@ -810,6 +815,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             myServiceView.Visibility = ViewStates.Gone;
             ShowDiscoverMoreLayoit();
             this.presenter.InitiateMyService();
+        }
+
+        public void SetDiscoverMoreView()
+        {
+            if (!isBCRMDown && !Utility.IsMDMSDownEnergyBudget())
+            {
+                discoverMoreContainer.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                discoverMoreContainer.Visibility = ViewStates.Visible;
+            }
         }
 
         public void SetMyServiceResult(List<MyService> list)
@@ -1442,7 +1459,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             }
                             this.SetIsClicked(false);
                         }
-                        else if (selectedService.ServiceCategoryId == "1007" && Utility.IsMDMSDownEnergyBudget())
+                        else if (selectedService.ServiceCategoryId == "1007" && !Utility.IsMDMSDownEnergyBudget())
                         {
                             if (!UserSessions.HasSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
@@ -1986,7 +2003,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 string refreshMsg = string.IsNullOrEmpty(contentMsg) ? GetLabelByLanguage("refreshMessage") : contentMsg;
                 string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? GetLabelByLanguage("refreshBtnText") : buttonMsg;
-                discoverMoreContainer.Visibility = ViewStates.Gone;
+                //discoverMoreContainer.Visibility = ViewStates.Gone;
                 btnRefresh.Text = refreshBtnTxt;
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {

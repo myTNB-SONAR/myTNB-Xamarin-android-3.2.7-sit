@@ -2651,7 +2651,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                 }
             }
-            else if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsFromLoginPage() && !UserSessions.GetSavePopUpCountEB(this.mPref).Equals("2"))
+            /*else if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsFromLoginPage() && !UserSessions.GetSavePopUpCountEB(this.mPref).Equals("2"))
             {
 
                 if (UserSessions.GetSavePopUpCountEB(this.mPref).Equals(string.Empty))
@@ -2665,6 +2665,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 try
                 {
+                    MyTNBAccountManagement.GetInstance().SetIsEBUser(true);
                     MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
                     UserSessions.DoHomeTutorialShown(this.mPref);
                     this.mView.EBPopupActivity();
@@ -2673,7 +2674,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     Utility.LoggingNonFatalError(e);
                 }
-            }
+            }*/
         }
 
         public List<NewAppModel> OnGeneraNewAppTutorialList()

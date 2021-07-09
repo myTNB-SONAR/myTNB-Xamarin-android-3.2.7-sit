@@ -438,7 +438,9 @@
     "toastSaveBudgetuccessfull": "You've successfully set your monthly budget!",
     "myUsageSoFar": "My usage so far",
     "disconnectedEnergyBudget": "Uh-oh, looks like your Energy Budget have been unplugged. Refresh to stay plugged in!",
-    "refreshNowEnergyBudgetButton": "Refresh Now"
+    "refreshNowEnergyBudgetButton": "Refresh Now",
+    "youHaveNotSetBudget": "You have not set up your Energy Budget",
+    "youHaveNotSetBudgetSubtitle": "Set your Energy Budget, monitor your usage and be notified when reaching your Energy Budget!"
   },
   "Bills": {
     "title": "Bills",
