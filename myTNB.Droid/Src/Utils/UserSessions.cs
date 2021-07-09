@@ -18,6 +18,7 @@ namespace myTNB_Android.Src.Utils
 
         private static ISharedPreferences mPreferences;
         internal static ApplicationStatusNotificationModel ApplicationStatusNotification { private set; get; }
+        internal static NotificationModel Notification { private set; get; }
 
         public static void SetCurrentImageCount(ISharedPreferences prefs, int count)
         {
@@ -95,6 +96,27 @@ namespace myTNB_Android.Src.Utils
             else
             {
                 ApplicationStatusNotification = null;
+            }
+        }
+
+        internal static void SetNotification(
+              string type
+            , string requestTransID
+            , string eventID)
+        {
+            if (!string.IsNullOrEmpty(type) && (!string.IsNullOrEmpty(requestTransID) || !string.IsNullOrEmpty(eventID)))
+            {
+                Notification = new NotificationModel
+                {
+                    Type = type,
+                    RequestTransId = requestTransID,
+                    EventId = eventID
+                   
+                };
+            }
+            else
+            {
+                Notification = null;
             }
         }
 

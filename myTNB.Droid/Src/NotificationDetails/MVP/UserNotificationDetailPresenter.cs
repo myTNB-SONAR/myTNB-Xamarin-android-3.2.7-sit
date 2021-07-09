@@ -5,9 +5,12 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Android.Content;
+using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Api;
@@ -36,6 +39,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         SSMRTerminateImpl terminationApi;
         AccountData mSelectedAccountData;
         bool isTaggedSMR = true;
+        private Android.App.Activity mActivity;
 
         public UserNotificationDetailPresenter(UserNotificationDetailContract.IView view)
         {
@@ -216,13 +220,37 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             }
                             break;
                         }
-                    case Constants.BCRM_NOTIFICATION_ENERGY_BUDGET:
+                    //case Constants.BCRM_NOTIFICATION_ENERGY_BUDGET:
+                    //    {
+                    //        imageResourceBanner = Resource.Drawable.SMRillustration;
+                    //        //pageTitle = "EnergyBudget";
+                    //        primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBudget"),
+                    //            delegate () { ViewMyUsage(notificationDetails); });
+                    //        ctaList.Add(primaryCTA);
+                    //        break;
+                    //    }
+                    case Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80:
                         {
-                            imageResourceBanner = Resource.Drawable.SMRillustration;
-                            //pageTitle = "EnergyBudget";
+                            imageResourceBanner = Resource.Drawable.notification_reaching_eb_icon;
                             primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBudget"),
                                 delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
+                            
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewTips"),
+                            delegate () { ViewTips(); });
+                            ctaList.Add(secondaryCTA);
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100:
+                        {
+                            imageResourceBanner = Resource.Drawable.notification_reached_eb_icon;
+                            primaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewBudget"),
+                                delegate () { ViewMyUsage(notificationDetails); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA(Utility.GetLocalizedLabel("PushNotificationDetails", "viewTips"),
+                            delegate () { ViewTips(); });
+                            ctaList.Add(secondaryCTA);
                             break;
                         }
                     default:
@@ -348,6 +376,13 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             {
                 this.mView.ShowRetryOptionsApiException(null);
             }
+        }
+
+
+        //string url= Utility.GetLocalizedLabel("PushNotificationDetails", "linkEB");
+        private void ViewTips()
+        {
+            this.mView.ViewTips();
         }
 
         private async void SubmitMeterReading(Models.NotificationDetails notificationDetails)

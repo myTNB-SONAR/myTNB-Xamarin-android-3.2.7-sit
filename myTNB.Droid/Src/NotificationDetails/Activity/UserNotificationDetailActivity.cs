@@ -376,6 +376,14 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             StartActivity(DashboardIntent);
         }
 
+        public void ViewTips()
+        {
+            Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
+            webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("PushNotificationDetails", "linkEB"));
+            webIntent.PutExtra(Constants.IN_APP_TITLE, Utility.GetLocalizedLabel("PushNotificationList", "title"));
+            this.StartActivity(webIntent);
+        }
+
         public void ViewDetails(AccountData mSelectedAccountData)
         {
             Intent intent = new Intent(this, typeof(BillingDetailsActivity));

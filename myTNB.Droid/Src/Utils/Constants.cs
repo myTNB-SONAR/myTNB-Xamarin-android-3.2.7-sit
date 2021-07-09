@@ -305,6 +305,10 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_PAYMENT_FAILED_ID = "71";
         public const string BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID = "72";
         public const string BCRM_NOTIFICATION_ENERGY_BUDGET = "11001";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET_80 = "CEP AT";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET_100 = "CEP TH";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET_TC = "CEP TC";
+        public const string BCRM_NOTIFICATION_ENERGY_BUDGET_RC = "CEP RC";
 
         public const string BCRM_NOTIFICATION_NEW_ACCOUNT_ADDED = "10001";
 
