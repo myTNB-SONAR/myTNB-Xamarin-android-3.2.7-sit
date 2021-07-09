@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical">
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/relativeRow"
         android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -19,5 +20,14 @@
             android:singleLine="true"
             android:textSize="16dp"
             android:ellipsize="end" />
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/imageActionIconTick"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_action_tick"
+            android:visibility="visible"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 </LinearLayout>

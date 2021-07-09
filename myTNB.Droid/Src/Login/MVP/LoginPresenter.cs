@@ -149,6 +149,8 @@ namespace myTNB_Android.Src.Login.MVP
                     ///</summary>
                     UserSessions.SaveLogoutFlag(mSharedPref, true);
 
+                    MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
+
                     if (rememberMe)
                     {
                         UserSessions.SaveUserEmail(mSharedPref, usrNme);

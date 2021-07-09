@@ -528,6 +528,18 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static void SavePopUpCountEB(ISharedPreferences prefs, string count)    //count EB popup
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("popupEB", count);
+            editor.Apply();
+        }
+
+        public static string GetSavePopUpCountEB(ISharedPreferences preferences)    //count EB popup
+        {
+            return preferences.GetString("popupEB", "");
+        }
+
         public static int GetPrevAppVersionCode(ISharedPreferences preferences)
         {
             return preferences.GetInt("PREV_APP_VERSION_CODE", 0);
@@ -605,6 +617,12 @@ namespace myTNB_Android.Src.Utils
             return selectAccountList;
         }
 
+        public static void DeleteEnergyBudgetList(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.Remove("SMR_ACCOUNT_LIST_ENERGY_BUDGET").Apply();
+        }
+    
         public static void SetSMREligibilityAccountList(List<SMRAccount> sMRAccounts)
         {
             ISharedPreferencesEditor editor = mPreferences.Edit();

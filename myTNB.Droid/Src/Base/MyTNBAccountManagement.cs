@@ -38,6 +38,8 @@ namespace myTNB_Android.Src.Base
         private bool IsNotificationListFromLaunch = false;
         private bool IsUpdateAppLanguage = false;
         private bool IsUpdateAppLargeFont = false;
+        private bool IsFromLogin = false;
+
 
         private MyTNBAccountManagement()
         {
@@ -610,6 +612,16 @@ namespace myTNB_Android.Src.Base
         public bool IsNotificationsFromLaunch()
         {
             return IsNotificationListFromLaunch;
+        }
+
+        public void SetFromLoginPage(bool isFromLaunch)
+        {
+            IsFromLogin = isFromLaunch;
+        }
+
+        public bool IsFromLoginPage()
+        {
+            return IsFromLogin;
         }
     }
 }
