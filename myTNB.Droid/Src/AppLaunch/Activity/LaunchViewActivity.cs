@@ -136,15 +136,10 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
                     if (Intent.Extras.ContainsKey("Type") && Intent.Extras.ContainsKey("RequestTransId") && Intent.Extras.ContainsKey("EventId"))
                     {
-                        
-                        //UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this));
-                        
-                        
-                        string type = Intent.Extras.GetString(NotificationModel.TYPE);
-                        string requestTransID = Intent.Extras.GetString(NotificationModel.PARAM_REQUESTTRANSID);
-                        string eventID = Intent.Extras.GetString(NotificationModel.Param_EVENTID);
-                        UserSessions.SetNotification(type, requestTransID, eventID);
-                        
+                            string type = Intent.Extras.GetString(NotificationModel.TYPE);
+                            string requestTransID = Intent.Extras.GetString(NotificationModel.PARAM_REQUESTTRANSID);
+                            string eventID = Intent.Extras.GetString(NotificationModel.Param_EVENTID);
+                            UserSessions.SetNotification(type, requestTransID, eventID);
                     }
 
                     if (Intent.Extras.ContainsKey("Email"))
@@ -652,14 +647,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 if (currentNavigation == AppLaunchNavigation.Notification)
                 {
-                    if (UserSessions.Notification != null)
-                    {
-                        ShowNotificationDetails();
-                    }
-                    else
-                    {
-                        ShowNotification();
-                    }
+                    ShowNotification();
                 }
                 else if (currentNavigation == AppLaunchNavigation.Logout)
                 {

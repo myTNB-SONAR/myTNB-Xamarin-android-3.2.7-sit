@@ -290,6 +290,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         }
                                         else if (hasNotification && isLoggedInEmail && UserSessions.Notification != null)
                                         {
+                                            UserSessions.RemoveNotificationSession(mSharedPref);
+                                            this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
+                                            MyTNBAccountManagement.GetInstance().SetIsNotificationListFromLaunch(true);
                                             this.mView.ShowNotificationDetails();
                                         }
                                         else if (hasNotification && (isODNType || isLoggedInEmail))
@@ -404,6 +407,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
                     UserNotificationEntity.UpdateIsRead(response.GetData().UserNotificationDetail.Id, true);
                     this.mView.ShowDetails(response.GetData().UserNotificationDetail);
+                    UserSessions.ClearNotification();
                 }
                 else
                 {
