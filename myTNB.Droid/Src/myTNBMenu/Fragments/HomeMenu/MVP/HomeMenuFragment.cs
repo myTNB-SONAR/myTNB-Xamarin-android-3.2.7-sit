@@ -776,17 +776,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (imgsource == "discover_non_targeted")
             {
                 discoverView.Visibility = ViewStates.Visible;
-                //img_discover_digital_bill.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.discover_non_targeted_bm: Resource.Drawable.discover_non_targeted_en);
                 discoverView.SetBackgroundResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.discover_non_targeted_bm : Resource.Drawable.discover_non_targeted_en);
-                //bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
-                //imgParam = img_discover_digital_bill.LayoutParameters as LinearLayout.LayoutParams;
+                LinearLayout.LayoutParams layout = discoverView.LayoutParameters as LinearLayout.LayoutParams;
 
-                //imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
-                //heightRatio = 216f / 250f;
-                //imgHeight = (int)(imgWidth * (heightRatio));
-                //imgParam.Width = imgWidth;
-                //imgParam.Height = imgHeight;*/
+                int imgWidth = GetDeviceHorizontalScaleInPixel(0.917f);
+                float heightRatio = 55f / 128f;
+                int imgHeight = (int)(imgWidth * (heightRatio));
+                layout.Width = imgWidth;
+                layout.Height = imgHeight;
             }
             else if (imgsource == "discover_targeted")
             {
@@ -794,7 +792,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 img_discover_digital_bill.SetImageResource(LanguageUtil.GetAppLanguage() == "MS" ? Resource.Drawable.discover_targeted_bm : Resource.Drawable.discover_targeted_en);
 
             }
-            //else if (imgsource == "discover_post_conversion")
             else 
             {
                 discoverView.Visibility = ViewStates.Visible;

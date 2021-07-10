@@ -63,6 +63,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [BindView(Resource.Id.applicationIndicator)]
         RelativeLayout applicationIndicator;
 
+        [BindView(Resource.Id.viewPagerLyout)]
+        FrameLayout viewPagerLyout;
+
         ManageBillDeliveryContract.IUserActionsListener userActionsListener;
 
         private List<DBRAccount> dbrAccountList = new List<DBRAccount>();
@@ -128,6 +131,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                    
                     InitiateDBRRequest();
             };
+
+            FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
+            layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(355f) : (int)DPUtils.ConvertDPToPx(308f);
         }
         public void InitiateDBRRequest()
         {
