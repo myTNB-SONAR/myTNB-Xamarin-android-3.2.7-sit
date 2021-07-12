@@ -267,6 +267,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.accountContainer)]
         ConstraintLayout accountContainer;
 
+        [BindView(Resource.Id.whatsNewUnreadImg)]
+        ImageView whatsNewUnreadImg;
+
         AccountsRecyclerViewAdapter accountsAdapter;
 
         private NewFAQScrollListener mListener;
@@ -428,7 +431,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     this.SetIsClicked(false);
                     Bundle extras = data.Extras;
-
+                  
                     if (extras.ContainsKey("EBList"))
                     {
                         if (UserSessions.GetEnergyBudgetList().Count == 1)
@@ -447,6 +450,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     else
                     {
                         MyTNBAccountManagement.GetInstance().SetMaybeLater(true);
+                        ShowDiscoverMoreLayout();
                         RestartHomeMenu();
                     }
                 }
@@ -472,6 +476,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetAccountActionHeader();
                 SetupMyServiceView();
                 SetupNewFAQView();
+                ShowDiscoverMoreLayout();
 
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg, txtMyServiceRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, discoverMoreTitle, btnRefresh, txtAdd
@@ -496,8 +501,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 newFAQTitle.Text = GetLabelByLanguage("needHelp");
                 rearrangeLabel.Text = GetLabelByLanguage("rearrangeAccts");
                 loadMoreLabel.Text = GetLabelByLanguage("moreAccts");
-                discoverMoreTitle.Text = GetLabelByLanguage("discoverMoreTitle");
-                txtTitleDiscoverMore.Text = GetLabelByLanguage("discoverMoreTextTitle");
+                discoverMoreTitle.Text = GetLabelByLanguage("DiscoverMore");
+                txtTitleDiscoverMore.Text = GetLabelByLanguage("DiscoverMoreTitle");
                 myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
 
                 addActionContainer.SetOnClickListener(null);
@@ -813,20 +818,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             myServiceShimmerView.Visibility = ViewStates.Visible;
             myServiceView.Visibility = ViewStates.Gone;
-            ShowDiscoverMoreLayoit();
             this.presenter.InitiateMyService();
-        }
-
-        public void SetDiscoverMoreView()
-        {
-            if (!isBCRMDown && !Utility.IsMDMSDownEnergyBudget())
-            {
-                discoverMoreContainer.Visibility = ViewStates.Gone;
-            }
-            else
-            {
-                discoverMoreContainer.Visibility = ViewStates.Visible;
-            }
         }
 
         public void SetMyServiceResult(List<MyService> list)
@@ -1459,7 +1451,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             }
                             this.SetIsClicked(false);
                         }
-                        else if (selectedService.ServiceCategoryId == "1007" && !Utility.IsMDMSDownEnergyBudget())
+                        else if (selectedService.ServiceCategoryId == "1007" && (Utility.IsMDMSDownEnergyBudget() && !isRefreshShown))
                         {
                             if (!UserSessions.HasSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
@@ -1986,7 +1978,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMaintenanceMsg);
                 }
-                discoverMoreContainer.Visibility = ViewStates.Visible;
+                discoverMoreContainer.Visibility = ViewStates.Gone;
             }
             else
             {
@@ -2003,7 +1995,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 string refreshMsg = string.IsNullOrEmpty(contentMsg) ? GetLabelByLanguage("refreshMessage") : contentMsg;
                 string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? GetLabelByLanguage("refreshBtnText") : buttonMsg;
-                //discoverMoreContainer.Visibility = ViewStates.Gone;
+                discoverMoreContainer.Visibility = ViewStates.Gone;
                 btnRefresh.Text = refreshBtnTxt;
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
@@ -2501,16 +2493,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                  this.SetIsClicked(true);
                  try
                  {
-                     FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Energy Budget Screen Popup");
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Energy Budget Screen Popup");
+                    EBPopupActivity();
                  }
                  catch (System.Exception err)
                  {
                      Utility.LoggingNonFatalError(err);
                  }
-
-                 Intent EBPopupPage = new Intent(this.Activity, typeof(EBPopupScreenActivity));
-                 EBPopupPage.PutExtra("fromDashboard", true);
-                 StartActivityForResult(EBPopupPage, SELECT_SM_POPUP_REQUEST_CODE);
             }
         }
 
@@ -3351,8 +3340,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         }
 
 
-        public void ShowDiscoverMoreLayoit()
+        public void ShowDiscoverMoreLayout()
         {
+            //discoverMoreContainer.Visibility = ViewStates.Gone;
             if (UserSessions.GetEnergyBudgetList().Count > 0)
             {          
                 discoverMoreContainer.Visibility = ViewStates.Visible;
@@ -3375,12 +3365,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         txtDate.Text = publishDateTime.ToString("dd MMM yyyy", currCult);
                         isDateAvailable = true;
                     }
+
+                    if (UserSessions.HasSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                    {
+                        whatsNewUnreadImg.Visibility = ViewStates.Gone;
+                    }
+                    else
+                    {
+                        whatsNewUnreadImg.Visibility = ViewStates.Visible;
+                    }
+
                 }
                 catch(System.Exception e)
                 {
                    txtDate.Text = "";
                     Utility.LoggingNonFatalError(e);
                 }
+            }
+            else
+            {
+                discoverMoreContainer.Visibility = ViewStates.Gone;
             }
         }
 

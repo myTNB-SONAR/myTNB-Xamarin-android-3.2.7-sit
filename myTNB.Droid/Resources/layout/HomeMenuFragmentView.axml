@@ -465,7 +465,7 @@
                         android:orientation="vertical"
                         android:layout_marginTop="13dp"
                         android:layout_marginBottom="13dp"
-                        android:visibility="visible"
+                        android:visibility="gone"
                         android:id="@+id/discoverMoreContainer">
                         <TextView
                             android:id="@+id/discoverMoreTitle"
@@ -477,25 +477,6 @@
                             android:layout_marginBottom="4dp"
                             android:textColor="@color/powerBlue"
                             android:layout_gravity="left"/>
-<!--                   <LinearLayout 
-                      android:orientation="vertical"
-                      android:layout_width="match_parent"
-                      android:layout_height="139dp"  
-                      android:layout_marginLeft="13dp"
-                      android:layout_marginRight="13dp"
-                      android:id="@+id/DiscoverMoreShimmerImgLayout">
-                        <com.facebook.shimmer.ShimmerFrameLayout
-                            android:id="@+id/shimmerDiscoverMoreImageLayout"
-                            android:layout_height="match_parent"
-                            android:layout_width="match_parent">
-                            <ImageView
-                            android:id="@+id/DiscoverMoreShimmerImg"
-                            android:layout_height="match_parent"
-                            android:layout_width="match_parent"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/shimmer_rectangle"/>
-                        </com.facebook.shimmer.ShimmerFrameLayout>
-                        </LinearLayout>-->
                         <LinearLayout 
                               android:orientation="vertical"
                               android:layout_width="match_parent"
@@ -512,29 +493,6 @@
                                 android:scaleType="fitXY"
                                 android:src="@drawable/bg_discover_more"/>
                         </LinearLayout>
-<!--
-                    <LinearLayout 
-                      android:orientation="vertical"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_marginLeft="13dp"
-                      android:layout_marginRight="13dp"
-                      android:background="@color/white"  
-                      android:padding="16dp"
-                      android:id="@+id/DiscoverMoreShimmerTxtLayout">
-                        <com.facebook.shimmer.ShimmerFrameLayout
-                            android:id="@+id/shimmerDiscoverMoreTxtLayout"
-                            android:layout_height="match_parent"
-                            android:layout_width="match_parent">
-                            <TextView
-                                android:layout_height="wrap_content"
-                                android:layout_width="match_parent"
-                                android:textColor="@color/shimmer_color"
-                                android:background="@color/shimmer_color"
-                                android:textSize="12dp"
-                                android:lineSpacingExtra="2dp"/>
-                        </com.facebook.shimmer.ShimmerFrameLayout>
-                    </LinearLayout>-->
                         <RelativeLayout 
                           android:orientation="vertical"
                           android:layout_width="match_parent"

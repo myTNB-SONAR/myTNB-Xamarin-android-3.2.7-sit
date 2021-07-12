@@ -387,7 +387,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             }
                             break;
                         case "1007":
-                            if (!Utility.IsMDMSDownEnergyBudget() && UserSessions.GetEnergyBudgetList().Count > 0)
+                            if (!isRefreshShown && Utility.IsMDMSDownEnergyBudget() && UserSessions.GetEnergyBudgetList().Count > 0)
                             {
                                 vh.serviceImg.SetImageResource(Resource.Drawable.Check_Status_Icon);
                                 vh.serviceTitle.SetTextColor(new Color(ContextCompat.GetColor(this.mActivity, Resource.Color.powerBlue)));
@@ -409,22 +409,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             {
                                 vh.newLabel.Visibility = ViewStates.Gone;
                             }
-                            /*if (UserSessions.GetEnergyBudgetList().Count > 0)
-                            {
-                                vh.serviceImg.SetImageResource(Resource.Drawable.Check_Status_Icon);
-                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
-                                {
-                                    vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "energyBudget"), FromHtmlOptions.ModeLegacy);
-                                }
-                                else
-                                {
-                                    vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "energyBudget"));
-                                }
-                                if (UserSessions.HasSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
-                                {
-                                    vh.newLabel.Visibility = ViewStates.Gone;
-                                }
-                            }*/
                             break;
                     }
 

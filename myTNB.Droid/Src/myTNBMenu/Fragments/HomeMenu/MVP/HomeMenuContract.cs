@@ -103,6 +103,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             bool GetHomeTutorialCallState();
             
             void EBPopupActivity();
+            
+            void ShowDiscoverMoreLayout();
         }
 
         public interface IHomeMenuPresenter

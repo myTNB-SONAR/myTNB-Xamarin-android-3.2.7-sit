@@ -257,7 +257,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
 
             IsRootTutorialShown = false;
-
+            MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
             SetBottomNavigationLabels();
             bottomNavigationView.SetShiftMode(false, false);
             bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
@@ -1428,10 +1428,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                            .Replace(Resource.Id.content_layout, currentFragment)
                            .CommitAllowingStateLoss();
 
-            if ( MyTNBAccountManagement.GetInstance().IsFromLoginPage() && !MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag())
+            if (MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag())
             {
-                this.mPresenter.SetIsWhatsNewDialogShowNeed(false);
-                isWhatNewDialogOnHold = false;
+                isWhatNewDialogOnHold = true;
             }
 
             if (isWhatNewDialogOnHold)
@@ -1883,6 +1882,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         {
                             try
                             {
+                                MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
+                                MyTNBAccountManagement.GetInstance().SetIsEBUser(true);
+                                MyTNBAccountManagement.GetInstance().SetMaybeLater(false);
                                 this.mPresenter.CheckWhatsNewCache();
                             }
                             catch (Exception e)
@@ -2095,11 +2097,21 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
                     bool flag = fragment.GetHomeTutorialCallState();
 
+                    if (MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag())
+                    {
+                        flag = true;
+                    }
+                    else if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && MyTNBAccountManagement.GetInstance().IsFromLoginPage() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2"))
+                    {
+                        flag = false;
+                    }
+
                     if (flag)
                     {
                         this.mPresenter.SetIsWhatsNewDialogShowNeed(false);
                         WhatsNewEntity wtManager = new WhatsNewEntity();
-                        List<WhatsNewEntity> items = wtManager.GetActivePopupItems();
+                        List<WhatsNewEntity> items = wtManager.GetActivePopupItems(
+                            );
                         if (items != null && items.Count > 0)
                         {
                             List<WhatsNewEntity> MaintenancePopupItems = items.FindAll(x => x.Donot_Show_In_WhatsNew);
@@ -2339,11 +2351,31 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     else
                     {
                         isWhatNewDialogOnHold = true;
+
+                        if (MyTNBAccountManagement.GetInstance().IsFromLoginPage())
+                        {
+                            MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
+                            Handler h = new Handler();
+                            Action myAction = () =>
+                            {
+                                OnCheckEnergyBudgetUser();
+                            };
+                            h.PostDelayed(myAction, 15);
+                        }
                     }
                 }
                 else if (bcrmEntity != null && bcrmEntity.IsDown && !MyTNBAccountManagement.GetInstance().IsMaintenanceDialogShown())
                 {
                     OnShowBCRMPopup(bcrmEntity);
+                }
+                else if (MyTNBAccountManagement.GetInstance().IsEBUserVerify() && MyTNBAccountManagement.GetInstance().IsFromLoginPage() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2"))
+                {
+                    Handler h = new Handler();
+                    Action myAction = () =>
+                    {
+                        OnCheckEnergyBudgetUser();
+                    };
+                    h.PostDelayed(myAction, 15);
                 }
             }
             catch (Exception e)
@@ -2592,6 +2624,36 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void SetAlreadyStarted(bool flag)
         {
             alreadyStarted = flag;
+        }
+
+        public void OnCheckEnergyBudgetUser()
+        {
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && !MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2"))
+            {
+
+                if (UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals(string.Empty))
+                {
+                    UserSessions.SavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this), "1");
+                }
+                else if (UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("1"))
+                {
+                    UserSessions.SavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this), "2");
+                }
+
+                try
+                {
+                    MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
+                    isWhatNewDialogOnHold = false;
+                    UserSessions.DoHomeTutorialShown(PreferenceManager.GetDefaultSharedPreferences(this));
+
+                    HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
+                    fragment.EBPopupActivity();
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
         }
     }
 }

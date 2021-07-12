@@ -220,8 +220,9 @@
     "tutorialEnergyBudgetTitle": "Begin your Energy Budget journey",
     "tutorialEnergyBudgetDesc": "Access Energy Budget easily from homepage to start setting up your desired monthly bill amount",
     //DiscoverMore
-    "discoverMoreTitle": "Discover More",
-    "discoverMoreTextTitle": "The new Energy Budget feature is here!"
+    "DiscoverMore": "Discover More",
+    "DiscoverMoreTitle": "The new Energy Budget feature is here!",
+    "DiscoverMoreDate": "07 May 2021"
   },
   "Tabbar": {
     "home": "Home",
@@ -585,9 +586,10 @@
     "viewReadingHistory": "View Reading History",
     "paymentHistory": "Payment history",
     "viewReceipt": "View Receipt",
+    //EnergyBudget
     "viewBudget": "View Budget",
     "viewTips": "View Tips",
-    "linkEB": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks"
+    "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks"
   },
   "AddAccount": {
     "title": "Add Electricity Account",

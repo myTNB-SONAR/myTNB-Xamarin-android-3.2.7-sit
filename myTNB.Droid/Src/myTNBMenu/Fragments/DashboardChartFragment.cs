@@ -5218,6 +5218,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (!this.GetIsClicked() && btnSetNewBudget.Text == Utility.GetLocalizedLabel("Usage", "setEnergyButton"))
                 {
+                    FirebaseAnalyticsUtils.SetScreenNameDynaTrace("EB_start");
+                    FirebaseAnalyticsUtils.SetFragmentScreenName(this, "EB_start");
                     this.SetIsClicked(true);
                     editBudget = true;
                     setBtn = true;
@@ -5254,6 +5256,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     if (!GetIsMDMSDown())
                     {
+                        FirebaseAnalyticsUtils.SetScreenNameDynaTrace("EB_setup_success");
+                        FirebaseAnalyticsUtils.SetFragmentScreenName(this, "EB_setup_success");
                         this.SetIsClicked(true);
                         setEnergyBudgetlayout = false;
                         setBtn = false;
@@ -5268,7 +5272,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             editBtn = false;
                             ShowEnergyBudgetSuccess();
-                            //ShowSMStatisticCard();
                         }
                         else if (saveamount.Equals(0))
                         {
@@ -9294,7 +9297,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 energyBudgetRMinput.Text = smDecimalFormat.Format(double.Parse(selectedCusBillAcc.BudgetAmount, currCult));
                                 energyBudgetAccountStatusText.Text = Utility.GetLocalizedLabel("Usage", "myMonthlyBudget");
                                 energyBudgetAccountStatusText.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.charcoalGrey));
-                                SetGraphBarHorizontal(120);
+                                //SetGraphBarHorizontal(120);
                             }
                             else if (saveBtn && !editBtn && !setBtn && isHaveEnergyBudget)
                             {
@@ -9307,7 +9310,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 energyBudgetRMinput.ClearFocus();
                                 energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(13) });
                                 energyBudgetRMinput.Text = smDecimalFormat.Format(double.Parse(selectedCusBillAcc.BudgetAmount, currCult));
-                                SetGraphBarHorizontal(120);
+                                //SetGraphBarHorizontal(120);
                             }
                             else if (saveBtn && editBtn && !setBtn && !isHaveEnergyBudget)
                             {
@@ -9329,7 +9332,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 energyBudgetRMinput.ClearFocus();
                                 energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(13) });
                                 energyBudgetRMinput.Text = smDecimalFormat.Format(double.Parse(selectedCusBillAcc.BudgetAmount, currCult));
-                                SetGraphBarHorizontal(120);
+                                //SetGraphBarHorizontal(120);
                             }
                             else
                             {
@@ -9355,10 +9358,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     if (costValue.Key == Constants.CURRENT_COST_KEY)
                                     {
-                                        smStatisticPredictTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
+                                        //smStatisticPredictTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
                                         smStatisticPredictSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
                                         smStatisticPredict.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : smDecimalFormat.Format(double.Parse(costValue.Value, currCult));
                                         smStatisticPredictCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
+
+                                        if (isHaveEnergyBudget)
+                                        {
+                                            double usageAmount = string.IsNullOrEmpty(costValue.Value) ? double.Parse(costValue.Value, currCult) : double.Parse(costValue.Value, currCult);
+                                            SetGraphBarHorizontal(usageAmount);
+                                        }
+
                                         if (isMDMSDown)
                                         {
                                             smStatisticPredictSubTitle.Text = "- -";
@@ -9403,7 +9413,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
                                 btnSetNewBudget.Visibility = ViewStates.Gone;
                                 smStatisticTooltip.Visibility = ViewStates.Visible;
-                                SetGraphBarHorizontal(120);
+                                //SetGraphBarHorizontal(120);
                             }
                             else if (!saveBtn && editBtn && !setBtn && isHaveEnergyBudget)
                             {
@@ -9416,7 +9426,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 smStatisticTooltip.Visibility = ViewStates.Visible;
                                 energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(13) });
                                 energyBudgetRMinput.Text = smDecimalFormat.Format(double.Parse(selectedCusBillAcc.BudgetAmount, currCult));
-                                SetGraphBarHorizontal(120);
+                                //SetGraphBarHorizontal(120);
                             }
                             else
                             {
@@ -9434,6 +9444,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             energyBudgetRMinput.Enabled = false;
                             DisableSetEnergyBudgetButton();
                             DisableEditEnergyBudgetButton();
+
+                            if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.CostData != null))
+                            {
+                                foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.CostData)
+                                {
+                                    if (costValue.Key == Constants.CURRENT_COST_KEY)
+                                    {
+                                        smStatisticPredictCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
+                                        if (isHaveEnergyBudget)
+                                        {
+                                            double usageAmount = string.IsNullOrEmpty(costValue.Value) ? double.Parse(costValue.Value, currCult) : double.Parse(costValue.Value, currCult);
+                                            SetGraphBarHorizontal(usageAmount);
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                     else
@@ -9816,7 +9842,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
-        public void SetGraphBarHorizontal(int amountUsage)
+        public void SetGraphBarHorizontal(double amountUsage)
         {
             try
             {
@@ -9825,9 +9851,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 string amount = selectedCusBillAcc.BudgetAmount;
                 int totalAmount = Integer.ParseInt(amount);
+                double totalPercentage = 0;
+                double Percentage = 0;
 
-                double totalPercentage = (double)totalAmount/amountUsage;
-                double Percentage = totalPercentage * 100;
+                if (amountUsage > 0)
+                {
+                    totalPercentage = (double)amountUsage/totalAmount;
+                    Percentage = totalPercentage * 100;
+                }
 
                 LinearLayout.LayoutParams OuterLayout = OuterlayoutHorizontolBar.LayoutParameters as LinearLayout.LayoutParams;
 
@@ -9838,13 +9869,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 OuterLayout.Width = widthT;
                 int widthOuterLayout = OuterLayout.Width;
-                int percentageBarGraph = (int)System.Math.Round(System.Math.Abs(totalPercentage * widthOuterLayout));
+                int percentageBarGraph = 109;
+
+                if (totalPercentage > 0)
+                {
+                    percentageBarGraph = (int)System.Math.Round(System.Math.Abs(totalPercentage * widthOuterLayout));
+                    int PerHundred = (int)System.Math.Round(Percentage);
+                    if (PerHundred > 100)
+                    {
+                        PerHundred = 100;
+                    }
+                    percentagetxt.Text = PerHundred.ToString() + "%";
+                }
+                else
+                {
+                    percentagetxt.Text = "0%";
+                }
+                
                 OuterlayoutHorizontolBar.RequestLayout();
 
                 LinearLayout.LayoutParams InnerLayout = InnerlayoutHorizontolBar.LayoutParameters as LinearLayout.LayoutParams;
                 InnerLayout.Width = percentageBarGraph;
 
-                if (Percentage > 0 && Percentage <= 49)
+                if (Percentage >= 0 && Percentage <= 49)
                 {
                     if (percentageBarGraph < 110)
                     {
@@ -9869,15 +9916,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     OuterlayoutHorizontolBar.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.outline_linear_layout_graphbar_red);
                     InnerlayoutHorizontolBar.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.graph_red_background);
                 }
-
-                InnerlayoutHorizontolBar.RequestLayout();
-
-                int PerHundred = (int)System.Math.Round(Percentage);
-                if (PerHundred > 100)
-                {
-                    PerHundred = 100;
-                }
-                percentagetxt.Text = PerHundred.ToString() + "%";
+                InnerlayoutHorizontolBar.RequestLayout();               
             }
             catch (System.Exception e)
             {

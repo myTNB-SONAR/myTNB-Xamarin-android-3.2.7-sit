@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Preferences;
 using Android.Text;
 using Android.Util;
 using Android.Views;
@@ -128,19 +129,38 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
         [OnClick(Resource.Id.btnGetStarted)]
         internal void OnGetStarted(object sender, EventArgs e)
         {
-            Intent result = new Intent();
-            result.PutExtra("EBList" , "EBList");
-            SetResult(Result.Ok, result);
-            Finish();
+            try
+            {
+                UserSessions.DoSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this));
+                FirebaseAnalyticsUtils.SetScreenNameDynaTrace("EB_initiate_Start");
+                FirebaseAnalyticsUtils.SetScreenName(this, "EB_initiate_Start");
+                Intent result = new Intent();
+                result.PutExtra("EBList", "EBList");
+                SetResult(Result.Ok, result);
+                Finish();
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         [OnClick(Resource.Id.btnMaybeLater)]
         internal void OnMaybeLater(object sender, EventArgs e)
         {
-            Intent result = new Intent();
-            result.PutExtra("MaybeLater", "MaybeLater");
-            SetResult(Result.Ok, result);
-            Finish();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenNameDynaTrace("EB_initiate_Later");
+                FirebaseAnalyticsUtils.SetScreenName(this, "EB_initiate_Later");
+                Intent result = new Intent();
+                result.PutExtra("MaybeLater", "MaybeLater");
+                SetResult(Result.Ok, result);
+                Finish();
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         public bool IsActive()

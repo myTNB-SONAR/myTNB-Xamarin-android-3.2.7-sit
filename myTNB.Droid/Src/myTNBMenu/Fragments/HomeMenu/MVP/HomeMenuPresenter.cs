@@ -193,7 +193,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                         isSummaryDone = true;
                         OnCheckToCallHomeMenuTutorial();
-
+                        this.mView.ShowDiscoverMoreLayout();
                         OnCleanUpNotifications(summaryDetails);
                     }
                     else if (response.Data != null && response.Data.ErrorCode == "8400")
@@ -311,7 +311,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             this.mView.IsLoadMoreButtonVisible(false, false);
                         }
-
+                        this.mView.ShowDiscoverMoreLayout();
                         OnCleanUpNotifications(summaryDetails);
                     }
                     else if (response.Data != null && response.Data.ErrorCode == "8400")
@@ -2651,32 +2651,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                 }
             }
-            /*else if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsFromLoginPage() && !UserSessions.GetSavePopUpCountEB(this.mPref).Equals("2"))
-            {
 
-                if (UserSessions.GetSavePopUpCountEB(this.mPref).Equals(string.Empty))
-                {
-                    UserSessions.SavePopUpCountEB(this.mPref, "1");
-                }
-                else if (UserSessions.GetSavePopUpCountEB(this.mPref).Equals("1"))
-                {
-                    UserSessions.SavePopUpCountEB(this.mPref, "2");
-                }
-
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && !MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag() && !UserSessions.GetSavePopUpCountEB(this.mPref).Equals("2"))
+            {              
                 try
                 {
-                    MyTNBAccountManagement.GetInstance().SetIsEBUser(true);
-                    MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
-                    UserSessions.DoHomeTutorialShown(this.mPref);
-                    this.mView.EBPopupActivity();
+                    UserSessions.HasHomeTutorialShown(this.mPref);
                 }
                 catch (System.Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
                 }
-            }*/
+            }
         }
-
+       
         public List<NewAppModel> OnGeneraNewAppTutorialList()
         {
             List<NewAppModel> newList = new List<NewAppModel>();
