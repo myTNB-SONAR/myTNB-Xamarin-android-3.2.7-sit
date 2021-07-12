@@ -1830,6 +1830,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             trackCurrentLoadMoreCount = HomeMenuUtils.GetTrackCurrentLoadMoreCount();
             LoadAccounts();
+            this.mView.ShowDiscoverMoreLayoit();
+
         }
 
         public void RestoreCurrentMyServiceState()
