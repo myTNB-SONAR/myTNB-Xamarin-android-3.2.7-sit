@@ -37,6 +37,12 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             ManageBillDeliveryList = new List<ManageBillDeliveryModel>();
             ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
             {
+                Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle4"),
+                Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription4"),
+                Image = "manage_bill_delivery_3"
+            });
+            ManageBillDeliveryList.Add(new ManageBillDeliveryModel()
+            {
                 Title = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoTitle1"),
                 Description = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "dbrInfoDescription1"),
                 Image = "manage_bill_delivery_0"

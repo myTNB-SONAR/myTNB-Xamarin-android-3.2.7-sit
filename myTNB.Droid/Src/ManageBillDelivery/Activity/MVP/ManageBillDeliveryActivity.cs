@@ -45,6 +45,9 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [BindView(Resource.Id.btnStartDigitalBill)]
         Button btnStartDigitalBill;
 
+        [BindView(Resource.Id.btnUpdateDigitalBill)]
+        Button btnUpdateDigitalBill;
+
         [BindView(Resource.Id.refresh_content)]
         TextView txtNewRefreshMessage;
 
@@ -65,6 +68,16 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         [BindView(Resource.Id.viewPagerLyout)]
         FrameLayout viewPagerLyout;
+
+        [BindView(Resource.Id.deliverigTitle)]
+        TextView deliverigTitle;
+
+        [BindView(Resource.Id.deliverigAddress)]
+        TextView deliverigAddress;
+
+        //[BindView(Resource.Id.pagerLyout)]
+        //LinearLayout pagerLyout;
+        
 
         ManageBillDeliveryContract.IUserActionsListener userActionsListener;
 
@@ -100,9 +113,12 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             Bundle extras = Intent.Extras;
             digitalBillLabel.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "whatIfIStillWantPaperBills");
             btnStartDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "startDigitalBillCTA");
-            TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel, btnStartDigitalBill);
+            TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel, btnStartDigitalBill, deliverigTitle);
+            TextViewUtils.SetMuseoSans300Typeface(deliverigAddress);
             TextViewUtils.SetTextSize12(digitalBillLabel);
-            TextViewUtils.SetTextSize16(btnStartDigitalBill);
+            TextViewUtils.SetTextSize16(btnStartDigitalBill, deliverigTitle);
+            TextViewUtils.SetTextSize14(deliverigAddress);
+
             dbrAccountList = this.presenter.GetEligibleDBRAccountList();
             if (extras != null)
             {
@@ -131,19 +147,16 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                    
                     InitiateDBRRequest();
             };
-
+            float h1 = 490f;
+            float h2 = 435f;
             FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
-            layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(355f) : (int)DPUtils.ConvertDPToPx(308f);
+            layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(h1) : (int)DPUtils.ConvertDPToPx(h2);
         }
         public void InitiateDBRRequest()
         {
             try
             {
                 StartActivity(typeof(DigitalBillActivity));
-
-
-
-
             }
             catch (Exception e)
             {
