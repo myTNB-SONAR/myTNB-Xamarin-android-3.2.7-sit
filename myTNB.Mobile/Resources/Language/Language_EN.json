@@ -985,6 +985,8 @@
     "generalEnquiryDescription": "I want to submit my thoughts and concerns.",
     "updatePersonalDetTitle": "Update Personal Details",
     "personalDetailsDescription": "I want to update personal details.",
+    "overVoltageClaimTitle": "Overvoltage Claim",
+    "overVoltageClaimDescription": "I would like to claim for damages in my property caused by an electricity surge.",
     "stepTitle1of2": "Step 1 of 2",
     "enquiryAboutTitle": "I want to enquire about:",
     "messageHint": "Your Message",
@@ -1097,7 +1099,11 @@
     "registeredView": "Is this electricity account registered under your name?",
     "viewYes": "Yes",
     "viewNo": "No",
-    "documentPdf": "Document"
+    "documentPdf": "Document",
+    "leaveDialouge": "Leave this page?",
+    "leaveDialougeMessage": "You will lose all changes made since your last save. Press Yes to continue, or Cancel to stay on the current page.",
+    "submitICFeedback_OverVoltageClainSuccessPageThankyouRequest": "Thank you for your request!",
+    "submitICFeedback_OverVoltageClainSuccessPageThankyouRequestContent": "We’ll get back to you soon. In the meantime, stay updated by tracking your claim status."
   },
   "Tutorial": {
     "swipeText": "Swipe to see more, tap to skip.",

@@ -38,6 +38,7 @@ using myTNB_Android.Src.FeedbackFail.Activity;
 using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity;
 using myTNB_Android.Src.FeedbackSuccess.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.OverVoltageClaim.Activity;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity;
 using myTNB_Android.Src.Utils;
@@ -73,6 +74,10 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         [BindView(Resource.Id.updatePersonalInfoConstraint)]
         ConstraintLayout updatePersonalInfoConstraint;
 
+        [BindView(Resource.Id.overvoltageclaimConstraint)]
+        ConstraintLayout overvoltageclaimConstraint;
+        
+
         [BindView(Resource.Id.txtAccountNo)]
         EditText txtAccountNo;
 
@@ -100,6 +105,15 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
         [BindView(Resource.Id.txtUpdatePersonalContent)]
         TextView txtUpdatePersonalContent;
+
+        [BindView(Resource.Id.txtOverVoltageClaim)]
+        TextView txtOverVoltageClaim;
+
+        [BindView(Resource.Id.txtOverVoltageClaimContent)]
+        TextView txtOverVoltageClaimContent;
+
+        
+
 
         [BindView(Resource.Id.scanNewEnquiry)]
         ImageButton scanNewEnquiry;
@@ -141,8 +155,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "submitEnquiryTitle"));
                 //2 set font type , 300 normal 500 button
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo);
-                TextViewUtils.SetMuseoSans300Typeface(txtUpdatePersonalContent, txtGeneralEnquiry_subContent, txtAccountNo);
-                TextViewUtils.SetMuseoSans500Typeface(infoLabeltxtWhereIsMyAcc, howCanWeHelpYou, txtGeneralEnquiry, txtUpdatePersonal);
+                TextViewUtils.SetMuseoSans300Typeface(txtUpdatePersonalContent, txtOverVoltageClaimContent , txtGeneralEnquiry_subContent, txtAccountNo);
+                TextViewUtils.SetMuseoSans500Typeface(infoLabeltxtWhereIsMyAcc, howCanWeHelpYou, txtGeneralEnquiry, txtUpdatePersonal ,txtOverVoltageClaim);
 
 
                 txtAccountNo.TextSize = TextViewUtils.GetFontSize(16f);
@@ -151,8 +165,9 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 txtGeneralEnquiry.TextSize = TextViewUtils.GetFontSize(14f);
                 txtGeneralEnquiry_subContent.TextSize = TextViewUtils.GetFontSize(12f);
                 txtUpdatePersonal.TextSize = TextViewUtils.GetFontSize(14f);
+                txtOverVoltageClaim.TextSize = TextViewUtils.GetFontSize(14f);
                 txtUpdatePersonalContent.TextSize = TextViewUtils.GetFontSize(12f);
-              
+                txtOverVoltageClaimContent.TextSize= TextViewUtils.GetFontSize(12f);
                 //set translation of string 
 
 
@@ -162,8 +177,9 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
                 txtGeneralEnquiry.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryTitle");
                 txtGeneralEnquiry_subContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "generalEnquiryDescription");
                 txtUpdatePersonal.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle");
+                txtOverVoltageClaim.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle");
                 txtUpdatePersonalContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "personalDetailsDescription");
-
+                txtOverVoltageClaimContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimDescription");
 
                 if (!UserEntity.IsCurrentlyActive())
                 {
@@ -492,17 +508,36 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
 
         public void ShowGeneralEnquiry()
         {
-        
-            Intent generalEnquiry = new Intent(this, typeof(FeedbackGeneralEnquiryStepOneActivity));
-            generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
-            StartActivity(generalEnquiry);
+            try
+            {
+                if(IsOverVoltageClick)
+                {
+                    Intent generalEnquiry = new Intent(this, typeof(OvervoltageClaim));
+                    //generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
+                    StartActivity(generalEnquiry);
+                    IsOverVoltageClick = false;
+                }
+                else
+                {
+                    Intent generalEnquiry = new Intent(this, typeof(FeedbackGeneralEnquiryStepOneActivity));
+                    generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
+                    StartActivity(generalEnquiry);
+                }
+                
 
+            }
+            catch (Exception ex)
+            {
+
+            }
+           
 
             //Intent generalEnquiry = new Intent(this, typeof(FeedbackGeneralEnquiryStepOneActivity));
             //generalEnquiry.PutExtra(Constants.ACCOUNT_NUMBER, txtAccountNo.Text.ToString().Trim());
             //StartActivityForResult(generalEnquiry, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
         }
 
+        
         public void ShowSelectAccount()
         {
             Intent supplyAccount = new Intent(this, typeof(FeedbackSelectAccountActivity));
@@ -556,12 +591,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         void OnGeneralEnquiryConstraint(object sender, EventArgs eventArgs)
         {
             if (!this.GetIsClicked())
-            {
-
-
-                this.SetIsClicked(true);
-
-
+            { 
+                this.SetIsClicked(true); 
                 if (DownTimeEntity.IsBCRMDown())
                 {
                     OnBCRMDownTimeErrorMessage();
@@ -589,9 +620,7 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         void OnupdatePersonalInfoConstraint(object sender, EventArgs eventArgs)
         {
             if (!this.GetIsClicked())
-            {
-
-
+            { 
                 if (DownTimeEntity.IsBCRMDown())
                 {
                     OnBCRMDownTimeErrorMessage();
@@ -616,6 +645,37 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
             }
         }
 
+        [OnClick(Resource.Id.overvoltageclaimConstraint)]
+        void OnovervoltageclaimConstraint(object sender, EventArgs eventArgs)
+        {
+            if (!this.GetIsClicked())
+            {
+                IsOverVoltageClick = true;
+                if (DownTimeEntity.IsBCRMDown())
+                {
+                    OnBCRMDownTimeErrorMessage();
+                    this.SetIsClicked(false);
+                }
+                else
+                {
+                    string accno = txtAccountNo.Text.ToString().Trim();
+                    bool isAllowed = this.userActionsListener.CheckRequiredFields(accno);
+
+                    if (isAllowed)
+                    {
+                        this.SetIsClicked(true);
+                        this.userActionsListener.ValidateAccountAsync(txtAccountNo.Text.ToString().Trim(), false);
+                    }
+                    else
+                    {
+                        this.SetIsClicked(false);
+                    }
+
+                }
+            }  
+        }
+
+         
         Snackbar mErrorMessageSnackBar;
         public void OnBCRMDownTimeErrorMessage(string message = null)
         {
@@ -978,6 +1038,9 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
         }
 
         Snackbar newErrorMessageSnackBar;
+
+        public bool IsOverVoltageClick { get; private set; }
+
         public void OnSubmitError(string message = null)
         {
             if (newErrorMessageSnackBar != null && newErrorMessageSnackBar.IsShown)

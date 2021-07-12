@@ -429,6 +429,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 }
                 else
                 {
+                  
                     this.Finish();
                 }
             }

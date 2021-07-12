@@ -45,8 +45,8 @@ namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
         {
             this.mView.ShowGeneralEnquiry();
         }
-
-       public void onUpdatePersonalDetail()
+         
+        public void onUpdatePersonalDetail()
         {
             this.mView.showUpdatePersonalDetail();
         }
