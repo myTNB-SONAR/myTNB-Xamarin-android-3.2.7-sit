@@ -2494,8 +2494,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                  try
                  {
                     FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Energy Budget Screen Popup");
-                    EBPopupActivity();
-                 }
+                    Intent EBPopupPage = new Intent(this.Activity, typeof(EBPopupScreenActivity));
+                    EBPopupPage.PutExtra("fromDashboard", true);
+                    StartActivityForResult(EBPopupPage, SELECT_SM_POPUP_REQUEST_CODE);
+                }
                  catch (System.Exception err)
                  {
                      Utility.LoggingNonFatalError(err);
