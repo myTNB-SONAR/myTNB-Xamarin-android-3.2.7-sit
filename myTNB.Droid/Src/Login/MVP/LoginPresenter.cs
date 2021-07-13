@@ -267,7 +267,7 @@ namespace myTNB_Android.Src.Login.MVP
                         {
                             int loginCount = UserLoginCountEntity.GetLoginCount(userResponse.GetData().Email);
                             int recordId;
-                            if (loginCount < 3)
+                            if (loginCount < 2)
                             {
                                 recordId = UserLoginCountEntity.InsertOrReplace(userResponse.GetData(), loginCount + 1);
                             }

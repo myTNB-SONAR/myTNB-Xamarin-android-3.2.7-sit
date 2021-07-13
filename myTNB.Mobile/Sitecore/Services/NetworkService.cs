@@ -7,7 +7,7 @@ namespace myTNB.Mobile.Sitecore
         public static CancellationToken GetCancellationToken()
         {
             CancellationTokenSource tokenSource = new CancellationTokenSource();
-            tokenSource.CancelAfter(Constants.SitecoreTimeOut);
+            tokenSource.CancelAfter(MobileConstants.SitecoreTimeOut);
             CancellationToken token = tokenSource.Token;
             return token;
         }

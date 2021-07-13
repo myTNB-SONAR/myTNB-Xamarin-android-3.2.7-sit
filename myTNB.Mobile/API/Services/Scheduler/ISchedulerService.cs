@@ -17,19 +17,19 @@ namespace myTNB.Mobile.API.Services.Scheduler
     internal interface ISchedulerService
     {
         [Get("/{urlPrefix}/AvailableAppointment?businessArea={businessArea}")]
-        Task<GetAvailableAppointmentResponse> GetAvailableAppointment([Header(Constants.Header_UserInfo)] string userInfo
+        Task<GetAvailableAppointmentResponse> GetAvailableAppointment([Header(MobileConstants.Header_UserInfo)] string userInfo
             , string businessArea
             , CancellationToken cancelToken
-            , [Header(Constants.Header_Lang)] string lang
-            , string urlPrefix = Constants.ApiUrlPath
-            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+            , [Header(MobileConstants.Header_Lang)] string lang
+            , string urlPrefix = MobileConstants.ApiUrlPath
+            , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
         [Post("/{urlPrefix}/SetAppointment")]
         Task<HttpResponseMessage> SetAppointment([Body] PostSetAppointmentRequest request
-           , [Header(Constants.Header_UserInfo)] string userInfo
+           , [Header(MobileConstants.Header_UserInfo)] string userInfo
            , CancellationToken cancelToken
-           , [Header(Constants.Header_Lang)] string lang
-           , string urlPrefix = Constants.ApiUrlPath
-           , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+           , [Header(MobileConstants.Header_Lang)] string lang
+           , string urlPrefix = MobileConstants.ApiUrlPath
+           , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
     }
 }

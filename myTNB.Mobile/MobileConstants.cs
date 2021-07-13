@@ -1,6 +1,6 @@
 ﻿namespace myTNB.Mobile
 {
-    internal static class Constants
+    public static class MobileConstants
     {
         //Headers
         internal const string Header_RoleID = "RoleId";
@@ -106,5 +106,11 @@
 #else
         internal const string APIKey = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJDaGFubmVsIjoibXlUTkJfQVBJX01vYmlsZSIsIkNoYW5uZWxLZXkiOiJGNUFEQjU0QzM1MkM0NzYwQjUzMkNEOUU1ODdBRTRGNiIsIm5iZiI6MTU5OTE5OTc0OSwiZXhwIjoxNTk5MjAzMzQ5LCJpYXQiOjE1OTkxOTk3NDksImlzcyI6Im15VE5CIEFQSSIsImF1ZCI6Im15VE5CIEFQSSBBdWRpZW5jZSJ9.Sy_xahwMgt2izUgztYq_BQeGECGsahP9oSNHeB1kwB0Ij8Grpg3kQZPCa_b_bbiyngzpjKy38_DFU12wToQAiA";
 #endif
+        public struct SharePreferenceKey
+        {
+            public const string GetEligibilityTimeStamp = "GetEligibilityTimeStamp";
+            public const string GetEligibilityData = "GetEligibilityData";
+            public const string AccessToken = "AccessToken";
+        }
     }
 }

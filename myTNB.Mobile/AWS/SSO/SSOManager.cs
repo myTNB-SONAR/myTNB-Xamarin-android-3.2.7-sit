@@ -62,8 +62,8 @@ namespace myTNB.Mobile
                     CaNo = CANumber
                 };
 
-                string signature = AES256_Encrypt(Constants.SaltKey
-                    , Constants.PassPhrase
+                string signature = AES256_Encrypt(MobileConstants.SaltKey
+                    , MobileConstants.PassPhrase
                     , JsonConvert.SerializeObject(ssoModel));
                 Debug.WriteLine("[DEBUG] SSO Signature: " + signature);
                 return signature;

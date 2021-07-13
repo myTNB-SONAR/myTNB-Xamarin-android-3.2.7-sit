@@ -13,24 +13,24 @@ namespace myTNB.Mobile.API.Services.Payment
         [Post("/{urlPrefix}/ApplicationPayment")]
         Task<HttpResponseMessage> ApplicationPayment([Body] PostApplicationPaymentRequest request
             , CancellationToken cancelToken
-            , [Header(Constants.Header_Lang)] string lang
-            , string urlPrefix = Constants.ApiUrlPath);
+            , [Header(MobileConstants.Header_Lang)] string lang
+            , string urlPrefix = MobileConstants.ApiUrlPath);
 
         [Headers(new string[] { "Content-Type: application/json" })]
         [Post("/{urlPrefix}/GetApplicationsPaidDetails")]
         Task<HttpResponseMessage> GetApplicationsPaidDetails([Body] PostApplicationsPaidDetailsRequest request
             , CancellationToken cancelToken
-            , [Header(Constants.Header_Lang)] string lang
-            , string urlPrefix = Constants.ApiUrlPath);
+            , [Header(MobileConstants.Header_Lang)] string lang
+            , string urlPrefix = MobileConstants.ApiUrlPath);
 
         [Headers(new string[] { "Content-Type: application/pdf" })]
         [Get("/{urlPrefix}/GetTaxInvoiceForApplicationPayment?srNumber={srNumber}")]
         Task<HttpResponseMessage> GetTaxInvoice(string srNumber
-          , [Header(Constants.Header_UserInfo)] string userInfo
+          , [Header(MobileConstants.Header_UserInfo)] string userInfo
           , CancellationToken cancelToken
           , string language
-          , [Header(Constants.Header_Lang)] string lang
-          , string urlPrefix = Constants.ApiUrlPath
-          , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+          , [Header(MobileConstants.Header_Lang)] string lang
+          , string urlPrefix = MobileConstants.ApiUrlPath
+          , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
     }
 }

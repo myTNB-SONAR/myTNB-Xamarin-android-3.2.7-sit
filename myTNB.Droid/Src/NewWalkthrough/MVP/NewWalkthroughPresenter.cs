@@ -142,7 +142,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                         Image = "walkthrough_img_update_5"
                     });
                 }
-                UserEntity activeUser = UserEntity.GetActive();
+               /* UserEntity activeUser = UserEntity.GetActive();
 
                 if (activeUser != null)
                 {
@@ -175,7 +175,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                             Image = "walkthrough_img_install_9"
                         });
                     }
-                }
+                }*/
             }
 
             return newWalkthroughList;

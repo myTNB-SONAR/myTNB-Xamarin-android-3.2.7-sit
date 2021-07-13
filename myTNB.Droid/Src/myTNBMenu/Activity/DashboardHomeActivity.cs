@@ -339,7 +339,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             UserEntity user = UserEntity.GetActive();
             int loginCount = UserLoginCountEntity.GetLoginCount(user.Email);
 
-            if (IsFromLogin && loginCount == 2)
+            if (IsFromLogin && loginCount == 1)
             {
                 ShowMarketingTooltip();
             }

@@ -37,7 +37,7 @@ namespace myTNB.Mobile.API.Managers.Scheduler
             SchedulerDisplay display = new SchedulerDisplay();
             try
             {
-                ISchedulerService service = RestService.For<ISchedulerService>(Constants.ApiDomain);
+                ISchedulerService service = RestService.For<ISchedulerService>(MobileConstants.ApiDomain);
                 try
                 {
                     GetAvailableAppointmentResponse response = await service.GetAvailableAppointment(AppInfoManager.Instance.GetUserInfo()
@@ -48,9 +48,9 @@ namespace myTNB.Mobile.API.Managers.Scheduler
                     {
                         if (response.Content.Count < 1)
                         {
-                            response.StatusDetail.Code = Constants.EMPTY;
+                            response.StatusDetail.Code = MobileConstants.EMPTY;
                         }
-                        response.StatusDetail = Constants.Service_GetAvailableAppointment.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail = MobileConstants.Service_GetAvailableAppointment.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
@@ -58,7 +58,7 @@ namespace myTNB.Mobile.API.Managers.Scheduler
                         {
                             StatusDetail = new StatusDetail()
                         };
-                        response.StatusDetail = Constants.Service_GetAvailableAppointment.GetStatusDetails(Constants.DEFAULT);
+                        response.StatusDetail = MobileConstants.Service_GetAvailableAppointment.GetStatusDetails(MobileConstants.DEFAULT);
                     }
 
                     if (response != null && response.StatusDetail != null && response.StatusDetail.IsSuccess)
@@ -66,7 +66,7 @@ namespace myTNB.Mobile.API.Managers.Scheduler
                         display = response.Parse();
                         if (display.ScheduleList == null || display.ScheduleList.Count == 0)
                         {
-                            display.StatusDetail = Constants.Service_GetAvailableAppointment.GetStatusDetails(Constants.EMPTY);
+                            display.StatusDetail = MobileConstants.Service_GetAvailableAppointment.GetStatusDetails(MobileConstants.EMPTY);
                         }
                     }
                     else
@@ -98,7 +98,7 @@ namespace myTNB.Mobile.API.Managers.Scheduler
             {
                 StatusDetail = new StatusDetail()
             };
-            display.StatusDetail = Constants.Service_GetAvailableAppointment.GetStatusDetails(Constants.DEFAULT);
+            display.StatusDetail = MobileConstants.Service_GetAvailableAppointment.GetStatusDetails(MobileConstants.DEFAULT);
             return display;
         }
         #endregion
@@ -127,7 +127,7 @@ namespace myTNB.Mobile.API.Managers.Scheduler
         {
             try
             {
-                ISchedulerService service = RestService.For<ISchedulerService>(Constants.ApiDomain);
+                ISchedulerService service = RestService.For<ISchedulerService>(MobileConstants.ApiDomain);
                 try
                 {
                     PostSetAppointmentRequest request = new PostSetAppointmentRequest
@@ -153,7 +153,7 @@ namespace myTNB.Mobile.API.Managers.Scheduler
                     PostSetAppointmentResponse response = await rawResponse.ParseAsync<PostSetAppointmentResponse>();
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
-                        response.StatusDetail = Constants.Service_PostSetAppointment.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail = MobileConstants.Service_PostSetAppointment.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
@@ -161,7 +161,7 @@ namespace myTNB.Mobile.API.Managers.Scheduler
                         {
                             StatusDetail = new StatusDetail()
                         };
-                        response.StatusDetail = Constants.Service_PostSetAppointment.GetStatusDetails(Constants.DEFAULT);
+                        response.StatusDetail = MobileConstants.Service_PostSetAppointment.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                     return response;
                 }
@@ -188,7 +188,7 @@ namespace myTNB.Mobile.API.Managers.Scheduler
             {
                 StatusDetail = new StatusDetail()
             };
-            res.StatusDetail = Constants.Service_PostSetAppointment.GetStatusDetails(Constants.DEFAULT);
+            res.StatusDetail = MobileConstants.Service_PostSetAppointment.GetStatusDetails(MobileConstants.DEFAULT);
             return res;
         }
         #endregion

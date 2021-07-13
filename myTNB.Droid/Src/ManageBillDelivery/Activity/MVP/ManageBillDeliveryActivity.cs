@@ -152,7 +152,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             TextViewUtils.SetTextSize12(digitalBillLabel);
             TextViewUtils.SetTextSize16(btnStartDigitalBill, deliverigTitle, txtTitle);
             TextViewUtils.SetTextSize14(deliverigAddress, txtMessage);
-
+            UserEntity user = UserEntity.GetActive();
             if (extras != null)
             {
                 if (extras.ContainsKey("EBill"))
@@ -172,7 +172,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(380f) : (int)DPUtils.ConvertDPToPx(355f);
                     applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = ViewStates.Gone;
                     email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = email_container .Visibility = ViewStates.Visible;
-                    UserEntity user = UserEntity.GetActive();
+                   
                     deliveryUserName.Text = user.DisplayName + " (" + Utility.GetLocalizedLabel("ManageDigitalBillLanding", "you") + ")";
                     deliveryEmail.Text = user.Email;
                     img_display.SetImageResource(Resource.Drawable.display_emailbilling);
@@ -220,16 +220,18 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             btnStartDigitalBill.Click += delegate
             {
                    
-                    InitiateDBRRequest();
+                    InitiateDBRRequest(mSelectedAccountData);
             };
            
 
         }
-        public void InitiateDBRRequest()
+        public void InitiateDBRRequest(AccountData mSelectedAccountData)
         {
             try
             {
-                StartActivity(typeof(DigitalBillActivity));
+                Intent intent = new Intent(this, typeof(DigitalBillActivity));
+                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
+                StartActivity(intent);
             }
             catch (Exception e)
             {

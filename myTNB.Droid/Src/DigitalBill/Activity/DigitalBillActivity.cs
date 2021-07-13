@@ -9,7 +9,10 @@ using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
+using Java.IO;
+using Java.Lang;
 using myTNB;
+using myTNB.Mobile;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
@@ -20,6 +23,7 @@ using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using Constants = myTNB_Android.Src.Utils.Constants;
 
 namespace myTNB_Android.Src.DigitalBill.Activity
 {
@@ -30,13 +34,13 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         private DigitalBillPresenter mPresenter;
         private DigitalBillContract.IUserActionsListener userActionsListener;
         private static Snackbar mErrorMessageSnackBar;
-
+        public AccountData mSelectedAccountData;
         private static FrameLayout mainView;
 
         WebView tncWebView;
 
         const string PAGE_ID = "ManageDigitalBillLanding";
-
+        const string SELECTED_ACCOUNT_KEY = ".selectedAccount";
         private string mSavedTimeStamp = "0000000";
 
         [BindView(Resource.Id.progressBar)]
@@ -79,7 +83,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                     }
                 });
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 progressBar.Visibility = ViewStates.Gone;
                 Utility.LoggingNonFatalError(e);
@@ -93,6 +97,13 @@ namespace myTNB_Android.Src.DigitalBill.Activity
 
             try
             {
+                Bundle extras = Intent.Extras;
+
+                if ((extras != null) && extras.ContainsKey(SELECTED_ACCOUNT_KEY))
+                {
+                    mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
+                }
+
                 mPresenter = new DigitalBillPresenter(this);
 
                 tncWebView = FindViewById<WebView>(Resource.Id.tncWebView);
@@ -102,7 +113,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 ShowDigitalBill(true);
 
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -112,24 +123,63 @@ namespace myTNB_Android.Src.DigitalBill.Activity
         {
             try
             {
-                string HTMLText = "<html>" + "<body><b>MicroSite</b><br/><br/></body>" +
-                    "<input type='button' value='Back to DBR' class='remove_this' onclick='mytnbapp://action=startDigitalBilling'>"+
-                "</html>";
-                tncWebView.LoadDataWithBaseURL("", HTMLText, "text/html", "UTF-8", "");
+                //string HTMLText = "<html>" + "<body><b>MicroSite</b><br/><br/></body>" +
+               //     "<input type='button' value='Back to DBR' class='remove_this' onclick='mytnbapp://action=startDigitalBilling'>"+
+               // "</html>";
+                UserEntity user = UserEntity.GetActive();
+                string accnum = mSelectedAccountData.AccountNum;
+                string myTNBAccountName = user?.DisplayName ?? string.Empty;
+                string signature = SSOManager.Instance.GetSignature(myTNBAccountName
+                                   , MobileConstants.SharePreferenceKey.AccessToken
+                                   , user.DeviceId ?? string.Empty
+                                   , DeviceIdUtils.GetAppVersionName()
+                                   , 16
+                                   , (LanguageUtil.GetAppLanguage() == "MS"
+                                       ? LanguageManager.Language.MS
+                                       : LanguageManager.Language.EN).ToString()
+                                   , TextViewUtils.FontSelected
+                                   , AWSConstants.DBROriginURL
+                                   , AWSConstants.DBRRedirectURL
+                                   , accnum);
+
+                tncWebView.PostUrl(AWSConstants.DBRSSOURL, GetBytes(signature, "base64"));
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
-       
+        public byte[] GetBytes(string data, string charset)
+        {
+            if (string.IsNullOrEmpty(data))
+            {
+                throw new IllegalArgumentException("data may not be null");
+            }
+
+            if (string.IsNullOrEmpty(charset))
+            {
+                throw new IllegalArgumentException("charset may not be null or empty");
+            }
+
+            Java.Lang.String ToBeEncoded = new Java.Lang.String(data);
+
+            try
+            {
+                return ToBeEncoded.GetBytes(charset);
+            }
+            catch (UnsupportedEncodingException e)
+            {
+                Utility.LoggingNonFatalError(e);
+                return ToBeEncoded.GetBytes();
+            }
+        }
         public void HideProgressBar()
         {
             try
             {
                 progressBar.Visibility = ViewStates.Gone;
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -142,7 +192,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             {
                 FirebaseAnalyticsUtils.SetScreenName(this, "Terms And Conditions");
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -182,7 +232,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             {
                 LoadingOverlayUtils.OnRunLoadingAnimation(this);
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -194,7 +244,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
             {
                 LoadingOverlayUtils.OnStopLoadingAnimation(this);
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
