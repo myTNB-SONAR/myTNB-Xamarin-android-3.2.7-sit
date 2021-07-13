@@ -105,7 +105,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
                         CustomerBillingAccount selectedAccount = JsonConvert.DeserializeObject<CustomerBillingAccount>(extras.GetString(Constants.SELECTED_ACCOUNT));
 
-                        this.mView.SetAccountName(selectedAccount.AccDesc);
+                        this.mView.SetAccountName(selectedAccount);
 
                     }
                 }

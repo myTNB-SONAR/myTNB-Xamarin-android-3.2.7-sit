@@ -6,4 +6,12 @@
         public string Description { set; get; }
         public string Image { set; get; }
     }
+    internal enum DBRTypeEnum
+    {
+        EBill,
+        Email,
+        Paper,
+        WhatsApp,
+        None
+    }
 }

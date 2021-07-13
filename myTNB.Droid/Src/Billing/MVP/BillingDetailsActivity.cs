@@ -327,6 +327,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 this.SetIsClicked(true);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                intent.PutExtra("Email", "Email");
                 StartActivity(intent);
             }
         }

@@ -17,7 +17,7 @@
 			layout="@layout/toolbar"
 			android:id="@+id/toolbar" />
 		<TextView
-			android:id="@+id/txt_notification_name"
+			android:id="@+id/txt_ca_name"
 			android:layout_width="wrap_content"
 			android:layout_height="30dp"
 			android:layout_marginBottom="16dp"
@@ -89,9 +89,76 @@
 					android:id="@+id/viewPager"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
+					android:visibility="gone"
 					android:background="@color/white"
 					android:overScrollMode="never"/>
-				
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center|top"
+					android:gravity="center|top"
+					android:orientation="vertical"
+					android:background="@color/white"
+					android:layout_marginBottom="16dp"
+					android:id="@+id/email_layout">
+					<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="vertical"
+				android:gravity="top"
+				android:layout_gravity="top">
+				<ImageView
+					android:id="@+id/img_display"
+					android:layout_height="88dp"
+					android:layout_width="match_parent"
+					android:layout_marginTop="32dp"
+					android:layout_gravity="center_horizontal"/>
+					</LinearLayout>
+					<TextView
+						android:layout_height="wrap_content"
+						android:layout_width="match_parent"
+						android:layout_marginTop="16dp"
+						android:textSize="16dp"
+						android:textColor="@color/tunaGrey"
+						android:lineSpacingExtra="8dp"
+						android:textStyle="bold"
+						android:layout_marginLeft="16dp"
+						android:layout_marginRight="16dp"
+						android:layout_marginBottom="16dp"
+						android:gravity="center_horizontal"
+						android:id="@+id/txtTitle" />
+					<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginLeft="16dp"
+				android:layout_marginRight="16dp"
+				android:layout_marginBottom="16dp"
+				android:id="@+id/walkthroughBottomView"
+				android:orientation="vertical">
+				<ScrollView
+					android:layout_height="wrap_content"
+					android:layout_width="match_parent"
+					android:overScrollMode="never"
+					android:fillViewport="true">
+					<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:orientation="vertical">
+						<TextView
+							android:layout_height="wrap_content"
+							android:layout_width="match_parent"
+							android:textSize="14dp"
+							android:textColor="@color/tunaGrey"
+							android:gravity="center_horizontal"
+							android:layout_marginTop="8dp"
+							android:lineSpacingExtra="4dp"
+							android:layout_marginLeft="0dp"
+							android:layout_marginRight="0dp"
+							android:id="@+id/txtMessage" />
+					</LinearLayout>
+				</ScrollView>
+			</LinearLayout>
+				</LinearLayout>
 				<LinearLayout
                     android:id="@+id/applicationIndicatorLayout"
 					android:layout_width="match_parent"
@@ -101,13 +168,14 @@
 					android:layout_gravity="bottom"
 					android:orientation="vertical">
 					<RelativeLayout
-					android:id="@+id/applicationIndicator"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:layout_gravity="bottom"
-					android:background="@color/white"
-					android:gravity="center"
-					android:orientation="horizontal">
+						android:id="@+id/applicationIndicator"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:layout_gravity="bottom"
+						android:visibility="gone"
+						android:background="@color/white"
+						android:gravity="center"
+						android:orientation="horizontal">
 					<LinearLayout
 						android:id="@+id/indicatorContainer"
 						android:layout_width="wrap_content"
@@ -118,7 +186,7 @@
 						android:layout_marginTop="16dp"
 						android:layout_marginBottom="16dp"
 						android:orientation="horizontal"/>
-				</RelativeLayout>
+					</RelativeLayout>
 					<LinearLayout
 					android:id="@+id/digitalBillLabelContainer"
 					android:layout_width="match_parent"
@@ -142,7 +210,8 @@
 					<LinearLayout
 					android:orientation="vertical"
 					android:layout_width="match_parent"
-					android:layout_height="match_parent"
+					android:layout_gravity="top"
+					android:layout_height="wrap_content"
 					android:id="@+id/deliveryLayout"
 					android:visibility="visible"
 					android:gravity="center">
@@ -152,7 +221,7 @@
 							android:orientation="vertical"
 							android:background="@color/white"
 							android:layout_marginBottom="16dp"
-							android:visibility="visible"
+							android:visibility="gone"
 							android:id="@+id/btnStartDigitalBillLayout"
 							android:paddingLeft="16dp"
 							android:paddingRight="16dp">
@@ -164,39 +233,72 @@
 									android:paddingLeft="6dp"
 									style="@style/DarkButton" 
 									android:text="UI-Update Bill Delivery Method" />
-					</LinearLayout>
-					<LinearLayout
-						android:orientation="vertical"
-						android:layout_width="match_parent"
-						android:layout_height="16dp"
-						android:background="@color/lightGrey"
-						android:visibility="visible"
-						android:gravity="center"/>
+						</LinearLayout>
+						<LinearLayout
+							android:orientation="vertical"
+							android:layout_width="match_parent"
+							android:layout_height="16dp"
+							android:background="@color/lightGrey"
+							android:visibility="visible"
+							android:gravity="center"/>
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:background="@color/lightGrey"
+							android:gravity="left"
+							android:textSize="16dp"
+							android:lineSpacingExtra="4sp"
+							android:paddingLeft="16dp"
+							android:paddingBottom="8dp"
+							android:textColor="#1c79ca"
+							android:id="@+id/deliverigTitle"
+							android:text="UI-Delivering to"/>
+						<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:gravity="left"
+							android:textSize="14dp"
+							android:visibility="gone"
+							android:layout_marginLeft="16dp"
+							android:layout_marginRight="16dp"
+							android:background="@color/white"
+							android:layout_marginTop="16dp"
+							android:layout_marginBottom="16dp"
+							android:textColor="#49494a"
+							android:id="@+id/deliverigAddress"
+							android:text="UI-No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"/>
+						<LinearLayout
+					android:id="@+id/email_container"
+					android:layout_below="@+id/ssmr_meter_reading_header_layout"
+					android:layout_width="match_parent"
+					android:layout_height="72dp"
+					android:paddingLeft="16dp"
+					android:paddingRight="26dp"
+					android:orientation="vertical"
+					android:gravity="center_vertical"
+					android:layout_gravity="center_vertical"
+					android:background="@color/white"
+					android:clickable="true">
 					<TextView
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:background="@color/lightGrey"
-						android:gravity="left"
-						android:textSize="16dp"
-						android:lineSpacingExtra="4sp"
-						android:layout_marginLeft="16dp"
-						android:paddingBottom="8dp"
-						android:textColor="#1c79ca"
-						android:id="@+id/deliverigTitle"
-						android:text="UI-Delivering to"/>
-					<TextView
-						android:layout_width="match_parent"
+						android:id="@+id/deliveryEmail"
+						android:text="UI-adam.hussein@gmail.com"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:gravity="left"
+						android:layout_gravity="left"
+						android:layout_marginBottom="4dp"
 						android:textSize="14dp"
-						android:layout_marginLeft="22dp"
-						android:layout_marginRight="16dp"
-						android:background="@color/white"
-						android:layout_marginTop="16dp"
-						android:layout_marginBottom="16dp"
-						android:textColor="#49494a"
-						android:id="@+id/deliverigAddress"
-						android:text="UI-No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"/>
+						android:textColor="#49494a"/>
+					<TextView
+						android:id="@+id/deliveryUserName"
+						android:layout_width="wrap_content"
+						android:gravity="left"
+						android:layout_gravity="left"
+						android:text="UI-Adam Hussein (You)"
+						android:layout_height="wrap_content"
+						android:textSize="12dp"
+						android:textColor="#49494a"/>
+				</LinearLayout>
 				</LinearLayout>
 				</LinearLayout>
 			</FrameLayout>
@@ -207,7 +309,8 @@
 				android:gravity="bottom"
 				android:background="@color/white"
 				android:layout_gravity="bottom"
-				android:visibility="gone"
+				android:visibility="visible"
+				android:id="@+id/btnUpdateDigitalBillLayout"
 				android:paddingLeft="16dp"
 				android:paddingRight="16dp">
 				<RelativeLayout

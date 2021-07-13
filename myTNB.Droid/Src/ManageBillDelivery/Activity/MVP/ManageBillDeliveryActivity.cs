@@ -33,8 +33,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [BindView(Resource.Id.rootView)]
         CoordinatorLayout rootView;
 
-        [BindView(Resource.Id.txt_notification_name)]
-        TextView txtNotificationName;
+        [BindView(Resource.Id.txt_ca_name)]
+        TextView txt_ca_name;
 
         [BindView(Resource.Id.selectAllCheckBox)]
         CheckBox selectAllCheckboxButton;
@@ -63,6 +63,22 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [BindView(Resource.Id.indicatorContainer)]
         LinearLayout indicatorContainer;
 
+        [BindView(Resource.Id.btnStartDigitalBillLayout)]
+        LinearLayout btnStartDigitalBillLayout;
+
+        [BindView(Resource.Id.applicationIndicatorLayout)]
+        LinearLayout applicationIndicatorLayout;
+
+        [BindView(Resource.Id.email_layout)]
+        LinearLayout email_layout;
+
+        [BindView(Resource.Id.email_container)]
+        LinearLayout email_container;
+        
+
+        [BindView(Resource.Id.btnUpdateDigitalBillLayout)]
+        LinearLayout btnUpdateDigitalBillLayout;
+
         [BindView(Resource.Id.applicationIndicator)]
         RelativeLayout applicationIndicator;
 
@@ -75,9 +91,24 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         [BindView(Resource.Id.deliverigAddress)]
         TextView deliverigAddress;
 
+        [BindView(Resource.Id.img_display)]
+        ImageView img_display;
+
+        [BindView(Resource.Id.txtTitle)]
+        TextView txtTitle;
+
+        [BindView(Resource.Id.txtMessage)]
+        TextView txtMessage;
+
+        [BindView(Resource.Id.deliveryEmail)]
+        TextView deliveryEmail;
+
+        [BindView(Resource.Id.deliveryUserName)]
+        TextView deliveryUserName;
+
         //[BindView(Resource.Id.pagerLyout)]
         //LinearLayout pagerLyout;
-        
+
 
         ManageBillDeliveryContract.IUserActionsListener userActionsListener;
 
@@ -99,29 +130,72 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
             // Create your application here
             presenter = new ManageBillDeliveryPresenter(this);
             viewPager = (ViewPager)FindViewById(Resource.Id.viewPager);
             viewPager.AddOnPageChangeListener(this);
             ManageBillDeliveryAdapter = new ManageBillDeliveryAdapter(SupportFragmentManager);
-
             ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList());
-
             viewPager.Adapter = ManageBillDeliveryAdapter;
-
             UpdateAccountListIndicator();
+            dbrAccountList = this.presenter.GetEligibleDBRAccountList();
+
             Bundle extras = Intent.Extras;
             digitalBillLabel.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "whatIfIStillWantPaperBills");
             btnStartDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "startDigitalBillCTA");
-            TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel, btnStartDigitalBill, deliverigTitle);
-            TextViewUtils.SetMuseoSans300Typeface(deliverigAddress);
+            deliverigTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "deliveringToTitle");
+            btnUpdateDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "updateBillDeliveryMethodCTA");
+            btnStartDigitalBill.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "goPaperlessCTA");
+            TextViewUtils.SetMuseoSans500Typeface(digitalBillLabel, btnStartDigitalBill, deliverigTitle, txtTitle);
+            TextViewUtils.SetMuseoSans300Typeface(deliverigAddress, txtMessage);
             TextViewUtils.SetTextSize12(digitalBillLabel);
-            TextViewUtils.SetTextSize16(btnStartDigitalBill, deliverigTitle);
-            TextViewUtils.SetTextSize14(deliverigAddress);
+            TextViewUtils.SetTextSize16(btnStartDigitalBill, deliverigTitle, txtTitle);
+            TextViewUtils.SetTextSize14(deliverigAddress, txtMessage);
 
-            dbrAccountList = this.presenter.GetEligibleDBRAccountList();
             if (extras != null)
             {
+                if (extras.ContainsKey("EBill"))
+                {
+                    FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
+                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(280f) : (int)DPUtils.ConvertDPToPx(265f);
+                    applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = email_container.Visibility = deliverigTitle.Visibility = ViewStates.Gone;
+                    email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Visible;
+                    img_display.SetImageResource(Resource.Drawable.icons_display_digital_ebill);
+                    txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillTitle");
+                    txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillDescription"));
+
+                }
+                else if (extras.ContainsKey("Email"))
+                {
+                    FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
+                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(380f) : (int)DPUtils.ConvertDPToPx(355f);
+                    applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = ViewStates.Gone;
+                    email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = email_container .Visibility = ViewStates.Visible;
+                    UserEntity user = UserEntity.GetActive();
+                    deliveryUserName.Text = user.DisplayName + " (" + Utility.GetLocalizedLabel("ManageDigitalBillLanding", "you") + ")";
+                    deliveryEmail.Text = user.Email;
+                    img_display.SetImageResource(Resource.Drawable.display_emailbilling);
+                    txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillTitle");
+                    txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillDescription"));
+                }
+                else if (extras.ContainsKey("Paper"))
+                {
+                    FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
+                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f) : (int)DPUtils.ConvertDPToPx(455f);
+                    applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = ViewStates.Visible;
+                    email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = email_container.Visibility = ViewStates.Gone;
+                    ScrollPage();
+                }
+                else if (extras.ContainsKey("WhatsApp"))
+                {
+
+                }
+                else if (extras.ContainsKey("None"))
+                {
+
+                }
+
                 if (extras.ContainsKey(Constants.APP_NAVIGATION_KEY))
                 {
                     currentAppNavigation = extras.GetString(Constants.APP_NAVIGATION_KEY);
@@ -136,21 +210,20 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 if (extras.ContainsKey(SELECTED_ACCOUNT_KEY))
                 {
                     mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
-                    txtNotificationName.Text = mSelectedAccountData.AccountNickName;
+                    txt_ca_name.Text = mSelectedAccountData.AccountNickName;
+                    deliverigAddress.Text = mSelectedAccountData.AddStreet;
                 }
             }
             
-            ScrollPage();
+          
 
             btnStartDigitalBill.Click += delegate
             {
                    
                     InitiateDBRRequest();
             };
-            float h1 = 490f;
-            float h2 = 435f;
-            FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
-            layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(h1) : (int)DPUtils.ConvertDPToPx(h2);
+           
+
         }
         public void InitiateDBRRequest()
         {
@@ -323,8 +396,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             return true;
         }
 
-        [OnClick(Resource.Id.txt_notification_name)]
-        void OnNotificationFilter(object sender, EventArgs eventArgs)
+        [OnClick(Resource.Id.txt_ca_name)]
+        void OnCANameFilter(object sender, EventArgs eventArgs)
         {
             if (!this.GetIsClicked())
             {
@@ -401,16 +474,18 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                         }
                     }
                     selectedAccountNickName = selectedEligibleAccount.accountName;
-                    txtNotificationName.Text = selectedAccountNickName;
+                    txt_ca_name.Text = selectedAccountNickName;
+                    deliverigAddress.Text = selectedEligibleAccount.accountAddress;
                     CustomerBillingAccount.RemoveSelected();
                     CustomerBillingAccount.SetSelected(selectedEligibleAccount.accountNumber);
                 }
             }
             base.OnActivityResult(requestCode, resultCode, data);
         }
-        public void SetAccountName(string accountName)
+        public void SetAccountName(CustomerBillingAccount selectedAccount)
         {
-            txtNotificationName.Text = accountName;
+            txt_ca_name.Text = selectedAccount.AccDesc;
+            deliverigAddress.Text = selectedAccount.AccountStAddress;
         }
 
         public void ShowRefreshView(bool isRefresh, string contentTxt, string btnTxt)

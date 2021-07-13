@@ -167,6 +167,7 @@ namespace myTNB_Android.Src.DigitalBill.Activity
                 AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
                 Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
                 intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                intent.PutExtra("Paper", "Paper");
                 StartActivity(intent);
             }
             catch (System.Exception ne)

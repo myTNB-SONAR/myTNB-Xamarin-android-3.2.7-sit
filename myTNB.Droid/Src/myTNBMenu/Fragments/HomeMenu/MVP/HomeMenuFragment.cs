@@ -559,11 +559,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     AccountData selectedAccountData = AccountData.Copy(customerAccount, true);
                     Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
                     intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                    intent.PutExtra("Paper", "Paper");
                     StartActivity(intent);
                 }
                 catch (System.Exception e)
                 {
                     Intent intent = new Intent(Activity, typeof(ManageBillDeliveryActivity));
+                    intent.PutExtra("Paper", "Paper");
                     StartActivity(intent);
                     Utility.LoggingNonFatalError(e);
                 }

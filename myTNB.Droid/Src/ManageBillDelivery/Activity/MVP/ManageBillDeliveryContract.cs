@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Runtime;
 using myTNB_Android.Src.Base.MVP;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DBR.DBRApplication.MVP;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
@@ -20,7 +21,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 			/// Set the account name
 			/// </summary>
 			/// <param name="accountName">string</param>tive
-			void SetAccountName(string accountName);
+			void SetAccountName(CustomerBillingAccount selectedAccount);
             void ShowDBREligibleAccountList(List<DBRAccount> dbrAccountList);
             void ShowProgressDialog();
             void HideProgressDialog();
