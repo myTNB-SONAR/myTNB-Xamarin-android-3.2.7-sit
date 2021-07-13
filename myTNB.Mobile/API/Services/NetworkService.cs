@@ -7,7 +7,7 @@ namespace myTNB.Mobile.API
         public static CancellationToken GetCancellationToken()
         {
             CancellationTokenSource tokenSource = new CancellationTokenSource();
-            tokenSource.CancelAfter(Constants.APITimeOut);
+            tokenSource.CancelAfter(MobileConstants.APITimeOut);
             CancellationToken token = tokenSource.Token;
             return token;
         }

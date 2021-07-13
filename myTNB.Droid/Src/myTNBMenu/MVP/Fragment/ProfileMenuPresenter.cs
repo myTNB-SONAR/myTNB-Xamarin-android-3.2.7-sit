@@ -228,6 +228,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     AppInfoManager.Instance.SetUserInfo("0"
                         , string.Empty
                         , string.Empty
+                        , UserSessions.GetDeviceId()
+                        , DeviceIdUtils.GetAppVersionName()
+                        , TextViewUtils.FontInfo
                         , LanguageUtil.GetAppLanguage() == "MS"
                             ? LanguageManager.Language.MS
                             : LanguageManager.Language.EN);

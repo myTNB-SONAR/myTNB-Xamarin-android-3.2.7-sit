@@ -1,13 +1,15 @@
 ﻿using System.Threading;
 
-namespace myTNB.Mobile.Sitecore
+namespace myTNB.Mobile.AWS
 {
     public class NetworkService
     {
-        public static CancellationToken GetCancellationToken()
+        public static CancellationToken GetCancellationToken(int? timeOut = null)
         {
             CancellationTokenSource tokenSource = new CancellationTokenSource();
-            tokenSource.CancelAfter(MobileConstants.SitecoreTimeOut);
+            tokenSource.CancelAfter(timeOut == null
+                ? AWSConstants.TimeOut
+                : timeOut.Value);
             CancellationToken token = tokenSource.Token;
             return token;
         }

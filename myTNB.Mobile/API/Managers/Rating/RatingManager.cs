@@ -35,7 +35,7 @@ namespace myTNB.Mobile.API.Managers.Rating
             try
             {
                 const string categoryID = "8";
-                IRatingService service = RestService.For<IRatingService>(Constants.ApiDomain);
+                IRatingService service = RestService.For<IRatingService>(MobileConstants.ApiDomain);
                 try
                 {
                     GetCustomerRatingMasterResponse response = await service.GetCustomerRatingMaster(AppInfoManager.Instance.GetUserInfo()
@@ -45,7 +45,7 @@ namespace myTNB.Mobile.API.Managers.Rating
                         , AppInfoManager.Instance.Language.ToString());
                     if (response != null && response.Content != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
-                        response.StatusDetail = Constants.Service_GetCustomerRatingMaster.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail = MobileConstants.Service_GetCustomerRatingMaster.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
@@ -53,7 +53,7 @@ namespace myTNB.Mobile.API.Managers.Rating
                         {
                             StatusDetail = new StatusDetail()
                         };
-                        response.StatusDetail = Constants.Service_GetCustomerRatingMaster.GetStatusDetails(Constants.DEFAULT);
+                        response.StatusDetail = MobileConstants.Service_GetCustomerRatingMaster.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                     return response;
                 }
@@ -80,7 +80,7 @@ namespace myTNB.Mobile.API.Managers.Rating
             {
                 StatusDetail = new StatusDetail()
             };
-            res.StatusDetail = Constants.Service_GetCustomerRatingMaster.GetStatusDetails(Constants.DEFAULT);
+            res.StatusDetail = MobileConstants.Service_GetCustomerRatingMaster.GetStatusDetails(MobileConstants.DEFAULT);
             return res;
         }
         #endregion
@@ -109,7 +109,7 @@ namespace myTNB.Mobile.API.Managers.Rating
         {
             try
             {
-                IRatingService service = RestService.For<IRatingService>(Constants.ApiDomain);
+                IRatingService service = RestService.For<IRatingService>(MobileConstants.ApiDomain);
                 try
                 {
                     PostSubmitRatingRequest request = new PostSubmitRatingRequest
@@ -135,7 +135,7 @@ namespace myTNB.Mobile.API.Managers.Rating
                     PostSubmitRatingResponse response = await rawResponse.ParseAsync<PostSubmitRatingResponse>();
                     if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
                     {
-                        response.StatusDetail = Constants.Service_PostSubmitRating.GetStatusDetails(response.StatusDetail.Code);
+                        response.StatusDetail = MobileConstants.Service_PostSubmitRating.GetStatusDetails(response.StatusDetail.Code);
                     }
                     else
                     {
@@ -143,7 +143,7 @@ namespace myTNB.Mobile.API.Managers.Rating
                         {
                             StatusDetail = new StatusDetail()
                         };
-                        response.StatusDetail = Constants.Service_PostSubmitRating.GetStatusDetails(Constants.DEFAULT);
+                        response.StatusDetail = MobileConstants.Service_PostSubmitRating.GetStatusDetails(MobileConstants.DEFAULT);
                     }
                     return response;
                 }
@@ -170,7 +170,7 @@ namespace myTNB.Mobile.API.Managers.Rating
             {
                 StatusDetail = new StatusDetail()
             };
-            res.StatusDetail = Constants.Service_PostSubmitRating.GetStatusDetails(Constants.DEFAULT);
+            res.StatusDetail = MobileConstants.Service_PostSubmitRating.GetStatusDetails(MobileConstants.DEFAULT);
             return res;
         }
         #endregion

@@ -65,7 +65,7 @@ namespace myTNB.Mobile.API.Managers.Payment
                 {
                     totalAmount = totalAmount.Replace(",", string.Empty);
                 }
-                IPaymentService service = RestService.For<IPaymentService>(Constants.ApiDomain);
+                IPaymentService service = RestService.For<IPaymentService>(MobileConstants.ApiDomain);
                 try
                 {
                     PostApplicationPaymentRequest request = new PostApplicationPaymentRequest
@@ -128,7 +128,7 @@ namespace myTNB.Mobile.API.Managers.Payment
         {
             try
             {
-                IPaymentService service = RestService.For<IPaymentService>(Constants.ApiDomain);
+                IPaymentService service = RestService.For<IPaymentService>(MobileConstants.ApiDomain);
                 try
                 {
                     PostApplicationsPaidDetailsRequest request = new PostApplicationsPaidDetailsRequest
@@ -187,7 +187,7 @@ namespace myTNB.Mobile.API.Managers.Payment
             GetTaxInvoiceResponse response;
             try
             {
-                IPaymentService service = RestService.For<IPaymentService>(Constants.ApiDomain);
+                IPaymentService service = RestService.For<IPaymentService>(MobileConstants.ApiDomain);
                 try
                 {
                     HttpResponseMessage rawResponse = await service.GetTaxInvoice(srNumber
@@ -252,7 +252,7 @@ namespace myTNB.Mobile.API.Managers.Payment
             {
                 StatusDetail = new StatusDetail()
             };
-            response.StatusDetail = Constants.Service_GetTaxInvoice.GetStatusDetails(Constants.DEFAULT);
+            response.StatusDetail = MobileConstants.Service_GetTaxInvoice.GetStatusDetails(MobileConstants.DEFAULT);
             return null;
         }
         #endregion
@@ -266,11 +266,11 @@ namespace myTNB.Mobile.API.Managers.Payment
                 {
                     string urlFormat = "{0}/{1}/{2}?apiKeyID={3}&apiKey={4}&srNumber={5}&lang={6}";
                     string url = string.Format(urlFormat
-                        , Constants.ApiDomain
-                        , Constants.ApiUrlPath
-                        , Constants.Service_TaxInvoice
-                        , Constants.ApiKeyId
-                        , Constants.APIKey
+                        , MobileConstants.ApiDomain
+                        , MobileConstants.ApiUrlPath
+                        , MobileConstants.Service_TaxInvoice
+                        , MobileConstants.ApiKeyId
+                        , MobileConstants.APIKey
                         , srNumber
                         , AppInfoManager.Instance.GetLanguage());
                     return url;
