@@ -264,7 +264,14 @@ namespace myTNB_Android.Src.Billing.MVP
             //if not owner mask the address IRUL
             if (!selectedAccountData.IsOwner == true)
             {
-                accountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, selectedAccountData.AddStreet);
+                if (!selectedAccountData.IsHaveAccess == true)
+                {
+                    accountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, selectedAccountData.AddStreet);
+                }
+                else
+                {
+                    accountAddress.Text = selectedAccountData.AddStreet;
+                }
             }
             else
             {

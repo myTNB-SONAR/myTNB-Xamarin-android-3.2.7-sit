@@ -986,7 +986,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     //if not owner mask the address IRUL
                     if (!selectedAccount.IsOwner == true)
                     {
-                        txtAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, selectedAccount.AddStreet);
+                        if (!selectedAccount.IsHaveAccess == true)
+                        {
+                            txtAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, selectedAccount.AddStreet);
+                        }
+                        else
+                        {
+                            txtAddress.Text = selectedAccount.AddStreet;
+                        }
                     }
                     else
                     {
@@ -1934,7 +1941,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             //if not owner mask the address IRUL
             if (!selectedAccount.IsOwner == true)
             {
-                txtAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, selectedAccount.AddStreet);
+                if (!selectedAccount.IsHaveAccess == true)
+                {
+                    txtAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, selectedAccount.AddStreet);
+                }
+                else
+                {
+                    txtAddress.Text = selectedAccount.AddStreet;
+                }
             }
             else
             {

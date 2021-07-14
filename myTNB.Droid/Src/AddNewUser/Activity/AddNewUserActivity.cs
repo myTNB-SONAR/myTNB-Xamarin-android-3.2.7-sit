@@ -154,11 +154,19 @@ namespace myTNB_Android.Src.AddNewUser.Activity
             {
                 if (!this.GetIsClicked())
                 {
+                    string address = "";
                     string email = txtUserEmail.Text.ToString().Trim();
                     this.SetIsClicked(true);
-                    string address = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
-                    this.userActionsListener.OnAddAccount(email, accountData.AccountNum, checkboxfullbill, checkboxbilling, address, accountData.AccountName);
 
+                    if (!checkboxfullbill == true)
+                    {
+                        address = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
+                    }
+                    else
+                    {
+                        address = accountData.AddStreet;
+                    }        
+                    this.userActionsListener.OnAddAccount(email, accountData.AccountNum, checkboxfullbill, checkboxbilling, address, accountData.AccountName);
 
                     //ShowAddTNBUserSuccess();
                     //ShowAddNonTNBUserSuccess();

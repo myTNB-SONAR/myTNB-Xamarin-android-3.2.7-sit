@@ -62,6 +62,12 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "isTaggedSMR")]
             public string IsTaggedSMR { get; set; }
+
+            [JsonProperty(PropertyName = "IsHaveAccess")]
+            public bool IsHaveAccess { get; set; }
+
+            [JsonProperty(PropertyName = "IsApplyEBilling")]
+            public bool IsApplyEBilling { get; set; }
         }
     }
 }

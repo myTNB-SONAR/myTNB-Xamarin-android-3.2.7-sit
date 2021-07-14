@@ -125,8 +125,16 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 //if not owner mask the address IRUL
                 if (!accountData.IsOwner == true)
                 {
-                   txtAccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
-                   infoAddress.Visibility = ViewStates.Visible;
+                    if (!accountData.IsHaveAccess == true)
+                    {
+                        txtAccountAddress.Text = Utility.StringSpaceMasking(Utility.Masking.Address, accountData.AddStreet);
+                        infoAddress.Visibility = ViewStates.Visible;
+                    }
+                    else
+                    {
+                        txtAccountAddress.Text = accountData.AddStreet;
+                        infoAddress.Visibility = ViewStates.Gone;
+                    }
                 }
                 else
                 {
