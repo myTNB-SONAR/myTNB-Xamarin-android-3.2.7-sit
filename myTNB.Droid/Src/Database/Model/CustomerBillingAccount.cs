@@ -124,7 +124,8 @@ namespace myTNB_Android.Src.Database.Model
                 AccountCategoryId = accountResponse.accountCategoryId,
                 SmartMeterCode = accountResponse.smartMeterCode == null ? "0" : accountResponse.smartMeterCode,
                 IsSelected = isSelected,
-                IsTaggedSMR = accountResponse.IsTaggedSMR
+                IsTaggedSMR = accountResponse.IsTaggedSMR,
+                BudgetAmount = accountResponse.BudgetAmount == null ? "0" : accountResponse.BudgetAmount
             };
 
             int newRecordRow = db.InsertOrReplace(newRecord);

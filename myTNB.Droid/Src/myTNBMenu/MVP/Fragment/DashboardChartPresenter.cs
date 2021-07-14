@@ -878,7 +878,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 if (saveEnergyBudgetResponse.IsSuccessResponse())
                 {
                     this.mView.UpdateEnergyBudgetLocal(amountEnergybudget.ToString(), accnum);
-                    this.mView.ShowEnergyBudgetSuccess();
+                    if (amountEnergybudget > 0)
+                    {
+                        this.mView.ShowEnergyBudgetSuccess();
+                    }
+                    else if (amountEnergybudget == 0)
+                    {
+                        this.mView.ShowSMStatisticCard();
+                    }
                 }
                 else
                 {

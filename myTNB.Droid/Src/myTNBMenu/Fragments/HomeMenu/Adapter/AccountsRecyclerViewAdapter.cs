@@ -328,7 +328,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 accountTypeIcon.Visibility = ViewStates.Visible;
                 accountTypeIcon.SetImageResource(Resource.Drawable.re_meter_dashboard);
             }
-            else if (cardModel.SmartMeterCode.Equals(3))
+            else if (cardModel.SmartMeterCode.Equals(3) && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
             {
                 accountTypeIcon.Visibility = ViewStates.Visible;
                 accountTypeIcon.SetImageResource(Resource.Drawable.smart_meter_icon);

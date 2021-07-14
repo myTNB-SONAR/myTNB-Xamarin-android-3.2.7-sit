@@ -424,6 +424,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     this.SetIsClicked(false);
                     ShowAccountDetails(selectedAccount.accountNumber);
                 }
+                else
+                {
+                    WhatNewCheckAgain();
+                }
             }
             else if (requestCode == SELECT_SM_POPUP_REQUEST_CODE)
             {
@@ -597,8 +601,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
                 this.presenter.SetDynaUserTAG();  //call dyna set username
                 OnStartLoadAccount();
-                //ShowDiscoverMoreLayoit();
-
+                WhatNewCheckAgain();
             }
             catch (System.Exception e)
             {
@@ -3345,7 +3348,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public void ShowDiscoverMoreLayout()
         {
             //discoverMoreContainer.Visibility = ViewStates.Gone;
-            if (UserSessions.GetEnergyBudgetList().Count > 0)
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
             {          
                 discoverMoreContainer.Visibility = ViewStates.Visible;
                 bool isDateAvailable = false;
@@ -3404,5 +3407,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public bool CheckWhatNewPopupAlready()
+        {
+            return ((DashboardHomeActivity)Activity).CheckWhatNewPopupCount();
+        }
+
+        public void WhatNewCheckAgain()
+        {
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && CheckWhatNewPopupAlready())
+            {                
+                ((DashboardHomeActivity)Activity).OnCheckWhatsNewTab();
+            }
+        }
     }
 }

@@ -2101,7 +2101,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     {
                         flag = true;
                     }
-                    else if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && MyTNBAccountManagement.GetInstance().IsFromLoginPage() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2"))
+                    else if (SetEligibleEBUserExtra())
                     {
                         flag = false;
                     }
@@ -2368,7 +2368,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     OnShowBCRMPopup(bcrmEntity);
                 }
-                else if (MyTNBAccountManagement.GetInstance().IsEBUserVerify() && MyTNBAccountManagement.GetInstance().IsFromLoginPage() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2"))
+                else if (SetEligibleEBUserExtra())
                 {
                     Handler h = new Handler();
                     Action myAction = () =>
@@ -2383,7 +2383,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
-
+            
         private string GetCurrentDate()
         {
             DateTime currentDate = DateTime.Now;
@@ -2626,9 +2626,24 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             alreadyStarted = flag;
         }
 
+        public bool SetEligibleEBUser()
+        {
+            return UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && !MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
+        }
+
+        public bool SetEligibleEBUserExtra()
+        {
+            return UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && MyTNBAccountManagement.GetInstance().IsFromLoginPage() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
+        }
+
+        public bool CheckWhatNewPopupCount()
+        {
+            return this.mPresenter.GetIsWhatsNewDialogShowNeed();
+        }
+
         public void OnCheckEnergyBudgetUser()
         {
-            if (UserSessions.GetEnergyBudgetList().Count > 0 && !MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2"))
+            if (SetEligibleEBUser())
             {
 
                 if (UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals(string.Empty))

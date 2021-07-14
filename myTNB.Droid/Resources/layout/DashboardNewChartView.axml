@@ -1335,6 +1335,7 @@
 													android:text="60%"
 													android:paddingTop="2dp" 
 													android:paddingBottom="2dp"
+													android:paddingLeft="2dp"
 													android:drawablePadding="2dp"
 													android:gravity="right|center"
 													android:singleLine="true"

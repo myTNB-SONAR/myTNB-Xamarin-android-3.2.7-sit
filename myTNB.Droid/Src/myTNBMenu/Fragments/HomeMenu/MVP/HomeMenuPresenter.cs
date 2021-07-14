@@ -1809,7 +1809,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 serviceCategoryDesc = "test",
             };*/
             //filterList.Add(testicon);
-            if (UserSessions.GetEnergyBudgetList().Count > 0)
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
             {
                 filterList.Insert(2, energyBudget);
             }
@@ -1858,7 +1858,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }                              
             }
 
-            if (UserSessions.GetEnergyBudgetList().Count > 0)
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
             {
                 cachedList.Insert(2, energyBudget);
             }
@@ -2624,7 +2624,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void OnCheckToCallHomeMenuTutorial()
         {
-            if (isAllDone() && !isHomeMenuTutorialShown && !this.mView.OnGetIsRootTooltipShown())
+            bool EBUser = false;
+
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify())
+            {
+                EBUser = true;
+                UserSessions.DoHomeTutorialShown(this.mPref);
+            }
+
+            if (isAllDone() && !isHomeMenuTutorialShown && !this.mView.OnGetIsRootTooltipShown() && !EBUser)
             {
                 isHomeMenuTutorialShown = true;
                 HomeMenuUtils.SetIsLoadedHomeMenu(true);
@@ -2649,18 +2657,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         HomeMenuUtils.SetIsRestartHomeMenu(true);
                         this.mView.RestartHomeMenu();
                     }
-                }
-            }
-
-            if (UserSessions.GetEnergyBudgetList().Count > 0 && !MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag() && !UserSessions.GetSavePopUpCountEB(this.mPref).Equals("2"))
-            {              
-                try
-                {
-                    UserSessions.HasHomeTutorialShown(this.mPref);
-                }
-                catch (System.Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
                 }
             }
         }
