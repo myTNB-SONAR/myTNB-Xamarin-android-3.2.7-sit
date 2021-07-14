@@ -35,6 +35,8 @@ namespace myTNB.Mobile
         {
             try
             {
+                userID = "0D1568D9-7770-4345-84BD-04C2C56A2069";
+
                 IAccessTokenService service = RestService.For<IAccessTokenService>(AWSConstants.Domains.GenerateAccessToken);
                 AccessTokenRequest request = new AccessTokenRequest
                 {

@@ -6253,6 +6253,8 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Async\EligibilityAPI.cs" />
+    <Compile Include="Src\Device Cache\AccessTokenCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -6586,6 +6588,7 @@
     <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\Adapter\" />
     <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\Adapter\" />
     <Folder Include="Src\ApplicationStatus\ApplicationStatusRating\" />
+    <Folder Include="Src\Device Cache\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

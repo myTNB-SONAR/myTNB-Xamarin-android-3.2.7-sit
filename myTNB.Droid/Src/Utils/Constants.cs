@@ -126,14 +126,13 @@ namespace myTNB_Android.Src.Utils
 
         internal struct SERVER_URL
         {
+            internal static readonly string END_POINT = myTNB.Mobile.MobileConstants.ApiDomain;
+
 #if DEBUG || STUB
-            internal static readonly string END_POINT = "http://10.215.128.191:89";  //dev
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link"; //sit
 #elif DEVELOP || SIT
-            internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";// "https://mobiletestingws.tnb.com.my";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbappsit.page.link";
 #else
-            internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
             internal static readonly string FIREBASE_DEEP_LINK_END_POINT = "https://mytnbapp.page.link";
 #endif
         }
@@ -147,7 +146,7 @@ namespace myTNB_Android.Src.Utils
             internal static readonly int IN_SAMPLE_SIZE = 4;
             internal static readonly string ENV = "SIT";
 #else //create new flavour called PROD, SIT, UAT
-            internal static readonly string API_KEY_ID = "E6148656-205B-494C-BC95-CC241423E72F";
+            internal static readonly string API_KEY_ID = myTNB.Mobile.MobileConstants.ApiKeyId;
             internal static readonly int MAX_IMAGE_QUALITY_IN_PERCENT = 100;
             internal static readonly int IN_SAMPLE_SIZE = 4;
             internal static readonly string ENV = "PROD";
