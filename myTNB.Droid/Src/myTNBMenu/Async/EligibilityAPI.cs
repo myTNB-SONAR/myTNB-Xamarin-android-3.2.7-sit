@@ -4,19 +4,16 @@ using Android.OS;
 using Android.Preferences;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
-using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.Utils;
-using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.myTNBMenu.Async
 {
     public class EligibilityAPI : AsyncTask
     {
         private DashboardHomeActivity _activity;
-        private const string Key = "SyncSRAPIKey";
+
         public EligibilityAPI(DashboardHomeActivity activity)
         {
             _activity = activity;
