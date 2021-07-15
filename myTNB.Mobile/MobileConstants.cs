@@ -1,6 +1,6 @@
 ﻿namespace myTNB.Mobile
 {
-    internal static class Constants
+    public static class MobileConstants
     {
         //Headers
         internal const string Header_RoleID = "RoleId";
@@ -20,8 +20,8 @@
         internal const int APITimeOut = 60000;
         internal const int SitecoreTimeOut = 5000;
         internal const string SitecoreDomain = "sitecore";
-        internal const string SitecoreUsername = "api_user";
-        internal const string SitecorePassword = "mytnbapiuser!3$@2";
+        public const string SitecoreUsername = "api_user";
+        public const string SitecorePassword = "mytnbapiuser!3$@2";
         internal const string ApiUrlPath = "v6/mytnbappws.asmx";
 
         private const string DEV1 = "http://10.215.128.191:88";
@@ -38,19 +38,30 @@
         private const string ApiKeyIdDEV = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         private const string ApiKeyIdPROD = "E6148656-205B-494C-BC95-CC241423E72F";
 
+        //Encrypt / Decrypt
+        private const string SaltKeyDEV = "Salt-4NHF1XP910G8NN6GRH23PD12N9X6T5DW";
+        private const string PassphraseDEV = "PW-myTNB-DEV";
+        private const string SaltKeyPROD = "Salt-IT9LJQ3LJEAK5G2R35L5V6A5FUDO7A5B";
+        private const string PassphrasePROD = "PW-myTNB-PROD";
+
 #if DEBUG
-        internal static string ApiDomain = DEV3;
-        internal const string ApiKeyId = ApiKeyIdDEV;
-        internal const string SitecoreURL = SitecoreSIT;
+        public static string ApiDomain = PROD;
+        public const string ApiKeyId = ApiKeyIdPROD;
+        public const string SitecoreURL = SitecoreSIT;
+        internal const string SaltKey = SaltKeyDEV;
+        internal const string PassPhrase = PassphraseDEV;
 #elif MASTER || SIT
-        internal static string ApiDomain = SIT;
-        internal const string ApiKeyId = ApiKeyIdDEV;
-        internal const string SitecoreURL = SitecorePROD;
+        public static string ApiDomain = DEV3;
+        public const string ApiKeyId = ApiKeyIdDEV;
+        public const string SitecoreURL = SitecorePROD;
+        internal const string SaltKey = SaltKeyDEV;
+        internal const string PassPhrase = PassphraseDEV;
 #else
-        //internal static string ApiDomain = PROD;
-        internal static string ApiDomain = SIT;
-        internal const string ApiKeyId = ApiKeyIdPROD;
-        internal const string SitecoreURL = SitecorePROD;
+        public static string ApiDomain = PROD;
+        public const string ApiKeyId = ApiKeyIdPROD;
+        public const string SitecoreURL = SitecorePROD;
+        internal const string SaltKey = SaltKeyPROD;
+        internal const string PassPhrase = PassphrasePROD;
 #endif
 
         //Service Name
@@ -86,5 +97,12 @@
 #else
         internal const string APIKey = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJDaGFubmVsIjoibXlUTkJfQVBJX01vYmlsZSIsIkNoYW5uZWxLZXkiOiJGNUFEQjU0QzM1MkM0NzYwQjUzMkNEOUU1ODdBRTRGNiIsIm5iZiI6MTU5OTE5OTc0OSwiZXhwIjoxNTk5MjAzMzQ5LCJpYXQiOjE1OTkxOTk3NDksImlzcyI6Im15VE5CIEFQSSIsImF1ZCI6Im15VE5CIEFQSSBBdWRpZW5jZSJ9.Sy_xahwMgt2izUgztYq_BQeGECGsahP9oSNHeB1kwB0Ij8Grpg3kQZPCa_b_bbiyngzpjKy38_DFU12wToQAiA";
 #endif
+
+        public struct SharePreferenceKey
+        {
+            public const string GetEligibilityTimeStamp = "GetEligibilityTimeStamp";
+            public const string GetEligibilityData = "GetEligibilityData";
+            public const string AccessToken = "AccessToken";
+        }
     }
 }

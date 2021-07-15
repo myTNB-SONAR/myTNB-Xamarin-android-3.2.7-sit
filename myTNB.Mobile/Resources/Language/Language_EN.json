@@ -99,7 +99,12 @@
     "open": "Open",
     "paymentPendingMsg": "My payment is being processed",
     "processing": "Processing",
-    "dontShowThisAgain": "Don't show this again"
+    "dontShowThisAgain": "Don't show this again",
+    "dbrPaperBill": "This account is still receiving paper bills. <b>Go paperless today!</b>",
+    "dbrAutoConvert": "Starting <b>July 2021, paper bills will be replaced by digital bills</b>. Get a head start and go paperless today!",
+    "dbrEmail": "This account is receiving bills via <b>myTNB App & Portal and email</b>.",
+    "dbrWhatsApp": "This account is receiving bills via <b>myTNB App & Portal and Whatsapp</b>.",
+    "dbrViaMyTNB": "This is an environmentally friendly account with <b>digital bills via myTNB!</b>"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -222,7 +227,11 @@
     //DiscoverMore
     "DiscoverMore": "Discover More",
     "DiscoverMoreTitle": "The new Energy Budget feature is here!",
-    "DiscoverMoreDate": "07 May 2021"
+    "DiscoverMoreDate": "07 May 2021",
+    "discoverMore": "Discover More",
+    "dbrReminderPopupTitle": "Be the first to go paperless with myTNB Bill today!",
+    "dbrReminderPopupMessage": "Make an impact today and choose to go without paper for your next bills! With myTNB, you have a better and more environmentally friendly way to receive you paperless bills digitally via App and Portal.",
+    "dbrReminderPopupStartNow": "View More"
   },
   "Tabbar": {
     "home": "Home",
@@ -391,7 +400,8 @@
   },
   "SelectElectricityAccounts": {
     "title": "Select Electricity Account",
-    "accountsMissing": "Why are some of my accounts not here?"
+    "accountsMissing": "Why are some of my accounts not here?",
+    "dbrMissingAccountsMessage": "In our push for a more sustainable future, we’re introducing this as a pilot program for Smart Meter accounts in smaller areas of Malaysia and are showing you only <b>electricity accounts that are eligible for digital bills</b>. We’re working hard for the program to expand nationwide and be available to all your other accounts soon!"
   },
   "Usage": {
     "title": "Usage",
@@ -781,7 +791,9 @@
     "nicknameUpdateSuccess": "Account nickname has been updated successfully.",
     "removeAccount": "Remove This Account",
     "popupremoveAccountTitle": "Remove Account",
-    "popupremoveAccountMessage": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b> from the app.<br><br>Note: This does not close your electricity account. Visit the myTNB Portal or Kedai Tenaga to close your electricity supply account."
+    "popupremoveAccountMessage": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b> from the app.<br><br>Note: This does not close your electricity account. Visit the myTNB Portal or Kedai Tenaga to close your electricity supply account.",
+    "dbrManageDeliveryMethod": "Manage Bill Delivery",
+    "dbrViewBillDelivery": "View Bill Delivery"
   },
   "Onboarding": {
     "letsStart": "Let's get started!",
@@ -1143,7 +1155,9 @@
     "applicationStatusDetailsActionOneTitle": "View your status progress here.",
     "applicationStatusDetailsActionOneMessage": "Stay updated with your real-time status. Visit the myTNB Portal to continue or update your application.",
     "applicationStatusDetailsActionTwoTitle": "Know when to take action.",
-    "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submitted application here."
+    "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submitted application here.",
+    "dbrBillTitle": "Your account bill delivery method.",
+    "dbrBillMessage": "View your bill delivery method here and tap to manage your preference."
   },
   "ApplicationStatusLanding": {
     "title": "Application Status",
@@ -2289,6 +2303,28 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "GetEligibility": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "GenerateAccessToken": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -2321,5 +2357,44 @@
     "txtLetgetstarted": "Let's Get Started",
     "txtViewmybudget": "View My Budget",
     "txtMaybelater": "Maybe Later"
+  },
+  "ManageDigitalBillLanding": {
+    "title": "Manage Bill Delivery",
+    "dbrInfoTitle0": "This account is receiving myTNB Bill & Paper Bill",
+    "dbrInfoTitle1": "Go green and save the trees.",
+    "dbrInfoTitle2": "Fast and convenient bill viewing.",
+    "dbrInfoTitle3": "Secure billing for a peace of mind.",
+    "dbrInfoDescription0": "Swipe left to learn how you can benefit from going without paper bills today!",
+    "dbrInfoDescription1": "Reduce paper waste and minimise your carbon footprint, and play your part in our collective move towards a sustainable future.",
+    "dbrInfoDescription2": "Enjoy faster and on-the-dot delivery of your monthly electricity bills and view them directly on myTNB App & Portal, anytime, anywhere.",
+    "dbrInfoDescription3": "Get your digital bills directly and securely on myTNB. No more worry about others seeing your bills, risk getting stolen or lost in the mail. ",
+    "startDigitalBillCTA": "Start Digital Bill",
+    "whatIfIStillWantPaperBills": "What if I still want paper bills?",
+    "whatIfIStillWantPaperBillsTitle": "What if I still want paper bills?",
+    "whatIfIStillWantPaperBillsDetails": "You can still choose to continue having paper bills mailed to you but your digital bills will always be available for viewing on myTNB. Let us know if you prefer to opt in for paper bills below. You can update your billing method anytime in this page.",
+    "iWant": "I Want",
+    "nevermind": "Nevermind",
+    "nonOwnerPreLaunchTitle": "Your bill delivery method will be changed to myTNB digital bills soon.",
+    "nonOwnerPreLaunchDescription": "<b>Starting July 2021</b>, you’ll be receiving digital bills via myTNB App & Portal for this account as part of our mission to reduce paper waste.",
+    "anotherDeliveryMethod": "What if I want another bill delivery method?",
+    "nonOwnerPreLaunchAnotherDeliveryMethodTitle": "What if I want another bill delivery method?",
+    "nonOwnerPreLaunchAnotherDeliveryMethodDetails": "Your digital bills will always be available for viewing on myTNB. However, you can continue having email or paper bills delivered to you by contacting the account owner to update the account bill delivery method if you prefer another method.",
+    "goPaperlessCTA": "Go Paperless",
+    "updateBillDeliveryMethodCTA": "Update Bill Delivery Method",
+    "deliveringToTitle": "Delivering to",
+    "you": "(You)",
+    "eBillTitle": "This is an environmentally friendly account with myTNB Bill!",
+    "emailBillTitle": "This account is receiving myTNB Bill & Email Bill.",
+    "eBillDescription": "You are receiving bills via App & Portal.<br>Thanks for going green!",
+    "emailBillDescription": "You are receiving bills via App & Portal and to your email address."
+  },
+  "DBRWebview": {
+    "startDigitalBill": "Start Digital Bill"
+  },
+  "ServiceConfiguration": {
+    "GetEligibility": {
+      "enabled": true,
+      "callInterval": 480
+    }
   }
 }

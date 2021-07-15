@@ -233,7 +233,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     if (proceed)
                                     {
                                         UserEntity loggedUser = UserEntity.GetActive();
-                                                                          
+
                                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                                         HomeMenuUtils.ResetAll();
                                         SummaryDashBoardAccountEntity.RemoveAll();
@@ -279,6 +279,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         AppInfoManager.Instance.SetUserInfo("16"
                                             , loggedUser.UserID
                                             , loggedUser.UserName
+                                            , UserSessions.GetDeviceId()
+                                            , DeviceIdUtils.GetAppVersionName()
+                                            , TextViewUtils.FontInfo
                                             , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                         AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
 
@@ -334,7 +337,12 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     }
                                     this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.PreLogin);
 
-                                    AppInfoManager.Instance.SetUserInfo("0", string.Empty, string.Empty
+                                    AppInfoManager.Instance.SetUserInfo("0"
+                                        , string.Empty
+                                        , string.Empty
+                                        , UserSessions.GetDeviceId()
+                                        , DeviceIdUtils.GetAppVersionName()
+                                        , TextViewUtils.FontInfo
                                         , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                     mView.ShowPreLogin();
                                 }
@@ -740,8 +748,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     try
                     {
-                         //imageCache = ImageUtils.GetImageBitmapFromUrl(item.Image);  
-                         imageCache = ImageUtils.GetImageBitmapFromUrlWithTimeOut(item.Image);   
+                        //imageCache = ImageUtils.GetImageBitmapFromUrl(item.Image);  
+                        imageCache = ImageUtils.GetImageBitmapFromUrlWithTimeOut(item.Image);
                         sw.Stop();
                         AppLaunchTimeOutMillisecond = 0;
 

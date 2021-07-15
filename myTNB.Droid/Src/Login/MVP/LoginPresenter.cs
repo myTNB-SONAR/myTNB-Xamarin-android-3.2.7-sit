@@ -325,7 +325,7 @@ namespace myTNB_Android.Src.Login.MVP
                                         MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(true);
                                     }
                                 }
-                                else if(response != null && response.Response != null && response.Response.ErrorCode == "8400")
+                                else if (response != null && response.Response != null && response.Response.ErrorCode == "8400")
                                 {
                                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(true);
                                 }
@@ -342,10 +342,13 @@ namespace myTNB_Android.Src.Login.MVP
                                 await LanguageUtil.SaveUpdatedLanguagePreference();
 
                                 AppInfoManager.Instance.SetUserInfo("16"
-                                           , UserEntity.GetActive().UserID
-                                           , UserEntity.GetActive().UserName
-                                           , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
-                                           AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
+                                    , UserEntity.GetActive().UserID
+                                    , UserEntity.GetActive().UserName
+                                    , UserSessions.GetDeviceId()
+                                    , DeviceIdUtils.GetAppVersionName()
+                                    , TextViewUtils.FontInfo
+                                    , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
+                                AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
 
                                 if (LanguageUtil.GetAppLanguage() == "MS")
                                 {
@@ -537,7 +540,7 @@ namespace myTNB_Android.Src.Login.MVP
                     {
                         newExisitingListArray.Sort();
 
-                        foreach(int index in newExisitingListArray)
+                        foreach (int index in newExisitingListArray)
                         {
                             CustomerBillingAccount oldAcc = existingSortedList[index];
 

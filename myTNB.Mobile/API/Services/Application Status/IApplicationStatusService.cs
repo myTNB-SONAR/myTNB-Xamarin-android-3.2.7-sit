@@ -17,48 +17,48 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
     internal interface IApplicationStatusService
     {
         [Get("/{urlPrefix}/SearchApplicationType?lang={language}")]
-        Task<SearchApplicationTypeResponse> SearchApplicationType([Header(Constants.Header_UserInfo)] string userInfo
-            , CancellationToken cancelToken
+        Task<SearchApplicationTypeResponse> SearchApplicationType([Header(MobileConstants.Header_UserInfo)] string userInfo
+            , CancellationToken cancellationToken
             , string language
-            , [Header(Constants.Header_Lang)] string lang
-            , string urlPrefix = Constants.ApiUrlPath
-            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+            , [Header(MobileConstants.Header_Lang)] string lang
+            , string urlPrefix = MobileConstants.ApiUrlPath
+            , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
         [Get("/{urlPrefix}/SearchApplicationType?lang={language}")]
-        Task<SearchApplicationTypeResponse> SearchApplicationType(CancellationToken cancelToken
+        Task<SearchApplicationTypeResponse> SearchApplicationType(CancellationToken cancellationToken
             , string language
-            , [Header(Constants.Header_Lang)] string lang
-            , string urlPrefix = Constants.ApiUrlPath
-            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+            , [Header(MobileConstants.Header_Lang)] string lang
+            , string urlPrefix = MobileConstants.ApiUrlPath
+            , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
         [Get("/{urlPrefix}/ApplicationStatus?lang={language}&applicationType={applicationType}&searchType={searchType}&searchTerm={searchTerm}")]
         Task<HttpResponseMessage> GetApplicationStatus(string applicationType
             , string searchType
             , string searchTerm
-            , [Header(Constants.Header_UserInfo)] string userInfo
-            , CancellationToken cancelToken
+            , [Header(MobileConstants.Header_UserInfo)] string userInfo
+            , CancellationToken cancellationToken
             , string language
-            , [Header(Constants.Header_Lang)] string lang
-            , string urlPrefix = Constants.ApiUrlPath
-            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+            , [Header(MobileConstants.Header_Lang)] string lang
+            , string urlPrefix = MobileConstants.ApiUrlPath
+            , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
         [Get("/{urlPrefix}/ApplicationStatus?lang={language}&applicationType={applicationType}&searchType={searchType}&searchTerm={searchTerm}")]
         Task<HttpResponseMessage> GetApplicationStatus(string applicationType
            , string searchType
            , string searchTerm
-           , CancellationToken cancelToken
+           , CancellationToken cancellationToken
            , string language
-           , [Header(Constants.Header_Lang)] string lang
-           , string urlPrefix = Constants.ApiUrlPath
-           , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+           , [Header(MobileConstants.Header_Lang)] string lang
+           , string urlPrefix = MobileConstants.ApiUrlPath
+           , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
         [Post("/{urlPrefix}/SaveApplication")]
         Task<HttpResponseMessage> SaveApplication([Body] PostSaveApplicationRequest request
-           , [Header(Constants.Header_UserInfo)] string userInfo
-           , CancellationToken cancelToken
-           , [Header(Constants.Header_Lang)] string lang
-           , string urlPrefix = Constants.ApiUrlPath
-           , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+           , [Header(MobileConstants.Header_UserInfo)] string userInfo
+           , CancellationToken cancellationToken
+           , [Header(MobileConstants.Header_Lang)] string lang
+           , string urlPrefix = MobileConstants.ApiUrlPath
+           , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
         [Get("/{urlPrefix}/AllApplications?lang={language}&Page={page}&Limit={limit}&SortBy={sortBy}&SortDirection={sortDirection}&ReferenceNo={referenceNo}&SrNo={srNo}&ApplicationType={applicationType}&StatusId={statusId}&StatusDescription={statusDescription}&CreatedDateFrom={createdDateFrom}&CreatedDateTo={createdDateTo}")]
         Task<HttpResponseMessage> GetAllApplications(int page
@@ -72,46 +72,46 @@ namespace myTNB.Mobile.API.Services.ApplicationStatus
            , string statusDescription
            , string createdDateFrom
            , string createdDateTo
-           , [Header(Constants.Header_UserInfo)] string userInfo
-           , CancellationToken cancelToken
+           , [Header(MobileConstants.Header_UserInfo)] string userInfo
+           , CancellationToken cancellationToken
            , string language
-           , [Header(Constants.Header_Lang)] string lang
-           , string urlPrefix = Constants.ApiUrlPath
-           , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+           , [Header(MobileConstants.Header_Lang)] string lang
+           , string urlPrefix = MobileConstants.ApiUrlPath
+           , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
         [Get("/{urlPrefix}/ApplicationDetail?lang={language}&applicationType={applicationType}&searchTerm={searchTerm}&system={system}")]
         Task<HttpResponseMessage> GetApplicationDetail(string applicationType
             , string searchTerm
             , string system
-            , [Header(Constants.Header_UserInfo)] string userInfo
-            , CancellationToken cancelToken
+            , [Header(MobileConstants.Header_UserInfo)] string userInfo
+            , CancellationToken cancellationToken
             , string language
-            , [Header(Constants.Header_Lang)] string lang
-            , string urlPrefix = Constants.ApiUrlPath
-            , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+            , [Header(MobileConstants.Header_Lang)] string lang
+            , string urlPrefix = MobileConstants.ApiUrlPath
+            , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
         [Post("/{urlPrefix}/RemoveApplication")]
         Task<HttpResponseMessage> RemoveApplication([Body] PostRemoveApplicationRequest request
-           , [Header(Constants.Header_UserInfo)] string userInfo
-           , CancellationToken cancelToken
-           , [Header(Constants.Header_Lang)] string lang
-           , string urlPrefix = Constants.ApiUrlPath
-           , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+           , [Header(MobileConstants.Header_UserInfo)] string userInfo
+           , CancellationToken cancellationToken
+           , [Header(MobileConstants.Header_Lang)] string lang
+           , string urlPrefix = MobileConstants.ApiUrlPath
+           , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
         [Get("/{urlPrefix}/SearchApplicationByCA?CANumber={accountNumber}")]
         Task<HttpResponseMessage> GetApplicationsByCA(string accountNumber
-           , [Header(Constants.Header_UserInfo)] string userInfo
-           , CancellationToken cancelToken
+           , [Header(MobileConstants.Header_UserInfo)] string userInfo
+           , CancellationToken cancellationToken
            , string language
-           , [Header(Constants.Header_Lang)] string lang
-           , string urlPrefix = Constants.ApiUrlPath
-           , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+           , [Header(MobileConstants.Header_Lang)] string lang
+           , string urlPrefix = MobileConstants.ApiUrlPath
+           , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
 
         [Get("/{urlPrefix}/SyncSrApplication")]
-        Task<HttpResponseMessage> SyncSRApplication([Header(Constants.Header_UserInfo)] string userInfo
-           , CancellationToken cancelToken
-           , [Header(Constants.Header_Lang)] string lang
-           , string urlPrefix = Constants.ApiUrlPath
-           , [Header(Constants.Header_SecureKey)] string secureKey = Constants.ApiKeyId);
+        Task<HttpResponseMessage> SyncSRApplication([Header(MobileConstants.Header_UserInfo)] string userInfo
+           , CancellationToken cancellationToken
+           , [Header(MobileConstants.Header_Lang)] string lang
+           , string urlPrefix = MobileConstants.ApiUrlPath
+           , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
     }
 }

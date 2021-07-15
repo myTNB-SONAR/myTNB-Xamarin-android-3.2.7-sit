@@ -22,12 +22,12 @@ namespace myTNB.Mobile.Sitecore
         {
             try
             {
-                var service = RestService.For<IAuthenticateService>(Constants.SitecoreURL);
+                var service = RestService.For<IAuthenticateService>(MobileConstants.SitecoreURL);
                 var requestParameter = new LoginRequest
                 {
-                    Domain = Constants.SitecoreDomain,
-                    Username = Constants.SitecoreUsername,
-                    Password = Constants.SitecorePassword
+                    Domain = MobileConstants.SitecoreDomain,
+                    Username = MobileConstants.SitecoreUsername,
+                    Password = MobileConstants.SitecorePassword
                 };
 
                 try
