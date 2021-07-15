@@ -196,7 +196,7 @@
     "payBill": "Pay<br>My Bill",
     "payBills": "Pay<br>My Bill",
     "submitFeedback": "Submit<br>Feedback",
-    "submitEnquiry": "Submit<br>Enquiry",
+    "submitEnquiry": "Submit &<br>Track Enquiry",
     "selfMeterReading": "Self<br>Meter Reading",
     "viewEBillAndAdvice": "View My<br>Bills / Advices",
     "tutorialAccountTitle": "Your Accounts at a glance.",
@@ -973,7 +973,8 @@
     "title": "Select Country/Region"
   },
   "SubmitEnquiry": {
-    "enquireTitle": "Enquiry",
+    //"enquireTitle": "Enquiry",
+    "enquireTitle": "Submit & Track Enquiry",
     "submitEnquiryTitle": "Submit New Enquiry",
     "submitEnquiryDescription": "Let us know your thoughts and concerns.",
     "viewSubmittedEnquiry": "View Submitted Enquiry",
