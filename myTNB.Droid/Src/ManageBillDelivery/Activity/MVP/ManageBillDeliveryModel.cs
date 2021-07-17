@@ -6,7 +6,7 @@
         public string Description { set; get; }
         public string Image { set; get; }
     }
-    internal enum DBRTypeEnum
+    public enum DBRTypeEnum
     {
         EBill,
         Email,

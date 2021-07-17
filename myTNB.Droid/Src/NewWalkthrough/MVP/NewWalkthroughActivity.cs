@@ -90,8 +90,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 }
                 UserEntity activeUser = UserEntity.GetActive();
                 if (position == (MyTNBAccountManagement.GetInstance().IsAppointmentDisabled
-                    ? (newWalkthroughAdapter.Count - 1)
-                    : (newWalkthroughAdapter.Count - 2)) && btnStart.Visibility == ViewStates.Gone)
+                   ? (newWalkthroughAdapter.Count - 1)
+                   : (newWalkthroughAdapter.Count - 2)))
                 {
                     ShowSubmitButton(true);
                 }
@@ -107,15 +107,6 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     ISharedPreferencesEditor editor = mPref.Edit();
                     editor.PutBoolean("hasItemizedBillingNMSMTutorialShown", false);
                     editor.Apply();
-                    ShowSubmitButton(true);
-                }
-                else if((MyTNBAccountManagement.GetInstance().IsDigitalBillDisabled || activeUser == null) && position == newWalkthroughAdapter.Count - 1)
-                {
-                    ShowSubmitButton(true);
-                }
-                else
-                {
-                    ShowSubmitButton(false);
                 }
             }
         }

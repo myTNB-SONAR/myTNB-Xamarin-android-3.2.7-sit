@@ -21,6 +21,8 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MultipleAccountPayment.Fragment;
 using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.DigitalBill.Activity;
+using Android.Preferences;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 
 namespace myTNB_Android.Src.ManageBillDelivery.MVP
 {
@@ -74,7 +76,12 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         [BindView(Resource.Id.email_container)]
         LinearLayout email_container;
-        
+
+        [BindView(Resource.Id.image_layout)]
+        LinearLayout image_layout;
+
+        [BindView(Resource.Id.deliveryLayout)]
+        LinearLayout deliveryLayout;
 
         [BindView(Resource.Id.btnUpdateDigitalBillLayout)]
         LinearLayout btnUpdateDigitalBillLayout;
@@ -105,6 +112,8 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
 
         [BindView(Resource.Id.deliveryUserName)]
         TextView deliveryUserName;
+
+        ISharedPreferences mPref;
 
         //[BindView(Resource.Id.pagerLyout)]
         //LinearLayout pagerLyout;
@@ -164,20 +173,44 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     img_display.SetImageResource(Resource.Drawable.icons_display_digital_ebill);
                     txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillTitle");
                     txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "eBillDescription"));
+                    mPref = PreferenceManager.GetDefaultSharedPreferences(this);
+                    Handler h = new Handler();
+                    Action myAction = () =>
+                    {
+                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                        if (!UserSessions.HasManageBillDeliveryTutorialShown(this.mPref))
+                        {
+                            UserSessions.ManageBillDelivery = DBRTypeEnum.EBill;
+                            OnShowManageBillDeliveryTutorialDialog();
+                        }
+                    };
+                    h.PostDelayed(myAction, 50);
 
                 }
                 else if (extras.ContainsKey("Email"))
                 {
                     FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
                     layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(380f) : (int)DPUtils.ConvertDPToPx(355f);
-                    applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = ViewStates.Gone;
-                    email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = email_container .Visibility = ViewStates.Visible;
+                    applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility = btnUpdateDigitalBillLayout.Visibility = ViewStates.Gone;
+                    email_layout.Visibility = email_container .Visibility = ViewStates.Visible;
                    
                     deliveryUserName.Text = user.DisplayName + " (" + Utility.GetLocalizedLabel("ManageDigitalBillLanding", "you") + ")";
                     deliveryEmail.Text = user.Email;
                     img_display.SetImageResource(Resource.Drawable.display_emailbilling);
                     txtTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillTitle");
                     txtMessage.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("ManageDigitalBillLanding", "emailBillDescription"));
+                    mPref = PreferenceManager.GetDefaultSharedPreferences(this);
+                    Handler h = new Handler();
+                    Action myAction = () =>
+                    {
+                        NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                        if (!UserSessions.HasManageBillDeliveryTutorialShown(this.mPref))
+                        {
+                            UserSessions.ManageBillDelivery = DBRTypeEnum.Email;
+                            OnShowManageBillDeliveryTutorialDialog();
+                        }
+                    };
+                    h.PostDelayed(myAction, 50);
                 }
                 else if (extras.ContainsKey("Paper"))
                 {
@@ -222,7 +255,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                    
                     InitiateDBRRequest(mSelectedAccountData);
             };
-           
+            
 
         }
         public void InitiateDBRRequest(AccountData mSelectedAccountData)
@@ -573,6 +606,47 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         public bool IsActive()
         {
             return Window.DecorView.RootView.IsShown;
+        }
+        public void OnShowManageBillDeliveryTutorialDialog()
+        {
+            Handler h = new Handler();
+            Action myAction = () =>
+            {
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.OnGeneraNewAppTutorialList(), false);
+            };
+            h.PostDelayed(myAction, 100);
+        }
+        public List<NewAppModel> OnGeneraNewAppTutorialList()
+        {
+            List<NewAppModel> newList = new List<NewAppModel>();
+
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.TopLeft,
+                ContentTitle = Utility.GetLocalizedLabel("Tutorial", "manageDeliveryMethodEmailTitle"),
+                ContentMessage = Utility.GetLocalizedLabel("Tutorial", "manageDeliveryMethodEmailMessage"),
+                ItemCount = 0,
+                DisplayMode = "",
+                IsButtonShow = false
+            });
+
+            return newList;
+        }
+        public int GetImageHeight()
+        {
+            return image_layout.Height + txtTitle.Height + txtMessage.Height;
+        }
+        public int GetEmailDeliveryHeight()
+        {
+            return deliveryLayout.Height;
+        }
+        public int GetviewPagerHeight()
+        {
+            return viewPagerLyout.Height;
+        }
+        public int GetBtnUpdateDigitalBillHeight()
+        {
+            return btnUpdateDigitalBillLayout.Height;
         }
     }
 }

@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -14,11 +15,13 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.ManageBillDelivery.MVP;
 using myTNB_Android.Src.ManageSupplyAccount.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.UpdateNickname.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
+using System.Collections.Generic;
 using System.Runtime;
 
 namespace myTNB_Android.Src.ManageSupplyAccount.Activity
@@ -55,6 +58,16 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [BindView(Resource.Id.manageBillTitle)]
         TextView manageBillTitle;
 
+        [BindView(Resource.Id.accountLayout)]
+        LinearLayout accountLayout;
+
+        [BindView(Resource.Id.layoutNickName)]
+        LinearLayout layoutNickName;
+
+        [BindView(Resource.Id.ManageBill_container)]
+        LinearLayout ManageBill_container;
+
+        ISharedPreferences mPref;
 
         ManageSupplyAccountContract.IUserActionsListener userActionsListener;
         ManageSupplyAccountPresenter mPresenter;
@@ -111,10 +124,19 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 manageBillTitle.Text = Utility.GetLocalizedLabel("ManageAccount", "dbrManageDeliveryMethod");
 
                 txtNickName.AddTextChangedListener(new InputFilterFormField(txtNickName, txtInputLayoutNickName));
-
-
                 mPresenter = new ManageSupplyAccountPresenter(this, accountData);
                 this.userActionsListener.Start();
+                mPref = PreferenceManager.GetDefaultSharedPreferences(this);
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (!UserSessions.HasManageSupplyAccountTutorialShown(this.mPref))
+                    {
+                        OnShowItemizedBillingTutorialDialog();
+                    }
+                };
+                h.PostDelayed(myAction, 50);
             }
             catch (Exception e)
             {
@@ -193,6 +215,16 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             base.OnResume();
             try
             {
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                    if (!UserSessions.HasItemizedBillingDetailTutorialShown(this.mPref))
+                    {
+                        OnShowItemizedBillingTutorialDialog();
+                    }
+                };
+                h.PostDelayed(myAction, 50);
                 FirebaseAnalyticsUtils.SetScreenName(this, "Manage Electricity Account");
             }
             catch (Exception e)
@@ -389,5 +421,51 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         {
             return PAGE_ID;
         }
+        public void OnShowItemizedBillingTutorialDialog()
+        {
+            Handler h = new Handler();
+            Action myAction = () =>
+            {
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.OnGeneraNewAppTutorialList(), true);
+            };
+            h.PostDelayed(myAction, 100);
+        }
+        public List<NewAppModel> OnGeneraNewAppTutorialList()
+        {
+            List<NewAppModel> newList = new List<NewAppModel>();
+
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.TopLeft,
+                ContentTitle = Utility.GetLocalizedLabel("Tutorial", "dbrBillTitle"),
+                ContentMessage = Utility.GetLocalizedLabel("Tutorial", "dbrManageAccountMessage"),
+                ItemCount = 0,
+                DisplayMode = "",
+                IsButtonShow = false
+            });
+
+            return newList;
+        }
+        public int GetAccountLayoutHeight()
+        {
+            int height = accountLayout.Height;
+            return height;
+        }
+        public int GetLayoutNickNameHeight()
+        {
+            int height = layoutNickName.Height;
+            return height;
+        }
+        public int GetLayoutManageBillHeight()
+        {
+            int height = ManageBill_container.Height;
+            return height;
+        }
+        public int GetLayoutManageBillWidth()
+        {
+            int height = ManageBill_container.Width;
+            return height;
+        }
+
     }
 }

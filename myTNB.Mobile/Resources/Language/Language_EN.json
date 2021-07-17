@@ -784,8 +784,6 @@
     "title8": "Stay Updated with Your Applications!",
     "title9": "Personalise Your Text Size.",
     "title10": "Set your appointment with us!",
-    "title11": "TNB is going green with digital bill!",
-    "title12": "TNB is going green with digital bill!",
     "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.",
     "description2": "Track, monitor and stay on top of your electricity usage!",
     "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
@@ -795,9 +793,7 @@
     "description7": "You can now register a myTNB account or update your existing one with an international phone number.",
     "description8": "You can now track all your application status with zero hassle, anytime and anywhere.",
     "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
-    "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot.",
-    "description11": "We’re excited to introduce digital bills as a new bill delivery method - a better and more environmentally friendly way to receive your electricity bills via myTNB. Get a head start in making your impact and go paperless today for your next bill!",
-    "description12": "Starting July 2021, your paper bills will be replaced by digital bils - a better and more environmentally friendly way to receive your electricity bills via myTNB. Get a head start in making your impact and go paperless today for your next bill!"
+    "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot."
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
@@ -1133,7 +1129,15 @@
     "applicationStatusDetailsActionTwoTitle": "Know when to take action.",
     "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submitted application here.",
     "dbrBillTitle": "Your account bill delivery method.",
-    "dbrBillMessage": "View your bill delivery method here and tap to manage your preference."
+    "dbrBillMessage": "View your bill delivery method here and tap to manage your preference.",
+    "manageCAManageBillDeliveryTitle": "Your account bill delivery method.",
+    "manageCAManageBillDeliveryMessage": "View and directly manage your bill delivery method here.",
+    "manageCAViewBillDeliveryTitle": "Your account bill delivery method.",
+    "manageCAViewBillDeliveryMessage": "View your bill delivery method here.",
+    "manageDeliveryMethodUpdateCTATitle": "Manage your bill delivery method.",
+    "manageDeliveryMethodUpdateCTAMessage": "Update your bill delivery method for this account here.",
+    "manageDeliveryMethodEmailTitle": "Users with email bills.",
+    "manageDeliveryMethodEmailMessage": "View account users or email recipients who are receiving monthly bills for this account."
   },
   "ApplicationStatusLanding": {
     "title": "Application Status",
@@ -2279,6 +2283,28 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "GetEligibility": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "GenerateAccessToken": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -2303,12 +2329,10 @@
     "dbrInfoTitle1": "Go green and save the trees.",
     "dbrInfoTitle2": "Fast and convenient bill viewing.",
     "dbrInfoTitle3": "Secure billing for a peace of mind.",
-    "dbrInfoTitle4": "This electricity account is still receiving paper bills.",
     "dbrInfoDescription0": "Swipe left to learn how you can benefit from going without paper bills today!",
     "dbrInfoDescription1": "Reduce paper waste and minimise your carbon footprint, and play your part in our collective move towards a sustainable future.",
     "dbrInfoDescription2": "Enjoy faster and on-the-dot delivery of your monthly electricity bills and view them directly on myTNB App & Portal, anytime, anywhere.",
     "dbrInfoDescription3": "Get your digital bills directly and securely on myTNB. No more worry about others seeing your bills, risk getting stolen or lost in the mail. ",
-    "dbrInfoDescription4": "Consider playing a part in a more sustainable future by reducing paper waste and opt out of paper bills!",
     "startDigitalBillCTA": "Start Digital Bill",
     "whatIfIStillWantPaperBills": "What if I still want paper bills?",
     "whatIfIStillWantPaperBillsTitle": "What if I still want paper bills?",
@@ -2323,7 +2347,7 @@
     "goPaperlessCTA": "Go Paperless",
     "updateBillDeliveryMethodCTA": "Update Bill Delivery Method",
     "deliveringToTitle": "Delivering to",
-    "you": "You",
+    "you": "(You)",
     "eBillTitle": "This is an environmentally friendly account with myTNB Bill!",
     "emailBillTitle": "This account is receiving myTNB Bill & Email Bill.",
     "eBillDescription": "You are receiving bills via App & Portal.<br>Thanks for going green!",

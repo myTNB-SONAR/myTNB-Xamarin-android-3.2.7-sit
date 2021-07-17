@@ -784,8 +784,6 @@
     "title8": "Sentiasa ketahui status permohonan anda!",
     "title9": "Pilih Saiz Teks Paparan Anda.",
     "title10": "Tetapkan janji temu anda!",
-    "title12": "MS_TNB is going green with digital bill!",
-    "title13": "MS_TNB is going green with digital bill!",
     "description1": "Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.<br><br>We're excited for all you can do with this app! But first, choose your preferred language.",
     "description2": "Pantau dan ketahui penggunaan elektrik anda yang terkini!",
     "description3": "Akses bil versi PDF anda untuk 6 bulan terkini dengan mudah, semuanya di satu tempat.",
@@ -795,9 +793,7 @@
     "description7": "Anda kini boleh mendaftar akaun myTNB dengan nombor telefon antarabangsa.",
     "description8": "Anda boleh jejaki semua status permohonan dengan mudah, pada bila-bila masa dan di mana-mana sahaja.",
     "description9": "Ubah suai myTNB anda dengan saiz teks paparan bersesuaian untuk pengendalian yang lebih selesa. Anda boleh memilih antara saiz normal atau besar dan boleh mengubah tetapan ini pada bila-bila masa di Profil anda.",
-    "description10": "Anda boleh menetapkan janji temu pemasangan meter anda dengan memilih tarikh dan slot masa yang sesuai.",
-    "description12": "MS_We’re excited to introduce digital bills as a new bill delivery method - a better and more environmentally friendly way to receive your electricity bills via myTNB. Get a head start in making your impact and go paperless today for your next bill!",
-    "description13": "MS_Starting July 2021, your paper bills will be replaced by digital bils - a better and more environmentally friendly way to receive your electricity bills via myTNB. Get a head start in making your impact and go paperless today for your next bill!"
+    "description10": "Anda boleh menetapkan janji temu pemasangan meter anda dengan memilih tarikh dan slot masa yang sesuai."
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
@@ -1133,7 +1129,15 @@
     "applicationStatusDetailsActionTwoTitle": "Ketahui bila tindakan perlu diambil.",
     "applicationStatusDetailsActionTwoMessage": "Ambil tindakan yang diperlukan untuk permohonan anda dengan mudah di sini.",
     "dbrBillTitle": "MS_Your account bill delivery method.",
-    "dbrBillMessage": "MS_View your bill delivery method here and tap to manage your preference."
+    "dbrBillMessage": "MS_View your bill delivery method here and tap to manage your preference.",
+    "manageCAManageBillDeliveryTitle": "MS_Your account bill delivery method.",
+    "manageCAManageBillDeliveryMessage": "MS_View and directly manage your bill delivery method here.",
+    "manageCAViewBillDeliveryTitle": "MS_Your account bill delivery method.",
+    "manageCAViewBillDeliveryMessage": "MS_View your bill delivery method here.",
+    "manageDeliveryMethodUpdateCTATitle": "MS_Manage your bill delivery method.",
+    "manageDeliveryMethodUpdateCTAMessage": "MS_Update your bill delivery method for this account here.",
+    "manageDeliveryMethodEmailTitle": "MS_Users with email bills.",
+    "manageDeliveryMethodEmailMessage": "MS_View account users or email recipients who are receiving monthly bills for this account."
   },
   "ApplicationStatusLanding": {
     "title": "Status Permohonan",
@@ -2271,6 +2275,28 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "GetEligibility": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "GenerateAccessToken": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -2313,7 +2339,7 @@
     "goPaperlessCTA": "MS_Go Paperless",
     "updateBillDeliveryMethodCTA": "MS_Update Bill Delivery Method",
     "deliveringToTitle": "MS_Delivering to",
-    "you": "MS_You",
+    "you": "(MS_You)",
     "eBillTitle": "MS_This is an environmentally friendly account with myTNB Bill!",
     "emailBillTitle": "MS_This account is receiving myTNB Bill & Email Bill.",
     "eBillDescription": "MS_You are receiving bills via App & Portal.<br>Thanks for going green!",

@@ -24,6 +24,8 @@ using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using myTNB_Android.Src.ManageSupplyAccount.Activity;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
 
 namespace myTNB_Android.Src.NewAppTutorial.MVP
 {
@@ -941,6 +943,14 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     {
                         UserSessions.DoApplicationDetailShown(this.mPref);
                     }
+                    else if (this.mActivity is ManageSupplyAccountActivity)
+                    {
+                        UserSessions.DoManageSupplyAccountTutorialShown(this.mPref);
+                    }
+                    else if (this.mActivity is ManageBillDeliveryActivity)
+                    {
+                        UserSessions.DoManageBillDeliveryTutorialShown(this.mPref);
+                    }
                 }
                 return true;
             }
@@ -1004,6 +1014,14 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     else if (this.mActivity is RewardDetailActivity)
                     {
                         UserSessions.DoRewardsDetailShown(this.mPref);
+                    }
+                    else if (this.mActivity is ManageSupplyAccountActivity)
+                    {
+                        UserSessions.DoManageSupplyAccountTutorialShown(this.mPref);
+                    }
+                    else if (this.mActivity is ManageBillDeliveryActivity)
+                    {
+                        UserSessions.DoManageBillDeliveryTutorialShown(this.mPref);
                     }
                 }
                 return true;

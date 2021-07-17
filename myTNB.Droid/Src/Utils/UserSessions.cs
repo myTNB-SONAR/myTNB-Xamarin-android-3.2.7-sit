@@ -10,6 +10,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.DBR.DBRApplication.MVP;
 using Newtonsoft.Json;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -19,6 +20,7 @@ namespace myTNB_Android.Src.Utils
 
         private static ISharedPreferences mPreferences;
         internal static ApplicationStatusNotificationModel ApplicationStatusNotification { private set; get; }
+        public static DBRTypeEnum ManageBillDelivery { set; get; }
 
         public static void SetCurrentImageCount(ISharedPreferences prefs, int count)
         {
@@ -317,7 +319,27 @@ namespace myTNB_Android.Src.Utils
             editor.PutBoolean("hasItemizedBillingDetailTutorialShown", true);
             editor.Apply();
         }
+        public static void DoManageSupplyAccountTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasManageSupplyAccountTutorialShown", true);
+            editor.Apply();
+        }
+        public static void DoManageBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasManageBillDeliveryTutorialShownTutorialShown", true);
+            editor.Apply();
+        }
+        public static bool HasManageSupplyAccountTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasManageSupplyAccountTutorialShown", false);
+        }
 
+        public static bool HasManageBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasManageBillDeliveryTutorialShown", false);
+        }
         public static bool HasSMRMeterHistoryTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasSMRMeterHistoryTutorialShown", false);
