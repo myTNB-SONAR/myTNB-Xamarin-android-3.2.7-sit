@@ -949,7 +949,22 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     }
                     else if (this.mActivity is ManageBillDeliveryActivity)
                     {
-                        UserSessions.DoManageBillDeliveryTutorialShown(this.mPref);
+                        if (UserSessions.ManageBillDelivery == DBRTypeEnum.EBill)
+                        {
+                            UserSessions.DoManageEBillDeliveryTutorialShown(this.mPref);
+                        }
+                        else if (UserSessions.ManageBillDelivery == DBRTypeEnum.OptedEBill)
+                        {
+                            UserSessions.DoManagepoptedEBillDeliveryTutorialShown(this.mPref);
+                        }
+                        else if (UserSessions.ManageBillDelivery == DBRTypeEnum.Email)
+                        {
+                            UserSessions.DoManageEmailBillDeliveryTutorialShown(this.mPref);
+                        }
+                        else if (UserSessions.ManageBillDelivery == DBRTypeEnum.ParallelEmail)
+                        {
+                            UserSessions.DoManageParallelEmailBillDeliveryTutorialShown(this.mPref);
+                        }
                     }
                 }
                 return true;
@@ -1021,7 +1036,22 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     }
                     else if (this.mActivity is ManageBillDeliveryActivity)
                     {
-                        UserSessions.DoManageBillDeliveryTutorialShown(this.mPref);
+                        if (UserSessions.ManageBillDelivery == DBRTypeEnum.EBill)
+                        {
+                            UserSessions.DoManageEBillDeliveryTutorialShown(this.mPref);
+                        }
+                        else if (UserSessions.ManageBillDelivery == DBRTypeEnum.OptedEBill)
+                        {
+                            UserSessions.DoManagepoptedEBillDeliveryTutorialShown(this.mPref);
+                        }
+                        else if (UserSessions.ManageBillDelivery == DBRTypeEnum.Email)
+                        {
+                            UserSessions.DoManageEmailBillDeliveryTutorialShown(this.mPref);
+                        }
+                        else if (UserSessions.ManageBillDelivery == DBRTypeEnum.ParallelEmail)
+                        {
+                            UserSessions.DoManageParallelEmailBillDeliveryTutorialShown(this.mPref);
+                        }
                     }
                 }
                 return true;

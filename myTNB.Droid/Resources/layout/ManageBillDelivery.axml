@@ -188,26 +188,7 @@
 						android:layout_marginBottom="16dp"
 						android:orientation="horizontal"/>
 					</RelativeLayout>
-					<LinearLayout
-					android:id="@+id/digitalBillLabelContainer"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:visibility="gone"
-					android:paddingLeft="2dp"
-					android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
-					android:gravity="center|left"
-					android:orientation="vertical">
-					<TextView
-						android:id="@+id/digitalBillLabel"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:textSize="12dp"
-						android:textColor="#1c79ca"
-						android:drawablePadding="8dp"
-						android:text="What if I still want paper bills?"
-						android:drawableLeft="@drawable/smr_why_accounts_info"
-						android:gravity="center_vertical"/>
-				</LinearLayout>
+					
 					<LinearLayout
 					android:orientation="vertical"
 					android:layout_width="match_parent"
@@ -238,10 +219,37 @@
 						<LinearLayout
 							android:orientation="vertical"
 							android:layout_width="match_parent"
-							android:layout_height="16dp"
+							android:layout_height="wrap_content"
 							android:background="@color/lightGrey"
+							android:paddingBottom="16dp"
+							android:paddingTop="16dp"
 							android:visibility="visible"
-							android:gravity="center"/>
+							android:gravity="center">
+							
+							
+						<LinearLayout
+					android:id="@+id/digitalBillLabelContainer"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="16dp"
+					android:layout_marginRight="16dp"
+					android:visibility="visible"
+					android:paddingLeft="2dp"
+					android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
+					android:gravity="center|left"
+					android:orientation="vertical">
+					<TextView
+						android:id="@+id/digitalBillLabel"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:textSize="12dp"
+						android:textColor="#1c79ca"
+						android:drawablePadding="8dp"
+						android:text="UI-What if I want another bill delivery method?"
+						android:drawableLeft="@drawable/smr_why_accounts_info"
+						android:gravity="center_vertical"/>
+				</LinearLayout>
+						</LinearLayout>
 						<TextView
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"

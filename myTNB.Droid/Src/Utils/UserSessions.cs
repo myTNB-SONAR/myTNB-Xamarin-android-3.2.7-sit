@@ -325,21 +325,53 @@ namespace myTNB_Android.Src.Utils
             editor.PutBoolean("hasManageSupplyAccountTutorialShown", true);
             editor.Apply();
         }
-        public static void DoManageBillDeliveryTutorialShown(ISharedPreferences prefs)
+        public static void DoManageEBillDeliveryTutorialShown(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutBoolean("hasManageBillDeliveryTutorialShownTutorialShown", true);
+            editor.PutBoolean("hasManageEBillDeliveryTutorialShown", true);
             editor.Apply();
         }
+        public static bool HasManageEBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasManageEBillDeliveryTutorialShown", false);
+        }
+        public static void DoManagepoptedEBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasManageOptedEBillDeliveryTutorialShown", true);
+            editor.Apply();
+        }
+        public static bool HasManageOptedEBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasManageOptedEBillDeliveryTutorialShown", false);
+        }
+        public static void DoManageEmailBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasManageEmailBillDeliveryTutorialShown", true);
+            editor.Apply();
+        }
+        public static bool HasManageEmailBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasManageEmailBillDeliveryTutorialShown", false);
+        }
+        public static void DoManageParallelEmailBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasManageParallelEmailBillDeliveryTutorialShown", true);
+            editor.Apply();
+        }
+        public static bool HasManageParallelEmailBillDeliveryTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasManageParallelEmailBillDeliveryTutorialShown", false);
+        }
+        
         public static bool HasManageSupplyAccountTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasManageSupplyAccountTutorialShown", false);
         }
 
-        public static bool HasManageBillDeliveryTutorialShown(ISharedPreferences prefs)
-        {
-            return prefs.GetBoolean("hasManageBillDeliveryTutorialShown", false);
-        }
+       
         public static bool HasSMRMeterHistoryTutorialShown(ISharedPreferences prefs)
         {
             return prefs.GetBoolean("hasSMRMeterHistoryTutorialShown", false);

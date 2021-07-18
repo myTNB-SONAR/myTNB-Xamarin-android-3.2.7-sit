@@ -50,6 +50,7 @@ using myTNB;
 using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.Mobile;
 using myTNB_Android.Src.myTNBMenu.Async;
+using myTNB_Android.Src.ManageBillDelivery.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Activity
 {
@@ -881,7 +882,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         }
         public void ShowManageBill()
         {
-
+            Intent intent = new Intent(this, typeof(ManageBillDeliveryActivity));
+            intent.PutExtra("Paper", "Paper");
+            StartActivity(intent);
         }
         public void ShowFeedbackMenu()
         {

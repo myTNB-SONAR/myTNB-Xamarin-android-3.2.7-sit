@@ -2392,8 +2392,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 int topHeight = 0;
                 if (UserSessions.ManageBillDelivery == DBRTypeEnum.Email)
                 {
-                    middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight();
-                    topHeight = (((ManageBillDeliveryActivity)this.mContext).GetviewPagerHeight() - ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight()) + (int)DPUtils.ConvertDPToPx(105f);
+                    middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight() - ((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight() - ((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight();
+                    topHeight = (((ManageBillDeliveryActivity)this.mContext).GetviewPagerHeight() - ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight()) +((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight() + ((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight() +(int)DPUtils.ConvertDPToPx(105f);
                     LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                     topLayoutParam.Height = topHeight;
                     topLayout.RequestLayout();
@@ -2402,7 +2402,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     middleLayout.RequestLayout();
                     LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
                     highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                    highlightedLeftLayout.RequestLayout();
+                    highlightedLeftLayout.RequestLayout();  
                     LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
                     highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
                     highlightedLayout.RequestLayout();
@@ -2423,7 +2423,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 else if (UserSessions.ManageBillDelivery == DBRTypeEnum.EBill)
                 {
                     middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight();
-                    topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight() - (int)DPUtils.ConvertDPToPx(25f);
+                    topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight();
                     LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                     topLayoutParam.Height = topHeight;
                     topLayout.RequestLayout();
@@ -2454,9 +2454,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 {
                     if (position == 0)
                     {
-                        middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight();
-                        topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight() - (int)DPUtils.ConvertDPToPx(25f);
-
+                        middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight();
+                        topHeight = (((ManageBillDeliveryActivity)this.mContext).GetviewPagerHeight() - ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight()) + (int)DPUtils.ConvertDPToPx(105f);
                         LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                         topLayoutParam.Height = topHeight;
                         topLayout.RequestLayout();
@@ -2486,7 +2485,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     else
                     {
                         middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight();
-                        topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight() - (int)DPUtils.ConvertDPToPx(25f);
+                        topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight();
 
                         LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                         topLayoutParam.Height = topHeight;
@@ -2593,7 +2592,22 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 }
                 else if (this.mContext is ManageBillDeliveryActivity)
                 {
-                    UserSessions.DoManageBillDeliveryTutorialShown(this.mPref);
+                    if (UserSessions.ManageBillDelivery == DBRTypeEnum.EBill)
+                    {
+                        UserSessions.DoManageEBillDeliveryTutorialShown(this.mPref);
+                    }
+                    else if (UserSessions.ManageBillDelivery == DBRTypeEnum.OptedEBill)
+                    {
+                        UserSessions.DoManagepoptedEBillDeliveryTutorialShown(this.mPref);
+                    }
+                    else if (UserSessions.ManageBillDelivery == DBRTypeEnum.Email)
+                    {
+                        UserSessions.DoManageEmailBillDeliveryTutorialShown(this.mPref);
+                    }
+                    else if (UserSessions.ManageBillDelivery == DBRTypeEnum.ParallelEmail)
+                    {
+                        UserSessions.DoManageParallelEmailBillDeliveryTutorialShown(this.mPref);
+                    }
                 }
             }
         }

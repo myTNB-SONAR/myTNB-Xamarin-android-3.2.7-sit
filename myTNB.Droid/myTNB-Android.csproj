@@ -60,8 +60,7 @@
     <AndroidSupportedAbis>arm64-v8a;armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>portable</DebugType>
+    <DebugType></DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\SIT\</OutputPath>
     <DefineConstants>TRACE;SIT</DefineConstants>
@@ -70,8 +69,8 @@
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <MandroidI18n>West</MandroidI18n>
-    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
-    <AndroidSupportedAbis>arm64-v8a;armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
