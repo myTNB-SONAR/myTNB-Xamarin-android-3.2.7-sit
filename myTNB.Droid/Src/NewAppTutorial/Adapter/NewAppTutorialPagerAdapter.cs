@@ -2394,37 +2394,128 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 {
                     middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight();
                     topHeight = (((ManageBillDeliveryActivity)this.mContext).GetviewPagerHeight() - ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight()) + (int)DPUtils.ConvertDPToPx(105f);
+                    LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    topLayoutParam.Height = topHeight;
+                    topLayout.RequestLayout();
+                    LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    middleLayoutParam.Height = middleHeight;
+                    middleLayout.RequestLayout();
+                    LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                    highlightedLeftLayout.RequestLayout();
+                    LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                    highlightedLayout.RequestLayout();
+                    LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                    highlightedRightLayout.RequestLayout();
+
+
+                    LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                    bottomLayout.RequestLayout();
+                    RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
+                    innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                    innerTopLayout.RequestLayout();
                 }
                 else if (UserSessions.ManageBillDelivery == DBRTypeEnum.EBill)
                 {
                     middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight();
                     topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight() - (int)DPUtils.ConvertDPToPx(25f);
+                    LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    topLayoutParam.Height = topHeight;
+                    topLayout.RequestLayout();
+                    LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    middleLayoutParam.Height = middleHeight;
+                    middleLayout.RequestLayout();
+                    LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                    highlightedLeftLayout.RequestLayout();
+                    LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                    highlightedLayout.RequestLayout();
+                    LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                    highlightedRightLayout.RequestLayout();
+
+
+                    LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                    bottomLayout.RequestLayout();
+                    RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
+                    innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                    innerTopLayout.RequestLayout();
                 }
-                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
-                topLayoutParam.Height = topHeight;
-                topLayout.RequestLayout();
-                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
-                middleLayoutParam.Height = middleHeight;
-                middleLayout.RequestLayout();
-                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
-                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                highlightedLeftLayout.RequestLayout();
-                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
-                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
-                highlightedLayout.RequestLayout();
-                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
-                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
-                highlightedRightLayout.RequestLayout();
+                else if (UserSessions.ManageBillDelivery == DBRTypeEnum.ParallelEmail)
+                {
+                    if (position == 0)
+                    {
+                        middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight();
+                        topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight() - (int)DPUtils.ConvertDPToPx(25f);
+
+                        LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        topLayoutParam.Height = topHeight;
+                        topLayout.RequestLayout();
+                        LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        middleLayoutParam.Height = middleHeight;
+                        middleLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                        highlightedLeftLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                        highlightedLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                        highlightedRightLayout.RequestLayout();
 
 
-                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
-                bottomLayout.RequestLayout();
-                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
-                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
-                innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
-                innerTopLayout.RequestLayout();
+                        LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                        bottomLayout.RequestLayout();
+                        RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                        innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
+                        innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                        innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                        innerTopLayout.RequestLayout();
+                    }
+                    else
+                    {
+                        middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight();
+                        topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - ((ManageBillDeliveryActivity)this.mContext).GetBtnUpdateDigitalBillHeight() - (int)DPUtils.ConvertDPToPx(25f);
+
+                        LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        topLayoutParam.Height = topHeight;
+                        topLayout.RequestLayout();
+                        LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        middleLayoutParam.Height = middleHeight;
+                        middleLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                        highlightedLeftLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                        highlightedLayout.RequestLayout();
+                        LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                        highlightedRightLayout.RequestLayout();
+
+
+                        LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                        bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                        bottomLayout.RequestLayout();
+                        RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                        innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(130f);
+                        innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                        innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                        innerTopLayout.RequestLayout();
+                    }
+                }
+                
 
             }
             container.AddView(rootView);

@@ -10,6 +10,8 @@
     {
         EBill,
         Email,
+        OptedEBill,
+        ParallelEmail,
         Paper,
         WhatsApp,
         None
