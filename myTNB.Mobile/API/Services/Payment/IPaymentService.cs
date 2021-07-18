@@ -12,14 +12,14 @@ namespace myTNB.Mobile.API.Services.Payment
         [Headers(new string[] { "Content-Type: application/json" })]
         [Post("/{urlPrefix}/ApplicationPayment")]
         Task<HttpResponseMessage> ApplicationPayment([Body] PostApplicationPaymentRequest request
-            , CancellationToken cancelToken
+            , CancellationToken cancellationToken
             , [Header(MobileConstants.Header_Lang)] string lang
             , string urlPrefix = MobileConstants.ApiUrlPath);
 
         [Headers(new string[] { "Content-Type: application/json" })]
         [Post("/{urlPrefix}/GetApplicationsPaidDetails")]
         Task<HttpResponseMessage> GetApplicationsPaidDetails([Body] PostApplicationsPaidDetailsRequest request
-            , CancellationToken cancelToken
+            , CancellationToken cancellationToken
             , [Header(MobileConstants.Header_Lang)] string lang
             , string urlPrefix = MobileConstants.ApiUrlPath);
 
@@ -27,7 +27,7 @@ namespace myTNB.Mobile.API.Services.Payment
         [Get("/{urlPrefix}/GetTaxInvoiceForApplicationPayment?srNumber={srNumber}")]
         Task<HttpResponseMessage> GetTaxInvoice(string srNumber
           , [Header(MobileConstants.Header_UserInfo)] string userInfo
-          , CancellationToken cancelToken
+          , CancellationToken cancellationToken
           , string language
           , [Header(MobileConstants.Header_Lang)] string lang
           , string urlPrefix = MobileConstants.ApiUrlPath

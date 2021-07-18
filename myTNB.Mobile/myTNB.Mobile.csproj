@@ -100,7 +100,20 @@
     <Folder Include="API\Managers\Scheduler\Utilities\" />
     <Folder Include="API\Models\Application Status\Post Sync SR Application\" />
     <Folder Include="AWS\" />
-    <Folder Include="AWS\SSO\" />
+    <Folder Include="AWS\Managers\" />
+    <Folder Include="AWS\Models\" />
+    <Folder Include="AWS\Models\Access Token\" />
+    <Folder Include="AWS\Models\SSO\" />
+    <Folder Include="AWS\Services\" />
+    <Folder Include="AWS\Managers\Access Token\" />
+    <Folder Include="AWS\Managers\SSO\" />
+    <Folder Include="AWS\Services\Access Token\" />
+    <Folder Include="AWS\Models\DBR\" />
+    <Folder Include="AWS\Models\DBR\Get Bill Rendering\" />
+    <Folder Include="AWS\Models\DBR\Get Eligibility\" />
+    <Folder Include="AWS\Managers\DBR\" />
+    <Folder Include="AWS\Services\DBR\" />
+    <Folder Include="AWS\Managers\Eligibility\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />

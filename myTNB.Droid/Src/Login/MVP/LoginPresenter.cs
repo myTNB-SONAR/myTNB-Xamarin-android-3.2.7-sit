@@ -349,7 +349,7 @@ namespace myTNB_Android.Src.Login.MVP
                                 }
                                 await LanguageUtil.SaveUpdatedLanguagePreference();
 
-                                AppInfoManager.Instance.SetUserInfo("16"
+                                AppInfoManager.Instance.SetUserInfos("16"
                                            , UserEntity.GetActive().UserID
                                            , UserEntity.GetActive().UserName
                                            , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);

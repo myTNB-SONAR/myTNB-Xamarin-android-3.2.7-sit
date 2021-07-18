@@ -19,7 +19,7 @@ namespace myTNB.Mobile.API.Services.Scheduler
         [Get("/{urlPrefix}/AvailableAppointment?businessArea={businessArea}")]
         Task<GetAvailableAppointmentResponse> GetAvailableAppointment([Header(MobileConstants.Header_UserInfo)] string userInfo
             , string businessArea
-            , CancellationToken cancelToken
+            , CancellationToken cancellationToken
             , [Header(MobileConstants.Header_Lang)] string lang
             , string urlPrefix = MobileConstants.ApiUrlPath
             , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);
@@ -27,7 +27,7 @@ namespace myTNB.Mobile.API.Services.Scheduler
         [Post("/{urlPrefix}/SetAppointment")]
         Task<HttpResponseMessage> SetAppointment([Body] PostSetAppointmentRequest request
            , [Header(MobileConstants.Header_UserInfo)] string userInfo
-           , CancellationToken cancelToken
+           , CancellationToken cancellationToken
            , [Header(MobileConstants.Header_Lang)] string lang
            , string urlPrefix = MobileConstants.ApiUrlPath
            , [Header(MobileConstants.Header_SecureKey)] string secureKey = MobileConstants.ApiKeyId);

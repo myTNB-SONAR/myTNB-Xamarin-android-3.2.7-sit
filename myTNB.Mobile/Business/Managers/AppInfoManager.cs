@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using myTNB.Mobile;
 using static myTNB.LanguageManager;
 
 namespace myTNB
@@ -32,7 +34,7 @@ namespace myTNB
         /// <param name="userID">SSPUID</param>
         /// <param name="userName">Email or EID</param>
         /// <param name="language">Language Selected in the App</param>
-        public void SetUserInfo(string roleID
+        public void SetUserInfos(string roleID
             , string userID
             , string userName
             , Language language = Language.EN)
@@ -42,6 +44,50 @@ namespace myTNB
             UserId = userID ?? string.Empty;
             UserName = userName ?? string.Empty;
             Lang = this.Language.ToString();
+        }
+
+        public void SetUserInfo(string roleID
+            , string userID
+            , string userName
+            , string deviceToken
+            , string appVersion
+            , string fontSize = "N"
+            , Language language = Language.EN)
+        {
+            //App Info
+            this.Language = language;
+            RoleId = roleID ?? string.Empty;
+            UserId = userID ?? string.Empty;
+            UserName = userName ?? string.Empty;
+            Lang = this.Language.ToString();
+
+            //View Info
+            ViewInfoHeader = new ViewInfoHeader
+            {
+                DeviceToken = deviceToken,
+                AppVersion = appVersion,
+                RoleId = roleID,
+                Lang = language.ToString(),
+                FontSize = fontSize.ToUpper() == "L" ? "L" : "N"
+            };
+        }
+
+        private ViewInfoHeader ViewInfoHeader { set; get; }
+
+        internal string ViewInfo
+        {
+            get
+            {
+                try
+                {
+                    return Newtonsoft.Json.JsonConvert.SerializeObject(ViewInfoHeader);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("[DEBUG] ViewInfo Error: " + e.Message);
+                }
+                return string.Empty;
+            }
         }
 
         public void SetPlatformUserInfo(object userInfo)

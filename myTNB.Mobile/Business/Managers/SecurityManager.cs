@@ -3,79 +3,29 @@ using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 
 namespace myTNB.Mobile
 {
-    public sealed class SSOManager
+    public sealed class SecurityManager
     {
-        private static readonly Lazy<SSOManager> lazy =
-            new Lazy<SSOManager>(() => new SSOManager());
+        private static readonly Lazy<SecurityManager> lazy =
+          new Lazy<SecurityManager>(() => new SecurityManager());
 
-        public static SSOManager Instance
+        public static SecurityManager Instance
         {
             get
             {
                 return lazy.Value;
             }
         }
-        public SSOManager() { }
 
-        /// <summary>
-        /// This returns the signature generated from App Parameters
-        /// </summary>
-        /// <param name="name">myTNB Account Name</param>
-        /// <param name="accessToken">Generated Access Token</param>
-        /// <param name="deviceToken">App's device id or UDID</param>
-        /// <param name="appVersion">3 Digit version. ie: 2.3.3</param>
-        /// <param name="roleID">Value will always be 16 for loggedin user</param>
-        /// <param name="language">EN or BM</param>
-        /// <param name="fontSize">N or L</param>
-        /// <param name="originURL">Origin URL of a feature configured in mobile constants</param>
-        /// <param name="redirectURL">Redirect URL of a feature configured in mobile constants</param>
-        /// <param name="CANumber">Electricity Account Number</param>
-        /// <returns></returns>
-        public string GetSignature(string name
-            , string accessToken
-            , string deviceToken
-            , string appVersion
-            , int roleID
-            , string language
-            , string fontSize
-            , string originURL
-            , string redirectURL
-            , string CANumber)
+        public SecurityManager()
         {
-            try
-            {
-                SSOModel ssoModel = new SSOModel
-                {
-                    Name = name,
-                    AccessToken = accessToken,
-                    DeviceToken = deviceToken,
-                    AppVersion = appVersion,
-                    RoleId = roleID,
-                    Lang = language,
-                    FontSize = fontSize,
-                    OriginUrl = originURL,
-                    RedirectUrl = redirectURL,
-                    CaNo = CANumber
-                };
-
-                string signature = AES256_Encrypt(MobileConstants.SaltKey
-                    , MobileConstants.PassPhrase
-                    , JsonConvert.SerializeObject(ssoModel));
-                Debug.WriteLine("[DEBUG] SSO Signature: " + signature);
-                return signature;
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("[DEBUG] GetSignature: " + e.Message);
-                return string.Empty;
-            }
         }
 
-        private string AES256_Encrypt(string saltKey
+        internal string AES256_Encrypt(string saltKey
             , string passPhrase
             , string plainText)
         {
@@ -110,7 +60,7 @@ namespace myTNB.Mobile
             return Convert.ToBase64String(cipherTextBytes);
         }
 
-        private string AES256_Decrypt(string saltKey
+        internal string AES256_Decrypt(string saltKey
             , string passPhrase
             , string cipherText)
         {
@@ -143,6 +93,43 @@ namespace myTNB.Mobile
             cryptoStream.Close();
 
             return Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount).Replace("\0", "");
+        }
+
+        public string Encrypt<T>(T responseClass)
+        {
+            try
+            {
+                string responseString = JsonConvert.SerializeObject(responseClass);
+                string encryptedString = AES256_Encrypt(MobileConstants.SaltKey
+                    , MobileConstants.PassPhrase
+                    , responseString);
+                return encryptedString;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG][Encrypt]General Exception: " + e.Message);
+            }
+            return string.Empty;
+        }
+
+        public T Decrypt<T>(string encryptedString) where T : new()
+        {
+            T customClass = new T();
+            try
+            {
+                string decryptedString = AES256_Decrypt(MobileConstants.SaltKey
+                    , MobileConstants.PassPhrase
+                    , encryptedString);
+                if (decryptedString.IsValid())
+                {
+                    return JsonConvert.DeserializeObject<T>(decryptedString);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("[DEBUG][Decrypt]General Exception: " + e.Message);
+            }
+            return customClass;
         }
     }
 }

@@ -1129,15 +1129,7 @@
     "applicationStatusDetailsActionTwoTitle": "Ketahui bila tindakan perlu diambil.",
     "applicationStatusDetailsActionTwoMessage": "Ambil tindakan yang diperlukan untuk permohonan anda dengan mudah di sini.",
     "dbrBillTitle": "MS_Your account bill delivery method.",
-    "dbrBillMessage": "MS_View your bill delivery method here and tap to manage your preference.",
-    "manageCAManageBillDeliveryTitle": "MS_Your account bill delivery method.",
-    "manageCAManageBillDeliveryMessage": "MS_View and directly manage your bill delivery method here.",
-    "manageCAViewBillDeliveryTitle": "MS_Your account bill delivery method.",
-    "manageCAViewBillDeliveryMessage": "MS_View your bill delivery method here.",
-    "manageDeliveryMethodUpdateCTATitle": "MS_Manage your bill delivery method.",
-    "manageDeliveryMethodUpdateCTAMessage": "MS_Update your bill delivery method for this account here.",
-    "manageDeliveryMethodEmailTitle": "MS_Users with email bills.",
-    "manageDeliveryMethodEmailMessage": "MS_View account users or email recipients who are receiving monthly bills for this account."
+    "dbrBillMessage": "MS_View your bill delivery method here and tap to manage your preference."
   },
   "ApplicationStatusLanding": {
     "title": "Status Permohonan",

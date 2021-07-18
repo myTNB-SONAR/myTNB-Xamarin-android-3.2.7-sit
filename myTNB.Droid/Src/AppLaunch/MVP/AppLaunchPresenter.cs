@@ -270,7 +270,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         //If Notification Email is equals to logged-in email
                                         bool isLoggedInEmail = loggedUser.Email.Equals(UserSessions.GetUserEmailNotification(mSharedPref));
 
-                                        AppInfoManager.Instance.SetUserInfo("16"
+                                        AppInfoManager.Instance.SetUserInfos("16"
                                             , loggedUser.UserID
                                             , loggedUser.UserName
                                             , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
@@ -321,7 +321,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     }
                                     this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.PreLogin);
 
-                                    AppInfoManager.Instance.SetUserInfo("0", string.Empty, string.Empty
+                                    AppInfoManager.Instance.SetUserInfos("0", string.Empty, string.Empty
                                         , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                     mView.ShowPreLogin();
                                 }
