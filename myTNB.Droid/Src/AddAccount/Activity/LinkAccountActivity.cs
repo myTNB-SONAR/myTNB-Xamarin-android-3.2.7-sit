@@ -403,7 +403,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
                 if (ConnectionUtils.HasInternetConnection(this))
                 {
-                    userActionsListener.GetAccountByIC(Constants.APP_CONFIG.API_KEY_ID, currentLinkedAccounts, email, idNumber);
+                    string ic_no = idNumber.Replace("-", string.Empty);
+                    userActionsListener.GetAccountByIC(Constants.APP_CONFIG.API_KEY_ID, currentLinkedAccounts, email, ic_no);
                 }
                 else
                 {
@@ -1163,9 +1164,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     View view = mAddAccountProgressDialog.View;
                     if (view != null)
                     {
+                        int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
+                        string totalAcc = totalAccountAdded.ToString();
                         string title = TOTAL_NO_OF_ACCOUNTS_TO_ADD == 1 ?
-                            string.Format(Utility.GetLocalizedLabel("AddAccount", "addAccount"), TOTAL_NO_OF_ACCOUNTS_TO_ADD) :
-                            string.Format(Utility.GetLocalizedLabel("AddAccount", "addAccounts"), TOTAL_NO_OF_ACCOUNTS_TO_ADD);
+                            string.Format(Utility.GetLocalizedLabel("AddAccount", "addAccount"), totalAcc) :
+                            string.Format(Utility.GetLocalizedLabel("AddAccount", "addAccounts"), totalAcc);
                         string message = TOTAL_NO_OF_ACCOUNTS_TO_ADD == 1 ?
                             Utility.GetLocalizedLabel("AddAccount", "addAccountMsg") :
                             Utility.GetLocalizedLabel("AddAccount", "addAccountsMsg");
@@ -1295,7 +1298,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
             //Get apiId and userId from the bundle
             string email = UserEntity.GetActive().UserID;
             string idNumber = UserEntity.GetActive().IdentificationNo;  // Get IC number from registration;
-            userActionsListener.GetAccountByIC(Constants.APP_CONFIG.API_KEY_ID, "", email, idNumber);
+            string ic_no = idNumber.Replace("-", string.Empty);
+            userActionsListener.GetAccountByIC(Constants.APP_CONFIG.API_KEY_ID, "", email, ic_no);
         }
 
         public override void OnBackPressed()
