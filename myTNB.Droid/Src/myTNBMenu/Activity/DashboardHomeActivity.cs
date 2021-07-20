@@ -2126,11 +2126,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         flag = false;
                     }
 
-                    if (!MyTNBAccountManagement.GetInstance().IsFromApiEBFinish())
-                    {
-                        flag = false;
-                    }
-
                     if (flag)
                     {
                         this.mPresenter.SetIsWhatsNewDialogShowNeed(false);

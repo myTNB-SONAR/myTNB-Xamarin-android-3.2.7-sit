@@ -1465,7 +1465,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (MyTNBAccountManagement.GetInstance().IsEBUserVerify())
                 {
-                    FirebaseAnalyticsUtils.SetScreenNameDynaTrace("EB_tooltip");
+                    CustomClassAnalytics.SetScreenNameDynaTrace("EB_tooltip");
                     FirebaseAnalyticsUtils.SetFragmentScreenName(this, "EB_tooltip");
 
                     MyTNBAppToolTipBuilder eppTooltip2 = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
@@ -5192,7 +5192,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             if (!this.GetIsClicked())
             {
-                FirebaseAnalyticsUtils.SetScreenNameDynaTrace("EB_edit_budget");
+                CustomClassAnalytics.SetScreenNameDynaTrace("EB_edit_budget");
                 FirebaseAnalyticsUtils.SetFragmentScreenName(this, "EB_edit_budget");
                 this.SetIsClicked(true);
                 editBudget = true;
@@ -5237,7 +5237,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 this.SetIsClicked(false);
                 if (!this.GetIsClicked() && btnSetNewBudget.Text == Utility.GetLocalizedLabel("Usage", "setEnergyButton"))
                 {
-                    FirebaseAnalyticsUtils.SetScreenNameDynaTrace("EB_start");
+                    CustomClassAnalytics.SetScreenNameDynaTrace("EB_start");
                     FirebaseAnalyticsUtils.SetFragmentScreenName(this, "EB_start");
                     this.SetIsClicked(true);
                     editBudget = true;
@@ -5275,7 +5275,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     if (!GetIsMDMSDown())
                     {
-                        FirebaseAnalyticsUtils.SetScreenNameDynaTrace("EB_setup_success");
+                        CustomClassAnalytics.SetScreenNameDynaTrace("EB_setup_success");
                         FirebaseAnalyticsUtils.SetFragmentScreenName(this, "EB_setup_success");
                         this.SetIsClicked(true);
                         setEnergyBudgetlayout = false;

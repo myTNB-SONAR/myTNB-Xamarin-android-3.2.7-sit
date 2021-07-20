@@ -67,7 +67,7 @@
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>false</DebugSymbols>
     <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\SIT\</OutputPath>
@@ -82,7 +82,7 @@
     <EnableLLVM>false</EnableLLVM>
     <BundleAssemblies>false</BundleAssemblies>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
-    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidUseAapt2>true</AndroidUseAapt2>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
@@ -1243,6 +1243,7 @@
     <Compile Include="Src\UpdatePersonalDetailTnC\MVP\UpdatePersonalDetailTnCPresenter.cs" />
     <Compile Include="Src\Utils\BitmapUtils.cs" />
     <Compile Include="Src\Utils\BottomNavigationViewUtils.cs" />
+    <Compile Include="Src\Utils\CustomClassAnalytics.cs" />
     <Compile Include="Src\Utils\ConnectionUtils.cs" />
     <Compile Include="Src\Utils\Constants.cs" />
     <Compile Include="Src\RegisterValidation\Activity\RegisterValidationActivity.cs" />

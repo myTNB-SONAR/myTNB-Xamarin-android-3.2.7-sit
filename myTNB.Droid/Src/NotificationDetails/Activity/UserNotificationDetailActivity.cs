@@ -386,7 +386,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         public void ViewTips()
         {
-            FirebaseAnalyticsUtils.SetScreenNameDynaTrace("EB_view_tips");
+            CustomClassAnalytics.SetScreenNameDynaTrace("EB_view_tips");
             FirebaseAnalyticsUtils.SetScreenName(this, "EB_view_tips");
             Intent webIntent = new Intent(this, typeof(BaseWebviewActivity));
             webIntent.PutExtra(Constants.IN_APP_LINK, Utility.GetLocalizedLabel("PushNotificationDetails", "viewTipsURL"));

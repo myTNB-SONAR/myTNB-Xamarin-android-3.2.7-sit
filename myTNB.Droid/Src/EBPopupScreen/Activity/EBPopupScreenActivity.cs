@@ -132,7 +132,7 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
             try
             {
                 UserSessions.DoSmartMeterShown(PreferenceManager.GetDefaultSharedPreferences(this));
-                FirebaseAnalyticsUtils.SetScreenNameDynaTrace("EB_initiate_Start");
+                CustomClassAnalytics.SetScreenNameDynaTrace("EB_initiate_Start");
                 FirebaseAnalyticsUtils.SetScreenName(this, "EB_initiate_Start");
                 Intent result = new Intent();
                 result.PutExtra("EBList", "EBList");
@@ -150,7 +150,7 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
         {
             try
             {
-                FirebaseAnalyticsUtils.SetScreenNameDynaTrace("EB_initiate_Later");
+                CustomClassAnalytics.SetScreenNameDynaTrace("EB_initiate_Later");
                 FirebaseAnalyticsUtils.SetScreenName(this, "EB_initiate_Later");
                 Intent result = new Intent();
                 result.PutExtra("MaybeLater", "MaybeLater");
