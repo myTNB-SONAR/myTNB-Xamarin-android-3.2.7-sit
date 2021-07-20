@@ -294,8 +294,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             /*****/
                         }
                         MyTNBAccountManagement.GetInstance().UpdateCustomerBillingDetails(billingDetails);
-                        this.mView.UpdateAccountListCards(updateDashboardInfoList);
-
+                        if (true)
+                        {
+                            this.mView.UpdateAccountListCards(updateDashboardInfoList);
+                        }
                         if (billingAccoutCount > 3)
                         {
                             if (billingAccoutCount == updateDashboardInfoList.Count())
@@ -647,6 +649,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isSummaryDone = true;
                     OnCheckToCallHomeMenuTutorial();
                 }
+                this.mView.ShowDiscoverMoreLayout();
             }
             catch (Exception e)
             {
@@ -662,6 +665,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             HomeMenuUtils.SetQueryWord(string.Empty);
             trackCurrentLoadMoreCount = 0;
             HomeMenuUtils.SetTrackCurrentLoadMoreCount(trackCurrentLoadMoreCount);
+
             LoadAccounts();
         }
 
@@ -809,6 +813,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         this.mView.IsLoadMoreButtonVisible(false, false);
                     }
                 }
+                this.mView.ShowDiscoverMoreLayout();
             }
             catch (Exception e)
             {
@@ -954,6 +959,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isSummaryDone = true;
                     OnCheckToCallHomeMenuTutorial();
                 }
+                this.mView.ShowDiscoverMoreLayout();
             }
             else
             {
@@ -1276,6 +1282,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     isSummaryDone = true;
                     OnCheckToCallHomeMenuTutorial();
                 }
+                this.mView.ShowDiscoverMoreLayout();
             }
             catch (Exception e)
             {
@@ -1441,6 +1448,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             queryTokenSource = new CancellationTokenSource();
             isMyServiceExpanded = false;
             HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
+
             this.mView.SetMyServiceRecycleView();
             this.mView.SetNewFAQRecycleView();
         }

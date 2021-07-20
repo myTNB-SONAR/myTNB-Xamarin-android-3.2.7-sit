@@ -15,6 +15,9 @@ namespace myTNB.Mobile.AWS.Models
         public EligibileFeaturesModel EligibileFeatures { set; get; }
         [JsonProperty("dbr")]
         public DBRModel DBR { set; get; }
+
+        [JsonProperty("eb")]
+        public EBModel EB { set; get; }
     }
 
     public class EligibileFeaturesModel
@@ -34,6 +37,12 @@ namespace myTNB.Mobile.AWS.Models
     }
 
     public class DBRModel
+    {
+        [JsonProperty("contractAccounts")]
+        public List<ContractAccountsModel> ContractAccounts { set; get; }
+    }
+
+    public class EBModel
     {
         [JsonProperty("contractAccounts")]
         public List<ContractAccountsModel> ContractAccounts { set; get; }

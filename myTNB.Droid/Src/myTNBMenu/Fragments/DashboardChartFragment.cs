@@ -1467,6 +1467,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     FirebaseAnalyticsUtils.SetScreenNameDynaTrace("EB_tooltip");
                     FirebaseAnalyticsUtils.SetFragmentScreenName(this, "EB_tooltip");
+
+                    MyTNBAppToolTipBuilder eppTooltip2 = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(Utility.GetLocalizedLabel("Usage", "whyIsAmountDiff"))
+                        .SetMessage(Utility.GetLocalizedLabel("Usage", "whyIsAmountDiffBody"))
+                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                        .SetCTAaction(() => { this.SetIsClicked(false); })
+                        .Build();
+                    eppTooltip2.Show();
                 }
                 /*string textMessage = Utility.GetLocalizedLabel("Usage", "projectedCostMsg");
                 string btnLabel = Utility.GetLocalizedCommonLabel("gotIt");
@@ -1503,13 +1511,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         .Build();
                     smartMeterStatsTooltip.Show();
                 }*/
-                MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                    .SetTitle(Utility.GetLocalizedLabel("Usage", "whyIsAmountDiff"))
-                    .SetMessage(Utility.GetLocalizedLabel("Usage", "whyIsAmountDiffBody"))
-                    .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
-                    .SetCTAaction(() => { this.SetIsClicked(false); })
-                    .Build();
-                eppTooltip.Show();
+                else
+                {
+                    MyTNBAppToolTipBuilder eppTooltip = MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                        .SetTitle(string.Empty)
+                        .SetMessage(Utility.GetLocalizedLabel("Usage", "projectedCostMsg"))
+                        .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
+                        .SetCTAaction(() => { this.SetIsClicked(false); })
+                        .Build();
+                    eppTooltip.Show();
+                }
             }
             catch (System.Exception e)
             {
@@ -9859,6 +9870,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 int totalAmount = Integer.ParseInt(amount);
                 double totalPercentage = 0;
                 double Percentage = 0;
+                int percentageBarGraph = 0;
 
                 if (amountUsage > 0)
                 {
@@ -9874,8 +9886,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 int widthT = widthS - (margin * 4);
 
                 OuterLayout.Width = widthT;
-                int widthOuterLayout = OuterLayout.Width;
-                int percentageBarGraph = 109;
+                int widthOuterLayout = OuterLayout.Width;                
 
                 if (totalPercentage > 0)
                 {

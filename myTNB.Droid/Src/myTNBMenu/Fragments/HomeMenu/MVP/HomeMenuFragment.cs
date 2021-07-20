@@ -601,7 +601,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
                 this.presenter.SetDynaUserTAG();  //call dyna set username
                 OnStartLoadAccount();
-                WhatNewCheckAgain();
             }
             catch (System.Exception e)
             {
@@ -777,7 +776,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return IsAdded && IsVisible && !IsDetached && !IsRemoving;
         }
 
-        private void OnLoadAccount()
+        public void OnLoadAccount()
         {
             this.presenter.LoadAccounts();
         }
@@ -821,7 +820,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             myServiceShimmerView.Visibility = ViewStates.Visible;
             myServiceView.Visibility = ViewStates.Gone;
-            this.presenter.InitiateMyService();
+
+            if (MyTNBAccountManagement.GetInstance().IsFromApiEBFinish())
+            {
+                this.presenter.InitiateMyService();
+            }
         }
 
         public void SetMyServiceResult(List<MyService> list)
@@ -1634,9 +1637,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         }
 
         public void SetAccountListCards(List<SummaryDashBoardDetails> accountList)
-        {
+        {           
             accountsAdapter.SetAccountCards(accountList);
-            accountsRecyclerView.SetAdapter(accountsAdapter);
+            accountsRecyclerView.SetAdapter(accountsAdapter);          
         }
 
         public void SetAccountListCardsFromLocal(List<SummaryDashBoardDetails> accountList)
@@ -2020,7 +2023,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        private void OnStartLoadAccount()
+        public void OnStartLoadAccount()
         {
             IsLoadMoreButtonVisible(false, false);
 
@@ -2121,7 +2124,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 searchEditText.SetQuery("", false);
                 OnLoadAccount();
-
+                
                 SetBottomLayoutBackground(false);
                 this.presenter.InitiateService();
             }
@@ -2251,6 +2254,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 else
                 {
                     this.presenter.RestoreCurrentAccountState();
+                }
+
+                if (MyTNBAccountManagement.GetInstance().IsFromApiEBFinish())
+                {
+                    this.presenter.InitiateService();
                 }
 
                 this.presenter.ReadNewFAQFromCache();
@@ -3344,7 +3352,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-
         public void ShowDiscoverMoreLayout()
         {
             //discoverMoreContainer.Visibility = ViewStates.Gone;
@@ -3414,9 +3421,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void WhatNewCheckAgain()
         {
-            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && CheckWhatNewPopupAlready())
-            {                
-                ((DashboardHomeActivity)Activity).OnCheckWhatsNewTab();
+            if (MyTNBAccountManagement.GetInstance().IsFromApiEBFinish())
+            {
+                if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && CheckWhatNewPopupAlready())
+                {
+                    ((DashboardHomeActivity)Activity).OnCheckWhatsNewTab();
+                }
             }
         }
     }

@@ -32,6 +32,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string USER_CREDENTIALS_ENTRY = ".userCredentialsEntry";
         internal static readonly string RETRIEVE_PIN_FROM_SMS = ".retrievedPinFromSMS";
         internal static readonly string SELECTED_NOTIFICATION_DETAIL_ITEM = ".selectedNotificationDetailItem";
+        internal static readonly string SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM = ".selectedFromDashboardNotificationDetailItem";
         internal static readonly string SELECTED_NOTIFICATION_LIST_ITEM = ".selectedNotificationListItem";
         internal static readonly string SELECTED_NOTIFICATION_ITEM_POSITION = ".selectedNotificationItemPosition";
         internal static readonly string ACTION_IS_READ = ".action_is_read";

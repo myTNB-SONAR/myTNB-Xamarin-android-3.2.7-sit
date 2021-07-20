@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using myTNB.Mobile;
 using static myTNB.LanguageManager;
 
@@ -71,6 +72,8 @@ namespace myTNB
             {
                 try
                 {
+                    ViewInfoHeader.AppVersion = Regex.Replace(ViewInfoHeader.AppVersion, @"\(.*?\)", "");
+                    ViewInfoHeader.AppVersion = Regex.Replace(ViewInfoHeader.AppVersion, @"[^0-9.,]+", "");
                     return Newtonsoft.Json.JsonConvert.SerializeObject(ViewInfoHeader);
                 }
                 catch (Exception e)

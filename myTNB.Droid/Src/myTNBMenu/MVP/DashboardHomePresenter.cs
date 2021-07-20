@@ -501,7 +501,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     RewardsMenuUtils.OnSetRewardLoading(true);
                     new SitecoreRewardAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
                 }
-                //MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
+                MyTNBAccountManagement.GetInstance().SetFromLoginPage(true);
                 isWhatsNewDialogShowNeed = true;
                 LaunchViewActivity.MAKE_INITIAL_CALL = false;
 			}

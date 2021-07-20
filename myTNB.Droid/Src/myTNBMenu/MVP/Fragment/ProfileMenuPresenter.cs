@@ -13,6 +13,7 @@ using myTNB_Android.Src.Utils;
 using Refit;
 using myTNB;
 using myTNB_Android.Src.AppLaunch.Models;
+using Android.Content;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -22,9 +23,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         private readonly string TAG = typeof(ProfileMenuPresenter).Name;
         private List<CreditCardData> cardList = new List<CreditCardData>();
         CancellationTokenSource cts;
+        private ISharedPreferences mPref;
 
-        public ProfileMenuPresenter(ProfileMenuContract.IView mView)
+        public ProfileMenuPresenter(ProfileMenuContract.IView mView, ISharedPreferences pref)
         {
+            this.mPref = pref;
             this.mView = mView;
         }
 
@@ -254,6 +257,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                             ? LanguageManager.Language.MS
                             : LanguageManager.Language.EN);
 
+                    UserSessions.RemoveEligibleData(mPref);
                     UserEntity.RemoveActive();
                     UserRegister.RemoveActive();
                     CustomerBillingAccount.RemoveActive();

@@ -29,7 +29,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType></DebugType>
+    <DebugType>
+    </DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -79,8 +80,10 @@
     <AndroidSupportedAbis>arm64-v8a;armeabi-v7a;x86;x86_64</AndroidSupportedAbis>
     <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
-    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -7016,16 +7019,6 @@
     <Folder Include="Src\UpdateMobileNo\Api\" />
     <Folder Include="Src\UpdateNickname\Api\" />
     <Folder Include="Src\UpdatePassword\Api\" />
-    <Folder Include="Src\Utils\PDFView\" />
-    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\" />
-    <Folder Include="Src\ApplicationStatus\ApplicationStatusDetailPayment\MVP\" />
-    <Folder Include="Src\Utils\ZoomImageView\" />
-    <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\" />
-    <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\MVP\" />
-    <Folder Include="Src\ApplicationStatus\ApplicationDetailActivityLog\Adapter\" />
-    <Folder Include="Src\ApplicationStatus\SearchApplicationStatus\Adapter\" />
-    <Folder Include="Src\ApplicationStatus\ApplicationStatusRating\" />
-    <Folder Include="Src\Device Cache\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

@@ -753,5 +753,13 @@ namespace myTNB_Android.Src.Utils
             ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
             return sharedPreferences.GetBoolean(Constants.SHARED_PREF_SAVED_LANG_PREF_RESULT_KEY, false);
         }
+
+        internal static void RemoveEligibleData(ISharedPreferences mSharedPref)
+        {
+            ISharedPreferencesEditor editor = mSharedPref.Edit();
+            editor.PutString(MobileConstants.SharePreferenceKey.GetEligibilityData, string.Empty);
+            editor.PutString(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp, string.Empty);
+            editor.Apply();
+        }
     }
 }

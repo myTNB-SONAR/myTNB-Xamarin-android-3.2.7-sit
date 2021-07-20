@@ -56,9 +56,11 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         Models.NotificationDetails notificationDetails;
         UserNotificationData userNotificationData;
+        internal static myTNB.Mobile.NotificationModel Notification;
         int position;
         UserNotificationDetailPresenter mPresenter;
         AlertDialog removeDialog;
+        public bool pushFromDashboard = false;
 
         public override int ResourceId()
         {
@@ -167,6 +169,12 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     {
                         notificationDetails = DeSerialze<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
                     }
+
+                    /*if (extras.ContainsKey(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM))
+                    {
+                        Notification = DeSerialze<myTNB.Mobile.NotificationModel>(extras.GetString(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM));
+                        pushFromDashboard = true;
+                    }*/
 
                     if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_LIST_ITEM))
                     {

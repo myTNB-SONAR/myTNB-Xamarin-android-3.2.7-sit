@@ -28,7 +28,8 @@
         //Domains
         internal struct Domains
         {
-            internal const string GenerateAccessToken = "https://st11n070y9.execute-api.ap-southeast-1.amazonaws.com";
+            internal const string GenerateAccessToken = "https://ru5ofma1zd.execute-api.ap-southeast-1.amazonaws.com";
+            //internal const string GenerateAccessToken = "https://st11n070y9.execute-api.ap-southeast-1.amazonaws.com";
             internal const string GetBillRendering = "https://q7zjjtvkmf.execute-api.ap-southeast-1.amazonaws.com";
             internal const string GetDBREligibility = "https://pjpd3gxnd8.execute-api.ap-southeast-1.amazonaws.com";
         }

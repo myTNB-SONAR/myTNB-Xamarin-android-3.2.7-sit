@@ -41,6 +41,7 @@ namespace myTNB_Android.Src.Base
         private bool IsFromLogin = false;
         private bool IsEBUser = false;
         private bool IsMaybeLater = false;
+        private bool IsFromApiEB = false;
 
 
         private MyTNBAccountManagement()
@@ -644,6 +645,16 @@ namespace myTNB_Android.Src.Base
         public bool IsMaybeLaterFlag()
         {
             return IsMaybeLater;
+        }
+
+        public void SetFinishApiEB(bool isfromapiEb)
+        {
+            IsFromApiEB = isfromapiEb;
+        }
+
+        public bool IsFromApiEBFinish()
+        {
+            return IsFromApiEB;
         }
     }
 }

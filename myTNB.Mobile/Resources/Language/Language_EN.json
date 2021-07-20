@@ -225,9 +225,9 @@
     "tutorialEnergyBudgetTitle": "Begin your Energy Budget journey",
     "tutorialEnergyBudgetDesc": "Access Energy Budget easily from homepage to start setting up your desired monthly bill amount",
     //DiscoverMore
-    "DiscoverMore": "Discover More",
-    "DiscoverMoreTitle": "The new Energy Budget feature is here!",
-    "DiscoverMoreDate": "07 May 2021",
+    "DiscoverMore":"Discover More",
+    "DiscoverMoreTitle":"The new Energy Budget feature is here!",
+    "DiscoverMoreDate":"07 May 2021",
     "discoverMore": "Discover More",
     "dbrReminderPopupTitle": "Be the first to go paperless with myTNB Bill today!",
     "dbrReminderPopupMessage": "Make an impact today and choose to go without paper for your next bills! With myTNB, you have a better and more environmentally friendly way to receive you paperless bills digitally via App and Portal.",
@@ -441,10 +441,10 @@
     "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
     //EnergyBudget
     "myMonthlyBudget": "My monthly budget is",
-    "whyIsAmountDiff": "Why is my usage amount different from my bill amount?",
-    "whyIsAmountDiffBody": "Your current usage amount is the amount of energy you've used up so far. As this amount is yet to be billed according to your monthly billing cycle, it is not yet subjected to any tax, discount or additional charges by us.",
+    "whyIsAmountDiff": "Will this be my final bill amount?",
+    "whyIsAmountDiffBody": "Its simple! The amount displayed is your usage which is the energy used so far. Your final bill will include tax, discounts or additional charges.",
     "editEnergyButton": "Edit Budget",
-    "setEnergyButton": "Set New Budget",
+    "setEnergyButton": "Set Now",
     "saveEnergyButton": "Save New Budget",
     "toastSaveBudgetuccessfull": "You've successfully set your monthly budget!",
     "myUsageSoFar": "My usage so far",
@@ -598,7 +598,7 @@
     "viewReceipt": "View Receipt",
     //EnergyBudget
     "viewBudget": "View Budget",
-    "viewTips": "View Tips",
+    "viewTips":"View Tips",
     "viewTipsURL": "https://www.mytnb.com.my/energy-efficiency/home-energy-savings-tips/tips-tricks"
   },
   "AddAccount": {
@@ -818,10 +818,7 @@
     "description7": "You can now register a myTNB account or update your existing one with an international phone number.",
     "description8": "You can now track all your application status with zero hassle, anytime and anywhere.",
     "description9": "Customise your myTNB with your preferred display text size for a more comfortable experience. You may opt between normal or large and can change this anytime in your Profile.",
-    "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot.",
-    //EnergyBudget
-    "title11": "Set your energy budget now.",
-    "description11": "You can now manage your energy consumption better by setting your monthly budget in myTNB! We'll let you know when it is reaching its monthly limit."
+    "description10": "You can now set your meter installation appointment by selecting your preferred date and time slot."
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
@@ -2343,10 +2340,10 @@
       }
     ]
   },
-  "EnregyBudgetListing": {
-    "title": "Select Smart Meter Account",
-    "tootltipTitle": "Why are some of my accounts not listed?",
-    "tooltipBody": "As Energy Budget is a Smart Meter feature, only Smart Meter accounts are listed here. Once your normal meter has been converted into Smart Meter, it will be automatically added into the list."
+  "EnregyBudgetListing":{
+    "title":"Select Smart Meter Account",
+    "tootltipTitle":"Why are some of my accounts not listed?",
+    "tooltipBody":"As Energy Budget is a Smart Meter feature, only Smart Meter accounts are listed here. Once your normal meter has been converted into Smart Meter, it will be automatically added into the list."
   },
   "EnergyBudgetPopup": {
     "title": "Take control of your energy usage with the new Energy Budget feature!",

@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Preferences;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.myTNBMenu.Activity;
@@ -67,7 +68,14 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     editor.Apply();
 
                     GetEligibilityResponse data = SecurityManager.Instance.Decrypt<GetEligibilityResponse>(encryptedData);
+                    MyTNBAccountManagement.GetInstance().SetFinishApiEB(true);
+                    _activity.OnCheckUserEligibleEB(true);
                     //Use data or any EligibilitySessionCache functionality
+                }
+                else
+                {
+                    MyTNBAccountManagement.GetInstance().SetFinishApiEB(true);
+                    _activity.OnCheckUserEligibleEB(false);
                 }
             }
             else if (EligibilityManager.Instance.IsEnabled(AWSConstants.Services.GetEligibility)
@@ -77,7 +85,8 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             {
                 GetEligibilityResponse data = SecurityManager.Instance.Decrypt<GetEligibilityResponse>(encryptedData);
                 EligibilitySessionCache.Instance.SetData(data);
-
+                MyTNBAccountManagement.GetInstance().SetFinishApiEB(true);
+                _activity.OnCheckUserEligibleEB(true);
                 //Use data or any EligibilitySessionCache functionality
             }
         }
