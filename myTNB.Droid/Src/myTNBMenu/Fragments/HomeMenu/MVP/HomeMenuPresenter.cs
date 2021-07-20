@@ -2709,7 +2709,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 });
             }
 
-            return newList;
+            return newList = new List<NewAppModel>();
         }
 
         private void OnCleanUpNotifications(List<SummaryDashBoardDetails> summaryDetails)

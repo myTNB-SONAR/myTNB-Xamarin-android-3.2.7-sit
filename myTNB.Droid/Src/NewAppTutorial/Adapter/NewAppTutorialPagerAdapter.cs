@@ -2392,8 +2392,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 int topHeight = 0;
                 if (UserSessions.ManageBillDelivery == DBRTypeEnum.Email)
                 {
+                    float h1 = 120f;
+                    float h2 = 115f;
                     middleHeight = ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight() - ((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight() - ((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight();
-                    topHeight = (((ManageBillDeliveryActivity)this.mContext).GetviewPagerHeight() - ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight()) +((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight() + ((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight() +(int)DPUtils.ConvertDPToPx(105f);
+                    topHeight = (((ManageBillDeliveryActivity)this.mContext).GetviewPagerHeight() - ((ManageBillDeliveryActivity)this.mContext).GetEmailDeliveryHeight()) + ((ManageBillDeliveryActivity)this.mContext).GetdigitalBillLabelHeight() + (TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(h1) : (int)DPUtils.ConvertDPToPx(h2));
                     LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                     topLayoutParam.Height = topHeight;
                     topLayout.RequestLayout();
