@@ -133,7 +133,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                     NewAppTutorialUtils.ForceCloseNewAppTutorial();
                     if (!UserSessions.HasManageSupplyAccountTutorialShown(this.mPref))
                     {
-                        OnShowItemizedBillingTutorialDialog();
+                        OnShowManageSupplyAccountTutorialDialog();
                     }
                 };
                 h.PostDelayed(myAction, 50);
@@ -219,9 +219,9 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 Action myAction = () =>
                 {
                     NewAppTutorialUtils.ForceCloseNewAppTutorial();
-                    if (!UserSessions.HasItemizedBillingDetailTutorialShown(this.mPref))
+                    if (!UserSessions.HasManageSupplyAccountTutorialShown(this.mPref))
                     {
-                        OnShowItemizedBillingTutorialDialog();
+                        OnShowManageSupplyAccountTutorialDialog();
                     }
                 };
                 h.PostDelayed(myAction, 50);
@@ -421,7 +421,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         {
             return PAGE_ID;
         }
-        public void OnShowItemizedBillingTutorialDialog()
+        public void OnShowManageSupplyAccountTutorialDialog()
         {
             Handler h = new Handler();
             Action myAction = () =>
