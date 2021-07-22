@@ -2111,17 +2111,24 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
                     bool flag = fragment.GetHomeTutorialCallState();
-
-                    if (UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2") && flag)
+                    
+                    bool finishApi = MyTNBAccountManagement.GetInstance().IsFromApiEBFinish();
+                    if (finishApi)
                     {
-                        flag = true;
+                        if (MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag())
+                        {
+                            flag = true;
+                        }
+                        else if (SetEligibleEBUser())
+                        {
+                            flag = false;
+                        }
+                        else if (!MyTNBAccountManagement.GetInstance().IsEBUserVerify() && flag)
+                        {
+                            flag = true;
+                        }
                     }
-
-                    if (MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag())
-                    {
-                        flag = true;
-                    }
-                    else if (SetEligibleEBUserExtra())
+                    else
                     {
                         flag = false;
                     }
@@ -2388,7 +2395,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     OnShowBCRMPopup(bcrmEntity);
                 }
-                else if (SetEligibleEBUserExtra())
+                else if (SetEligibleEBUser())
                 {
                     Handler h = new Handler();
                     Action myAction = () =>
@@ -2650,25 +2657,32 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             try
             {
-                RunOnUiThread(() =>
+                if (isEligibleEB)
                 {
-                    try
+                    RunOnUiThread(() =>
                     {
-                        CheckStatusEligibleEB();
-                        MyTNBAccountManagement.GetInstance().SetMaybeLater(false);
-                        this.mPresenter.CheckWhatsNewCache();
-
-                        if (currentFragment.GetType() == typeof(HomeMenuFragment))
+                        try
                         {
-                            HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
-                            fragment.OnStartLoadAccount();
+                            CheckStatusEligibleEB();
+                            MyTNBAccountManagement.GetInstance().SetMaybeLater(false);
+                            this.mPresenter.CheckWhatsNewCache();
+
+                            if (currentFragment.GetType() == typeof(HomeMenuFragment))
+                            {
+                                HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
+                                fragment.OnStartLoadAccount();
+                            }
                         }
-                    }
-                    catch (Exception e)
-                    {
-                        Utility.LoggingNonFatalError(e);
-                    }
-                });
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    });
+                }
+                else if (!isEligibleEB)
+                {
+                    new EligibilityAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, string.Empty);
+                }
             }
             catch (Exception ex)
             {
@@ -2681,10 +2695,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             return UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && !MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
         }
 
-        public bool SetEligibleEBUserExtra()
+        /*public bool SetEligibleEBUserExtra()
         {
             return UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && MyTNBAccountManagement.GetInstance().IsFromLoginPage() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
-        }
+        }*/
 
         public bool CheckWhatNewPopupCount()
         {

@@ -97,19 +97,19 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
                 string[] OneWord = Set.Trim().Split(" ");
                 OneWord[0] = "<font color='#1C79CA'>" + OneWord[0] + "</font>";
                 string combineAgain = string.Join(" ", OneWord);
-                txtSetbudget.TextFormatted = Html.FromHtml(combineAgain, FromHtmlOptions.ModeLegacy);
+                txtSetbudget.TextFormatted = GetFormattedText(combineAgain);
 
                 string MONITOR = Utility.GetLocalizedLabel("EnergyBudgetPopup", "secondStep");
                 string[] OneWordMonitor = MONITOR.Trim().Split(" ");
                 OneWordMonitor[0] = "<font color='#1C79CA'>" + OneWordMonitor[0] + "</font>";
                 string combineAgainMonitor = string.Join(" ", OneWordMonitor);
-                txtMonitor.TextFormatted = Html.FromHtml(combineAgainMonitor, FromHtmlOptions.ModeLegacy);
+                txtMonitor.TextFormatted = GetFormattedText(combineAgainMonitor);
 
                 string SAVINGS = Utility.GetLocalizedLabel("EnergyBudgetPopup", "thirdStep");
                 string[] OneWordSavings = SAVINGS.Trim().Split(" ");
                 OneWordSavings[0] = "<font color='#1C79CA'>" + OneWordSavings[0] + "</font>";
                 string combineAgainSavings = string.Join(" ", OneWordSavings);
-                txtSavingbudget.TextFormatted = Html.FromHtml(combineAgainSavings, FromHtmlOptions.ModeLegacy);
+                txtSavingbudget.TextFormatted = GetFormattedText(combineAgainSavings);
 
                 if (isDiscoverMore)
                 {
@@ -242,6 +242,18 @@ namespace myTNB_Android.Src.EBPopupScreen.Activity
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private ISpanned GetFormattedText(string stringValue)
+        {
+            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                return Html.FromHtml(stringValue, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                return Html.FromHtml(stringValue);
             }
         }
     }

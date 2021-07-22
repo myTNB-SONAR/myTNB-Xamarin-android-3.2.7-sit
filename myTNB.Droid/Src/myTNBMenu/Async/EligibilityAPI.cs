@@ -14,6 +14,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
     public class EligibilityAPI : AsyncTask
     {
         private DashboardHomeActivity _activity;
+        private bool flag = false;
 
         public EligibilityAPI(DashboardHomeActivity activity)
         {
@@ -74,8 +75,17 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                 }
                 else
                 {
-                    MyTNBAccountManagement.GetInstance().SetFinishApiEB(true);
-                    _activity.OnCheckUserEligibleEB(false);
+                    if (!MyTNBAccountManagement.GetInstance().IsRepeatCallApi())
+                    {
+                        MyTNBAccountManagement.GetInstance().RepeatCall(true);
+                        MyTNBAccountManagement.GetInstance().SetFinishApiEB(false);
+                        _activity.OnCheckUserEligibleEB(false);
+                    }
+                    else
+                    {
+                        MyTNBAccountManagement.GetInstance().SetFinishApiEB(true);
+                        _activity.OnCheckUserEligibleEB(true);
+                    }
                 }
             }
             else if (EligibilityManager.Instance.IsEnabled(AWSConstants.Services.GetEligibility)

@@ -55,7 +55,7 @@ namespace myTNB_Android.Src.Firebase.Services
                 message = remoteMessage.GetNotification().Body;
             }
 
-            //UserSessions.SetNotification(remoteData["Type"], remoteData["EventId"], remoteData["RequestTransId"]);
+            UserSessions.SetNotification(remoteData["Type"], remoteData["EventId"], remoteData["RequestTransId"]);
             SendNotification(title, message);
             if (remoteData.ContainsKey("Badge") && int.TryParse(remoteData["Badge"], out int count))
             {
@@ -76,23 +76,23 @@ namespace myTNB_Android.Src.Firebase.Services
 
         private void SendNotification(string title, string message)
         {
-            /*if (UserSessions.Notification !=  null)
+            if (UserSessions.Notification != null)
             {
                 Intent intent = new Intent(this, typeof(UserNotificationDetailActivity));
                 intent.PutExtra(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(UserSessions.Notification));
                 intent.AddFlags(ActivityFlags.ClearTop);
-                pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);             
+                pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
             }
             else
-            {*/
+            {
                 flag = true;
                 Intent intent = new Intent(this, typeof(NotificationActivity));
                 intent.PutExtra(Constants.HAS_NOTIFICATION, true);
                 intent.AddFlags(ActivityFlags.ClearTop);
                 pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
-            //}
+            }
 
-            if (flag)
+            if (UserSessions.Notification != null || flag)
             {
                 Android.Net.Uri defaultSoundUri = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
                 NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)

@@ -26,6 +26,7 @@ using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using Refit;
 using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
 
@@ -259,7 +260,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 }
                 notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_NICKNAME_PATTERN, accountName);
 
-                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET)
+                if (notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_80 || notificationDetails.BCRMNotificationTypeId == Constants.BCRM_NOTIFICATION_ENERGY_BUDGET_100)
                 {
                     notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_PROFILENAME_PATTERN, UserEntity.GetActive().DisplayName);
                     notificationDetailMessage = Regex.Replace(notificationDetailMessage, Constants.ACCOUNT_ACCNO_PATTERN, "\"" + accountName + "\"");
@@ -675,6 +676,58 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         public NotificationDetailModel GetNotificationDetailModel()
         {
             return notificationDetailModel;
+        }
+
+        public async void OnShowNotificationDetails(string NotificationTypeId, string BCRMNotificationTypeId, string NotificationRequestId)
+        {
+            try
+            {
+                this.mView.ShowLoadingScreen();
+                UserNotificationDetailsRequestNew request = new UserNotificationDetailsRequestNew(NotificationTypeId, BCRMNotificationTypeId, NotificationRequestId);
+                string dt = JsonConvert.SerializeObject(request);
+                UserNotificationDetailsResponse response = await ServiceApiImpl.Instance.GetNotificationDetailsByRequestId(request);
+                if (response.IsSuccessResponse())
+                {
+                    Utility.SetIsPayDisableNotFromAppLaunch(!response.Response.IsPayEnabled);
+                    UserNotificationEntity.UpdateIsRead(response.GetData().UserNotificationDetail.Id, true);
+                    UserSessions.ClearNotification();
+                    EvaluateDetail(response.GetData().UserNotificationDetail);
+                    this.mView.RenderUI();
+                }
+                else
+                {
+                    if (response.GetData() == null)
+                    {
+                        this.mView.ReturnToDashboard();
+                    }
+                    //this.mView.ShowRetryOptionsCancelledException(null);
+                }
+
+                ////MOCK RESPONSE
+                //this.mView.ShowDetails(GetMockDetails(userNotification.BCRMNotificationTypeId), userNotification, position);
+                this.mView.HideLoadingScreen();
+            }
+            catch (System.OperationCanceledException e)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                this.mView.HideLoadingScreen();
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

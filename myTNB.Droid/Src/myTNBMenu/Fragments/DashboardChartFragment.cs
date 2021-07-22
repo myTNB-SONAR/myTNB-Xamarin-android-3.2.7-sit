@@ -5199,7 +5199,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 saveBtn = false;
                 editBtn = true;
                 setEnergyBudgetlayout = true;
-                isChangeVirtualHeightNeed = true;
                 energyBudgetsmaccountstatus.Visibility = ViewStates.Visible;
                 energyBudgetRMinput.Enabled = true;
                 energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(8) });
@@ -5215,6 +5214,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 btnSetNewBudget.Visibility = ViewStates.Visible;
                 smStatisticTooltip.Visibility = ViewStates.Gone;
                 OuterlayoutHorizontolBar.Visibility = ViewStates.Gone;
+                isChangeVirtualHeightNeed = true;
                 SetVirtualHeightParams(6f);
                 try
                 {
@@ -9310,6 +9310,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 btnSetNewBudget.Visibility = ViewStates.Gone;
                                 smStatisticTooltip.Visibility = ViewStates.Visible;
                                 energyBudgetRMinput.ClearFocus();
+                                energyBudgetRMinput.Enabled = false;
                                 energyBudgetRMinput.SetFilters(new IInputFilter[] { new InputFilterLengthFilter(13) });
                                 energyBudgetRMinput.Text = smDecimalFormat.Format(double.Parse(selectedCusBillAcc.BudgetAmount, currCult));
                                 energyBudgetAccountStatusText.Text = Utility.GetLocalizedLabel("Usage", "myMonthlyBudget");

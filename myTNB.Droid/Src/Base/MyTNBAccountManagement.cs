@@ -42,6 +42,7 @@ namespace myTNB_Android.Src.Base
         private bool IsEBUser = false;
         private bool IsMaybeLater = false;
         private bool IsFromApiEB = false;
+        private bool IsRepeatCall = false;
 
 
         private MyTNBAccountManagement()
@@ -655,6 +656,16 @@ namespace myTNB_Android.Src.Base
         public bool IsFromApiEBFinish()
         {
             return IsFromApiEB;
+        }
+
+        public void RepeatCall(bool isrepeatcall)
+        {
+            IsRepeatCall = isrepeatcall;
+        }
+
+        public bool IsRepeatCallApi()
+        {
+            return IsRepeatCall;
         }
     }
 }

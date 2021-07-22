@@ -118,6 +118,11 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             base.OnBackPressed();
         }
 
+        public void ReturnToDashboard()
+        {
+            Finish();
+        }
+
         public void OnClickSpan(string textMessage)
         {
             if (textMessage != null && textMessage.Contains("http"))
@@ -170,11 +175,11 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                         notificationDetails = DeSerialze<NotificationDetails.Models.NotificationDetails>(extras.GetString(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM));
                     }
 
-                    /*if (extras.ContainsKey(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM))
+                    if (extras.ContainsKey(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM))
                     {
                         Notification = DeSerialze<myTNB.Mobile.NotificationModel>(extras.GetString(Constants.SELECTED_FROMDASHBOARD_NOTIFICATION_DETAIL_ITEM));
                         pushFromDashboard = true;
-                    }*/
+                    }
 
                     if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_LIST_ITEM))
                     {
@@ -195,8 +200,15 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     notificationMainLayout.SetBackgroundColor(Color.ParseColor("#ffffff"));
                 }
 
-                mPresenter.EvaluateDetail(notificationDetails);
-                RenderUI();
+                if (pushFromDashboard)
+                {
+                    mPresenter.OnShowNotificationDetails(Notification.Type, Notification.EventId, Notification.RequestTransId);
+                }
+                else
+                {
+                    mPresenter.EvaluateDetail(notificationDetails);
+                    RenderUI();
+                }
             }
             catch (Exception e)
             {
@@ -204,7 +216,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
-        private void RenderUI()
+        public void RenderUI()
         {
             try
             {
