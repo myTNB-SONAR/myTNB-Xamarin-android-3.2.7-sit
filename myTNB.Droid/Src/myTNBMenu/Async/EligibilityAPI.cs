@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Android.Content;
 using Android.OS;
 using Android.Preferences;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
+using myTNB_Android.Src.AppLaunch.MVP;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.DeviceCache;
@@ -14,7 +16,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
     public class EligibilityAPI : AsyncTask
     {
         private DashboardHomeActivity _activity;
-        private bool flag = false;
+        private Context mView;
 
         public EligibilityAPI(DashboardHomeActivity activity)
         {
@@ -69,23 +71,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     editor.Apply();
 
                     GetEligibilityResponse data = SecurityManager.Instance.Decrypt<GetEligibilityResponse>(encryptedData);
-                    MyTNBAccountManagement.GetInstance().SetFinishApiEB(true);
-                    _activity.OnCheckUserEligibleEB(true);
                     //Use data or any EligibilitySessionCache functionality
-                }
-                else
-                {
-                    if (!MyTNBAccountManagement.GetInstance().IsRepeatCallApi())
-                    {
-                        MyTNBAccountManagement.GetInstance().RepeatCall(true);
-                        MyTNBAccountManagement.GetInstance().SetFinishApiEB(false);
-                        _activity.OnCheckUserEligibleEB(false);
-                    }
-                    else
-                    {
-                        MyTNBAccountManagement.GetInstance().SetFinishApiEB(true);
-                        _activity.OnCheckUserEligibleEB(true);
-                    }
                 }
             }
             else if (EligibilityManager.Instance.IsEnabled(AWSConstants.Services.GetEligibility)
@@ -95,10 +81,97 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             {
                 GetEligibilityResponse data = SecurityManager.Instance.Decrypt<GetEligibilityResponse>(encryptedData);
                 EligibilitySessionCache.Instance.SetData(data);
-                MyTNBAccountManagement.GetInstance().SetFinishApiEB(true);
-                _activity.OnCheckUserEligibleEB(true);
                 //Use data or any EligibilitySessionCache functionality
             }
+        }
+    }
+
+    public class CustomEligibility
+    {
+
+        private static readonly Lazy<CustomEligibility> lazy =
+            new Lazy<CustomEligibility>(() => new CustomEligibility());
+        public static CustomEligibility Instance
+        {
+            get
+            {
+                return lazy.Value;
+            }
+        }
+
+        public CustomEligibility() { }
+
+        public async Task<bool> EvaluateEligibility(Context mView)
+        {
+            try
+            {
+#pragma warning disable CS0618 // Type or member is obsolete
+                ISharedPreferences preferences = PreferenceManager.GetDefaultSharedPreferences(mView);
+#pragma warning restore CS0618 // Type or member is obsolete
+                string eligibilityTimeStamp = preferences.GetString(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp, string.Empty);
+
+                if (EligibilityManager.Instance.ShouldCallApi(AWSConstants.Services.GetEligibility
+                   , eligibilityTimeStamp))
+                {
+                    if (!AccessTokenCache.Instance.HasTokenSaved(mView))
+                    {
+                        string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+
+                        if (string.IsNullOrEmpty(accessToken))      //second try
+                        {
+                            accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty); //second try
+                        }
+
+                        if (string.IsNullOrEmpty(accessToken))     //third try
+                        {
+                            accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty); //second try
+                        }
+                        AccessTokenCache.Instance.SaveAccessToken(mView, accessToken);
+
+                    }
+
+                    GetEligibilityResponse response = await EligibilityManager.Instance.GetEligibility(UserEntity.GetActive().UserID ?? string.Empty
+                        , AccessTokenCache.Instance.GetAccessToken(mView));
+
+                    //Nullity Check
+                    if (response != null
+                       && response.StatusDetail != null
+                       && response.StatusDetail.IsSuccess)
+                    {
+                        EligibilitySessionCache.Instance.SetData(response);
+                        DateTime now = DateTime.Now;
+                        string encryptedData = SecurityManager.Instance.Encrypt(response);
+                        ISharedPreferencesEditor editor = preferences.Edit();
+                        editor.PutString(MobileConstants.SharePreferenceKey.GetEligibilityData, encryptedData);
+                        editor.PutString(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp, now.ToString());
+                        editor.Apply();
+
+                        GetEligibilityResponse data = SecurityManager.Instance.Decrypt<GetEligibilityResponse>(encryptedData);
+                        MyTNBAccountManagement.GetInstance().SetFinishApiEB(true);
+                        //Use data or any EligibilitySessionCache functionality
+                    }
+                    else
+                    {
+                        MyTNBAccountManagement.GetInstance().SetFinishApiEB(true);
+                    }
+                }
+                else if (EligibilityManager.Instance.IsEnabled(AWSConstants.Services.GetEligibility)
+                    && preferences.GetString(MobileConstants.SharePreferenceKey.GetEligibilityData, string.Empty) is string encryptedData
+                    && !string.IsNullOrEmpty(encryptedData)
+                    && !string.IsNullOrWhiteSpace(encryptedData))
+                {
+                    GetEligibilityResponse data = SecurityManager.Instance.Decrypt<GetEligibilityResponse>(encryptedData);
+                    EligibilitySessionCache.Instance.SetData(data);
+                    MyTNBAccountManagement.GetInstance().SetFinishApiEB(true);
+                    //Use data or any EligibilitySessionCache functionality
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] Eligibility API Error: " + e.Message);
+            }
+            return true;
         }
     }
 }

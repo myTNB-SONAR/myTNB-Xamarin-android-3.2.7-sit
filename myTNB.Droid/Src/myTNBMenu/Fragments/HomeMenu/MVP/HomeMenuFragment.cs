@@ -424,10 +424,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     this.SetIsClicked(false);
                     ShowAccountDetails(selectedAccount.accountNumber);
                 }
-                else
-                {
-                    WhatNewCheckAgain();
-                }
             }
             else if (requestCode == SELECT_SM_POPUP_REQUEST_CODE)
             {
@@ -601,6 +597,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
                 this.presenter.SetDynaUserTAG();  //call dyna set username
                 OnStartLoadAccount();
+                //WhatNewCheckAgain();
             }
             catch (System.Exception e)
             {
@@ -821,10 +818,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             myServiceShimmerView.Visibility = ViewStates.Visible;
             myServiceView.Visibility = ViewStates.Gone;
 
-            if (MyTNBAccountManagement.GetInstance().IsFromApiEBFinish())
-            {
-                this.presenter.InitiateMyService();
-            }
+            this.presenter.InitiateMyService();
         }
 
         public void SetMyServiceResult(List<MyService> list)
@@ -2256,10 +2250,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     this.presenter.RestoreCurrentAccountState();
                 }
 
-                if (MyTNBAccountManagement.GetInstance().IsFromApiEBFinish())
-                {
-                    this.presenter.InitiateService();
-                }
+                this.presenter.InitiateService();
 
                 this.presenter.ReadNewFAQFromCache();
             }
@@ -3421,12 +3412,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void WhatNewCheckAgain()
         {
-            if (MyTNBAccountManagement.GetInstance().IsFromApiEBFinish())
+            if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && CheckWhatNewPopupAlready())
             {
-                if (UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && CheckWhatNewPopupAlready())
-                {
-                    ((DashboardHomeActivity)Activity).OnCheckWhatsNewTab();
-                }
+                ((DashboardHomeActivity)Activity).OnCheckWhatsNewTab();
             }
         }
     }

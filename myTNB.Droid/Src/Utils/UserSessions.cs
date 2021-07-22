@@ -759,6 +759,7 @@ namespace myTNB_Android.Src.Utils
             ISharedPreferencesEditor editor = mSharedPref.Edit();
             editor.PutString(MobileConstants.SharePreferenceKey.GetEligibilityData, string.Empty);
             editor.PutString(MobileConstants.SharePreferenceKey.GetEligibilityTimeStamp, string.Empty);
+            editor.PutString(MobileConstants.SharePreferenceKey.AccessToken, string.Empty);
             editor.Apply();
         }
     }

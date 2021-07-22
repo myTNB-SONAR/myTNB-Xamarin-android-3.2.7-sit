@@ -40,6 +40,8 @@ using static myTNB_Android.Src.MyTNBService.Response.UserNotificationDetailsResp
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
+using myTNB_Android.Src.myTNBMenu.Async;
+using myTNB_Android.Src.DeviceCache;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -284,6 +286,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             , TextViewUtils.FontInfo
                                             , LanguageUtil.GetAppLanguage() == "MS" ? LanguageManager.Language.MS : LanguageManager.Language.EN);
                                         AppInfoManager.Instance.SetPlatformUserInfo(new MyTNBService.Request.BaseRequest().usrInf);
+
+                                        bool EbUser = await CustomEligibility.Instance.EvaluateEligibility((Context)this.mView);
 
                                         if (UserSessions.GetNotificationType(mSharedPref) != null
                                             && "APPLICATIONSTATUS".Equals(UserSessions.GetNotificationType(mSharedPref).ToUpper())

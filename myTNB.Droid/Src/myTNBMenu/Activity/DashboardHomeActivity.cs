@@ -246,17 +246,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             mPresenter = new DashboardHomePresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
             TextViewUtils.SetMuseoSans500Typeface(txtAccountName);
 
-            try
-            {
-                MyTNBAccountManagement.GetInstance().SetFinishApiEB(false);
-                new EligibilityAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, string.Empty);
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine("[DEBUG] EligibilityAPI Error: " + e.Message);
-            }
-
-
             bool IsRewardsDisabled = MyTNBAccountManagement.GetInstance().IsRewardsDisabled();
             if (IsRewardsDisabled)
             {
@@ -265,7 +254,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     bottomNavigationView.Menu.RemoveItem(Resource.Id.menu_reward);
                 }
             }
-
+            CheckStatusEligibleEB();
             IsRootTutorialShown = false;
             SetBottomNavigationLabels();
             bottomNavigationView.SetShiftMode(false, false);
@@ -346,6 +335,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 System.Diagnostics.Debug.WriteLine("[DEBUG] Sync SR Error: " + e.Message);
             }
+
+            /*try
+            {
+                new EligibilityAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, string.Empty);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] EligibilityAPI Error: " + e.Message);
+            }*/
         }
 
         private async void RouteToApplicationLanding()
@@ -1858,11 +1856,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             try
                             {
                                 HideProgressDialog();
-                                if (MyTNBAccountManagement.GetInstance().IsFromApiEBFinish())
-                                {
-                                    MyTNBAccountManagement.GetInstance().SetMaybeLater(false);
-                                    this.mPresenter.CheckWhatsNewCache();
-                                }
+                                MyTNBAccountManagement.GetInstance().SetMaybeLater(false);
+                                this.mPresenter.CheckWhatsNewCache();
                                 if (urlSchemaCalled && !string.IsNullOrEmpty(urlSchemaData) && urlSchemaData.Contains("whatsnew"))
                                 {
                                     urlSchemaCalled = false;
@@ -1896,11 +1891,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         {
                             try
                             {
-                                if (MyTNBAccountManagement.GetInstance().IsFromApiEBFinish())
-                                {
-                                    MyTNBAccountManagement.GetInstance().SetMaybeLater(false);
-                                    this.mPresenter.CheckWhatsNewCache();
-                                }
+                                this.mPresenter.CheckWhatsNewCache();
                             }
                             catch (Exception e)
                             {
@@ -2111,26 +2102,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
                     bool flag = fragment.GetHomeTutorialCallState();
-                    
-                    bool finishApi = MyTNBAccountManagement.GetInstance().IsFromApiEBFinish();
-                    if (finishApi)
+
+                    if (MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag())
                     {
-                        if (MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag())
-                        {
-                            flag = true;
-                        }
-                        else if (SetEligibleEBUser())
-                        {
-                            flag = false;
-                        }
-                        else if (!MyTNBAccountManagement.GetInstance().IsEBUserVerify() && flag)
-                        {
-                            flag = true;
-                        }
+                        flag = true;
                     }
-                    else
+                    else if (SetEligibleEBUser())
                     {
                         flag = false;
+                    }
+                    else if (!MyTNBAccountManagement.GetInstance().IsEBUserVerify() && flag)
+                    {
+                        flag = true;
                     }
 
                     if (flag)
@@ -2653,46 +2636,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             alreadyStarted = flag;
         }
 
-        public void OnCheckUserEligibleEB(bool isEligibleEB)
-        {
-            try
-            {
-                if (isEligibleEB)
-                {
-                    RunOnUiThread(() =>
-                    {
-                        try
-                        {
-                            CheckStatusEligibleEB();
-                            MyTNBAccountManagement.GetInstance().SetMaybeLater(false);
-                            this.mPresenter.CheckWhatsNewCache();
-
-                            if (currentFragment.GetType() == typeof(HomeMenuFragment))
-                            {
-                                HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
-                                fragment.OnStartLoadAccount();
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
-                    });
-                }
-                else if (!isEligibleEB)
-                {
-                    new EligibilityAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, string.Empty);
-                }
-            }
-            catch (Exception ex)
-            {
-                Utility.LoggingNonFatalError(ex);
-            }
-        }
-
         public bool SetEligibleEBUser()
         {
-            return UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && !MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2");
+            return UserSessions.GetEnergyBudgetList().Count > 0 && MyTNBAccountManagement.GetInstance().IsEBUserVerify() && !MyTNBAccountManagement.GetInstance().IsMaybeLaterFlag() && !UserSessions.GetSavePopUpCountEB(PreferenceManager.GetDefaultSharedPreferences(this)).Equals("2") && this.mPresenter.GetIsWhatsNewDialogShowNeed();
         }
 
         /*public bool SetEligibleEBUserExtra()
@@ -2747,8 +2693,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 {
                     MyTNBAccountManagement.GetInstance().SetFromLoginPage(false);
                     isWhatNewDialogOnHold = false;
-                    UserSessions.DoHomeTutorialShown(PreferenceManager.GetDefaultSharedPreferences(this));
-
+                    mPresenter.DisableWalkthrough();
                     HomeMenuFragment fragment = (HomeMenuFragment)SupportFragmentManager.FindFragmentById(Resource.Id.content_layout);
                     fragment.EBPopupActivity();
                 }

@@ -1655,6 +1655,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             wtManager.UpdateReadItem(itemID, flag, formattedDate);
         }
 
+        public void DisableWalkthrough()
+        {
+            UserSessions.DoHomeTutorialShown(this.mSharedPref);
+        }
+
     }
 
 }
