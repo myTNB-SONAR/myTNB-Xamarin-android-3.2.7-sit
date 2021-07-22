@@ -170,6 +170,12 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             UserEntity user = UserEntity.GetActive();
             if (extras != null)
             {
+                if (extras.ContainsKey(SELECTED_ACCOUNT_KEY))
+                {
+                    mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
+                    txt_ca_name.Text = mSelectedAccountData.AccountNickName;
+                    deliverigAddress.Text = mSelectedAccountData.AddStreet;
+                }
                 if (extras.ContainsKey("EBill"))
                 {
                     FrameLayout.LayoutParams layout = email_layout.LayoutParameters as FrameLayout.LayoutParams;
@@ -268,10 +274,12 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 }
                 else if (extras.ContainsKey("Paper"))
                 {
-                    FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
-                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f) : (int)DPUtils.ConvertDPToPx(455f);
+                    
                     applicationIndicator.Visibility = btnStartDigitalBillLayout.Visibility = applicationIndicator.Visibility = indicatorContainer.Visibility = viewPager.Visibility = deliverigAddress.Visibility  = ViewStates.Visible;
                     email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = email_container.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
+                    UserSessions.ManageBillDelivery = DBRTypeEnum.Paper;
+                    FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
+                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 2)) : (int)DPUtils.ConvertDPToPx(455f);
                     ScrollPage();
                 }
                 else if (extras.ContainsKey("WhatsApp"))
@@ -286,31 +294,15 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                 if (extras.ContainsKey(Constants.APP_NAVIGATION_KEY))
                 {
                     currentAppNavigation = extras.GetString(Constants.APP_NAVIGATION_KEY);
-
                     ManageBillDeliveryAdapter.SetData(this.presenter.GenerateManageBillDeliveryList());
-
                     viewPager.Adapter = ManageBillDeliveryAdapter;
-
                     UpdateAccountListIndicator();
-
-                }
-                if (extras.ContainsKey(SELECTED_ACCOUNT_KEY))
-                {
-                    mSelectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString(SELECTED_ACCOUNT_KEY));
-                    txt_ca_name.Text = mSelectedAccountData.AccountNickName;
-                    deliverigAddress.Text = mSelectedAccountData.AddStreet;
                 }
             }
-            
-          
-
             btnStartDigitalBill.Click += delegate
             {
-                   
-                    InitiateDBRRequest(mSelectedAccountData);
+                InitiateDBRRequest(mSelectedAccountData);
             };
-            
-
         }
         public void InitiateDBRRequest(AccountData mSelectedAccountData)
         {
@@ -574,6 +566,12 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     selectedAccountNickName = selectedEligibleAccount.accountName;
                     txt_ca_name.Text = selectedAccountNickName;
                     deliverigAddress.Text = selectedEligibleAccount.accountAddress;
+                    if (UserSessions.ManageBillDelivery == DBRTypeEnum.Paper)
+                    {
+                        FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
+                        layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 2)) : (int)DPUtils.ConvertDPToPx(455f);
+                       
+                    }
                     CustomerBillingAccount.RemoveSelected();
                     CustomerBillingAccount.SetSelected(selectedEligibleAccount.accountNumber);
                 }
@@ -584,6 +582,12 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
         {
             txt_ca_name.Text = selectedAccount.AccDesc;
             deliverigAddress.Text = selectedAccount.AccountStAddress;
+            if (UserSessions.ManageBillDelivery == DBRTypeEnum.Paper)
+            {
+                FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
+                layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 2)) : (int)DPUtils.ConvertDPToPx(455f);
+                
+            }
         }
 
         public void ShowRefreshView(bool isRefresh, string contentTxt, string btnTxt)
