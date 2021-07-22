@@ -240,13 +240,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     dialogWhereMyAccountNo.Show();
                 };
 
-                txtAccountType.TextSize = TextViewUtils.GetFontSize(18);
-                txtTitlePremise.TextSize = TextViewUtils.GetFontSize(18);
-                txtTitle.TextSize = TextViewUtils.GetFontSize(18);
-                txtTitleROC.TextSize = TextViewUtils.GetFontSize(18);
-                btnWhereIsMyAccountNo.TextSize = TextViewUtils.GetFontSize(18);
-                accountType.TextSize = TextViewUtils.GetFontSize(14);
-                txtSkipAcc.TextSize = TextViewUtils.GetFontSize(14);
+                TextViewUtils.SetTextSize18(txtAccountType, txtTitlePremise, txtTitle, txtTitleROC, btnWhereIsMyAccountNo);
+                TextViewUtils.SetTextSize14(accountType, txtSkipAcc);
 
                 AccountType Individual = new AccountType();
                 Individual.Id = "2";

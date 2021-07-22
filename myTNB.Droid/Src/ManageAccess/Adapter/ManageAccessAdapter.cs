@@ -91,8 +91,8 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
                 {
                     viewHolder.txtAccountName.Text = account.email;
                     viewHolder.txtAccountNum.Visibility = ViewStates.Visible;
-                    viewHolder.txtAccountNum.Text = Utility.GetLocalizedLabel("UserAccess", "pendingRegistration"); ;
-                    viewHolder.txtAccountNum.TextSize = TextViewUtils.GetFontSize(14);
+                    viewHolder.txtAccountNum.Text = Utility.GetLocalizedLabel("UserAccess", "pendingRegistration");
+                    //viewHolder.txtAccountNum.TextSize = TextViewUtils.GetFontSize(14);
                 }
                 else
                 {
@@ -148,8 +148,8 @@ namespace myTNB_Android.Src.ManageAccess.Adapter
                 TextViewUtils.SetMuseoSans300Typeface( txtAccountNum);
                 TextViewUtils.SetMuseoSans500Typeface(txtAccountName);
 
-                txtAccountNum.TextSize = TextViewUtils.GetFontSize(12);
-                txtAccountName.TextSize = TextViewUtils.GetFontSize(14);
+                TextViewUtils.SetTextSize14(txtAccountNum);
+                TextViewUtils.SetTextSize12(txtAccountName);
             }
         }
     }

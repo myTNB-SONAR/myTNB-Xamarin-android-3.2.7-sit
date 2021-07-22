@@ -189,13 +189,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     dialogWhereMyAccountNo.Show();
                 };
 
-                edtAccountLabel.TextSize = TextViewUtils.GetFontSize(18);
-                edtAccountNo.TextSize = TextViewUtils.GetFontSize(18);
-                edtOwnerMotherName.TextSize = TextViewUtils.GetFontSize(18);
-                btnWhereIsMyAccountNo.TextSize = TextViewUtils.GetFontSize(18);
-                txtNonOwnerTitle.TextSize = TextViewUtils.GetFontSize(18);
-                addAccount.TextSize = TextViewUtils.GetFontSize(16);
-
+                TextViewUtils.SetTextSize18(edtAccountLabel, edtAccountNo, edtOwnerMotherName, btnWhereIsMyAccountNo, txtNonOwnerTitle);
+                TextViewUtils.SetTextSize16(addAccount);
 
                 AccountType Individual = new AccountType();
                 Individual.Id = "1";
