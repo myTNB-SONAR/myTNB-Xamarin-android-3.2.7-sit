@@ -225,9 +225,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     {
                         this.mView.HideNotificationsProgressDialog();
                     }
-                    AppInfoManager.Instance.SetUserInfos("0"
+                    AppInfoManager.Instance.SetUserInfo("0"
                         , string.Empty
                         , string.Empty
+                        , UserSessions.GetDeviceId()
+                        , DeviceIdUtils.GetAppVersionName()
+                        , TextViewUtils.FontInfo
                         , LanguageUtil.GetAppLanguage() == "MS"
                             ? LanguageManager.Language.MS
                             : LanguageManager.Language.EN);

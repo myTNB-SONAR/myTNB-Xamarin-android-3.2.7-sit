@@ -344,6 +344,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             {
                 ShowMarketingTooltip();
             }
+
+            try
+            {
+                new EligibilityAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, string.Empty);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine("[DEBUG] EligibilityAPI Error: " + e.Message);
+            }
         }
 
         private async void RouteToApplicationLanding()
