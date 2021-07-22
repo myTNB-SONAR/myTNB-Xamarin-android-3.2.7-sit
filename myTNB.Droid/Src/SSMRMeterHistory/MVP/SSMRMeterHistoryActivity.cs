@@ -37,11 +37,11 @@ using System.Runtime;
 
 namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 {
-	[Activity(Label = "@string/ssmr_meter_history_activity_title"
-		  , ScreenOrientation = ScreenOrientation.Portrait
-		  , Theme = "@style/Theme.SSMRMeterHistoryStyle")]
-	public class SSMRMeterHistoryActivity : BaseActivityCustom, SSMRMeterHistoryContract.IView
-	{
+    [Activity(Label = "@string/ssmr_meter_history_activity_title"
+          , ScreenOrientation = ScreenOrientation.Portrait
+          , Theme = "@style/Theme.SSMRMeterHistoryStyle")]
+    public class SSMRMeterHistoryActivity : BaseActivityCustom, SSMRMeterHistoryContract.IView
+    {
         private string SMR_ACTION_KEY;
         private SMRActivityInfoResponse smrResponse;
         private AccountData selectedAccount;
@@ -56,7 +56,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         private string selectedAccountNumber;
         private List<SMRAccount> smrAccountList = new List<SMRAccount>();
         const string PAGE_ID = "SSMRReadingHistory";
-				ISharedPreferences mPref;
+        ISharedPreferences mPref;
         private bool isTutorialShown = false;
         private bool isSMR = false;
         private bool noMeterAccess = false;
@@ -149,48 +149,36 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
         [BindView(Resource.Id.selectAccountContainer)]
         LinearLayout selectAccountContainer;
-        
+
 
         public override int ResourceId()
-		{
-			return Resource.Layout.SSMRMeterHistoryLayout;
-		}
+        {
+            return Resource.Layout.SSMRMeterHistoryLayout;
+        }
 
-		public override bool ShowCustomToolbarTitle()
-		{
-			return true;
-		}
+        public override bool ShowCustomToolbarTitle()
+        {
+            return true;
+        }
 
-		protected override void OnCreate(Bundle savedInstanceState)
-		{
-			base.OnCreate(savedInstanceState);
-			try
-			{
+        protected override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
+            try
+            {
                 isSMR = false;
                 SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
 
-                TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, SMRMessageTitle, btnSubmitMeter, btnEnableSubmitMeter, btnDisableSubmitMeter, btnRefresh);
+                TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, SMRMessageTitle, btnSubmitMeter
+                    , btnEnableSubmitMeter, btnDisableSubmitMeter, btnRefresh);
                 TextViewUtils.SetMuseoSans300Typeface(SMRMainContent, SMRAccountTitle, SMRAccountSelected, EmptySMRHistoryMessage, refreshMsg);
-
                 TextViewUtils.SetMuseoSans500Typeface(txtMeterAccessTitle, btnNo, btnYes, meterLookLabel);
-
-                SMRMessageTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                SMRAccountTitle.TextSize = TextViewUtils.GetFontSize(9f);
-                SMRAccountSelected.TextSize = TextViewUtils.GetFontSize(16f);
-                SMRMainTitle.TextSize = TextViewUtils.GetFontSize(14f);
-                SMRMainContent.TextSize = TextViewUtils.GetFontSize(14f);
-                txtMeterAccessTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                meterLookLabel.TextSize = TextViewUtils.GetFontSize(12f);
-                SMRListHeader.TextSize = TextViewUtils.GetFontSize(16f);
-                EmptySMRHistoryMessage.TextSize = TextViewUtils.GetFontSize(14f);
-                refreshMsg.TextSize = TextViewUtils.GetFontSize(16f);
-                btnEnableSubmitMeter.TextSize = TextViewUtils.GetFontSize(16f);
-                btnRefresh.TextSize = TextViewUtils.GetFontSize(16f);
-                btnNo.TextSize = TextViewUtils.GetFontSize(16f);
-                btnYes.TextSize = TextViewUtils.GetFontSize(16f);
-                btnSubmitMeter.TextSize = TextViewUtils.GetFontSize(16f);
-                btnDisableSubmitMeter.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize9(SMRAccountTitle);
+                TextViewUtils.SetTextSize12(meterLookLabel);
+                TextViewUtils.SetTextSize14(SMRMainTitle, SMRMainContent, EmptySMRHistoryMessage);
+                TextViewUtils.SetTextSize16(SMRMessageTitle, SMRAccountSelected, txtMeterAccessTitle, SMRListHeader
+                    , refreshMsg, btnEnableSubmitMeter, btnRefresh, btnNo, btnYes, btnSubmitMeter, btnDisableSubmitMeter);
 
                 SMRMessageTitle.Text = GetLabelByLanguage("subTitle");
                 SMRAccountTitle.Text = GetLabelCommonByLanguage("account").ToUpper();
@@ -294,7 +282,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     else
                     {
                         IsFromUsage = false;
-                        SMRAccount smrSelectedAccount = smrAccountList.Find(account => {
+                        SMRAccount smrSelectedAccount = smrAccountList.Find(account =>
+                        {
                             return account.isTaggedSMR;
                         });
 
@@ -334,10 +323,10 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 }
             }
             catch (Exception e)
-			{
-				Utility.LoggingNonFatalError(e);
-			}
-		}
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         private void ShowNonSMRVisible(bool isNonSMRAccount, bool hasNoSMREligibleAccount)
         {
@@ -421,7 +410,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         {
             ShowRefreshScreen(false);
             SMRAccountSelected.Text = selectedAccountNickName;
-            ShowNonSMRVisible(true,true);
+            ShowNonSMRVisible(true, true);
 
         }
 
@@ -435,7 +424,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         {
             ShowRefreshScreen(false);
             SMRAccountSelected.Text = selectedAccountNickName;
-            ShowNonSMRVisible(false,false);
+            ShowNonSMRVisible(false, false);
             smrResponse = activityInfoResponse;
 
             if (activityInfoResponse.Response.Data.MeterReadingHistory.Count > 0)
@@ -506,7 +495,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 {
                     NewAppTutorialUtils.ForceCloseNewAppTutorial();
                     selectedAccountNumber = data.GetStringExtra("SELECTED_ACCOUNT_NUMBER");
-                    foreach(SMRAccount account in smrAccountList)
+                    foreach (SMRAccount account in smrAccountList)
                     {
                         if (account.accountNumber == selectedAccountNumber)
                         {
@@ -599,21 +588,21 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
 
         public override void OnTrimMemory(TrimMemory level)
-		{
-			base.OnTrimMemory(level);
+        {
+            base.OnTrimMemory(level);
 
-			switch (level)
-			{
-				case TrimMemory.RunningLow:
-					GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-					GC.Collect();
-					break;
-				default:
-					GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-					GC.Collect();
-					break;
-			}
-		}
+            switch (level)
+            {
+                case TrimMemory.RunningLow:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+                default:
+                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    GC.Collect();
+                    break;
+            }
+        }
 
         [OnClick(Resource.Id.selectAccountContainer)]
         void OnSelectAccount(object sender, EventArgs eventArgs)
@@ -812,7 +801,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         public override string GetPageId()
         {
             return PAGE_ID;
-				}
+        }
         public void OnShowSMRMeterReadingDialog()
         {
             if (!UserSessions.HasSMRMeterHistoryTutorialShown(this.mPref))

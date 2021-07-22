@@ -31,14 +31,14 @@ using Android.Support.Design.Widget;
 
 namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 {
- 
+
     [Activity(Label = "General Enquiry"
       , ScreenOrientation = ScreenOrientation.Portrait
               , WindowSoftInputMode = SoftInput.AdjustPan
       , Theme = "@style/Theme.FaultyStreetLamps")]
 
 
-    public class FeedbackGeneralEnquiryStepOneActivity : BaseToolbarAppCompatActivity  , FeedbackGeneralEnquiryStepOneContract.IView, View.IOnTouchListener
+    public class FeedbackGeneralEnquiryStepOneActivity : BaseToolbarAppCompatActivity, FeedbackGeneralEnquiryStepOneContract.IView, View.IOnTouchListener
     {
         //needed when add contract
         FeedbackGeneralEnquiryStepOneContract.IUserActionsListener userActionsListener;
@@ -52,7 +52,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         CoordinatorLayout rootView;
 
         [BindView(Resource.Id.recyclerView)]
-         RecyclerView recyclerView;
+        RecyclerView recyclerView;
 
         [BindView(Resource.Id.txtGeneralEnquiry1)]
         EditText txtGeneralEnquiry1;
@@ -84,7 +84,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         [BindView(Resource.Id.TextView_CharLeft)]
         TextView TextView_CharLeft;
 
-        
+
 
 
         private AlertDialog _ChooseDialog;
@@ -113,7 +113,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                     {
                         accNo = extras.GetString(Constants.ACCOUNT_NUMBER);
                     }
-               
+
                 }
 
 
@@ -130,13 +130,15 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 recyclerView.SetLayoutManager(layoutManager);
                 recyclerView.SetAdapter(adapter);
 
-               // adapter listener
+                // adapter listener
                 adapter.AddClickEvent += Adapter_AddClickEvent;
                 adapter.RemoveClickEvent += Adapter_RemoveClickEvent;
 
                 //injecting data       
                 txtInputLayoutGeneralEnquiry1.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "messageHint");
-                txtInputLayoutGeneralEnquiry1.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
+                txtInputLayoutGeneralEnquiry1.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
                 txtGeneralEnquiry1.Text = "";
 
 
@@ -154,21 +156,17 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 
                 //set translation 
                 txtstep1of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "stepTitle1of2");
-                IwantToEnquire.Text= Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryAboutTitle");
+                IwantToEnquire.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryAboutTitle");
                 uploadSupportingDoc.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "uploadDocTitle");
                 txtRelatedScreenshotTitle.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachTitle");
                 txtMaxImageContent.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "attachDescription");
-                btnNext.Text= Utility.GetLocalizedLabel("Common", "next");
+                btnNext.Text = Utility.GetLocalizedLabel("Common", "next");
 
-                txtstep1of2.TextSize = TextViewUtils.GetFontSize(12f);
-                IwantToEnquire.TextSize = TextViewUtils.GetFontSize(16f);
-                txtGeneralEnquiry1.TextSize = TextViewUtils.GetFontSize(16f);
-                TextView_CharLeft.TextSize = TextViewUtils.GetFontSize(10f);
-                uploadSupportingDoc.TextSize = TextViewUtils.GetFontSize(16f);
-                txtRelatedScreenshotTitle.TextSize = TextViewUtils.GetFontSize(14f);
-                txtMaxImageContent.TextSize = TextViewUtils.GetFontSize(9f);
-                btnNext.TextSize = TextViewUtils.GetFontSize(16f);
-
+                TextViewUtils.SetTextSize9(txtMaxImageContent);
+                TextViewUtils.SetTextSize10(TextView_CharLeft);
+                TextViewUtils.SetTextSize12(txtstep1of2);
+                TextViewUtils.SetTextSize14(txtRelatedScreenshotTitle);
+                TextViewUtils.SetTextSize16(IwantToEnquire, txtGeneralEnquiry1, uploadSupportingDoc, btnNext);
 
                 //set feedback setting
                 TextView_CharLeft.Text = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), Constants.FEEDBACK_CHAR_LIMIT);
@@ -194,7 +192,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             return GetString(Resource.String.feedback_image_name_convention, dateFormatter.Format(calendar.TimeInMillis), UserSessions.GetCurrentImageCount(PreferenceManager.GetDefaultSharedPreferences(this)) + itemCount);
         }
 
-        public string copyPDFGetFilePath(Android.Net.Uri realFilePath , string filename)
+        public string copyPDFGetFilePath(Android.Net.Uri realFilePath, string filename)
         {
             string filePath = FileUtils.CopyPDF(this, realFilePath, FileUtils.PDF_FOLDER, filename);
             return filePath;
@@ -347,7 +345,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             {
                 this.SetIsClicked(true);
 
-             
+
                 Intent galleryIntent = new Intent(Intent.ActionGetContent);
                 galleryIntent.SetType("application/pdf");
                 galleryIntent.AddFlags(ActivityFlags.GrantReadUriPermission);
@@ -361,9 +359,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 
 
         public string getActualPath(Android.Net.Uri uri)
-        {  
-           string path = FileUtils.GetActualPathForFile(uri, this);
-           return path;
+        {
+            string path = FileUtils.GetActualPathForFile(uri, this);
+            return path;
         }
 
 
@@ -413,8 +411,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 {
                     int char_left = Constants.FEEDBACK_CHAR_LIMIT - char_count;
 
-                    txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
-                    
+                    txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                        ? Resource.Style.TextInputLayoutFeedbackCountLarge
+                        : Resource.Style.TextInputLayoutFeedbackCount);
+
                     //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1.FindViewById<TextView>(Resource.Id.textinput_error));
                     TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
                     txtInputLayoutGeneralEnquiry1.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), char_left);
@@ -425,12 +425,14 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
                 }
                 else
                 {
-                    txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                    txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                        ? Resource.Style.TextInputLayoutFeedbackCountLarge
+                        : Resource.Style.TextInputLayoutFeedbackCount);
                     // TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1.FindViewById<TextView>(Resource.Id.textinput_error));
                     TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
-                    
-                 
-                
+
+
+
 
                     txtInputLayoutGeneralEnquiry1.Error = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), Constants.FEEDBACK_CHAR_LIMIT);
                     var handleBounceError = txtInputLayoutGeneralEnquiry1.FindViewById<TextView>(Resource.Id.textinput_error);
@@ -472,9 +474,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         public void ShowEmptyFeedbackError()
         {
             TextView_CharLeft.Visibility = ViewStates.Gone;
-            txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);
-           
-           
+            txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                ? Resource.Style.TextInputLayoutBottomErrorHintLarge
+                : Resource.Style.TextInputLayoutBottomErrorHint);
+
             //TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1.FindViewById<TextView>(Resource.Id.textinput_error));
             TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
             txtInputLayoutGeneralEnquiry1.Error = Utility.GetLocalizedLabel("FeedbackForm", "invalidFeedback");
@@ -508,7 +511,9 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         {
             try
             {   //remove any error
-                txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutGeneralEnquiry1.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayoutFeedbackCountLarge
+                    : Resource.Style.TextInputLayoutFeedbackCount);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutGeneralEnquiry1);
                 txtInputLayoutGeneralEnquiry1.Error = " ";
                 var handleBounceError = txtInputLayoutGeneralEnquiry1.FindViewById<TextView>(Resource.Id.textinput_error);
@@ -531,7 +536,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 
         public void ShowGeneralEnquiry()
         {
-            
+
             var feedbackGeneralEnquiry = new Intent(this, typeof(FeedbackGeneralEnquiryStepTwoActivity));
             feedbackGeneralEnquiry.PutExtra("FEEDBACK", txtGeneralEnquiry1.Text.Trim());
             feedbackGeneralEnquiry.PutExtra("IMAGE", JsonConvert.SerializeObject(adapter?.GetAllImages()));
@@ -547,10 +552,10 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
         void OnNextButton(object sender, EventArgs eventArgs)
         {
             if (!this.GetIsClicked())
-            { 
+            {
 
-                    this.userActionsListener.OnGeneralEnquiry();
-                
+                this.userActionsListener.OnGeneralEnquiry();
+
             }
         }
 
@@ -561,7 +566,7 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
             this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
 
         }
-   
+
         public string GetTemporaryImageFilePath(string pFolder, string pFileName)
         {
             return FileUtils.GetTemporaryImageFilePath(this, pFolder, pFileName);
@@ -610,14 +615,14 @@ namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity
 
         }
 
-        public void UpdateAdapter(string pFilePath, string pFileName ,string tfileName = "")
+        public void UpdateAdapter(string pFilePath, string pFileName, string tfileName = "")
         {
             adapter.Update(adapter.ItemCount - 1, new AttachedImage()
             {
                 ViewType = Constants.VIEW_TYPE_REAL_RECORD,
                 Name = pFileName,
                 Path = pFilePath,
-                FileName= tfileName
+                FileName = tfileName
             });
             if (adapter.ItemCount < 2)
             {

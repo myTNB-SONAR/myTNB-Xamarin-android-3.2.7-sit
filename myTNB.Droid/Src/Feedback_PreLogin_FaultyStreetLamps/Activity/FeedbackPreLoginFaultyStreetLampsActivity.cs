@@ -145,13 +145,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtMaxImageContent, txtRelatedScreenshotTitle, txtFeedbackContent, txtFullName, txtMobileNo, txtEmail, txtState, txtLocation, txtPoleNo, txtFeedback, txtMaxCharacters);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFullName, txtInputLayoutEmail, txtInputLayoutFeedback, txtInputLayoutLocation, txtInputLayoutMobileNo, txtInputLayoutPoleNo, txtInputLayoutState);
                 TextViewUtils.SetMuseoSans500Typeface(txtFeedbackTitle, btnSubmit);
-
-                txtFeedbackTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                txtFeedbackContent.TextSize = TextViewUtils.GetFontSize(14f);
-                txtMaxCharacters.TextSize = TextViewUtils.GetFontSize(9f);
-                txtRelatedScreenshotTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                txtMaxImageContent.TextSize = TextViewUtils.GetFontSize(16f);
-               
+                TextViewUtils.SetTextSize9(txtMaxCharacters);
+                TextViewUtils.SetTextSize14(txtFeedbackContent);
+                TextViewUtils.SetTextSize16(txtFeedbackTitle, txtRelatedScreenshotTitle, txtMaxImageContent);
 
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
@@ -577,7 +573,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             try
             {
                 //txtInputLayoutFeedback.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
-                txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+                txtInputLayoutFeedback.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayoutFeedbackCountLarge
+                    : Resource.Style.TextInputLayoutFeedbackCount);
                 txtInputLayoutLocation.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
                 txtInputLayoutPoleNo.SetErrorTextAppearance(Resource.Style.TextErrorAppearance);
 
@@ -595,7 +593,9 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
                 txtInputLayoutState.Error = null;
                 txtInputLayoutMobileNo.Error = null;
 
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFullName, txtInputLayoutEmail, txtInputLayoutFeedback, txtInputLayoutLocation, txtInputLayoutMobileNo, txtInputLayoutPoleNo, txtInputLayoutState);
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutFullName, txtInputLayoutEmail
+                    , txtInputLayoutFeedback, txtInputLayoutLocation, txtInputLayoutMobileNo
+                    , txtInputLayoutPoleNo, txtInputLayoutState);
 
                 FeedBackCharacCount();
             }

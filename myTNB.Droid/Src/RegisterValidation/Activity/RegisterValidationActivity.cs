@@ -125,19 +125,10 @@ namespace myTNB_Android.Src.RegisterValidation
                 TextViewUtils.SetMuseoSans300Typeface(txtNumber_1, txtNumber_2, txtNumber_3, txtNumber_4);
                 TextViewUtils.SetMuseoSans500Typeface(btnResend, OnCompleteResend);
                 TextViewUtils.SetMuseoSans300Typeface(txtErrorPin);
-
-                txtInfoTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                txtErrorPin.TextSize = TextViewUtils.GetFontSize(12f);
-                txtDidntReceive.TextSize = TextViewUtils.GetFontSize(16f);
-                OnCompleteResend.TextSize = TextViewUtils.GetFontSize(18f);
-                btnResend.TextSize = TextViewUtils.GetFontSize(18f);
-                txtNumber_1.TextSize = TextViewUtils.GetFontSize(22f);
-                txtNumber_2.TextSize = TextViewUtils.GetFontSize(22f);
-
-                txtNumber_3.TextSize = TextViewUtils.GetFontSize(22f);
-
-                txtNumber_4.TextSize = TextViewUtils.GetFontSize(22f);
-
+                TextViewUtils.SetTextSize12(txtErrorPin);
+                TextViewUtils.SetTextSize16(txtInfoTitle, txtDidntReceive);
+                TextViewUtils.SetTextSize18(OnCompleteResend, btnResend);
+                TextViewUtils.SetTextSize22(txtNumber_1, txtNumber_2, txtNumber_3, txtNumber_4);
 
                 txtInfoTitle.Text = string.Format(GetLabelByLanguage("otpRegistration"), entity.MobileNo);
                 txtDidntReceive.Text = GetLabelByLanguage("smsNotReceived");
@@ -155,9 +146,9 @@ namespace myTNB_Android.Src.RegisterValidation
                 Snackbar mPinSentInfo = Snackbar.Make(rootView,
                     Utility.GetLocalizedLabel("VerifyPin", "resendPinMessage"),
                     Snackbar.LengthLong);
-                    View v = mPinSentInfo.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
+                View v = mPinSentInfo.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
                 mPinSentInfo.Show();
                 this.userActionsListener.Start();
             }

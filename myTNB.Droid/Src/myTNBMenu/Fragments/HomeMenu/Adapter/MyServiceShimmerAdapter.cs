@@ -136,10 +136,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 myServiceShimmerImg = itemView.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerMyServiceImg);
                 myServiceShimmerText = itemView.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerMyServiceTitle);
                 myServiceShimmerTextTwo = itemView.FindViewById<ShimmerFrameLayout>(Resource.Id.shimmerMyServiceTitleTwo);
-
-                serviceTitle.TextSize = TextViewUtils.GetFontSize(12f);
-                serviceTitle_Two.TextSize = TextViewUtils.GetFontSize(12f);
-             
+                TextViewUtils.SetTextSize12(serviceTitle, serviceTitle_Two);
             }
         }
 

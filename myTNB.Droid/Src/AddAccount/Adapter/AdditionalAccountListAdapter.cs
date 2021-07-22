@@ -157,18 +157,26 @@ namespace myTNB_Android.Src.AddAccount
             NoMobileFieldDetail.Text = Utility.GetLocalizedCommonLabel("mobileNumber");
             EmailFieldDetail.Text = Utility.GetLocalizedCommonLabel("emailAddress");
             textInputLayoutAccountLabel.Hint = Utility.GetLocalizedCommonLabel("acctNickname");
-            textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+            textInputLayoutAccountLabel.SetHintTextAppearance(TextViewUtils.IsLargeFonts
+                    ? Resource.Style.TextInputLayout_TextAppearance_Large
+                    : Resource.Style.TextInputLayout_TextAppearance_Small);
+            textInputLayoutAccountLabel.SetErrorTextAppearance(TextViewUtils.IsLargeFonts
+                ? Resource.Style.TextInputLayoutFeedbackCountLarge
+                : Resource.Style.TextInputLayoutFeedbackCount);
             context = itemView.Context;
             AccountLabel.AddTextChangedListener(new InputFilterFormField(AccountLabel, textInputLayoutAccountLabel));
-            AccountLabel.TextSize = TextViewUtils.GetFontSize(16);
-            AccountNumber.TextSize = TextViewUtils.GetFontSize(14);
-            AccountAddress.TextSize = TextViewUtils.GetFontSize(12);
-            OwnerDetailTitle.TextSize = TextViewUtils.GetFontSize(14);
-            EmailFieldDetail.TextSize = TextViewUtils.GetFontSize(16);
-            NoMobileFieldDetail.TextSize = TextViewUtils.GetFontSize(16);
+           
+
+            TextViewUtils.SetTextSize16(AccountLabel, EmailFieldDetail, NoMobileFieldDetail);
+            TextViewUtils.SetTextSize14(AccountNumber, OwnerDetailTitle);
+            TextViewUtils.SetTextSize12(AccountAddress);
 
             OwnerDetailTitle.Text = Utility.GetLocalizedLabel("AddAccount", "titleOwnerDetailRegion");
             textInputLayoutEmailEditText.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
+
+            // TextViewUtils.SetTextSize12(AccountAddress);
+            // TextViewUtils.SetTextSize14(AccountNumber);
+            // TextViewUtils.SetTextSize16(AccountLabel);
 
             //TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress, AccountLabel, OwnerDetailTitle);
             //TextViewUtils.SetMuseoSans500Typeface(EmailFieldDetail, NoMobileFieldDetail);

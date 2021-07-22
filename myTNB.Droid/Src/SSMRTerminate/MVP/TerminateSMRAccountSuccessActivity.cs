@@ -68,15 +68,10 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, btnTrackApplication, btnBackToHomeSuccess);
             TextViewUtils.SetMuseoSans300Typeface(txtMessageInfo, refNumberLabel, appliedOnDateLabel, refNumberValue, appliedOnDateValue);
-
-            txtTitleInfo.TextSize = TextViewUtils.GetFontSize(16f);
-            txtMessageInfo.TextSize = TextViewUtils.GetFontSize(12f);
-            refNumberLabel.TextSize = TextViewUtils.GetFontSize(10f);
-            appliedOnDateLabel.TextSize = TextViewUtils.GetFontSize(10f);
-            refNumberValue.TextSize = TextViewUtils.GetFontSize(14f);
-            appliedOnDateValue.TextSize = TextViewUtils.GetFontSize(14f);
-            btnTrackApplication.TextSize = TextViewUtils.GetFontSize(16f);
-            btnBackToHomeSuccess.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetTextSize10(refNumberLabel, appliedOnDateLabel);
+            TextViewUtils.SetTextSize12(txtMessageInfo);
+            TextViewUtils.SetTextSize14(refNumberValue, appliedOnDateValue);
+            TextViewUtils.SetTextSize16(txtTitleInfo, btnTrackApplication, btnBackToHomeSuccess);
 
             txtTitleInfo.Text = Utility.GetLocalizedLabel("Status", "ssmrApplySuccessTitle");
             refNumberLabel.Text = Utility.GetLocalizedLabel("Status", "ssmrApplyReferenceTitle").ToUpper();

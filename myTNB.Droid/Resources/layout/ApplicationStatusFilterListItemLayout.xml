@@ -24,9 +24,7 @@
 				android:layout_marginStart="16dp"
 				android:layout_marginLeft="16dp"
 				android:paddingRight="56dp"
-				android:ellipsize="end"
-				android:maxLines="1"
-				android:text="Supply Account Nickname"
+				android:text="UI - Supply Account Nickname"
 				android:layout_centerVertical="true"
 				android:textColor="@color/tunaGrey"
 				android:textSize="16dp" />

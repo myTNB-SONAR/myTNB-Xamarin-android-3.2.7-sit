@@ -54,15 +54,16 @@ namespace myTNB_Android.Src.AddAccount.Activity
             fragmentTransaction.Add(Resource.Id.fragment_container, addAccountTypeFragment);
             fragmentTransaction.Commit();
 
-           
-            SetTheme(TextViewUtils.IsLargeFonts ? Resource.Style.Theme_AddAccountLarge : Resource.Style.Theme_AddAccount);
+            SetTheme(TextViewUtils.IsLargeFonts
+                ? Resource.Style.Theme_AddAccountLarge
+                : Resource.Style.Theme_AddAccount);
             //Initialize scanner
             MobileBarcodeScanner.Initialize(Application);
             //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
         }
-      
 
-        public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
+
+        public void nextFragment(AndroidX.Fragment.App.Fragment fragment, Bundle bundle)
         {
             //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
             if (fragment is AddAccountTypeFragmentNew)
@@ -181,7 +182,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public override string ToolbarTitle()
         {
-            return Utility.GetLocalizedLabel("AddAccount","title");
+            return Utility.GetLocalizedLabel("AddAccount", "title");
         }
 
         /*public void SetInnerDashboardToolbarBackground()

@@ -3,7 +3,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
-
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
@@ -79,7 +78,7 @@ namespace myTNB_Android.Src.FindUs.Activity
         RecyclerView layoutPhone;
 
         [BindView(Resource.Id.lbl_opening_hours)]
-        TextView lblOepningHours;
+        TextView lblOpeningHours;
 
         [BindView(Resource.Id.layout_opening_hours)]
         RecyclerView layoutOpeningHours;
@@ -156,18 +155,14 @@ namespace myTNB_Android.Src.FindUs.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(txtTitle);
                 TextViewUtils.SetMuseoSans300Typeface(txtAddress);
-                TextViewUtils.SetMuseoSans300Typeface(lblAddress, lblPhone, lblOepningHours, lblServices);
-                txtTitle.TextSize = TextViewUtils.GetFontSize(18f);
-                lblAddress.TextSize = TextViewUtils.GetFontSize(14f);
-                txtAddress.TextSize = TextViewUtils.GetFontSize(16f);
-                lblPhone.TextSize = TextViewUtils.GetFontSize(14f);
-                lblOepningHours.TextSize = TextViewUtils.GetFontSize(14f);
-                lblServices.TextSize = TextViewUtils.GetFontSize(14f);
-               
+                TextViewUtils.SetMuseoSans300Typeface(lblAddress, lblPhone, lblOpeningHours, lblServices);
+                TextViewUtils.SetTextSize14(lblAddress, lblPhone, lblOpeningHours, lblServices);
+                TextViewUtils.SetTextSize16(txtAddress);
+                TextViewUtils.SetTextSize18(txtTitle);
 
                 lblAddress.Text = Utility.GetLocalizedLabel("LocationDetails", "address").ToUpper();
                 lblPhone.Text = Utility.GetLocalizedLabel("LocationDetails", "phone").ToUpper();
-                lblOepningHours.Text = Utility.GetLocalizedLabel("LocationDetails", "openingHours").ToUpper();
+                lblOpeningHours.Text = Utility.GetLocalizedLabel("LocationDetails", "openingHours").ToUpper();
                 lblServices.Text = Utility.GetLocalizedLabel("LocationDetails", "services").ToUpper();
 
                 rootView.RequestFocus();

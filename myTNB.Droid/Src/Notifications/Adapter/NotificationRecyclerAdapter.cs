@@ -198,7 +198,7 @@ namespace myTNB_Android.Src.Notifications.Adapter
 
         public void ShowSelectButtons(bool show)
         {
-            foreach(UserNotificationData userNotificationData in this.itemList)
+            foreach (UserNotificationData userNotificationData in this.itemList)
             {
                 userNotificationData.ShowSelectButton = show;
             }
@@ -207,7 +207,7 @@ namespace myTNB_Android.Src.Notifications.Adapter
 
         public void SelectAllNotifications(bool show)
         {
-            for (int i=0; i < this.itemList.Count; i++)
+            for (int i = 0; i < this.itemList.Count; i++)
             {
                 this.itemList[i].IsSelected = show;
             }
@@ -258,9 +258,8 @@ namespace myTNB_Android.Src.Notifications.Adapter
             {
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationTitle);
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationContent, txtNotificationDate);
-                txtNotificationTitle.TextSize = TextViewUtils.GetFontSize(14f);
-                txtNotificationContent.TextSize = TextViewUtils.GetFontSize(10f);
-                txtNotificationDate.TextSize = TextViewUtils.GetFontSize(10f);
+                TextViewUtils.SetTextSize10(txtNotificationContent, txtNotificationDate);
+                TextViewUtils.SetTextSize14(txtNotificationTitle);
                 itemView.SetOnLongClickListener(new NotificationLongItemClickListener(this, adapter));
                 itemView.SetOnClickListener(new NotificationItemClickListener(this, adapter));
                 selectItemCheckbox.SetOnCheckedChangeListener(new NotificationItemSelectedListener(this, adapter));

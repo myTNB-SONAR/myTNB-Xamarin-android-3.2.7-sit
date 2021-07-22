@@ -95,16 +95,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
             TextViewUtils.SetMuseoSans300Typeface(statusItemTitle, statusSubTitle);
             TextViewUtils.SetMuseoSans300Typeface(filterDateItemTitle, filterDateSubTitle);
             TextViewUtils.SetMuseoSans500Typeface(btnClearFilter, btnApplyFilter);
-
-            applicationStatusItemTitle.TextSize = TextViewUtils.GetFontSize(16f);
-            btnClearFilter.TextSize = TextViewUtils.GetFontSize(16f);
-            applicationStatusSubTitle.TextSize = TextViewUtils.GetFontSize(12f);
-            statusItemTitle.TextSize = TextViewUtils.GetFontSize(16f);
-            statusSubTitle.TextSize = TextViewUtils.GetFontSize(12f);
-            filterDateItemTitle.TextSize = TextViewUtils.GetFontSize(16f);
-            btnApplyFilter.TextSize = TextViewUtils.GetFontSize(16f);
-            filterDateSubTitle.TextSize = TextViewUtils.GetFontSize(12f);
-
+            TextViewUtils.SetTextSize12(applicationStatusSubTitle, statusSubTitle, filterDateSubTitle);
+            TextViewUtils.SetTextSize16(applicationStatusItemTitle, btnClearFilter, statusItemTitle, filterDateItemTitle, btnApplyFilter);
             SetText();
 
             SetToolBarTitle(Utility.GetLocalizedLabel("ApplicationStatusFilter", "title"));

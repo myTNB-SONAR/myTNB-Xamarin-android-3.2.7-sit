@@ -27,6 +27,12 @@
     </NuGetPackageImportStamp>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
   </PropertyGroup>
+   <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <NullableContextOptions>enable</NullableContextOptions>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
     <DebugType>Full</DebugType>
@@ -35,7 +41,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <MandroidI18n />
@@ -57,16 +63,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
-    <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <MandroidI18n>West</MandroidI18n>
     <LangVersion>8.0</LangVersion>
     <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -87,6 +91,8 @@
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <AndroidUseAapt2>true</AndroidUseAapt2>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+    <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>

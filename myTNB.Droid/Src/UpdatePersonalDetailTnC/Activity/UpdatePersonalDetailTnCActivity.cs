@@ -107,11 +107,7 @@ namespace myTNB_Android.Src.UpdatePersonalDetailTnC.Activity
                 //set font 
                 TextViewUtils.SetMuseoSans300Typeface(TextView_tnc_data); //inputLay
                 TextViewUtils.SetMuseoSans500Typeface(TextView_updatePersonalDataDisclaim, TextView_TNB_TermOfUse, TextView_privacypolicy); //edit text
-
-                TextView_updatePersonalDataDisclaim.TextSize = TextViewUtils.GetFontSize(14f);
-                TextView_tnc_data.TextSize = TextViewUtils.GetFontSize(14f);
-                TextView_TNB_TermOfUse.TextSize = TextViewUtils.GetFontSize(14f);
-                TextView_privacypolicy.TextSize = TextViewUtils.GetFontSize(14f);
+                TextViewUtils.SetTextSize14(TextView_updatePersonalDataDisclaim, TextView_tnc_data, TextView_TNB_TermOfUse, TextView_privacypolicy);
 
                 //  CustomerBillingAccount selectedAcc;
                 CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(caNumber);

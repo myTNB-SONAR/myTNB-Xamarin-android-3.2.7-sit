@@ -76,8 +76,6 @@ namespace myTNB_Android.Src.AddAccount.Adapter
             //TextViewUtils.SetMuseoSans300Typeface(vh.AccountAddress);
             vh.AccountLabel.Text = item.accountLabel;
             TextViewUtils.SetMuseoSans500Typeface(vh.AccountLabel);
-
-
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -86,9 +84,7 @@ namespace myTNB_Android.Src.AddAccount.Adapter
             var itemView = LayoutInflater.From(parent.Context).Inflate(id, parent, false);
             return new AccountListViewHolder(itemView);
         }
-
     }
-
 
     public class AccountListViewHolder : RecyclerView.ViewHolder
     {
@@ -103,10 +99,10 @@ namespace myTNB_Android.Src.AddAccount.Adapter
             AccountNumber = itemView.FindViewById<TextView>(Resource.Id.text_account_number);
             AccountAddress = itemView.FindViewById<TextView>(Resource.Id.text_account_address);
             bottomLine = itemView.FindViewById<View>(Resource.Id.bottom_line);
-            AccountLabel.TextSize = TextViewUtils.GetFontSize(16);
-            AccountNumber.TextSize = TextViewUtils.GetFontSize(14);
-            AccountAddress.TextSize = TextViewUtils.GetFontSize(12);
-        }
 
+            TextViewUtils.SetTextSize12(AccountAddress);
+            TextViewUtils.SetTextSize14(AccountNumber);
+            TextViewUtils.SetTextSize16(AccountLabel);
+        }
     }
 }

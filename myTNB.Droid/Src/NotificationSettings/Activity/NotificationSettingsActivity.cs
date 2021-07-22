@@ -200,7 +200,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 Console.WriteLine("NotificationSettingsActivity OnCreate");
 
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationTypeTitle, txtNotificationChannelTitle, appLanguageMessage, textSizeMessage);
-
+                TextViewUtils.SetTextSize16(txtNotificationTypeTitle, txtNotificationChannelTitle, appLanguageMessage, textSizeMessage);
                 txtNotificationTypeTitle.Text = Utility.GetLocalizedLabel("ApplicationSetting", "typeDescription"); 
                 txtNotificationChannelTitle.Text = Utility.GetLocalizedLabel("ApplicationSetting", "modeDescription");
                 textSizeMessage.Text = Utility.GetLocalizedLabel("ApplicationSetting", "setTextSize");
@@ -247,10 +247,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 SetSelectedLanguage(null);
 
                 //SetTextSize
-                txtNotificationTypeTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                txtNotificationChannelTitle.TextSize = TextViewUtils.GetFontSize(16f);
-                textSizeMessage.TextSize = TextViewUtils.GetFontSize(16f);
-                appLanguageMessage.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize16(txtNotificationTypeTitle, txtNotificationChannelTitle, textSizeMessage, appLanguageMessage);
 
                 mPresenter = new NotificationSettingsPresenter(this);
                 this.userActionsListener.Start();

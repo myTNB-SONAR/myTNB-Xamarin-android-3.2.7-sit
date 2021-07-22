@@ -93,14 +93,9 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             btnTopGotIt.Click += BtnGotIt_Click;
 
             TextViewUtils.SetMuseoSans300Typeface(txtBottomContent, txtTopContent);
-            TextViewUtils.SetMuseoSans500Typeface(txtBottomTitle, txtTopTitle, btnBottomGotIt, btnTopGotIt, btnTopUpdateNickname);
-
-            txtTopTitle.TextSize = TextViewUtils.GetFontSize(14f);
-            txtTopContent.TextSize = TextViewUtils.GetFontSize(14f);
-            txtBottomTitle.TextSize = TextViewUtils.GetFontSize(14f);
-            txtBottomContent.TextSize = TextViewUtils.GetFontSize(14f);
-            btnTopGotIt.TextSize = TextViewUtils.GetFontSize(16f);
-            btnBottomGotIt.TextSize = TextViewUtils.GetFontSize(16f);
+            TextViewUtils.SetMuseoSans500Typeface(txtBottomTitle, txtTopTitle, btnBottomGotIt, btnTopGotIt);
+            TextViewUtils.SetTextSize14(txtTopTitle, txtTopContent, txtBottomTitle, txtBottomContent);
+            TextViewUtils.SetTextSize16(btnTopGotIt, btnBottomGotIt);
 
             btnTopGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
             btnBottomGotIt.Text = Utility.GetLocalizedCommonLabel("gotIt");
@@ -137,8 +132,17 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     innerUpperBottomLayoutParam.Gravity = GravityFlags.Right;
                     innerTxtBtnBottomLayoutParam.Gravity = GravityFlags.Right;
                 }
-
-                txtBottomContentParam.Width = (int)((float)this.mContext.Resources.DisplayMetrics.WidthPixels * 0.705);
+                try
+                {
+                    if (!(this.mFragment is ItemisedBillingMenuFragment))
+                    {
+                        txtBottomContentParam.Width = (int)((float)this.mContext.Resources.DisplayMetrics.WidthPixels * 0.705);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
 
                 txtBottomContent.RequestLayout();
                 btnBottomGotIt.RequestLayout();
@@ -333,8 +337,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     {
                         if (position == 0)
                         {
-                            float h1 = TextViewUtils.IsLargeFonts ? 85f : 65f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                            int topHeight = ((HomeMenuFragment)this.mFragment).GetAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(25f);
                             int middleHeight = (int)DPUtils.ConvertDPToPx(275f);
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
@@ -381,19 +384,16 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else if (position == 1)
                         {
-                            float h1 = TextViewUtils.IsLargeFonts ? 75f : 65f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
-
+                            int topHeight = ((HomeMenuFragment)this.mFragment).GetAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(27f);
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                float h2 = TextViewUtils.IsLargeFonts ? 95f : 65f;
-                                topHeight = (int)DPUtils.ConvertDPToPx(h2);
+                                int offsetHeight = (int)DPUtils.ConvertDPToPx(65f);
                                 int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                int halfScroll = topHeight / 2;
+                                int halfScroll = offsetHeight / 2;
 
                                 if (diffHeight < halfScroll)
                                 {
-                                    topHeight = topHeight / 2;
+                                    topHeight = topHeight - (offsetHeight / 2);
                                 }
                             }
 
@@ -476,7 +476,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             }
                             else
                             {
-                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(144f) : (int)DPUtils.ConvertDPToPx(122f);
+                                innerTopLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(164f) : (int)DPUtils.ConvertDPToPx(132f);
                             }
                             innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
                             innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
@@ -485,8 +485,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         else
                         {
                             int middleHeight = 0;
-                            int topHeight = ((HomeMenuFragment)this.mFragment).GettopRootViewHeight() + ((HomeMenuFragment)this.mFragment).GetMyServiceContainerHeight() + (int)DPUtils.ConvertDPToPx(20f);
-                            middleHeight = ((HomeMenuFragment)this.mFragment).GetnewFAQContainerHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
+                            int topHeight = ((HomeMenuFragment)this.mFragment).GettopRootViewHeight() + ((HomeMenuFragment)this.mFragment).GetMyServiceContainerHeight() + (int)DPUtils.ConvertDPToPx(30f);
+                            middleHeight = ((HomeMenuFragment)this.mFragment).GetnewFAQContainerHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight()) - (int)DPUtils.ConvertDPToPx(10f);
                             if (((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible())
                             {
                                 topHeight = (int)DPUtils.ConvertDPToPx(TextViewUtils.IsLargeFonts ? 385f : 345f);
@@ -533,8 +533,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     {
                         if (position == 0)
                         {
-                            float h1 = TextViewUtils.IsLargeFonts ? 85f : 65f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                            int topHeight = ((HomeMenuFragment)this.mFragment).GetAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(35f);
                             int middleHeight = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(255f) : (int)DPUtils.ConvertDPToPx(235f);
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
@@ -682,8 +681,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     {
                         if (position == 0)
                         {
-                            float h1 = TextViewUtils.IsLargeFonts ? 85f : 65f;
-                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                            int topHeight = ((HomeMenuFragment)this.mFragment).GetAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(35f);
                             int middleHeight = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(195f) : (int)DPUtils.ConvertDPToPx(175f);
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
@@ -829,7 +827,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     {
                         if (position == 0)
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(75f);
+                            int topHeight = ((HomeMenuFragment)this.mFragment).GetAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(35f);
                             int middleHeight = (int)DPUtils.ConvertDPToPx(120f);
 
                             LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
@@ -966,7 +964,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     {
                         if (position == 0)
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(75f);
+                            int topHeight = ((HomeMenuFragment)this.mFragment).GetAccountContainerHeight() + (int)DPUtils.ConvertDPToPx(35f);
                             int middleHeight = (int)DPUtils.ConvertDPToPx(118f);
 
                             LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
@@ -1095,8 +1093,9 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     {
                         if (position == 0)
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(55f);
-                            int middleHeight = (int)DPUtils.ConvertDPToPx(285f);
+                            float h1 = 55f;
+                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                            int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight();
                             int checkPoint = (int)DPUtils.ConvertDPToPx(200f);
                             if (model.DisplayMode == "Extra")
                             {
@@ -1145,7 +1144,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(375f);
+                            int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(85f);
                             int middleHeight = (int)DPUtils.ConvertDPToPx(208f);
                             if (model.DisplayMode == "Extra")
                             {
@@ -1237,14 +1236,10 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     {
                         if (position == 0)
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(55f);
-                            int middleHeight = (int)DPUtils.ConvertDPToPx(285f);
+                            float h1 =  55f;
+                            int topHeight = (int)DPUtils.ConvertDPToPx(h1);
+                            int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight();
                             int checkPoint = (int)DPUtils.ConvertDPToPx(200f);
-                            if (model.DisplayMode == "Extra")
-                            {
-                                middleHeight = (int)DPUtils.ConvertDPToPx(265f);
-                                checkPoint = (int)DPUtils.ConvertDPToPx(180f);
-                            }
 
                             if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                             {
@@ -1274,26 +1269,22 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             bottomLayout.RequestLayout();
 
                             LinearLayout.LayoutParams innerUpperBottomLayoutParam = innerUpperBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerUpperBottomLayoutParam.Height = (int)DPUtils.ConvertDPToPx(40f);
-                            innerUpperBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerUpperBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                            innerUpperBottomLayoutParam.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(45f) : (int)DPUtils.ConvertDPToPx(40f);
+                            innerUpperBottomLayoutParam.LeftMargin = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(8f) : (int)DPUtils.ConvertDPToPx(8f);
+                            innerUpperBottomLayoutParam.RightMargin = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(0f) : (int)DPUtils.ConvertDPToPx(8f);
                             innerUpperBottomLayout.LayoutParameters = innerUpperBottomLayoutParam;
                             innerUpperBottomLayout.RequestLayout();
 
                             LinearLayout.LayoutParams innerTxtBtnBottomLayoutParam = innerTxtBtnBottomLayout.LayoutParameters as LinearLayout.LayoutParams;
-                            innerTxtBtnBottomLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
-                            innerTxtBtnBottomLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                            innerTxtBtnBottomLayoutParam.LeftMargin = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(0f) : (int)DPUtils.ConvertDPToPx(8f);
+                            innerTxtBtnBottomLayoutParam.RightMargin = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(0f) : (int)DPUtils.ConvertDPToPx(8f);
                             innerTxtBtnBottomLayout.RequestLayout();
                         }
                         else if (position == 1)
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(359f);
+                            int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + (int)DPUtils.ConvertDPToPx(55f);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(8f);
-                            if (model.DisplayMode == "Extra")
-                            {
-                                topHeight = (int)DPUtils.ConvertDPToPx(335f);
-                            }
-
+                           
                             int rightWidth = (int)DPUtils.ConvertDPToPx(12f);
                             int middleWidth = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonWidth() + (int)DPUtils.ConvertDPToPx(8f);
                             int leftWidth = this.mContext.Resources.DisplayMetrics.WidthPixels - rightWidth - middleWidth;
@@ -1325,13 +1316,9 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else if (position == 2)
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(359f);
+                            int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + (int)DPUtils.ConvertDPToPx(55f);
                             int middleHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(8f);
-                            if (model.DisplayMode == "Extra")
-                            {
-                                topHeight = (int)DPUtils.ConvertDPToPx(335f);
-                            }
-
+                           
                             int leftWidth = (int)DPUtils.ConvertDPToPx(12f);
                             int middleWidth = ((ItemisedBillingMenuFragment)this.mFragment).GetButtonWidth() + (int)DPUtils.ConvertDPToPx(8f);
                             int rightWidth = this.mContext.Resources.DisplayMetrics.WidthPixels - leftWidth - middleWidth;
@@ -1363,12 +1350,8 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                         else
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(430f);
+                            int topHeight = ((ItemisedBillingMenuFragment)this.mFragment).GetchargeAvailableNoCTAContainerHeight() + ((ItemisedBillingMenuFragment)this.mFragment).GetButtonHeight() + (int)DPUtils.ConvertDPToPx(85f);
                             int middleHeight = (int)DPUtils.ConvertDPToPx(208f);
-                            if (model.DisplayMode == "Extra")
-                            {
-                                topHeight = (int)DPUtils.ConvertDPToPx(405f);
-                            }
 
                             if (model.ItemCount == 0)
                             {

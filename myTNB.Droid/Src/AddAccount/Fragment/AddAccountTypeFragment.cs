@@ -7,7 +7,7 @@ using System;
 
 namespace myTNB_Android.Src.AddAccount.Fragment
 {
-    public class AddAccountTypeFragment : AndroidX.Fragment.App.Fragment 
+    public class AddAccountTypeFragment : AndroidX.Fragment.App.Fragment
     {
 
         LinearLayout radio_non_owner;
@@ -40,13 +40,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             txtNonOwnerRights = rootView.FindViewById<TextView>(Resource.Id.txtNonOwnerConstrain);
             txtYes = rootView.FindViewById<TextView>(Resource.Id.txtYes);
             txtNo = rootView.FindViewById<TextView>(Resource.Id.txtNo);
-            txtYes.TextSize = TextViewUtils.GetFontSize(18);
-            txtNo.TextSize = TextViewUtils.GetFontSize(18);
-            txtTitle.TextSize = TextViewUtils.GetFontSize(18);
-            txtOwnerRights.TextSize = TextViewUtils.GetFontSize(18);
-            txtNonOwnerRights.TextSize = TextViewUtils.GetFontSize(18);
 
-
+            TextViewUtils.SetTextSize18(txtYes, txtNo, txtTitle, txtOwnerRights, txtNonOwnerRights);
 
             radio_non_owner.Click += delegate
             {

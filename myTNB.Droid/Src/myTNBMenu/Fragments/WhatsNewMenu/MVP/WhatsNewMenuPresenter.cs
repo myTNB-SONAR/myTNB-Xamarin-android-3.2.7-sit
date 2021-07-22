@@ -262,8 +262,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
                     }
                     else
                     {
-                        mWhatsNewEntity.RemoveItemByCategoryId(mCategoryList[i].ID);
-                        mWhatsNewCategoryEntity.RemoveItem(mCategoryList[i].ID);
+                        //mWhatsNewEntity.RemoveItemByCategoryId(mCategoryList[i].ID);
+                        //mWhatsNewCategoryEntity.RemoveItem(mCategoryList[i].ID);
                     }
                 }
             }

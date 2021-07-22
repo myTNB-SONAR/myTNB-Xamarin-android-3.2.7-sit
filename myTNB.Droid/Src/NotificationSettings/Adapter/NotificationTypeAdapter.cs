@@ -76,8 +76,6 @@ namespace myTNB_Android.Src.NotificationSettings.Adapter
             return new NotificationTypeViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.NotificationTypeUserPreferenceRow, parent, false), OnClickEvent);
         }
 
-
-
         class NotificationTypeViewHolder : BaseRecyclerViewHolder
         {
             [BindView(Resource.Id.txtNotificationTitle)]
@@ -89,7 +87,7 @@ namespace myTNB_Android.Src.NotificationSettings.Adapter
             public NotificationTypeViewHolder(View itemView, Action<int> listener) : base(itemView)
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationTitle);
-                txtNotificationTitle.TextSize = TextViewUtils.GetFontSize(14f);
+                TextViewUtils.SetTextSize14(txtNotificationTitle);
                 notificationActionSwitch.Click += (sender, e) => listener(base.LayoutPosition);
             }
         }

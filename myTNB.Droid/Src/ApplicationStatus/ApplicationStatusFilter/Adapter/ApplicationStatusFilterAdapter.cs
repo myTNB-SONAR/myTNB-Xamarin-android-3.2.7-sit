@@ -186,9 +186,8 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
             TextViewUtils.SetMuseoSans300Typeface(txtFilterName);
             txtFilterName.Click += (sender, e) => listener(base.LayoutPosition);
             chkApplicationFilter.Click += (sender, e) => listener(base.LayoutPosition);
-
-            txtFilterName.TextSize = TextViewUtils.GetFontSize(16);
-            whyAccountsNotHere.TextSize = TextViewUtils.GetFontSize(12);
+            TextViewUtils.SetTextSize12(whyAccountsNotHere);
+            TextViewUtils.SetTextSize16(txtFilterName);
         }
 
         public void PopulateStatusData(ApplicationStatusCodeModel item, bool isMultipleSelectCapable)

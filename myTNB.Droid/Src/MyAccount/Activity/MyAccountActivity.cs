@@ -91,13 +91,12 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 //TextViewUtils.SetMuseoSans500Typeface(btnAddAnotherAccount,
                 //    btnAddAccount);
 
-                //txtTnBSupplyAccountTitle.TextSize = TextViewUtils.GetFontSize(18f);
-                txtMyAccountNoAccountTitle.TextSize = TextViewUtils.GetFontSize(14f);
-                txtMyAccountNoAccountContent.TextSize = TextViewUtils.GetFontSize(12f);
-                btnAddAccount.TextSize = TextViewUtils.GetFontSize(16f);
-                btnAddAnotherAccount.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize12(txtMyAccountNoAccountContent);
+                TextViewUtils.SetTextSize14(txtMyAccountNoAccountTitle);
+                TextViewUtils.SetTextSize16(btnAddAccount, btnAddAnotherAccount);
+                //TextViewUtils.SetTextSize18(txtTnBSupplyAccountTitle);
+
                 //txtTnBSupplyAccountTitle.Text = GetLabelByLanguage("accountSectionTitle");
-                
                 btnAddAnotherAccount.Text = GetLabelCommonByLanguage("addAnotherAcct");
                 txtMyAccountNoAccountTitle.Text = GetLabelByLanguage("noAccounts");
                 txtMyAccountNoAccountContent.Text = GetLabelByLanguage("addAccountMessage");
@@ -527,13 +526,13 @@ namespace myTNB_Android.Src.MyAccount.Activity
                             (view) =>
                             {
 
-                            // EMPTY WILL CLOSE SNACKBAR
-                        }
+                                // EMPTY WILL CLOSE SNACKBAR
+                            }
                            );
-                           View v = removeSupplySnackbar.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
-            removeSupplySnackbar.Show();
+                View v = removeSupplySnackbar.View;
+                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                tv.SetMaxLines(5);
+                removeSupplySnackbar.Show();
                 this.SetIsClicked(false);
             }
             catch (Exception e)
@@ -560,8 +559,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
                              (view) =>
                              {
 
-                             // EMPTY WILL CLOSE SNACKBAR
-                         }
+                                 // EMPTY WILL CLOSE SNACKBAR
+                             }
                             );
 
                 View v = updatePassWordBar.View;

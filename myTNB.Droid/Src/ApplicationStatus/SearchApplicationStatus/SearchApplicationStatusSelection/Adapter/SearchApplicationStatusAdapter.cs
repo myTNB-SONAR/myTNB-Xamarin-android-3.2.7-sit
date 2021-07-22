@@ -220,14 +220,14 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
                     filterSelection.Visibility = ViewStates.Gone;
 
                     whyAccountsNotHere.Text = Utility.GetLocalizedLabel("SearchByNumber", "whereToGetTheseNumber");
-                    whyAccountsNotHere.TextSize = TextViewUtils.GetFontSize(12f);
+                    TextViewUtils.SetTextSize12(whyAccountsNotHere);
                 }
                 else
                 {
                     ctaSelection.Visibility = ViewStates.Gone;
                     filterSelection.Visibility = ViewStates.Visible;
                     txtFilterName.Text = item.SearchTypeDisplay;
-                    txtFilterName.TextSize = TextViewUtils.GetFontSize(16f);
+                    TextViewUtils.SetTextSize16(txtFilterName);
                     imgApplicationFilter.Visibility = ViewStates.Gone;
                     chkApplicationFilter.Visibility = ViewStates.Gone;
                     txtFilterName.Clickable = true;
@@ -253,7 +253,7 @@ namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchAppl
             try
             {
                 txtFilterName.Text = item.ApplicationTypeDisplay;
-                txtFilterName.TextSize = TextViewUtils.GetFontSize(16f);
+                TextViewUtils.SetTextSize16(txtFilterName);
                 imgApplicationFilter.Visibility = ViewStates.Gone;
                 chkApplicationFilter.Visibility = ViewStates.Gone;
                 txtFilterName.Clickable = true;

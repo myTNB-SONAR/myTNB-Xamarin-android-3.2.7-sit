@@ -1,81 +1,81 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/mobileNumberInputContainer"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/countryCodeHeaderTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:includeFontPadding="false"
-        android:textColor="#a6a6a6"
-        android:lineSpacingExtra="0dp"
-        android:textSize="10dp"
-        android:text="MOBILE NUMBER"/>
-    <LinearLayout
-        android:id="@+id/countryCodeRootContainer"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/countryCodeContainer"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_weight="0"
-            android:background="?attr/editTextBackground"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:id="@+id/countryISDCodeContainer"
-                android:orientation="horizontal"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:id="@+id/countryIcon"
-                    android:layout_width="17dp"
-                    android:layout_height="12dp"
-                    android:src="@drawable/ph"/>
-                <TextView
-                    android:text="+60"
-                    android:id="@+id/coutryCodeValue"
-                    android:gravity="center"
-                    android:textColor="#49494a"
-                    android:layout_marginLeft="2dp"
-                    android:textSize="16sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <ImageView
-                    android:id="@+id/selectDropDownIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_action_dropdown"/>
-            </LinearLayout>
-        </LinearLayout>
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/mobileNumberInputContainer"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+	<TextView
+		android:id="@+id/countryCodeHeaderTitle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="4dp"
+		android:includeFontPadding="false"
+		android:textColor="#a6a6a6"
+		android:lineSpacingExtra="0dp"
+		android:textSize="10dp"
+		android:text="MOBILE NUMBER"/>
+	<LinearLayout
+		android:id="@+id/countryCodeRootContainer"
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+		<LinearLayout
+			android:id="@+id/countryCodeContainer"
+			android:orientation="horizontal"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:layout_weight="0"
+			android:background="?attr/editTextBackground"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent">
+			<LinearLayout
+				android:id="@+id/countryISDCodeContainer"
+				android:orientation="horizontal"
+				android:layout_gravity="center"
+				android:gravity="center"
+				android:layout_width="wrap_content"
+				android:layout_height="match_parent">
+				<ImageView
+					android:id="@+id/countryIcon"
+					android:layout_width="17dp"
+					android:layout_height="12dp"
+					android:src="@drawable/ph"/>
+				<TextView
+					android:text="+60"
+					android:id="@+id/coutryCodeValue"
+					android:gravity="center"
+					android:textColor="#49494a"
+					android:layout_marginLeft="2dp"
+					android:textSize="16dp"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"/>
+				<ImageView
+					android:id="@+id/selectDropDownIcon"
+					android:layout_width="24dp"
+					android:layout_height="24dp"
+					android:src="@drawable/ic_action_dropdown"/>
+			</LinearLayout>
+		</LinearLayout>
 
-            <EditText
-                android:id="@+id/txtMobileNo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="phone"
-                android:maxLines="1"
-                android:textSize="16dp"
-                android:digits="0123456789"
-                android:maxLength="15"
-                android:textColor="#49494a"
-                android:longClickable="false"/>
+		<EditText
+			android:id="@+id/txtMobileNo"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:inputType="phone"
+			android:maxLines="1"
+			android:textSize="16dp"
+			android:digits="0123456789"
+			android:maxLength="15"
+			android:textColor="#49494a"
+			android:longClickable="false"/>
 
-            
-    </LinearLayout>
-    
-<!--        <com.google.android.material.textfield.TextInputLayout
+
+	</LinearLayout>
+
+	<!--        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/TextInputLayoutMobileNo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,15 +84,15 @@
             app:errorTextAppearance="@style/TextInputLayoutFeedbackCount"
             app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small">
          </com.google.android.material.textfield.TextInputLayout>-->
-    <TextView
-        android:id="@+id/countryCodeError"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:includeFontPadding="false"
-        android:textColor="@color/errorColor"
-        android:visibility="gone"
-        android:lineSpacingExtra="0dp"
-        android:textSize="12dp"
+	<TextView
+		android:id="@+id/countryCodeError"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginLeft="4dp"
+		android:includeFontPadding="false"
+		android:textColor="@color/errorColor"
+		android:visibility="gone"
+		android:lineSpacingExtra="0dp"
+		android:textSize="12dp"
         />
 </LinearLayout>

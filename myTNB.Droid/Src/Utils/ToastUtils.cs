@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.Utils
                 View layout = inflater.Inflate(Resource.Layout.ToastLayout, null, false);
                 TextView messageTextView = layout.FindViewById<TextView>(Resource.Id.toastMessage);
                 messageTextView.Text = message ?? string.Empty;
-                messageTextView.TextSize = TextViewUtils.GetFontSize(12f);
+                TextViewUtils.SetTextSize12(messageTextView);
                 TextViewUtils.SetMuseoSans300Typeface(messageTextView);
 
                 Toast toast = new Toast(mActivity)
