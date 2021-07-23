@@ -279,7 +279,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     email_layout.Visibility = btnUpdateDigitalBillLayout.Visibility = email_container.Visibility = digitalBillLabelContainer.Visibility = digitalBillLabelLayout.Visibility = ViewStates.Gone;
                     UserSessions.ManageBillDelivery = DBRTypeEnum.Paper;
                     FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
-                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 2)) : (int)DPUtils.ConvertDPToPx(455f);
+                    layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 1.7)) : (int)DPUtils.ConvertDPToPx(455f);
                     ScrollPage();
                 }
                 else if (extras.ContainsKey("WhatsApp"))
@@ -569,7 +569,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
                     if (UserSessions.ManageBillDelivery == DBRTypeEnum.Paper)
                     {
                         FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
-                        layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 2)) : (int)DPUtils.ConvertDPToPx(455f);
+                        layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 1.7)) : (int)DPUtils.ConvertDPToPx(455f);
                        
                     }
                     CustomerBillingAccount.RemoveSelected();
@@ -585,7 +585,7 @@ namespace myTNB_Android.Src.ManageBillDelivery.MVP
             if (UserSessions.ManageBillDelivery == DBRTypeEnum.Paper)
             {
                 FrameLayout.LayoutParams layout = viewPagerLyout.LayoutParameters as FrameLayout.LayoutParams;
-                layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 2)) : (int)DPUtils.ConvertDPToPx(455f);
+                layout.Height = TextViewUtils.IsLargeFonts ? (int)DPUtils.ConvertDPToPx(510f + (float)(deliverigAddress.Text.Length / 1.7)) : (int)DPUtils.ConvertDPToPx(455f);
                 
             }
         }
