@@ -3,7 +3,12 @@ using Newtonsoft.Json;
 
 namespace myTNB.Mobile.AWS.Models
 {
-    public class GetBillRenderingResponse : BaseStatus
+    public class GetBillRenderingResponse : BaseResponse<GetBillRenderingModel>
+    {
+        
+    }
+
+    public class GetBillRenderingModel
     {
         [JsonProperty("contractAccountNumber")]
         public string ContractAccountNumber { set; get; }
@@ -17,6 +22,12 @@ namespace myTNB.Mobile.AWS.Models
         public string OwnerBillingEmail { set; get; }
         [JsonProperty("bcRecord")]
         public List<BCRecordModel> BCRecordModels { set; get; }
+        [JsonProperty("isInProgress")]
+        public bool IsInProgress { set; get; }
+        [JsonProperty("isUpdateCtaAllow")]
+        public bool IsUpdateCtaAllow { set; get; }
+        [JsonProperty("isUpdateCtaOptInPaperBill")]
+        public bool IsUpdateCtaOptInPaperBill { set; get; }
     }
 
     public class BCRecordModel

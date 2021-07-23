@@ -32,35 +32,35 @@
         //Mark: http://tnbcsdevapp.tnb.my/
         private const string SitecoreDEV = "http://10.215.70.246/";
         //Mark: http://tnbcsstgapp.tnb.my/
-        private const string SitecoreSIT = "https://sitecore.tnb.com.my/";
+        private const string SitecoreSIT = "http://10.215.70.248/";
         private const string SitecorePROD = "https://sitecore.tnb.com.my/";
         private const string ApiKeyIdDEV = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
         private const string ApiKeyIdPROD = "E6148656-205B-494C-BC95-CC241423E72F";
 
         //Encrypt / Decrypt
-        private const string SaltKeyDEV = "Salt-4NHF1XP910G8NN6GRH23PD12N9X6T5DW";
-        private const string PassphraseDEV = "PW-myTNB-DEV";
-        private const string SaltKeyPROD = "Salt-IT9LJQ3LJEAK5G2R35L5V6A5FUDO7A5B";
-        private const string PassphrasePROD = "PW-myTNB-PROD";
+        private const string SaltKey_DEV = "Salt-4NHF1XP910G8NN6GRH23PD12N9X6T5DW";
+        private const string Passphrase_DEV = "PW-myTNB-DEV";
+        private const string SaltKey_PROD = "Salt-IT9LJQ3LJEAK5G2R35L5V6A5FUDO7A5B";
+        private const string Passphrase_PROD = "PW-myTNB-PROD";
 
 #if DEBUG
-        public static string ApiDomain = PROD;
-        public const string ApiKeyId = ApiKeyIdPROD;
+        public static string ApiDomain = SIT;
+        public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecoreSIT;
-        internal const string SaltKey = SaltKeyDEV;
-        internal const string PassPhrase = PassphraseDEV;
+        internal const string SaltKey = SaltKey_DEV;
+        internal const string PassPhrase = Passphrase_DEV;
 #elif MASTER || SIT
         public static string ApiDomain = SIT;
         public const string ApiKeyId = ApiKeyIdDEV;
         public const string SitecoreURL = SitecorePROD;
-        internal const string SaltKey = SaltKeyDEV;
-        internal const string PassPhrase = PassphraseDEV;
+        internal const string SaltKey = SaltKey_DEV;
+        internal const string PassPhrase = Passphrase_DEV;
 #else
         public static string ApiDomain = PROD;
         public const string ApiKeyId = ApiKeyIdPROD;
         public const string SitecoreURL = SitecorePROD;
-        internal const string SaltKey = SaltKeyPROD;
-        internal const string PassPhrase = PassphrasePROD;
+        internal const string SaltKey = SaltKey_PROD;
+        internal const string PassPhrase = Passphrase_PROD;
 #endif
 
         //Service Name

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using myTNB.Mobile.AWS;
 using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile.AWS.Services.DBR;
+using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 using Refit;
 
@@ -53,10 +54,30 @@ namespace myTNB.Mobile
 
                 string responseString = await rawResponse.Content.ReadAsStringAsync();
                 response = JsonConvert.DeserializeObject<GetBillRenderingResponse>(responseString);
-                response.StatusDetail = new StatusDetail
+
+                if (response != null
+                    && response.Content != null
+                    && response.StatusDetail != null
+                    && response.StatusDetail.Code.IsValid())
                 {
-                    IsSuccess = true
-                };
+                    response.StatusDetail = AWSConstants.Services.GetBillRendering.GetStatusDetails(response.StatusDetail.Code);
+                }
+                else
+                {
+                    if (response != null && response.StatusDetail != null && response.StatusDetail.Code.IsValid())
+                    {
+                        response.StatusDetail = AWSConstants.Services.GetBillRendering.GetStatusDetails(response.StatusDetail.Code);
+                    }
+                    else
+                    {
+                        response = new GetBillRenderingResponse
+                        {
+                            StatusDetail = new StatusDetail()
+                        };
+                        response.StatusDetail = AWSConstants.Services.GetBillRendering.GetStatusDetails(MobileConstants.DEFAULT);
+                    }
+                }
+
                 return response;
             }
             catch (ApiException apiEx)

@@ -2424,7 +2424,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 }
                 else if (UserSessions.ManageBillDelivery == DBRTypeEnum.EBill)
                 {
-                    middleHeight = (int)DPUtils.ConvertDPToPx(100f);
+                    middleHeight = (int)DPUtils.ConvertDPToPx(120f);
                     topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - middleHeight;
                     LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                     topLayoutParam.Height = topHeight;

@@ -33,7 +33,6 @@ namespace myTNB.Mobile
         /// <returns>Access Token</returns>
         public async Task<string> GenerateAccessToken(string userID)
         {
-
             try
             {
                 userID = "0D1568D9-7770-4345-84BD-04C2C56A2069";

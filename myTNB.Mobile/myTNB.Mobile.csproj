@@ -26,11 +26,11 @@
     <MandroidI18n>West</MandroidI18n>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType></DebugType>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>PdbOnly</DebugType>
     <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0;</DefineConstants>
+    <DefineConstants>TRACE;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
@@ -105,7 +105,6 @@
     <Folder Include="AWS\Models\Access Token\" />
     <Folder Include="AWS\Models\SSO\" />
     <Folder Include="AWS\Services\" />
-    <Folder Include="AWS\Managers\Access Token\" />
     <Folder Include="AWS\Managers\SSO\" />
     <Folder Include="AWS\Services\Access Token\" />
     <Folder Include="AWS\Models\DBR\" />

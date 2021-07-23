@@ -1129,7 +1129,15 @@
     "applicationStatusDetailsActionTwoTitle": "Know when to take action.",
     "applicationStatusDetailsActionTwoMessage": "Easily complete any action that is required for your submitted application here.",
     "dbrBillTitle": "Your account bill delivery method.",
-    "dbrBillMessage": "View your bill delivery method here and tap to manage your preference."
+    "dbrBillMessage": "View your bill delivery method here and tap to manage your preference.",
+    "manageCAManageBillDeliveryTitle": "Your account bill delivery method.",
+    "manageCAManageBillDeliveryMessage": "View and directly manage your bill delivery method here.",
+    "manageCAViewBillDeliveryTitle": "Your account bill delivery method.",
+    "manageCAViewBillDeliveryMessage": "View your bill delivery method here.",
+    "manageDeliveryMethodUpdateCTATitle": "Manage your bill delivery method.",
+    "manageDeliveryMethodUpdateCTAMessage": "Update your bill delivery method for this account here.",
+    "manageDeliveryMethodEmailTitle": "Users with email bills.",
+    "manageDeliveryMethodEmailMessage": "View account users or email recipients who are receiving monthly bills for this account."
   },
   "ApplicationStatusLanding": {
     "title": "Application Status",
@@ -2288,6 +2296,17 @@
           }
         ],
         "GenerateAccessToken": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
+        ],
+        "GetBillRendering": [
           {
             "code": "7200",
             "title": "",
